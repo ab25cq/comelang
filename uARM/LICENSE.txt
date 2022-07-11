@@ -1,0 +1,7 @@
+This code can be used for non-commercial purposes as long as you publish all code changes and this license file unmodified with them. If integrated in any hardware, the paperwork that comes with the hardware must include this notice.
+For commercial use terms, contact me.
+
+--
+Dmitry Grinberg
+dmtirygr@gmail.com
+http://dmitry.co/

@@ -1,0 +1,11 @@
+x
+int fun(int a, int b) 
+{
+    return a + b;
+}
+iiiiiiaaa
+int main() 
+{
+    int a = 1;
+    printf("%d\n", a);
+}

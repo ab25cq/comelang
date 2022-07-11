@@ -1,0 +1,158 @@
+automatically output header
+
+
+
+class name initializer
+
+struct with initialization
+
+---- implemented ----
+list, map, var[0] = , var[0], var["AAA"] operator ovarload
+operator overload
+blocck result
+
+関数のデフォルト引数、ラベル、ラベルの強制、ラベルの非強制
+
+vin undo, searching word saving to file
+
+switch return require break
+
+method block parent bug
+debug info
+generics file name error
+inline
+undefined struct;
+anonymous struct
+enum
+union
+array head pointer
+
+    array initiailizer
+
+        global variable array initializer
+    dynamic length array
+
+    iran dynamic length array initializer
+
+    omit array index
+array
+
+    char array initializer
+
+var args
+
+    xsprintf
+
+static local variable
+
+function pointer
+
+static function
+    normal block
+
+    switch
+
+    case
+
+    break
+
+    cotinue
+
+    label
+
+    goto
+
+    class name
+
+    is heap
+    conditional
+    complement
+
+    load address value
+
+    func_name
+
+    comma
+    plus plus
+
+    minus minus
+
+    equal plus
+
+    equals minus
+
+    equal mult
+
+    equal div
+
+    equal mod
+
+    equal lshift
+    
+    equal rshift
+
+    equal and
+
+    equal xor
+
+    equal or
+
+    pointer sub and add
+
+struct 
+
+    generics struct
+
+foreach
+
+    select
+    map
+    each
+    --> foreach 
+
+generics
+
+    code generated generics or none code generated generics
+
+    vector, list, map, tuple, string, wstring
+
+    no lambda and method block
+sublist?
+
+anonymous union
+anonymous struct
+
+new type_name --> type_name()
+finalize --> type_name_finalize()
+
+1.print --> int_print(1)
+    debug info
+    generics finalize
+
+code generated generics
+code generated generics
+no method generics, pcre
+simpler method definition
+no method block
+no pcre
+list
+vector
+
+foreach C macro
+
+auto
+
+substring
+
+map
+tuple
+
+Br no mae no free_right_objects while no conditional, for, do while, switch, case atarino br mae ni ireru?
+
+
+map<char*, int> bug
+ddthod name completion
+
+operators
+
+mixin-layers override C libraries

@@ -1,0 +1,362 @@
+#########################################
+# installed directories
+#########################################
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+datadir=@datadir@
+mandir=@mandir@
+sharedstatedir=@sharedstatedir@
+sysconfdir=@sysconfdir@/comelang
+includedir=@includedir@/comelang
+datarootdir=@datarootdir@/comelang
+docdir=@datadir@/doc
+libdir=@libdir@
+
+#########################################
+# environmnet variables
+#########################################
+CC=@CC@
+CXX=@CXX@
+INSTALL=@INSTALL@
+CFLAGS=@CFLAGS@
+CFLAGS2=`echo $(CFLAGS) | sed -e 's/-O2//'`
+CXXFLAGS=@CXXFLAGS@
+CXXFLAGS2=@CXXFLAGS2@
+LIBS=@LIBS@
+OS=@OS@
+DESTDIR=@DESTDIR@
+OBJS=@OBJS@
+SELF_HOST_OBJS=@SELF_HOST_OBJS@
+
+#########################################
+# main
+#########################################
+all: comelang no-self-host
+
+no-self-host: comelang lib lib-gc
+
+
+comelang: config.h src/main.o $(OBJS)
+	$(CC) -c src/main.c -o src/main.o $(CFLAGS)
+	$(CXX) -o comelang src/main.o $(OBJS) $(CXXFLAGS) $(LIBS) -L/usr/local/lib
+
+lib: 
+	clang -c -o comelang6.o comelang6.c -I/usr/local/include
+	./comelang -c -no-gc comelang.c -fPIC
+	./comelang -c -no-gc comelang2.c -fPIC
+	./comelang -c -no-gc comelang3.c -fPIC
+	./comelang -c -no-gc comelang4.c -fPIC
+	./comelang -c -no-gc comelang5.c -fPIC
+	./comelang -c -no-gc comelang7.c -fPIC
+	./comelang -c -no-gc comelang8.c -fPIC
+	ar r libcomelang.a comelang.o comelang2.o comelang3.o comelang4.o comelang5.o comelang6.o comelang7.o comelang8.o
+
+lib-gc:
+	clang -c -o comelang6.o comelang6.c -I/usr/local/include
+	./comelang -o comelang-gc.o -gc -c comelang.c -fPIC
+	./comelang -o comelang2-gc.o -gc -c comelang2.c -fPIC
+	./comelang -o comelang3-gc.o -gc -c comelang3.c -fPIC
+	./comelang -o comelang4-gc.o -gc -c comelang4.c -fPIC
+	./comelang -o comelang5-gc.o -gc -c comelang5.c -fPIC
+	./comelang -o comelang7-gc.o -gc -c comelang7.c -fPIC
+	./comelang -o comelang8-gc.o -gc -c comelang8.c -fPIC
+	clang -o comelang6.o -c comelang6.c -fPIC -I/usr/local/include -I/opt/local/include
+	ar r libcomelang-gc.a comelang-gc.o comelang2-gc.o comelang3-gc.o comelang4-gc.o comelang5-gc.o comelang6.o comelang7-gc.o comelang8-gc.o
+
+self-host: comelang config.h $(SELF_HOST_OBJS) lib
+	$(CXX) -o comelang $(SELF_HOST_OBJS) $(CXXFLAGS) -fPIC $(LIBS) -L/usr/local/lib
+
+src/parse_value.c.o: src/parse_value.c
+	./comelang -o src/parse_value.c.o -c src/parse_value.c $(CFLAGS) -fPIC
+
+src/parse_lib.c.o: src/parse_lib.c
+	./comelang -o src/parse_lib.c.o -c src/parse_lib.c $(CFLAGS) -fPIC
+
+src/parse_type.c.o: src/parse_type.c
+	./comelang -o src/parse_type.c.o -c src/parse_type.c $(CFLAGS) -fPIC
+
+src/parse_function.c.o: src/parse_function.c
+	./comelang -o src/parse_function.c.o -c src/parse_function.c $(CFLAGS) -fPIC
+
+src/parse_loop.c.o: src/parse_loop.c
+	./comelang -o src/parse_loop.c.o -c src/parse_loop.c $(CFLAGS) -fPIC
+
+src/parse_var.c.o: src/parse_var.c
+	./comelang -o src/parse_var.c.o -c src/parse_var.c $(CFLAGS) -fPIC
+
+src/parse_exp.c.o: src/parse_exp.c
+	./comelang -o src/parse_exp.c.o -c src/parse_exp.c $(CFLAGS) -fPIC
+
+src/parse_op.c.o: src/parse_op.c
+	./comelang -o src/parse_op.c.o -c src/parse_op.c $(CFLAGS) -fPIC
+
+src/alignment.c.o: src/alignment.c
+	./comelang -o src/alignment.c.o -c src/alignment.c $(CFLAGS) -fPIC
+
+src/buffer.c.o: src/buffer.c
+	./comelang -o src/buffer.c.o -c src/buffer.c $(CFLAGS) -fPIC
+
+src/xfunc.c.o: src/xfunc.c
+	./comelang -o src/xfunc.c.o -c src/xfunc.c $(CFLAGS) -fPIC
+
+src/node.c.o: src/node.c
+	./comelang -o src/node.c.o -c src/node.c $(CFLAGS) -fPIC
+
+src/node_function_call.c.o: src/node_function_call.c
+	./comelang -o src/node_function_call.c.o -c src/node_function_call.c $(CFLAGS2) -fPIC
+
+src/node_function_lib.c.o: src/node_function_lib.c
+	./comelang -o src/node_function_lib.c.o -c src/node_function_lib.c $(CFLAGS) -fPIC
+
+src/node_function.c.o: src/node_function.c
+	./comelang -o src/node_function.c.o -c src/node_function.c $(CFLAGS) -fPIC
+
+src/node_function_come.c.o: src/node_function_come.c
+	./comelang -o src/node_function_come.c.o -c src/node_function_come.c $(CFLAGS) -fPIC
+
+src/node_loop.c.o: src/node_loop.c
+	./comelang -o src/node_loop.c.o -c src/node_loop.c $(CFLAGS) -fPIC
+
+src/node_op.c.o: src/node_op.c
+	./comelang -o src/node_op.c.o -c src/node_op.c $(CFLAGS) -fPIC
+
+src/node_value.c.o: src/node_value.c
+	./comelang -o src/node_value.c.o -c src/node_value.c $(CFLAGS) -fPIC
+
+src/node_var.c.o: src/node_var.c
+	./comelang -o src/node_var.c.o -c src/node_var.c $(CFLAGS) -fPIC
+
+src/node_compile.c.o: src/node_compile.c
+	./comelang -o src/node_compile.c.o -c src/node_compile.c $(CFLAGS) -fPIC
+
+src/vtable.c.o: src/vtable.c
+	./comelang -o src/vtable.c.o -c src/vtable.c $(CFLAGS) -fPIC
+
+src/node_type.c.o: src/node_type.c
+	./comelang -o src/node_type.c.o -c src/node_type.c $(CFLAGS) -fPIC
+
+src/klass.c.o: src/klass.c
+	./comelang -o src/klass.c.o -c src/klass.c $(CFLAGS) -fPIC
+
+src/node_block.c.o: src/node_block.c
+	./comelang -o src/node_block.c.o -c src/node_block.c $(CFLAGS) -fPIC
+
+src/typedef.c.o: src/typedef.c
+	./comelang -o src/typedef.c.o -c src/typedef.c $(CFLAGS) -fPIC
+
+src/compiler.c.o: src/compiler.c
+	./comelang -o src/compiler.c.o -c src/compiler.c $(CFLAGS) -fPIC
+
+src/macro.c.o: src/macro.c
+	./comelang -o src/macro.c.o -c src/macro.c $(CFLAGS) -fPIC
+
+src/main.c.o: src/main.c
+	./comelang -o src/main.c.o -c src/main.c $(CFLAGS) -fPIC
+
+#########################################
+# Object files
+#########################################
+$(OBJS): src/*.h Makefile configure
+
+#########################################
+# install
+#########################################
+install:
+	mkdir -p $(DESTDIR)/include
+	$(INSTALL) -m 644 ./comelang.h $(DESTDIR)/include
+	mkdir -p $(DESTDIR)/lib
+	if test -e ./libcomelang.a; then $(INSTALL) -m 644 ./libcomelang.a $(DESTDIR)/lib; fi
+	if test -e ./libcomelang-gc.a; then $(INSTALL) -m 644 ./libcomelang-gc.a $(DESTDIR)/lib; fi
+
+	mkdir -p "$(DESTDIR)/bin"
+	$(INSTALL) -m 755 ./comelang "$(DESTDIR)/bin"
+
+	mkdir -p $(DESTDIR)/share/doc/comelang
+	$(INSTALL) -m 644 ./README.md "$(DESTDIR)/share/doc/comelang"
+
+#########################################
+# permission
+#########################################
+permission:
+	chmod 644 *
+	chmod 755 .git man src configure
+	chmod 644 src/*.c
+	chmod 644 src/*.h
+	chmod 755 update_comelang.sh
+
+#########################################
+# clean
+#########################################
+clean:
+	rm -fR comelang *.a src/*.o src/*.i src/*.ll code/*.i code/*.ll code/HelloWorld code/HelloWorld2 code/HelloWorld3 code/HelloWorld4 code/HelloWorld5 *.i *.ll a.out src/*.o code/HelloWorld.dSYM code/HelloWorld2.dSYM code/HelloWorld3.dSYM code/HelloWorld4.dSYM code/HelloWorld5.dSYM code/HelloWorld6.dSYM code/HelloWorld7.dSYM code/HelloWorld8.dSYM code/HelloWorld9.dSYM code/HelloWorld10.dSYM code/HelloWorld11.dSYM code/HelloWorld12.dSYM code/HelloWorld13.dSYM code/HelloWorld14.dSYM code/HelloWorld15.dSYM code/HelloWorld16.dSYM code/HelloWorld17.dSYM comelang.dSYM code/HelloWorld6 code/HelloWorld7 code/HelloWorld8 code/HelloWorld9 code/HelloWorld10 code/HelloWorld11 code/HelloWorld12 code/HelloWorld13 code/HelloWorld14 code/HelloWorld15 code/HelloWorld16 code/HelloWorld17 *.o libcomelang.a a
+
+distclean: clean
+	rm -fR  config.h Makefile autom4te.cache 
+
+#########################################
+# test
+#########################################
+test: no-gc-test debug-test gc-test gc-debug-test
+
+no-gc-test:
+	@echo "Compile to gc test code..."
+	PWD=`pwd` ./comelang -no-gc -clang code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld4.c
+	./code/HelloWorld4
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld5.c
+	./code/HelloWorld5
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld6.c
+	./code/HelloWorld6
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld7.c
+	./code/HelloWorld7
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./comelang -no-gc code/HelloWorld17.c
+	./code/HelloWorld17
+
+
+debug-test: 
+	@echo "Compile to test code..."
+	PWD=`pwd` ./comelang -no-gc -clang -g code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./comelang -no-gc -clang -g code/HelloWorld2.c
+	./code/HelloWorld2
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld4.c
+	./code/HelloWorld4
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld5.c
+	./code/HelloWorld5
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld6.c
+	./code/HelloWorld6
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld7.c
+	./code/HelloWorld7
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./comelang -no-gc -g code/HelloWorld17.c
+	./code/HelloWorld17
+
+gc-test:
+	@echo "Compile to gc test code..."
+	PWD=`pwd` ./comelang -gc -clang code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./comelang -gc code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./comelang -gc code/HelloWorld4.c
+	./code/HelloWorld4
+	PWD=`pwd` ./comelang -gc code/HelloWorld5.c
+	./code/HelloWorld5
+	PWD=`pwd` ./comelang -gc code/HelloWorld6.c
+	./code/HelloWorld6
+	PWD=`pwd` ./comelang -gc code/HelloWorld7.c
+	./code/HelloWorld7
+	PWD=`pwd` ./comelang -gc code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./comelang -gc code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./comelang -gc code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./comelang -gc code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./comelang -gc code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./comelang -gc code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./comelang -gc code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./comelang -gc code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./comelang -gc code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./comelang -gc code/HelloWorld17.c
+	./code/HelloWorld17
+
+
+gc-debug-test: 
+	@echo "Compile to test code..."
+	PWD=`pwd` ./comelang -gc -clang -g code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./comelang -gc -clang -g code/HelloWorld2.c
+	./code/HelloWorld2
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld4.c
+	./code/HelloWorld4
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld5.c
+	./code/HelloWorld5
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld6.c
+	./code/HelloWorld6
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld7.c
+	./code/HelloWorld7
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./comelang -gc -g code/HelloWorld17.c
+	./code/HelloWorld17
+
+
+#########################################
+# uninstall
+#########################################
+uninstall:
+	rm -f "$(DESTDIR)"/bin/comelang
+	rm -f "$(DESTDIR)"/include/comelang.h
+	rm -f "$(DESTDIR)"/lib/libcomelang.a
+	rm -f "$(DESTDIR)"/lib/libcomelang-gc.a
+	rm -f "$(DESTDIR)/share/doc/comelang/README.md"
+

@@ -1,0 +1,77 @@
+#######################################################
+# installed directories
+#######################################################
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+datadir=@datadir@
+mandir=@mandir@
+sharedstatedir=@sharedstatedir@
+sysconfdir=@sysconfdir@/yappy
+datarootdir=@datarootdir@/yappy
+docdir=@datadir@/doc
+libdir=@libdir@
+
+##########################################################
+# environmnet variables
+##########################################################
+CC=@CC@
+INSTALL=@INSTALL@
+CFLAGS=@CFLAGS@
+LIBS=@LIBS@
+OS=@OS@
+DESTDIR=@DESTDIR@
+OBJS=@OBJS@
+
+##########################################################
+# main
+##########################################################
+all: yappy
+
+yappy: config.h $(OBJS) 
+	$(CC) -o yappy $(OBJS) $(CFLAGS) $(LIBS)
+
+#########################################################
+# Object files
+#########################################################
+$(OBJ): src/*.h Makefile configure
+
+#########################################################
+# install
+#########################################################
+install:
+
+	mkdir -p "$(DESTDIR)/bin"
+	$(INSTALL) -m 755 ./yappy "$(DESTDIR)/bin"
+
+#########################################################
+# uninstall
+#########################################################
+uninstall:
+	rm -f "$(DESTDIR)"/bin/yappy
+
+#########################################################
+# permission
+#########################################################
+permission:
+	chmod 644 *
+	chmod 755 .git man src configure
+	chmod 644 src/*.c
+	chmod 644 src/*.h
+	chmod 755 update_clover.sh
+
+########################################################
+# clean
+########################################################
+clean:
+	rm -fR yappy yappy.dSYM src/*.o config.log config.status *.stackdump autom4te.cache .DS_Store core.* core a.out src/*.ll src/*.i code/__pycache__
+
+distclean: clean
+	rm -fR  config.h Makefile autom4te.cache
+
+########################################################
+# test
+########################################################
+test: 
+	PWD=`pwd` && ./yappy code/HelloWorld.py
+

@@ -1,0 +1,128 @@
+<html>
+<body>
+
+<h1>summary</h1>
+<p>This guide explains what functions in what files you should change to port uARM to another microcontroller/board. It then has more details after the table.
+</p>
+<p>There reset of the code should *not* be changed, unless you know what you're doing exactly.
+</p>
+
+<h1>The big bad table</h1>
+<table border="1">
+	<tr><td><b>FUNCTION</b></td><td><b>USE</b></td><td><b>NOTES</b></td></tr>
+	<tr><td colspan="3"><center>--- FILE: SD.c ---</center></td></tr>
+	<tr><td>void sdClockSpeed(Bool fast)</td><td>sets SPI speed to fast or slow</td><td>If you use a hardware spi controller, use this opportunity to reconfigure it for the given speed (slow should be 100-400KHz fast can be anything under 20MHz). For bit-banged versions just save the variable somewhere so that your bit-banging code can use it to decide to be slow or very slow :-)</td></tr>
+	<tr><td>u8 sdSpiByte(u8 byte)</td><td>spi byte</td><td>send and concurrently receive a byte on the SPI bus</td></tr>
+	<tr><td>void sdSpiSingleClock()</td><td>spi clock pulse</td><td>Since I do not use the CS pin on the SD card (to save a pin), power-up glitching can cause the SD card to think we're in the middle of a byte when the microcontroller thinks we're at a byte boundary. Needless to say this is bad. This function is used by the SD init code to resync with the card. It should move the data line high (very important!) and then pulse the clock line high and back low (min pulse width: 1.25 microseconds)</td></tr>
+	<tr><td colspan="3"><center>--- FILE: SoC.c ---</center></td></tr>
+	<tr><td>socRun() line "if(!(PIND & 0x10))"</td><td colspan="2">This is used to print the current emulator speed. Either change to "if(0)" or change code to read your button state (the if condition should be true if button is low)</td></tr>
+	<tr><td colspan="3"><center>--- FILE: main_avr.c ---</center></td></tr>
+	<tr><td>int readchar()</td><td>get a serial port character</td><td>Return a character from the serial port buffer or CHAR_NONE if none is available. This function is called rather often (and regardless of whether the emulated OS asks for it), so you are unlikely to need a buffer.</td></tr>
+	<tr><td>void writechar(int chr)</td><td>put a serial port character</td><td>Write a character to your serial port.</td></tr>
+	<tr><td>void init()</td><td>Initialize the CPU/board</td><td>Do whatever you need in here to initialize your board, pinmux, RTC, clocks, serial port, toaster, etc...</td></tr>
+	<tr><td>ISR(TIMER3_COMPA_vect)</td><td>RTC interrupt</td><td>Feel free to remove this, but you do need an RTC. See later functions for details...</td></tr>
+	<tr><td>u32 rtcCurTime(void)</td><td>get the RTC</td><td>Return the current unix time (or some semblance thereof). How you do this is your own business, just do it.</td></tr>
+	<tr><td colspan="3"><center>--- FILE: avr_asm.S (this file can be coded in C as well, if you want) ---</center></td></tr>
+	<tr><td>u8 sdSpiByte(u8 byte)</td><td>see same func in SD.c</td><td>I wrote it in asm, you don't have to. Details in SD.c's sdSpiByte comment above</td></tr>
+	<tr><td>void ramRead(u32 addr, u8* buf, u8 sz)</td><td>Do a ram read</td><td>This is where you twiddle the address, data, nCAS, and nRAS lines to make a RAM read happen</td></tr>
+	<tr><td>void ramWrite(u32 addr, const u8* buf, u8 sz)</td><td>Do a ram write</td><td>This is where you twiddle the address, data, nCAS, nWE, and nRAS lines to make a RAM write happen</td></tr>
+	<tr><td>void __vector_13()</td><td>Do a ram refresh</td><td>This is where you twiddle the nCAS and nRAS lines to make a RAM refresh happen...4096 times in a row. In an AVR this is the interrupt handler, on your board you may choose to do it differently. Just make sure it happens every 62ms</td></tr>
+</table>
+<h1>RAM and you</h1>
+<p>RAM port setup: address lines should all be outputs for you always. nCAS, nRAS, nWE as well. Data lines should be *inputs* by default.
+</p>
+<p>Since AVR asm may not be your language of choice (it certainly is not mine), I'll explain what happens in those functions here. Nah... I am too lazy to explain. I'll just give you C code, and a warning. Actually, warning first: if you can, use ASM and not C - these functions really do need to be fast. They have the potential to slow down your emulation quite a bit, so put some work into them.
+</p>
+<p>General idea here is: ram refresh needs to happen every 64ms. We play it safe and schedule an interrupt every 62ms to happen, where we do the refresh. The refresh can and will break an ongoing read or write. How do we handle it? We disable the refresh interrupt while we're reading/writing. When we finish, we re-enable the interrupt, and if it was queued, it will fire and a refresh will happen right there and then. If your microcontroller of choice does not remember masked interrupts(all the ones I know do), figure out some other way to handle this. 
+</p>
+<p>In these mock implementations I make use of "fake" functions like nop, ints_off, ints_on, output_on_address_lines, output_on_data_lines, read_data_lines, make_data_lines_outputs, make_data_lines_inputs. These are just placeholders for your code to do these things.
+</p>
+
+<h3>ramRefresh(interrupt handler calls this)</h3>
+<pre style="width: 500px; border: 1px solid black">
+void ramRefresh(){
+	unsigned short cycles = 4096;
+	
+	do{
+		nCAS = 0;
+		nRAS = 0;
+		nCAS = 1;
+		nRAS = 1;
+	}while(--cycles);
+}</pre>
+
+<h3>ramRead</h3>
+<pre style="width: 500px; border: 1px solid black">
+void ramRead(u32 addr, u8* buf, u8 sz){
+	
+	unsigned short row_addr, col_addr;
+	
+	//step1: prepare address values
+	row_addr = addr >> 12;
+	col_addr = addr & 0xFFF;
+	
+	//step 2: disable interrupts
+	ints_off();
+	
+	//step 3: read
+	output_on_address_lines(row_addr);
+	nRAS = 0;
+	while(sz--){
+		output_on_address_lines(col_addr++);
+		nCAS = 0;
+		nop();	//wait just a bit (longer for
+			// longer wires, output drivers
+			//on this ram stick are VERY weak)
+		*buf++ = read_data_lines();
+		nCAS = 1;
+	}
+	nRAS = 1;
+	
+	//step 4: re-enable interrupts
+	ints_on();
+}</pre>
+
+<h3>ramWrite</h3>
+<pre style="width: 500px; border: 1px solid black">
+void ramWrite(u32 addr, const u8* buf, u8 sz){
+	
+	unsigned short row_addr, col_addr;
+	unsigned char val;
+	
+	//step1: prepare address values
+	row_addr = addr >> 12;
+	col_addr = addr & 0xFFF;
+	
+	//step 2: disable interrupts
+	ints_off();
+	
+	//step 3: toggle nWE & make data lines outputs
+	nWE = 0;
+	make_data_lines_outputs();
+	
+	//step 4: write
+	output_on_address_lines(row_addr);
+	nRAS = 0;
+	
+	while(sz--){
+	
+		output_on_data_lines(*buf++);
+		output_on_address_lines(col_addr++);
+		nCAS = 0;
+		nop();
+		nCAS = 1;
+	}
+	
+	nRAS = 1;
+	
+	//step 5: fix data lines to normal state & toggle nWE
+	make_data_lines_inputs();
+	nWE = 1;
+	
+	//step 6: re-enable interrupts
+	ints_on();
+}</pre>
+
+
+</body>
+</html>
