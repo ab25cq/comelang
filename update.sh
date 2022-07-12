@@ -28,7 +28,8 @@ then
 fi
 
 (cd 9cc && make clean)
-(cd uARM && make clean)
+#(cd uARM && make clean)
+(cd c && make clean)
 
 
 if [ -e Makefile ]
