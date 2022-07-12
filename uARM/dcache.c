@@ -116,12 +116,10 @@ Boolean _dcache_fetch_func(dcache* dc, UInt32 va, UInt8 sz, Boolean priviledged,
     line = lines + j;
 
     line->info = va | (priviledged ? DCACHE_PRIV_MASK : 0);
-puts("dc->memF");
     if(!dc->memF(dc->cpu, line->data, va, DCACHE_LINE_SZ, false, priviledged, fsrP)){
 
         return false;
     }
-puts("dc->memF end");
     line->info |= DCACHE_USED_MASK;
 
     if(sz == 4){
@@ -143,9 +141,7 @@ Boolean _dcache_test_func(dcache* dc, UInt32 va, UInt8 sz, Boolean priviledged, 
     UInt8 i;
 
     retO = _dcache_fetch_func(dc, va, sz, priviledged, &fsrO, dataO);
-puts("xx1");
     retT = dc->memF(dc->cpu, dataT, va, sz, false, priviledged, &fsrT);
-puts("xx1 end");
 
     if((retT != retO) || (fsrT != fsrO) || (dataT[0] != dataO[0]) || (dataT[1] != dataO[1]) || (dataT[2] != dataO[2]) || (dataT[3] != dataO[3])){
 

@@ -30,8 +30,8 @@ Kernel configured for up to 4 processors.
 Processor type: x86_64h (Intel x86-64h Haswell)
 Processors active: 0 1 2 3
 Primary memory available: 8.00 gigabytes
-Default processor set: 453 tasks, 1485 threads, 4 processors
-Load average: 2.24, Mach factor: 1.75
+Default processor set: 428 tasks, 1440 threads, 4 processors
+Load average: 2.02, Mach factor: 1.98
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -475,7 +475,7 @@ configure:4203: checking for execvpe
 configure:4203: clang -o conftest -I. -I/usr/local/opt/llvm/include -L/usr/local/opt/llvm/lib conftest.c  -ldl -lm -lpcre -lncurses -lreadline -lpthread >&5
 Undefined symbols for architecture x86_64:
   "_execvpe", referenced from:
-      _main in conftest-227822.o
+      _main in conftest-974ea3.o
 ld: symbol(s) not found for architecture x86_64
 clang-14: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:4203: $? = 1
@@ -564,6 +564,7 @@ on minatotaitennoMacBook-ea.local
 
 config.status:814: creating Makefile
 config.status:814: creating config.h
+config.status:989: config.h is unchanged
 
 ## ---------------- ##
 ## Cache variables. ##

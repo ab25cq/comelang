@@ -1859,11 +1859,22 @@ BOOL compile_left_shift(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(auto_cast_posibility(left_type, right_type)) {
-            if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
-            {
-                compile_err_msg(info, "Cast failed");
-                return TRUE;
+        if(is_left_type_bigger_size(left_type, right_type)) {
+            if(auto_cast_posibility(left_type, right_type)) {
+                if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
+            }
+        }
+        else {
+            if(auto_cast_posibility(right_type, left_type)) {
+                if(!cast_right_type_to_left_type(right_type, &left_type, &lvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
             }
         }
     
@@ -1940,11 +1951,22 @@ BOOL compile_right_shift(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(auto_cast_posibility(right_type, left_type)) {
-            if(!cast_right_type_to_left_type(right_type, &left_type, &lvalue, info))
-            {
-                compile_err_msg(info, "Cast failed");
-                return TRUE;
+        if(is_left_type_bigger_size(left_type, right_type)) {
+            if(auto_cast_posibility(left_type, right_type)) {
+                if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
+            }
+        }
+        else {
+            if(auto_cast_posibility(right_type, left_type)) {
+                if(!cast_right_type_to_left_type(right_type, &left_type, &lvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
             }
         }
     
@@ -2021,11 +2043,22 @@ BOOL compile_and(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(auto_cast_posibility(left_type, right_type)) {
-            if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
-            {
-                compile_err_msg(info, "Cast failed");
-                return TRUE;
+        if(is_left_type_bigger_size(left_type, right_type)) {
+            if(auto_cast_posibility(left_type, right_type)) {
+                if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
+            }
+        }
+        else {
+            if(auto_cast_posibility(right_type, left_type)) {
+                if(!cast_right_type_to_left_type(right_type, &left_type, &lvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
             }
         }
     
@@ -2102,11 +2135,22 @@ BOOL compile_xor(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(auto_cast_posibility(left_type, right_type)) {
-            if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
-            {
-                compile_err_msg(info, "Cast failed");
-                return TRUE;
+        if(is_left_type_bigger_size(left_type, right_type)) {
+            if(auto_cast_posibility(left_type, right_type)) {
+                if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
+            }
+        }
+        else {
+            if(auto_cast_posibility(right_type, left_type)) {
+                if(!cast_right_type_to_left_type(right_type, &left_type, &lvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
             }
         }
     
@@ -2183,17 +2227,28 @@ BOOL compile_or(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(auto_cast_posibility(left_type, right_type)) {
-            if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
-            {
-                compile_err_msg(info, "Cast failed");
-                return TRUE;
+        if(is_left_type_bigger_size(left_type, right_type)) {
+            if(auto_cast_posibility(left_type, right_type)) {
+                if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
+            }
+        }
+        else {
+            if(auto_cast_posibility(right_type, left_type)) {
+                if(!cast_right_type_to_left_type(right_type, &left_type, &lvalue, info))
+                {
+                    compile_err_msg(info, "Cast failed");
+                    return TRUE;
+                }
             }
         }
     
         LVALUE llvm_value;
         llvm_value.value = LLVMBuildOr(gBuilder, lvalue.value, rvalue.value, "ortmp");
-        llvm_value.type = clone_node_type(right_type);
+        llvm_value.type = clone_node_type(left_type);
         llvm_value.address = NULL;
         llvm_value.var = NULL;
     
@@ -3587,8 +3642,8 @@ BOOL compile_equal_xor(unsigned int node, sCompileInfo* info)
     if(left_type->mPointerNum > 0) {
         left_type->mPointerNum--;
 
-        if(auto_cast_posibility(left_type, right_type)) {
-            if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
+        if(auto_cast_posibility(right_type, left_type)) {
+            if(!cast_right_type_to_left_type(right_type, &left_type, &lvalue, info))
             {
                 compile_err_msg(info, "Cast failed");
                 return TRUE;

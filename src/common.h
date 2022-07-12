@@ -230,6 +230,7 @@ BOOL is_typeof_type(sNodeType* node_type);
 BOOL included_generics_type(sNodeType* node_type, sCLClass* checked_class[], int* num_checked_class);
 BOOL get_type_of_method_generics(sNodeType** method_generics_types, sNodeType* fun_param_type, sNodeType* param_type);
 void create_type_name_from_node_type(char* type_name, int type_name_max, sNodeType* node_type, BOOL neo_c);
+BOOL is_left_type_bigger_size(sNodeType* left_type, sNodeType* right_type);
 
 
 //////////////////////////////

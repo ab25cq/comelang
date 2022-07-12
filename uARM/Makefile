@@ -1,6 +1,6 @@
 APP	= uARM
-CC	= gcc
-LD	= gcc
+CC	= comelang
+LD	= comelang
 
 BUILD ?= debug
 
@@ -15,8 +15,8 @@ ifeq ($(BUILD), avr)
 endif
 
 ifeq ($(BUILD), debug)
-	CC_FLAGS	= -Wall -W -O0 -g -ggdb -ggdb3 -D_FILE_OFFSET_BITS=64 -D__USE_LARGEFILE64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DLCD_SUPPORT
-	LD_FLAGS	= -O0 -g -ggdb -ggdb3
+	CC_FLAGS	= -Wall -W -O0 -O2 -ggdb -ggdb3 -D_FILE_OFFSET_BITS=64 -D__USE_LARGEFILE64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DLCD_SUPPORT
+	LD_FLAGS	= -O0 -O2 -ggdb -ggdb3
 	EXTRA_OBJS	= main_pc.o
 endif
 

@@ -21,8 +21,6 @@ void memDeinit(_UNUSED_ ArmMem* mem){
 
 Boolean memRegionAdd(ArmMem* mem, UInt32 pa, UInt32 sz, ArmMemAccessF aF, void* uD){
 
-printf("memRegionAdd pa %u sz %u pa + sz %u\n", pa, sz, pa + sz);
-
     UInt8 i;
 
     //check for intersection with another region
@@ -76,18 +74,13 @@ Boolean memAccess(ArmMem* mem, UInt32 addr, UInt8 size, Boolean write, void* buf
 
     UInt8 i;
     
-printf("memAccess write1 %u\n", write);
-
     for(i = 0; i < MAX_MEM_REGIONS; i++){
-printf("mem->region[i].pa <= addr && mem->regions[i].pa + mem->regions[i].sz > addr (%d) addr %u pa %u sz %u\n", (mem->regions[i].pa <= addr && mem->regions[i].pa + mem->regions[i].sz > addr), addr, mem->regions[i].pa, mem->regions[i].sz);
         if(mem->regions[i].pa <= addr && mem->regions[i].pa + mem->regions[i].sz > addr){
 
             return mem->regions[i].aF(mem->regions[i].uD, addr, size, write & 0x7F, buf);
         }
     }
     
-printf("memAccess write & 0x80 %u\n", (write & 0x80));
-
     if(!(write & 0x80)){    //high bit in write tells us to not print this error (used by gdb stub)
 
         err_str("Memory ");

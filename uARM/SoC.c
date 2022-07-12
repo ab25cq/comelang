@@ -52,11 +52,7 @@ static Boolean vMemF(ArmCpu* cpu, void* buf, UInt32 vaddr, UInt8 size, Boolean w
         return false;
     }
 
-puts("Boolean n = mmuTranslate soc->mmu vaddr priviledged write pa fsrP && memAccess soc->mem, pa, size, write, buf");
     Boolean n = mmuTranslate(&soc->mmu, vaddr, priviledged, write, &pa, fsrP) && memAccess(&soc->mem, pa, size, write, buf);
-puts("Boolean n = mmuTranslate soc->mmu vaddr priviledged write pa fsrP end && memAccess soc->mem pa size write buf end");
-    
-    
     return n;
 }
 
@@ -147,9 +143,7 @@ static Boolean pMemReadF(void* userData, UInt32* buf, UInt32 pa){    //for DMA e
 
     ArmMem* mem = userData;
 
-puts("DDD");
     Boolean n = memAccess(mem, pa, 4, false, buf);
-puts("EEE");
     return n;
 }
 

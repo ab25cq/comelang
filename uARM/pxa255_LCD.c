@@ -202,9 +202,7 @@ static UInt32 pxa255PrvGetWord(Pxa255lcd* lcd, UInt32 addr){
 
     UInt32 v;
 
-puts("AAA");
     if(!memAccess(lcd->mem, addr, 4, false, &v)) return 0;
-puts("BBB");
 
     return v;
 }

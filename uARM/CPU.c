@@ -1246,16 +1246,6 @@ static Err cpuPrvExecInstr(ArmCpu* cpu, UInt32 instr, UInt32 instrPC/* lower bit
         }
         if((instr & 0x10000000UL) && !specialInstr) execute = !execute;    //invert for inverted conditions
     }
-    
-/*
-{
-FILE* f = fopen("AAA", "a");
-fprintf(f, "instr %u\n", instr);
-fclose(f);
-}
-output_cpu(cpu);
-output_icache(&cpu->ic);
-*/
 
     //execute, if needed
     if(execute){
@@ -1282,18 +1272,14 @@ output_icache(&cpu->ic);
                                 case 0:        //SWP
                                     
                                     adr = cpuPrvGetReg(cpu, (instr >> 16) & 0x0F, wasT, specialPC);
-puts("x1");
                                     ok = cpu->memF(cpu, &m32, adr, 4, false, privileged, &fsr);
-puts("x1 end");
                                     if(!ok){
                                         cpuPrvHandleMemErr(cpu, adr, 4, false, false, fsr);
                                         goto instr_done;
                                     }
                                     tmp = m32;
                                     m32 = cpuPrvGetReg(cpu, instr & 0x0F, wasT, specialPC);
-puts("x2");
                                     ok = cpu->memF(cpu, &m32, adr, 4, true, privileged, &fsr);
-puts("x2 end");
                                     if(!ok){
                                         cpuPrvHandleMemErr(cpu, adr, 4, true, false, fsr);
                                         goto instr_done;
@@ -1304,18 +1290,14 @@ puts("x2 end");
                                 case 4:        //SWPB
                                     
                                     adr = cpuPrvGetReg(cpu, (instr >> 16) & 0x0F, wasT, specialPC);
-puts("x3");
                                     ok = cpu->memF(cpu, &vc8, adr, 1, false, privileged, &fsr);
-puts("x3 end");
                                     if(!ok){
                                         cpuPrvHandleMemErr(cpu, adr, 1, false, false, fsr);
                                         goto instr_done;
                                     }
                                     va8 = vc8;
                                     vc8 = cpuPrvGetReg(cpu, instr & 0x0F, wasT, specialPC);
-puts("x4");
                                     ok = cpu->memF(cpu, &vc8, adr, 1, true, privileged, &fsr);
-puts("x4 end");
                                     if(!ok){
                                         cpuPrvHandleMemErr(cpu, adr, 1, true, false, fsr);
                                         goto instr_done;
@@ -1333,9 +1315,7 @@ puts("x4 end");
                                     
                                     adr = cpuPrvGetReg(cpu, (instr >> 16) & 0x0F, wasT, specialPC);
                                     tmp = cpuPrvGetReg(cpu, instr & 0x0F, wasT, specialPC);
-puts("x5");
                                     ok = cpu->memF(cpu, &tmp, adr, 4, true, privileged, &fsr);
-puts("x5 end");
                                     if(!ok){
                                         cpuPrvHandleMemErr(cpu, adr, 4, true, false, fsr);
                                         goto instr_done;
@@ -1348,9 +1328,7 @@ puts("x5 end");
                                 
                                     if((instr & 0x00000F0FUL) != 0x00000F0FUL) goto invalid_instr;
                                     adr = cpuPrvGetReg(cpu, (instr >> 16) & 0x0F, wasT, specialPC);
-puts("x6");
                                     ok = cpu->memF(cpu, &tmp, adr, 4, false, privileged, &fsr);
-puts("x6 end");
                                     if(!ok){
                                         cpuPrvHandleMemErr(cpu, adr, 4, false, false, fsr);
                                         goto instr_done;
@@ -1503,9 +1481,7 @@ puts("x6 end");
                         }
                         if(va8 & ARM_MODE_3_LOAD){
                             
-puts("x7");
                             ok = cpu->memF(cpu, store, adr + tmp, vb8, false, privileged, &fsr);
-puts("x7 end");
                             if(!ok){
                                 cpuPrvHandleMemErr(cpu, adr + tmp, vb8, false, false, fsr);
                                 goto instr_done;
@@ -1542,9 +1518,7 @@ puts("x7 end");
                                 store[1] = cpuPrvGetReg(cpu, ((instr >> 12) & 0x0F) + 1, wasT, specialPC);
                             }
                             adr += tmp;
-puts("x8");
                             ok = cpu->memF(cpu, store, adr, vb8, true, privileged, &fsr);
-puts("x8 end");
                             if(!ok){
                                 cpuPrvHandleMemErr(cpu, adr, vb8, true, false, fsr);
                                 goto instr_done;
@@ -1588,6 +1562,7 @@ puts("x8 end");
                                 
                                 if((instr & 0x0FFFFF00UL) != 0x012FFF00UL) goto invalid_instr;
                                 
+
                                 if((instr & 0x00000030UL) == 0x00000030UL) cpuPrvSetReg(cpu, 14, instrPC + (wasT ? 3 : 4));    //save return value for BLX
                                 cpuPrvSetPC(cpu, cpuPrvGetReg(cpu, instr & 0x0F, wasT, specialPC));
                             }
@@ -2032,9 +2007,7 @@ load_store_mode_2:
                 
                 if(va8 & ARM_MODE_2_LOAD){
                     
-puts("x9");
                     ok = cpu->memF(cpu, &m32, adr + tmp, vb8, false, privileged, &fsr);
-puts("x9 end");
                     if(!ok){
                         cpuPrvHandleMemErr(cpu, adr + tmp, vb8, false, false, fsr);
                         goto instr_done;
@@ -2058,9 +2031,7 @@ puts("x9 end");
                     else{
                         m32 = cpuPrvGetReg(cpu, (instr >> 12) & 0x0F, wasT, specialPC);
                     }
-puts("x10");
                     ok = cpu->memF(cpu, &m32, adr, vb8, true, privileged, &fsr);
-puts("x10 end");
                     if(!ok){
                         cpuPrvHandleMemErr(cpu, adr, vb8, true, false, fsr);
                         goto instr_done;
@@ -2137,9 +2108,7 @@ puts("x10 end");
                             }
                         }
                         if(va8 & ARM_MODE_4_BFR) adr += (va8 & ARM_MODE_4_INC) ? 4L : -4L;
-puts("x11");
                         ok = cpu->memF(cpu, reg, adr, 4, !L, privileged, &fsr);
-puts("x11 end");
                         if(!ok){
                             cpuPrvHandleMemErr(cpu, adr, 4, !L, false, fsr);
                             if(v16 & (1UL << (va8 & ARM_MODE_4_REG))) cpuPrvSetReg(cpu, va8 & ARM_MODE_4_REG, tmp);
@@ -2277,6 +2246,7 @@ static Err cpuPrvCycleArm(ArmCpu* cpu){
     {
         ok = icacheFetch(&cpu->ic, pc = cpu->regs[15], 4, privileged, &fsr, &instr);
         if(!ok){
+
             cpuPrvHandleMemErr(cpu, cpu->regs[15], 4, false, true, fsr);
             return errNone;                        //exit here so that debugger can see us execute first instr of execption handler
         }
@@ -2352,7 +2322,6 @@ static Err cpuPrvCycleThumb(ArmCpu* cpu){
         case 4:        // LDR(3) ADD(4) CMP(3) MOV(3) BX MVN CMP(2) CMN TST ADC SBC NEG MUL LSL(2) LSR(2) ASR(2) ROR AND EOR ORR BIC
         
             if(instrT & 0x0800){            // LDR(3)
-                
                 instr |= 0x059F0000UL | ((instrT & 0xFF) << 2) | ((instrT & 0x700) << 4);
                 specialPC = true;
             }
@@ -2376,7 +2345,6 @@ static Err cpuPrvCycleThumb(ArmCpu* cpu){
                         break;
                     
                     case 2:            // MOV(3)
-                        
                         instr |= 0x01A00000UL | (((UInt32)vD) << 12) | v8;
                         break;
                     
@@ -2432,32 +2400,27 @@ static Err cpuPrvCycleThumb(ArmCpu* cpu){
             break;
             
         case 7:        // LDRB(1) STRB(1)    (bit11 set = ldrb)
-        
             instr |= ((instrT & 7) << 12) | (((UInt32)(instrT & 0x38)) << 13) | ((instrT >> 6) & 0x1F) | 0x05C00000UL;
             if(instrT & 0x0800) instr |= 0x00100000UL;
             break;
         
         case 8:        // LDRH(1) STRH(1)    (bit11 set = ldrh)
-            
             instr |= ((instrT & 7) << 12) | (((UInt32)(instrT & 0x38)) << 13) | ((instrT >> 5) & 0x0E) | ((instrT >> 1) & 0x300) | 0x01C000B0UL;
             if(instrT & 0x0800) instr |= 0x00100000UL;
             break;
         
         case 9:        // LDR(4) STR(3)    (bit11 set = ldr)
-            
             instr |= ((instrT & 0x700) << 4) | ((instrT & 0xFF) << 2) | 0x058D0000UL;
             if(instrT & 0x0800) instr |= 0x00100000UL;
             break;
         
         case 10:    // ADD(5) ADD(6)    (bit11 set = add(6))
-            
             instr |= ((instrT & 0x700) << 4) | (instrT &0xFF) | 0x028D0F00UL;    //encode add to SP, line below sets the bit needed to reference PC instead when needed)
             if(!(instrT & 0x0800)) instr |= 0x00020000UL;
             else specialPC = true;
             break;
         
         case 11:    // ADD(7) SUB(4) PUSH POP BKPT
-        
             if((instrT & 0x0600) == 0x0400){        //PUSH POP
                 
                 instr |= (instrT & 0xFF) | 0x000D0000UL;
@@ -2611,6 +2574,7 @@ static Err cpuPrvCycleThumb(ArmCpu* cpu){
             if(instrT & 0x0400) instr |= 0x00FFF800UL;
             break;
     }
+    
 
 instr_execute:
     return cpuPrvExecInstr(cpu, instr, pc, true, privileged, specialPC);
@@ -2769,20 +2733,16 @@ void cpuSetCPAR(ArmCpu* cpu, UInt16 cpar){
 
 void output_cpu(ArmCpu* cpu)
 {
-    FILE* f = fopen("AAA", "a");
-
     int i;
     for(i=0; i<16; i++) {
-        fprintf(f, "regs[%d] %d\n", i, cpu->regs[i]);
+        printf("regs[%d] %d\n", i, cpu->regs[i]);
     }
-    fprintf(f, "CPSR %d SPSTR %d\n", cpu->CPSR, cpu->SPSR);
+    printf("CPSR %d SPSTR %d\n", cpu->CPSR, cpu->SPSR);
 
     for(i=0; i<5; i++) {
-        fprintf(f, "extra_regs[%d] %d\n", i, cpu->extra_regs[i]);
+        printf("extra_regs[%d] %d\n", i, cpu->extra_regs[i]);
     }
 
-    fprintf(f, "%d %d %d\n", cpu->waitingIrqs, cpu->waitingFiqs, cpu->CPAR);
-
-    fclose(f);
+    printf("%d %d %d\n", cpu->waitingIrqs, cpu->waitingFiqs, cpu->CPAR);
 }
 

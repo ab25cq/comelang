@@ -69,7 +69,6 @@ void icacheInvalAddr(icache* ic, UInt32 va){
 */
 
 Boolean _icache_fetch_func(icache* ic, UInt32 va, UInt8 sz, Boolean priviledged, UInt8* fsrP, void* buf){
-
     UInt32 off = va % ICACHE_LINE_SZ;
     Int8 i, j, bucket;
     icacheLine* lines;
@@ -112,13 +111,10 @@ Boolean _icache_fetch_func(icache* ic, UInt32 va, UInt8 sz, Boolean priviledged,
     line = lines + j;
 
     line->info = va | (priviledged ? ICACHE_PRIV_MASK : 0);
-puts("ic->memF");
     if(!ic->memF(ic->cpu, line->data, va, ICACHE_LINE_SZ, false, priviledged, fsrP)){
 
-puts("ic->memF return false");
         return false;
     }
-puts("ic->memF end");
     line->info |= ICACHE_USED_MASK;
 
     if(sz == 4){
@@ -150,9 +146,7 @@ Boolean _icache_test_func(icache* ic, UInt32 va, UInt8 sz, Boolean priviledged, 
     UInt8 i;
 
     retO = _icache_fetch_func(ic, va, sz, priviledged, &fsrO, dataO);
-puts("retT ic->memF ic->cpu dataT va sz false priviledgged fsrT ");
     retT = ic->memF(ic->cpu, dataT, va, sz, false, priviledged, &fsrT);
-puts("retT ic->memF end");
 
     if((retT != retO) || (fsrT != fsrO) || (dataT[0] != dataO[0]) || (dataT[1] != dataO[1]) || (dataT[2] != dataO[2]) || (dataT[3] != dataO[3])){
 
@@ -166,17 +160,15 @@ puts("retT ic->memF end");
 
 void output_icache(icache* ic)
 {
-    FILE* f = fopen("AAA", "a");
     long unsigned int i;
     for(i=0; i<3; i++) {
         long unsigned int j;
         for(j=0; j<3; j++) {
-            fprintf(f, "lines[%ld][%ld] %d\n", i,j, ic->lines[i][j].info);
+            printf("lines[%ld][%ld] %d\n", i,j, ic->lines[i][j].info);
             for(i=0; i<3; i++) {
-                fprintf(f, "data[%ld] %d\n", i, ic->lines[i][j].data[i]);
+                printf("data[%ld] %d\n", i, ic->lines[i][j].data[i]);
             }
         }
     }
-    fclose(f);
 }
 

@@ -1357,3 +1357,56 @@ BOOL type_equalability(sNodeType* left_type, sNodeType* right_type)
     return TRUE;
 }
 
+BOOL is_left_type_bigger_size(sNodeType* left_type, sNodeType* right_type)
+{
+    if(left_type->mPointerNum > 0 || right_type->mPointerNum > 0) {
+        return FALSE;
+    }
+    else if(left_type->mArrayDimentionNum > 0 || right_type->mArrayDimentionNum > 0) {
+        return FALSE;
+    }
+    else if(type_identify_with_class_name(left_type, "long") && !type_identify_with_class_name(left_type, "long")) {
+        return TRUE;
+    }
+    else if(type_identify_with_class_name(left_type, "int")) {
+        if(type_identify_with_class_name(right_type, "long")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "int")) {
+            return FALSE;
+        }
+        
+        return TRUE;
+    }
+    else if(type_identify_with_class_name(left_type, "short")) {
+        if(type_identify_with_class_name(right_type, "long")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "int")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "short")) {
+            return FALSE;
+        }
+        
+        return TRUE;
+    }
+    else if(type_identify_with_class_name(left_type, "char")) {
+        if(type_identify_with_class_name(right_type, "long")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "int")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "short")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "char")) {
+            return FALSE;
+        }
+        
+        return TRUE;
+    }
+    
+    return FALSE;
+}
