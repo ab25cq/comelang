@@ -27,10 +27,6 @@ uname -v = #1 SMP Debian 4.19.98-1+deb10u1 (2020-04-27)
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /home/ab25cq/.local/bin
-PATH: /home/ab25cq/.gem/bin
-PATH: /home/ab25cq/.rvm/bin/
-PATH: /home/ab25cq/bin
 PATH: /home/ab25cq/bin
 PATH: /home/ab25cq/.local/bin
 PATH: /home/ab25cq/.gem/bin

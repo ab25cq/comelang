@@ -3071,7 +3071,7 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
     return TRUE;
 }
 
-unsigned int sNodeTree_create_struct_with_initialization(char* name, int num_initialize_array_value, unsigned int* initialize_array_value, unsigned int left_node, sParserInfo* info)
+unsigned int sNodeTree_create_struct_with_initialization(char* var_name, sNodeType* node_type, int num_elements, struct sStructInitializer* elements, unsigned int left_node, sParserInfo* info)
 {
     unsigned int node = alloc_node();
 
@@ -3079,10 +3079,17 @@ unsigned int sNodeTree_create_struct_with_initialization(char* name, int num_ini
 
     xstrncpy(gNodes[node].mSName, info->sname, PATH_MAX);
     gNodes[node].mLine = info->sline;
-
-    xstrncpy(gNodes[node].uValue.sArrayWithInitialization.mVarName, name, VAR_NAME_MAX);
-    gNodes[node].uValue.sArrayWithInitialization.mNumInitializeArrayValue = num_initialize_array_value;
-    memcpy(gNodes[node].uValue.sArrayWithInitialization.mInitializeArrayValue, initialize_array_value, sizeof(unsigned int)*INIT_ARRAY_MAX);
+    
+    gNodes[node].uValue.sStructWithInitialization.mNumElements = num_elements;
+    gNodes[node].uValue.sStructWithInitialization.mNodeType = clone_node_type(node_type);
+    xstrncpy(gNodes[node].uValue.sStructWithInitialization.mVarName, var_name, VAR_NAME_MAX);
+    
+    int i;
+    for(i=0; i<num_elements; i++) {
+        gNodes[node].uValue.sStructWithInitialization.mNameFields[i] = strdup(elementes[i]->mName);
+        gNodes[node].uValue.sStructWithInitialization.mElements[i] = elements[i].mNode;
+        gNodes[node].uValue.sStructWithInitialization.mStructInitializer[i] = elements[i].mStructElement;
+    }
 
     gNodes[node].mLeft = left_node;
     gNodes[node].mRight = 0;
@@ -3093,9 +3100,156 @@ unsigned int sNodeTree_create_struct_with_initialization(char* name, int num_ini
 
 BOOL compile_struct_with_initialization(unsigned int node, sCompileInfo* info)
 {
-    compile_err_msg(info, "no support for struct initializer(2)");
+    int num_elements = gNodes[node].uValue.sStructWithInitialization.mNumElements;
+    sNodeType* node_type = clone_node_type(gNodes[node].uValue.sStructWithInitialization.mNodeType);
+    
+    char* name_fields[INIT_ARRAY_MAX];
+    unsigned int elements[INIT_ARRAY_MAX];
+    struct sStructInitializer* struct_initializer[INIT_ARRAY_MAX];
+    
+    char var_name[VAR_NAME_MAX];
+    xstrncpy(var_name, gNodes[node].uValue.sStructWithInitialization.mVarName, VAR_NAME_MAX);
+    
+    int i;
+    for(i=0; i<num_elements; i++) {
+        name_fields[i] = strdup(gNodes[node].uValue.sStructWithInitialization.mNameFields[i]);
+        elements[i] = gNodes[node].uValue.sStructWithInitialization.mElements[i];
+        struct_initializer[i] = gNodes[node].uValue.sStructWithInitialization.mStructInitializer[i];
+    }
 
-    return FALSE;
+    /// compile node ///
+    unsigned int lnode = gNodes[node].mLeft;
+
+    if(!compile(lnode, info)) {
+        return FALSE;
+    }
+
+    sVar* var_ = get_variable_from_table(info->pinfo->lv_table, var_name);
+
+    if(var_ == NULL) {
+        compile_err_msg(info, "undeclared variable %s(4)", var_name);
+        return TRUE;
+    }
+
+    sNodeType* var_type = var_->mType;
+
+    LLVMValueRef alloca_value = var_->mLLVMValue;
+
+    if((var_type->mClass->mFlags & CLASS_FLAGS_STRUCT) && var_type->mPointerNum == 0) {
+        if(var_type->mArrayDimentionNum > 0) {
+            compile_err_msg(info, "comelang don't support this format");
+            return FALSE;
+        }
+        else {
+            sNodeType* element_node_type = clone_node_type(var_type);
+            element_node_type->mArrayDimentionNum = 0;
+            LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(element_node_type);
+            
+            sCLClass* klass = var_type->mClass;
+            int num_fields = klass->mNumFields;
+    
+            /// zero initializer ///
+            LLVMValueRef values[INIT_ARRAY_MAX];
+            
+            int i;
+            for(i=0; i<num_fields; i++) {
+                sNodeType* node_type = clone_node_type(klass->mFields[i]);
+                char* field_name = klass->mFieldName[i];
+                
+                if(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
+                    LLVMValueRef values2[INIT_ARRAY_MAX];
+                    
+                    sClass* klass = node_type->mClass;
+                    int num_fields = klass->mNumFields;
+                    struct sStructInitializer* si = struct_initializer[i];
+                    
+                    int j;
+                    for(j=0; j<num_fields; j++) {
+                        sNodeType* node_type = clone_node_type(klass->mFields[j]);
+                        char* field_name = klass->mFieldName[j];
+                        
+                        if((node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (node_type->mClass->mFlags & CLASS_FLAGS_UNION)) {
+                            compile_err_msg(info, "comelang does'nt support this format of struct initializer");
+                            return FALSE;
+                        }
+                        
+                        BOOL found = FALSE;
+                        int k;
+                        for(k=0; k<si->mNumStructElement; k++) {
+                            if(strcmp(si[k]->mName, field_name) == 0) {
+                                unsigned int node = si[k].mNode;
+                    
+                                if(!compile(node, info)) {
+                                    return FALSE;
+                                }
+                                
+                                LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                                dec_stack_ptr(1, info);
+                    
+                                values2[i] = llvm_value.value;
+                                
+                                found = TRUE;
+                            }
+                        }
+                        
+                        if(!found) {
+                            LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
+                            
+                            LLVMValueRef zero_value;
+                            if(node_type->mPointerNum > 0)
+                            {
+                                zero_value = LLVMConstNull(llvm_element_type);
+                            }
+                            else {
+                                zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
+                            }
+                            
+                            values2[i] = zero_value;
+                        }
+                    }
+                    
+                    LLVMValueRef value = LLVMConstStruct(values2, num_fields, FALSE);
+        
+                    values[i] = value;
+                }
+                else if(strcmp(name_fields[i], field_name) == 0) {
+                    unsigned int node = elements[i];
+        
+                    if(!compile(node, info)) {
+                        return FALSE;
+                    }
+                    
+                    LVALUE llvm_value = *get_value_from_stack(-1);
+        
+                    dec_stack_ptr(1, info);
+        
+                    values[i] = llvm_value.value;
+                }
+                else {
+                    LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
+                    
+                    LLVMValueRef zero_value;
+                    if(node_type->mPointerNum > 0)
+                    {
+                        zero_value = LLVMConstNull(llvm_element_type);
+                    }
+                    else {
+                        zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
+                    }
+                    
+                    values[i] = zero_value;
+                }
+            }
+    
+            LLVMValueRef value = LLVMConstStruct(values, num_fields, FALSE);
+            LLVMSetInitializer(alloca_value, value);
+        }
+    }
+
+    info->type = node_type;
+    
+    return TRUE;
 }
 
 unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, unsigned int right_node, BOOL parent, sNodeType* cast_pointer_type, sParserInfo* info)
