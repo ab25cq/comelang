@@ -2816,9 +2816,7 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                 if(i >= num_initialize_array_value) {
                     sNodeType* node_type = clone_node_type(klass->mFields[i]);
                     
-                    LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
-                    
-                    LLVMValueRef zero_value = create_null_value(element_node_type);
+                    LLVMValueRef zero_value = create_null_value(node_type);
                     
                     values[i] = zero_value;
                 }

@@ -2718,8 +2718,6 @@ LLVMTypeRef create_llvm_type_from_node_type(sNodeType* node_type)
 {
     LLVMTypeRef result_type = NULL;
     
-show_node_type(node_type);
-
     char class_name[VAR_NAME_MAX];
     create_generics_struct_name(class_name, VAR_NAME_MAX, node_type);
     
@@ -4498,7 +4496,7 @@ void set_debug_info_to_variable(LLVMValueRef value, sNodeType* node_type, char* 
 }
 
 
-LLVMValueRef craete_null_const_struct(sNodeType* node_type)
+static LLVMValueRef craete_null_const_struct(sNodeType* node_type)
 {
     sCLClass* klass = node_type->mClass;
     int num_fields = klass->mNumFields;
@@ -4507,13 +4505,14 @@ LLVMValueRef craete_null_const_struct(sNodeType* node_type)
     
     int i;
     for(i=0; i<num_fields; i++) {
-        sNodeType* field = klass->mFields;
+        sNodeType* field = klass->mFields[i];
         
         LLVMValueRef zero_value = create_null_value(field);
         
         values[i] = zero_value;
     }
-    LLVMValueRef value = LLVMConstStruct(values, num_fields, FALSE);
+    LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+    LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values, num_fields);
     
     return value;
 }
