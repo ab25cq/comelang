@@ -418,14 +418,7 @@ if(var_type->mPointerNum > 0) {
             LLVMValueRef values[element_node_type->mArrayNum[0]];
 
             int i;
-            LLVMValueRef zero_value;
-            if(element_node_type->mPointerNum > 0)
-            {
-                zero_value = LLVMConstNull(llvm_element_type);
-            }
-            else {
-                zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
-            }
+            LLVMValueRef zero_value = create_null_value(element_node_type);
 
             for(i=0; i<element_node_type->mArrayNum[0]; i++) 
             {
@@ -444,14 +437,7 @@ if(var_type->mPointerNum > 0) {
             LLVMValueRef values[element_node_type->mArrayNum[0]*element_node_type->mArrayNum[1]];
 
             int i;
-            LLVMValueRef zero_value;
-            if(element_node_type->mPointerNum > 0)
-            {
-                zero_value = LLVMConstNull(llvm_element_type);
-            }
-            else {
-                zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
-            }
+            LLVMValueRef zero_value = create_null_value(element_node_type);
             for(i=0; i<element_node_type->mArrayNum[0]*element_node_type->mArrayNum[1]; i++) {
                 values[i] = zero_value;
             }
@@ -468,14 +454,7 @@ if(var_type->mPointerNum > 0) {
             LLVMValueRef values[element_node_type->mArrayNum[0]*element_node_type->mArrayNum[1]*element_node_type->mArrayNum[2]];
 
             int i;
-            LLVMValueRef zero_value;
-            if(element_node_type->mPointerNum > 0)
-            {
-                zero_value = LLVMConstNull(llvm_element_type);
-            }
-            else {
-                zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
-            }
+            LLVMValueRef zero_value = create_null_value(element_node_type);
             for(i=0; i<element_node_type->mArrayNum[0]*element_node_type->mArrayNum[1]*element_node_type->mArrayNum[2]; i++) {
                 values[i] = zero_value;
             }
@@ -2786,16 +2765,7 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                     if(n >= num_initialize_array_value) {
                         sNodeType* node_type = clone_node_type(klass->mFields[i]);
                         
-                        LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
-                        
-                        LLVMValueRef zero_value;
-                        if(node_type->mPointerNum > 0)
-                        {
-                            zero_value = LLVMConstNull(llvm_element_type);
-                        }
-                        else {
-                            zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
-                        }
+                        LLVMValueRef zero_value = create_null_value(node_type);
                         
                         values[i] = zero_value;
                     }
@@ -2848,14 +2818,7 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                     
                     LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
                     
-                    LLVMValueRef zero_value;
-                    if(node_type->mPointerNum > 0)
-                    {
-                        zero_value = LLVMConstNull(llvm_element_type);
-                    }
-                    else {
-                        zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
-                    }
+                    LLVMValueRef zero_value = create_null_value(element_node_type);
                     
                     values[i] = zero_value;
                 }
@@ -3071,25 +3034,20 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
     return TRUE;
 }
 
-unsigned int sNodeTree_create_struct_with_initialization(char* var_name, sNodeType* node_type, int num_elements, struct sStructInitializer* elements, unsigned int left_node, sParserInfo* info)
+unsigned int sNodeTree_create_struct_initializer(char* var_name, sNodeType* node_type, int num_elements, struct sStructInitializer* elements, unsigned int left_node, sParserInfo* info)
 {
     unsigned int node = alloc_node();
 
-    gNodes[node].mNodeType = kNodeTypeStructWithInitialization;
+    gNodes[node].mNodeType = kNodeTypeStructInitializer;
 
     xstrncpy(gNodes[node].mSName, info->sname, PATH_MAX);
     gNodes[node].mLine = info->sline;
     
-    gNodes[node].uValue.sStructWithInitialization.mNumElements = num_elements;
     gNodes[node].uValue.sStructWithInitialization.mNodeType = clone_node_type(node_type);
     xstrncpy(gNodes[node].uValue.sStructWithInitialization.mVarName, var_name, VAR_NAME_MAX);
     
-    int i;
-    for(i=0; i<num_elements; i++) {
-        gNodes[node].uValue.sStructWithInitialization.mNameFields[i] = strdup(elementes[i]->mName);
-        gNodes[node].uValue.sStructWithInitialization.mElements[i] = elements[i].mNode;
-        gNodes[node].uValue.sStructWithInitialization.mStructInitializer[i] = elements[i].mStructElement;
-    }
+    gNodes[node].uValue.sStructWithInitialization.mNumElements = num_elements;
+    gNodes[node].uValue.sStructWithInitialization.mElements = elements;
 
     gNodes[node].mLeft = left_node;
     gNodes[node].mRight = 0;
@@ -3098,24 +3056,15 @@ unsigned int sNodeTree_create_struct_with_initialization(char* var_name, sNodeTy
     return node;
 }
 
-BOOL compile_struct_with_initialization(unsigned int node, sCompileInfo* info)
+BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
 {
-    int num_elements = gNodes[node].uValue.sStructWithInitialization.mNumElements;
     sNodeType* node_type = clone_node_type(gNodes[node].uValue.sStructWithInitialization.mNodeType);
-    
-    char* name_fields[INIT_ARRAY_MAX];
-    unsigned int elements[INIT_ARRAY_MAX];
-    struct sStructInitializer* struct_initializer[INIT_ARRAY_MAX];
     
     char var_name[VAR_NAME_MAX];
     xstrncpy(var_name, gNodes[node].uValue.sStructWithInitialization.mVarName, VAR_NAME_MAX);
     
-    int i;
-    for(i=0; i<num_elements; i++) {
-        name_fields[i] = strdup(gNodes[node].uValue.sStructWithInitialization.mNameFields[i]);
-        elements[i] = gNodes[node].uValue.sStructWithInitialization.mElements[i];
-        struct_initializer[i] = gNodes[node].uValue.sStructWithInitialization.mStructInitializer[i];
-    }
+    int num_elements = gNodes[node].uValue.sStructWithInitialization.mNumElements;
+    struct sStructInitializer* elements = gNodes[node].uValue.sStructWithInitialization.mElements;
 
     /// compile node ///
     unsigned int lnode = gNodes[node].mLeft;
@@ -3141,10 +3090,6 @@ BOOL compile_struct_with_initialization(unsigned int node, sCompileInfo* info)
             return FALSE;
         }
         else {
-            sNodeType* element_node_type = clone_node_type(var_type);
-            element_node_type->mArrayDimentionNum = 0;
-            LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(element_node_type);
-            
             sCLClass* klass = var_type->mClass;
             int num_fields = klass->mNumFields;
     
@@ -3156,87 +3101,83 @@ BOOL compile_struct_with_initialization(unsigned int node, sCompileInfo* info)
                 sNodeType* node_type = clone_node_type(klass->mFields[i]);
                 char* field_name = klass->mFieldName[i];
                 
-                if(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
-                    LLVMValueRef values2[INIT_ARRAY_MAX];
-                    
-                    sClass* klass = node_type->mClass;
-                    int num_fields = klass->mNumFields;
-                    struct sStructInitializer* si = struct_initializer[i];
-                    
-                    int j;
-                    for(j=0; j<num_fields; j++) {
-                        sNodeType* node_type = clone_node_type(klass->mFields[j]);
-                        char* field_name = klass->mFieldName[j];
-                        
-                        if((node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (node_type->mClass->mFlags & CLASS_FLAGS_UNION)) {
-                            compile_err_msg(info, "comelang does'nt support this format of struct initializer");
-                            return FALSE;
+                BOOL found = FALSE;
+                int j;
+                for(j=0; j<num_elements; j++ ) {
+                    if(strcmp(elements[j].mName, field_name) == 0) {
+                        if(elements[j].mNumStructElement == 0) {
+                            unsigned int node = elements[j].mNode;
+                
+                            if(!compile(node, info)) {
+                                return FALSE;
+                            }
+                            
+                            LVALUE llvm_value = *get_value_from_stack(-1);
+                
+                            dec_stack_ptr(1, info);
+                
+                            values[i] = llvm_value.value;
+                            
+                            found = TRUE;
                         }
-                        
-                        BOOL found = FALSE;
-                        int k;
-                        for(k=0; k<si->mNumStructElement; k++) {
-                            if(strcmp(si[k]->mName, field_name) == 0) {
-                                unsigned int node = si[k].mNode;
-                    
-                                if(!compile(node, info)) {
-                                    return FALSE;
+                        else {
+                            if(!(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT)) {
+                                compile_err_msg(info, "Require struct field");
+                                return TRUE;
+                            }
+                            
+                            LLVMValueRef values2[INIT_ARRAY_MAX];
+                            
+                            sCLClass* klass = node_type->mClass;
+                            int num_fields = klass->mNumFields;
+                            
+                            int num_struct_element = elements[j].mNumStructElement;
+                            struct sStructInitializer* si = elements[j].mStructElement;
+                            
+                            int j;
+                            for(j=0; j<num_fields; j++) {
+                                sNodeType* node_type = clone_node_type(klass->mFields[j]);
+                                char* field_name = klass->mFieldName[j];
+                                
+                                BOOL found = FALSE;
+                                int k;
+                                for(k=0; k<num_struct_element; k++) {
+                                    if(strcmp(si[k].mName, field_name) == 0) {
+                                        unsigned int node = si[k].mNode;
+                            
+                                        if(!compile(node, info)) {
+                                            return FALSE;
+                                        }
+                                        
+                                        LVALUE llvm_value = *get_value_from_stack(-1);
+                            
+                                        dec_stack_ptr(1, info);
+                            
+                                        values2[j] = llvm_value.value;
+                                        
+                                        found = TRUE;
+                                    }
                                 }
                                 
-                                LVALUE llvm_value = *get_value_from_stack(-1);
-                    
-                                dec_stack_ptr(1, info);
-                    
-                                values2[i] = llvm_value.value;
-                                
-                                found = TRUE;
-                            }
-                        }
-                        
-                        if(!found) {
-                            LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
-                            
-                            LLVMValueRef zero_value;
-                            if(node_type->mPointerNum > 0)
-                            {
-                                zero_value = LLVMConstNull(llvm_element_type);
-                            }
-                            else {
-                                zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
+                                if(!found) {
+                                    LLVMValueRef zero_value = create_null_value(node_type);
+                                    
+                                    values2[j] = zero_value;
+                                }
                             }
                             
-                            values2[i] = zero_value;
+                            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                            LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, num_fields);
+                
+                            values[i] = value;
+                            
+                            found = TRUE;
                         }
                     }
-                    
-                    LLVMValueRef value = LLVMConstStruct(values2, num_fields, FALSE);
-        
-                    values[i] = value;
                 }
-                else if(strcmp(name_fields[i], field_name) == 0) {
-                    unsigned int node = elements[i];
-        
-                    if(!compile(node, info)) {
-                        return FALSE;
-                    }
-                    
-                    LVALUE llvm_value = *get_value_from_stack(-1);
-        
-                    dec_stack_ptr(1, info);
-        
-                    values[i] = llvm_value.value;
-                }
-                else {
-                    LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
-                    
-                    LLVMValueRef zero_value;
-                    if(node_type->mPointerNum > 0)
-                    {
-                        zero_value = LLVMConstNull(llvm_element_type);
-                    }
-                    else {
-                        zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
-                    }
+                
+                if(!found) {
+                    LLVMValueRef zero_value = create_null_value(node_type);
                     
                     values[i] = zero_value;
                 }

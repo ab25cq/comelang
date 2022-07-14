@@ -1691,10 +1691,261 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
         info->p++;
         skip_spaces_and_lf(info);
         
+        char* p = info->p;
         int sline = info->sline;
         
+        BOOL struct_initializer = FALSE;
         
-        if(result_type->mArrayDimentionNum > 0 || result_type->mOmitArrayNum || ((result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) && result_type->mPointerNum == 0) && ((type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 1 && result_type->mOmitArrayNum) || (type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 0) || *info->p == '{')) {
+        BOOL struct_initializer_pointer = FALSE;
+        if(*info->p == '&') {
+            info->p++;
+            skip_spaces_and_lf(info);
+            struct_initializer_pointer = TRUE;
+        }
+        
+        if((result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) && *info->p == '(') {
+            info->p++;
+            skip_spaces_and_lf(info);
+            
+            char* p2 = info->p;
+            int sline2 = info->sline;
+            
+            char buf[VAR_NAME_MAX];
+            (void)parse_word(buf, VAR_NAME_MAX, info, FALSE, FALSE);
+            
+            if(is_type_name(buf, info)) {
+                info->p = p2;
+                info->sline = sline2;
+                
+                sNodeType* node_type = NULL;
+                char buf[VAR_NAME_MAX];
+                if(!parse_type(&node_type, info, NULL, FALSE, TRUE, NULL, FALSE, FALSE)) {
+                    return FALSE;
+                }
+                
+                if(*info->p == ')') {
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                    
+                    if(*info->p == '{') {
+                        struct_initializer = TRUE;
+                    }
+                }
+            }
+        }
+        else {
+            struct_initializer_pointer = FALSE;
+        }
+        
+        info->p = p;
+        info->sline = sline;
+        
+        if(struct_initializer || struct_initializer_pointer) {
+            if(struct_initializer_pointer) {
+                info->p++;
+                skip_spaces_and_lf(info);
+            }
+            
+            info->p++;
+            skip_spaces_and_lf(info);
+            
+            sNodeType* node_type = NULL;
+            char buf[VAR_NAME_MAX];
+            if(!parse_type(&node_type, info, NULL, FALSE, TRUE, NULL, FALSE, FALSE)) {
+                return FALSE;
+            }
+            
+            expect_next_character_with_one_forward(")", info);
+            expect_next_character_with_one_forward("{", info);
+            
+            info->array_initializer = TRUE;
+            
+            int sline = info->sline;
+            
+            int num_elements = 0;
+            struct sStructInitializer elements[INIT_ARRAY_MAX];
+
+            unsigned int right_node;
+            while(TRUE) {
+                if(*info->p == '.') {
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                    
+                    char buf[VAR_NAME_MAX];
+                    if(!parse_word(buf, VAR_NAME_MAX, info, TRUE, FALSE)) 
+                    {
+                        return FALSE;
+                    }
+                    
+                    expect_next_character_with_one_forward("=", info);
+                    
+                    if(*info->p == '{') {
+                        info->p++;
+                        skip_spaces_and_lf(info);
+                        
+                        int num_elements2 = 0;
+                        struct sStructInitializer elements2[INIT_ARRAY_MAX];
+                        
+                        while(TRUE) {
+                            if(*info->p == '.') {
+                                info->p++;
+                                skip_spaces_and_lf(info);
+                                
+                                char buf[VAR_NAME_MAX];
+                                if(!parse_word(buf, VAR_NAME_MAX, info, TRUE, FALSE)) 
+                                {
+                                    return FALSE;
+                                }
+                                
+                                expect_next_character_with_one_forward("=", info);
+                                
+                                unsigned int right_node = 0;
+                                if(!expression(&right_node, FALSE, info)) {
+                                    return FALSE;
+                                }
+                                
+                                elements2[num_elements2].mName = strdup(buf);
+                                elements2[num_elements2].mNode = right_node;
+                                
+                                elements[num_elements2].mNumStructElement = 0;
+                                
+                                num_elements2++;
+                                if(num_elements2 >= INIT_ARRAY_MAX) {
+                                    fprintf(stderr, "overflow struct initializer number\n");
+                                    exit(2);
+                                }
+                            }
+                            else {
+                                char buf[128];
+                                snprintf(buf, 128, "unexpecte character %c at struct initializer\n", *info->p);
+                                parser_err_msg(info, buf);
+                            }
+                            
+                            if(*info->p == ',') {
+                                info->p++;
+                                skip_spaces_and_lf(info);
+                            }
+                            
+                            if(*info->p == '}') {
+                                info->p++;
+                                skip_spaces_and_lf(info);
+                                break;
+                            }
+                            else if(*info->p == '\0') {
+                                info->sline = sline;
+                                parser_err_msg(info, "In the struct initialization, the parser has arraived at the source end");
+                                return FALSE;
+                            }
+                        }
+                        
+                        elements[num_elements].mName = strdup(buf);
+                        elements[num_elements].mNode = 0;
+                        elements[num_elements].mNumStructElement = num_elements2;
+                        elements[num_elements].mStructElement = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                        memcpy(elements[num_elements].mStructElement, elements2, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                        
+                        num_elements++;
+                        
+                        if(num_elements >= INIT_ARRAY_MAX) {
+                            fprintf(stderr, "overflow struct initializer number\n");
+                            exit(2);
+                        }
+                    }
+                    else {
+                        unsigned int right_node = 0;
+                        if(!expression(&right_node, FALSE, info)) {
+                            return FALSE;
+                        }
+                        
+                        elements[num_elements].mName = strdup(buf);
+                        elements[num_elements].mNode = right_node;
+                        elements[num_elements].mNumStructElement = 0;
+                        num_elements++;
+                        if(num_elements >= INIT_ARRAY_MAX) {
+                            fprintf(stderr, "overflow struct initializer number\n");
+                            exit(2);
+                        }
+                    }
+                }
+                else { 
+                    char buf[128];
+                    snprintf(buf, 128, "unexpected character %c at struct initializer\n", *info->p);
+                    parser_err_msg(info, buf);
+                }
+
+                if(*info->p == ',') {
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                }
+                
+                if(*info->p == '\0') {
+                    info->sline = sline;
+                    parser_err_msg(info, "In the struct initialization, the parser has arraived at the source end");
+                    return FALSE;
+                }
+                else if(*info->p == '}') {
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                    break;
+                }
+            }
+            
+            if(info->mBlockLevel == 0) {
+                if(struct_initializer_pointer) {
+                    unsigned int nodes[INIT_ARRAY_MAX+128];
+                    int num_nodes = 0;
+                    
+                    char name2[VAR_NAME_MAX];
+                    snprintf(name2, VAR_NAME_MAX, "_%s", name);
+                    
+                    check_already_added_variable(info->lv_table, name2, info);
+                    sNodeType* node_type2 = clone_node_type(node_type);
+                    node_type2->mConstant = TRUE;
+                    if(!add_variable_to_table(info->lv_table, name2, node_type2, FALSE, NULL, -1, info->mBlockLevel == 0, TRUE, FALSE))
+                    {
+                        fprintf(stderr, "overflow variable table\n");
+                        exit(2);
+                    }
+                    
+                    unsigned int node2 = sNodeTree_create_define_variable(name2, extern_, info->mBlockLevel == 0, info);
+                    
+                    struct sStructInitializer* elements2;
+                    elements2 = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                    memcpy(elements2, elements, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                    
+                    unsigned int left_node = node2;
+                    
+                    *node = sNodeTree_create_struct_initializer(name2, node_type, num_elements, elements2, left_node, info);
+    
+                    nodes[num_nodes++] = *node;
+                    
+                    unsigned int right_node = sNodeTree_create_load_variable(name2, info);
+                    right_node = sNodeTree_create_reffernce(right_node, info);
+                    
+                    BOOL alloc = TRUE;
+                    BOOL global = TRUE;
+                    unsigned int node3 = sNodeTree_create_store_variable(name, right_node, alloc, global, info);
+    
+                    nodes[num_nodes++] = node3;
+    
+                    BOOL in_macro = FALSE;
+                    *node = sNodeTree_create_nodes(nodes, num_nodes, in_macro, info);
+                }
+                else {
+                    *node = sNodeTree_create_define_variable(name, extern_, info->mBlockLevel == 0, info);
+                    
+                    struct sStructInitializer* elements2;
+                    elements2 = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                    memcpy(elements2, elements, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                    
+                    unsigned int left_node = *node;
+                    *node = sNodeTree_create_struct_initializer(name, node_type, num_elements, elements2, left_node, info);
+                }
+            }
+            else {
+            }
+        }
+        else if(result_type->mArrayDimentionNum > 0 || result_type->mOmitArrayNum || ((result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) && result_type->mPointerNum == 0) && ((type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 1 && result_type->mOmitArrayNum) || (type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 0) || *info->p == '{')) {
             if(type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 0) {
                 if(*info->p == '{') {
                     info->p++;

@@ -2674,21 +2674,23 @@ void create_generics_struct_name(char* struct_name, size_t size, sNodeType* stru
     char* class_name = CLASS_NAME(struct_type->mClass);
 
     xstrncpy(struct_name, class_name, size);
-
-    int i;
-    for(i=0; i<struct_type->mNumGenericsTypes; i++) {
-        sNodeType* node_type = struct_type->mGenericsTypes[i];
-
-        xstrncat(struct_name, "_", size);
-        
-        char real_name[512];
-        create_generics_name(real_name, 512, node_type);
-        
-        xstrncat(struct_name, real_name, size);
-
-        int j;
-        for(j=0; j<node_type->mPointerNum; j++) {
-            xstrncat(struct_name, "p", size);
+    
+    if(struct_type->mNumGenericsTypes > 0) {
+        int i;
+        for(i=0; i<struct_type->mNumGenericsTypes; i++) {
+            sNodeType* node_type = struct_type->mGenericsTypes[i];
+    
+            xstrncat(struct_name, "_", size);
+            
+            char real_name[512];
+            create_generics_name(real_name, 512, node_type);
+            
+            xstrncat(struct_name, real_name, size);
+    
+            int j;
+            for(j=0; j<node_type->mPointerNum; j++) {
+                xstrncat(struct_name, "p", size);
+            }
         }
     }
 }
@@ -2715,6 +2717,8 @@ void create_generics_struct_name2(char* class_name, char* struct_name, size_t si
 LLVMTypeRef create_llvm_type_from_node_type(sNodeType* node_type)
 {
     LLVMTypeRef result_type = NULL;
+    
+show_node_type(node_type);
 
     char class_name[VAR_NAME_MAX];
     create_generics_struct_name(class_name, VAR_NAME_MAX, node_type);
@@ -4493,3 +4497,43 @@ void set_debug_info_to_variable(LLVMValueRef value, sNodeType* node_type, char* 
     }
 }
 
+
+LLVMValueRef craete_null_const_struct(sNodeType* node_type)
+{
+    sCLClass* klass = node_type->mClass;
+    int num_fields = klass->mNumFields;
+    
+    LLVMValueRef values[STRUCT_FIELD_MAX];
+    
+    int i;
+    for(i=0; i<num_fields; i++) {
+        sNodeType* field = klass->mFields;
+        
+        LLVMValueRef zero_value = create_null_value(field);
+        
+        values[i] = zero_value;
+    }
+    LLVMValueRef value = LLVMConstStruct(values, num_fields, FALSE);
+    
+    return value;
+}
+
+LLVMValueRef create_null_value(sNodeType* node_type)
+{
+    LLVMValueRef zero_value;
+    
+    LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(node_type);
+    
+    if(node_type->mPointerNum > 0)
+    {
+        zero_value = LLVMConstNull(llvm_element_type);
+    }
+    else if(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
+        zero_value = craete_null_const_struct(node_type);
+    }
+    else {
+        zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
+    }
+    
+    return zero_value;
+}

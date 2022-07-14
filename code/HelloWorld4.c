@@ -13,11 +13,13 @@ void fun2(int m, int x)
 int main() 
 {
     come fun(2);
+/*
     come fun2(1, 2);
 
     come join;
     
     puts("finish");
+*/
     
     return 0;
 }

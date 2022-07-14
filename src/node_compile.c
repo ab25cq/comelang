@@ -534,8 +534,8 @@ BOOL compile(unsigned int node, sCompileInfo* info)
             break;
 
 
-        case kNodeTypeStructWithInitialization:
-            if(!compile_struct_with_initialization(node, info))
+        case kNodeTypeStructInitializer:
+            if(!compile_struct_initializer(node, info))
             {
                 return FALSE;
             }
