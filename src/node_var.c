@@ -3132,10 +3132,10 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
                             int num_struct_element = elements[j].mNumStructElement;
                             struct sStructInitializer* si = elements[j].mStructElement;
                             
-                            int j;
-                            for(j=0; j<num_fields; j++) {
-                                sNodeType* node_type = clone_node_type(klass->mFields[j]);
-                                char* field_name = klass->mFieldName[j];
+                            int l;
+                            for(l=0; l<num_fields; l++) {
+                                sNodeType* node_type = clone_node_type(klass->mFields[l]);
+                                char* field_name = klass->mFieldName[l];
                                 
                                 BOOL found = FALSE;
                                 int k;
@@ -3151,7 +3151,7 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
                             
                                         dec_stack_ptr(1, info);
                             
-                                        values2[j] = llvm_value.value;
+                                        values2[l] = llvm_value.value;
                                         
                                         found = TRUE;
                                     }
@@ -3160,7 +3160,7 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
                                 if(!found) {
                                     LLVMValueRef zero_value = create_null_value(node_type);
                                     
-                                    values2[j] = zero_value;
+                                    values2[l] = zero_value;
                                 }
                             }
                             

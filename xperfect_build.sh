@@ -4,6 +4,6 @@ if uname -a | grep iSH
 then
     bash all_build.sh && (cd vin && bash fast_build.sh) && (cd zed && bash fast_build.sh) && (cd shsh && bash fast_build.sh) && (cd mf && bash fast_build.sh ) && (cd gogo && bash fast_build.sh) && (cd c && make && bash test.sh)
 else
-    bash all_build.sh && if uname -a | grep Linux; then (cd 9cc && make clean && make && make test); fi; (cd vin && bash fast_build.sh) && (cd zed && bash fast_build.sh) && (cd shsh && bash fast_build.sh) && (cd mf && bash fast_build.sh ) && (cd gogo && bash fast_build.sh) && (cd c && make, && bash test.sh)
+    bash all_build.sh && if uname -a | grep Linux; then (cd 9cc && make clean && make && make test); fi; (cd vin && bash fast_build.sh) && (cd zed && bash fast_build.sh) && (cd shsh && bash fast_build.sh) && (cd mf && bash fast_build.sh ) && (cd gogo && bash fast_build.sh) && (cd c && make && bash test.sh)
 fi
 
