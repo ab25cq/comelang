@@ -3326,6 +3326,20 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
 
                 rvalue->value = LLVMBuildCast(gBuilder, LLVMFPTrunc, rvalue->value, llvm_type, "icastKO");
             }
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "short") || type_identify_with_class_name(*right_type, "int")) || type_identify_with_class_name(*right_type, "long"))
+            {
+                if((*right_type)->mUnsigned) {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("float");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMUIToFP, rvalue->value, llvm_type, "icastKO");
+                }
+                else {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("float");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMSIToFP, rvalue->value, llvm_type, "icastKO");
+                }
+            }
+
 
             rvalue->type = create_node_type_with_class_name("float");
         }
@@ -3340,6 +3354,19 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("double");
 
                 rvalue->value = LLVMBuildCast(gBuilder, LLVMFPExt, rvalue->value, llvm_type, "icastKL");
+            }
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "short") || type_identify_with_class_name(*right_type, "int")) || type_identify_with_class_name(*right_type, "long"))
+            {
+                if((*right_type)->mUnsigned) {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("double");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMUIToFP, rvalue->value, llvm_type, "icastKO");
+                }
+                else {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("double");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMSIToFP, rvalue->value, llvm_type, "icastKO");
+                }
             }
 
             rvalue->type = create_node_type_with_class_name("double");
@@ -4517,6 +4544,25 @@ static LLVMValueRef craete_null_const_struct(sNodeType* node_type)
     return value;
 }
 
+static LLVMValueRef craete_null_const_union(sNodeType* node_type)
+{
+    sCLClass* klass = node_type->mClass;
+    int num_fields = 1;
+    
+    LLVMValueRef values[STRUCT_FIELD_MAX];
+    
+    sNodeType* field = klass->mFields[0];
+    
+    LLVMValueRef zero_value = create_null_value(field);
+    
+    values[0] = zero_value;
+    
+    LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+    LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values, num_fields);
+    
+    return value;
+}
+
 LLVMValueRef create_null_value(sNodeType* node_type)
 {
     LLVMValueRef zero_value;
@@ -4526,6 +4572,9 @@ LLVMValueRef create_null_value(sNodeType* node_type)
     if(node_type->mPointerNum > 0)
     {
         zero_value = LLVMConstNull(llvm_element_type);
+    }
+    else if(node_type->mClass->mFlags & CLASS_FLAGS_UNION) {
+        zero_value = craete_null_const_union(node_type);
     }
     else if(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
         zero_value = craete_null_const_struct(node_type);

@@ -1,5 +1,6 @@
-CC=comelang
-CFLAGS  = -std=c89 -g -Wfatal-errors -Wno-unused-parameter -Wall -Wextra -D_DEFAULT_SOURCE
+CC=comelang 
+CFLAGS  = -rdynamic -fPIE -std=c89 -g -Wfatal-errors -Wno-unused-parameter -Wall -Wextra -D_DEFAULT_SOURCE
+AR=ar
 
 # NOTE if one of these headers does not exist, the wildcard rule fails.
 HFILES = src/u.h src/cc/cc.h src/ds/ds.h src/mem/mem.h
@@ -51,20 +52,20 @@ selfhost:
 
 bin/6c: $(_6CO) $(LIBA)
 	@ mkdir -p bin
-	$(CC) $(LDFLAGS) $(_6CO) $(LIBA) -o $@
+	clang $(LDFLAGS) $(_6CO) $(LIBA) -o $@
 
 bin/cpp:  $(CPPO) $(LIBA)
 	@ mkdir -p bin
-	$(CC) $(LDFLAGS) $(CPPO) $(LIBA) -o $@
+	clang $(LDFLAGS) $(CPPO) $(LIBA) -o $@
 
 bin/abifuzz:  $(ABIFZO) $(LIBA)
 	@ mkdir -p bin
-	$(CC) $(LDFLAGS) $(ABIFZO) $(LIBA) -o $@
+	clang $(LDFLAGS) $(ABIFZO) $(LIBA) -o $@
 
 $(LIBA): $(LIBO)
 	@ mkdir -p lib
 	$(AR) rcs $(LIBA) $(LIBO)
 
 clean:
-	rm -rf $(LIBO) $(CPPO) $(_6CO) $(ABIFZO) lib bin
+	rm -rf $(LIBO) $(CPPO) $(_6CO) $(ABIFZO) lib bin test/bugs/*.o test/bugs/*.s test/bugs/*.bin test/cpp/*.o test/cpp/*.s test/cpp/*.bin test/execute/*.o test/execute/*.s test/execute/*.bin
 

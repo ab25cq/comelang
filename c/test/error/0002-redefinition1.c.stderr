@@ -1,0 +1,3 @@
+x already initialized at test/error/0002-redefinition1.c:7:1
+int x = 1;
+^

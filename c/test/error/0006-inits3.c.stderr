@@ -1,0 +1,3 @@
+fields in init overlaps with another field at test/error/0006-inits3.c:6:21
+int arr[3] = {[0] = 1, [1] = 2, [0] = 3};
+                    ^

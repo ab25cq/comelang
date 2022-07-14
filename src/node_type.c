@@ -558,6 +558,10 @@ BOOL auto_cast_posibility(sNodeType* left_type, sNodeType* right_type)
     {
         return TRUE;
     }
+    else if(left_type->mPointerNum > 0 && is_number_type(right_type))
+    {
+        return TRUE;
+    }
     else if(type_identify_with_class_name(left_type, "bool") && right_type->mPointerNum > 0) 
     {
         return TRUE;

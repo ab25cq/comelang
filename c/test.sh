@@ -5,8 +5,8 @@ set -e
 for T in test/execute/*.c test/cpp/*.c test/bugs/*.c
 do
 	if ! ( bin/6c $T > $T.s &&
-           gcc -c $T.s -o $T.o &&
-           gcc $T.o -o $T.bin && 
+           gcc -no-pie -c $T.s -o $T.o &&
+           gcc -no-pie $T.o -o $T.bin -fPIE && 
            $T.bin > /dev/null )
 	then
 		echo $T FAIL

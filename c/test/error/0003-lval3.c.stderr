@@ -1,0 +1,3 @@
+& expects an lvalue at test/error/0003-lval3.c:10:10
+    p = &2;
+         ^

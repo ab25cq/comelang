@@ -14,7 +14,7 @@ This language is self-host.
 
 完全なセルフホストを行います。
 
-version 7.0.7
+version 7.0.8
 
 ```
 #include <comelang.h>
