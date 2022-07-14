@@ -10,6 +10,8 @@ With version 7.0.0, we were able to obtain compatibility with C language of abou
 
 version 7.0.0で9cc程度のC言語との互換を得ることができました。試してみてください。
 
+version 7.0.8で何処かのCコンパイラのコンパイル実行に成功しました。かなりCコンパイラとして完成度上がってます。
+
 This language is self-host.
 
 完全なセルフホストを行います。
