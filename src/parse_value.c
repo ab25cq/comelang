@@ -1630,6 +1630,97 @@ BOOL parse_return(unsigned int* node, sParserInfo* info)
     return TRUE;
 }
 
+BOOL parse_struct_initializer(int* num_elements, struct sStructInitializer* elements, sParserInfo* info)
+{
+    BOOL array_initializer = info->array_initializer;
+    info->array_initializer = TRUE;
+    
+    int sline = info->sline;
+
+    unsigned int right_node;
+    while(TRUE) {
+        if(*info->p == '.') {
+            info->p++;
+            skip_spaces_and_lf(info);
+            
+            char buf[VAR_NAME_MAX];
+            if(!parse_word(buf, VAR_NAME_MAX, info, TRUE, FALSE)) 
+            {
+                return FALSE;
+            }
+            
+            expect_next_character_with_one_forward("=", info);
+            
+            if(*info->p == '{') {
+                info->p++;
+                skip_spaces_and_lf(info);
+                
+                int num_elements2 = 0;
+                struct sStructInitializer elements2[INIT_ARRAY_MAX];
+                
+                if(!parse_struct_initializer(&num_elements2, elements2, info))
+                {
+                    return FALSE;
+                }
+                
+                elements[*num_elements].mName = strdup(buf);
+                elements[*num_elements].mNode = 0;
+                elements[*num_elements].mNumStructElement = num_elements2;
+                elements[*num_elements].mStructElement = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                memcpy(elements[*num_elements].mStructElement, elements2, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                
+                (*num_elements)++;
+                
+                if(*num_elements >= INIT_ARRAY_MAX) {
+                    fprintf(stderr, "overflow struct initializer number\n");
+                    exit(2);
+                }
+            }
+            else {
+                unsigned int right_node = 0;
+                if(!expression(&right_node, FALSE, info)) {
+                    return FALSE;
+                }
+                
+                elements[*num_elements].mName = strdup(buf);
+                elements[*num_elements].mNode = right_node;
+                elements[*num_elements].mNumStructElement = 0;
+                (*num_elements)++;
+                if(*num_elements >= INIT_ARRAY_MAX) {
+                    fprintf(stderr, "overflow struct initializer number\n");
+                    exit(2);
+                }
+            }
+        }
+        else { 
+            char buf[128];
+            snprintf(buf, 128, "unexpected character %c at struct initializer\n", *info->p);
+            parser_err_msg(info, buf);
+            return FALSE;
+        }
+
+        if(*info->p == ',') {
+            info->p++;
+            skip_spaces_and_lf(info);
+        }
+        
+        if(*info->p == '\0') {
+            info->sline = sline;
+            parser_err_msg(info, "In the struct initialization, the parser has arraived at the source end");
+            return FALSE;
+        }
+        else if(*info->p == '}') {
+            info->p++;
+            skip_spaces_and_lf(info);
+            break;
+        }
+    }
+    
+    info->array_initializer = array_initializer;
+    
+    return TRUE;
+}
+
 BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL extern_, sParserInfo* info, char* definition_top, BOOL readonly)
 {
     if(strcmp(info->sname, gFName) == 0 && !result_type->mStatic && info->mBlockLevel == 0) {
@@ -1758,136 +1849,11 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
             expect_next_character_with_one_forward(")", info);
             expect_next_character_with_one_forward("{", info);
             
-            info->array_initializer = TRUE;
-            
-            int sline = info->sline;
-            
             int num_elements = 0;
             struct sStructInitializer elements[INIT_ARRAY_MAX];
-
-            unsigned int right_node;
-            while(TRUE) {
-                if(*info->p == '.') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                    
-                    char buf[VAR_NAME_MAX];
-                    if(!parse_word(buf, VAR_NAME_MAX, info, TRUE, FALSE)) 
-                    {
-                        return FALSE;
-                    }
-                    
-                    expect_next_character_with_one_forward("=", info);
-                    
-                    if(*info->p == '{') {
-                        info->p++;
-                        skip_spaces_and_lf(info);
-                        
-                        int num_elements2 = 0;
-                        struct sStructInitializer elements2[INIT_ARRAY_MAX];
-                        
-                        while(TRUE) {
-                            if(*info->p == '.') {
-                                info->p++;
-                                skip_spaces_and_lf(info);
-                                
-                                char buf[VAR_NAME_MAX];
-                                if(!parse_word(buf, VAR_NAME_MAX, info, TRUE, FALSE)) 
-                                {
-                                    return FALSE;
-                                }
-                                
-                                expect_next_character_with_one_forward("=", info);
-                                
-                                unsigned int right_node = 0;
-                                if(!expression(&right_node, FALSE, info)) {
-                                    return FALSE;
-                                }
-                                
-                                elements2[num_elements2].mName = strdup(buf);
-                                elements2[num_elements2].mNode = right_node;
-                                
-                                elements[num_elements2].mNumStructElement = 0;
-                                
-                                num_elements2++;
-                                if(num_elements2 >= INIT_ARRAY_MAX) {
-                                    fprintf(stderr, "overflow struct initializer number\n");
-                                    exit(2);
-                                }
-                            }
-                            else {
-                                char buf[128];
-                                snprintf(buf, 128, "unexpecte character %c at struct initializer\n", *info->p);
-                                parser_err_msg(info, buf);
-                            }
-                            
-                            if(*info->p == ',') {
-                                info->p++;
-                                skip_spaces_and_lf(info);
-                            }
-                            
-                            if(*info->p == '}') {
-                                info->p++;
-                                skip_spaces_and_lf(info);
-                                break;
-                            }
-                            else if(*info->p == '\0') {
-                                info->sline = sline;
-                                parser_err_msg(info, "In the struct initialization, the parser has arraived at the source end");
-                                return FALSE;
-                            }
-                        }
-                        
-                        elements[num_elements].mName = strdup(buf);
-                        elements[num_elements].mNode = 0;
-                        elements[num_elements].mNumStructElement = num_elements2;
-                        elements[num_elements].mStructElement = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
-                        memcpy(elements[num_elements].mStructElement, elements2, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
-                        
-                        num_elements++;
-                        
-                        if(num_elements >= INIT_ARRAY_MAX) {
-                            fprintf(stderr, "overflow struct initializer number\n");
-                            exit(2);
-                        }
-                    }
-                    else {
-                        unsigned int right_node = 0;
-                        if(!expression(&right_node, FALSE, info)) {
-                            return FALSE;
-                        }
-                        
-                        elements[num_elements].mName = strdup(buf);
-                        elements[num_elements].mNode = right_node;
-                        elements[num_elements].mNumStructElement = 0;
-                        num_elements++;
-                        if(num_elements >= INIT_ARRAY_MAX) {
-                            fprintf(stderr, "overflow struct initializer number\n");
-                            exit(2);
-                        }
-                    }
-                }
-                else { 
-                    char buf[128];
-                    snprintf(buf, 128, "unexpected character %c at struct initializer\n", *info->p);
-                    parser_err_msg(info, buf);
-                }
-
-                if(*info->p == ',') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                }
-                
-                if(*info->p == '\0') {
-                    info->sline = sline;
-                    parser_err_msg(info, "In the struct initialization, the parser has arraived at the source end");
-                    return FALSE;
-                }
-                else if(*info->p == '}') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                    break;
-                }
+            if(!parse_struct_initializer(&num_elements, elements, info))
+            {
+                return FALSE;
             }
             
             if(info->mBlockLevel == 0) {

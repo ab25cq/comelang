@@ -20,7 +20,7 @@ sBuf gHeader;
 
 static void compiler_init(char* sname)
 {
-    gVersion = "7.0.9";
+    gVersion = "8.0.0";
     node_var_init();
     node_function_init();
     node_loop_init();
