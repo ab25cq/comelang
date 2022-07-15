@@ -42,6 +42,39 @@ int add2(int (*a)[2]) { return a[0][0] + a[0][0]; }
 int add3(int b[][2]) { return b[0][0] + b[1][0]; }
 int add4(int c[2][2]) { return c[0][0] + c[1][0]; }
 
+struct sData2 {
+    int a;
+    int b;
+    
+    struct {
+        int c;
+        int d;
+    } c;
+    
+    struct {
+        int c;
+        int d;
+    } d;
+    
+    union {
+        int a;
+        long b;
+        char c;
+    } e;
+};
+
+union eNode2 {
+    int a;
+    long b;
+    char c;
+};
+
+eNode2 gNode = (eNode2) { .c = 'd' };
+
+struct sData2 gData = (struct sData2){ .a = 1, .b = 2, .c = { .c = 3, .d =4 }, .e = { .c='c' } };
+
+struct sData2* gData2 = &(struct sData2) { .a = 3, .b = 4, .c = { .c = 4, .d = 5} };
+
 int main(int argc, char** argv)
 {
     int a[10];
@@ -98,6 +131,11 @@ int main(int argc, char** argv)
     iii[1] = 'e';
     
     xassert("typeof test", iii[0] == 'd' && iii[1] == 'e');
+    
+    xassert("initializer test", gNode.c == 'd');
+    
+    xassert("initializer test2", gData.a == 1 && gData.b == 2 && gData.c.c == 3 && gData.c.d == 4 && gData.e.c == 'c' && gData.d.c == 0 && gData.d.d == 0);
+    xassert("initializer test3", gData2->a == 3 && gData2->b == 4 && gData2->c.c == 4 && gData2->c.d == 5 && gData2->c.c == 3 && gData.c.d == 4 && gData.e.c == 'c' && gData2->d.c == 0 && gData2->d.d == 0);
     
     return 0;
 }

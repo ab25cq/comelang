@@ -30,8 +30,8 @@ Kernel configured for up to 4 processors.
 Processor type: x86_64h (Intel x86-64h Haswell)
 Processors active: 0 1 2 3
 Primary memory available: 8.00 gigabytes
-Default processor set: 436 tasks, 1442 threads, 4 processors
-Load average: 1.83, Mach factor: 2.20
+Default processor set: 443 tasks, 1636 threads, 4 processors
+Load average: 6.93, Mach factor: 0.94
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -475,7 +475,7 @@ configure:4203: checking for execvpe
 configure:4203: clang -o conftest -I. -I/usr/local/opt/llvm/include -L/usr/local/opt/llvm/lib conftest.c  -ldl -lm -lpcre -lncurses -lreadline -lpthread >&5
 Undefined symbols for architecture x86_64:
   "_execvpe", referenced from:
-      _main in conftest-5b337f.o
+      _main in conftest-d8fe7b.o
 ld: symbol(s) not found for architecture x86_64
 clang-14: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:4203: $? = 1

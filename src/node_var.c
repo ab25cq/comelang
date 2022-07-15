@@ -3119,57 +3119,134 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
                             found = TRUE;
                         }
                         else {
-                            if(!(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT)) {
-                                compile_err_msg(info, "Require struct field");
-                                return TRUE;
-                            }
-                            
-                            LLVMValueRef values2[INIT_ARRAY_MAX];
-                            
-                            sCLClass* klass = node_type->mClass;
-                            int num_fields = klass->mNumFields;
-                            
-                            int num_struct_element = elements[j].mNumStructElement;
-                            struct sStructInitializer* si = elements[j].mStructElement;
-                            
-                            int l;
-                            for(l=0; l<num_fields; l++) {
-                                sNodeType* node_type = clone_node_type(klass->mFields[l]);
-                                char* field_name = klass->mFieldName[l];
+                            if(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
+                                LLVMValueRef values2[INIT_ARRAY_MAX];
                                 
-                                BOOL found = FALSE;
-                                int k;
-                                for(k=0; k<num_struct_element; k++) {
-                                    if(strcmp(si[k].mName, field_name) == 0) {
-                                        unsigned int node = si[k].mNode;
-                            
-                                        if(!compile(node, info)) {
-                                            return FALSE;
+                                sCLClass* klass = node_type->mClass;
+                                int num_fields = klass->mNumFields;
+                                
+                                int num_struct_element = elements[j].mNumStructElement;
+                                struct sStructInitializer* si = elements[j].mStructElement;
+                                
+                                int l;
+                                for(l=0; l<num_fields; l++) {
+                                    sNodeType* node_type = clone_node_type(klass->mFields[l]);
+                                    char* field_name = klass->mFieldName[l];
+                                    
+                                    BOOL found = FALSE;
+                                    int k;
+                                    for(k=0; k<num_struct_element; k++) {
+                                        if(strcmp(si[k].mName, field_name) == 0) {
+                                            unsigned int node = si[k].mNode;
+                                
+                                            if(!compile(node, info)) {
+                                                return FALSE;
+                                            }
+                                            
+                                            LVALUE llvm_value = *get_value_from_stack(-1);
+                                
+                                            dec_stack_ptr(1, info);
+                                
+                                            values2[l] = llvm_value.value;
+                                            
+                                            found = TRUE;
                                         }
+                                    }
+                                    
+                                    if(!found) {
+                                        LLVMValueRef zero_value = create_null_value(node_type);
                                         
-                                        LVALUE llvm_value = *get_value_from_stack(-1);
-                            
-                                        dec_stack_ptr(1, info);
-                            
-                                        values2[l] = llvm_value.value;
-                                        
-                                        found = TRUE;
+                                        values2[l] = zero_value;
                                     }
                                 }
                                 
-                                if(!found) {
-                                    LLVMValueRef zero_value = create_null_value(node_type);
-                                    
-                                    values2[l] = zero_value;
-                                }
+                                LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                                LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, num_fields);
+                    
+                                values[i] = value;
+                                
+                                found = TRUE;
                             }
-                            
-                            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
-                            LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, num_fields);
-                
-                            values[i] = value;
-                            
-                            found = TRUE;
+                            else if(node_type->mClass->mFlags & CLASS_FLAGS_UNION) {
+                                LLVMValueRef values2[1];
+                                
+                                sCLClass* klass = node_type->mClass;
+                                int num_fields = klass->mNumFields;
+                                
+                                int num_struct_element = elements[j].mNumStructElement;
+                                struct sStructInitializer* si = elements[j].mStructElement;
+                                
+                                
+                                sNodeType* left_type = NULL;
+                                int max_size = 0;
+                                int l;
+                                for(l=0; l<num_fields; l++) {
+                                    sNodeType* node_type = clone_node_type(klass->mFields[l]);
+                                    char* field_name = klass->mFieldName[l];
+                                    
+                                    int alignment = 0;
+                                    int size = get_size_from_node_type(node_type, &alignment);
+                                    
+                                    if(size >= max_size) {
+                                        left_type = node_type;
+                                        max_size = size;
+                                    }
+                                }
+                                
+                                if(type_identify_with_class_name(left_type, "float") || type_identify_with_class_name(left_type, "double") || (left_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (left_type->mClass->mFlags & CLASS_FLAGS_UNION))
+                                {
+                                    compile_err_msg(info, "comelang does'nt support this type format");
+                                    return FALSE;
+                                }
+                                
+                                for(l=0; l<num_fields; l++) {
+                                    sNodeType* node_type = clone_node_type(klass->mFields[l]);
+                                    char* field_name = klass->mFieldName[l];
+                                    
+                                    BOOL found = FALSE;
+                                    int k;
+                                    for(k=0; k<num_struct_element; k++) {
+                                        if(strcmp(si[k].mName, field_name) == 0) {
+                                            unsigned int node = si[k].mNode;
+                                
+                                            if(!compile(node, info)) {
+                                                return FALSE;
+                                            }
+                                            
+                                            LVALUE llvm_value = *get_value_from_stack(-1);
+                                            
+                                            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(left_type);
+                                            
+                                            if(!cast_right_type_to_left_type(left_type, &node_type, &llvm_value, info))
+                                            {
+                                                compile_err_msg(info, "Cast failed");
+                                                return TRUE;
+                                            }
+                                            
+                                            values2[0] = llvm_value.value;
+                                            
+                                            dec_stack_ptr(1, info);
+                                            
+                                            found = TRUE;
+                                        }
+                                    }
+                                    
+                                    if(found) {
+                                        break;
+                                    }
+                                }
+                                
+                                LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                                LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, 1);
+                    
+                                values[i] = value;
+                                
+                                found = TRUE;
+                            }
+                            else {
+                                compile_err_msg(info, "require union or struct field");
+                                return FALSE;
+                            }
                         }
                     }
                 }
@@ -3182,6 +3259,80 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
             }
     
             LLVMValueRef value = LLVMConstStruct(values, num_fields, FALSE);
+            LLVMSetInitializer(alloca_value, value);
+        }
+    }
+    else if((var_type->mClass->mFlags & CLASS_FLAGS_UNION) && var_type->mPointerNum == 0) {
+        if(var_type->mArrayDimentionNum > 0) {
+            compile_err_msg(info, "comelang don't support this format");
+            return FALSE;
+        }
+        else {
+            sCLClass* klass = var_type->mClass;
+            int num_fields = klass->mNumFields;
+            
+            sNodeType* left_type = NULL;
+            int max_size = 0;
+            int l;
+            for(l=0; l<num_fields; l++) {
+                sNodeType* node_type = clone_node_type(klass->mFields[l]);
+                char* field_name = klass->mFieldName[l];
+                
+                int alignment = 0;
+                int size = get_size_from_node_type(node_type, &alignment);
+                
+                if(size >= max_size) {
+                    left_type = node_type;
+                    max_size = size;
+                }
+            }
+            
+            if(type_identify_with_class_name(left_type, "float") || type_identify_with_class_name(left_type, "double") || (left_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (left_type->mClass->mFlags & CLASS_FLAGS_UNION))
+            {
+                compile_err_msg(info, "comelang does'nt support this type format");
+                return FALSE;
+            }
+    
+            /// zero initializer ///
+            LLVMValueRef values[1];
+            
+            int i;
+            for(i=0; i<num_fields; i++) {
+                sNodeType* node_type = clone_node_type(klass->mFields[i]);
+                char* field_name = klass->mFieldName[i];
+                
+                int j;
+                for(j=0; j<num_elements; j++ ) {
+                    if(strcmp(elements[j].mName, field_name) == 0) {
+                        if(elements[j].mNumStructElement == 0) {
+                            unsigned int node = elements[j].mNode;
+                
+                            if(!compile(node, info)) {
+                                return FALSE;
+                            }
+                            
+                            LVALUE llvm_value = *get_value_from_stack(-1);
+                
+                            if(!cast_right_type_to_left_type(left_type, &node_type, &llvm_value, info))
+                            {
+                                compile_err_msg(info, "Cast failed");
+                                return TRUE;
+                            }
+                            
+                            dec_stack_ptr(1, info);
+                
+                            values[0] = llvm_value.value;
+                            break;
+                        }
+                        else {
+                            compile_err_msg(info, "comelang does'nt support this type format");
+                            return FALSE;
+                        }
+                    }
+                }
+            }
+    
+            LLVMValueRef value = LLVMConstStruct(values, 1, FALSE);
             LLVMSetInitializer(alloca_value, value);
         }
     }

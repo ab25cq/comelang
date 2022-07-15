@@ -1703,7 +1703,7 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
             struct_initializer_pointer = TRUE;
         }
         
-        if((result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) && *info->p == '(') {
+        if(((result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (result_type->mClass->mFlags & CLASS_FLAGS_UNION)) && *info->p == '(') {
             info->p++;
             skip_spaces_and_lf(info);
             

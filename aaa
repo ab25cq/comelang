@@ -1,810 +1,811 @@
+clang -I/usr/local/Cellar/llvm/14.0.6_1/include  -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Isrc/ -I.  -DPREFIX="\"/usr/local/\"" -fPIC -L/usr/local/lib -DCONFIG_H -I/usr/local/opt/llvm/include  -I/usr/local/include -DLLVM_VERSION=14 -DCLANG="\"clang\"" -I/usr/local/opt/llvm/include  -c -o src/node_var.o src/node_var.c
 clang-14: warning: argument unused during compilation: '-L/usr/local/lib' [-Wunused-command-line-argument]
 src/node_var.c:322:9: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
         LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "");
         ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:765:37: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:807:37: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:838:41: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                     LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                         ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:876:37: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:898:33: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:925:33: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:978:25: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
         field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
                         ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:979:28: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
         llvm_value.value = LLVMBuildLoad(gBuilder, field_address, "tuple_element");
                            ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:982:25: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
         field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
                         ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:983:28: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
         llvm_value.value = LLVMBuildLoad(gBuilder, field_address, "tuple_element");
                            ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1152:41: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                     LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                         ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1183:45: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                         LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1220:41: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                     LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                         ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1242:37: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1269:37: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, obj, "obj");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1443:32: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
             llvm_value.value = LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "fun_resultOOPPPPc");
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1623:23: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             address = LLVMBuildGEP(gBuilder, address, indices, 2, "gep");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1624:23: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             address = LLVMBuildLoad(gBuilder, address, "value");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1661:36: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 llvm_value.value = LLVMBuildLoad(gBuilder, value, "derefference_value");
                                    ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1674:36: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 llvm_value.value = LLVMBuildLoad(gBuilder, lvalue.value, "derefference_value");
                                    ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1884:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 (void)LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1887:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 obj = LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "funZZZ2");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1954:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 (void)LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:1957:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 obj = LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "funZZZ2");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2088:50: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef load_element_addresss = LLVMBuildGEP(gBuilder, lvalue2, &mvalue[0].value, 1, "gep");
                                                  ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2107:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2112:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep2");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2135:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2140:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep2");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2145:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep3");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2163:35: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
                 element_address = LLVMBuildGEP(gBuilder, element_address, &mvalue[i].value,  1, "element_address");
                                   ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 src/node_var.c:2165:39: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                     element_address = LLVMBuildLoad(gBuilder, element_address, "element_address");
                                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:3182:65: error: use of undeclared identifier 'element_node_type'; did you mean 'clone_node_type'?
-                    LLVMValueRef zero_value = create_null_value(element_node_type);
-                                                                ^~~~~~~~~~~~~~~~~
-                                                                clone_node_type
-src/common.h:212:12: note: 'clone_node_type' declared here
-sNodeType* clone_node_type(sNodeType* node_type);
-           ^
-src/node_var.c:3289:19: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:3290:187: error: no member named 'Class' in 'struct sNodeTypeStruct'; did you mean 'mClass'?
+            if(type_identify_with_class_name(left_type, "float") || type_identify_with_class_name(left_type, "double") || (left_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (left_type->Class->mFlags & CLASS_FLAGS_UNION))
+                                                                                                                                                                                          ^~~~~
+                                                                                                                                                                                          mClass
+src/common.h:148:15: note: 'mClass' declared here
+    sCLClass* mClass;
+              ^
+src/node_var.c:3436:19: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
         address = LLVMBuildGEP(gBuilder, address, indices, 2, "gep");
                   ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:3355:24: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:3502:24: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
     llvm_value.value = LLVMBuildLoad(gBuilder, address, "load_address_value");
                        ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:3612:28: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:3759:28: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
         llvm_value.value = LLVMBuildLoad(gBuilder, var_address, var_name);
                            ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:3648:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:3795:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             llvm_value.value = LLVMBuildLoad(gBuilder, var_address, var_name);
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4095:32: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4242:32: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
         LLVMValueRef address = LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "fun_resultXXXYYYZZZZ");
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4148:32: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4295:32: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
         LLVMValueRef address = LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "fun_resultXXXYYYZZZZ2");
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4435:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4582:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4438:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4585:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4449:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4596:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4452:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4599:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4457:29: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4604:29: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
         LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, field_address, "obj");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4541:34: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4688:34: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
     LLVMValueRef field_address = LLVMBuildStructGEP(gBuilder, protocol_value, field_index, "field");
                                  ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4547:29: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4694:29: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
         LLVMValueRef obj2 = LLVMBuildLoad(gBuilder, field_address, "obj");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4594:42: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4741:42: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef field_address = LLVMBuildStructGEP(gBuilder, protocol_value, i, "field");
                                          ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4596:40: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4743:40: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef field_value = LLVMBuildLoad(gBuilder, field_address, "load");
                                        ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4746:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4893:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
                 field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
                                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4749:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4896:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
                 field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
                                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4754:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4901:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4763:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4910:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             llvm_value.value = LLVMBuildLoad(gBuilder, field_address, var_name);
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4766:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4913:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4775:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4922:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             llvm_value.value = LLVMBuildLoad(gBuilder, field_address, var_name);
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4830:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4977:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
                 field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
                                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4833:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4980:33: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
                 field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
                                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4838:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4985:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4839:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4986:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             llvm_value.value = LLVMBuildLoad(gBuilder, field_address, var_name);
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4842:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4989:29: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
                             ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4843:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:4990:32: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             llvm_value.value = LLVMBuildLoad(gBuilder, field_address, var_name);
                                ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4922:42: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5069:42: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
     LLVMValueRef load_element_addresss = LLVMBuildGEP(gBuilder, lvalue2, &lvalue3, 1, "gep");
                                          ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:4924:34: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5071:34: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
     LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                  ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5370:17: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5517:17: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "");
                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5373:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5520:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 obj = LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "funXX2222");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5439:17: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5586:17: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "");
                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5442:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5589:23: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
                 obj = LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "funXX2222333");
                       ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5524:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5671:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, left_type->mArrayDimentionNum, "gep");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5530:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5677:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, left_type->mArrayDimentionNum, "gep2");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5541:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5688:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                              ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5580:50: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5727:50: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef load_element_addresss = LLVMBuildGEP(gBuilder, lvalue2, &rvalue[0].value, 1, "gep");
                                                  ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5582:42: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5729:42: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                          ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5605:37: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5752:37: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5608:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5755:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 1, "gep");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5612:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5759:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep2");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5619:42: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5766:42: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                          ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5645:50: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5792:50: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef load_element_addresss = LLVMBuildGEP(gBuilder, lvalue2, &rvalue[0].value, 1, "gep");
                                                  ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5647:42: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5794:42: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
             LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                          ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5672:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5819:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5676:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5823:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep2");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5687:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5834:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                              ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5731:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5878:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5736:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5883:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep2");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5741:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5888:37: warning: 'LLVMBuildGEP' is deprecated: Use LLVMBuildGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
             load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, 2, "gep3");
                                     ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3898:1: note: 'LLVMBuildGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5752:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5899:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                              ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5767:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5914:46: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                              ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5791:41: warning: 'LLVMBuildInBoundsGEP' is deprecated: Use LLVMBuildInBoundsGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5938:41: warning: 'LLVMBuildInBoundsGEP' is deprecated: Use LLVMBuildInBoundsGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
                 load_element_addresss = LLVMBuildInBoundsGEP(gBuilder, load_element_addresss, &value, 1, "element_address");
                                         ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3903:1: note: 'LLVMBuildInBoundsGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3903:1: note: 'LLVMBuildInBoundsGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5793:33: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:5940:33: warning: 'LLVMBuildLoad' is deprecated: Use LLVMBuildLoad2 instead to support opaque pointers [-Wdeprecated-declarations]
                 element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
                                 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3891:1: note: 'LLVMBuildLoad' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:5872:46: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:6019:46: warning: 'LLVMBuildStructGEP' is deprecated: Use LLVMBuildStructGEP2 instead to support opaque pointers [-Wdeprecated-declarations]
                 LLVMValueRef field_address = LLVMBuildStructGEP(gBuilder, stack, field_index, "field");
                                              ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3908:1: note: 'LLVMBuildStructGEP' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
-src/node_var.c:6392:11: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
+src/node_var.c:6539:11: warning: 'LLVMBuildCall' is deprecated: Use LLVMBuildCall2 instead to support opaque pointers [-Wdeprecated-declarations]
     (void)LLVMBuildCall(gBuilder, llvm_fun, llvm_params, num_params, "");
           ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Core.h:3991:1: note: 'LLVMBuildCall' has been explicitly marked deprecated here
 LLVM_ATTRIBUTE_C_DEPRECATED(
 ^
-/usr/local/Cellar/llvm/14.0.6/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
+/usr/local/Cellar/llvm/14.0.6_1/include/llvm-c/Deprecated.h:26:23: note: expanded from macro 'LLVM_ATTRIBUTE_C_DEPRECATED'
   decl __attribute__((deprecated(message)))
                       ^
 89 warnings and 1 error generated.
