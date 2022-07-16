@@ -1062,6 +1062,11 @@ void init_nodes(char* sname)
         fprintf(stderr, "overflow struct number\n");
         exit(2);
     }
+#elif defined(__DARWIN_ARM__)
+    sNodeType* node_type = create_node_type_with_class_name("char*");
+
+    add_typedef("__builtin_va_list", node_type, FALSE);
+    add_typedef("va_list", node_type, FALSE);
 #elif  defined(__X86_64_CPU__ )
     LLVMTypeRef field_types[STRUCT_FIELD_MAX];
 
@@ -2729,7 +2734,7 @@ LLVMTypeRef create_llvm_type_from_node_type(sNodeType* node_type)
 
     sCLClass* klass = node_type->mClass;
 
-#ifdef __ISH__
+#if defined(__ISH__) || defined(__DARWIN_ARM__)
     if(type_identify_with_class_name(node_type, "__builtin_va_list") || type_identify_with_class_name(node_type, "va_list") || type_identify_with_class_name(node_type, "__va_list"))
     {
         result_type = LLVMInt8TypeInContext(gContext);
@@ -2937,7 +2942,8 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
         return TRUE;
     }
 #endif
-    else if(type_identify(left_type, *right_type) && (left_type->mPointerNum-1 == (*right_type)->mPointerNum) && (*right_type)->mArrayDimentionNum == 1) 
+
+    if(type_identify(left_type, *right_type) && (left_type->mPointerNum-1 == (*right_type)->mPointerNum) && (*right_type)->mArrayDimentionNum == 1) 
     {
         if(rvalue && rvalue->value) {
 #ifdef __DARWIN__

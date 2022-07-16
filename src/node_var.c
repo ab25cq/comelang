@@ -3740,10 +3740,22 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
         info->type = clone_node_type(var_type);
     }
     else {
-        if(type_identify_with_class_name(var_type, "__builtin_va_list") || type_identify_with_class_name(var_type, "va_list") || type_identify_with_class_name(var_type, "__va_list")) 
+#ifdef __DARWIN_ARM__
+        if(strcmp(var_type->mOriginalTypeName, "__builtin_va_list") == 0 || strcmp(var_type->mOriginalTypeName, "va_list") == 0 || strcmp(var_type->mOriginalTypeName, "__va_list") == 0) 
         {
-#if defined(__X86_64_CPU__ ) && !defined(__DARWIN__)
+            llvm_value.value = var_address;
 
+            llvm_value.type = clone_node_type(var_type);
+            llvm_value.address = var_address;
+            llvm_value.var = NULL;
+
+            push_value_to_stack_ptr(&llvm_value, info);
+
+            info->type = clone_node_type(var_type);
+        }
+#elif defined(__X86_64_CPU__ ) && !defined(__DARWIN__)
+        if(type_identify_with_class_name(var_type, "__builtin_va_list") || type_identify_with_class_name(var_type, "va_list") || type_identify_with_class_name(var_type, "__va_list"))
+        {
             LLVMValueRef indices[2];
 
             LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
@@ -3752,9 +3764,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
             indices[1] = LLVMConstInt(llvm_type, 0, FALSE);
 
             llvm_value.value = LLVMBuildGEP(gBuilder, var_address, indices, 2, "gep");
-#else
-            llvm_value.value = var_address;
-#endif
 
             llvm_value.type = var_type;
             llvm_value.address = var_address;
@@ -3764,6 +3773,19 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
 
             info->type = clone_node_type(var_type);
         }
+#else
+        if(type_identify_with_class_name(var_type, "__builtin_va_list") || type_identify_with_class_name(var_type, "va_list") || type_identify_with_class_name(var_type, "__va_list"))
+            llvm_value.value = var_address;
+
+            llvm_value.type = var_type;
+            llvm_value.address = var_address;
+            llvm_value.var = NULL;
+
+            push_value_to_stack_ptr(&llvm_value, info);
+
+            info->type = clone_node_type(var_type);
+        }
+#endif
         else {
             llvm_value.value = LLVMBuildLoad(gBuilder, var_address, var_name);
             llvm_value.type = var_type;

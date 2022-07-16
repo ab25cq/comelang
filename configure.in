@@ -38,7 +38,7 @@ then
 
     AC_DEFINE(__RASPBERRY_PI__, 1)
     AC_DEFINE(__32BIT_CPU__, 1)
-elif test `uname -o` = Android
+elif uname -a | grep Android
 then
     echo Android
 
@@ -83,6 +83,11 @@ then
 
     AC_DEFINE(__32BIT_CPU__, 1)
     AC_DEFINE(__RASPBERRY_PI__, 1)
+elif test `uname -m` = arm64
+then
+    echo armv7l
+
+    AC_DEFINE(__64BIT_CPU__, 1)
 elif test `uname -m` = aarch64
 then
     echo aarch64
@@ -118,6 +123,23 @@ if uname -v | grep iSH > /dev/null; then
     fi
 
     AC_HAVE_LIBRARY(util, [ LIBS="$LIBS -lutil" ], [])
+elif uname -a | grep Darwin | grep arm64; then
+    echo "Darwin-arm"
+
+    OS=DARWIN_ARM
+
+    AC_DEFINE(__DARWIN_ARM__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I.  $CFLAGS -I/usr/local/opt/llvm/include -L/opt/homebrew/lib -I/opt/homebrew/include"
+#        CFLAGS="-Isrc/ -I.  $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I.  -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    else 
+        CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include -L/opt/homebrew/lib -I/opt/homebrew/include"
+#        CFLAGS="-Isrc/ -I. -I$myprefix/include -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    fi
+
+    PATH="$PATH:/opt/homebrew/opt/llvm/bin"
 elif test `uname -s` = "Darwin"; then
     echo "Darwin"
 

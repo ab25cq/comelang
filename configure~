@@ -647,7 +647,12 @@ ac_includes_default="\
 ac_header_c_list=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+SELF_HOST_OBJS
 OBJS
+CLANG
+CXXFLAGS2
+CXXFLAGS
+CXX
 DESTDIR
 OS
 INSTALL_DATA
@@ -704,7 +709,6 @@ ac_user_opts='
 enable_option_checking
 with_debug
 with_optimize
-with_no_gc
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1330,8 +1334,7 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-debug              include debug info
-  --with-optimize           with optimize(-O in CFLAGS)
-  --with-no-gc              disable gc
+  --with-optimize           with optimize(-O2 in CFLAGS)
 
 Some influential environment variables:
   CC          C compiler command
@@ -3795,12 +3798,10 @@ else
     myprefix=$prefix
 fi
 
-##############################################################
+#################################################
 # configure arguments
-##############################################################
+#################################################
 DEBUGGING=0
-LOGGING=0
-ENABLE_NO_GC=0
 
 
 # Check whether --with-debug was given.
@@ -3819,16 +3820,9 @@ else $as_nop
 fi
 
 
-# Check whether --with-no-gc was given.
-if test ${with_no_gc+y}
-then :
-  withval=$with_no_gc;  ENABLE_NO_GC=1
-fi
-
-
-##############################################################
+#################################################
 # check cpu type
-##############################################################
+#################################################
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking CPU type" >&5
 printf %s "checking CPU type... " >&6; }
 
@@ -3836,7 +3830,23 @@ if test `uname -m` = x86_64
 then
     echo x86_64
 
+    printf "%s\n" "#define __X86_64_CPU__ 1" >>confdefs.h
+
     printf "%s\n" "#define __64BIT_CPU__ 1" >>confdefs.h
+
+elif uname -a | grep raspberry
+then
+    echo raspberry
+
+    printf "%s\n" "#define __RASPBERRY_PI__ 1" >>confdefs.h
+
+    printf "%s\n" "#define __32BIT_CPU__ 1" >>confdefs.h
+
+elif uname -a | grep Android
+then
+    echo Android
+
+    printf "%s\n" "#define __ANDROID__ 1" >>confdefs.h
 
 elif test `uname -m` = i386 || test `uname -m` = i686
 then
@@ -3888,25 +3898,110 @@ then
 
     printf "%s\n" "#define __32BIT_CPU__ 1" >>confdefs.h
 
+    printf "%s\n" "#define __RASPBERRY_PI__ 1" >>confdefs.h
+
+elif test `uname -m` = arm64
+then
+    echo armv7l
+
+    printf "%s\n" "#define __64BIT_CPU__ 1" >>confdefs.h
+
+elif test `uname -m` = aarch64
+then
+    echo aarch64
+
+    printf "%s\n" "#define __AARCH64_CPU__ 1" >>confdefs.h
+
+    printf "%s\n" "#define __64BIT_CPU__ 1" >>confdefs.h
+
 else
     echo other
 
-    printf "%s\n" "#define __32BIT_CPU__ 1" >>confdefs.h
+    printf "%s\n" "#define __64BIT_CPU__ 1" >>confdefs.h
 
 fi
 
-##############################################################
+##################################################
 # check operating systems
-##############################################################
+##################################################
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking Operating System" >&5
 printf %s "checking Operating System... " >&6; }
 
-CFLAGS='-DPREFIX="\"${DESTDIR}/\""'
-CFLAGS="-fPIC $CFLAGS"
+#CFLAGS='-DPREFIX="\"${DESTDIR}/\"" -fPIC'
+CFLAGS='-DPREFIX="\"${DESTDIR}/\"" -fPIC -L/usr/local/lib -DCONFIG_H'
+#CFLAGS="-fPIC -rdynamic $CFLAGS"
 
-AR_LIB=
+if uname -v | grep iSH > /dev/null; then
+    echo "iSH"
 
-if test `uname -s` = "Darwin"; then
+    OS=iSH
+
+    printf "%s\n" "#define __ISH__ 1" >>confdefs.h
+
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I. $CFLAGS"
+    else
+        CFLAGS="-Isrc/ -I.  -I$myprefix/include $CFLAGS"
+    fi
+
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lutil" >&5
+printf %s "checking for main in -lutil... " >&6; }
+if test ${ac_cv_lib_util_main+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lutil  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main (void)
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_util_main=yes
+else $as_nop
+  ac_cv_lib_util_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_util_main" >&5
+printf "%s\n" "$ac_cv_lib_util_main" >&6; }
+if test "x$ac_cv_lib_util_main" = xyes
+then :
+   LIBS="$LIBS -lutil"
+fi
+ac_cv_lib_util=ac_cv_lib_util_main
+
+elif uname -a | grep Dawrin | grep arm64; then
+    echo "Darwin-arm"
+
+    OS=DARWIN_ARM
+
+    printf "%s\n" "#define __DARWIN_ARM__ 1" >>confdefs.h
+
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I.  $CFLAGS -I/usr/local/opt/llvm/include -L/opt/homebrew/lib -I/opt/homebrew/include"
+#        CFLAGS="-Isrc/ -I.  $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I.  -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    else
+        CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include -L/opt/homebrew/lib -I/opt/homebrew/include"
+#        CFLAGS="-Isrc/ -I. -I$myprefix/include -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    fi
+
+    PATH="$PATH:/opt/homebrew/opt/llvm/bin"
+elif test `uname -s` = "Darwin"; then
     echo "Darwin"
 
     OS=DARWIN
@@ -3915,10 +4010,14 @@ if test `uname -s` = "Darwin"; then
 
 
     if test $myprefix = /usr/local; then
-        CFLAGS="-Isrc/ -I. -I/opt/homebrew/opt/ncurses/include -L/opt/homebrew/opt/ncurses/lib -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $CFLAGS"
+        CFLAGS="-Isrc/ -I.  $CFLAGS -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I.  $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I.  -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
     else
-        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I$myprefix/include -L$myprefix/lib $CFLAGS"
+        CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I. -I$myprefix/include -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
     fi
+
 elif test `uname -s` = "FreeBSD"; then
     echo "FreeBSD"
 
@@ -3927,20 +4026,7 @@ elif test `uname -s` = "FreeBSD"; then
     printf "%s\n" "#define __FREEBSD__ 1" >>confdefs.h
 
 
-    CFLAGS="-Isrc/ -I. -I$myprefix/include -L$myprefix/lib $CFLAGS"
-elif uname -s | grep -q CYGWIN_NT; then
-    echo CYGWIN
-
-    OS=CYGWIN
-
-    printf "%s\n" "#define __CYGWIN__ 1" >>confdefs.h
-
-
-    if test $myprefix = /usr/local; then
-        CFLAGS="-Isrc/ -I. $CFLAGS"
-    else
-        CFLAGS="-Isrc/ -I. -I$myprefix/include -L$myprefix/lib $CFLAGS"
-    fi
+    CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS"
 else
     echo "Linux"
 
@@ -3952,7 +4038,7 @@ else
     if test $myprefix = /usr/local; then
         CFLAGS="-Isrc/ -I. $CFLAGS"
     else
-        CFLAGS="-Isrc/ -I. -I$myprefix/include -L$myprefix/lib $CFLAGS"
+        CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS"
     fi
 
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lutil" >&5
@@ -3995,27 +4081,17 @@ ac_cv_lib_util=ac_cv_lib_util_main
 
 fi
 
-##############################################################
+###################################################
 # CFLAGS settings
-##############################################################
+###################################################
 if test -d /usr/local/include
 then
     CFLAGS="$CFLAGS -I/usr/local/include"
 fi
 
-#if test -d /usr/local/lib
-#then
-#    CFLAGS="$CFLAGS -L /usr/local/lib"
-#fi
-
 if test -d /opt/local/include
 then
     CFLAGS="$CFLAGS -I/opt/local/include"
-fi
-
-if test -d /opt/local/lib
-then
-    CFLAGS="$CFLAGS -L /opt/local/lib"
 fi
 
 if test -d /usr/include/i386-linux-gnu/
@@ -4023,33 +4099,86 @@ then
     CFLAGS="$CFLAGS -I /usr/include/i386-linux-gnu//"
 fi
 
-if test -d /usr/lib/i386-linux-gnu/
+if test $ENABLE_OPTIMIZE = 1
 then
-    CFLAGS="$CFLAGS -L /usr/lib/i386-linux-gnu/"
+    CFLAGS="$CFLAGS -O2"
+fi
+
+if test $DEBUGGING = 1
+then
+    CFLAGS="$CFLAGS -g"
 fi
 
 
 
-##########################################################
+export CFLAGS
+
+##################################################
 # Libs
-##########################################################
+##################################################
 CC=clang
+
+if test `uname -s` = "Darwin"; then
+    CC=clang
+elif which clang-11 2> /dev/null
+then
+    CC=clang-11
+elif which clang-9 2> /dev/null
+then
+    CC=clang-9
+fi
 
 INSTALL="$(which install) -c"
 
-ac_fn_c_check_header_compile "$LINENO" "bsd/stdlib.h" "ac_cv_header_bsd_stdlib_h" "$ac_includes_default"
-if test "x$ac_cv_header_bsd_stdlib_h" = xyes
+if test "$OS" != FREEBSD
+then
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -ldl" >&5
+printf %s "checking for main in -ldl... " >&6; }
+if test ${ac_cv_lib_dl_main+y}
 then :
-  printf "%s\n" "#define HAVE_BSD_H 1" >>confdefs.h
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-ldl  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main (void)
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_dl_main=yes
+else $as_nop
+  ac_cv_lib_dl_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_dl_main" >&5
+printf "%s\n" "$ac_cv_lib_dl_main" >&6; }
+if test "x$ac_cv_lib_dl_main" = xyes
+then :
+   LIBS="$LIBS -ldl";
+fi
+ac_cv_lib_dl=ac_cv_lib_dl_main
 
 fi
-
 
 ac_fn_c_check_header_compile "$LINENO" "math.h" "ac_cv_header_math_h" "$ac_includes_default"
 if test "x$ac_cv_header_math_h" = xyes
 then :
   printf "%s\n" "#define HAVE_MATH_H 1" >>confdefs.h
 
+else $as_nop
+   exit
 fi
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lm" >&5
@@ -4087,17 +4216,19 @@ printf "%s\n" "$ac_cv_lib_m_main" >&6; }
 if test "x$ac_cv_lib_m_main" = xyes
 then :
    LIBS="$LIBS -lm";
+else $as_nop
+   exit
 fi
 ac_cv_lib_m=ac_cv_lib_m_main
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lreadline" >&5
-printf %s "checking for main in -lreadline... " >&6; }
-if test ${ac_cv_lib_readline_main+y}
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lgc" >&5
+printf %s "checking for main in -lgc... " >&6; }
+if test ${ac_cv_lib_gc_main+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lreadline  $LIBS"
+LIBS="-lgc  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -4112,32 +4243,32 @@ return main ();
 _ACEOF
 if ac_fn_c_try_link "$LINENO"
 then :
-  ac_cv_lib_readline_main=yes
+  ac_cv_lib_gc_main=yes
 else $as_nop
-  ac_cv_lib_readline_main=no
+  ac_cv_lib_gc_main=no
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_readline_main" >&5
-printf "%s\n" "$ac_cv_lib_readline_main" >&6; }
-if test "x$ac_cv_lib_readline_main" = xyes
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gc_main" >&5
+printf "%s\n" "$ac_cv_lib_gc_main" >&6; }
+if test "x$ac_cv_lib_gc_main" = xyes
 then :
-   LIBS="$LIBS -lreadline";
+   LIBS="$LIBS -lgc"
 else $as_nop
    exit
 fi
-ac_cv_lib_readline=ac_cv_lib_readline_main
+ac_cv_lib_gc=ac_cv_lib_gc_main
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lncursesw" >&5
-printf %s "checking for main in -lncursesw... " >&6; }
-if test ${ac_cv_lib_ncursesw_main+y}
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lpcre" >&5
+printf %s "checking for main in -lpcre... " >&6; }
+if test ${ac_cv_lib_pcre_main+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lncursesw  $LIBS"
+LIBS="-lpcre  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -4152,23 +4283,63 @@ return main ();
 _ACEOF
 if ac_fn_c_try_link "$LINENO"
 then :
-  ac_cv_lib_ncursesw_main=yes
+  ac_cv_lib_pcre_main=yes
 else $as_nop
-  ac_cv_lib_ncursesw_main=no
+  ac_cv_lib_pcre_main=no
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ncursesw_main" >&5
-printf "%s\n" "$ac_cv_lib_ncursesw_main" >&6; }
-if test "x$ac_cv_lib_ncursesw_main" = xyes
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pcre_main" >&5
+printf "%s\n" "$ac_cv_lib_pcre_main" >&6; }
+if test "x$ac_cv_lib_pcre_main" = xyes
 then :
-   LIBS="$LIBS -lncursesw";
+
 else $as_nop
    exit
 fi
-ac_cv_lib_ncursesw=ac_cv_lib_ncursesw_main
+ac_cv_lib_pcre=ac_cv_lib_pcre_main
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lpthread" >&5
+printf %s "checking for main in -lpthread... " >&6; }
+if test ${ac_cv_lib_pthread_main+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpthread  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main (void)
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_pthread_main=yes
+else $as_nop
+  ac_cv_lib_pthread_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthread_main" >&5
+printf "%s\n" "$ac_cv_lib_pthread_main" >&6; }
+if test "x$ac_cv_lib_pthread_main" = xyes
+then :
+
+else $as_nop
+   exit
+fi
+ac_cv_lib_pthread=ac_cv_lib_pthread_main
 
 ac_fn_c_check_header_compile "$LINENO" "iconv.h" "ac_cv_header_iconv_h" "$ac_includes_default"
 if test "x$ac_cv_header_iconv_h" = xyes
@@ -4178,9 +4349,51 @@ then :
 fi
 
 
+if test "$OS" = CYGWIN || test "$OS" = DARWIN || test "$OS" = FREEBSD
+then
+    LIBS="$LIBS -liconv"
+fi
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lrt" >&5
+printf %s "checking for main in -lrt... " >&6; }
+if test ${ac_cv_lib_rt_main+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lrt  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
 
 
-CC=comelang
+int
+main (void)
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_rt_main=yes
+else $as_nop
+  ac_cv_lib_rt_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_rt_main" >&5
+printf "%s\n" "$ac_cv_lib_rt_main" >&6; }
+if test "x$ac_cv_lib_rt_main" = xyes
+then :
+   LIBS="$LIBS -lrt";
+fi
+ac_cv_lib_rt=ac_cv_lib_rt_main
+
+
+
 
 
 
@@ -4188,24 +4401,85 @@ DESTDIR=$myprefix
 
 
 
-if test $ENABLE_OPTIMIZE = 1
+CXXFLAGS='-DPREFIX="\"${DESTDIR}/\" -L/usr/local/lib"'
+CXXFLAGS="-I . -I src $CXXFLAGS"
+#CXXFLAGS="-fPIC -rdynamic $CXXFLAGS"
+
+if which clang++ > /dev/null
 then
-    CFLAGS="$CFLAGS -O3"
+    CXX=clang++
+else
+    echo "Require clang++"
+    exit 2
 fi
 
 if test $DEBUGGING = 1
 then
-    CFLAGS="$CFLAGS -g"
+    CXXFLAGS="-g $CXXFLAGS"
+else
+    CXXFLAGS="-O2 $CXXFLAGS"
 fi
 
-if test $ENABLE_NO_GC = 1
+LIBS="$LIBS"
+
+
+
+OBJS="src/parse_value.o src/parse_lib.o src/parse_type.o src/parse_function.o src/parse_loop.o src/parse_var.o src/parse_exp.o src/parse_op.o src/alignment.o src/buffer.o src/xfunc.o src/node.o src/node_function_call.o src/node_function_lib.o src/node_function.o src/node_function_come.o src/node_compile.o src/node_loop.o src/node_op.o src/node_value.o src/node_var.o src/vtable.o src/node_type.o src/klass.o src/node_block.o src/typedef.o src/compiler.o src/macro.o"
+SELF_HOST_OBJS="src/parse_value.c.o src/parse_lib.c.o src/parse_type.c.o src/parse_function.c.o src/parse_loop.c.o src/parse_var.c.o src/parse_exp.c.o src/parse_op.c.o src/alignment.c.o src/buffer.c.o src/xfunc.c.o src/node.c.o src/vtable.c.o src/node_type.c.o src/klass.c.o src/node_block.c.o src/typedef.c.o src/compiler.c.o src/node_function_call.c.o src/node_function_lib.c.o src/node_function.c.o src/node_function_come.c.o src/node_loop.c.o src/node_op.c.o src/node_value.c.o src/node_var.c.o src/macro.c.o src/node_compile.c.o src/main.c.o"
+
+ac_fn_c_check_func "$LINENO" "lchmod" "ac_cv_func_lchmod"
+if test "x$ac_cv_func_lchmod" = xyes
+then :
+  printf "%s\n" "#define HAVE_LCHMOD 1" >>confdefs.h
+
+fi
+
+
+#CXXFLAGS="$CXXFLAGS -Qunused-arguments"
+
+echo -n checking for llvm-config...
+
+if which llvm-config-11 1> /dev/null 2>/dev/null
 then
-    CFLAGS="$CFLAGS -no-gc"
+    CFLAGS=`llvm-config-11 --cflags | tr '\n' ' '`" $CFLAGS"
+    CXXFLAGS=`llvm-config-11 --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
+    #CXXFLAGS=`llvm-config-11 --cxxflags --ldflags --system-libs --libs all | tr '\n' ' '`" $CXXFLAGS"
+    echo llvm-11 ok
+    LLVM_VERSION=`llvm-config-11 --version | sed 's/\([0-9]*\)\.[0-9]*\.[0-9]*/\1/'`
+    CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
+    CFLAGS=$CFLAGS' -DCLANG="\"clang-11\""'
+elif which llvm-config-9 1> /dev/null 2>/dev/null
+then
+    CFLAGS=`llvm-config-9 --cflags | tr '\n' ' '`" $CFLAGS"
+    CXXFLAGS=`llvm-config-9 --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
+    echo llvm-9 ok
+    LLVM_VERSION=`llvm-config-9 --version | sed 's/\([0-9]*\)\.[0-9]*\.[0-9]*/\1/'`
+    CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
+    CFLAGS=$CFLAGS' -DCLANG="\"clang-9\""'
+elif which llvm-config 1> /dev/null 2>/dev/null
+then
+    CFLAGS=`llvm-config --cflags | tr '\n' ' '`" $CFLAGS"
+    CXXFLAGS=`llvm-config --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
+    LLVM_VERSION=`llvm-config --version | sed 's/\([0-9]*\)\.[0-9]*\.[0-9]*/\1/'`
+    CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
+    CFLAGS=$CFLAGS' -DCLANG="\"clang\""'
+    echo ok
+else
+    echo no
+    exit 1
 fi
 
-export CFLAGS
+if test $DEBUGGING = 1
+then
+    CXXFLAGS2="${CXXFLAGS}"
+else
+    CXXFLAGS2="${CXXFLAGS#-g}"
+fi
 
-OBJS="src/main.o"
+
+
+
+
 
 ac_fn_c_check_func "$LINENO" "execvpe" "ac_cv_func_execvpe"
 if test "x$ac_cv_func_execvpe" = xyes
@@ -4213,6 +4487,7 @@ then :
   printf "%s\n" "#define HAVE_EXECVPE 1" >>confdefs.h
 
 fi
+
 
 
 

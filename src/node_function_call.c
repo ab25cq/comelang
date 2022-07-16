@@ -714,6 +714,17 @@ BOOL compile_function_call(unsigned int node, sCompileInfo* info)
     {
         param.value = LLVMBuildLoad(gBuilder, param.value, "va_list_load");
     }
+#elifdef __DARWIN_ARM__
+    if(strcmp(fun_param_type->mOriginalTypeName, "va_list") == 0)
+    {
+        if(strcmp(fun_name, "llvm.va_strt") == 0 || strcmp(fun_name, "llvm.va_end") == 0) {
+            LLVMTypeRef llvm_type = create_llvm_type_with_class_name("char*");
+            param.value = LLVMBuildBitCast(gBuilder, param.value, llvm_type, "va_list_bit_cast");
+        }
+        else {
+            param.value = LLVMBuildLoad(gBuilder, param.value, "va_list_load");
+        }
+    }
 #endif
 
             if(auto_cast_posibility(fun_param_type, param_types[i])) {

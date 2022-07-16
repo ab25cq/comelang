@@ -5,7 +5,7 @@ then
     apk add sudo git clang g++ gcc llvm-dev pcre-dev gc-dev readline-dev ncurses-dev make samurai cmake autoconf valgrind gdb musl-dev
 elif uname | grep Darwin
 then
-    brew install git llvm pcre libgc readline ncurses make ninja cmake autoconf 
+    brew install git llvm pcre libgc readline ncurses make ninja cmake autoconf boehmgc 
 elif which apk > /dev/null
 then
     sudo apk add sudo git clang g++ gcc llvm-dev pcre-dev gc-dev readline-dev ncurses-dev make samurai cmake autoconf valgrind gdb lldb musl-dev

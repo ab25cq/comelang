@@ -1,22 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
-struct sData {
-    union {
-        int a;
-        struct {
-            int a;
-            int b;
-        } b;
-    } a;
-};
+char* xsprintf(char* msg, ...)
+{
+    va_list args;
+    va_start(args, msg);
+    char* result;
+    int len = vasprintf(&result, msg, args);
+    va_end(args);
 
-struct sData gData = (struct sData){ .a = { .b = {.a = 111, .b = 222}} };
+    if(len < 0) {
+        fprintf(stderr, "can't get heap memory.\n");
+
+        exit(2);
+    }
+
+    return result;
+}
 
 int main()
 {
-    printf("%d %d\n", gData.a.b.a, gData.a.b.b);
     
     return 0;
 }

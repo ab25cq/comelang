@@ -39,10 +39,10 @@ no-self-host: comelang lib lib-gc
 
 comelang: config.h src/main.o $(OBJS)
 	$(CC) -c src/main.c -o src/main.o $(CFLAGS)
-	$(CXX) -o comelang src/main.o $(OBJS) $(CXXFLAGS) $(LIBS) -L/usr/local/lib
+	$(CXX) -o comelang src/main.o $(OBJS) $(CXXFLAGS) $(LIBS) -L/usr/local/lib -L/opt/homebrew/lib
 
 lib: 
-	clang -c -o comelang6.o comelang6.c -I/usr/local/include
+	clang -c -o comelang6.o comelang6.c -I/usr/local/include -I/opt/homebrew/include -fPIC
 	./comelang -c -no-gc comelang.c -fPIC
 	./comelang -c -no-gc comelang2.c -fPIC
 	./comelang -c -no-gc comelang3.c -fPIC
@@ -53,7 +53,7 @@ lib:
 	ar r libcomelang.a comelang.o comelang2.o comelang3.o comelang4.o comelang5.o comelang6.o comelang7.o comelang8.o
 
 lib-gc:
-	clang -c -o comelang6.o comelang6.c -I/usr/local/include
+	clang -c -o comelang6-gc.o comelang6.c -I/usr/local/include -I/opt/homebrew/include -fPIC
 	./comelang -o comelang-gc.o -gc -c comelang.c -fPIC
 	./comelang -o comelang2-gc.o -gc -c comelang2.c -fPIC
 	./comelang -o comelang3-gc.o -gc -c comelang3.c -fPIC
@@ -61,11 +61,10 @@ lib-gc:
 	./comelang -o comelang5-gc.o -gc -c comelang5.c -fPIC
 	./comelang -o comelang7-gc.o -gc -c comelang7.c -fPIC
 	./comelang -o comelang8-gc.o -gc -c comelang8.c -fPIC
-	clang -o comelang6.o -c comelang6.c -fPIC -I/usr/local/include -I/opt/local/include
-	ar r libcomelang-gc.a comelang-gc.o comelang2-gc.o comelang3-gc.o comelang4-gc.o comelang5-gc.o comelang6.o comelang7-gc.o comelang8-gc.o
+	ar r libcomelang-gc.a comelang-gc.o comelang2-gc.o comelang3-gc.o comelang4-gc.o comelang5-gc.o comelang6-gc.o comelang7-gc.o comelang8-gc.o
 
 self-host: comelang config.h $(SELF_HOST_OBJS) lib
-	$(CXX) -o comelang $(SELF_HOST_OBJS) $(CXXFLAGS) -fPIC $(LIBS) -L/usr/local/lib
+	$(CXX) -o comelang $(SELF_HOST_OBJS) $(CXXFLAGS) -fPIC $(LIBS) -L/usr/local/lib -L/opt/homebrew/lib
 
 src/parse_value.c.o: src/parse_value.c
 	./comelang -o src/parse_value.c.o -c src/parse_value.c $(CFLAGS) -fPIC

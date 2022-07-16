@@ -69,11 +69,31 @@ union eNode2 {
     char c;
 };
 
-eNode2 gNode = (eNode2) { .c = 'd' };
+eNode2 gNodeX = (eNode2) { .c = 'd' };
 
 struct sData2 gData = (struct sData2){ .a = 1, .b = 2, .c = { .c = 3, .d =4 }, .e = { .c='c' } };
 
 struct sData2* gData2 = &(struct sData2) { .a = 3, .b = 4, .c = { .c = 4, .d = 5} };
+struct sData2 {
+    int a;
+    int b;
+    
+    struct {
+        int c;
+        int d;
+    } c;
+    
+    struct {
+        int c;
+        int d;
+    } d;
+    
+    union {
+        int a;
+        long b;
+        char c;
+    } e;
+};
 
 struct sData3 {
     int a;
@@ -99,10 +119,6 @@ struct sData3 {
 
 struct sData3 gData3 = (struct sData3){ .a = 1, .b = { .a = 3, .b =4 }, .c = {.c ='f' }, .d = { .a = { .a = 111, .b = 222}}};
 
-int main()
-{
-    printf("%d %d %d %c %d %d\n", gData.a, gData.b.a, gData.b.b, gData.c.c, gData.d.a.a, gData.d.a.b);
-
 int main(int argc, char** argv)
 {
     int a[10];
@@ -125,18 +141,18 @@ int main(int argc, char** argv)
     
     struct sData bb = { 3, 4};
     
-    xassert("struct initializer", aa.a == 1 && aa.b == 2);
-    xassert("struct initializer", bb.a == 3 && bb.b == 4);
+    xassert("struct initializerA", aa.a == 1 && aa.b == 2);
+    xassert("struct initializerB", bb.a == 3 && bb.b == 4);
 
-    xassert("struct initializer", xyz[0].a === "AAA" && xyz[0].b == 2 && xyz[1].a === "BBB" && xyz[1].b == 4);
+    xassert("struct initializerC", xyz[0].a === "AAA" && xyz[0].b == 2 && xyz[1].a === "BBB" && xyz[1].b == 4);
     struct {
         char* a;
         int b;
     } xyz2[] = { { "AAA",2 }, { "BBB", 4 }};
     
-    xassert("struct initializer", xyz2[0].a === "AAA" && xyz2[0].b == 2 && xyz2[1].a === "BBB" && xyz2[1].b == 4);
+    xassert("struct initializerD", xyz2[0].a === "AAA" && xyz2[0].b == 2 && xyz2[1].a === "BBB" && xyz2[1].b == 4);
     
-    xassert("struct initializer", gNode.a == 1 && gNode.b == 0);
+    xassert("struct initializerE", gNode.a == 1 && gNode.b == 0);
     
     int ggg[2][2];
     
@@ -160,10 +176,9 @@ int main(int argc, char** argv)
     
     xassert("typeof test", iii[0] == 'd' && iii[1] == 'e');
     
-    xassert("initializer test", gNode.c == 'd');
+    xassert("initializer test", gNodeX.c == 'd');
     
     xassert("initializer test2", gData.a == 1 && gData.b == 2 && gData.c.c == 3 && gData.c.d == 4 && gData.e.c == 'c' && gData.d.c == 0 && gData.d.d == 0);
-    xassert("initializer test3", gData2->a == 3 && gData2->b == 4 && gData2->c.c == 4 && gData2->c.d == 5 && gData2->c.c == 3 && gData.c.d == 4 && gData.e.c == 'c' && gData2->d.c == 0 && gData2->d.d == 0);
     xassert("initializer test4", gData3.a == 1 && gData3.b.a == 3 && gData3.b.b == 4 && gData3.c.c == 'f' && gData3.d.a.a == 111 && gData3.d.a.b == 222);
     
     return 0;

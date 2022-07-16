@@ -11,6 +11,7 @@
 #undef __CYGWIN__
 #undef __SUNOS__
 #undef __DARWIN__
+#undef __DARWIN_ARM__
 #undef __LINUX__
 #undef __ISH__
 #undef __FREEBSD__

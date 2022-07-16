@@ -20,7 +20,7 @@ sBuf gHeader;
 
 static void compiler_init(char* sname)
 {
-    gVersion = "8.0.0";
+    gVersion = "8.0.1";
     node_var_init();
     node_function_init();
     node_loop_init();
@@ -92,7 +92,9 @@ static BOOL compiler(char* fname, BOOL optimize, sVarTable* module_var_table, BO
         xstrncat(cpp_fname, ".i", PATH_MAX);
     
         char cmd[1024];
-#ifdef __DARWIN__
+#ifdef __DARWIN_ARM__
+        snprintf(cmd, 1024, "/opt/homebrew/opt/llvm/bin/clang-cpp %s -I. -I/usr/local/include -I%s/include %s -I/opt/homebrew/include -D__DARWIN__ -U__GNUC__ %s %s > %s", include_path, PREFIX, cflags, fname, macro_definition, cpp_fname);
+#elifdef __DARWIN__
         snprintf(cmd, 1024, "/usr/local/opt/llvm/bin/clang-cpp %s -I. -I/usr/local/include -I%s/include %s -D__DARWIN__ -U__GNUC__ %s %s > %s", include_path, PREFIX, cflags, fname, macro_definition, cpp_fname);
 #else
         snprintf(cmd, 1024, "cpp %s -I. -I%s/include %s -U__GNUC__ %s %s > %s", include_path, PREFIX,cflags, fname, macro_definition, cpp_fname);
@@ -174,11 +176,7 @@ static BOOL compile_ll_file(char* fname, char* bname, char* clang_optiones, BOOL
     
     char cmd[1024];
     
-#ifdef __DARWIN__
-    snprintf(cmd, 1024, "%s -o %s -c %s.ll %s -L/usr/local/opt/libgc/lib -fPIC ", CLANG, bname2, fname, clang_optiones);
-#else
-    snprintf(cmd, 1024, "%s -o %s -c %s.ll %s -fPIC ", CLANG, bname2, fname, clang_optiones);
-#endif
+    snprintf(cmd, 1024, "%s -o %s -c %s.ll %s -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC ", CLANG, bname2, fname, clang_optiones);
     
     int rc = system(cmd);
     if(rc != 0) {
@@ -231,18 +229,10 @@ static BOOL linker(char* fname, int num_obj_files, char** obj_files, char* clang
         
         char cmd[1024];
         if(!gNCGC) {
-#ifdef __DARWIN__
-            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -L/usr/local/lib/libgc/lib -fPIC ", CLANG, exec_fname, clang_optiones);
-#else
-            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC ", CLANG, exec_fname, clang_optiones);
-#endif
+            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/lib/libgc/lib -fPIC ", CLANG, exec_fname, clang_optiones);
         }
         else {
-#ifdef __DARWIN__
-            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -L/usr/local/opt/libgc/lib -fPIC ", CLANG, exec_fname, clang_optiones);
-#else
-            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC ", CLANG, exec_fname, clang_optiones);
-#endif
+            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC ", CLANG, exec_fname, clang_optiones);
         }
         
         int i;
@@ -274,34 +264,18 @@ static BOOL linker(char* fname, int num_obj_files, char** obj_files, char* clang
         char cmd[1024];
         if(exec_fname[0] != '\0') {
             if(!gNCGC) {
-#ifdef __DARWIN__
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -L/usr/local/opt/libgc/lib -fPIC ", CLANG, exec_fname, fname, clang_optiones);
-#else
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC ", CLANG, exec_fname, fname, clang_optiones);
-#endif
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC ", CLANG, exec_fname, fname, clang_optiones);
             }
             else {
-#ifdef __DARWIN__
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -L/usr/local/opt/lib -fPIC ", CLANG, exec_fname, fname, clang_optiones);
-#else
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC ", CLANG, exec_fname, fname, clang_optiones);
-#endif
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/lib -fPIC", CLANG, exec_fname, fname, clang_optiones);
             }
         }
         else {
             if(!gNCGC) {
-#ifdef __DARWIN__
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -L/usr/local/opt/libgc/lib -fPIC ", CLANG, bname, fname, clang_optiones);
-#else
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC ", CLANG, bname, fname, clang_optiones);
-#endif
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -fPIC -L/usr/local/opt/libgc/lib ", CLANG, bname, fname, clang_optiones);
             }
             else {
-#ifdef __DARWIN__
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -L/usr/local/opt/libgc/lib -fPIC ", CLANG, bname, fname, clang_optiones);
-#else
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC ", CLANG, bname, fname, clang_optiones);
-#endif
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib ", CLANG, bname, fname, clang_optiones);
             }
         }
         
@@ -439,20 +413,12 @@ int main(int argc, char** argv)
         }
         else if(strcmp(argv[i], "libs") == 0)
         {
-#ifdef __DARWIN__
             printf("-lgc -lpcre -lpthread %slib/libcomelang.a -L/usr/local/lib/libgc/lib \n", PREFIX);
-#else
-            printf("-lgc -lpcre -lpthread %slib/libcomelang.a \n", PREFIX);
-#endif
             return 0;
         }
         else if(strcmp(argv[i], "libs-gc") == 0)
         {
-#ifdef __DARWIN__
             printf("-lgc -lpcre -lpthread %s/lib/libcomelang-gc.a -L/usr/local/opt/libgc/lib \n", PREFIX);
-#else
-            printf("-lgc -lpcre -lpthread %s/lib/libcomelang-gc.a \n", PREFIX);
-#endif
             return 0;
         }
         else if(strcmp(argv[i], "type") == 0)

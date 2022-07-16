@@ -3915,7 +3915,7 @@ if test `uname -s` = "Darwin"; then
 
 
     if test $myprefix = /usr/local; then
-        CFLAGS="-Isrc/ -I. -I/opt/homebrew/opt/ncurses/include -L/opt/homebrew/opt/ncurses/lib -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $CFLAGS"
+        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $CFLAGS"
     else
         CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I$myprefix/include -L$myprefix/lib $CFLAGS"
     fi
@@ -4129,46 +4129,6 @@ else $as_nop
    exit
 fi
 ac_cv_lib_readline=ac_cv_lib_readline_main
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lncursesw" >&5
-printf %s "checking for main in -lncursesw... " >&6; }
-if test ${ac_cv_lib_ncursesw_main+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lncursesw  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-
-int
-main (void)
-{
-return main ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  ac_cv_lib_ncursesw_main=yes
-else $as_nop
-  ac_cv_lib_ncursesw_main=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ncursesw_main" >&5
-printf "%s\n" "$ac_cv_lib_ncursesw_main" >&6; }
-if test "x$ac_cv_lib_ncursesw_main" = xyes
-then :
-   LIBS="$LIBS -lncursesw";
-else $as_nop
-   exit
-fi
-ac_cv_lib_ncursesw=ac_cv_lib_ncursesw_main
 
 ac_fn_c_check_header_compile "$LINENO" "iconv.h" "ac_cv_header_iconv_h" "$ac_includes_default"
 if test "x$ac_cv_header_iconv_h" = xyes
