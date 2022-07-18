@@ -2,6 +2,8 @@
 
 int main()
 {
-    printf("%d\n", PATH_MAX);
+
+    
+            printf("%d\n", PATH_MAX);
     return 0;
 }

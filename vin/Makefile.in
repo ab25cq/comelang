@@ -92,13 +92,13 @@ src/19rewrite_mode.o: configure Makefile config.h src/19rewrite_mode.c src/commo
 
 src/20completion-comelang.o: configure Makefile config.h src/20completion-comelang.c src/common.h
 	comelang -c $(NCFLAGS) src/20completion-comelang.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+	mkdir -p ~/.vin/backup
 
 #########################################
 # install
 #########################################
 install:
 	mkdir -p "$(DESTDIR)/bin"
-	mkdir -p ~/.vin/backup
 	$(INSTALL) -m 755 ./vin "$(DESTDIR)/bin"
 
 #########################################

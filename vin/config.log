@@ -30,8 +30,8 @@ Kernel configured for up to 8 processors.
 Processor type: arm64e (ARM64E)
 Processors active: 0 1 2 3 4 5 6 7
 Primary memory available: 8.00 gigabytes
-Default processor set: 444 tasks, 1754 threads, 8 processors
-Load average: 1.31, Mach factor: 6.68
+Default processor set: 497 tasks, 1888 threads, 8 processors
+Load average: 2.24, Mach factor: 5.74
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -495,7 +495,7 @@ configure:4203: checking for execvpe
 configure:4203: clang -o conftest -I.   conftest.c  -ldl -lm -lpcre -lncurses -lreadline -lpthread >&5
 Undefined symbols for architecture arm64:
   "_execvpe", referenced from:
-      _main in conftest-5436e6.o
+      _main in conftest-467700.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:4203: $? = 1

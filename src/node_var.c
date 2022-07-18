@@ -3055,8 +3055,167 @@ unsigned int sNodeTree_create_struct_initializer(char* var_name, sNodeType* node
 }
 
 BOOL compile_struct_initializer_core(int num_elements, struct sStructInitializer* elements, LLVMValueRef* values, int num_fields, sCLClass* klass, sCompileInfo* info);
+/*
+                        LLVMValueRef values2[1];
+                        
+                        sCLClass* klass2 = node_type->mClass;
+                        int num_fields2 = klass2->mNumFields;
+                        
+                        int num_elements2 = elements[j].mNumStructElement;
+                        struct sStructInitializer* elements2 = elements[j].mStructElement;
+                        
+                        sNodeType* change_var_type = NULL;
+                        LLVMValueRef change_var_type_initializer = NULL;
+                        if(!compile_union_initializer_core(num_elements2, elements2, values2, num_fields2, klass2, &change_var_type, &change_var_type_initializer, info)) {
+                            return FALSE;
+                        }
+                        
+                        if(change_var_type) {
+                            compile_err_msg(info, "invalid initializer");
+                            return FALSE;
+                        }
+                        
+                        LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                        LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, 1);
+            
+                        values[0] = value;
+                        break;
+*/
+/*
+                            LLVMValueRef values2[1];
+                            
+                            sCLClass* klass2 = node_type->mClass;
+                            int num_fields2 = klass2->mNumFields;
+                            
+                            int num_elements2 = elements[j].mNumStructElement;
+                            struct sStructInitializer* elements2 = elements[j].mStructElement;
+                            
+                            sNodeType* change_var_type = NULL;
+                            LLVMValueRef change_var_type_initializer = NULL;
+                            if(!compile_union_initializer_core(num_elements2, elements2, values2, num_fields2, klass2, &change_var_type, &change_var_type_initializer, info)) {
+                                return FALSE;
+                            }
+                            
+                            if(change_var_type) {
+                                compile_err_msg(info, "invalid initializer");
+                                return FALSE;
+                            }
+                            
+                            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                            LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, 1);
+                
+                            values[0] = value;
+                            break;
+*/
+/*
+                        LLVMValueRef values2[INIT_ARRAY_MAX];
+                        
+                        sCLClass* klass2 = node_type->mClass;
+                        int num_fields2 = klass2->mNumFields;
+                        
+                        int num_elements2 = elements[j].mNumStructElement;
+                        struct sStructInitializer* elements2 = elements[j].mStructElement;
+                        
+                        sNodeType* change_var_type2 = NULL;
+                        LLVMValueRef change_var_type_initializer2 = NULL;
+                        if(!compile_union_initializer_core(num_elements2, elements2, values2, num_fields2, klass2, &change_var_type2, &change_var_type_initializer2, info)) {
+                            return FALSE;
+                        }
+                        
+                        if(change_var_type_initializer2) {
+puts("AAA");
+                            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                            LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, num_fields2);
+                
+                            ////
+                            LLVMTypeRef field_types[STRUCT_FIELD_MAX];
+                            int num_fields = 2;
+                            
+                            int alignment = 0;
+                            int size = get_size_from_node_type(node_type, &alignment);
+                            
+                            int char_array_size = max_size - size;
+                            
+                            field_types[0] = change_var_type2;
+                            //field_types[0] = create_llvm_type_from_node_type(node_type);
+                            field_types[1] = create_llvm_type_with_class_name("char");
+                            field_types[1] = LLVMArrayType(field_types[1], char_array_size);
+                        
+                            LLVMTypeRef struct_type = LLVMStructTypeInContext(gContext, field_types, num_fields, FALSE);
+                        
+                            LLVMStructSetBody(struct_type, field_types, num_fields, FALSE);
+                            
+                            LLVMValueRef values3[INIT_ARRAY_MAX];
+                            values3[0] = change_var_type_initializer2;
+//                            values3[0] = value;
+                            
+                            sNodeType* field2_type = create_node_type_with_class_name("char");
+                            field2_type->mArrayDimentionNum = 1;
+                            field2_type->mArrayNum[0] = char_array_size;
+                            values3[1] = create_null_value(field2_type);
+                
+                            *change_var_type_initializer = LLVMConstNamedStruct(struct_type, values3, num_fields);
+                            *change_var_type = struct_type;
+                            break;
+                        }
+                        else {
+                            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                            LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, num_fields2);
+                            
+                            values[0] = value;
+                            break;
+                        }
+*/
+/*
+                        LLVMValueRef values2[INIT_ARRAY_MAX];
+                        
+                        sCLClass* klass2 = node_type->mClass;
+                        int num_fields2 = klass2->mNumFields;
+                        
+                        int num_elements2 = elements[j].mNumStructElement;
+                        struct sStructInitializer* elements2 = elements[j].mStructElement;
+                        
+                        sNodeType* change_var_type2 = NULL;
+                        LLVMValueRef change_var_type_initializer2 = NULL;
+                        if(!compile_union_initializer_core(num_elements2, elements2, values2, num_fields2, klass2, &change_var_type2, &change_var_type_initializer2, info)) {
+                            return FALSE;
+                        }
+                        
+                        LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+                        LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, num_fields2);
+            
+                        ////
+                        LLVMTypeRef field_types[STRUCT_FIELD_MAX];
+                        int num_fields = 2;
+                        
+                        int alignment = 0;
+                        int size = get_size_from_node_type(node_type, &alignment);
+                        
+                        int char_array_size = max_size - size;
+                        
+                        field_types[0] = create_llvm_type_from_node_type(node_type);
+                        field_types[1] = create_llvm_type_with_class_name("char");
+                        field_types[1] = LLVMArrayType(field_types[1], char_array_size);
+                    
+                        LLVMTypeRef struct_type = LLVMStructTypeInContext(gContext, field_types, num_fields, FALSE);
+                    
+                        LLVMStructSetBody(struct_type, field_types, num_fields, FALSE);
+                        
+                        LLVMValueRef values3[INIT_ARRAY_MAX];
+                        values3[0] = value;
+                        
+                        sNodeType* field2_type = create_node_type_with_class_name("char");
+                        field2_type->mArrayDimentionNum = 1;
+                        field2_type->mArrayNum[0] = char_array_size;
+                        values3[1] = create_null_value(field2_type);
+            
+                        *change_var_type_initializer = LLVMConstNamedStruct(struct_type, values3, num_fields);
+                        *change_var_type = struct_type;
+                        break;
+                    }
+*/
 
-BOOL compile_union_initializer_core(int num_elements, struct sStructInitializer* elements, LLVMValueRef* values, int num_fields, sCLClass* klass, sCompileInfo* info)
+BOOL compile_union_initializer_core(int num_elements, struct sStructInitializer* elements, LLVMValueRef* values, int num_fields, sCLClass* klass, LLVMTypeRef* change_var_type, LLVMValueRef* change_var_type_initializer, sCompileInfo* info)
 {
     sNodeType* left_type = NULL;
     int max_size = 0;
@@ -3096,17 +3255,81 @@ BOOL compile_union_initializer_core(int num_elements, struct sStructInitializer*
                     }
                     
                     LVALUE llvm_value = *get_value_from_stack(-1);
-        
-                    if(!cast_right_type_to_left_type(left_type, &node_type, &llvm_value, info))
-                    {
-                        compile_err_msg(info, "Cast failed");
-                        return TRUE;
-                    }
                     
                     dec_stack_ptr(1, info);
-        
-                    values[0] = llvm_value.value;
-                    break;
+                    
+                    if(left_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
+                        LLVMTypeRef field_types[STRUCT_FIELD_MAX];
+                        int num_fields = 2;
+                        
+                        int alignment = 0;
+                        int size = get_size_from_node_type(node_type, &alignment);
+                        
+                        int char_array_size = max_size - size;
+                        
+                        field_types[0] = create_llvm_type_from_node_type(node_type);
+                        field_types[1] = create_llvm_type_with_class_name("char");
+                        field_types[1] = LLVMArrayType(field_types[1], char_array_size);
+                    
+                        LLVMTypeRef struct_type = LLVMStructTypeInContext(gContext, field_types, num_fields, FALSE);
+                    
+                        LLVMStructSetBody(struct_type, field_types, num_fields, FALSE);
+                        
+                        LLVMValueRef values2[INIT_ARRAY_MAX];
+                        values2[0] = llvm_value.value;
+                        
+                        sNodeType* field2_type = create_node_type_with_class_name("char");
+                        field2_type->mArrayDimentionNum = 1;
+                        field2_type->mArrayNum[0] = char_array_size;
+                        values2[1] = create_null_value(field2_type);
+            
+                        *change_var_type_initializer = LLVMConstNamedStruct(struct_type, values2, num_fields);
+                        *change_var_type = struct_type;
+                        break;
+                    }
+                    else if(left_type->mClass->mFlags & CLASS_FLAGS_UNION) {
+                        LLVMTypeRef field_types[STRUCT_FIELD_MAX];
+                        int num_fields = 2;
+                        
+                        int alignment = 0;
+                        int size = get_size_from_node_type(node_type, &alignment);
+                        
+                        int char_array_size = max_size - size;
+                        
+                        field_types[0] = create_llvm_type_from_node_type(node_type);
+                        field_types[1] = create_llvm_type_with_class_name("char");
+                        field_types[1] = LLVMArrayType(field_types[1], char_array_size);
+                    
+                        LLVMTypeRef struct_type = LLVMStructTypeInContext(gContext, field_types, num_fields, FALSE);
+                    
+                        LLVMStructSetBody(struct_type, field_types, num_fields, FALSE);
+                        
+                        LLVMValueRef values2[INIT_ARRAY_MAX];
+                        values2[0] = llvm_value.value;
+                        
+                        sNodeType* field2_type = create_node_type_with_class_name("char");
+                        field2_type->mArrayDimentionNum = 1;
+                        field2_type->mArrayNum[0] = char_array_size;
+                        values2[1] = create_null_value(field2_type);
+            
+                        LLVMValueRef value = LLVMConstStruct(values2, num_fields, FALSE);
+                        LLVMTypeRef llvm_type2 = create_llvm_type_from_node_type(left_type);
+                        values[0] = value;
+                        
+                        *change_var_type = struct_type;
+                        break;
+                    }
+                    else {
+                        sNodeType* node_type = clone_node_type(llvm_value.type);
+                        if(!cast_right_type_to_left_type(left_type, &node_type, &llvm_value, info))
+                        {
+                            compile_err_msg(info, "Cast failed");
+                            return TRUE;
+                        }
+                        
+                        values[0] = llvm_value.value;
+                        break;
+                    }
                 }
                 else {
                     if(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
@@ -3125,25 +3348,81 @@ BOOL compile_union_initializer_core(int num_elements, struct sStructInitializer*
                         LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
                         LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, num_fields2);
             
-                        values[0] = value;
+                        ////
+                        LLVMTypeRef field_types[STRUCT_FIELD_MAX];
+                        int num_fields = 2;
+                        
+                        int alignment = 0;
+                        int size = get_size_from_node_type(node_type, &alignment);
+                        
+                        int char_array_size = max_size - size;
+                        
+                        field_types[0] = create_llvm_type_from_node_type(node_type);
+                        field_types[1] = create_llvm_type_with_class_name("char");
+                        field_types[1] = LLVMArrayType(field_types[1], char_array_size);
+                    
+                        LLVMTypeRef struct_type = LLVMStructTypeInContext(gContext, field_types, num_fields, FALSE);
+                    
+                        LLVMStructSetBody(struct_type, field_types, num_fields, FALSE);
+                        
+                        LLVMValueRef values3[INIT_ARRAY_MAX];
+                        values3[0] = value;
+                        
+                        sNodeType* field2_type = create_node_type_with_class_name("char");
+                        field2_type->mArrayDimentionNum = 1;
+                        field2_type->mArrayNum[0] = char_array_size;
+                        values3[1] = create_null_value(field2_type);
+            
+                        *change_var_type_initializer = LLVMConstNamedStruct(struct_type, values3, num_fields);
+                        *change_var_type = struct_type;
+                        break;
                     }
                     else if(node_type->mClass->mFlags & CLASS_FLAGS_UNION) {
-                        LLVMValueRef values2[1];
+                        struct sStructInitializer* struct_initializer = elements[j].mStructElement;
                         
-                        sCLClass* klass2 = node_type->mClass;
-                        int num_fields2 = klass2->mNumFields;
-                        
-                        int num_elements2 = elements[j].mNumStructElement;
-                        struct sStructInitializer* elements2 = elements[j].mStructElement;
-                        
-                        if(!compile_union_initializer_core(num_elements2, elements2, values2, num_fields2, klass2, info)) {
+                        if(struct_initializer->mNumStructElement > 0) {
+                            compile_err_msg(info, "Invalid union initializer");
+                            return FALSE;
+                        }
+                        unsigned int node = struct_initializer->mNode;
+            
+                        if(!compile(node, info)) {
                             return FALSE;
                         }
                         
-                        LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
-                        LLVMValueRef value = LLVMConstNamedStruct(llvm_type, values2, 1);
+                        LVALUE llvm_value = *get_value_from_stack(-1);
+                        
+                        sNodeType* value_type = clone_node_type(info->type);
+                        
+                        dec_stack_ptr(1, info);
+                    
+                        LLVMTypeRef field_types[STRUCT_FIELD_MAX];
+                        int num_fields = 2;
+                        
+                        int alignment = 0;
+                        int size = get_size_from_node_type(node_type, &alignment);
+                        
+                        int char_array_size = max_size - size;
+                        
+                        field_types[0] = create_llvm_type_from_node_type(value_type);
+                        field_types[1] = create_llvm_type_with_class_name("char");
+                        field_types[1] = LLVMArrayType(field_types[1], char_array_size);
+                    
+                        LLVMTypeRef struct_type = LLVMStructTypeInContext(gContext, field_types, num_fields, FALSE);
+                    
+                        LLVMStructSetBody(struct_type, field_types, num_fields, FALSE);
+                        
+                        LLVMValueRef values3[INIT_ARRAY_MAX];
+                        values3[0] = llvm_value.value;
+                        
+                        sNodeType* field2_type = create_node_type_with_class_name("char");
+                        field2_type->mArrayDimentionNum = 1;
+                        field2_type->mArrayNum[0] = char_array_size;
+                        values3[1] = create_null_value(field2_type);
             
-                        values[0] = value;
+                        *change_var_type_initializer = LLVMConstNamedStruct(struct_type, values3, num_fields);
+                        *change_var_type = struct_type;
+                        break;
                     }
                     else {
                         compile_err_msg(info, "require union or struct field");
@@ -3213,7 +3492,14 @@ BOOL compile_struct_initializer_core(int num_elements, struct sStructInitializer
                         int num_elements2 = elements[j].mNumStructElement;
                         struct sStructInitializer* elements2 = elements[j].mStructElement;
                         
-                        if(!compile_union_initializer_core(num_elements2, elements2, values2, num_fields2, klass2, info)) {
+                        sNodeType* change_var_type = NULL;
+                        LLVMValueRef change_var_type_initializer = NULL;
+                        if(!compile_union_initializer_core(num_elements2, elements2, values2, num_fields2, klass2, &change_var_type, &change_var_type_initializer, info)) {
+                            return FALSE;
+                        }
+                        
+                        if(change_var_type) {
+                            compile_err_msg(info, "invalid initializer");
                             return FALSE;
                         }
                         
@@ -3301,12 +3587,23 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
             
             LLVMValueRef values[INIT_ARRAY_MAX];
             
-            if(!compile_union_initializer_core(num_elements, elements, values, num_fields, klass, info)) {
+            sNodeType* change_var_type = NULL;
+            LLVMValueRef change_var_type_initializer = NULL;
+            if(!compile_union_initializer_core(num_elements, elements, values, num_fields, klass, &change_var_type, &change_var_type_initializer, info)) {
                 return FALSE;
             }
-    
-            LLVMValueRef value = LLVMConstStruct(values, 1, FALSE);
-            LLVMSetInitializer(alloca_value, value);
+            
+            if(change_var_type_initializer != NULL) {
+                LLVMDeleteGlobal(var_->mLLVMValue);
+                var_->mLLVMValue = LLVMAddGlobal(gModule, change_var_type, var_name);
+                
+                alloca_value = var_->mLLVMValue;
+                LLVMSetInitializer(alloca_value, change_var_type_initializer);
+            }
+            else {
+                LLVMValueRef value = LLVMConstStruct(values, 1, FALSE);
+                LLVMSetInitializer(alloca_value, value);
+            }
         }
     }
 

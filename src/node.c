@@ -4585,6 +4585,21 @@ LLVMValueRef create_null_value(sNodeType* node_type)
     else if(node_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
         zero_value = craete_null_const_struct(node_type);
     }
+    else if(node_type->mArrayDimentionNum == 1) {
+        sNodeType* element_type = clone_node_type(node_type);
+        element_type->mArrayDimentionNum = 0;
+        
+        int array_element_num = node_type->mArrayNum[0];
+        
+        LLVMValueRef values[INIT_ARRAY_MAX];
+        int i;
+        for(i=0; i<array_element_num; i++) {
+            values[i] = create_null_value(element_type);
+        }
+        
+        LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(element_type);
+        zero_value = LLVMConstArray(llvm_element_type, values, array_element_num);
+    }
     else {
         zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);
     }
