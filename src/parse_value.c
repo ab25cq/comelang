@@ -1947,6 +1947,10 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
             
             int nest = 1;
 
+            struct sStructInitializer* struct_elements[INIT_ARRAY_MAX];
+            int num_struct_elements_array[INIT_ARRAY_MAX];
+            int num_struct_elements = 0;
+
             unsigned int right_node;
             while(TRUE) {
                 if(*info->p == '{') {
@@ -1955,7 +1959,29 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                     nest++;
                 }
                 
-                if(*info->p == '[') {
+                if(*info->p == '.') {
+                    nest--;
+                    int num_elements = 0;
+                    struct sStructInitializer elements[INIT_ARRAY_MAX];
+                    if(!parse_struct_initializer(&num_elements, elements, info))
+                    {
+                        return FALSE;
+                    }
+                    
+                    struct sStructInitializer* elements2;
+                    elements2 = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                    memcpy(elements2, elements, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                    
+                    struct_elements[num_struct_elements] = elements2;
+                    num_struct_elements_array[num_struct_elements] = num_elements;
+                    num_struct_elements++;
+                    
+                    if(num_struct_elements >= INIT_ARRAY_MAX) {
+                        fprintf(stderr, "overflow array initializer\n");
+                        exit(1);
+                    }
+                }
+                else if(*info->p == '[') {
                     info->p++;
                     skip_spaces_and_lf(info);
                     
@@ -2109,6 +2135,9 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                         result_type->mArrayNum[0] = num_initialize_array_value;
                     }
                 }
+                else if(num_struct_elements > 0) {
+                    result_type->mArrayNum[0] = num_struct_elements;
+                }
                 else if(result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) {
                     result_type->mArrayNum[0] = num_initialize_array_value / result_type->mClass->mNumFields;
                 }
@@ -2126,7 +2155,7 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
             if(info->mBlockLevel == 0) {
                 *node = sNodeTree_create_define_variable(name, extern_, info->mBlockLevel == 0, info);
 
-                *node = sNodeTree_create_array_initializer(name, num_initialize_array_value, initialize_array_values, *node, info);
+                *node = sNodeTree_create_array_initializer(name, num_initialize_array_value, initialize_array_values, *node, num_struct_elements, num_struct_elements_array, struct_elements, info);
             }
             else if(result_type->mClass->mFlags & CLASS_FLAGS_STRUCT && result_type->mPointerNum == 0) {
                 if(result_type->mArrayDimentionNum == 1) {

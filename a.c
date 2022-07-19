@@ -3,45 +3,18 @@
 #include <string.h>
 #include <stdarg.h>
 
-union uUnion {
-    struct {
-        int a;
-        int b;
-    } a;
-    
-    struct {
-        char a;
-        char b;
-    } b;
-    
-    int c;
-    
-    union {
-        int a;
-        char b;
-    } d;
-    
-    struct {
-        struct {
-            int a;
-            int b;
-        } a;
-    } e;
+struct sXXX {
+    int a;
+    int b;
 };
 
-union uUnion gA = (union uUnion) { .b = { .a = 'c', .b = 'd' } };
-union uUnion gB = (union uUnion) { .a = { .a = 111, .b = 222 }};
-union uUnion gC = (union uUnion) { .c = 123 };
-union uUnion gD = (union uUnion) { .d = { .a = 777 } };
-union uUnion gE = (union uUnion) { .e = { .a = { .a = 111, .b = 222} } };
+struct sXXX xxx[3] = {
+    { .a = 111, .b = 222 }, { .a = 333, .b = 444 }, { .a = 555, .b = 666 }
+};
 
 int main()
 {
-    printf("%c %c\n", gA.b.a, gA.b.b);
-    printf("%d %d\n", gB.a.a, gB.a.b);
-    printf("%d\n", gC.c);
-    printf("%d\n", gD.d.a);
-    printf("%d %d\n", gE.e.a.a, gE.e.a.b);
+    printf("%d %d %d %d %d %d\n", xxx[0].a, xxx[0].b, xxx[1].a, xxx[1].b, xxx[2].a, xxx[2].b);
     
     return 0;
 }

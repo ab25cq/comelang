@@ -119,6 +119,38 @@ struct sData3 {
 
 struct sData3 gData3 = (struct sData3){ .a = 1, .b = { .a = 3, .b =4 }, .c = {.c ='f' }, .d = { .a = { .a = 111, .b = 222}}};
 
+union uUnion {
+    struct {
+        int a;
+        int b;
+    } a;
+    
+    struct {
+        char a;
+        char b;
+    } b;
+    
+    int c;
+    
+    union {
+        int a;
+        char b;
+    } d;
+    
+    struct {
+        struct {
+            int a;
+            int b;
+        } a;
+    } e;
+};
+
+union uUnion gA = (union uUnion) { .b = { .a = 'c', .b = 'd' } };
+union uUnion gB = (union uUnion) { .a = { .a = 111, .b = 222 }};
+union uUnion gC = (union uUnion) { .c = 123 };
+union uUnion gD = (union uUnion) { .d = { .a = 777 } };
+union uUnion gE = (union uUnion) { .e = { .a = { .a = 111, .b = 222} } };
+
 int main(int argc, char** argv)
 {
     int a[10];
@@ -180,6 +212,8 @@ int main(int argc, char** argv)
     
     xassert("initializer test2", gData.a == 1 && gData.b == 2 && gData.c.c == 3 && gData.c.d == 4 && gData.e.c == 'c' && gData.d.c == 0 && gData.d.d == 0);
     xassert("initializer test4", gData3.a == 1 && gData3.b.a == 3 && gData3.b.b == 4 && gData3.c.c == 'f' && gData3.d.a.a == 111 && gData3.d.a.b == 222);
+
+    xassert("union initializer", gA.b.a == 'c' && gA.b.b == 'd' && gB.a.a == 111 && gB.a.b == 222 && gC.c == 123 && gD.d.a == 777 && gE.e.a.a == 111 && gE.e.a.b === 222);
     
     return 0;
 }

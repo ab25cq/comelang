@@ -836,6 +836,9 @@ struct sNodeTreeStruct
             char mVarName[VAR_NAME_MAX];
             int mNumInitializeArrayValue;
             unsigned int mInitializeArrayValue[INIT_ARRAY_MAX];
+            int mNumStructElements;
+            struct sStructInitializer* mStructElements[INIT_ARRAY_MAX];
+            int mNumStructElementsArray[INIT_ARRAY_MAX];
         } sArrayWithInitialization;
 
         struct {
@@ -1172,7 +1175,7 @@ unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, 
 
 unsigned int sNodeTree_create_struct_initializer(char* var_name, sNodeType* node_type, int num_elements, struct sStructInitializer* elements, unsigned int left_node, sParserInfo* info);
 
-unsigned int sNodeTree_create_array_initializer(char* name, int num_initialize_array_value, unsigned int* initialize_array_value, unsigned int left_node, sParserInfo* info);
+unsigned int sNodeTree_create_array_initializer(char* name, int num_initialize_array_value, unsigned int* initialize_array_value, unsigned int left_node, int num_struct_elements, int* num_struct_elements_array, struct sStructInitializer** struct_elements, sParserInfo* info);
 unsigned int sNodeTree_create_load_function(char* fun_name, sParserInfo* info, int sline);
 unsigned int sNodeTree_create_sizeof(sNodeType* node_type, sParserInfo* info);
 unsigned int sNodeTree_create_sizeof_expression(int num_nodes, unsigned int* nodes, sParserInfo* info);

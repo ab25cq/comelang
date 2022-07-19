@@ -12,11 +12,16 @@ version 7.0.0で9cc程度のC言語との互換を得ることができました
 
 version 7.0.8で何処かのCコンパイラのコンパイル実行に成功しました。かなりCコンパイラとして完成度上がってます。
 
+version 10.0.0で配列、構造体、unionの初期化子をサポートしました。普通にCコンパイラと言ってもいいかもしれません。
+
+With version 10.0.0, we were suported with struct initializer, array initializer, union initializer. We can call comelang as C laguage.
+
+
 This language is self-host.
 
 完全なセルフホストを行います。
 
-version 8.0.2
+version 10.0.0
 
 ```
 #include <comelang.h>
