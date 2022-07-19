@@ -7,7 +7,6 @@ void fun(int@ pipe)
 
 void fun2(int@ pipe2)
 {
-    sleep(1);
     @pipe2 = 5;
 }
 

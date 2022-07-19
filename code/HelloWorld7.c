@@ -2,21 +2,15 @@
 
 void fun(int@ pipe) 
 {
-    sleep(3);
     @pipe = 4; `writing_channel
-    sleep(3);
     @pipe = 4;
-    sleep(3);
     @pipe = 4;
 }
 
 void fun2(int@ pipe2)
 {
-    sleep(1);
     @pipe2 = 5;
-    sleep(1);
     @pipe2 = 5;
-    sleep(1);
     @pipe2 = 5;
 }
 

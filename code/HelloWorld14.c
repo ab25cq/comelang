@@ -151,6 +151,15 @@ union uUnion gC = (union uUnion) { .c = 123 };
 union uUnion gD = (union uUnion) { .d = { .a = 777 } };
 union uUnion gE = (union uUnion) { .e = { .a = { .a = 111, .b = 222} } };
 
+struct sXXX {
+    int a;
+    int b;
+};
+
+struct sXXX xxx[3] = {
+    { .a = 111, .b = 222 }, { .a = 333, .b = 444 }, { .a = 555, .b = 666 }
+};
+
 int main(int argc, char** argv)
 {
     int a[10];
@@ -214,6 +223,8 @@ int main(int argc, char** argv)
     xassert("initializer test4", gData3.a == 1 && gData3.b.a == 3 && gData3.b.b == 4 && gData3.c.c == 'f' && gData3.d.a.a == 111 && gData3.d.a.b == 222);
 
     xassert("union initializer", gA.b.a == 'c' && gA.b.b == 'd' && gB.a.a == 111 && gB.a.b == 222 && gC.c == 123 && gD.d.a == 777 && gE.e.a.a == 111 && gE.e.a.b === 222);
+
+    xassert("struct array initializer", xxx[0].a == 111 && xxx[0].b == 222 && xxx[1].a == 333 && xxx[1].b == 444 && xxx[2].a == 555 && xxx[2].b == 666);
     
     return 0;
 }
