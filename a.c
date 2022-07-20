@@ -15,6 +15,9 @@ struct sXXX xxx[3] = {
 int main()
 {
     printf("%d %d %d %d %d %d\n", xxx[0].a, xxx[0].b, xxx[1].a, xxx[1].b, xxx[2].a, xxx[2].b);
+    if(xxx[0].a == 111) {
+        puts("OK");
+    }
     
     return 0;
 }
