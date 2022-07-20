@@ -216,16 +216,16 @@ int Vi*::main_loop(Vi* self) version 19
             self.activeWin.clearInputedKey();
         }
 
-        self.activeWin.makeTmpFile();
-        self.wins.each {
-            it.makeTmpFile();
-        }
+//        self.activeWin.makeTmpFile();
+//        self.wins.each {
+//            it.makeTmpFile();
+//        }
         self.activeWin.input(self);
     }
     
-    self.wins.each {
-        it.deleteTmpFile();
-    }
+//    self.wins.each {
+//        it.deleteTmpFile();
+//    }
 
     return 0;
 }

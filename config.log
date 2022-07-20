@@ -30,13 +30,14 @@ Kernel configured for up to 8 processors.
 Processor type: arm64e (ARM64E)
 Processors active: 0 1 2 3 4 5 6 7
 Primary memory available: 8.00 gigabytes
-Default processor set: 485 tasks, 1864 threads, 8 processors
-Load average: 1.69, Mach factor: 6.30
+Default processor set: 493 tasks, 1924 threads, 8 processors
+Load average: 1.92, Mach factor: 6.08
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
 PATH: /opt/homebrew/bin/
+PATH: /opt/homebrew/opt/gcc/bin/
 PATH: /usr/local/bin/
 PATH: /usr/bin/
 PATH: /bin/
@@ -54,32 +55,40 @@ configure:2278: looking for aux files: install-sh
 configure:2291:  trying ./
 configure:2305:   ./install.sh found
 configure:2497: checking for gcc
-configure:2518: found /usr/bin/gcc
+configure:2518: found /opt/homebrew/opt/gcc/bin/gcc
 configure:2529: result: gcc
 configure:2882: checking for C compiler version
 configure:2891: gcc --version >&5
-Apple clang version 13.1.6 (clang-1316.0.21.2.5)
-Target: arm64-apple-darwin21.4.0
-Thread model: posix
-InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+gcc (Homebrew GCC 11.3.0_2) 11.3.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 configure:2902: $? = 0
 configure:2891: gcc -v >&5
-Apple clang version 13.1.6 (clang-1316.0.21.2.5)
-Target: arm64-apple-darwin21.4.0
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/opt/homebrew/Cellar/gcc/11.3.0_2/bin/../libexec/gcc/aarch64-apple-darwin21/11/lto-wrapper
+Target: aarch64-apple-darwin21
+Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/11 --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c,c++,objc,obj-c++,fortran --program-suffix=-11 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 11.3.0_2' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --build=aarch64-apple-darwin21 --with-system-zlib --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk
 Thread model: posix
-InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+Supported LTO compression algorithms: zlib zstd
+gcc version 11.3.0 (Homebrew GCC 11.3.0_2) 
 configure:2902: $? = 0
 configure:2891: gcc -V >&5
-clang: error: argument to '-V' is missing (expected 1 value)
-clang: error: no input files
+gcc: error: unrecognized command-line option '-V'
+gcc: fatal error: no input files
+compilation terminated.
 configure:2902: $? = 1
 configure:2891: gcc -qversion >&5
-clang: error: unknown argument '-qversion'; did you mean '--version'?
-clang: error: no input files
+gcc: error: unrecognized command-line option '-qversion'; did you mean '--version'?
+gcc: fatal error: no input files
+compilation terminated.
 configure:2902: $? = 1
 configure:2891: gcc -version >&5
-clang: error: unknown argument '-version'; did you mean '--version'?
-clang: error: no input files
+gcc: error: unrecognized command-line option '-version'
+gcc: fatal error: no input files
+compilation terminated.
 configure:2902: $? = 1
 configure:2922: checking whether the C compiler works
 configure:2944: gcc    conftest.c  >&5
@@ -157,10 +166,14 @@ configure:3576: $? = 0
 configure:3622: gcc -c -g -O2  conftest.c >&5
 configure:3622: $? = 0
 configure:3641: gcc -c -g -O2  conftest.c >&5
-conftest.c:26:4: error: use of undeclared identifier 'not'
-                 not big endian
-                 ^
-1 error generated.
+conftest.c: In function 'main':
+conftest.c:26:18: error: unknown type name 'not'; did you mean 'ino_t'?
+   26 |                  not big endian
+      |                  ^~~
+      |                  ino_t
+conftest.c:26:26: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'endian'
+   26 |                  not big endian
+      |                          ^~~~~~
 configure:3641: $? = 1
 configure: failed program was:
 | /* confdefs.h */
@@ -275,7 +288,7 @@ configure:4484: checking for execvpe
 configure:4484: clang -o conftest -I/opt/homebrew/Cellar/llvm/14.0.6_1/include  -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Isrc/ -I.  -DPREFIX="\"${DESTDIR}/\"" -fPIC -L/usr/local/lib -DCONFIG_H -I/usr/local/opt/llvm/include -L/opt/homebrew/lib -I/opt/homebrew/include -I/usr/local/include -DLLVM_VERSION=14 -DCLANG="\"clang\""   conftest.c  -ldl -lm -lgc >&5
 Undefined symbols for architecture arm64:
   "_execvpe", referenced from:
-      _main in conftest-721ae1.o
+      _main in conftest-f754de.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:4484: $? = 1

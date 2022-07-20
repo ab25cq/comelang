@@ -205,7 +205,7 @@ void ViWin*::writeFile(ViWin* self)
         self.writed = false;
         self.saveCursorPosition(self.fileName);
         self.saveDotToFile(self.vi);
-        self.deleteTmpFile();
+        //self.deleteTmpFile();
     }
 }
 

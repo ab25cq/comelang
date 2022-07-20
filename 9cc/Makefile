@@ -1,4 +1,4 @@
-CC=gcc
+CC=comelang
 CFLAGS=-Wall -std=c11 -g
 SRCS=$(wildcard *.c)
 OBJS=$(SRCS:.c=.o)
