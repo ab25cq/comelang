@@ -1951,51 +1951,42 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
             int num_struct_elements_array[INIT_ARRAY_MAX];
             int num_struct_elements = 0;
 
-            unsigned int right_node;
-            while(TRUE) {
-                if(*info->p == '{') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                    nest++;
-                }
-                
-                if(*info->p == '.') {
-                    nest--;
-                    int num_elements = 0;
-                    struct sStructInitializer elements[INIT_ARRAY_MAX];
-                    if(!parse_struct_initializer(&num_elements, elements, info))
-                    {
-                        return FALSE;
+            unsigned int right_node = 0;
+            if(*info->p == '}') {
+                info->p++;
+                skip_spaces_and_lf(info);
+            }
+            else {
+                while(TRUE) {
+                    if(*info->p == '{') {
+                        info->p++;
+                        skip_spaces_and_lf(info);
+                        nest++;
                     }
                     
-                    struct sStructInitializer* elements2;
-                    elements2 = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
-                    memcpy(elements2, elements, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
-                    
-                    struct_elements[num_struct_elements] = elements2;
-                    num_struct_elements_array[num_struct_elements] = num_elements;
-                    num_struct_elements++;
-                    
-                    if(num_struct_elements >= INIT_ARRAY_MAX) {
-                        fprintf(stderr, "overflow array initializer\n");
-                        exit(1);
+                    if(*info->p == '.') {
+                        nest--;
+                        int num_elements = 0;
+                        struct sStructInitializer elements[INIT_ARRAY_MAX];
+                        if(!parse_struct_initializer(&num_elements, elements, info))
+                        {
+                            return FALSE;
+                        }
+                        
+                        struct sStructInitializer* elements2;
+                        elements2 = calloc(1, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                        memcpy(elements2, elements, sizeof(struct sStructInitializer)*INIT_ARRAY_MAX);
+                        
+                        struct_elements[num_struct_elements] = elements2;
+                        num_struct_elements_array[num_struct_elements] = num_elements;
+                        num_struct_elements++;
+                        
+                        if(num_struct_elements >= INIT_ARRAY_MAX) {
+                            fprintf(stderr, "overflow array initializer\n");
+                            exit(1);
+                        }
                     }
-                }
-                else if(*info->p == '[') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                    
-                    unsigned int index_node = 0;
-                    if(!expression(&index_node, FALSE, info)) {
-                        return FALSE;
-                    }
-                    
-                    store_each_element[num_initialize_array_value] = TRUE;
-                    store_each_element_index[num_initialize_array_value] = index_node;
-                    
-                    expect_next_character_with_one_forward("]", info);
-                    
-                    if(*info->p == '[') {
+                    else if(*info->p == '[') {
                         info->p++;
                         skip_spaces_and_lf(info);
                         
@@ -2004,14 +1995,10 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                             return FALSE;
                         }
                         
-                        store_each_element_index2[num_initialize_array_value] = index_node;
+                        store_each_element[num_initialize_array_value] = TRUE;
+                        store_each_element_index[num_initialize_array_value] = index_node;
                         
                         expect_next_character_with_one_forward("]", info);
-                        
-                        if(num_dimention == 1) {
-                            parser_err_msg(info, "Invalid array dimention");
-                            return FALSE;
-                        }
                         
                         if(*info->p == '[') {
                             info->p++;
@@ -2022,43 +2009,42 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                                 return FALSE;
                             }
                             
-                            store_each_element_index3[num_initialize_array_value] = index_node;
+                            store_each_element_index2[num_initialize_array_value] = index_node;
                             
                             expect_next_character_with_one_forward("]", info);
                             
-                            if(num_dimention != 3) {
+                            if(num_dimention == 1) {
                                 parser_err_msg(info, "Invalid array dimention");
                                 return FALSE;
                             }
+                            
+                            if(*info->p == '[') {
+                                info->p++;
+                                skip_spaces_and_lf(info);
+                                
+                                unsigned int index_node = 0;
+                                if(!expression(&index_node, FALSE, info)) {
+                                    return FALSE;
+                                }
+                                
+                                store_each_element_index3[num_initialize_array_value] = index_node;
+                                
+                                expect_next_character_with_one_forward("]", info);
+                                
+                                if(num_dimention != 3) {
+                                    parser_err_msg(info, "Invalid array dimention");
+                                    return FALSE;
+                                }
+                            }
                         }
-                    }
-                    expect_next_character_with_one_forward("=", info);
-                    
-                    right_node = 0;
-    
-                    if(!expression(&right_node, FALSE, info)) {
-                        return FALSE;
-                    }
-                    
-                    initialize_array_values[num_initialize_array_value++] = right_node;
-
-                    if(num_initialize_array_value >= INIT_ARRAY_MAX) {
-                        fprintf(stderr, "overflow array initializer number\n");
-                        exit(2);
-                    }
-                }
-                else { 
-                    right_node = 0;
-    
-                    if(!expression(&right_node, FALSE, info)) {
-                        return FALSE;
-                    }
-    
-                    if(right_node == 0) {
-                        parser_err_msg(info, "Require right value for {}");
-                        *node = 0;
-                    }
-                    else {
+                        expect_next_character_with_one_forward("=", info);
+                        
+                        right_node = 0;
+        
+                        if(!expression(&right_node, FALSE, info)) {
+                            return FALSE;
+                        }
+                        
                         initialize_array_values[num_initialize_array_value++] = right_node;
     
                         if(num_initialize_array_value >= INIT_ARRAY_MAX) {
@@ -2066,62 +2052,82 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                             exit(2);
                         }
                     }
-                }
-
-                if(*info->p == ',') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
+                    else { 
+                        right_node = 0;
+        
+                        if(!expression(&right_node, FALSE, info)) {
+                            return FALSE;
+                        }
+        
+                        if(right_node == 0) {
+                            parser_err_msg(info, "Require right value for {}");
+                            *node = 0;
+                        }
+                        else {
+                            initialize_array_values[num_initialize_array_value++] = right_node;
+        
+                            if(num_initialize_array_value >= INIT_ARRAY_MAX) {
+                                fprintf(stderr, "overflow array initializer number\n");
+                                exit(2);
+                            }
+                        }
+                    }
+    
+                    if(*info->p == ',') {
+                        info->p++;
+                        skip_spaces_and_lf(info);
+                        
+                        while(*info->p == '}') {
+                            info->p++;
+                            skip_spaces_and_lf(info);
+                            nest--;
+                        }
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        info->sline = sline;
+                        parser_err_msg(info, "In the array initialization, the parser has arraived at the source end");
+                        return FALSE;
+                    }
+                    else if(*info->p == '}') {
+                        while(*info->p == '}') {
+                            info->p++;
+                            skip_spaces_and_lf(info);
+                            nest--;
+                        }
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 0) {
+                        if(*info->p == '}') {
+                            info->p++;
+                            skip_spaces_and_lf(info);
+                        }
+                        break;
+                    }
+                    else if(type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 1 && result_type->mOmitArrayNum) {
+                        if(*info->p == '}') {
+                            info->p++;
+                            skip_spaces_and_lf(info);
+                        }
+                        break;
+                    }
                     
-                    while(*info->p == '}') {
+                    if(*info->p == ',') {
                         info->p++;
                         skip_spaces_and_lf(info);
-                        nest--;
-                    }
-                    if(nest == 0) {
-                        break;
-                    }
-                }
-                else if(*info->p == '\0') {
-                    info->sline = sline;
-                    parser_err_msg(info, "In the array initialization, the parser has arraived at the source end");
-                    return FALSE;
-                }
-                else if(*info->p == '}') {
-                    while(*info->p == '}') {
-                        info->p++;
-                        skip_spaces_and_lf(info);
-                        nest--;
-                    }
-                    if(nest == 0) {
-                        break;
-                    }
-                }
-                else if(type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 0) {
-                    if(*info->p == '}') {
-                        info->p++;
-                        skip_spaces_and_lf(info);
-                    }
-                    break;
-                }
-                else if(type_identify_with_class_name(result_type, "char") && result_type->mPointerNum == 1 && result_type->mOmitArrayNum) {
-                    if(*info->p == '}') {
-                        info->p++;
-                        skip_spaces_and_lf(info);
-                    }
-                    break;
-                }
-                
-                if(*info->p == ',') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                    
-                    while(*info->p == '}') {
-                        info->p++;
-                        skip_spaces_and_lf(info);
-                        nest--;
-                    }
-                    if(nest == 0) {
-                        break;
+                        
+                        while(*info->p == '}') {
+                            info->p++;
+                            skip_spaces_and_lf(info);
+                            nest--;
+                        }
+                        if(nest == 0) {
+                            break;
+                        }
                     }
                 }
             }
