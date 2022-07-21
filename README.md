@@ -20,7 +20,7 @@ This language is infinity self-host.
 
 無限セルフホストを行います。
 
-version 10.0.0
+version 10.0.1
 
 ```
 #include <comelang.h>
@@ -239,6 +239,8 @@ a.c,b.c,c.c
 
 15. Smart pointer
 
+16. Simple exception statment
+
 1. C言語とある程度互換性があります。Cプリプロセッサーも動きます。
 
 2. GCを使わないオリジナルヒープシステムをサポートします。デフォルトではBoehmGCによるヒープ管理をします。
@@ -268,6 +270,8 @@ a.c,b.c,c.c
 14. 動的な関数呼び出しのプロトコルがあります。(インターフェース)
 
 14. 範囲チェックするポインターがあります
+
+15. 簡易な例外処理があります。
 
 # INSTALL
 
@@ -2446,3 +2450,34 @@ int main(int argc, char** argv)
 a.c 12: out of range of smart pointer
 ```
 
+
+# exception
+
+```
+#include <comelang.h>
+
+exception int div_op(int left, int right)
+{
+    if(right == 0) {
+        throw;
+    }
+    return (true, left / right);
+}
+
+exception int test(int left, int right)
+{
+    return div_op(left, right);
+}
+
+int main()
+{
+    int n = test(1,0).catch {
+        puts("AAA");
+        exit(1);
+    }
+    
+    printf("n %d\n", n);
+    
+    return 0;
+}
+```

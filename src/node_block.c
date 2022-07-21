@@ -328,6 +328,84 @@ BOOL parse_block(sNodeBlock* node_block, BOOL extern_c_lang, BOOL single_express
     return TRUE;
 }
 
+BOOL create_block(sNodeBlock** node_block, int num_nodes, unsigned int nodes[], BOOL result_type_is_void, sParserInfo* info)
+{
+    BOOL extern_c_lang = FALSE;
+    sVarTable* old_table = info->lv_table;
+
+    *node_block = ALLOC sNodeBlock_alloc();
+
+    info->lv_table = init_block_vtable(old_table, extern_c_lang);
+    
+    BOOL has_result = FALSE;
+    info->change_sline = FALSE;
+    
+    (*node_block)->mLVTable = info->lv_table;
+    
+    xstrncpy((*node_block)->mSName, info->sname, PATH_MAX);
+    (*node_block)->mSLine = info->sline;
+
+    (*node_block)->mExternCLang = extern_c_lang;
+
+    if(!extern_c_lang) {
+        info->mBlockLevel++;
+    }
+
+    char* source_head = info->p;
+    int n = 0;
+
+    while(1) {
+        unsigned int node = nodes[n];
+        n++;
+
+        if(node == 0) {
+            char buf[512];
+            snprintf(buf, 512, "require an expression(4) (%c)", *info->p);
+            parser_err_msg(info, buf);
+        }
+
+        if(info->err_num == 0) {
+            append_node_to_node_block(*node_block, node);
+        }
+        
+        if(n == num_nodes) {
+            break;
+        }
+    }
+
+    char* source_end = info->p;
+
+    sBuf_append(&(*node_block)->mSource, source_head, source_end - source_head);
+    
+    sBuf_append_char(&(*node_block)->mSource, '\0');
+    
+    if((*node_block)->mNumNodes > 0) {
+        unsigned int last_node = (*node_block)->mNodes[(*node_block)->mNumNodes-1];
+        
+        if(!result_type_is_void) {
+            if(gNodes[last_node].mNodeType != kNodeTypeReturn 
+                && gNodes[last_node].mNodeType != kNodeTypeIf 
+                && gNodes[last_node].mNodeType != kNodeTypeWhile 
+                && gNodes[last_node].mNodeType != kNodeTypeFor 
+                && gNodes[last_node].mNodeType != kNodeTypeDoWhile
+                && gNodes[last_node].mNodeType != kNodeTypeSwitch)
+            {
+                has_result = TRUE;
+            }
+        }
+    }
+    
+    (*node_block)->mHasResult = has_result;
+
+    if(!extern_c_lang) {
+        info->mBlockLevel--;
+    }
+
+    info->lv_table = old_table;
+
+    return TRUE;
+}
+
 BOOL skip_block(sParserInfo* info)
 {
     if(*info->p == '{') {

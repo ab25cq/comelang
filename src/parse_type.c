@@ -60,6 +60,7 @@ BOOL parse_type(sNodeType** result_type, sParserInfo* info, char* func_pointer_n
     BOOL heap = FALSE;
     BOOL no_heap = FALSE;
     BOOL refference = FALSE;
+    BOOL exception_ = FALSE;
     
     BOOL unsigned_ = FALSE;
     BOOL long_ = FALSE;
@@ -97,6 +98,9 @@ BOOL parse_type(sNodeType** result_type, sParserInfo* info, char* func_pointer_n
         }
         else if(strcmp(type_name, "static") == 0 || strcmp(type_name, "private") == 0) {
             static_ = TRUE;
+        }
+        else if(strcmp(type_name, "exception") == 0) {
+            exception_ = TRUE;
         }
         else {
             info->p = p_before;
@@ -1318,6 +1322,15 @@ BOOL parse_type(sNodeType** result_type, sParserInfo* info, char* func_pointer_n
     
     if(no_heap) {
         (*result_type)->mHeap = FALSE;
+    }
+    
+    if(exception_ && get_class("tuple2")) {
+        sNodeType* node_type = clone_node_type(*result_type);
+        *result_type = create_node_type_with_class_name("tuple2");
+        (*result_type)->mNumGenericsTypes = 2;
+        (*result_type)->mGenericsTypes[0] = create_node_type_with_class_name("bool");
+        (*result_type)->mGenericsTypes[1] = node_type;
+        (*result_type)->mPointerNum = 1;
     }
     
     (*result_type)->mOriginalPointerNum = parser_pointer_num;

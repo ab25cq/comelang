@@ -1989,6 +1989,11 @@ BOOL expression_node(unsigned int* node, BOOL enable_assginment, sParserInfo* in
                 return FALSE;
             }
         }
+        else if(strcmp(buf, "throw") == 0) {
+            if(!parse_throw(node, info)) {
+                return FALSE;
+            }
+        }
         else if(strcmp(buf, "auto_immutable") == 0) {
             if(!parse_var(node, info, TRUE)) {
                 return FALSE;

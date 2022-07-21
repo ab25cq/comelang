@@ -118,6 +118,124 @@ BOOL parse_if(unsigned int* node, sParserInfo* info)
     return TRUE;
 }
 
+BOOL parse_throw(unsigned int* node, sParserInfo* info)
+{
+    unsigned int nodes[TUPLE_ELEMENT_MAX];
+    int num_nodes = 0;
+    
+    nodes[num_nodes] = sNodeTree_create_false(info);
+    num_nodes++;
+    
+    nodes[num_nodes] = sNodeTree_create_int_value(0, info);
+    num_nodes++;
+    
+    int object_num = sNodeTree_create_int_value(1, info);
+    int num_params = 0;
+    unsigned int params[PARAMS_MAX];
+    BOOL gc = gNCGC;
+    
+    int num_tuples = num_nodes;
+    
+    sNodeType* node_type = create_node_type_with_class_name("any");
+    
+    unsigned int tuple_object = sNodeTree_create_object(node_type, object_num, num_params, params, 0, 0, 0, nodes, num_tuples, info->sname, info->sline, gc, info);
+    
+    char* fun_name = "initialize";
+    unsigned int params2[PARAMS_MAX];
+    int num_params2 = num_tuples+1;
+    BOOL method = TRUE;
+    BOOL inherit = FALSE;
+    int version = 0;
+    
+    params2[0] = tuple_object;
+    
+    int i;
+    for(i=0; i<num_tuples; i++) {
+        params2[i+1] = nodes[i];
+    }
+    
+    *node = sNodeTree_create_function_call(fun_name, params2, num_params2, method, inherit, version, info);
+    
+    *node = sNodeTree_create_return(*node, info);
+    
+    return TRUE;
+}
+
+BOOL parse_catch(unsigned int* node, sParserInfo* info)
+{
+    char sname[PATH_MAX];
+    xstrncpy(sname, info->sname, PATH_MAX);
+    int sline = info->sline;
+    
+    unsigned int nodes[128];
+    int num_nodes = 0;
+
+    /// expression ///
+    static int n = 0;
+    n++;
+    
+    int num_vars = 2;
+    char var_names[2][VAR_NAME_MAX];
+    snprintf(var_names[0], VAR_NAME_MAX, "catcha%d", n);
+    snprintf(var_names[1], VAR_NAME_MAX, "catchb%d", n);
+    
+    check_already_added_variable(info->lv_table, var_names[0], info);
+    if(!add_variable_to_table(info->lv_table, var_names[0], NULL, FALSE, NULL, -1, info->mBlockLevel == 0, FALSE, FALSE))
+    {
+        fprintf(stderr, "overflow variable table\n");
+        exit(2);
+    }
+    
+    check_already_added_variable(info->lv_table, var_names[1], info);
+    if(!add_variable_to_table(info->lv_table, var_names[1], NULL, FALSE, NULL, -1, info->mBlockLevel == 0, FALSE, FALSE))
+    {
+        fprintf(stderr, "overflow variable table\n");
+        exit(2);
+    }
+    
+    BOOL alloc = TRUE;
+    char* var_names2[2] = { (char*)&var_names[0], (char*)&var_names[1] };
+    nodes[num_nodes] = sNodeTree_create_store_variable_multiple(num_vars, var_names2, *node, alloc, info);
+    num_nodes++;
+    
+    unsigned int node2 = sNodeTree_create_load_variable(var_names[0], info);
+    
+    unsigned int expression_node = sNodeTree_create_logical_denial(node2, 0, 0, info);
+
+    sNodeBlock* if_node_block = NULL;
+    BOOL result_type_is_void = TRUE;
+    if(!parse_block_easy(ALLOC &if_node_block, FALSE, result_type_is_void, info))
+    {
+        return FALSE;
+    }
+
+    unsigned int elif_expression_nodes[ELIF_NUM_MAX];
+    memset(elif_expression_nodes, 0, sizeof(unsigned int)*ELIF_NUM_MAX);
+
+    sNodeBlock* elif_node_blocks[ELIF_NUM_MAX];
+    memset(elif_node_blocks, 0, sizeof(sNodeBlock*)*ELIF_NUM_MAX);
+
+    int elif_num = 0;
+
+    sNodeBlock* else_node_block = NULL;
+
+    nodes[num_nodes] = sNodeTree_if_expression(expression_node, MANAGED if_node_block, elif_expression_nodes, elif_node_blocks, elif_num, MANAGED else_node_block, info, sname, sline);
+    num_nodes++;
+    
+    nodes[num_nodes] = sNodeTree_create_load_variable(var_names[1], info);
+    num_nodes++;
+    
+    BOOL result_type_is_void2 = FALSE;
+    sNodeBlock* node_block = NULL;
+    if(!create_block(&node_block, num_nodes, nodes, result_type_is_void2, info)) {
+        return FALSE;
+    }
+    
+    *node = sNodeTree_create_normal_block(node_block, info);
+
+    return TRUE;
+}
+
 BOOL parse_guard(unsigned int* node, sParserInfo* info)
 {
     char sname[PATH_MAX];

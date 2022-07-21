@@ -124,25 +124,32 @@ BOOL postposition_operator(unsigned int* node, BOOL enable_assginment, sParserIn
                     }
                     else {
                         char* fun_name = buf;
-    
-                        unsigned int params[PARAMS_MAX];
-                        int num_params = 0;
-    
-                        params[0] = *node;
-                        num_params++;
-    
-                        if(!parse_funcation_call_params(&num_params, params, info)) 
-                        {
-                            return FALSE;
-                        };
-    
-                        *node = sNodeTree_create_function_call(fun_name, params, num_params, TRUE, FALSE, info->mFunVersion, info);
                         
-                        if(*info->p == '!' && *(info->p+1) != '=') {
-                            info->p++;
-                            skip_spaces_and_lf(info);
+                        if(strcmp(fun_name, "catch") == 0) {
+                            if(!parse_catch(node, info)) {
+                                return FALSE;
+                            }
+                        }
+                        else {
+                            unsigned int params[PARAMS_MAX];
+                            int num_params = 0;
+        
+                            params[0] = *node;
+                            num_params++;
+        
+                            if(!parse_funcation_call_params(&num_params, params, info)) 
+                            {
+                                return FALSE;
+                            };
+        
+                            *node = sNodeTree_create_function_call(fun_name, params, num_params, TRUE, FALSE, info->mFunVersion, info);
                             
-                            *node = sNodeTree_create_unwrap(*node, info);
+                            if(*info->p == '!' && *(info->p+1) != '=') {
+                                info->p++;
+                                skip_spaces_and_lf(info);
+                                
+                                *node = sNodeTree_create_unwrap(*node, info);
+                            }
                         }
                     }
                 }

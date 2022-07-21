@@ -1,16 +1,26 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
+#include <comelang.h>
 
-int sum(int* a, int n)
+exception int div_op(int left, int right)
 {
+    if(right == 0) {
+        throw;
+    }
+    return (true, left / right);
+}
+
+exception int test(int left, int right)
+{
+    return div_op(left, right);
 }
 
 int main()
 {
-    int a[] = {};
+    int n = test(1,1).catch {
+        puts("AAA");
+        exit(1);
+    }
     
-    sum(a, 0);
+    printf("n %d\n", n);
+    
     return 0;
 }

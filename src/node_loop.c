@@ -2331,3 +2331,4 @@ BOOL compile_defer(unsigned int node, sCompileInfo* info)
 
     return TRUE;
 }
+

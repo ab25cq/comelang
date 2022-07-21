@@ -322,6 +322,7 @@ struct sNodeBlockStruct
 typedef struct sNodeBlockStruct sNodeBlock;
 
 BOOL parse_block_easy(ALLOC sNodeBlock** node_block, BOOL extern_c_lang, BOOL result_type_is_void, struct sParserInfoStruct* info);
+BOOL create_block(sNodeBlock** node_block, int num_nodes, unsigned int nodes[], BOOL result_type_is_void, struct sParserInfoStruct* info);
 BOOL parse_block(sNodeBlock* node_block, BOOL extern_c_lang, BOOL single_expression, BOOL result_type_is_void, BOOL return_self, struct sParserInfoStruct* info);
 BOOL skip_block(struct sParserInfoStruct* info);
 
@@ -470,6 +471,8 @@ BOOL parse_function(unsigned int* node, sNodeType* result_type, char* fun_name, 
 BOOL parse_inline_function(unsigned int* node, sParserInfo* info);
 BOOL parse_funcation_call_params(int* num_params, unsigned int* params, sParserInfo* info);
 BOOL parse_if(unsigned int* node, sParserInfo* info);
+BOOL parse_throw(unsigned int* node, sParserInfo* info);
+BOOL parse_catch(unsigned int* node, sParserInfo* info);
 BOOL parse_guard(unsigned int* node, sParserInfo* info);
 BOOL postposition_operator(unsigned int* node, BOOL enable_assginment, sParserInfo* info);
 BOOL parse_while(unsigned int* node, sParserInfo* info);
@@ -1353,6 +1356,7 @@ unsigned int sNodeTree_goto_expression(char* name, sParserInfo* info);
 unsigned int sNodeTree_for_expression(unsigned int expression_node1, unsigned int expression_node2, unsigned int expression_node3, MANAGED struct sNodeBlockStruct* for_node_block, sParserInfo* info);
 unsigned int sNodeTree_if_expression(unsigned int expression_node, MANAGED struct sNodeBlockStruct* if_node_block, unsigned int* elif_expression_nodes, MANAGED struct sNodeBlockStruct** elif_node_blocks, int elif_num, MANAGED struct sNodeBlockStruct* else_node_block, sParserInfo* info, char* sname, int sline);
 unsigned int sNodeTree_while_expression(unsigned int expression_node, MANAGED struct sNodeBlockStruct* while_node_block, sParserInfo* info);
+unsigned int sNodeTree_create_throw(sParserInfo* info);
 unsigned int sNodeTree_do_while_expression(unsigned int expression_node, MANAGED struct sNodeBlockStruct* while_node_block, sParserInfo* info);
 unsigned int sNodeTree_create_defer(unsigned int expression_node, sParserInfo* info);
 unsigned int sNodeTree_create_select(int num_pipes, char** pipes, struct sNodeBlockStruct** pipe_blocks, sParserInfo* info);
