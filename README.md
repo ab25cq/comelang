@@ -20,7 +20,7 @@ This language is infinity self-host.
 
 無限セルフホストを行います。
 
-version 10.0.1
+version 10.0.2
 
 ```
 #include <comelang.h>
@@ -2461,18 +2461,20 @@ exception int div_op(int left, int right)
     if(right == 0) {
         throw;
     }
-    return (true, left / right);
+    return left / right;
 }
 
 exception int test(int left, int right)
 {
-    return div_op(left, right);
+    return div_op(left, right).catch {
+        throw;
+    }
 }
 
 int main()
 {
-    int n = test(1,0).catch {
-        puts("AAA");
+    int n = test(4,0).catch {
+        fprintf(stderr, "zero div\n");
         exit(1);
     }
     

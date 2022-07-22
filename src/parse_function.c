@@ -606,6 +606,14 @@ BOOL parse_function(unsigned int* node, sNodeType* result_type, char* fun_name, 
         if(type_identify_with_class_name(result_type, "void") && result_type->mPointerNum == 0) {
             result_type_is_void = TRUE;
         }
+        BOOL exception_result_type_function = info->exception_result_type_function;
+        if(result_type->mException) {
+            info->exception_result_type_function = TRUE;
+        }
+        else {
+            info->exception_result_type_function = FALSE;
+        }
+        info->function_result_type = clone_node_type(result_type);
 
         if(gNCHeader) {
             while(*info->p != '{') {
@@ -640,6 +648,7 @@ BOOL parse_function(unsigned int* node, sNodeType* result_type, char* fun_name, 
         BOOL construct_fun = FALSE;
 
         *node = sNodeTree_create_function(fun_name, asm_fname, params, num_params, result_type, MANAGED node_block, lambda_, block_var_table, struct_name, operator_fun, construct_fun, simple_lambda_param, info, FALSE, var_arg, version, FALSE, -1, fun_name, sline, immutable_);
+        info->exception_result_type_function = exception_result_type_function;
     }
 
     info->mNumMethodGenerics = 0;

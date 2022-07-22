@@ -1331,6 +1331,7 @@ BOOL parse_type(sNodeType** result_type, sParserInfo* info, char* func_pointer_n
         (*result_type)->mGenericsTypes[0] = create_node_type_with_class_name("bool");
         (*result_type)->mGenericsTypes[1] = node_type;
         (*result_type)->mPointerNum = 1;
+        (*result_type)->mException = TRUE;
     }
     
     (*result_type)->mOriginalPointerNum = parser_pointer_num;

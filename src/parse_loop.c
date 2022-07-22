@@ -120,41 +120,9 @@ BOOL parse_if(unsigned int* node, sParserInfo* info)
 
 BOOL parse_throw(unsigned int* node, sParserInfo* info)
 {
-    unsigned int nodes[TUPLE_ELEMENT_MAX];
-    int num_nodes = 0;
+    *node = sNodeTree_create_int_value(0, info);
     
-    nodes[num_nodes] = sNodeTree_create_false(info);
-    num_nodes++;
-    
-    nodes[num_nodes] = sNodeTree_create_int_value(0, info);
-    num_nodes++;
-    
-    int object_num = sNodeTree_create_int_value(1, info);
-    int num_params = 0;
-    unsigned int params[PARAMS_MAX];
-    BOOL gc = gNCGC;
-    
-    int num_tuples = num_nodes;
-    
-    sNodeType* node_type = create_node_type_with_class_name("any");
-    
-    unsigned int tuple_object = sNodeTree_create_object(node_type, object_num, num_params, params, 0, 0, 0, nodes, num_tuples, info->sname, info->sline, gc, info);
-    
-    char* fun_name = "initialize";
-    unsigned int params2[PARAMS_MAX];
-    int num_params2 = num_tuples+1;
-    BOOL method = TRUE;
-    BOOL inherit = FALSE;
-    int version = 0;
-    
-    params2[0] = tuple_object;
-    
-    int i;
-    for(i=0; i<num_tuples; i++) {
-        params2[i+1] = nodes[i];
-    }
-    
-    *node = sNodeTree_create_function_call(fun_name, params2, num_params2, method, inherit, version, info);
+    create_exception_result_value(node, TRUE, info);
     
     *node = sNodeTree_create_return(*node, info);
     

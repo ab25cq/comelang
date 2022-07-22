@@ -1577,6 +1577,52 @@ BOOL is_premitive_type(char* buf, sParserInfo* info)
     return klass->mFlags & CLASS_FLAGS_PRIMITIVE;
 }
 
+void create_exception_result_value(unsigned int* node, BOOL throw_, sParserInfo* info)
+{
+    unsigned int nodes[TUPLE_ELEMENT_MAX];
+    int num_nodes = 0;
+    
+    if(throw_) {
+        nodes[num_nodes] = sNodeTree_create_false(info);
+        num_nodes++;
+    }
+    else {
+        nodes[num_nodes] = sNodeTree_create_true(info);
+        num_nodes++;
+    }
+    
+    nodes[num_nodes] = *node;
+    num_nodes++;
+    
+    int object_num = sNodeTree_create_int_value(1, info);
+    int num_params = 0;
+    unsigned int params[PARAMS_MAX];
+    BOOL gc = gNCGC;
+    
+    int num_tuples = num_nodes;
+    
+    sNodeType* node_type = clone_node_type(info->function_result_type);
+    node_type->mPointerNum--;
+    
+    unsigned int tuple_object = sNodeTree_create_object(node_type, object_num, num_params, params, 0, 0, 0, nodes, num_tuples, info->sname, info->sline, gc, info);
+    
+    char* fun_name = "initialize";
+    unsigned int params2[PARAMS_MAX];
+    int num_params2 = num_tuples+1;
+    BOOL method = TRUE;
+    BOOL inherit = FALSE;
+    int version = 0;
+    
+    params2[0] = tuple_object;
+    
+    int i;
+    for(i=0; i<num_tuples; i++) {
+        params2[i+1] = nodes[i];
+    }
+    
+    *node = sNodeTree_create_function_call(fun_name, params2, num_params2, method, inherit, version, info);
+}
+
 BOOL parse_return(unsigned int* node, sParserInfo* info)
 {
     *node = 0;
@@ -1616,6 +1662,9 @@ BOOL parse_return(unsigned int* node, sParserInfo* info)
         if(!expression(node, TRUE, info)) {
             return FALSE;
         }
+        if(info->exception_result_type_function) {
+            create_exception_result_value(node, FALSE, info);
+        }
     }
     else {
         expect_next_character_with_one_forward("(", info);
@@ -1623,6 +1672,10 @@ BOOL parse_return(unsigned int* node, sParserInfo* info)
             return FALSE;
         }
         expect_next_character_with_one_forward(")", info);
+        
+        if(info->exception_result_type_function) {
+            create_exception_result_value(node, FALSE, info);
+        }
     }
 
     *node = sNodeTree_create_return(*node, info);

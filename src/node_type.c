@@ -98,6 +98,7 @@ sNodeType* clone_node_type(sNodeType* node_type)
     node_type2->mDynamicArrayNum = node_type->mDynamicArrayNum;
     node_type2->mArrayInitializeNum = node_type->mArrayInitializeNum;
     node_type2->mTypeOfExpression = node_type->mTypeOfExpression;
+    node_type2->mException = node_type->mException;
     node_type2->mConstant = node_type->mConstant;
     node_type2->mCurrentStackVariable = node_type->mCurrentStackVariable;
     node_type2->mMethodGenericsResult = node_type->mMethodGenericsResult;

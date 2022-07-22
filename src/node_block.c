@@ -317,6 +317,11 @@ BOOL parse_block(sNodeBlock* node_block, BOOL extern_c_lang, BOOL single_express
                 has_result = TRUE;
             }
         }
+        
+        if(has_result && info->exception_result_type_function) {
+            create_exception_result_value(&last_node, FALSE, info);
+            node_block->mNodes[node_block->mNumNodes-1] = last_node;
+        }
     }
     
     node_block->mHasResult = has_result;

@@ -199,6 +199,7 @@ struct sNodeTypeStruct {
     BOOL mOmitArrayNum;
     int mNoArrayPointerNum;
     int mElementPointerNum;
+    BOOL mException;
 };
 
 typedef struct sNodeTypeStruct sNodeType;
@@ -411,6 +412,8 @@ struct sParserInfoStruct
     unsigned int mClassFieldsRightValue[CLASS_FIELD_MAX];
     
     BOOL array_initializer;
+    BOOL exception_result_type_function;
+    sNodeType* function_result_type;
 };
 
 typedef struct sParserInfoStruct sParserInfo;
@@ -1344,6 +1347,7 @@ LLVMBasicBlockRef get_label_from_table(char* name);
 unsigned int sNodeTree_create_conditional(unsigned int conditional, unsigned int value1, unsigned int value2, sParserInfo* info);
 unsigned int sNodeTree_create_comma(unsigned int left_node, unsigned int right_node, sParserInfo* info);
 unsigned int sNodeTree_create_return(unsigned int left, sParserInfo* info);
+void create_exception_result_value(unsigned int* node, BOOL throw_, sParserInfo* info);
 unsigned int sNodeTree_create_nodes(unsigned int* nodes, int num_nodes, BOOL in_macro, sParserInfo* info);
 BOOL is_function_name(char* name);
 unsigned int sNodeTree_create_normal_block(MANAGED struct sNodeBlockStruct* node_block, sParserInfo* info);
