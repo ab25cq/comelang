@@ -162,7 +162,7 @@ BOOL parse_catch(unsigned int* node, sParserInfo* info)
     }
     
     BOOL alloc = TRUE;
-    char* var_names2[2] = { (char*)&var_names[0], (char*)&var_names[1] };
+    char* var_names2[2] = { var_names[0], var_names[1] };
     nodes[num_nodes] = sNodeTree_create_store_variable_multiple(num_vars, var_names2, *node, alloc, info);
     num_nodes++;
     

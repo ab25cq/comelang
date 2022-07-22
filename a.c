@@ -1,28 +1,22 @@
-#include <comelang.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-exception int div_op(int left, int right)
-{
-    if(right == 0) {
-        throw;
-    }
-    return left / right;
-}
-
-exception int test(int left, int right)
-{
-    return div_op(left, right).catch {
-        throw;
-    }
-}
+struct sData {
+    int a;
+    int b;
+};
 
 int main()
 {
-    int n = test(4,0).catch {
-        puts("zero div");
-        exit(1);
-    }
+    struct sData a = (struct sData) { .a = 111 };
+    struct sData b = { .a = 111, .b = 222 };
     
-    printf("n %d\n", n);
+    int c[] = { 1, 2, 3};
+    
+    printf("%d %d\n", a.a, a.b);
+    printf("%d %d\n", b.a, b.b);
+    printf("%d %d %d\n", c[0], c[1], c[2]);
     
     return 0;
 }
