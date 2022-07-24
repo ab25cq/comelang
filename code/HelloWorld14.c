@@ -160,8 +160,56 @@ struct sXXX xxx[3] = {
     { .a = 111, .b = 222 }, { .a = 333, .b = 444 }, { .a = 555, .b = 666 }
 };
 
+struct sDataXXX {
+    int a;
+    int b;
+};
+
+struct sDataYYY {
+    int a;
+    int b;
+};
+
+struct sDataYYY ayyy = (struct sDataYYY) { .a = 111 };
+struct sDataYYY byyy = { .a = 111, .b = 222 };
+struct sDataYYY cyyy = { 333 };
+int dyyy[] = { 1, 2, 3};
+
+struct sDataYYY eyyy[3] = { { .a = 111 }, { .a = 222 }, { .a = 333 }};
+
 int main(int argc, char** argv)
 {
+    xassert("global array initializer test", dyyy[0] == 1 && dyyy[1] == 2 && dyyy[2] == 3);
+    
+    xassert("global struct initializer test", ayyy.a == 111 && ayyy.b == 0);
+    xassert("global struct initializer test", byyy.a == 111 && byyy.b == 222);
+    xassert("global struct initializer test", cyyy.a == 333 && cyyy.b == 0);
+    xassert("global struct initializer test", eyyy[0].a == 111 && eyyy[1].a == 222 && eyyy[2].a == 333);
+    
+    int xg = 111;
+    int yg = 222 -xg +111;
+    int zg = 333;
+    
+    struct sDataYYY aag = (struct sDataYYY) { .a = xg+1-1 };
+    struct sDataYYY bbg = { .a = xg+2-2, .b = yg };
+    struct sDataYYY ccg = { zg };
+    
+    xassert("local struct initializer test", aag.a == 111 && aag.b == 0);
+    xassert("local struct initializer test", bbg.a == 111 && bbg.b == 222);
+    xassert("local struct initializer test", ccg.a == 333 && ccg.b == 0);
+    
+    int x1 = 1;
+    int x2 = 2;
+    int x3 = 3;
+    
+    int dd[] = { x1, x2, x3 };
+    
+    xassert("local array initializer test", dd[0] == 1 && dd[1] == 2 && dd[2] == 3);
+    
+    struct sDataYYY ee[3] = { { .a = 111 }, { .a = 222 }, { .a = 333 }};
+    
+    xassert("local sturct array initializer test", ee[0].a == 111 && ee[1].a == 222 && ee[2].a == 333);
+
     int a[10];
     int (*b)[10] = &a;
     
@@ -225,6 +273,15 @@ int main(int argc, char** argv)
     xassert("union initializer", gA.b.a == 'c' && gA.b.b == 'd' && gB.a.a == 111 && gB.a.b == 222 && gC.c == 123 && gD.d.a == 777 && gE.e.a.a == 111 && gE.e.a.b === 222);
 
     xassert("struct array initializer", xxx[0].a == 111 && xxx[0].b == 222 && xxx[1].a == 333 && xxx[1].b == 444 && xxx[2].a == 555 && xxx[2].b == 666);
+    
+    struct sDataXXX axy = (struct sDataXXX) { .a = 111 };
+    struct sDataXXX bxy = { .a = 111, .b = 222 };
+    
+    int cxy[] = { 1, 2, 3};
+    
+    xassert("struct local variable initializer", axy.a == 111 && axy.b == 0);
+    xassert("struct local variable initializer", bxy.a == 111 && bxy.b == 222);
+    xassert("array local variable initializer", cxy[0] == 1 && cxy[1] == 2 && cxy[2] == 3);
     
     return 0;
 }
