@@ -1878,6 +1878,18 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                 }
             }
         }
+        else if(((result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (result_type->mClass->mFlags & CLASS_FLAGS_UNION)) && *info->p == '{' && result_type->mOmitArrayNum) 
+        {
+            info->p++;
+            skip_spaces_and_lf(info);
+            
+            info->p++; // {
+            skip_spaces_and_lf(info);
+            
+            if(*info->p == '.') {
+                struct_initializer2 = TRUE;
+            }
+        }
         else if(((result_type->mClass->mFlags & CLASS_FLAGS_STRUCT) || (result_type->mClass->mFlags & CLASS_FLAGS_UNION)) && *info->p == '{') 
         {
             info->p++;
@@ -1898,16 +1910,15 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
         info->sline = sline;
         
         if(info->mBlockLevel > 0 && (struct_initializer || struct_initializer2)) {
-            if(result_type->mOmitArrayNum || result_type->mArrayDimentionNum > 1) {
+            if(result_type->mArrayDimentionNum > 1) {
                 parser_err_msg(info, "comelang don't support this format");
                 return FALSE;
             }
-            
-            if(struct_initializer && result_type->mArrayDimentionNum > 0) {
+            else if(struct_initializer && result_type->mArrayDimentionNum > 0) {
                 parser_err_msg(info, "comelang don't support this format");
                 return FALSE;
             }
-            else if(struct_initializer2 && result_type->mArrayDimentionNum == 1) {
+            else if(struct_initializer2 && (result_type->mArrayDimentionNum == 1 || result_type->mOmitArrayNum)) {
                 unsigned int nodes[INIT_ARRAY_MAX+128];
                 int num_nodes = 0;
                 
@@ -1916,11 +1927,49 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                 sCLClass* klass = result_type->mClass;
                 unsigned int array_node = sNodeTree_create_load_variable(name, info);
                 
+                if(result_type->mOmitArrayNum) {
+                    char* p = info->p;
+                    int sline = info->sline;
+                    
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                    int n = 0;
+                    while(TRUE) {
+                        int num_elements = 0;
+                        struct sStructInitializer elements[INIT_ARRAY_MAX];
+                        
+                        expect_next_character_with_one_forward("{", info);
+                        
+                        if(!parse_struct_initializer(&num_elements, elements, info))
+                        {
+                            return FALSE;
+                        }
+                        
+                        n++;
+                        
+                        if(*info->p == ',') {
+                            info->p++;
+                            skip_spaces_and_lf(info);
+                        }
+                        else if(*info->p == '}') {
+                            info->p++;
+                            skip_spaces_and_lf(info);
+                            break;
+                        }
+                    }
+                    
+                    result_type->mArrayDimentionNum = 1;
+                    result_type->mArrayNum[0] = n;
+                    result_type->mPointerNum--;
+                    
+                    info->p = p;
+                    info->sline = sline;
+                }
+                
                 expect_next_character_with_one_forward("{", info);
                 
                 int i;
                 for(i=0; i<result_type->mArrayNum[0]; i++) {
-                    
                     int num_elements = 0;
                     struct sStructInitializer elements[INIT_ARRAY_MAX];
                     

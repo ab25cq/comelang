@@ -20,7 +20,7 @@ This language is infinity self-host.
 
 無限セルフホストを行います。
 
-version 10.0.2
+version 10.0.3
 
 ```
 #include <comelang.h>
