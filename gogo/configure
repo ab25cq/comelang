@@ -4152,10 +4152,6 @@ ac_cv_lib_pcre=ac_cv_lib_pcre_main
 
 
 
-CC=comelang
-
-
-
 DESTDIR=$myprefix
 
 
@@ -4251,6 +4247,10 @@ else
     CXXFLAGS2="${CXXFLAGS#-g}"
 fi
 
+
+
+
+CC=comelang
 
 
 

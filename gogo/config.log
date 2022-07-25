@@ -30,8 +30,8 @@ Kernel configured for up to 8 processors.
 Processor type: arm64e (ARM64E)
 Processors active: 0 1 2 3 4 5 6 7
 Primary memory available: 8.00 gigabytes
-Default processor set: 506 tasks, 1956 threads, 8 processors
-Load average: 1.66, Mach factor: 6.33
+Default processor set: 505 tasks, 1953 threads, 8 processors
+Load average: 1.87, Mach factor: 6.12
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -305,31 +305,16 @@ ld: warning: directory not found for option '-L/usr/local/opt/ncurses/lib'
 ld: warning: directory not found for option '-L/usr/local/opt/readline/lib'
 configure:4132: $? = 0
 configure:4142: result: yes
-configure:4203: checking for execvpe
-configure:4203: comelang -o conftest -Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I/opt/homebrew/opt/pcre/include -L/opt/homebrew/opt/pcre/lib -fPIC -DPREFIX="\"${DESTDIR}/\"" -I/usr/local/include   conftest.c  -lm -lpcre >&5
-clang-14: warning: argument unused during compilation: '-L/usr/local/opt/ncurses/lib' [-Wunused-command-line-argument]
-clang-14: warning: argument unused during compilation: '-L/usr/local/opt/readline/lib' [-Wunused-command-line-argument]
-clang-14: warning: argument unused during compilation: '-L/opt/homebrew/opt/pcre/lib' [-Wunused-command-line-argument]
-In file included from <built-in>:406:
-<command line>:4:16: warning: missing terminating '"' character [-Winvalid-pp-token]
-#define PREFIX "\/\"
-               ^
-<command line>:4:9: warning: 'PREFIX' macro redefined [-Wmacro-redefined]
-#define PREFIX "\/\"
-        ^
-<command line>:1:9: note: previous definition is here
-#define PREFIX "/"
-        ^
-In file included from conftest.c:31:
-In file included from /opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/limits.h:21:
-In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/limits.h:63:
-/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/cdefs.h:81:2: warning: "Unsupported compiler detected" [-W#warnings]
-#warning "Unsupported compiler detected"
- ^
-3 warnings generated.
-clang: error: unknown argument: '-fPIC/usr/local/lib/libcomelang-gc.a'
-return code is error on clang
-configure:4203: $? = 2
+configure:4199: checking for execvpe
+configure:4199: clang -o conftest -Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I/opt/homebrew/opt/pcre/include -L/opt/homebrew/opt/pcre/lib -fPIC -DPREFIX="\"${DESTDIR}/\"" -I/usr/local/include   conftest.c  -lm -lpcre >&5
+ld: warning: directory not found for option '-L/usr/local/opt/ncurses/lib'
+ld: warning: directory not found for option '-L/usr/local/opt/readline/lib'
+Undefined symbols for architecture arm64:
+  "_execvpe", referenced from:
+      _main in conftest-b0b421.o
+ld: symbol(s) not found for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+configure:4199: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME ""
@@ -385,7 +370,7 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:4203: result: no
+configure:4199: result: no
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -438,7 +423,7 @@ ac_cv_prog_cc_stdc=
 ## Output variables. ##
 ## ----------------- ##
 
-CC='comelang'
+CC='clang'
 CFLAGS='-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I/opt/homebrew/opt/pcre/include -L/opt/homebrew/opt/pcre/lib -fPIC -DPREFIX="\"${DESTDIR}/\"" -I/usr/local/include'
 COMELIB='-lgc -lpcre -lpthread /usr/local//lib/libcomelang-gc.a -L/usr/local/opt/libgc/lib '
 CPPFLAGS=''

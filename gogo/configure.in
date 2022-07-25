@@ -190,10 +190,6 @@ AC_HAVE_LIBRARY(pcre, [ LIBS="$LIBS -lpcre"; ], [ eixt ])
 
 AC_SUBST(LIBS)
 
-CC=comelang
-
-AC_SUBST(CC)
-
 DESTDIR=$myprefix
 
 AC_SUBST(DESTDIR)
@@ -285,5 +281,9 @@ fi
 
 AC_SUBST(CXXFLAGS)
 AC_SUBST(CXXFLAGS2)
+
+CC=comelang
+
+AC_SUBST(CC)
 
 AC_OUTPUT(Makefile)

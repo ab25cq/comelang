@@ -3919,9 +3919,9 @@ if test `uname -s` = "Darwin"; then
 
 
     if test $myprefix = /usr/local; then
-        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $CFLAGS"
+        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I/opt/homebrew/opt/pcre/include -L/opt/homebrew/opt/pcre/lib $CFLAGS"
     else
-        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I$myprefix/include -L$myprefix/lib $CFLAGS"
+        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I$myprefix/include -I/opt/homebrew/opt/pcre/include -L/opt/homebrew/opt/pcre/lib -L$myprefix/lib $CFLAGS"
     fi
 elif test `uname -s` = "FreeBSD"; then
     echo "FreeBSD"
@@ -4152,10 +4152,6 @@ ac_cv_lib_pcre=ac_cv_lib_pcre_main
 
 
 
-CC=comelang
-
-
-
 DESTDIR=$myprefix
 
 
@@ -4251,6 +4247,10 @@ else
     CXXFLAGS2="${CXXFLAGS#-g}"
 fi
 
+
+
+
+CC=comelang
 
 
 
