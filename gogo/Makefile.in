@@ -15,7 +15,7 @@ libdir=@libdir@
 ##########################################################
 # environmnet variables
 ##########################################################
-CC=@CC@
+CC=comelang
 INSTALL=@INSTALL@
 CFLAGS=@CFLAGS@
 CXXFLAGS=@CXXFLAGS@

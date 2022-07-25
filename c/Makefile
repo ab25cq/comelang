@@ -52,15 +52,15 @@ selfhost:
 
 bin/6c: $(_6CO) $(LIBA)
 	@ mkdir -p bin
-	gcc $(LDFLAGS) $(_6CO) $(LIBA) -o $@
+	clang $(LDFLAGS) $(_6CO) $(LIBA) -o $@
 
 bin/cpp:  $(CPPO) $(LIBA)
 	@ mkdir -p bin
-	gcc $(LDFLAGS) $(CPPO) $(LIBA) -o $@
+	clang $(LDFLAGS) $(CPPO) $(LIBA) -o $@
 
 bin/abifuzz:  $(ABIFZO) $(LIBA)
 	@ mkdir -p bin
-	gcc $(LDFLAGS) $(ABIFZO) $(LIBA) -o $@
+	clang $(LDFLAGS) $(ABIFZO) $(LIBA) -o $@
 
 $(LIBA): $(LIBO)
 	@ mkdir -p lib
