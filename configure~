@@ -4481,6 +4481,14 @@ fi
 
 
 
+ac_fn_c_check_func "$LINENO" "execvpe" "ac_cv_func_execvpe"
+if test "x$ac_cv_func_execvpe" = xyes
+then :
+  printf "%s\n" "#define HAVE_EXECVPE 1" >>confdefs.h
+
+fi
+
+
 
 
 

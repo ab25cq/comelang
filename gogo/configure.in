@@ -234,14 +234,15 @@ export CFLAGS
 
 OBJS="src/main.o src/type.o src/01fun.o src/02int.o src/03var.o src/04if.o"
 
-AC_CHECK_FUNCS(execvpe)
-
 AC_SUBST(OBJS)
 
 COMELIB=`comelang libs-gc`
 
 AC_SUBST(COMELIB)
 
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
+echo llvm
 if which llvm-config-11 1> /dev/null 2>/dev/null
 then
     CFLAGS=`llvm-config-11 --cflags | tr '\n' ' '`" $CFLAGS"

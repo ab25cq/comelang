@@ -31,7 +31,7 @@ COMELIB=@COMELIB@
 all: gogo
 
 gogo: config.h $(OBJS) 
-	$(CXX) -o gogo $(OBJS) $(CXXFLAGS) -L/usr/local/lib -lgc -lpcre -lpthread $(COMELIB) $(LIBS) -lgc -lpcre -lpthread
+	$(CXX) -o gogo $(OBJS) $(CXXFLAGS) -L/usr/local/lib -lgc -lpcre -lpthread $(COMELIB) $(LIBS) -lgc -lpcre -lpthread -L/opt/homebrew/opt/boehmgc/lib
 
 #########################################################
 # Object files

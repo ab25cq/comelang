@@ -176,7 +176,7 @@ static BOOL compile_ll_file(char* fname, char* bname, char* clang_optiones, BOOL
     
     char cmd[1024];
     
-    snprintf(cmd, 1024, "%s -o %s -c %s.ll %s -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC ", CLANG, bname2, fname, clang_optiones);
+    snprintf(cmd, 1024, "%s -o %s -c %s.ll %s -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -L/opt/homebrew/opt/boehmgc/lib -fPIC -L/opt/homebrew/opt/boehmgc/lib ", CLANG, bname2, fname, clang_optiones);
     
     int rc = system(cmd);
     if(rc != 0) {
@@ -229,10 +229,10 @@ static BOOL linker(char* fname, int num_obj_files, char** obj_files, char* clang
         
         char cmd[1024];
         if(!gNCGC) {
-            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/lib/libgc/lib -fPIC ", CLANG, exec_fname, clang_optiones);
+            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/lib/libgc/lib -fPIC -L/opt/homebrew/opt/boehmgc/lib ", CLANG, exec_fname, clang_optiones);
         }
         else {
-            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC ", CLANG, exec_fname, clang_optiones);
+            snprintf(cmd, 1024, "%s -o %s %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC -L/opt/homebrew/opt/boehmgc/lib ", CLANG, exec_fname, clang_optiones);
         }
         
         int i;
@@ -264,18 +264,18 @@ static BOOL linker(char* fname, int num_obj_files, char** obj_files, char* clang
         char cmd[1024];
         if(exec_fname[0] != '\0') {
             if(!gNCGC) {
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC ", CLANG, exec_fname, fname, clang_optiones);
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -fPIC -L/opt/homebrew/opt/boehmgc/lib ", CLANG, exec_fname, fname, clang_optiones);
             }
             else {
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/lib -fPIC", CLANG, exec_fname, fname, clang_optiones);
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/lib -fPIC -L/opt/homebrew/opt/boehmgc/lib ", CLANG, exec_fname, fname, clang_optiones);
             }
         }
         else {
             if(!gNCGC) {
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -fPIC -L/usr/local/opt/libgc/lib ", CLANG, bname, fname, clang_optiones);
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -fPIC -L/usr/local/opt/libgc/lib -L/opt/homebrew/opt/boehmgc/lib ", CLANG, bname, fname, clang_optiones);
             }
             else {
-                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib ", CLANG, bname, fname, clang_optiones);
+                snprintf(cmd, 1024, "%s -o %s %s.ll %s -lgc -lpcre -lpthread -fPIC -L/opt/homebrew/lib -I/opt/homebrew/include -L/usr/local/opt/libgc/lib -L/opt/homebrew/opt/boehmgc/lib ", CLANG, bname, fname, clang_optiones);
             }
         }
         
