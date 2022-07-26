@@ -2833,6 +2833,7 @@ BOOL compile_equal_plus(unsigned int node, sCompileInfo* info)
             right_value = LLVMBuildMul(gBuilder, right_value, alloc_size_value, "mult");
 
             LLVMValueRef value = LLVMBuildAdd(gBuilder, left_value2, right_value, "add");
+            rvalue.value = value;
             value = LLVMBuildCast(gBuilder, LLVMIntToPtr, value, LLVMPointerType(llvm_left_type,0), "IntToPtrG");
             LLVMBuildStore(gBuilder, value, lvalue.address);
         }
@@ -2851,6 +2852,8 @@ BOOL compile_equal_plus(unsigned int node, sCompileInfo* info)
             LLVMValueRef add_rvalue = rvalue.value;
 
             LLVMValueRef value = LLVMBuildAdd(gBuilder, add_lvalue, add_rvalue, "add");
+            
+            rvalue.value = value;
 
             LLVMBuildStore(gBuilder, value, address);
         }
@@ -2870,11 +2873,15 @@ BOOL compile_equal_plus(unsigned int node, sCompileInfo* info)
         LLVMValueRef add_rvalue = rvalue.value;
 
         LLVMValueRef value = LLVMBuildAdd(gBuilder, add_lvalue, add_rvalue, "add");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
+    
+    push_value_to_stack_ptr(&rvalue, info);
 
-    info->type = create_node_type_with_class_name("void");
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -2963,6 +2970,7 @@ BOOL compile_equal_minus(unsigned int node, sCompileInfo* info)
 
             LLVMValueRef value = LLVMBuildSub(gBuilder, left_value2, right_value, "sub");
             value = LLVMBuildCast(gBuilder, LLVMIntToPtr, value, LLVMPointerType(llvm_left_type,0), "IntToPtrH");
+            rvalue.value = value;
             LLVMBuildStore(gBuilder, value, lvalue.address);
         }
         else {
@@ -2980,6 +2988,8 @@ BOOL compile_equal_minus(unsigned int node, sCompileInfo* info)
             LLVMValueRef add_rvalue = rvalue.value;
 
             LLVMValueRef value = LLVMBuildSub(gBuilder, add_lvalue, add_rvalue, "sub");
+            
+            rvalue.value = value;
 
             LLVMBuildStore(gBuilder, value, address);
         }
@@ -2999,11 +3009,15 @@ BOOL compile_equal_minus(unsigned int node, sCompileInfo* info)
         LLVMValueRef add_rvalue = rvalue.value;
 
         LLVMValueRef value = LLVMBuildSub(gBuilder, add_lvalue, add_rvalue, "subtmp");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3074,6 +3088,8 @@ BOOL compile_equal_mult(unsigned int node, sCompileInfo* info)
         LLVMValueRef add_rvalue = rvalue.value;
 
         LLVMValueRef value = LLVMBuildMul(gBuilder, add_lvalue, add_rvalue, "mult");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3092,11 +3108,15 @@ BOOL compile_equal_mult(unsigned int node, sCompileInfo* info)
         LLVMValueRef add_rvalue = rvalue.value;
 
         LLVMValueRef value = LLVMBuildMul(gBuilder, add_lvalue, add_rvalue, "multmp");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3174,6 +3194,8 @@ BOOL compile_equal_div(unsigned int node, sCompileInfo* info)
         else {
             value = LLVMBuildSDiv(gBuilder, add_lvalue, add_rvalue, "div");
         }
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3199,11 +3221,15 @@ BOOL compile_equal_div(unsigned int node, sCompileInfo* info)
         else {
             value = LLVMBuildSDiv(gBuilder, add_lvalue, add_rvalue, "div");
         }
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3279,6 +3305,8 @@ BOOL compile_equal_mod(unsigned int node, sCompileInfo* info)
         else {
             value = LLVMBuildSRem(gBuilder, add_lvalue, add_rvalue, "rem");
         }
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3303,11 +3331,15 @@ BOOL compile_equal_mod(unsigned int node, sCompileInfo* info)
         else {
             value = LLVMBuildSRem(gBuilder, add_lvalue, add_rvalue, "rem");
         }
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3378,6 +3410,8 @@ BOOL compile_equal_lshift(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildShl(gBuilder, add_lvalue, add_rvalue, "lshift");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3397,11 +3431,15 @@ BOOL compile_equal_lshift(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildShl(gBuilder, add_lvalue, add_rvalue, "lshift");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3472,6 +3510,8 @@ BOOL compile_equal_rshift(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildAShr(gBuilder, add_lvalue, add_rvalue, "rshift");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3491,11 +3531,15 @@ BOOL compile_equal_rshift(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildAShr(gBuilder, add_lvalue, add_rvalue, "rshift");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3567,6 +3611,8 @@ BOOL compile_equal_and(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildAnd(gBuilder, add_lvalue, add_rvalue, "andtmp");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3586,11 +3632,15 @@ BOOL compile_equal_and(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildAnd(gBuilder, add_lvalue, add_rvalue, "and");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3657,6 +3707,8 @@ BOOL compile_equal_xor(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildXor(gBuilder, add_lvalue, add_rvalue, "xortmp");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3676,11 +3728,15 @@ BOOL compile_equal_xor(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildXor(gBuilder, add_lvalue, add_rvalue, "xortmp");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
 
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }
@@ -3751,6 +3807,8 @@ BOOL compile_equal_or(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildOr(gBuilder, add_lvalue, add_rvalue, "ortmp");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
@@ -3770,11 +3828,15 @@ BOOL compile_equal_or(unsigned int node, sCompileInfo* info)
 
         LLVMValueRef value;
         value = LLVMBuildOr(gBuilder, add_lvalue, add_rvalue, "ortmp");
+        
+        rvalue.value = value;
 
         LLVMBuildStore(gBuilder, value, address);
     }
     
-    info->type = create_node_type_with_class_name("void");
+    push_value_to_stack_ptr(&rvalue, info);
+
+    info->type = clone_node_type(right_type);
 
     return TRUE;
 }

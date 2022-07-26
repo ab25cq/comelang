@@ -1414,7 +1414,9 @@ BOOL parse_typedef(unsigned int* node, BOOL static_, sParserInfo* info)
 
     if(buf[0] == '\0') {
         while(1) {
-            if(!parse_variable_name(buf, VAR_NAME_MAX, info, node_type2, FALSE, FALSE))
+            sNodeType* node_type3 = clone_node_type(node_type2);
+            
+            if(!parse_variable_name(buf, VAR_NAME_MAX, info, node_type3, FALSE, FALSE))
             {
                 return FALSE;
             }
@@ -1423,7 +1425,7 @@ BOOL parse_typedef(unsigned int* node, BOOL static_, sParserInfo* info)
                 info->p++;
                 skip_spaces_and_lf(info);
 
-                *node = sNodeTree_create_typedef(buf, node_type2, info);
+                *node = sNodeTree_create_typedef(buf, node_type3, info);
                 nodes[num_nodes++] = *node;
 
                 if(num_nodes >= NODES_MAX) {
@@ -1432,7 +1434,7 @@ BOOL parse_typedef(unsigned int* node, BOOL static_, sParserInfo* info)
                 }
             }
             else {
-                *node = sNodeTree_create_typedef(buf, node_type2, info);
+                *node = sNodeTree_create_typedef(buf, node_type3, info);
                 nodes[num_nodes++] = *node;
 
                 if(num_nodes >= NODES_MAX) {

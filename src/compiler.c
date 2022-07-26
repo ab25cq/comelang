@@ -273,6 +273,39 @@ BOOL compile_source(char* fname, char** source, BOOL optimize, sVarTable* module
     xstrncpy(info.sname, fname, PATH_MAX);
     info.lv_table = module_var_table;
     info.sline = 1;
+    
+    {
+        sNodeType* node_type = create_node_type_with_class_name("int");
+        LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
+        LLVMValueRef global = LLVMGetNamedGlobal(gModule, "errno");
+        if(global == NULL) {
+            LLVMValueRef alloca_value = LLVMAddGlobal(gModule, llvm_type, "errno");
+    
+            LLVMSetExternallyInitialized(alloca_value, TRUE);
+            
+            (void)add_variable_to_table(info.lv_table, "errno", node_type, FALSE, NULL, -1, TRUE, FALSE, FALSE);
+    
+            sVar* var_ = get_variable_from_table(info.lv_table, "errno");
+        
+            if(var_ == NULL) {
+                fprintf(stderr, "no errno\n");
+                exit(1);
+            }
+    
+            var_->mLLVMValue = alloca_value;
+        }
+        else {
+            (void)add_variable_to_table(info.lv_table, "errno", node_type, FALSE, NULL, -1, TRUE, FALSE, FALSE);
+    
+            sVar* var_ = get_variable_from_table(info.lv_table, "errno");
+        
+            if(var_ == NULL) {
+                fprintf(stderr, "no errno\n");
+                exit(1);
+            }
+            var_->mLLVMValue = global;
+        }
+    }
 
     char module_name[PATH_MAX];
     xstrncpy(module_name, fname, PATH_MAX);

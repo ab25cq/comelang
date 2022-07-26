@@ -57,7 +57,7 @@ BOOL parse_param(sParserParam* param, sParserInfo* info)
     return TRUE;
 }
 
-BOOL get_block_text(sBuf* buf, sParserInfo* info, BOOL append_head_currly_brace)
+BOOL get_block_text(char* fun_name, sBuf* buf, sParserInfo* info, BOOL append_head_currly_brace)
 {
     if(append_head_currly_brace) {
         sBuf_append_str(buf, "{ ");
@@ -152,7 +152,9 @@ BOOL get_block_text(sBuf* buf, sParserInfo* info, BOOL append_head_currly_brace)
             info->p++;
         }
         else if(*info->p == '\0') {
-            parser_err_msg(info, "require } before the source end");
+            char buf2[1024];
+            snprintf(buf2, 1024, "require } before the source end in function(%s) (%s)", fun_name, buf->mBuf);
+            parser_err_msg(info, buf2);
             return FALSE;
         }
         else {
@@ -307,7 +309,7 @@ BOOL parse_generics_function(unsigned int* node, sNodeType* result_type, char* f
     sBuf buf;
     sBuf_init(&buf);
 
-    if(!get_block_text(&buf, info, TRUE)) {
+    if(!get_block_text(fun_name, &buf, info, TRUE)) {
         free(buf.mBuf);
         return FALSE;
     };
@@ -429,7 +431,7 @@ BOOL parse_method_generics_function(unsigned int* node, char* struct_name, sPars
     sBuf buf;
     sBuf_init(&buf);
 
-    if(!get_block_text(&buf, info, TRUE)) {
+    if(!get_block_text(fun_name, &buf, info, TRUE)) {
         free(buf.mBuf);
         return FALSE;
     };
@@ -906,17 +908,24 @@ BOOL parse_inline_function(unsigned int* node, sParserInfo* info)
     if(*info->p == '{') {
         info->p++;
         skip_spaces_and_lf(info);
+    
+        sBuf buf;
+        sBuf_init(&buf);
+    
+        if(!get_block_text(fun_name, &buf, info, TRUE)) {
+            free(buf.mBuf);
+            return FALSE;
+        };
+    
+        *node = sNodeTree_create_inline_function(fun_name, params, num_params, result_type, MANAGED buf.mBuf, struct_name, sname, sline, var_arg, immutable_, info);
     }
-
-    sBuf buf;
-    sBuf_init(&buf);
-
-    if(!get_block_text(&buf, info, TRUE)) {
-        free(buf.mBuf);
+    else if(*info->p == ';') {
+        *node = sNodeTree_create_null(info);
+    }
+    else {
+        parser_err_msg(info, "invalid inline function format");
         return FALSE;
-    };
-
-    *node = sNodeTree_create_inline_function(fun_name, params, num_params, result_type, MANAGED buf.mBuf, struct_name, sname, sline, var_arg, immutable_, info);
+    }
 
     return TRUE;
 }

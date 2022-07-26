@@ -414,6 +414,8 @@ struct sParserInfoStruct
     BOOL array_initializer;
     BOOL exception_result_type_function;
     sNodeType* function_result_type;
+    
+    BOOL store_address;
 };
 
 typedef struct sParserInfoStruct sParserInfo;
@@ -465,7 +467,7 @@ BOOL is_premitive_type(char* buf, sParserInfo* info);
 BOOL parse_return(unsigned int* node, sParserInfo* info);
 BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL extern_, sParserInfo* info, char* definition_top, BOOL readonly);
 BOOL parse_param(sParserParam* param, sParserInfo* info);
-BOOL get_block_text(sBuf* buf, sParserInfo* info, BOOL append_head_currly_brace);
+BOOL get_block_text(char* fun_name, sBuf* buf, sParserInfo* info, BOOL append_head_currly_brace);
 BOOL parse_params(sParserParam* params, int* num_params, sParserInfo* info, int character_type, BOOL* var_arg);
 BOOL parse_generics_function(unsigned int* node, sNodeType* result_type, char* fun_name, char* struct_name, sParserInfo* info);
 BOOL parse_method_generics_function(unsigned int* node, char* struct_name, sParserInfo* info);
@@ -650,6 +652,7 @@ struct sNodeTreeStruct
             char mVarName[VAR_NAME_MAX];
             BOOL mAlloc;
             BOOL mGlobal;
+            BOOL mStoreAddress;
         } sStoreVariable;
 
         struct {
@@ -907,6 +910,7 @@ struct sNodeTreeStruct
         struct {
             BOOL mParent;
             sNodeType* mCastPointerType;
+            BOOL mPlusPlusMinusMinus;
         } sStoreValueToAddress;
         
         struct {
@@ -1177,7 +1181,7 @@ unsigned int sNodeTree_create_load_array_element(unsigned int array, unsigned in
 unsigned int sNodeTree_create_store_element(unsigned int array, unsigned int index_node[], int num_dimetion, unsigned int right_node, sParserInfo* info);
 unsigned int sNodeTree_create_func_name(sParserInfo* info);
 unsigned int sNodeTree_create_load_adress_value(unsigned int address_node, sParserInfo* info);
-unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, unsigned int right_node, BOOL parent, sNodeType* cast_pointer_type, sParserInfo* info);
+unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, unsigned int right_node, BOOL parent, sNodeType* cast_pointer_type, BOOL plus_plus_minus_minus, sParserInfo* info);
 
 unsigned int sNodeTree_create_struct_initializer(char* var_name, sNodeType* node_type, int num_elements, struct sStructInitializer* elements, unsigned int left_node, sParserInfo* info);
 

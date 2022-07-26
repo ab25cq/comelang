@@ -283,5 +283,19 @@ int main(int argc, char** argv)
     xassert("struct local variable initializer", bxy.a == 111 && bxy.b == 222);
     xassert("array local variable initializer", cxy[0] == 1 && cxy[1] == 2 && cxy[2] == 3);
     
+    int nnn = 1;
+    int* mmm = &nnn;
+    
+    --*m;
+    
+    xassert("plus plus minus minus test", nnn == 0);
+    
+    const char* nx4;
+    
+    nx4 = "ABC";
+    nx4 = "DEF";
+    
+    xassert("const pointer assignment", strcmp(nx4, "DEF") == 0);
+    
     return 0;
 }

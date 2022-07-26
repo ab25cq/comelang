@@ -665,21 +665,21 @@ BOOL parse_type(sNodeType** result_type, sParserInfo* info, char* func_pointer_n
                 info->p++;
                 skip_spaces_and_lf(info);
                 
-                while(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                }
-                
                 int n = 0;
-                while(xisdigit(*info->p)) {
-                    n = n * 10 + *info->p - '0';
-                    info->p++;
-                    skip_spaces_and_lf(info);
-                }
+                BOOL none_array_num = FALSE;
                 
-                while(*info->p == ')') {
-                    info->p++;
-                    skip_spaces_and_lf(info);
+                if(*info->p == ']') {
+                    none_array_num = TRUE;
+                }
+                else {
+                    unsigned int node2 = 0;
+                    if(!expression(&node2, FALSE, info)) {
+                        return FALSE;
+                    }
+                    
+                    if(!get_const_value_from_node(&n, node2, info)) {
+                        return FALSE;
+                    }
                 }
                 
                 if(*info->p == ']') {
@@ -688,15 +688,21 @@ BOOL parse_type(sNodeType** result_type, sParserInfo* info, char* func_pointer_n
                 }
                 else {
                     char buf[128];
-                    snprintf(buf, 128, "require [ for array pointer variable name %c", *info->p);
+                    snprintf(buf, 128, "require ] for array pointer variable name %c", *info->p);
                     parser_err_msg(info, buf);
                     return TRUE;
                 }
                 
-                (*result_type)->mPointerNum = pointer_num;
-                (*result_type)->mArrayDimentionNum = 1;
-                (*result_type)->mArrayPointer = TRUE;
-                (*result_type)->mArrayNum[0] = n;
+                if(none_array_num) {
+                    (*result_type)->mPointerNum = pointer_num + 1;
+                    (*result_type)->mArrayDimentionNum = 0;
+                }
+                else {
+                    (*result_type)->mPointerNum = pointer_num;
+                    (*result_type)->mArrayDimentionNum = 1;
+                    (*result_type)->mArrayPointer = TRUE;
+                    (*result_type)->mArrayNum[0] = n;
+                }
             }
             else if(*info->p == '(') {
                 sNodeType* node_type = clone_node_type(*result_type);

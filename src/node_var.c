@@ -604,6 +604,7 @@ unsigned int sNodeTree_create_store_variable(char* var_name, int right, BOOL all
     xstrncpy(gNodes[node].uValue.sStoreVariable.mVarName, var_name, VAR_NAME_MAX);
     gNodes[node].uValue.sStoreVariable.mAlloc = alloc;
     gNodes[node].uValue.sStoreVariable.mGlobal = global;
+    gNodes[node].uValue.sStoreVariable.mStoreAddress = info->store_address;
 
     gNodes[node].mLeft = 0;
     gNodes[node].mRight = right;
@@ -615,6 +616,8 @@ unsigned int sNodeTree_create_store_variable(char* var_name, int right, BOOL all
 
 BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
 {
+    BOOL store_address = gNodes[node].uValue.sStoreVariable.mStoreAddress;
+    BOOL left_is_derefference = store_address;
     char var_name[VAR_NAME_MAX];
     xstrncpy(var_name, gNodes[node].uValue.sStoreVariable.mVarName, VAR_NAME_MAX);
     
@@ -630,6 +633,8 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
         compile_err_msg(info, "undeclared variable %s(2)", var_name);
         return TRUE;
     }
+    
+    BOOL right_value_is_derefference = gNodes[right_node].mNodeType == kNodeTypeDerefference;
     
     if(!compile(right_node, info)) {
         return FALSE;
@@ -888,7 +893,7 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
         if(var_->mReadOnly) {
             compile_err_msg(info, "%s is readonly and immutable", var_name);
         }
-        if(var_->mType->mConstant && !var_->mGlobal) {
+        if(var_->mType->mConstant && !var_->mGlobal && !left_is_derefference && var_->mType->mPointerNum == 0) {
             compile_err_msg(info, "%s is constant(1)", var_name);
         }
         
@@ -907,7 +912,7 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
         if(var_->mReadOnly) {
             compile_err_msg(info, "%s is readonly and immutable", var_name);
         }
-        if(var_->mType->mConstant && !var_->mGlobal) {
+        if(var_->mType->mConstant && !var_->mGlobal && !left_is_derefference && var_->mType->mPointerNum == 0) {
             compile_err_msg(info, "%s is constant(2)", var_name);
         }
         
@@ -1610,6 +1615,7 @@ BOOL compile_dereffernce(unsigned int node, sCompileInfo* info)
         
         if((left_type->mArrayDimentionNum >= 1 || left_type->mDynamicArrayNum != 0) && left_type->mPointerNum == 0) {
             derefference_type->mArrayDimentionNum--;
+            derefference_type->mConstant = FALSE;
             
             LLVMValueRef address = lvalue.value;
             
@@ -1635,6 +1641,7 @@ BOOL compile_dereffernce(unsigned int node, sCompileInfo* info)
         }
         else if((left_type->mArrayDimentionNum >= 1 || left_type->mDynamicArrayNum != 0)) { // && left_type->mPointerNum == 0) {
             derefference_type->mArrayDimentionNum--;
+            derefference_type->mConstant = FALSE;
             
             LVALUE llvm_value;
             llvm_value.value = lvalue.value; //address;
@@ -1669,6 +1676,7 @@ BOOL compile_dereffernce(unsigned int node, sCompileInfo* info)
             }
             else {
                 derefference_type->mPointerNum--;
+                derefference_type->mConstant = FALSE;
                 
                 LVALUE llvm_value;
                 llvm_value.value = LLVMBuildLoad(gBuilder, lvalue.value, "derefference_value");
@@ -3510,7 +3518,7 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
     return TRUE;
 }
 
-unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, unsigned int right_node, BOOL parent, sNodeType* cast_pointer_type, sParserInfo* info)
+unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, unsigned int right_node, BOOL parent, sNodeType* cast_pointer_type, BOOL plus_plus_minus_minus, sParserInfo* info)
 {
     unsigned int node = alloc_node();
 
@@ -3520,6 +3528,7 @@ unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, 
     gNodes[node].mLine = info->sline;
     
     gNodes[node].uValue.sStoreValueToAddress.mParent = parent;
+    gNodes[node].uValue.sStoreValueToAddress.mPlusPlusMinusMinus = plus_plus_minus_minus;
     
     if(cast_pointer_type) {
         gNodes[node].uValue.sStoreValueToAddress.mCastPointerType = clone_node_type(cast_pointer_type);
@@ -3527,7 +3536,7 @@ unsigned int sNodeTree_create_store_value_to_address(unsigned int address_node, 
     else {
         gNodes[node].uValue.sStoreValueToAddress.mCastPointerType = NULL;
     }
-
+    
     gNodes[node].mLeft = address_node;
     gNodes[node].mRight = right_node;
     gNodes[node].mMiddle = 0;
@@ -3539,6 +3548,7 @@ BOOL compile_store_address(unsigned int node, sCompileInfo* info)
 {
     BOOL parent = gNodes[node].uValue.sStoreValueToAddress.mParent;
     sNodeType* cast_pointer_type = gNodes[node].uValue.sStoreValueToAddress.mCastPointerType;
+    BOOL plus_plus_minus_minus = gNodes[node].uValue.sStoreValueToAddress.mPlusPlusMinusMinus;
     
     unsigned int left_node = gNodes[node].mLeft;
 
@@ -3555,8 +3565,30 @@ BOOL compile_store_address(unsigned int node, sCompileInfo* info)
     sNodeType* left_type = clone_node_type(info->type);
 
     if(left_type->mPointerNum == 0 && left_type->mArrayDimentionNum == 0) {
-        compile_err_msg(info, "This is not pointer type2(%s)", CLASS_NAME(left_type->mClass));
-        return TRUE;
+        if(plus_plus_minus_minus) {
+            LVALUE lvalue = *get_value_from_stack(-1);
+            dec_stack_ptr(1, info);
+        
+            unsigned int right_node = gNodes[node].mRight;
+        
+            if(!compile(right_node, info)) {
+                return FALSE;
+            }
+        
+            sNodeType* right_type = clone_node_type(info->type);
+        
+            LVALUE rvalue = *get_value_from_stack(-1);
+            dec_stack_ptr(1, info);
+            
+            push_value_to_stack_ptr(&rvalue, info);
+            
+            info->type = clone_node_type(right_type);
+            return TRUE;
+        }
+        else {
+            compile_err_msg(info, "This is not pointer type2(%s)", CLASS_NAME(left_type->mClass));
+            return TRUE;
+        }
     }
 
     LVALUE lvalue = *get_value_from_stack(-1);
@@ -3580,7 +3612,7 @@ BOOL compile_store_address(unsigned int node, sCompileInfo* info)
 
     LVALUE rvalue = *get_value_from_stack(-1);
     dec_stack_ptr(1, info);
-
+    
     left_type->mPointerNum--;
 
     if(auto_cast_posibility(left_type, right_type)) {
