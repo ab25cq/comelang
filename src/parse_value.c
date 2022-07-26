@@ -1218,14 +1218,26 @@ BOOL parse_enum(unsigned int* node, char* name, int name_size, BOOL* terminated,
         }
     }
     else {
+        if(!parse_sharp(info)) {
+            return FALSE;
+        }
         expect_next_character_with_one_forward("{", info);
+        if(!parse_sharp(info)) {
+            return FALSE;
+        }
     
         int value = 0;
     
         while(TRUE) {
+            if(!parse_sharp(info)) {
+                return FALSE;
+            }
             char asm_fname[VAR_NAME_MAX];
             BOOL flag_asm_fun_name = FALSE;
             if(!parse_attribute(info, asm_fname, &flag_asm_fun_name)) {
+                return FALSE;
+            }
+            if(!parse_sharp(info)) {
                 return FALSE;
             }
     
@@ -1237,10 +1249,17 @@ BOOL parse_enum(unsigned int* node, char* name, int name_size, BOOL* terminated,
             if(!parse_attribute(info, asm_fname, &flag_asm_fun_name)) {
                 return FALSE;
             }
+            if(!parse_sharp(info)) {
+                return FALSE;
+            }
     
             if(*info->p == '=') {
                 info->p++;
                 skip_spaces_and_lf(info);
+                
+                if(!parse_sharp(info)) {
+                    return FALSE;
+                }
     
                 unsigned int node2;
                 if(!expression(&node2, FALSE, info)) {
@@ -1253,6 +1272,10 @@ BOOL parse_enum(unsigned int* node, char* name, int name_size, BOOL* terminated,
     
                         *node = sNodeTree_create_null(info);
                     }
+                }
+                
+                if(!parse_sharp(info)) {
+                    return FALSE;
                 }
             }
     
@@ -1289,10 +1312,18 @@ BOOL parse_enum(unsigned int* node, char* name, int name_size, BOOL* terminated,
                     dec_stack_ptr(1, &cinfo);
                 }
             }
+            
+            if(!parse_sharp(info)) {
+                return FALSE;
+            }
     
             if(*info->p == ',') {
                 info->p++;
                 skip_spaces_and_lf(info);
+            }
+            
+            if(!parse_sharp(info)) {
+                return FALSE;
             }
     
             element_values[num_element] = value;
@@ -1309,6 +1340,10 @@ BOOL parse_enum(unsigned int* node, char* name, int name_size, BOOL* terminated,
                 info->p++;
                 skip_spaces_and_lf(info);
                 break;
+            }
+            
+            if(!parse_sharp(info)) {
+                return FALSE;
             }
     
             value++;

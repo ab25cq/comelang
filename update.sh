@@ -27,6 +27,16 @@ then
     (cd gogo && make distclean)
 fi
 
+if [ -e lcc/Makefile ]
+then
+    (cd lcc && make clean)
+fi
+
+if [ -e tcc/Makefile ]
+then
+    (cd cc && make clean)
+fi
+
 (cd 9cc && make clean)
 #(cd uARM && make clean)
 (cd c && make clean)
