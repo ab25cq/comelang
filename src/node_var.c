@@ -2954,32 +2954,84 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
         
         sNodeType* left_type = clone_node_type(var_type);
         left_type->mArrayDimentionNum = 0;
-
+    
+        int l = 0;
         for(i=0; i<num_initialize_array_value; i++) {
-            unsigned int node = initialize_array_value[i];
-
-            if(!compile(node, info)) {
-                return FALSE;
-            }
-            
-            sNodeType* right_type = clone_node_type(info->type);
-
-            LVALUE llvm_value = *get_value_from_stack(-1);
-            
-            if(auto_cast_posibility(left_type, right_type)) {
-                if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
-                {
-                    compile_err_msg(info, "Cast failed");
+            if(gNodes[initialize_array_value[i]].mNodeType == kNodeTypeCString) 
+            {
+                unsigned int initialize_array_value2[INIT_ARRAY_MAX];
+                
+                unsigned int node = initialize_array_value[i];
+        
+                char* str = gNodes[node].uValue.sString.mString;
+                
+                if(strlen(str)+1 >= INIT_ARRAY_MAX) {
+                    compile_err_msg(info, "invalid array initializer");
                     return TRUE;
                 }
+        
+                int j;
+                for(j=0; j<strlen(str); j++) {
+                    initialize_array_value2[j] = sNodeTree_create_character_value(str[j], info->pinfo);
+                }
+                initialize_array_value2[j] = sNodeTree_create_character_value('\0', info->pinfo);
+        
+                int num_initialize_array_value2 = strlen(str)+1;
+                
+                for(j=0; j<num_initialize_array_value2; j++) {
+                    unsigned int node = initialize_array_value2[j];
+                
+                    if(!compile(node, info)) {
+                        return FALSE;
+                    }
+                    
+                    sNodeType* right_type = clone_node_type(info->type);
+        
+                    LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    if(auto_cast_posibility(left_type, right_type)) {
+                        if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
+                        {
+                            compile_err_msg(info, "Cast failed");
+                            return TRUE;
+                        }
+                    }
+        
+                    dec_stack_ptr(1, info);
+        
+                    int n = l / var_type->mArrayNum[1];
+                    int m = l % var_type->mArrayNum[1];
+                    
+                    l++;
+                    values[n][m] = llvm_value.value;
+                }
             }
-
-            dec_stack_ptr(1, info);
-
-            int n = i / var_type->mArrayNum[1];
-            int m = i % var_type->mArrayNum[1];
-
-            values[n][m] = llvm_value.value;
+            else {
+                unsigned int node = initialize_array_value[i];
+            
+                if(!compile(node, info)) {
+                    return FALSE;
+                }
+                
+                sNodeType* right_type = clone_node_type(info->type);
+    
+                LVALUE llvm_value = *get_value_from_stack(-1);
+                
+                if(auto_cast_posibility(left_type, right_type)) {
+                    if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
+                    {
+                        compile_err_msg(info, "Cast failed");
+                        return TRUE;
+                    }
+                }
+    
+                dec_stack_ptr(1, info);
+    
+                int n = i / var_type->mArrayNum[1];
+                int m = i % var_type->mArrayNum[1];
+    
+                values[n][m] = llvm_value.value;
+            }
         }
 
         LLVMValueRef array_value[INIT_ARRAY_MAX];
@@ -3024,34 +3076,90 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
         sNodeType* left_type = clone_node_type(var_type);
         left_type->mArrayDimentionNum = 0;
 
+        int l = 0;
         for(i=0; i<num_initialize_array_value; i++) {
-            unsigned int node = initialize_array_value[i];
-
-            if(!compile(node, info)) {
-                return FALSE;
-            }
-            
-            sNodeType* right_type = clone_node_type(info->type);
-
-            LVALUE llvm_value = *get_value_from_stack(-1);
-            
-            if(auto_cast_posibility(left_type, right_type)) {
-                if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
-                {
-                    compile_err_msg(info, "Cast failed");
+            if(gNodes[initialize_array_value[i]].mNodeType == kNodeTypeCString) 
+            {
+                unsigned int initialize_array_value2[INIT_ARRAY_MAX];
+                
+                unsigned int node = initialize_array_value[i];
+        
+                char* str = gNodes[node].uValue.sString.mString;
+                
+                if(strlen(str)+1 >= INIT_ARRAY_MAX) {
+                    compile_err_msg(info, "invalid array initializer");
                     return TRUE;
                 }
+        
+                int j;
+                for(j=0; j<strlen(str); j++) {
+                    initialize_array_value2[j] = sNodeTree_create_character_value(str[j], info->pinfo);
+                }
+                initialize_array_value2[j] = sNodeTree_create_character_value('\0', info->pinfo);
+        
+                int num_initialize_array_value2 = strlen(str)+1;
+                
+                for(j=0; j<num_initialize_array_value2; j++) {
+                    unsigned int node = initialize_array_value2[j];
+        
+                    if(!compile(node, info)) {
+                        return FALSE;
+                    }
+                    
+                    sNodeType* right_type = clone_node_type(info->type);
+        
+                    LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    if(auto_cast_posibility(left_type, right_type)) {
+                        if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
+                        {
+                            compile_err_msg(info, "Cast failed");
+                            return TRUE;
+                        }
+                    }
+        
+                    dec_stack_ptr(1, info);
+        
+                    int n = var_type->mArrayNum[1]*var_type->mArrayNum[2];
+        
+                    int a = l/n;
+                    int b = (l/var_type->mArrayNum[2])%var_type->mArrayNum[1];
+                    int c = l%var_type->mArrayNum[2];
+                    
+                    l++;
+        
+                    values[a][b][c] = llvm_value.value;
+                }
             }
-
-            dec_stack_ptr(1, info);
-
-            int n = var_type->mArrayNum[1]*var_type->mArrayNum[2];
-
-            int a = i/n;
-            int b = (i/var_type->mArrayNum[2])%var_type->mArrayNum[1];
-            int c = i%var_type->mArrayNum[2];
-
-            values[a][b][c] = llvm_value.value;
+            else {
+                unsigned int node = initialize_array_value[i];
+    
+                if(!compile(node, info)) {
+                    return FALSE;
+                }
+                
+                sNodeType* right_type = clone_node_type(info->type);
+    
+                LVALUE llvm_value = *get_value_from_stack(-1);
+                
+                if(auto_cast_posibility(left_type, right_type)) {
+                    if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
+                    {
+                        compile_err_msg(info, "Cast failed");
+                        return TRUE;
+                    }
+                }
+    
+                dec_stack_ptr(1, info);
+    
+                int n = var_type->mArrayNum[1]*var_type->mArrayNum[2];
+    
+                int a = i/n;
+                int b = (i/var_type->mArrayNum[2])%var_type->mArrayNum[1];
+                int c = i%var_type->mArrayNum[2];
+    
+                values[a][b][c] = llvm_value.value;
+            }
         }
 
         LLVMValueRef array_array_value[var_type->mArrayNum[0]];

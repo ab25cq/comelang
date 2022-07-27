@@ -1,17 +1,51 @@
 # 1 "tcc.c"
-# 1 "<built-in>" 1
-# 1 "<built-in>" 3
-# 406 "<built-in>" 3
-# 1 "<command line>" 1
-# 1 "<built-in>" 2
-# 1 "tcc.c" 2
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "tcc.c"
 # 21 "tcc.c"
-# 1 "./libtcc.c" 1
-# 21 "./libtcc.c"
-# 1 "./tcc.h" 1
-# 22 "./tcc.h"
-# 1 "./config.h" 1
-# 23 "./tcc.h" 2
+# 1 "libtcc.c" 1
+# 21 "libtcc.c"
+# 1 "tcc.h" 1
+# 22 "tcc.h"
+# 1 "config.h" 1
+# 23 "tcc.h" 2
+# 31 "tcc.h"
+# 1 "/usr/include/stdlib.h" 1 3 4
+# 25 "/usr/include/stdlib.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
+# 33 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 3 4
+# 1 "/usr/include/features.h" 1 3 4
+# 424 "/usr/include/features.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 1 3 4
+# 442 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 443 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/long-double.h" 1 3 4
+# 444 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 2 3 4
+# 425 "/usr/include/features.h" 2 3 4
+# 448 "/usr/include/features.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 1 3 4
+# 10 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/gnu/stubs-64.h" 1 3 4
+# 11 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 2 3 4
+# 449 "/usr/include/features.h" 2 3 4
+# 34 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 2 3 4
+# 26 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 216 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 3 4
+
+# 216 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 328 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 3 4
+typedef int wchar_t;
+# 32 "/usr/include/stdlib.h" 2 3 4
 
 
 
@@ -19,223 +53,316 @@
 
 
 
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 1 3 4
-# 61 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/Availability.h" 1 3 4
-# 135 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/Availability.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/AvailabilityVersions.h" 1 3 4
-# 136 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/Availability.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/AvailabilityInternal.h" 1 3 4
-# 137 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/Availability.h" 2 3 4
-# 62 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/cdefs.h" 1 3 4
-# 659 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/cdefs.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_symbol_aliasing.h" 1 3 4
-# 660 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/cdefs.h" 2 3 4
-# 725 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/cdefs.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_posix_availability.h" 1 3 4
-# 726 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/cdefs.h" 2 3 4
-# 63 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types.h" 1 3 4
-# 27 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types.h" 1 3 4
-# 33 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/_types.h" 1 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/_types.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_types.h" 1 3 4
-# 17 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_types.h" 3 4
-typedef char __int8_t;
-
-typedef unsigned char __uint8_t;
-typedef short __int16_t;
-typedef unsigned short __uint16_t;
-typedef int __int32_t;
-typedef unsigned int __uint32_t;
-typedef long long __int64_t;
-typedef unsigned long long __uint64_t;
-
-typedef long __darwin_intptr_t;
-typedef unsigned int __darwin_natural_t;
-# 48 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_types.h" 3 4
-typedef int __darwin_ct_rune_t;
-
-
-
-
-
-typedef union {
- char __mbstate8[128];
- long long _mbstateL;
-} __mbstate_t;
-
-typedef __mbstate_t __darwin_mbstate_t;
-
-
-typedef long int __darwin_ptrdiff_t;
-
-
-
-
-
-
-
-typedef long unsigned int __darwin_size_t;
-
-
-
-
-
-
-
-typedef void * __darwin_va_list;
-
-
-
-typedef int __darwin_wchar_t;
-
-
-
-
-typedef __darwin_wchar_t __darwin_rune_t;
-
-
-typedef int __darwin_wint_t;
-
-
-
-
-typedef unsigned long __darwin_clock_t;
-typedef __uint32_t __darwin_socklen_t;
-typedef long __darwin_ssize_t;
-typedef long __darwin_time_t;
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/_types.h" 2 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types.h" 2 3 4
-# 55 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types.h" 3 4
-typedef __int64_t __darwin_blkcnt_t;
-typedef __int32_t __darwin_blksize_t;
-typedef __int32_t __darwin_dev_t;
-typedef unsigned int __darwin_fsblkcnt_t;
-typedef unsigned int __darwin_fsfilcnt_t;
-typedef __uint32_t __darwin_gid_t;
-typedef __uint32_t __darwin_id_t;
-typedef __uint64_t __darwin_ino64_t;
-
-typedef __darwin_ino64_t __darwin_ino_t;
-
-
-
-typedef __darwin_natural_t __darwin_mach_port_name_t;
-typedef __darwin_mach_port_name_t __darwin_mach_port_t;
-typedef __uint16_t __darwin_mode_t;
-typedef __int64_t __darwin_off_t;
-typedef __int32_t __darwin_pid_t;
-typedef __uint32_t __darwin_sigset_t;
-typedef __int32_t __darwin_suseconds_t;
-typedef __uint32_t __darwin_uid_t;
-typedef __uint32_t __darwin_useconds_t;
-typedef unsigned char __darwin_uuid_t[16];
-typedef char __darwin_uuid_string_t[37];
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_pthread/_pthread_types.h" 1 3 4
-# 57 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_pthread/_pthread_types.h" 3 4
-struct __darwin_pthread_handler_rec {
- void (*__routine)(void *);
- void *__arg;
- struct __darwin_pthread_handler_rec *__next;
-};
-
-struct _opaque_pthread_attr_t {
- long __sig;
- char __opaque[56];
-};
-
-struct _opaque_pthread_cond_t {
- long __sig;
- char __opaque[40];
-};
-
-struct _opaque_pthread_condattr_t {
- long __sig;
- char __opaque[8];
-};
-
-struct _opaque_pthread_mutex_t {
- long __sig;
- char __opaque[56];
-};
-
-struct _opaque_pthread_mutexattr_t {
- long __sig;
- char __opaque[8];
-};
-
-struct _opaque_pthread_once_t {
- long __sig;
- char __opaque[8];
-};
-
-struct _opaque_pthread_rwlock_t {
- long __sig;
- char __opaque[192];
-};
-
-struct _opaque_pthread_rwlockattr_t {
- long __sig;
- char __opaque[16];
-};
-
-struct _opaque_pthread_t {
- long __sig;
- struct __darwin_pthread_handler_rec *__cleanup_stack;
- char __opaque[8176];
-};
-
-typedef struct _opaque_pthread_attr_t __darwin_pthread_attr_t;
-typedef struct _opaque_pthread_cond_t __darwin_pthread_cond_t;
-typedef struct _opaque_pthread_condattr_t __darwin_pthread_condattr_t;
-typedef unsigned long __darwin_pthread_key_t;
-typedef struct _opaque_pthread_mutex_t __darwin_pthread_mutex_t;
-typedef struct _opaque_pthread_mutexattr_t __darwin_pthread_mutexattr_t;
-typedef struct _opaque_pthread_once_t __darwin_pthread_once_t;
-typedef struct _opaque_pthread_rwlock_t __darwin_pthread_rwlock_t;
-typedef struct _opaque_pthread_rwlockattr_t __darwin_pthread_rwlockattr_t;
-typedef struct _opaque_pthread_t *__darwin_pthread_t;
-# 81 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types.h" 2 3 4
-# 28 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types.h" 2 3 4
-# 40 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types.h" 3 4
-typedef int __darwin_nl_item;
-typedef int __darwin_wctrans_t;
-
-typedef __uint32_t __darwin_wctype_t;
-# 65 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 1 3 4
-# 79 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 3 4
-typedef enum {
- P_ALL,
- P_PID,
- P_PGID
+# 1 "/usr/include/x86_64-linux-gnu/bits/waitflags.h" 1 3 4
+# 52 "/usr/include/x86_64-linux-gnu/bits/waitflags.h" 3 4
+typedef enum
+{
+  P_ALL,
+  P_PID,
+  P_PGID
 } idtype_t;
+# 40 "/usr/include/stdlib.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/waitstatus.h" 1 3 4
+# 41 "/usr/include/stdlib.h" 2 3 4
+# 55 "/usr/include/stdlib.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/floatn.h" 1 3 4
+# 120 "/usr/include/x86_64-linux-gnu/bits/floatn.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/floatn-common.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/floatn-common.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/long-double.h" 1 3 4
+# 25 "/usr/include/x86_64-linux-gnu/bits/floatn-common.h" 2 3 4
+# 214 "/usr/include/x86_64-linux-gnu/bits/floatn-common.h" 3 4
+typedef float _Float32;
+# 251 "/usr/include/x86_64-linux-gnu/bits/floatn-common.h" 3 4
+typedef double _Float64;
+# 268 "/usr/include/x86_64-linux-gnu/bits/floatn-common.h" 3 4
+typedef double _Float32x;
+# 285 "/usr/include/x86_64-linux-gnu/bits/floatn-common.h" 3 4
+typedef long double _Float64x;
+# 121 "/usr/include/x86_64-linux-gnu/bits/floatn.h" 2 3 4
+# 56 "/usr/include/stdlib.h" 2 3 4
+
+
+typedef struct
+  {
+    int quot;
+    int rem;
+  } div_t;
+
+
+
+typedef struct
+  {
+    long int quot;
+    long int rem;
+  } ldiv_t;
 
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_pid_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_pid_t.h" 3 4
-typedef __darwin_pid_t pid_t;
-# 90 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_id_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_id_t.h" 3 4
-typedef __darwin_id_t id_t;
-# 91 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 2 3 4
-# 109 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 1 3 4
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/appleapiopts.h" 1 3 4
-# 74 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
+ typedef struct
+  {
+    long long int quot;
+    long long int rem;
+  } lldiv_t;
+# 97 "/usr/include/stdlib.h" 3 4
+extern size_t __ctype_get_mb_cur_max (void) ;
+
+
+
+extern double atof (const char *__nptr)
+     ;
+
+extern int atoi (const char *__nptr)
+     ;
+
+extern long int atol (const char *__nptr)
+     ;
+
+
+
+ extern long long int atoll (const char *__nptr)
+     ;
+
+
+
+extern double strtod (const char *restrict __nptr,
+        char **restrict __endptr)
+     ;
+
+
+
+extern float strtof (const char *restrict __nptr,
+       char **restrict __endptr) ;
+
+extern long double strtold (const char *restrict __nptr,
+       char **restrict __endptr)
+     ;
+# 140 "/usr/include/stdlib.h" 3 4
+extern _Float32 strtof32 (const char *restrict __nptr,
+     char **restrict __endptr)
+     ;
+
+
+
+extern _Float64 strtof64 (const char *restrict __nptr,
+     char **restrict __endptr)
+     ;
+# 158 "/usr/include/stdlib.h" 3 4
+extern _Float32x strtof32x (const char *restrict __nptr,
+       char **restrict __endptr)
+     ;
+
+
+
+extern _Float64x strtof64x (const char *restrict __nptr,
+       char **restrict __endptr)
+     ;
+# 176 "/usr/include/stdlib.h" 3 4
+extern long int strtol (const char *restrict __nptr,
+   char **restrict __endptr, int __base)
+     ;
+
+extern unsigned long int strtoul (const char *restrict __nptr,
+      char **restrict __endptr, int __base)
+     ;
+
+
+
+
+extern long long int strtoq (const char *restrict __nptr,
+        char **restrict __endptr, int __base)
+     ;
+
+
+extern unsigned long long int strtouq (const char *restrict __nptr,
+           char **restrict __endptr, int __base)
+     ;
+
+
+
+
+
+extern long long int strtoll (const char *restrict __nptr,
+         char **restrict __endptr, int __base)
+     ;
+
+
+extern unsigned long long int strtoull (const char *restrict __nptr,
+     char **restrict __endptr, int __base)
+     ;
+
+
+
+
+extern int strfromd (char *__dest, size_t __size, const char *__format,
+       double __f)
+     ;
+
+extern int strfromf (char *__dest, size_t __size, const char *__format,
+       float __f)
+     ;
+
+extern int strfroml (char *__dest, size_t __size, const char *__format,
+       long double __f)
+     ;
+# 232 "/usr/include/stdlib.h" 3 4
+extern int strfromf32 (char *__dest, size_t __size, const char * __format,
+         _Float32 __f)
+     ;
+
+
+
+extern int strfromf64 (char *__dest, size_t __size, const char * __format,
+         _Float64 __f)
+     ;
+# 250 "/usr/include/stdlib.h" 3 4
+extern int strfromf32x (char *__dest, size_t __size, const char * __format,
+   _Float32x __f)
+     ;
+
+
+
+extern int strfromf64x (char *__dest, size_t __size, const char * __format,
+   _Float64x __f)
+     ;
+# 272 "/usr/include/stdlib.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/locale_t.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/types/locale_t.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h" 1 3 4
+# 28 "/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h" 3 4
+struct __locale_struct
+{
+
+  struct __locale_data *__locales[13];
+
+
+  const unsigned short int *__ctype_b;
+  const int *__ctype_tolower;
+  const int *__ctype_toupper;
+
+
+  const char *__names[13];
+};
+
+typedef struct __locale_struct *__locale_t;
+# 23 "/usr/include/x86_64-linux-gnu/bits/types/locale_t.h" 2 3 4
+
+typedef __locale_t locale_t;
+# 273 "/usr/include/stdlib.h" 2 3 4
+
+extern long int strtol_l (const char *restrict __nptr,
+     char **restrict __endptr, int __base,
+     locale_t __loc) ;
+
+extern unsigned long int strtoul_l (const char *restrict __nptr,
+        char **restrict __endptr,
+        int __base, locale_t __loc)
+     ;
+
+
+extern long long int strtoll_l (const char *restrict __nptr,
+    char **restrict __endptr, int __base,
+    locale_t __loc)
+     ;
+
+
+extern unsigned long long int strtoull_l (const char *restrict __nptr,
+       char **restrict __endptr,
+       int __base, locale_t __loc)
+     ;
+
+extern double strtod_l (const char *restrict __nptr,
+   char **restrict __endptr, locale_t __loc)
+     ;
+
+extern float strtof_l (const char *restrict __nptr,
+         char **restrict __endptr, locale_t __loc)
+     ;
+
+extern long double strtold_l (const char *restrict __nptr,
+         char **restrict __endptr,
+         locale_t __loc)
+     ;
+# 316 "/usr/include/stdlib.h" 3 4
+extern _Float32 strtof32_l (const char *restrict __nptr,
+       char **restrict __endptr,
+       locale_t __loc)
+     ;
+
+
+
+extern _Float64 strtof64_l (const char *restrict __nptr,
+       char **restrict __endptr,
+       locale_t __loc)
+     ;
+# 337 "/usr/include/stdlib.h" 3 4
+extern _Float32x strtof32x_l (const char *restrict __nptr,
+         char **restrict __endptr,
+         locale_t __loc)
+     ;
+
+
+
+extern _Float64x strtof64x_l (const char *restrict __nptr,
+         char **restrict __endptr,
+         locale_t __loc)
+     ;
+# 385 "/usr/include/stdlib.h" 3 4
+extern char *l64a (long int __n) ;
+
+
+extern long int a64l (const char *__s)
+     ;
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/sys/types.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/types.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 28 "/usr/include/x86_64-linux-gnu/bits/types.h" 2 3 4
+
+
+typedef unsigned char __u_char;
+typedef unsigned short int __u_short;
+typedef unsigned int __u_int;
+typedef unsigned long int __u_long;
+
+
+typedef signed char __int8_t;
+typedef unsigned char __uint8_t;
+typedef signed short int __int16_t;
+typedef unsigned short int __uint16_t;
+typedef signed int __int32_t;
+typedef unsigned int __uint32_t;
+
+typedef signed long int __int64_t;
+typedef unsigned long int __uint64_t;
+
+
+
+
+
+
+typedef __int8_t __int_least8_t;
+typedef __uint8_t __uint_least8_t;
+typedef __int16_t __int_least16_t;
+typedef __uint16_t __uint_least16_t;
+typedef __int32_t __int_least32_t;
+typedef __uint32_t __uint_least32_t;
+typedef __int64_t __int_least64_t;
+typedef __uint64_t __uint_least64_t;
+
+
+
+typedef long int __quad_t;
+typedef unsigned long int __u_quad_t;
 
 
 
@@ -243,382 +370,360 @@ typedef __darwin_id_t id_t;
 
 
 
+typedef long int __intmax_t;
+typedef unsigned long int __uintmax_t;
+# 140 "/usr/include/x86_64-linux-gnu/bits/types.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/typesizes.h" 1 3 4
+# 141 "/usr/include/x86_64-linux-gnu/bits/types.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/signal.h" 1 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/signal.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/signal.h" 1 3 4
-# 17 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/signal.h" 3 4
-typedef int sig_atomic_t;
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/signal.h" 2 3 4
-# 83 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-# 146 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/_mcontext.h" 1 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/_mcontext.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_mcontext.h" 1 3 4
-# 36 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_mcontext.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/machine/_structs.h" 1 3 4
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/machine/_structs.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 1 3 4
-# 37 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/types.h" 1 3 4
-# 37 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/types.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 1 3 4
-# 55 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int8_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int8_t.h" 3 4
-typedef signed char int8_t;
-# 56 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int16_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int16_t.h" 3 4
-typedef short int16_t;
-# 57 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int32_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int32_t.h" 3 4
-typedef int int32_t;
-# 58 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int64_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_int64_t.h" 3 4
-typedef long long int64_t;
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int8_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int8_t.h" 3 4
+typedef unsigned long int __dev_t;
+typedef unsigned int __uid_t;
+typedef unsigned int __gid_t;
+typedef unsigned long int __ino_t;
+typedef unsigned long int __ino64_t;
+typedef unsigned int __mode_t;
+typedef unsigned long int __nlink_t;
+typedef long int __off_t;
+typedef long int __off64_t;
+typedef int __pid_t;
+typedef struct { int __val[2]; } __fsid_t;
+typedef long int __clock_t;
+typedef unsigned long int __rlim_t;
+typedef unsigned long int __rlim64_t;
+typedef unsigned int __id_t;
+typedef long int __time_t;
+typedef unsigned int __useconds_t;
+typedef long int __suseconds_t;
+
+typedef int __daddr_t;
+typedef int __key_t;
+
+
+typedef int __clockid_t;
+
+
+typedef void * __timer_t;
+
+
+typedef long int __blksize_t;
+
+
+
+
+typedef long int __blkcnt_t;
+typedef long int __blkcnt64_t;
+
+
+typedef unsigned long int __fsblkcnt_t;
+typedef unsigned long int __fsblkcnt64_t;
+
+
+typedef unsigned long int __fsfilcnt_t;
+typedef unsigned long int __fsfilcnt64_t;
+
+
+typedef long int __fsword_t;
+
+typedef long int __ssize_t;
+
+
+typedef long int __syscall_slong_t;
+
+typedef unsigned long int __syscall_ulong_t;
+
+
+
+typedef __off64_t __loff_t;
+typedef char *__caddr_t;
+
+
+typedef long int __intptr_t;
+
+
+typedef unsigned int __socklen_t;
+
+
+
+
+typedef int __sig_atomic_t;
+# 30 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+typedef __u_char u_char;
+typedef __u_short u_short;
+typedef __u_int u_int;
+typedef __u_long u_long;
+typedef __quad_t quad_t;
+typedef __u_quad_t u_quad_t;
+typedef __fsid_t fsid_t;
+
+
+typedef __loff_t loff_t;
+
+
+
+
+typedef __ino_t ino_t;
+
+
+
+
+
+
+typedef __ino64_t ino64_t;
+
+
+
+
+typedef __dev_t dev_t;
+
+
+
+
+typedef __gid_t gid_t;
+
+
+
+
+typedef __mode_t mode_t;
+
+
+
+
+typedef __nlink_t nlink_t;
+
+
+
+
+typedef __uid_t uid_t;
+
+
+
+
+
+typedef __off_t off_t;
+
+
+
+
+
+
+typedef __off64_t off64_t;
+
+
+
+
+typedef __pid_t pid_t;
+
+
+
+
+
+typedef __id_t id_t;
+
+
+
+
+typedef __ssize_t ssize_t;
+
+
+
+
+
+typedef __daddr_t daddr_t;
+typedef __caddr_t caddr_t;
+
+
+
+
+
+typedef __key_t key_t;
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/clock_t.h" 1 3 4
+
+
+
+
+
+
+typedef __clock_t clock_t;
+# 127 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h" 1 3 4
+
+
+
+
+
+
+typedef __clockid_t clockid_t;
+# 129 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/time_t.h" 1 3 4
+
+
+
+
+
+
+typedef __time_t time_t;
+# 130 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/timer_t.h" 1 3 4
+
+
+
+
+
+
+typedef __timer_t timer_t;
+# 131 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+typedef __useconds_t useconds_t;
+
+
+
+typedef __suseconds_t suseconds_t;
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 145 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+typedef unsigned long int ulong;
+typedef unsigned short int ushort;
+typedef unsigned int uint;
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdint-intn.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/stdint-intn.h" 3 4
+typedef __int8_t int8_t;
+typedef __int16_t int16_t;
+typedef __int32_t int32_t;
+typedef __int64_t int64_t;
+# 156 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+
 typedef unsigned char u_int8_t;
-# 61 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int16_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int16_t.h" 3 4
-typedef unsigned short u_int16_t;
-# 62 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int32_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int32_t.h" 3 4
+typedef unsigned short int u_int16_t;
 typedef unsigned int u_int32_t;
-# 63 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int64_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_u_int64_t.h" 3 4
-typedef unsigned long long u_int64_t;
-# 64 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
 
-
-typedef int64_t register_t;
+typedef unsigned long int u_int64_t;
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_intptr_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_intptr_t.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/types.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_intptr_t.h" 2 3 4
-
-typedef __darwin_intptr_t intptr_t;
-# 72 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_uintptr_t.h" 1 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_uintptr_t.h" 3 4
-typedef unsigned long uintptr_t;
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 2 3 4
-
-
-
-
-typedef u_int64_t user_addr_t;
-typedef u_int64_t user_size_t;
-typedef int64_t user_ssize_t;
-typedef int64_t user_long_t;
-typedef u_int64_t user_ulong_t;
-typedef int64_t user_time_t;
-typedef int64_t user_off_t;
-# 104 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/types.h" 3 4
-typedef u_int64_t syscall_arg_t;
-# 38 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/types.h" 2 3 4
-# 38 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 2 3 4
-
-
-
-struct __darwin_arm_exception_state
+typedef int register_t;
+# 193 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+# 1 "/usr/include/endian.h" 1 3 4
+# 36 "/usr/include/endian.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/endian.h" 1 3 4
+# 37 "/usr/include/endian.h" 2 3 4
+# 60 "/usr/include/endian.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 1 3 4
+# 33 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 3 4
+static inline __uint16_t
+__bswap_16 (__uint16_t __bsx)
 {
- __uint32_t __exception;
- __uint32_t __fsr;
- __uint32_t __far;
-};
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __darwin_arm_exception_state64
+
+
+
+  return ((__uint16_t) ((((__bsx) >> 8) & 0xff) | (((__bsx) & 0xff) << 8)));
+
+}
+
+
+
+
+
+
+static inline __uint32_t
+__bswap_32 (__uint32_t __bsx)
 {
- __uint64_t __far;
- __uint32_t __esr;
- __uint32_t __exception;
-};
-# 77 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __darwin_arm_thread_state
+
+
+
+  return ((((__bsx) & 0xff000000u) >> 24) | (((__bsx) & 0x00ff0000u) >> 8) | (((__bsx) & 0x0000ff00u) << 8) | (((__bsx) & 0x000000ffu) << 24));
+
+}
+# 69 "/usr/include/x86_64-linux-gnu/bits/byteswap.h" 3 4
+ static inline __uint64_t
+__bswap_64 (__uint64_t __bsx)
 {
- __uint32_t __r[13];
- __uint32_t __sp;
- __uint32_t __lr;
- __uint32_t __pc;
- __uint32_t __cpsr;
-};
-# 136 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __darwin_arm_thread_state64
+
+
+
+  return ((((__bsx) & 0xff00000000000000ull) >> 56) | (((__bsx) & 0x00ff000000000000ull) >> 40) | (((__bsx) & 0x0000ff0000000000ull) >> 24) | (((__bsx) & 0x000000ff00000000ull) >> 8) | (((__bsx) & 0x00000000ff000000ull) << 8) | (((__bsx) & 0x0000000000ff0000ull) << 24) | (((__bsx) & 0x000000000000ff00ull) << 40) | (((__bsx) & 0x00000000000000ffull) << 56));
+
+}
+# 61 "/usr/include/endian.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/uintn-identity.h" 1 3 4
+# 32 "/usr/include/x86_64-linux-gnu/bits/uintn-identity.h" 3 4
+static inline __uint16_t
+__uint16_identity (__uint16_t __x)
 {
- __uint64_t __x[29];
- __uint64_t __fp;
- __uint64_t __lr;
- __uint64_t __sp;
- __uint64_t __pc;
- __uint32_t __cpsr;
- __uint32_t __pad;
-};
-# 433 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __darwin_arm_vfp_state
+  return __x;
+}
+
+static inline __uint32_t
+__uint32_identity (__uint32_t __x)
 {
- __uint32_t __r[64];
- __uint32_t __fpscr;
-};
-# 452 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __darwin_arm_neon_state64
+  return __x;
+}
+
+static inline __uint64_t
+__uint64_identity (__uint64_t __x)
 {
- __uint128_t __v[32];
- __uint32_t __fpsr;
- __uint32_t __fpcr;
-};
+  return __x;
+}
+# 62 "/usr/include/endian.h" 2 3 4
+# 194 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
 
-struct __darwin_arm_neon_state
+
+# 1 "/usr/include/x86_64-linux-gnu/sys/select.h" 1 3 4
+# 30 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/select.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/select.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/select.h" 2 3 4
+# 31 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h" 1 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h" 1 3 4
+
+
+
+
+typedef struct
 {
- __uint128_t __v[16];
- __uint32_t __fpsr;
- __uint32_t __fpcr;
-};
-# 523 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __arm_pagein_state
-{
- int __pagein_error;
-};
-# 560 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __arm_legacy_debug_state
-{
- __uint32_t __bvr[16];
- __uint32_t __bcr[16];
- __uint32_t __wvr[16];
- __uint32_t __wcr[16];
-};
-# 583 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __darwin_arm_debug_state32
-{
- __uint32_t __bvr[16];
- __uint32_t __bcr[16];
- __uint32_t __wvr[16];
- __uint32_t __wcr[16];
- __uint64_t __mdscr_el1;
-};
+  unsigned long int __val[(1024 / (8 * sizeof (unsigned long int)))];
+} __sigset_t;
+# 5 "/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h" 2 3 4
 
 
-struct __darwin_arm_debug_state64
-{
- __uint64_t __bvr[16];
- __uint64_t __bcr[16];
- __uint64_t __wvr[16];
- __uint64_t __wcr[16];
- __uint64_t __mdscr_el1;
-};
-# 625 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/arm/_structs.h" 3 4
-struct __darwin_arm_cpmu_state64
-{
- __uint64_t __ctrs[16];
-};
-# 36 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/mach/machine/_structs.h" 2 3 4
-# 37 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_mcontext.h" 2 3 4
+typedef __sigset_t sigset_t;
+# 34 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
 
 
 
-
-struct __darwin_mcontext32
-{
- struct __darwin_arm_exception_state __es;
- struct __darwin_arm_thread_state __ss;
- struct __darwin_arm_vfp_state __fs;
-};
-# 64 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_mcontext.h" 3 4
-struct __darwin_mcontext64
-{
- struct __darwin_arm_exception_state64 __es;
- struct __darwin_arm_thread_state64 __ss;
- struct __darwin_arm_neon_state64 __ns;
-};
-# 85 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/_mcontext.h" 3 4
-typedef struct __darwin_mcontext64 *mcontext_t;
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/_mcontext.h" 2 3 4
-# 147 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_pthread/_pthread_attr_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_pthread/_pthread_attr_t.h" 3 4
-typedef __darwin_pthread_attr_t pthread_attr_t;
-# 149 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_sigaltstack.h" 1 3 4
-# 42 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_sigaltstack.h" 3 4
-struct __darwin_sigaltstack
-{
- void *ss_sp;
- __darwin_size_t ss_size;
- int ss_flags;
-};
-typedef struct __darwin_sigaltstack stack_t;
-# 151 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_ucontext.h" 1 3 4
-# 43 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_ucontext.h" 3 4
-struct __darwin_ucontext
-{
- int uc_onstack;
- __darwin_sigset_t uc_sigmask;
- struct __darwin_sigaltstack uc_stack;
- struct __darwin_ucontext *uc_link;
- __darwin_size_t uc_mcsize;
- struct __darwin_mcontext64 *uc_mcontext;
-
-
-
-};
-
-
-typedef struct __darwin_ucontext ucontext_t;
-# 152 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_sigset_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_sigset_t.h" 3 4
-typedef __darwin_sigset_t sigset_t;
-# 155 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_size_t.h" 3 4
-typedef __darwin_size_t size_t;
-# 156 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_uid_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_uid_t.h" 3 4
-typedef __darwin_uid_t uid_t;
-# 157 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 2 3 4
-
-union sigval {
-
- int sival_int;
- void *sival_ptr;
-};
-
-
-
-
-
-struct sigevent {
- int sigev_notify;
- int sigev_signo;
- union sigval sigev_value;
- void (*sigev_notify_function)(union sigval);
- pthread_attr_t *sigev_notify_attributes;
-};
-
-
-typedef struct __siginfo {
- int si_signo;
- int si_errno;
- int si_code;
- pid_t si_pid;
- uid_t si_uid;
- int si_status;
- void *si_addr;
- union sigval si_value;
- long si_band;
- unsigned long __pad[7];
-} siginfo_t;
-# 269 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 3 4
-union __sigaction_u {
- void (*__sa_handler)(int);
- void (*__sa_sigaction)(int, struct __siginfo *,
-     void *);
-};
-
-
-struct __sigaction {
- union __sigaction_u __sigaction_u;
- void (*sa_tramp)(void *, int, int, siginfo_t *, void *);
- sigset_t sa_mask;
- int sa_flags;
-};
-
-
-
-
-struct sigaction {
- union __sigaction_u __sigaction_u;
- sigset_t sa_mask;
- int sa_flags;
-};
-# 331 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 3 4
-typedef void (*sig_t)(int);
-# 348 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 3 4
-struct sigvec {
- void (*sv_handler)(int);
- int sv_mask;
- int sv_flags;
-};
-# 367 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 3 4
-struct sigstack {
- char *ss_sp;
- int ss_onstack;
-};
-# 390 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/signal.h" 3 4
-    void(*signal(int, void (*)(int)))(int);
-# 110 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 1 3 4
-# 72 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 3 4
-# 1 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/stdint.h" 1 3 4
-# 52 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/stdint.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 1 3 4
-# 23 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint8_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint8_t.h" 3 4
-typedef unsigned char uint8_t;
-# 24 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint16_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint16_t.h" 3 4
-typedef unsigned short uint16_t;
-# 25 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint32_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint32_t.h" 3 4
-typedef unsigned int uint32_t;
-# 26 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint64_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uint64_t.h" 3 4
-typedef unsigned long long uint64_t;
-# 27 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 2 3 4
-
-
-typedef int8_t int_least8_t;
-typedef int16_t int_least16_t;
-typedef int32_t int_least32_t;
-typedef int64_t int_least64_t;
-typedef uint8_t uint_least8_t;
-typedef uint16_t uint_least16_t;
-typedef uint32_t uint_least32_t;
-typedef uint64_t uint_least64_t;
-
-
-
-typedef int8_t int_fast8_t;
-typedef int16_t int_fast16_t;
-typedef int32_t int_fast32_t;
-typedef int64_t int_fast64_t;
-typedef uint8_t uint_fast8_t;
-typedef uint16_t uint_fast16_t;
-typedef uint32_t uint_fast32_t;
-typedef uint64_t uint_fast64_t;
-# 58 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_intmax_t.h" 1 3 4
-# 32 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_intmax_t.h" 3 4
-typedef long int intmax_t;
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uintmax_t.h" 1 3 4
-# 32 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_types/_uintmax_t.h" 3 4
-typedef long unsigned int uintmax_t;
-# 60 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdint.h" 2 3 4
-# 53 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/stdint.h" 2 3 4
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h" 1 3 4
 
 
 
@@ -626,2248 +731,7470 @@ typedef long unsigned int uintmax_t;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_timeval.h" 1 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_timeval.h" 3 4
 struct timeval
 {
- __darwin_time_t tv_sec;
- __darwin_suseconds_t tv_usec;
+  __time_t tv_sec;
+  __suseconds_t tv_usec;
 };
-# 81 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 2 3 4
+# 38 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
 
-
-
-
-
-
-
-
-typedef __uint64_t rlim_t;
-# 152 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 3 4
-struct rusage {
- struct timeval ru_utime;
- struct timeval ru_stime;
-# 163 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 3 4
- long ru_maxrss;
-
- long ru_ixrss;
- long ru_idrss;
- long ru_isrss;
- long ru_minflt;
- long ru_majflt;
- long ru_nswap;
- long ru_inblock;
- long ru_oublock;
- long ru_msgsnd;
- long ru_msgrcv;
- long ru_nsignals;
- long ru_nvcsw;
- long ru_nivcsw;
-
-
-};
-# 199 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 3 4
-typedef void *rusage_info_t;
-
-struct rusage_info_v0 {
- uint8_t ri_uuid[16];
- uint64_t ri_user_time;
- uint64_t ri_system_time;
- uint64_t ri_pkg_idle_wkups;
- uint64_t ri_interrupt_wkups;
- uint64_t ri_pageins;
- uint64_t ri_wired_size;
- uint64_t ri_resident_size;
- uint64_t ri_phys_footprint;
- uint64_t ri_proc_start_abstime;
- uint64_t ri_proc_exit_abstime;
-};
-
-struct rusage_info_v1 {
- uint8_t ri_uuid[16];
- uint64_t ri_user_time;
- uint64_t ri_system_time;
- uint64_t ri_pkg_idle_wkups;
- uint64_t ri_interrupt_wkups;
- uint64_t ri_pageins;
- uint64_t ri_wired_size;
- uint64_t ri_resident_size;
- uint64_t ri_phys_footprint;
- uint64_t ri_proc_start_abstime;
- uint64_t ri_proc_exit_abstime;
- uint64_t ri_child_user_time;
- uint64_t ri_child_system_time;
- uint64_t ri_child_pkg_idle_wkups;
- uint64_t ri_child_interrupt_wkups;
- uint64_t ri_child_pageins;
- uint64_t ri_child_elapsed_abstime;
-};
-
-struct rusage_info_v2 {
- uint8_t ri_uuid[16];
- uint64_t ri_user_time;
- uint64_t ri_system_time;
- uint64_t ri_pkg_idle_wkups;
- uint64_t ri_interrupt_wkups;
- uint64_t ri_pageins;
- uint64_t ri_wired_size;
- uint64_t ri_resident_size;
- uint64_t ri_phys_footprint;
- uint64_t ri_proc_start_abstime;
- uint64_t ri_proc_exit_abstime;
- uint64_t ri_child_user_time;
- uint64_t ri_child_system_time;
- uint64_t ri_child_pkg_idle_wkups;
- uint64_t ri_child_interrupt_wkups;
- uint64_t ri_child_pageins;
- uint64_t ri_child_elapsed_abstime;
- uint64_t ri_diskio_bytesread;
- uint64_t ri_diskio_byteswritten;
-};
-
-struct rusage_info_v3 {
- uint8_t ri_uuid[16];
- uint64_t ri_user_time;
- uint64_t ri_system_time;
- uint64_t ri_pkg_idle_wkups;
- uint64_t ri_interrupt_wkups;
- uint64_t ri_pageins;
- uint64_t ri_wired_size;
- uint64_t ri_resident_size;
- uint64_t ri_phys_footprint;
- uint64_t ri_proc_start_abstime;
- uint64_t ri_proc_exit_abstime;
- uint64_t ri_child_user_time;
- uint64_t ri_child_system_time;
- uint64_t ri_child_pkg_idle_wkups;
- uint64_t ri_child_interrupt_wkups;
- uint64_t ri_child_pageins;
- uint64_t ri_child_elapsed_abstime;
- uint64_t ri_diskio_bytesread;
- uint64_t ri_diskio_byteswritten;
- uint64_t ri_cpu_time_qos_default;
- uint64_t ri_cpu_time_qos_maintenance;
- uint64_t ri_cpu_time_qos_background;
- uint64_t ri_cpu_time_qos_utility;
- uint64_t ri_cpu_time_qos_legacy;
- uint64_t ri_cpu_time_qos_user_initiated;
- uint64_t ri_cpu_time_qos_user_interactive;
- uint64_t ri_billed_system_time;
- uint64_t ri_serviced_system_time;
-};
-
-struct rusage_info_v4 {
- uint8_t ri_uuid[16];
- uint64_t ri_user_time;
- uint64_t ri_system_time;
- uint64_t ri_pkg_idle_wkups;
- uint64_t ri_interrupt_wkups;
- uint64_t ri_pageins;
- uint64_t ri_wired_size;
- uint64_t ri_resident_size;
- uint64_t ri_phys_footprint;
- uint64_t ri_proc_start_abstime;
- uint64_t ri_proc_exit_abstime;
- uint64_t ri_child_user_time;
- uint64_t ri_child_system_time;
- uint64_t ri_child_pkg_idle_wkups;
- uint64_t ri_child_interrupt_wkups;
- uint64_t ri_child_pageins;
- uint64_t ri_child_elapsed_abstime;
- uint64_t ri_diskio_bytesread;
- uint64_t ri_diskio_byteswritten;
- uint64_t ri_cpu_time_qos_default;
- uint64_t ri_cpu_time_qos_maintenance;
- uint64_t ri_cpu_time_qos_background;
- uint64_t ri_cpu_time_qos_utility;
- uint64_t ri_cpu_time_qos_legacy;
- uint64_t ri_cpu_time_qos_user_initiated;
- uint64_t ri_cpu_time_qos_user_interactive;
- uint64_t ri_billed_system_time;
- uint64_t ri_serviced_system_time;
- uint64_t ri_logical_writes;
- uint64_t ri_lifetime_max_phys_footprint;
- uint64_t ri_instructions;
- uint64_t ri_cycles;
- uint64_t ri_billed_energy;
- uint64_t ri_serviced_energy;
- uint64_t ri_interval_max_phys_footprint;
- uint64_t ri_runnable_time;
-};
-
-struct rusage_info_v5 {
- uint8_t ri_uuid[16];
- uint64_t ri_user_time;
- uint64_t ri_system_time;
- uint64_t ri_pkg_idle_wkups;
- uint64_t ri_interrupt_wkups;
- uint64_t ri_pageins;
- uint64_t ri_wired_size;
- uint64_t ri_resident_size;
- uint64_t ri_phys_footprint;
- uint64_t ri_proc_start_abstime;
- uint64_t ri_proc_exit_abstime;
- uint64_t ri_child_user_time;
- uint64_t ri_child_system_time;
- uint64_t ri_child_pkg_idle_wkups;
- uint64_t ri_child_interrupt_wkups;
- uint64_t ri_child_pageins;
- uint64_t ri_child_elapsed_abstime;
- uint64_t ri_diskio_bytesread;
- uint64_t ri_diskio_byteswritten;
- uint64_t ri_cpu_time_qos_default;
- uint64_t ri_cpu_time_qos_maintenance;
- uint64_t ri_cpu_time_qos_background;
- uint64_t ri_cpu_time_qos_utility;
- uint64_t ri_cpu_time_qos_legacy;
- uint64_t ri_cpu_time_qos_user_initiated;
- uint64_t ri_cpu_time_qos_user_interactive;
- uint64_t ri_billed_system_time;
- uint64_t ri_serviced_system_time;
- uint64_t ri_logical_writes;
- uint64_t ri_lifetime_max_phys_footprint;
- uint64_t ri_instructions;
- uint64_t ri_cycles;
- uint64_t ri_billed_energy;
- uint64_t ri_serviced_energy;
- uint64_t ri_interval_max_phys_footprint;
- uint64_t ri_runnable_time;
- uint64_t ri_flags;
-};
-
-typedef struct rusage_info_v5 rusage_info_current;
-# 411 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 3 4
-struct rlimit {
- rlim_t rlim_cur;
- rlim_t rlim_max;
-};
-# 446 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 3 4
-struct proc_rlimit_control_wakeupmon {
- uint32_t wm_flags;
- int32_t wm_rate;
-};
-# 511 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/resource.h" 3 4
-int getpriority(int, id_t);
-
-int getiopolicy_np(int, int) __attribute__((availability(macosx,introduced=10.5)));
-
-int getrlimit(int, struct rlimit *) __asm("_" "getrlimit" );
-int getrusage(int, struct rusage *);
-int setpriority(int, id_t, int);
-
-int setiopolicy_np(int, int, int) __attribute__((availability(macosx,introduced=10.5)));
-
-int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
-# 111 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 2 3 4
-# 186 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/endian.h" 1 3 4
-# 37 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/endian.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/endian.h" 1 3 4
-# 77 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/endian.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_endian.h" 1 3 4
-# 130 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_endian.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/libkern/_OSByteOrder.h" 1 3 4
-# 131 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_endian.h" 2 3 4
-# 78 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/arm/endian.h" 2 3 4
-# 38 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/machine/endian.h" 2 3 4
-# 187 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 2 3 4
-
-
-
-
-
-
-
-union wait {
- int w_status;
-
-
-
- struct {
-
-  unsigned int w_Termsig:7,
-      w_Coredump:1,
-      w_Retcode:8,
-      w_Filler:16;
-
-
-
-
-
-
-
- } w_T;
-
-
-
-
-
- struct {
-
-  unsigned int w_Stopval:8,
-      w_Stopsig:8,
-      w_Filler:16;
-
-
-
-
-
-
- } w_S;
-};
-# 248 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/wait.h" 3 4
-pid_t wait(int *) __asm("_" "wait" );
-pid_t waitpid(pid_t, int *, int) __asm("_" "waitpid" );
-
-int waitid(idtype_t, id_t, siginfo_t *, int) __asm("_" "waitid" );
-
-
-pid_t wait3(int *, int, struct rusage *);
-pid_t wait4(pid_t, int *, int, struct rusage *);
-# 67 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/alloca.h" 1 3 4
-# 32 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/alloca.h" 3 4
-void *alloca(size_t);
-# 69 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-
-
-
-
-
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_ct_rune_t.h" 1 3 4
-# 32 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_ct_rune_t.h" 3 4
-typedef __darwin_ct_rune_t ct_rune_t;
-# 78 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_rune_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_rune_t.h" 3 4
-typedef __darwin_rune_t rune_t;
-# 79 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_wchar_t.h" 1 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_wchar_t.h" 3 4
-typedef __darwin_wchar_t wchar_t;
-# 82 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-typedef struct {
- int quot;
- int rem;
-} div_t;
-
-typedef struct {
- long quot;
- long rem;
-} ldiv_t;
-
-
-typedef struct {
- long long quot;
- long long rem;
-} lldiv_t;
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_null.h" 1 3 4
-# 101 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-# 118 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 3 4
-extern int __mb_cur_max;
-# 128 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/malloc/_malloc.h" 1 3 4
-# 40 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/malloc/_malloc.h" 3 4
-void *malloc(size_t __size) __attribute__((__warn_unused_result__)) __attribute__((alloc_size(1)));
-void *calloc(size_t __count, size_t __size) __attribute__((__warn_unused_result__)) __attribute__((alloc_size(1,2)));
-void free(void *);
-void *realloc(void *__ptr, size_t __size) __attribute__((__warn_unused_result__)) __attribute__((alloc_size(2)));
-
-void *valloc(size_t) __attribute__((alloc_size(1)));
-
-
-
-
-void *aligned_alloc(size_t __alignment, size_t __size) __attribute__((__warn_unused_result__)) __attribute__((alloc_size(2))) __attribute__((availability(macosx,introduced=10.15))) __attribute__((availability(ios,introduced=13.0))) __attribute__((availability(tvos,introduced=13.0))) __attribute__((availability(watchos,introduced=6.0)));
-
-int posix_memalign(void **__memptr, size_t __alignment, size_t __size) __attribute__((availability(macosx,introduced=10.6)));
-# 129 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-
-void abort(void) __attribute__((__cold__)) __attribute__((__noreturn__));
-int abs(int) __attribute__((__const__));
-int atexit(void (* _Nonnull)(void));
-double atof(const char *);
-int atoi(const char *);
-long atol(const char *);
-
-long long
-  atoll(const char *);
-
-void *bsearch(const void *__key, const void *__base, size_t __nel,
-     size_t __width, int (* _Nonnull __compar)(const void *, const void *));
-
-div_t div(int, int) __attribute__((__const__));
-void exit(int) __attribute__((__noreturn__));
-
-char *getenv(const char *);
-long labs(long) __attribute__((__const__));
-ldiv_t ldiv(long, long) __attribute__((__const__));
-
-long long
-  llabs(long long);
-lldiv_t lldiv(long long, long long);
-
-
-int mblen(const char *__s, size_t __n);
-size_t mbstowcs(wchar_t * restrict , const char * restrict, size_t);
-int mbtowc(wchar_t * restrict, const char * restrict, size_t);
-
-void qsort(void *__base, size_t __nel, size_t __width,
-     int (* _Nonnull __compar)(const void *, const void *));
-int rand(void) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-
-void srand(unsigned) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-double strtod(const char *, char **) __asm("_" "strtod" );
-float strtof(const char *, char **) __asm("_" "strtof" );
-long strtol(const char *__str, char **__endptr, int __base);
-long double
-  strtold(const char *, char **);
-
-long long
-  strtoll(const char *__str, char **__endptr, int __base);
-
-unsigned long
-  strtoul(const char *__str, char **__endptr, int __base);
-
-unsigned long long
-  strtoull(const char *__str, char **__endptr, int __base);
-
-
-__attribute__((__availability__(swift, unavailable, message="Use posix_spawn APIs or NSTask instead. (On iOS, process spawning is unavailable.)")))
-__attribute__((availability(macos,introduced=10.0))) __attribute__((availability(ios,unavailable)))
-__attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)))
-int system(const char *) __asm("_" "system" );
-
-
-size_t wcstombs(char * restrict, const wchar_t * restrict, size_t);
-int wctomb(char *, wchar_t);
-
-
-void _Exit(int) __attribute__((__noreturn__));
-long a64l(const char *);
-double drand48(void);
-char *ecvt(double, int, int *restrict, int *restrict);
-double erand48(unsigned short[3]);
-char *fcvt(double, int, int *restrict, int *restrict);
-char *gcvt(double, int, char *);
-int getsubopt(char **, char * const *, char **);
-int grantpt(int);
-
-char *initstate(unsigned, char *, size_t);
-
-
-
-long jrand48(unsigned short[3]) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-char *l64a(long);
-void lcong48(unsigned short[7]);
-long lrand48(void) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-char *mktemp(char *);
-int mkstemp(char *);
-long mrand48(void) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-long nrand48(unsigned short[3]) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-int posix_openpt(int);
-char *ptsname(int);
-
-
-int ptsname_r(int fildes, char *buffer, size_t buflen) __attribute__((availability(macos,introduced=10.13.4))) __attribute__((availability(ios,introduced=11.3))) __attribute__((availability(tvos,introduced=11.3))) __attribute__((availability(watchos,introduced=4.3)));
-
-
-int putenv(char *) __asm("_" "putenv" );
-long random(void) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-int rand_r(unsigned *) __attribute__((__availability__(swift, unavailable, message="Use arc4random instead.")));
-
-char *realpath(const char * restrict, char * restrict) __asm("_" "realpath" "$DARWIN_EXTSN");
-
-
-
-unsigned short
- *seed48(unsigned short[3]);
-int setenv(const char * __name, const char * __value, int __overwrite) __asm("_" "setenv" );
-
-void setkey(const char *) __asm("_" "setkey" );
-
-
-
-char *setstate(const char *);
-void srand48(long);
-
-void srandom(unsigned);
-
-
-
-int unlockpt(int);
-
-int unsetenv(const char *) __asm("_" "unsetenv" );
-
-
-
-
-
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_dev_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_dev_t.h" 3 4
-typedef __darwin_dev_t dev_t;
-# 254 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_mode_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_mode_t.h" 3 4
-typedef __darwin_mode_t mode_t;
-# 255 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 2 3 4
-
-
-uint32_t arc4random(void);
-void arc4random_addrandom(unsigned char * , int )
-    __attribute__((availability(macosx,introduced=10.0))) __attribute__((availability(macosx,deprecated=10.12,message="use arc4random_stir")))
-    __attribute__((availability(ios,introduced=2.0))) __attribute__((availability(ios,deprecated=10.0,message="use arc4random_stir")))
-    __attribute__((availability(tvos,introduced=2.0))) __attribute__((availability(tvos,deprecated=10.0,message="use arc4random_stir")))
-    __attribute__((availability(watchos,introduced=1.0))) __attribute__((availability(watchos,deprecated=3.0,message="use arc4random_stir")));
-void arc4random_buf(void * __buf, size_t __nbytes) __attribute__((availability(macosx,introduced=10.7)));
-void arc4random_stir(void);
-uint32_t
-  arc4random_uniform(uint32_t __upper_bound) __attribute__((availability(macosx,introduced=10.7)));
-
-int atexit_b(void (^ _Nonnull)(void)) __attribute__((availability(macosx,introduced=10.6)));
-# 277 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 3 4
-void *bsearch_b(const void *__key, const void *__base, size_t __nel,
-     size_t __width, int (^ _Nonnull __compar)(const void *, const void *) __attribute__((__noescape__)))
-     __attribute__((availability(macosx,introduced=10.6)));
-
-
-
-char *cgetcap(char *, const char *, int);
-int cgetclose(void);
-int cgetent(char **, char **, const char *);
-int cgetfirst(char **, char **);
-int cgetmatch(const char *, const char *);
-int cgetnext(char **, char **);
-int cgetnum(char *, const char *, long *);
-int cgetset(const char *);
-int cgetstr(char *, const char *, char **);
-int cgetustr(char *, const char *, char **);
-
-int daemon(int, int) __asm("_" "daemon" ) __attribute__((availability(macosx,introduced=10.0,deprecated=10.5,message="Use posix_spawn APIs instead."))) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-char *devname(dev_t, mode_t);
-char *devname_r(dev_t, mode_t, char *buf, int len);
-char *getbsize(int *, long *);
-int getloadavg(double [], int);
-const char
- *getprogname(void);
-void setprogname(const char *);
-# 311 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdlib.h" 3 4
-int heapsort(void *__base, size_t __nel, size_t __width,
-     int (* _Nonnull __compar)(const void *, const void *));
-
-int heapsort_b(void *__base, size_t __nel, size_t __width,
-     int (^ _Nonnull __compar)(const void *, const void *) __attribute__((__noescape__)))
-     __attribute__((availability(macosx,introduced=10.6)));
-
-int mergesort(void *__base, size_t __nel, size_t __width,
-     int (* _Nonnull __compar)(const void *, const void *));
-
-int mergesort_b(void *__base, size_t __nel, size_t __width,
-     int (^ _Nonnull __compar)(const void *, const void *) __attribute__((__noescape__)))
-     __attribute__((availability(macosx,introduced=10.6)));
-
-void psort(void *__base, size_t __nel, size_t __width,
-     int (* _Nonnull __compar)(const void *, const void *))
-     __attribute__((availability(macosx,introduced=10.6)));
-
-void psort_b(void *__base, size_t __nel, size_t __width,
-     int (^ _Nonnull __compar)(const void *, const void *) __attribute__((__noescape__)))
-     __attribute__((availability(macosx,introduced=10.6)));
-
-void psort_r(void *__base, size_t __nel, size_t __width, void *,
-     int (* _Nonnull __compar)(void *, const void *, const void *))
-     __attribute__((availability(macosx,introduced=10.6)));
-
-void qsort_b(void *__base, size_t __nel, size_t __width,
-     int (^ _Nonnull __compar)(const void *, const void *) __attribute__((__noescape__)))
-     __attribute__((availability(macosx,introduced=10.6)));
-
-void qsort_r(void *__base, size_t __nel, size_t __width, void *,
-     int (* _Nonnull __compar)(void *, const void *, const void *));
-int radixsort(const unsigned char **__base, int __nel, const unsigned char *__table,
-     unsigned __endbyte);
-int rpmatch(const char *)
- __attribute__((availability(macos,introduced=10.15))) __attribute__((availability(ios,introduced=13.0))) __attribute__((availability(tvos,introduced=13.0))) __attribute__((availability(watchos,introduced=6.0)));
-int sradixsort(const unsigned char **__base, int __nel, const unsigned char *__table,
-     unsigned __endbyte);
-void sranddev(void);
-void srandomdev(void);
-void *reallocf(void *__ptr, size_t __size) __attribute__((alloc_size(2)));
-long long
- strtonum(const char *__numstr, long long __minval, long long __maxval, const char **__errstrp)
- __attribute__((availability(macos,introduced=11.0))) __attribute__((availability(ios,introduced=14.0))) __attribute__((availability(tvos,introduced=14.0))) __attribute__((availability(watchos,introduced=7.0)));
-
-long long
-  strtoq(const char *__str, char **__endptr, int __base);
-unsigned long long
-  strtouq(const char *__str, char **__endptr, int __base);
-
-extern char *suboptarg;
-# 32 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 1 3 4
-# 64 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_stdio.h" 1 3 4
-# 75 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_stdio.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_va_list.h" 1 3 4
-# 32 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_va_list.h" 3 4
-typedef __darwin_va_list va_list;
-# 76 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_stdio.h" 2 3 4
-
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/stdio.h" 1 3 4
-# 47 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/stdio.h" 3 4
-int renameat(int, const char *, int, const char *) __attribute__((availability(macosx,introduced=10.10)));
-
-
-
-int renamex_np(const char *, const char *, unsigned int) __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
-int renameatx_np(int, const char *, int, const char *, unsigned int) __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
-# 80 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_stdio.h" 2 3 4
-
-typedef __darwin_off_t fpos_t;
-# 92 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_stdio.h" 3 4
-struct __sbuf {
- unsigned char *_base;
- int _size;
-};
-
-
-struct __sFILEX;
-# 126 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_stdio.h" 3 4
-typedef struct __sFILE {
- unsigned char *_p;
- int _r;
- int _w;
- short _flags;
- short _file;
- struct __sbuf _bf;
- int _lbfsize;
-
-
- void *_cookie;
- int (* _Nullable _close)(void *);
- int (* _Nullable _read) (void *, char *, int);
- fpos_t (* _Nullable _seek) (void *, fpos_t, int);
- int (* _Nullable _write)(void *, const char *, int);
-
-
- struct __sbuf _ub;
- struct __sFILEX *_extra;
- int _ur;
-
-
- unsigned char _ubuf[3];
- unsigned char _nbuf[1];
-
-
- struct __sbuf _lb;
-
-
- int _blksize;
- fpos_t _offset;
-} FILE;
-# 65 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 2 3 4
-
-
-extern FILE *__stdinp;
-extern FILE *__stdoutp;
-extern FILE *__stderrp;
-# 142 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-void clearerr(FILE *);
-int fclose(FILE *);
-int feof(FILE *);
-int ferror(FILE *);
-int fflush(FILE *);
-int fgetc(FILE *);
-int fgetpos(FILE * restrict, fpos_t *);
-char *fgets(char * restrict, int, FILE *);
-
-
-
-FILE *fopen(const char * restrict __filename, const char * restrict __mode) __asm("_" "fopen" );
-
-int fprintf(FILE * restrict, const char * restrict, ...) __attribute__((__format__ (__printf__, 2, 3)));
-int fputc(int, FILE *);
-int fputs(const char * restrict, FILE * restrict) __asm("_" "fputs" );
-size_t fread(void * restrict __ptr, size_t __size, size_t __nitems, FILE * restrict __stream);
-FILE *freopen(const char * restrict, const char * restrict,
-                 FILE * restrict) __asm("_" "freopen" );
-int fscanf(FILE * restrict, const char * restrict, ...) __attribute__((__format__ (__scanf__, 2, 3)));
-int fseek(FILE *, long, int);
-int fsetpos(FILE *, const fpos_t *);
-long ftell(FILE *);
-size_t fwrite(const void * restrict __ptr, size_t __size, size_t __nitems, FILE * restrict __stream) __asm("_" "fwrite" );
-int getc(FILE *);
-int getchar(void);
-char *gets(char *);
-void perror(const char *) __attribute__((__cold__));
-int printf(const char * restrict, ...) __attribute__((__format__ (__printf__, 1, 2)));
-int putc(int, FILE *);
-int putchar(int);
-int puts(const char *);
-int remove(const char *);
-int rename (const char *__old, const char *__new);
-void rewind(FILE *);
-int scanf(const char * restrict, ...) __attribute__((__format__ (__scanf__, 1, 2)));
-void setbuf(FILE * restrict, char * restrict);
-int setvbuf(FILE * restrict, char * restrict, int, size_t);
-int sprintf(char * restrict, const char * restrict, ...) __attribute__((__format__ (__printf__, 2, 3))) __attribute__((__availability__(swift, unavailable, message="Use snprintf instead.")));
-int sscanf(const char * restrict, const char * restrict, ...) __attribute__((__format__ (__scanf__, 2, 3)));
-FILE *tmpfile(void);
-
-__attribute__((__availability__(swift, unavailable, message="Use mkstemp(3) instead.")))
-
-__attribute__((__deprecated__("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of tmpnam(3), it is highly recommended that you use mkstemp(3) instead.")))
-
-char *tmpnam(char *);
-int ungetc(int, FILE *);
-int vfprintf(FILE * restrict, const char * restrict, va_list) __attribute__((__format__ (__printf__, 2, 0)));
-int vprintf(const char * restrict, va_list) __attribute__((__format__ (__printf__, 1, 0)));
-int vsprintf(char * restrict, const char * restrict, va_list) __attribute__((__format__ (__printf__, 2, 0))) __attribute__((__availability__(swift, unavailable, message="Use vsnprintf instead.")));
-# 205 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_ctermid.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/_ctermid.h" 3 4
-char *ctermid(char *);
-# 206 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 2 3 4
-
-
-
-
-FILE *fdopen(int, const char *) __asm("_" "fdopen" );
-
-int fileno(FILE *);
-# 223 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-int pclose(FILE *) __attribute__((__availability__(swift, unavailable, message="Use posix_spawn APIs or NSTask instead. (On iOS, process spawning is unavailable.)")));
-
-
-
-FILE *popen(const char *, const char *) __asm("_" "popen" ) __attribute__((__availability__(swift, unavailable, message="Use posix_spawn APIs or NSTask instead. (On iOS, process spawning is unavailable.)")));
-# 242 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-int __srget(FILE *);
-int __svfscanf(FILE *, const char *, va_list) __attribute__((__format__ (__scanf__, 2, 0)));
-int __swbuf(int, FILE *);
-# 279 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-void flockfile(FILE *);
-int ftrylockfile(FILE *);
-void funlockfile(FILE *);
-int getc_unlocked(FILE *);
-int getchar_unlocked(void);
-int putc_unlocked(int, FILE *);
-int putchar_unlocked(int);
-
-
-
-int getw(FILE *);
-int putw(int, FILE *);
-
-
-__attribute__((__availability__(swift, unavailable, message="Use mkstemp(3) instead.")))
-
-__attribute__((__deprecated__("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of tempnam(3), it is highly recommended that you use mkstemp(3) instead.")))
-
-char *tempnam(const char *__dir, const char *__prefix) __asm("_" "tempnam" );
-# 317 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_off_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_off_t.h" 3 4
-typedef __darwin_off_t off_t;
-# 318 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 2 3 4
-
-
-int fseeko(FILE * __stream, off_t __offset, int __whence);
-off_t ftello(FILE * __stream);
-
-
-
-
-
-int snprintf(char * restrict __str, size_t __size, const char * restrict __format, ...) __attribute__((__format__ (__printf__, 3, 4)));
-int vfscanf(FILE * restrict __stream, const char * restrict __format, va_list) __attribute__((__format__ (__scanf__, 2, 0)));
-int vscanf(const char * restrict __format, va_list) __attribute__((__format__ (__scanf__, 1, 0)));
-int vsnprintf(char * restrict __str, size_t __size, const char * restrict __format, va_list) __attribute__((__format__ (__printf__, 3, 0)));
-int vsscanf(const char * restrict __str, const char * restrict __format, va_list) __attribute__((__format__ (__scanf__, 2, 0)));
-# 342 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_ssize_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_ssize_t.h" 3 4
-typedef __darwin_ssize_t ssize_t;
-# 343 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 2 3 4
-
-
-int dprintf(int, const char * restrict, ...) __attribute__((__format__ (__printf__, 2, 3))) __attribute__((availability(macosx,introduced=10.7)));
-int vdprintf(int, const char * restrict, va_list) __attribute__((__format__ (__printf__, 2, 0))) __attribute__((availability(macosx,introduced=10.7)));
-ssize_t getdelim(char ** restrict __linep, size_t * restrict __linecapp, int __delimiter, FILE * restrict __stream) __attribute__((availability(macosx,introduced=10.7)));
-ssize_t getline(char ** restrict __linep, size_t * restrict __linecapp, FILE * restrict __stream) __attribute__((availability(macosx,introduced=10.7)));
-FILE *fmemopen(void * restrict __buf, size_t __size, const char * restrict __mode) __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0))) __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
-FILE *open_memstream(char **__bufp, size_t *__sizep) __attribute__((availability(macos,introduced=10.13))) __attribute__((availability(ios,introduced=11.0))) __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
-# 360 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/stdio.h" 3 4
-extern const int sys_nerr;
-extern const char *const sys_errlist[];
-
-int asprintf(char ** restrict, const char * restrict, ...) __attribute__((__format__ (__printf__, 2, 3)));
-char *ctermid_r(char *);
-char *fgetln(FILE *, size_t *);
-const char *fmtcheck(const char *, const char *);
-int fpurge(FILE *);
-void setbuffer(FILE *, char *, int);
-int setlinebuf(FILE *);
-int vasprintf(char ** restrict, const char * restrict, va_list) __attribute__((__format__ (__printf__, 2, 0)));
-
-
-
-
-
-FILE *funopen(const void *,
-                 int (* _Nullable)(void *, char *, int),
-                 int (* _Nullable)(void *, const char *, int),
-                 fpos_t (* _Nullable)(void *, fpos_t, int),
-                 int (* _Nullable)(void *));
-# 33 "./tcc.h" 2
-# 1 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/stdarg.h" 1 3
-# 14 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/stdarg.h" 3
-typedef __builtin_va_list va_list;
-# 32 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/stdarg.h" 3
-typedef __builtin_va_list __gnuc_va_list;
-# 34 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 1 3 4
-# 70 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 3 4
-void *memchr(const void *__s, int __c, size_t __n);
-int memcmp(const void *__s1, const void *__s2, size_t __n);
-void *memcpy(void *__dst, const void *__src, size_t __n);
-void *memmove(void *__dst, const void *__src, size_t __len);
-void *memset(void *__b, int __c, size_t __len);
-char *strcat(char *__s1, const char *__s2);
-char *strchr(const char *__s, int __c);
-int strcmp(const char *__s1, const char *__s2);
-int strcoll(const char *__s1, const char *__s2);
-char *strcpy(char *__dst, const char *__src);
-size_t strcspn(const char *__s, const char *__charset);
-char *strerror(int __errnum) __asm("_" "strerror" );
-size_t strlen(const char *__s);
-char *strncat(char *__s1, const char *__s2, size_t __n);
-int strncmp(const char *__s1, const char *__s2, size_t __n);
-char *strncpy(char *__dst, const char *__src, size_t __n);
-char *strpbrk(const char *__s, const char *__charset);
-char *strrchr(const char *__s, int __c);
-size_t strspn(const char *__s, const char *__charset);
-char *strstr(const char *__big, const char *__little);
-char *strtok(char *__str, const char *__sep);
-size_t strxfrm(char *__s1, const char *__s2, size_t __n);
-# 104 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 3 4
-char *strtok_r(char *__str, const char *__sep, char **__lasts);
-# 116 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 3 4
-int strerror_r(int __errnum, char *__strerrbuf, size_t __buflen);
-char *strdup(const char *__s1);
-void *memccpy(void *__dst, const void *__src, int __c, size_t __n);
-# 130 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 3 4
-char *stpcpy(char *__dst, const char *__src);
-char *stpncpy(char *__dst, const char *__src, size_t __n) __attribute__((availability(macosx,introduced=10.7)));
-char *strndup(const char *__s1, size_t __n) __attribute__((availability(macosx,introduced=10.7)));
-size_t strnlen(const char *__s1, size_t __n) __attribute__((availability(macosx,introduced=10.7)));
-char *strsignal(int __sig);
-
-
-
-
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_rsize_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_rsize_t.h" 3 4
-typedef __darwin_size_t rsize_t;
-# 142 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_errno_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_errno_t.h" 3 4
-typedef int errno_t;
-# 143 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 2 3 4
-
-
-errno_t memset_s(void *__s, rsize_t __smax, int __c, rsize_t __n) __attribute__((availability(macosx,introduced=10.9)));
-# 155 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 3 4
-void *memmem(const void *__big, size_t __big_len, const void *__little, size_t __little_len) __attribute__((availability(macosx,introduced=10.7)));
-void memset_pattern4(void *__b, const void *__pattern4, size_t __len) __attribute__((availability(macosx,introduced=10.5)));
-void memset_pattern8(void *__b, const void *__pattern8, size_t __len) __attribute__((availability(macosx,introduced=10.5)));
-void memset_pattern16(void *__b, const void *__pattern16, size_t __len) __attribute__((availability(macosx,introduced=10.5)));
-
-char *strcasestr(const char *__big, const char *__little);
-char *strnstr(const char *__big, const char *__little, size_t __len);
-size_t strlcat(char *__dst, const char *__source, size_t __size);
-size_t strlcpy(char *__dst, const char *__source, size_t __size);
-void strmode(int __mode, char *__bp);
-char *strsep(char **__stringp, const char *__delim);
-
-
-void swab(const void * restrict, void * restrict, ssize_t);
-
-__attribute__((availability(macosx,introduced=10.12.1))) __attribute__((availability(ios,introduced=10.1)))
-__attribute__((availability(tvos,introduced=10.0.1))) __attribute__((availability(watchos,introduced=3.1)))
-int timingsafe_bcmp(const void *__b1, const void *__b2, size_t __len);
-
-__attribute__((availability(macosx,introduced=11.0))) __attribute__((availability(ios,introduced=14.0)))
-__attribute__((availability(tvos,introduced=14.0))) __attribute__((availability(watchos,introduced=7.0)))
-int strsignal_r(int __sig, char *__strsignalbuf, size_t __buflen);
-
-
-
-
-
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/strings.h" 1 3 4
-# 70 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/strings.h" 3 4
-int bcmp(const void *, const void *, size_t) ;
-void bcopy(const void *, void *, size_t) ;
-void bzero(void *, size_t) ;
-char *index(const char *, int) ;
-char *rindex(const char *, int) ;
-
-
-int ffs(int);
-int strcasecmp(const char *, const char *);
-int strncasecmp(const char *, const char *, size_t);
-
-
-
-
-
-int ffsl(long) __attribute__((availability(macosx,introduced=10.5)));
-int ffsll(long long) __attribute__((availability(macosx,introduced=10.9)));
-int fls(int) __attribute__((availability(macosx,introduced=10.5)));
-int flsl(long) __attribute__((availability(macosx,introduced=10.5)));
-int flsll(long long) __attribute__((availability(macosx,introduced=10.9)));
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 1 3 4
-# 93 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/strings.h" 2 3 4
-# 185 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/string.h" 2 3 4
-# 35 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/errno.h" 1 3 4
-# 23 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/errno.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/errno.h" 1 3 4
-# 80 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/errno.h" 3 4
-extern int * __error(void);
-# 24 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/errno.h" 2 3 4
-# 36 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 1 3 4
-# 44 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-    typedef float float_t;
-    typedef double double_t;
-# 111 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-extern int __math_errhandling(void);
-# 131 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-extern int __fpclassifyf(float);
-extern int __fpclassifyd(double);
-extern int __fpclassifyl(long double);
-# 284 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-extern int __isnormalf(float);
-extern int __isnormald(double);
-extern int __isnormall(long double);
-extern int __isfinitef(float);
-extern int __isfinited(double);
-extern int __isfinitel(long double);
-extern int __isinff(float);
-extern int __isinfd(double);
-extern int __isinfl(long double);
-extern int __isnanf(float);
-extern int __isnand(double);
-extern int __isnanl(long double);
-extern int __signbitf(float);
-extern int __signbitd(double);
-extern int __signbitl(long double);
-# 308 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-extern float acosf(float);
-extern double acos(double);
-extern long double acosl(long double);
-
-extern float asinf(float);
-extern double asin(double);
-extern long double asinl(long double);
-
-extern float atanf(float);
-extern double atan(double);
-extern long double atanl(long double);
-
-extern float atan2f(float, float);
-extern double atan2(double, double);
-extern long double atan2l(long double, long double);
-
-extern float cosf(float);
-extern double cos(double);
-extern long double cosl(long double);
-
-extern float sinf(float);
-extern double sin(double);
-extern long double sinl(long double);
-
-extern float tanf(float);
-extern double tan(double);
-extern long double tanl(long double);
-
-extern float acoshf(float);
-extern double acosh(double);
-extern long double acoshl(long double);
-
-extern float asinhf(float);
-extern double asinh(double);
-extern long double asinhl(long double);
-
-extern float atanhf(float);
-extern double atanh(double);
-extern long double atanhl(long double);
-
-extern float coshf(float);
-extern double cosh(double);
-extern long double coshl(long double);
-
-extern float sinhf(float);
-extern double sinh(double);
-extern long double sinhl(long double);
-
-extern float tanhf(float);
-extern double tanh(double);
-extern long double tanhl(long double);
-
-extern float expf(float);
-extern double exp(double);
-extern long double expl(long double);
-
-extern float exp2f(float);
-extern double exp2(double);
-extern long double exp2l(long double);
-
-extern float expm1f(float);
-extern double expm1(double);
-extern long double expm1l(long double);
-
-extern float logf(float);
-extern double log(double);
-extern long double logl(long double);
-
-extern float log10f(float);
-extern double log10(double);
-extern long double log10l(long double);
-
-extern float log2f(float);
-extern double log2(double);
-extern long double log2l(long double);
-
-extern float log1pf(float);
-extern double log1p(double);
-extern long double log1pl(long double);
-
-extern float logbf(float);
-extern double logb(double);
-extern long double logbl(long double);
-
-extern float modff(float, float *);
-extern double modf(double, double *);
-extern long double modfl(long double, long double *);
-
-extern float ldexpf(float, int);
-extern double ldexp(double, int);
-extern long double ldexpl(long double, int);
-
-extern float frexpf(float, int *);
-extern double frexp(double, int *);
-extern long double frexpl(long double, int *);
-
-extern int ilogbf(float);
-extern int ilogb(double);
-extern int ilogbl(long double);
-
-extern float scalbnf(float, int);
-extern double scalbn(double, int);
-extern long double scalbnl(long double, int);
-
-extern float scalblnf(float, long int);
-extern double scalbln(double, long int);
-extern long double scalblnl(long double, long int);
-
-extern float fabsf(float);
-extern double fabs(double);
-extern long double fabsl(long double);
-
-extern float cbrtf(float);
-extern double cbrt(double);
-extern long double cbrtl(long double);
-
-extern float hypotf(float, float);
-extern double hypot(double, double);
-extern long double hypotl(long double, long double);
-
-extern float powf(float, float);
-extern double pow(double, double);
-extern long double powl(long double, long double);
-
-extern float sqrtf(float);
-extern double sqrt(double);
-extern long double sqrtl(long double);
-
-extern float erff(float);
-extern double erf(double);
-extern long double erfl(long double);
-
-extern float erfcf(float);
-extern double erfc(double);
-extern long double erfcl(long double);
-
-
-
-
-extern float lgammaf(float);
-extern double lgamma(double);
-extern long double lgammal(long double);
-
-extern float tgammaf(float);
-extern double tgamma(double);
-extern long double tgammal(long double);
-
-extern float ceilf(float);
-extern double ceil(double);
-extern long double ceill(long double);
-
-extern float floorf(float);
-extern double floor(double);
-extern long double floorl(long double);
-
-extern float nearbyintf(float);
-extern double nearbyint(double);
-extern long double nearbyintl(long double);
-
-extern float rintf(float);
-extern double rint(double);
-extern long double rintl(long double);
-
-extern long int lrintf(float);
-extern long int lrint(double);
-extern long int lrintl(long double);
-
-extern float roundf(float);
-extern double round(double);
-extern long double roundl(long double);
-
-extern long int lroundf(float);
-extern long int lround(double);
-extern long int lroundl(long double);
-
-
-
-
-extern long long int llrintf(float);
-extern long long int llrint(double);
-extern long long int llrintl(long double);
-
-extern long long int llroundf(float);
-extern long long int llround(double);
-extern long long int llroundl(long double);
-
-
-extern float truncf(float);
-extern double trunc(double);
-extern long double truncl(long double);
-
-extern float fmodf(float, float);
-extern double fmod(double, double);
-extern long double fmodl(long double, long double);
-
-extern float remainderf(float, float);
-extern double remainder(double, double);
-extern long double remainderl(long double, long double);
-
-extern float remquof(float, float, int *);
-extern double remquo(double, double, int *);
-extern long double remquol(long double, long double, int *);
-
-extern float copysignf(float, float);
-extern double copysign(double, double);
-extern long double copysignl(long double, long double);
-
-extern float nanf(const char *);
-extern double nan(const char *);
-extern long double nanl(const char *);
-
-extern float nextafterf(float, float);
-extern double nextafter(double, double);
-extern long double nextafterl(long double, long double);
-
-extern double nexttoward(double, long double);
-extern float nexttowardf(float, long double);
-extern long double nexttowardl(long double, long double);
-
-extern float fdimf(float, float);
-extern double fdim(double, double);
-extern long double fdiml(long double, long double);
-
-extern float fmaxf(float, float);
-extern double fmax(double, double);
-extern long double fmaxl(long double, long double);
-
-extern float fminf(float, float);
-extern double fmin(double, double);
-extern long double fminl(long double, long double);
-
-extern float fmaf(float, float, float);
-extern double fma(double, double, double);
-extern long double fmal(long double, long double, long double);
-# 588 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-extern float __exp10f(float) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-extern double __exp10(double) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-
-
-
-
-
-inline void __sincosf(float __x, float *__sinp, float *__cosp);
-inline void __sincos(double __x, double *__sinp, double *__cosp);
-# 605 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-extern float __cospif(float) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-extern double __cospi(double) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-extern float __sinpif(float) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-extern double __sinpi(double) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-extern float __tanpif(float) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-extern double __tanpi(double) __attribute__((availability(macos,introduced=10.9))) __attribute__((availability(ios,introduced=7.0)));
-# 636 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-inline void __sincospif(float __x, float *__sinp, float *__cosp);
-inline void __sincospi(double __x, double *__sinp, double *__cosp);
-
-
-
-
-
-
-struct __float2 { float __sinval; float __cosval; };
-struct __double2 { double __sinval; double __cosval; };
-
-extern struct __float2 __sincosf_stret(float);
-extern struct __double2 __sincos_stret(double);
-extern struct __float2 __sincospif_stret(float);
-extern struct __double2 __sincospi_stret(double);
-
-inline void __sincosf(float __x, float *__sinp, float *__cosp) {
-    const struct __float2 __stret = __sincosf_stret(__x);
-    *__sinp = __stret.__sinval; *__cosp = __stret.__cosval;
-}
-
-inline void __sincos(double __x, double *__sinp, double *__cosp) {
-    const struct __double2 __stret = __sincos_stret(__x);
-    *__sinp = __stret.__sinval; *__cosp = __stret.__cosval;
-}
-
-inline void __sincospif(float __x, float *__sinp, float *__cosp) {
-    const struct __float2 __stret = __sincospif_stret(__x);
-    *__sinp = __stret.__sinval; *__cosp = __stret.__cosval;
-}
-
-inline void __sincospi(double __x, double *__sinp, double *__cosp) {
-    const struct __double2 __stret = __sincospi_stret(__x);
-    *__sinp = __stret.__sinval; *__cosp = __stret.__cosval;
-}
-
-
-
-
-
-
-
-extern double j0(double) __attribute__((availability(macos,introduced=10.0))) __attribute__((availability(ios,introduced=3.2)));
-extern double j1(double) __attribute__((availability(macos,introduced=10.0))) __attribute__((availability(ios,introduced=3.2)));
-extern double jn(int, double) __attribute__((availability(macos,introduced=10.0))) __attribute__((availability(ios,introduced=3.2)));
-extern double y0(double) __attribute__((availability(macos,introduced=10.0))) __attribute__((availability(ios,introduced=3.2)));
-extern double y1(double) __attribute__((availability(macos,introduced=10.0))) __attribute__((availability(ios,introduced=3.2)));
-extern double yn(int, double) __attribute__((availability(macos,introduced=10.0))) __attribute__((availability(ios,introduced=3.2)));
-extern double scalb(double, double);
-extern int signgam;
-# 763 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/math.h" 3 4
-struct exception {
-    int type;
-    char *name;
-    double arg1;
-    double arg2;
-    double retval;
-};
-# 37 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/signal.h" 1 3 4
-# 66 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/signal.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_pthread/_pthread_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_pthread/_pthread_t.h" 3 4
-typedef __darwin_pthread_t pthread_t;
-# 67 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/signal.h" 2 3 4
-
-
-extern const char *const sys_signame[32];
-extern const char *const sys_siglist[32];
-
-
-
-int raise(int);
-
-
-
-
-void (* _Nullable bsd_signal(int, void (* _Nullable)(int)))(int);
-int kill(pid_t, int) __asm("_" "kill" );
-int killpg(pid_t, int) __asm("_" "killpg" );
-int pthread_kill(pthread_t, int);
-int pthread_sigmask(int, const sigset_t *, sigset_t *) __asm("_" "pthread_sigmask" );
-int sigaction(int, const struct sigaction * restrict,
-     struct sigaction * restrict);
-int sigaddset(sigset_t *, int);
-int sigaltstack(const stack_t * restrict, stack_t * restrict) __asm("_" "sigaltstack" ) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int sigdelset(sigset_t *, int);
-int sigemptyset(sigset_t *);
-int sigfillset(sigset_t *);
-int sighold(int);
-int sigignore(int);
-int siginterrupt(int, int);
-int sigismember(const sigset_t *, int);
-int sigpause(int) __asm("_" "sigpause" );
-int sigpending(sigset_t *);
-int sigprocmask(int, const sigset_t * restrict, sigset_t * restrict);
-int sigrelse(int);
-void (* _Nullable sigset(int, void (* _Nullable)(int)))(int);
-int sigsuspend(const sigset_t *) __asm("_" "sigsuspend" );
-int sigwait(const sigset_t * restrict, int * restrict) __asm("_" "sigwait" );
-
-void psignal(unsigned int, const char *);
-int sigblock(int);
-int sigsetmask(int);
-int sigvec(int, struct sigvec *, struct sigvec *);
-
-
-
-
-inline int
-__sigbits(int __signo)
-{
-    return __signo > 32 ? 0 : (1 << (__signo - 1));
-}
-# 38 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/fcntl.h" 1 3 4
-# 23 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/fcntl.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 1 3 4
-# 116 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_o_sync.h" 1 3 4
-# 117 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 2 3 4
-# 146 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_o_dsync.h" 1 3 4
-# 147 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 2 3 4
-# 336 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_seek_set.h" 1 3 4
-# 337 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 2 3 4
-
-
-
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_s_ifmt.h" 1 3 4
-# 343 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 2 3 4
-# 361 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-struct flock {
- off_t l_start;
- off_t l_len;
- pid_t l_pid;
- short l_type;
- short l_whence;
-};
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_timespec.h" 1 3 4
-# 33 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_timespec.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h" 1 3 4
+# 9 "/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h" 3 4
 struct timespec
 {
- __darwin_time_t tv_sec;
- long tv_nsec;
+  __time_t tv_sec;
+  __syscall_slong_t tv_nsec;
 };
-# 370 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 2 3 4
+# 40 "/usr/include/x86_64-linux-gnu/sys/select.h" 2 3 4
+# 49 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+typedef long int __fd_mask;
+# 59 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+typedef struct
+  {
+
+
+
+    __fd_mask fds_bits[1024 / (8 * (int) sizeof (__fd_mask))];
+
+
+
+
+
+  } fd_set;
 
 
 
 
 
 
-struct flocktimeout {
- struct flock fl;
- struct timespec timeout;
+typedef __fd_mask fd_mask;
+# 91 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+
+# 101 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+extern int select (int __nfds, fd_set *restrict __readfds,
+     fd_set *restrict __writefds,
+     fd_set *restrict __exceptfds,
+     struct timeval *restrict __timeout);
+# 113 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+extern int pselect (int __nfds, fd_set *restrict __readfds,
+      fd_set *restrict __writefds,
+      fd_set *restrict __exceptfds,
+      const struct timespec *restrict __timeout,
+      const __sigset_t *restrict __sigmask);
+# 126 "/usr/include/x86_64-linux-gnu/sys/select.h" 3 4
+
+# 197 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+
+
+typedef __blksize_t blksize_t;
+
+
+
+
+
+
+typedef __blkcnt_t blkcnt_t;
+
+
+
+typedef __fsblkcnt_t fsblkcnt_t;
+
+
+
+typedef __fsfilcnt_t fsfilcnt_t;
+# 236 "/usr/include/x86_64-linux-gnu/sys/types.h" 3 4
+typedef __blkcnt64_t blkcnt64_t;
+typedef __fsblkcnt64_t fsblkcnt64_t;
+typedef __fsfilcnt64_t fsfilcnt64_t;
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h" 1 3 4
+# 77 "/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h" 1 3 4
+# 21 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h" 2 3 4
+# 65 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h" 3 4
+struct __pthread_rwlock_arch_t
+{
+  unsigned int __readers;
+  unsigned int __writers;
+  unsigned int __wrphase_futex;
+  unsigned int __writers_futex;
+  unsigned int __pad3;
+  unsigned int __pad4;
+
+  int __cur_writer;
+  int __shared;
+  signed char __rwelision;
+
+
+
+
+  unsigned char __pad1[7];
+
+
+  unsigned long int __pad2;
+
+
+  unsigned int __flags;
+# 99 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h" 3 4
 };
-# 389 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-struct radvisory {
- off_t ra_offset;
- int ra_count;
-};
-# 402 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-typedef struct fsignatures {
- off_t fs_file_start;
- void *fs_blob_start;
- size_t fs_blob_size;
+# 78 "/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h" 2 3 4
 
 
 
- size_t fs_fsignatures_size;
- char fs_cdhash[20];
- int fs_hash_type;
-} fsignatures_t;
 
-typedef struct fsupplement {
- off_t fs_file_start;
- off_t fs_blob_start;
- size_t fs_blob_size;
- int fs_orig_fd;
-} fsupplement_t;
-# 433 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-typedef struct fchecklv {
- off_t lv_file_start;
- size_t lv_error_message_size;
- void *lv_error_message;
-} fchecklv_t;
-# 447 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-typedef struct fgetsigsinfo {
- off_t fg_file_start;
- int fg_info_request;
- int fg_sig_is_platform;
-} fgetsigsinfo_t;
-# 462 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-typedef struct fstore {
- unsigned int fst_flags;
- int fst_posmode;
- off_t fst_offset;
- off_t fst_length;
- off_t fst_bytesalloc;
-} fstore_t;
+typedef struct __pthread_internal_list
+{
+  struct __pthread_internal_list *__prev;
+  struct __pthread_internal_list *__next;
+} __pthread_list_t;
+# 118 "/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h" 3 4
+struct __pthread_mutex_s
+{
+  int __lock ;
+  unsigned int __count;
+  int __owner;
 
-
-typedef struct fpunchhole {
- unsigned int fp_flags;
- unsigned int reserved;
- off_t fp_offset;
- off_t fp_length;
-} fpunchhole_t;
-
-
-typedef struct ftrimactivefile {
- off_t fta_offset;
- off_t fta_length;
-} ftrimactivefile_t;
-
-
-typedef struct fspecread {
- unsigned int fsr_flags;
- unsigned int reserved;
- off_t fsr_offset;
- off_t fsr_length;
-} fspecread_t;
+  unsigned int __nusers;
+# 148 "/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h" 3 4
+  int __kind;
+ 
 
 
 
-typedef struct fbootstraptransfer {
- off_t fbt_offset;
- size_t fbt_length;
- void *fbt_buffer;
-} fbootstraptransfer_t;
-# 522 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-#pragma pack(4)
 
-struct log2phys {
- unsigned int l2p_flags;
- off_t l2p_contigbytes;
-
-
- off_t l2p_devoffset;
-
-
+  short __spins; short __elision;
+  __pthread_list_t __list;
+# 165 "/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h" 3 4
+ 
 };
 
-#pragma pack()
-# 545 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_filesec_t.h" 1 3 4
-# 30 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_filesec_t.h" 3 4
-struct _filesec;
-typedef struct _filesec *filesec_t;
-# 546 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/fcntl.h" 2 3 4
-
-typedef enum {
- FILESEC_OWNER = 1,
- FILESEC_GROUP = 2,
- FILESEC_UUID = 3,
- FILESEC_MODE = 4,
- FILESEC_ACL = 5,
- FILESEC_GRPUUID = 6,
-
-
- FILESEC_ACL_RAW = 100,
- FILESEC_ACL_ALLOCSIZE = 101
-} filesec_property_t;
 
 
 
-
-
-
-int open(const char *, int, ...) __asm("_" "open" );
-
-int openat(int, const char *, int, ...) __asm("_" "openat" ) __attribute__((availability(macosx,introduced=10.10)));
-
-int creat(const char *, mode_t) __asm("_" "creat" );
-int fcntl(int, int, ...) __asm("_" "fcntl" );
-
-
-int openx_np(const char *, int, filesec_t);
-
-
-
-
-int open_dprotected_np( const char *, int, int, int, ...);
-int flock(int, int);
-filesec_t filesec_init(void);
-filesec_t filesec_dup(filesec_t);
-void filesec_free(filesec_t);
-int filesec_get_property(filesec_t, filesec_property_t, void *);
-int filesec_query_property(filesec_t, filesec_property_t, int *);
-int filesec_set_property(filesec_t, filesec_property_t, const void *);
-int filesec_unset_property(filesec_t, filesec_property_t) __attribute__((availability(macosx,introduced=10.6)));
-# 24 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/fcntl.h" 2 3 4
-# 39 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/setjmp.h" 1 3 4
-# 79 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/setjmp.h" 3 4
-typedef int jmp_buf[((14 + 8 + 2) * 2)];
-typedef int sigjmp_buf[((14 + 8 + 2) * 2) + 1];
-
-
-
-
-
-
-extern int setjmp(jmp_buf);
-extern void longjmp(jmp_buf, int) __attribute__((__noreturn__));
-
-
-int _setjmp(jmp_buf);
-void _longjmp(jmp_buf, int) __attribute__((__noreturn__));
-int sigsetjmp(sigjmp_buf, int);
-void siglongjmp(sigjmp_buf, int) __attribute__((__noreturn__));
-
-
-
-void longjmperror(void);
-# 40 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/time.h" 1 3 4
-# 69 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/time.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_clock_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_clock_t.h" 3 4
-typedef __darwin_clock_t clock_t;
-# 70 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/time.h" 2 3 4
-
-
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_time_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_time_t.h" 3 4
-typedef __darwin_time_t time_t;
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/time.h" 2 3 4
-
-
-struct tm {
- int tm_sec;
- int tm_min;
- int tm_hour;
- int tm_mday;
- int tm_mon;
- int tm_year;
- int tm_wday;
- int tm_yday;
- int tm_isdst;
- long tm_gmtoff;
- char *tm_zone;
+struct __pthread_cond_s
+{
+  union
+  {
+    unsigned long long int __wseq;
+    struct
+    {
+      unsigned int __low;
+      unsigned int __high;
+    } __wseq32;
+  };
+  union
+  {
+    unsigned long long int __g1_start;
+    struct
+    {
+      unsigned int __low;
+      unsigned int __high;
+    } __g1_start32;
+  };
+  unsigned int __g_refs[2] ;
+  unsigned int __g_size[2];
+  unsigned int __g1_orig_size;
+  unsigned int __wrefs;
+  unsigned int __g_signals[2];
 };
-# 98 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/time.h" 3 4
-extern char *tzname[];
+# 24 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 2 3 4
 
 
-extern int getdate_err;
 
-extern long timezone __asm("_" "timezone" );
+typedef unsigned long int pthread_t;
+
+
+
+
+typedef union
+{
+  char __size[4];
+  int __align;
+} pthread_mutexattr_t;
+
+
+
+
+typedef union
+{
+  char __size[4];
+  int __align;
+} pthread_condattr_t;
+
+
+
+typedef unsigned int pthread_key_t;
+
+
+
+typedef int pthread_once_t;
+
+
+union pthread_attr_t
+{
+  char __size[56];
+  long int __align;
+};
+
+typedef union pthread_attr_t pthread_attr_t;
+
+
+
+
+typedef union
+{
+  struct __pthread_mutex_s __data;
+  char __size[40];
+  long int __align;
+} pthread_mutex_t;
+
+
+typedef union
+{
+  struct __pthread_cond_s __data;
+  char __size[48];
+  long long int __align;
+} pthread_cond_t;
+
+
+
+
+
+typedef union
+{
+  struct __pthread_rwlock_arch_t __data;
+  char __size[56];
+  long int __align;
+} pthread_rwlock_t;
+
+typedef union
+{
+  char __size[8];
+  long int __align;
+} pthread_rwlockattr_t;
+
+
+
+
+
+typedef volatile int pthread_spinlock_t;
+
+
+
+
+typedef union
+{
+  char __size[32];
+  long int __align;
+} pthread_barrier_t;
+
+typedef union
+{
+  char __size[4];
+  int __align;
+} pthread_barrierattr_t;
+# 245 "/usr/include/x86_64-linux-gnu/sys/types.h" 2 3 4
+
+
+
+# 395 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+
+
+extern long int random (void) ;
+
+
+extern void srandom (unsigned int __seed) ;
+
+
+
+
+
+extern char *initstate (unsigned int __seed, char *__statebuf,
+   size_t __statelen) ;
+
+
+
+extern char *setstate (char *__statebuf) ;
+
+
+
+
+
+
+
+struct random_data
+  {
+    int32_t *fptr;
+    int32_t *rptr;
+    int32_t *state;
+    int rand_type;
+    int rand_deg;
+    int rand_sep;
+    int32_t *end_ptr;
+  };
+
+extern int random_r (struct random_data *restrict __buf,
+       int32_t *restrict __result) ;
+
+extern int srandom_r (unsigned int __seed, struct random_data *__buf)
+     ;
+
+extern int initstate_r (unsigned int __seed, char *restrict __statebuf,
+   size_t __statelen,
+   struct random_data *restrict __buf)
+     ;
+
+extern int setstate_r (char *restrict __statebuf,
+         struct random_data *restrict __buf)
+     ;
+
+
+
+
+
+extern int rand (void) ;
+
+extern void srand (unsigned int __seed) ;
+
+
+
+extern int rand_r (unsigned int *__seed) ;
+
+
+
+
+
+
+
+extern double drand48 (void) ;
+extern double erand48 (unsigned short int __xsubi[3]) ;
+
+
+extern long int lrand48 (void) ;
+extern long int nrand48 (unsigned short int __xsubi[3])
+     ;
+
+
+extern long int mrand48 (void) ;
+extern long int jrand48 (unsigned short int __xsubi[3])
+     ;
+
+
+extern void srand48 (long int __seedval) ;
+extern unsigned short int *seed48 (unsigned short int __seed16v[3])
+     ;
+extern void lcong48 (unsigned short int __param[7]) ;
+
+
+
+
+
+struct drand48_data
+  {
+    unsigned short int __x[3];
+    unsigned short int __old_x[3];
+    unsigned short int __c;
+    unsigned short int __init;
+    unsigned long long int __a;
+
+  };
+
+
+extern int drand48_r (struct drand48_data *restrict __buffer,
+        double *restrict __result) ;
+extern int erand48_r (unsigned short int __xsubi[3],
+        struct drand48_data *restrict __buffer,
+        double *restrict __result) ;
+
+
+extern int lrand48_r (struct drand48_data *restrict __buffer,
+        long int *restrict __result)
+     ;
+extern int nrand48_r (unsigned short int __xsubi[3],
+        struct drand48_data *restrict __buffer,
+        long int *restrict __result)
+     ;
+
+
+extern int mrand48_r (struct drand48_data *restrict __buffer,
+        long int *restrict __result)
+     ;
+extern int jrand48_r (unsigned short int __xsubi[3],
+        struct drand48_data *restrict __buffer,
+        long int *restrict __result)
+     ;
+
+
+extern int srand48_r (long int __seedval, struct drand48_data *__buffer)
+     ;
+
+extern int seed48_r (unsigned short int __seed16v[3],
+       struct drand48_data *__buffer) ;
+
+extern int lcong48_r (unsigned short int __param[7],
+        struct drand48_data *__buffer)
+     ;
+
+
+
+
+extern void *malloc (size_t __size) ;
+
+extern void *calloc (size_t __nmemb, size_t __size)
+     ;
+
+
+
+
+
+
+extern void *realloc (void *__ptr, size_t __size)
+     ;
+
+
+
+
+
+
+
+extern void *reallocarray (void *__ptr, size_t __nmemb, size_t __size)
+     ;
+
+
+
+extern void free (void *__ptr) ;
+
+
+# 1 "/usr/include/alloca.h" 1 3 4
+# 24 "/usr/include/alloca.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 25 "/usr/include/alloca.h" 2 3 4
+
+
+
+
+
+
+
+extern void *alloca (size_t __size) ;
+
+
+
+
+
+
+# 567 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+
+extern void *valloc (size_t __size) ;
+
+
+
+
+extern int posix_memalign (void **__memptr, size_t __alignment, size_t __size)
+     ;
+
+
+
+
+extern void *aligned_alloc (size_t __alignment, size_t __size)
+     ;
+
+
+
+extern void abort (void) ;
+
+
+
+extern int atexit (void (*__func) (void)) ;
+
+
+
+
+
+
+
+extern int at_quick_exit (void (*__func) (void)) ;
+
+
+
+
+
+
+extern int on_exit (void (*__func) (int __status, void *__arg), void *__arg)
+     ;
+
+
+
+
+
+extern void exit (int __status) ;
+
+
+
+
+
+extern void quick_exit (int __status) ;
+
+
+
+
+
+extern void _Exit (int __status) ;
+
+
+
+
+extern char *getenv (const char *__name) ;
+
+
+
+
+extern char *secure_getenv (const char *__name)
+     ;
+
+
+
+
+
+
+extern int putenv (char *__string) ;
+
+
+
+
+
+extern int setenv (const char *__name, const char *__value, int __replace)
+     ;
+
+
+extern int unsetenv (const char *__name) ;
+
+
+
+
+
+
+extern int clearenv (void) ;
+# 672 "/usr/include/stdlib.h" 3 4
+extern char *mktemp (char *__template) ;
+# 685 "/usr/include/stdlib.h" 3 4
+extern int mkstemp (char *__template) ;
+# 695 "/usr/include/stdlib.h" 3 4
+extern int mkstemp64 (char *__template) ;
+# 707 "/usr/include/stdlib.h" 3 4
+extern int mkstemps (char *__template, int __suffixlen) ;
+# 717 "/usr/include/stdlib.h" 3 4
+extern int mkstemps64 (char *__template, int __suffixlen)
+     ;
+# 728 "/usr/include/stdlib.h" 3 4
+extern char *mkdtemp (char *__template) ;
+# 739 "/usr/include/stdlib.h" 3 4
+extern int mkostemp (char *__template, int __flags) ;
+# 749 "/usr/include/stdlib.h" 3 4
+extern int mkostemp64 (char *__template, int __flags) ;
+# 759 "/usr/include/stdlib.h" 3 4
+extern int mkostemps (char *__template, int __suffixlen, int __flags)
+     ;
+# 771 "/usr/include/stdlib.h" 3 4
+extern int mkostemps64 (char *__template, int __suffixlen, int __flags)
+     ;
+# 781 "/usr/include/stdlib.h" 3 4
+extern int system (const char *__command) ;
+
+
+
+
+
+extern char *canonicalize_file_name (const char *__name)
+     ;
+# 797 "/usr/include/stdlib.h" 3 4
+extern char *realpath (const char *restrict __name,
+         char *restrict __resolved) ;
+
+
+
+
+
+
+typedef int (*__compar_fn_t) (const void *, const void *);
+
+
+typedef __compar_fn_t comparison_fn_t;
+
+
+
+typedef int (*__compar_d_fn_t) (const void *, const void *, void *);
+
+
+
+
+extern void *bsearch (const void *__key, const void *__base,
+        size_t __nmemb, size_t __size, __compar_fn_t __compar)
+     ;
+
+
+
+
+
+
+
+extern void qsort (void *__base, size_t __nmemb, size_t __size,
+     __compar_fn_t __compar) ;
+
+extern void qsort_r (void *__base, size_t __nmemb, size_t __size,
+       __compar_d_fn_t __compar, void *__arg)
+  ;
+
+
+
+
+extern int abs (int __x) ;
+extern long int labs (long int __x) ;
+
+
+ extern long long int llabs (long long int __x)
+     ;
+
+
+
+
+
+
+extern div_t div (int __numer, int __denom)
+     ;
+extern ldiv_t ldiv (long int __numer, long int __denom)
+     ;
+
+
+ extern lldiv_t lldiv (long long int __numer,
+        long long int __denom)
+     ;
+# 869 "/usr/include/stdlib.h" 3 4
+extern char *ecvt (double __value, int __ndigit, int *restrict __decpt,
+     int *restrict __sign) ;
+
+
+
+
+extern char *fcvt (double __value, int __ndigit, int *restrict __decpt,
+     int *restrict __sign) ;
+
+
+
+
+extern char *gcvt (double __value, int __ndigit, char *__buf)
+     ;
+
+
+
+
+extern char *qecvt (long double __value, int __ndigit,
+      int *restrict __decpt, int *restrict __sign)
+     ;
+extern char *qfcvt (long double __value, int __ndigit,
+      int *restrict __decpt, int *restrict __sign)
+     ;
+extern char *qgcvt (long double __value, int __ndigit, char *__buf)
+     ;
+
+
+
+
+extern int ecvt_r (double __value, int __ndigit, int *restrict __decpt,
+     int *restrict __sign, char *restrict __buf,
+     size_t __len) ;
+extern int fcvt_r (double __value, int __ndigit, int *restrict __decpt,
+     int *restrict __sign, char *restrict __buf,
+     size_t __len) ;
+
+extern int qecvt_r (long double __value, int __ndigit,
+      int *restrict __decpt, int *restrict __sign,
+      char *restrict __buf, size_t __len)
+     ;
+extern int qfcvt_r (long double __value, int __ndigit,
+      int *restrict __decpt, int *restrict __sign,
+      char *restrict __buf, size_t __len)
+     ;
+
+
+
+
+
+extern int mblen (const char *__s, size_t __n) ;
+
+
+extern int mbtowc (wchar_t *restrict __pwc,
+     const char *restrict __s, size_t __n) ;
+
+
+extern int wctomb (char *__s, wchar_t __wchar) ;
+
+
+
+extern size_t mbstowcs (wchar_t *restrict __pwcs,
+   const char *restrict __s, size_t __n) ;
+
+extern size_t wcstombs (char *restrict __s,
+   const wchar_t *restrict __pwcs, size_t __n)
+     ;
+
+
+
+
+
+
+
+extern int rpmatch (const char *__response) ;
+# 954 "/usr/include/stdlib.h" 3 4
+extern int getsubopt (char **restrict __optionp,
+        char *const *restrict __tokens,
+        char **restrict __valuep)
+     ;
+
+
+
+
+
+
+
+extern int posix_openpt (int __oflag) ;
+
+
+
+
+
+
+
+extern int grantpt (int __fd) ;
+
+
+
+extern int unlockpt (int __fd) ;
+
+
+
+
+extern char *ptsname (int __fd) ;
+
+
+
+
+
+
+extern int ptsname_r (int __fd, char *__buf, size_t __buflen)
+     ;
+
+
+extern int getpt (void);
+
+
+
+
+
+
+extern int getloadavg (double __loadavg[], int __nelem)
+     ;
+# 1010 "/usr/include/stdlib.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdlib-float.h" 1 3 4
+# 1011 "/usr/include/stdlib.h" 2 3 4
+# 1020 "/usr/include/stdlib.h" 3 4
+
+# 32 "tcc.h" 2
+# 1 "/usr/include/stdio.h" 1 3 4
+# 27 "/usr/include/stdio.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
+# 28 "/usr/include/stdio.h" 2 3 4
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 34 "/usr/include/stdio.h" 2 3 4
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stdarg.h" 1 3 4
+# 40 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stdarg.h" 3 4
+typedef __builtin_va_list __gnuc_va_list;
+# 37 "/usr/include/stdio.h" 2 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h" 1 3 4
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h" 1 3 4
+# 13 "/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h" 3 4
+typedef struct
+{
+  int __count;
+  union
+  {
+    unsigned int __wch;
+    char __wchb[4];
+  } __value;
+} __mbstate_t;
+# 6 "/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h" 2 3 4
+
+
+
+
+typedef struct _G_fpos_t
+{
+  __off_t __pos;
+  __mbstate_t __state;
+} __fpos_t;
+# 40 "/usr/include/stdio.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h" 1 3 4
+# 10 "/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h" 3 4
+typedef struct _G_fpos64_t
+{
+  __off64_t __pos;
+  __mbstate_t __state;
+} __fpos64_t;
+# 41 "/usr/include/stdio.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/__FILE.h" 1 3 4
+
+
+
+struct _IO_FILE;
+typedef struct _IO_FILE __FILE;
+# 42 "/usr/include/stdio.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/FILE.h" 1 3 4
+
+
+
+struct _IO_FILE;
+
+
+typedef struct _IO_FILE FILE;
+# 43 "/usr/include/stdio.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h" 1 3 4
+# 35 "/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h" 3 4
+struct _IO_FILE;
+struct _IO_marker;
+struct _IO_codecvt;
+struct _IO_wide_data;
+
+
+
+
+typedef void _IO_lock_t;
+
+
+
+
+
+struct _IO_FILE
+{
+  int _flags;
+
+
+  char *_IO_read_ptr;
+  char *_IO_read_end;
+  char *_IO_read_base;
+  char *_IO_write_base;
+  char *_IO_write_ptr;
+  char *_IO_write_end;
+  char *_IO_buf_base;
+  char *_IO_buf_end;
+
+
+  char *_IO_save_base;
+  char *_IO_backup_base;
+  char *_IO_save_end;
+
+  struct _IO_marker *_markers;
+
+  struct _IO_FILE *_chain;
+
+  int _fileno;
+  int _flags2;
+  __off_t _old_offset;
+
+
+  unsigned short _cur_column;
+  signed char _vtable_offset;
+  char _shortbuf[1];
+
+  _IO_lock_t *_lock;
+
+
+
+
+
+
+
+  __off64_t _offset;
+
+  struct _IO_codecvt *_codecvt;
+  struct _IO_wide_data *_wide_data;
+  struct _IO_FILE *_freeres_list;
+  void *_freeres_buf;
+  size_t __pad5;
+  int _mode;
+
+  char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
+};
+# 44 "/usr/include/stdio.h" 2 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h" 3 4
+typedef __ssize_t cookie_read_function_t (void *__cookie, char *__buf,
+                                          size_t __nbytes);
+
+
+
+
+
+
+
+typedef __ssize_t cookie_write_function_t (void *__cookie, const char *__buf,
+                                           size_t __nbytes);
+
+
+
+
+
+
+
+typedef int cookie_seek_function_t (void *__cookie, __off64_t *__pos, int __w);
+
+
+typedef int cookie_close_function_t (void *__cookie);
+
+
+
+
+
+
+typedef struct _IO_cookie_io_functions_t
+{
+  cookie_read_function_t *read;
+  cookie_write_function_t *write;
+  cookie_seek_function_t *seek;
+  cookie_close_function_t *close;
+} cookie_io_functions_t;
+# 47 "/usr/include/stdio.h" 2 3 4
+# 56 "/usr/include/stdio.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stdarg.h" 1 3 4
+# 99 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stdarg.h" 3 4
+typedef __gnuc_va_list va_list;
+# 57 "/usr/include/stdio.h" 2 3 4
+# 84 "/usr/include/stdio.h" 3 4
+typedef __fpos_t fpos_t;
+
+
+
+
+typedef __fpos64_t fpos64_t;
+# 133 "/usr/include/stdio.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdio_lim.h" 1 3 4
+# 134 "/usr/include/stdio.h" 2 3 4
+
+
+
+extern FILE *stdin;
+extern FILE *stdout;
+extern FILE *stderr;
+
+
+
+
+
+
+extern int remove (const char *__filename) ;
+
+extern int rename (const char *__old, const char *__new) ;
+
+
+
+extern int renameat (int __oldfd, const char *__old, int __newfd,
+       const char *__new) ;
+# 164 "/usr/include/stdio.h" 3 4
+extern int renameat2 (int __oldfd, const char *__old, int __newfd,
+        const char *__new, unsigned int __flags) ;
+
+
+
+
+
+
+
+extern FILE *tmpfile (void) ;
+# 183 "/usr/include/stdio.h" 3 4
+extern FILE *tmpfile64 (void) ;
+
+
+
+extern char *tmpnam (char *__s) ;
+
+
+
+
+extern char *tmpnam_r (char *__s) ;
+# 204 "/usr/include/stdio.h" 3 4
+extern char *tempnam (const char *__dir, const char *__pfx)
+     ;
+
+
+
+
+
+
+
+extern int fclose (FILE *__stream);
+
+
+
+
+extern int fflush (FILE *__stream);
+# 227 "/usr/include/stdio.h" 3 4
+extern int fflush_unlocked (FILE *__stream);
+# 237 "/usr/include/stdio.h" 3 4
+extern int fcloseall (void);
+# 246 "/usr/include/stdio.h" 3 4
+extern FILE *fopen (const char *restrict __filename,
+      const char *restrict __modes) ;
+
+
+
+
+extern FILE *freopen (const char *restrict __filename,
+        const char *restrict __modes,
+        FILE *restrict __stream) ;
+# 270 "/usr/include/stdio.h" 3 4
+extern FILE *fopen64 (const char *restrict __filename,
+        const char *restrict __modes) ;
+extern FILE *freopen64 (const char *restrict __filename,
+   const char *restrict __modes,
+   FILE *restrict __stream) ;
+
+
+
+
+extern FILE *fdopen (int __fd, const char *__modes) ;
+
+
+
+
+
+extern FILE *fopencookie (void *restrict __magic_cookie,
+     const char *restrict __modes,
+     cookie_io_functions_t __io_funcs) ;
+
+
+
+
+extern FILE *fmemopen (void *__s, size_t __len, const char *__modes)
+  ;
+
+
+
+
+extern FILE *open_memstream (char **__bufloc, size_t *__sizeloc) ;
+
+
+
+
+
+extern void setbuf (FILE *restrict __stream, char *restrict __buf) ;
+
+
+
+extern int setvbuf (FILE *restrict __stream, char *restrict __buf,
+      int __modes, size_t __n) ;
+
+
+
+
+extern void setbuffer (FILE *restrict __stream, char *restrict __buf,
+         size_t __size) ;
+
+
+extern void setlinebuf (FILE *__stream) ;
+
+
+
+
+
+
+
+extern int fprintf (FILE *restrict __stream,
+      const char *restrict __format, ...);
+
+
+
+
+extern int printf (const char *restrict __format, ...);
+
+extern int sprintf (char *restrict __s,
+      const char *restrict __format, ...) ;
+
+
+
+
+
+extern int vfprintf (FILE *restrict __s, const char *restrict __format,
+       __gnuc_va_list __arg);
+
+
+
+
+extern int vprintf (const char *restrict __format, __gnuc_va_list __arg);
+
+extern int vsprintf (char *restrict __s, const char *restrict __format,
+       __gnuc_va_list __arg) ;
+
+
+
+extern int snprintf (char *restrict __s, size_t __maxlen,
+       const char *restrict __format, ...)
+     ;
+
+extern int vsnprintf (char *restrict __s, size_t __maxlen,
+        const char *restrict __format, __gnuc_va_list __arg)
+     ;
+
+
+
+
+
+extern int vasprintf (char **restrict __ptr, const char *restrict __f,
+        __gnuc_va_list __arg)
+     ;
+extern int __asprintf (char **restrict __ptr,
+         const char *restrict __fmt, ...)
+     ;
+extern int asprintf (char **restrict __ptr,
+       const char *restrict __fmt, ...)
+     ;
+
+
+
+
+extern int vdprintf (int __fd, const char *restrict __fmt,
+       __gnuc_va_list __arg)
+     ;
+extern int dprintf (int __fd, const char *restrict __fmt, ...)
+     ;
+
+
+
+
+
+
+
+extern int fscanf (FILE *restrict __stream,
+     const char *restrict __format, ...) ;
+
+
+
+
+extern int scanf (const char *restrict __format, ...) ;
+
+extern int sscanf (const char *restrict __s,
+     const char *restrict __format, ...) ;
+# 434 "/usr/include/stdio.h" 3 4
+extern int vfscanf (FILE *restrict __s, const char *restrict __format,
+      __gnuc_va_list __arg)
+     ;
+
+
+
+
+
+extern int vscanf (const char *restrict __format, __gnuc_va_list __arg)
+     ;
+
+
+extern int vsscanf (const char *restrict __s,
+      const char *restrict __format, __gnuc_va_list __arg)
+     ;
+# 491 "/usr/include/stdio.h" 3 4
+extern int fgetc (FILE *__stream);
+extern int getc (FILE *__stream);
+
+
+
+
+
+extern int getchar (void);
+
+
+
+
+
+
+extern int getc_unlocked (FILE *__stream);
+extern int getchar_unlocked (void);
+# 516 "/usr/include/stdio.h" 3 4
+extern int fgetc_unlocked (FILE *__stream);
+# 527 "/usr/include/stdio.h" 3 4
+extern int fputc (int __c, FILE *__stream);
+extern int putc (int __c, FILE *__stream);
+
+
+
+
+
+extern int putchar (int __c);
+# 543 "/usr/include/stdio.h" 3 4
+extern int fputc_unlocked (int __c, FILE *__stream);
+
+
+
+
+
+
+
+extern int putc_unlocked (int __c, FILE *__stream);
+extern int putchar_unlocked (int __c);
+
+
+
+
+
+
+extern int getw (FILE *__stream);
+
+
+extern int putw (int __w, FILE *__stream);
+
+
+
+
+
+
+
+extern char *fgets (char *restrict __s, int __n, FILE *restrict __stream)
+     ;
+# 593 "/usr/include/stdio.h" 3 4
+extern char *fgets_unlocked (char *restrict __s, int __n,
+        FILE *restrict __stream) ;
+# 609 "/usr/include/stdio.h" 3 4
+extern __ssize_t __getdelim (char **restrict __lineptr,
+                             size_t *restrict __n, int __delimiter,
+                             FILE *restrict __stream) ;
+extern __ssize_t getdelim (char **restrict __lineptr,
+                           size_t *restrict __n, int __delimiter,
+                           FILE *restrict __stream) ;
+
+
+
+
+
+
+
+extern __ssize_t getline (char **restrict __lineptr,
+                          size_t *restrict __n,
+                          FILE *restrict __stream) ;
+
+
+
+
+
+
+
+extern int fputs (const char *restrict __s, FILE *restrict __stream);
+
+
+
+
+
+extern int puts (const char *__s);
+
+
+
+
+
+
+extern int ungetc (int __c, FILE *__stream);
+
+
+
+
+
+
+extern size_t fread (void *restrict __ptr, size_t __size,
+       size_t __n, FILE *restrict __stream) ;
+
+
+
+
+extern size_t fwrite (const void *restrict __ptr, size_t __size,
+        size_t __n, FILE *restrict __s);
+# 668 "/usr/include/stdio.h" 3 4
+extern int fputs_unlocked (const char *restrict __s,
+      FILE *restrict __stream);
+# 679 "/usr/include/stdio.h" 3 4
+extern size_t fread_unlocked (void *restrict __ptr, size_t __size,
+         size_t __n, FILE *restrict __stream) ;
+extern size_t fwrite_unlocked (const void *restrict __ptr, size_t __size,
+          size_t __n, FILE *restrict __stream);
+
+
+
+
+
+
+
+extern int fseek (FILE *__stream, long int __off, int __whence);
+
+
+
+
+extern long int ftell (FILE *__stream) ;
+
+
+
+
+extern void rewind (FILE *__stream);
+# 713 "/usr/include/stdio.h" 3 4
+extern int fseeko (FILE *__stream, __off_t __off, int __whence);
+
+
+
+
+extern __off_t ftello (FILE *__stream) ;
+# 737 "/usr/include/stdio.h" 3 4
+extern int fgetpos (FILE *restrict __stream, fpos_t *restrict __pos);
+
+
+
+
+extern int fsetpos (FILE *__stream, const fpos_t *__pos);
+# 756 "/usr/include/stdio.h" 3 4
+extern int fseeko64 (FILE *__stream, __off64_t __off, int __whence);
+extern __off64_t ftello64 (FILE *__stream) ;
+extern int fgetpos64 (FILE *restrict __stream, fpos64_t *restrict __pos);
+extern int fsetpos64 (FILE *__stream, const fpos64_t *__pos);
+
+
+
+extern void clearerr (FILE *__stream) ;
+
+extern int feof (FILE *__stream) ;
+
+extern int ferror (FILE *__stream) ;
+
+
+
+extern void clearerr_unlocked (FILE *__stream) ;
+extern int feof_unlocked (FILE *__stream) ;
+extern int ferror_unlocked (FILE *__stream) ;
+
+
+
+
+
+
+
+extern void perror (const char *__s);
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/sys_errlist.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/bits/sys_errlist.h" 3 4
+extern int sys_nerr;
+extern const char *const sys_errlist[];
+
+
+extern int _sys_nerr;
+extern const char *const _sys_errlist[];
+# 788 "/usr/include/stdio.h" 2 3 4
+
+
+
+
+extern int fileno (FILE *__stream) ;
+
+
+
+
+extern int fileno_unlocked (FILE *__stream) ;
+# 806 "/usr/include/stdio.h" 3 4
+extern FILE *popen (const char *__command, const char *__modes) ;
+
+
+
+
+
+extern int pclose (FILE *__stream);
+
+
+
+
+
+extern char *ctermid (char *__s) ;
+
+
+
+
+
+extern char *cuserid (char *__s);
+
+
+
+
+struct obstack;
+
+
+extern int obstack_printf (struct obstack *restrict __obstack,
+      const char *restrict __format, ...)
+     ;
+extern int obstack_vprintf (struct obstack *restrict __obstack,
+       const char *restrict __format,
+       __gnuc_va_list __args)
+     ;
+
+
+
+
+
+
+
+extern void flockfile (FILE *__stream) ;
+
+
+
+extern int ftrylockfile (FILE *__stream) ;
+
+
+extern void funlockfile (FILE *__stream) ;
+# 864 "/usr/include/stdio.h" 3 4
+extern int __uflow (FILE *);
+extern int __overflow (FILE *, int);
+# 879 "/usr/include/stdio.h" 3 4
+
+# 33 "tcc.h" 2
+
+# 1 "/usr/include/string.h" 1 3 4
+# 26 "/usr/include/string.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
+# 27 "/usr/include/string.h" 2 3 4
+
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 34 "/usr/include/string.h" 2 3 4
+# 42 "/usr/include/string.h" 3 4
+extern void *memcpy (void *restrict __dest, const void *restrict __src,
+       size_t __n) ;
+
+
+extern void *memmove (void *__dest, const void *__src, size_t __n)
+     ;
+
+
+
+
+
+extern void *memccpy (void *restrict __dest, const void *restrict __src,
+        int __c, size_t __n)
+     ;
+
+
+
+
+extern void *memset (void *__s, int __c, size_t __n) ;
+
+
+extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+     ;
+# 90 "/usr/include/string.h" 3 4
+extern void *memchr (const void *__s, int __c, size_t __n)
+      ;
+# 103 "/usr/include/string.h" 3 4
+extern void *rawmemchr (const void *__s, int __c)
+     ;
+# 114 "/usr/include/string.h" 3 4
+extern void *memrchr (const void *__s, int __c, size_t __n)
+      ;
+
+
+
+
+
+extern char *strcpy (char *restrict __dest, const char *restrict __src)
+     ;
+
+extern char *strncpy (char *restrict __dest,
+        const char *restrict __src, size_t __n)
+     ;
+
+
+extern char *strcat (char *restrict __dest, const char *restrict __src)
+     ;
+
+extern char *strncat (char *restrict __dest, const char *restrict __src,
+        size_t __n) ;
+
+
+extern int strcmp (const char *__s1, const char *__s2)
+     ;
+
+extern int strncmp (const char *__s1, const char *__s2, size_t __n)
+     ;
+
+
+extern int strcoll (const char *__s1, const char *__s2)
+     ;
+
+extern size_t strxfrm (char *restrict __dest,
+         const char *restrict __src, size_t __n)
+     ;
+
+
+
+
+
+
+extern int strcoll_l (const char *__s1, const char *__s2, locale_t __l)
+     ;
+
+
+extern size_t strxfrm_l (char *__dest, const char *__src, size_t __n,
+    locale_t __l) ;
+
+
+
+
+
+extern char *strdup (const char *__s)
+     ;
+
+
+
+
+
+
+extern char *strndup (const char *__string, size_t __n)
+     ;
+# 225 "/usr/include/string.h" 3 4
+extern char *strchr (const char *__s, int __c)
+     ;
+# 252 "/usr/include/string.h" 3 4
+extern char *strrchr (const char *__s, int __c)
+     ;
+# 265 "/usr/include/string.h" 3 4
+extern char *strchrnul (const char *__s, int __c)
+     ;
+
+
+
+
+
+extern size_t strcspn (const char *__s, const char *__reject)
+     ;
+
+
+extern size_t strspn (const char *__s, const char *__accept)
+     ;
+# 302 "/usr/include/string.h" 3 4
+extern char *strpbrk (const char *__s, const char *__accept)
+     ;
+# 329 "/usr/include/string.h" 3 4
+extern char *strstr (const char *__haystack, const char *__needle)
+     ;
+
+
+
+
+extern char *strtok (char *restrict __s, const char *restrict __delim)
+     ;
+
+
+
+extern char *__strtok_r (char *restrict __s,
+    const char *restrict __delim,
+    char **restrict __save_ptr)
+     ;
+
+extern char *strtok_r (char *restrict __s, const char *restrict __delim,
+         char **restrict __save_ptr)
+     ;
+# 359 "/usr/include/string.h" 3 4
+extern char *strcasestr (const char *__haystack, const char *__needle)
+     ;
+
+
+
+
+
+
+
+extern void *memmem (const void *__haystack, size_t __haystacklen,
+       const void *__needle, size_t __needlelen)
+     ;
+
+
+
+extern void *__mempcpy (void *restrict __dest,
+   const void *restrict __src, size_t __n)
+     ;
+extern void *mempcpy (void *restrict __dest,
+        const void *restrict __src, size_t __n)
+     ;
+
+
+
+
+extern size_t strlen (const char *__s)
+     ;
+
+
+
+
+extern size_t strnlen (const char *__string, size_t __maxlen)
+     ;
+
+
+
+
+extern char *strerror (int __errnum) ;
+# 420 "/usr/include/string.h" 3 4
+extern char *strerror_r (int __errnum, char *__buf, size_t __buflen)
+     ;
+
+
+
+
+
+extern char *strerror_l (int __errnum, locale_t __l) ;
+
+
+
+# 1 "/usr/include/strings.h" 1 3 4
+# 23 "/usr/include/strings.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 24 "/usr/include/strings.h" 2 3 4
+
+
+
+
+
+
+
+
+
+
+extern int bcmp (const void *__s1, const void *__s2, size_t __n)
+     ;
+
+
+extern void bcopy (const void *__src, void *__dest, size_t __n)
+  ;
+
+
+extern void bzero (void *__s, size_t __n) ;
+# 68 "/usr/include/strings.h" 3 4
+extern char *index (const char *__s, int __c)
+     ;
+# 96 "/usr/include/strings.h" 3 4
+extern char *rindex (const char *__s, int __c)
+     ;
+
+
+
+
+
+
+extern int ffs (int __i) ;
+
+
+
+
+
+extern int ffsl (long int __l) ;
+ extern int ffsll (long long int __ll)
+     ;
+
+
+
+extern int strcasecmp (const char *__s1, const char *__s2)
+     ;
+
+
+extern int strncasecmp (const char *__s1, const char *__s2, size_t __n)
+     ;
+
+
+
+
+
+
+extern int strcasecmp_l (const char *__s1, const char *__s2, locale_t __loc)
+     ;
+
+
+
+extern int strncasecmp_l (const char *__s1, const char *__s2,
+     size_t __n, locale_t __loc)
+     ;
+
+
+
+# 432 "/usr/include/string.h" 2 3 4
+
+
+
+extern void explicit_bzero (void *__s, size_t __n) ;
+
+
+
+extern char *strsep (char **restrict __stringp,
+       const char *restrict __delim)
+     ;
+
+
+
+
+extern char *strsignal (int __sig) ;
+
+
+extern char *__stpcpy (char *restrict __dest, const char *restrict __src)
+     ;
+extern char *stpcpy (char *restrict __dest, const char *restrict __src)
+     ;
+
+
+
+extern char *__stpncpy (char *restrict __dest,
+   const char *restrict __src, size_t __n)
+     ;
+extern char *stpncpy (char *restrict __dest,
+        const char *restrict __src, size_t __n)
+     ;
+
+
+
+
+extern int strverscmp (const char *__s1, const char *__s2)
+     ;
+
+
+extern char *strfry (char *__string) ;
+
+
+extern void *memfrob (void *__s, size_t __n) ;
+# 486 "/usr/include/string.h" 3 4
+extern char *basename (const char *__filename) ;
+# 498 "/usr/include/string.h" 3 4
+
+# 35 "tcc.h" 2
+# 1 "/usr/include/errno.h" 1 3 4
+# 28 "/usr/include/errno.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/errno.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/bits/errno.h" 3 4
+# 1 "/usr/include/linux/errno.h" 1 3 4
+# 1 "/usr/include/x86_64-linux-gnu/asm/errno.h" 1 3 4
+# 1 "/usr/include/asm-generic/errno.h" 1 3 4
+
+
+
+
+# 1 "/usr/include/asm-generic/errno-base.h" 1 3 4
+# 6 "/usr/include/asm-generic/errno.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/asm/errno.h" 2 3 4
+# 1 "/usr/include/linux/errno.h" 2 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/errno.h" 2 3 4
+# 29 "/usr/include/errno.h" 2 3 4
+
+
+
+
+
+
+
+
+extern int *__errno_location (void) ;
+
+
+
+
+
+
+
+extern char *program_invocation_name;
+extern char *program_invocation_short_name;
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/error_t.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/types/error_t.h" 3 4
+typedef int error_t;
+# 49 "/usr/include/errno.h" 2 3 4
+
+
+
+
+# 36 "tcc.h" 2
+# 1 "/usr/include/math.h" 1 3 4
+# 27 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
+# 28 "/usr/include/math.h" 2 3 4
+
+
+
+
+
+
+
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/math-vector.h" 1 3 4
+# 25 "/usr/include/x86_64-linux-gnu/bits/math-vector.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/bits/math-vector.h" 2 3 4
+# 41 "/usr/include/math.h" 2 3 4
+# 138 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h" 1 3 4
+# 139 "/usr/include/math.h" 2 3 4
+# 149 "/usr/include/math.h" 3 4
+typedef float float_t;
+typedef double double_t;
+# 190 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/fp-logb.h" 1 3 4
+# 191 "/usr/include/math.h" 2 3 4
+# 233 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/fp-fast.h" 1 3 4
+# 234 "/usr/include/math.h" 2 3 4
+
+
+
+enum
+  {
+    FP_INT_UPWARD =
+
+      0,
+    FP_INT_DOWNWARD =
+
+      1,
+    FP_INT_TOWARDZERO =
+
+      2,
+    FP_INT_TONEARESTFROMZERO =
+
+      3,
+    FP_INT_TONEAREST =
+
+      4,
+  };
+# 289 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h" 1 3 4
+# 21 "/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h" 3 4
+extern int __fpclassify (double __value)
+     ;
+
+
+extern int __signbit (double __value)
+     ;
+
+
+
+extern int __isinf (double __value) ;
+
+
+extern int __finite (double __value) ;
+
+
+extern int __isnan (double __value) ;
+
+
+extern int __iseqsig (double __x, double __y) ;
+
+
+extern int __issignaling (double __value)
+     ;
+# 290 "/usr/include/math.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 1 3 4
+# 53 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern double acos (double __x) ; extern double __acos (double __x) ;
+
+extern double asin (double __x) ; extern double __asin (double __x) ;
+
+extern double atan (double __x) ; extern double __atan (double __x) ;
+
+extern double atan2 (double __y, double __x) ; extern double __atan2 (double __y, double __x) ;
+
+
+ extern double cos (double __x) ; extern double __cos (double __x) ;
+
+ extern double sin (double __x) ; extern double __sin (double __x) ;
+
+extern double tan (double __x) ; extern double __tan (double __x) ;
+
+
+
+
+extern double cosh (double __x) ; extern double __cosh (double __x) ;
+
+extern double sinh (double __x) ; extern double __sinh (double __x) ;
+
+extern double tanh (double __x) ; extern double __tanh (double __x) ;
+
+
+
+ extern void sincos (double __x, double *__sinx, double *__cosx) ; extern void __sincos (double __x, double *__sinx, double *__cosx)
+                                                        ;
+
+
+
+
+extern double acosh (double __x) ; extern double __acosh (double __x) ;
+
+extern double asinh (double __x) ; extern double __asinh (double __x) ;
+
+extern double atanh (double __x) ; extern double __atanh (double __x) ;
+
+
+
+
+
+ extern double exp (double __x) ; extern double __exp (double __x) ;
+
+
+extern double frexp (double __x, int *__exponent) ; extern double __frexp (double __x, int *__exponent) ;
+
+
+extern double ldexp (double __x, int __exponent) ; extern double __ldexp (double __x, int __exponent) ;
+
+
+ extern double log (double __x) ; extern double __log (double __x) ;
+
+
+extern double log10 (double __x) ; extern double __log10 (double __x) ;
+
+
+extern double modf (double __x, double *__iptr) ; extern double __modf (double __x, double *__iptr) ;
+
+
+
+extern double exp10 (double __x) ; extern double __exp10 (double __x) ;
+
+
+
+
+extern double expm1 (double __x) ; extern double __expm1 (double __x) ;
+
+
+extern double log1p (double __x) ; extern double __log1p (double __x) ;
+
+
+extern double logb (double __x) ; extern double __logb (double __x) ;
+
+
+
+
+extern double exp2 (double __x) ; extern double __exp2 (double __x) ;
+
+
+extern double log2 (double __x) ; extern double __log2 (double __x) ;
+
+
+
+
+
+
+ extern double pow (double __x, double __y) ; extern double __pow (double __x, double __y) ;
+
+
+extern double sqrt (double __x) ; extern double __sqrt (double __x) ;
+
+
+
+extern double hypot (double __x, double __y) ; extern double __hypot (double __x, double __y) ;
+
+
+
+
+extern double cbrt (double __x) ; extern double __cbrt (double __x) ;
+
+
+
+
+
+
+extern double ceil (double __x) ; extern double __ceil (double __x) ;
+
+
+extern double fabs (double __x) ; extern double __fabs (double __x) ;
+
+
+extern double floor (double __x) ; extern double __floor (double __x) ;
+
+
+extern double fmod (double __x, double __y) ; extern double __fmod (double __x, double __y) ;
+# 177 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern int isinf (double __value) ;
+
+
+
+
+extern int finite (double __value) ;
+
+
+extern double drem (double __x, double __y) ; extern double __drem (double __x, double __y) ;
+
+
+
+extern double significand (double __x) ; extern double __significand (double __x) ;
+
+
+
+
+
+
+extern double copysign (double __x, double __y) ; extern double __copysign (double __x, double __y) ;
+
+
+
+
+extern double nan (const char *__tagb) ; extern double __nan (const char *__tagb) ;
+# 211 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern int isnan (double __value) ;
+
+
+
+
+
+extern double j0 (double) ; extern double __j0 (double) ;
+extern double j1 (double) ; extern double __j1 (double) ;
+extern double jn (int, double) ; extern double __jn (int, double) ;
+extern double y0 (double) ; extern double __y0 (double) ;
+extern double y1 (double) ; extern double __y1 (double) ;
+extern double yn (int, double) ; extern double __yn (int, double) ;
+
+
+
+
+
+extern double erf (double) ; extern double __erf (double) ;
+extern double erfc (double) ; extern double __erfc (double) ;
+extern double lgamma (double) ; extern double __lgamma (double) ;
+
+
+
+
+extern double tgamma (double) ; extern double __tgamma (double) ;
+
+
+
+
+
+extern double gamma (double) ; extern double __gamma (double) ;
+
+
+
+
+
+
+
+extern double lgamma_r (double, int *__signgamp) ; extern double __lgamma_r (double, int *__signgamp) ;
+
+
+
+
+
+
+extern double rint (double __x) ; extern double __rint (double __x) ;
+
+
+extern double nextafter (double __x, double __y) ; extern double __nextafter (double __x, double __y) ;
+
+extern double nexttoward (double __x, long double __y) ; extern double __nexttoward (double __x, long double __y) ;
+
+
+
+
+extern double nextdown (double __x) ; extern double __nextdown (double __x) ;
+
+extern double nextup (double __x) ; extern double __nextup (double __x) ;
+
+
+
+extern double remainder (double __x, double __y) ; extern double __remainder (double __x, double __y) ;
+
+
+
+extern double scalbn (double __x, int __n) ; extern double __scalbn (double __x, int __n) ;
+
+
+
+extern int ilogb (double __x) ; extern int __ilogb (double __x) ;
+
+
+
+
+extern long int llogb (double __x) ; extern long int __llogb (double __x) ;
+
+
+
+
+extern double scalbln (double __x, long int __n) ; extern double __scalbln (double __x, long int __n) ;
+
+
+
+extern double nearbyint (double __x) ; extern double __nearbyint (double __x) ;
+
+
+
+extern double round (double __x) ; extern double __round (double __x) ;
+
+
+
+extern double trunc (double __x) ; extern double __trunc (double __x) ;
+
+
+
+
+extern double remquo (double __x, double __y, int *__quo) ; extern double __remquo (double __x, double __y, int *__quo) ;
+
+
+
+
+
+
+extern long int lrint (double __x) ; extern long int __lrint (double __x) ;
+
+extern long long int llrint (double __x) ; extern long long int __llrint (double __x) ;
+
+
+
+extern long int lround (double __x) ; extern long int __lround (double __x) ;
+
+extern long long int llround (double __x) ; extern long long int __llround (double __x) ;
+
+
+
+extern double fdim (double __x, double __y) ; extern double __fdim (double __x, double __y) ;
+
+
+extern double fmax (double __x, double __y) ; extern double __fmax (double __x, double __y) ;
+
+
+extern double fmin (double __x, double __y) ; extern double __fmin (double __x, double __y) ;
+
+
+extern double fma (double __x, double __y, double __z) ; extern double __fma (double __x, double __y, double __z) ;
+
+
+
+
+extern double roundeven (double __x) ; extern double __roundeven (double __x) ;
+
+
+
+extern __intmax_t fromfp (double __x, int __round, unsigned int __width) ; extern __intmax_t __fromfp (double __x, int __round, unsigned int __width)
+                            ;
+
+
+
+extern __uintmax_t ufromfp (double __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfp (double __x, int __round, unsigned int __width)
+                              ;
+
+
+
+
+extern __intmax_t fromfpx (double __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpx (double __x, int __round, unsigned int __width)
+                             ;
+
+
+
+
+extern __uintmax_t ufromfpx (double __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpx (double __x, int __round, unsigned int __width)
+                               ;
+
+
+extern double fmaxmag (double __x, double __y) ; extern double __fmaxmag (double __x, double __y) ;
+
+
+extern double fminmag (double __x, double __y) ; extern double __fminmag (double __x, double __y) ;
+
+
+extern int totalorder (double __x, double __y)
+     ;
+
+
+extern int totalordermag (double __x, double __y)
+     ;
+
+
+extern int canonicalize (double *__cx, const double *__x) ;
+
+
+extern double getpayload (const double *__x) ; extern double __getpayload (const double *__x) ;
+
+
+extern int setpayload (double *__x, double __payload) ;
+
+
+extern int setpayloadsig (double *__x, double __payload) ;
+
+
+
+
+
+
+
+extern double scalb (double __x, double __n) ; extern double __scalb (double __x, double __n) ;
+# 291 "/usr/include/math.h" 2 3 4
+# 306 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h" 1 3 4
+# 21 "/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h" 3 4
+extern int __fpclassifyf (float __value)
+     ;
+
+
+extern int __signbitf (float __value)
+     ;
+
+
+
+extern int __isinff (float __value) ;
+
+
+extern int __finitef (float __value) ;
+
+
+extern int __isnanf (float __value) ;
+
+
+extern int __iseqsigf (float __x, float __y) ;
+
+
+extern int __issignalingf (float __value)
+     ;
+# 307 "/usr/include/math.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 1 3 4
+# 53 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern float acosf (float __x) ; extern float __acosf (float __x) ;
+
+extern float asinf (float __x) ; extern float __asinf (float __x) ;
+
+extern float atanf (float __x) ; extern float __atanf (float __x) ;
+
+extern float atan2f (float __y, float __x) ; extern float __atan2f (float __y, float __x) ;
+
+
+ extern float cosf (float __x) ; extern float __cosf (float __x) ;
+
+ extern float sinf (float __x) ; extern float __sinf (float __x) ;
+
+extern float tanf (float __x) ; extern float __tanf (float __x) ;
+
+
+
+
+extern float coshf (float __x) ; extern float __coshf (float __x) ;
+
+extern float sinhf (float __x) ; extern float __sinhf (float __x) ;
+
+extern float tanhf (float __x) ; extern float __tanhf (float __x) ;
+
+
+
+ extern void sincosf (float __x, float *__sinx, float *__cosx) ; extern void __sincosf (float __x, float *__sinx, float *__cosx)
+                                                        ;
+
+
+
+
+extern float acoshf (float __x) ; extern float __acoshf (float __x) ;
+
+extern float asinhf (float __x) ; extern float __asinhf (float __x) ;
+
+extern float atanhf (float __x) ; extern float __atanhf (float __x) ;
+
+
+
+
+
+ extern float expf (float __x) ; extern float __expf (float __x) ;
+
+
+extern float frexpf (float __x, int *__exponent) ; extern float __frexpf (float __x, int *__exponent) ;
+
+
+extern float ldexpf (float __x, int __exponent) ; extern float __ldexpf (float __x, int __exponent) ;
+
+
+ extern float logf (float __x) ; extern float __logf (float __x) ;
+
+
+extern float log10f (float __x) ; extern float __log10f (float __x) ;
+
+
+extern float modff (float __x, float *__iptr) ; extern float __modff (float __x, float *__iptr) ;
+
+
+
+extern float exp10f (float __x) ; extern float __exp10f (float __x) ;
+
+
+
+
+extern float expm1f (float __x) ; extern float __expm1f (float __x) ;
+
+
+extern float log1pf (float __x) ; extern float __log1pf (float __x) ;
+
+
+extern float logbf (float __x) ; extern float __logbf (float __x) ;
+
+
+
+
+extern float exp2f (float __x) ; extern float __exp2f (float __x) ;
+
+
+extern float log2f (float __x) ; extern float __log2f (float __x) ;
+
+
+
+
+
+
+ extern float powf (float __x, float __y) ; extern float __powf (float __x, float __y) ;
+
+
+extern float sqrtf (float __x) ; extern float __sqrtf (float __x) ;
+
+
+
+extern float hypotf (float __x, float __y) ; extern float __hypotf (float __x, float __y) ;
+
+
+
+
+extern float cbrtf (float __x) ; extern float __cbrtf (float __x) ;
+
+
+
+
+
+
+extern float ceilf (float __x) ; extern float __ceilf (float __x) ;
+
+
+extern float fabsf (float __x) ; extern float __fabsf (float __x) ;
+
+
+extern float floorf (float __x) ; extern float __floorf (float __x) ;
+
+
+extern float fmodf (float __x, float __y) ; extern float __fmodf (float __x, float __y) ;
+# 177 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern int isinff (float __value) ;
+
+
+
+
+extern int finitef (float __value) ;
+
+
+extern float dremf (float __x, float __y) ; extern float __dremf (float __x, float __y) ;
+
+
+
+extern float significandf (float __x) ; extern float __significandf (float __x) ;
+
+
+
+
+
+
+extern float copysignf (float __x, float __y) ; extern float __copysignf (float __x, float __y) ;
+
+
+
+
+extern float nanf (const char *__tagb) ; extern float __nanf (const char *__tagb) ;
+# 211 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern int isnanf (float __value) ;
+
+
+
+
+
+extern float j0f (float) ; extern float __j0f (float) ;
+extern float j1f (float) ; extern float __j1f (float) ;
+extern float jnf (int, float) ; extern float __jnf (int, float) ;
+extern float y0f (float) ; extern float __y0f (float) ;
+extern float y1f (float) ; extern float __y1f (float) ;
+extern float ynf (int, float) ; extern float __ynf (int, float) ;
+
+
+
+
+
+extern float erff (float) ; extern float __erff (float) ;
+extern float erfcf (float) ; extern float __erfcf (float) ;
+extern float lgammaf (float) ; extern float __lgammaf (float) ;
+
+
+
+
+extern float tgammaf (float) ; extern float __tgammaf (float) ;
+
+
+
+
+
+extern float gammaf (float) ; extern float __gammaf (float) ;
+
+
+
+
+
+
+
+extern float lgammaf_r (float, int *__signgamp) ; extern float __lgammaf_r (float, int *__signgamp) ;
+
+
+
+
+
+
+extern float rintf (float __x) ; extern float __rintf (float __x) ;
+
+
+extern float nextafterf (float __x, float __y) ; extern float __nextafterf (float __x, float __y) ;
+
+extern float nexttowardf (float __x, long double __y) ; extern float __nexttowardf (float __x, long double __y) ;
+
+
+
+
+extern float nextdownf (float __x) ; extern float __nextdownf (float __x) ;
+
+extern float nextupf (float __x) ; extern float __nextupf (float __x) ;
+
+
+
+extern float remainderf (float __x, float __y) ; extern float __remainderf (float __x, float __y) ;
+
+
+
+extern float scalbnf (float __x, int __n) ; extern float __scalbnf (float __x, int __n) ;
+
+
+
+extern int ilogbf (float __x) ; extern int __ilogbf (float __x) ;
+
+
+
+
+extern long int llogbf (float __x) ; extern long int __llogbf (float __x) ;
+
+
+
+
+extern float scalblnf (float __x, long int __n) ; extern float __scalblnf (float __x, long int __n) ;
+
+
+
+extern float nearbyintf (float __x) ; extern float __nearbyintf (float __x) ;
+
+
+
+extern float roundf (float __x) ; extern float __roundf (float __x) ;
+
+
+
+extern float truncf (float __x) ; extern float __truncf (float __x) ;
+
+
+
+
+extern float remquof (float __x, float __y, int *__quo) ; extern float __remquof (float __x, float __y, int *__quo) ;
+
+
+
+
+
+
+extern long int lrintf (float __x) ; extern long int __lrintf (float __x) ;
+
+extern long long int llrintf (float __x) ; extern long long int __llrintf (float __x) ;
+
+
+
+extern long int lroundf (float __x) ; extern long int __lroundf (float __x) ;
+
+extern long long int llroundf (float __x) ; extern long long int __llroundf (float __x) ;
+
+
+
+extern float fdimf (float __x, float __y) ; extern float __fdimf (float __x, float __y) ;
+
+
+extern float fmaxf (float __x, float __y) ; extern float __fmaxf (float __x, float __y) ;
+
+
+extern float fminf (float __x, float __y) ; extern float __fminf (float __x, float __y) ;
+
+
+extern float fmaf (float __x, float __y, float __z) ; extern float __fmaf (float __x, float __y, float __z) ;
+
+
+
+
+extern float roundevenf (float __x) ; extern float __roundevenf (float __x) ;
+
+
+
+extern __intmax_t fromfpf (float __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpf (float __x, int __round, unsigned int __width)
+                            ;
+
+
+
+extern __uintmax_t ufromfpf (float __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpf (float __x, int __round, unsigned int __width)
+                              ;
+
+
+
+
+extern __intmax_t fromfpxf (float __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpxf (float __x, int __round, unsigned int __width)
+                             ;
+
+
+
+
+extern __uintmax_t ufromfpxf (float __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpxf (float __x, int __round, unsigned int __width)
+                               ;
+
+
+extern float fmaxmagf (float __x, float __y) ; extern float __fmaxmagf (float __x, float __y) ;
+
+
+extern float fminmagf (float __x, float __y) ; extern float __fminmagf (float __x, float __y) ;
+
+
+extern int totalorderf (float __x, float __y)
+     ;
+
+
+extern int totalordermagf (float __x, float __y)
+     ;
+
+
+extern int canonicalizef (float *__cx, const float *__x) ;
+
+
+extern float getpayloadf (const float *__x) ; extern float __getpayloadf (const float *__x) ;
+
+
+extern int setpayloadf (float *__x, float __payload) ;
+
+
+extern int setpayloadsigf (float *__x, float __payload) ;
+
+
+
+
+
+
+
+extern float scalbf (float __x, float __n) ; extern float __scalbf (float __x, float __n) ;
+# 308 "/usr/include/math.h" 2 3 4
+# 349 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h" 1 3 4
+# 21 "/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h" 3 4
+extern int __fpclassifyl (long double __value)
+     ;
+
+
+extern int __signbitl (long double __value)
+     ;
+
+
+
+extern int __isinfl (long double __value) ;
+
+
+extern int __finitel (long double __value) ;
+
+
+extern int __isnanl (long double __value) ;
+
+
+extern int __iseqsigl (long double __x, long double __y) ;
+
+
+extern int __issignalingl (long double __value)
+     ;
+# 350 "/usr/include/math.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 1 3 4
+# 53 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern long double acosl (long double __x) ; extern long double __acosl (long double __x) ;
+
+extern long double asinl (long double __x) ; extern long double __asinl (long double __x) ;
+
+extern long double atanl (long double __x) ; extern long double __atanl (long double __x) ;
+
+extern long double atan2l (long double __y, long double __x) ; extern long double __atan2l (long double __y, long double __x) ;
+
+
+ extern long double cosl (long double __x) ; extern long double __cosl (long double __x) ;
+
+ extern long double sinl (long double __x) ; extern long double __sinl (long double __x) ;
+
+extern long double tanl (long double __x) ; extern long double __tanl (long double __x) ;
+
+
+
+
+extern long double coshl (long double __x) ; extern long double __coshl (long double __x) ;
+
+extern long double sinhl (long double __x) ; extern long double __sinhl (long double __x) ;
+
+extern long double tanhl (long double __x) ; extern long double __tanhl (long double __x) ;
+
+
+
+ extern void sincosl (long double __x, long double *__sinx, long double *__cosx) ; extern void __sincosl (long double __x, long double *__sinx, long double *__cosx)
+                                                        ;
+
+
+
+
+extern long double acoshl (long double __x) ; extern long double __acoshl (long double __x) ;
+
+extern long double asinhl (long double __x) ; extern long double __asinhl (long double __x) ;
+
+extern long double atanhl (long double __x) ; extern long double __atanhl (long double __x) ;
+
+
+
+
+
+ extern long double expl (long double __x) ; extern long double __expl (long double __x) ;
+
+
+extern long double frexpl (long double __x, int *__exponent) ; extern long double __frexpl (long double __x, int *__exponent) ;
+
+
+extern long double ldexpl (long double __x, int __exponent) ; extern long double __ldexpl (long double __x, int __exponent) ;
+
+
+ extern long double logl (long double __x) ; extern long double __logl (long double __x) ;
+
+
+extern long double log10l (long double __x) ; extern long double __log10l (long double __x) ;
+
+
+extern long double modfl (long double __x, long double *__iptr) ; extern long double __modfl (long double __x, long double *__iptr) ;
+
+
+
+extern long double exp10l (long double __x) ; extern long double __exp10l (long double __x) ;
+
+
+
+
+extern long double expm1l (long double __x) ; extern long double __expm1l (long double __x) ;
+
+
+extern long double log1pl (long double __x) ; extern long double __log1pl (long double __x) ;
+
+
+extern long double logbl (long double __x) ; extern long double __logbl (long double __x) ;
+
+
+
+
+extern long double exp2l (long double __x) ; extern long double __exp2l (long double __x) ;
+
+
+extern long double log2l (long double __x) ; extern long double __log2l (long double __x) ;
+
+
+
+
+
+
+ extern long double powl (long double __x, long double __y) ; extern long double __powl (long double __x, long double __y) ;
+
+
+extern long double sqrtl (long double __x) ; extern long double __sqrtl (long double __x) ;
+
+
+
+extern long double hypotl (long double __x, long double __y) ; extern long double __hypotl (long double __x, long double __y) ;
+
+
+
+
+extern long double cbrtl (long double __x) ; extern long double __cbrtl (long double __x) ;
+
+
+
+
+
+
+extern long double ceill (long double __x) ; extern long double __ceill (long double __x) ;
+
+
+extern long double fabsl (long double __x) ; extern long double __fabsl (long double __x) ;
+
+
+extern long double floorl (long double __x) ; extern long double __floorl (long double __x) ;
+
+
+extern long double fmodl (long double __x, long double __y) ; extern long double __fmodl (long double __x, long double __y) ;
+# 177 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern int isinfl (long double __value) ;
+
+
+
+
+extern int finitel (long double __value) ;
+
+
+extern long double dreml (long double __x, long double __y) ; extern long double __dreml (long double __x, long double __y) ;
+
+
+
+extern long double significandl (long double __x) ; extern long double __significandl (long double __x) ;
+
+
+
+
+
+
+extern long double copysignl (long double __x, long double __y) ; extern long double __copysignl (long double __x, long double __y) ;
+
+
+
+
+extern long double nanl (const char *__tagb) ; extern long double __nanl (const char *__tagb) ;
+# 211 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern int isnanl (long double __value) ;
+
+
+
+
+
+extern long double j0l (long double) ; extern long double __j0l (long double) ;
+extern long double j1l (long double) ; extern long double __j1l (long double) ;
+extern long double jnl (int, long double) ; extern long double __jnl (int, long double) ;
+extern long double y0l (long double) ; extern long double __y0l (long double) ;
+extern long double y1l (long double) ; extern long double __y1l (long double) ;
+extern long double ynl (int, long double) ; extern long double __ynl (int, long double) ;
+
+
+
+
+
+extern long double erfl (long double) ; extern long double __erfl (long double) ;
+extern long double erfcl (long double) ; extern long double __erfcl (long double) ;
+extern long double lgammal (long double) ; extern long double __lgammal (long double) ;
+
+
+
+
+extern long double tgammal (long double) ; extern long double __tgammal (long double) ;
+
+
+
+
+
+extern long double gammal (long double) ; extern long double __gammal (long double) ;
+
+
+
+
+
+
+
+extern long double lgammal_r (long double, int *__signgamp) ; extern long double __lgammal_r (long double, int *__signgamp) ;
+
+
+
+
+
+
+extern long double rintl (long double __x) ; extern long double __rintl (long double __x) ;
+
+
+extern long double nextafterl (long double __x, long double __y) ; extern long double __nextafterl (long double __x, long double __y) ;
+
+extern long double nexttowardl (long double __x, long double __y) ; extern long double __nexttowardl (long double __x, long double __y) ;
+
+
+
+
+extern long double nextdownl (long double __x) ; extern long double __nextdownl (long double __x) ;
+
+extern long double nextupl (long double __x) ; extern long double __nextupl (long double __x) ;
+
+
+
+extern long double remainderl (long double __x, long double __y) ; extern long double __remainderl (long double __x, long double __y) ;
+
+
+
+extern long double scalbnl (long double __x, int __n) ; extern long double __scalbnl (long double __x, int __n) ;
+
+
+
+extern int ilogbl (long double __x) ; extern int __ilogbl (long double __x) ;
+
+
+
+
+extern long int llogbl (long double __x) ; extern long int __llogbl (long double __x) ;
+
+
+
+
+extern long double scalblnl (long double __x, long int __n) ; extern long double __scalblnl (long double __x, long int __n) ;
+
+
+
+extern long double nearbyintl (long double __x) ; extern long double __nearbyintl (long double __x) ;
+
+
+
+extern long double roundl (long double __x) ; extern long double __roundl (long double __x) ;
+
+
+
+extern long double truncl (long double __x) ; extern long double __truncl (long double __x) ;
+
+
+
+
+extern long double remquol (long double __x, long double __y, int *__quo) ; extern long double __remquol (long double __x, long double __y, int *__quo) ;
+
+
+
+
+
+
+extern long int lrintl (long double __x) ; extern long int __lrintl (long double __x) ;
+
+extern long long int llrintl (long double __x) ; extern long long int __llrintl (long double __x) ;
+
+
+
+extern long int lroundl (long double __x) ; extern long int __lroundl (long double __x) ;
+
+extern long long int llroundl (long double __x) ; extern long long int __llroundl (long double __x) ;
+
+
+
+extern long double fdiml (long double __x, long double __y) ; extern long double __fdiml (long double __x, long double __y) ;
+
+
+extern long double fmaxl (long double __x, long double __y) ; extern long double __fmaxl (long double __x, long double __y) ;
+
+
+extern long double fminl (long double __x, long double __y) ; extern long double __fminl (long double __x, long double __y) ;
+
+
+extern long double fmal (long double __x, long double __y, long double __z) ; extern long double __fmal (long double __x, long double __y, long double __z) ;
+
+
+
+
+extern long double roundevenl (long double __x) ; extern long double __roundevenl (long double __x) ;
+
+
+
+extern __intmax_t fromfpl (long double __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpl (long double __x, int __round, unsigned int __width)
+                            ;
+
+
+
+extern __uintmax_t ufromfpl (long double __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpl (long double __x, int __round, unsigned int __width)
+                              ;
+
+
+
+
+extern __intmax_t fromfpxl (long double __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpxl (long double __x, int __round, unsigned int __width)
+                             ;
+
+
+
+
+extern __uintmax_t ufromfpxl (long double __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpxl (long double __x, int __round, unsigned int __width)
+                               ;
+
+
+extern long double fmaxmagl (long double __x, long double __y) ; extern long double __fmaxmagl (long double __x, long double __y) ;
+
+
+extern long double fminmagl (long double __x, long double __y) ; extern long double __fminmagl (long double __x, long double __y) ;
+
+
+extern int totalorderl (long double __x, long double __y)
+     ;
+
+
+extern int totalordermagl (long double __x, long double __y)
+     ;
+
+
+extern int canonicalizel (long double *__cx, const long double *__x) ;
+
+
+extern long double getpayloadl (const long double *__x) ; extern long double __getpayloadl (const long double *__x) ;
+
+
+extern int setpayloadl (long double *__x, long double __payload) ;
+
+
+extern int setpayloadsigl (long double *__x, long double __payload) ;
+
+
+
+
+
+
+
+extern long double scalbl (long double __x, long double __n) ; extern long double __scalbl (long double __x, long double __n) ;
+# 351 "/usr/include/math.h" 2 3 4
+# 389 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 1 3 4
+# 53 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32 acosf32 (_Float32 __x) ; extern _Float32 __acosf32 (_Float32 __x) ;
+
+extern _Float32 asinf32 (_Float32 __x) ; extern _Float32 __asinf32 (_Float32 __x) ;
+
+extern _Float32 atanf32 (_Float32 __x) ; extern _Float32 __atanf32 (_Float32 __x) ;
+
+extern _Float32 atan2f32 (_Float32 __y, _Float32 __x) ; extern _Float32 __atan2f32 (_Float32 __y, _Float32 __x) ;
+
+
+ extern _Float32 cosf32 (_Float32 __x) ; extern _Float32 __cosf32 (_Float32 __x) ;
+
+ extern _Float32 sinf32 (_Float32 __x) ; extern _Float32 __sinf32 (_Float32 __x) ;
+
+extern _Float32 tanf32 (_Float32 __x) ; extern _Float32 __tanf32 (_Float32 __x) ;
+
+
+
+
+extern _Float32 coshf32 (_Float32 __x) ; extern _Float32 __coshf32 (_Float32 __x) ;
+
+extern _Float32 sinhf32 (_Float32 __x) ; extern _Float32 __sinhf32 (_Float32 __x) ;
+
+extern _Float32 tanhf32 (_Float32 __x) ; extern _Float32 __tanhf32 (_Float32 __x) ;
+
+
+
+ extern void sincosf32 (_Float32 __x, _Float32 *__sinx, _Float32 *__cosx) ; extern void __sincosf32 (_Float32 __x, _Float32 *__sinx, _Float32 *__cosx)
+                                                        ;
+
+
+
+
+extern _Float32 acoshf32 (_Float32 __x) ; extern _Float32 __acoshf32 (_Float32 __x) ;
+
+extern _Float32 asinhf32 (_Float32 __x) ; extern _Float32 __asinhf32 (_Float32 __x) ;
+
+extern _Float32 atanhf32 (_Float32 __x) ; extern _Float32 __atanhf32 (_Float32 __x) ;
+
+
+
+
+
+ extern _Float32 expf32 (_Float32 __x) ; extern _Float32 __expf32 (_Float32 __x) ;
+
+
+extern _Float32 frexpf32 (_Float32 __x, int *__exponent) ; extern _Float32 __frexpf32 (_Float32 __x, int *__exponent) ;
+
+
+extern _Float32 ldexpf32 (_Float32 __x, int __exponent) ; extern _Float32 __ldexpf32 (_Float32 __x, int __exponent) ;
+
+
+ extern _Float32 logf32 (_Float32 __x) ; extern _Float32 __logf32 (_Float32 __x) ;
+
+
+extern _Float32 log10f32 (_Float32 __x) ; extern _Float32 __log10f32 (_Float32 __x) ;
+
+
+extern _Float32 modff32 (_Float32 __x, _Float32 *__iptr) ; extern _Float32 __modff32 (_Float32 __x, _Float32 *__iptr) ;
+
+
+
+extern _Float32 exp10f32 (_Float32 __x) ; extern _Float32 __exp10f32 (_Float32 __x) ;
+
+
+
+
+extern _Float32 expm1f32 (_Float32 __x) ; extern _Float32 __expm1f32 (_Float32 __x) ;
+
+
+extern _Float32 log1pf32 (_Float32 __x) ; extern _Float32 __log1pf32 (_Float32 __x) ;
+
+
+extern _Float32 logbf32 (_Float32 __x) ; extern _Float32 __logbf32 (_Float32 __x) ;
+
+
+
+
+extern _Float32 exp2f32 (_Float32 __x) ; extern _Float32 __exp2f32 (_Float32 __x) ;
+
+
+extern _Float32 log2f32 (_Float32 __x) ; extern _Float32 __log2f32 (_Float32 __x) ;
+
+
+
+
+
+
+ extern _Float32 powf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __powf32 (_Float32 __x, _Float32 __y) ;
+
+
+extern _Float32 sqrtf32 (_Float32 __x) ; extern _Float32 __sqrtf32 (_Float32 __x) ;
+
+
+
+extern _Float32 hypotf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __hypotf32 (_Float32 __x, _Float32 __y) ;
+
+
+
+
+extern _Float32 cbrtf32 (_Float32 __x) ; extern _Float32 __cbrtf32 (_Float32 __x) ;
+
+
+
+
+
+
+extern _Float32 ceilf32 (_Float32 __x) ; extern _Float32 __ceilf32 (_Float32 __x) ;
+
+
+extern _Float32 fabsf32 (_Float32 __x) ; extern _Float32 __fabsf32 (_Float32 __x) ;
+
+
+extern _Float32 floorf32 (_Float32 __x) ; extern _Float32 __floorf32 (_Float32 __x) ;
+
+
+extern _Float32 fmodf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __fmodf32 (_Float32 __x, _Float32 __y) ;
+# 196 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32 copysignf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __copysignf32 (_Float32 __x, _Float32 __y) ;
+
+
+
+
+extern _Float32 nanf32 (const char *__tagb) ; extern _Float32 __nanf32 (const char *__tagb) ;
+# 217 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32 j0f32 (_Float32) ; extern _Float32 __j0f32 (_Float32) ;
+extern _Float32 j1f32 (_Float32) ; extern _Float32 __j1f32 (_Float32) ;
+extern _Float32 jnf32 (int, _Float32) ; extern _Float32 __jnf32 (int, _Float32) ;
+extern _Float32 y0f32 (_Float32) ; extern _Float32 __y0f32 (_Float32) ;
+extern _Float32 y1f32 (_Float32) ; extern _Float32 __y1f32 (_Float32) ;
+extern _Float32 ynf32 (int, _Float32) ; extern _Float32 __ynf32 (int, _Float32) ;
+
+
+
+
+
+extern _Float32 erff32 (_Float32) ; extern _Float32 __erff32 (_Float32) ;
+extern _Float32 erfcf32 (_Float32) ; extern _Float32 __erfcf32 (_Float32) ;
+extern _Float32 lgammaf32 (_Float32) ; extern _Float32 __lgammaf32 (_Float32) ;
+
+
+
+
+extern _Float32 tgammaf32 (_Float32) ; extern _Float32 __tgammaf32 (_Float32) ;
+# 249 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32 lgammaf32_r (_Float32, int *__signgamp) ; extern _Float32 __lgammaf32_r (_Float32, int *__signgamp) ;
+
+
+
+
+
+
+extern _Float32 rintf32 (_Float32 __x) ; extern _Float32 __rintf32 (_Float32 __x) ;
+
+
+extern _Float32 nextafterf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __nextafterf32 (_Float32 __x, _Float32 __y) ;
+
+
+
+
+
+
+extern _Float32 nextdownf32 (_Float32 __x) ; extern _Float32 __nextdownf32 (_Float32 __x) ;
+
+extern _Float32 nextupf32 (_Float32 __x) ; extern _Float32 __nextupf32 (_Float32 __x) ;
+
+
+
+extern _Float32 remainderf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __remainderf32 (_Float32 __x, _Float32 __y) ;
+
+
+
+extern _Float32 scalbnf32 (_Float32 __x, int __n) ; extern _Float32 __scalbnf32 (_Float32 __x, int __n) ;
+
+
+
+extern int ilogbf32 (_Float32 __x) ; extern int __ilogbf32 (_Float32 __x) ;
+
+
+
+
+extern long int llogbf32 (_Float32 __x) ; extern long int __llogbf32 (_Float32 __x) ;
+
+
+
+
+extern _Float32 scalblnf32 (_Float32 __x, long int __n) ; extern _Float32 __scalblnf32 (_Float32 __x, long int __n) ;
+
+
+
+extern _Float32 nearbyintf32 (_Float32 __x) ; extern _Float32 __nearbyintf32 (_Float32 __x) ;
+
+
+
+extern _Float32 roundf32 (_Float32 __x) ; extern _Float32 __roundf32 (_Float32 __x) ;
+
+
+
+extern _Float32 truncf32 (_Float32 __x) ; extern _Float32 __truncf32 (_Float32 __x) ;
+
+
+
+
+extern _Float32 remquof32 (_Float32 __x, _Float32 __y, int *__quo) ; extern _Float32 __remquof32 (_Float32 __x, _Float32 __y, int *__quo) ;
+
+
+
+
+
+
+extern long int lrintf32 (_Float32 __x) ; extern long int __lrintf32 (_Float32 __x) ;
+
+extern long long int llrintf32 (_Float32 __x) ; extern long long int __llrintf32 (_Float32 __x) ;
+
+
+
+extern long int lroundf32 (_Float32 __x) ; extern long int __lroundf32 (_Float32 __x) ;
+
+extern long long int llroundf32 (_Float32 __x) ; extern long long int __llroundf32 (_Float32 __x) ;
+
+
+
+extern _Float32 fdimf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __fdimf32 (_Float32 __x, _Float32 __y) ;
+
+
+extern _Float32 fmaxf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __fmaxf32 (_Float32 __x, _Float32 __y) ;
+
+
+extern _Float32 fminf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __fminf32 (_Float32 __x, _Float32 __y) ;
+
+
+extern _Float32 fmaf32 (_Float32 __x, _Float32 __y, _Float32 __z) ; extern _Float32 __fmaf32 (_Float32 __x, _Float32 __y, _Float32 __z) ;
+
+
+
+
+extern _Float32 roundevenf32 (_Float32 __x) ; extern _Float32 __roundevenf32 (_Float32 __x) ;
+
+
+
+extern __intmax_t fromfpf32 (_Float32 __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpf32 (_Float32 __x, int __round, unsigned int __width)
+                            ;
+
+
+
+extern __uintmax_t ufromfpf32 (_Float32 __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpf32 (_Float32 __x, int __round, unsigned int __width)
+                              ;
+
+
+
+
+extern __intmax_t fromfpxf32 (_Float32 __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpxf32 (_Float32 __x, int __round, unsigned int __width)
+                             ;
+
+
+
+
+extern __uintmax_t ufromfpxf32 (_Float32 __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpxf32 (_Float32 __x, int __round, unsigned int __width)
+                               ;
+
+
+extern _Float32 fmaxmagf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __fmaxmagf32 (_Float32 __x, _Float32 __y) ;
+
+
+extern _Float32 fminmagf32 (_Float32 __x, _Float32 __y) ; extern _Float32 __fminmagf32 (_Float32 __x, _Float32 __y) ;
+
+
+extern int totalorderf32 (_Float32 __x, _Float32 __y)
+     ;
+
+
+extern int totalordermagf32 (_Float32 __x, _Float32 __y)
+     ;
+
+
+extern int canonicalizef32 (_Float32 *__cx, const _Float32 *__x) ;
+
+
+extern _Float32 getpayloadf32 (const _Float32 *__x) ; extern _Float32 __getpayloadf32 (const _Float32 *__x) ;
+
+
+extern int setpayloadf32 (_Float32 *__x, _Float32 __payload) ;
+
+
+extern int setpayloadsigf32 (_Float32 *__x, _Float32 __payload) ;
+# 390 "/usr/include/math.h" 2 3 4
+# 406 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 1 3 4
+# 53 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64 acosf64 (_Float64 __x) ; extern _Float64 __acosf64 (_Float64 __x) ;
+
+extern _Float64 asinf64 (_Float64 __x) ; extern _Float64 __asinf64 (_Float64 __x) ;
+
+extern _Float64 atanf64 (_Float64 __x) ; extern _Float64 __atanf64 (_Float64 __x) ;
+
+extern _Float64 atan2f64 (_Float64 __y, _Float64 __x) ; extern _Float64 __atan2f64 (_Float64 __y, _Float64 __x) ;
+
+
+ extern _Float64 cosf64 (_Float64 __x) ; extern _Float64 __cosf64 (_Float64 __x) ;
+
+ extern _Float64 sinf64 (_Float64 __x) ; extern _Float64 __sinf64 (_Float64 __x) ;
+
+extern _Float64 tanf64 (_Float64 __x) ; extern _Float64 __tanf64 (_Float64 __x) ;
+
+
+
+
+extern _Float64 coshf64 (_Float64 __x) ; extern _Float64 __coshf64 (_Float64 __x) ;
+
+extern _Float64 sinhf64 (_Float64 __x) ; extern _Float64 __sinhf64 (_Float64 __x) ;
+
+extern _Float64 tanhf64 (_Float64 __x) ; extern _Float64 __tanhf64 (_Float64 __x) ;
+
+
+
+ extern void sincosf64 (_Float64 __x, _Float64 *__sinx, _Float64 *__cosx) ; extern void __sincosf64 (_Float64 __x, _Float64 *__sinx, _Float64 *__cosx)
+                                                        ;
+
+
+
+
+extern _Float64 acoshf64 (_Float64 __x) ; extern _Float64 __acoshf64 (_Float64 __x) ;
+
+extern _Float64 asinhf64 (_Float64 __x) ; extern _Float64 __asinhf64 (_Float64 __x) ;
+
+extern _Float64 atanhf64 (_Float64 __x) ; extern _Float64 __atanhf64 (_Float64 __x) ;
+
+
+
+
+
+ extern _Float64 expf64 (_Float64 __x) ; extern _Float64 __expf64 (_Float64 __x) ;
+
+
+extern _Float64 frexpf64 (_Float64 __x, int *__exponent) ; extern _Float64 __frexpf64 (_Float64 __x, int *__exponent) ;
+
+
+extern _Float64 ldexpf64 (_Float64 __x, int __exponent) ; extern _Float64 __ldexpf64 (_Float64 __x, int __exponent) ;
+
+
+ extern _Float64 logf64 (_Float64 __x) ; extern _Float64 __logf64 (_Float64 __x) ;
+
+
+extern _Float64 log10f64 (_Float64 __x) ; extern _Float64 __log10f64 (_Float64 __x) ;
+
+
+extern _Float64 modff64 (_Float64 __x, _Float64 *__iptr) ; extern _Float64 __modff64 (_Float64 __x, _Float64 *__iptr) ;
+
+
+
+extern _Float64 exp10f64 (_Float64 __x) ; extern _Float64 __exp10f64 (_Float64 __x) ;
+
+
+
+
+extern _Float64 expm1f64 (_Float64 __x) ; extern _Float64 __expm1f64 (_Float64 __x) ;
+
+
+extern _Float64 log1pf64 (_Float64 __x) ; extern _Float64 __log1pf64 (_Float64 __x) ;
+
+
+extern _Float64 logbf64 (_Float64 __x) ; extern _Float64 __logbf64 (_Float64 __x) ;
+
+
+
+
+extern _Float64 exp2f64 (_Float64 __x) ; extern _Float64 __exp2f64 (_Float64 __x) ;
+
+
+extern _Float64 log2f64 (_Float64 __x) ; extern _Float64 __log2f64 (_Float64 __x) ;
+
+
+
+
+
+
+ extern _Float64 powf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __powf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float64 sqrtf64 (_Float64 __x) ; extern _Float64 __sqrtf64 (_Float64 __x) ;
+
+
+
+extern _Float64 hypotf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __hypotf64 (_Float64 __x, _Float64 __y) ;
+
+
+
+
+extern _Float64 cbrtf64 (_Float64 __x) ; extern _Float64 __cbrtf64 (_Float64 __x) ;
+
+
+
+
+
+
+extern _Float64 ceilf64 (_Float64 __x) ; extern _Float64 __ceilf64 (_Float64 __x) ;
+
+
+extern _Float64 fabsf64 (_Float64 __x) ; extern _Float64 __fabsf64 (_Float64 __x) ;
+
+
+extern _Float64 floorf64 (_Float64 __x) ; extern _Float64 __floorf64 (_Float64 __x) ;
+
+
+extern _Float64 fmodf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __fmodf64 (_Float64 __x, _Float64 __y) ;
+# 196 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64 copysignf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __copysignf64 (_Float64 __x, _Float64 __y) ;
+
+
+
+
+extern _Float64 nanf64 (const char *__tagb) ; extern _Float64 __nanf64 (const char *__tagb) ;
+# 217 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64 j0f64 (_Float64) ; extern _Float64 __j0f64 (_Float64) ;
+extern _Float64 j1f64 (_Float64) ; extern _Float64 __j1f64 (_Float64) ;
+extern _Float64 jnf64 (int, _Float64) ; extern _Float64 __jnf64 (int, _Float64) ;
+extern _Float64 y0f64 (_Float64) ; extern _Float64 __y0f64 (_Float64) ;
+extern _Float64 y1f64 (_Float64) ; extern _Float64 __y1f64 (_Float64) ;
+extern _Float64 ynf64 (int, _Float64) ; extern _Float64 __ynf64 (int, _Float64) ;
+
+
+
+
+
+extern _Float64 erff64 (_Float64) ; extern _Float64 __erff64 (_Float64) ;
+extern _Float64 erfcf64 (_Float64) ; extern _Float64 __erfcf64 (_Float64) ;
+extern _Float64 lgammaf64 (_Float64) ; extern _Float64 __lgammaf64 (_Float64) ;
+
+
+
+
+extern _Float64 tgammaf64 (_Float64) ; extern _Float64 __tgammaf64 (_Float64) ;
+# 249 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64 lgammaf64_r (_Float64, int *__signgamp) ; extern _Float64 __lgammaf64_r (_Float64, int *__signgamp) ;
+
+
+
+
+
+
+extern _Float64 rintf64 (_Float64 __x) ; extern _Float64 __rintf64 (_Float64 __x) ;
+
+
+extern _Float64 nextafterf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __nextafterf64 (_Float64 __x, _Float64 __y) ;
+
+
+
+
+
+
+extern _Float64 nextdownf64 (_Float64 __x) ; extern _Float64 __nextdownf64 (_Float64 __x) ;
+
+extern _Float64 nextupf64 (_Float64 __x) ; extern _Float64 __nextupf64 (_Float64 __x) ;
+
+
+
+extern _Float64 remainderf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __remainderf64 (_Float64 __x, _Float64 __y) ;
+
+
+
+extern _Float64 scalbnf64 (_Float64 __x, int __n) ; extern _Float64 __scalbnf64 (_Float64 __x, int __n) ;
+
+
+
+extern int ilogbf64 (_Float64 __x) ; extern int __ilogbf64 (_Float64 __x) ;
+
+
+
+
+extern long int llogbf64 (_Float64 __x) ; extern long int __llogbf64 (_Float64 __x) ;
+
+
+
+
+extern _Float64 scalblnf64 (_Float64 __x, long int __n) ; extern _Float64 __scalblnf64 (_Float64 __x, long int __n) ;
+
+
+
+extern _Float64 nearbyintf64 (_Float64 __x) ; extern _Float64 __nearbyintf64 (_Float64 __x) ;
+
+
+
+extern _Float64 roundf64 (_Float64 __x) ; extern _Float64 __roundf64 (_Float64 __x) ;
+
+
+
+extern _Float64 truncf64 (_Float64 __x) ; extern _Float64 __truncf64 (_Float64 __x) ;
+
+
+
+
+extern _Float64 remquof64 (_Float64 __x, _Float64 __y, int *__quo) ; extern _Float64 __remquof64 (_Float64 __x, _Float64 __y, int *__quo) ;
+
+
+
+
+
+
+extern long int lrintf64 (_Float64 __x) ; extern long int __lrintf64 (_Float64 __x) ;
+
+extern long long int llrintf64 (_Float64 __x) ; extern long long int __llrintf64 (_Float64 __x) ;
+
+
+
+extern long int lroundf64 (_Float64 __x) ; extern long int __lroundf64 (_Float64 __x) ;
+
+extern long long int llroundf64 (_Float64 __x) ; extern long long int __llroundf64 (_Float64 __x) ;
+
+
+
+extern _Float64 fdimf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __fdimf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float64 fmaxf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __fmaxf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float64 fminf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __fminf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float64 fmaf64 (_Float64 __x, _Float64 __y, _Float64 __z) ; extern _Float64 __fmaf64 (_Float64 __x, _Float64 __y, _Float64 __z) ;
+
+
+
+
+extern _Float64 roundevenf64 (_Float64 __x) ; extern _Float64 __roundevenf64 (_Float64 __x) ;
+
+
+
+extern __intmax_t fromfpf64 (_Float64 __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpf64 (_Float64 __x, int __round, unsigned int __width)
+                            ;
+
+
+
+extern __uintmax_t ufromfpf64 (_Float64 __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpf64 (_Float64 __x, int __round, unsigned int __width)
+                              ;
+
+
+
+
+extern __intmax_t fromfpxf64 (_Float64 __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpxf64 (_Float64 __x, int __round, unsigned int __width)
+                             ;
+
+
+
+
+extern __uintmax_t ufromfpxf64 (_Float64 __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpxf64 (_Float64 __x, int __round, unsigned int __width)
+                               ;
+
+
+extern _Float64 fmaxmagf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __fmaxmagf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float64 fminmagf64 (_Float64 __x, _Float64 __y) ; extern _Float64 __fminmagf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern int totalorderf64 (_Float64 __x, _Float64 __y)
+     ;
+
+
+extern int totalordermagf64 (_Float64 __x, _Float64 __y)
+     ;
+
+
+extern int canonicalizef64 (_Float64 *__cx, const _Float64 *__x) ;
+
+
+extern _Float64 getpayloadf64 (const _Float64 *__x) ; extern _Float64 __getpayloadf64 (const _Float64 *__x) ;
+
+
+extern int setpayloadf64 (_Float64 *__x, _Float64 __payload) ;
+
+
+extern int setpayloadsigf64 (_Float64 *__x, _Float64 __payload) ;
+# 407 "/usr/include/math.h" 2 3 4
+# 440 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 1 3 4
+# 53 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32x acosf32x (_Float32x __x) ; extern _Float32x __acosf32x (_Float32x __x) ;
+
+extern _Float32x asinf32x (_Float32x __x) ; extern _Float32x __asinf32x (_Float32x __x) ;
+
+extern _Float32x atanf32x (_Float32x __x) ; extern _Float32x __atanf32x (_Float32x __x) ;
+
+extern _Float32x atan2f32x (_Float32x __y, _Float32x __x) ; extern _Float32x __atan2f32x (_Float32x __y, _Float32x __x) ;
+
+
+ extern _Float32x cosf32x (_Float32x __x) ; extern _Float32x __cosf32x (_Float32x __x) ;
+
+ extern _Float32x sinf32x (_Float32x __x) ; extern _Float32x __sinf32x (_Float32x __x) ;
+
+extern _Float32x tanf32x (_Float32x __x) ; extern _Float32x __tanf32x (_Float32x __x) ;
+
+
+
+
+extern _Float32x coshf32x (_Float32x __x) ; extern _Float32x __coshf32x (_Float32x __x) ;
+
+extern _Float32x sinhf32x (_Float32x __x) ; extern _Float32x __sinhf32x (_Float32x __x) ;
+
+extern _Float32x tanhf32x (_Float32x __x) ; extern _Float32x __tanhf32x (_Float32x __x) ;
+
+
+
+ extern void sincosf32x (_Float32x __x, _Float32x *__sinx, _Float32x *__cosx) ; extern void __sincosf32x (_Float32x __x, _Float32x *__sinx, _Float32x *__cosx)
+                                                        ;
+
+
+
+
+extern _Float32x acoshf32x (_Float32x __x) ; extern _Float32x __acoshf32x (_Float32x __x) ;
+
+extern _Float32x asinhf32x (_Float32x __x) ; extern _Float32x __asinhf32x (_Float32x __x) ;
+
+extern _Float32x atanhf32x (_Float32x __x) ; extern _Float32x __atanhf32x (_Float32x __x) ;
+
+
+
+
+
+ extern _Float32x expf32x (_Float32x __x) ; extern _Float32x __expf32x (_Float32x __x) ;
+
+
+extern _Float32x frexpf32x (_Float32x __x, int *__exponent) ; extern _Float32x __frexpf32x (_Float32x __x, int *__exponent) ;
+
+
+extern _Float32x ldexpf32x (_Float32x __x, int __exponent) ; extern _Float32x __ldexpf32x (_Float32x __x, int __exponent) ;
+
+
+ extern _Float32x logf32x (_Float32x __x) ; extern _Float32x __logf32x (_Float32x __x) ;
+
+
+extern _Float32x log10f32x (_Float32x __x) ; extern _Float32x __log10f32x (_Float32x __x) ;
+
+
+extern _Float32x modff32x (_Float32x __x, _Float32x *__iptr) ; extern _Float32x __modff32x (_Float32x __x, _Float32x *__iptr) ;
+
+
+
+extern _Float32x exp10f32x (_Float32x __x) ; extern _Float32x __exp10f32x (_Float32x __x) ;
+
+
+
+
+extern _Float32x expm1f32x (_Float32x __x) ; extern _Float32x __expm1f32x (_Float32x __x) ;
+
+
+extern _Float32x log1pf32x (_Float32x __x) ; extern _Float32x __log1pf32x (_Float32x __x) ;
+
+
+extern _Float32x logbf32x (_Float32x __x) ; extern _Float32x __logbf32x (_Float32x __x) ;
+
+
+
+
+extern _Float32x exp2f32x (_Float32x __x) ; extern _Float32x __exp2f32x (_Float32x __x) ;
+
+
+extern _Float32x log2f32x (_Float32x __x) ; extern _Float32x __log2f32x (_Float32x __x) ;
+
+
+
+
+
+
+ extern _Float32x powf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __powf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32x sqrtf32x (_Float32x __x) ; extern _Float32x __sqrtf32x (_Float32x __x) ;
+
+
+
+extern _Float32x hypotf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __hypotf32x (_Float32x __x, _Float32x __y) ;
+
+
+
+
+extern _Float32x cbrtf32x (_Float32x __x) ; extern _Float32x __cbrtf32x (_Float32x __x) ;
+
+
+
+
+
+
+extern _Float32x ceilf32x (_Float32x __x) ; extern _Float32x __ceilf32x (_Float32x __x) ;
+
+
+extern _Float32x fabsf32x (_Float32x __x) ; extern _Float32x __fabsf32x (_Float32x __x) ;
+
+
+extern _Float32x floorf32x (_Float32x __x) ; extern _Float32x __floorf32x (_Float32x __x) ;
+
+
+extern _Float32x fmodf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __fmodf32x (_Float32x __x, _Float32x __y) ;
+# 196 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32x copysignf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __copysignf32x (_Float32x __x, _Float32x __y) ;
+
+
+
+
+extern _Float32x nanf32x (const char *__tagb) ; extern _Float32x __nanf32x (const char *__tagb) ;
+# 217 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32x j0f32x (_Float32x) ; extern _Float32x __j0f32x (_Float32x) ;
+extern _Float32x j1f32x (_Float32x) ; extern _Float32x __j1f32x (_Float32x) ;
+extern _Float32x jnf32x (int, _Float32x) ; extern _Float32x __jnf32x (int, _Float32x) ;
+extern _Float32x y0f32x (_Float32x) ; extern _Float32x __y0f32x (_Float32x) ;
+extern _Float32x y1f32x (_Float32x) ; extern _Float32x __y1f32x (_Float32x) ;
+extern _Float32x ynf32x (int, _Float32x) ; extern _Float32x __ynf32x (int, _Float32x) ;
+
+
+
+
+
+extern _Float32x erff32x (_Float32x) ; extern _Float32x __erff32x (_Float32x) ;
+extern _Float32x erfcf32x (_Float32x) ; extern _Float32x __erfcf32x (_Float32x) ;
+extern _Float32x lgammaf32x (_Float32x) ; extern _Float32x __lgammaf32x (_Float32x) ;
+
+
+
+
+extern _Float32x tgammaf32x (_Float32x) ; extern _Float32x __tgammaf32x (_Float32x) ;
+# 249 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float32x lgammaf32x_r (_Float32x, int *__signgamp) ; extern _Float32x __lgammaf32x_r (_Float32x, int *__signgamp) ;
+
+
+
+
+
+
+extern _Float32x rintf32x (_Float32x __x) ; extern _Float32x __rintf32x (_Float32x __x) ;
+
+
+extern _Float32x nextafterf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __nextafterf32x (_Float32x __x, _Float32x __y) ;
+
+
+
+
+
+
+extern _Float32x nextdownf32x (_Float32x __x) ; extern _Float32x __nextdownf32x (_Float32x __x) ;
+
+extern _Float32x nextupf32x (_Float32x __x) ; extern _Float32x __nextupf32x (_Float32x __x) ;
+
+
+
+extern _Float32x remainderf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __remainderf32x (_Float32x __x, _Float32x __y) ;
+
+
+
+extern _Float32x scalbnf32x (_Float32x __x, int __n) ; extern _Float32x __scalbnf32x (_Float32x __x, int __n) ;
+
+
+
+extern int ilogbf32x (_Float32x __x) ; extern int __ilogbf32x (_Float32x __x) ;
+
+
+
+
+extern long int llogbf32x (_Float32x __x) ; extern long int __llogbf32x (_Float32x __x) ;
+
+
+
+
+extern _Float32x scalblnf32x (_Float32x __x, long int __n) ; extern _Float32x __scalblnf32x (_Float32x __x, long int __n) ;
+
+
+
+extern _Float32x nearbyintf32x (_Float32x __x) ; extern _Float32x __nearbyintf32x (_Float32x __x) ;
+
+
+
+extern _Float32x roundf32x (_Float32x __x) ; extern _Float32x __roundf32x (_Float32x __x) ;
+
+
+
+extern _Float32x truncf32x (_Float32x __x) ; extern _Float32x __truncf32x (_Float32x __x) ;
+
+
+
+
+extern _Float32x remquof32x (_Float32x __x, _Float32x __y, int *__quo) ; extern _Float32x __remquof32x (_Float32x __x, _Float32x __y, int *__quo) ;
+
+
+
+
+
+
+extern long int lrintf32x (_Float32x __x) ; extern long int __lrintf32x (_Float32x __x) ;
+
+extern long long int llrintf32x (_Float32x __x) ; extern long long int __llrintf32x (_Float32x __x) ;
+
+
+
+extern long int lroundf32x (_Float32x __x) ; extern long int __lroundf32x (_Float32x __x) ;
+
+extern long long int llroundf32x (_Float32x __x) ; extern long long int __llroundf32x (_Float32x __x) ;
+
+
+
+extern _Float32x fdimf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __fdimf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32x fmaxf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __fmaxf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32x fminf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __fminf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32x fmaf32x (_Float32x __x, _Float32x __y, _Float32x __z) ; extern _Float32x __fmaf32x (_Float32x __x, _Float32x __y, _Float32x __z) ;
+
+
+
+
+extern _Float32x roundevenf32x (_Float32x __x) ; extern _Float32x __roundevenf32x (_Float32x __x) ;
+
+
+
+extern __intmax_t fromfpf32x (_Float32x __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpf32x (_Float32x __x, int __round, unsigned int __width)
+                            ;
+
+
+
+extern __uintmax_t ufromfpf32x (_Float32x __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpf32x (_Float32x __x, int __round, unsigned int __width)
+                              ;
+
+
+
+
+extern __intmax_t fromfpxf32x (_Float32x __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpxf32x (_Float32x __x, int __round, unsigned int __width)
+                             ;
+
+
+
+
+extern __uintmax_t ufromfpxf32x (_Float32x __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpxf32x (_Float32x __x, int __round, unsigned int __width)
+                               ;
+
+
+extern _Float32x fmaxmagf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __fmaxmagf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32x fminmagf32x (_Float32x __x, _Float32x __y) ; extern _Float32x __fminmagf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern int totalorderf32x (_Float32x __x, _Float32x __y)
+     ;
+
+
+extern int totalordermagf32x (_Float32x __x, _Float32x __y)
+     ;
+
+
+extern int canonicalizef32x (_Float32x *__cx, const _Float32x *__x) ;
+
+
+extern _Float32x getpayloadf32x (const _Float32x *__x) ; extern _Float32x __getpayloadf32x (const _Float32x *__x) ;
+
+
+extern int setpayloadf32x (_Float32x *__x, _Float32x __payload) ;
+
+
+extern int setpayloadsigf32x (_Float32x *__x, _Float32x __payload) ;
+# 441 "/usr/include/math.h" 2 3 4
+# 457 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 1 3 4
+# 53 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64x acosf64x (_Float64x __x) ; extern _Float64x __acosf64x (_Float64x __x) ;
+
+extern _Float64x asinf64x (_Float64x __x) ; extern _Float64x __asinf64x (_Float64x __x) ;
+
+extern _Float64x atanf64x (_Float64x __x) ; extern _Float64x __atanf64x (_Float64x __x) ;
+
+extern _Float64x atan2f64x (_Float64x __y, _Float64x __x) ; extern _Float64x __atan2f64x (_Float64x __y, _Float64x __x) ;
+
+
+ extern _Float64x cosf64x (_Float64x __x) ; extern _Float64x __cosf64x (_Float64x __x) ;
+
+ extern _Float64x sinf64x (_Float64x __x) ; extern _Float64x __sinf64x (_Float64x __x) ;
+
+extern _Float64x tanf64x (_Float64x __x) ; extern _Float64x __tanf64x (_Float64x __x) ;
+
+
+
+
+extern _Float64x coshf64x (_Float64x __x) ; extern _Float64x __coshf64x (_Float64x __x) ;
+
+extern _Float64x sinhf64x (_Float64x __x) ; extern _Float64x __sinhf64x (_Float64x __x) ;
+
+extern _Float64x tanhf64x (_Float64x __x) ; extern _Float64x __tanhf64x (_Float64x __x) ;
+
+
+
+ extern void sincosf64x (_Float64x __x, _Float64x *__sinx, _Float64x *__cosx) ; extern void __sincosf64x (_Float64x __x, _Float64x *__sinx, _Float64x *__cosx)
+                                                        ;
+
+
+
+
+extern _Float64x acoshf64x (_Float64x __x) ; extern _Float64x __acoshf64x (_Float64x __x) ;
+
+extern _Float64x asinhf64x (_Float64x __x) ; extern _Float64x __asinhf64x (_Float64x __x) ;
+
+extern _Float64x atanhf64x (_Float64x __x) ; extern _Float64x __atanhf64x (_Float64x __x) ;
+
+
+
+
+
+ extern _Float64x expf64x (_Float64x __x) ; extern _Float64x __expf64x (_Float64x __x) ;
+
+
+extern _Float64x frexpf64x (_Float64x __x, int *__exponent) ; extern _Float64x __frexpf64x (_Float64x __x, int *__exponent) ;
+
+
+extern _Float64x ldexpf64x (_Float64x __x, int __exponent) ; extern _Float64x __ldexpf64x (_Float64x __x, int __exponent) ;
+
+
+ extern _Float64x logf64x (_Float64x __x) ; extern _Float64x __logf64x (_Float64x __x) ;
+
+
+extern _Float64x log10f64x (_Float64x __x) ; extern _Float64x __log10f64x (_Float64x __x) ;
+
+
+extern _Float64x modff64x (_Float64x __x, _Float64x *__iptr) ; extern _Float64x __modff64x (_Float64x __x, _Float64x *__iptr) ;
+
+
+
+extern _Float64x exp10f64x (_Float64x __x) ; extern _Float64x __exp10f64x (_Float64x __x) ;
+
+
+
+
+extern _Float64x expm1f64x (_Float64x __x) ; extern _Float64x __expm1f64x (_Float64x __x) ;
+
+
+extern _Float64x log1pf64x (_Float64x __x) ; extern _Float64x __log1pf64x (_Float64x __x) ;
+
+
+extern _Float64x logbf64x (_Float64x __x) ; extern _Float64x __logbf64x (_Float64x __x) ;
+
+
+
+
+extern _Float64x exp2f64x (_Float64x __x) ; extern _Float64x __exp2f64x (_Float64x __x) ;
+
+
+extern _Float64x log2f64x (_Float64x __x) ; extern _Float64x __log2f64x (_Float64x __x) ;
+
+
+
+
+
+
+ extern _Float64x powf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __powf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64x sqrtf64x (_Float64x __x) ; extern _Float64x __sqrtf64x (_Float64x __x) ;
+
+
+
+extern _Float64x hypotf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __hypotf64x (_Float64x __x, _Float64x __y) ;
+
+
+
+
+extern _Float64x cbrtf64x (_Float64x __x) ; extern _Float64x __cbrtf64x (_Float64x __x) ;
+
+
+
+
+
+
+extern _Float64x ceilf64x (_Float64x __x) ; extern _Float64x __ceilf64x (_Float64x __x) ;
+
+
+extern _Float64x fabsf64x (_Float64x __x) ; extern _Float64x __fabsf64x (_Float64x __x) ;
+
+
+extern _Float64x floorf64x (_Float64x __x) ; extern _Float64x __floorf64x (_Float64x __x) ;
+
+
+extern _Float64x fmodf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __fmodf64x (_Float64x __x, _Float64x __y) ;
+# 196 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64x copysignf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __copysignf64x (_Float64x __x, _Float64x __y) ;
+
+
+
+
+extern _Float64x nanf64x (const char *__tagb) ; extern _Float64x __nanf64x (const char *__tagb) ;
+# 217 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64x j0f64x (_Float64x) ; extern _Float64x __j0f64x (_Float64x) ;
+extern _Float64x j1f64x (_Float64x) ; extern _Float64x __j1f64x (_Float64x) ;
+extern _Float64x jnf64x (int, _Float64x) ; extern _Float64x __jnf64x (int, _Float64x) ;
+extern _Float64x y0f64x (_Float64x) ; extern _Float64x __y0f64x (_Float64x) ;
+extern _Float64x y1f64x (_Float64x) ; extern _Float64x __y1f64x (_Float64x) ;
+extern _Float64x ynf64x (int, _Float64x) ; extern _Float64x __ynf64x (int, _Float64x) ;
+
+
+
+
+
+extern _Float64x erff64x (_Float64x) ; extern _Float64x __erff64x (_Float64x) ;
+extern _Float64x erfcf64x (_Float64x) ; extern _Float64x __erfcf64x (_Float64x) ;
+extern _Float64x lgammaf64x (_Float64x) ; extern _Float64x __lgammaf64x (_Float64x) ;
+
+
+
+
+extern _Float64x tgammaf64x (_Float64x) ; extern _Float64x __tgammaf64x (_Float64x) ;
+# 249 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3 4
+extern _Float64x lgammaf64x_r (_Float64x, int *__signgamp) ; extern _Float64x __lgammaf64x_r (_Float64x, int *__signgamp) ;
+
+
+
+
+
+
+extern _Float64x rintf64x (_Float64x __x) ; extern _Float64x __rintf64x (_Float64x __x) ;
+
+
+extern _Float64x nextafterf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __nextafterf64x (_Float64x __x, _Float64x __y) ;
+
+
+
+
+
+
+extern _Float64x nextdownf64x (_Float64x __x) ; extern _Float64x __nextdownf64x (_Float64x __x) ;
+
+extern _Float64x nextupf64x (_Float64x __x) ; extern _Float64x __nextupf64x (_Float64x __x) ;
+
+
+
+extern _Float64x remainderf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __remainderf64x (_Float64x __x, _Float64x __y) ;
+
+
+
+extern _Float64x scalbnf64x (_Float64x __x, int __n) ; extern _Float64x __scalbnf64x (_Float64x __x, int __n) ;
+
+
+
+extern int ilogbf64x (_Float64x __x) ; extern int __ilogbf64x (_Float64x __x) ;
+
+
+
+
+extern long int llogbf64x (_Float64x __x) ; extern long int __llogbf64x (_Float64x __x) ;
+
+
+
+
+extern _Float64x scalblnf64x (_Float64x __x, long int __n) ; extern _Float64x __scalblnf64x (_Float64x __x, long int __n) ;
+
+
+
+extern _Float64x nearbyintf64x (_Float64x __x) ; extern _Float64x __nearbyintf64x (_Float64x __x) ;
+
+
+
+extern _Float64x roundf64x (_Float64x __x) ; extern _Float64x __roundf64x (_Float64x __x) ;
+
+
+
+extern _Float64x truncf64x (_Float64x __x) ; extern _Float64x __truncf64x (_Float64x __x) ;
+
+
+
+
+extern _Float64x remquof64x (_Float64x __x, _Float64x __y, int *__quo) ; extern _Float64x __remquof64x (_Float64x __x, _Float64x __y, int *__quo) ;
+
+
+
+
+
+
+extern long int lrintf64x (_Float64x __x) ; extern long int __lrintf64x (_Float64x __x) ;
+
+extern long long int llrintf64x (_Float64x __x) ; extern long long int __llrintf64x (_Float64x __x) ;
+
+
+
+extern long int lroundf64x (_Float64x __x) ; extern long int __lroundf64x (_Float64x __x) ;
+
+extern long long int llroundf64x (_Float64x __x) ; extern long long int __llroundf64x (_Float64x __x) ;
+
+
+
+extern _Float64x fdimf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __fdimf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64x fmaxf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __fmaxf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64x fminf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __fminf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64x fmaf64x (_Float64x __x, _Float64x __y, _Float64x __z) ; extern _Float64x __fmaf64x (_Float64x __x, _Float64x __y, _Float64x __z) ;
+
+
+
+
+extern _Float64x roundevenf64x (_Float64x __x) ; extern _Float64x __roundevenf64x (_Float64x __x) ;
+
+
+
+extern __intmax_t fromfpf64x (_Float64x __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpf64x (_Float64x __x, int __round, unsigned int __width)
+                            ;
+
+
+
+extern __uintmax_t ufromfpf64x (_Float64x __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpf64x (_Float64x __x, int __round, unsigned int __width)
+                              ;
+
+
+
+
+extern __intmax_t fromfpxf64x (_Float64x __x, int __round, unsigned int __width) ; extern __intmax_t __fromfpxf64x (_Float64x __x, int __round, unsigned int __width)
+                             ;
+
+
+
+
+extern __uintmax_t ufromfpxf64x (_Float64x __x, int __round, unsigned int __width) ; extern __uintmax_t __ufromfpxf64x (_Float64x __x, int __round, unsigned int __width)
+                               ;
+
+
+extern _Float64x fmaxmagf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __fmaxmagf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64x fminmagf64x (_Float64x __x, _Float64x __y) ; extern _Float64x __fminmagf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern int totalorderf64x (_Float64x __x, _Float64x __y)
+     ;
+
+
+extern int totalordermagf64x (_Float64x __x, _Float64x __y)
+     ;
+
+
+extern int canonicalizef64x (_Float64x *__cx, const _Float64x *__x) ;
+
+
+extern _Float64x getpayloadf64x (const _Float64x *__x) ; extern _Float64x __getpayloadf64x (const _Float64x *__x) ;
+
+
+extern int setpayloadf64x (_Float64x *__x, _Float64x __payload) ;
+
+
+extern int setpayloadsigf64x (_Float64x *__x, _Float64x __payload) ;
+# 458 "/usr/include/math.h" 2 3 4
+# 503 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern float fadd (double __x, double __y) ;
+
+
+extern float fdiv (double __x, double __y) ;
+
+
+extern float fmul (double __x, double __y) ;
+
+
+extern float fsub (double __x, double __y) ;
+# 504 "/usr/include/math.h" 2 3 4
+# 517 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern float faddl (long double __x, long double __y) ;
+
+
+extern float fdivl (long double __x, long double __y) ;
+
+
+extern float fmull (long double __x, long double __y) ;
+
+
+extern float fsubl (long double __x, long double __y) ;
+# 518 "/usr/include/math.h" 2 3 4
+# 537 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern double daddl (long double __x, long double __y) ;
+
+
+extern double ddivl (long double __x, long double __y) ;
+
+
+extern double dmull (long double __x, long double __y) ;
+
+
+extern double dsubl (long double __x, long double __y) ;
+# 538 "/usr/include/math.h" 2 3 4
+# 616 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern _Float32 f32addf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32 f32divf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32 f32mulf32x (_Float32x __x, _Float32x __y) ;
+
+
+extern _Float32 f32subf32x (_Float32x __x, _Float32x __y) ;
+# 617 "/usr/include/math.h" 2 3 4
+# 626 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern _Float32 f32addf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float32 f32divf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float32 f32mulf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float32 f32subf64 (_Float64 __x, _Float64 __y) ;
+# 627 "/usr/include/math.h" 2 3 4
+# 636 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern _Float32 f32addf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float32 f32divf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float32 f32mulf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float32 f32subf64x (_Float64x __x, _Float64x __y) ;
+# 637 "/usr/include/math.h" 2 3 4
+# 666 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern _Float32x f32xaddf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float32x f32xdivf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float32x f32xmulf64 (_Float64 __x, _Float64 __y) ;
+
+
+extern _Float32x f32xsubf64 (_Float64 __x, _Float64 __y) ;
+# 667 "/usr/include/math.h" 2 3 4
+# 676 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern _Float32x f32xaddf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float32x f32xdivf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float32x f32xmulf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float32x f32xsubf64x (_Float64x __x, _Float64x __y) ;
+# 677 "/usr/include/math.h" 2 3 4
+# 706 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h" 3 4
+extern _Float64 f64addf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64 f64divf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64 f64mulf64x (_Float64x __x, _Float64x __y) ;
+
+
+extern _Float64 f64subf64x (_Float64x __x, _Float64x __y) ;
+# 707 "/usr/include/math.h" 2 3 4
+# 773 "/usr/include/math.h" 3 4
+extern int signgam;
+# 853 "/usr/include/math.h" 3 4
+enum
+  {
+    FP_NAN =
+
+      0,
+    FP_INFINITE =
+
+      1,
+    FP_ZERO =
+
+      2,
+    FP_SUBNORMAL =
+
+      3,
+    FP_NORMAL =
+
+      4
+  };
+# 968 "/usr/include/math.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/iscanonical.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/iscanonical.h" 3 4
+extern int __iscanonicall (long double __x)
+     ;
+# 969 "/usr/include/math.h" 2 3 4
+# 1553 "/usr/include/math.h" 3 4
+
+# 37 "tcc.h" 2
+# 1 "/usr/include/signal.h" 1 3 4
+# 27 "/usr/include/signal.h" 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/signum.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/bits/signum.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/signum-generic.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/signum.h" 2 3 4
+# 31 "/usr/include/signal.h" 2 3 4
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h" 1 3 4
+
+
+
+
+
+
+
+typedef __sig_atomic_t sig_atomic_t;
+# 33 "/usr/include/signal.h" 2 3 4
+# 57 "/usr/include/signal.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h" 1 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 5 "/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h" 2 3 4
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h" 3 4
+union sigval
+{
+  int sival_int;
+  void *sival_ptr;
+};
+
+typedef union sigval __sigval_t;
+# 7 "/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h" 2 3 4
+# 16 "/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/siginfo-arch.h" 1 3 4
+# 17 "/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h" 2 3 4
+# 36 "/usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h" 3 4
+typedef struct
+  {
+    int si_signo;
+
+    int si_errno;
+
+    int si_code;
+
+
+
+
+
+    int __pad0;
+
+
+    union
+      {
+ int _pad[((128 / sizeof (int)) - 4)];
+
+
+ struct
+   {
+     __pid_t si_pid;
+     __uid_t si_uid;
+   } _kill;
+
+
+ struct
+   {
+     int si_tid;
+     int si_overrun;
+     __sigval_t si_sigval;
+   } _timer;
+
+
+ struct
+   {
+     __pid_t si_pid;
+     __uid_t si_uid;
+     __sigval_t si_sigval;
+   } _rt;
+
+
+ struct
+   {
+     __pid_t si_pid;
+     __uid_t si_uid;
+     int si_status;
+     __clock_t si_utime;
+     __clock_t si_stime;
+   } _sigchld;
+
+
+ struct
+   {
+     void *si_addr;
+    
+     short int si_addr_lsb;
+     union
+       {
+
+  struct
+    {
+      void *_lower;
+      void *_upper;
+    } _addr_bnd;
+
+  __uint32_t _pkey;
+       } _bounds;
+   } _sigfault;
+
+
+ struct
+   {
+     long int si_band;
+     int si_fd;
+   } _sigpoll;
+
+
+
+ struct
+   {
+     void *_call_addr;
+     int _syscall;
+     unsigned int _arch;
+   } _sigsys;
+
+      } _sifields;
+  } siginfo_t ;
+# 58 "/usr/include/signal.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h" 1 3 4
+# 35 "/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h" 3 4
+enum
+{
+  SI_ASYNCNL = -60,
+  SI_TKILL = -6,
+  SI_SIGIO,
+
+  SI_ASYNCIO,
+  SI_MESGQ,
+  SI_TIMER,
+
+
+
+
+
+  SI_QUEUE,
+  SI_USER,
+  SI_KERNEL = 0x80
+# 63 "/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h" 3 4
+};
+
+
+
+
+enum
+{
+  ILL_ILLOPC = 1,
+
+  ILL_ILLOPN,
+
+  ILL_ILLADR,
+
+  ILL_ILLTRP,
+
+  ILL_PRVOPC,
+
+  ILL_PRVREG,
+
+  ILL_COPROC,
+
+  ILL_BADSTK
+
+};
+
+
+enum
+{
+  FPE_INTDIV = 1,
+
+  FPE_INTOVF,
+
+  FPE_FLTDIV,
+
+  FPE_FLTOVF,
+
+  FPE_FLTUND,
+
+  FPE_FLTRES,
+
+  FPE_FLTINV,
+
+  FPE_FLTSUB
+
+};
+
+
+enum
+{
+  SEGV_MAPERR = 1,
+
+  SEGV_ACCERR,
+
+  SEGV_BNDERR,
+
+  SEGV_PKUERR
+
+};
+
+
+enum
+{
+  BUS_ADRALN = 1,
+
+  BUS_ADRERR,
+
+  BUS_OBJERR,
+
+  BUS_MCEERR_AR,
+
+  BUS_MCEERR_AO
+
+};
+
+
+
+
+enum
+{
+  TRAP_BRKPT = 1,
+
+  TRAP_TRACE
+
+};
+
+
+
+
+enum
+{
+  CLD_EXITED = 1,
+
+  CLD_KILLED,
+
+  CLD_DUMPED,
+
+  CLD_TRAPPED,
+
+  CLD_STOPPED,
+
+  CLD_CONTINUED
+
+};
+
+
+enum
+{
+  POLL_IN = 1,
+
+  POLL_OUT,
+
+  POLL_MSG,
+
+  POLL_ERR,
+
+  POLL_PRI,
+
+  POLL_HUP
+
+};
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h" 1 3 4
+# 189 "/usr/include/x86_64-linux-gnu/bits/siginfo-consts.h" 2 3 4
+# 59 "/usr/include/signal.h" 2 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/sigval_t.h" 1 3 4
+# 16 "/usr/include/x86_64-linux-gnu/bits/types/sigval_t.h" 3 4
+typedef __sigval_t sigval_t;
+# 63 "/usr/include/signal.h" 2 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h" 1 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 5 "/usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h" 2 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h" 3 4
+typedef struct sigevent
+  {
+    __sigval_t sigev_value;
+    int sigev_signo;
+    int sigev_notify;
+
+    union
+      {
+ int _pad[((64 / sizeof (int)) - 4)];
+
+
+
+ __pid_t _tid;
+
+ struct
+   {
+     void (*_function) (__sigval_t);
+     pthread_attr_t *_attribute;
+   } _sigev_thread;
+      } _sigev_un;
+  } sigevent_t;
+# 67 "/usr/include/signal.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/sigevent-consts.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/sigevent-consts.h" 3 4
+enum
+{
+  SIGEV_SIGNAL = 0,
+
+  SIGEV_NONE,
+
+  SIGEV_THREAD,
+
+
+  SIGEV_THREAD_ID = 4
+
+
+};
+# 68 "/usr/include/signal.h" 2 3 4
+
+
+
+
+typedef void (*__sighandler_t) (int);
+
+
+
+
+extern __sighandler_t __sysv_signal (int __sig, __sighandler_t __handler)
+     ;
+
+extern __sighandler_t sysv_signal (int __sig, __sighandler_t __handler)
+     ;
+
+
+
+
+
+
+extern __sighandler_t signal (int __sig, __sighandler_t __handler)
+     ;
+# 112 "/usr/include/signal.h" 3 4
+extern int kill (__pid_t __pid, int __sig) ;
+
+
+
+
+
+
+extern int killpg (__pid_t __pgrp, int __sig) ;
+
+
+
+extern int raise (int __sig) ;
+
+
+
+extern __sighandler_t ssignal (int __sig, __sighandler_t __handler)
+     ;
+extern int gsignal (int __sig) ;
+
+
+
+
+extern void psignal (int __sig, const char *__s);
+
+
+extern void psiginfo (const siginfo_t *__pinfo, const char *__s);
+# 153 "/usr/include/signal.h" 3 4
+extern int __sigpause (int __sig_or_mask, int __is_sig);
+# 170 "/usr/include/signal.h" 3 4
+extern int sigblock (int __mask) ;
+
+
+extern int sigsetmask (int __mask) ;
+
+
+extern int siggetmask (void) ;
+# 185 "/usr/include/signal.h" 3 4
+typedef __sighandler_t sighandler_t;
+
+
+
+
+typedef __sighandler_t sig_t;
+
+
+
+
+
+extern int sigemptyset (sigset_t *__set) ;
+
+
+extern int sigfillset (sigset_t *__set) ;
+
+
+extern int sigaddset (sigset_t *__set, int __signo) ;
+
+
+extern int sigdelset (sigset_t *__set, int __signo) ;
+
+
+extern int sigismember (const sigset_t *__set, int __signo)
+     ;
+
+
+
+extern int sigisemptyset (const sigset_t *__set) ;
+
+
+extern int sigandset (sigset_t *__set, const sigset_t *__left,
+        const sigset_t *__right) ;
+
+
+extern int sigorset (sigset_t *__set, const sigset_t *__left,
+       const sigset_t *__right) ;
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/sigaction.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/sigaction.h" 3 4
+struct sigaction
+  {
+
+
+    union
+      {
+
+ __sighandler_t sa_handler;
+
+ void (*sa_sigaction) (int, siginfo_t *, void *);
+      }
+    __sigaction_handler;
+
+
+
+
+
+
+
+    __sigset_t sa_mask;
+
+
+    int sa_flags;
+
+
+    void (*sa_restorer) (void);
+  };
+# 227 "/usr/include/signal.h" 2 3 4
+
+
+extern int sigprocmask (int __how, const sigset_t *restrict __set,
+   sigset_t *restrict __oset) ;
+
+
+
+
+
+
+extern int sigsuspend (const sigset_t *__set) ;
+
+
+extern int sigaction (int __sig, const struct sigaction *restrict __act,
+        struct sigaction *restrict __oact) ;
+
+
+extern int sigpending (sigset_t *__set) ;
+
+
+
+
+
+
+
+extern int sigwait (const sigset_t *restrict __set, int *restrict __sig)
+     ;
+
+
+
+
+
+
+
+extern int sigwaitinfo (const sigset_t *restrict __set,
+   siginfo_t *restrict __info) ;
+
+
+
+
+
+
+extern int sigtimedwait (const sigset_t *restrict __set,
+    siginfo_t *restrict __info,
+    const struct timespec *restrict __timeout)
+     ;
+
+
+
+extern int sigqueue (__pid_t __pid, int __sig, const union sigval __val)
+     ;
+# 286 "/usr/include/signal.h" 3 4
+extern const char *const _sys_siglist[(64 + 1)];
+extern const char *const sys_siglist[(64 + 1)];
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/sigcontext.h" 1 3 4
+# 31 "/usr/include/x86_64-linux-gnu/bits/sigcontext.h" 3 4
+struct _fpx_sw_bytes
+{
+  __uint32_t magic1;
+  __uint32_t extended_size;
+  __uint64_t xstate_bv;
+  __uint32_t xstate_size;
+  __uint32_t __glibc_reserved1[7];
+};
+
+struct _fpreg
+{
+  unsigned short significand[4];
+  unsigned short exponent;
+};
+
+struct _fpxreg
+{
+  unsigned short significand[4];
+  unsigned short exponent;
+  unsigned short __glibc_reserved1[3];
+};
+
+struct _xmmreg
+{
+  __uint32_t element[4];
+};
+# 123 "/usr/include/x86_64-linux-gnu/bits/sigcontext.h" 3 4
+struct _fpstate
+{
+
+  __uint16_t cwd;
+  __uint16_t swd;
+  __uint16_t ftw;
+  __uint16_t fop;
+  __uint64_t rip;
+  __uint64_t rdp;
+  __uint32_t mxcsr;
+  __uint32_t mxcr_mask;
+  struct _fpxreg _st[8];
+  struct _xmmreg _xmm[16];
+  __uint32_t __glibc_reserved1[24];
+};
+
+struct sigcontext
+{
+  __uint64_t r8;
+  __uint64_t r9;
+  __uint64_t r10;
+  __uint64_t r11;
+  __uint64_t r12;
+  __uint64_t r13;
+  __uint64_t r14;
+  __uint64_t r15;
+  __uint64_t rdi;
+  __uint64_t rsi;
+  __uint64_t rbp;
+  __uint64_t rbx;
+  __uint64_t rdx;
+  __uint64_t rax;
+  __uint64_t rcx;
+  __uint64_t rsp;
+  __uint64_t rip;
+  __uint64_t eflags;
+  unsigned short cs;
+  unsigned short gs;
+  unsigned short fs;
+  unsigned short __pad0;
+  __uint64_t err;
+  __uint64_t trapno;
+  __uint64_t oldmask;
+  __uint64_t cr2;
+  union
+    {
+      struct _fpstate * fpstate;
+      __uint64_t __fpstate_word;
+    };
+  __uint64_t __reserved1 [8];
+};
+
+
+
+struct _xsave_hdr
+{
+  __uint64_t xstate_bv;
+  __uint64_t __glibc_reserved1[2];
+  __uint64_t __glibc_reserved2[5];
+};
+
+struct _ymmh_state
+{
+  __uint32_t ymmh_space[64];
+};
+
+struct _xstate
+{
+  struct _fpstate fpstate;
+  struct _xsave_hdr xstate_hdr;
+  struct _ymmh_state ymmh;
+};
+# 292 "/usr/include/signal.h" 2 3 4
+
+
+extern int sigreturn (struct sigcontext *__scp) ;
+
+
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 302 "/usr/include/signal.h" 2 3 4
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/stack_t.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/types/stack_t.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/types/stack_t.h" 2 3 4
+
+
+typedef struct
+  {
+    void *ss_sp;
+    int ss_flags;
+    size_t ss_size;
+  } stack_t;
+# 304 "/usr/include/signal.h" 2 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/sys/ucontext.h" 1 3 4
+# 37 "/usr/include/x86_64-linux-gnu/sys/ucontext.h" 3 4
+ typedef long long int greg_t;
+# 46 "/usr/include/x86_64-linux-gnu/sys/ucontext.h" 3 4
+typedef greg_t gregset_t[23];
+
+
+
+enum
+{
+  REG_R8 = 0,
+
+  REG_R9,
+
+  REG_R10,
+
+  REG_R11,
+
+  REG_R12,
+
+  REG_R13,
+
+  REG_R14,
+
+  REG_R15,
+
+  REG_RDI,
+
+  REG_RSI,
+
+  REG_RBP,
+
+  REG_RBX,
+
+  REG_RDX,
+
+  REG_RAX,
+
+  REG_RCX,
+
+  REG_RSP,
+
+  REG_RIP,
+
+  REG_EFL,
+
+  REG_CSGSFS,
+
+  REG_ERR,
+
+  REG_TRAPNO,
+
+  REG_OLDMASK,
+
+  REG_CR2
+
+};
+
+
+struct _libc_fpxreg
+{
+  unsigned short int significand[4];
+  unsigned short int exponent;
+  unsigned short int __glibc_reserved1[3];
+};
+
+struct _libc_xmmreg
+{
+  __uint32_t element[4];
+};
+
+struct _libc_fpstate
+{
+
+  __uint16_t cwd;
+  __uint16_t swd;
+  __uint16_t ftw;
+  __uint16_t fop;
+  __uint64_t rip;
+  __uint64_t rdp;
+  __uint32_t mxcsr;
+  __uint32_t mxcr_mask;
+  struct _libc_fpxreg _st[8];
+  struct _libc_xmmreg _xmm[16];
+  __uint32_t __glibc_reserved1[24];
+};
+
+
+typedef struct _libc_fpstate *fpregset_t;
+
+
+typedef struct
+  {
+    gregset_t gregs;
+
+    fpregset_t fpregs;
+    unsigned long long __reserved1 [8];
+} mcontext_t;
+
+
+typedef struct ucontext_t
+  {
+    unsigned long int uc_flags;
+    struct ucontext_t *uc_link;
+    stack_t uc_stack;
+    mcontext_t uc_mcontext;
+    sigset_t uc_sigmask;
+    struct _libc_fpstate __fpregs_mem;
+    unsigned long long int __ssp[4];
+  } ucontext_t;
+# 307 "/usr/include/signal.h" 2 3 4
+
+
+
+
+
+
+
+extern int siginterrupt (int __sig, int __interrupt) ;
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/sigstack.h" 1 3 4
+# 317 "/usr/include/signal.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/ss_flags.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/ss_flags.h" 3 4
+enum
+{
+  SS_ONSTACK = 1,
+
+  SS_DISABLE
+
+};
+# 318 "/usr/include/signal.h" 2 3 4
+
+
+
+extern int sigaltstack (const stack_t *restrict __ss,
+   stack_t *restrict __oss) ;
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h" 3 4
+struct sigstack
+  {
+    void *ss_sp;
+    int ss_onstack;
+  };
+# 328 "/usr/include/signal.h" 2 3 4
+
+
+
+
+
+
+
+extern int sigstack (struct sigstack *__ss, struct sigstack *__oss)
+     ;
+
+
+
+
+
+
+extern int sighold (int __sig) ;
+
+
+extern int sigrelse (int __sig) ;
+
+
+extern int sigignore (int __sig) ;
+
+
+extern __sighandler_t sigset (int __sig, __sighandler_t __disp) ;
+
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/sigthread.h" 1 3 4
+# 31 "/usr/include/x86_64-linux-gnu/bits/sigthread.h" 3 4
+extern int pthread_sigmask (int __how,
+       const __sigset_t *restrict __newmask,
+       __sigset_t *restrict __oldmask);
+
+
+extern int pthread_kill (pthread_t __threadid, int __signo) ;
+
+
+
+extern int pthread_sigqueue (pthread_t __threadid, int __signo,
+        const union sigval __value) ;
+# 360 "/usr/include/signal.h" 2 3 4
+
+
+
+
+
+
+extern int __libc_current_sigrtmin (void) ;
+
+extern int __libc_current_sigrtmax (void) ;
+
+
+
+
+
+# 38 "tcc.h" 2
+# 1 "/usr/include/fcntl.h" 1 3 4
+# 28 "/usr/include/fcntl.h" 3 4
+
+
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/fcntl.h" 1 3 4
+# 35 "/usr/include/x86_64-linux-gnu/bits/fcntl.h" 3 4
+struct flock
+  {
+    short int l_type;
+    short int l_whence;
+
+    __off_t l_start;
+    __off_t l_len;
+
+
+
+
+    __pid_t l_pid;
+  };
+
+
+struct flock64
+  {
+    short int l_type;
+    short int l_whence;
+    __off64_t l_start;
+    __off64_t l_len;
+    __pid_t l_pid;
+  };
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 1 3 4
+# 38 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h" 2 3 4
+
+
+struct iovec
+  {
+    void *iov_base;
+    size_t iov_len;
+  };
+# 39 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 2 3 4
+# 265 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 3 4
+enum __pid_type
+  {
+    F_OWNER_TID = 0,
+    F_OWNER_PID,
+    F_OWNER_PGRP,
+    F_OWNER_GID = F_OWNER_PGRP
+  };
+
+
+struct f_owner_ex
+  {
+    enum __pid_type type;
+    __pid_t pid;
+  };
+# 346 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 3 4
+# 1 "/usr/include/linux/falloc.h" 1 3 4
+# 347 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 2 3 4
+
+
+
+struct file_handle
+{
+  unsigned int handle_bytes;
+  int handle_type;
+
+  unsigned char f_handle[0];
+};
+# 384 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 3 4
+
+
+
+
+
+extern __ssize_t readahead (int __fd, __off64_t __offset, size_t __count)
+    ;
+
+
+
+
+
+
+extern int sync_file_range (int __fd, __off64_t __offset, __off64_t __count,
+       unsigned int __flags);
+
+
+
+
+
+
+extern __ssize_t vmsplice (int __fdout, const struct iovec *__iov,
+      size_t __count, unsigned int __flags);
+
+
+
+
+
+extern __ssize_t splice (int __fdin, __off64_t *__offin, int __fdout,
+    __off64_t *__offout, size_t __len,
+    unsigned int __flags);
+
+
+
+
+
+extern __ssize_t tee (int __fdin, int __fdout, size_t __len,
+        unsigned int __flags);
+
+
+
+
+
+
+extern int fallocate (int __fd, int __mode, __off_t __offset, __off_t __len);
+# 439 "/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h" 3 4
+extern int fallocate64 (int __fd, int __mode, __off64_t __offset,
+   __off64_t __len);
+
+
+
+
+extern int name_to_handle_at (int __dfd, const char *__name,
+         struct file_handle *__handle, int *__mnt_id,
+         int __flags) ;
+
+
+
+
+
+extern int open_by_handle_at (int __mountdirfd, struct file_handle *__handle,
+         int __flags);
+
+
+
+
+# 61 "/usr/include/x86_64-linux-gnu/bits/fcntl.h" 2 3 4
+# 36 "/usr/include/fcntl.h" 2 3 4
+# 78 "/usr/include/fcntl.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/stat.h" 1 3 4
+# 46 "/usr/include/x86_64-linux-gnu/bits/stat.h" 3 4
+struct stat
+  {
+    __dev_t st_dev;
+
+
+
+
+    __ino_t st_ino;
+
+
+
+
+
+
+
+    __nlink_t st_nlink;
+    __mode_t st_mode;
+
+    __uid_t st_uid;
+    __gid_t st_gid;
+
+    int __pad0;
+
+    __dev_t st_rdev;
+
+
+
+
+    __off_t st_size;
+
+
+
+    __blksize_t st_blksize;
+
+    __blkcnt_t st_blocks;
+# 91 "/usr/include/x86_64-linux-gnu/bits/stat.h" 3 4
+    struct timespec st_atim;
+    struct timespec st_mtim;
+    struct timespec st_ctim;
+# 106 "/usr/include/x86_64-linux-gnu/bits/stat.h" 3 4
+    __syscall_slong_t __glibc_reserved[3];
+# 115 "/usr/include/x86_64-linux-gnu/bits/stat.h" 3 4
+  };
+
+
+
+struct stat64
+  {
+    __dev_t st_dev;
+
+    __ino64_t st_ino;
+    __nlink_t st_nlink;
+    __mode_t st_mode;
+
+
+
+
+
+
+    __uid_t st_uid;
+    __gid_t st_gid;
+
+    int __pad0;
+    __dev_t st_rdev;
+    __off_t st_size;
+
+
+
+
+
+    __blksize_t st_blksize;
+    __blkcnt64_t st_blocks;
+
+
+
+
+
+
+
+    struct timespec st_atim;
+    struct timespec st_mtim;
+    struct timespec st_ctim;
+# 164 "/usr/include/x86_64-linux-gnu/bits/stat.h" 3 4
+    __syscall_slong_t __glibc_reserved[3];
+
+
+
+  };
+# 79 "/usr/include/fcntl.h" 2 3 4
+# 148 "/usr/include/fcntl.h" 3 4
+extern int fcntl (int __fd, int __cmd, ...);
+# 157 "/usr/include/fcntl.h" 3 4
+extern int fcntl64 (int __fd, int __cmd, ...);
+# 168 "/usr/include/fcntl.h" 3 4
+extern int open (const char *__file, int __oflag, ...) ;
+# 178 "/usr/include/fcntl.h" 3 4
+extern int open64 (const char *__file, int __oflag, ...) ;
+# 192 "/usr/include/fcntl.h" 3 4
+extern int openat (int __fd, const char *__file, int __oflag, ...)
+     ;
+# 203 "/usr/include/fcntl.h" 3 4
+extern int openat64 (int __fd, const char *__file, int __oflag, ...)
+     ;
+# 214 "/usr/include/fcntl.h" 3 4
+extern int creat (const char *__file, mode_t __mode) ;
+# 224 "/usr/include/fcntl.h" 3 4
+extern int creat64 (const char *__file, mode_t __mode) ;
+# 243 "/usr/include/fcntl.h" 3 4
+extern int lockf (int __fd, int __cmd, off_t __len);
+# 252 "/usr/include/fcntl.h" 3 4
+extern int lockf64 (int __fd, int __cmd, off64_t __len);
+
+
+
+
+
+
+
+extern int posix_fadvise (int __fd, off_t __offset, off_t __len,
+     int __advise) ;
+# 272 "/usr/include/fcntl.h" 3 4
+extern int posix_fadvise64 (int __fd, off64_t __offset, off64_t __len,
+       int __advise) ;
+# 282 "/usr/include/fcntl.h" 3 4
+extern int posix_fallocate (int __fd, off_t __offset, off_t __len);
+# 293 "/usr/include/fcntl.h" 3 4
+extern int posix_fallocate64 (int __fd, off64_t __offset, off64_t __len);
+# 304 "/usr/include/fcntl.h" 3 4
+
+# 39 "tcc.h" 2
+# 1 "/usr/include/setjmp.h" 1 3 4
+# 27 "/usr/include/setjmp.h" 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/setjmp.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/bits/setjmp.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/setjmp.h" 2 3 4
+
+
+
+
+typedef long int __jmp_buf[8];
+# 30 "/usr/include/setjmp.h" 2 3 4
+
+
+
+struct __jmp_buf_tag
+  {
+
+
+
+
+    __jmp_buf __jmpbuf;
+    int __mask_was_saved;
+    __sigset_t __saved_mask;
+  };
+
+
+typedef struct __jmp_buf_tag jmp_buf[1];
+
+
+
+extern int setjmp (jmp_buf __env) ;
+
+
+
+
+extern int __sigsetjmp (struct __jmp_buf_tag __env[1], int __savemask) ;
+
+
+
+extern int _setjmp (struct __jmp_buf_tag __env[1]) ;
+# 67 "/usr/include/setjmp.h" 3 4
+extern void longjmp (struct __jmp_buf_tag __env[1], int __val)
+     ;
+
+
+
+
+
+extern void _longjmp (struct __jmp_buf_tag __env[1], int __val)
+     ;
+
+
+
+
+
+
+
+typedef struct __jmp_buf_tag sigjmp_buf[1];
+# 93 "/usr/include/setjmp.h" 3 4
+extern void siglongjmp (sigjmp_buf __env, int __val)
+     ;
+# 103 "/usr/include/setjmp.h" 3 4
+
+# 40 "tcc.h" 2
+# 1 "/usr/include/time.h" 1 3 4
+# 29 "/usr/include/time.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 30 "/usr/include/time.h" 2 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/time.h" 1 3 4
+# 73 "/usr/include/x86_64-linux-gnu/bits/time.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/timex.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/bits/timex.h" 3 4
+struct timex
+{
+  unsigned int modes;
+  __syscall_slong_t offset;
+  __syscall_slong_t freq;
+  __syscall_slong_t maxerror;
+  __syscall_slong_t esterror;
+  int status;
+  __syscall_slong_t constant;
+  __syscall_slong_t precision;
+  __syscall_slong_t tolerance;
+  struct timeval time;
+  __syscall_slong_t tick;
+  __syscall_slong_t ppsfreq;
+  __syscall_slong_t jitter;
+  int shift;
+  __syscall_slong_t stabil;
+  __syscall_slong_t jitcnt;
+  __syscall_slong_t calcnt;
+  __syscall_slong_t errcnt;
+  __syscall_slong_t stbcnt;
+
+  int tai;
+
+
+  int :32; int :32; int :32; int :32;
+  int :32; int :32; int :32; int :32;
+  int :32; int :32; int :32;
+};
+# 74 "/usr/include/x86_64-linux-gnu/bits/time.h" 2 3 4
+
+
+
+
+extern int clock_adjtime (__clockid_t __clock_id, struct timex *__utx) ;
+
+
+# 34 "/usr/include/time.h" 2 3 4
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h" 1 3 4
+
+
+
+
+
+
+struct tm
+{
+  int tm_sec;
+  int tm_min;
+  int tm_hour;
+  int tm_mday;
+  int tm_mon;
+  int tm_year;
+  int tm_wday;
+  int tm_yday;
+  int tm_isdst;
+
+
+  long int tm_gmtoff;
+  const char *tm_zone;
+
+
+
+
+};
+# 40 "/usr/include/time.h" 2 3 4
+# 48 "/usr/include/time.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h" 1 3 4
+
+
+
+
+
+
+
+struct itimerspec
+  {
+    struct timespec it_interval;
+    struct timespec it_value;
+  };
+# 49 "/usr/include/time.h" 2 3 4
+struct sigevent;
+# 68 "/usr/include/time.h" 3 4
+
+
+
+
+extern clock_t clock (void) ;
+
+
+extern time_t time (time_t *__timer) ;
+
+
+extern double difftime (time_t __time1, time_t __time0)
+     ;
+
+
+extern time_t mktime (struct tm *__tp) ;
+
+
+
+
+
+extern size_t strftime (char *restrict __s, size_t __maxsize,
+   const char *restrict __format,
+   const struct tm *restrict __tp) ;
+
+
+
+
+extern char *strptime (const char *restrict __s,
+         const char *restrict __fmt, struct tm *__tp)
+     ;
+
+
+
+
+
+
+extern size_t strftime_l (char *restrict __s, size_t __maxsize,
+     const char *restrict __format,
+     const struct tm *restrict __tp,
+     locale_t __loc) ;
+
+
+
+extern char *strptime_l (const char *restrict __s,
+    const char *restrict __fmt, struct tm *__tp,
+    locale_t __loc) ;
+
+
+
+
+
+extern struct tm *gmtime (const time_t *__timer) ;
+
+
+
+extern struct tm *localtime (const time_t *__timer) ;
+
+
+
+
+extern struct tm *gmtime_r (const time_t *restrict __timer,
+       struct tm *restrict __tp) ;
+
+
+
+extern struct tm *localtime_r (const time_t *restrict __timer,
+          struct tm *restrict __tp) ;
+
+
+
+
+extern char *asctime (const struct tm *__tp) ;
+
+
+extern char *ctime (const time_t *__timer) ;
+
+
+
+
+
+
+extern char *asctime_r (const struct tm *restrict __tp,
+   char *restrict __buf) ;
+
+
+extern char *ctime_r (const time_t *restrict __timer,
+        char *restrict __buf) ;
+
+
+
+
+extern char *__tzname[2];
+extern int __daylight;
+extern long int __timezone;
+
+
+
+
+extern char *tzname[2];
+
+
+
+extern void tzset (void) ;
+
+
 
 extern int daylight;
-
-
-char *asctime(const struct tm *);
-clock_t clock(void) __asm("_" "clock" );
-char *ctime(const time_t *);
-double difftime(time_t, time_t);
-struct tm *getdate(const char *);
-struct tm *gmtime(const time_t *);
-struct tm *localtime(const time_t *);
-time_t mktime(struct tm *) __asm("_" "mktime" );
-size_t strftime(char * restrict, size_t, const char * restrict, const struct tm * restrict) __asm("_" "strftime" );
-char *strptime(const char * restrict, const char * restrict, struct tm * restrict) __asm("_" "strptime" );
-time_t time(time_t *);
-
-
-void tzset(void);
-
-
-
-char *asctime_r(const struct tm * restrict, char * restrict);
-char *ctime_r(const time_t *, char *);
-struct tm *gmtime_r(const time_t * restrict, struct tm * restrict);
-struct tm *localtime_r(const time_t * restrict, struct tm * restrict);
-
-
-time_t posix2time(time_t);
-
-
-
-void tzsetwall(void);
-time_t time2posix(time_t);
-time_t timelocal(struct tm * const);
-time_t timegm(struct tm * const);
-
-
-
-int nanosleep(const struct timespec *__rqtp, struct timespec *__rmtp) __asm("_" "nanosleep" );
-# 153 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/time.h" 3 4
-typedef enum {
-_CLOCK_REALTIME __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 0,
-
-_CLOCK_MONOTONIC __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 6,
-
-
-_CLOCK_MONOTONIC_RAW __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 4,
-
-_CLOCK_MONOTONIC_RAW_APPROX __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 5,
-
-_CLOCK_UPTIME_RAW __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 8,
-
-_CLOCK_UPTIME_RAW_APPROX __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 9,
-
-
-_CLOCK_PROCESS_CPUTIME_ID __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 12,
-
-_CLOCK_THREAD_CPUTIME_ID __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0))) = 16
-
-} clockid_t;
-
-__attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)))
-int clock_getres(clockid_t __clock_id, struct timespec *__res);
-
-__attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)))
-int clock_gettime(clockid_t __clock_id, struct timespec *__tp);
-
-
-__attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)))
-__uint64_t clock_gettime_nsec_np(clockid_t __clock_id);
-
-
-__attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,unavailable)))
-__attribute__((availability(tvos,unavailable))) __attribute__((availability(watchos,unavailable)))
-int clock_settime(clockid_t __clock_id, const struct timespec *__tp);
-# 198 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/time.h" 3 4
-__attribute__((availability(macosx,introduced=10.15))) __attribute__((availability(ios,introduced=13.0))) __attribute__((availability(tvos,introduced=13.0))) __attribute__((availability(watchos,introduced=6.0)))
-int timespec_get(struct timespec *ts, int base);
-# 41 "./tcc.h" 2
-# 52 "./tcc.h"
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 1 3 4
-# 72 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 1 3 4
-# 84 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_posix_vdisable.h" 1 3 4
-# 85 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 2 3 4
-# 122 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_seek_set.h" 1 3 4
-# 123 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 2 3 4
-# 132 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 3 4
-struct accessx_descriptor {
- unsigned int ad_name_offset;
- int ad_flags;
- int ad_pad[2];
-};
-# 188 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 3 4
-int getattrlistbulk(int, void *, void *, size_t, uint64_t) __attribute__((availability(macosx,introduced=10.10)));
-int getattrlistat(int, const char *, void *, void *, size_t, unsigned long) __attribute__((availability(macosx,introduced=10.10)));
-int setattrlistat(int, const char *, void *, void *, size_t, uint32_t) __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0))) __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
-# 203 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_gid_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_gid_t.h" 3 4
-typedef __darwin_gid_t gid_t;
-# 204 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/unistd.h" 2 3 4
+extern long int timezone;
 
 
 
 
-int faccessat(int, const char *, int, int) __attribute__((availability(macosx,introduced=10.10)));
-int fchownat(int, const char *, uid_t, gid_t, int) __attribute__((availability(macosx,introduced=10.10)));
-int linkat(int, const char *, int, const char *, int) __attribute__((availability(macosx,introduced=10.10)));
-ssize_t readlinkat(int, const char *, char *, size_t) __attribute__((availability(macosx,introduced=10.10)));
-int symlinkat(const char *, int, const char *) __attribute__((availability(macosx,introduced=10.10)));
-int unlinkat(int, const char *, int) __attribute__((availability(macosx,introduced=10.10)));
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 2 3 4
-# 83 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_useconds_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_useconds_t.h" 3 4
-typedef __darwin_useconds_t useconds_t;
-# 84 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 2 3 4
-# 430 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-void _exit(int) __attribute__((__noreturn__));
-int access(const char *, int);
-unsigned int
-  alarm(unsigned int);
-int chdir(const char *);
-int chown(const char *, uid_t, gid_t);
 
-int close(int) __asm("_" "close" );
+extern int stime (const time_t *__when) ;
+# 196 "/usr/include/time.h" 3 4
+extern time_t timegm (struct tm *__tp) ;
 
-int dup(int);
-int dup2(int, int);
-int execl(const char * __path, const char * __arg0, ...) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int execle(const char * __path, const char * __arg0, ...) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int execlp(const char * __file, const char * __arg0, ...) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int execv(const char * __path, char * const * __argv) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int execve(const char * __file, char * const * __argv, char * const * __envp) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int execvp(const char * __file, char * const * __argv) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-pid_t fork(void) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-long fpathconf(int, int);
-char *getcwd(char *, size_t);
-gid_t getegid(void);
-uid_t geteuid(void);
-gid_t getgid(void);
+
+extern time_t timelocal (struct tm *__tp) ;
+
+
+extern int dysize (int __year) ;
+# 211 "/usr/include/time.h" 3 4
+extern int nanosleep (const struct timespec *__requested_time,
+        struct timespec *__remaining);
 
 
 
-int getgroups(int, gid_t []);
-
-char *getlogin(void);
-pid_t getpgrp(void);
-pid_t getpid(void);
-pid_t getppid(void);
-uid_t getuid(void);
-int isatty(int);
-int link(const char *, const char *);
-off_t lseek(int, off_t, int);
-long pathconf(const char *, int);
-
-int pause(void) __asm("_" "pause" );
-
-int pipe(int [2]);
-
-ssize_t read(int, void *, size_t) __asm("_" "read" );
-
-int rmdir(const char *);
-int setgid(gid_t);
-int setpgid(pid_t, pid_t);
-pid_t setsid(void);
-int setuid(uid_t);
-
-unsigned int
-  sleep(unsigned int) __asm("_" "sleep" );
-
-long sysconf(int);
-pid_t tcgetpgrp(int);
-int tcsetpgrp(int, pid_t);
-char *ttyname(int);
+extern int clock_getres (clockid_t __clock_id, struct timespec *__res) ;
 
 
-int ttyname_r(int, char *, size_t) __asm("_" "ttyname_r" );
+extern int clock_gettime (clockid_t __clock_id, struct timespec *__tp) ;
+
+
+extern int clock_settime (clockid_t __clock_id, const struct timespec *__tp)
+     ;
 
 
 
 
-int unlink(const char *);
 
-ssize_t write(int __fd, const void * __buf, size_t __nbyte) __asm("_" "write" );
-# 507 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-size_t confstr(int, char *, size_t) __asm("_" "confstr" );
 
-int getopt(int, char * const [], const char *) __asm("_" "getopt" );
+extern int clock_nanosleep (clockid_t __clock_id, int __flags,
+       const struct timespec *__req,
+       struct timespec *__rem);
+
+
+extern int clock_getcpuclockid (pid_t __pid, clockid_t *__clock_id) ;
+
+
+
+
+extern int timer_create (clockid_t __clock_id,
+    struct sigevent *restrict __evp,
+    timer_t *restrict __timerid) ;
+
+
+extern int timer_delete (timer_t __timerid) ;
+
+
+extern int timer_settime (timer_t __timerid, int __flags,
+     const struct itimerspec *restrict __value,
+     struct itimerspec *restrict __ovalue) ;
+
+
+extern int timer_gettime (timer_t __timerid, struct itimerspec *__value)
+     ;
+
+
+extern int timer_getoverrun (timer_t __timerid) ;
+
+
+
+
+
+extern int timespec_get (struct timespec *__ts, int __base)
+     ;
+# 280 "/usr/include/time.h" 3 4
+extern int getdate_err;
+# 289 "/usr/include/time.h" 3 4
+extern struct tm *getdate (const char *__string);
+# 303 "/usr/include/time.h" 3 4
+extern int getdate_r (const char *restrict __string,
+        struct tm *restrict __resbufp);
+
+
+
+# 41 "tcc.h" 2
+# 52 "tcc.h"
+# 1 "/usr/include/unistd.h" 1 3 4
+# 27 "/usr/include/unistd.h" 3 4
+
+# 202 "/usr/include/unistd.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/posix_opt.h" 1 3 4
+# 203 "/usr/include/unistd.h" 2 3 4
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/environments.h" 1 3 4
+# 22 "/usr/include/x86_64-linux-gnu/bits/environments.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 23 "/usr/include/x86_64-linux-gnu/bits/environments.h" 2 3 4
+# 207 "/usr/include/unistd.h" 2 3 4
+# 226 "/usr/include/unistd.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 227 "/usr/include/unistd.h" 2 3 4
+# 267 "/usr/include/unistd.h" 3 4
+typedef __intptr_t intptr_t;
+
+
+
+
+
+
+typedef __socklen_t socklen_t;
+# 287 "/usr/include/unistd.h" 3 4
+extern int access (const char *__name, int __type) ;
+
+
+
+
+extern int euidaccess (const char *__name, int __type)
+     ;
+
+
+extern int eaccess (const char *__name, int __type)
+     ;
+
+
+
+
+
+
+extern int faccessat (int __fd, const char *__file, int __type, int __flag)
+     ;
+# 334 "/usr/include/unistd.h" 3 4
+extern __off_t lseek (int __fd, __off_t __offset, int __whence) ;
+# 345 "/usr/include/unistd.h" 3 4
+extern __off64_t lseek64 (int __fd, __off64_t __offset, int __whence)
+     ;
+
+
+
+
+
+
+extern int close (int __fd);
+
+
+
+
+
+
+extern ssize_t read (int __fd, void *__buf, size_t __nbytes) ;
+
+
+
+
+
+extern ssize_t write (int __fd, const void *__buf, size_t __n) ;
+# 376 "/usr/include/unistd.h" 3 4
+extern ssize_t pread (int __fd, void *__buf, size_t __nbytes,
+        __off_t __offset) ;
+
+
+
+
+
+
+extern ssize_t pwrite (int __fd, const void *__buf, size_t __n,
+         __off_t __offset) ;
+# 404 "/usr/include/unistd.h" 3 4
+extern ssize_t pread64 (int __fd, void *__buf, size_t __nbytes,
+   __off64_t __offset) ;
+
+
+extern ssize_t pwrite64 (int __fd, const void *__buf, size_t __n,
+    __off64_t __offset) ;
+
+
+
+
+
+
+
+extern int pipe (int __pipedes[2]) ;
+
+
+
+
+extern int pipe2 (int __pipedes[2], int __flags) ;
+# 432 "/usr/include/unistd.h" 3 4
+extern unsigned int alarm (unsigned int __seconds) ;
+# 444 "/usr/include/unistd.h" 3 4
+extern unsigned int sleep (unsigned int __seconds);
+
+
+
+
+
+
+
+extern __useconds_t ualarm (__useconds_t __value, __useconds_t __interval)
+     ;
+
+
+
+
+
+
+extern int usleep (__useconds_t __useconds);
+# 469 "/usr/include/unistd.h" 3 4
+extern int pause (void);
+
+
+
+extern int chown (const char *__file, __uid_t __owner, __gid_t __group)
+     ;
+
+
+
+extern int fchown (int __fd, __uid_t __owner, __gid_t __group) ;
+
+
+
+
+extern int lchown (const char *__file, __uid_t __owner, __gid_t __group)
+     ;
+
+
+
+
+
+
+extern int fchownat (int __fd, const char *__file, __uid_t __owner,
+       __gid_t __group, int __flag)
+     ;
+
+
+
+extern int chdir (const char *__path) ;
+
+
+
+extern int fchdir (int __fd) ;
+# 511 "/usr/include/unistd.h" 3 4
+extern char *getcwd (char *__buf, size_t __size) ;
+
+
+
+
+
+extern char *get_current_dir_name (void) ;
+
+
+
+
+
+
+
+extern char *getwd (char *__buf)
+     ;
+
+
+
+
+extern int dup (int __fd) ;
+
+
+extern int dup2 (int __fd, int __fd2) ;
+
+
+
+
+extern int dup3 (int __fd, int __fd2, int __flags) ;
+
+
+
+extern char **__environ;
+
+extern char **environ;
+
+
+
+
+
+extern int execve (const char *__path, char *const __argv[],
+     char *const __envp[]) ;
+
+
+
+
+extern int fexecve (int __fd, char *const __argv[], char *const __envp[])
+     ;
+
+
+
+
+extern int execv (const char *__path, char *const __argv[])
+     ;
+
+
+
+extern int execle (const char *__path, const char *__arg, ...)
+     ;
+
+
+
+extern int execl (const char *__path, const char *__arg, ...)
+     ;
+
+
+
+extern int execvp (const char *__file, char *const __argv[])
+     ;
+
+
+
+
+extern int execlp (const char *__file, const char *__arg, ...)
+     ;
+
+
+
+
+extern int execvpe (const char *__file, char *const __argv[],
+      char *const __envp[])
+     ;
+
+
+
+
+
+extern int nice (int __inc) ;
+
+
+
+
+extern void _exit (int __status) ;
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/confname.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/confname.h" 3 4
+enum
+  {
+    _PC_LINK_MAX,
+
+    _PC_MAX_CANON,
+
+    _PC_MAX_INPUT,
+
+    _PC_NAME_MAX,
+
+    _PC_PATH_MAX,
+
+    _PC_PIPE_BUF,
+
+    _PC_CHOWN_RESTRICTED,
+
+    _PC_NO_TRUNC,
+
+    _PC_VDISABLE,
+
+    _PC_SYNC_IO,
+
+    _PC_ASYNC_IO,
+
+    _PC_PRIO_IO,
+
+    _PC_SOCK_MAXBUF,
+
+    _PC_FILESIZEBITS,
+
+    _PC_REC_INCR_XFER_SIZE,
+
+    _PC_REC_MAX_XFER_SIZE,
+
+    _PC_REC_MIN_XFER_SIZE,
+
+    _PC_REC_XFER_ALIGN,
+
+    _PC_ALLOC_SIZE_MIN,
+
+    _PC_SYMLINK_MAX,
+
+    _PC_2_SYMLINKS
+
+  };
+
+
+enum
+  {
+    _SC_ARG_MAX,
+
+    _SC_CHILD_MAX,
+
+    _SC_CLK_TCK,
+
+    _SC_NGROUPS_MAX,
+
+    _SC_OPEN_MAX,
+
+    _SC_STREAM_MAX,
+
+    _SC_TZNAME_MAX,
+
+    _SC_JOB_CONTROL,
+
+    _SC_SAVED_IDS,
+
+    _SC_REALTIME_SIGNALS,
+
+    _SC_PRIORITY_SCHEDULING,
+
+    _SC_TIMERS,
+
+    _SC_ASYNCHRONOUS_IO,
+
+    _SC_PRIORITIZED_IO,
+
+    _SC_SYNCHRONIZED_IO,
+
+    _SC_FSYNC,
+
+    _SC_MAPPED_FILES,
+
+    _SC_MEMLOCK,
+
+    _SC_MEMLOCK_RANGE,
+
+    _SC_MEMORY_PROTECTION,
+
+    _SC_MESSAGE_PASSING,
+
+    _SC_SEMAPHORES,
+
+    _SC_SHARED_MEMORY_OBJECTS,
+
+    _SC_AIO_LISTIO_MAX,
+
+    _SC_AIO_MAX,
+
+    _SC_AIO_PRIO_DELTA_MAX,
+
+    _SC_DELAYTIMER_MAX,
+
+    _SC_MQ_OPEN_MAX,
+
+    _SC_MQ_PRIO_MAX,
+
+    _SC_VERSION,
+
+    _SC_PAGESIZE,
+
+
+    _SC_RTSIG_MAX,
+
+    _SC_SEM_NSEMS_MAX,
+
+    _SC_SEM_VALUE_MAX,
+
+    _SC_SIGQUEUE_MAX,
+
+    _SC_TIMER_MAX,
+
+
+
+
+    _SC_BC_BASE_MAX,
+
+    _SC_BC_DIM_MAX,
+
+    _SC_BC_SCALE_MAX,
+
+    _SC_BC_STRING_MAX,
+
+    _SC_COLL_WEIGHTS_MAX,
+
+    _SC_EQUIV_CLASS_MAX,
+
+    _SC_EXPR_NEST_MAX,
+
+    _SC_LINE_MAX,
+
+    _SC_RE_DUP_MAX,
+
+    _SC_CHARCLASS_NAME_MAX,
+
+
+    _SC_2_VERSION,
+
+    _SC_2_C_BIND,
+
+    _SC_2_C_DEV,
+
+    _SC_2_FORT_DEV,
+
+    _SC_2_FORT_RUN,
+
+    _SC_2_SW_DEV,
+
+    _SC_2_LOCALEDEF,
+
+
+    _SC_PII,
+
+    _SC_PII_XTI,
+
+    _SC_PII_SOCKET,
+
+    _SC_PII_INTERNET,
+
+    _SC_PII_OSI,
+
+    _SC_POLL,
+
+    _SC_SELECT,
+
+    _SC_UIO_MAXIOV,
+
+    _SC_IOV_MAX = _SC_UIO_MAXIOV,
+
+    _SC_PII_INTERNET_STREAM,
+
+    _SC_PII_INTERNET_DGRAM,
+
+    _SC_PII_OSI_COTS,
+
+    _SC_PII_OSI_CLTS,
+
+    _SC_PII_OSI_M,
+
+    _SC_T_IOV_MAX,
+
+
+
+    _SC_THREADS,
+
+    _SC_THREAD_SAFE_FUNCTIONS,
+
+    _SC_GETGR_R_SIZE_MAX,
+
+    _SC_GETPW_R_SIZE_MAX,
+
+    _SC_LOGIN_NAME_MAX,
+
+    _SC_TTY_NAME_MAX,
+
+    _SC_THREAD_DESTRUCTOR_ITERATIONS,
+
+    _SC_THREAD_KEYS_MAX,
+
+    _SC_THREAD_STACK_MIN,
+
+    _SC_THREAD_THREADS_MAX,
+
+    _SC_THREAD_ATTR_STACKADDR,
+
+    _SC_THREAD_ATTR_STACKSIZE,
+
+    _SC_THREAD_PRIORITY_SCHEDULING,
+
+    _SC_THREAD_PRIO_INHERIT,
+
+    _SC_THREAD_PRIO_PROTECT,
+
+    _SC_THREAD_PROCESS_SHARED,
+
+
+    _SC_NPROCESSORS_CONF,
+
+    _SC_NPROCESSORS_ONLN,
+
+    _SC_PHYS_PAGES,
+
+    _SC_AVPHYS_PAGES,
+
+    _SC_ATEXIT_MAX,
+
+    _SC_PASS_MAX,
+
+
+    _SC_XOPEN_VERSION,
+
+    _SC_XOPEN_XCU_VERSION,
+
+    _SC_XOPEN_UNIX,
+
+    _SC_XOPEN_CRYPT,
+
+    _SC_XOPEN_ENH_I18N,
+
+    _SC_XOPEN_SHM,
+
+
+    _SC_2_CHAR_TERM,
+
+    _SC_2_C_VERSION,
+
+    _SC_2_UPE,
+
+
+    _SC_XOPEN_XPG2,
+
+    _SC_XOPEN_XPG3,
+
+    _SC_XOPEN_XPG4,
+
+
+    _SC_CHAR_BIT,
+
+    _SC_CHAR_MAX,
+
+    _SC_CHAR_MIN,
+
+    _SC_INT_MAX,
+
+    _SC_INT_MIN,
+
+    _SC_LONG_BIT,
+
+    _SC_WORD_BIT,
+
+    _SC_MB_LEN_MAX,
+
+    _SC_NZERO,
+
+    _SC_SSIZE_MAX,
+
+    _SC_SCHAR_MAX,
+
+    _SC_SCHAR_MIN,
+
+    _SC_SHRT_MAX,
+
+    _SC_SHRT_MIN,
+
+    _SC_UCHAR_MAX,
+
+    _SC_UINT_MAX,
+
+    _SC_ULONG_MAX,
+
+    _SC_USHRT_MAX,
+
+
+    _SC_NL_ARGMAX,
+
+    _SC_NL_LANGMAX,
+
+    _SC_NL_MSGMAX,
+
+    _SC_NL_NMAX,
+
+    _SC_NL_SETMAX,
+
+    _SC_NL_TEXTMAX,
+
+
+    _SC_XBS5_ILP32_OFF32,
+
+    _SC_XBS5_ILP32_OFFBIG,
+
+    _SC_XBS5_LP64_OFF64,
+
+    _SC_XBS5_LPBIG_OFFBIG,
+
+
+    _SC_XOPEN_LEGACY,
+
+    _SC_XOPEN_REALTIME,
+
+    _SC_XOPEN_REALTIME_THREADS,
+
+
+    _SC_ADVISORY_INFO,
+
+    _SC_BARRIERS,
+
+    _SC_BASE,
+
+    _SC_C_LANG_SUPPORT,
+
+    _SC_C_LANG_SUPPORT_R,
+
+    _SC_CLOCK_SELECTION,
+
+    _SC_CPUTIME,
+
+    _SC_THREAD_CPUTIME,
+
+    _SC_DEVICE_IO,
+
+    _SC_DEVICE_SPECIFIC,
+
+    _SC_DEVICE_SPECIFIC_R,
+
+    _SC_FD_MGMT,
+
+    _SC_FIFO,
+
+    _SC_PIPE,
+
+    _SC_FILE_ATTRIBUTES,
+
+    _SC_FILE_LOCKING,
+
+    _SC_FILE_SYSTEM,
+
+    _SC_MONOTONIC_CLOCK,
+
+    _SC_MULTI_PROCESS,
+
+    _SC_SINGLE_PROCESS,
+
+    _SC_NETWORKING,
+
+    _SC_READER_WRITER_LOCKS,
+
+    _SC_SPIN_LOCKS,
+
+    _SC_REGEXP,
+
+    _SC_REGEX_VERSION,
+
+    _SC_SHELL,
+
+    _SC_SIGNALS,
+
+    _SC_SPAWN,
+
+    _SC_SPORADIC_SERVER,
+
+    _SC_THREAD_SPORADIC_SERVER,
+
+    _SC_SYSTEM_DATABASE,
+
+    _SC_SYSTEM_DATABASE_R,
+
+    _SC_TIMEOUTS,
+
+    _SC_TYPED_MEMORY_OBJECTS,
+
+    _SC_USER_GROUPS,
+
+    _SC_USER_GROUPS_R,
+
+    _SC_2_PBS,
+
+    _SC_2_PBS_ACCOUNTING,
+
+    _SC_2_PBS_LOCATE,
+
+    _SC_2_PBS_MESSAGE,
+
+    _SC_2_PBS_TRACK,
+
+    _SC_SYMLOOP_MAX,
+
+    _SC_STREAMS,
+
+    _SC_2_PBS_CHECKPOINT,
+
+
+    _SC_V6_ILP32_OFF32,
+
+    _SC_V6_ILP32_OFFBIG,
+
+    _SC_V6_LP64_OFF64,
+
+    _SC_V6_LPBIG_OFFBIG,
+
+
+    _SC_HOST_NAME_MAX,
+
+    _SC_TRACE,
+
+    _SC_TRACE_EVENT_FILTER,
+
+    _SC_TRACE_INHERIT,
+
+    _SC_TRACE_LOG,
+
+
+    _SC_LEVEL1_ICACHE_SIZE,
+
+    _SC_LEVEL1_ICACHE_ASSOC,
+
+    _SC_LEVEL1_ICACHE_LINESIZE,
+
+    _SC_LEVEL1_DCACHE_SIZE,
+
+    _SC_LEVEL1_DCACHE_ASSOC,
+
+    _SC_LEVEL1_DCACHE_LINESIZE,
+
+    _SC_LEVEL2_CACHE_SIZE,
+
+    _SC_LEVEL2_CACHE_ASSOC,
+
+    _SC_LEVEL2_CACHE_LINESIZE,
+
+    _SC_LEVEL3_CACHE_SIZE,
+
+    _SC_LEVEL3_CACHE_ASSOC,
+
+    _SC_LEVEL3_CACHE_LINESIZE,
+
+    _SC_LEVEL4_CACHE_SIZE,
+
+    _SC_LEVEL4_CACHE_ASSOC,
+
+    _SC_LEVEL4_CACHE_LINESIZE,
+
+
+
+    _SC_IPV6 = _SC_LEVEL1_ICACHE_SIZE + 50,
+
+    _SC_RAW_SOCKETS,
+
+
+    _SC_V7_ILP32_OFF32,
+
+    _SC_V7_ILP32_OFFBIG,
+
+    _SC_V7_LP64_OFF64,
+
+    _SC_V7_LPBIG_OFFBIG,
+
+
+    _SC_SS_REPL_MAX,
+
+
+    _SC_TRACE_EVENT_NAME_MAX,
+
+    _SC_TRACE_NAME_MAX,
+
+    _SC_TRACE_SYS_MAX,
+
+    _SC_TRACE_USER_EVENT_MAX,
+
+
+    _SC_XOPEN_STREAMS,
+
+
+    _SC_THREAD_ROBUST_PRIO_INHERIT,
+
+    _SC_THREAD_ROBUST_PRIO_PROTECT
+
+  };
+
+
+enum
+  {
+    _CS_PATH,
+
+
+    _CS_V6_WIDTH_RESTRICTED_ENVS,
+
+
+
+    _CS_GNU_LIBC_VERSION,
+
+    _CS_GNU_LIBPTHREAD_VERSION,
+
+
+    _CS_V5_WIDTH_RESTRICTED_ENVS,
+
+
+
+    _CS_V7_WIDTH_RESTRICTED_ENVS,
+
+
+
+    _CS_LFS_CFLAGS = 1000,
+
+    _CS_LFS_LDFLAGS,
+
+    _CS_LFS_LIBS,
+
+    _CS_LFS_LINTFLAGS,
+
+    _CS_LFS64_CFLAGS,
+
+    _CS_LFS64_LDFLAGS,
+
+    _CS_LFS64_LIBS,
+
+    _CS_LFS64_LINTFLAGS,
+
+
+    _CS_XBS5_ILP32_OFF32_CFLAGS = 1100,
+
+    _CS_XBS5_ILP32_OFF32_LDFLAGS,
+
+    _CS_XBS5_ILP32_OFF32_LIBS,
+
+    _CS_XBS5_ILP32_OFF32_LINTFLAGS,
+
+    _CS_XBS5_ILP32_OFFBIG_CFLAGS,
+
+    _CS_XBS5_ILP32_OFFBIG_LDFLAGS,
+
+    _CS_XBS5_ILP32_OFFBIG_LIBS,
+
+    _CS_XBS5_ILP32_OFFBIG_LINTFLAGS,
+
+    _CS_XBS5_LP64_OFF64_CFLAGS,
+
+    _CS_XBS5_LP64_OFF64_LDFLAGS,
+
+    _CS_XBS5_LP64_OFF64_LIBS,
+
+    _CS_XBS5_LP64_OFF64_LINTFLAGS,
+
+    _CS_XBS5_LPBIG_OFFBIG_CFLAGS,
+
+    _CS_XBS5_LPBIG_OFFBIG_LDFLAGS,
+
+    _CS_XBS5_LPBIG_OFFBIG_LIBS,
+
+    _CS_XBS5_LPBIG_OFFBIG_LINTFLAGS,
+
+
+    _CS_POSIX_V6_ILP32_OFF32_CFLAGS,
+
+    _CS_POSIX_V6_ILP32_OFF32_LDFLAGS,
+
+    _CS_POSIX_V6_ILP32_OFF32_LIBS,
+
+    _CS_POSIX_V6_ILP32_OFF32_LINTFLAGS,
+
+    _CS_POSIX_V6_ILP32_OFFBIG_CFLAGS,
+
+    _CS_POSIX_V6_ILP32_OFFBIG_LDFLAGS,
+
+    _CS_POSIX_V6_ILP32_OFFBIG_LIBS,
+
+    _CS_POSIX_V6_ILP32_OFFBIG_LINTFLAGS,
+
+    _CS_POSIX_V6_LP64_OFF64_CFLAGS,
+
+    _CS_POSIX_V6_LP64_OFF64_LDFLAGS,
+
+    _CS_POSIX_V6_LP64_OFF64_LIBS,
+
+    _CS_POSIX_V6_LP64_OFF64_LINTFLAGS,
+
+    _CS_POSIX_V6_LPBIG_OFFBIG_CFLAGS,
+
+    _CS_POSIX_V6_LPBIG_OFFBIG_LDFLAGS,
+
+    _CS_POSIX_V6_LPBIG_OFFBIG_LIBS,
+
+    _CS_POSIX_V6_LPBIG_OFFBIG_LINTFLAGS,
+
+
+    _CS_POSIX_V7_ILP32_OFF32_CFLAGS,
+
+    _CS_POSIX_V7_ILP32_OFF32_LDFLAGS,
+
+    _CS_POSIX_V7_ILP32_OFF32_LIBS,
+
+    _CS_POSIX_V7_ILP32_OFF32_LINTFLAGS,
+
+    _CS_POSIX_V7_ILP32_OFFBIG_CFLAGS,
+
+    _CS_POSIX_V7_ILP32_OFFBIG_LDFLAGS,
+
+    _CS_POSIX_V7_ILP32_OFFBIG_LIBS,
+
+    _CS_POSIX_V7_ILP32_OFFBIG_LINTFLAGS,
+
+    _CS_POSIX_V7_LP64_OFF64_CFLAGS,
+
+    _CS_POSIX_V7_LP64_OFF64_LDFLAGS,
+
+    _CS_POSIX_V7_LP64_OFF64_LIBS,
+
+    _CS_POSIX_V7_LP64_OFF64_LINTFLAGS,
+
+    _CS_POSIX_V7_LPBIG_OFFBIG_CFLAGS,
+
+    _CS_POSIX_V7_LPBIG_OFFBIG_LDFLAGS,
+
+    _CS_POSIX_V7_LPBIG_OFFBIG_LIBS,
+
+    _CS_POSIX_V7_LPBIG_OFFBIG_LINTFLAGS,
+
+
+    _CS_V6_ENV,
+
+    _CS_V7_ENV
+
+  };
+# 610 "/usr/include/unistd.h" 2 3 4
+
+
+extern long int pathconf (const char *__path, int __name)
+     ;
+
+
+extern long int fpathconf (int __fd, int __name) ;
+
+
+extern long int sysconf (int __name) ;
+
+
+
+extern size_t confstr (int __name, char *__buf, size_t __len) ;
+
+
+
+
+extern __pid_t getpid (void) ;
+
+
+extern __pid_t getppid (void) ;
+
+
+extern __pid_t getpgrp (void) ;
+
+
+extern __pid_t __getpgid (__pid_t __pid) ;
+
+extern __pid_t getpgid (__pid_t __pid) ;
+
+
+
+
+
+
+extern int setpgid (__pid_t __pid, __pid_t __pgid) ;
+# 660 "/usr/include/unistd.h" 3 4
+extern int setpgrp (void) ;
+
+
+
+
+
+
+extern __pid_t setsid (void) ;
+
+
+
+extern __pid_t getsid (__pid_t __pid) ;
+
+
+
+extern __uid_t getuid (void) ;
+
+
+extern __uid_t geteuid (void) ;
+
+
+extern __gid_t getgid (void) ;
+
+
+extern __gid_t getegid (void) ;
+
+
+
+
+extern int getgroups (int __size, __gid_t __list[]) ;
+
+
+
+extern int group_member (__gid_t __gid) ;
+
+
+
+
+
+
+extern int setuid (__uid_t __uid) ;
+
+
+
+
+extern int setreuid (__uid_t __ruid, __uid_t __euid) ;
+
+
+
+
+extern int seteuid (__uid_t __uid) ;
+
+
+
+
+
+
+extern int setgid (__gid_t __gid) ;
+
+
+
+
+extern int setregid (__gid_t __rgid, __gid_t __egid) ;
+
+
+
+
+extern int setegid (__gid_t __gid) ;
+
+
+
+
+
+extern int getresuid (__uid_t *__ruid, __uid_t *__euid, __uid_t *__suid)
+     ;
+
+
+
+extern int getresgid (__gid_t *__rgid, __gid_t *__egid, __gid_t *__sgid)
+     ;
+
+
+
+extern int setresuid (__uid_t __ruid, __uid_t __euid, __uid_t __suid)
+     ;
+
+
+
+extern int setresgid (__gid_t __rgid, __gid_t __egid, __gid_t __sgid)
+     ;
+
+
+
+
+
+
+extern __pid_t fork (void) ;
+
+
+
+
+
+
+
+extern __pid_t vfork (void) ;
+
+
+
+
+
+extern char *ttyname (int __fd) ;
+
+
+
+extern int ttyname_r (int __fd, char *__buf, size_t __buflen)
+     ;
+
+
+
+extern int isatty (int __fd) ;
+
+
+
+
+extern int ttyslot (void) ;
+
+
+
+
+extern int link (const char *__from, const char *__to)
+     ;
+
+
+
+
+extern int linkat (int __fromfd, const char *__from, int __tofd,
+     const char *__to, int __flags)
+     ;
+
+
+
+
+extern int symlink (const char *__from, const char *__to)
+     ;
+
+
+
+
+extern ssize_t readlink (const char *restrict __path,
+    char *restrict __buf, size_t __len)
+     ;
+
+
+
+
+extern int symlinkat (const char *__from, int __tofd,
+        const char *__to) ;
+
+
+extern ssize_t readlinkat (int __fd, const char *restrict __path,
+      char *restrict __buf, size_t __len)
+     ;
+
+
+
+extern int unlink (const char *__name) ;
+
+
+
+extern int unlinkat (int __fd, const char *__name, int __flag)
+     ;
+
+
+
+extern int rmdir (const char *__path) ;
+
+
+
+extern __pid_t tcgetpgrp (int __fd) ;
+
+
+extern int tcsetpgrp (int __fd, __pid_t __pgrp_id) ;
+
+
+
+
+
+
+extern char *getlogin (void);
+
+
+
+
+
+
+
+extern int getlogin_r (char *__name, size_t __name_len) ;
+
+
+
+
+extern int setlogin (const char *__name) ;
+
+
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/getopt_posix.h" 1 3 4
+# 27 "/usr/include/x86_64-linux-gnu/bits/getopt_posix.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/getopt_core.h" 1 3 4
+# 28 "/usr/include/x86_64-linux-gnu/bits/getopt_core.h" 3 4
+
+
+
+
+
+
+
 
 extern char *optarg;
-extern int optind, opterr, optopt;
-# 538 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-__attribute__((__deprecated__)) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)))
+# 50 "/usr/include/x86_64-linux-gnu/bits/getopt_core.h" 3 4
+extern int optind;
 
-void *brk(const void *);
-int chroot(const char *) ;
 
 
-char *crypt(const char *, const char *);
 
-void encrypt(char *, int) __asm("_" "encrypt" );
+extern int opterr;
 
 
 
-int fchdir(int);
-long gethostid(void);
-pid_t getpgid(pid_t);
-pid_t getsid(pid_t);
+extern int optopt;
+# 91 "/usr/include/x86_64-linux-gnu/bits/getopt_core.h" 3 4
+extern int getopt (int ___argc, char *const *___argv, const char *__shortopts)
+       ;
 
 
+# 28 "/usr/include/x86_64-linux-gnu/bits/getopt_posix.h" 2 3 4
 
-int getdtablesize(void) ;
-int getpagesize(void) __attribute__((__const__)) ;
-char *getpass(const char *) ;
 
+# 49 "/usr/include/x86_64-linux-gnu/bits/getopt_posix.h" 3 4
 
+# 870 "/usr/include/unistd.h" 2 3 4
 
 
-char *getwd(char *) ;
 
 
-int lchown(const char *, uid_t, gid_t) __asm("_" "lchown" );
 
-int lockf(int, int, off_t) __asm("_" "lockf" );
 
-int nice(int) __asm("_" "nice" );
 
-ssize_t pread(int __fd, void * __buf, size_t __nbyte, off_t __offset) __asm("_" "pread" );
+extern int gethostname (char *__name, size_t __len) ;
 
-ssize_t pwrite(int __fd, const void * __buf, size_t __nbyte, off_t __offset) __asm("_" "pwrite" );
 
 
 
 
 
+extern int sethostname (const char *__name, size_t __len)
+     ;
 
-__attribute__((__deprecated__)) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)))
 
-void *sbrk(int);
 
+extern int sethostid (long int __id) ;
 
 
-pid_t setpgrp(void) __asm("_" "setpgrp" );
 
 
 
+extern int getdomainname (char *__name, size_t __len)
+     ;
+extern int setdomainname (const char *__name, size_t __len)
+     ;
 
-int setregid(gid_t, gid_t) __asm("_" "setregid" );
 
-int setreuid(uid_t, uid_t) __asm("_" "setreuid" );
 
-void swab(const void * restrict, void * restrict, ssize_t);
-void sync(void);
-int truncate(const char *, off_t);
-useconds_t ualarm(useconds_t, useconds_t);
-int usleep(useconds_t) __asm("_" "usleep" );
 
 
-__attribute__((__deprecated__("Use posix_spawn or fork")))
+extern int vhangup (void) ;
 
-pid_t vfork(void) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
 
+extern int revoke (const char *__file) ;
 
-int fsync(int) __asm("_" "fsync" );
 
-int ftruncate(int, off_t);
-int getlogin_r(char *, size_t);
-# 625 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-int fchown(int, uid_t, gid_t);
-int gethostname(char *, size_t);
-ssize_t readlink(const char * restrict, char * restrict, size_t);
-int setegid(gid_t);
-int seteuid(uid_t);
-int symlink(const char *, const char *);
-# 639 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 1 3 4
-# 75 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_def.h" 1 3 4
-# 50 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_def.h" 3 4
-typedef struct fd_set {
- __int32_t fds_bits[((((1024) % ((sizeof(__int32_t) * 8))) == 0) ? ((1024) / ((sizeof(__int32_t) * 8))) : (((1024) / ((sizeof(__int32_t) * 8))) + 1))];
-} fd_set;
 
-int __darwin_check_fd_set_overflow(int, const void *, int) __attribute__((availability(macosx,introduced=11.0))) __attribute__((availability(ios,introduced=14.0))) __attribute__((availability(tvos,introduced=14.0))) __attribute__((availability(watchos,introduced=7.0)));
 
 
-inline int
-__darwin_check_fd_set(int _a, const void *_b)
-{
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunguarded-availability-new"
 
- if ((uintptr_t)&__darwin_check_fd_set_overflow != (uintptr_t) 0) {
+extern int profil (unsigned short int *__sample_buffer, size_t __size,
+     size_t __offset, unsigned int __scale)
+     ;
 
 
 
-  return __darwin_check_fd_set_overflow(_a, _b, 0);
 
- } else {
-  return 1;
- }
 
-#pragma clang diagnostic pop
+extern int acct (const char *__name) ;
 
-}
 
 
-inline int
-__darwin_fd_isset(int _fd, const struct fd_set *_p)
-{
- if (__darwin_check_fd_set(_fd, (const void *) _p)) {
-  return _p->fds_bits[(unsigned long)_fd / (sizeof(__int32_t) * 8)] & ((__int32_t)(((unsigned long)1) << ((unsigned long)_fd % (sizeof(__int32_t) * 8))));
- }
+extern char *getusershell (void) ;
+extern void endusershell (void) ;
+extern void setusershell (void) ;
 
- return 0;
-}
 
-inline void
-__darwin_fd_set(int _fd, struct fd_set *const _p)
-{
- if (__darwin_check_fd_set(_fd, (const void *) _p)) {
-  (_p->fds_bits[(unsigned long)_fd / (sizeof(__int32_t) * 8)] |= ((__int32_t)(((unsigned long)1) << ((unsigned long)_fd % (sizeof(__int32_t) * 8)))));
- }
-}
 
-inline void
-__darwin_fd_clr(int _fd, struct fd_set *const _p)
-{
- if (__darwin_check_fd_set(_fd, (const void *) _p)) {
-  (_p->fds_bits[(unsigned long)_fd / (sizeof(__int32_t) * 8)] &= ~((__int32_t)(((unsigned long)1) << ((unsigned long)_fd % (sizeof(__int32_t) * 8)))));
- }
-}
-# 76 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
-# 85 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_suseconds_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_suseconds_t.h" 3 4
-typedef __darwin_suseconds_t suseconds_t;
-# 86 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
-# 100 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_setsize.h" 1 3 4
-# 101 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_set.h" 1 3 4
-# 102 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_clr.h" 1 3 4
-# 103 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_isset.h" 1 3 4
-# 104 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_zero.h" 1 3 4
-# 105 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_fd_copy.h" 1 3 4
-# 108 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
+extern int daemon (int __nochdir, int __noclose) ;
 
 
 
 
 
 
-int pselect(int, fd_set * restrict, fd_set * restrict,
-    fd_set * restrict, const struct timespec * restrict,
-    const sigset_t * restrict)
+extern int chroot (const char *__path) ;
 
 
 
+extern char *getpass (const char *__prompt) ;
 
-__asm("_" "pselect" )
 
 
 
 
-;
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_select.h" 1 3 4
-# 43 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_select.h" 3 4
-int select(int, fd_set * restrict, fd_set * restrict,
-    fd_set * restrict, struct timeval * restrict)
+extern int fsync (int __fd);
 
 
 
 
 
-__asm("_" "select" )
+extern int syncfs (int __fd) ;
 
 
 
 
-;
-# 130 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/select.h" 2 3 4
-# 640 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 2 3 4
 
 
+extern long int gethostid (void);
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_uuid_t.h" 1 3 4
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_uuid_t.h" 3 4
-typedef __darwin_uuid_t uuid_t;
-# 644 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 2 3 4
 
+extern void sync (void) ;
 
-void _Exit(int) __attribute__((__noreturn__));
-int accessx_np(const struct accessx_descriptor *, size_t, int *, uid_t);
-int acct(const char *);
-int add_profil(char *, size_t, unsigned long, unsigned int) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-void endusershell(void);
-int execvP(const char * __file, const char * __searchpath, char * const * __argv) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-char *fflagstostr(unsigned long);
-int getdomainname(char *, int);
-int getgrouplist(const char *, int, int *, int *);
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/gethostuuid.h" 1 3 4
-# 39 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/gethostuuid.h" 3 4
-int gethostuuid(uuid_t, const struct timespec *) __attribute__((availability(macos,introduced=10.5))) __attribute__((availability(ios,unavailable))) __attribute__((availability(tvos,unavailable))) __attribute__((availability(watchos,unavailable)));
-# 660 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 2 3 4
+extern int getpagesize (void) ;
 
 
 
 
-mode_t getmode(const void *, mode_t);
-int getpeereid(int, uid_t *, gid_t *);
-int getsgroups_np(int *, uuid_t);
-char *getusershell(void);
-int getwgroups_np(int *, uuid_t);
-int initgroups(const char *, int);
-int issetugid(void);
-char *mkdtemp(char *);
-int mknod(const char *, mode_t, dev_t);
-int mkpath_np(const char *path, mode_t omode) __attribute__((availability(macosx,introduced=10.8)));
-int mkpathat_np(int dfd, const char *path, mode_t omode)
-  __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0)))
-  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
-int mkstemp(char *);
-int mkstemps(char *, int);
-char *mktemp(char *);
-int mkostemp(char *path, int oflags)
-  __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0)))
-  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
-int mkostemps(char *path, int slen, int oflags)
-  __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0)))
-  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
+extern int getdtablesize (void) ;
+# 991 "/usr/include/unistd.h" 3 4
+extern int truncate (const char *__file, __off_t __length)
+     ;
+# 1003 "/usr/include/unistd.h" 3 4
+extern int truncate64 (const char *__file, __off64_t __length)
+     ;
+# 1014 "/usr/include/unistd.h" 3 4
+extern int ftruncate (int __fd, __off_t __length) ;
+# 1024 "/usr/include/unistd.h" 3 4
+extern int ftruncate64 (int __fd, __off64_t __length) ;
+# 1035 "/usr/include/unistd.h" 3 4
+extern int brk (void *__addr) ;
 
-int mkstemp_dprotected_np(char *path, int dpclass, int dpflags)
-  __attribute__((availability(macosx,unavailable))) __attribute__((availability(ios,introduced=10.0)))
-  __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
-char *mkdtempat_np(int dfd, char *path)
-  __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)))
-  __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
-int mkstempsat_np(int dfd, char *path, int slen)
-  __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)))
-  __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
-int mkostempsat_np(int dfd, char *path, int slen, int oflags)
-  __attribute__((availability(macosx,introduced=10.13))) __attribute__((availability(ios,introduced=11.0)))
-  __attribute__((availability(tvos,introduced=11.0))) __attribute__((availability(watchos,introduced=4.0)));
-int nfssvc(int, void *);
-int profil(char *, size_t, unsigned long, unsigned int);
 
-__attribute__((__deprecated__("Use of per-thread security contexts is error-prone and discouraged.")))
-int pthread_setugid_np(uid_t, gid_t);
-int pthread_getugid_np( uid_t *, gid_t *);
 
-int reboot(int);
-int revoke(const char *);
 
-__attribute__((__deprecated__)) int rcmd(char **, int, const char *, const char *, const char *, int *);
-__attribute__((__deprecated__)) int rcmd_af(char **, int, const char *, const char *, const char *, int *,
-  int);
-__attribute__((__deprecated__)) int rresvport(int *);
-__attribute__((__deprecated__)) int rresvport_af(int *, int);
-__attribute__((__deprecated__)) int iruserok(unsigned long, int, const char *, const char *);
-__attribute__((__deprecated__)) int iruserok_sa(const void *, int, int, const char *, const char *);
-__attribute__((__deprecated__)) int ruserok(const char *, int, const char *, const char *);
 
-int setdomainname(const char *, int);
-int setgroups(int, const gid_t *);
-void sethostid(long);
-int sethostname(const char *, int);
+extern void *sbrk (intptr_t __delta) ;
+# 1056 "/usr/include/unistd.h" 3 4
+extern long int syscall (long int __sysno, ...) ;
+# 1107 "/usr/include/unistd.h" 3 4
+ssize_t copy_file_range (int __infd, __off64_t *__pinoff,
+    int __outfd, __off64_t *__poutoff,
+    size_t __length, unsigned int __flags);
 
-void setkey(const char *) __asm("_" "setkey" );
 
 
 
-int setlogin(const char *);
-void *setmode(const char *) __asm("_" "setmode" );
-int setrgid(gid_t);
-int setruid(uid_t);
-int setsgroups_np(int, const uuid_t);
-void setusershell(void);
-int setwgroups_np(int, const uuid_t);
-int strtofflags(char **, unsigned long *, unsigned long *);
-int swapon(const char *);
-int ttyslot(void);
-int undelete(const char *);
-int unwhiteout(const char *);
-void *valloc(size_t);
 
-__attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)))
-__attribute__((availability(ios,deprecated=10.0,message="syscall(2) is unsupported; " "please switch to a supported interface. For SYS_kdebug_trace use kdebug_signpost().")))
+extern int fdatasync (int __fildes);
+# 1124 "/usr/include/unistd.h" 3 4
+extern char *crypt (const char *__key, const char *__salt)
+     ;
 
-__attribute__((availability(macosx,deprecated=10.12,message="syscall(2) is unsupported; " "please switch to a supported interface. For SYS_kdebug_trace use kdebug_signpost().")))
 
-int syscall(int, ...);
 
-extern char *suboptarg;
-int getsubopt(char **, char * const *, char **);
 
 
 
-int fgetattrlist(int,void*,void*,size_t,unsigned int) __attribute__((availability(macosx,introduced=10.6)));
-int fsetattrlist(int,void*,void*,size_t,unsigned int) __attribute__((availability(macosx,introduced=10.6)));
-int getattrlist(const char*,void*,void*,size_t,unsigned int) __asm("_" "getattrlist" );
-int setattrlist(const char*,void*,void*,size_t,unsigned int) __asm("_" "setattrlist" );
-int exchangedata(const char*,const char*,unsigned int) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int getdirentriesattr(int,void*,void*,size_t,unsigned int*,unsigned int*,unsigned int*,unsigned int) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-# 773 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/unistd.h" 3 4
-struct fssearchblock;
-struct searchstate;
 
-int searchfs(const char *, struct fssearchblock *, unsigned long *, unsigned int, unsigned int, struct searchstate *) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
-int fsctl(const char *,unsigned long,void*,unsigned int);
-int ffsctl(int,unsigned long,void*,unsigned int) __attribute__((availability(macosx,introduced=10.6)));
+extern void swab (const void *restrict __from, void *restrict __to,
+    ssize_t __n) ;
+# 1161 "/usr/include/unistd.h" 3 4
+int getentropy (void *__buffer, size_t __length) ;
 
 
 
 
-int fsync_volume_np(int, int) __attribute__((availability(macosx,introduced=10.8)));
-int sync_volume_np(const char *, int) __attribute__((availability(macosx,introduced=10.8)));
 
-extern int optreset;
-# 53 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/time.h" 1 3 4
-# 80 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/time.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_timeval64.h" 1 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_timeval64.h" 3 4
-struct timeval64 {
- __int64_t tv_sec;
- __int64_t tv_usec;
-};
-# 81 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/time.h" 2 3 4
-# 91 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/time.h" 3 4
-struct itimerval {
- struct timeval it_interval;
- struct timeval it_value;
-};
-# 129 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/time.h" 3 4
-struct timezone {
- int tz_minuteswest;
- int tz_dsttime;
-};
-# 172 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/time.h" 3 4
-struct clockinfo {
- int hz;
- int tick;
- int tickadj;
- int stathz;
- int profhz;
-};
-# 190 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/time.h" 3 4
-int adjtime(const struct timeval *, struct timeval *);
-int futimes(int, const struct timeval *);
-int lutimes(const char *, const struct timeval *) __attribute__((availability(macosx,introduced=10.5)));
-int settimeofday(const struct timeval *, const struct timezone *);
 
 
-int getitimer(int, struct itimerval *);
-int gettimeofday(struct timeval * restrict, void * restrict);
 
+# 53 "tcc.h" 2
+# 1 "/usr/include/x86_64-linux-gnu/sys/time.h" 1 3 4
+# 34 "/usr/include/x86_64-linux-gnu/sys/time.h" 3 4
 
+# 52 "/usr/include/x86_64-linux-gnu/sys/time.h" 3 4
+struct timezone
+  {
+    int tz_minuteswest;
+    int tz_dsttime;
+  };
 
-int setitimer(int, const struct itimerval * restrict,
-    struct itimerval * restrict);
-int utimes(const char *, const struct timeval *);
-# 54 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/ucontext.h" 1 3 4
-# 55 "./tcc.h" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/mman.h" 1 3 4
-# 231 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/mman.h" 3 4
-int mlockall(int);
-int munlockall(void);
+typedef struct timezone *restrict __timezone_ptr_t;
+# 68 "/usr/include/x86_64-linux-gnu/sys/time.h" 3 4
+extern int gettimeofday (struct timeval *restrict __tv,
+    __timezone_ptr_t __tz) ;
 
-int mlock(const void *, size_t);
 
 
 
-void * mmap(void *, size_t, int, int, int, off_t) __asm("_" "mmap" );
+extern int settimeofday (const struct timeval *__tv,
+    const struct timezone *__tz)
+     ;
 
 
-int mprotect(void *, size_t, int) __asm("_" "mprotect" );
 
-int msync(void *, size_t, int) __asm("_" "msync" );
 
-int munlock(const void *, size_t);
 
-int munmap(void *, size_t) __asm("_" "munmap" );
+extern int adjtime (const struct timeval *__delta,
+      struct timeval *__olddelta) ;
 
-int shm_open(const char *, int, ...);
-int shm_unlink(const char *);
 
-int posix_madvise(void *, size_t, int);
 
 
-int madvise(void *, size_t, int);
-int mincore(const void *, size_t, char *);
-int minherit(void *, size_t, int);
-# 56 "./tcc.h" 2
+enum __itimer_which
+  {
 
+    ITIMER_REAL = 0,
 
 
+    ITIMER_VIRTUAL = 1,
 
 
 
+    ITIMER_PROF = 2
 
+  };
 
-# 1 "./elf.h" 1
-# 25 "./elf.h"
-# 1 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/inttypes.h" 1 3
-# 21 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/inttypes.h" 3
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/inttypes.h" 1 3 4
-# 227 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/inttypes.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/sys/_types/_wchar_t.h" 1 3 4
-# 228 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/inttypes.h" 2 3 4
 
 
+struct itimerval
+  {
 
+    struct timeval it_interval;
 
+    struct timeval it_value;
+  };
 
 
-__attribute__((availability(macosx,introduced=10.4)))
-extern intmax_t
-imaxabs(intmax_t j);
 
 
-typedef struct {
- intmax_t quot;
- intmax_t rem;
-} imaxdiv_t;
+typedef enum __itimer_which __itimer_which_t;
 
-__attribute__((availability(macosx,introduced=10.4)))
-extern imaxdiv_t
-imaxdiv(intmax_t __numer, intmax_t __denom);
 
 
-__attribute__((availability(macosx,introduced=10.4)))
-extern intmax_t
-strtoimax(const char * restrict __nptr,
-   char ** restrict __endptr,
-   int __base);
 
-__attribute__((availability(macosx,introduced=10.4)))
-extern uintmax_t
-strtoumax(const char * restrict __nptr,
-   char ** restrict __endptr,
-   int __base);
 
 
-__attribute__((availability(macosx,introduced=10.4)))
-extern intmax_t
-wcstoimax(const wchar_t * restrict __nptr,
-   wchar_t ** restrict __endptr,
-   int __base);
+extern int getitimer (__itimer_which_t __which,
+        struct itimerval *__value) ;
 
-__attribute__((availability(macosx,introduced=10.4)))
-extern uintmax_t
-wcstoumax(const wchar_t * restrict __nptr,
-   wchar_t ** restrict __endptr,
-   int __base);
-# 22 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/inttypes.h" 2 3
-# 26 "./elf.h" 2
-# 44 "./elf.h"
+
+
+
+extern int setitimer (__itimer_which_t __which,
+        const struct itimerval *restrict __new,
+        struct itimerval *restrict __old) ;
+
+
+
+
+extern int utimes (const char *__file, const struct timeval __tvp[2])
+     ;
+
+
+
+extern int lutimes (const char *__file, const struct timeval __tvp[2])
+     ;
+
+
+extern int futimes (int __fd, const struct timeval __tvp[2]) ;
+
+
+
+
+
+
+extern int futimesat (int __fd, const char *__file,
+        const struct timeval __tvp[2]) ;
+# 186 "/usr/include/x86_64-linux-gnu/sys/time.h" 3 4
+
+# 54 "tcc.h" 2
+
+# 1 "/usr/include/x86_64-linux-gnu/sys/mman.h" 1 3 4
+# 25 "/usr/include/x86_64-linux-gnu/sys/mman.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 26 "/usr/include/x86_64-linux-gnu/sys/mman.h" 2 3 4
+# 41 "/usr/include/x86_64-linux-gnu/sys/mman.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mman.h" 1 3 4
+# 49 "/usr/include/x86_64-linux-gnu/bits/mman.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mman-linux.h" 1 3 4
+# 117 "/usr/include/x86_64-linux-gnu/bits/mman-linux.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/mman-shared.h" 1 3 4
+# 42 "/usr/include/x86_64-linux-gnu/bits/mman-shared.h" 3 4
+
+
+
+
+int memfd_create (const char *__name, unsigned int __flags) ;
+
+
+
+int mlock2 (const void *__addr, size_t __length, unsigned int __flags) ;
+
+
+
+
+
+int pkey_alloc (unsigned int __flags, unsigned int __access_rights) ;
+
+
+
+int pkey_set (int __key, unsigned int __access_rights) ;
+
+
+
+int pkey_get (int __key) ;
+
+
+
+int pkey_free (int __key) ;
+
+
+
+int pkey_mprotect (void *__addr, size_t __len, int __prot, int __pkey) ;
+
+
+# 117 "/usr/include/x86_64-linux-gnu/bits/mman-linux.h" 2 3 4
+# 49 "/usr/include/x86_64-linux-gnu/bits/mman.h" 2 3 4
+# 42 "/usr/include/x86_64-linux-gnu/sys/mman.h" 2 3 4
+
+
+
+
+
+# 57 "/usr/include/x86_64-linux-gnu/sys/mman.h" 3 4
+extern void *mmap (void *__addr, size_t __len, int __prot,
+     int __flags, int __fd, __off_t __offset) ;
+# 70 "/usr/include/x86_64-linux-gnu/sys/mman.h" 3 4
+extern void *mmap64 (void *__addr, size_t __len, int __prot,
+       int __flags, int __fd, __off64_t __offset) ;
+
+
+
+
+extern int munmap (void *__addr, size_t __len) ;
+
+
+
+
+extern int mprotect (void *__addr, size_t __len, int __prot) ;
+
+
+
+
+
+
+
+extern int msync (void *__addr, size_t __len, int __flags);
+
+
+
+
+extern int madvise (void *__addr, size_t __len, int __advice) ;
+
+
+
+extern int posix_madvise (void *__addr, size_t __len, int __advice) ;
+
+
+
+
+extern int mlock (const void *__addr, size_t __len) ;
+
+
+extern int munlock (const void *__addr, size_t __len) ;
+
+
+
+
+extern int mlockall (int __flags) ;
+
+
+
+extern int munlockall (void) ;
+
+
+
+
+
+
+
+extern int mincore (void *__start, size_t __len, unsigned char *__vec)
+     ;
+# 133 "/usr/include/x86_64-linux-gnu/sys/mman.h" 3 4
+extern void *mremap (void *__addr, size_t __old_len, size_t __new_len,
+       int __flags, ...) ;
+
+
+
+extern int remap_file_pages (void *__start, size_t __size, int __prot,
+        size_t __pgoff, int __flags) ;
+
+
+
+
+extern int shm_open (const char *__name, int __oflag, mode_t __mode);
+
+
+extern int shm_unlink (const char *__name);
+
+
+# 56 "tcc.h" 2
+# 64 "tcc.h"
+# 1 "elf.h" 1
+# 25 "elf.h"
+# 1 "/usr/include/inttypes.h" 1 3 4
+# 27 "/usr/include/inttypes.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stdint.h" 3 4
+# 1 "/usr/include/stdint.h" 1 3 4
+# 26 "/usr/include/stdint.h" 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
+# 27 "/usr/include/stdint.h" 2 3 4
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/wchar.h" 1 3 4
+# 29 "/usr/include/stdint.h" 2 3 4
+# 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
+# 30 "/usr/include/stdint.h" 2 3 4
+
+
+
+
+
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h" 1 3 4
+# 24 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h" 3 4
+typedef __uint8_t uint8_t;
+typedef __uint16_t uint16_t;
+typedef __uint32_t uint32_t;
+typedef __uint64_t uint64_t;
+# 38 "/usr/include/stdint.h" 2 3 4
+
+
+
+
+
+typedef __int_least8_t int_least8_t;
+typedef __int_least16_t int_least16_t;
+typedef __int_least32_t int_least32_t;
+typedef __int_least64_t int_least64_t;
+
+
+typedef __uint_least8_t uint_least8_t;
+typedef __uint_least16_t uint_least16_t;
+typedef __uint_least32_t uint_least32_t;
+typedef __uint_least64_t uint_least64_t;
+
+
+
+
+
+typedef signed char int_fast8_t;
+
+typedef long int int_fast16_t;
+typedef long int int_fast32_t;
+typedef long int int_fast64_t;
+# 71 "/usr/include/stdint.h" 3 4
+typedef unsigned char uint_fast8_t;
+
+typedef unsigned long int uint_fast16_t;
+typedef unsigned long int uint_fast32_t;
+typedef unsigned long int uint_fast64_t;
+# 90 "/usr/include/stdint.h" 3 4
+typedef unsigned long int uintptr_t;
+# 101 "/usr/include/stdint.h" 3 4
+typedef __intmax_t intmax_t;
+typedef __uintmax_t uintmax_t;
+# 10 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stdint.h" 2 3 4
+# 28 "/usr/include/inttypes.h" 2 3 4
+
+
+
+
+
+
+typedef int __gwchar_t;
+# 266 "/usr/include/inttypes.h" 3 4
+
+
+
+
+
+typedef struct
+  {
+    long int quot;
+    long int rem;
+  } imaxdiv_t;
+# 290 "/usr/include/inttypes.h" 3 4
+extern intmax_t imaxabs (intmax_t __n) ;
+
+
+extern imaxdiv_t imaxdiv (intmax_t __numer, intmax_t __denom)
+      ;
+
+
+extern intmax_t strtoimax (const char *restrict __nptr,
+      char **restrict __endptr, int __base) ;
+
+
+extern uintmax_t strtoumax (const char *restrict __nptr,
+       char ** restrict __endptr, int __base) ;
+
+
+extern intmax_t wcstoimax (const __gwchar_t *restrict __nptr,
+      __gwchar_t **restrict __endptr, int __base)
+     ;
+
+
+extern uintmax_t wcstoumax (const __gwchar_t *restrict __nptr,
+       __gwchar_t ** restrict __endptr, int __base)
+     ;
+# 432 "/usr/include/inttypes.h" 3 4
+
+# 26 "elf.h" 2
+# 44 "elf.h"
+
+# 44 "elf.h"
 typedef uint16_t Elf32_Half;
 typedef uint16_t Elf64_Half;
 
@@ -2939,7 +8266,7 @@ typedef struct
   Elf64_Half e_shnum;
   Elf64_Half e_shstrndx;
 } Elf64_Ehdr;
-# 269 "./elf.h"
+# 269 "elf.h"
 typedef struct
 {
   Elf32_Word sh_name;
@@ -2967,7 +8294,7 @@ typedef struct
   Elf64_Xword sh_addralign;
   Elf64_Xword sh_entsize;
 } Elf64_Shdr;
-# 348 "./elf.h"
+# 348 "elf.h"
 typedef struct
 {
   Elf32_Word st_name;
@@ -3002,7 +8329,7 @@ typedef struct
   Elf64_Half si_boundto;
   Elf64_Half si_flags;
 } Elf64_Syminfo;
-# 463 "./elf.h"
+# 463 "elf.h"
 typedef struct
 {
   Elf32_Addr r_offset;
@@ -3035,7 +8362,7 @@ typedef struct
   Elf64_Xword r_info;
   Elf64_Sxword r_addend;
 } Elf64_Rela;
-# 508 "./elf.h"
+# 508 "elf.h"
 typedef struct
 {
   Elf32_Word p_type;
@@ -3059,7 +8386,7 @@ typedef struct
   Elf64_Xword p_memsz;
   Elf64_Xword p_align;
 } Elf64_Phdr;
-# 577 "./elf.h"
+# 577 "elf.h"
 typedef struct
 {
   Elf32_Sword d_tag;
@@ -3079,7 +8406,7 @@ typedef struct
       Elf64_Addr d_ptr;
     } d_un;
 } Elf64_Dyn;
-# 688 "./elf.h"
+# 688 "elf.h"
 typedef struct
 {
   Elf32_Half vd_version;
@@ -3103,7 +8430,7 @@ typedef struct
   Elf64_Word vd_next;
 
 } Elf64_Verdef;
-# 724 "./elf.h"
+# 724 "elf.h"
 typedef struct
 {
   Elf32_Word vda_name;
@@ -3142,7 +8469,7 @@ typedef struct
   Elf64_Word vn_next;
 
 } Elf64_Verneed;
-# 771 "./elf.h"
+# 771 "elf.h"
 typedef struct
 {
   Elf32_Word vna_hash;
@@ -3162,7 +8489,7 @@ typedef struct
   Elf64_Word vna_next;
 
 } Elf64_Vernaux;
-# 805 "./elf.h"
+# 805 "elf.h"
 typedef struct
 {
   int a_type;
@@ -3184,7 +8511,7 @@ typedef struct
       void (*a_fcn) (void);
     } a_un;
 } Elf64_auxv_t;
-# 858 "./elf.h"
+# 858 "elf.h"
 typedef struct
 {
   Elf32_Word n_namesz;
@@ -3198,7 +8525,7 @@ typedef struct
   Elf64_Word n_descsz;
   Elf64_Word n_type;
 } Elf64_Nhdr;
-# 1177 "./elf.h"
+# 1177 "elf.h"
 typedef union
 {
   struct
@@ -3233,13 +8560,13 @@ typedef struct
 
   Elf32_Word info;
 } Elf_Options;
-# 1253 "./elf.h"
+# 1253 "elf.h"
 typedef struct
 {
   Elf32_Word hwp_flags1;
   Elf32_Word hwp_flags2;
 } Elf_Options_Hw;
-# 1392 "./elf.h"
+# 1392 "elf.h"
 typedef struct
 {
   Elf32_Word l_name;
@@ -3257,22 +8584,15 @@ typedef struct
   Elf64_Word l_version;
   Elf64_Word l_flags;
 } Elf64_Lib;
-# 1423 "./elf.h"
+# 1423 "elf.h"
 typedef Elf32_Addr Elf32_Conflict;
-# 65 "./tcc.h" 2
-# 1 "./stab.h" 1
-
-
-
-
-
-
-
-
+# 65 "tcc.h" 2
+# 1 "stab.h" 1
+# 9 "stab.h"
 enum __stab_debug_code
 {
-# 1 "./stab.def" 1
-# 24 "./stab.def"
+# 1 "stab.def" 1
+# 24 "stab.def"
 N_GSYM=0x20,
 
 
@@ -3430,100 +8750,100 @@ N_NBLCS=0xF8,
 
 
 N_LENG=0xfe,
-# 12 "./stab.h" 2
+# 12 "stab.h" 2
 LAST_UNUSED_STAB_CODE
 };
-# 66 "./tcc.h" 2
+# 66 "tcc.h" 2
 
 
 
 
 
-# 1 "./libtcc.h" 1
-# 14 "./libtcc.h"
+# 1 "libtcc.h" 1
+# 14 "libtcc.h"
 struct TCCState;
 
 typedef struct TCCState TCCState;
 
 
-          TCCState *tcc_new(void);
+ TCCState *tcc_new(void);
 
 
-          void tcc_delete(TCCState *s);
+ void tcc_delete(TCCState *s);
 
 
-          void tcc_enable_debug(TCCState *s);
+ void tcc_enable_debug(TCCState *s);
 
 
-          void tcc_set_error_func(TCCState *s, void *error_opaque,
+ void tcc_set_error_func(TCCState *s, void *error_opaque,
                         void (*error_func)(void *opaque, const char *msg));
 
 
-          int tcc_set_warning(TCCState *s, const char *warning_name, int value);
+ int tcc_set_warning(TCCState *s, const char *warning_name, int value);
 
 
 
 
 
-          int tcc_add_include_path(TCCState *s, const char *pathname);
+ int tcc_add_include_path(TCCState *s, const char *pathname);
 
 
-          int tcc_add_sysinclude_path(TCCState *s, const char *pathname);
+ int tcc_add_sysinclude_path(TCCState *s, const char *pathname);
 
 
-          void tcc_define_symbol(TCCState *s, const char *sym, const char *value);
+ void tcc_define_symbol(TCCState *s, const char *sym, const char *value);
 
 
-          void tcc_undefine_symbol(TCCState *s, const char *sym);
-
-
-
-
-
-
-          int tcc_add_file(TCCState *s, const char *filename);
-
-
-
-          int tcc_compile_string(TCCState *s, const char *buf);
-# 70 "./libtcc.h"
-          int tcc_set_output_type(TCCState *s, int output_type);
+ void tcc_undefine_symbol(TCCState *s, const char *sym);
 
 
 
 
 
 
-          int tcc_add_library_path(TCCState *s, const char *pathname);
-
-
-          int tcc_add_library(TCCState *s, const char *libraryname);
-
-
-          int tcc_add_symbol(TCCState *s, const char *name, void *val);
+ int tcc_add_file(TCCState *s, const char *filename);
 
 
 
-          int tcc_output_file(TCCState *s, const char *filename);
-
-
-
-          int tcc_run(TCCState *s, int argc, char **argv);
+ int tcc_compile_string(TCCState *s, const char *buf);
+# 70 "libtcc.h"
+ int tcc_set_output_type(TCCState *s, int output_type);
 
 
 
 
-          int tcc_relocate(TCCState *s1, void *ptr);
 
 
-          void *tcc_get_symbol(TCCState *s, const char *name);
+ int tcc_add_library_path(TCCState *s, const char *pathname);
 
 
-          void tcc_set_lib_path(TCCState *s, const char *path);
-# 72 "./tcc.h" 2
-# 125 "./tcc.h"
+ int tcc_add_library(TCCState *s, const char *libraryname);
+
+
+ int tcc_add_symbol(TCCState *s, const char *name, void *val);
+
+
+
+ int tcc_output_file(TCCState *s, const char *filename);
+
+
+
+ int tcc_run(TCCState *s, int argc, char **argv);
+
+
+
+
+ int tcc_relocate(TCCState *s1, void *ptr);
+
+
+ void *tcc_get_symbol(TCCState *s, const char *name);
+
+
+ void tcc_set_lib_path(TCCState *s, const char *path);
+# 72 "tcc.h" 2
+# 125 "tcc.h"
 typedef int BOOL;
-# 142 "./tcc.h"
+# 142 "tcc.h"
 typedef struct TokenSym {
     struct TokenSym *hash_next;
     struct Sym *sym_define;
@@ -3589,7 +8909,7 @@ typedef struct Sym {
     struct Sym *prev;
     struct Sym *prev_tok;
 } Sym;
-# 217 "./tcc.h"
+# 217 "tcc.h"
 typedef struct Section {
     unsigned long data_offset;
     unsigned char *data;
@@ -3634,7 +8954,7 @@ typedef struct {
       func_args : 8,
       func_export : 1;
 } func_attr_t;
-# 300 "./tcc.h"
+# 300 "tcc.h"
 typedef struct BufferedFile {
     uint8_t *buf_ptr;
     uint8_t *buf_end;
@@ -3677,7 +8997,7 @@ typedef struct CachedInclude {
     char type;
     char filename[1];
 } CachedInclude;
-# 368 "./tcc.h"
+# 368 "tcc.h"
 struct TCCState {
     int output_type;
 
@@ -3798,11 +9118,11 @@ struct TCCState {
     unsigned int runtime_plt_and_got_offset;
 
 };
-# 683 "./tcc.h"
+# 683 "tcc.h"
 enum tcc_token {
     TOK_LAST = 256 - 1,
 
-# 1 "./tcctok.h" 1
+# 1 "tcctok.h" 1
 
      TOK_INT,
      TOK_VOID,
@@ -3930,14 +9250,14 @@ enum tcc_token {
 
      TOK_ASM_push,
      TOK_ASM_pop,
-# 139 "./tcctok.h"
+# 139 "tcctok.h"
      TOK_memcpy,
      TOK_memset,
      TOK___divdi3,
      TOK___moddi3,
      TOK___udivdi3,
      TOK___umoddi3,
-# 194 "./tcctok.h"
+# 194 "tcctok.h"
      TOK___ashrdi3,
      TOK___lshrdi3,
      TOK___ashldi3,
@@ -3949,7 +9269,7 @@ enum tcc_token {
 
      TOK___fixunssfdi,
      TOK___fixunsdfdi,
-# 236 "./tcctok.h"
+# 236 "tcctok.h"
  TOK_ASM_byte,
  TOK_ASM_align,
  TOK_ASM_skip,
@@ -3966,13 +9286,13 @@ enum tcc_token {
  TOK_ASM_fill,
  TOK_ASM_org,
  TOK_ASM_quad,
-# 687 "./tcc.h" 2
+# 687 "tcc.h" 2
 
 };
-# 713 "./tcc.h"
+# 713 "tcc.h"
 extern float strtof (const char *__nptr, char **__endptr);
 extern long double strtold (const char *__nptr, char **__endptr);
-# 727 "./tcc.h"
+# 727 "tcc.h"
 void error(const char *fmt, ...);
 void error_noabort(const char *fmt, ...);
 void warning(const char *fmt, ...);
@@ -4012,7 +9332,7 @@ static inline int is_space(int ch)
 {
     return ch == ' ' || ch == '\t' || ch == '\v' || ch == '\f' || ch == '\r';
 }
-# 22 "./libtcc.c" 2
+# 22 "libtcc.c" 2
 
 
 
@@ -4038,7 +9358,7 @@ static int *unget_saved_macro_ptr;
 static int unget_saved_buffer[4 + 1];
 static int unget_buffer_enabled;
 static int parse_flags;
-# 55 "./libtcc.c"
+# 55 "libtcc.c"
 static Section *text_section, *data_section, *bss_section;
 static Section *cur_text_section;
 
@@ -4205,19 +9525,40 @@ int pe_load_res_file(struct TCCState *s1, int fd);
 void pe_add_runtime(struct TCCState *s1);
 void pe_guess_outfile(char *objfilename, int output_type);
 int pe_output_file(struct TCCState *s1, const char *filename);
-# 232 "./libtcc.c"
+# 232 "libtcc.c"
 static void asm_instr(void);
 static void asm_global_instr(void);
-# 251 "./libtcc.c"
-# 1 "./x86_64-gen.c" 1
-# 23 "./x86_64-gen.c"
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/assert.h" 1 3 4
-# 69 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/assert.h" 3 4
-void abort(void) __attribute__((__noreturn__)) __attribute__((__cold__));
+# 251 "libtcc.c"
+# 1 "x86_64-gen.c" 1
+# 23 "x86_64-gen.c"
+# 1 "/usr/include/assert.h" 1 3 4
+# 66 "/usr/include/assert.h" 3 4
 
-int printf(const char * restrict, ...);
-# 24 "./x86_64-gen.c" 2
-# 43 "./x86_64-gen.c"
+
+
+
+# 69 "/usr/include/assert.h" 3 4
+extern void __assert_fail (const char *__assertion, const char *__file,
+      unsigned int __line, const char *__function)
+     ;
+
+
+extern void __assert_perror_fail (int __errnum, const char *__file,
+      unsigned int __line, const char *__function)
+     ;
+
+
+
+
+extern void __assert (const char *__assertion, const char *__file, int __line)
+     ;
+
+
+
+# 24 "x86_64-gen.c" 2
+# 43 "x86_64-gen.c"
+
+# 43 "x86_64-gen.c"
 enum {
     TREG_RAX = 0,
     TREG_RCX = 1,
@@ -4245,7 +9586,7 @@ int reg_classes[5] = {
                0x0002 | 0x0020,
               0x0040,
 };
-# 103 "./x86_64-gen.c"
+# 103 "x86_64-gen.c"
 static unsigned long func_sub_sp_offset;
 static int func_ret_sub;
 
@@ -4490,7 +9831,19 @@ void load(int r, SValue *sv)
     } else {
         if (v == 0x00f0) {
             if ((ft & 0x000f) == 12) {
-                ((void) ((!(fr & 0x0200)) ? ((void)0) : ((void)printf ("%s:%d: failed assertion `%s'\n", "x86_64-gen.c", 347, "!(fr & VT_SYM)"), abort())));
+                
+# 347 "x86_64-gen.c" 3 4
+               ((
+# 347 "x86_64-gen.c"
+               !(fr & 0x0200)
+# 347 "x86_64-gen.c" 3 4
+               ) ? (void) (0) : __assert_fail (
+# 347 "x86_64-gen.c"
+               "!(fr & VT_SYM)"
+# 347 "x86_64-gen.c" 3 4
+               , "x86_64-gen.c", 347, __func__))
+# 347 "x86_64-gen.c"
+                                     ;
                 o(0x48);
                 o(0xb8 + ((r) & 7));
                 gen_addr64(fr, sv->sym, sv->c.ull);
@@ -4527,14 +9880,38 @@ void load(int r, SValue *sv)
             oad(0xb8 + r, t ^ 1);
         } else if (v != r) {
             if (r == TREG_XMM0) {
-                ((void) ((v == TREG_ST0) ? ((void)0) : ((void)printf ("%s:%d: failed assertion `%s'\n", "x86_64-gen.c", 384, "v == TREG_ST0"), abort())));
+                
+# 384 "x86_64-gen.c" 3 4
+               ((
+# 384 "x86_64-gen.c"
+               v == TREG_ST0
+# 384 "x86_64-gen.c" 3 4
+               ) ? (void) (0) : __assert_fail (
+# 384 "x86_64-gen.c"
+               "v == TREG_ST0"
+# 384 "x86_64-gen.c" 3 4
+               , "x86_64-gen.c", 384, __func__))
+# 384 "x86_64-gen.c"
+                                    ;
 
                 o(0xf0245cdd);
 
                 o(0x44100ff2);
                 o(0xf024);
             } else if (r == TREG_ST0) {
-                ((void) ((v == TREG_XMM0) ? ((void)0) : ((void)printf ("%s:%d: failed assertion `%s'\n", "x86_64-gen.c", 391, "v == TREG_XMM0"), abort())));
+                
+# 391 "x86_64-gen.c" 3 4
+               ((
+# 391 "x86_64-gen.c"
+               v == TREG_XMM0
+# 391 "x86_64-gen.c" 3 4
+               ) ? (void) (0) : __assert_fail (
+# 391 "x86_64-gen.c"
+               "v == TREG_XMM0"
+# 391 "x86_64-gen.c" 3 4
+               , "x86_64-gen.c", 391, __func__))
+# 391 "x86_64-gen.c"
+                                     ;
 
 
                 o(0x44110ff2);
@@ -4814,10 +10191,14 @@ void gfunc_call(int nb_args)
         gadd_sp(args_size);
     vtop--;
 }
-# 680 "./x86_64-gen.c"
+# 680 "x86_64-gen.c"
 static void push_arg_reg(int i) {
     loc -= 8;
-    gen_modrm64(0x89, arg_regs[i], 0x00f2, ((void *)0), loc);
+    gen_modrm64(0x89, arg_regs[i], 0x00f2, 
+# 682 "x86_64-gen.c" 3 4
+                                            ((void *)0)
+# 682 "x86_64-gen.c"
+                                                , loc);
 }
 
 
@@ -4844,7 +10225,11 @@ void gfunc_prolog(CType *func_type)
         seen_stack_size = 8 * 2;
 
         sym = func_type->ref;
-        while ((sym = sym->next) != ((void *)0)) {
+        while ((sym = sym->next) != 
+# 709 "x86_64-gen.c" 3 4
+                                   ((void *)0)
+# 709 "x86_64-gen.c"
+                                       ) {
             type = &sym->type;
             if (is_sse_float(type->t)) {
                 if (seen_sse_num < 8) {
@@ -4882,7 +10267,11 @@ void gfunc_prolog(CType *func_type)
         for (i = 0; i < 8; i++) {
             loc -= 16;
             o(0xd60f66);
-            gen_modrm(7 - i, 0x00f2, ((void *)0), loc);
+            gen_modrm(7 - i, 0x00f2, 
+# 747 "x86_64-gen.c" 3 4
+                                      ((void *)0)
+# 747 "x86_64-gen.c"
+                                          , loc);
 
             o(0x85c748);
             gen_le32(loc + 8);
@@ -4910,7 +10299,11 @@ void gfunc_prolog(CType *func_type)
         reg_param_index++;
     }
 
-    while ((sym = sym->next) != ((void *)0)) {
+    while ((sym = sym->next) != 
+# 775 "x86_64-gen.c" 3 4
+                               ((void *)0)
+# 775 "x86_64-gen.c"
+                                   ) {
         type = &sym->type;
         size = type_size(type, &align);
         size = (size + 3) & ~3;
@@ -4919,7 +10312,11 @@ void gfunc_prolog(CType *func_type)
 
                 loc -= 8;
                 o(0xd60f66);
-                gen_modrm(sse_param_index, 0x00f2, ((void *)0), loc);
+                gen_modrm(sse_param_index, 0x00f2, 
+# 784 "x86_64-gen.c" 3 4
+                                                    ((void *)0)
+# 784 "x86_64-gen.c"
+                                                        , loc);
                 param_addr = loc;
             } else {
                 param_addr = addr;
@@ -4964,7 +10361,7 @@ void gfunc_epilog(void)
     v = (-loc + 15) & -16;
     saved_ind = ind;
     ind = func_sub_sp_offset - 11;
-# 837 "./x86_64-gen.c"
+# 837 "x86_64-gen.c"
     {
         o(0xe5894855);
         o(0xec8148);
@@ -5529,7 +10926,19 @@ void gen_cvt_ftoi(int t)
     } else if (bt == 9) {
         o(0xf2);
     } else {
-        ((void) ((0) ? ((void)0) : ((void)printf ("%s:%d: failed assertion `%s'\n", "x86_64-gen.c", 1401, "0"), abort())));
+        
+# 1401 "x86_64-gen.c" 3 4
+       ((
+# 1401 "x86_64-gen.c"
+       0
+# 1401 "x86_64-gen.c" 3 4
+       ) ? (void) (0) : __assert_fail (
+# 1401 "x86_64-gen.c"
+       "0"
+# 1401 "x86_64-gen.c" 3 4
+       , "x86_64-gen.c", 1401, __func__))
+# 1401 "x86_64-gen.c"
+                ;
     }
     if (size == 8) {
         o(0x48 + (((r) >> 3) & 1));
@@ -5545,39 +10954,184 @@ void ggoto(void)
     gcall_or_jmp(1);
     vtop--;
 }
-# 252 "./libtcc.c" 2
-# 308 "./libtcc.c"
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/dlfcn.h" 1 3 4
-# 40 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/dlfcn.h" 3 4
-# 1 "/opt/homebrew/Cellar/llvm/14.0.6_1/lib/clang/14.0.6/include/stdbool.h" 1 3 4
-# 41 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/dlfcn.h" 2 3 4
-# 52 "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk/usr/include/dlfcn.h" 3 4
-typedef struct dl_info {
-        const char *dli_fname;
-        void *dli_fbase;
-        const char *dli_sname;
-        void *dli_saddr;
+# 252 "libtcc.c" 2
+# 308 "libtcc.c"
+# 1 "/usr/include/dlfcn.h" 1 3 4
+# 24 "/usr/include/dlfcn.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/8/include/stddef.h" 1 3 4
+# 25 "/usr/include/dlfcn.h" 2 3 4
+
+
+# 1 "/usr/include/x86_64-linux-gnu/bits/dlfcn.h" 1 3 4
+# 57 "/usr/include/x86_64-linux-gnu/bits/dlfcn.h" 3 4
+
+
+
+
+# 60 "/usr/include/x86_64-linux-gnu/bits/dlfcn.h" 3 4
+extern void _dl_mcount_wrapper_check (void *__selfpc) ;
+
+
+# 28 "/usr/include/dlfcn.h" 2 3 4
+# 44 "/usr/include/dlfcn.h" 3 4
+typedef long int Lmid_t;
+
+
+
+
+
+
+
+
+
+
+
+extern void *dlopen (const char *__file, int __mode) ;
+
+
+
+extern int dlclose (void *__handle) ;
+
+
+
+extern void *dlsym (void *restrict __handle,
+      const char *restrict __name) ;
+
+
+
+extern void *dlmopen (Lmid_t __nsid, const char *__file, int __mode) ;
+
+
+
+extern void *dlvsym (void *restrict __handle,
+       const char *restrict __name,
+       const char *restrict __version)
+     ;
+
+
+
+
+
+extern char *dlerror (void) ;
+
+
+
+
+
+typedef struct
+{
+  const char *dli_fname;
+  void *dli_fbase;
+  const char *dli_sname;
+  void *dli_saddr;
 } Dl_info;
 
-extern int dladdr(const void *, Dl_info *);
+
+
+extern int dladdr (const void *__address, Dl_info *__info)
+     ;
+
+
+extern int dladdr1 (const void *__address, Dl_info *__info,
+      void **__extra_info, int __flags) ;
 
 
 
 
-extern int dlclose(void * __handle) __attribute__((availability(driverkit,unavailable)));
-extern char * dlerror(void) __attribute__((availability(driverkit,unavailable)));
-extern void * dlopen(const char * __path, int __mode) __attribute__((availability(driverkit,unavailable)));
-extern void * dlsym(void * __handle, const char * __symbol) __attribute__((availability(driverkit,unavailable)));
+enum
+  {
+
+    RTLD_DL_SYMENT = 1,
 
 
-extern _Bool dlopen_preflight(const char* __path) __attribute__((availability(macosx,introduced=10.5))) __attribute__((availability(driverkit,unavailable)));
-# 309 "./libtcc.c" 2
+    RTLD_DL_LINKMAP = 2
+  };
 
+
+
+
+
+
+
+extern int dlinfo (void *restrict __handle,
+     int __request, void *restrict __arg)
+     ;
+
+
+enum
+  {
+
+    RTLD_DI_LMID = 1,
+
+
+
+    RTLD_DI_LINKMAP = 2,
+
+    RTLD_DI_CONFIGADDR = 3,
+
+
+
+
+
+
+    RTLD_DI_SERINFO = 4,
+    RTLD_DI_SERINFOSIZE = 5,
+
+
+
+    RTLD_DI_ORIGIN = 6,
+
+    RTLD_DI_PROFILENAME = 7,
+    RTLD_DI_PROFILEOUT = 8,
+
+
+
+
+    RTLD_DI_TLS_MODID = 9,
+
+
+
+
+
+    RTLD_DI_TLS_DATA = 10,
+
+    RTLD_DI_MAX = 10
+  };
+
+
+
+
+typedef struct
+{
+  char *dls_name;
+  unsigned int dls_flags;
+} Dl_serpath;
+
+
+
+typedef struct
+{
+  size_t dls_size;
+  unsigned int dls_cnt;
+  Dl_serpath dls_serpath[1];
+} Dl_serinfo;
+
+
+
+
+# 309 "libtcc.c" 2
+
+
+# 310 "libtcc.c"
 void *resolve_sym(TCCState *s1, const char *sym, int type)
 {
-    return dlsym(((void *) -2), sym);
+    return dlsym(
+# 312 "libtcc.c" 3 4
+                ((void *) 0)
+# 312 "libtcc.c"
+                            , sym);
 }
-# 322 "./libtcc.c"
+# 322 "libtcc.c"
 int ieee_finite(double d)
 {
     int *p = (int *)&d;
@@ -5629,7 +11183,7 @@ char *tcc_fileextension (const char *name)
     char *e = strrchr(b, '.');
     return e ? e : strchr(b, 0);
 }
-# 400 "./libtcc.c"
+# 400 "libtcc.c"
 void set_pages_executable(void *ptr, unsigned long length)
 {
 
@@ -5640,10 +11194,22 @@ void set_pages_executable(void *ptr, unsigned long length)
     start = (unsigned long)ptr & ~(4096 - 1);
     end = (unsigned long)ptr + length;
     end = (end + 4096 - 1) & ~(4096 - 1);
-    mprotect((void *)start, end - start, 0x01 | 0x02 | 0x04);
+    mprotect((void *)start, end - start, 
+# 410 "libtcc.c" 3 4
+                                        0x1 
+# 410 "libtcc.c"
+                                                  | 
+# 410 "libtcc.c" 3 4
+                                                    0x2 
+# 410 "libtcc.c"
+                                                               | 
+# 410 "libtcc.c" 3 4
+                                                                 0x4
+# 410 "libtcc.c"
+                                                                          );
 
 }
-# 421 "./libtcc.c"
+# 421 "libtcc.c"
 void tcc_free(void *ptr)
 {
 
@@ -5731,7 +11297,11 @@ void dynarray_reset(void *pp, int *n)
         if (*p)
             tcc_free(*p);
     tcc_free(*(void**)pp);
-    *(void**)pp = ((void *)0);
+    *(void**)pp = 
+# 508 "libtcc.c" 3 4
+                 ((void *)0)
+# 508 "libtcc.c"
+                     ;
 }
 
 
@@ -5869,7 +11439,11 @@ static void put_extern_sym2(Sym *sym, Section *section,
     const char *name;
     char buf1[256];
 
-    if (section == ((void *)0))
+    if (section == 
+# 646 "libtcc.c" 3 4
+                  ((void *)0)
+# 646 "libtcc.c"
+                      )
         sh_num = 0;
     else if (section == ((void *)1))
         sh_num = 0xfff1;
@@ -5880,7 +11454,7 @@ static void put_extern_sym2(Sym *sym, Section *section,
 
     if ((sym->type.t & 0x000f) == 6) {
         sym_type = 2;
-# 665 "./libtcc.c"
+# 665 "libtcc.c"
     } else {
         sym_type = 1;
     }
@@ -5891,8 +11465,12 @@ static void put_extern_sym2(Sym *sym, Section *section,
         sym_bind = 1;
 
     if (!sym->c) {
-        name = get_tok_str(sym->v, ((void *)0));
-# 712 "./libtcc.c"
+        name = get_tok_str(sym->v, 
+# 675 "libtcc.c" 3 4
+                                  ((void *)0)
+# 675 "libtcc.c"
+                                      );
+# 712 "libtcc.c"
         if (tcc_state->leading_underscore && can_add_underscore) {
             buf1[0] = '_';
             pstrcpy(buf1 + 1, sizeof(buf1) - 1, name);
@@ -5919,7 +11497,11 @@ static void put_extern_sym(Sym *sym, Section *section,
 static void greloc(Section *s, Sym *sym, unsigned long offset, int type)
 {
     if (!sym->c)
-        put_extern_sym(sym, ((void *)0), 0, 0);
+        put_extern_sym(sym, 
+# 738 "libtcc.c" 3 4
+                           ((void *)0)
+# 738 "libtcc.c"
+                               , 0, 0);
 
     put_elf_reloc(symtab_section, s, offset, type, sym->c);
 }
@@ -5959,9 +11541,29 @@ static void strcat_vprintf(char *buf, int buf_size, const char *fmt, va_list ap)
 static void strcat_printf(char *buf, int buf_size, const char *fmt, ...)
 {
     va_list ap;
-    __builtin_va_start(ap, fmt);
+    
+# 778 "libtcc.c" 3 4
+   __builtin_va_start(
+# 778 "libtcc.c"
+   ap
+# 778 "libtcc.c" 3 4
+   ,
+# 778 "libtcc.c"
+   fmt
+# 778 "libtcc.c" 3 4
+   )
+# 778 "libtcc.c"
+                    ;
     strcat_vprintf(buf, buf_size, fmt, ap);
-    __builtin_va_end(ap);
+    
+# 780 "libtcc.c" 3 4
+   __builtin_va_end(
+# 780 "libtcc.c"
+   ap
+# 780 "libtcc.c" 3 4
+   )
+# 780 "libtcc.c"
+             ;
 }
 
 void error1(TCCState *s1, int is_warning, const char *fmt, va_list ap)
@@ -5991,7 +11593,11 @@ void error1(TCCState *s1, int is_warning, const char *fmt, va_list ap)
 
     if (!s1->error_func) {
 
-        fprintf(__stderrp, "%s\n", buf);
+        fprintf(
+# 810 "libtcc.c" 3 4
+               stderr
+# 810 "libtcc.c"
+                     , "%s\n", buf);
     } else {
         s1->error_func(s1->error_opaque, buf);
     }
@@ -6012,9 +11618,29 @@ void error_noabort(const char *fmt, ...)
     TCCState *s1 = tcc_state;
     va_list ap;
 
-    __builtin_va_start(ap, fmt);
+    
+# 831 "libtcc.c" 3 4
+   __builtin_va_start(
+# 831 "libtcc.c"
+   ap
+# 831 "libtcc.c" 3 4
+   ,
+# 831 "libtcc.c"
+   fmt
+# 831 "libtcc.c" 3 4
+   )
+# 831 "libtcc.c"
+                    ;
     error1(s1, 0, fmt, ap);
-    __builtin_va_end(ap);
+    
+# 833 "libtcc.c" 3 4
+   __builtin_va_end(
+# 833 "libtcc.c"
+   ap
+# 833 "libtcc.c" 3 4
+   )
+# 833 "libtcc.c"
+             ;
 }
 
 void error(const char *fmt, ...)
@@ -6022,9 +11648,29 @@ void error(const char *fmt, ...)
     TCCState *s1 = tcc_state;
     va_list ap;
 
-    __builtin_va_start(ap, fmt);
+    
+# 841 "libtcc.c" 3 4
+   __builtin_va_start(
+# 841 "libtcc.c"
+   ap
+# 841 "libtcc.c" 3 4
+   ,
+# 841 "libtcc.c"
+   fmt
+# 841 "libtcc.c" 3 4
+   )
+# 841 "libtcc.c"
+                    ;
     error1(s1, 0, fmt, ap);
-    __builtin_va_end(ap);
+    
+# 843 "libtcc.c" 3 4
+   __builtin_va_end(
+# 843 "libtcc.c"
+   ap
+# 843 "libtcc.c" 3 4
+   )
+# 843 "libtcc.c"
+             ;
 
     if (s1->error_set_jmp_enabled) {
         longjmp(s1->error_jmp_buf, 1);
@@ -6047,9 +11693,29 @@ void warning(const char *fmt, ...)
     if (s1->warn_none)
         return;
 
-    __builtin_va_start(ap, fmt);
+    
+# 866 "libtcc.c" 3 4
+   __builtin_va_start(
+# 866 "libtcc.c"
+   ap
+# 866 "libtcc.c" 3 4
+   ,
+# 866 "libtcc.c"
+   fmt
+# 866 "libtcc.c" 3 4
+   )
+# 866 "libtcc.c"
+                    ;
     error1(s1, 1, fmt, ap);
-    __builtin_va_end(ap);
+    
+# 868 "libtcc.c" 3 4
+   __builtin_va_end(
+# 868 "libtcc.c"
+   ap
+# 868 "libtcc.c" 3 4
+   )
+# 868 "libtcc.c"
+             ;
 }
 
 void skip(int c)
@@ -6162,7 +11828,11 @@ static Sym *sym_push2(Sym **ps, int v, int t, long c)
     s->v = v;
     s->type.t = t;
     s->c = c;
-    s->next = ((void *)0);
+    s->next = 
+# 981 "libtcc.c" 3 4
+             ((void *)0)
+# 981 "libtcc.c"
+                 ;
 
     s->prev = *ps;
     *ps = s;
@@ -6178,7 +11848,11 @@ static Sym *sym_find2(Sym *s, int v)
             return s;
         s = s->prev;
     }
-    return ((void *)0);
+    return 
+# 997 "libtcc.c" 3 4
+          ((void *)0)
+# 997 "libtcc.c"
+              ;
 }
 
 
@@ -6186,7 +11860,11 @@ static inline Sym *struct_find(int v)
 {
     v -= 256;
     if ((unsigned)v >= (unsigned)(tok_ident - 256))
-        return ((void *)0);
+        return 
+# 1005 "libtcc.c" 3 4
+              ((void *)0)
+# 1005 "libtcc.c"
+                  ;
     return table_ident[v]->sym_struct;
 }
 
@@ -6195,7 +11873,11 @@ static inline Sym *sym_find(int v)
 {
     v -= 256;
     if ((unsigned)v >= (unsigned)(tok_ident - 256))
-        return ((void *)0);
+        return 
+# 1014 "libtcc.c" 3 4
+              ((void *)0)
+# 1014 "libtcc.c"
+                  ;
     return table_ident[v]->sym_identifier;
 }
 
@@ -6237,9 +11919,17 @@ static Sym *global_identifier_push(int v, int t, int c)
         ps = &table_ident[v - 256]->sym_identifier;
 
 
-        while (*ps != ((void *)0))
+        while (*ps != 
+# 1056 "libtcc.c" 3 4
+                     ((void *)0)
+# 1056 "libtcc.c"
+                         )
             ps = &(*ps)->prev_tok;
-        s->prev_tok = ((void *)0);
+        s->prev_tok = 
+# 1058 "libtcc.c" 3 4
+                     ((void *)0)
+# 1058 "libtcc.c"
+                         ;
         *ps = s;
     }
     return s;
@@ -6282,12 +11972,20 @@ BufferedFile *tcc_open(TCCState *s1, const char *filename)
     if (strcmp(filename, "-") == 0)
         fd = 0, filename = "stdin";
     else
-        fd = open(filename, 0x0000 | 0);
+        fd = open(filename, 
+# 1101 "libtcc.c" 3 4
+                           00 
+# 1101 "libtcc.c"
+                                    | 0);
     if ((s1->verbose == 2 && fd >= 0) || s1->verbose == 3)
         printf("%s %*s%s\n", fd < 0 ? "nf":"->",
                (s1->include_stack_ptr - s1->include_stack), "", filename);
     if (fd < 0)
-        return ((void *)0);
+        return 
+# 1106 "libtcc.c" 3 4
+              ((void *)0)
+# 1106 "libtcc.c"
+                  ;
     bf = tcc_malloc(sizeof(BufferedFile));
     bf->fd = fd;
     bf->buf_ptr = bf->buffer;
@@ -6311,11 +12009,11 @@ void tcc_close(BufferedFile *bf)
     tcc_free(bf);
 }
 
-# 1 "./tccpp.c" 1
-# 22 "./tccpp.c"
+# 1 "tccpp.c" 1
+# 22 "tccpp.c"
 static const char tcc_keywords[] =
 
-# 1 "./tcctok.h" 1
+# 1 "tcctok.h" 1
 
      "int" "\0"
      "void" "\0"
@@ -6443,14 +12141,14 @@ static const char tcc_keywords[] =
 
      "push" "\0"
      "pop" "\0"
-# 139 "./tcctok.h"
+# 139 "tcctok.h"
      "memcpy" "\0"
      "memset" "\0"
      "__divdi3" "\0"
      "__moddi3" "\0"
      "__udivdi3" "\0"
      "__umoddi3" "\0"
-# 194 "./tcctok.h"
+# 194 "tcctok.h"
      "__ashrdi3" "\0"
      "__lshrdi3" "\0"
      "__ashldi3" "\0"
@@ -6462,7 +12160,7 @@ static const char tcc_keywords[] =
 
      "__fixunssfdi" "\0"
      "__fixunsdfdi" "\0"
-# 236 "./tcctok.h"
+# 236 "tcctok.h"
  "byte" "\0"
  "align" "\0"
  "skip" "\0"
@@ -6479,7 +12177,7 @@ static const char tcc_keywords[] =
  "fill" "\0"
  "org" "\0"
  "quad" "\0"
-# 25 "./tccpp.c" 2
+# 25 "tccpp.c" 2
 
 ;
 
@@ -6522,12 +12220,32 @@ static TokenSym *tok_alloc_new(TokenSym **pts, const char *str, int len)
     ts = tcc_malloc(sizeof(TokenSym) + len);
     table_ident[i] = ts;
     ts->tok = tok_ident++;
-    ts->sym_define = ((void *)0);
-    ts->sym_label = ((void *)0);
-    ts->sym_struct = ((void *)0);
-    ts->sym_identifier = ((void *)0);
+    ts->sym_define = 
+# 67 "tccpp.c" 3 4
+                    ((void *)0)
+# 67 "tccpp.c"
+                        ;
+    ts->sym_label = 
+# 68 "tccpp.c" 3 4
+                   ((void *)0)
+# 68 "tccpp.c"
+                       ;
+    ts->sym_struct = 
+# 69 "tccpp.c" 3 4
+                    ((void *)0)
+# 69 "tccpp.c"
+                        ;
+    ts->sym_identifier = 
+# 70 "tccpp.c" 3 4
+                        ((void *)0)
+# 70 "tccpp.c"
+                            ;
     ts->len = len;
-    ts->hash_next = ((void *)0);
+    ts->hash_next = 
+# 72 "tccpp.c" 3 4
+                   ((void *)0)
+# 72 "tccpp.c"
+                       ;
     memcpy(ts->str, str, len);
     ts->str[len] = '\0';
     *pts = ts;
@@ -6656,7 +12374,11 @@ char *get_tok_str(int v, CValue *cv)
             sprintf(p, "L.%u", v - 0x10000000);
         } else {
 
-            return ((void *)0);
+            return 
+# 201 "tccpp.c" 3 4
+                  ((void *)0)
+# 201 "tccpp.c"
+                      ;
         }
         break;
     }
@@ -6760,7 +12482,7 @@ static int handle_stray1(uint8_t *p)
     }
     return c;
 }
-# 332 "./tccpp.c"
+# 332 "tccpp.c"
 static void minp(void)
 {
     inp();
@@ -7005,7 +12727,11 @@ redo_start:
         case '\'':
             if (in_warn_or_error)
                 goto _default;
-            p = parse_pp_string(p, c, ((void *)0));
+            p = parse_pp_string(p, c, 
+# 576 "tccpp.c" 3 4
+                                     ((void *)0)
+# 576 "tccpp.c"
+                                         );
             break;
 
         case '/':
@@ -7048,7 +12774,7 @@ _default:
  the_end: ;
     file->buf_ptr = p;
 }
-# 627 "./tccpp.c"
+# 627 "tccpp.c"
 void save_parse_state(ParseState *s)
 {
     s->line_num = file->line_num;
@@ -7099,7 +12825,11 @@ static inline int tok_ext_size(int t)
 
 static inline void tok_str_new(TokenString *s)
 {
-    s->str = ((void *)0);
+    s->str = 
+# 677 "tccpp.c" 3 4
+            ((void *)0)
+# 677 "tccpp.c"
+                ;
     s->len = 0;
     s->allocated_len = 0;
     s->last_line_num = -1;
@@ -7170,9 +12900,17 @@ static void tok_str_add2(TokenString *s, int t, CValue *cv)
             while ((len + nb_words) > s->allocated_len)
                 str = tok_str_realloc(s);
             cstr = (CString *)(str + len);
-            cstr->data = ((void *)0);
+            cstr->data = 
+# 748 "tccpp.c" 3 4
+                        ((void *)0)
+# 748 "tccpp.c"
+                            ;
             cstr->size = cv->cstr->size;
-            cstr->data_allocated = ((void *)0);
+            cstr->data_allocated = 
+# 750 "tccpp.c" 3 4
+                                  ((void *)0)
+# 750 "tccpp.c"
+                                      ;
             cstr->size_allocated = cstr->size;
             memcpy((char *)cstr + sizeof(CString),
                    cv->cstr->data, cstr->size);
@@ -7222,7 +12960,7 @@ static void tok_str_add_tok(TokenString *s)
     }
     tok_str_add2(s, tok, &tokc);
 }
-# 859 "./tccpp.c"
+# 859 "tccpp.c"
 static inline void define_push(int v, int macro_type, int *str, Sym *first_arg)
 {
     Sym *s;
@@ -7238,7 +12976,11 @@ static void define_undef(Sym *s)
     int v;
     v = s->v;
     if (v >= 256 && v < tok_ident)
-        table_ident[v - 256]->sym_define = ((void *)0);
+        table_ident[v - 256]->sym_define = 
+# 874 "tccpp.c" 3 4
+                                                ((void *)0)
+# 874 "tccpp.c"
+                                                    ;
     s->v = 0;
 }
 
@@ -7246,7 +12988,11 @@ static inline Sym *define_find(int v)
 {
     v -= 256;
     if ((unsigned)v >= (unsigned)(tok_ident - 256))
-        return ((void *)0);
+        return 
+# 882 "tccpp.c" 3 4
+              ((void *)0)
+# 882 "tccpp.c"
+                  ;
     return table_ident[v]->sym_define;
 }
 
@@ -7264,7 +13010,11 @@ static void free_defines(Sym *b)
             tok_str_free((int *)top->c);
         v = top->v;
         if (v >= 256 && v < tok_ident)
-            table_ident[v - 256]->sym_define = ((void *)0);
+            table_ident[v - 256]->sym_define = 
+# 900 "tccpp.c" 3 4
+                                                    ((void *)0)
+# 900 "tccpp.c"
+                                                        ;
         sym_free(top);
         top = top1;
     }
@@ -7276,7 +13026,11 @@ static Sym *label_find(int v)
 {
     v -= 256;
     if ((unsigned)v >= (unsigned)(tok_ident - 256))
-        return ((void *)0);
+        return 
+# 912 "tccpp.c" 3 4
+              ((void *)0)
+# 912 "tccpp.c"
+                  ;
     return table_ident[v]->sym_label;
 }
 
@@ -7289,7 +13043,11 @@ static Sym *label_push(Sym **ptop, int v, int flags)
     if (ptop == &global_label_stack) {
 
 
-        while (*ps != ((void *)0))
+        while (*ps != 
+# 925 "tccpp.c" 3 4
+                     ((void *)0)
+# 925 "tccpp.c"
+                         )
             ps = &(*ps)->prev_tok;
     }
     s->prev_tok = *ps;
@@ -7305,10 +13063,18 @@ static void label_pop(Sym **ptop, Sym *slast)
     for(s = *ptop; s != slast; s = s1) {
         s1 = s->prev;
         if (s->r == 2) {
-            warning("label '%s' declared but not used", get_tok_str(s->v, ((void *)0)));
+            warning("label '%s' declared but not used", get_tok_str(s->v, 
+# 941 "tccpp.c" 3 4
+                                                                         ((void *)0)
+# 941 "tccpp.c"
+                                                                             ));
         } else if (s->r == 1) {
                 error("label '%s' used but not defined",
-                      get_tok_str(s->v, ((void *)0)));
+                      get_tok_str(s->v, 
+# 944 "tccpp.c" 3 4
+                                       ((void *)0)
+# 944 "tccpp.c"
+                                           ));
         } else {
             if (s->c) {
 
@@ -7355,11 +13121,15 @@ static int expr_preprocess(void)
     macro_ptr = str.str;
     next();
     c = expr_const();
-    macro_ptr = ((void *)0);
+    macro_ptr = 
+# 991 "tccpp.c" 3 4
+               ((void *)0)
+# 991 "tccpp.c"
+                   ;
     tok_str_free(str.str);
     return c != 0;
 }
-# 1014 "./tccpp.c"
+# 1014 "tccpp.c"
 static void parse_define(void)
 {
     Sym *s, *first, **ps;
@@ -7370,7 +13140,11 @@ static void parse_define(void)
     if (v < 256)
         error("invalid macro name '%s'", get_tok_str(tok, &tokc));
 
-    first = ((void *)0);
+    first = 
+# 1024 "tccpp.c" 3 4
+           ((void *)0)
+# 1024 "tccpp.c"
+               ;
     t = 0;
 
     next_nomacro_spc();
@@ -7461,7 +13235,11 @@ static CachedInclude *search_cached_include(TCCState *s1,
             return e;
         i = e->hash_next;
     }
-    return ((void *)0);
+    return 
+# 1115 "tccpp.c" 3 4
+          ((void *)0)
+# 1115 "tccpp.c"
+              ;
 }
 
 static inline void add_cached_include(TCCState *s1, int type,
@@ -7665,7 +13443,11 @@ static void preprocess(int is_bof)
 
 
 
-                f = ((void *)0);
+                f = 
+# 1319 "tccpp.c" 3 4
+                   ((void *)0)
+# 1319 "tccpp.c"
+                       ;
             } else {
                 f = tcc_open(s1, buf1);
                 if (!f)
@@ -8131,18 +13913,34 @@ void parse_number(const char *p)
             }
             *q = '\0';
             t = toup(ch);
-            (*__error()) = 0;
+            
+# 1785 "tccpp.c" 3 4
+           (*__errno_location ()) 
+# 1785 "tccpp.c"
+                 = 0;
             if (t == 'F') {
                 ch = *p++;
                 tok = 0xb9;
-                tokc.f = strtof(token_buf, ((void *)0));
+                tokc.f = strtof(token_buf, 
+# 1789 "tccpp.c" 3 4
+                                          ((void *)0)
+# 1789 "tccpp.c"
+                                              );
             } else if (t == 'L') {
                 ch = *p++;
                 tok = 0xc1;
-                tokc.ld = strtold(token_buf, ((void *)0));
+                tokc.ld = strtold(token_buf, 
+# 1793 "tccpp.c" 3 4
+                                            ((void *)0)
+# 1793 "tccpp.c"
+                                                );
             } else {
                 tok = 0xc0;
-                tokc.d = strtod(token_buf, ((void *)0));
+                tokc.d = strtod(token_buf, 
+# 1796 "tccpp.c" 3 4
+                                          ((void *)0)
+# 1796 "tccpp.c"
+                                              );
             }
         }
     } else {
@@ -8226,7 +14024,7 @@ void parse_number(const char *p)
     if (ch)
         error("invalid number\n");
 }
-# 1894 "./tccpp.c"
+# 1894 "tccpp.c"
 static inline void next_nomacro1(void)
 {
     int t, c, is_long;
@@ -8753,7 +14551,11 @@ static int *macro_arg_subst(Sym **nested_list, int *macro_str, Sym *args)
                 } else {
 
 
-                    macro_subst(&str, nested_list, st, ((void *)0));
+                    macro_subst(&str, nested_list, st, 
+# 2420 "tccpp.c" 3 4
+                                                      ((void *)0)
+# 2420 "tccpp.c"
+                                                          );
                 }
             } else {
                 tok_str_add(&str, t);
@@ -8836,11 +14638,19 @@ static int macro_subst_tok(TokenString *tok_str,
 
 
                     struct macro_level *ml = *can_read_stream;
-                    macro_ptr = ((void *)0);
+                    macro_ptr = 
+# 2503 "tccpp.c" 3 4
+                               ((void *)0)
+# 2503 "tccpp.c"
+                                   ;
                     if (ml)
                     {
                         macro_ptr = ml->p;
-                        ml->p = ((void *)0);
+                        ml->p = 
+# 2507 "tccpp.c" 3 4
+                               ((void *)0)
+# 2507 "tccpp.c"
+                                   ;
                         *can_read_stream = ml -> prev;
                     }
                     goto redo;
@@ -8858,7 +14668,11 @@ static int macro_subst_tok(TokenString *tok_str,
 
             next_nomacro();
             next_nomacro();
-            args = ((void *)0);
+            args = 
+# 2525 "tccpp.c" 3 4
+                  ((void *)0)
+# 2525 "tccpp.c"
+                      ;
             sa = s->next;
 
             for(;;) {
@@ -8949,7 +14763,11 @@ static inline int *macro_twosharps(const int *macro_str)
             break;
 
         if (t == 0)
-            return ((void *)0);
+            return 
+# 2616 "tccpp.c" 3 4
+                  ((void *)0)
+# 2616 "tccpp.c"
+                      ;
     }
 
 
@@ -9078,13 +14896,21 @@ static void macro_subst(TokenString *tok_str, Sym **nested_list,
     while (1) {
 
 
-        if (ptr == ((void *)0))
+        if (ptr == 
+# 2745 "tccpp.c" 3 4
+                  ((void *)0)
+# 2745 "tccpp.c"
+                      )
             break;
         { t = *ptr++; switch(t) { case 0xb3: case 0xc8: case 0xb4: case 0xb7: case 0xb9: case 0xba: cval.tab[0] = *ptr++; break; case 0xb5: case 0xb8: case 0xce: cval.cstr = (CString *)ptr; cval.cstr->data = (char *)ptr + sizeof(CString); ptr += (sizeof(CString) + cval.cstr->size + 3) >> 2; break; case 0xc0: case 0xc9: case 0xca: cval.tab[0] = ptr[0]; cval.tab[1] = ptr[1]; ptr += 2; break; case 0xc1: cval.tab[0] = ptr[0]; cval.tab[1] = ptr[1]; cval.tab[2] = ptr[2]; cval.tab[3] = ptr[3];; ptr += 16 / 4; break; default: break; } };
         if (t == 0)
             break;
         s = define_find(t);
-        if (s != ((void *)0)) {
+        if (s != 
+# 2751 "tccpp.c" 3 4
+                ((void *)0)
+# 2751 "tccpp.c"
+                    ) {
 
             if (sym_find2(*nested_list, t))
                 goto no_subst;
@@ -9131,8 +14957,16 @@ static void next(void)
             if (s) {
 
                 tok_str_new(&str);
-                nested_list = ((void *)0);
-                ml = ((void *)0);
+                nested_list = 
+# 2798 "tccpp.c" 3 4
+                             ((void *)0)
+# 2798 "tccpp.c"
+                                 ;
+                ml = 
+# 2799 "tccpp.c" 3 4
+                    ((void *)0)
+# 2799 "tccpp.c"
+                        ;
                 if (macro_subst_tok(&str, &nested_list, s, &ml) == 0) {
 
                     tok_str_add(&str, 0);
@@ -9151,7 +14985,11 @@ static void next(void)
             } else {
 
                 tok_str_free(macro_ptr_allocated);
-                macro_ptr = ((void *)0);
+                macro_ptr = 
+# 2818 "tccpp.c" 3 4
+                           ((void *)0)
+# 2818 "tccpp.c"
+                               ;
             }
             goto redo;
         }
@@ -9210,7 +15048,11 @@ void preprocess_new()
         isidnum_table[i-(-1)] = isid(i) || isnum(i);
 
 
-    table_ident = ((void *)0);
+    table_ident = 
+# 2877 "tccpp.c" 3 4
+                 ((void *)0)
+# 2877 "tccpp.c"
+                     ;
     memset(hash_ident, 0, 8192 * sizeof(TokenSym *));
 
     tok_ident = 256;
@@ -9242,7 +15084,11 @@ static int tcc_preprocess(TCCState *s1)
         0x0004 | 0x0010;
     token_seen = 0;
     line_ref = 0;
-    file_ref = ((void *)0);
+    file_ref = 
+# 2909 "tccpp.c" 3 4
+              ((void *)0)
+# 2909 "tccpp.c"
+                  ;
 
     for (;;) {
         next();
@@ -9268,9 +15114,9 @@ static int tcc_preprocess(TCCState *s1)
     free_defines(define_start);
     return 0;
 }
-# 1131 "./libtcc.c" 2
-# 1 "./tccgen.c" 1
-# 21 "./tccgen.c"
+# 1131 "libtcc.c" 2
+# 1 "tccgen.c" 1
+# 21 "tccgen.c"
 void swap(int *p, int *q)
 {
     int t;
@@ -9371,7 +15217,11 @@ static Sym *external_sym(int v, CType *type, int r)
     } else {
         if (!is_compatible_types(&s->type, type))
             error("incompatible types for redefinition of '%s'",
-                  get_tok_str(v, ((void *)0)));
+                  get_tok_str(v, 
+# 121 "tccgen.c" 3 4
+                                ((void *)0)
+# 121 "tccgen.c"
+                                    ));
     }
     return s;
 }
@@ -9462,7 +15312,7 @@ void save_reg(int r)
                 if (r == TREG_ST0) {
                     o(0xd9dd);
                 }
-# 220 "./tccgen.c"
+# 220 "tccgen.c"
                 l = loc;
                 saved = 1;
             }
@@ -9579,7 +15429,7 @@ void gaddrof(void)
     if ((vtop->r & 0x00ff) == 0x00f1)
         vtop->r = (vtop->r & ~(0x00ff | (0x1000 | 0x2000 | 0x4000))) | 0x00f2 | 0x0100;
 }
-# 368 "./tccgen.c"
+# 368 "tccgen.c"
 int gv(int rc)
 {
     int r, rc2, bit_pos, bit_size, size, align, i;
@@ -9628,8 +15478,8 @@ int gv(int rc)
 
 
 
-
-
+            if (size == 16)
+                vtop->c.tab[2] &= 0xffff;
 
             ptr = section_ptr_add(data_section, size);
             size = size >> 2;
@@ -9666,7 +15516,7 @@ int gv(int rc)
             ((vtop->type.t & 0x000f) == 12 &&
              !(reg_classes[vtop->r2] & rc2))) {
             r = get_reg(rc);
-# 499 "./tccgen.c"
+# 499 "tccgen.c"
             if ((vtop->r & 0x0100) && !is_float(vtop->type.t)) {
                 int t1, t;
 
@@ -9767,7 +15617,7 @@ void lexpand(void)
     vtop[0].type.t = 0 | u;
     vtop[-1].type.t = 0 | u;
 }
-# 629 "./tccgen.c"
+# 629 "tccgen.c"
 void lbuild(int t)
 {
     gv2(0x0001, 0x0001);
@@ -9803,7 +15653,7 @@ void vrott(int n)
         vtop[-i] = vtop[-i - 1];
     vtop[-n + 1] = tmp;
 }
-# 682 "./tccgen.c"
+# 682 "tccgen.c"
 void vpop(void)
 {
     int v;
@@ -9866,7 +15716,7 @@ void gv_dup(void)
         vtop->r = r1;
     }
 }
-# 984 "./tccgen.c"
+# 984 "tccgen.c"
 void gen_opic(int op)
 {
     int c1, c2, t1, t2, n;
@@ -10119,7 +15969,11 @@ static void check_comparison_pointer_types(SValue *p1, SValue *p2, int op)
         type2 = pointed_type(type2);
     } else if (bt2 != 6) {
     invalid_operands:
-        error("invalid operands to binary %s", get_tok_str(op, ((void *)0)));
+        error("invalid operands to binary %s", get_tok_str(op, 
+# 1236 "tccgen.c" 3 4
+                                                              ((void *)0)
+# 1236 "tccgen.c"
+                                                                  ));
     }
     if ((type1->t & 0x000f) == 3 ||
         (type2->t & 0x000f) == 3)
@@ -10194,7 +16048,7 @@ void gen_op(int op)
 
 
             gen_op('*');
-# 1325 "./tccgen.c"
+# 1325 "tccgen.c"
             {
                 gen_opic(op);
             }
@@ -10459,7 +16313,7 @@ static void gen_cast(CType *type)
                         gen_cast(type);
                     }
                 }
-# 1614 "./tccgen.c"
+# 1614 "tccgen.c"
             } else if ((dbt & 0x000f) == 12 ||
                        (dbt & 0x000f) == 4) {
 
@@ -10536,7 +16390,7 @@ static int type_size(CType *type, int *a)
         *a = 8;
         return 16;
     } else if (bt == 9 || bt == 12) {
-# 1703 "./tccgen.c"
+# 1703 "tccgen.c"
         *a = 8;
 
         return 8;
@@ -10585,8 +16439,16 @@ static int is_compatible_func(CType *type1, CType *type2)
         return 1;
     if (s1->c != s2->c)
         return 0;
-    while (s1 != ((void *)0)) {
-        if (s2 == ((void *)0))
+    while (s1 != 
+# 1751 "tccgen.c" 3 4
+                ((void *)0)
+# 1751 "tccgen.c"
+                    ) {
+        if (s2 == 
+# 1752 "tccgen.c" 3 4
+                 ((void *)0)
+# 1752 "tccgen.c"
+                     )
             return 0;
         if (!is_compatible_parameter_types(&s1->type, &s2->type))
             return 0;
@@ -10712,15 +16574,27 @@ void type_to_str(char *buf, int buf_size,
         if (v >= 0x10000000)
             pstrcat(buf, buf_size, "<anonymous>");
         else
-            pstrcat(buf, buf_size, get_tok_str(v, ((void *)0)));
+            pstrcat(buf, buf_size, get_tok_str(v, 
+# 1878 "tccgen.c" 3 4
+                                                 ((void *)0)
+# 1878 "tccgen.c"
+                                                     ));
         break;
     case 6:
         s = type->ref;
         type_to_str(buf, buf_size, &s->type, varstr);
         pstrcat(buf, buf_size, "(");
         sa = s->next;
-        while (sa != ((void *)0)) {
-            type_to_str(buf1, sizeof(buf1), &sa->type, ((void *)0));
+        while (sa != 
+# 1885 "tccgen.c" 3 4
+                    ((void *)0)
+# 1885 "tccgen.c"
+                        ) {
+            type_to_str(buf1, sizeof(buf1), &sa->type, 
+# 1886 "tccgen.c" 3 4
+                                                      ((void *)0)
+# 1886 "tccgen.c"
+                                                          );
             pstrcat(buf, buf_size, buf1);
             sa = sa->next;
             if (sa)
@@ -10812,8 +16686,16 @@ static void gen_assign_cast(CType *dt)
         tmp_type2.t &= ~(0x0800 | 0x1000);
         if (!is_compatible_types(&tmp_type1, &tmp_type2)) {
         error:
-            type_to_str(buf1, sizeof(buf1), st, ((void *)0));
-            type_to_str(buf2, sizeof(buf2), dt, ((void *)0));
+            type_to_str(buf1, sizeof(buf1), st, 
+# 1978 "tccgen.c" 3 4
+                                               ((void *)0)
+# 1978 "tccgen.c"
+                                                   );
+            type_to_str(buf2, sizeof(buf2), dt, 
+# 1979 "tccgen.c" 3 4
+                                               ((void *)0)
+# 1979 "tccgen.c"
+                                                   );
             error("cannot cast '%s' to '%s'", buf1, buf2);
         }
         break;
@@ -10850,7 +16732,7 @@ void vstore(void)
 
         if (!nocode_wanted) {
             size = type_size(&vtop->type, &align);
-# 2024 "./tccgen.c"
+# 2024 "tccgen.c"
             vpush_global_sym(&func_old_type, TOK_memcpy);
 
 
@@ -10920,7 +16802,7 @@ void vstore(void)
         vpop();
 
     } else {
-# 2101 "./tccgen.c"
+# 2101 "tccgen.c"
         if (!nocode_wanted) {
             rc = 0x0001;
             if (is_float(ft)) {
@@ -10947,7 +16829,7 @@ void vstore(void)
                 vtop[-1].r = t | 0x0100;
             }
             store(r, vtop - 1);
-# 2142 "./tccgen.c"
+# 2142 "tccgen.c"
         }
         vswap();
         vtop--;
@@ -10972,7 +16854,7 @@ void inc(int post, int c)
     if (post)
         vpop();
 }
-# 2175 "./tccgen.c"
+# 2175 "tccgen.c"
 static void parse_attribute(AttributeDef *ad)
 {
     int t, n;
@@ -11033,13 +16915,17 @@ static void parse_attribute(AttributeDef *ad)
         case TOK_STDCALL3:
             (((func_attr_t*)&(ad->func_attr))->func_call) = 1;
             break;
-# 2254 "./tccgen.c"
+# 2254 "tccgen.c"
         case TOK_DLLEXPORT:
             (((func_attr_t*)&(ad->func_attr))->func_export) = 1;
             break;
         default:
             if (tcc_state->warn_unsupported)
-                warning("'%s' attribute ignored", get_tok_str(t, ((void *)0)));
+                warning("'%s' attribute ignored", get_tok_str(t, 
+# 2259 "tccgen.c" 3 4
+                                                                ((void *)0)
+# 2259 "tccgen.c"
+                                                                    ));
 
             if (tok == '(') {
                 int parenthesis = 0;
@@ -11145,7 +17031,11 @@ static void struct_decl(CType *type, int u)
                         if ((type1.t & 0x000f) == 6 ||
                             (type1.t & (0x00000200 | 0x00000100 | 0x00000080 | 0x00000400)))
                             error("invalid type for '%s'",
-                                  get_tok_str(v, ((void *)0)));
+                                  get_tok_str(v, 
+# 2365 "tccgen.c" 3 4
+                                                ((void *)0)
+# 2365 "tccgen.c"
+                                                    ));
                     }
                     if (tok == ':') {
                         next();
@@ -11153,10 +17043,18 @@ static void struct_decl(CType *type, int u)
 
                         if (bit_size < 0)
                             error("negative width in bit-field '%s'",
-                                  get_tok_str(v, ((void *)0)));
+                                  get_tok_str(v, 
+# 2373 "tccgen.c" 3 4
+                                                ((void *)0)
+# 2373 "tccgen.c"
+                                                    ));
                         if (v && bit_size == 0)
                             error("zero width for bit-field '%s'",
-                                  get_tok_str(v, ((void *)0)));
+                                  get_tok_str(v, 
+# 2376 "tccgen.c" 3 4
+                                                ((void *)0)
+# 2376 "tccgen.c"
+                                                    ));
                     }
                     size = type_size(&type1, &align);
                     if (ad.aligned) {
@@ -11181,7 +17079,11 @@ static void struct_decl(CType *type, int u)
                         bsize = size * 8;
                         if (bit_size > bsize) {
                             error("width of '%s' exceeds its type",
-                                  get_tok_str(v, ((void *)0)));
+                                  get_tok_str(v, 
+# 2401 "tccgen.c" 3 4
+                                                ((void *)0)
+# 2401 "tccgen.c"
+                                                    ));
                         } else if (bit_size == bsize) {
 
                             bit_pos = 0;
@@ -11225,11 +17127,15 @@ static void struct_decl(CType *type, int u)
                             if (align > maxalign)
                                 maxalign = align;
                         }
-# 2455 "./tccgen.c"
+# 2455 "tccgen.c"
                     }
                     if (v == 0 && (type1.t & 0x000f) == 7) {
                         ass = type1.ref;
-                        while ((ass = ass->next) != ((void *)0)) {
+                        while ((ass = ass->next) != 
+# 2458 "tccgen.c" 3 4
+                                                   ((void *)0)
+# 2458 "tccgen.c"
+                                                       ) {
                            ss = sym_push(ass->v, &ass->type, 0, offset + ass->c);
                            *ps = ss;
                            ps = &ss->next;
@@ -11457,7 +17363,11 @@ static void post_type(CType *type, AttributeDef *ad)
 
         next();
         l = 0;
-        first = ((void *)0);
+        first = 
+# 2686 "tccgen.c" 3 4
+               ((void *)0)
+# 2686 "tccgen.c"
+                   ;
         plast = &first;
         arg_size = 0;
         if (tok != ')') {
@@ -11667,13 +17577,21 @@ static void gfunc_param_typed(Sym *func, Sym *arg)
 
     func_type = func->c;
     if (func_type == 2 ||
-        (func_type == 3 && arg == ((void *)0))) {
+        (func_type == 3 && arg == 
+# 2896 "tccgen.c" 3 4
+                                             ((void *)0)
+# 2896 "tccgen.c"
+                                                 )) {
 
         if ((vtop->type.t & 0x000f) == 8) {
             type.t = 9;
             gen_cast(&type);
         }
-    } else if (arg == ((void *)0)) {
+    } else if (arg == 
+# 2902 "tccgen.c" 3 4
+                     ((void *)0)
+# 2902 "tccgen.c"
+                         ) {
         error("too many arguments to function");
     } else {
         type = arg->type;
@@ -11827,7 +17745,23 @@ static void unary(void)
             save_regs(0);
 
 
-            block(((void *)0), ((void *)0), ((void *)0), ((void *)0), 0, 1);
+            block(
+# 3056 "tccgen.c" 3 4
+                 ((void *)0)
+# 3056 "tccgen.c"
+                     , 
+# 3056 "tccgen.c" 3 4
+                       ((void *)0)
+# 3056 "tccgen.c"
+                           , 
+# 3056 "tccgen.c" 3 4
+                             ((void *)0)
+# 3056 "tccgen.c"
+                                 , 
+# 3056 "tccgen.c" 3 4
+                                   ((void *)0)
+# 3056 "tccgen.c"
+                                       , 0, 1);
             skip(')');
         } else {
             gexpr();
@@ -12004,12 +17938,20 @@ static void unary(void)
         s = sym_find(t);
         if (!s) {
             if (tok != '(')
-                error("'%s' undeclared", get_tok_str(t, ((void *)0)));
+                error("'%s' undeclared", get_tok_str(t, 
+# 3233 "tccgen.c" 3 4
+                                                       ((void *)0)
+# 3233 "tccgen.c"
+                                                           ));
 
 
             if (tcc_state->warn_implicit_function_declaration)
                 warning("implicit declaration of function '%s'",
-                        get_tok_str(t, ((void *)0)));
+                        get_tok_str(t, 
+# 3238 "tccgen.c" 3 4
+                                      ((void *)0)
+# 3238 "tccgen.c"
+                                          ));
             s = external_global_sym(t, &func_old_type, 0);
         }
         if ((s->type.t & (0x00000100 | 0x00000400 | 0x000f)) ==
@@ -12052,12 +17994,20 @@ static void unary(void)
             s = vtop->type.ref;
 
             tok |= 0x20000000;
-            while ((s = s->next) != ((void *)0)) {
+            while ((s = s->next) != 
+# 3281 "tccgen.c" 3 4
+                                   ((void *)0)
+# 3281 "tccgen.c"
+                                       ) {
                 if (s->v == tok)
                     break;
             }
             if (!s)
-                error("field not found: %s", get_tok_str(tok & ~0x20000000, ((void *)0)));
+                error("field not found: %s", get_tok_str(tok & ~0x20000000, 
+# 3286 "tccgen.c" 3 4
+                                                                           ((void *)0)
+# 3286 "tccgen.c"
+                                                                               ));
 
             vtop->type = char_pointer_type;
             vpushi(s->c);
@@ -12667,7 +18617,7 @@ static void block(int *bsym, int *csym, int *case_sym, int *def_sym,
             gen_assign_cast(&func_vt);
             if ((func_vt.t & 0x000f) == 7) {
                 CType type;
-# 3919 "./tccgen.c"
+# 3919 "tccgen.c"
                 type = func_vt;
                 mk_pointer(&type);
                 vset(&type, 0x00f2 | 0x0100, func_vc);
@@ -12851,7 +18801,11 @@ static void block(int *bsym, int *csym, int *case_sym, int *def_sym,
             s = label_find(b);
             if (s) {
                 if (s->r == 0)
-                    error("duplicate label '%s'", get_tok_str(s->v, ((void *)0)));
+                    error("duplicate label '%s'", get_tok_str(s->v, 
+# 4102 "tccgen.c" 3 4
+                                                                   ((void *)0)
+# 4102 "tccgen.c"
+                                                                       ));
                 gsym((long)s->next);
                 s->r = 0;
             } else {
@@ -13197,7 +19151,11 @@ static void decl_initializer(CType *type, Section *sec, unsigned long c,
         } else {
             index = 0;
             while (tok != '}') {
-                decl_designator(type, sec, c, &index, ((void *)0), size_only);
+                decl_designator(type, sec, c, &index, 
+# 4448 "tccgen.c" 3 4
+                                                     ((void *)0)
+# 4448 "tccgen.c"
+                                                         , size_only);
                 if (n >= 0 && index >= n)
                     error("index too large");
 
@@ -13232,7 +19190,7 @@ static void decl_initializer(CType *type, Section *sec, unsigned long c,
     } else if ((type->t & 0x000f) == 7 &&
                (sec || !first || tok == '{')) {
         int par_count;
-# 4492 "./tccgen.c"
+# 4492 "tccgen.c"
         par_count = 0;
         if (tok == '(') {
             AttributeDef ad1;
@@ -13262,7 +19220,11 @@ static void decl_initializer(CType *type, Section *sec, unsigned long c,
         index = 0;
         n = s->c;
         while (tok != '}') {
-            decl_designator(type, sec, c, ((void *)0), &f, size_only);
+            decl_designator(type, sec, c, 
+# 4521 "tccgen.c" 3 4
+                                         ((void *)0)
+# 4521 "tccgen.c"
+                                             , &f, size_only);
             index = f->c;
             if (!size_only && array_length < index) {
                 init_putz(type, sec, c + array_length,
@@ -13272,7 +19234,11 @@ static void decl_initializer(CType *type, Section *sec, unsigned long c,
             if (index > array_length)
                 array_length = index;
             f = f->next;
-            if (no_oblock && f == ((void *)0))
+            if (no_oblock && f == 
+# 4531 "tccgen.c" 3 4
+                                 ((void *)0)
+# 4531 "tccgen.c"
+                                     )
                 break;
             if (tok == '}')
                 break;
@@ -13313,7 +19279,7 @@ static void decl_initializer(CType *type, Section *sec, unsigned long c,
         init_putv(type, sec, c, 0, expr_type);
     }
 }
-# 4580 "./tccgen.c"
+# 4580 "tccgen.c"
 static void decl_initializer_alloc(CType *type, AttributeDef *ad, int r,
                                    int has_init, int v, int scope)
 {
@@ -13367,7 +19333,11 @@ static void decl_initializer_alloc(CType *type, AttributeDef *ad, int r,
 
         macro_ptr = init_str.str;
         next();
-        decl_initializer(type, ((void *)0), 0, 1, 1);
+        decl_initializer(type, 
+# 4633 "tccgen.c" 3 4
+                              ((void *)0)
+# 4633 "tccgen.c"
+                                  , 0, 1, 1);
 
         macro_ptr = init_str.str;
         next();
@@ -13385,7 +19355,11 @@ static void decl_initializer_alloc(CType *type, AttributeDef *ad, int r,
         align = 1;
     }
     if ((r & 0x00ff) == 0x00f2) {
-        sec = ((void *)0);
+        sec = 
+# 4651 "tccgen.c" 3 4
+             ((void *)0)
+# 4651 "tccgen.c"
+                 ;
         if (tcc_state->do_bounds_check && (type->t & 0x0020))
             loc--;
         loc = (loc - size) & -align;
@@ -13412,14 +19386,22 @@ static void decl_initializer_alloc(CType *type, AttributeDef *ad, int r,
     } else {
         Sym *sym;
 
-        sym = ((void *)0);
+        sym = 
+# 4678 "tccgen.c" 3 4
+             ((void *)0)
+# 4678 "tccgen.c"
+                 ;
         if (v && scope == 0x00f0) {
 
             sym = sym_find(v);
             if (sym) {
                 if (!is_compatible_types(&sym->type, type))
                     error("incompatible types for redefinition of '%s'",
-                          get_tok_str(v, ((void *)0)));
+                          get_tok_str(v, 
+# 4685 "tccgen.c" 3 4
+                                        ((void *)0)
+# 4685 "tccgen.c"
+                                            ));
                 if (sym->type.t & 0x00000080) {
 
                     sym->type.t &= ~0x00000080;
@@ -13483,7 +19465,11 @@ static void decl_initializer_alloc(CType *type, AttributeDef *ad, int r,
             } else {
                 Elf64_Sym *esym;
 
-                put_extern_sym(sym, ((void *)0), align, size);
+                put_extern_sym(sym, 
+# 4749 "tccgen.c" 3 4
+                                   ((void *)0)
+# 4749 "tccgen.c"
+                                       , align, size);
 
                 esym = &((Elf64_Sym *)symtab_section->data)[sym->c];
                 esym->st_shndx = 0xfff2;
@@ -13560,17 +19546,29 @@ static void func_decl_list(Sym *func_sym)
                 type_decl(&type, &ad, &v, 2);
 
                 s = func_sym->next;
-                while (s != ((void *)0)) {
+                while (s != 
+# 4826 "tccgen.c" 3 4
+                           ((void *)0)
+# 4826 "tccgen.c"
+                               ) {
                     if ((s->v & ~0x20000000) == v)
                         goto found;
                     s = s->next;
                 }
                 error("declaration for parameter '%s' but no such parameter",
-                      get_tok_str(v, ((void *)0)));
+                      get_tok_str(v, 
+# 4832 "tccgen.c" 3 4
+                                    ((void *)0)
+# 4832 "tccgen.c"
+                                        ));
             found:
 
                 if (type.t & (0x00000080 | 0x00000100 | 0x00000200 | 0x00000400))
-                    error("storage class specified for '%s'", get_tok_str(v, ((void *)0)));
+                    error("storage class specified for '%s'", get_tok_str(v, 
+# 4836 "tccgen.c" 3 4
+                                                                            ((void *)0)
+# 4836 "tccgen.c"
+                                                                                ));
                 convert_parameter_type(&type);
 
                 s->type = type;
@@ -13594,7 +19592,11 @@ static void gen_function(Sym *sym)
     ind = cur_text_section->data_offset;
 
     put_extern_sym(sym, cur_text_section, ind, 0);
-    funcname = get_tok_str(sym->v, ((void *)0));
+    funcname = get_tok_str(sym->v, 
+# 4860 "tccgen.c" 3 4
+                                  ((void *)0)
+# 4860 "tccgen.c"
+                                      );
     func_ind = ind;
 
     if (tcc_state->do_debug)
@@ -13603,12 +19605,36 @@ static void gen_function(Sym *sym)
     sym_push2(&local_stack, 0x20000000, 0, 0);
     gfunc_prolog(&sym->type);
     rsym = 0;
-    block(((void *)0), ((void *)0), ((void *)0), ((void *)0), 0, 0);
+    block(
+# 4869 "tccgen.c" 3 4
+         ((void *)0)
+# 4869 "tccgen.c"
+             , 
+# 4869 "tccgen.c" 3 4
+               ((void *)0)
+# 4869 "tccgen.c"
+                   , 
+# 4869 "tccgen.c" 3 4
+                     ((void *)0)
+# 4869 "tccgen.c"
+                         , 
+# 4869 "tccgen.c" 3 4
+                           ((void *)0)
+# 4869 "tccgen.c"
+                               , 0, 0);
     gsym(rsym);
     gfunc_epilog();
     cur_text_section->data_offset = ind;
-    label_pop(&global_label_stack, ((void *)0));
-    sym_pop(&local_stack, ((void *)0));
+    label_pop(&global_label_stack, 
+# 4873 "tccgen.c" 3 4
+                                  ((void *)0)
+# 4873 "tccgen.c"
+                                      );
+    sym_pop(&local_stack, 
+# 4874 "tccgen.c" 3 4
+                         ((void *)0)
+# 4874 "tccgen.c"
+                             );
 
 
     ((Elf64_Sym *)symtab_section->data)[sym->c].st_size =
@@ -13617,7 +19643,11 @@ static void gen_function(Sym *sym)
         put_stabn(N_FUN, 0, 0, ind - func_ind);
     }
 
-    cur_text_section = ((void *)0);
+    cur_text_section = 
+# 4883 "tccgen.c" 3 4
+                      ((void *)0)
+# 4883 "tccgen.c"
+                          ;
     funcname = "";
     func_vt.t = 3;
     ind = 0;
@@ -13633,7 +19663,11 @@ static void gen_inline_functions(void)
 
     for(;;) {
         inline_generated = 0;
-        for(sym = global_stack; sym != ((void *)0); sym = sym->prev) {
+        for(sym = global_stack; sym != 
+# 4899 "tccgen.c" 3 4
+                                      ((void *)0)
+# 4899 "tccgen.c"
+                                          ; sym = sym->prev) {
             type = &sym->type;
             if (((type->t & 0x000f) == 6) &&
                 (type->t & (0x00000100 | 0x00000400)) ==
@@ -13649,7 +19683,11 @@ static void gen_inline_functions(void)
                 next();
                 cur_text_section = text_section;
                 gen_function(sym);
-                macro_ptr = ((void *)0);
+                macro_ptr = 
+# 4915 "tccgen.c" 3 4
+                           ((void *)0)
+# 4915 "tccgen.c"
+                               ;
 
                 tok_str_free(str);
                 inline_generated = 1;
@@ -13660,7 +19698,11 @@ static void gen_inline_functions(void)
     }
 
 
-    for(sym = global_stack; sym != ((void *)0); sym = sym->prev) {
+    for(sym = global_stack; sym != 
+# 4926 "tccgen.c" 3 4
+                                  ((void *)0)
+# 4926 "tccgen.c"
+                                      ; sym = sym->prev) {
         type = &sym->type;
         if (((type->t & 0x000f) == 6) &&
             (type->t & (0x00000100 | 0x00000400)) ==
@@ -13736,7 +19778,11 @@ static void decl(int l)
 
 
                 sym = type.ref;
-                while ((sym = sym->next) != ((void *)0))
+                while ((sym = sym->next) != 
+# 5002 "tccgen.c" 3 4
+                                           ((void *)0)
+# 5002 "tccgen.c"
+                                               )
                     if (!(sym->v & ~0x20000000))
                        expect("identifier");
 
@@ -13761,7 +19807,11 @@ static void decl(int l)
                     if (!is_compatible_types(&sym->type, &type)) {
                     func_error1:
                         error("incompatible types for redefinition of '%s'",
-                              get_tok_str(v, ((void *)0)));
+                              get_tok_str(v, 
+# 5027 "tccgen.c" 3 4
+                                            ((void *)0)
+# 5027 "tccgen.c"
+                                                ));
                     }
 
                     sym->type = type;
@@ -13856,7 +19906,7 @@ static void decl(int l)
         }
     }
 }
-# 1132 "./libtcc.c" 2
+# 1132 "libtcc.c" 2
 
 
 
@@ -13871,7 +19921,11 @@ static int tcc_compile(TCCState *s1)
 
     preprocess_init(s1);
 
-    cur_text_section = ((void *)0);
+    cur_text_section = 
+# 1146 "libtcc.c" 3 4
+                      ((void *)0)
+# 1146 "libtcc.c"
+                          ;
     funcname = "";
     anon_sym = 0x10000000;
 
@@ -13880,7 +19934,11 @@ static int tcc_compile(TCCState *s1)
     if (s1->do_debug) {
         section_sym = put_elf_sym(symtab_section, 0, 0,
                                   ((((0)) << 4) + (((3)) & 0xf)), 0,
-                                  text_section->sh_num, ((void *)0));
+                                  text_section->sh_num, 
+# 1155 "libtcc.c" 3 4
+                                                       ((void *)0)
+# 1155 "libtcc.c"
+                                                           );
         getcwd(buf, sizeof(buf));
 
 
@@ -13905,11 +19963,19 @@ static int tcc_compile(TCCState *s1)
 
     func_old_type.t = 6;
     func_old_type.ref = sym_push(0x20000000, &int_type, 0, 2);
-# 1205 "./libtcc.c"
+# 1205 "libtcc.c"
     define_start = define_stack;
     nocode_wanted = 1;
 
-    if (setjmp(s1->error_jmp_buf) == 0) {
+    if (
+# 1208 "libtcc.c" 3 4
+       _setjmp (
+# 1208 "libtcc.c"
+       s1->error_jmp_buf
+# 1208 "libtcc.c" 3 4
+       ) 
+# 1208 "libtcc.c"
+                                 == 0) {
         s1->nb_errors = 0;
         s1->error_set_jmp_enabled = 1;
 
@@ -13923,7 +19989,11 @@ static int tcc_compile(TCCState *s1)
 
 
         if (s1->do_debug) {
-            put_stabs_r(((void *)0), N_SO, 0, 0,
+            put_stabs_r(
+# 1222 "libtcc.c" 3 4
+                       ((void *)0)
+# 1222 "libtcc.c"
+                           , N_SO, 0, 0,
                         text_section->data_offset, text_section, section_sym);
         }
     }
@@ -13935,8 +20005,16 @@ static int tcc_compile(TCCState *s1)
 
     gen_inline_functions();
 
-    sym_pop(&global_stack, ((void *)0));
-    sym_pop(&local_stack, ((void *)0));
+    sym_pop(&global_stack, 
+# 1234 "libtcc.c" 3 4
+                          ((void *)0)
+# 1234 "libtcc.c"
+                              );
+    sym_pop(&local_stack, 
+# 1235 "libtcc.c" 3 4
+                         ((void *)0)
+# 1235 "libtcc.c"
+                             );
 
     return s1->nb_errors != 0 ? -1 : 0;
 }
@@ -13962,7 +20040,11 @@ int tcc_compile_string(TCCState *s, const char *str)
     bf->line_num = 1;
     file = bf;
     ret = tcc_compile(s);
-    file = ((void *)0);
+    file = 
+# 1261 "libtcc.c" 3 4
+          ((void *)0)
+# 1261 "libtcc.c"
+              ;
     tcc_free(buf);
 
 
@@ -13996,7 +20078,11 @@ void tcc_define_symbol(TCCState *s1, const char *sym, const char *value)
     ch = file->buf_ptr[0];
     next_nomacro();
     parse_define();
-    file = ((void *)0);
+    file = 
+# 1295 "libtcc.c" 3 4
+          ((void *)0)
+# 1295 "libtcc.c"
+              ;
 }
 
 
@@ -14010,7 +20096,7 @@ void tcc_undefine_symbol(TCCState *s1, const char *sym)
     if (s)
         define_undef(s);
 }
-# 1318 "./libtcc.c"
+# 1318 "libtcc.c"
 static void asm_instr(void)
 {
     error("inline asm() not supported");
@@ -14021,8 +20107,8 @@ static void asm_global_instr(void)
 }
 
 
-# 1 "./tccelf.c" 1
-# 36 "./tccelf.c"
+# 1 "tccelf.c" 1
+# 36 "tccelf.c"
 static int put_elf_str(Section *s, const char *sym)
 {
     int offset, len;
@@ -14165,7 +20251,11 @@ void *tcc_get_symbol(TCCState *s, const char *name)
     Elf64_Sym *sym;
     sym_index = find_elf_sym(symtab_section, name);
     if (!sym_index)
-        return ((void *)0);
+        return 
+# 178 "tccelf.c" 3 4
+              ((void *)0)
+# 178 "tccelf.c"
+                  ;
     sym = &((Elf64_Sym *)symtab_section->data)[sym_index];
     return (void*)(long)sym->st_value;
 }
@@ -14319,12 +20409,20 @@ static void put_stabs_r(const char *str, int type, int other, int desc,
 
 static void put_stabn(int type, int other, int desc, int value)
 {
-    put_stabs(((void *)0), type, other, desc, value);
+    put_stabs(
+# 332 "tccelf.c" 3 4
+             ((void *)0)
+# 332 "tccelf.c"
+                 , type, other, desc, value);
 }
 
 static void put_stabd(int type, int other, int desc)
 {
-    put_stabs(((void *)0), type, other, desc, 0);
+    put_stabs(
+# 337 "tccelf.c" 3 4
+             ((void *)0)
+# 337 "tccelf.c"
+                 , type, other, desc, 0);
 }
 
 
@@ -14523,7 +20621,7 @@ static void relocate_section(TCCState *s1, Section *s)
 
 
         switch(type) {
-# 659 "./tccelf.c"
+# 659 "tccelf.c"
         case 1:
             if (s1->output_type == 2) {
                 qrel->r_info = ((((Elf64_Xword)(0)) << 32) + (8));
@@ -14708,7 +20806,7 @@ static void build_got(TCCState *s1)
     add_elf_sym(symtab_section, 0, 4, ((((1)) << 4) + (((1)) & 0xf)),
                 0, s1->got->sh_num, "_GLOBAL_OFFSET_TABLE_");
     ptr = section_ptr_add(s1->got, 3 * 8);
-# 851 "./tccelf.c"
+# 851 "tccelf.c"
     put32(ptr, 0);
     put32(ptr + 4, 0);
 
@@ -14759,7 +20857,7 @@ static void put_got_entry(TCCState *s1,
 
 
             modrm = 0x25;
-# 910 "./tccelf.c"
+# 910 "tccelf.c"
             plt = s1->plt;
             if (plt->data_offset == 0) {
 
@@ -14788,7 +20886,7 @@ static void put_got_entry(TCCState *s1,
 
                 offset = plt->data_offset - 16;
         }
-# 974 "./tccelf.c"
+# 974 "tccelf.c"
         index = put_elf_sym(s1->dynsym, offset,
                             size, info, 0, sym->st_shndx, name);
 
@@ -14822,7 +20920,7 @@ static void build_got_entries(TCCState *s1)
             rel++) {
             type = ((rel->r_info) & 0xffffffff);
             switch(type) {
-# 1065 "./tccelf.c"
+# 1065 "tccelf.c"
             case 3:
             case 22:
             case 9:
@@ -14865,7 +20963,11 @@ static Section *new_symtab(TCCState *s1,
     strtab = new_section(s1, strtab_name, 3, sh_flags);
     put_elf_str(strtab, "");
     symtab->link = strtab;
-    put_elf_sym(symtab, 0, 0, 0, 0, 0, ((void *)0));
+    put_elf_sym(symtab, 0, 0, 0, 0, 0, 
+# 1107 "tccelf.c" 3 4
+                                      ((void *)0)
+# 1107 "tccelf.c"
+                                          );
 
     nb_buckets = 1;
 
@@ -14923,7 +21025,7 @@ static void tcc_add_runtime(TCCState *s1)
 {
 
     char buf[1024];
-# 1198 "./tccelf.c"
+# 1198 "tccelf.c"
     if (!s1->nostdlib) {
         tcc_add_library(s1, "c");
 
@@ -15061,11 +21163,31 @@ int elf_output_file(TCCState *s1, const char *filename)
         tcc_add_runtime(s1);
     }
 
-    phdr = ((void *)0);
-    section_order = ((void *)0);
-    interp = ((void *)0);
-    dynamic = ((void *)0);
-    dynstr = ((void *)0);
+    phdr = 
+# 1335 "tccelf.c" 3 4
+          ((void *)0)
+# 1335 "tccelf.c"
+              ;
+    section_order = 
+# 1336 "tccelf.c" 3 4
+                   ((void *)0)
+# 1336 "tccelf.c"
+                       ;
+    interp = 
+# 1337 "tccelf.c" 3 4
+            ((void *)0)
+# 1337 "tccelf.c"
+                ;
+    dynamic = 
+# 1338 "tccelf.c" 3 4
+             ((void *)0)
+# 1338 "tccelf.c"
+                 ;
+    dynstr = 
+# 1339 "tccelf.c" 3 4
+            ((void *)0)
+# 1339 "tccelf.c"
+                ;
     saved_dynamic_data_offset = 0;
 
     if (file_type != 3) {
@@ -15288,7 +21410,7 @@ int elf_output_file(TCCState *s1, const char *filename)
     for(i = 1; i < s1->nb_sections; i++) {
         s = s1->sections[i];
         s->sh_name = put_elf_str(strsec, s->name);
-# 1573 "./tccelf.c"
+# 1573 "tccelf.c"
         if (file_type == 2 &&
             s->sh_type == 4 &&
             !(s->sh_flags & (1 << 1))) {
@@ -15473,7 +21595,7 @@ int elf_output_file(TCCState *s1, const char *filename)
                 p = s1->plt->data;
                 p_end = p + s1->plt->data_offset;
                 if (p < p_end) {
-# 1766 "./tccelf.c"
+# 1766 "tccelf.c"
                     int x = s1->got->sh_addr - s1->plt->sh_addr - 6;
                     put32(p + 2, get32(p + 2) + x);
                     put32(p + 8, get32(p + 8) + x - 6);
@@ -15482,7 +21604,7 @@ int elf_output_file(TCCState *s1, const char *filename)
                         put32(p + 2, get32(p + 2) + x + s1->plt->data - p);
                         p += 16;
                     }
-# 1787 "./tccelf.c"
+# 1787 "tccelf.c"
                 }
             }
 
@@ -15583,7 +21705,19 @@ int elf_output_file(TCCState *s1, const char *filename)
         mode = 0666;
     else
         mode = 0777;
-    fd = open(filename, 0x0001 | 0x00000200 | 0x00000400 | 0, mode);
+    fd = open(filename, 
+# 1887 "tccelf.c" 3 4
+                       01 
+# 1887 "tccelf.c"
+                                | 
+# 1887 "tccelf.c" 3 4
+                                  0100 
+# 1887 "tccelf.c"
+                                          | 
+# 1887 "tccelf.c" 3 4
+                                            01000 
+# 1887 "tccelf.c"
+                                                    | 0, mode);
     if (fd < 0) {
         error_noabort("could not write '%s'", filename);
         goto fail;
@@ -15611,7 +21745,7 @@ int elf_output_file(TCCState *s1, const char *filename)
         ehdr.e_ident[4] = 2;
         ehdr.e_ident[5] = 1;
         ehdr.e_ident[6] = 1;
-# 1926 "./tccelf.c"
+# 1926 "tccelf.c"
         switch(file_type) {
         default:
         case 1:
@@ -15707,7 +21841,11 @@ static void *load_data(int fd, unsigned long file_offset, unsigned long size)
     void *data;
 
     data = tcc_malloc(size);
-    lseek(fd, file_offset, 0);
+    lseek(fd, file_offset, 
+# 2021 "tccelf.c" 3 4
+                          0
+# 2021 "tccelf.c"
+                                  );
     read(fd, data, size);
     return data;
 }
@@ -15767,9 +21905,21 @@ static int tcc_load_object_file(TCCState *s1,
     strsec = load_data(fd, file_offset + sh->sh_offset, sh->sh_size);
 
 
-    old_to_new_syms = ((void *)0);
-    symtab = ((void *)0);
-    strtab = ((void *)0);
+    old_to_new_syms = 
+# 2081 "tccelf.c" 3 4
+                     ((void *)0)
+# 2081 "tccelf.c"
+                         ;
+    symtab = 
+# 2082 "tccelf.c" 3 4
+            ((void *)0)
+# 2082 "tccelf.c"
+                ;
+    strtab = 
+# 2083 "tccelf.c" 3 4
+            ((void *)0)
+# 2083 "tccelf.c"
+                ;
     nb_syms = 0;
     for(i = 1; i < ehdr.e_shnum; i++) {
         sh = &shdr[i];
@@ -15864,7 +22014,11 @@ static int tcc_load_object_file(TCCState *s1,
         size = sh->sh_size;
         if (sh->sh_type != 8) {
             unsigned char *ptr;
-            lseek(fd, file_offset + sh->sh_offset, 0);
+            lseek(fd, file_offset + sh->sh_offset, 
+# 2178 "tccelf.c" 3 4
+                                                  0
+# 2178 "tccelf.c"
+                                                          );
             ptr = section_ptr_add(s, size);
             read(fd, ptr, size);
         } else {
@@ -16035,7 +22189,11 @@ static int tcc_load_alacarte(TCCState *s1, int fd, int size)
 
 
                     ++bound;
-                    lseek(fd, off, 0);
+                    lseek(fd, off, 
+# 2349 "tccelf.c" 3 4
+                                  0
+# 2349 "tccelf.c"
+                                          );
                     if(tcc_load_object_file(s1, fd, off) < 0) {
                     fail:
                         ret = -1;
@@ -16074,7 +22232,11 @@ static int tcc_load_archive(TCCState *s1, int fd)
         }
         memcpy(ar_size, hdr.ar_size, sizeof(hdr.ar_size));
         ar_size[sizeof(hdr.ar_size)] = '\0';
-        size = strtol(ar_size, ((void *)0), 0);
+        size = strtol(ar_size, 
+# 2388 "tccelf.c" 3 4
+                              ((void *)0)
+# 2388 "tccelf.c"
+                                  , 0);
         memcpy(ar_name, hdr.ar_name, sizeof(hdr.ar_name));
         for(i = sizeof(hdr.ar_name) - 1; i >= 0; i--) {
             if (ar_name[i] != ' ')
@@ -16082,7 +22244,11 @@ static int tcc_load_archive(TCCState *s1, int fd)
         }
         ar_name[i + 1] = '\0';
 
-        file_offset = lseek(fd, 0, 1);
+        file_offset = lseek(fd, 0, 
+# 2396 "tccelf.c" 3 4
+                                  1
+# 2396 "tccelf.c"
+                                          );
 
         size = (size + 1) & ~1;
         if (!strcmp(ar_name, "/")) {
@@ -16098,7 +22264,11 @@ static int tcc_load_archive(TCCState *s1, int fd)
             if (tcc_load_object_file(s1, fd, file_offset) < 0)
                 return -1;
         }
-        lseek(fd, file_offset + size, 0);
+        lseek(fd, file_offset + size, 
+# 2412 "tccelf.c" 3 4
+                                     0
+# 2412 "tccelf.c"
+                                             );
     }
     return 0;
 }
@@ -16132,9 +22302,21 @@ static int tcc_load_dll(TCCState *s1, int fd, const char *filename, int level)
 
     nb_syms = 0;
     nb_dts = 0;
-    dynamic = ((void *)0);
-    dynsym = ((void *)0);
-    dynstr = ((void *)0);
+    dynamic = 
+# 2446 "tccelf.c" 3 4
+             ((void *)0)
+# 2446 "tccelf.c"
+                 ;
+    dynsym = 
+# 2447 "tccelf.c" 3 4
+            ((void *)0)
+# 2447 "tccelf.c"
+                ;
+    dynstr = 
+# 2448 "tccelf.c" 3 4
+            ((void *)0)
+# 2448 "tccelf.c"
+                ;
     for(i = 0, sh = shdr; i < ehdr.e_shnum; i++, sh++) {
         switch(sh->sh_type) {
         case 6:
@@ -16419,8 +22601,8 @@ static int tcc_load_ldscript(TCCState *s1)
     }
     return 0;
 }
-# 1329 "./libtcc.c" 2
-# 1341 "./libtcc.c"
+# 1329 "libtcc.c" 2
+# 1341 "libtcc.c"
 static void rt_printline(unsigned long wanted_pc)
 {
     Stab_Sym *sym, *sym_end;
@@ -16430,7 +22612,11 @@ static void rt_printline(unsigned long wanted_pc)
     int incl_index, len, last_line_num, i;
     const char *str, *p;
 
-    fprintf(__stderrp, "0x%08lx:", wanted_pc);
+    fprintf(
+# 1350 "libtcc.c" 3 4
+           stderr
+# 1350 "libtcc.c"
+                 , "0x%08lx:", wanted_pc);
 
     func_name[0] = '\0';
     func_addr = 0;
@@ -16525,51 +22711,138 @@ static void rt_printline(unsigned long wanted_pc)
         }
     }
 
-    fprintf(__stderrp, " ???\n");
+    fprintf(
+# 1445 "libtcc.c" 3 4
+           stderr
+# 1445 "libtcc.c"
+                 , " ???\n");
     return;
  found:
     if (last_func_name[0] != '\0') {
-        fprintf(__stderrp, " %s()", last_func_name);
+        fprintf(
+# 1449 "libtcc.c" 3 4
+               stderr
+# 1449 "libtcc.c"
+                     , " %s()", last_func_name);
     }
     if (incl_index > 0) {
-        fprintf(__stderrp, " (%s:%d",
+        fprintf(
+# 1452 "libtcc.c" 3 4
+               stderr
+# 1452 "libtcc.c"
+                     , " (%s:%d",
                 incl_files[incl_index - 1], last_line_num);
         for(i = incl_index - 2; i >= 0; i--)
-            fprintf(__stderrp, ", included from %s", incl_files[i]);
-        fprintf(__stderrp, ")");
+            fprintf(
+# 1455 "libtcc.c" 3 4
+                   stderr
+# 1455 "libtcc.c"
+                         , ", included from %s", incl_files[i]);
+        fprintf(
+# 1456 "libtcc.c" 3 4
+               stderr
+# 1456 "libtcc.c"
+                     , ")");
     }
-    fprintf(__stderrp, "\n");
+    fprintf(
+# 1458 "libtcc.c" 3 4
+           stderr
+# 1458 "libtcc.c"
+                 , "\n");
 }
-# 1528 "./libtcc.c"
+# 1504 "libtcc.c"
 static int rt_get_caller_pc(unsigned long *paddr,
                             ucontext_t *uc, int level)
 {
-    return -1;
+    unsigned long fp;
+    int i;
+
+    if (level == 0) {
+
+        *paddr = uc->uc_mcontext.gregs[
+# 1512 "libtcc.c" 3 4
+                                      REG_RIP
+# 1512 "libtcc.c"
+                                             ];
+        return 0;
+    } else {
+        fp = uc->uc_mcontext.gregs[
+# 1515 "libtcc.c" 3 4
+                                  REG_RBP
+# 1515 "libtcc.c"
+                                         ];
+        for(i=1;i<level;i++) {
+
+            if (fp <= 0x1000)
+                return -1;
+            fp = ((unsigned long *)fp)[0];
+        }
+        *paddr = ((unsigned long *)fp)[1];
+        return 0;
+    }
 }
-
-
-
+# 1536 "libtcc.c"
 void rt_error(ucontext_t *uc, const char *fmt, ...)
 {
     va_list ap;
     unsigned long pc;
     int i;
 
-    __builtin_va_start(ap, fmt);
-    fprintf(__stderrp, "Runtime error: ");
-    vfprintf(__stderrp, fmt, ap);
-    fprintf(__stderrp, "\n");
+    
+# 1542 "libtcc.c" 3 4
+   __builtin_va_start(
+# 1542 "libtcc.c"
+   ap
+# 1542 "libtcc.c" 3 4
+   ,
+# 1542 "libtcc.c"
+   fmt
+# 1542 "libtcc.c" 3 4
+   )
+# 1542 "libtcc.c"
+                    ;
+    fprintf(
+# 1543 "libtcc.c" 3 4
+           stderr
+# 1543 "libtcc.c"
+                 , "Runtime error: ");
+    vfprintf(
+# 1544 "libtcc.c" 3 4
+            stderr
+# 1544 "libtcc.c"
+                  , fmt, ap);
+    fprintf(
+# 1545 "libtcc.c" 3 4
+           stderr
+# 1545 "libtcc.c"
+                 , "\n");
     for(i=0;i<num_callers;i++) {
         if (rt_get_caller_pc(&pc, uc, i) < 0)
             break;
         if (i == 0)
-            fprintf(__stderrp, "at ");
+            fprintf(
+# 1550 "libtcc.c" 3 4
+                   stderr
+# 1550 "libtcc.c"
+                         , "at ");
         else
-            fprintf(__stderrp, "by ");
+            fprintf(
+# 1552 "libtcc.c" 3 4
+                   stderr
+# 1552 "libtcc.c"
+                         , "by ");
         rt_printline(pc);
     }
     exit(255);
-    __builtin_va_end(ap);
+    
+# 1556 "libtcc.c" 3 4
+   __builtin_va_end(
+# 1556 "libtcc.c"
+   ap
+# 1556 "libtcc.c" 3 4
+   )
+# 1556 "libtcc.c"
+             ;
 }
 
 
@@ -16578,10 +22851,22 @@ static void sig_error(int signum, siginfo_t *siginf, void *puc)
     ucontext_t *uc = puc;
 
     switch(signum) {
-    case 8:
+    case 
+# 1565 "libtcc.c" 3 4
+        8
+# 1565 "libtcc.c"
+              :
         switch(siginf->si_code) {
-        case 7:
-        case 1:
+        case 
+# 1567 "libtcc.c" 3 4
+            FPE_INTDIV
+# 1567 "libtcc.c"
+                      :
+        case 
+# 1568 "libtcc.c" 3 4
+            FPE_FLTDIV
+# 1568 "libtcc.c"
+                      :
             rt_error(uc, "division by zero");
             break;
         default:
@@ -16589,17 +22874,33 @@ static void sig_error(int signum, siginfo_t *siginf, void *puc)
             break;
         }
         break;
-    case 10:
-    case 11:
+    case 
+# 1576 "libtcc.c" 3 4
+        7
+# 1576 "libtcc.c"
+              :
+    case 
+# 1577 "libtcc.c" 3 4
+        11
+# 1577 "libtcc.c"
+               :
         if (rt_bound_error_msg && *rt_bound_error_msg)
             rt_error(uc, *rt_bound_error_msg);
         else
             rt_error(uc, "dereferencing invalid pointer");
         break;
-    case 4:
+    case 
+# 1583 "libtcc.c" 3 4
+        4
+# 1583 "libtcc.c"
+              :
         rt_error(uc, "illegal instruction");
         break;
-    case 6:
+    case 
+# 1586 "libtcc.c" 3 4
+        6
+# 1586 "libtcc.c"
+               :
         rt_error(uc, "abort() called");
         break;
     default:
@@ -16675,7 +22976,11 @@ int tcc_relocate(TCCState *s1, void *ptr)
         length = s->data_offset;
 
         ptr = (void*)s->sh_addr;
-        if (((void *)0) == s->data || s->sh_type == 8)
+        if (
+# 1662 "libtcc.c" 3 4
+           ((void *)0) 
+# 1662 "libtcc.c"
+                == s->data || s->sh_type == 8)
             memset(ptr, 0, length);
         else
             memcpy(ptr, s->data, length);
@@ -16697,7 +23002,11 @@ int tcc_run(TCCState *s1, int argc, char **argv)
     void *ptr;
     int ret;
 
-    ret = tcc_relocate(s1, ((void *)0));
+    ret = tcc_relocate(s1, 
+# 1684 "libtcc.c" 3 4
+                          ((void *)0)
+# 1684 "libtcc.c"
+                              );
     if (ret < 0)
         return -1;
     ptr = tcc_malloc(ret);
@@ -16710,19 +23019,71 @@ int tcc_run(TCCState *s1, int argc, char **argv)
         struct sigaction sigact;
 
 
-        sigact.sa_flags = 0x0040 | 0x0004;
-        sigact.__sigaction_u.__sa_sigaction = sig_error;
-        (*(&sigact.sa_mask) = 0, 0);
-        sigaction(8, &sigact, ((void *)0));
-        sigaction(4, &sigact, ((void *)0));
-        sigaction(11, &sigact, ((void *)0));
-        sigaction(10, &sigact, ((void *)0));
-        sigaction(6, &sigact, ((void *)0));
+        sigact.sa_flags = 
+# 1697 "libtcc.c" 3 4
+                         4 
+# 1697 "libtcc.c"
+                                    | 
+# 1697 "libtcc.c" 3 4
+                                      0x80000000
+# 1697 "libtcc.c"
+                                                  ;
+        sigact.
+# 1698 "libtcc.c" 3 4
+              __sigaction_handler.sa_sigaction 
+# 1698 "libtcc.c"
+                           = sig_error;
+        sigemptyset(&sigact.sa_mask);
+        sigaction(
+# 1700 "libtcc.c" 3 4
+                 8
+# 1700 "libtcc.c"
+                       , &sigact, 
+# 1700 "libtcc.c" 3 4
+                                  ((void *)0)
+# 1700 "libtcc.c"
+                                      );
+        sigaction(
+# 1701 "libtcc.c" 3 4
+                 4
+# 1701 "libtcc.c"
+                       , &sigact, 
+# 1701 "libtcc.c" 3 4
+                                  ((void *)0)
+# 1701 "libtcc.c"
+                                      );
+        sigaction(
+# 1702 "libtcc.c" 3 4
+                 11
+# 1702 "libtcc.c"
+                        , &sigact, 
+# 1702 "libtcc.c" 3 4
+                                   ((void *)0)
+# 1702 "libtcc.c"
+                                       );
+        sigaction(
+# 1703 "libtcc.c" 3 4
+                 7
+# 1703 "libtcc.c"
+                       , &sigact, 
+# 1703 "libtcc.c" 3 4
+                                  ((void *)0)
+# 1703 "libtcc.c"
+                                      );
+        sigaction(
+# 1704 "libtcc.c" 3 4
+                 6
+# 1704 "libtcc.c"
+                        , &sigact, 
+# 1704 "libtcc.c" 3 4
+                                   ((void *)0)
+# 1704 "libtcc.c"
+                                       );
 
 
 
     }
-# 1722 "./libtcc.c"
+# 1722 "libtcc.c"
     ret = (*prog_main)(argc, argv);
     tcc_free(ptr);
     return ret;
@@ -16739,12 +23100,24 @@ static void tcc_cleanup(void)
 {
     int i, n;
 
-    if (((void *)0) == tcc_state)
+    if (
+# 1738 "libtcc.c" 3 4
+       ((void *)0) 
+# 1738 "libtcc.c"
+            == tcc_state)
         return;
-    tcc_state = ((void *)0);
+    tcc_state = 
+# 1740 "libtcc.c" 3 4
+               ((void *)0)
+# 1740 "libtcc.c"
+                   ;
 
 
-    free_defines(((void *)0));
+    free_defines(
+# 1743 "libtcc.c" 3 4
+                ((void *)0)
+# 1743 "libtcc.c"
+                    );
 
 
     n = tok_ident - 256;
@@ -16757,9 +23130,17 @@ static void tcc_cleanup(void)
 
     cstr_free(&tokcstr);
 
-    sym_free_first = ((void *)0);
+    sym_free_first = 
+# 1756 "libtcc.c" 3 4
+                    ((void *)0)
+# 1756 "libtcc.c"
+                        ;
 
-    macro_ptr = ((void *)0);
+    macro_ptr = 
+# 1758 "libtcc.c" 3 4
+               ((void *)0)
+# 1758 "libtcc.c"
+                   ;
 }
 
 TCCState *tcc_new(void)
@@ -16770,7 +23151,11 @@ TCCState *tcc_new(void)
 
     s = tcc_mallocz(sizeof(TCCState));
     if (!s)
-        return ((void *)0);
+        return 
+# 1769 "libtcc.c" 3 4
+              ((void *)0)
+# 1769 "libtcc.c"
+                  ;
     tcc_state = s;
     s->output_type = 0;
     s->tcc_lib_path = "/usr/local/lib/tcc";
@@ -16779,29 +23164,89 @@ TCCState *tcc_new(void)
 
 
 
-    define_push(TOK___LINE__, 0, ((void *)0), ((void *)0));
-    define_push(TOK___FILE__, 0, ((void *)0), ((void *)0));
-    define_push(TOK___DATE__, 0, ((void *)0), ((void *)0));
-    define_push(TOK___TIME__, 0, ((void *)0), ((void *)0));
+    define_push(TOK___LINE__, 0, 
+# 1778 "libtcc.c" 3 4
+                                        ((void *)0)
+# 1778 "libtcc.c"
+                                            , 
+# 1778 "libtcc.c" 3 4
+                                              ((void *)0)
+# 1778 "libtcc.c"
+                                                  );
+    define_push(TOK___FILE__, 0, 
+# 1779 "libtcc.c" 3 4
+                                        ((void *)0)
+# 1779 "libtcc.c"
+                                            , 
+# 1779 "libtcc.c" 3 4
+                                              ((void *)0)
+# 1779 "libtcc.c"
+                                                  );
+    define_push(TOK___DATE__, 0, 
+# 1780 "libtcc.c" 3 4
+                                        ((void *)0)
+# 1780 "libtcc.c"
+                                            , 
+# 1780 "libtcc.c" 3 4
+                                              ((void *)0)
+# 1780 "libtcc.c"
+                                                  );
+    define_push(TOK___TIME__, 0, 
+# 1781 "libtcc.c" 3 4
+                                        ((void *)0)
+# 1781 "libtcc.c"
+                                            , 
+# 1781 "libtcc.c" 3 4
+                                              ((void *)0)
+# 1781 "libtcc.c"
+                                                  );
 
 
-    tcc_define_symbol(s, "__STDC__", ((void *)0));
+    tcc_define_symbol(s, "__STDC__", 
+# 1784 "libtcc.c" 3 4
+                                    ((void *)0)
+# 1784 "libtcc.c"
+                                        );
     tcc_define_symbol(s, "__STDC_VERSION__", "199901L");
 
 
 
 
-    tcc_define_symbol(s, "__x86_64__", ((void *)0));
-# 1805 "./libtcc.c"
-    tcc_define_symbol(s, "__unix__", ((void *)0));
-    tcc_define_symbol(s, "__unix", ((void *)0));
+    tcc_define_symbol(s, "__x86_64__", 
+# 1790 "libtcc.c" 3 4
+                                      ((void *)0)
+# 1790 "libtcc.c"
+                                          );
+# 1805 "libtcc.c"
+    tcc_define_symbol(s, "__unix__", 
+# 1805 "libtcc.c" 3 4
+                                    ((void *)0)
+# 1805 "libtcc.c"
+                                        );
+    tcc_define_symbol(s, "__unix", 
+# 1806 "libtcc.c" 3 4
+                                  ((void *)0)
+# 1806 "libtcc.c"
+                                      );
+
+    tcc_define_symbol(s, "__linux__", 
+# 1808 "libtcc.c" 3 4
+                                     ((void *)0)
+# 1808 "libtcc.c"
+                                         );
+    tcc_define_symbol(s, "__linux", 
+# 1809 "libtcc.c" 3 4
+                                   ((void *)0)
+# 1809 "libtcc.c"
+                                       );
 
 
 
-
-
-
-    tcc_define_symbol(s, "__TINYC__", ((void *)0));
+    tcc_define_symbol(s, "__TINYC__", 
+# 1813 "libtcc.c" 3 4
+                                     ((void *)0)
+# 1813 "libtcc.c"
+                                         );
 
 
     tcc_define_symbol(s, "__SIZE_TYPE__", "unsigned int");
@@ -16820,7 +23265,11 @@ TCCState *tcc_new(void)
 
 
 
-    dynarray_add((void ***)&s->sections, &s->nb_sections, ((void *)0));
+    dynarray_add((void ***)&s->sections, &s->nb_sections, 
+# 1832 "libtcc.c" 3 4
+                                                         ((void *)0)
+# 1832 "libtcc.c"
+                                                             );
 
 
     text_section = new_section(s, ".text", 1, (1 << 1) | (1 << 2));
@@ -16838,7 +23287,7 @@ TCCState *tcc_new(void)
                                       ".dynstrtab",
                                       ".dynhashtab", 0x80000000);
     s->alacarte_link = 1;
-# 1858 "./libtcc.c"
+# 1858 "libtcc.c"
     return s;
 }
 
@@ -16925,12 +23374,16 @@ static int tcc_add_file_internal(TCCState *s1, const char *filename, int flags)
 
         ret = tcc_compile(s1);
     } else
-# 1958 "./libtcc.c"
+# 1958 "libtcc.c"
     {
         fd = file->fd;
 
         ret = read(fd, &ehdr, sizeof(ehdr));
-        lseek(fd, 0, 0);
+        lseek(fd, 0, 
+# 1962 "libtcc.c" 3 4
+                    0
+# 1962 "libtcc.c"
+                            );
         if (ret <= 0) {
             error_noabort("could not read header");
             goto fail;
@@ -16951,7 +23404,15 @@ static int tcc_add_file_internal(TCCState *s1, const char *filename, int flags)
 
 
                     void *h;
-                    h = dlopen(filename, 0x8 | 0x1);
+                    h = dlopen(filename, 
+# 1983 "libtcc.c" 3 4
+                                        0x00100 
+# 1983 "libtcc.c"
+                                                    | 
+# 1983 "libtcc.c" 3 4
+                                                      0x00001
+# 1983 "libtcc.c"
+                                                               );
                     if (h)
                         ret = 0;
                     else
@@ -16969,7 +23430,7 @@ static int tcc_add_file_internal(TCCState *s1, const char *filename, int flags)
             file->line_num = 0;
             ret = tcc_load_archive(s1, fd);
         } else
-# 2011 "./libtcc.c"
+# 2011 "libtcc.c"
         {
 
         try_load_script:
@@ -17078,9 +23539,13 @@ int tcc_set_output_type(TCCState *s, int output_type)
 
 
     }
-# 2133 "./libtcc.c"
+# 2133 "libtcc.c"
     if (s->char_is_unsigned) {
-        tcc_define_symbol(s, "__CHAR_UNSIGNED__", ((void *)0));
+        tcc_define_symbol(s, "__CHAR_UNSIGNED__", 
+# 2134 "libtcc.c" 3 4
+                                                 ((void *)0)
+# 2134 "libtcc.c"
+                                                     );
     }
 
 
@@ -17336,7 +23801,11 @@ static const TCCOption tcc_options[] = {
     { "w", TCC_OPTION_w, 0 },
     { "pipe", TCC_OPTION_pipe, 0},
     { "E", TCC_OPTION_E, 0},
-    { ((void *)0) },
+    { 
+# 151 "tcc.c" 3 4
+     ((void *)0) 
+# 151 "tcc.c"
+          },
 };
 
 static int64_t getclock_us(void)
@@ -17347,7 +23816,11 @@ static int64_t getclock_us(void)
 
 
     struct timeval tv;
-    gettimeofday(&tv, ((void *)0));
+    gettimeofday(&tv, 
+# 162 "tcc.c" 3 4
+                     ((void *)0)
+# 162 "tcc.c"
+                         );
     return tv.tv_sec * 1000000LL + tv.tv_usec;
 
 }
@@ -17376,7 +23849,11 @@ static int expand_args(char ***pargv, const char *str)
     int argc, len;
 
     argc = 0;
-    argv = ((void *)0);
+    argv = 
+# 191 "tcc.c" 3 4
+          ((void *)0)
+# 191 "tcc.c"
+              ;
     for(;;) {
         while (is_space(*str))
             str++;
@@ -17419,7 +23896,11 @@ int parse_args(TCCState *s, int argc, char **argv)
             popt = tcc_options;
             for(;;) {
                 p1 = popt->name;
-                if (p1 == ((void *)0))
+                if (p1 == 
+# 234 "tcc.c" 3 4
+                         ((void *)0)
+# 234 "tcc.c"
+                             )
                     error("invalid option -- '%s'", r);
                 r1 = r + 1;
                 for(;;) {
@@ -17444,7 +23925,11 @@ int parse_args(TCCState *s, int argc, char **argv)
             } else {
                 if (*r1 != '\0')
                     return 0;
-                optarg = ((void *)0);
+                optarg = 
+# 259 "tcc.c" 3 4
+                        ((void *)0)
+# 259 "tcc.c"
+                            ;
             }
 
             switch(popt->index) {
@@ -17566,10 +24051,18 @@ int parse_args(TCCState *s, int argc, char **argv)
                 {
                     const char *p;
                     if (strstart(optarg, "-Ttext,", &p)) {
-                        s->text_addr = strtoul(p, ((void *)0), 16);
+                        s->text_addr = strtoul(p, 
+# 381 "tcc.c" 3 4
+                                                 ((void *)0)
+# 381 "tcc.c"
+                                                     , 16);
                         s->has_text_addr = 1;
                     } else if (strstart(optarg, "--oformat,", &p)) {
-                        if (strstart(p, "elf32-", ((void *)0))) {
+                        if (strstart(p, "elf32-", 
+# 384 "tcc.c" 3 4
+                                                 ((void *)0)
+# 384 "tcc.c"
+                                                     )) {
                             s->output_format = 0;
                         } else if (!strcmp(p, "binary")) {
                             s->output_format = 1;
@@ -17615,9 +24108,17 @@ int main(int argc, char **argv)
 
 
     output_type = 1;
-    outfile = ((void *)0);
+    outfile = 
+# 430 "tcc.c" 3 4
+             ((void *)0)
+# 430 "tcc.c"
+                 ;
     multiple_files = 1;
-    files = ((void *)0);
+    files = 
+# 432 "tcc.c" 3 4
+           ((void *)0)
+# 432 "tcc.c"
+               ;
     nb_files = 0;
     nb_libraries = 0;
     reloc_output = 0;
@@ -17656,7 +24157,11 @@ int main(int argc, char **argv)
 
     if (output_type == 4) {
         if (!outfile) {
-            s->outfile = __stdoutp;
+            s->outfile = 
+# 471 "tcc.c" 3 4
+                        stdout
+# 471 "tcc.c"
+                              ;
         } else {
             s->outfile = fopen(outfile, "w");
             if (!s->outfile)

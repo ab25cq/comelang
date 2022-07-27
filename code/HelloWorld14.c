@@ -177,6 +177,21 @@ int dyyy[] = { 1, 2, 3};
 
 struct sDataYYY eyyy[3] = { { .a = 111 }, { .a = 222 }, { .a = 333 }};
 
+static char const ab_month_name[12][4] =
+{
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+
+static char const ab_month_name2[2][12][4] =
+{
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+
 int main(int argc, char** argv)
 {
     xassert("global array initializer test", dyyy[0] == 1 && dyyy[1] == 2 && dyyy[2] == 3);
@@ -296,6 +311,9 @@ int main(int argc, char** argv)
     nx4 = "DEF";
     
     xassert("const pointer assignment", strcmp(nx4, "DEF") == 0);
+
+    xassert("array initializer test", strcmp(ab_month_name[0], "Jan") == 0);
+    xassert("array initializer test2", strcmp(ab_month_name2[0][0], "Jan") == 0);
     
     return 0;
 }
