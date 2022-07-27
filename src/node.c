@@ -1265,6 +1265,40 @@ void init_nodes(char* sname)
             exit(1);
         }
     }
+    
+/*
+    {
+        char* name = "__error";
+        int num_params = 0;
+        char param_names[PARAMS_MAX][VAR_NAME_MAX];
+        sNodeType* param_types[PARAMS_MAX];
+        char* block_text = NULL;
+        BOOL var_arg = FALSE;
+
+        sNodeType* result_type = create_node_type_with_class_name("int*");
+
+        LLVMTypeRef llvm_param_types[PARAMS_MAX];
+
+        LLVMTypeRef llvm_result_type = create_llvm_type_from_node_type(result_type);
+
+        LLVMTypeRef function_type = LLVMFunctionType(llvm_result_type, llvm_param_types, num_params, var_arg);
+        LLVMValueRef llvm_fun = LLVMAddFunction(gModule, name, function_type);
+
+        char* param_names2[PARAMS_MAX];
+        int i;
+        for(i=0; i<num_params; i++) {
+            param_names2[i] = param_names[i];
+        }
+
+        BOOL generics_function = FALSE;
+        BOOL var_args = FALSE;
+        if(!add_function_to_table(name, num_params, param_names2, param_types, NULL, NULL, result_type, llvm_fun, block_text, generics_function, var_args, 0, NULL, 0, NULL, FALSE, NULL, FALSE, NULL, "", -1, immutable_, FALSE))
+        {
+            fprintf(stderr, "overflow function number\n");
+            exit(1);
+        }
+    }
+*/
 
     {
         char* name = "__builtin_va_start";

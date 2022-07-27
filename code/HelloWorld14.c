@@ -286,7 +286,7 @@ int main(int argc, char** argv)
     int nnn = 1;
     int* mmm = &nnn;
     
-    --*m;
+    --*mmm;
     
     xassert("plus plus minus minus test", nnn == 0);
     

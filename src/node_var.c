@@ -3564,6 +3564,24 @@ BOOL compile_store_address(unsigned int node, sCompileInfo* info)
 
     sNodeType* left_type = clone_node_type(info->type);
 
+    if(gNodes[left_node].mNodeType == kNodeTypeDerefference) {
+        dec_stack_ptr(1, info);
+        
+        left_node = gNodes[left_node].mLeft;
+    
+        if(!compile(left_node, info)) {
+            return FALSE;
+        }
+        
+        if(!parent) {
+            if(!check_nullable_type(NULL, info->type, info)) {
+                return TRUE;
+            }
+        }
+    
+        left_type = clone_node_type(info->type);
+    }
+    
     if(left_type->mPointerNum == 0 && left_type->mArrayDimentionNum == 0) {
         if(plus_plus_minus_minus) {
             LVALUE lvalue = *get_value_from_stack(-1);
