@@ -3414,6 +3414,34 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
 
         *right_type = create_node_type_with_class_name("double");
     }
+    else if(type_identify_with_class_name(left_type, "long_double") && left_type->mPointerNum == 0)
+    {
+        if(rvalue && rvalue->value) {
+            if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "float") || type_identify_with_class_name(*right_type, "double")))
+            {
+                LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long_double");
+
+                rvalue->value = LLVMBuildCast(gBuilder, LLVMFPExt, rvalue->value, llvm_type, "icastKLL");
+            }
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "short") || type_identify_with_class_name(*right_type, "int")) || type_identify_with_class_name(*right_type, "long"))
+            {
+                if((*right_type)->mUnsigned) {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long_double");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMUIToFP, rvalue->value, llvm_type, "icastKOL");
+                }
+                else {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long_double");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMSIToFP, rvalue->value, llvm_type, "icastKOL");
+                }
+            }
+
+            rvalue->type = create_node_type_with_class_name("long_double");
+        }
+
+        *right_type = create_node_type_with_class_name("double");
+    }
     else if(type_identify_with_class_name(left_type, "any"))
     {
         if(rvalue && rvalue->value) {

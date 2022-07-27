@@ -3,13 +3,10 @@
 #include <stdlib.h>
 #include <errno.h>
 
-extern int * __error(void);
-
 int main()
 {
-    (*__error()) = 123;
-    
-    printf("%d\n", errno);
+    double a = 1;
+    long double d = (long double)a;
     
     return 0;
 }
