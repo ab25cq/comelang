@@ -489,6 +489,11 @@ BOOL is_number_type(sNodeType* node_type)
     return n && node_type->mPointerNum == 0;
 }
 
+BOOL is_float_type(sNodeType* node_type)
+{
+    return type_identify_with_class_name(node_type, "float") || type_identify_with_class_name(node_type, "double") || type_identify_with_class_name(node_type, "long_double");
+}
+
 BOOL is_number_class(sNodeType* node_type)
 {
     int n = (node_type->mClass->mFlags & CLASS_FLAGS_NUMBER) == CLASS_FLAGS_NUMBER;
@@ -571,10 +576,13 @@ BOOL auto_cast_posibility(sNodeType* left_type, sNodeType* right_type)
     {
         return TRUE;
     }
-    else if(type_identify_with_class_name(left_type, "float") && is_number_type(right_type)) {
+    else if(type_identify_with_class_name(left_type, "float") && (is_number_type(right_type) || is_float_type(right_type))) {
         return TRUE;
     }
-    else if(type_identify_with_class_name(left_type, "double") && is_number_type(right_type)) {
+    else if(type_identify_with_class_name(left_type, "double") && (is_number_type(right_type) || is_float_type(right_type))) {
+        return TRUE;
+    }
+    else if(type_identify_with_class_name(left_type, "long_double") && (is_number_type(right_type) || is_float_type(right_type))) {
         return TRUE;
     }
     else if(left_type->mPointerNum > 0 && type_identify_with_class_name(right_type, "void*")) 

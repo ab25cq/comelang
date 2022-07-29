@@ -17,6 +17,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+/* return the pointed type of t */
+static inline CType *pointed_type(CType *type)
+{
+    return &type->ref->type;
+}
 
 void swap(int *p, int *q)
 {
@@ -1716,11 +1722,6 @@ static int type_size(CType *type, int *a)
     }
 }
 
-/* return the pointed type of t */
-static inline CType *pointed_type(CType *type)
-{
-    return &type->ref->type;
-}
 
 /* modify type so that its it is a pointer to type. */
 static void mk_pointer(CType *type)

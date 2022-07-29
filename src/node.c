@@ -3440,7 +3440,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
             rvalue->type = create_node_type_with_class_name("long_double");
         }
 
-        *right_type = create_node_type_with_class_name("double");
+        *right_type = create_node_type_with_class_name("long_double");
     }
     else if(type_identify_with_class_name(left_type, "any"))
     {
