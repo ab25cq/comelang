@@ -6007,31 +6007,26 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
     
             LLVMValueRef indices[left_type->mArrayDimentionNum+1];
     
+            LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long");
+            indices[0] = LLVMConstInt(llvm_type, 0, FALSE);
             int j;
-            for(j=0; j<left_type->mArrayDimentionNum-num_dimention; j++) {
-                LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
-                indices[j] = LLVMConstInt(llvm_type, 0, FALSE);
+            for(j=0; j<num_dimention; j++) {
+                indices[j+1] = rvalue[j].value;
             }
             int k;
-            for(k=0; j<left_type->mArrayDimentionNum; j++, k++) {
-                indices[j] = rvalue[k].value;
+            for(k=0; k<left_type->mArrayDimentionNum-num_dimention; k++) {
+                indices[k+j+1] = LLVMConstInt(llvm_type, 0, FALSE);
             }
-            load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, left_type->mArrayDimentionNum, "gep");
-    
-            for(j=0; j<left_type->mArrayDimentionNum; j++) {
-                LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
-                indices[j] = LLVMConstInt(llvm_type, 0, FALSE);
-            }
-            load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, left_type->mArrayDimentionNum, "gep2");
+            load_element_addresss = LLVMBuildGEP(gBuilder, load_element_addresss, indices, left_type->mArrayDimentionNum+1, "GEP2");
     
             sNodeType* element_type = clone_node_type(var_type);
             element_type->mArrayDimentionNum = 0;
             element_type->mDynamicArrayNum = 0;
     
             sNodeType* node_type = clone_node_type(element_type);
-            node_type->mPointerNum -= num_dimention;
-            node_type->mPointerNum+=2;
-    
+            node_type->mPointerNum = left_type->mArrayDimentionNum - num_dimention;
+//            node_type->mPointerNum+=3;
+            
             if(node_type->mPointerNum == 0) {
                 LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "element");
     
