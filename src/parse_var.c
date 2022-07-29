@@ -548,14 +548,14 @@ BOOL postposition_operator(unsigned int* node, BOOL enable_assginment, sParserIn
 
             *node = sNodeTree_create_load_channel_element(*node, num, info);
         }
-        else if(*info->p == '+' && *(info->p+1) == '+')
+        else if(gMultDivPlusPlusEnableNode[gNodes[*node].mNodeType] && *info->p == '+' && *(info->p+1) == '+')
         {
             info->p+=2;
             skip_spaces_and_lf(info);
 
             *node = sNodeTree_create_plus_plus(*node, info);
         }
-        else if(*info->p == '-' && *(info->p+1) == '-')
+        else if(gMultDivPlusPlusEnableNode[gNodes[*node].mNodeType] && *info->p == '-' && *(info->p+1) == '-')
         {
             info->p+=2;
             skip_spaces_and_lf(info);

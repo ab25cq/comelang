@@ -1,6 +1,10 @@
 #include "common.h"
 #include <ctype.h>
 
+BOOL gMultDivPlusPlusEnableNode[] = {
+    1, 1, 1, 1, 1, 1, 1,     1, 1, 1, 0, 0, 1,     1, 0, 0, 1, 1, 0, 0,     1, 1, 0, 0, 1, 1, 1,     1, 0, 0, 0, 1, 1,     1, 0, 0, 1, 1, 1, 1, 1,     1, 1, 1, 1, 0, 1, 1, 1,     1, 1, 1, 1, 1, 1, 1, 1, 1,     0, 0, 0, 0, 1, 1, 1,     1, 1, 0, 1, 1, 0, 0,     0, 0, 0, 0, 0, 0,     0, 0, 0, 0, 0, 0, 1, 1,     1, 0, 0, 1, 1, 0,     0, 0, 0, 0, 0, 0, 0,     0, 0, 1, 0, 0, 1, 1, 0,     0, 0, 0, 0, 0, 0, 0, 1,     1, 0, 1, 0, 0, 1, 0, 0
+};
+
 // from left to right order
 BOOL expression_mult_div(unsigned int* node, sParserInfo* info)
 {
@@ -10,29 +14,9 @@ BOOL expression_mult_div(unsigned int* node, sParserInfo* info)
     if(*node == 0) {
         return TRUE;
     }
-    
-    BOOL mult_div_enable_node[] = {
-        1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 0, 0, 1,
-        1, 0, 0, 1, 1, 0, 0,
-        1, 1, 0, 0, 1, 1, 1,
-        1, 0, 0, 0, 1, 1,
-        1, 0, 0, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 0, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 0, 0, 1, 1, 1,
-        1, 1, 0, 1, 1, 0, 0,
-        0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 1, 1,
-        1, 0, 0, 1, 1, 0,
-        0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 0, 0, 1, 1, 0,
-        0, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 1, 0, 0, 1, 0, 0
-    };
 
 
-    if(!mult_div_enable_node[gNodes[*node].mNodeType]) 
+    if(!gMultDivPlusPlusEnableNode[gNodes[*node].mNodeType]) 
     //if(gNodes[*node].mNodeType == kNodeTypeIf || gNodes[*node].mNodeType == kNodeTypeSwitch || gNodes[*node].mNodeType == kNodeTypeFor || gNodes[*node].mNodeType == kNodeTypeWhile || gNodes[*node].mNodeType == kNodeTypeDoWhile || gNodes[*node].mNodeType == kNodeTypeCase || gNodes[*node].mNodeType == kNodeTypeLabel) 
     {
         return TRUE;
