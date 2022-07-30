@@ -1,0 +1,91 @@
+clang: warning: argument unused during compilation: '-L/usr/local/lib' [-Wunused-command-line-argument]
+clang: warning: argument unused during compilation: '-L/opt/homebrew/lib' [-Wunused-command-line-argument]
+src/parse_exp.c:901:72: error: use of undeclared identifier 'letf_node'
+                        *node = sNodeTree_create_store_field(var_name, letf_node, node2, FALSE, info);
+                                                                       ^
+src/parse_exp.c:1018:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_div(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1106:14: note: 'sNodeTree_create_div' declared here
+unsigned int sNodeTree_create_div(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1030:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_div(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1106:14: note: 'sNodeTree_create_div' declared here
+unsigned int sNodeTree_create_div(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1058:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_mod(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1107:14: note: 'sNodeTree_create_mod' declared here
+unsigned int sNodeTree_create_mod(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1070:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_mod(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1107:14: note: 'sNodeTree_create_mod' declared here
+unsigned int sNodeTree_create_mod(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1098:106: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_left_shift(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1100:14: note: 'sNodeTree_create_left_shift' declared here
+unsigned int sNodeTree_create_left_shift(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1110:106: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_left_shift(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1100:14: note: 'sNodeTree_create_left_shift' declared here
+unsigned int sNodeTree_create_left_shift(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1138:107: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_right_shift(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1101:14: note: 'sNodeTree_create_right_shift' declared here
+unsigned int sNodeTree_create_right_shift(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1150:107: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_right_shift(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1101:14: note: 'sNodeTree_create_right_shift' declared here
+unsigned int sNodeTree_create_right_shift(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1178:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_and(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1102:14: note: 'sNodeTree_create_and' declared here
+unsigned int sNodeTree_create_and(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1190:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_and(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1102:14: note: 'sNodeTree_create_and' declared here
+unsigned int sNodeTree_create_and(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1218:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_xor(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1103:14: note: 'sNodeTree_create_xor' declared here
+unsigned int sNodeTree_create_xor(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1230:99: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_xor(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1103:14: note: 'sNodeTree_create_xor' declared here
+unsigned int sNodeTree_create_xor(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1258:98: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_or(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1104:14: note: 'sNodeTree_create_or' declared here
+unsigned int sNodeTree_create_or(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+src/parse_exp.c:1270:98: error: too many arguments to function call, expected 4, have 5
+                        unsigned int node2 = sNodeTree_create_or(left_node, right_node, 0, TRUE, info);
+                                             ~~~~~~~~~~~~~~~~~~~                                 ^~~~
+src/common.h:1104:14: note: 'sNodeTree_create_or' declared here
+unsigned int sNodeTree_create_or(unsigned int left, unsigned int right, unsigned int middle, sParserInfo* info);
+             ^
+15 errors generated.
+make: *** [src/parse_exp.o] Error 1

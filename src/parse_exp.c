@@ -762,6 +762,529 @@ BOOL expression_node(unsigned int* node, BOOL enable_assginment, sParserInfo* in
                 parser_err_msg(info, "require expression as ( operand");
             }
             
+            char* p2 = info->p;
+            int sline2 = info->sline;
+            
+            if(*info->p == ')') {
+                info->p++;
+                skip_spaces_and_lf(info);
+                
+                if(*info->p == '=' && *(info->p+1) != '=') {
+                    info->p++;
+                    skip_spaces_and_lf(info);
+                    
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+                    
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+                        
+                        *node = sNodeTree_create_store_field(var_name, left_node, right_node, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, right_node, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '+' && *(info->p+1) == '+')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+                    
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+                        
+                        unsigned int right_node = sNodeTree_create_int_value(1, info);
+                
+                        unsigned int node2 = sNodeTree_create_add(left_node, right_node, 0, TRUE, info);
+                
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, node2, FALSE, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+                        
+                        unsigned int right_node = sNodeTree_create_int_value(1, info);
+                
+                        unsigned int node2 = sNodeTree_create_add(left_node, right_node, 0, TRUE, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, right_node, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '-' && *(info->p+1) == '-')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+                    
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+                        
+                        unsigned int right_node = sNodeTree_create_int_value(1, info);
+                
+                        unsigned int node2 = sNodeTree_create_sub(left_node, right_node, 0, TRUE, info);
+                
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+                        
+                        unsigned int right_node = sNodeTree_create_int_value(1, info);
+                
+                        unsigned int node2 = sNodeTree_create_sub(left_node, right_node, 0, TRUE, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, right_node, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '+' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_add(left_node, right_node, 0, TRUE, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_add(left_node, right_node, 0, TRUE, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '-' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_sub(left_node, right_node, 0, TRUE, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_sub(left_node, right_node, 0, TRUE, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '*' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_mult(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_mult(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '/' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_div(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_div(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '%' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_mod(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_mod(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '<' && *(info->p+1) == '<' && *(info->p+2) == '=')
+                {
+                    info->p+=3;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_left_shift(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_left_shift(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '>' && *(info->p+1) == '>' && *(info->p+2) == '=')
+                {
+                    info->p+=3;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_right_shift(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_right_shift(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '&' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_and(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_and(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '^' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_xor(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_xor(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else if(*info->p == '|' && *(info->p+1) == '=')
+                {
+                    info->p+=2;
+                    skip_spaces_and_lf(info);
+            
+                    unsigned int right_node = 0;
+                    if(!expression(&right_node, FALSE, info)) {
+                        return FALSE;
+                    }
+            
+                    if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_or(left_node, right_node, 0, info);
+            
+                        sNodeType* cast_pointer_type = NULL;
+                        *node = sNodeTree_create_store_field(var_name, left_node, node2, info);
+                        return TRUE;
+                    }
+                    else if(gNodes[*node].mNodeType == kNodeTypeLoadVariable) {
+                        char var_name[VAR_NAME_MAX];
+                        xstrncpy(var_name, gNodes[*node].uValue.sLoadVariable.mVarName, VAR_NAME_MAX);
+                        
+                        unsigned int left_node = gNodes[*node].mLeft;
+            
+                        unsigned int node2 = sNodeTree_create_or(left_node, right_node, 0, info);
+                        
+                        BOOL alloc = FALSE;
+                        BOOL global = info->mBlockLevel == 0;
+                        *node = sNodeTree_create_store_variable(var_name, node2, alloc, global, info);
+                        return TRUE;
+                    }
+                    else {
+                        info->p = p2;
+                        info->sline = sline2;
+                    }
+                }
+                else {
+                    info->p = p2;
+                    info->sline = sline2;
+                }
+            }
+            
             /// tuple ///
             if(*info->p == ',' && !gExternC) {
                 info->p = p;
