@@ -3,21 +3,15 @@
 #include <stdlib.h>
 #include <errno.h>
 
-typedef struct {
-    unsigned int  func_call : 8;
-    unsigned int func_args : 8;
-    unsigned int func_export : 1;
-} func_attr_t;
+struct sData {
+    long r;
+};
 
 int main()
 {
-    int func_attr;
-    int a;
-    a = 1;
-    (((func_attr_t*)&(func_attr))->func_call) = 1;
-    (((func_attr_t*)&(func_attr))->func_args) = 2;
+    struct sData sym;
     
-    printf("%d %d %d\n", a, (((func_attr_t*)&(func_attr))->func_call), (((func_attr_t*)&(func_attr))->func_args));
+    (*(int**)&(sym.r)) = 111;
     
     return 0;
 }

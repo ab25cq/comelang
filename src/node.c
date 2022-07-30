@@ -2781,7 +2781,7 @@ LLVMTypeRef create_llvm_type_from_node_type(sNodeType* node_type)
         result_type = LLVMInt32TypeInContext(gContext);
     }
     else if(node_type->mSizeNum > 0) {
-        result_type = LLVMIntTypeInContext(gContext, node_type->mSizeNum*8);
+        result_type = LLVMIntTypeInContext(gContext, node_type->mSizeNum);
     }
     else if(node_type->mChannel) {
         result_type = LLVMInt32TypeInContext(gContext);
@@ -3044,16 +3044,16 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
     else if(left_type->mSizeNum > 0 && (*right_type)->mSizeNum == 0) {
         int size = 0;
         if(type_identify_with_class_name(*right_type, "char")) {
-            size = 1;
+            size = 8;
         }
         else if(type_identify_with_class_name(*right_type, "short")) {
-            size = 2;
+            size = 16;
         }
         else if(type_identify_with_class_name(*right_type, "int")) {
-            size = 4;
+            size = 32;
         }
         else if(type_identify_with_class_name(*right_type, "long")) {
-            size = 8;
+            size = 64;
         }
         
         if(rvalue && rvalue->value) {
@@ -3202,7 +3202,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
 
         *right_type = create_node_type_with_class_name("bool");
     }
-    else if((type_identify_with_class_name(left_type, "long") || left_type->mSizeNum == 8) && left_type->mPointerNum == 0)
+    else if((type_identify_with_class_name(left_type, "long") || left_type->mSizeNum == 64) && left_type->mPointerNum == 0)
     {
         if(rvalue && rvalue->value) {
             if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "int") || type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "short") || type_identify_with_class_name(*right_type, "bool"))) 
@@ -3228,10 +3228,10 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
 
         *right_type = create_node_type_with_class_name("long");
     }
-    else if((type_identify_with_class_name(left_type, "short") || left_type->mSizeNum == 2 )&& left_type->mPointerNum == 0)
+    else if((type_identify_with_class_name(left_type, "short") || left_type->mSizeNum == 16)&& left_type->mPointerNum == 0)
     {
         if(rvalue && rvalue->value) {
-            if((type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "bool")) && (*right_type)->mPointerNum == 0 || ((*right_type)->mSizeNum) == 1) {
+            if((type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "bool")) && (*right_type)->mPointerNum == 0 || ((*right_type)->mSizeNum) == 8) {
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("short");
 
                 if((*right_type)->mUnsigned) {
@@ -3241,7 +3241,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
                     rvalue->value = LLVMBuildCast(gBuilder, LLVMSExt, rvalue->value, llvm_type, "icastF");
                 }
             }
-            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "int") || type_identify_with_class_name(*right_type, "long") || ((*right_type)->mSizeNum > 2))) {
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "int") || type_identify_with_class_name(*right_type, "long") || ((*right_type)->mSizeNum > 16))) {
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("short");
 
                 rvalue->value = LLVMBuildTrunc(gBuilder, rvalue->value, llvm_type, "icastG");
@@ -3262,7 +3262,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
 
         *right_type = create_node_type_with_class_name("short");
     }
-    else if((type_identify_with_class_name(left_type, "char") || left_type->mSizeNum == 1) && left_type->mPointerNum == 0)
+    else if((type_identify_with_class_name(left_type, "char") || left_type->mSizeNum == 8) && left_type->mPointerNum == 0)
     {
         if(rvalue && rvalue->value) {
             if(type_identify_with_class_name(*right_type, "bool") && (*right_type)->mPointerNum == 0) {
@@ -3275,7 +3275,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
                     rvalue->value = LLVMBuildCast(gBuilder, LLVMSExt, rvalue->value, llvm_type, "icastI");
                 }
             }
-            else if((*right_type)->mPointerNum == 0  && (type_identify_with_class_name(*right_type, "short") || (type_identify_with_class_name(*right_type, "int") || type_identify_with_class_name(*right_type, "long") || (*right_type)->mSizeNum > 1))) {
+            else if((*right_type)->mPointerNum == 0  && (type_identify_with_class_name(*right_type, "short") || (type_identify_with_class_name(*right_type, "int") || type_identify_with_class_name(*right_type, "long") || (*right_type)->mSizeNum > 8))) {
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("char");
                 rvalue->value = LLVMBuildTrunc(gBuilder, rvalue->value, llvm_type, "icastJ");
             }
@@ -3295,7 +3295,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
 
         *right_type = create_node_type_with_class_name("char");
     }
-    else if((type_identify_with_class_name(left_type, "int") || left_type->mSizeNum == 4) && left_type->mPointerNum == 0)
+    else if((type_identify_with_class_name(left_type, "int") || left_type->mSizeNum == 32) && left_type->mPointerNum == 0)
     {
         if(rvalue && rvalue->value) {
             if((*right_type)->mArrayDimentionNum > 0 && (*right_type)->mPointerNum == 0) {
@@ -3325,7 +3325,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
 
                 rvalue->value = LLVMBuildCast(gBuilder, LLVMZExt, rvalue->value, llvm_type, "icastKX");
             }
-            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "short") || (*right_type)->mSizeNum >=1 && (*right_type)->mSizeNum <= 2))
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "char") || type_identify_with_class_name(*right_type, "short") || (*right_type)->mSizeNum >=8 && (*right_type)->mSizeNum <= 16))
             {
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
 
@@ -3336,7 +3336,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
                     rvalue->value = LLVMBuildCast(gBuilder, LLVMSExt, rvalue->value, llvm_type, "icastL");
                 }
             }
-            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "long") || (*right_type)->mSizeNum > 4)) {
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "long") || (*right_type)->mSizeNum > 32)) {
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
 
                 rvalue->value = LLVMBuildTrunc(gBuilder, rvalue->value, llvm_type, "icastM");
@@ -3942,7 +3942,12 @@ uint64_t get_size_from_node_type(sNodeType* node_type, int* alignment)
     }
 
     if(node_type2->mSizeNum > 0) {
-        result = node_type2->mSizeNum;
+        if(node_type2->mSizeNum % 8 == 0) {
+            result = node_type2->mSizeNum / 8;
+        }
+        else {
+            result = node_type2->mSizeNum / 8 + 1;
+        }
 
         int i;
         for(i=0; i<node_type2->mArrayDimentionNum; i++) {
