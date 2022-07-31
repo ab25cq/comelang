@@ -3,15 +3,23 @@
 #include <stdlib.h>
 #include <errno.h>
 
-struct sData {
-    long r;
-};
+int aaa(int a, char** b)
+{
+    puts("AAA");
+    
+    return 0;
+}
 
 int main()
 {
-    struct sData sym;
+    int ret;
+    int (*prog_main)(int, char **);
     
-    (*(int**)&(sym.r)) = 111;
+    prog_main = aaa;
+    
+    char* aaa[12];
+    
+    ret = (*prog_main)(1, aaa);
     
     return 0;
 }

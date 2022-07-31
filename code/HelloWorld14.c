@@ -192,6 +192,15 @@ static char const ab_month_name2[2][12][4] =
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
+struct sDataXYZ {
+    long r;
+};
+
+int aaaX(int a, char** b)
+{
+    return 1;
+}
+
 int main(int argc, char** argv)
 {
     xassert("global array initializer test", dyyy[0] == 1 && dyyy[1] == 2 && dyyy[2] == 3);
@@ -314,6 +323,28 @@ int main(int argc, char** argv)
 
     xassert("array initializer test", strcmp(ab_month_name[0], "Jan") == 0);
     xassert("array initializer test2", strcmp(ab_month_name2[0][0], "Jan") == 0);
+    struct sDataXYZ sym;
+    
+    (*(int**)&(sym.r)) = 111;
+    
+    xassert("assing test", (*(int**)&(sym.r)) == 111);
+    
+    int line_ref;
+    
+    if(line_ref == 0) {
+        printf("%d\n", line_ref);
+    }
+    ++line_ref;
+    xassert("++ test", line_ref == 1);
+
+    int (*prog_main)(int, char **);
+    
+    prog_main = aaaX;
+    
+    int GGG[12];
+    
+    xassert("fun pointer test", prog_main(1, GGG) == 1);
+    xassert("fun pointer test2", (*prog_main)(1, GGG) == 1);
     
     return 0;
 }

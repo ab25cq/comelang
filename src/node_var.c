@@ -1301,7 +1301,7 @@ unsigned int sNodeTree_create_load_variable(char* var_name, sParserInfo* info)
 
     xstrncpy(gNodes[node].uValue.sLoadVariable.mVarName, var_name, VAR_NAME_MAX);
     gNodes[node].uValue.sLoadVariable.mGlobal = info->mBlockLevel == 0;
-
+    
     gNodes[node].mLeft = 0;
     gNodes[node].mRight = 0;
     gNodes[node].mMiddle = 0;
@@ -1653,6 +1653,11 @@ BOOL compile_dereffernce(unsigned int node, sCompileInfo* info)
         
             info->type = clone_node_type(derefference_type);
         }
+        else if(type_identify_with_class_name(left_type, "lambda")) {
+            push_value_to_stack_ptr(&lvalue, info);
+        
+            info->type = clone_node_type(left_type);
+        }
         else {
             if(cast_pointer_type) {
                 LLVMValueRef value = lvalue.value;
@@ -1679,6 +1684,7 @@ BOOL compile_dereffernce(unsigned int node, sCompileInfo* info)
                 derefference_type->mConstant = FALSE;
                 
                 LVALUE llvm_value;
+                
                 llvm_value.value = LLVMBuildLoad(gBuilder, lvalue.value, "derefference_value");
                 llvm_value.type = derefference_type;
                 llvm_value.address = lvalue.value;

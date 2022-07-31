@@ -416,6 +416,7 @@ struct sParserInfoStruct
     sNodeType* function_result_type;
     
     BOOL store_address;
+    BOOL in_derefference;
 };
 
 typedef struct sParserInfoStruct sParserInfo;

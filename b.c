@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-float fun()
-{
-    return 0;
-}
-
 int main(int argc, char** arv)
 {
-    printf("%f\n", fun());
+    int a = 1;
+    void* b = &a;
+    
+    *(int*)b++;
+    
+    printf("%d\n", a);
     
     return 0;
 }
