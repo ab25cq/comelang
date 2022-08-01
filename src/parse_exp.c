@@ -62,9 +62,6 @@ static BOOL expression_node_variable(unsigned int* node, BOOL enable_assginment,
         nodes[1] = *node;
         
         *node = sNodeTree_create_nodes(nodes, num_nodes, TRUE, info);
-        
-        if(*info->p == '=' && *(info->p+1) != '=') {
-        }
     }
     else if(*info->p == '-' && *(info->p+1) == '-')
     {

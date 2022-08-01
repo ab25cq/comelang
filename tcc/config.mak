@@ -15,3 +15,6 @@ CFLAGS=-O2
 LDFLAGS=
 LIBSUF=.a
 EXESUF=
+ARCH=x86-64
+VERSION=0.9.25
+SRC_PATH=/home/ab25cq/comelang/tcc

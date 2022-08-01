@@ -10,13 +10,8 @@ struct sDataXYZ {
 
 int main()
 {
-    struct sDataXYZ sym;
-    
-    long a;
-    
-    (*(int**)&(sym.r)) = 111;
-    
-    printf("%d\n", (*(int**)&(sym.r)));
+    double bn[128];
+    (double)bn[1] * (double)4294967296.0 + (double)bn[0];
     
     return 0;
 }
