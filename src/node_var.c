@@ -1545,6 +1545,372 @@ BOOL compile_reffernce(unsigned int node, sCompileInfo* info)
     return TRUE;
 }
 
+unsigned int sNodeTree_create_reffernce_load_field(unsigned int left_node, sParserInfo* info)
+{
+    unsigned int node = alloc_node();
+
+    gNodes[node].mNodeType = kNodeTypeRefferenceLoadField;
+
+    xstrncpy(gNodes[node].mSName, info->sname, PATH_MAX);
+    gNodes[node].mLine = info->sline;
+
+    gNodes[node].mLeft = left_node;
+    gNodes[node].mRight = 0;
+    gNodes[node].mMiddle = 0;
+
+    return node;
+}
+
+BOOL compile_reffernce_load_field(unsigned int node, sCompileInfo* info)
+{
+    unsigned int left_node = gNodes[node].mLeft;
+    
+    char var_name[VAR_NAME_MAX];
+    xstrncpy(var_name, gNodes[left_node].uValue.sLoadField.mVarName, VAR_NAME_MAX);
+
+    /// compile left node ///
+    unsigned int lnode = gNodes[left_node].mLeft;
+
+    if(!compile(lnode, info)) {
+        return FALSE;
+    }
+
+    sNodeType* left_type = clone_node_type(info->type);
+
+    int parent_field_index = -1;
+    int field_index = get_field_index(left_type->mClass, var_name, &parent_field_index);
+
+    if(field_index == -1) {
+        sCLClass* klass = left_type->mClass;
+
+        char var_name2[VAR_NAME_MAX];
+
+        int i;
+        for(i=0; i<klass->mNumFields; i++) {
+            sNodeType* field_type = klass->mFields[i];
+            char* field_name = klass->mFieldName[i];
+
+            int parent_field_index = -1;
+            int field_index = get_field_index(field_type->mClass, var_name, &parent_field_index);
+
+            if(field_index != -1) {
+                xstrncpy(var_name2, field_name, VAR_NAME_MAX);
+                break;
+            }
+        }
+
+        if(i < klass->mNumFields) {
+            dec_stack_ptr(-1, info);
+            unsigned int new_lnode = sNodeTree_create_load_field(var_name2, lnode, info->pinfo);
+
+            if(!compile(new_lnode, info)) {
+                return FALSE;
+            }
+
+            left_type = clone_node_type(info->type);
+        }
+        else {
+            compile_err_msg(info, "The field(%s) is not found(1) in %s", var_name, CLASS_NAME(klass));
+            return TRUE;
+        }
+    }
+    else if(field_index == -1) {
+        compile_err_msg(info, "The field(%s) is not found(2) in %s", var_name, CLASS_NAME(left_type->mClass));
+        return TRUE;
+    }
+
+    LVALUE lvalue = *get_value_from_stack(-1);
+
+    if(!(left_type->mClass->mFlags & CLASS_FLAGS_STRUCT) && !(left_type->mClass->mFlags & CLASS_FLAGS_UNION)) {
+        compile_err_msg(info, "This is not struct type");
+        return TRUE;
+    }
+
+    if(left_type->mPointerNum > 1) {
+        compile_err_msg(info, "This is pointer of pointer type(%s)", var_name);
+        show_node_type(left_type);
+        return TRUE;
+    }
+
+    if(left_type->mClass->mFlags & CLASS_FLAGS_UNION) {
+        int parent_field_index = -1;
+        int field_index = get_field_index(left_type->mClass, var_name, &parent_field_index);
+
+        if(field_index == -1) {
+            compile_err_msg(info, "The field(%s) is not found", var_name);
+            return TRUE;
+        }
+
+        sNodeType* field_type = clone_node_type(left_type->mClass->mFields[field_index]);
+
+        field_index = 0;
+
+        LVALUE llvm_value;
+        
+#ifdef __32BIT_CPU__
+        LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
+#else
+        LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long");
+#endif
+
+        LLVMValueRef field_address;
+        if(field_type->mArrayDimentionNum > 0) {
+            if(left_type->mPointerNum == 0) {
+                field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
+            }
+            else {
+                field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
+            }
+            
+            LLVMValueRef left_value = field_address;
+            LLVMValueRef right_value;
+            
+            if(left_type->mPointerNum == 0) {
+                right_value = lvalue.address;
+            }
+            else {
+                right_value = lvalue.value;
+            }
+            llvm_value.value = left_value; //LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+            //llvm_value.value = LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+        }
+        else if(left_type->mPointerNum == 0) {
+            field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
+            
+            sNodeType* field_type2 = clone_node_type(field_type);
+
+            field_type2->mPointerNum++;
+
+            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(field_type2);
+
+            field_address = LLVMBuildCast(gBuilder, LLVMBitCast, field_address, llvm_type, "icastO");
+            
+            LLVMValueRef left_value = field_address;
+            LLVMValueRef right_value;
+            
+            if(left_type->mPointerNum == 0) {
+                right_value = lvalue.address;
+            }
+            else {
+                right_value = lvalue.value;
+            }
+            llvm_value.value = left_value; //LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+            //llvm_value.value = LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+        }
+        else {
+            field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
+            
+            sNodeType* field_type2 = clone_node_type(field_type);
+
+            field_type2->mPointerNum++;
+
+            LLVMTypeRef llvm_type = create_llvm_type_from_node_type(field_type2);
+
+            field_address = LLVMBuildCast(gBuilder, LLVMBitCast, field_address, llvm_type, "icastP");
+            
+            LLVMValueRef left_value = field_address;
+            LLVMValueRef right_value;
+            
+            if(left_type->mPointerNum == 0) {
+                right_value = lvalue.address;
+            }
+            else {
+                right_value = lvalue.value;
+            }
+            llvm_value.value = left_value; //LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+            //llvm_value.value = LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+        }
+        llvm_value.value = LLVMBuildCast(gBuilder, LLVMPtrToInt, llvm_value.value, llvm_type, "field_refference_cast");
+
+#ifdef __32BIT_CPU__
+        llvm_value.type = create_node_type_with_class_name("int");
+#else
+        llvm_value.type = create_node_type_with_class_name("long");
+#endif
+        llvm_value.address = NULL;
+        llvm_value.var = NULL;
+
+        dec_stack_ptr(1, info);
+        push_value_to_stack_ptr(&llvm_value, info);
+
+        info->type = llvm_value.type;
+    }
+    else {
+        int parent_field_index = -1;
+        int field_index = get_field_index(left_type->mClass, var_name, &parent_field_index);
+
+        if(field_index == -1) {
+            compile_err_msg(info, "The field(%s) is not found", var_name);
+            return TRUE;
+        }
+
+        sNodeType* field_type = clone_node_type(left_type->mClass->mFields[field_index]);
+        
+//field_type->mHeap = info->generics_type->mHeap
+        if(is_typeof_type(field_type))
+        {
+            if(!solve_typeof(&field_type, info)) 
+            {
+                compile_err_msg(info, "Can't solve typeof types");
+                show_node_type(field_type); 
+                return FALSE;
+            }
+        }
+
+        if(!solve_generics(&field_type, left_type)) {
+            compile_err_msg(info, "Solve Generics Error");
+            return TRUE;
+        }
+        
+        if(info->generics_type) {
+            if(!solve_generics(&field_type, info->generics_type)) 
+            {
+                compile_err_msg(info, "Can't solve generics types(3)");
+                show_node_type(field_type);
+                show_node_type(info->generics_type);
+
+                return FALSE;
+            }
+        }
+
+        
+#ifdef __32BIT_CPU__
+        LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
+#else
+        LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long");
+#endif
+
+        LVALUE llvm_value;
+        LLVMValueRef field_address;
+        if(field_type->mArrayDimentionNum > 0) {
+            if(left_type->mPointerNum == 0) {
+                field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
+            }
+            else {
+                field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
+            }
+            
+            LLVMValueRef left_value = field_address;
+            LLVMValueRef right_value;
+            
+            if(left_type->mPointerNum == 0) {
+                right_value = lvalue.address;
+            }
+            else {
+                right_value = lvalue.value;
+            }
+            llvm_value.value = left_value; //LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+            //llvm_value.value = LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+        }
+        else if(left_type->mPointerNum == 0) {
+            field_address = LLVMBuildStructGEP(gBuilder, lvalue.address, field_index, "field");
+            
+            LLVMValueRef left_value = field_address;
+            LLVMValueRef right_value;
+            
+            if(left_type->mPointerNum == 0) {
+                right_value = lvalue.address;
+            }
+            else {
+                right_value = lvalue.value;
+            }
+            llvm_value.value = left_value; //LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+            //llvm_value.value = LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+        }
+        else {
+            field_address = LLVMBuildStructGEP(gBuilder, lvalue.value, field_index, "field");
+            
+            LLVMValueRef left_value = field_address;
+            LLVMValueRef right_value;
+            
+            if(left_type->mPointerNum == 0) {
+                right_value = lvalue.address;
+            }
+            else {
+                right_value = lvalue.value;
+            }
+            llvm_value.value = left_value; //LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+            //llvm_value.value = LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+        }
+        llvm_value.value = LLVMBuildCast(gBuilder, LLVMPtrToInt, llvm_value.value, llvm_type, "field_refference_cast");
+
+#ifdef __32BIT_CPU__
+        llvm_value.type = create_node_type_with_class_name("int");
+#else
+        llvm_value.type = create_node_type_with_class_name("long");
+#endif
+        llvm_value.address = NULL;
+        llvm_value.var = NULL;
+
+        dec_stack_ptr(1, info);
+        push_value_to_stack_ptr(&llvm_value, info);
+
+        info->type = llvm_value.type;
+    }
+
+/*
+        LVALUE llvm_value;
+        
+            sCLClass* klass = left_type->mClass;
+            
+            int num_fields = klass->mNumFields;
+            
+            int alignment = 0;
+            uint64_t size_in_bits = get_size_from_node_type(field_type, &alignment);
+            uint32_t align_in_bits = alignment;
+            
+            klass->mNumFields = field_index+1;
+            uint64_t offset_in_bits;
+            if(field_index == 0) {
+                offset_in_bits = 0;
+            }
+            else if(field_index+1 > num_fields) {
+                klass->mNumFields = num_fields;
+            }
+            else {
+                alignment = 0;
+                offset_in_bits = get_size_from_node_type(left_type, &alignment) - size_in_bits;
+            }
+            klass->mNumFields = num_fields;
+        
+        
+#ifdef __32BIT_CPU__
+        LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
+#else
+        LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long");
+#endif
+
+        llvm_value.value = LLVMConstInt(llvm_type, offset_in_bits, FALSE);
+        
+#ifdef __32BIT_CPU__
+        LLVMTypeRef llvm_type2 = create_llvm_type_with_class_name("int");
+#else
+        LLVMTypeRef llvm_type2 = create_llvm_type_with_class_name("long");
+#endif
+
+#ifdef __32BIT_CPU__
+        llvm_value.type = create_node_type_with_class_name("int");
+#else
+        llvm_value.type = create_node_type_with_class_name("long");
+#endif
+        llvm_value.address = NULL;
+        llvm_value.var = NULL;
+        llvm_value.value = LLVMBuildCast(gBuilder, LLVMPtrToInt, llvm_value.value, llvm_type, "field_refference_cast");
+
+        dec_stack_ptr(1, info);
+        push_value_to_stack_ptr(&llvm_value, info);
+
+#ifdef __32BIT_CPU__
+        info->type = create_node_type_with_class_name("int");
+#else
+        info->type = create_node_type_with_class_name("long");
+#endif
+    }
+*/
+    
+    return TRUE;
+}
+
 unsigned int sNodeTree_create_dereffernce(unsigned int left_node, BOOL parent, sNodeType* cast_pointer_type, sParserInfo* info)
 {
     unsigned int node = alloc_node();
@@ -2833,6 +3199,8 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
         
                 int i;
                 for(i=0; i<num_fields; i++) {
+                    sNodeType* field_type = clone_node_type(klass->mFields[i]);
+                    
                     if(n >= num_initialize_array_value) {
                         sNodeType* node_type = clone_node_type(klass->mFields[i]);
                         
@@ -2850,6 +3218,16 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                         LVALUE llvm_value = *get_value_from_stack(-1);
             
                         dec_stack_ptr(1, info);
+                        
+                        sNodeType* right_type = clone_node_type(info->type);
+                        
+                        if(auto_cast_posibility(field_type, right_type)) {
+                            if(!cast_right_type_to_left_type(field_type, &right_type, &llvm_value, info))
+                            {
+                                compile_err_msg(info, "Cast failed");
+                                return TRUE;
+                            }
+                        }
             
                         values[i] = llvm_value.value;
                     }
@@ -3477,6 +3855,16 @@ BOOL compile_struct_initializer_core(int num_elements, struct sStructInitializer
                     LVALUE llvm_value = *get_value_from_stack(-1);
         
                     dec_stack_ptr(1, info);
+                    
+                    sNodeType* right_type = clone_node_type(info->type);
+                    
+                    if(auto_cast_posibility(node_type, right_type)) {
+                        if(!cast_right_type_to_left_type(node_type, &right_type, &llvm_value, info))
+                        {
+                            compile_err_msg(info, "Cast failed");
+                            return TRUE;
+                        }
+                    }
         
                     values[i] = llvm_value.value;
                     

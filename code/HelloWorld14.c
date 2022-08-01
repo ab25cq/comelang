@@ -201,6 +201,30 @@ int aaaX(int a, char** b)
     return 1;
 }
 
+#define offsetof(type, field) ((size_t) &((type *)0)->field)
+
+struct TCCState {
+    int warn_write_strings;
+    int warn_unsupported;
+    int warn_error;
+    int warn_none;
+    int warn_implicit_function_declaration;
+};
+
+typedef struct FlagDef {
+    uint16_t offset;
+    uint16_t flags;
+    const char *name;
+} FlagDef;
+
+static const FlagDef warning_defs[] = {
+    { offsetof(TCCState, warn_unsupported), 0, "unsupported" },
+    { offsetof(TCCState, warn_write_strings), 0, "write-strings" },
+    { offsetof(TCCState, warn_error), 0, "error" },
+    { offsetof(TCCState, warn_implicit_function_declaration), 1,
+      "implicit-function-declaration" },
+};
+
 int main(int argc, char** argv)
 {
     xassert("global array initializer test", dyyy[0] == 1 && dyyy[1] == 2 && dyyy[2] == 3);
@@ -345,6 +369,7 @@ int main(int argc, char** argv)
     
     xassert("fun pointer test", prog_main(1, GGG) == 1);
     xassert("fun pointer test2", (*prog_main)(1, GGG) == 1);
+    xassert("offset test", warning_defs[0].offset == 4 && warning_defs[1].offset == 0 && warning_defs[2].offset == 8 && warning_defs[3].offset == 16);
     
     return 0;
 }

@@ -14,10 +14,8 @@ BOOL expression_mult_div(unsigned int* node, sParserInfo* info)
     if(*node == 0) {
         return TRUE;
     }
-
-
-    if(!gMultDivPlusPlusEnableNode[gNodes[*node].mNodeType]) 
-    //if(gNodes[*node].mNodeType == kNodeTypeIf || gNodes[*node].mNodeType == kNodeTypeSwitch || gNodes[*node].mNodeType == kNodeTypeFor || gNodes[*node].mNodeType == kNodeTypeWhile || gNodes[*node].mNodeType == kNodeTypeDoWhile || gNodes[*node].mNodeType == kNodeTypeCase || gNodes[*node].mNodeType == kNodeTypeLabel) 
+    
+    if(!gMultDivPlusPlusEnableNode[gNodes[*node].mNodeType] && *info->p != '/' && *info->p != '%') 
     {
         return TRUE;
     }

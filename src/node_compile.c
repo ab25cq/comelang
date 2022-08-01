@@ -353,6 +353,13 @@ BOOL compile(unsigned int node, sCompileInfo* info)
                 return FALSE;
             }
             break;
+            
+        case kNodeTypeRefferenceLoadField:
+            if(!compile_reffernce_load_field(node, info))
+            {
+                return FALSE;
+            }
+            break;
 
         case kNodeTypeNull:
             if(!compile_null(node, info))
