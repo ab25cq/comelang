@@ -1333,7 +1333,7 @@ BOOL compile_nodes(unsigned int node, sCompileInfo* info)
     unsigned int nodes[NODES_MAX];
     int i;
     for(i=0; i<num_nodes; i++) {
-	nodes[i] = gNodes[node].uValue.sNodes.mNodes[i];
+        nodes[i] = gNodes[node].uValue.sNodes.mNodes[i];
     }
     BOOL in_macro = gNodes[node].uValue.sNodes.mInMacro;
 

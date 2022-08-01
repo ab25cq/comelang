@@ -680,6 +680,13 @@ BOOL compile(unsigned int node, sCompileInfo* info)
             }
             break;
 
+        case kNodeTypeStoreDerefference:
+            if(!compile_store_derefference(node, info))
+            {
+                return FALSE;
+            }
+            break;
+
         case kNodeTypePlusPlus:
             if(!compile_plus_plus(node, info))
             {

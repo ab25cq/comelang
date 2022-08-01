@@ -290,8 +290,13 @@ static char *string_literal(char *p) {
 
 static char *ident(char *p) {
   int len = 1;
-  while (isalpha(p[len]) || isdigit(p[len]) || p[len] == '_')
+  while (isalpha(p[len]) || isdigit(p[len]) || p[len] == '_') {
+printf("before len1 %d\n", len);
+printf("p %d %c\n", p[len], p[len]);
     len++;
+printf("after len2 %d\n", len);
+printf("p %d %c\n", p[len], p[len]);
+  }
 
   char *name = strndup(p, len);
   int ty = map_geti(keywords, name, TK_IDENT);
@@ -340,6 +345,8 @@ static char *number(char *p) {
 
 static void scan() {
   char *p = env->buf;
+  
+puts(p);
 
 loop:
   while (*p) {
@@ -491,8 +498,14 @@ Vector *tokenize(char *path, bool add_eof) {
 
   FILE *fp = open_file(path);
   char *buf = read_file(fp);
+puts("OH");
+puts(buf);
   replace_crlf(buf);
+puts("OH2");
+puts(buf);
   remove_backslash_newline(buf);
+puts("OH3");
+puts(buf);
 
   env = new_env(env, path, buf);
   scan();

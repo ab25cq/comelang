@@ -452,7 +452,7 @@ BOOL compile_add(unsigned int node, sCompileInfo* info)
             info->type = clone_node_type(left_type);
         }
     }
-
+    
     return TRUE;
 }
 

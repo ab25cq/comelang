@@ -2,17 +2,21 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <ctype.h>
 
-struct sData {
-    int fds_bits[128];
+struct sDataXYZ {
+    long r;
 };
 
 int main()
 {
-    int _fd;
-    sData* _p;
+    struct sDataXYZ sym;
     
-    _p->fds_bits[(int)_fd / (sizeof(__int32_t) * 8)];
+    long a;
+    
+    (*(int**)&(sym.r)) = 111;
+    
+    printf("%d\n", (*(int**)&(sym.r)));
     
     return 0;
 }

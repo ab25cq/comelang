@@ -640,6 +640,7 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
         return FALSE;
     }
     
+    
     LLVMValueRef obj = NULL;
 
     sNodeType* right_type = clone_node_type(info->type);
@@ -4145,6 +4146,114 @@ BOOL compile_store_address(unsigned int node, sCompileInfo* info)
     
     if(left_type->mArrayDimentionNum > 0) {
         LLVMValueRef address = lvalue.value;
+
+        LLVMValueRef indices[2];
+
+        LLVMTypeRef llvm_type = create_llvm_type_with_class_name("int");
+
+        indices[0] = LLVMConstInt(llvm_type, 0, FALSE);
+        indices[1] = LLVMConstInt(llvm_type, 0, FALSE);
+
+        address = LLVMBuildGEP(gBuilder, address, indices, 2, "gep");
+        
+        LLVMValueRef value = rvalue.value;
+    
+        LLVMBuildStore(gBuilder, value, address);
+        
+        push_value_to_stack_ptr(&rvalue, info);
+    }
+    else {
+        LLVMValueRef address = lvalue.value;
+        LLVMValueRef value = rvalue.value;
+    
+        LLVMBuildStore(gBuilder, value, address);
+        
+        push_value_to_stack_ptr(&rvalue, info);
+    }
+    
+    info->type = clone_node_type(right_type);
+
+    return TRUE;
+}
+
+unsigned int sNodeTree_create_store_value_to_derefference(unsigned int address_node, unsigned int right_node, sParserInfo* info)
+{
+    unsigned int node = alloc_node();
+
+    gNodes[node].mNodeType = kNodeTypeStoreDerefference;
+
+    xstrncpy(gNodes[node].mSName, info->sname, PATH_MAX);
+    gNodes[node].mLine = info->sline;
+    
+    gNodes[node].mLeft = address_node;
+    gNodes[node].mRight = right_node;
+    gNodes[node].mMiddle = 0;
+
+    return node;
+}
+
+BOOL compile_store_derefference(unsigned int node, sCompileInfo* info)
+{
+    unsigned int left_node = gNodes[node].mLeft;
+
+    if(!compile(left_node, info)) {
+        return FALSE;
+    }
+    
+    if(!check_nullable_type(NULL, info->type, info)) {
+        return TRUE;
+    }
+
+    sNodeType* left_type = clone_node_type(info->type);
+
+    if(gNodes[left_node].mNodeType == kNodeTypeDerefference) {
+        dec_stack_ptr(1, info);
+        
+        left_node = gNodes[left_node].mLeft;
+    
+        if(!compile(left_node, info)) {
+            return FALSE;
+        }
+        
+        if(!check_nullable_type(NULL, info->type, info)) {
+            return TRUE;
+        }
+    
+        left_type = clone_node_type(info->type);
+    }
+    
+    if(left_type->mPointerNum == 0 && left_type->mArrayDimentionNum == 0) {
+        compile_err_msg(info, "This is not pointer type2(%s)", CLASS_NAME(left_type->mClass));
+        return TRUE;
+    }
+
+    LVALUE lvalue = *get_value_from_stack(-1);
+    dec_stack_ptr(1, info);
+
+    unsigned int right_node = gNodes[node].mRight;
+
+    if(!compile(right_node, info)) {
+        return FALSE;
+    }
+
+    sNodeType* right_type = clone_node_type(info->type);
+
+    LVALUE rvalue = *get_value_from_stack(-1);
+    dec_stack_ptr(1, info);
+    
+    left_type->mPointerNum--;
+
+    if(auto_cast_posibility(left_type, right_type)) {
+        if(!cast_right_type_to_left_type(left_type, &right_type, &rvalue, info))
+        {
+            compile_err_msg(info, "Cast failed");
+            return TRUE;
+        }
+    }
+    
+    if(left_type->mArrayDimentionNum > 0) {
+        LLVMValueRef address = lvalue.value;
+        //LLVMBuildLoad(gBuilder, lvalue.value, "store_to_derefference");
 
         LLVMValueRef indices[2];
 
