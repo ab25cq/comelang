@@ -3520,11 +3520,16 @@ BOOL get_const_value_from_node(int* array_size, unsigned int array_size_node, sP
     memset(&cinfo, 0, sizeof(sCompileInfo));
     cinfo.pinfo = info;
 
+    LLVMBasicBlockRef prev_block = NULL;
+    start_tmp_inst(&prev_block, info);
+    
     if(!compile(array_size_node, &cinfo)) {
         info->no_output_err_msg = FALSE;
         return FALSE;
     }
     info->no_output_err_msg = FALSE;
+    
+    delete_last_instrunction(prev_block, info);
     
 /*
     if(!check_nullable_type(NULL, cinfo.type, &cinfo)) {

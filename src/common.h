@@ -1412,5 +1412,8 @@ BOOL get_command_result(sBuf* command_result, char* macro_name, char* cmdline, c
 BOOL get_command_result2(sBuf* command_result, char* cmdline);
 BOOL call_macro(unsigned * node, char* name, char* params, sParserInfo* info);
 
+void start_tmp_inst(LLVMBasicBlockRef* prev_block, sCompileInfo* info);
+void delete_last_instrunction(LLVMBasicBlockRef prev_block, sCompileInfo* info);
+
 #endif
 
