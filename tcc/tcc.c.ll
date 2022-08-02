@@ -3937,7 +3937,7 @@ entry:
   %fdiv = fdiv double %icastKO, 1.000000e+06, !dbg !310
   store double %fdiv, double* %tt, align 8, !dbg !310
   %tt4 = load double, double* %tt, align 8, !dbg !311
-  %le = icmp olt double %tt4, 1.000000e-03, !dbg !311
+  %le = fcmp olt double %tt4, 1.000000e-03, !dbg !311
   br i1 %le, label %cond_jump_then, label %cond_end, !dbg !311
 
 cond_jump_then:                                   ; preds = %entry
@@ -3961,12 +3961,14 @@ cond_end7:                                        ; preds = %cond_jump_then6, %c
   %tt9 = load double, double* %tt, align 8, !dbg !315
   %total_lines10 = load i32, i32* @total_lines, align 4, !dbg !315
   %tt11 = load double, double* %tt, align 8, !dbg !315
-  %div = sdiv i32 %total_lines10, double %tt11, !dbg !315
-  %total_bytes12 = load i32, i32* @total_bytes, align 4, !dbg !315
-  %tt13 = load double, double* %tt, align 8, !dbg !315
-  %div14 = sdiv i32 %total_bytes12, double %tt13, !dbg !315
-  %div15 = sdiv i32 %div14, double 1.000000e+06, !dbg !315
-  %fun_result = call i32 (i8*, ...) @printf(i8* bitcast ([64 x i8]* @364 to i8*), i32 %sub, i32 %total_lines, i32 %total_bytes8, double %tt9, i32 %div, i32 %div15), !dbg !315
+  %icastKO12 = sitofp i32 %total_lines10 to double, !dbg !315
+  %fdiv13 = fdiv double %icastKO12, %tt11, !dbg !315
+  %total_bytes14 = load i32, i32* @total_bytes, align 4, !dbg !315
+  %tt15 = load double, double* %tt, align 8, !dbg !315
+  %icastKO16 = sitofp i32 %total_bytes14 to double, !dbg !315
+  %fdiv17 = fdiv double %icastKO16, %tt15, !dbg !315
+  %fdiv18 = fdiv double %fdiv17, 1.000000e+06, !dbg !315
+  %fun_result = call i32 (i8*, ...) @printf(i8* bitcast ([64 x i8]* @364 to i8*), i32 %sub, i32 %total_lines, i32 %total_bytes8, double %tt9, double %fdiv13, double %fdiv18), !dbg !315
   ret void, !dbg !315
 }
 
@@ -5215,9 +5217,11 @@ cond_else_block:                                  ; preds = %cstr_ccat_end254
   %cstr307 = load %CString*, %CString** %cstr, align 8, !dbg !476
   %field308 = getelementptr inbounds %CString, %CString* %cstr307, i32 0, i32 0, !dbg !476
   %size309 = load i32, i32* %field308, align 4, !dbg !476
-  %div = sdiv i32 %size309, 4, !dbg !476
-  %sub310 = sub i32 %div, 1, !dbg !476
-  store i32 %sub310, i32* %len, align 4, !dbg !476
+  %icastD = sext i32 %size309 to i64, !dbg !476
+  %div = sdiv i64 %icastD, 4, !dbg !476
+  %sub310 = sub i64 %div, 1, !dbg !476
+  %icastM = trunc i64 %sub310 to i32, !dbg !476
+  store i32 %icastM, i32* %len, align 4, !dbg !476
   store i32 0, i32* %i, align 4, !dbg !477
   br label %loop_top_block312, !dbg !477
 
@@ -8681,34 +8685,34 @@ after_break463:                                   ; No predecessors!
 
 define internal void @decl_initializer(%CType* %0, %Section* %1, i64 %2, i32 %3, i32 %4) !dbg !1021 {
 entry:
-  %andand557 = alloca i1, align 1
-  %oror552 = alloca i1, align 1
-  %andand551 = alloca i1, align 1
-  %andand504 = alloca i1, align 1
-  %andand487 = alloca i1, align 1
-  %andand448 = alloca i1, align 1
-  %oror414 = alloca i1, align 1
-  %type1392 = alloca %CType, align 8
-  %castXXXX393 = bitcast %CType* %type1392 to i8*
-  %5 = call i8* @memset(i8* %castXXXX393, i32 0, i64 16)
+  %andand559 = alloca i1, align 1
+  %oror554 = alloca i1, align 1
+  %andand553 = alloca i1, align 1
+  %andand506 = alloca i1, align 1
+  %andand489 = alloca i1, align 1
+  %andand450 = alloca i1, align 1
+  %oror416 = alloca i1, align 1
+  %type1394 = alloca %CType, align 8
+  %castXXXX395 = bitcast %CType* %type1394 to i8*
+  %5 = call i8* @memset(i8* %castXXXX395, i32 0, i64 16)
   %ad1 = alloca %AttributeDef, align 8
-  %castXXXX391 = bitcast %AttributeDef* %ad1 to i8*
-  %6 = call i8* @memset(i8* %castXXXX391, i32 0, i64 24)
+  %castXXXX393 = bitcast %AttributeDef* %ad1 to i8*
+  %6 = call i8* @memset(i8* %castXXXX393, i32 0, i64 24)
   %par_count = alloca i32, align 4
-  %castXXXX386 = bitcast i32* %par_count to i8*
-  %7 = call i8* @memset(i8* %castXXXX386, i32 0, i64 4)
-  %oror367 = alloca i1, align 1
-  %oror366 = alloca i1, align 1
-  %andand358 = alloca i1, align 1
-  %andand317 = alloca i1, align 1
-  %andand316 = alloca i1, align 1
-  %andand293 = alloca i1, align 1
-  %andand256 = alloca i1, align 1
-  %andand244 = alloca i1, align 1
-  %oror204 = alloca i1, align 1
+  %castXXXX388 = bitcast i32* %par_count to i8*
+  %7 = call i8* @memset(i8* %castXXXX388, i32 0, i64 4)
+  %oror369 = alloca i1, align 1
+  %oror368 = alloca i1, align 1
+  %andand360 = alloca i1, align 1
+  %andand319 = alloca i1, align 1
+  %andand318 = alloca i1, align 1
+  %andand295 = alloca i1, align 1
+  %andand258 = alloca i1, align 1
+  %andand246 = alloca i1, align 1
+  %oror206 = alloca i1, align 1
+  %andand134 = alloca i1, align 1
   %andand133 = alloca i1, align 1
-  %andand132 = alloca i1, align 1
-  %andand108 = alloca i1, align 1
+  %andand109 = alloca i1, align 1
   %cstr = alloca %CString*, align 8
   %castXXXX94 = bitcast %CString** %cstr to i8*
   %8 = call i8* @memset(i8* %castXXXX94, i32 0, i64 8)
@@ -8806,54 +8810,54 @@ cond_jump_then:                                   ; preds = %entry
   br label %pointed_type, !dbg !1031
 
 cond_jump_elif0:                                  ; preds = %entry
-  %type359 = load %CType*, %CType** %type, align 8, !dbg !1032
-  %field360 = getelementptr inbounds %CType, %CType* %type359, i32 0, i32 0, !dbg !1032
-  %t361 = load i32, i32* %field360, align 4, !dbg !1032
-  %andtmp362 = and i32 %t361, 15, !dbg !1032
-  %eq363 = icmp eq i32 %andtmp362, 7, !dbg !1032
-  store i1 %eq363, i1* %andand358, align 1, !dbg !1032
-  br i1 %eq363, label %cond_jump_then364, label %cond_jump_end365, !dbg !1032
+  %type361 = load %CType*, %CType** %type, align 8, !dbg !1032
+  %field362 = getelementptr inbounds %CType, %CType* %type361, i32 0, i32 0, !dbg !1032
+  %t363 = load i32, i32* %field362, align 4, !dbg !1032
+  %andtmp364 = and i32 %t363, 15, !dbg !1032
+  %eq365 = icmp eq i32 %andtmp364, 7, !dbg !1032
+  store i1 %eq365, i1* %andand360, align 1, !dbg !1032
+  br i1 %eq365, label %cond_jump_then366, label %cond_jump_end367, !dbg !1032
 
-cond_jump_elif_then0:                             ; preds = %cond_jump_end365
+cond_jump_elif_then0:                             ; preds = %cond_jump_end367
   store i32 0, i32* %par_count, align 4, !dbg !1033
-  %tok387 = load i32, i32* @tok, align 4, !dbg !1034
-  %eq388 = icmp eq i32 %tok387, 40, !dbg !1034
-  br i1 %eq388, label %cond_jump_then389, label %cond_end390, !dbg !1034
+  %tok389 = load i32, i32* @tok, align 4, !dbg !1034
+  %eq390 = icmp eq i32 %tok389, 40, !dbg !1034
+  br i1 %eq390, label %cond_jump_then391, label %cond_end392, !dbg !1034
 
-cond_jump_elif1:                                  ; preds = %cond_jump_end365
-  %tok541 = load i32, i32* @tok, align 4, !dbg !1035
-  %eq542 = icmp eq i32 %tok541, 123, !dbg !1035
-  br i1 %eq542, label %cond_jump_elif_then1, label %cond_jump_elif2, !dbg !1035
+cond_jump_elif1:                                  ; preds = %cond_jump_end367
+  %tok543 = load i32, i32* @tok, align 4, !dbg !1035
+  %eq544 = icmp eq i32 %tok543, 123, !dbg !1035
+  br i1 %eq544, label %cond_jump_elif_then1, label %cond_jump_elif2, !dbg !1035
 
 cond_jump_elif_then1:                             ; preds = %cond_jump_elif1
   call void @next(), !dbg !1036
-  %type543 = load %CType*, %CType** %type, align 8, !dbg !1037
-  %sec544 = load %Section*, %Section** %sec, align 8, !dbg !1037
-  %c545 = load i64, i64* %c, align 4, !dbg !1037
-  %first546 = load i32, i32* %first, align 4, !dbg !1037
-  %size_only547 = load i32, i32* %size_only, align 4, !dbg !1037
-  call void @decl_initializer(%CType* %type543, %Section* %sec544, i64 %c545, i32 %first546, i32 %size_only547), !dbg !1037
+  %type545 = load %CType*, %CType** %type, align 8, !dbg !1037
+  %sec546 = load %Section*, %Section** %sec, align 8, !dbg !1037
+  %c547 = load i64, i64* %c, align 4, !dbg !1037
+  %first548 = load i32, i32* %first, align 4, !dbg !1037
+  %size_only549 = load i32, i32* %size_only, align 4, !dbg !1037
+  call void @decl_initializer(%CType* %type545, %Section* %sec546, i64 %c547, i32 %first548, i32 %size_only549), !dbg !1037
   call void @skip(i32 125), !dbg !1038
   br label %cond_end, !dbg !1038
 
 cond_jump_elif2:                                  ; preds = %cond_jump_elif1
-  %size_only548 = load i32, i32* %size_only, align 4, !dbg !1039
-  %icmpA549 = icmp ne i32 %size_only548, 0, !dbg !1039
-  br i1 %icmpA549, label %cond_jump_elif_then2, label %cond_else_block, !dbg !1039
+  %size_only550 = load i32, i32* %size_only, align 4, !dbg !1039
+  %icmpA551 = icmp ne i32 %size_only550, 0, !dbg !1039
+  br i1 %icmpA551, label %cond_jump_elif_then2, label %cond_else_block, !dbg !1039
 
 cond_jump_elif_then2:                             ; preds = %cond_jump_elif2
   store i32 0, i32* %parlevel, align 4, !dbg !1040
-  br label %loop_top_block550, !dbg !1041
+  br label %loop_top_block552, !dbg !1041
 
 cond_else_block:                                  ; preds = %cond_jump_elif2
   store i32 1, i32* %expr_type, align 4, !dbg !1042
-  %sec591 = load %Section*, %Section** %sec, align 8, !dbg !1043
-  %logical_denial592 = icmp eq %Section* %sec591, null, !dbg !1043
-  %castOOOO593 = zext i1 %logical_denial592 to i32, !dbg !1043
-  %icmpA594 = icmp ne i32 %castOOOO593, 0, !dbg !1043
-  br i1 %icmpA594, label %cond_jump_then595, label %cond_end596, !dbg !1043
+  %sec593 = load %Section*, %Section** %sec, align 8, !dbg !1043
+  %logical_denial594 = icmp eq %Section* %sec593, null, !dbg !1043
+  %castOOOO595 = zext i1 %logical_denial594 to i32, !dbg !1043
+  %icmpA596 = icmp ne i32 %castOOOO595, 0, !dbg !1043
+  br i1 %icmpA596, label %cond_jump_then597, label %cond_end598, !dbg !1043
 
-cond_end:                                         ; preds = %cond_end596, %cond_end_block575, %cond_jump_elif_then1, %cond_end_block537, %cond_end353
+cond_end:                                         ; preds = %cond_end598, %cond_end_block577, %cond_jump_elif_then1, %cond_end_block539, %cond_end355
   ret void, !dbg !1044
 
 pointed_type:                                     ; preds = %cond_jump_then
@@ -8973,16 +8977,16 @@ cond_jump_then80:                                 ; preds = %cond_jump_end65
 
 cond_else_block81:                                ; preds = %cond_jump_end65
   store i32 0, i32* %index, align 4, !dbg !1054
-  br label %loop_top_block234, !dbg !1055
+  br label %loop_top_block236, !dbg !1055
 
-cond_end82:                                       ; preds = %cond_end_block238, %cond_end215
-  %no_oblock310 = load i32, i32* %no_oblock, align 4, !dbg !1056
-  %logical_denial311 = icmp eq i32 %no_oblock310, 0, !dbg !1056
-  %castOOOO312 = zext i1 %logical_denial311 to i32, !dbg !1056
-  %icmpA313 = icmp ne i32 %castOOOO312, 0, !dbg !1056
-  br i1 %icmpA313, label %cond_jump_then314, label %cond_end315, !dbg !1056
+cond_end82:                                       ; preds = %cond_end_block240, %cond_end217
+  %no_oblock312 = load i32, i32* %no_oblock, align 4, !dbg !1056
+  %logical_denial313 = icmp eq i32 %no_oblock312, 0, !dbg !1056
+  %castOOOO314 = zext i1 %logical_denial313 to i32, !dbg !1056
+  %icmpA315 = icmp ne i32 %castOOOO314, 0, !dbg !1056
+  br i1 %icmpA315, label %cond_jump_then316, label %cond_end317, !dbg !1056
 
-loop_top_block:                                   ; preds = %cond_end126, %cond_jump_then80
+loop_top_block:                                   ; preds = %cond_end127, %cond_jump_then80
   %tok84 = load i32, i32* @tok, align 4, !dbg !1057
   %eq85 = icmp eq i32 %tok84, 181, !dbg !1057
   store i1 %eq85, i1* %oror83, align 1, !dbg !1057
@@ -9008,10 +9012,10 @@ cond_then_block:                                  ; preds = %cond_jump_end87
   br i1 %eq97, label %cond_jump_then98, label %cond_else_block99, !dbg !1059
 
 cond_end_block:                                   ; preds = %cond_jump_end87
-  %n205 = load i32, i32* %n, align 4, !dbg !1053
-  %le206 = icmp slt i32 %n205, 0, !dbg !1053
-  store i1 %le206, i1* %oror204, align 1, !dbg !1053
-  br i1 %le206, label %cond_jump_end208, label %cond_jump_then207, !dbg !1053
+  %n207 = load i32, i32* %n, align 4, !dbg !1053
+  %le208 = icmp slt i32 %n207, 0, !dbg !1053
+  store i1 %le208, i1* %oror206, align 1, !dbg !1053
+  br i1 %le208, label %cond_jump_end210, label %cond_jump_then209, !dbg !1053
 
 cond_jump_then98:                                 ; preds = %cond_then_block
   %cstr101 = load %CString*, %CString** %cstr, align 8, !dbg !1060
@@ -9024,800 +9028,802 @@ cond_else_block99:                                ; preds = %cond_then_block
   %cstr103 = load %CString*, %CString** %cstr, align 8, !dbg !1061
   %field104 = getelementptr inbounds %CString, %CString* %cstr103, i32 0, i32 0, !dbg !1061
   %size105 = load i32, i32* %field104, align 4, !dbg !1061
-  %div = sdiv i32 %size105, 4, !dbg !1061
-  store i32 %div, i32* %cstr_len, align 4, !dbg !1061
+  %icastD = sext i32 %size105 to i64, !dbg !1061
+  %div = sdiv i64 %icastD, 4, !dbg !1061
+  %icastM106 = trunc i64 %div to i32, !dbg !1061
+  store i32 %icastM106, i32* %cstr_len, align 4, !dbg !1061
   br label %cond_end100, !dbg !1061
 
 cond_end100:                                      ; preds = %cond_else_block99, %cond_jump_then98
-  %cstr_len106 = load i32, i32* %cstr_len, align 4, !dbg !1062
-  %sub = sub i32 %cstr_len106, 1, !dbg !1062
+  %cstr_len107 = load i32, i32* %cstr_len, align 4, !dbg !1062
+  %sub = sub i32 %cstr_len107, 1, !dbg !1062
   store i32 %sub, i32* %cstr_len, align 4, !dbg !1062
   %add = add i32 %sub, 1, !dbg !1062
-  %cstr_len107 = load i32, i32* %cstr_len, align 4, !dbg !1063
-  store i32 %cstr_len107, i32* %nb, align 4, !dbg !1063
-  %n109 = load i32, i32* %n, align 4, !dbg !1064
-  %gteq = icmp sge i32 %n109, 0, !dbg !1064
-  store i1 %gteq, i1* %andand108, align 1, !dbg !1064
-  br i1 %gteq, label %cond_jump_then110, label %cond_jump_end111, !dbg !1064
+  %cstr_len108 = load i32, i32* %cstr_len, align 4, !dbg !1063
+  store i32 %cstr_len108, i32* %nb, align 4, !dbg !1063
+  %n110 = load i32, i32* %n, align 4, !dbg !1064
+  %gteq = icmp sge i32 %n110, 0, !dbg !1064
+  store i1 %gteq, i1* %andand109, align 1, !dbg !1064
+  br i1 %gteq, label %cond_jump_then111, label %cond_jump_end112, !dbg !1064
 
-cond_jump_then110:                                ; preds = %cond_end100
-  %nb112 = load i32, i32* %nb, align 4, !dbg !1064
-  %n113 = load i32, i32* %n, align 4, !dbg !1064
-  %array_length114 = load i32, i32* %array_length, align 4, !dbg !1064
-  %sub115 = sub i32 %n113, %array_length114, !dbg !1064
-  %gt = icmp sgt i32 %nb112, %sub115, !dbg !1064
-  %andand116 = and i1 %gteq, %gt, !dbg !1064
-  store i1 %andand116, i1* %andand108, align 1, !dbg !1064
-  br label %cond_jump_end111, !dbg !1064
+cond_jump_then111:                                ; preds = %cond_end100
+  %nb113 = load i32, i32* %nb, align 4, !dbg !1064
+  %n114 = load i32, i32* %n, align 4, !dbg !1064
+  %array_length115 = load i32, i32* %array_length, align 4, !dbg !1064
+  %sub116 = sub i32 %n114, %array_length115, !dbg !1064
+  %gt = icmp sgt i32 %nb113, %sub116, !dbg !1064
+  %andand117 = and i1 %gteq, %gt, !dbg !1064
+  store i1 %andand117, i1* %andand109, align 1, !dbg !1064
+  br label %cond_jump_end112, !dbg !1064
 
-cond_jump_end111:                                 ; preds = %cond_jump_then110, %cond_end100
-  %andand_result_value117 = load i1, i1* %andand108, align 1, !dbg !1064
-  br i1 %andand_result_value117, label %cond_jump_then118, label %cond_end119, !dbg !1064
+cond_jump_end112:                                 ; preds = %cond_jump_then111, %cond_end100
+  %andand_result_value118 = load i1, i1* %andand109, align 1, !dbg !1064
+  br i1 %andand_result_value118, label %cond_jump_then119, label %cond_end120, !dbg !1064
 
-cond_jump_then118:                                ; preds = %cond_jump_end111
-  %n120 = load i32, i32* %n, align 4, !dbg !1065
-  %array_length121 = load i32, i32* %array_length, align 4, !dbg !1065
-  %sub122 = sub i32 %n120, %array_length121, !dbg !1065
-  store i32 %sub122, i32* %nb, align 4, !dbg !1065
-  br label %cond_end119, !dbg !1065
+cond_jump_then119:                                ; preds = %cond_jump_end112
+  %n121 = load i32, i32* %n, align 4, !dbg !1065
+  %array_length122 = load i32, i32* %array_length, align 4, !dbg !1065
+  %sub123 = sub i32 %n121, %array_length122, !dbg !1065
+  store i32 %sub123, i32* %nb, align 4, !dbg !1065
+  br label %cond_end120, !dbg !1065
 
-cond_end119:                                      ; preds = %cond_jump_then118, %cond_jump_end111
-  %size_only123 = load i32, i32* %size_only, align 4, !dbg !1066
-  %logical_denial = icmp eq i32 %size_only123, 0, !dbg !1066
+cond_end120:                                      ; preds = %cond_jump_then119, %cond_jump_end112
+  %size_only124 = load i32, i32* %size_only, align 4, !dbg !1066
+  %logical_denial = icmp eq i32 %size_only124, 0, !dbg !1066
   %castOOOO = zext i1 %logical_denial to i32, !dbg !1066
-  %icmpA124 = icmp ne i32 %castOOOO, 0, !dbg !1066
-  br i1 %icmpA124, label %cond_jump_then125, label %cond_end126, !dbg !1066
+  %icmpA125 = icmp ne i32 %castOOOO, 0, !dbg !1066
+  br i1 %icmpA125, label %cond_jump_then126, label %cond_end127, !dbg !1066
 
-cond_jump_then125:                                ; preds = %cond_end119
-  %cstr_len127 = load i32, i32* %cstr_len, align 4, !dbg !1067
-  %nb128 = load i32, i32* %nb, align 4, !dbg !1067
-  %gt129 = icmp sgt i32 %cstr_len127, %nb128, !dbg !1067
-  br i1 %gt129, label %cond_jump_then130, label %cond_end131, !dbg !1067
+cond_jump_then126:                                ; preds = %cond_end120
+  %cstr_len128 = load i32, i32* %cstr_len, align 4, !dbg !1067
+  %nb129 = load i32, i32* %nb, align 4, !dbg !1067
+  %gt130 = icmp sgt i32 %cstr_len128, %nb129, !dbg !1067
+  br i1 %gt130, label %cond_jump_then131, label %cond_end132, !dbg !1067
 
-cond_end126:                                      ; preds = %cond_end149, %cond_end119
-  %array_length199 = load i32, i32* %array_length, align 4, !dbg !1068
-  %nb200 = load i32, i32* %nb, align 4, !dbg !1068
-  %add201 = add i32 %array_length199, %nb200, !dbg !1068
-  store i32 %add201, i32* %array_length, align 4, !dbg !1068
+cond_end127:                                      ; preds = %cond_end150, %cond_end120
+  %array_length201 = load i32, i32* %array_length, align 4, !dbg !1068
   %nb202 = load i32, i32* %nb, align 4, !dbg !1068
-  %sub203 = sub i32 %add201, %nb202, !dbg !1068
+  %add203 = add i32 %array_length201, %nb202, !dbg !1068
+  store i32 %add203, i32* %array_length, align 4, !dbg !1068
+  %nb204 = load i32, i32* %nb, align 4, !dbg !1068
+  %sub205 = sub i32 %add203, %nb204, !dbg !1068
   call void @next(), !dbg !1069
   br label %loop_top_block, !dbg !1069
 
-cond_jump_then130:                                ; preds = %cond_jump_then125
+cond_jump_then131:                                ; preds = %cond_jump_then126
   call void (i8*, ...) @warning(i8* bitcast ([41 x i8]* @199 to i8*)), !dbg !1070
-  br label %cond_end131, !dbg !1070
+  br label %cond_end132, !dbg !1070
 
-cond_end131:                                      ; preds = %cond_jump_then130, %cond_jump_then125
-  %sec134 = load %Section*, %Section** %sec, align 8, !dbg !1071
-  %icmpB = icmp ne %Section* %sec134, null, !dbg !1071
-  store i1 %icmpB, i1* %andand133, align 1, !dbg !1071
-  br i1 %icmpB, label %cond_jump_then135, label %cond_jump_end136, !dbg !1071
+cond_end132:                                      ; preds = %cond_jump_then131, %cond_jump_then126
+  %sec135 = load %Section*, %Section** %sec, align 8, !dbg !1071
+  %icmpB = icmp ne %Section* %sec135, null, !dbg !1071
+  store i1 %icmpB, i1* %andand134, align 1, !dbg !1071
+  br i1 %icmpB, label %cond_jump_then136, label %cond_jump_end137, !dbg !1071
 
-cond_jump_then135:                                ; preds = %cond_end131
-  %tok137 = load i32, i32* @tok, align 4, !dbg !1071
-  %eq138 = icmp eq i32 %tok137, 181, !dbg !1071
-  %andand139 = and i1 %icmpB, %eq138, !dbg !1071
-  store i1 %andand139, i1* %andand133, align 1, !dbg !1071
-  br label %cond_jump_end136, !dbg !1071
+cond_jump_then136:                                ; preds = %cond_end132
+  %tok138 = load i32, i32* @tok, align 4, !dbg !1071
+  %eq139 = icmp eq i32 %tok138, 181, !dbg !1071
+  %andand140 = and i1 %icmpB, %eq139, !dbg !1071
+  store i1 %andand140, i1* %andand134, align 1, !dbg !1071
+  br label %cond_jump_end137, !dbg !1071
 
-cond_jump_end136:                                 ; preds = %cond_jump_then135, %cond_end131
-  %andand_result_value140 = load i1, i1* %andand133, align 1, !dbg !1071
-  store i1 %andand_result_value140, i1* %andand132, align 1, !dbg !1071
-  br i1 %andand_result_value140, label %cond_jump_then141, label %cond_jump_end142, !dbg !1071
+cond_jump_end137:                                 ; preds = %cond_jump_then136, %cond_end132
+  %andand_result_value141 = load i1, i1* %andand134, align 1, !dbg !1071
+  store i1 %andand_result_value141, i1* %andand133, align 1, !dbg !1071
+  br i1 %andand_result_value141, label %cond_jump_then142, label %cond_jump_end143, !dbg !1071
 
-cond_jump_then141:                                ; preds = %cond_jump_end136
-  %size1143 = load i32, i32* %size1, align 4, !dbg !1071
-  %eq144 = icmp eq i32 %size1143, 1, !dbg !1071
-  %andand145 = and i1 %andand_result_value140, %eq144, !dbg !1071
-  store i1 %andand145, i1* %andand132, align 1, !dbg !1071
-  br label %cond_jump_end142, !dbg !1071
+cond_jump_then142:                                ; preds = %cond_jump_end137
+  %size1144 = load i32, i32* %size1, align 4, !dbg !1071
+  %eq145 = icmp eq i32 %size1144, 1, !dbg !1071
+  %andand146 = and i1 %andand_result_value141, %eq145, !dbg !1071
+  store i1 %andand146, i1* %andand133, align 1, !dbg !1071
+  br label %cond_jump_end143, !dbg !1071
 
-cond_jump_end142:                                 ; preds = %cond_jump_then141, %cond_jump_end136
-  %andand_result_value146 = load i1, i1* %andand132, align 1, !dbg !1071
-  br i1 %andand_result_value146, label %cond_jump_then147, label %cond_else_block148, !dbg !1071
+cond_jump_end143:                                 ; preds = %cond_jump_then142, %cond_jump_end137
+  %andand_result_value147 = load i1, i1* %andand133, align 1, !dbg !1071
+  br i1 %andand_result_value147, label %cond_jump_then148, label %cond_else_block149, !dbg !1071
 
-cond_jump_then147:                                ; preds = %cond_jump_end142
-  %sec150 = load %Section*, %Section** %sec, align 8, !dbg !1072
-  %field151 = getelementptr inbounds %Section, %Section* %sec150, i32 0, i32 1, !dbg !1072
-  %data = load i8*, i8** %field151, align 8, !dbg !1072
-  %c152 = load i64, i64* %c, align 4, !dbg !1072
+cond_jump_then148:                                ; preds = %cond_jump_end143
+  %sec151 = load %Section*, %Section** %sec, align 8, !dbg !1072
+  %field152 = getelementptr inbounds %Section, %Section* %sec151, i32 0, i32 1, !dbg !1072
+  %data = load i8*, i8** %field152, align 8, !dbg !1072
+  %c153 = load i64, i64* %c, align 4, !dbg !1072
   %ptrToIntC = ptrtoint i8* %data to i64, !dbg !1072
-  %mul = mul i64 %c152, 1, !dbg !1072
-  %add153 = add i64 %ptrToIntC, %mul, !dbg !1072
-  %intToPtrB = inttoptr i64 %add153 to i8*, !dbg !1072
-  %array_length154 = load i32, i32* %array_length, align 4, !dbg !1072
-  %ptrToIntC155 = ptrtoint i8* %intToPtrB to i64, !dbg !1072
-  %sext = sext i32 %array_length154 to i64, !dbg !1072
-  %mul156 = mul i64 %sext, 1, !dbg !1072
-  %add157 = add i64 %ptrToIntC155, %mul156, !dbg !1072
-  %intToPtrB158 = inttoptr i64 %add157 to i8*, !dbg !1072
-  %cstr159 = load %CString*, %CString** %cstr, align 8, !dbg !1072
-  %field160 = getelementptr inbounds %CString, %CString* %cstr159, i32 0, i32 1, !dbg !1072
-  %data161 = load i8*, i8** %field160, align 8, !dbg !1072
-  %nb162 = load i32, i32* %nb, align 4, !dbg !1072
-  %icastD = sext i32 %nb162 to i64, !dbg !1072
-  %fun_result163 = call i8* @memcpy(i8* %intToPtrB158, i8* %data161, i64 %icastD), !dbg !1072
-  br label %cond_end149, !dbg !1072
+  %mul = mul i64 %c153, 1, !dbg !1072
+  %add154 = add i64 %ptrToIntC, %mul, !dbg !1072
+  %intToPtrB = inttoptr i64 %add154 to i8*, !dbg !1072
+  %array_length155 = load i32, i32* %array_length, align 4, !dbg !1072
+  %ptrToIntC156 = ptrtoint i8* %intToPtrB to i64, !dbg !1072
+  %sext = sext i32 %array_length155 to i64, !dbg !1072
+  %mul157 = mul i64 %sext, 1, !dbg !1072
+  %add158 = add i64 %ptrToIntC156, %mul157, !dbg !1072
+  %intToPtrB159 = inttoptr i64 %add158 to i8*, !dbg !1072
+  %cstr160 = load %CString*, %CString** %cstr, align 8, !dbg !1072
+  %field161 = getelementptr inbounds %CString, %CString* %cstr160, i32 0, i32 1, !dbg !1072
+  %data162 = load i8*, i8** %field161, align 8, !dbg !1072
+  %nb163 = load i32, i32* %nb, align 4, !dbg !1072
+  %icastD164 = sext i32 %nb163 to i64, !dbg !1072
+  %fun_result165 = call i8* @memcpy(i8* %intToPtrB159, i8* %data162, i64 %icastD164), !dbg !1072
+  br label %cond_end150, !dbg !1072
 
-cond_else_block148:                               ; preds = %cond_jump_end142
+cond_else_block149:                               ; preds = %cond_jump_end143
   store i32 0, i32* %i, align 4, !dbg !1073
-  br label %loop_top_block164, !dbg !1073
+  br label %loop_top_block166, !dbg !1073
 
-cond_end149:                                      ; preds = %cond_end_block168, %cond_jump_then147
-  br label %cond_end126, !dbg !1073
+cond_end150:                                      ; preds = %cond_end_block170, %cond_jump_then148
+  br label %cond_end127, !dbg !1073
 
-loop_continue_top_block:                          ; preds = %cond_end173
-  %i195 = load i32, i32* %i, align 4, !dbg !1073
-  %add196 = add i32 %i195, 1, !dbg !1073
-  store i32 %add196, i32* %i, align 4, !dbg !1073
+loop_continue_top_block:                          ; preds = %cond_end175
   %i197 = load i32, i32* %i, align 4, !dbg !1073
-  %sub198 = sub i32 %i197, 1, !dbg !1073
-  br label %loop_top_block164, !dbg !1073
+  %add198 = add i32 %i197, 1, !dbg !1073
+  store i32 %add198, i32* %i, align 4, !dbg !1073
+  %i199 = load i32, i32* %i, align 4, !dbg !1073
+  %sub200 = sub i32 %i199, 1, !dbg !1073
+  br label %loop_top_block166, !dbg !1073
 
-loop_top_block164:                                ; preds = %loop_continue_top_block, %cond_else_block148
-  %i165 = load i32, i32* %i, align 4, !dbg !1073
-  %nb166 = load i32, i32* %nb, align 4, !dbg !1073
-  %le = icmp slt i32 %i165, %nb166, !dbg !1073
-  br i1 %le, label %cond_then_block167, label %cond_end_block168, !dbg !1073
+loop_top_block166:                                ; preds = %loop_continue_top_block, %cond_else_block149
+  %i167 = load i32, i32* %i, align 4, !dbg !1073
+  %nb168 = load i32, i32* %nb, align 4, !dbg !1073
+  %le = icmp slt i32 %i167, %nb168, !dbg !1073
+  br i1 %le, label %cond_then_block169, label %cond_end_block170, !dbg !1073
 
-cond_then_block167:                               ; preds = %loop_top_block164
-  %tok169 = load i32, i32* @tok, align 4, !dbg !1074
-  %eq170 = icmp eq i32 %tok169, 181, !dbg !1074
-  br i1 %eq170, label %cond_jump_then171, label %cond_else_block172, !dbg !1074
+cond_then_block169:                               ; preds = %loop_top_block166
+  %tok171 = load i32, i32* @tok, align 4, !dbg !1074
+  %eq172 = icmp eq i32 %tok171, 181, !dbg !1074
+  br i1 %eq172, label %cond_jump_then173, label %cond_else_block174, !dbg !1074
 
-cond_end_block168:                                ; preds = %loop_top_block164
-  br label %cond_end149, !dbg !1073
+cond_end_block170:                                ; preds = %loop_top_block166
+  br label %cond_end150, !dbg !1073
 
-cond_jump_then171:                                ; preds = %cond_then_block167
-  %cstr174 = load %CString*, %CString** %cstr, align 8, !dbg !1075
-  %field175 = getelementptr inbounds %CString, %CString* %cstr174, i32 0, i32 1, !dbg !1075
-  %data176 = load i8*, i8** %field175, align 8, !dbg !1075
-  %i177 = load i32, i32* %i, align 4, !dbg !1075
-  %element_address = getelementptr inbounds i8, i8* %data176, i32 %i177, !dbg !1075
+cond_jump_then173:                                ; preds = %cond_then_block169
+  %cstr176 = load %CString*, %CString** %cstr, align 8, !dbg !1075
+  %field177 = getelementptr inbounds %CString, %CString* %cstr176, i32 0, i32 1, !dbg !1075
+  %data178 = load i8*, i8** %field177, align 8, !dbg !1075
+  %i179 = load i32, i32* %i, align 4, !dbg !1075
+  %element_address = getelementptr inbounds i8, i8* %data178, i32 %i179, !dbg !1075
   %element = load i8, i8* %element_address, align 1, !dbg !1075
   %icastKY = zext i8 %element to i32, !dbg !1075
   store i32 %icastKY, i32* %ch, align 4, !dbg !1075
-  br label %cond_end173, !dbg !1075
+  br label %cond_end175, !dbg !1075
 
-cond_else_block172:                               ; preds = %cond_then_block167
-  %cstr178 = load %CString*, %CString** %cstr, align 8, !dbg !1076
-  %field179 = getelementptr inbounds %CString, %CString* %cstr178, i32 0, i32 1, !dbg !1076
-  %data180 = load i8*, i8** %field179, align 8, !dbg !1076
-  %castAQ = bitcast i8* %data180 to i32*, !dbg !1076
-  %i181 = load i32, i32* %i, align 4, !dbg !1076
-  %element_address182 = getelementptr inbounds i32, i32* %castAQ, i32 %i181, !dbg !1076
-  %element183 = load i32, i32* %element_address182, align 4, !dbg !1076
-  store i32 %element183, i32* %ch, align 4, !dbg !1076
-  br label %cond_end173, !dbg !1076
+cond_else_block174:                               ; preds = %cond_then_block169
+  %cstr180 = load %CString*, %CString** %cstr, align 8, !dbg !1076
+  %field181 = getelementptr inbounds %CString, %CString* %cstr180, i32 0, i32 1, !dbg !1076
+  %data182 = load i8*, i8** %field181, align 8, !dbg !1076
+  %castAQ = bitcast i8* %data182 to i32*, !dbg !1076
+  %i183 = load i32, i32* %i, align 4, !dbg !1076
+  %element_address184 = getelementptr inbounds i32, i32* %castAQ, i32 %i183, !dbg !1076
+  %element185 = load i32, i32* %element_address184, align 4, !dbg !1076
+  store i32 %element185, i32* %ch, align 4, !dbg !1076
+  br label %cond_end175, !dbg !1076
 
-cond_end173:                                      ; preds = %cond_else_block172, %cond_jump_then171
-  %t1184 = load %CType*, %CType** %t1, align 8, !dbg !1077
-  %sec185 = load %Section*, %Section** %sec, align 8, !dbg !1077
-  %c186 = load i64, i64* %c, align 4, !dbg !1077
-  %array_length187 = load i32, i32* %array_length, align 4, !dbg !1077
-  %i188 = load i32, i32* %i, align 4, !dbg !1077
-  %add189 = add i32 %array_length187, %i188, !dbg !1077
-  %size1190 = load i32, i32* %size1, align 4, !dbg !1077
-  %mul191 = mul i32 %add189, %size1190, !dbg !1077
-  %icastD192 = sext i32 %mul191 to i64, !dbg !1077
-  %add193 = add i64 %c186, %icastD192, !dbg !1077
-  %ch194 = load i32, i32* %ch, align 4, !dbg !1077
-  call void @init_putv(%CType* %t1184, %Section* %sec185, i64 %add193, i32 %ch194, i32 0), !dbg !1077
+cond_end175:                                      ; preds = %cond_else_block174, %cond_jump_then173
+  %t1186 = load %CType*, %CType** %t1, align 8, !dbg !1077
+  %sec187 = load %Section*, %Section** %sec, align 8, !dbg !1077
+  %c188 = load i64, i64* %c, align 4, !dbg !1077
+  %array_length189 = load i32, i32* %array_length, align 4, !dbg !1077
+  %i190 = load i32, i32* %i, align 4, !dbg !1077
+  %add191 = add i32 %array_length189, %i190, !dbg !1077
+  %size1192 = load i32, i32* %size1, align 4, !dbg !1077
+  %mul193 = mul i32 %add191, %size1192, !dbg !1077
+  %icastD194 = sext i32 %mul193 to i64, !dbg !1077
+  %add195 = add i64 %c188, %icastD194, !dbg !1077
+  %ch196 = load i32, i32* %ch, align 4, !dbg !1077
+  call void @init_putv(%CType* %t1186, %Section* %sec187, i64 %add195, i32 %ch196, i32 0), !dbg !1077
   br label %loop_continue_top_block, !dbg !1077
 
-cond_jump_then207:                                ; preds = %cond_end_block
-  %array_length209 = load i32, i32* %array_length, align 4, !dbg !1053
-  %n210 = load i32, i32* %n, align 4, !dbg !1053
-  %le211 = icmp slt i32 %array_length209, %n210, !dbg !1053
-  %oror212 = or i1 %le206, %le211, !dbg !1053
-  store i1 %oror212, i1* %oror204, align 1, !dbg !1053
-  br label %cond_jump_end208, !dbg !1053
+cond_jump_then209:                                ; preds = %cond_end_block
+  %array_length211 = load i32, i32* %array_length, align 4, !dbg !1053
+  %n212 = load i32, i32* %n, align 4, !dbg !1053
+  %le213 = icmp slt i32 %array_length211, %n212, !dbg !1053
+  %oror214 = or i1 %le208, %le213, !dbg !1053
+  store i1 %oror214, i1* %oror206, align 1, !dbg !1053
+  br label %cond_jump_end210, !dbg !1053
 
-cond_jump_end208:                                 ; preds = %cond_jump_then207, %cond_end_block
-  %oror_result_value213 = load i1, i1* %oror204, align 1, !dbg !1053
-  br i1 %oror_result_value213, label %cond_jump_then214, label %cond_end215, !dbg !1053
+cond_jump_end210:                                 ; preds = %cond_jump_then209, %cond_end_block
+  %oror_result_value215 = load i1, i1* %oror206, align 1, !dbg !1053
+  br i1 %oror_result_value215, label %cond_jump_then216, label %cond_end217, !dbg !1053
 
-cond_jump_then214:                                ; preds = %cond_jump_end208
-  %size_only216 = load i32, i32* %size_only, align 4, !dbg !1078
-  %logical_denial217 = icmp eq i32 %size_only216, 0, !dbg !1078
-  %castOOOO218 = zext i1 %logical_denial217 to i32, !dbg !1078
-  %icmpA219 = icmp ne i32 %castOOOO218, 0, !dbg !1078
-  br i1 %icmpA219, label %cond_jump_then220, label %cond_end221, !dbg !1078
+cond_jump_then216:                                ; preds = %cond_jump_end210
+  %size_only218 = load i32, i32* %size_only, align 4, !dbg !1078
+  %logical_denial219 = icmp eq i32 %size_only218, 0, !dbg !1078
+  %castOOOO220 = zext i1 %logical_denial219 to i32, !dbg !1078
+  %icmpA221 = icmp ne i32 %castOOOO220, 0, !dbg !1078
+  br i1 %icmpA221, label %cond_jump_then222, label %cond_end223, !dbg !1078
 
-cond_end215:                                      ; preds = %cond_end221, %cond_jump_end208
+cond_end217:                                      ; preds = %cond_end223, %cond_jump_end210
   br label %cond_end82, !dbg !1079
 
-cond_jump_then220:                                ; preds = %cond_jump_then214
-  %t1222 = load %CType*, %CType** %t1, align 8, !dbg !1080
-  %sec223 = load %Section*, %Section** %sec, align 8, !dbg !1080
-  %c224 = load i64, i64* %c, align 4, !dbg !1080
-  %array_length225 = load i32, i32* %array_length, align 4, !dbg !1080
-  %size1226 = load i32, i32* %size1, align 4, !dbg !1080
-  %mul227 = mul i32 %array_length225, %size1226, !dbg !1080
-  %icastD228 = sext i32 %mul227 to i64, !dbg !1080
-  %add229 = add i64 %c224, %icastD228, !dbg !1080
-  call void @init_putv(%CType* %t1222, %Section* %sec223, i64 %add229, i32 0, i32 0), !dbg !1080
-  br label %cond_end221, !dbg !1080
+cond_jump_then222:                                ; preds = %cond_jump_then216
+  %t1224 = load %CType*, %CType** %t1, align 8, !dbg !1080
+  %sec225 = load %Section*, %Section** %sec, align 8, !dbg !1080
+  %c226 = load i64, i64* %c, align 4, !dbg !1080
+  %array_length227 = load i32, i32* %array_length, align 4, !dbg !1080
+  %size1228 = load i32, i32* %size1, align 4, !dbg !1080
+  %mul229 = mul i32 %array_length227, %size1228, !dbg !1080
+  %icastD230 = sext i32 %mul229 to i64, !dbg !1080
+  %add231 = add i64 %c226, %icastD230, !dbg !1080
+  call void @init_putv(%CType* %t1224, %Section* %sec225, i64 %add231, i32 0, i32 0), !dbg !1080
+  br label %cond_end223, !dbg !1080
 
-cond_end221:                                      ; preds = %cond_jump_then220, %cond_jump_then214
-  %array_length230 = load i32, i32* %array_length, align 4, !dbg !1079
-  %add231 = add i32 %array_length230, 1, !dbg !1079
-  store i32 %add231, i32* %array_length, align 4, !dbg !1079
+cond_end223:                                      ; preds = %cond_jump_then222, %cond_jump_then216
   %array_length232 = load i32, i32* %array_length, align 4, !dbg !1079
-  %sub233 = sub i32 %array_length232, 1, !dbg !1079
-  br label %cond_end215, !dbg !1079
+  %add233 = add i32 %array_length232, 1, !dbg !1079
+  store i32 %add233, i32* %array_length, align 4, !dbg !1079
+  %array_length234 = load i32, i32* %array_length, align 4, !dbg !1079
+  %sub235 = sub i32 %array_length234, 1, !dbg !1079
+  br label %cond_end217, !dbg !1079
 
-loop_top_block234:                                ; preds = %cond_end308, %cond_else_block81
-  %tok235 = load i32, i32* @tok, align 4, !dbg !1081
-  %not_eq236 = icmp ne i32 %tok235, 125, !dbg !1081
-  br i1 %not_eq236, label %cond_then_block237, label %cond_end_block238, !dbg !1081
+loop_top_block236:                                ; preds = %cond_end310, %cond_else_block81
+  %tok237 = load i32, i32* @tok, align 4, !dbg !1081
+  %not_eq238 = icmp ne i32 %tok237, 125, !dbg !1081
+  br i1 %not_eq238, label %cond_then_block239, label %cond_end_block240, !dbg !1081
 
-cond_then_block237:                               ; preds = %loop_top_block234
-  %type239 = load %CType*, %CType** %type, align 8, !dbg !1082
-  %sec240 = load %Section*, %Section** %sec, align 8, !dbg !1082
-  %c241 = load i64, i64* %c, align 4, !dbg !1082
-  %index242 = load i32, i32* %index, align 4, !dbg !1082
-  %size_only243 = load i32, i32* %size_only, align 4, !dbg !1082
-  call void @decl_designator(%CType* %type239, %Section* %sec240, i64 %c241, i32* %index, %Sym** null, i32 %size_only243), !dbg !1082
-  %n245 = load i32, i32* %n, align 4, !dbg !1083
-  %gteq246 = icmp sge i32 %n245, 0, !dbg !1083
-  store i1 %gteq246, i1* %andand244, align 1, !dbg !1083
-  br i1 %gteq246, label %cond_jump_then247, label %cond_jump_end248, !dbg !1083
+cond_then_block239:                               ; preds = %loop_top_block236
+  %type241 = load %CType*, %CType** %type, align 8, !dbg !1082
+  %sec242 = load %Section*, %Section** %sec, align 8, !dbg !1082
+  %c243 = load i64, i64* %c, align 4, !dbg !1082
+  %index244 = load i32, i32* %index, align 4, !dbg !1082
+  %size_only245 = load i32, i32* %size_only, align 4, !dbg !1082
+  call void @decl_designator(%CType* %type241, %Section* %sec242, i64 %c243, i32* %index, %Sym** null, i32 %size_only245), !dbg !1082
+  %n247 = load i32, i32* %n, align 4, !dbg !1083
+  %gteq248 = icmp sge i32 %n247, 0, !dbg !1083
+  store i1 %gteq248, i1* %andand246, align 1, !dbg !1083
+  br i1 %gteq248, label %cond_jump_then249, label %cond_jump_end250, !dbg !1083
 
-cond_end_block238:                                ; preds = %cond_jump_then307, %cond_jump_then303, %loop_top_block234
+cond_end_block240:                                ; preds = %cond_jump_then309, %cond_jump_then305, %loop_top_block236
   br label %cond_end82, !dbg !1084
 
-cond_jump_then247:                                ; preds = %cond_then_block237
-  %index249 = load i32, i32* %index, align 4, !dbg !1083
-  %n250 = load i32, i32* %n, align 4, !dbg !1083
-  %gteq251 = icmp sge i32 %index249, %n250, !dbg !1083
-  %andand252 = and i1 %gteq246, %gteq251, !dbg !1083
-  store i1 %andand252, i1* %andand244, align 1, !dbg !1083
-  br label %cond_jump_end248, !dbg !1083
+cond_jump_then249:                                ; preds = %cond_then_block239
+  %index251 = load i32, i32* %index, align 4, !dbg !1083
+  %n252 = load i32, i32* %n, align 4, !dbg !1083
+  %gteq253 = icmp sge i32 %index251, %n252, !dbg !1083
+  %andand254 = and i1 %gteq248, %gteq253, !dbg !1083
+  store i1 %andand254, i1* %andand246, align 1, !dbg !1083
+  br label %cond_jump_end250, !dbg !1083
 
-cond_jump_end248:                                 ; preds = %cond_jump_then247, %cond_then_block237
-  %andand_result_value253 = load i1, i1* %andand244, align 1, !dbg !1083
-  br i1 %andand_result_value253, label %cond_jump_then254, label %cond_end255, !dbg !1083
+cond_jump_end250:                                 ; preds = %cond_jump_then249, %cond_then_block239
+  %andand_result_value255 = load i1, i1* %andand246, align 1, !dbg !1083
+  br i1 %andand_result_value255, label %cond_jump_then256, label %cond_end257, !dbg !1083
 
-cond_jump_then254:                                ; preds = %cond_jump_end248
+cond_jump_then256:                                ; preds = %cond_jump_end250
   call void (i8*, ...) @error(i8* bitcast ([16 x i8]* @200 to i8*)), !dbg !1085
-  br label %cond_end255, !dbg !1085
+  br label %cond_end257, !dbg !1085
 
-cond_end255:                                      ; preds = %cond_jump_then254, %cond_jump_end248
-  %size_only257 = load i32, i32* %size_only, align 4, !dbg !1086
-  %logical_denial258 = icmp eq i32 %size_only257, 0, !dbg !1086
-  %castOOOO259 = zext i1 %logical_denial258 to i32, !dbg !1086
-  %icmpA260 = icmp ne i32 %castOOOO259, 0, !dbg !1086
-  store i1 %icmpA260, i1* %andand256, align 1, !dbg !1086
-  br i1 %icmpA260, label %cond_jump_then261, label %cond_jump_end262, !dbg !1086
+cond_end257:                                      ; preds = %cond_jump_then256, %cond_jump_end250
+  %size_only259 = load i32, i32* %size_only, align 4, !dbg !1086
+  %logical_denial260 = icmp eq i32 %size_only259, 0, !dbg !1086
+  %castOOOO261 = zext i1 %logical_denial260 to i32, !dbg !1086
+  %icmpA262 = icmp ne i32 %castOOOO261, 0, !dbg !1086
+  store i1 %icmpA262, i1* %andand258, align 1, !dbg !1086
+  br i1 %icmpA262, label %cond_jump_then263, label %cond_jump_end264, !dbg !1086
 
-cond_jump_then261:                                ; preds = %cond_end255
-  %array_length263 = load i32, i32* %array_length, align 4, !dbg !1086
-  %index264 = load i32, i32* %index, align 4, !dbg !1086
-  %le265 = icmp slt i32 %array_length263, %index264, !dbg !1086
-  %andand266 = and i1 %icmpA260, %le265, !dbg !1086
-  store i1 %andand266, i1* %andand256, align 1, !dbg !1086
-  br label %cond_jump_end262, !dbg !1086
+cond_jump_then263:                                ; preds = %cond_end257
+  %array_length265 = load i32, i32* %array_length, align 4, !dbg !1086
+  %index266 = load i32, i32* %index, align 4, !dbg !1086
+  %le267 = icmp slt i32 %array_length265, %index266, !dbg !1086
+  %andand268 = and i1 %icmpA262, %le267, !dbg !1086
+  store i1 %andand268, i1* %andand258, align 1, !dbg !1086
+  br label %cond_jump_end264, !dbg !1086
 
-cond_jump_end262:                                 ; preds = %cond_jump_then261, %cond_end255
-  %andand_result_value267 = load i1, i1* %andand256, align 1, !dbg !1086
-  br i1 %andand_result_value267, label %cond_jump_then268, label %cond_end269, !dbg !1086
+cond_jump_end264:                                 ; preds = %cond_jump_then263, %cond_end257
+  %andand_result_value269 = load i1, i1* %andand258, align 1, !dbg !1086
+  br i1 %andand_result_value269, label %cond_jump_then270, label %cond_end271, !dbg !1086
 
-cond_jump_then268:                                ; preds = %cond_jump_end262
-  %t1270 = load %CType*, %CType** %t1, align 8, !dbg !1087
-  %sec271 = load %Section*, %Section** %sec, align 8, !dbg !1087
-  %c272 = load i64, i64* %c, align 4, !dbg !1087
-  %array_length273 = load i32, i32* %array_length, align 4, !dbg !1087
-  %size1274 = load i32, i32* %size1, align 4, !dbg !1087
-  %mul275 = mul i32 %array_length273, %size1274, !dbg !1087
-  %icastD276 = sext i32 %mul275 to i64, !dbg !1087
-  %add277 = add i64 %c272, %icastD276, !dbg !1087
-  %index278 = load i32, i32* %index, align 4, !dbg !1087
-  %array_length279 = load i32, i32* %array_length, align 4, !dbg !1087
-  %sub280 = sub i32 %index278, %array_length279, !dbg !1087
-  %size1281 = load i32, i32* %size1, align 4, !dbg !1087
-  %mul282 = mul i32 %sub280, %size1281, !dbg !1087
-  call void @init_putz(%CType* %t1270, %Section* %sec271, i64 %add277, i32 %mul282), !dbg !1087
-  br label %cond_end269, !dbg !1087
+cond_jump_then270:                                ; preds = %cond_jump_end264
+  %t1272 = load %CType*, %CType** %t1, align 8, !dbg !1087
+  %sec273 = load %Section*, %Section** %sec, align 8, !dbg !1087
+  %c274 = load i64, i64* %c, align 4, !dbg !1087
+  %array_length275 = load i32, i32* %array_length, align 4, !dbg !1087
+  %size1276 = load i32, i32* %size1, align 4, !dbg !1087
+  %mul277 = mul i32 %array_length275, %size1276, !dbg !1087
+  %icastD278 = sext i32 %mul277 to i64, !dbg !1087
+  %add279 = add i64 %c274, %icastD278, !dbg !1087
+  %index280 = load i32, i32* %index, align 4, !dbg !1087
+  %array_length281 = load i32, i32* %array_length, align 4, !dbg !1087
+  %sub282 = sub i32 %index280, %array_length281, !dbg !1087
+  %size1283 = load i32, i32* %size1, align 4, !dbg !1087
+  %mul284 = mul i32 %sub282, %size1283, !dbg !1087
+  call void @init_putz(%CType* %t1272, %Section* %sec273, i64 %add279, i32 %mul284), !dbg !1087
+  br label %cond_end271, !dbg !1087
 
-cond_end269:                                      ; preds = %cond_jump_then268, %cond_jump_end262
-  %index283 = load i32, i32* %index, align 4, !dbg !1088
-  %add284 = add i32 %index283, 1, !dbg !1088
-  store i32 %add284, i32* %index, align 4, !dbg !1088
+cond_end271:                                      ; preds = %cond_jump_then270, %cond_jump_end264
   %index285 = load i32, i32* %index, align 4, !dbg !1088
-  %sub286 = sub i32 %index285, 1, !dbg !1088
-  %index287 = load i32, i32* %index, align 4, !dbg !1089
-  %array_length288 = load i32, i32* %array_length, align 4, !dbg !1089
-  %gt289 = icmp sgt i32 %index287, %array_length288, !dbg !1089
-  br i1 %gt289, label %cond_jump_then290, label %cond_end291, !dbg !1089
+  %add286 = add i32 %index285, 1, !dbg !1088
+  store i32 %add286, i32* %index, align 4, !dbg !1088
+  %index287 = load i32, i32* %index, align 4, !dbg !1088
+  %sub288 = sub i32 %index287, 1, !dbg !1088
+  %index289 = load i32, i32* %index, align 4, !dbg !1089
+  %array_length290 = load i32, i32* %array_length, align 4, !dbg !1089
+  %gt291 = icmp sgt i32 %index289, %array_length290, !dbg !1089
+  br i1 %gt291, label %cond_jump_then292, label %cond_end293, !dbg !1089
 
-cond_jump_then290:                                ; preds = %cond_end269
-  %index292 = load i32, i32* %index, align 4, !dbg !1090
-  store i32 %index292, i32* %array_length, align 4, !dbg !1090
-  br label %cond_end291, !dbg !1090
+cond_jump_then292:                                ; preds = %cond_end271
+  %index294 = load i32, i32* %index, align 4, !dbg !1090
+  store i32 %index294, i32* %array_length, align 4, !dbg !1090
+  br label %cond_end293, !dbg !1090
 
-cond_end291:                                      ; preds = %cond_jump_then290, %cond_end269
-  %index294 = load i32, i32* %index, align 4, !dbg !1091
-  %n295 = load i32, i32* %n, align 4, !dbg !1091
-  %gteq296 = icmp sge i32 %index294, %n295, !dbg !1091
-  store i1 %gteq296, i1* %andand293, align 1, !dbg !1091
-  br i1 %gteq296, label %cond_jump_then297, label %cond_jump_end298, !dbg !1091
+cond_end293:                                      ; preds = %cond_jump_then292, %cond_end271
+  %index296 = load i32, i32* %index, align 4, !dbg !1091
+  %n297 = load i32, i32* %n, align 4, !dbg !1091
+  %gteq298 = icmp sge i32 %index296, %n297, !dbg !1091
+  store i1 %gteq298, i1* %andand295, align 1, !dbg !1091
+  br i1 %gteq298, label %cond_jump_then299, label %cond_jump_end300, !dbg !1091
 
-cond_jump_then297:                                ; preds = %cond_end291
-  %no_oblock299 = load i32, i32* %no_oblock, align 4, !dbg !1091
-  %icmpA300 = icmp ne i32 %no_oblock299, 0, !dbg !1091
-  %andand301 = and i1 %gteq296, %icmpA300, !dbg !1091
-  store i1 %andand301, i1* %andand293, align 1, !dbg !1091
-  br label %cond_jump_end298, !dbg !1091
+cond_jump_then299:                                ; preds = %cond_end293
+  %no_oblock301 = load i32, i32* %no_oblock, align 4, !dbg !1091
+  %icmpA302 = icmp ne i32 %no_oblock301, 0, !dbg !1091
+  %andand303 = and i1 %gteq298, %icmpA302, !dbg !1091
+  store i1 %andand303, i1* %andand295, align 1, !dbg !1091
+  br label %cond_jump_end300, !dbg !1091
 
-cond_jump_end298:                                 ; preds = %cond_jump_then297, %cond_end291
-  %andand_result_value302 = load i1, i1* %andand293, align 1, !dbg !1091
-  br i1 %andand_result_value302, label %cond_jump_then303, label %cond_end304, !dbg !1091
+cond_jump_end300:                                 ; preds = %cond_jump_then299, %cond_end293
+  %andand_result_value304 = load i1, i1* %andand295, align 1, !dbg !1091
+  br i1 %andand_result_value304, label %cond_jump_then305, label %cond_end306, !dbg !1091
 
-cond_jump_then303:                                ; preds = %cond_jump_end298
-  br label %cond_end_block238, !dbg !1092
+cond_jump_then305:                                ; preds = %cond_jump_end300
+  br label %cond_end_block240, !dbg !1092
 
-cond_end304:                                      ; preds = %after_break, %cond_jump_end298
-  %tok305 = load i32, i32* @tok, align 4, !dbg !1093
-  %eq306 = icmp eq i32 %tok305, 125, !dbg !1093
-  br i1 %eq306, label %cond_jump_then307, label %cond_end308, !dbg !1093
+cond_end306:                                      ; preds = %after_break, %cond_jump_end300
+  %tok307 = load i32, i32* @tok, align 4, !dbg !1093
+  %eq308 = icmp eq i32 %tok307, 125, !dbg !1093
+  br i1 %eq308, label %cond_jump_then309, label %cond_end310, !dbg !1093
 
 after_break:                                      ; No predecessors!
-  br label %cond_end304, !dbg !1092
+  br label %cond_end306, !dbg !1092
 
-cond_jump_then307:                                ; preds = %cond_end304
-  br label %cond_end_block238, !dbg !1094
+cond_jump_then309:                                ; preds = %cond_end306
+  br label %cond_end_block240, !dbg !1094
 
-cond_end308:                                      ; preds = %after_break309, %cond_end304
+cond_end310:                                      ; preds = %after_break311, %cond_end306
   call void @skip(i32 44), !dbg !1084
-  br label %loop_top_block234, !dbg !1084
+  br label %loop_top_block236, !dbg !1084
 
-after_break309:                                   ; No predecessors!
-  br label %cond_end308, !dbg !1094
+after_break311:                                   ; No predecessors!
+  br label %cond_end310, !dbg !1094
 
-cond_jump_then314:                                ; preds = %cond_end82
+cond_jump_then316:                                ; preds = %cond_end82
   call void @skip(i32 125), !dbg !1095
-  br label %cond_end315, !dbg !1095
+  br label %cond_end317, !dbg !1095
 
-cond_end315:                                      ; preds = %cond_jump_then314, %cond_end82
-  %size_only318 = load i32, i32* %size_only, align 4, !dbg !1096
-  %logical_denial319 = icmp eq i32 %size_only318, 0, !dbg !1096
-  %castOOOO320 = zext i1 %logical_denial319 to i32, !dbg !1096
-  %icmpA321 = icmp ne i32 %castOOOO320, 0, !dbg !1096
-  store i1 %icmpA321, i1* %andand317, align 1, !dbg !1096
-  br i1 %icmpA321, label %cond_jump_then322, label %cond_jump_end323, !dbg !1096
+cond_end317:                                      ; preds = %cond_jump_then316, %cond_end82
+  %size_only320 = load i32, i32* %size_only, align 4, !dbg !1096
+  %logical_denial321 = icmp eq i32 %size_only320, 0, !dbg !1096
+  %castOOOO322 = zext i1 %logical_denial321 to i32, !dbg !1096
+  %icmpA323 = icmp ne i32 %castOOOO322, 0, !dbg !1096
+  store i1 %icmpA323, i1* %andand319, align 1, !dbg !1096
+  br i1 %icmpA323, label %cond_jump_then324, label %cond_jump_end325, !dbg !1096
 
-cond_jump_then322:                                ; preds = %cond_end315
-  %n324 = load i32, i32* %n, align 4, !dbg !1096
-  %gteq325 = icmp sge i32 %n324, 0, !dbg !1096
-  %andand326 = and i1 %icmpA321, %gteq325, !dbg !1096
-  store i1 %andand326, i1* %andand317, align 1, !dbg !1096
-  br label %cond_jump_end323, !dbg !1096
+cond_jump_then324:                                ; preds = %cond_end317
+  %n326 = load i32, i32* %n, align 4, !dbg !1096
+  %gteq327 = icmp sge i32 %n326, 0, !dbg !1096
+  %andand328 = and i1 %icmpA323, %gteq327, !dbg !1096
+  store i1 %andand328, i1* %andand319, align 1, !dbg !1096
+  br label %cond_jump_end325, !dbg !1096
 
-cond_jump_end323:                                 ; preds = %cond_jump_then322, %cond_end315
-  %andand_result_value327 = load i1, i1* %andand317, align 1, !dbg !1096
-  store i1 %andand_result_value327, i1* %andand316, align 1, !dbg !1096
-  br i1 %andand_result_value327, label %cond_jump_then328, label %cond_jump_end329, !dbg !1096
+cond_jump_end325:                                 ; preds = %cond_jump_then324, %cond_end317
+  %andand_result_value329 = load i1, i1* %andand319, align 1, !dbg !1096
+  store i1 %andand_result_value329, i1* %andand318, align 1, !dbg !1096
+  br i1 %andand_result_value329, label %cond_jump_then330, label %cond_jump_end331, !dbg !1096
 
-cond_jump_then328:                                ; preds = %cond_jump_end323
-  %array_length330 = load i32, i32* %array_length, align 4, !dbg !1096
-  %n331 = load i32, i32* %n, align 4, !dbg !1096
-  %le332 = icmp slt i32 %array_length330, %n331, !dbg !1096
-  %andand333 = and i1 %andand_result_value327, %le332, !dbg !1096
-  store i1 %andand333, i1* %andand316, align 1, !dbg !1096
-  br label %cond_jump_end329, !dbg !1096
+cond_jump_then330:                                ; preds = %cond_jump_end325
+  %array_length332 = load i32, i32* %array_length, align 4, !dbg !1096
+  %n333 = load i32, i32* %n, align 4, !dbg !1096
+  %le334 = icmp slt i32 %array_length332, %n333, !dbg !1096
+  %andand335 = and i1 %andand_result_value329, %le334, !dbg !1096
+  store i1 %andand335, i1* %andand318, align 1, !dbg !1096
+  br label %cond_jump_end331, !dbg !1096
 
-cond_jump_end329:                                 ; preds = %cond_jump_then328, %cond_jump_end323
-  %andand_result_value334 = load i1, i1* %andand316, align 1, !dbg !1096
-  br i1 %andand_result_value334, label %cond_jump_then335, label %cond_end336, !dbg !1096
+cond_jump_end331:                                 ; preds = %cond_jump_then330, %cond_jump_end325
+  %andand_result_value336 = load i1, i1* %andand318, align 1, !dbg !1096
+  br i1 %andand_result_value336, label %cond_jump_then337, label %cond_end338, !dbg !1096
 
-cond_jump_then335:                                ; preds = %cond_jump_end329
-  %t1337 = load %CType*, %CType** %t1, align 8, !dbg !1097
-  %sec338 = load %Section*, %Section** %sec, align 8, !dbg !1097
-  %c339 = load i64, i64* %c, align 4, !dbg !1097
-  %array_length340 = load i32, i32* %array_length, align 4, !dbg !1097
-  %size1341 = load i32, i32* %size1, align 4, !dbg !1097
-  %mul342 = mul i32 %array_length340, %size1341, !dbg !1097
-  %icastD343 = sext i32 %mul342 to i64, !dbg !1097
-  %add344 = add i64 %c339, %icastD343, !dbg !1097
-  %n345 = load i32, i32* %n, align 4, !dbg !1097
-  %array_length346 = load i32, i32* %array_length, align 4, !dbg !1097
-  %sub347 = sub i32 %n345, %array_length346, !dbg !1097
-  %size1348 = load i32, i32* %size1, align 4, !dbg !1097
-  %mul349 = mul i32 %sub347, %size1348, !dbg !1097
-  call void @init_putz(%CType* %t1337, %Section* %sec338, i64 %add344, i32 %mul349), !dbg !1097
-  br label %cond_end336, !dbg !1097
+cond_jump_then337:                                ; preds = %cond_jump_end331
+  %t1339 = load %CType*, %CType** %t1, align 8, !dbg !1097
+  %sec340 = load %Section*, %Section** %sec, align 8, !dbg !1097
+  %c341 = load i64, i64* %c, align 4, !dbg !1097
+  %array_length342 = load i32, i32* %array_length, align 4, !dbg !1097
+  %size1343 = load i32, i32* %size1, align 4, !dbg !1097
+  %mul344 = mul i32 %array_length342, %size1343, !dbg !1097
+  %icastD345 = sext i32 %mul344 to i64, !dbg !1097
+  %add346 = add i64 %c341, %icastD345, !dbg !1097
+  %n347 = load i32, i32* %n, align 4, !dbg !1097
+  %array_length348 = load i32, i32* %array_length, align 4, !dbg !1097
+  %sub349 = sub i32 %n347, %array_length348, !dbg !1097
+  %size1350 = load i32, i32* %size1, align 4, !dbg !1097
+  %mul351 = mul i32 %sub349, %size1350, !dbg !1097
+  call void @init_putz(%CType* %t1339, %Section* %sec340, i64 %add346, i32 %mul351), !dbg !1097
+  br label %cond_end338, !dbg !1097
 
-cond_end336:                                      ; preds = %cond_jump_then335, %cond_jump_end329
-  %n350 = load i32, i32* %n, align 4, !dbg !1098
-  %le351 = icmp slt i32 %n350, 0, !dbg !1098
-  br i1 %le351, label %cond_jump_then352, label %cond_end353, !dbg !1098
+cond_end338:                                      ; preds = %cond_jump_then337, %cond_jump_end331
+  %n352 = load i32, i32* %n, align 4, !dbg !1098
+  %le353 = icmp slt i32 %n352, 0, !dbg !1098
+  br i1 %le353, label %cond_jump_then354, label %cond_end355, !dbg !1098
 
-cond_jump_then352:                                ; preds = %cond_end336
-  %s354 = load %Sym*, %Sym** %s, align 8, !dbg !1099
-  %array_length355 = load i32, i32* %array_length, align 4, !dbg !1099
-  %icastD356 = sext i32 %array_length355 to i64, !dbg !1099
-  %field357 = getelementptr inbounds %Sym, %Sym* %s354, i32 0, i32 2, !dbg !1099
-  store i64 %icastD356, i64* %field357, align 4, !dbg !1099
-  br label %cond_end353, !dbg !1099
+cond_jump_then354:                                ; preds = %cond_end338
+  %s356 = load %Sym*, %Sym** %s, align 8, !dbg !1099
+  %array_length357 = load i32, i32* %array_length, align 4, !dbg !1099
+  %icastD358 = sext i32 %array_length357 to i64, !dbg !1099
+  %field359 = getelementptr inbounds %Sym, %Sym* %s356, i32 0, i32 2, !dbg !1099
+  store i64 %icastD358, i64* %field359, align 4, !dbg !1099
+  br label %cond_end355, !dbg !1099
 
-cond_end353:                                      ; preds = %cond_jump_then352, %cond_end336
+cond_end355:                                      ; preds = %cond_jump_then354, %cond_end338
   br label %cond_end, !dbg !1099
 
-cond_jump_then364:                                ; preds = %cond_jump_elif0
-  %sec368 = load %Section*, %Section** %sec, align 8, !dbg !1100
-  %icmpB369 = icmp ne %Section* %sec368, null, !dbg !1100
-  store i1 %icmpB369, i1* %oror367, align 1, !dbg !1100
-  br i1 %icmpB369, label %cond_jump_end371, label %cond_jump_then370, !dbg !1100
+cond_jump_then366:                                ; preds = %cond_jump_elif0
+  %sec370 = load %Section*, %Section** %sec, align 8, !dbg !1100
+  %icmpB371 = icmp ne %Section* %sec370, null, !dbg !1100
+  store i1 %icmpB371, i1* %oror369, align 1, !dbg !1100
+  br i1 %icmpB371, label %cond_jump_end373, label %cond_jump_then372, !dbg !1100
 
-cond_jump_end365:                                 ; preds = %cond_jump_end379, %cond_jump_elif0
-  %andand_result_value385 = load i1, i1* %andand358, align 1, !dbg !1100
-  br i1 %andand_result_value385, label %cond_jump_elif_then0, label %cond_jump_elif1, !dbg !1100
+cond_jump_end367:                                 ; preds = %cond_jump_end381, %cond_jump_elif0
+  %andand_result_value387 = load i1, i1* %andand360, align 1, !dbg !1100
+  br i1 %andand_result_value387, label %cond_jump_elif_then0, label %cond_jump_elif1, !dbg !1100
 
-cond_jump_then370:                                ; preds = %cond_jump_then364
-  %first372 = load i32, i32* %first, align 4, !dbg !1100
-  %logical_denial373 = icmp eq i32 %first372, 0, !dbg !1100
-  %castOOOO374 = zext i1 %logical_denial373 to i32, !dbg !1100
-  %icmpA375 = icmp ne i32 %castOOOO374, 0, !dbg !1100
-  %oror376 = or i1 %icmpB369, %icmpA375, !dbg !1100
-  store i1 %oror376, i1* %oror367, align 1, !dbg !1100
-  br label %cond_jump_end371, !dbg !1100
+cond_jump_then372:                                ; preds = %cond_jump_then366
+  %first374 = load i32, i32* %first, align 4, !dbg !1100
+  %logical_denial375 = icmp eq i32 %first374, 0, !dbg !1100
+  %castOOOO376 = zext i1 %logical_denial375 to i32, !dbg !1100
+  %icmpA377 = icmp ne i32 %castOOOO376, 0, !dbg !1100
+  %oror378 = or i1 %icmpB371, %icmpA377, !dbg !1100
+  store i1 %oror378, i1* %oror369, align 1, !dbg !1100
+  br label %cond_jump_end373, !dbg !1100
 
-cond_jump_end371:                                 ; preds = %cond_jump_then370, %cond_jump_then364
-  %oror_result_value377 = load i1, i1* %oror367, align 1, !dbg !1100
-  store i1 %oror_result_value377, i1* %oror366, align 1, !dbg !1100
-  br i1 %oror_result_value377, label %cond_jump_end379, label %cond_jump_then378, !dbg !1100
+cond_jump_end373:                                 ; preds = %cond_jump_then372, %cond_jump_then366
+  %oror_result_value379 = load i1, i1* %oror369, align 1, !dbg !1100
+  store i1 %oror_result_value379, i1* %oror368, align 1, !dbg !1100
+  br i1 %oror_result_value379, label %cond_jump_end381, label %cond_jump_then380, !dbg !1100
 
-cond_jump_then378:                                ; preds = %cond_jump_end371
-  %tok380 = load i32, i32* @tok, align 4, !dbg !1100
-  %eq381 = icmp eq i32 %tok380, 123, !dbg !1100
-  %oror382 = or i1 %oror_result_value377, %eq381, !dbg !1100
-  store i1 %oror382, i1* %oror366, align 1, !dbg !1100
-  br label %cond_jump_end379, !dbg !1100
+cond_jump_then380:                                ; preds = %cond_jump_end373
+  %tok382 = load i32, i32* @tok, align 4, !dbg !1100
+  %eq383 = icmp eq i32 %tok382, 123, !dbg !1100
+  %oror384 = or i1 %oror_result_value379, %eq383, !dbg !1100
+  store i1 %oror384, i1* %oror368, align 1, !dbg !1100
+  br label %cond_jump_end381, !dbg !1100
 
-cond_jump_end379:                                 ; preds = %cond_jump_then378, %cond_jump_end371
-  %oror_result_value383 = load i1, i1* %oror366, align 1, !dbg !1100
-  %andand384 = and i1 %eq363, %oror_result_value383, !dbg !1100
-  store i1 %andand384, i1* %andand358, align 1, !dbg !1100
-  br label %cond_jump_end365, !dbg !1100
+cond_jump_end381:                                 ; preds = %cond_jump_then380, %cond_jump_end373
+  %oror_result_value385 = load i1, i1* %oror368, align 1, !dbg !1100
+  %andand386 = and i1 %eq365, %oror_result_value385, !dbg !1100
+  store i1 %andand386, i1* %andand360, align 1, !dbg !1100
+  br label %cond_jump_end367, !dbg !1100
 
-cond_jump_then389:                                ; preds = %cond_jump_elif_then0
+cond_jump_then391:                                ; preds = %cond_jump_elif_then0
   call void @next(), !dbg !1101
-  br label %loop_top_block394, !dbg !1102
+  br label %loop_top_block396, !dbg !1102
 
-cond_end390:                                      ; preds = %cond_end410, %cond_jump_elif_then0
+cond_end392:                                      ; preds = %cond_end412, %cond_jump_elif_then0
   store i32 1, i32* %no_oblock, align 4, !dbg !1103
-  %first415 = load i32, i32* %first, align 4, !dbg !1104
-  %icmpA416 = icmp ne i32 %first415, 0, !dbg !1104
-  store i1 %icmpA416, i1* %oror414, align 1, !dbg !1104
-  br i1 %icmpA416, label %cond_jump_end418, label %cond_jump_then417, !dbg !1104
+  %first417 = load i32, i32* %first, align 4, !dbg !1104
+  %icmpA418 = icmp ne i32 %first417, 0, !dbg !1104
+  store i1 %icmpA418, i1* %oror416, align 1, !dbg !1104
+  br i1 %icmpA418, label %cond_jump_end420, label %cond_jump_then419, !dbg !1104
 
-loop_top_block394:                                ; preds = %cond_then_block397, %cond_jump_then389
-  %tok395 = load i32, i32* @tok, align 4, !dbg !1105
-  %eq396 = icmp eq i32 %tok395, 40, !dbg !1105
-  br i1 %eq396, label %cond_then_block397, label %cond_end_block398, !dbg !1105
+loop_top_block396:                                ; preds = %cond_then_block399, %cond_jump_then391
+  %tok397 = load i32, i32* @tok, align 4, !dbg !1105
+  %eq398 = icmp eq i32 %tok397, 40, !dbg !1105
+  br i1 %eq398, label %cond_then_block399, label %cond_end_block400, !dbg !1105
 
-cond_then_block397:                               ; preds = %loop_top_block394
-  %par_count399 = load i32, i32* %par_count, align 4, !dbg !1106
-  %add400 = add i32 %par_count399, 1, !dbg !1106
-  store i32 %add400, i32* %par_count, align 4, !dbg !1106
+cond_then_block399:                               ; preds = %loop_top_block396
   %par_count401 = load i32, i32* %par_count, align 4, !dbg !1106
-  %sub402 = sub i32 %par_count401, 1, !dbg !1106
+  %add402 = add i32 %par_count401, 1, !dbg !1106
+  store i32 %add402, i32* %par_count, align 4, !dbg !1106
+  %par_count403 = load i32, i32* %par_count, align 4, !dbg !1106
+  %sub404 = sub i32 %par_count403, 1, !dbg !1106
   call void @next(), !dbg !1107
-  br label %loop_top_block394, !dbg !1107
+  br label %loop_top_block396, !dbg !1107
 
-cond_end_block398:                                ; preds = %loop_top_block394
-  %type1403 = load %CType, %CType* %type1392, align 8, !dbg !1102
-  %ad1404 = load %AttributeDef, %AttributeDef* %ad1, align 8, !dbg !1102
-  %fun_result405 = call i32 @parse_btype(%CType* %type1392, %AttributeDef* %ad1), !dbg !1102
-  %logical_denial406 = icmp eq i32 %fun_result405, 0, !dbg !1102
-  %castOOOO407 = zext i1 %logical_denial406 to i32, !dbg !1102
-  %icmpA408 = icmp ne i32 %castOOOO407, 0, !dbg !1102
-  br i1 %icmpA408, label %cond_jump_then409, label %cond_end410, !dbg !1102
+cond_end_block400:                                ; preds = %loop_top_block396
+  %type1405 = load %CType, %CType* %type1394, align 8, !dbg !1102
+  %ad1406 = load %AttributeDef, %AttributeDef* %ad1, align 8, !dbg !1102
+  %fun_result407 = call i32 @parse_btype(%CType* %type1394, %AttributeDef* %ad1), !dbg !1102
+  %logical_denial408 = icmp eq i32 %fun_result407, 0, !dbg !1102
+  %castOOOO409 = zext i1 %logical_denial408 to i32, !dbg !1102
+  %icmpA410 = icmp ne i32 %castOOOO409, 0, !dbg !1102
+  br i1 %icmpA410, label %cond_jump_then411, label %cond_end412, !dbg !1102
 
-cond_jump_then409:                                ; preds = %cond_end_block398
+cond_jump_then411:                                ; preds = %cond_end_block400
   call void @expect(i8* bitcast ([5 x i8]* @201 to i8*)), !dbg !1108
-  br label %cond_end410, !dbg !1108
+  br label %cond_end412, !dbg !1108
 
-cond_end410:                                      ; preds = %cond_jump_then409, %cond_end_block398
-  %type1411 = load %CType, %CType* %type1392, align 8, !dbg !1109
-  %ad1412 = load %AttributeDef, %AttributeDef* %ad1, align 8, !dbg !1109
-  %n413 = load i32, i32* %n, align 4, !dbg !1109
-  call void @type_decl(%CType* %type1392, %AttributeDef* %ad1, i32* %n, i32 1), !dbg !1109
+cond_end412:                                      ; preds = %cond_jump_then411, %cond_end_block400
+  %type1413 = load %CType, %CType* %type1394, align 8, !dbg !1109
+  %ad1414 = load %AttributeDef, %AttributeDef* %ad1, align 8, !dbg !1109
+  %n415 = load i32, i32* %n, align 4, !dbg !1109
+  call void @type_decl(%CType* %type1394, %AttributeDef* %ad1, i32* %n, i32 1), !dbg !1109
   call void @skip(i32 41), !dbg !1110
-  br label %cond_end390, !dbg !1110
+  br label %cond_end392, !dbg !1110
 
-cond_jump_then417:                                ; preds = %cond_end390
-  %tok419 = load i32, i32* @tok, align 4, !dbg !1104
-  %eq420 = icmp eq i32 %tok419, 123, !dbg !1104
-  %oror421 = or i1 %icmpA416, %eq420, !dbg !1104
-  store i1 %oror421, i1* %oror414, align 1, !dbg !1104
-  br label %cond_jump_end418, !dbg !1104
+cond_jump_then419:                                ; preds = %cond_end392
+  %tok421 = load i32, i32* @tok, align 4, !dbg !1104
+  %eq422 = icmp eq i32 %tok421, 123, !dbg !1104
+  %oror423 = or i1 %icmpA418, %eq422, !dbg !1104
+  store i1 %oror423, i1* %oror416, align 1, !dbg !1104
+  br label %cond_jump_end420, !dbg !1104
 
-cond_jump_end418:                                 ; preds = %cond_jump_then417, %cond_end390
-  %oror_result_value422 = load i1, i1* %oror414, align 1, !dbg !1104
-  br i1 %oror_result_value422, label %cond_jump_then423, label %cond_end424, !dbg !1104
+cond_jump_end420:                                 ; preds = %cond_jump_then419, %cond_end392
+  %oror_result_value424 = load i1, i1* %oror416, align 1, !dbg !1104
+  br i1 %oror_result_value424, label %cond_jump_then425, label %cond_end426, !dbg !1104
 
-cond_jump_then423:                                ; preds = %cond_jump_end418
+cond_jump_then425:                                ; preds = %cond_jump_end420
   call void @skip(i32 123), !dbg !1111
   store i32 0, i32* %no_oblock, align 4, !dbg !1112
-  br label %cond_end424, !dbg !1112
+  br label %cond_end426, !dbg !1112
 
-cond_end424:                                      ; preds = %cond_jump_then423, %cond_jump_end418
-  %type425 = load %CType*, %CType** %type, align 8, !dbg !1113
-  %field426 = getelementptr inbounds %CType, %CType* %type425, i32 0, i32 1, !dbg !1113
-  %ref427 = load %Sym*, %Sym** %field426, align 8, !dbg !1113
-  store %Sym* %ref427, %Sym** %s, align 8, !dbg !1113
-  %s428 = load %Sym*, %Sym** %s, align 8, !dbg !1114
-  %field429 = getelementptr inbounds %Sym, %Sym* %s428, i32 0, i32 4, !dbg !1114
-  %next = load %Sym*, %Sym** %field429, align 8, !dbg !1114
+cond_end426:                                      ; preds = %cond_jump_then425, %cond_jump_end420
+  %type427 = load %CType*, %CType** %type, align 8, !dbg !1113
+  %field428 = getelementptr inbounds %CType, %CType* %type427, i32 0, i32 1, !dbg !1113
+  %ref429 = load %Sym*, %Sym** %field428, align 8, !dbg !1113
+  store %Sym* %ref429, %Sym** %s, align 8, !dbg !1113
+  %s430 = load %Sym*, %Sym** %s, align 8, !dbg !1114
+  %field431 = getelementptr inbounds %Sym, %Sym* %s430, i32 0, i32 4, !dbg !1114
+  %next = load %Sym*, %Sym** %field431, align 8, !dbg !1114
   store %Sym* %next, %Sym** %f, align 8, !dbg !1114
   store i32 0, i32* %array_length, align 4, !dbg !1115
   store i32 0, i32* %index, align 4, !dbg !1116
-  %s430 = load %Sym*, %Sym** %s, align 8, !dbg !1117
-  %field431 = getelementptr inbounds %Sym, %Sym* %s430, i32 0, i32 2, !dbg !1117
-  %c432 = load i64, i64* %field431, align 4, !dbg !1117
-  %icastM433 = trunc i64 %c432 to i32, !dbg !1117
-  store i32 %icastM433, i32* %n, align 4, !dbg !1117
-  br label %loop_top_block434, !dbg !1118
+  %s432 = load %Sym*, %Sym** %s, align 8, !dbg !1117
+  %field433 = getelementptr inbounds %Sym, %Sym* %s432, i32 0, i32 2, !dbg !1117
+  %c434 = load i64, i64* %field433, align 4, !dbg !1117
+  %icastM435 = trunc i64 %c434 to i32, !dbg !1117
+  store i32 %icastM435, i32* %n, align 4, !dbg !1117
+  br label %loop_top_block436, !dbg !1118
 
-loop_top_block434:                                ; preds = %cond_end502, %cond_end424
-  %tok435 = load i32, i32* @tok, align 4, !dbg !1119
-  %not_eq436 = icmp ne i32 %tok435, 125, !dbg !1119
-  br i1 %not_eq436, label %cond_then_block437, label %cond_end_block438, !dbg !1119
+loop_top_block436:                                ; preds = %cond_end504, %cond_end426
+  %tok437 = load i32, i32* @tok, align 4, !dbg !1119
+  %not_eq438 = icmp ne i32 %tok437, 125, !dbg !1119
+  br i1 %not_eq438, label %cond_then_block439, label %cond_end_block440, !dbg !1119
 
-cond_then_block437:                               ; preds = %loop_top_block434
-  %type439 = load %CType*, %CType** %type, align 8, !dbg !1120
-  %sec440 = load %Section*, %Section** %sec, align 8, !dbg !1120
-  %c441 = load i64, i64* %c, align 4, !dbg !1120
-  %f442 = load %Sym*, %Sym** %f, align 8, !dbg !1120
-  %size_only443 = load i32, i32* %size_only, align 4, !dbg !1120
-  call void @decl_designator(%CType* %type439, %Section* %sec440, i64 %c441, i32* null, %Sym** %f, i32 %size_only443), !dbg !1120
-  %f444 = load %Sym*, %Sym** %f, align 8, !dbg !1121
-  %field445 = getelementptr inbounds %Sym, %Sym* %f444, i32 0, i32 2, !dbg !1121
-  %c446 = load i64, i64* %field445, align 4, !dbg !1121
-  %icastM447 = trunc i64 %c446 to i32, !dbg !1121
-  store i32 %icastM447, i32* %index, align 4, !dbg !1121
-  %size_only449 = load i32, i32* %size_only, align 4, !dbg !1122
-  %logical_denial450 = icmp eq i32 %size_only449, 0, !dbg !1122
-  %castOOOO451 = zext i1 %logical_denial450 to i32, !dbg !1122
-  %icmpA452 = icmp ne i32 %castOOOO451, 0, !dbg !1122
-  store i1 %icmpA452, i1* %andand448, align 1, !dbg !1122
-  br i1 %icmpA452, label %cond_jump_then453, label %cond_jump_end454, !dbg !1122
+cond_then_block439:                               ; preds = %loop_top_block436
+  %type441 = load %CType*, %CType** %type, align 8, !dbg !1120
+  %sec442 = load %Section*, %Section** %sec, align 8, !dbg !1120
+  %c443 = load i64, i64* %c, align 4, !dbg !1120
+  %f444 = load %Sym*, %Sym** %f, align 8, !dbg !1120
+  %size_only445 = load i32, i32* %size_only, align 4, !dbg !1120
+  call void @decl_designator(%CType* %type441, %Section* %sec442, i64 %c443, i32* null, %Sym** %f, i32 %size_only445), !dbg !1120
+  %f446 = load %Sym*, %Sym** %f, align 8, !dbg !1121
+  %field447 = getelementptr inbounds %Sym, %Sym* %f446, i32 0, i32 2, !dbg !1121
+  %c448 = load i64, i64* %field447, align 4, !dbg !1121
+  %icastM449 = trunc i64 %c448 to i32, !dbg !1121
+  store i32 %icastM449, i32* %index, align 4, !dbg !1121
+  %size_only451 = load i32, i32* %size_only, align 4, !dbg !1122
+  %logical_denial452 = icmp eq i32 %size_only451, 0, !dbg !1122
+  %castOOOO453 = zext i1 %logical_denial452 to i32, !dbg !1122
+  %icmpA454 = icmp ne i32 %castOOOO453, 0, !dbg !1122
+  store i1 %icmpA454, i1* %andand450, align 1, !dbg !1122
+  br i1 %icmpA454, label %cond_jump_then455, label %cond_jump_end456, !dbg !1122
 
-cond_end_block438:                                ; preds = %cond_jump_then501, %cond_jump_then496, %loop_top_block434
-  %size_only505 = load i32, i32* %size_only, align 4, !dbg !1118
-  %logical_denial506 = icmp eq i32 %size_only505, 0, !dbg !1118
-  %castOOOO507 = zext i1 %logical_denial506 to i32, !dbg !1118
-  %icmpA508 = icmp ne i32 %castOOOO507, 0, !dbg !1118
-  store i1 %icmpA508, i1* %andand504, align 1, !dbg !1118
-  br i1 %icmpA508, label %cond_jump_then509, label %cond_jump_end510, !dbg !1118
+cond_end_block440:                                ; preds = %cond_jump_then503, %cond_jump_then498, %loop_top_block436
+  %size_only507 = load i32, i32* %size_only, align 4, !dbg !1118
+  %logical_denial508 = icmp eq i32 %size_only507, 0, !dbg !1118
+  %castOOOO509 = zext i1 %logical_denial508 to i32, !dbg !1118
+  %icmpA510 = icmp ne i32 %castOOOO509, 0, !dbg !1118
+  store i1 %icmpA510, i1* %andand506, align 1, !dbg !1118
+  br i1 %icmpA510, label %cond_jump_then511, label %cond_jump_end512, !dbg !1118
 
-cond_jump_then453:                                ; preds = %cond_then_block437
-  %array_length455 = load i32, i32* %array_length, align 4, !dbg !1122
-  %index456 = load i32, i32* %index, align 4, !dbg !1122
-  %le457 = icmp slt i32 %array_length455, %index456, !dbg !1122
-  %andand458 = and i1 %icmpA452, %le457, !dbg !1122
-  store i1 %andand458, i1* %andand448, align 1, !dbg !1122
-  br label %cond_jump_end454, !dbg !1122
+cond_jump_then455:                                ; preds = %cond_then_block439
+  %array_length457 = load i32, i32* %array_length, align 4, !dbg !1122
+  %index458 = load i32, i32* %index, align 4, !dbg !1122
+  %le459 = icmp slt i32 %array_length457, %index458, !dbg !1122
+  %andand460 = and i1 %icmpA454, %le459, !dbg !1122
+  store i1 %andand460, i1* %andand450, align 1, !dbg !1122
+  br label %cond_jump_end456, !dbg !1122
 
-cond_jump_end454:                                 ; preds = %cond_jump_then453, %cond_then_block437
-  %andand_result_value459 = load i1, i1* %andand448, align 1, !dbg !1122
-  br i1 %andand_result_value459, label %cond_jump_then460, label %cond_end461, !dbg !1122
+cond_jump_end456:                                 ; preds = %cond_jump_then455, %cond_then_block439
+  %andand_result_value461 = load i1, i1* %andand450, align 1, !dbg !1122
+  br i1 %andand_result_value461, label %cond_jump_then462, label %cond_end463, !dbg !1122
 
-cond_jump_then460:                                ; preds = %cond_jump_end454
-  %type462 = load %CType*, %CType** %type, align 8, !dbg !1123
-  %sec463 = load %Section*, %Section** %sec, align 8, !dbg !1123
-  %c464 = load i64, i64* %c, align 4, !dbg !1123
-  %array_length465 = load i32, i32* %array_length, align 4, !dbg !1123
-  %icastD466 = sext i32 %array_length465 to i64, !dbg !1123
-  %add467 = add i64 %c464, %icastD466, !dbg !1123
-  %index468 = load i32, i32* %index, align 4, !dbg !1123
-  %array_length469 = load i32, i32* %array_length, align 4, !dbg !1123
-  %sub470 = sub i32 %index468, %array_length469, !dbg !1123
-  call void @init_putz(%CType* %type462, %Section* %sec463, i64 %add467, i32 %sub470), !dbg !1123
-  br label %cond_end461, !dbg !1123
+cond_jump_then462:                                ; preds = %cond_jump_end456
+  %type464 = load %CType*, %CType** %type, align 8, !dbg !1123
+  %sec465 = load %Section*, %Section** %sec, align 8, !dbg !1123
+  %c466 = load i64, i64* %c, align 4, !dbg !1123
+  %array_length467 = load i32, i32* %array_length, align 4, !dbg !1123
+  %icastD468 = sext i32 %array_length467 to i64, !dbg !1123
+  %add469 = add i64 %c466, %icastD468, !dbg !1123
+  %index470 = load i32, i32* %index, align 4, !dbg !1123
+  %array_length471 = load i32, i32* %array_length, align 4, !dbg !1123
+  %sub472 = sub i32 %index470, %array_length471, !dbg !1123
+  call void @init_putz(%CType* %type464, %Section* %sec465, i64 %add469, i32 %sub472), !dbg !1123
+  br label %cond_end463, !dbg !1123
 
-cond_end461:                                      ; preds = %cond_jump_then460, %cond_jump_end454
-  %index471 = load i32, i32* %index, align 4, !dbg !1124
-  %f472 = load %Sym*, %Sym** %f, align 8, !dbg !1124
-  %field473 = getelementptr inbounds %Sym, %Sym* %f472, i32 0, i32 3, !dbg !1124
-  %type474 = load %CType, %CType* %field473, align 8, !dbg !1124
-  %align1475 = load i32, i32* %align1, align 4, !dbg !1124
-  %fun_result476 = call i32 @type_size(%CType* %field473, i32* %align1), !dbg !1124
-  %add477 = add i32 %index471, %fun_result476, !dbg !1124
-  store i32 %add477, i32* %index, align 4, !dbg !1124
-  %index478 = load i32, i32* %index, align 4, !dbg !1125
-  %array_length479 = load i32, i32* %array_length, align 4, !dbg !1125
-  %gt480 = icmp sgt i32 %index478, %array_length479, !dbg !1125
-  br i1 %gt480, label %cond_jump_then481, label %cond_end482, !dbg !1125
+cond_end463:                                      ; preds = %cond_jump_then462, %cond_jump_end456
+  %index473 = load i32, i32* %index, align 4, !dbg !1124
+  %f474 = load %Sym*, %Sym** %f, align 8, !dbg !1124
+  %field475 = getelementptr inbounds %Sym, %Sym* %f474, i32 0, i32 3, !dbg !1124
+  %type476 = load %CType, %CType* %field475, align 8, !dbg !1124
+  %align1477 = load i32, i32* %align1, align 4, !dbg !1124
+  %fun_result478 = call i32 @type_size(%CType* %field475, i32* %align1), !dbg !1124
+  %add479 = add i32 %index473, %fun_result478, !dbg !1124
+  store i32 %add479, i32* %index, align 4, !dbg !1124
+  %index480 = load i32, i32* %index, align 4, !dbg !1125
+  %array_length481 = load i32, i32* %array_length, align 4, !dbg !1125
+  %gt482 = icmp sgt i32 %index480, %array_length481, !dbg !1125
+  br i1 %gt482, label %cond_jump_then483, label %cond_end484, !dbg !1125
 
-cond_jump_then481:                                ; preds = %cond_end461
-  %index483 = load i32, i32* %index, align 4, !dbg !1126
-  store i32 %index483, i32* %array_length, align 4, !dbg !1126
-  br label %cond_end482, !dbg !1126
+cond_jump_then483:                                ; preds = %cond_end463
+  %index485 = load i32, i32* %index, align 4, !dbg !1126
+  store i32 %index485, i32* %array_length, align 4, !dbg !1126
+  br label %cond_end484, !dbg !1126
 
-cond_end482:                                      ; preds = %cond_jump_then481, %cond_end461
-  %f484 = load %Sym*, %Sym** %f, align 8, !dbg !1127
-  %field485 = getelementptr inbounds %Sym, %Sym* %f484, i32 0, i32 4, !dbg !1127
-  %next486 = load %Sym*, %Sym** %field485, align 8, !dbg !1127
-  store %Sym* %next486, %Sym** %f, align 8, !dbg !1127
-  %no_oblock488 = load i32, i32* %no_oblock, align 4, !dbg !1128
-  %icmpA489 = icmp ne i32 %no_oblock488, 0, !dbg !1128
-  store i1 %icmpA489, i1* %andand487, align 1, !dbg !1128
-  br i1 %icmpA489, label %cond_jump_then490, label %cond_jump_end491, !dbg !1128
+cond_end484:                                      ; preds = %cond_jump_then483, %cond_end463
+  %f486 = load %Sym*, %Sym** %f, align 8, !dbg !1127
+  %field487 = getelementptr inbounds %Sym, %Sym* %f486, i32 0, i32 4, !dbg !1127
+  %next488 = load %Sym*, %Sym** %field487, align 8, !dbg !1127
+  store %Sym* %next488, %Sym** %f, align 8, !dbg !1127
+  %no_oblock490 = load i32, i32* %no_oblock, align 4, !dbg !1128
+  %icmpA491 = icmp ne i32 %no_oblock490, 0, !dbg !1128
+  store i1 %icmpA491, i1* %andand489, align 1, !dbg !1128
+  br i1 %icmpA491, label %cond_jump_then492, label %cond_jump_end493, !dbg !1128
 
-cond_jump_then490:                                ; preds = %cond_end482
-  %f492 = load %Sym*, %Sym** %f, align 8, !dbg !1128
-  %eq493 = icmp eq %Sym* %f492, null, !dbg !1128
-  %andand494 = and i1 %icmpA489, %eq493, !dbg !1128
-  store i1 %andand494, i1* %andand487, align 1, !dbg !1128
-  br label %cond_jump_end491, !dbg !1128
+cond_jump_then492:                                ; preds = %cond_end484
+  %f494 = load %Sym*, %Sym** %f, align 8, !dbg !1128
+  %eq495 = icmp eq %Sym* %f494, null, !dbg !1128
+  %andand496 = and i1 %icmpA491, %eq495, !dbg !1128
+  store i1 %andand496, i1* %andand489, align 1, !dbg !1128
+  br label %cond_jump_end493, !dbg !1128
 
-cond_jump_end491:                                 ; preds = %cond_jump_then490, %cond_end482
-  %andand_result_value495 = load i1, i1* %andand487, align 1, !dbg !1128
-  br i1 %andand_result_value495, label %cond_jump_then496, label %cond_end497, !dbg !1128
+cond_jump_end493:                                 ; preds = %cond_jump_then492, %cond_end484
+  %andand_result_value497 = load i1, i1* %andand489, align 1, !dbg !1128
+  br i1 %andand_result_value497, label %cond_jump_then498, label %cond_end499, !dbg !1128
 
-cond_jump_then496:                                ; preds = %cond_jump_end491
-  br label %cond_end_block438, !dbg !1129
+cond_jump_then498:                                ; preds = %cond_jump_end493
+  br label %cond_end_block440, !dbg !1129
 
-cond_end497:                                      ; preds = %after_break498, %cond_jump_end491
-  %tok499 = load i32, i32* @tok, align 4, !dbg !1130
-  %eq500 = icmp eq i32 %tok499, 125, !dbg !1130
-  br i1 %eq500, label %cond_jump_then501, label %cond_end502, !dbg !1130
+cond_end499:                                      ; preds = %after_break500, %cond_jump_end493
+  %tok501 = load i32, i32* @tok, align 4, !dbg !1130
+  %eq502 = icmp eq i32 %tok501, 125, !dbg !1130
+  br i1 %eq502, label %cond_jump_then503, label %cond_end504, !dbg !1130
 
-after_break498:                                   ; No predecessors!
-  br label %cond_end497, !dbg !1129
+after_break500:                                   ; No predecessors!
+  br label %cond_end499, !dbg !1129
 
-cond_jump_then501:                                ; preds = %cond_end497
-  br label %cond_end_block438, !dbg !1131
+cond_jump_then503:                                ; preds = %cond_end499
+  br label %cond_end_block440, !dbg !1131
 
-cond_end502:                                      ; preds = %after_break503, %cond_end497
+cond_end504:                                      ; preds = %after_break505, %cond_end499
   call void @skip(i32 44), !dbg !1132
-  br label %loop_top_block434, !dbg !1132
+  br label %loop_top_block436, !dbg !1132
 
-after_break503:                                   ; No predecessors!
-  br label %cond_end502, !dbg !1131
+after_break505:                                   ; No predecessors!
+  br label %cond_end504, !dbg !1131
 
-cond_jump_then509:                                ; preds = %cond_end_block438
-  %array_length511 = load i32, i32* %array_length, align 4, !dbg !1118
-  %n512 = load i32, i32* %n, align 4, !dbg !1118
-  %le513 = icmp slt i32 %array_length511, %n512, !dbg !1118
-  %andand514 = and i1 %icmpA508, %le513, !dbg !1118
-  store i1 %andand514, i1* %andand504, align 1, !dbg !1118
-  br label %cond_jump_end510, !dbg !1118
+cond_jump_then511:                                ; preds = %cond_end_block440
+  %array_length513 = load i32, i32* %array_length, align 4, !dbg !1118
+  %n514 = load i32, i32* %n, align 4, !dbg !1118
+  %le515 = icmp slt i32 %array_length513, %n514, !dbg !1118
+  %andand516 = and i1 %icmpA510, %le515, !dbg !1118
+  store i1 %andand516, i1* %andand506, align 1, !dbg !1118
+  br label %cond_jump_end512, !dbg !1118
 
-cond_jump_end510:                                 ; preds = %cond_jump_then509, %cond_end_block438
-  %andand_result_value515 = load i1, i1* %andand504, align 1, !dbg !1118
-  br i1 %andand_result_value515, label %cond_jump_then516, label %cond_end517, !dbg !1118
+cond_jump_end512:                                 ; preds = %cond_jump_then511, %cond_end_block440
+  %andand_result_value517 = load i1, i1* %andand506, align 1, !dbg !1118
+  br i1 %andand_result_value517, label %cond_jump_then518, label %cond_end519, !dbg !1118
 
-cond_jump_then516:                                ; preds = %cond_jump_end510
-  %type518 = load %CType*, %CType** %type, align 8, !dbg !1133
-  %sec519 = load %Section*, %Section** %sec, align 8, !dbg !1133
-  %c520 = load i64, i64* %c, align 4, !dbg !1133
-  %array_length521 = load i32, i32* %array_length, align 4, !dbg !1133
-  %icastD522 = sext i32 %array_length521 to i64, !dbg !1133
-  %add523 = add i64 %c520, %icastD522, !dbg !1133
-  %n524 = load i32, i32* %n, align 4, !dbg !1133
-  %array_length525 = load i32, i32* %array_length, align 4, !dbg !1133
-  %sub526 = sub i32 %n524, %array_length525, !dbg !1133
-  call void @init_putz(%CType* %type518, %Section* %sec519, i64 %add523, i32 %sub526), !dbg !1133
-  br label %cond_end517, !dbg !1133
+cond_jump_then518:                                ; preds = %cond_jump_end512
+  %type520 = load %CType*, %CType** %type, align 8, !dbg !1133
+  %sec521 = load %Section*, %Section** %sec, align 8, !dbg !1133
+  %c522 = load i64, i64* %c, align 4, !dbg !1133
+  %array_length523 = load i32, i32* %array_length, align 4, !dbg !1133
+  %icastD524 = sext i32 %array_length523 to i64, !dbg !1133
+  %add525 = add i64 %c522, %icastD524, !dbg !1133
+  %n526 = load i32, i32* %n, align 4, !dbg !1133
+  %array_length527 = load i32, i32* %array_length, align 4, !dbg !1133
+  %sub528 = sub i32 %n526, %array_length527, !dbg !1133
+  call void @init_putz(%CType* %type520, %Section* %sec521, i64 %add525, i32 %sub528), !dbg !1133
+  br label %cond_end519, !dbg !1133
 
-cond_end517:                                      ; preds = %cond_jump_then516, %cond_jump_end510
-  %no_oblock527 = load i32, i32* %no_oblock, align 4, !dbg !1134
-  %logical_denial528 = icmp eq i32 %no_oblock527, 0, !dbg !1134
-  %castOOOO529 = zext i1 %logical_denial528 to i32, !dbg !1134
-  %icmpA530 = icmp ne i32 %castOOOO529, 0, !dbg !1134
-  br i1 %icmpA530, label %cond_jump_then531, label %cond_end532, !dbg !1134
+cond_end519:                                      ; preds = %cond_jump_then518, %cond_jump_end512
+  %no_oblock529 = load i32, i32* %no_oblock, align 4, !dbg !1134
+  %logical_denial530 = icmp eq i32 %no_oblock529, 0, !dbg !1134
+  %castOOOO531 = zext i1 %logical_denial530 to i32, !dbg !1134
+  %icmpA532 = icmp ne i32 %castOOOO531, 0, !dbg !1134
+  br i1 %icmpA532, label %cond_jump_then533, label %cond_end534, !dbg !1134
 
-cond_jump_then531:                                ; preds = %cond_end517
+cond_jump_then533:                                ; preds = %cond_end519
   call void @skip(i32 125), !dbg !1135
-  br label %cond_end532, !dbg !1135
+  br label %cond_end534, !dbg !1135
 
-cond_end532:                                      ; preds = %cond_jump_then531, %cond_end517
-  br label %loop_top_block533, !dbg !1035
+cond_end534:                                      ; preds = %cond_jump_then533, %cond_end519
+  br label %loop_top_block535, !dbg !1035
 
-loop_top_block533:                                ; preds = %cond_then_block536, %cond_end532
-  %par_count534 = load i32, i32* %par_count, align 4, !dbg !1136
-  %icmpA535 = icmp ne i32 %par_count534, 0, !dbg !1136
-  br i1 %icmpA535, label %cond_then_block536, label %cond_end_block537, !dbg !1136
+loop_top_block535:                                ; preds = %cond_then_block538, %cond_end534
+  %par_count536 = load i32, i32* %par_count, align 4, !dbg !1136
+  %icmpA537 = icmp ne i32 %par_count536, 0, !dbg !1136
+  br i1 %icmpA537, label %cond_then_block538, label %cond_end_block539, !dbg !1136
 
-cond_then_block536:                               ; preds = %loop_top_block533
+cond_then_block538:                               ; preds = %loop_top_block535
   call void @skip(i32 41), !dbg !1137
-  %par_count538 = load i32, i32* %par_count, align 4, !dbg !1138
-  %sub539 = sub i32 %par_count538, 1, !dbg !1138
-  store i32 %sub539, i32* %par_count, align 4, !dbg !1138
-  %add540 = add i32 %sub539, 1, !dbg !1138
-  br label %loop_top_block533, !dbg !1138
+  %par_count540 = load i32, i32* %par_count, align 4, !dbg !1138
+  %sub541 = sub i32 %par_count540, 1, !dbg !1138
+  store i32 %sub541, i32* %par_count, align 4, !dbg !1138
+  %add542 = add i32 %sub541, 1, !dbg !1138
+  br label %loop_top_block535, !dbg !1138
 
-cond_end_block537:                                ; preds = %loop_top_block533
+cond_end_block539:                                ; preds = %loop_top_block535
   br label %cond_end, !dbg !1138
 
-loop_top_block550:                                ; preds = %cond_end581, %cond_jump_elif_then2
-  %parlevel553 = load i32, i32* %parlevel, align 4, !dbg !1139
-  %gt554 = icmp sgt i32 %parlevel553, 0, !dbg !1139
-  store i1 %gt554, i1* %oror552, align 1, !dbg !1139
-  br i1 %gt554, label %cond_jump_end556, label %cond_jump_then555, !dbg !1139
+loop_top_block552:                                ; preds = %cond_end583, %cond_jump_elif_then2
+  %parlevel555 = load i32, i32* %parlevel, align 4, !dbg !1139
+  %gt556 = icmp sgt i32 %parlevel555, 0, !dbg !1139
+  store i1 %gt556, i1* %oror554, align 1, !dbg !1139
+  br i1 %gt556, label %cond_jump_end558, label %cond_jump_then557, !dbg !1139
 
-cond_jump_then555:                                ; preds = %loop_top_block550
-  %tok558 = load i32, i32* @tok, align 4, !dbg !1139
-  %not_eq559 = icmp ne i32 %tok558, 125, !dbg !1139
-  store i1 %not_eq559, i1* %andand557, align 1, !dbg !1139
-  br i1 %not_eq559, label %cond_jump_then560, label %cond_jump_end561, !dbg !1139
+cond_jump_then557:                                ; preds = %loop_top_block552
+  %tok560 = load i32, i32* @tok, align 4, !dbg !1139
+  %not_eq561 = icmp ne i32 %tok560, 125, !dbg !1139
+  store i1 %not_eq561, i1* %andand559, align 1, !dbg !1139
+  br i1 %not_eq561, label %cond_jump_then562, label %cond_jump_end563, !dbg !1139
 
-cond_jump_end556:                                 ; preds = %cond_jump_end561, %loop_top_block550
-  %oror_result_value567 = load i1, i1* %oror552, align 1, !dbg !1139
-  store i1 %oror_result_value567, i1* %andand551, align 1, !dbg !1139
-  br i1 %oror_result_value567, label %cond_jump_then568, label %cond_jump_end569, !dbg !1139
+cond_jump_end558:                                 ; preds = %cond_jump_end563, %loop_top_block552
+  %oror_result_value569 = load i1, i1* %oror554, align 1, !dbg !1139
+  store i1 %oror_result_value569, i1* %andand553, align 1, !dbg !1139
+  br i1 %oror_result_value569, label %cond_jump_then570, label %cond_jump_end571, !dbg !1139
 
-cond_jump_then560:                                ; preds = %cond_jump_then555
-  %tok562 = load i32, i32* @tok, align 4, !dbg !1139
-  %not_eq563 = icmp ne i32 %tok562, 44, !dbg !1139
-  %andand564 = and i1 %not_eq559, %not_eq563, !dbg !1139
-  store i1 %andand564, i1* %andand557, align 1, !dbg !1139
-  br label %cond_jump_end561, !dbg !1139
+cond_jump_then562:                                ; preds = %cond_jump_then557
+  %tok564 = load i32, i32* @tok, align 4, !dbg !1139
+  %not_eq565 = icmp ne i32 %tok564, 44, !dbg !1139
+  %andand566 = and i1 %not_eq561, %not_eq565, !dbg !1139
+  store i1 %andand566, i1* %andand559, align 1, !dbg !1139
+  br label %cond_jump_end563, !dbg !1139
 
-cond_jump_end561:                                 ; preds = %cond_jump_then560, %cond_jump_then555
-  %andand_result_value565 = load i1, i1* %andand557, align 1, !dbg !1139
-  %oror566 = or i1 %gt554, %andand_result_value565, !dbg !1139
-  store i1 %oror566, i1* %oror552, align 1, !dbg !1139
-  br label %cond_jump_end556, !dbg !1139
+cond_jump_end563:                                 ; preds = %cond_jump_then562, %cond_jump_then557
+  %andand_result_value567 = load i1, i1* %andand559, align 1, !dbg !1139
+  %oror568 = or i1 %gt556, %andand_result_value567, !dbg !1139
+  store i1 %oror568, i1* %oror554, align 1, !dbg !1139
+  br label %cond_jump_end558, !dbg !1139
 
-cond_jump_then568:                                ; preds = %cond_jump_end556
-  %tok570 = load i32, i32* @tok, align 4, !dbg !1140
-  %not_eq571 = icmp ne i32 %tok570, -1, !dbg !1140
-  %andand572 = and i1 %oror_result_value567, %not_eq571, !dbg !1140
-  store i1 %andand572, i1* %andand551, align 1, !dbg !1140
-  br label %cond_jump_end569, !dbg !1140
+cond_jump_then570:                                ; preds = %cond_jump_end558
+  %tok572 = load i32, i32* @tok, align 4, !dbg !1140
+  %not_eq573 = icmp ne i32 %tok572, -1, !dbg !1140
+  %andand574 = and i1 %oror_result_value569, %not_eq573, !dbg !1140
+  store i1 %andand574, i1* %andand553, align 1, !dbg !1140
+  br label %cond_jump_end571, !dbg !1140
 
-cond_jump_end569:                                 ; preds = %cond_jump_then568, %cond_jump_end556
-  %andand_result_value573 = load i1, i1* %andand551, align 1, !dbg !1140
-  br i1 %andand_result_value573, label %cond_then_block574, label %cond_end_block575, !dbg !1140
+cond_jump_end571:                                 ; preds = %cond_jump_then570, %cond_jump_end558
+  %andand_result_value575 = load i1, i1* %andand553, align 1, !dbg !1140
+  br i1 %andand_result_value575, label %cond_then_block576, label %cond_end_block577, !dbg !1140
 
-cond_then_block574:                               ; preds = %cond_jump_end569
-  %tok576 = load i32, i32* @tok, align 4, !dbg !1141
-  %eq577 = icmp eq i32 %tok576, 40, !dbg !1141
-  br i1 %eq577, label %cond_jump_then578, label %cond_jump_elif0579, !dbg !1141
+cond_then_block576:                               ; preds = %cond_jump_end571
+  %tok578 = load i32, i32* @tok, align 4, !dbg !1141
+  %eq579 = icmp eq i32 %tok578, 40, !dbg !1141
+  br i1 %eq579, label %cond_jump_then580, label %cond_jump_elif0581, !dbg !1141
 
-cond_end_block575:                                ; preds = %cond_jump_end569
+cond_end_block577:                                ; preds = %cond_jump_end571
   br label %cond_end, !dbg !1142
 
-cond_jump_then578:                                ; preds = %cond_then_block574
-  %parlevel582 = load i32, i32* %parlevel, align 4, !dbg !1143
-  %add583 = add i32 %parlevel582, 1, !dbg !1143
-  store i32 %add583, i32* %parlevel, align 4, !dbg !1143
+cond_jump_then580:                                ; preds = %cond_then_block576
   %parlevel584 = load i32, i32* %parlevel, align 4, !dbg !1143
-  %sub585 = sub i32 %parlevel584, 1, !dbg !1143
-  br label %cond_end581, !dbg !1143
+  %add585 = add i32 %parlevel584, 1, !dbg !1143
+  store i32 %add585, i32* %parlevel, align 4, !dbg !1143
+  %parlevel586 = load i32, i32* %parlevel, align 4, !dbg !1143
+  %sub587 = sub i32 %parlevel586, 1, !dbg !1143
+  br label %cond_end583, !dbg !1143
 
-cond_jump_elif0579:                               ; preds = %cond_then_block574
-  %tok586 = load i32, i32* @tok, align 4, !dbg !1144
-  %eq587 = icmp eq i32 %tok586, 41, !dbg !1144
-  br i1 %eq587, label %cond_jump_elif_then0580, label %cond_end581, !dbg !1144
+cond_jump_elif0581:                               ; preds = %cond_then_block576
+  %tok588 = load i32, i32* @tok, align 4, !dbg !1144
+  %eq589 = icmp eq i32 %tok588, 41, !dbg !1144
+  br i1 %eq589, label %cond_jump_elif_then0582, label %cond_end583, !dbg !1144
 
-cond_jump_elif_then0580:                          ; preds = %cond_jump_elif0579
-  %parlevel588 = load i32, i32* %parlevel, align 4, !dbg !1145
-  %sub589 = sub i32 %parlevel588, 1, !dbg !1145
-  store i32 %sub589, i32* %parlevel, align 4, !dbg !1145
-  %add590 = add i32 %sub589, 1, !dbg !1145
-  br label %cond_end581, !dbg !1145
+cond_jump_elif_then0582:                          ; preds = %cond_jump_elif0581
+  %parlevel590 = load i32, i32* %parlevel, align 4, !dbg !1145
+  %sub591 = sub i32 %parlevel590, 1, !dbg !1145
+  store i32 %sub591, i32* %parlevel, align 4, !dbg !1145
+  %add592 = add i32 %sub591, 1, !dbg !1145
+  br label %cond_end583, !dbg !1145
 
-cond_end581:                                      ; preds = %cond_jump_elif_then0580, %cond_jump_elif0579, %cond_jump_then578
+cond_end583:                                      ; preds = %cond_jump_elif_then0582, %cond_jump_elif0581, %cond_jump_then580
   call void @next(), !dbg !1142
-  br label %loop_top_block550, !dbg !1142
+  br label %loop_top_block552, !dbg !1142
 
-cond_jump_then595:                                ; preds = %cond_else_block
+cond_jump_then597:                                ; preds = %cond_else_block
   store i32 2, i32* %expr_type, align 4, !dbg !1146
-  br label %cond_end596, !dbg !1146
+  br label %cond_end598, !dbg !1146
 
-cond_end596:                                      ; preds = %cond_jump_then595, %cond_else_block
-  %type597 = load %CType*, %CType** %type, align 8, !dbg !1044
-  %sec598 = load %Section*, %Section** %sec, align 8, !dbg !1044
-  %c599 = load i64, i64* %c, align 4, !dbg !1044
-  %expr_type600 = load i32, i32* %expr_type, align 4, !dbg !1044
-  call void @init_putv(%CType* %type597, %Section* %sec598, i64 %c599, i32 0, i32 %expr_type600), !dbg !1044
+cond_end598:                                      ; preds = %cond_jump_then597, %cond_else_block
+  %type599 = load %CType*, %CType** %type, align 8, !dbg !1044
+  %sec600 = load %Section*, %Section** %sec, align 8, !dbg !1044
+  %c601 = load i64, i64* %c, align 4, !dbg !1044
+  %expr_type602 = load i32, i32* %expr_type, align 4, !dbg !1044
+  call void @init_putv(%CType* %type599, %Section* %sec600, i64 %c601, i32 0, i32 %expr_type602), !dbg !1044
   br label %cond_end, !dbg !1044
 }
 
@@ -52563,7 +52569,7 @@ entry:
   %s11 = load %Section*, %Section** %s, align 8, !dbg !6226
   %field12 = getelementptr inbounds %Section, %Section* %s11, i32 0, i32 0, !dbg !6226
   %data_offset = load i64, i64* %field12, align 4, !dbg !6226
-  %div = udiv i64 %data_offset, 24, !dbg !6226
+  %div = sdiv i64 %data_offset, 24, !dbg !6226
   %icastM = trunc i64 %div to i32, !dbg !6226
   store i32 %icastM, i32* %nb_syms, align 4, !dbg !6226
   %s13 = load %Section*, %Section** %s, align 8, !dbg !6227
@@ -52920,7 +52926,7 @@ entry:
   %s13 = load %Section*, %Section** %s, align 8, !dbg !6269
   %field = getelementptr inbounds %Section, %Section* %s13, i32 0, i32 0, !dbg !6269
   %data_offset = load i64, i64* %field, align 4, !dbg !6269
-  %div = udiv i64 %data_offset, 24, !dbg !6269
+  %div = sdiv i64 %data_offset, 24, !dbg !6269
   %icastM = trunc i64 %div to i32, !dbg !6269
   store i32 %icastM, i32* %nb_syms, align 4, !dbg !6269
   %nb_syms14 = load i32, i32* %nb_syms, align 4, !dbg !6270
@@ -56347,7 +56353,7 @@ cond_else_block92:                                ; preds = %cond_end55
   %symtab_section365 = load %Section*, %Section** @symtab_section, align 8, !dbg !6697
   %field366 = getelementptr inbounds %Section, %Section* %symtab_section365, i32 0, i32 0, !dbg !6697
   %data_offset367 = load i64, i64* %field366, align 4, !dbg !6697
-  %div368 = udiv i64 %data_offset367, 24, !dbg !6697
+  %div368 = sdiv i64 %data_offset367, 24, !dbg !6697
   %icastM369 = trunc i64 %div368 to i32, !dbg !6697
   store i32 %icastM369, i32* %nb_syms, align 4, !dbg !6697
   %s1370 = load %TCCState*, %TCCState** %s1, align 8, !dbg !6698
@@ -59365,7 +59371,7 @@ cond_end129:                                      ; preds = %tcc_load_object_fil
   %sh130 = load %come_anon15*, %come_anon15** %sh, align 8, !dbg !7064
   %field131 = getelementptr inbounds %come_anon15, %come_anon15* %sh130, i32 0, i32 5, !dbg !7064
   %sh_size132 = load i64, i64* %field131, align 4, !dbg !7064
-  %div = udiv i64 %sh_size132, 24, !dbg !7064
+  %div = sdiv i64 %sh_size132, 24, !dbg !7064
   %icastM = trunc i64 %div to i32, !dbg !7064
   store i32 %icastM, i32* %nb_syms, align 4, !dbg !7064
   %fd133 = load i32, i32* %fd, align 4, !dbg !7065
@@ -61106,7 +61112,7 @@ cond_then_block45:                                ; preds = %cond_then_block
   %sh46 = load %come_anon15*, %come_anon15** %sh, align 8, !dbg !7269
   %field47 = getelementptr inbounds %come_anon15, %come_anon15* %sh46, i32 0, i32 5, !dbg !7269
   %sh_size = load i64, i64* %field47, align 4, !dbg !7269
-  %div = udiv i64 %sh_size, 16, !dbg !7269
+  %div = sdiv i64 %sh_size, 16, !dbg !7269
   %icastM = trunc i64 %div to i32, !dbg !7269
   store i32 %icastM, i32* %nb_dts, align 4, !dbg !7269
   %fd48 = load i32, i32* %fd, align 4, !dbg !7270
@@ -61133,7 +61139,7 @@ cond_then_block56:                                ; preds = %cond_else_blockX
   %sh59 = load %come_anon15*, %come_anon15** %sh, align 8, !dbg !7273
   %field60 = getelementptr inbounds %come_anon15, %come_anon15* %sh59, i32 0, i32 5, !dbg !7273
   %sh_size61 = load i64, i64* %field60, align 4, !dbg !7273
-  %div62 = udiv i64 %sh_size61, 24, !dbg !7273
+  %div62 = sdiv i64 %sh_size61, 24, !dbg !7273
   %icastM63 = trunc i64 %div62 to i32, !dbg !7273
   store i32 %icastM63, i32* %nb_syms, align 4, !dbg !7273
   %fd64 = load i32, i32* %fd, align 4, !dbg !7274

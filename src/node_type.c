@@ -1388,7 +1388,13 @@ BOOL is_left_type_bigger_size(sNodeType* left_type, sNodeType* right_type)
         return TRUE;
     }
     else if(type_identify_with_class_name(left_type, "int")) {
-        if(type_identify_with_class_name(right_type, "long")) {
+        if(type_identify_with_class_name(right_type, "float")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "double")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "long")) {
             return FALSE;
         }
         else if(type_identify_with_class_name(right_type, "int")) {
@@ -1398,7 +1404,13 @@ BOOL is_left_type_bigger_size(sNodeType* left_type, sNodeType* right_type)
         return TRUE;
     }
     else if(type_identify_with_class_name(left_type, "short")) {
-        if(type_identify_with_class_name(right_type, "long")) {
+        if(type_identify_with_class_name(right_type, "float")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "double")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "long")) {
             return FALSE;
         }
         else if(type_identify_with_class_name(right_type, "int")) {
@@ -1411,7 +1423,13 @@ BOOL is_left_type_bigger_size(sNodeType* left_type, sNodeType* right_type)
         return TRUE;
     }
     else if(type_identify_with_class_name(left_type, "char")) {
-        if(type_identify_with_class_name(right_type, "long")) {
+        if(type_identify_with_class_name(right_type, "float")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "double")) {
+            return FALSE;
+        }
+        else if(type_identify_with_class_name(right_type, "long")) {
             return FALSE;
         }
         else if(type_identify_with_class_name(right_type, "int")) {
@@ -1424,6 +1442,15 @@ BOOL is_left_type_bigger_size(sNodeType* left_type, sNodeType* right_type)
             return FALSE;
         }
         
+        return TRUE;
+    }
+    else if(type_identify_with_class_name(left_type, "float")) {
+        if(type_identify_with_class_name(right_type, "double")) {
+            return FALSE;
+        }
+        return TRUE;
+    }
+    else if(type_identify_with_class_name(left_type, "double")) {
         return TRUE;
     }
     

@@ -4643,9 +4643,28 @@ static LLVMValueRef craete_null_const_union(sNodeType* node_type)
     
     LLVMValueRef values[STRUCT_FIELD_MAX];
     
-    sNodeType* field = klass->mFields[0];
+    sNodeType* max_field = NULL;
+    int max_size = 0;
     
-    LLVMValueRef zero_value = create_null_value(field);
+    int j;
+    for(j=0; j<klass->mNumFields; j++) {
+        sNodeType* field = klass->mFields[0];
+        
+        int alignment = 0;
+        uint64_t size = get_size_from_node_type(field, &alignment) * 8;
+        
+        if(size > max_size) {
+            size = max_size;
+            max_field = field;
+        }
+    }
+    
+    if(max_field == NULL) {
+        fprintf(stderr, "empty union\n");
+        exit(2);
+    }
+    
+    LLVMValueRef zero_value = create_null_value(max_field);
     
     values[0] = zero_value;
     
@@ -4685,6 +4704,10 @@ LLVMValueRef create_null_value(sNodeType* node_type)
         
         LLVMTypeRef llvm_element_type = create_llvm_type_from_node_type(element_type);
         zero_value = LLVMConstArray(llvm_element_type, values, array_element_num);
+    }
+    else if(type_identify_with_class_name(node_type, "float") || type_identify_with_class_name(node_type, "double") || type_identify_with_class_name(node_type, "long_double"))
+    {
+        zero_value = LLVMConstReal(llvm_element_type, 0.0);
     }
     else {
         zero_value = LLVMConstInt(llvm_element_type, 0, FALSE);

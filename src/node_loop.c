@@ -1593,7 +1593,13 @@ BOOL compile_case_expression(unsigned int node, sCompileInfo* info)
         
         free_right_value_objects(info);
 
-        LLVMValueRef conditional_value = LLVMBuildICmp(gBuilder, LLVMIntEQ, lvalue, rvalue.value, "eqtmp");
+        LLVMValueRef conditional_value;
+        if(type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "float"))         {
+            conditional_value = LLVMBuildFCmp(gBuilder, LLVMRealOEQ, lvalue, rvalue.value, "eqtmp");
+        }
+        else {
+            conditional_value = LLVMBuildICmp(gBuilder, LLVMIntEQ, lvalue, rvalue.value, "eqtmp");
+        }
         LLVMBuildCondBr(gBuilder, conditional_value, cond_then_block, cond_else_block);
     }
 
