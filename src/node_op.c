@@ -1081,7 +1081,13 @@ BOOL compile_equals(unsigned int node, sCompileInfo* info)
 //    }
 
     LVALUE llvm_value;
-    llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntEQ, lvalue.value, rvalue.value, "eq");
+    if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+    {
+        llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealOEQ, lvalue.value, rvalue.value, "eq");
+    }
+    else {
+        llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntEQ, lvalue.value, rvalue.value, "eq");
+    }
     llvm_value.type = create_node_type_with_class_name("bool");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
@@ -1173,7 +1179,14 @@ BOOL compile_equals2(unsigned int node, sCompileInfo* info)
         }
     
         LVALUE llvm_value;
-        llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntEQ, lvalue.value, rvalue.value, "eq");
+        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealOEQ, lvalue.value, rvalue.value, "eq");
+        }
+        else {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntEQ, lvalue.value, rvalue.value, "eq");
+        }
+        
         llvm_value.type = create_node_type_with_class_name("bool");
         llvm_value.address = NULL;
         llvm_value.var = NULL;
@@ -1256,7 +1269,13 @@ BOOL compile_not_equals(unsigned int node, sCompileInfo* info)
 //    }
 
     LVALUE llvm_value;
-    llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntNE, lvalue.value, rvalue.value, "not_eq");
+    if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+    {
+        llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealONE, lvalue.value, rvalue.value, "not_eq");
+    }
+    else {
+        llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntNE, lvalue.value, rvalue.value, "not_eq");
+    }
     llvm_value.type = create_node_type_with_class_name("bool");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
@@ -1348,7 +1367,13 @@ BOOL compile_not_equals2(unsigned int node, sCompileInfo* info)
         }
     
         LVALUE llvm_value;
-        llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntNE, lvalue.value, rvalue.value, "not_eq");
+        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealONE, lvalue.value, rvalue.value, "not_eq");
+        }
+        else {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntNE, lvalue.value, rvalue.value, "not_eq");
+        }
         llvm_value.type = create_node_type_with_class_name("bool");
         llvm_value.address = NULL;
         llvm_value.var = NULL;
@@ -1442,7 +1467,11 @@ BOOL compile_gteq(unsigned int node, sCompileInfo* info)
 //        }
     
         LVALUE llvm_value;
-        if(left_type->mUnsigned) {
+        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealOGE, lvalue.value, rvalue.value, "gteq");
+        }
+        else if(left_type->mUnsigned) {
             llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntUGE, lvalue.value, rvalue.value, "gteq");
         }
         else {
@@ -1541,7 +1570,11 @@ BOOL compile_leeq(unsigned int node, sCompileInfo* info)
 //        }
     
         LVALUE llvm_value;
-        if(left_type->mUnsigned) {
+        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealOLE, lvalue.value, rvalue.value, "leeq");
+        }
+        else if(left_type->mUnsigned) {
             llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntULE, lvalue.value, rvalue.value, "leeq");
         }
         else {
@@ -1640,7 +1673,11 @@ BOOL compile_gt(unsigned int node, sCompileInfo* info)
 //        }
     
         LVALUE llvm_value;
-        if(left_type->mUnsigned) {
+        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealOGT, lvalue.value, rvalue.value, "gt");
+        }
+        else if(left_type->mUnsigned) {
             llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntUGT, lvalue.value, rvalue.value, "gt");
         }
         else {
@@ -1739,7 +1776,11 @@ BOOL compile_le(unsigned int node, sCompileInfo* info)
 //        }
     
         LVALUE llvm_value;
-        if(left_type->mUnsigned) {
+        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        {
+            llvm_value.value = LLVMBuildICmp(gBuilder, LLVMRealOLT, lvalue.value, rvalue.value, "le");
+        }
+        else if(left_type->mUnsigned) {
             llvm_value.value = LLVMBuildICmp(gBuilder, LLVMIntULT, lvalue.value, rvalue.value, "le");
         }
         else {
