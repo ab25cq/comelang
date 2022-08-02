@@ -13,6 +13,10 @@ int main()
     else {
         puts("NO");
     }
+    double tt;
+    tt = (double)1.1 / 1000000.0;
+    if (tt > 0.001)
+        tt = 0.001;
     
     return 0;
 }

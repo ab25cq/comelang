@@ -3937,7 +3937,7 @@ entry:
   %fdiv = fdiv double %icastKO, 1.000000e+06, !dbg !310
   store double %fdiv, double* %tt, align 8, !dbg !310
   %tt4 = load double, double* %tt, align 8, !dbg !311
-  %le = icmp slt double %tt4, 1.000000e-03, !dbg !311
+  %le = icmp olt double %tt4, 1.000000e-03, !dbg !311
   br i1 %le, label %cond_jump_then, label %cond_end, !dbg !311
 
 cond_jump_then:                                   ; preds = %entry

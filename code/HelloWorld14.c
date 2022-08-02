@@ -371,9 +371,9 @@ int main(int argc, char** argv)
     xassert("fun pointer test2", (*prog_main)(1, GGG) == 1);
     xassert("offset test", warning_defs[0].offset == 4 && warning_defs[1].offset == 0 && warning_defs[2].offset == 8 && warning_defs[3].offset == 16);
     
-    struct sigaction sigact;
-    sigact.sa_flags = 0x0040 | 0x0004;
-    *(&sigact.sa_mask) = 0;
+    xassert("double cmp", 1.3f > 1.2f);
+    
+    xassert("double cmp", 1.2f == 1.2f);
     
     return 0;
 }
