@@ -3085,6 +3085,26 @@ unsigned int sNodeTree_create_array_initializer(char* name, int num_initialize_a
 
 BOOL compile_struct_initializer_core(int num_elements, struct sStructInitializer* elements, LLVMValueRef* values, int num_fields, sCLClass* klass, sCompileInfo* info);
 
+void start_tmp_inst(LLVMBasicBlockRef* prev_block, sCompileInfo* info)
+{
+    *prev_block = info->current_block;
+    LLVMBasicBlockRef block = LLVMAppendBasicBlockInContext(gContext, gTmpFunction, "tmp_block");
+    
+    llvm_change_block(block, info);
+}
+
+void delete_last_instrunction(LLVMBasicBlockRef prev_block, sCompileInfo* info)
+{
+    LLVMBasicBlockRef block = info->current_block;
+    
+    LLVMValueRef last_inst = LLVMGetLastInstruction(block);
+    
+    if(last_inst) {
+        LLVMInstructionRemoveFromParent(last_inst);
+    }
+    
+    llvm_change_block(prev_block, info);
+}
 
 BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
 {
@@ -3211,12 +3231,17 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                     }
                     else {
                         unsigned int node = initialize_array_value[n++];
-            
+                        
+                        LLVMBasicBlockRef prev_block = NULL;
+                        start_tmp_inst(&prev_block, info);
+                        
                         if(!compile(node, info)) {
                             return FALSE;
                         }
             
                         LVALUE llvm_value = *get_value_from_stack(-1);
+                        
+                        delete_last_instrunction(prev_block, info);
             
                         dec_stack_ptr(1, info);
                         
@@ -3272,12 +3297,17 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                 }
                 else {
                     unsigned int node = initialize_array_value[i];
+                    
+                    LLVMBasicBlockRef prev_block = NULL;
+                    start_tmp_inst(&prev_block, info);
         
                     if(!compile(node, info)) {
                         return FALSE;
                     }
                     
                     LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    delete_last_instrunction(prev_block, info);
         
                     dec_stack_ptr(1, info);
         
@@ -3303,10 +3333,15 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
         int i;
         for(i=0; i<num_initialize_array_value; i++) {
             unsigned int node = initialize_array_value[i];
+            
+            LLVMBasicBlockRef prev_block = NULL;
+            start_tmp_inst(&prev_block, info);
 
             if(!compile(node, info)) {
                 return FALSE;
             }
+            
+            delete_last_instrunction(prev_block, info);
             
             sNodeType* right_type = clone_node_type(info->type);
 
@@ -3365,6 +3400,9 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                 
                 for(j=0; j<num_initialize_array_value2; j++) {
                     unsigned int node = initialize_array_value2[j];
+                    
+                    LLVMBasicBlockRef prev_block = NULL;
+                    start_tmp_inst(&prev_block, info);
                 
                     if(!compile(node, info)) {
                         return FALSE;
@@ -3373,6 +3411,8 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                     sNodeType* right_type = clone_node_type(info->type);
         
                     LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    delete_last_instrunction(prev_block, info);
                     
                     if(auto_cast_posibility(left_type, right_type)) {
                         if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
@@ -3393,6 +3433,9 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
             }
             else {
                 unsigned int node = initialize_array_value[i];
+                
+                LLVMBasicBlockRef prev_block = NULL;
+                start_tmp_inst(&prev_block, info);
             
                 if(!compile(node, info)) {
                     return FALSE;
@@ -3401,6 +3444,8 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                 sNodeType* right_type = clone_node_type(info->type);
     
                 LVALUE llvm_value = *get_value_from_stack(-1);
+                
+                delete_last_instrunction(prev_block, info);
                 
                 if(auto_cast_posibility(left_type, right_type)) {
                     if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
@@ -3486,6 +3531,9 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                 
                 for(j=0; j<num_initialize_array_value2; j++) {
                     unsigned int node = initialize_array_value2[j];
+                    
+                    LLVMBasicBlockRef prev_block = NULL;
+                    start_tmp_inst(&prev_block, info);
         
                     if(!compile(node, info)) {
                         return FALSE;
@@ -3494,6 +3542,8 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                     sNodeType* right_type = clone_node_type(info->type);
         
                     LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    delete_last_instrunction(prev_block, info);
                     
                     if(auto_cast_posibility(left_type, right_type)) {
                         if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
@@ -3518,6 +3568,9 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
             }
             else {
                 unsigned int node = initialize_array_value[i];
+                
+                LLVMBasicBlockRef prev_block = NULL;
+                start_tmp_inst(&prev_block, info);
     
                 if(!compile(node, info)) {
                     return FALSE;
@@ -3526,6 +3579,8 @@ BOOL compile_array_initializer(unsigned int node, sCompileInfo* info)
                 sNodeType* right_type = clone_node_type(info->type);
     
                 LVALUE llvm_value = *get_value_from_stack(-1);
+                
+                delete_last_instrunction(prev_block, info);
                 
                 if(auto_cast_posibility(left_type, right_type)) {
                     if(!cast_right_type_to_left_type(left_type, &right_type, &llvm_value, info))
@@ -3614,6 +3669,7 @@ unsigned int sNodeTree_create_struct_initializer(char* var_name, sNodeType* node
 
 BOOL compile_struct_initializer_core(int num_elements, struct sStructInitializer* elements, LLVMValueRef* values, int num_fields, sCLClass* klass, sCompileInfo* info);
 
+
 BOOL compile_union_initializer_core(int num_elements, struct sStructInitializer* elements, LLVMValueRef* values, int num_fields, sCLClass* klass, LLVMTypeRef* change_var_type, LLVMValueRef* change_var_type_initializer, sCompileInfo* info)
 {
     sNodeType* left_type = NULL;
@@ -3648,12 +3704,17 @@ BOOL compile_union_initializer_core(int num_elements, struct sStructInitializer*
             if(strcmp(elements[j].mName, field_name) == 0) {
                 if(elements[j].mNumStructElement == 0) {
                     unsigned int node = elements[j].mNode;
+                    
+                    LLVMBasicBlockRef prev_block = NULL;
+                    start_tmp_inst(&prev_block, info);
         
                     if(!compile(node, info)) {
                         return FALSE;
                     }
                     
                     LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    delete_last_instrunction(prev_block, info);
                     
                     dec_stack_ptr(1, info);
                     
@@ -3784,12 +3845,17 @@ BOOL compile_union_initializer_core(int num_elements, struct sStructInitializer*
                             return FALSE;
                         }
                         unsigned int node = struct_initializer->mNode;
+                        
+                        LLVMBasicBlockRef prev_block = NULL;
+                        start_tmp_inst(&prev_block, info);
             
                         if(!compile(node, info)) {
                             return FALSE;
                         }
                         
                         LVALUE llvm_value = *get_value_from_stack(-1);
+                        
+                        delete_last_instrunction(prev_block, info);
                         
                         sNodeType* value_type = clone_node_type(info->type);
                         
@@ -3848,12 +3914,17 @@ BOOL compile_struct_initializer_core(int num_elements, struct sStructInitializer
             if(strcmp(elements[j].mName, field_name) == 0) {
                 if(elements[j].mNumStructElement == 0) {
                     unsigned int node = elements[j].mNode;
+                    
+                    LLVMBasicBlockRef prev_block = NULL;
+                    start_tmp_inst(&prev_block, info);
         
                     if(!compile(node, info)) {
                         return FALSE;
                     }
                     
                     LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    delete_last_instrunction(prev_block, info);
         
                     dec_stack_ptr(1, info);
                     

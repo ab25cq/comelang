@@ -1074,12 +1074,14 @@ BOOL expression_node(unsigned int* node, BOOL enable_assginment, sParserInfo* in
             parser_err_msg(info, "require value for &");
         };
         
+/*
         if(gNodes[*node].mNodeType == kNodeTypeLoadField) {
             *node = sNodeTree_create_reffernce_load_field(*node, info);
         }
         else {
+*/
             *node = sNodeTree_create_reffernce(*node, info);
-        }
+//        }
     }
     else if(*info->p == '!') {
         info->p++;

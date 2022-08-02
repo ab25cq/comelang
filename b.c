@@ -1,15 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+struct sData {
+    int a;
+    int b;
+};
+
+#define offsetof(type, field) ((long) &((type *)0)->field)
 
 int main(int argc, char** arv)
 {
-    int a = 1;
-    void* b = &a;
-    
-    *(int*)b++;
-    
-    printf("%d\n", a);
-    
-    return 0;
+    return offsetof(struct sData, b);
 }

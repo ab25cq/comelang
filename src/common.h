@@ -960,6 +960,8 @@ extern LLVMContextRef gContext;
 extern LLVMValueRef gFunction;
 extern char gFunctionName[VAR_NAME_MAX];
 
+extern LLVMValueRef gTmpFunction;
+
 void init_nodes(char* sname);
 void free_nodes(char* snmae);
 

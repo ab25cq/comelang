@@ -941,6 +941,8 @@ LLVMValueRef clone_object(sNodeType* node_type, LLVMValueRef obj, sCompileInfo* 
 
 LLVMTypeRef create_llvm_type_with_class_name(char* class_name);
 
+LLVMValueRef gTmpFunction;
+
 void init_nodes(char* sname)
 {
     // create context, module and builder
@@ -2177,10 +2179,22 @@ void init_nodes(char* sname)
             exit(1);
         }
     }
+
+    LLVMTypeRef llvm_result_type;
+
+    llvm_result_type = create_llvm_type_with_class_name("void");
+    int num_params = 0;
+    LLVMTypeRef llvm_param_types[PARAMS_MAX];
+    
+    BOOL var_arg = FALSE;
+
+    LLVMTypeRef function_type = LLVMFunctionType(llvm_result_type, llvm_param_types, num_params, var_arg);
+    gTmpFunction = LLVMAddFunction(gModule, "const_tmp_function", function_type);
 }
 
 void free_nodes(char* sname)
 {
+    LLVMDeleteFunction(gTmpFunction);
     if(gNCDebug) {
         LLVMDIBuilderFinalize(gDIBuilder);
         LLVMDisposeDIBuilder(gDIBuilder);
