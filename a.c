@@ -2,61 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define VT_VALMASK   0x00ff
-#define VT_CONST     0x00f0  /* constant in vc 
-                              (must be first non register value) */
-#define VT_LLOCAL    0x00f1  /* lvalue, offset on stack */
-#define VT_LOCAL     0x00f2  /* offset on stack */
-#define VT_CMP       0x00f3  /* the value is stored in processor flags (in vc) */
-#define VT_JMP       0x00f4  /* value is the consequence of jmp true (even) */
-#define VT_JMPI      0x00f5  /* value is the consequence of jmp false (odd) */
-#define VT_LVAL      0x0100  /* var is an lvalue */
-#define VT_SYM       0x0200  /* a symbol value is added */
-#define VT_MUSTCAST  0x0400  /* value must be casted to be correct (used for
-                                char/short stored in integer registers) */
-#define VT_MUSTBOUND 0x0800  /* bound checking must be done before
-                                dereferencing value */
-#define VT_BOUNDED   0x8000  /* value is bounded. The address of the
-                                bounding function call point is in vc */
-#define VT_LVAL_BYTE     0x1000  /* lvalue is a byte */
-#define VT_LVAL_SHORT    0x2000  /* lvalue is a short */
-#define VT_LVAL_UNSIGNED 0x4000  /* lvalue is unsigned */
-#define VT_LVAL_TYPE     (VT_LVAL_BYTE | VT_LVAL_SHORT | VT_LVAL_UNSIGNED)
-
-/* types */
-#define VT_INT        0  /* integer type */
-#define VT_BYTE       1  /* signed byte type */
-#define VT_SHORT      2  /* short type */
-#define VT_VOID       3  /* void type */
-#define VT_PTR        4  /* pointer */
-#define VT_ENUM       5  /* enum definition */
-#define VT_FUNC       6  /* function type */
-#define VT_STRUCT     7  /* struct/union definition */
-#define VT_FLOAT      8  /* IEEE float */
-#define VT_DOUBLE     9  /* IEEE double */
-#define VT_LDOUBLE   10  /* IEEE long double */
-#define VT_BOOL      11  /* ISOC99 boolean type */
-#define VT_LLONG     12  /* 64 bit integer */
-#define VT_LONG      13  /* long integer (NEVER USED as type, only
-                            during parsing) */
-#define VT_BTYPE      0x000f /* mask for basic type */
-#define VT_UNSIGNED   0x0010  /* unsigned type */
-#define VT_ARRAY      0x0020  /* array type (also has VT_PTR) */
-#define VT_BITFIELD   0x0040  /* bitfield modifier */
-#define VT_CONSTANT   0x0800  /* const modifier */
-#define VT_VOLATILE   0x1000  /* volatile modifier */
-#define VT_SIGNED     0x2000  /* signed type */
-
-/* storage */
-#define VT_EXTERN  0x00000080  /* extern definition */
-#define VT_STATIC  0x00000100  /* static variable */
-#define VT_TYPEDEF 0x00000200  /* typedef definition */
-#define VT_INLINE  0x00000400  /* inline definition */
-
-#define VT_STRUCT_SHIFT 16   /* shift for bitfield shift values */
-
-#define VSTACK_SIZE         256
-
 struct Sym;
 
 typedef struct CType {
@@ -96,132 +41,206 @@ typedef struct SValue {
     struct Sym *sym;       /* symbol, if (VT_SYM | VT_CONST) */
 } SValue;
 
+#define VSTACK_SIZE         256
+
 static SValue vstack[VSTACK_SIZE], *vtop;
 
-static void gen_cast(CType *type)
+
+
+#define INCLUDE_STACK_SIZE  32
+#define IFDEF_STACK_SIZE    64
+#define STRING_MAX_SIZE     1024
+#define PACK_STACK_SIZE     8
+
+#define TOK_HASH_SIZE       8192 /* must be a power of two */
+#define TOK_ALLOC_INCR      512  /* must be a power of two */
+#define TOK_MAX_SIZE        4 /* token max size in int unit when stored in string */
+#define CACHED_INCLUDES_HASH_SIZE 512
+
+/* stored in 'Sym.c' field */
+#define FUNC_NEW       1 /* ansi function prototype */
+#define FUNC_OLD       2 /* old function prototype */
+#define FUNC_ELLIPSIS  3 /* ansi function prototype with ... */
+
+/* stored in 'Sym.r' field */
+#define FUNC_CDECL     0 /* standard c call */
+#define FUNC_STDCALL   1 /* pascal c call */
+#define FUNC_FASTCALL1 2 /* first param in %eax */
+#define FUNC_FASTCALL2 3 /* first parameters in %eax, %edx */
+#define FUNC_FASTCALL3 4 /* first parameter in %eax, %edx, %ecx */
+#define FUNC_FASTCALLW 5 /* first parameter in %ecx, %edx */
+
+/* field 'Sym.t' for macros */
+#define MACRO_OBJ      0 /* object like macro */
+#define MACRO_FUNC     1 /* function like macro */
+
+/* field 'Sym.r' for C labels */
+#define LABEL_DEFINED  0 /* label is defined */
+#define LABEL_FORWARD  1 /* label is forward defined */
+#define LABEL_DECLARED 2 /* label is declared but never used */
+
+/* type_decl() types */
+#define TYPE_ABSTRACT  1 /* type without variable */
+#define TYPE_DIRECT    2 /* type with variable */
+
+#define IO_BUF_SIZE 8192
+
+typedef struct BufferedFile {
+    uint8_t *buf_ptr;
+    uint8_t *buf_end;
+    int fd;
+    int line_num;    /* current line number - here to simplify code */
+    int ifndef_macro;  /* #ifndef macro / #endif search */
+    int ifndef_macro_saved; /* saved ifndef_macro */
+    int *ifdef_stack_ptr; /* ifdef_stack value at the start of the file */
+    char inc_type;          /* type of include */
+    char inc_filename[512]; /* filename specified by the user */
+    char filename[1024];    /* current filename - here to simplify code */
+    unsigned char buffer[IO_BUF_SIZE + 1]; /* extra size for CH_EOB char */
+} BufferedFile;
+
+static struct BufferedFile *file;
+
+struct TCCState {
+    int output_type;
+ 
+    BufferedFile **include_stack_ptr;
+    int *ifdef_stack_ptr;
+
+    /* include file handling */
+    char **include_paths;
+    int nb_include_paths;
+    char **sysinclude_paths;
+    int nb_sysinclude_paths;
+    CachedInclude **cached_includes;
+    int nb_cached_includes;
+
+    char **library_paths;
+    int nb_library_paths;
+
+    /* array of all loaded dlls (including those referenced by loaded
+       dlls) */
+    DLLReference **loaded_dlls;
+    int nb_loaded_dlls;
+
+    /* sections */
+    Section **sections;
+    int nb_sections; /* number of sections, including first dummy section */
+
+    Section **priv_sections;
+    int nb_priv_sections; /* number of private sections */
+
+    /* got handling */
+    Section *got;
+    Section *plt;
+    unsigned long *got_offsets;
+    int nb_got_offsets;
+    /* give the correspondance from symtab indexes to dynsym indexes */
+    int *symtab_to_dynsym;
+
+    /* temporary dynamic symbol sections (for dll loading) */
+    Section *dynsymtab_section;
+    /* exported dynamic symbol section */
+    Section *dynsym;
+
+    int nostdinc; /* if true, no standard headers are added */
+    int nostdlib; /* if true, no standard libraries are added */
+    int nocommon; /* if true, do not use common symbols for .bss data */
+
+    /* if true, static linking is performed */
+    int static_link;
+
+    /* soname as specified on the command line (-soname) */
+    const char *soname;
+
+    /* if true, all symbols are exported */
+    int rdynamic;
+
+    /* if true, only link in referenced objects from archive */
+    int alacarte_link;
+
+    /* address of text section */
+    unsigned long text_addr;
+    int has_text_addr;
+    
+    /* output format, see TCC_OUTPUT_FORMAT_xxx */
+    int output_format;
+
+    /* C language options */
+    int char_is_unsigned;
+    int leading_underscore;
+    
+    /* warning switches */
+    int warn_write_strings;
+    int warn_unsupported;
+    int warn_error;
+    int warn_none;
+    int warn_implicit_function_declaration;
+
+    /* display some information during compilation */
+    int verbose;
+    /* compile with debug symbol (and use them if error during execution) */
+    int do_debug;
+    /* compile with built-in memory and bounds checker */
+    int do_bounds_check;
+    /* give the path of the tcc libraries */
+    const char *tcc_lib_path;
+
+    /* error handling */
+    void *error_opaque;
+    void (*error_func)(void *opaque, const char *msg);
+    int error_set_jmp_enabled;
+    jmp_buf error_jmp_buf;
+    int nb_errors;
+
+    /* tiny assembler state */
+    Sym *asm_labels;
+
+    /* see include_stack_ptr */
+    BufferedFile *include_stack[INCLUDE_STACK_SIZE];
+
+    /* see ifdef_stack_ptr */
+    int ifdef_stack[IFDEF_STACK_SIZE];
+
+    /* see cached_includes */
+    int cached_includes_hash[CACHED_INCLUDES_HASH_SIZE];
+
+    /* pack stack */
+    int pack_stack[PACK_STACK_SIZE];
+    int *pack_stack_ptr;
+
+    /* output file for preprocessing */
+    FILE *outfile;
+
+    /* for tcc_relocate */
+    int runtime_added;
+
+#ifdef TCC_TARGET_X86_64
+    /* write PLT and GOT here */
+    char *runtime_plt_and_got;
+    unsigned int runtime_plt_and_got_offset;
+#endif
+};
+
+struct sData {
+    int a;
+    int b;
+};
+
+static void preprocess_init(TCCState *s1)
 {
-    int sbt, dbt, sf, df, c, p;
+/*
+    s1->include_stack_ptr = s1->include_stack;
+    s1->ifdef_stack_ptr = s1->ifdef_stack;
+    file->ifdef_stack_ptr = s1->ifdef_stack_ptr;
+*/
 
-    /* special delayed cast for char/short */
-    /* XXX: in some cases (multiple cascaded casts), it may still
-       be incorrect */
-    if (vtop->r & VT_MUSTCAST) {
-        vtop->r &= ~VT_MUSTCAST;
-//        force_charshort_cast(vtop->type.t);
-    }
-
-    /* bitfields first get cast to ints */
-    if (vtop->type.t & VT_BITFIELD) {
-//        gv(RC_INT);
-    }
-
-    dbt = type->t & (VT_BTYPE | VT_UNSIGNED);
-    sbt = vtop->type.t & (VT_BTYPE | VT_UNSIGNED);
-
-    if (sbt != dbt) {
-//        sf = is_float(sbt);
-//        df = is_float(dbt);
-        c = (vtop->r & (VT_VALMASK | VT_LVAL | VT_SYM)) == VT_CONST;
-        p = (vtop->r & (VT_VALMASK | VT_LVAL | VT_SYM)) == (VT_CONST | VT_SYM);
-        if (c) {
-            /* constant case: we can do it now */
-            /* XXX: in ISOC, cannot do it if error in convert */
-            if (sbt == VT_FLOAT)
-                vtop->c.ld = vtop->c.f;
-            else if (sbt == VT_DOUBLE)
-                vtop->c.ld = vtop->c.d;
-
-            if (df) {
-                if ((sbt & VT_BTYPE) == VT_LLONG) {
-                    if (sbt & VT_UNSIGNED)
-                        vtop->c.ld = vtop->c.ull;
-                    else
-                        vtop->c.ld = vtop->c.ll;
-                } 
-                else if(!sf) {
-                    if (sbt & VT_UNSIGNED)
-                        vtop->c.ld = vtop->c.ui;
-                    else
-                        vtop->c.ld = vtop->c.i;
-                }
-
-                if (dbt == VT_FLOAT)
-                    vtop->c.f = (float)vtop->c.ld;
-                else if (dbt == VT_DOUBLE)
-                    vtop->c.d = (double)vtop->c.ld;
-                    
-            } else if (sf && dbt == (VT_LLONG|VT_UNSIGNED)) {
-            } else if (sf && dbt == VT_BOOL) {
-            } else {
-                if(sf)
-                    vtop->c.ll = (long long)vtop->c.ld;
-                else if (sbt == (VT_LLONG|VT_UNSIGNED))
-                    vtop->c.ll = vtop->c.ull;
-                else if (sbt & VT_UNSIGNED)
-                    vtop->c.ll = vtop->c.ui;
-                else if (sbt != VT_LLONG)
-                    vtop->c.ll = vtop->c.i;
-
-                if (dbt == (VT_LLONG|VT_UNSIGNED))
-                    vtop->c.ull = vtop->c.ll;
-                else if (dbt == VT_BOOL)
-                    vtop->c.i = (vtop->c.ll != 0);
-                else if (dbt != VT_LLONG) {
-                    int s = 0;
-                    if ((dbt & VT_BTYPE) == VT_BYTE)
-                        s = 24;
-                    else if ((dbt & VT_BTYPE) == VT_SHORT)
-                        s = 16;
-
-                    if(dbt & VT_UNSIGNED)
-                        vtop->c.ui = ((unsigned int)vtop->c.ll << s) >> s;
-                    else
-                        vtop->c.i = ((int)vtop->c.ll << s) >> s;
-                }
-            }
-        } else if (p && dbt == VT_BOOL) {
-            vtop->r = VT_CONST;
-            vtop->c.i = 1;
-        } else if (!0) {
-            if (sf && df) {
-                /* convert from fp to fp */
-            } else if (df) {
-            } else if (sf) {
-                /* convert fp to int */
-                if (dbt == VT_BOOL) {
-                     //vpushi(0);
-                     //gen_op(TOK_NE);
-                } else {
-                    /* we handle char/short/etc... with generic code */
-                    if (dbt != (VT_INT | VT_UNSIGNED) &&
-                        dbt != (VT_LLONG | VT_UNSIGNED) &&
-                        dbt != VT_LLONG)
-                        dbt = VT_INT;
-                    //gen_cvt_ftoi1(dbt);
-                    if (dbt == VT_INT && (type->t & (VT_BTYPE | VT_UNSIGNED)) != dbt) {
-                        /* additional cast for char/short... */
-                        vtop->type.t = dbt;
-                        gen_cast(type);
-                    }
-                }
-            } else if (dbt == VT_BOOL) {
-                /* scalar to bool */
-                //vpushi(0);
-                //gen_op(TOK_NE);
-            } else if ((dbt & VT_BTYPE) == VT_BYTE || 
-                       (dbt & VT_BTYPE) == VT_SHORT) {
-                if (sbt == VT_PTR) {
-                    vtop->type.t = VT_INT;
-                    //warning("nonportable conversion from pointer to char/short");
-                }
-                //force_charshort_cast(dbt);
-            } else if ((dbt & VT_BTYPE) == VT_INT) {
-                if (sbt == VT_LLONG) {
-                } 
-            }
-        }
-    }
-    vtop->type = *type;
+    vtop = vstack - 1;
+    
+/*
+    s1->pack_stack[0] = 0;
+    s1->pack_stack_ptr = s1->pack_stack;
+*/
 }
 
 int main()

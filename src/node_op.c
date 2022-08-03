@@ -593,10 +593,10 @@ BOOL compile_sub(unsigned int node, sCompileInfo* info)
             LVALUE llvm_value;
             if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
             {
-                llvm_value.value = LLVMBuildFSub(gBuilder, left_value, right_value, "fsub");
+                llvm_value.value = LLVMBuildFSub(gBuilder, left_value2, right_value, "fsub");
             }
             else {
-                llvm_value.value = LLVMBuildSub(gBuilder, left_value, right_value, "sub");
+                llvm_value.value = LLVMBuildSub(gBuilder, left_value2, right_value, "sub");
             }
             llvm_value.value = LLVMBuildCast(gBuilder, LLVMIntToPtr, llvm_value.value, llvm_var_type, "intToPtrC");
             llvm_value.type = clone_node_type(left_type2);

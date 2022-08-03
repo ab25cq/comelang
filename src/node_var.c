@@ -4599,7 +4599,7 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
     }
 
     BOOL global = var_->mGlobal;
-    BOOL constant = var_->mConstant;
+    BOOL constant = var_->mConstant && !var_->mParamVar;
 
     sNodeType* var_type = clone_node_type(var_->mType);
     

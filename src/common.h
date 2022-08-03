@@ -250,6 +250,7 @@ struct sVarStruct {
 
     BOOL mGlobal;
     BOOL mAllocaValue;
+    BOOL mParamVar;
 };
 
 typedef struct sVarStruct sVar;

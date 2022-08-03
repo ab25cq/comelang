@@ -109,6 +109,8 @@ BOOL call_inline_function(sFunction* fun, sNodeType* generics_type, int num_meth
 
         sVar* var_ = get_variable_from_table(block_var_table, param_names[i]);
         
+        var_->mParamVar = TRUE;
+        
         LLVMBuildStore(gBuilder, llvm_params[i], param);
 
         if(fun->mParamTypes[i] != NULL) {
@@ -1105,6 +1107,8 @@ BOOL compile_function_call(unsigned int node, sCompileInfo* info)
             LLVMValueRef param = LLVMBuildAlloca(gBuilder, llvm_type, param_names[i]);
 
             sVar* var_ = get_variable_from_table(block_var_table, param_names[i]);
+            
+            var_->mParamVar = TRUE;
             
             LLVMBuildStore(gBuilder, llvm_params[i], param);
 
