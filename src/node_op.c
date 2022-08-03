@@ -374,7 +374,7 @@ BOOL compile_add(unsigned int node, sCompileInfo* info)
             left_type2->mHeap = FALSE;
     
             LVALUE llvm_value;
-            if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+            if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
             {
                 llvm_value.value = LLVMBuildFAdd(gBuilder, left_value2, right_value, "fadd");
             }
@@ -426,7 +426,66 @@ BOOL compile_add(unsigned int node, sCompileInfo* info)
             left_type2->mHeap = FALSE;
     
             LVALUE llvm_value;
-            if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+            if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+            {
+                llvm_value.value = LLVMBuildFAdd(gBuilder, left_value, right_value, "fadd");
+            }
+            else {
+                llvm_value.value = LLVMBuildAdd(gBuilder, left_value, right_value, "add");
+            }
+            llvm_value.value = LLVMBuildCast(gBuilder, LLVMIntToPtr, llvm_value.value, llvm_var_type, "intToPtrB");
+            llvm_value.type = clone_node_type(left_type2);
+            llvm_value.address = NULL;
+            llvm_value.var = NULL;
+    
+            dec_stack_ptr(2, info);
+            push_value_to_stack_ptr(&llvm_value, info);
+    
+            info->type = clone_node_type(left_type2);
+        }
+        else if(right_type->mPointerNum > 0 && is_number_type(left_type))
+        {
+            sNodeType* tmp_type = left_type;
+            left_type = right_type;
+            right_type = tmp_type;
+            LVALUE tmp_value = lvalue;
+            lvalue = rvalue;
+            rvalue = tmp_value;
+            
+            LLVMTypeRef long_type = create_llvm_type_with_class_name("long");
+    
+            LLVMValueRef left_value = LLVMBuildCast(gBuilder, LLVMPtrToInt, lvalue.value, long_type, "ptrToIntC");
+    
+            LLVMValueRef right_value;
+            if(type_identify_with_class_name(right_type, "long")) {
+                right_value = rvalue.value;
+            }
+            else {
+                if(right_type->mPointerNum > 0 || right_type->mArrayDimentionNum > 0) {
+                    right_value = LLVMBuildCast(gBuilder, LLVMPtrToInt, rvalue.value, long_type, "ptrToIntD");
+                }
+                else {
+                    right_value = LLVMBuildCast(gBuilder, LLVMSExt, rvalue.value, long_type, "sext");
+                }
+            }
+    
+            LLVMTypeRef llvm_var_type = create_llvm_type_from_node_type(left_type);
+    
+            sNodeType* left_type3 = clone_node_type(left_type);
+            left_type3->mPointerNum--;
+    
+            int alignment = 0;
+            uint64_t alloc_size = get_size_from_node_type(left_type3, &alignment);
+    
+            LLVMValueRef alloc_size_value = LLVMConstInt(long_type, alloc_size, FALSE);
+    
+            right_value = LLVMBuildMul(gBuilder, right_value, alloc_size_value, "mul");
+    
+            sNodeType* left_type2 = clone_node_type(left_type);
+            left_type2->mHeap = FALSE;
+    
+            LVALUE llvm_value;
+            if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
             {
                 llvm_value.value = LLVMBuildFAdd(gBuilder, left_value, right_value, "fadd");
             }
@@ -453,7 +512,7 @@ BOOL compile_add(unsigned int node, sCompileInfo* info)
             }
     
             LVALUE llvm_value;
-            if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+            if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
             {
                 llvm_value.value = LLVMBuildFAdd(gBuilder, lvalue.value, rvalue.value, "fadd");
             }
@@ -591,7 +650,7 @@ BOOL compile_sub(unsigned int node, sCompileInfo* info)
             left_type2->mHeap = FALSE;
     
             LVALUE llvm_value;
-            if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+            if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
             {
                 llvm_value.value = LLVMBuildFSub(gBuilder, left_value2, right_value, "fsub");
             }
@@ -727,7 +786,13 @@ BOOL compile_sub(unsigned int node, sCompileInfo* info)
             }
     
             LVALUE llvm_value;
-            llvm_value.value = LLVMBuildSub(gBuilder, lvalue.value, rvalue.value, "sub");
+            if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+            {
+                llvm_value.value = LLVMBuildFSub(gBuilder, lvalue.value, rvalue.value, "fsub");
+            }
+            else {
+                llvm_value.value = LLVMBuildSub(gBuilder, lvalue.value, rvalue.value, "sub");
+            }
             llvm_value.type = clone_node_type(left_type);
             llvm_value.address = NULL;
             llvm_value.var = NULL;
@@ -810,7 +875,7 @@ BOOL compile_mult(unsigned int node, sCompileInfo* info)
         }
     
         LVALUE llvm_value;
-        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
         {
             llvm_value.value = LLVMBuildFMul(gBuilder, lvalue.value, rvalue.value, "fmul");
         }
@@ -910,7 +975,7 @@ BOOL compile_div(unsigned int node, sCompileInfo* info)
         }
     
         LVALUE llvm_value;
-        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
         {
             llvm_value.value = LLVMBuildFDiv(gBuilder, lvalue.value, rvalue.value, "fdiv");
         }
@@ -1001,7 +1066,7 @@ BOOL compile_mod(unsigned int node, sCompileInfo* info)
         }
     
         LVALUE llvm_value;
-        if((type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
+        if((type_identify_with_class_name(left_type, "long_double") || type_identify_with_class_name(left_type, "double") || type_identify_with_class_name(left_type, "float")) && left_type->mPointerNum == 0) 
         {
             llvm_value.value = LLVMBuildFRem(gBuilder, lvalue.value, rvalue.value, "frem");
         }
