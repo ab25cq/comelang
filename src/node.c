@@ -3230,6 +3230,21 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
                     rvalue->value = LLVMBuildCast(gBuilder, LLVMSExt, rvalue->value, llvm_type, "icastD");
                 }
             }
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "float") || type_identify_with_class_name(*right_type, "double") || type_identify_with_class_name(*right_type, "long_double")))
+            {
+                LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long");
+
+                if((*right_type)->mUnsigned) {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMFPToUI, rvalue->value, llvm_type, "icastKOKO");
+                }
+                else {
+                    LLVMTypeRef llvm_type = create_llvm_type_with_class_name("long");
+    
+                    rvalue->value = LLVMBuildCast(gBuilder, LLVMFPToSI, rvalue->value, llvm_type, "icastKOL");
+                }
+            }
             else if((*right_type)->mPointerNum > 0 || type_identify_with_class_name((*right_type), "protocol_obj_t")) {
                 LLVMTypeRef llvm_type = create_llvm_type_from_node_type(left_type);
 
