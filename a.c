@@ -126,50 +126,41 @@ static void gen_cast(CType *type)
         if (c) {
             /* constant case: we can do it now */
             /* XXX: in ISOC, cannot do it if error in convert */
-/*
             if (sbt == VT_FLOAT)
                 vtop->c.ld = vtop->c.f;
             else if (sbt == VT_DOUBLE)
                 vtop->c.ld = vtop->c.d;
-*/
 
             if (df) {
                 if ((sbt & VT_BTYPE) == VT_LLONG) {
-//                    if (sbt & VT_UNSIGNED)
-//                        vtop->c.ld = vtop->c.ull;
-//                    else
-//                        vtop->c.ld = vtop->c.ll;
+                    if (sbt & VT_UNSIGNED)
+                        vtop->c.ld = vtop->c.ull;
+                    else
+                        vtop->c.ld = vtop->c.ll;
                 } 
-/*
                 else if(!sf) {
                     if (sbt & VT_UNSIGNED)
                         vtop->c.ld = vtop->c.ui;
                     else
                         vtop->c.ld = vtop->c.i;
                 }
-*/
 
-/*
                 if (dbt == VT_FLOAT)
                     vtop->c.f = (float)vtop->c.ld;
                 else if (dbt == VT_DOUBLE)
                     vtop->c.d = (double)vtop->c.ld;
-*/
+                    
             } else if (sf && dbt == (VT_LLONG|VT_UNSIGNED)) {
-//                vtop->c.ull = (unsigned long long)vtop->c.ld;
             } else if (sf && dbt == VT_BOOL) {
-//                vtop->c.i = (vtop->c.ld != 0);
             } else {
                 if(sf)
                     vtop->c.ll = (long long)vtop->c.ld;
-/*
                 else if (sbt == (VT_LLONG|VT_UNSIGNED))
                     vtop->c.ll = vtop->c.ull;
                 else if (sbt & VT_UNSIGNED)
                     vtop->c.ll = vtop->c.ui;
                 else if (sbt != VT_LLONG)
                     vtop->c.ll = vtop->c.i;
-*/
 
                 if (dbt == (VT_LLONG|VT_UNSIGNED))
                     vtop->c.ull = vtop->c.ll;
@@ -192,13 +183,9 @@ static void gen_cast(CType *type)
             vtop->r = VT_CONST;
             vtop->c.i = 1;
         } else if (!0) {
-            /* non constant case: generate code */
             if (sf && df) {
                 /* convert from fp to fp */
-//                gen_cvt_ftof(dbt);
             } else if (df) {
-                /* convert int to fp */
-//                gen_cvt_itof1(dbt);
             } else if (sf) {
                 /* convert fp to int */
                 if (dbt == VT_BOOL) {
@@ -217,44 +204,6 @@ static void gen_cast(CType *type)
                         gen_cast(type);
                     }
                 }
-#ifndef TCC_TARGET_X86_64
-            } else if ((dbt & VT_BTYPE) == VT_LLONG) {
-                if ((sbt & VT_BTYPE) != VT_LLONG) {
-                    /* scalar to long long */
-                    /* machine independent conversion */
-//                    gv(RC_INT);
-                    /* generate high word */
-                    if (sbt == (VT_INT | VT_UNSIGNED)) {
-                        //vpushi(0);
-                        //gv(RC_INT);
-                    } else {
-                        if (sbt == VT_PTR) {
-                            /* cast from pointer to int before we apply
-                               shift operation, which pointers don't support*/
-//                            gen_cast(&int_type);
-                        }
-                        //gv_dup();
-                        //vpushi(31);
-                        //gen_op(TOK_SAR);
-                    }
-                    /* patch second register */
-                    vtop[-1].r2 = vtop->r;
-                    //vpop();
-                }
-#else
-            } else if ((dbt & VT_BTYPE) == VT_LLONG ||
-                       (dbt & VT_BTYPE) == VT_PTR) {
-                /* XXX: not sure if this is perfect... need more tests */
-                if ((sbt & VT_BTYPE) != VT_LLONG) {
-                    int r = gv(RC_INT);
-                    if (sbt != (VT_INT | VT_UNSIGNED) &&
-                        sbt != VT_PTR && sbt != VT_FUNC) {
-                        /* x86_64 specific: movslq */
-                        o(0x6348);
-                        o(0xc0 + (REG_VALUE(r) << 3) + REG_VALUE(r));
-                    }
-                }
-#endif
             } else if (dbt == VT_BOOL) {
                 /* scalar to bool */
                 //vpushi(0);
@@ -267,24 +216,10 @@ static void gen_cast(CType *type)
                 }
                 //force_charshort_cast(dbt);
             } else if ((dbt & VT_BTYPE) == VT_INT) {
-                /* scalar to int */
                 if (sbt == VT_LLONG) {
-                    /* from long long: just take low order word */
-                    //lexpand();
-                    //vpop();
                 } 
-                /* if lvalue and single word type, nothing to do because
-                   the lvalue already contains the real type size (see
-                   VT_LVAL_xxx constants) */
             }
         }
-    } else if ((dbt & VT_BTYPE) == VT_PTR && !(vtop->r & VT_LVAL)) {
-        /* if we are casting between pointer types,
-           we must update the VT_LVAL_xxx size */
-/*
-        vtop->r = (vtop->r & ~VT_LVAL_TYPE)
-                  | (lvalue_type(type->ref->type.t) & VT_LVAL_TYPE);
-*/
     }
     vtop->type = *type;
 }

@@ -3389,7 +3389,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
     else if(type_identify_with_class_name(left_type, "float") && left_type->mPointerNum == 0)
     {
         if(rvalue && rvalue->value) {
-            if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "double")))
+            if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "double") || type_identify_with_class_name(*right_type, "long_double")))
             {
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("float");
 
@@ -3418,7 +3418,13 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
     else if(type_identify_with_class_name(left_type, "double") && left_type->mPointerNum == 0)
     {
         if(rvalue && rvalue->value) {
-            if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "float")))
+            if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "long_double")))
+            {
+                LLVMTypeRef llvm_type = create_llvm_type_with_class_name("double");
+
+                rvalue->value = LLVMBuildCast(gBuilder, LLVMFPTrunc, rvalue->value, llvm_type, "icastKLL");
+            }
+            else if((*right_type)->mPointerNum == 0 && (type_identify_with_class_name(*right_type, "float")))
             {
                 LLVMTypeRef llvm_type = create_llvm_type_with_class_name("double");
 
