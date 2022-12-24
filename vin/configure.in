@@ -1,0 +1,174 @@
+AC_INIT(src/main.c)
+
+AC_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_C_BIGENDIAN
+
+if test $prefix = NONE
+then
+    myprefix=/usr/local
+else
+    myprefix=$prefix
+fi
+
+#########################################
+# configure arguments
+#########################################
+DEBUGGING=0
+ENABLE_GC=0
+LOGGING=0
+
+AC_ARG_WITH(debug,              [  --with-debug              include debug info ], [ DEBUGGING=1; ], [])
+AC_ARG_WITH(gc,                 [  --with-gc                 enable Boehm GC ], [ ENABLE_GC=1; ], [])
+AC_ARG_WITH(optimize,           [  --with-optimize           with optimize(-O2 in CFLAGS) ], [ ENABLE_OPTIMIZE=1 ], [ ENABLE_OPTIMIZE=0 ])
+
+#########################################
+# check cpu type
+#########################################
+AC_MSG_CHECKING(CPU type)
+
+if test `uname -m` = x86_64
+then
+    echo x86_64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+    AC_DEFINE(__X86_64__, 1)
+elif test `uname -m` = i386 || test `uname -m` = i686
+then
+    echo x86_32
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+elif test `uname -o` = Android
+then
+    echo Android
+
+    AC_DEFINE(__ANDROID__, 1)
+elif test `uname -p` = sparc
+then
+    echo sparc
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = sparc64
+then
+    echo sparc64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = ppc
+then
+    echo ppc
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = ppc64
+then
+    echo ppc64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = armv6l
+then
+    echo armv6l
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+elif test `uname -m` = armv7l
+then
+    echo armv7l
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+else
+    echo other
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+fi
+
+#########################################
+# check operating systems
+#########################################
+AC_MSG_CHECKING(Operating System)
+
+#########################################
+# CFLAGS settings
+#########################################
+CFLAGS="-I."
+NCFLAGS=""
+if test $DEBUGGING = 1
+then
+    CFLAGS="$CFLAGS -g -DMDEBUG"
+fi
+if test $ENABLE_GC = 1
+then
+    NCFLAGS="$NCFLAGS -gc"
+fi
+if test $ENABLE_OPTIMIZE = 1
+then
+    CFLAGS="$CFLAGS -O2"
+fi
+
+AC_SUBST(OS)
+AC_SUBST(NCFLAGS)
+
+export CFLAGS
+export NCFLAGS
+
+##########################################
+# Libs
+#########################################
+CC=clang
+
+if which clang-11 > /dev/null
+then
+    CC=clang-11
+fi
+
+INSTALL="$(which install) -c"
+
+if test "$OS" != FREEBSD
+then
+    AC_HAVE_LIBRARY(dl, [ LIBS="$LIBS -ldl"; ], [exit])
+fi
+
+AC_CHECK_HEADER(math.h, [AC_DEFINE(HAVE_MATH_H,1)], [])
+AC_HAVE_LIBRARY(m, [ LIBS="$LIBS -lm"; ], [])
+AC_CHECK_HEADER(iconv.h, [AC_DEFINE(HAVE_ICONV_H, 1)], [])
+
+AC_CHECK_HEADER(pcre.h, [AC_DEFINE(HAVE_PCRE_H,1)], [])
+AC_HAVE_LIBRARY(pcre, [ LIBS="$LIBS -lpcre"; ], [ eixt ])
+
+AC_HAVE_LIBRARY(gc, [ LIBS="$LIBS -lgc"; ], [])
+
+if test `uname -s` = "Darwin"; then
+    AC_CHECK_HEADER(ncurses.h, [AC_DEFINE(HAVE_NCURSESW_H, 1)], [])
+    AC_HAVE_LIBRARY(ncurses, [ LIBS="$LIBS -lncurses"; ], [])
+else
+    AC_CHECK_HEADER(ncurses.h, [AC_DEFINE(HAVE_NCURSESW_H, 1)], [])
+    AC_HAVE_LIBRARY(ncursesw, [ LIBS="$LIBS -lncursesw"; ], [])
+fi
+AC_CHECK_HEADER(readline/readline.h, [AC_DEFINE(HAVE_READLINE_H, 1)], [])
+AC_HAVE_LIBRARY(readline, [ LIBS="$LIBS -lreadline"; ], [])
+
+AC_HAVE_LIBRARY(rt, [ LIBS="$LIBS -lrt"; ], [])
+
+AC_CHECK_HEADER(pthread.h, [AC_DEFINE(HAVE_PTHREAD_H, 1)], [])
+AC_HAVE_LIBRARY(pthread, [ LIBS="$LIBS -lpthread"; ], [])
+
+AC_SUBST(LIBS)
+
+AC_SUBST(CC)
+AC_SUBST(NCC)
+
+DESTDIR=$myprefix
+
+AC_SUBST(DESTDIR)
+
+LIBS="$LIBS"
+
+AC_CHECK_FUNCS(lchmod)
+AC_CHECK_FUNCS(execvpe)
+
+AC_SUBST(CFLAGS)
+
+AC_OUTPUT(Makefile)

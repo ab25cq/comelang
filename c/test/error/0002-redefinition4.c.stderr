@@ -1,0 +1,3 @@
+incompatible redefinition of typedef x at test/error/0002-redefinition4.c:9:1
+typedef int *x;
+^

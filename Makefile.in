@@ -1,0 +1,417 @@
+#########################################
+# installed directories
+#########################################
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+datadir=@datadir@
+mandir=@mandir@
+sharedstatedir=@sharedstatedir@
+sysconfdir=@sysconfdir@/neo-c
+includedir=@includedir@/neo-c
+datarootdir=@datarootdir@/neo-c
+docdir=@datadir@/doc
+libdir=@libdir@
+
+#########################################
+# environmnet variables
+#########################################
+CC=@CC@
+CXX=@CXX@
+INSTALL=@INSTALL@
+CFLAGS=@CFLAGS@
+CFLAGS2=`echo $(CFLAGS) | sed -e 's/-O2//'`
+CXXFLAGS=@CXXFLAGS@
+CXXFLAGS2=@CXXFLAGS2@
+LIBS=@LIBS@
+OS=@OS@
+DESTDIR=@DESTDIR@
+OBJS=@OBJS@
+SELF_HOST_OBJS=@SELF_HOST_OBJS@
+
+#########################################
+# main
+#########################################
+all: neo-c no-self-host
+
+no-self-host: neo-c lib lib-gc
+
+neo-c: config.h src/main.o $(OBJS) src/llvm.o
+	$(CC) -c src/main.c -o src/main.o $(CFLAGS)
+	$(CXX) -o neo-c src/main.o $(OBJS) src/llvm.o $(CXXFLAGS) $(LIBS) -L/usr/local/lib -L/opt/homebrew/lib
+
+src/llvm.o: src/llvm.cpp
+	$(CXX) -c -o src/llvm.o src/llvm.cpp $(CXXFLAGS) $(CFLAGS)
+
+lib: neo-c.o neo-c2.o neo-c3.o neo-c4.o neo-c5.o neo-c6.o neo-c7.o neo-c8.o
+	ar r libneo-c.a neo-c.o neo-c2.o neo-c3.o neo-c4.o neo-c5.o neo-c6.o neo-c7.o neo-c8.o
+
+neo-c.o:
+	./neo-c -c -no-gc neo-c.c -fPIC
+
+neo-c2.o:
+	./neo-c -c -no-gc neo-c2.c -fPIC
+
+neo-c3.o:
+	./neo-c -c -no-gc neo-c3.c -fPIC
+
+neo-c4.o:
+	./neo-c -c -no-gc neo-c4.c -fPIC
+
+neo-c5.o:
+	./neo-c -c -no-gc neo-c5.c -fPIC
+
+neo-c6.o:
+	clang -c -o neo-c6.o neo-c6.c -I/usr/local/include -I/opt/homebrew/include -fPIC
+
+neo-c7.o:
+	./neo-c -c -no-gc neo-c7.c -fPIC
+
+neo-c8.o:
+	./neo-c -c -no-gc neo-c8.c -fPIC
+
+	./neo-c -c -no-gc neo-c8.c -fPIC
+	ar r libneo-c.a neo-c.o neo-c2.o neo-c3.o neo-c4.o neo-c5.o neo-c6.o neo-c7.o neo-c8.o
+
+lib-gc: neo-c-gc.o neo-c2-gc.o neo-c3-gc.o neo-c4-gc.o neo-c5-gc.o neo-c6-gc.o neo-c7-gc.o neo-c8-gc.o
+	ar r libneo-c-gc.a neo-c-gc.o neo-c2-gc.o neo-c3-gc.o neo-c4-gc.o neo-c5-gc.o neo-c6-gc.o neo-c7-gc.o neo-c8-gc.o
+
+neo-c-gc.o:
+	./neo-c -o neo-c-gc.o -gc -c neo-c.c -fPIC
+
+neo-c2-gc.o:
+	./neo-c -o neo-c2-gc.o -gc -c neo-c2.c -fPIC
+
+neo-c3-gc.o:
+	./neo-c -o neo-c3-gc.o -gc -c neo-c3.c -fPIC
+
+neo-c4-gc.o:
+	./neo-c -o neo-c4-gc.o -gc -c neo-c4.c -fPIC
+
+neo-c5-gc.o:
+	./neo-c -o neo-c5-gc.o -gc -c neo-c5.c -fPIC
+
+neo-c6-gc.o:
+	clang -c -o neo-c6-gc.o neo-c6.c -I/usr/local/include -I/opt/homebrew/include -fPIC
+
+neo-c7-gc.o:
+	./neo-c -o neo-c7-gc.o -gc -c neo-c7.c -fPIC
+
+neo-c8-gc.o:
+	./neo-c -o neo-c8-gc.o -gc -c neo-c8.c -fPIC
+
+
+self-host: neo-c config.h $(SELF_HOST_OBJS) lib src/llvm.o
+	$(CXX) -o neo-c $(SELF_HOST_OBJS) src/llvm.o $(CXXFLAGS) -fPIC $(LIBS) -L/usr/local/lib -L/opt/homebrew/lib
+
+src/parse_value.c.o: src/parse_value.c
+	./neo-c -o src/parse_value.c.o -c src/parse_value.c $(CFLAGS) -fPIC
+
+src/parse_lib.c.o: src/parse_lib.c
+	./neo-c -o src/parse_lib.c.o -c src/parse_lib.c $(CFLAGS) -fPIC
+
+src/parse_type.c.o: src/parse_type.c
+	./neo-c -o src/parse_type.c.o -c src/parse_type.c $(CFLAGS) -fPIC
+
+src/parse_function.c.o: src/parse_function.c
+	./neo-c -o src/parse_function.c.o -c src/parse_function.c $(CFLAGS) -fPIC
+
+src/parse_loop.c.o: src/parse_loop.c
+	./neo-c -o src/parse_loop.c.o -c src/parse_loop.c $(CFLAGS) -fPIC
+
+src/parse_var.c.o: src/parse_var.c
+	./neo-c -o src/parse_var.c.o -c src/parse_var.c $(CFLAGS) -fPIC
+
+src/parse_exp.c.o: src/parse_exp.c
+	./neo-c -o src/parse_exp.c.o -c src/parse_exp.c $(CFLAGS) -fPIC
+
+src/parse_op.c.o: src/parse_op.c
+	./neo-c -o src/parse_op.c.o -c src/parse_op.c $(CFLAGS) -fPIC
+
+src/alignment.c.o: src/alignment.c
+	./neo-c -o src/alignment.c.o -c src/alignment.c $(CFLAGS) -fPIC
+
+src/buffer.c.o: src/buffer.c
+	./neo-c -o src/buffer.c.o -c src/buffer.c $(CFLAGS) -fPIC
+
+src/xfunc.c.o: src/xfunc.c
+	./neo-c -o src/xfunc.c.o -c src/xfunc.c $(CFLAGS) -fPIC
+
+src/node.c.o: src/node.c
+	./neo-c -o src/node.c.o -c src/node.c $(CFLAGS) -fPIC
+
+src/node_function_call.c.o: src/node_function_call.c
+	./neo-c -o src/node_function_call.c.o -c src/node_function_call.c $(CFLAGS2) -fPIC
+
+src/node_function_lib.c.o: src/node_function_lib.c
+	./neo-c -o src/node_function_lib.c.o -c src/node_function_lib.c $(CFLAGS) -fPIC
+
+src/node_function.c.o: src/node_function.c
+	./neo-c -o src/node_function.c.o -c src/node_function.c $(CFLAGS) -fPIC
+
+src/node_function_come.c.o: src/node_function_come.c
+	./neo-c -o src/node_function_come.c.o -c src/node_function_come.c $(CFLAGS) -fPIC
+
+src/node_loop.c.o: src/node_loop.c
+	./neo-c -o src/node_loop.c.o -c src/node_loop.c $(CFLAGS) -fPIC
+
+src/node_op.c.o: src/node_op.c
+	./neo-c -o src/node_op.c.o -c src/node_op.c $(CFLAGS) -fPIC
+
+src/node_value.c.o: src/node_value.c
+	./neo-c -o src/node_value.c.o -c src/node_value.c $(CFLAGS) -fPIC
+
+src/node_var.c.o: src/node_var.c
+	./neo-c -o src/node_var.c.o -c src/node_var.c $(CFLAGS) -fPIC
+
+src/node_compile.c.o: src/node_compile.c
+	./neo-c -o src/node_compile.c.o -c src/node_compile.c $(CFLAGS) -fPIC
+
+src/vtable.c.o: src/vtable.c
+	./neo-c -o src/vtable.c.o -c src/vtable.c $(CFLAGS) -fPIC
+
+src/node_type.c.o: src/node_type.c
+	./neo-c -o src/node_type.c.o -c src/node_type.c $(CFLAGS) -fPIC
+
+src/klass.c.o: src/klass.c
+	./neo-c -o src/klass.c.o -c src/klass.c $(CFLAGS) -fPIC
+
+src/node_block.c.o: src/node_block.c
+	./neo-c -o src/node_block.c.o -c src/node_block.c $(CFLAGS) -fPIC
+
+src/typedef.c.o: src/typedef.c
+	./neo-c -o src/typedef.c.o -c src/typedef.c $(CFLAGS) -fPIC
+
+src/compiler.c.o: src/compiler.c
+	./neo-c -o src/compiler.c.o -c src/compiler.c $(CFLAGS) -fPIC
+
+src/macro.c.o: src/macro.c
+	./neo-c -o src/macro.c.o -c src/macro.c $(CFLAGS) -fPIC
+
+src/main.c.o: src/main.c
+	./neo-c -o src/main.c.o -c src/main.c $(CFLAGS) -fPIC
+
+#########################################
+# Object files
+#########################################
+$(OBJS): src/*.h Makefile configure
+
+#########################################
+# install
+#########################################
+install:
+	mkdir -p $(DESTDIR)/include
+	$(INSTALL) -m 644 ./neo-c.h $(DESTDIR)/include
+	mkdir -p $(DESTDIR)/lib
+	if test -e ./libneo-c.a; then $(INSTALL) -m 644 ./libneo-c.a $(DESTDIR)/lib; fi
+	if test -e ./libneo-c-gc.a; then $(INSTALL) -m 644 ./libneo-c-gc.a $(DESTDIR)/lib; fi
+
+	mkdir -p "$(DESTDIR)/bin"
+	$(INSTALL) -m 755 ./neo-c "$(DESTDIR)/bin"
+
+	mkdir -p $(DESTDIR)/share/doc/neo-c
+	$(INSTALL) -m 644 ./README.md "$(DESTDIR)/share/doc/neo-c"
+
+#########################################
+# permission
+#########################################
+permission:
+	chmod 644 *
+	chmod 755 .git man src configure
+	chmod 644 src/*.c
+	chmod 644 src/*.h
+	chmod 755 update_neo-c.sh
+
+#########################################
+# clean
+#########################################
+clean:
+	rm -fR a neo-c *.a src/*.o src/*.i src/*.ll code/*.i code/*.ll code/HelloWorld code/HelloWorld2 code/HelloWorld3 code/HelloWorld4 code/HelloWorld5 *.i *.ll a.out src/*.o code/HelloWorld.dSYM code/HelloWorld2.dSYM code/HelloWorld3.dSYM code/HelloWorld4.dSYM code/HelloWorld5.dSYM code/HelloWorld6.dSYM code/HelloWorld7.dSYM code/HelloWorld8.dSYM code/HelloWorld9.dSYM code/HelloWorld10.dSYM code/HelloWorld11.dSYM code/HelloWorld12.dSYM code/HelloWorld13.dSYM code/HelloWorld14.dSYM code/HelloWorld15.dSYM code/HelloWorld16.dSYM code/HelloWorld17.dSYM comelang.dSYM code/HelloWorld6 code/HelloWorld7 code/HelloWorld8 code/HelloWorld9 code/HelloWorld10 code/HelloWorld11 code/HelloWorld12 code/HelloWorld13 code/HelloWorld14 code/HelloWorld15 code/HelloWorld16 code/HelloWorld17 code/HelloWorld18 *.o libcomelang.a a *.i a.out code/tcctest.c.o
+
+
+distclean: clean
+	rm -fR  config.h Makefile autom4te.cache 
+
+#########################################
+# test
+#########################################
+test: gc-test gc-debug-test no-gc-test debug-test 
+
+no-gc-test:
+	@echo "Compile to gc test code..."
+	PWD=`pwd` ./neo-c -no-gc -clang code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld4.c
+	./code/HelloWorld4
+#	PWD=`pwd` ./neo-c -no-gc code/HelloWorld5.c
+#	./code/HelloWorld5
+#	PWD=`pwd` ./neo-c -no-gc code/HelloWorld6.c
+#	./code/HelloWorld6
+#	PWD=`pwd` ./neo-c -no-gc code/HelloWorld7.c
+#	./code/HelloWorld7
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld17.c
+	./code/HelloWorld17
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld18.c
+	./code/HelloWorld18
+
+tcc-test:
+	PWD=`pwd` ./neo-c -no-gc code/tcctest.c
+	./code/tcctest
+	PWD=`pwd` ./neo-c -no-gc -g code/tcctest.c
+	./code/tcctest
+	PWD=`pwd` ./neo-c -gc code/tcctest.c
+	./code/tcctest
+	PWD=`pwd` ./neo-c -gc -g code/tcctest.c
+	./code/tcctest
+
+debug-test: 
+	@echo "Compile to test code..."
+	PWD=`pwd` ./neo-c -no-gc -clang -g code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./neo-c -no-gc -clang -g code/HelloWorld2.c
+	./code/HelloWorld2
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld4.c
+	./code/HelloWorld4
+#	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld5.c
+#	./code/HelloWorld5
+#	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld6.c
+#	./code/HelloWorld6
+#	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld7.c
+#	./code/HelloWorld7
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld17.c
+	./code/HelloWorld17
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld18.c
+	./code/HelloWorld18
+
+gc-test:
+	@echo "Compile to gc test code..."
+	PWD=`pwd` ./neo-c -gc -clang code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./neo-c -gc code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./neo-c -gc code/HelloWorld4.c
+	./code/HelloWorld4
+#	PWD=`pwd` ./neo-c -gc code/HelloWorld5.c
+#	./code/HelloWorld5
+#	PWD=`pwd` ./neo-c -gc code/HelloWorld6.c
+#	./code/HelloWorld6
+#	PWD=`pwd` ./neo-c -gc code/HelloWorld7.c
+#	./code/HelloWorld7
+	PWD=`pwd` ./neo-c -gc code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./neo-c -gc code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./neo-c -gc code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./neo-c -gc code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./neo-c -gc code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./neo-c -gc code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./neo-c -gc code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./neo-c -gc code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./neo-c -gc code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./neo-c -gc code/HelloWorld17.c
+	./code/HelloWorld17
+	PWD=`pwd` ./neo-c -gc code/HelloWorld18.c
+	./code/HelloWorld18
+
+
+gc-debug-test: 
+	@echo "Compile to test code..."
+	PWD=`pwd` ./neo-c -gc -clang -g code/HelloWorld.c
+	./code/HelloWorld
+	PWD=`pwd` ./neo-c -gc -clang -g code/HelloWorld2.c
+	./code/HelloWorld2
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld3.c
+	./code/HelloWorld3
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld4.c
+	./code/HelloWorld4
+#	PWD=`pwd` ./neo-c -gc -g code/HelloWorld5.c
+#	./code/HelloWorld5
+#	PWD=`pwd` ./neo-c -gc -g code/HelloWorld6.c
+#	./code/HelloWorld6
+#	PWD=`pwd` ./neo-c -gc -g code/HelloWorld7.c
+#	./code/HelloWorld7
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld8.c
+	./code/HelloWorld8
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld9.c
+	./code/HelloWorld9
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld10.c
+	./code/HelloWorld10
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld11.c
+	./code/HelloWorld11
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld12.c
+	./code/HelloWorld12
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld13.c
+	./code/HelloWorld13
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld14.c
+	./code/HelloWorld14
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld15.c
+	./code/HelloWorld15
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld16.c
+	./code/HelloWorld16
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld17.c
+	./code/HelloWorld17
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld18.c
+	./code/HelloWorld18
+
+
+#########################################
+# uninstall
+#########################################
+uninstall:
+	rm -f "$(DESTDIR)"/bin/neo-c
+	rm -f "$(DESTDIR)"/include/neo-c.h
+	rm -f "$(DESTDIR)"/lib/libneo-c.a
+	rm -f "$(DESTDIR)"/lib/libneo-c-gc.a
+	rm -f "$(DESTDIR)/share/doc/neo-c/README.md"
+

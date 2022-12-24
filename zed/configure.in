@@ -1,0 +1,226 @@
+AC_INIT(src/main.c)
+
+AC_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_C_BIGENDIAN
+
+if test $prefix = NONE
+then
+    myprefix=/usr/local
+else
+    myprefix=$prefix
+fi
+
+##############################################################
+# configure arguments
+##############################################################
+DEBUGGING=0
+LOGGING=0
+ENABLE_NO_GC=0
+
+AC_ARG_WITH(debug,              [  --with-debug              include debug info ], [ DEBUGGING=1; ], [])
+AC_ARG_WITH(optimize,           [  --with-optimize           with optimize(-O in CFLAGS) ], [ ENABLE_OPTIMIZE=1 ], [ ENABLE_OPTIMIZE=0 ])
+AC_ARG_WITH(no-gc,              [  --with-no-gc              disable gc ], [ ENABLE_NO_GC=1 ], [])
+
+##############################################################
+# check cpu type
+##############################################################
+AC_MSG_CHECKING(CPU type)
+
+if test `uname -m` = x86_64
+then
+    echo x86_64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+elif test `uname -m` = i386 || test `uname -m` = i686
+then
+    echo x86_32
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+elif test `uname -p` = sparc
+then
+    echo sparc
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = sparc64
+then
+    echo sparc64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = ppc
+then
+    echo ppc
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = ppc64
+then
+    echo ppc64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = armv6l
+then
+    echo armv6l
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+elif test `uname -m` = armv7l
+then
+    echo armv7l
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+else
+    echo other
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+fi
+
+##############################################################
+# check operating systems
+##############################################################
+AC_MSG_CHECKING(Operating System)
+
+CFLAGS='-DPREFIX="\"${DESTDIR}/\""'
+CFLAGS="-fPIC $CFLAGS"
+
+AR_LIB=
+
+if test `uname -s` = "Darwin"; then
+    echo "Darwin"
+
+    OS=DARWIN
+
+    AC_DEFINE(__DARWIN__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $CFLAGS"
+    else 
+        CFLAGS="-Isrc/ -I. -L/usr/local/opt/ncurses/lib -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include -I$myprefix/include -L$myprefix/lib $CFLAGS"
+    fi
+elif test `uname -s` = "FreeBSD"; then
+    echo "FreeBSD"
+
+    OS=FREEBSD
+
+    AC_DEFINE(__FREEBSD__, 1)
+
+    CFLAGS="-Isrc/ -I. -I$myprefix/include -L$myprefix/lib $CFLAGS"
+elif uname -s | grep -q CYGWIN_NT; then
+    echo CYGWIN
+
+    OS=CYGWIN
+
+    AC_DEFINE(__CYGWIN__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I. $CFLAGS"
+    else 
+        CFLAGS="-Isrc/ -I. -I$myprefix/include -L$myprefix/lib $CFLAGS"
+    fi
+else
+    echo "Linux"
+
+    OS=LINUX
+
+    AC_DEFINE(__LINUX__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I. $CFLAGS"
+    else
+        CFLAGS="-Isrc/ -I. -I$myprefix/include -L$myprefix/lib $CFLAGS"
+    fi
+
+    AC_HAVE_LIBRARY(util, [ LIBS="$LIBS -lutil" ], [])
+fi
+
+##############################################################
+# CFLAGS settings
+##############################################################
+if test -d /usr/local/include
+then
+    CFLAGS="$CFLAGS -I/usr/local/include"
+fi
+
+#if test -d /usr/local/lib
+#then
+#    CFLAGS="$CFLAGS -L /usr/local/lib"
+#fi
+
+if test -d /opt/local/include
+then
+    CFLAGS="$CFLAGS -I/opt/local/include"
+fi
+
+if test -d /opt/local/lib
+then
+    CFLAGS="$CFLAGS -L /opt/local/lib"
+fi
+
+if test -d /usr/include/i386-linux-gnu/
+then
+    CFLAGS="$CFLAGS -I /usr/include/i386-linux-gnu//"
+fi
+
+if test -d /usr/lib/i386-linux-gnu/
+then
+    CFLAGS="$CFLAGS -L /usr/lib/i386-linux-gnu/"
+fi
+
+AC_SUBST(OS)
+
+##########################################################
+# Libs
+##########################################################
+CC=clang
+
+INSTALL="$(which install) -c"
+
+AC_CHECK_HEADER(bsd/stdlib.h, [AC_DEFINE(HAVE_BSD_H, 1)], [])
+
+AC_CHECK_HEADER(math.h, [AC_DEFINE(HAVE_MATH_H,1)], [])
+AC_HAVE_LIBRARY(m, [ LIBS="$LIBS -lm"; ], [])
+AC_CHECK_HEADER(iconv.h, [AC_DEFINE(HAVE_ICONV_H, 1)], [])
+
+AC_CHECK_HEADER(pcre.h, [AC_DEFINE(HAVE_PCRE_H,1)], [])
+AC_HAVE_LIBRARY(pcre, [ LIBS="$LIBS -lpcre"; ], [ eixt ])
+
+AC_SUBST(LIBS)
+
+CC=neo-c
+
+AC_SUBST(CC)
+
+DESTDIR=$myprefix
+
+AC_SUBST(DESTDIR)
+
+if test $ENABLE_OPTIMIZE = 1
+then
+    CFLAGS="$CFLAGS -O3"
+fi
+
+if test $DEBUGGING = 1
+then
+    CFLAGS="$CFLAGS -g"
+fi
+
+if test $ENABLE_NO_GC = 1
+then
+    CFLAGS="$CFLAGS -no-gc"
+else
+    CFLAGS="$CFLAGS -gc"
+fi
+
+export CFLAGS
+
+OBJS="src/main.o src/01int.o src/02str.o src/03var.o src/04if.o src/05loop.o src/06print.o src/07regex.o src/08list.o src/09fun.o src/10fun.o src/11str_fun.o"
+
+AC_CHECK_FUNCS(execvpe)
+
+AC_SUBST(OBJS)
+
+AC_OUTPUT(Makefile)

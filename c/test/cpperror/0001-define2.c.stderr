@@ -1,0 +1,3 @@
+cannot #undef macro that isn't defined at test/cpperror/0001-define2.c:6:8
+#undef X
+       ^

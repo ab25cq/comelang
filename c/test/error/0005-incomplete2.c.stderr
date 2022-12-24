@@ -1,0 +1,3 @@
+selector on incomplete type at test/error/0005-incomplete2.c:10:13
+    return x.v;
+            ^

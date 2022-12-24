@@ -1,0 +1,3 @@
+++ and -- expects an lvalue at test/error/0003-lval1.c:8:5
+    3++;
+    ^

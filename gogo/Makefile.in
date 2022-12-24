@@ -1,0 +1,79 @@
+#######################################################
+# installed directories
+#######################################################
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+datadir=@datadir@
+mandir=@mandir@
+sharedstatedir=@sharedstatedir@
+sysconfdir=@sysconfdir@/gogo
+datarootdir=@datarootdir@/gogo
+docdir=@datadir@/doc
+libdir=@libdir@
+
+##########################################################
+# environmnet variables
+##########################################################
+CC=neo-c
+INSTALL=@INSTALL@
+CFLAGS=@CFLAGS@
+CXXFLAGS=@CXXFLAGS@
+LIBS=@LIBS@
+OS=@OS@
+DESTDIR=@DESTDIR@
+OBJS=@OBJS@
+COMELIB=@COMELIB@
+
+##########################################################
+# main
+##########################################################
+all: gogo
+
+gogo: config.h $(OBJS) 
+	$(CXX) -o gogo $(OBJS) $(CXXFLAGS) -L/usr/local/lib -lgc -lpcre -lpthread $(COMELIB) $(LIBS) -lgc -lpcre -lpthread -L/opt/homebrew/opt/boehmgc/lib
+
+#########################################################
+# Object files
+#########################################################
+$(OBJ): src/*.h Makefile configure
+
+#########################################################
+# install
+#########################################################
+install:
+
+	mkdir -p "$(DESTDIR)/bin"
+	$(INSTALL) -m 755 ./gogo "$(DESTDIR)/bin"
+
+#########################################################
+# uninstall
+#########################################################
+uninstall:
+	rm -f "$(DESTDIR)"/bin/gogo
+
+#########################################################
+# permission
+#########################################################
+permission:
+	chmod 644 *
+	chmod 755 .git man src configure
+	chmod 644 src/*.c
+	chmod 644 src/*.h
+	chmod 755 update_clover.sh
+
+########################################################
+# clean
+########################################################
+clean:
+	rm -fR gogo gogo.dSYM src/*.o config.log config.status *.stackdump autom4te.cache .DS_Store core.* core a.out src/*.ll src/*.i code/__pycache__
+
+distclean: clean
+	rm -fR  config.h Makefile autom4te.cache
+
+########################################################
+# test
+########################################################
+test: 
+	PWD=`pwd` && gogo run code/HelloWorld.go
+

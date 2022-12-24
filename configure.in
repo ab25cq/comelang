@@ -1,0 +1,365 @@
+AC_INIT(src/main.c)
+
+AC_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_C_BIGENDIAN
+
+if test $prefix = NONE
+then
+    myprefix=/usr/local
+else
+    myprefix=$prefix
+fi
+
+#################################################
+# configure arguments
+#################################################
+DEBUGGING=0
+
+AC_ARG_WITH(debug,              [  --with-debug              include debug info ], [ DEBUGGING=1; ], [])
+AC_ARG_WITH(optimize,           [  --with-optimize           with optimize(-O2 in CFLAGS) ], [ ENABLE_OPTIMIZE=1 ], [ ENABLE_OPTIMIZE=0 ])
+
+#################################################
+# check cpu type
+#################################################
+AC_MSG_CHECKING(CPU type)
+
+if test `uname -m` = x86_64
+then
+    echo x86_64
+
+    AC_DEFINE(__X86_64_CPU__, 1)
+    AC_DEFINE(__64BIT_CPU__, 1)
+elif uname -a | grep Android
+then
+    echo ANDROID
+
+    AC_DEFINE(__ANDROID__, 1)
+    AC_DEFINE(__AARCH64_CPU__, 1)
+    AC_DEFINE(__64BIT_CPU__, 1)
+elif uname -a | grep raspberry
+then
+    echo raspberry 
+
+    AC_DEFINE(__RASPBERRY_PI__, 1)
+    AC_DEFINE(__32BIT_CPU__, 1)
+elif uname -a | grep Android
+then
+    echo Android
+
+    AC_DEFINE(__ANDROID__, 1)
+elif test `uname -m` = i386 || test `uname -m` = i686
+then
+    echo x86_32
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+elif test `uname -p` = sparc
+then
+    echo sparc
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = sparc64
+then
+    echo sparc64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = ppc
+then
+    echo ppc
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = ppc64
+then
+    echo ppc64
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+    AC_DEFINE(__BIG_ENDIAN__, 1)
+elif test `uname -m` = armv6l
+then
+    echo armv6l
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+elif test `uname -m` = armv7l
+then
+    echo armv7l
+
+    AC_DEFINE(__32BIT_CPU__, 1)
+    AC_DEFINE(__RASPBERRY_PI__, 1)
+elif test `uname -m` = arm64
+then
+    echo armv7l
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+elif test `uname -m` = aarch64
+then
+    echo aarch64
+
+    AC_DEFINE(__AARCH64_CPU__, 1)
+#    AC_DEFINE(__64BIT_CPU__, 1)
+#    AC_DEFINE(__X86_64_CPU__, 1)
+    AC_DEFINE(__64BIT_CPU__, 1)
+else
+    echo other
+
+    AC_DEFINE(__64BIT_CPU__, 1)
+fi
+
+##################################################
+# check operating systems
+##################################################
+AC_MSG_CHECKING(Operating System)
+
+#CFLAGS='-DPREFIX="\"${DESTDIR}/\"" -fPIC'
+CFLAGS='-DPREFIX="\"${DESTDIR}/\"" -fPIC -L/usr/local/lib -DCONFIG_H'
+#CFLAGS="-fPIC -rdynamic $CFLAGS"
+
+if uname -v | grep iSH > /dev/null; then
+    echo "iSH"
+
+    OS=iSH
+
+    AC_DEFINE(__ISH__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I. $CFLAGS"
+    else
+        CFLAGS="-Isrc/ -I.  -I$myprefix/include $CFLAGS"
+    fi
+
+    AC_HAVE_LIBRARY(util, [ LIBS="$LIBS -lutil" ], [])
+elif uname -a | grep Darwin | grep arm64; then
+    echo "Darwin-arm"
+
+    OS=DARWIN_ARM
+
+    AC_DEFINE(__DARWIN_ARM__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I.  $CFLAGS -I/usr/local/opt/llvm/include -L/opt/homebrew/lib -I/opt/homebrew/include"
+#        CFLAGS="-Isrc/ -I.  $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I.  -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    else 
+        CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include -L/opt/homebrew/lib -I/opt/homebrew/include"
+#        CFLAGS="-Isrc/ -I. -I$myprefix/include -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    fi
+
+    PATH="$PATH:/opt/homebrew/opt/llvm/bin"
+elif test `uname -s` = "Darwin"; then
+    echo "Darwin"
+
+    OS=DARWIN
+
+    AC_DEFINE(__DARWIN__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I.  $CFLAGS -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I.  $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I.  -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    else 
+        CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+#        CFLAGS="-Isrc/ -I. -I$myprefix/include -I `xcrun --show-sdk-path`/usr/include $CFLAGS -L/usr/local/opt/llvm/lib -I/usr/local/opt/llvm/include "
+    fi
+
+elif test `uname -s` = "FreeBSD"; then
+    echo "FreeBSD"
+
+    OS=FREEBSD
+
+    AC_DEFINE(__FREEBSD__, 1)
+
+    CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS"
+else
+    echo "Linux"
+
+    OS=LINUX
+
+    AC_DEFINE(__LINUX__, 1)
+
+    if test $myprefix = /usr/local; then
+        CFLAGS="-Isrc/ -I. $CFLAGS"
+    else
+        CFLAGS="-Isrc/ -I. -I$myprefix/include $CFLAGS"
+    fi
+
+    AC_HAVE_LIBRARY(util, [ LIBS="$LIBS -lutil" ], [])
+fi
+
+###################################################
+# CFLAGS settings
+###################################################
+if test -d /usr/local/include
+then
+    CFLAGS="$CFLAGS -I/usr/local/include"
+fi
+
+if test -d /opt/local/include
+then
+    CFLAGS="$CFLAGS -I/opt/local/include"
+fi
+
+if test -d /usr/include/i386-linux-gnu/
+then
+    CFLAGS="$CFLAGS -I /usr/include/i386-linux-gnu//"
+fi
+
+if test $ENABLE_OPTIMIZE = 1
+then
+    CFLAGS="$CFLAGS -O2"
+fi
+
+if test $DEBUGGING = 1
+then
+    CFLAGS="$CFLAGS -g"
+fi
+
+AC_SUBST(OS)
+
+export CFLAGS
+
+##################################################
+# Libs
+##################################################
+CC=clang
+
+INSTALL="$(which install) -c"
+
+if test "$OS" != FREEBSD
+then
+    AC_HAVE_LIBRARY(dl, [ LIBS="$LIBS -ldl"; ], [])
+fi
+
+AC_CHECK_HEADER(math.h, [AC_DEFINE(HAVE_MATH_H,1)], [ exit ])
+AC_HAVE_LIBRARY(m, [ LIBS="$LIBS -lm"; ], [ exit ])
+AC_HAVE_LIBRARY(gc, [ LIBS="$LIBS -lgc" ], [ exit ])
+AC_HAVE_LIBRARY(pcre, [ ], [ exit ])
+AC_HAVE_LIBRARY(pthread, [ ], [ exit ])
+AC_CHECK_HEADER(iconv.h, [AC_DEFINE(HAVE_ICONV_H, 1)], [])
+
+if test "$OS" = CYGWIN || test "$OS" = DARWIN || test "$OS" = FREEBSD
+then
+    LIBS="$LIBS -liconv"
+fi
+
+AC_HAVE_LIBRARY(rt, [ LIBS="$LIBS -lrt"; ], [])
+
+if which /opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15
+then
+    echo Darwin-clang
+    CC=/opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15
+elif test `uname -s` = "Darwin"; then
+    CC=clang
+elif which clang-11 2> /dev/null
+then
+    CC=clang-11
+elif which clang-9 2> /dev/null
+then
+    CC=clang-9
+fi
+
+echo $CC
+
+AC_SUBST(LIBS)
+
+AC_SUBST(CC)
+
+DESTDIR=$myprefix
+
+AC_SUBST(DESTDIR)
+
+CXXFLAGS='-DPREFIX="\"${DESTDIR}/\" -L/usr/local/lib"'
+CXXFLAGS="-I . -I src $CXXFLAGS"
+#CXXFLAGS="-fPIC -rdynamic $CXXFLAGS"
+
+if which clang++ > /dev/null
+then
+    CXX=clang++
+else
+    echo "Require clang++"
+    exit 2
+fi
+
+if test $DEBUGGING = 1
+then
+    CXXFLAGS="-g $CXXFLAGS"
+else
+    CXXFLAGS="-O2 $CXXFLAGS"
+fi
+
+LIBS="$LIBS"
+
+AC_SUBST(CXX)
+
+OBJS="src/parse_value.o src/parse_lib.o src/parse_type.o src/parse_function.o src/parse_loop.o src/parse_var.o src/parse_exp.o src/parse_op.o src/alignment.o src/buffer.o src/xfunc.o src/node.o src/node_function_call.o src/node_function_lib.o src/node_function.o src/node_function_come.o src/node_compile.o src/node_loop.o src/node_op.o src/node_value.o src/node_var.o src/vtable.o src/node_type.o src/klass.o src/node_block.o src/typedef.o src/compiler.o src/macro.o"
+SELF_HOST_OBJS="src/parse_value.c.o src/parse_lib.c.o src/parse_type.c.o src/parse_function.c.o src/parse_loop.c.o src/parse_var.c.o src/parse_exp.c.o src/parse_op.c.o src/alignment.c.o src/buffer.c.o src/xfunc.c.o src/node.c.o src/vtable.c.o src/node_type.c.o src/klass.c.o src/node_block.c.o src/typedef.c.o src/compiler.c.o src/node_function_call.c.o src/node_function_lib.c.o src/node_function.c.o src/node_function_come.c.o src/node_loop.c.o src/node_op.c.o src/node_value.c.o src/node_var.c.o src/macro.c.o src/node_compile.c.o src/main.c.o"
+
+AC_CHECK_FUNCS(lchmod)
+
+#CXXFLAGS="$CXXFLAGS -Qunused-arguments"
+
+echo checking for llvm-config...
+
+export PATH=$PATH:/opt/homebrew/opt/llvm/bin
+
+if ls /opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15 1> /dev/null 2>/dev/null
+then
+    CFLAGS=`/opt/homebrew/opt/llvm/bin/llvm-config --cflags | tr '\n' ' '`" $CFLAGS"
+    CXXFLAGS=`/opt/homebrew/opt/llvm/bin/llvm-config --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
+    LLVM_VERSION=`/opt/homebrew/opt/llvm/bin/llvm-config --version | sed 's/\([[0-9]]*\)\.[[0-9]]*\.[[0-9]]*/\1/'`
+    CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
+    CFLAGS=$CFLAGS' -DCLANG="\"/opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15\""'
+    echo home-brew-ok
+elif which llvm-config-11 1> /dev/null 2>/dev/null
+then
+    CFLAGS=`llvm-config-11 --cflags | tr '\n' ' '`" $CFLAGS"
+    CXXFLAGS=`llvm-config-11 --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
+    #CXXFLAGS=`llvm-config-11 --cxxflags --ldflags --system-libs --libs all | tr '\n' ' '`" $CXXFLAGS"
+    echo llvm-11 ok
+    LLVM_VERSION=`llvm-config-11 --version | sed 's/\([[0-9]]*\)\.[[0-9]]*\.[[0-9]]*/\1/'`
+    CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
+    CFLAGS=$CFLAGS' -DCLANG="\"clang-11\""'
+elif which llvm-config-9 1> /dev/null 2>/dev/null
+then
+    CFLAGS=`llvm-config-9 --cflags | tr '\n' ' '`" $CFLAGS"
+    CXXFLAGS=`llvm-config-9 --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
+    echo llvm-9 ok
+    LLVM_VERSION=`llvm-config-9 --version | sed 's/\([[0-9]]*\)\.[[0-9]]*\.[[0-9]]*/\1/'`
+    CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
+    CFLAGS=$CFLAGS' -DCLANG="\"clang-9\""'
+elif which llvm-config 1> /dev/null 2>/dev/null
+then
+    CFLAGS=`llvm-config --cflags | tr '\n' ' '`" $CFLAGS"
+    CXXFLAGS=`llvm-config --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
+    LLVM_VERSION=`llvm-config --version | sed 's/\([[0-9]]*\)\.[[0-9]]*\.[[0-9]]*/\1/'`
+    CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
+    CFLAGS=$CFLAGS' -DCLANG="\"clang\""'
+    echo ok
+else
+    echo no
+    exit 1
+fi
+
+CFLAGS=$CFLAGS' -DGCC="\"clang\""'
+
+if test $DEBUGGING = 1
+then
+    CXXFLAGS2="${CXXFLAGS}"
+else
+    CXXFLAGS2="${CXXFLAGS#-g}"
+fi
+
+#CXXFLAGS='`llvm-config --cxxflags --ldflags --system-libs --libs all` '" $CXXFLAGS"
+
+AC_SUBST(CXXFLAGS)
+AC_SUBST(CXXFLAGS2)
+AC_SUBST(CFLAGS)
+AC_SUBST(CLANG)
+
+AC_SUBST(OBJS)
+AC_SUBST(SELF_HOST_OBJS)
+
+AC_OUTPUT(Makefile)

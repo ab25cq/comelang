@@ -1,0 +1,133 @@
+##########################################
+# installed directories
+##########################################
+prefix=@prefix@ exec_prefix=@exec_prefix@
+bindir=@bindir@
+datadir=@datadir@
+mandir=@mandir@
+sharedstatedir=@sharedstatedir@
+sysconfdir=@sysconfdir@/neo-c
+includedir=@includedir@/neo-c
+datarootdir=@datarootdir@/neo-c
+docdir=@datadir@/doc
+libdir=@libdir@
+
+
+#########################################
+# environmnet variables
+##########################################
+CC=@CC@
+NCC=@NCC@
+INSTALL=@INSTALL@
+CFLAGS=@CFLAGS@
+NCFLAGS=@NCFLAGS@
+LIBS=@LIBS@
+OS=@OS@
+DESTDIR=@DESTDIR@
+
+#########################################
+# main
+##########################################
+all: vin
+
+vin: configure Makefile config.h src/main.o src/main.c src/01init.o src/01init.c src/02base.o src/02base.c src/03insert_mode.o src/03insert_mode.c src/04word.c src/04word.o src/05undo.c src/05undo.o src/06file.o src/07yank.o src/08visual.o src/09search.o src/10edit.o src/11move.o src/12command.o src/13completion.o src/14dot.o src/16mark.o src/17hvisual.o src/18vvisual.o src/19rewrite_mode.o src/20completion-neo-c.o
+	neo-c -o vin src/main.o src/01init.o src/02base.o src/03insert_mode.o src/04word.o src/05undo.o src/06file.o src/07yank.o src/08visual.o src/09search.o src/10edit.o src/11move.o src/12command.o src/13completion.o src/14dot.o src/16mark.o src/17hvisual.o src/18vvisual.o src/19rewrite_mode.o src/20completion-neo-c.o -L/opt/local/lib $(CFLAGS) $(LIBS) -L/usr/local/lib $(NCFLAGS)
+
+src/main.o: configure Makefile config.h src/main.c src/common.h
+	neo-c -c $(NCFLAGS) src/main.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/01init.o: configure Makefile config.h src/01init.c src/common.h
+	neo-c -c $(NCFLAGS) src/01init.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/02base.o: configure Makefile config.h src/02base.c src/common.h
+	neo-c -c $(NCFLAGS) src/02base.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/03insert_mode.o: configure Makefile config.h src/03insert_mode.c src/common.h
+	neo-c -c $(NCFLAGS) src/03insert_mode.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/04word.o: configure Makefile config.h src/04word.c src/common.h
+	neo-c -c $(NCFLAGS) src/04word.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/05undo.o: configure Makefile config.h src/05undo.c src/common.h
+	neo-c -c $(NCFLAGS) src/05undo.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/06file.o: configure Makefile config.h src/06file.c src/common.h
+	neo-c -c $(NCFLAGS) src/06file.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/07yank.o: configure Makefile config.h src/07yank.c src/common.h
+	neo-c -c $(NCFLAGS) src/07yank.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/08visual.o: configure Makefile config.h src/08visual.c src/common.h
+	neo-c -c $(NCFLAGS) src/08visual.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/09search.o: configure Makefile config.h src/09search.c src/common.h
+	neo-c -c $(NCFLAGS) src/09search.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/10edit.o: configure Makefile config.h src/10edit.c src/common.h
+	neo-c -c $(NCFLAGS) src/10edit.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/11move.o: configure Makefile config.h src/11move.c src/common.h
+	neo-c -c $(NCFLAGS) src/11move.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/12command.o: configure Makefile config.h src/12command.c src/common.h
+	neo-c -c $(NCFLAGS) src/12command.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/13completion.o: configure Makefile config.h src/13completion.c src/common.h
+	neo-c -c $(NCFLAGS) src/13completion.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/14dot.o: configure Makefile config.h src/14dot.c src/common.h
+	neo-c -c $(NCFLAGS) src/14dot.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/16mark.o: configure Makefile config.h src/16mark.c src/common.h
+	neo-c -c $(NCFLAGS) src/16mark.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/17hvisual.o: configure Makefile config.h src/17hvisual.c src/common.h
+	neo-c -c $(NCFLAGS) src/17hvisual.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/18vvisual.o: configure Makefile config.h src/18vvisual.c src/common.h
+	neo-c -c $(NCFLAGS) src/18vvisual.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/19rewrite_mode.o: configure Makefile config.h src/19rewrite_mode.c src/common.h
+	neo-c -c $(NCFLAGS) src/19rewrite_mode.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+
+src/20completion-neo-c.o: configure Makefile config.h src/20completion-neo-c.c src/common.h
+	neo-c -c $(NCFLAGS) src/20completion-neo-c.c -Isrc $(CFLAGS) -I/usr/local/include -I.
+	mkdir -p ~/.vin/backup
+
+#########################################
+# install
+#########################################
+install:
+	mkdir -p "$(DESTDIR)/bin"
+	$(INSTALL) -m 755 ./vin "$(DESTDIR)/bin"
+
+#########################################
+# uninstall
+#########################################
+uninstall:
+	rm -f "$(DESTDIR)"/bin/vin
+	rm -Rf ~/.vin/
+
+#########################################
+# permission
+#########################################
+permission:
+	chmod 644 *
+	chmod 755 .git man configure
+	chmod 644 *.c
+	chmod 644 *.h
+
+#########################################
+# clean
+#########################################
+clean:
+	rm -fR src/*.ll src/*.bc src/*.c.tmp src/*.out src/*.o valgrind.txt src/*.i aaa AAA BBB bbb vin.dSYM
+	rm -fR vin
+
+distclean: clean
+	rm -fR  config.h Makefile autom4te.cache 
+
+test:
+	rm -f valgrind.txt
+	valgrind ./vin a.txt 2> aaa
+

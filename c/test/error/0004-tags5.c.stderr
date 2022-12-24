@@ -1,0 +1,3 @@
+incomplete type inside struct/union at test/error/0004-tags5.c:7:21
+struct X { struct X x; };
+                    ^

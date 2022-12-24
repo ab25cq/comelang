@@ -1,0 +1,12 @@
+
+int fun(int a, int b) 
+{
+    return a + b;
+}
+
+int main() 
+{
+    a128 aaa
+    int a = 1;
+    printf("%d\n", a);
+}
