@@ -22,7 +22,6 @@ sBuf gHeader;
 
 static void compiler_init(char* sname)
 {
-    gVersion = "0.9.9p";
     node_var_init();
     node_function_init();
     node_loop_init();
@@ -342,6 +341,8 @@ static BOOL linker(char* fname, int num_obj_files, char** obj_files, char* clang
 
 int main(int argc, char** argv)
 {
+    gVersion = "1.0.1";
+    
     setlocale(LC_ALL, "");
     
     char sname[128][PATH_MAX];

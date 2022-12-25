@@ -950,7 +950,48 @@ void free_object(sNodeType* node_type, LLVMValueRef obj, BOOL force_delete, sCom
         }
         else {
             /// free memmory ///
-            if(node_type->mHeap || force_delete) {
+            if(force_delete) {
+                /// free ///
+                int num_params = 1;
+        
+                LLVMValueRef llvm_params[PARAMS_MAX];
+                memset(llvm_params, 0, sizeof(LLVMValueRef)*PARAMS_MAX);
+        
+                char* fun_name2 = "ncfree";
+                //char* fun_name2 = "igc_decrement_ref_count";
+                //char* fun_name2 = "free";
+        
+                LLVMTypeRef llvm_type = create_llvm_type_with_class_name("char*");
+        
+                obj = LLVMBuildCast(gBuilder, LLVMBitCast, obj, llvm_type, "castAK");
+        
+                llvm_params[0] = obj;
+        
+                LLVMValueRef llvm_fun = LLVMGetNamedFunction(gModule, fun_name2);
+                
+                if(llvm_fun == NULL) {
+                    compile_err_msg(info, "require %s funtion", fun_name2);
+                    exit(2);
+                }
+                
+                sNodeType* result_type = create_node_type_with_class_name("void");
+    
+                LLVMTypeRef llvm_param_types[PARAMS_MAX];
+    
+                llvm_param_types[0] = create_llvm_type_with_class_name("char*");
+    
+                LLVMTypeRef llvm_result_type = create_llvm_type_from_node_type(result_type);
+            
+                BOOL var_arg = FALSE;
+    
+                LLVMTypeRef function_type = LLVMFunctionType(llvm_result_type, llvm_param_types, num_params, var_arg);
+                
+                LLVMBuildCall2(gBuilder, function_type, llvm_fun, llvm_params, num_params, "");
+        
+                /// remove right value objects from list
+                //remove_object_from_right_values(obj, info);
+            }
+            else if(node_type->mHeap) {
                 /// free ///
                 int num_params = 1;
         
