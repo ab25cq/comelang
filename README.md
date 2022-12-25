@@ -340,10 +340,6 @@ git clone https://github.com/ab25cq/neo-c
 
 cd neo-c
 bash home_build.sh
-..some segmentation fault
-bash rebuild.sh
-bash rebuild.sh
-bash rebuild.sh.....
 ```
 
 
@@ -353,6 +349,12 @@ compile the compiler, editor, interpreter, shell and console filer with configur
 
 ```
 bash xfast_build.sh
+```
+
+in termux
+
+```
+bash xhome_build.sh
 ```
 
 # Language specifications
@@ -2377,4 +2379,3 @@ int main(int argc, char** argv)
 }
 
 ```
-
