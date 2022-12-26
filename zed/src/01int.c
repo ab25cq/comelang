@@ -596,6 +596,21 @@ sNode*? exp_node(sInfo* info) version 1
         
         return result;
     }
+    else if(*info->p == '(') {
+        info->p++;
+        skip_spaces(info);
+        
+        sNode*? exp = expression(info);
+        
+        if(*info->p == ')') {
+            info->p++;
+            skip_spaces(info);
+        }
+        
+        sNode* result = exp!;
+        
+        return result;
+    }
     
     return null;
 }

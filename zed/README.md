@@ -19,4 +19,6 @@ USAGE
     [1,2,3]
     > echo 123 | zed '.scan(/./).map  { it + "ab" }'
     [1ab,2ab,3ab]
+    > zed '(1+1).to_string() + "B"
+    2B
 ```
