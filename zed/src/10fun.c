@@ -48,6 +48,17 @@ bool vm(sInfo* info) version 8
                     }
                     break;
                     
+                case kIntValue: {
+                    if(fun_name === "to_string") {
+                        if(params.length() == 0) {
+                            string str = obj.intValue.to_string();
+                            
+                            result = nullable new ZVALUE(kind:kStrValue, str_value:str.to_wstring());
+                        }
+                    }
+                    }
+                    break;
+                    
                 case kFileValue: {
                     if(fun_name === "read") {
                         if(params.length() == 0) {
