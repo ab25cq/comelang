@@ -3,7 +3,7 @@
 
 Modern C compiler. It has a collection and string library using Refference count GC heap system. 
 
-モダンなCコンパイラ。リファレンスカウントを使ったコレクション、文字列ライブラリを備えます。
+モダンなCコンパイラ。リファレンスカウントGCを使ったコレクション、文字列ライブラリを備えます。
 
 version 1.0.1
 
@@ -220,7 +220,7 @@ int main()
 }
 ```
 
-In pipes filter or cmmand lines.
+In pipes filter or command lines.
 
 ```
 > neo-c -e 'puts("HELLO WORLD");'
@@ -425,7 +425,7 @@ reverse()は文字列を逆順にした文字列を返します。
     }
 ```
 
-ubstring () returns a range string. -1 means the end and -2 means the first character from the end. Does not include the character of the second argument.
+substring () returns a range string. -1 means the end and -2 means the first character from the end. Does not include the character of the second argument.
 
 substring()は範囲文字列を返します。-1だと末尾を-2だと末尾から一文字目の意味となります。２つ目の引数の文字は含みません。
 
