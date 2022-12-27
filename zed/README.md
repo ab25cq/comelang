@@ -19,6 +19,12 @@ USAGE
     [1,2,3]
     > echo 123 | zed '.scan(/./).map  { it + "ab" }'
     [1ab,2ab,3ab]
-    > zed '(1+1).to_string() + "B"
+    > zed '(1+1).to_string() + "B"'
     2B
+    > echo abc | zed '.sub_block(/./g) { it * 2 }'
+    aabbcc
+    
+    > echo abc | zed '(.scan(/./) * 2).join("")'
+    abcabc
+
 ```
