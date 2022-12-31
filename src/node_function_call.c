@@ -901,11 +901,8 @@ BOOL compile_function_call(unsigned int node, sCompileInfo* info)
             sVar* var_ = param.var;
             if(var_) {
                 increment_ref_count(llvm_params[i], var_->mType, info);
-/*
-               var_->mLLVMValue.value  = NULL;
-               var_->mLLVMValue.constant = FALSE;
-*/
             }
+//            increment_ref_count(llvm_params[i], param.type, info);
         }
     }
 
