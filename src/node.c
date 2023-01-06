@@ -473,7 +473,7 @@ sFunction* create_finalizer_automatically(sNodeType* node_type, char* fun_name, 
             sParserParam* param = params + i;
     
             BOOL readonly = FALSE;
-            (void)add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE, FALSE);
+            (void)add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE);
         }
         
         if(parse_block_easy(&node_block, extern_c_lang, result_type_is_void, TRUE, &pinfo)) {
@@ -631,7 +631,7 @@ sFunction* create_equals_automatically(sNodeType* node_type, char* fun_name, sCo
             sParserParam* param = params + i;
     
             BOOL readonly = FALSE;
-            (void)add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE, FALSE);
+            (void)add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE);
         }
         
         if(parse_block_easy(&node_block, extern_c_lang, result_type_is_void, TRUE, &pinfo)) {
@@ -1139,7 +1139,7 @@ sFunction* create_cloner_automatically(sNodeType* node_type, char* fun_name, sCo
             sParserParam* param = params + i;
     
             BOOL readonly = FALSE;
-            (void)add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE, FALSE);
+            (void)add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE);
         }
         
         if(parse_block_easy(&node_block, extern_c_lang, result_type_is_void, TRUE, &pinfo)) {

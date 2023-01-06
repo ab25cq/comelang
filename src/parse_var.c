@@ -992,7 +992,7 @@ BOOL parse_var(unsigned int* node, sParserInfo* info, BOOL readonly)
     for(i=0; i<num_vars; i++) {
         sNodeType* node_type = NULL;
         check_already_added_variable(info->lv_table, buf[i], info);
-        if(!add_variable_to_table(info->lv_table, buf[i], node_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE, FALSE))
+        if(!add_variable_to_table(info->lv_table, buf[i], node_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
         {
             fprintf(stderr, "overflow variable table\n");
             exit(2);

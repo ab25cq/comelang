@@ -310,7 +310,6 @@ struct sVarStruct {
     int mBlockLevel;
 
     BOOL mReadOnly;
-    BOOL mConstant;
     LVALUE mLLVMValue;
 
     BOOL mGlobal;
@@ -354,7 +353,7 @@ void create_current_stack_frame_struct(char* type_name, sVarTable* lv_table);
 void check_already_added_variable(sVarTable* table, char* name, struct sParserInfoStruct* info);
 
 // result: (true) success (false) overflow the table or a variable which has the same name exists
-BOOL add_variable_to_table(sVarTable* table, char* name, sNodeType* type_, BOOL readonly, LVALUE llvm_value, int index, BOOL global, BOOL constant, BOOL alloca_value, BOOL param);
+BOOL add_variable_to_table(sVarTable* table, char* name, sNodeType* type_, BOOL readonly, LVALUE llvm_value, int index, BOOL global, BOOL alloca_value, BOOL param);
 
 // result: (null) not found (sVar*) found
 sVar* get_variable_from_table(sVarTable* table, char* name);
@@ -695,8 +694,6 @@ struct sCompileInfoStruct
     
     char inline_caller_sname[VAR_NAME_MAX];
     int inline_caller_sline;
-    
-    BOOL store_constant_var;
 };
 
 typedef struct sCompileInfoStruct sCompileInfo;

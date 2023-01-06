@@ -399,7 +399,6 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
         llvm_value.constant_str = FALSE;
         
         var_->mLLVMValue = llvm_value;
-        var_->mConstant = FALSE;
     }
 
     sNodeType* return_result_type = info->return_result_type;
@@ -1033,7 +1032,7 @@ BOOL compile_method_block(unsigned int node, sCompileInfo* info)
         sParserParam* param = params + i;
 
         BOOL readonly = TRUE;
-        if(!add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, param->mType->mConstant, FALSE, TRUE))
+        if(!add_variable_to_table(pinfo.lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, TRUE))
         {
             return FALSE;
         }
@@ -1426,7 +1425,7 @@ BOOL create_generics_function(LLVMValueRef* llvm_fun, sFunction* fun, char* fun_
             sParserParam param = params[i];
 
             BOOL readonly = FALSE;
-            if(!add_variable_to_table(info2.lv_table, param.mName, param.mType, readonly, gNullLVALUE, -1, FALSE, param.mType->mConstant, FALSE, TRUE))
+            if(!add_variable_to_table(info2.lv_table, param.mName, param.mType, readonly, gNullLVALUE, -1, FALSE, FALSE, TRUE))
             {
                 compile_err_msg(info, "overflow variable table");
                 return FALSE;

@@ -3043,7 +3043,7 @@ BOOL expression_node(unsigned int* node, BOOL enable_assginment, sParserInfo* in
                         BOOL global = info->mBlockLevel == 0;
                         BOOL alloc = TRUE;
                         check_already_added_variable(info->lv_table, name, info);
-                        if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, global, FALSE, FALSE, FALSE))
+                        if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, global, FALSE, FALSE))
                         {
                             fprintf(stderr, "overflow variable table\n");
                             exit(2);

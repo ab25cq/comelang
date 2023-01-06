@@ -56,7 +56,7 @@ sVarTable* clone_var_table(sVarTable* lv_table)
 
     while(1) {
         if(p->mName[0] != 0) {
-            if(!add_variable_to_table(result, p->mName, p->mType, p->mReadOnly, p->mLLVMValue, p->mIndex, p->mGlobal, p->mConstant, p->mAllocaValue, p->mParamVar))
+            if(!add_variable_to_table(result, p->mName, p->mType, p->mReadOnly, p->mLLVMValue, p->mIndex, p->mGlobal, p->mAllocaValue, p->mParamVar))
             {
                 fprintf(stderr, "overflow variable table\n");
                 exit(2);
@@ -84,7 +84,7 @@ sVarTable* clone_var_table(sVarTable* lv_table)
 // local variable table
 //////////////////////////////////////////////////
 // result: (true) success (false) overflow the table or a variable which has the same name exists
-BOOL add_variable_to_table(sVarTable* table, char* name, sNodeType* type_, BOOL readonly, LVALUE llvm_value, int index, BOOL global, BOOL constant, BOOL alloca_value, BOOL param)
+BOOL add_variable_to_table(sVarTable* table, char* name, sNodeType* type_, BOOL readonly, LVALUE llvm_value, int index, BOOL global, BOOL alloca_value, BOOL param)
 {
     int hash_value;
     sVar* p;
@@ -113,7 +113,6 @@ BOOL add_variable_to_table(sVarTable* table, char* name, sNodeType* type_, BOOL 
             p->mLLVMValue = llvm_value;
             p->mLLVMValue.var = p;
             p->mGlobal = global;
-            p->mConstant = constant;
             p->mAllocaValue = alloca_value;
             p->mParamVar = param;
 
@@ -144,7 +143,6 @@ BOOL add_variable_to_table(sVarTable* table, char* name, sNodeType* type_, BOOL 
                 p->mLLVMValue = llvm_value;
                 p->mLLVMValue.var = p;
                 p->mGlobal = global;
-                p->mConstant = constant;
                 p->mAllocaValue = alloca_value;
                 p->mParamVar = param;
 
@@ -280,7 +278,7 @@ void show_vtable_current_only(sVarTable* table)
 
         while(1) {
             if(p->mName[0] != 0) {
-                printf("name %s index %d block level %d readonly %d constant %d value %p global %d\n", p->mName, p->mIndex, p->mBlockLevel, p->mReadOnly, p->mConstant, p->mLLVMValue.value, p->mGlobal);
+                printf("name %s index %d block level %d readonly %d value %p global %d\n", p->mName, p->mIndex, p->mBlockLevel, p->mReadOnly, p->mLLVMValue.value, p->mGlobal);
 
                 if(p->mType && p->mType->mClass) 
                 {
@@ -307,7 +305,7 @@ void show_vtable(sVarTable* table)
 
         while(1) {
             if(p->mName[0] != 0) {
-                printf("name %s index %d block level %d readonly %d constant %d value %p global %d\n", p->mName, p->mIndex, p->mBlockLevel, p->mReadOnly, p->mConstant, p->mLLVMValue.value, p->mGlobal);
+                printf("name %s index %d block level %d readonly %d value %p global %d\n", p->mName, p->mIndex, p->mBlockLevel, p->mReadOnly, p->mLLVMValue.value, p->mGlobal);
 
                 if(p->mType && p->mType->mClass) 
                 {
@@ -404,7 +402,7 @@ void free_objects(sVarTable* table, sCompileInfo* info)
                 {
                     if(p->mLLVMValue.value)
                     {
-                        if(p->mConstant) {
+                        if(p->mType->mConstant) {
                             LLVMValueRef obj = p->mLLVMValue.value;
                             free_object(p->mType, obj, FALSE, info);
                             remove_object_from_right_values(obj, info);
@@ -455,7 +453,7 @@ static void free_block_variables(sVarTable* table, LLVMValueRef ret_value, sComp
                     if(p->mLLVMValue.value)
                     {
                         if(p->mLLVMValue.value != ret_value) {
-                            if(p->mConstant) {
+                            if(p->mType->mConstant) {
                                 LLVMValueRef obj = p->mLLVMValue.value;
                                 free_object(p->mType, obj, FALSE, info);
                                 remove_object_from_right_values(obj, info);

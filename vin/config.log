@@ -28,8 +28,8 @@ uname -v = #1 SMP Debian 5.10.120-1 (2022-06-09)
 /bin/universe          = unknown
 
 PATH: /home/ab25cq/bin
-PATH: /opt/android-studio/bin
 PATH: /home/ab25cq/bin
+PATH: /opt/android-studio/bin
 PATH: /usr/local/bin
 PATH: /usr/bin
 PATH: /bin

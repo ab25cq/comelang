@@ -366,7 +366,7 @@ BOOL get_list(unsigned int* node, sParserInfo* info)
     unsigned int var_ = sNodeTree_create_store_variable(var_name, func, alloc, global, FALSE, info);
 
     check_already_added_variable(info->lv_table, var_name, info);
-    if(!add_variable_to_table(info->lv_table, var_name, NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE, FALSE))
+    if(!add_variable_to_table(info->lv_table, var_name, NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
     {
         fprintf(stderr, "overflow variable table\n");
         exit(2);
@@ -500,7 +500,7 @@ BOOL get_map(unsigned int* node, sParserInfo* info)
     unsigned int var_ = sNodeTree_create_store_variable(var_name, func, alloc, global, FALSE, info);
 
     check_already_added_variable(info->lv_table, var_name, info);
-    if(!add_variable_to_table(info->lv_table, var_name, NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE, FALSE))
+    if(!add_variable_to_table(info->lv_table, var_name, NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
     {
         fprintf(stderr, "overflow variable table\n");
         exit(2);
@@ -1492,7 +1492,7 @@ BOOL parse_enum(unsigned int* node, char* name, int name_size, BOOL* terminated,
     
                     check_already_added_variable(info->lv_table, var_name, info);
                     BOOL readonly = TRUE;
-                    if(!add_variable_to_table(info->lv_table, var_name, result_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, result_type->mConstant, FALSE, FALSE))
+                    if(!add_variable_to_table(info->lv_table, var_name, result_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
                     {
                         fprintf(stderr, "overflow variable table\n");
                         exit(2);
@@ -1729,7 +1729,7 @@ BOOL parse_lambda(unsigned int* node, sNodeType* result_type, sParserInfo* info)
         sParserParam* param = params + i;
 
         BOOL readonly = TRUE;
-        if(!add_variable_to_table(info->lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, param->mType->mConstant, FALSE, FALSE))
+        if(!add_variable_to_table(info->lv_table, param->mName, param->mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE))
         {
             return FALSE;
         }
@@ -2430,7 +2430,7 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                     check_already_added_variable(info->lv_table, name2, info);
                     sNodeType* node_type2 = clone_node_type(node_type);
                     node_type2->mConstant = TRUE;
-                    if(!add_variable_to_table(info->lv_table, name2, node_type2, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, TRUE, FALSE, FALSE))
+                    if(!add_variable_to_table(info->lv_table, name2, node_type2, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
                     {
                         fprintf(stderr, "overflow variable table\n");
                         exit(2);
@@ -2517,7 +2517,8 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
             int num_struct_elements = 0;
             
             if(result_type->mOmitArrayNum == FALSE) {
-                if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, TRUE, FALSE, FALSE))
+                result_type->mConstant = TRUE;
+                if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
                 {
                     fprintf(stderr, "overflow variable table\n");
                     exit(2);
@@ -2914,7 +2915,9 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                 
                 num_dimention = result_type->mArrayDimentionNum;
                 
-                if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, TRUE, FALSE, FALSE))
+                result_type->mConstant = TRUE;
+                
+                if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
                 {
                     fprintf(stderr, "overflow variable table\n");
                     exit(2);
@@ -3258,7 +3261,7 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
                     check_already_added_variable(info->lv_table, name2, info);
                     sNodeType* node_type2 = clone_node_type(node_type);
                     node_type2->mConstant = TRUE;
-                    if(!add_variable_to_table(info->lv_table, name2, node_type2, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, TRUE, FALSE, FALSE))
+                    if(!add_variable_to_table(info->lv_table, name2, node_type2, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
                     {
                         fprintf(stderr, "overflow variable table\n");
                         exit(2);
@@ -3553,7 +3556,8 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
             info->array_initializer = FALSE;
 
             if(info->mBlockLevel == 0) {
-                if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, TRUE, FALSE, FALSE))
+                result_type->mConstant = TRUE;
+                if(!add_variable_to_table(info->lv_table, name, result_type, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
                 {
                     fprintf(stderr, "overflow variable table\n");
                     exit(2);
@@ -3769,7 +3773,7 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
         }
         else {
             check_already_added_variable(info->lv_table, name, info);
-            if(!add_variable_to_table(info->lv_table, name, result_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, result_type->mConstant, FALSE, FALSE))
+            if(!add_variable_to_table(info->lv_table, name, result_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
             {
                 fprintf(stderr, "overflow variable table\n");
                 exit(2);
@@ -3797,7 +3801,7 @@ BOOL parse_variable(unsigned int* node, sNodeType* result_type, char* name, BOOL
     
     if(get_variable_from_this_table_only(info->lv_table, name) == NULL) {
         check_already_added_variable(info->lv_table, name, info);
-        if(!add_variable_to_table(info->lv_table, name, result_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, result_type->mConstant, FALSE, FALSE))
+        if(!add_variable_to_table(info->lv_table, name, result_type, readonly, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
         {
             fprintf(stderr, "overflow variable table\n");
             exit(2);

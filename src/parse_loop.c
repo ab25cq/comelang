@@ -150,14 +150,14 @@ BOOL parse_catch(unsigned int* node, sParserInfo* info)
     snprintf(var_names[1], VAR_NAME_MAX, "catchb%d", n);
     
     check_already_added_variable(info->lv_table, var_names[0], info);
-    if(!add_variable_to_table(info->lv_table, var_names[0], NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE, FALSE))
+    if(!add_variable_to_table(info->lv_table, var_names[0], NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
     {
         fprintf(stderr, "overflow variable table\n");
         exit(2);
     }
     
     check_already_added_variable(info->lv_table, var_names[1], info);
-    if(!add_variable_to_table(info->lv_table, var_names[1], NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE, FALSE))
+    if(!add_variable_to_table(info->lv_table, var_names[1], NULL, FALSE, gNullLVALUE, -1, info->mBlockLevel == 0, FALSE, FALSE))
     {
         fprintf(stderr, "overflow variable table\n");
         exit(2);

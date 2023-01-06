@@ -343,12 +343,10 @@ BOOL compile_add(unsigned int node, sCompileInfo* info)
 {
     BOOL move_ = gNodes[node].uValue.sOp.mMove;
     
-    info->store_constant_var = TRUE;
     int left_node = gNodes[node].mLeft;
     if(!compile(left_node, info)) {
         return FALSE;
     }
-    info->store_constant_var = FALSE;
     
     if(!check_nullable_type(NULL, info->type, info)) {
         return TRUE;
@@ -592,12 +590,10 @@ BOOL compile_sub(unsigned int node, sCompileInfo* info)
 {
     BOOL move_ = gNodes[node].uValue.sOp.mMove;
     
-    info->store_constant_var = TRUE;
     int left_node = gNodes[node].mLeft;
     if(!compile(left_node, info)) {
         return FALSE;
     }
-    info->store_constant_var = FALSE;
     
     if(!check_nullable_type(NULL, info->type, info)) {
         return TRUE;

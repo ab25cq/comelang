@@ -63,7 +63,7 @@ BOOL compile_come_function_call(unsigned int node, sCompileInfo* info)
     }
     
     BOOL readonly = FALSE;
-    if(!add_variable_to_table(info->pinfo->lv_table, thread_var_name, var_type, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE, FALSE))
+    if(!add_variable_to_table(info->pinfo->lv_table, thread_var_name, var_type, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE))
     {
         return FALSE;
     }
@@ -121,7 +121,7 @@ BOOL compile_come_function_call(unsigned int node, sCompileInfo* info)
 
     snprintf(thread_arg_var_name, VAR_NAME_MAX, "thread_arg%d", gThreadNum);
     
-    if(!add_variable_to_table(info->pinfo->lv_table, thread_arg_var_name, thread_arg_struct_type, FALSE, gNullLVALUE, -1, FALSE, FALSE, FALSE, FALSE))
+    if(!add_variable_to_table(info->pinfo->lv_table, thread_arg_var_name, thread_arg_struct_type, FALSE, gNullLVALUE, -1, FALSE, FALSE, FALSE))
     {
         return FALSE;
     }
@@ -185,7 +185,7 @@ BOOL compile_come_function_call(unsigned int node, sCompileInfo* info)
     pinfo.lv_table = init_var_table();
     pinfo.sline = 1;
     
-    if(!add_variable_to_table(pinfo.lv_table, thread_fun_params[0].mName, thread_fun_params[0].mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE, FALSE))
+    if(!add_variable_to_table(pinfo.lv_table, thread_fun_params[0].mName, thread_fun_params[0].mType, readonly, gNullLVALUE, -1, FALSE, FALSE, FALSE))
     {
         return FALSE;
     }

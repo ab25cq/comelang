@@ -291,7 +291,7 @@ BOOL compile_source(char* fname, char** source, BOOL optimize, sVarTable* module
             llvm_value.constant = TRUE;
             llvm_value.constant_str = FALSE;
             
-            (void)add_variable_to_table(info.lv_table, "errno", node_type, FALSE, llvm_value, -1, TRUE, FALSE, FALSE, FALSE);
+            (void)add_variable_to_table(info.lv_table, "errno", node_type, FALSE, llvm_value, -1, TRUE, FALSE, FALSE);
         }
         else {
             LVALUE llvm_value;
@@ -302,7 +302,7 @@ BOOL compile_source(char* fname, char** source, BOOL optimize, sVarTable* module
             llvm_value.constant = TRUE;
             llvm_value.constant_str = FALSE;
             
-            (void)add_variable_to_table(info.lv_table, "errno", node_type, FALSE, gNullLVALUE, -1, TRUE, FALSE, FALSE, FALSE);
+            (void)add_variable_to_table(info.lv_table, "errno", node_type, FALSE, gNullLVALUE, -1, TRUE, FALSE, FALSE);
         }
     }
 
