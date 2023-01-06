@@ -226,7 +226,7 @@ permission:
 # clean
 #########################################
 clean:
-	rm -fR a neo-c *.a src/*.o src/*.i src/*.ll code/*.i code/*.ll code/HelloWorld code/HelloWorld2 code/HelloWorld3 code/HelloWorld4 code/HelloWorld5 *.i *.ll a.out src/*.o code/HelloWorld.dSYM code/HelloWorld2.dSYM code/HelloWorld3.dSYM code/HelloWorld4.dSYM code/HelloWorld5.dSYM code/HelloWorld6.dSYM code/HelloWorld7.dSYM code/HelloWorld8.dSYM code/HelloWorld9.dSYM code/HelloWorld10.dSYM code/HelloWorld11.dSYM code/HelloWorld12.dSYM code/HelloWorld13.dSYM code/HelloWorld14.dSYM code/HelloWorld15.dSYM code/HelloWorld16.dSYM code/HelloWorld17.dSYM comelang.dSYM code/HelloWorld6 code/HelloWorld7 code/HelloWorld8 code/HelloWorld9 code/HelloWorld10 code/HelloWorld11 code/HelloWorld12 code/HelloWorld13 code/HelloWorld14 code/HelloWorld15 code/HelloWorld16 code/HelloWorld17 code/HelloWorld18 *.o libcomelang.a a *.i a.out code/tcctest.c.o
+	rm -fR a neo-c *.a src/*.o src/*.i src/*.ll code/*.i code/*.ll code/HelloWorld code/HelloWorld2 code/HelloWorld3 code/HelloWorld4 code/HelloWorld5 *.i *.ll a.out src/*.o code/HelloWorld.dSYM code/HelloWorld2.dSYM code/HelloWorld3.dSYM code/HelloWorld4.dSYM code/HelloWorld5.dSYM code/HelloWorld6.dSYM code/HelloWorld7.dSYM code/HelloWorld8.dSYM code/HelloWorld9.dSYM code/HelloWorld10.dSYM code/HelloWorld11.dSYM code/HelloWorld12.dSYM code/HelloWorld13.dSYM code/HelloWorld14.dSYM code/HelloWorld15.dSYM code/HelloWorld16.dSYM code/HelloWorld17.dSYM comelang.dSYM code/HelloWorld6 code/HelloWorld7 code/HelloWorld8 code/HelloWorld9 code/HelloWorld10 code/HelloWorld11 code/HelloWorld12 code/HelloWorld13 code/HelloWorld14 code/HelloWorld15 code/HelloWorld16 code/HelloWorld17 code/HelloWorld18 code/HelloWorld19 *.o libcomelang.a a *.i a.out code/tcctest.c.o
 
 
 distclean: clean
@@ -273,6 +273,7 @@ no-gc-test:
 	./code/HelloWorld17
 	PWD=`pwd` ./neo-c -no-gc code/HelloWorld18.c
 	./code/HelloWorld18
+	PWD=`pwd` ./neo-c -no-gc code/HelloWorld19.c
 
 tcc-test:
 	PWD=`pwd` ./neo-c -no-gc code/tcctest.c
@@ -324,6 +325,7 @@ debug-test:
 	./code/HelloWorld17
 	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld18.c
 	./code/HelloWorld18
+	PWD=`pwd` ./neo-c -no-gc -g code/HelloWorld19.c
 
 gc-test:
 	@echo "Compile to gc test code..."
@@ -361,6 +363,7 @@ gc-test:
 	./code/HelloWorld17
 	PWD=`pwd` ./neo-c -gc code/HelloWorld18.c
 	./code/HelloWorld18
+	PWD=`pwd` ./neo-c -gc code/HelloWorld19.c
 
 
 gc-debug-test: 
@@ -402,7 +405,7 @@ gc-debug-test:
 	PWD=`pwd` ./neo-c -gc -g code/HelloWorld17.c
 	./code/HelloWorld17
 	PWD=`pwd` ./neo-c -gc -g code/HelloWorld18.c
-	./code/HelloWorld18
+	PWD=`pwd` ./neo-c -gc -g code/HelloWorld19.c
 
 
 #########################################

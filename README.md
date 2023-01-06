@@ -5,7 +5,7 @@ Modern C compiler. It has a collection and string library using Refference count
 
 モダンなCコンパイラ。リファレンスカウントGCを使ったコレクション、文字列ライブラリを備えます。
 
-version 1.0.1
+version 1.0.2
 
 ```
 #include <neo-c.h>

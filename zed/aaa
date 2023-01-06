@@ -1,91 +1,91 @@
-==77769== Memcheck, a memory error detector
-==77769== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==77769== Using Valgrind-3.16.1 and LibVEX; rerun with -h for copyright info
-==77769== Command: zed "AAA".sub_block(/A/g)\ {\ it.lower_case()\ }
-==77769== 
-==77769== Conditional jump or move depends on uninitialised value(s)
-==77769==    at 0x4A38576: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A34DD4: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A39A4D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A38C88: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
-==77769==    by 0x402448: main (in /usr/local/bin/zed)
-==77769== 
-==77769== Conditional jump or move depends on uninitialised value(s)
-==77769==    at 0x4A3857B: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A34DD4: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A39A4D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A38C88: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
-==77769==    by 0x402448: main (in /usr/local/bin/zed)
-==77769== 
-==77769== Conditional jump or move depends on uninitialised value(s)
-==77769==    at 0x4A372DB: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
-==77769==    by 0x402448: main (in /usr/local/bin/zed)
-==77769== 
-==77769== Conditional jump or move depends on uninitialised value(s)
-==77769==    at 0x4A372BB: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
-==77769==    by 0x402448: main (in /usr/local/bin/zed)
-==77769== 
-==77769== Conditional jump or move depends on uninitialised value(s)
-==77769==    at 0x4A372E0: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
-==77769==    by 0x402448: main (in /usr/local/bin/zed)
-==77769== 
-==77769== Conditional jump or move depends on uninitialised value(s)
-==77769==    at 0x4A372B6: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
-==77769==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
-==77769==    by 0x402448: main (in /usr/local/bin/zed)
-==77769== 
-==77769== 
-==77769== HEAP SUMMARY:
-==77769==     in use at exit: 937 bytes in 4 blocks
-==77769==   total heap usage: 12 allocs, 8 frees, 3,953 bytes allocated
-==77769== 
-==77769== LEAK SUMMARY:
-==77769==    definitely lost: 0 bytes in 0 blocks
-==77769==    indirectly lost: 0 bytes in 0 blocks
-==77769==      possibly lost: 864 bytes in 3 blocks
-==77769==    still reachable: 73 bytes in 1 blocks
-==77769==         suppressed: 0 bytes in 0 blocks
-==77769== Rerun with --leak-check=full to see details of leaked memory
-==77769== 
-==77769== Use --track-origins=yes to see where uninitialised values come from
-==77769== For lists of detected and suppressed errors, rerun with: -s
-==77769== ERROR SUMMARY: 121 errors from 6 contexts (suppressed: 0 from 0)
+==91813== Memcheck, a memory error detector
+==91813== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==91813== Using Valgrind-3.16.1 and LibVEX; rerun with -h for copyright info
+==91813== Command: zed "AAA".sub_block(/A/g)\ {\ it.lower_case()\ }
+==91813== 
+==91813== Conditional jump or move depends on uninitialised value(s)
+==91813==    at 0x4A38576: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A34DD4: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A39A4D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A38C88: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
+==91813==    by 0x402448: main (in /usr/local/bin/zed)
+==91813== 
+==91813== Conditional jump or move depends on uninitialised value(s)
+==91813==    at 0x4A3857B: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A34DD4: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A39A4D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A38C88: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
+==91813==    by 0x402448: main (in /usr/local/bin/zed)
+==91813== 
+==91813== Conditional jump or move depends on uninitialised value(s)
+==91813==    at 0x4A372DB: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
+==91813==    by 0x402448: main (in /usr/local/bin/zed)
+==91813== 
+==91813== Conditional jump or move depends on uninitialised value(s)
+==91813==    at 0x4A372BB: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
+==91813==    by 0x402448: main (in /usr/local/bin/zed)
+==91813== 
+==91813== Conditional jump or move depends on uninitialised value(s)
+==91813==    at 0x4A372E0: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
+==91813==    by 0x402448: main (in /usr/local/bin/zed)
+==91813== 
+==91813== Conditional jump or move depends on uninitialised value(s)
+==91813==    at 0x4A372B6: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A378AC: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37ADF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A37C50: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A38D7C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2D40C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A2DC4D: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x4A3B5E3: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.3)
+==91813==    by 0x43C0D8: come_boehm_gc_init (in /usr/local/bin/zed)
+==91813==    by 0x402448: main (in /usr/local/bin/zed)
+==91813== 
+==91813== 
+==91813== HEAP SUMMARY:
+==91813==     in use at exit: 937 bytes in 4 blocks
+==91813==   total heap usage: 12 allocs, 8 frees, 3,953 bytes allocated
+==91813== 
+==91813== LEAK SUMMARY:
+==91813==    definitely lost: 0 bytes in 0 blocks
+==91813==    indirectly lost: 0 bytes in 0 blocks
+==91813==      possibly lost: 864 bytes in 3 blocks
+==91813==    still reachable: 73 bytes in 1 blocks
+==91813==         suppressed: 0 bytes in 0 blocks
+==91813== Rerun with --leak-check=full to see details of leaked memory
+==91813== 
+==91813== Use --track-origins=yes to see where uninitialised values come from
+==91813== For lists of detected and suppressed errors, rerun with: -s
+==91813== ERROR SUMMARY: 123 errors from 6 contexts (suppressed: 0 from 0)

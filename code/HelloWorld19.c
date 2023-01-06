@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 const char **rt_bound_error_msg;
 const short **funX()
