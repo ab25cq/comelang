@@ -397,7 +397,6 @@ on golem
 
 config.status:816: creating Makefile
 config.status:816: creating config.h
-config.status:991: config.h is unchanged
 
 ## ---------------- ##
 ## Cache variables. ##
