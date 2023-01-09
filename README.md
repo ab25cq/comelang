@@ -59,7 +59,7 @@ int main()
         printf("%d\n", it);   //1\n2\n3\n
     }
 
-    var m = ["AAA":1, "BBB":2, "CCC":]
+    var m = ["AAA":1, "BBB":2, "CCC":3]
     
     foreach(key, m) {
         var item = m[key];
@@ -407,7 +407,7 @@ With -gc option for neo-c, enable boehm GC. The default heap system is using Ori
 xsprintf is a function that returns the memory of a format string. === internally is operator_equal ~
 
 xsprintfはフォーマット文字列のメモリーを返す関数です。===は内部的にはoperator_equals関数が呼ばれてます。
-==はポインターでは同じアドレスを指さないとtrueになりませんが===は同じ値ならtrueを返します。
+==が呼ばれてます。ポインターでは同じアドレスを指さないとtrueになりませんが===は同じ値ならtrueを返します。
 
 ```
     if("ABC".reverse() === "CBA") {
