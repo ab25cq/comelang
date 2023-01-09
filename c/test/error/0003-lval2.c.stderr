@@ -1,3 +1,0 @@
-assign expects an lvalue at test/error/0003-lval2.c:8:5
-    3 = 2;
-    ^

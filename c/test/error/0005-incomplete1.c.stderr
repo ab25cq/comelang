@@ -1,3 +1,0 @@
-cannot use incomplete type in this context at test/error/0005-incomplete1.c:10:5
-    struct X x;
-    ^

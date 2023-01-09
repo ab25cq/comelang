@@ -1,3 +1,0 @@
-redefinition of macro X at test/cpperror/0001-define1.c:7:9
-#define X Z
-        ^

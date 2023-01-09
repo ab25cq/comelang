@@ -52,7 +52,6 @@ int main(int argc, char **argv)
     /* MUST BE CALLED before any compilation */
     tcc_set_output_type(s, TCC_OUTPUT_MEMORY);
 
-puts(my_program);
     if (tcc_compile_string(s, my_program) == -1)
         return 1;
 

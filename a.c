@@ -2,43 +2,111 @@
 #include <stdlib.h>
 #include <string.h>
 
-const char **rt_bound_error_msg;
-const short **funX()
+typedef struct CTy CTy;
+
+struct CTy {
+    int t;
+    int size;
+    int align;
+    int incomplete;
+    union {
+        struct {
+            CTy *rtype;
+            int *params;
+            int  isvararg;
+        } Func;
+        struct {
+            int   isunion;
+            char *name;
+            int  *members;
+            int  *exports;
+        } Struct;
+        struct {
+            int  *members;
+        } Enum;
+        struct {
+            CTy *subty;
+        } Ptr;
+        struct {
+            CTy *subty;
+            int  dim;
+        } Arr;
+        struct {
+            int issigned;
+            int type;
+        } Prim;
+    };
+};
+
+CTy *
+newtype(int type)
 {
+    CTy *t;
+
+    t = malloc(sizeof(CTy));
+    t->t = type;
+    return t;
 }
 
-const char* n
+#define CFUNC 1
+#define CPTR 2
 
-void rt_error(const char *uc)
+CTy *
+mkptr(CTy *t)
 {
+    CTy *p;
+
+    p = newtype(CPTR);
+    p->Ptr.subty = t;
+    p->size = 8;
+    p->align = 8;
+    return p;
 }
 
-static const char *outfile;
+static CTy *
+declarator(CTy *basety, char **name, void *init) 
+{
+    CTy *t;
 
-static char tok_two_chars[] = "<=\236>=\235!=\225&&\240||\241++\244--\242==\224<<\1>>\2+=\253-=\255*=\252/=\257%=\245&=\246^=\336|=\374->\313..\250##\266";
+    basety = mkptr(basety);
+    t = basety;
+    return t;
+}
+
+static CTy *
+declaratortail(CTy *basety)
+{
+    CTy    *t, *newt;
+    
+    t = basety;
+    newt = newtype(CFUNC);
+    newt->Func.rtype = basety;
+printf("newt->Func.rtype %p\n", basety);
+    newt->Func.params = NULL;
+    t = newt;
+        
+    return t;
+}
+
+static CTy *
+directdeclarator(CTy *basety, char **name) 
+{
+    CTy *ty, *stub;
+
+    *name = 0;
+    stub = malloc(sizeof(CTy));
+    *stub = *basety;
+    ty = declarator(stub, name, 0);
+    *stub = *declaratortail(basety);
+    return ty;
+}
 
 int main()
 {
-    outfile = (void*)0;
-
-    if (*rt_bound_error_msg && *rt_bound_error_msg)
-        rt_error(*rt_bound_error_msg);
-        
-    printf("%d\n", (*funX())[0]);
-    
-    if(outfile) {
-        puts("AAA");
-    }
-    
-    char objfilename[1024];
-    
-    outfile = objfilename;
-
-    const unsigned char *q;
-    
-    q = tok_two_chars;
-    
-    *q;
+    struct CTy t1;
+    char name[1024];
+    struct CTy* t = directdeclarator(&t1, &name);
+printf("l->Ptr.subty.Func.rtype %p\n", t->Ptr.subty->Func.rtype);
     
     return 0;
 }

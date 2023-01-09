@@ -1,3 +1,0 @@
-redefinition of tag X at test/error/0004-tags1.c:8:1
-struct X {int x;};
-^

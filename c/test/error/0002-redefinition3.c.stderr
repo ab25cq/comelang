@@ -1,3 +1,0 @@
-field x duplicated in struct at test/error/0002-redefinition3.c:5:10
-struct x {
-         ^

@@ -1,3 +1,0 @@
-array initializer wrong size for type at test/error/0006-inits1.c:6:12
-int x[3] = {1, 2};
-           ^

@@ -1,3 +1,0 @@
-cannot use incomplete type in this context at test/error/0004-tags4.c:12:5
-    struct X x;
-    ^
