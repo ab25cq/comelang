@@ -5,7 +5,7 @@ Modern C compiler. It has a collection and string library using Refference count
 
 モダンなCコンパイラ。リファレンスカウントGCを使ったコレクション、文字列ライブラリを備えます。
 
-version 1.0.2
+version 1.0.3
 
 ```
 #include <neo-c.h>
@@ -233,6 +233,8 @@ b.c
 c.c
 > ls | neo-c -e 'stdin.read().split(/\n/).join(",").puts();'
 a.c,b.c,c.c
+> echo "aaa bbb" | neo-c 'stdin.read().chomp().spit(/ /).to_string().puts()'
+[aaa,bbb]
 ```
 
 1. It is compatible with C language. The C preprocessor also works.
