@@ -68,7 +68,6 @@ sNode*? exp_node(sInfo* info) version 7
 {
     if(*info->p == '/') {
         info->p++;
-        skip_spaces(info);
         
         buffer*% buf = new buffer();
         bool global = false;

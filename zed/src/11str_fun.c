@@ -5,15 +5,8 @@ bool str_method(char* fun_name, list<ZVALUE*%>* params, ZVALUE* obj, ZVALUE** re
 {
     if(fun_name === "chomp") {
         if(params.length() == 0) {
-            string str = obj.strValue.to_string();
-            if(str[str.length()-1] == '\n') {
-                string str2 = str.substring(0, -2);
-                
-                *result = new ZVALUE(kind:kStrValue, str_value:str2.to_wstring());
-            }
-            else {
-                *result =  new ZVALUE(kind:kStrValue, str_value:str.to_wstring());
-            }
+            string str = obj.strValue.to_string().chomp();
+            *result = new ZVALUE(kind:kStrValue, str_value:str.to_wstring());
         }
     }
     else if(fun_name === "lower_case") {

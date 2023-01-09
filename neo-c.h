@@ -76,6 +76,12 @@ inline string char*::reverse(char* str)
     return string_reverse(str);
 }
 
+string string::chomp(char* str);
+inline string char*::chomp(char* str)
+{
+    return string_chomp(str);
+}
+
 string string::lower_case(char* str);
 inline string char*::lower_case(char* str)
 {

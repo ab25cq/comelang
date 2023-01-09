@@ -350,6 +350,16 @@ string string::reverse(char* str)
     return result;
 }
 
+string string::chomp(char* str)
+{
+    string result = string(str);
+    
+    if(result[result.length()-1] == '\n') {
+        return result.substring(0, -2);
+    }
+    
+    return result;
+}
 
 string string::substring(char* str, int head, int tail)
 {
