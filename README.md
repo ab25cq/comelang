@@ -409,7 +409,7 @@ With -gc option for neo-c, enable boehm GC. The default heap system is using Ori
 xsprintf is a function that returns the memory of a format string. === internally is operator_equal ~
 
 xsprintfはフォーマット文字列のメモリーを返す関数です。===は内部的にはoperator_equals関数が呼ばれてます。
-==が呼ばれてます。ポインターでは同じアドレスを指さないとtrueになりませんが===は同じ値ならtrueを返します。
+ポインターでは同じアドレスを指さないとtrueになりませんが===は同じ値ならtrueを返します。
 
 ```
     if("ABC".reverse() === "CBA") {
