@@ -2077,14 +2077,6 @@ int fun();
 
 ```
 
-
-    
-}
-
-
-
-```
-
 # multiple assign
 
 ```
