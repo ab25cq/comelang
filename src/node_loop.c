@@ -809,8 +809,6 @@ BOOL compile_and_and(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("bool");
     llvm_value.address = result_var;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -944,8 +942,6 @@ BOOL compile_or_or(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("bool");
     llvm_value.address = result_var;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
     
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -1044,8 +1040,6 @@ BOOL compile_for_expression(unsigned int node, sCompileInfo* info)
         conditional_value.type = create_node_type_with_class_name("int");
         conditional_value.address = NULL;
         conditional_value.var = NULL;
-        conditional_value.constant = FALSE;
-        conditional_value.constant_str = FALSE;
         
         conditional_type = create_node_type_with_class_name("int");
     }
@@ -1872,8 +1866,6 @@ BOOL compile_create_label(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("void*");
     llvm_value.address = get_block_address(block);
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
     
@@ -2171,8 +2163,6 @@ BOOL compile_conditional(unsigned int node, sCompileInfo* info)
         llvm_value.type = clone_node_type(value1_result_type);
         llvm_value.address = NULL;
         llvm_value.var = NULL;
-        llvm_value.constant = FALSE;
-        llvm_value.constant_str = FALSE;
 
         info->type = clone_node_type(value1_result_type);
 

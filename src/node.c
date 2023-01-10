@@ -527,8 +527,6 @@ void increment_ref_count(LLVMValueRef obj, sNodeType* node_type, sCompileInfo* i
     llvm_value.type->mUnsigned = TRUE;
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
     
     if(!cast_right_type_to_left_type(left_type, &node_type, &llvm_value, info)) {
         compile_err_msg(info, "this is not memory in increment_ref_count");

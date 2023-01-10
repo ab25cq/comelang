@@ -395,8 +395,6 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
         llvm_value.type = clone_node_type(type_);
         llvm_value.address = value2;
         llvm_value.var = NULL;
-        llvm_value.constant = FALSE;
-        llvm_value.constant_str = FALSE;
         
         var_->mLLVMValue = llvm_value;
     }
@@ -517,8 +515,6 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
                 llvm_value.type = clone_node_type(result_type);
                 llvm_value.address = alloca_value;
                 llvm_value.var = NULL;
-                llvm_value.constant = FALSE;
-                llvm_value.constant_str = FALSE;
                 
                 if(!cast_right_type_to_left_type(result_type, &node_type, &llvm_value, info)) {
                     compile_err_msg(info, "result type can't be casted");
@@ -537,8 +533,6 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
                 llvm_value.type = clone_node_type(node_type);
                 llvm_value.address = NULL;
                 llvm_value.var = NULL;
-                llvm_value.constant = TRUE;
-                llvm_value.constant_str = FALSE;
                 
                 if(!cast_right_type_to_left_type(result_type, &node_type, &llvm_value, info)) {
                     compile_err_msg(info, "result type can't be casted");
@@ -573,8 +567,6 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
         llvm_value.type = clone_node_type(lambda_type);
         llvm_value.address = NULL;
         llvm_value.var = NULL;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         push_value_to_stack_ptr(&llvm_value, info);
 

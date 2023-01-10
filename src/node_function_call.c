@@ -114,7 +114,6 @@ BOOL call_inline_function(sFunction* fun, sNodeType* generics_type, int num_meth
             }
 
             var_->mLLVMValue.value = param;
-            var_->mLLVMValue.constant = FALSE;
             
             if(node_type->mHeap) {
                 remove_object_from_right_values(llvm_params[i], info);
@@ -171,8 +170,6 @@ BOOL call_inline_function(sFunction* fun, sNodeType* generics_type, int num_meth
         llvm_value.type = result_type;
         llvm_value.address = info->inline_result_variable;
         llvm_value.var = NULL;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         dec_stack_ptr(num_params, info);
         push_value_to_stack_ptr(&llvm_value, info);
@@ -272,8 +269,6 @@ BOOL omit_exception_catch(sFunction* fun, sCompileInfo* info)
     llvm_value.type = clone_node_type(result_type);
     llvm_value.address = field_address;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-        llvm_value.constant_str = FALSE;
 
     dec_stack_ptr(1, info);
     push_value_to_stack_ptr(&llvm_value, info);
@@ -1053,8 +1048,6 @@ BOOL compile_function_call(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(result_type);
             llvm_value.address = NULL;
             llvm_value.var = NULL;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
 
             dec_stack_ptr(num_params, info);
             push_value_to_stack_ptr(&llvm_value, info);
@@ -1167,7 +1160,6 @@ BOOL compile_function_call(unsigned int node, sCompileInfo* info)
                 }
 
                 var_->mLLVMValue.value = param;
-                var_->mLLVMValue.constant = FALSE;
                 
                 if(node_type->mHeap) {
                     remove_object_from_right_values(llvm_params[i], info);
@@ -1221,8 +1213,6 @@ BOOL compile_function_call(unsigned int node, sCompileInfo* info)
             llvm_value.type = result_type;
             llvm_value.address = info->inline_result_variable;
             llvm_value.var = NULL;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
 
             dec_stack_ptr(num_params, info);
             push_value_to_stack_ptr(&llvm_value, info);
@@ -1322,8 +1312,6 @@ BOOL compile_function_call(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(result_type);
             llvm_value.address = NULL;
             llvm_value.var = NULL;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
 
             dec_stack_ptr(num_params, info);
             push_value_to_stack_ptr(&llvm_value, info);
@@ -1493,8 +1481,6 @@ BOOL compile_lambda_call(unsigned int node, sCompileInfo* info)
         llvm_value.type = result_type;
         llvm_value.address = NULL;
         llvm_value.var = NULL;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         push_value_to_stack_ptr(&llvm_value, info);
 

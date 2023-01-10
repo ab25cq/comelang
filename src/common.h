@@ -294,8 +294,6 @@ struct LVALUEStruct {
     LLVMValueRef value;
     LLVMValueRef address;
     struct sVarStruct* var;
-    BOOL constant;
-    BOOL constant_str;
 };
 
 typedef struct LVALUEStruct LVALUE;

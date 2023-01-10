@@ -279,7 +279,6 @@ BOOL compile_define_variable(unsigned int node, sCompileInfo* info)
         }
 
         var_->mLLVMValue.value = alloca_value;
-        var_->mLLVMValue.constant = FALSE;
     }
     else if(global) {
         LLVMValueRef global2 = LLVMGetNamedGlobal(gModule, var_name);
@@ -369,7 +368,6 @@ BOOL compile_define_variable(unsigned int node, sCompileInfo* info)
 
         var_->mLLVMValue.value = alloca_value;
         var_->mLLVMValue.address = alloca_value;
-        var_->mLLVMValue.constant = FALSE;
     }
     else {
         if(var_type->mDynamicArrayNum != 0) {
@@ -397,7 +395,6 @@ BOOL compile_define_variable(unsigned int node, sCompileInfo* info)
             LLVMValueRef alloca_value = LLVMBuildArrayAlloca(gBuilder, llvm_type, len_value, var_name);
             var_->mLLVMValue.value = alloca_value;
             var_->mLLVMValue.address = alloca_value;
-            var_->mLLVMValue.constant = FALSE;
         }
         else {
             LLVMBasicBlockRef this_block = LLVMGetInsertBlock(gBuilder);
@@ -421,7 +418,6 @@ BOOL compile_define_variable(unsigned int node, sCompileInfo* info)
 
             var_->mLLVMValue.value = alloca_value;
             var_->mLLVMValue.address = alloca_value;
-            var_->mLLVMValue.constant = FALSE;
             
             if(!(type_identify_with_class_name(var_type, "__builtin_va_list") || type_identify_with_class_name(var_type, "va_list"))) 
             {
@@ -627,7 +623,6 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
             
             var_->mLLVMValue.value = rvalue.value;
             var_->mLLVMValue.address = rvalue.value;
-            var_->mLLVMValue.constant = TRUE;
 
             info->type = right_type; 
         }
@@ -671,7 +666,6 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
 
             var_->mLLVMValue.value = alloca_value;
             var_->mLLVMValue.address = alloca_value;
-            var_->mLLVMValue.constant = FALSE;
 
             info->type = clone_node_type(right_type); 
         }
@@ -703,7 +697,6 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
 
             var_->mLLVMValue.value = alloca_value;
             var_->mLLVMValue.address = alloca_value;
-            var_->mLLVMValue.constant = FALSE;
 
             info->type = clone_node_type(right_type); 
         }
@@ -737,7 +730,6 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
 
             var_->mLLVMValue.value = alloca_value;
             var_->mLLVMValue.address = alloca_value;
-            var_->mLLVMValue.constant = FALSE;
 
             info->type = right_type;
         }
@@ -750,7 +742,6 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
         if(LLVMIsConstant(var_->mLLVMValue.value) != 0 && LLVMIsConstant(rvalue.value) != 0 && !global_var) {
             var_->mLLVMValue.value = rvalue.value;
             var_->mLLVMValue.address = rvalue.value;
-            var_->mLLVMValue.constant = TRUE;
         }
         else {
             obj = var_->mLLVMValue.value;
@@ -864,8 +855,6 @@ LVALUE get_tuple_element(LVALUE rvalue, sNodeType* right_type, int i, sCompileIn
     llvm_value.type = clone_node_type(right_type);
     llvm_value.address = field_address;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
     
     return llvm_value;
 }
@@ -1026,7 +1015,6 @@ BOOL compile_store_variable_multiple(unsigned int node, sCompileInfo* info)
                 }
                 
                 var_->mLLVMValue.value = rvalue2.value;
-                var_->mLLVMValue.constant = TRUE;
     
                 info->type = left_type;
             }
@@ -1059,7 +1047,6 @@ BOOL compile_store_variable_multiple(unsigned int node, sCompileInfo* info)
                     }
     
                     var_->mLLVMValue.value = alloca_value;
-                    var_->mLLVMValue.constant = TRUE;
     
                     info->type = left_type;
                 }
@@ -1102,7 +1089,6 @@ BOOL compile_store_variable_multiple(unsigned int node, sCompileInfo* info)
                 }
     
                 var_->mLLVMValue.value = alloca_value;
-                var_->mLLVMValue.constant = FALSE;
     
                 info->type = left_type;
                 
@@ -1126,7 +1112,6 @@ BOOL compile_store_variable_multiple(unsigned int node, sCompileInfo* info)
             }
             
             var_->mLLVMValue.value = rvalue2.value;
-            var_->mLLVMValue.constant = TRUE;
     
             info->type = left_type;
         }
@@ -1247,8 +1232,6 @@ BOOL compile_clone(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(left_type2);
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -1303,8 +1286,6 @@ BOOL compile_is_gc_heap(unsigned int node, sCompileInfo* info)
             llvm_value.type = create_node_type_with_class_name("bool");
             llvm_value.address = NULL;
             llvm_value.var = NULL;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
         
             push_value_to_stack_ptr(&llvm_value, info);
         
@@ -1349,8 +1330,6 @@ BOOL compile_is_gc_heap(unsigned int node, sCompileInfo* info)
             llvm_value.type = create_node_type_with_class_name("int");
             llvm_value.address = NULL;
             llvm_value.var = NULL;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
             
             sNodeType* left_type3 = create_node_type_with_class_name("bool");
             sNodeType* right_type3 = create_node_type_with_class_name("int");
@@ -1372,8 +1351,6 @@ BOOL compile_is_gc_heap(unsigned int node, sCompileInfo* info)
         llvm_value.type = create_node_type_with_class_name("bool");
         llvm_value.address = NULL;
         llvm_value.var = NULL;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
         
         push_value_to_stack_ptr(&llvm_value, info);
 
@@ -1441,8 +1418,6 @@ BOOL compile_reffernce(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(refference_type);
     llvm_value.address = NULL;
     llvm_value.var = lvalue.var;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -1639,8 +1614,6 @@ BOOL compile_reffernce_load_field(unsigned int node, sCompileInfo* info)
 #endif
         llvm_value.address = NULL;
         llvm_value.var = lvalue.var;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         dec_stack_ptr(1, info);
         push_value_to_stack_ptr(&llvm_value, info);
@@ -1756,8 +1729,6 @@ BOOL compile_reffernce_load_field(unsigned int node, sCompileInfo* info)
 #endif
         llvm_value.address = NULL;
         llvm_value.var = lvalue.var;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         dec_stack_ptr(1, info);
         push_value_to_stack_ptr(&llvm_value, info);
@@ -1873,8 +1844,6 @@ BOOL compile_derefference(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(derefference_type);
             llvm_value.address = lvalue.value;
             llvm_value.var = var_;
-            llvm_value.constant = FALSE;
-            llvm_value.constant_str = FALSE;
         
             push_value_to_stack_ptr(&llvm_value, info);
         
@@ -1890,8 +1859,6 @@ BOOL compile_derefference(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(derefference_type);
             llvm_value.address = lvalue.address; //lvalue.value;
             llvm_value.var = var_;
-            llvm_value.constant = FALSE;
-            llvm_value.constant_str = FALSE;
         
             push_value_to_stack_ptr(&llvm_value, info);
         
@@ -1923,8 +1890,6 @@ BOOL compile_derefference(unsigned int node, sCompileInfo* info)
                 llvm_value.type = node_type;
                 llvm_value.address = lvalue.value;
                 llvm_value.var = var_;
-                llvm_value.constant = FALSE;
-                llvm_value.constant_str = FALSE;
             
                 push_value_to_stack_ptr(&llvm_value, info);
             
@@ -1945,11 +1910,9 @@ BOOL compile_derefference(unsigned int node, sCompileInfo* info)
                 
                 LVALUE llvm_value;
                 llvm_value.value = LLVMBuildLoad2(gBuilder, llvm_type, lvalue.value, "derefference_valueB");
-                llvm_value.constant = FALSE;
                 llvm_value.type = derefference_type;
                 llvm_value.address = lvalue.value;
                 llvm_value.var = var_;
-                llvm_value.constant_str = FALSE;
             
                 push_value_to_stack_ptr(&llvm_value, info);
             
@@ -2297,8 +2260,6 @@ BOOL compile_store_element(unsigned int node, sCompileInfo* info)
             llvm_value.type = result_type;
             llvm_value.address = NULL;
             llvm_value.var = NULL;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
     
             dec_stack_ptr(2+num_dimention, info);
             push_value_to_stack_ptr(&llvm_value, info);
@@ -2749,8 +2710,6 @@ BOOL compile_sizeof(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("int");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -2766,8 +2725,6 @@ BOOL compile_sizeof(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("long");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -2851,8 +2808,6 @@ BOOL compile_sizeof_expression(unsigned int node, sCompileInfo* info)
     llvm_value2.type = create_node_type_with_class_name("int");
     llvm_value2.address = NULL;
     llvm_value2.var = NULL;
-    llvm_value2.constant = TRUE;
-    llvm_value2.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value2, info);
 
@@ -2869,8 +2824,6 @@ BOOL compile_sizeof_expression(unsigned int node, sCompileInfo* info)
     llvm_value2.type = create_node_type_with_class_name("long");
     llvm_value2.address = NULL;
     llvm_value2.var = NULL;
-    llvm_value2.constant = TRUE;
-    llvm_value2.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value2, info);
 
@@ -2890,8 +2843,6 @@ BOOL compile_sizeof_expression(unsigned int node, sCompileInfo* info)
     llvm_value2.type = create_node_type_with_class_name("int");
     llvm_value2.address = NULL;
     llvm_value2.var = NULL;
-    llvm_value2.constant = TRUE;
-    llvm_value2.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value2, info);
 
@@ -2908,8 +2859,6 @@ BOOL compile_sizeof_expression(unsigned int node, sCompileInfo* info)
     llvm_value2.type = create_node_type_with_class_name("long");
     llvm_value2.address = NULL;
     llvm_value2.var = NULL;
-    llvm_value2.constant = TRUE;
-    llvm_value2.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value2, info);
 
@@ -2963,8 +2912,6 @@ BOOL compile_alignof(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("int");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -2977,8 +2924,6 @@ BOOL compile_alignof(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("long");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -3043,8 +2988,6 @@ BOOL compile_alignof_expression(unsigned int node, sCompileInfo* info)
     llvm_value2.type = create_node_type_with_class_name("int");
     llvm_value2.address = NULL;
     llvm_value2.var = NULL;
-    llvm_value2.constant = TRUE;
-    llvm_value2.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value2, info);
 
@@ -3055,8 +2998,6 @@ BOOL compile_alignof_expression(unsigned int node, sCompileInfo* info)
     llvm_value2.type = create_node_type_with_class_name("long");
     llvm_value2.address = NULL;
     llvm_value2.var = NULL;
-    llvm_value2.constant = TRUE;
-    llvm_value2.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value2, info);
 
@@ -3118,8 +3059,6 @@ BOOL compile_load_function(unsigned int node, sCompileInfo* info)
     llvm_value.type = lambda_type;
     llvm_value.address = fun->mLLVMFunction;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -4507,7 +4446,6 @@ BOOL compile_struct_initializer(unsigned int node, sCompileInfo* info)
             if(change_var_type_initializer != NULL) {
                 LLVMDeleteGlobal(var_->mLLVMValue.value);
                 var_->mLLVMValue.value = LLVMAddGlobal(gModule, change_var_type, var_name);
-                var_->mLLVMValue.constant = TRUE;
                 var_->mType->mConstant = TRUE;
                 
                 alloca_value = var_->mLLVMValue.value;
@@ -4857,8 +4795,6 @@ BOOL compile_load_address_value(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(left_type2);
     llvm_value.address = address;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -4894,8 +4830,6 @@ BOOL compile_func_name(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("char*");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -4931,8 +4865,6 @@ BOOL compile_sname(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("char*");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -4968,8 +4900,6 @@ BOOL compile_sline(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("int");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5006,8 +4936,6 @@ BOOL compile_caller_sname(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("char*");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5044,8 +4972,6 @@ BOOL compile_caller_sline(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("int");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
     
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5106,8 +5032,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
         
         if(var_type->mArrayDimentionNum >= 1 || var_type->mDynamicArrayNum != 0) {
             llvm_value.value = var_address;
-            llvm_value.constant = FALSE;
-            llvm_value.constant_str = FALSE;
     
             llvm_value.type = var_type2;
             llvm_value.address = var_address;
@@ -5122,8 +5046,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
         {
             llvm_value.value = var_address;
             llvm_value.address = var_address;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
     
             llvm_value.type = clone_node_type(var_type);
             llvm_value.var = var_;
@@ -5137,8 +5059,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
             LLVMTypeRef llvm_type = create_llvm_type_from_node_type(var_type2);
             
             llvm_value.value = LLVMBuildLoad2(gBuilder, llvm_type, var_address, var_name);
-            llvm_value.constant = FALSE;
-            llvm_value.constant_str = FALSE;
     
             llvm_value.type = var_type2;
             llvm_value.address = var_address;
@@ -5151,8 +5071,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
         else {
             LLVMTypeRef llvm_type = create_llvm_type_from_node_type(var_type2);
             llvm_value.value = LLVMBuildLoad2(gBuilder, llvm_type, var_address, var_name);
-            llvm_value.constant = FALSE;
-            llvm_value.constant_str = FALSE;
     
             llvm_value.type = var_type2;
             llvm_value.address = var_address;
@@ -5166,8 +5084,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
     else if(LLVMIsConstant(var_address) != 0) {
         llvm_value.value = var_address;
         llvm_value.address = var_address;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         llvm_value.type = clone_node_type(var_type);
         llvm_value.var = var_;
@@ -5182,8 +5098,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
         llvm_value.type = var_type;
         llvm_value.address = var_address;
         llvm_value.var = var_;
-        llvm_value.constant_str = FALSE;
-        llvm_value.constant = FALSE;
 
         push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5198,8 +5112,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(var_type);
             llvm_value.address = var_address;
             llvm_value.var = var_;
-            llvm_value.constant_str = FALSE;
-            llvm_value.constant = FALSE;
 
             push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5295,8 +5207,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
             llvm_value.type = var_type;
             llvm_value.address = var_address;
             llvm_value.var = var_;
-            llvm_value.constant_str = FALSE;
-            llvm_value.constant = FALSE;
 
             push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5310,8 +5220,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
             llvm_value.type = var_type;
             llvm_value.address = var_address;
             llvm_value.var = var_;
-            llvm_value.constant_str = FALSE;
-            llvm_value.constant = FALSE;
 
             push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5334,8 +5242,6 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
             llvm_value.type = var_type;
             llvm_value.address = var_address;
             llvm_value.var = var_;
-            llvm_value.constant_str = FALSE;
-            llvm_value.constant = FALSE;
 
             push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5847,8 +5753,6 @@ BOOL compile_object(unsigned int node, sCompileInfo* info)
         llvm_value.type = clone_node_type(node_type2);
         llvm_value.address = NULL;
         llvm_value.var = NULL;
-        llvm_value.constant = FALSE;
-        llvm_value.constant_str = FALSE;
 
         push_value_to_stack_ptr(&llvm_value, info);
 
@@ -5918,8 +5822,6 @@ BOOL compile_object(unsigned int node, sCompileInfo* info)
         llvm_value.type = clone_node_type(node_type2);
         llvm_value.address = NULL;
         llvm_value.var = NULL;
-        llvm_value.constant = FALSE;
-        llvm_value.constant_str = FALSE;
 
         push_value_to_stack_ptr(&llvm_value, info);
         
@@ -5990,8 +5892,6 @@ BOOL compile_stack_object(unsigned int node, sCompileInfo* info)
         llvm_value.type = node_type2;
         llvm_value.address = NULL;
         llvm_value.var = NULL;
-        llvm_value.constant = FALSE;
-        llvm_value.constant_str = FALSE;
 
         push_value_to_stack_ptr(&llvm_value, info);
 
@@ -6024,8 +5924,6 @@ BOOL compile_stack_object(unsigned int node, sCompileInfo* info)
         llvm_value2.type = node_type2;
         llvm_value2.address = NULL;
         llvm_value2.var = NULL;
-        llvm_value2.constant = FALSE;
-        llvm_value2.constant_str = FALSE;
 
         push_value_to_stack_ptr(&llvm_value2, info);
 
@@ -6722,8 +6620,6 @@ BOOL compile_load_field(unsigned int node, sCompileInfo* info)
         llvm_value.type = clone_node_type(field_type);
         llvm_value.address = field_address;
         llvm_value.var = lvalue.var;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         dec_stack_ptr(1, info);
         push_value_to_stack_ptr(&llvm_value, info);
@@ -6800,8 +6696,6 @@ BOOL compile_load_field(unsigned int node, sCompileInfo* info)
         llvm_value.type = clone_node_type(field_type);
         llvm_value.address = field_address;
         llvm_value.var = lvalue.var;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         dec_stack_ptr(1, info);
         push_value_to_stack_ptr(&llvm_value, info);
@@ -6885,8 +6779,6 @@ BOOL compile_load_channel_element(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(element_type);
     llvm_value.address = load_element_addresss;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     dec_stack_ptr(1, info);
     push_value_to_stack_ptr(&llvm_value, info);
@@ -7467,8 +7359,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
         llvm_value.type = result_type;
         llvm_value.address = NULL;
         llvm_value.var = lvalue.var;
-        llvm_value.constant = TRUE;
-        llvm_value.constant_str = FALSE;
 
         dec_stack_ptr(1+num_dimention, info);
         push_value_to_stack_ptr(&llvm_value, info);
@@ -7521,7 +7411,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(element_type);
             llvm_value.address = load_element_addresss;
             llvm_value.var = lvalue.var;
-            llvm_value.constant = TRUE;
     
             dec_stack_ptr(1+num_dimention, info);
             push_value_to_stack_ptr(&llvm_value, info);
@@ -7579,8 +7468,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                 llvm_value.type = clone_node_type(element_type);
                 llvm_value.address = load_element_addresss;
                 llvm_value.var = lvalue.var;
-                llvm_value.constant = TRUE;
-                llvm_value.constant_str = FALSE;
         
                 dec_stack_ptr(1+num_dimention, info);
                 push_value_to_stack_ptr(&llvm_value, info);
@@ -7636,8 +7523,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                 llvm_value.type = clone_node_type(element_type);
                 llvm_value.address = load_element_addresss;
                 llvm_value.var = lvalue.var;
-                llvm_value.constant = TRUE;
-                llvm_value.constant_str = FALSE;
         
                 dec_stack_ptr(1+num_dimention, info);
                 push_value_to_stack_ptr(&llvm_value, info);
@@ -7675,8 +7560,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                 llvm_value.type = clone_node_type(node_type);
                 llvm_value.address = load_element_addresss;
                 llvm_value.var = lvalue.var;
-                llvm_value.constant = TRUE;
-                llvm_value.constant_str = FALSE;
     
                 dec_stack_ptr(1+num_dimention, info);
                 push_value_to_stack_ptr(&llvm_value, info);
@@ -7721,8 +7604,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                 llvm_value.type = clone_node_type(node_type);
                 llvm_value.address = load_element_addresss;
                 llvm_value.var = lvalue.var;
-                llvm_value.constant = TRUE;
-                llvm_value.constant_str = FALSE;
     
                 dec_stack_ptr(1+num_dimention, info);
                 push_value_to_stack_ptr(&llvm_value, info);
@@ -7763,8 +7644,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                     llvm_value.type = clone_node_type(element_type);
                     llvm_value.address = load_element_addresss;
                     llvm_value.var = lvalue.var;
-                    llvm_value.constant = TRUE;
-                    llvm_value.constant_str = FALSE;
         
                     dec_stack_ptr(1+num_dimention, info);
                     push_value_to_stack_ptr(&llvm_value, info);
@@ -7780,8 +7659,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                     llvm_value.type = clone_node_type(element_type);
                     llvm_value.address = load_element_addresss;
                     llvm_value.var = lvalue.var;
-                    llvm_value.constant = TRUE;
-                    llvm_value.constant_str = FALSE;
         
                     dec_stack_ptr(1+num_dimention, info);
                     push_value_to_stack_ptr(&llvm_value, info);
@@ -7841,8 +7718,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                 llvm_value.type = clone_node_type(node_type);
                 llvm_value.address = load_element_addresss;
                 llvm_value.var = lvalue.var;
-                llvm_value.constant = TRUE;
-                llvm_value.constant_str = FALSE;
     
                 dec_stack_ptr(1+num_dimention, info);
                 push_value_to_stack_ptr(&llvm_value, info);
@@ -7883,8 +7758,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                     llvm_value.type = clone_node_type(node_type);
                     llvm_value.address = load_element_addresss;
                     llvm_value.var = lvalue.var;
-                    llvm_value.constant = TRUE;
-                    llvm_value.constant_str = FALSE;
         
                     dec_stack_ptr(1+num_dimention, info);
                     push_value_to_stack_ptr(&llvm_value, info);
@@ -7901,8 +7774,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                     llvm_value.type = clone_node_type(node_type);
                     llvm_value.address = load_element_addresss;
                     llvm_value.var = lvalue.var;
-                    llvm_value.constant = FALSE;
-                    llvm_value.constant_str = FALSE;
         
                     dec_stack_ptr(1+num_dimention, info);
                     push_value_to_stack_ptr(&llvm_value, info);
@@ -7954,8 +7825,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                     llvm_value.type = clone_node_type(node_type);
                     llvm_value.address = load_element_addresss;
                     llvm_value.var = lvalue.var;
-                    llvm_value.constant = TRUE;
-                    llvm_value.constant_str = FALSE;
         
                     dec_stack_ptr(1+num_dimention, info);
                     push_value_to_stack_ptr(&llvm_value, info);
@@ -7972,8 +7841,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                     llvm_value.type = clone_node_type(node_type);
                     llvm_value.address = load_element_addresss;
                     llvm_value.var = lvalue.var;
-                    llvm_value.constant = FALSE;
-                    llvm_value.constant_str = FALSE;
         
                     dec_stack_ptr(1+num_dimention, info);
                     push_value_to_stack_ptr(&llvm_value, info);
@@ -8072,8 +7939,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(element_type);
             llvm_value.address = element_address;
             llvm_value.var = lvalue.var;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
     
             dec_stack_ptr(1+num_dimention, info);
             push_value_to_stack_ptr(&llvm_value, info);
@@ -8153,8 +8018,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
             llvm_value.type = clone_node_type(element_type);
             llvm_value.address = element_address;
             llvm_value.var = lvalue.var;
-            llvm_value.constant = TRUE;
-            llvm_value.constant_str = FALSE;
     
             dec_stack_ptr(1+num_dimention, info);
             push_value_to_stack_ptr(&llvm_value, info);
@@ -8261,8 +8124,6 @@ BOOL compile_stack(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(node_type);
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -8514,8 +8375,6 @@ BOOL compile_is_heap(unsigned int node, sCompileInfo* info)
     llvm_value.type = create_node_type_with_class_name("bool");
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = TRUE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
@@ -8931,8 +8790,6 @@ BOOL compile_va_arg(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(node_type);
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
     
     push_value_to_stack_ptr(&llvm_value, info);
     
@@ -8986,8 +8843,6 @@ BOOL compile_va_arg(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(node_type3);
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
     
     push_value_to_stack_ptr(&llvm_value, info);
     
@@ -9023,8 +8878,6 @@ BOOL compile_va_arg(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(node_type);
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
     
     push_value_to_stack_ptr(&llvm_value, info);
     
@@ -9165,8 +9018,6 @@ BOOL compile_va_arg(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(node_type);
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
     
     push_value_to_stack_ptr(&llvm_value, info);
     
@@ -9204,8 +9055,6 @@ BOOL compile_null_value(unsigned int node, sCompileInfo* info)
     llvm_value.type = clone_node_type(result_type);
     llvm_value.address = NULL;
     llvm_value.var = NULL;
-    llvm_value.constant = FALSE;
-    llvm_value.constant_str = FALSE;
 
     push_value_to_stack_ptr(&llvm_value, info);
 
