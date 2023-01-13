@@ -380,6 +380,37 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
         LLVMTypeRef llvm_type2 = create_llvm_type_from_node_type(node_type);
         
         LLVMValueRef value = LLVMBuildAlloca(gBuilder, llvm_type, name);
+#if defined(__AARCH64_CPU__) && !defined(__ANDROID__)
+        if(type_identify_with_class_name(type_, "__builtin_va_list") || type_identify_with_class_name(type_, "va_list")) 
+        {
+            LVALUE llvm_value;
+            llvm_value.value = value;
+            llvm_value.type = clone_node_type(type_);
+            llvm_value.address = value;
+            llvm_value.var = NULL;
+            
+            var_->mLLVMValue = llvm_value;
+        }
+        else {
+            LLVMValueRef value2 = LLVMBuildAlloca(gBuilder, llvm_type2, name);
+            
+            setNullCurrentDebugLocation(info->sline, info);
+            LLVMBuildStore(gBuilder, param, value);
+            
+            setNullCurrentDebugLocation(info->sline, info);
+            LLVMBuildStore(gBuilder, value, value2);
+    
+            setNullCurrentDebugLocation(info->sline, info);
+            
+            LVALUE llvm_value;
+            llvm_value.value = value;
+            llvm_value.type = clone_node_type(type_);
+            llvm_value.address = value2;
+            llvm_value.var = NULL;
+            
+            var_->mLLVMValue = llvm_value;
+        }
+#else
         LLVMValueRef value2 = LLVMBuildAlloca(gBuilder, llvm_type2, name);
         
         setNullCurrentDebugLocation(info->sline, info);
@@ -397,6 +428,7 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
         llvm_value.var = NULL;
         
         var_->mLLVMValue = llvm_value;
+#endif
     }
 
     sNodeType* return_result_type = info->return_result_type;

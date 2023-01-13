@@ -426,7 +426,7 @@ Copyright (C) 2021 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/ab25cq/neo-c'
+ac_pwd='/home/userland/neo-c'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 test -n "$AWK" || AWK=awk
@@ -605,10 +605,10 @@ S["OBJS"]="src/parse_value.o src/parse_lib.o src/parse_type.o src/parse_function
 "le.o src/node_loop.o src/node_op.o src/node_value.o src/node_var.o src/vtable.o src/node_type.o src/klass.o src/node_block.o src/typedef.o src/compi"\
 "ler.o src/macro.o"
 S["CLANG"]=""
-S["CXXFLAGS2"]="-I/usr/lib/llvm-14/include -std=c++14   -fno-exceptions -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -L/usr/l"\
-"ib/llvm-14/lib  -lLLVM-14   -O2 -I . -I src -DPREFIX=\"\\\"${DESTDIR}/\\\" -L/usr/local/lib\""
-S["CXXFLAGS"]="-I/usr/lib/llvm-14/include -std=c++14   -fno-exceptions -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -L/usr/l"\
-"ib/llvm-14/lib  -lLLVM-14   -O2 -I . -I src -DPREFIX=\"\\\"${DESTDIR}/\\\" -L/usr/local/lib\""
+S["CXXFLAGS2"]="-I/usr/lib/llvm-10/include -std=c++14   -fno-exceptions -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -L/usr/l"\
+"ib/llvm-10/lib  -lLLVM-10   -O2 -I . -I src -DPREFIX=\"\\\"${DESTDIR}/\\\" -L/usr/local/lib\""
+S["CXXFLAGS"]="-I/usr/lib/llvm-10/include -std=c++14   -fno-exceptions -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -L/usr/l"\
+"ib/llvm-10/lib  -lLLVM-10   -O2 -I . -I src -DPREFIX=\"\\\"${DESTDIR}/\\\" -L/usr/local/lib\""
 S["CXX"]="clang++"
 S["DESTDIR"]="/usr/local"
 S["OS"]="LINUX"
@@ -620,8 +620,8 @@ S["EXEEXT"]=""
 S["ac_ct_CC"]="gcc"
 S["CPPFLAGS"]=""
 S["LDFLAGS"]=""
-S["CFLAGS"]="-I/usr/lib/llvm-14/include  -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Isrc/ -I. -DPREFIX=\"\\\"${DESTDIR}/\\"\
-"\"\" -fPIC -L/usr/local/lib -DCONFIG_H -I/usr/local/include -DLLVM_VERSION=14 -DCLANG=\"\\\"clang\\\"\" -DGCC=\"\\\"clang\\\"\""
+S["CFLAGS"]="-I/usr/lib/llvm-10/include  -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS  -Isrc/ -I. -DPREFIX=\"\\\"${DESTDIR}/\\"\
+"\"\" -fPIC -L/usr/local/lib -DCONFIG_H -I/usr/local/include -DLLVM_VERSION=10 -DCLANG=\"\\\"clang\\\"\" -DGCC=\"\\\"clang\\\"\""
 S["CC"]="clang"
 S["target_alias"]=""
 S["host_alias"]=""
@@ -719,12 +719,11 @@ D["HAVE_SYS_STAT_H"]=" 1"
 D["HAVE_SYS_TYPES_H"]=" 1"
 D["HAVE_UNISTD_H"]=" 1"
 D["STDC_HEADERS"]=" 1"
-D["__X86_64_CPU__"]=" 1"
+D["__AARCH64_CPU__"]=" 1"
 D["__64BIT_CPU__"]=" 1"
 D["__LINUX__"]=" 1"
 D["HAVE_MATH_H"]=" 1"
 D["HAVE_ICONV_H"]=" 1"
-D["HAVE_LCHMOD"]=" 1"
   for (key in D) D_is_set[key] = 1
   FS = ""
 }
