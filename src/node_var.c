@@ -7955,7 +7955,8 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
             sNodeType* array_type = clone_node_type(var_type);
             sNodeType* array_type2 = clone_node_type(var_type);
             
-            if(LLVMIsConstant(element_address) != 0) {
+            if(LLVMIsConstantString(lvalue.value) != 0 || LLVMIsConstant(lvalue.value) != 0) 
+            {
             }
             else if(left_type->mCastedPointerToPointer) {
                 sNodeType* array_type2 = clone_node_type(array_type);
