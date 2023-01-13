@@ -7955,7 +7955,7 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
             sNodeType* array_type = clone_node_type(var_type);
             sNodeType* array_type2 = clone_node_type(var_type);
             
-            if(LLVMIsConstantString(lvalue.value) != 0) {
+            if(LLVMIsConstant(element_address) != 0) {
             }
             else if(left_type->mCastedPointerToPointer) {
                 sNodeType* array_type2 = clone_node_type(array_type);
@@ -7964,7 +7964,6 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
             else {
                 sNodeType* array_type2 = clone_node_type(array_type);
                 array_type2->mPointerNum++;
-//                element_address = LLVMBuildCast(gBuilder, create_llvm_type_from_node_type(array_type), element_address, "element_addressAB");
                 element_address = LLVMBuildCast(gBuilder, LLVMBitCast, element_address, create_llvm_type_from_node_type(array_type2), "castXYXXYXYXY");
                 element_address = LLVMBuildLoad2(gBuilder, create_llvm_type_from_node_type(array_type), element_address, "element_addressAB");
             }

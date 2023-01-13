@@ -40,13 +40,21 @@ typedef int myint;
 
 int main(int argc, char** argv)
 {
+puts("aaa");
   EXPECT(64, "\10000"[0]);
+puts("aaa");
   EXPECT('0', "\10000"[1]);
+puts("aaa");
   EXPECT('0', "\10000"[2]);
+puts("aaa");
   EXPECT(0, "\10000"[3]);
+puts("aaa");
   EXPECT(255, "\xffxyz"[0]);
+puts("aaa");
   EXPECT('x', "\xffxyz"[1]);
+puts("aaa");
 
+puts("bbbb");
   EXPECT('a', ({ char *p = "abc"; p[0]; }));
   EXPECT('b', ({ char *p = "abc"; p[1]; }));
   EXPECT('c', ({ char *p = "abc"; p[2]; }));
@@ -60,6 +68,7 @@ int main(int argc, char** argv)
   EXPECT(15, ({ var2[0] = 5; var2[4] = 10; var2[0] + var2[4]; }));
   EXPECT(5, global_arr[0]);
 
+puts("bbbb");
   EXPECT(4, ({ struct { int a; } x; sizeof(x); }));
   EXPECT(8, ({ struct { char a; int b; } x; sizeof(x); }));
   EXPECT(12, ({ struct { char a; char b; int c; char d; } x; sizeof(x); }));
