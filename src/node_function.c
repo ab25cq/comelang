@@ -543,7 +543,7 @@ BOOL compile_function(unsigned int node, sCompileInfo* info)
                 
                 LLVMValueRef alloca_value = LLVMBuildAlloca(gBuilder, llvm_type, "result_object");
                 
-                llvm_value.value = LLVMBuildLoad(gBuilder, alloca_value, "result_object");
+                llvm_value.value = LLVMBuildLoad2(gBuilder, llvm_type, alloca_value, "result_object");
                 llvm_value.type = clone_node_type(result_type);
                 llvm_value.address = alloca_value;
                 llvm_value.var = NULL;

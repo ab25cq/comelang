@@ -1,21 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-
-void strcat_vprintf(char *buf, int buf_size, const char *fmt, va_list ap)
-{
-    int len;
-    len = strlen(buf);
-    vsnprintf(buf + len, buf_size - len, fmt, ap);
-}
-
+#include <neo-c.h>
 
 int main()
 {
-    int e2 = "\10000"[0];
+   tuple2<int, char*>*% t = new tuple2<int, char*>;
     
     return 0;
 }

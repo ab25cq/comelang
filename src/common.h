@@ -122,6 +122,7 @@ extern BOOL gNCTypedef;
 extern BOOL gNCHeader;
 extern BOOL gNCSafeMode;
 extern BOOL gNCCome;
+extern BOOL gNCRust;
 extern char gFName[PATH_MAX];
 extern struct sVarTableStruct* gModuleVarTable;
 
@@ -1539,6 +1540,7 @@ BOOL compile_null_value(unsigned int node, sCompileInfo* info);
 LLVMValueRef call_va_arg_inst(LLVMBasicBlockRef block, LLVMValueRef value, LLVMTypeRef llvm_type);
 
 void call_come_final(sCompileInfo* info);
+void call_come_gc_final(sCompileInfo* info);
 
 #endif
 

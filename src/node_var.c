@@ -595,7 +595,13 @@ BOOL compile_store_variable(unsigned int node, sCompileInfo* info)
     if(left_type->mHeap && right_type->mHeap && !no_stdmove) {
         if(gNodes[right_node].mNodeType == kNodeTypeLoadVariable || gNodes[right_node].mNodeType == kNodeTypeNormalBlock)
         {
-            increment_ref_count(rvalue.value, right_type, info);
+            if(gNCRust) {
+                sVar* var_ = rvalue.var;
+                var_->mLLVMValue.value = NULL;
+            }
+            else {
+                increment_ref_count(rvalue.value, right_type, info);
+            }
         }
     }
     
@@ -993,7 +999,13 @@ BOOL compile_store_variable_multiple(unsigned int node, sCompileInfo* info)
         if(left_type->mHeap && right_type2->mHeap) {
             if(gNodes[right_node].mNodeType == kNodeTypeLoadVariable || gNodes[right_node].mNodeType == kNodeTypeNormalBlock)
             {
-                increment_ref_count(rvalue.value, right_type2, info);
+                if(gNCRust) {
+                    sVar* var_ = rvalue.var;
+                    var_->mLLVMValue.value = NULL;
+                }
+                else {
+                    increment_ref_count(rvalue.value, right_type2, info);
+                }
             }
         }
         
@@ -2321,7 +2333,13 @@ BOOL compile_store_element(unsigned int node, sCompileInfo* info)
         if(var_type->mHeap && right_type->mHeap) {
             if(gNodes[rnode].mNodeType == kNodeTypeLoadVariable || gNodes[rnode].mNodeType == kNodeTypeNormalBlock) 
             {
-                increment_ref_count(rvalue.value, right_type, info);
+                if(gNCRust) {
+                    sVar* var_ = rvalue.var;
+                    var_->mLLVMValue.value = NULL;
+                }
+                else {
+                    increment_ref_count(rvalue.value, right_type, info);
+                }
             }
         }
         
@@ -5762,7 +5780,7 @@ BOOL compile_object(unsigned int node, sCompileInfo* info)
     }
     else {
         /// calloc ///
-        int num_params = 2;
+        int num_params = 3;
 
         LLVMValueRef llvm_params[PARAMS_MAX];
         memset(llvm_params, 0, sizeof(LLVMValueRef)*PARAMS_MAX);
@@ -5778,12 +5796,11 @@ BOOL compile_object(unsigned int node, sCompileInfo* info)
         int alignment = 0;
         uint64_t alloc_size = get_size_from_node_type(node_type2, &alignment);
 
-#ifdef __32BIT_CPU__
-        LLVMTypeRef long_type = create_llvm_type_with_class_name("int");
-#else
         LLVMTypeRef long_type = create_llvm_type_with_class_name("long");
-#endif
         llvm_params[1] = LLVMConstInt(long_type, alloc_size, FALSE);
+        
+        LLVMTypeRef int_type = create_llvm_type_with_class_name("int");
+        llvm_params[2] = LLVMConstInt(int_type, gNCRust, FALSE);
 
         LLVMValueRef llvm_fun = LLVMGetNamedFunction(gModule, fun_name);
 
@@ -6087,7 +6104,13 @@ BOOL compile_store_field(unsigned int node, sCompileInfo* info)
     if(std_move && field_type->mHeap && right_type->mHeap) {
         if(gNodes[rnode].mNodeType == kNodeTypeLoadVariable || gNodes[rnode].mNodeType == kNodeTypeNormalBlock) 
         {
-            increment_ref_count(rvalue.value, right_type, info);
+            if(gNCRust) {
+                sVar* var_ = rvalue.var;
+                var_->mLLVMValue.value = NULL;
+            }
+            else {
+                increment_ref_count(rvalue.value, right_type, info);
+            }
         }
         remove_object_from_right_values(rvalue.value, info);
     }
@@ -6440,18 +6463,17 @@ BOOL compile_store_field_of_protocol(unsigned int node, sCompileInfo* info)
         }
     }
     
-/*
     /// std::move ///
-    if(protocol_type->mHeap && right_type->mHeap) {
-        sVar* var_ = rvalue.var;
-        if(var_ && (gNodes[rnode].mNodeType == kNodeTypeLoadVariable || gNodes[rnode].mNodeType == kNodeTypeNormalBlock)) {
-            //var_->mLLVMValue.value = NULL;
-            increment_ref_count(rvalue.value, var_->mType, info);
+    if(gNCRust) {
+        if(protocol_type->mHeap && right_type->mHeap) {
+            sVar* var_ = rvalue.var;
+            if(var_ && (gNodes[rnode].mNodeType == kNodeTypeLoadVariable || gNodes[rnode].mNodeType == kNodeTypeNormalBlock)) {
+                var_->mLLVMValue.value = NULL;
+            }
+        
+            remove_object_from_right_values(rvalue.value, info);
         }
-    
-        remove_object_from_right_values(rvalue.value, info);
     }
-*/
     
     if(!protocol_type->mHeap && !gNCGC) {
         compile_err_msg(info, "Protocol type should be allocated in heap");
@@ -6769,9 +6791,9 @@ BOOL compile_load_channel_element(unsigned int node, sCompileInfo* info)
         lvalue3 = LLVMConstInt(llvm_type, 0, TRUE);
     }
 
-    LLVMValueRef load_element_addresss = LLVMBuildGEP(gBuilder, lvalue2, &lvalue3, 1, "gep");
+    LLVMValueRef load_element_addresss = LLVMBuildGEP2(gBuilder, llvm_type, lvalue2, &lvalue3, 1, "gep");
 
-    LLVMValueRef element_value = LLVMBuildLoad(gBuilder, load_element_addresss, "elementIII");
+    LLVMValueRef element_value = LLVMBuildLoad2(gBuilder, llvm_type, load_element_addresss, "elementIII");
 
     LVALUE llvm_value;
 
@@ -7947,9 +7969,9 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
         }
         else if(left_type->mPointerNum > 0) {
             LLVMValueRef lvalue2 = lvalue.address;
-    
+            
             LLVMValueRef element_address = lvalue2;
-    
+            
             LLVMValueRef element_value;
             
             sNodeType* array_type = clone_node_type(var_type);

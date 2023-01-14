@@ -30,8 +30,8 @@ DESTDIR=@DESTDIR@
 ##########################################
 all: vin
 
-vin: configure Makefile config.h src/main.o src/main.c src/01init.o src/01init.c src/02base.o src/02base.c src/03insert_mode.o src/03insert_mode.c src/04word.c src/04word.o src/05undo.c src/05undo.o src/06file.o src/07yank.o src/08visual.o src/09search.o src/10edit.o src/11move.o src/12command.o src/13completion.o src/14dot.o src/16mark.o src/17hvisual.o src/18vvisual.o src/19rewrite_mode.o src/20completion-neo-c.o
-	neo-c -o vin src/main.o src/01init.o src/02base.o src/03insert_mode.o src/04word.o src/05undo.o src/06file.o src/07yank.o src/08visual.o src/09search.o src/10edit.o src/11move.o src/12command.o src/13completion.o src/14dot.o src/16mark.o src/17hvisual.o src/18vvisual.o src/19rewrite_mode.o src/20completion-neo-c.o -L/opt/local/lib $(CFLAGS) $(LIBS) -L/usr/local/lib $(NCFLAGS)
+vin: configure Makefile config.h src/main.o src/main.c src/01init.o src/01init.c src/02base.o src/02base.c src/03insert_mode.o src/03insert_mode.c src/04word.c src/04word.o src/05undo.c src/05undo.o src/06file.o src/07yank.o src/08visual.o src/09search.o src/10edit.o src/11move.o src/12command.o src/13completion.o src/14dot.o src/16mark.o src/17hvisual.o src/18vvisual.o src/19rewrite_mode.o
+	neo-c -o vin src/main.o src/01init.o src/02base.o src/03insert_mode.o src/04word.o src/05undo.o src/06file.o src/07yank.o src/08visual.o src/09search.o src/10edit.o src/11move.o src/12command.o src/13completion.o src/14dot.o src/16mark.o src/17hvisual.o src/18vvisual.o src/19rewrite_mode.o -L/opt/local/lib $(CFLAGS) $(LIBS) -L/usr/local/lib $(NCFLAGS)
 
 src/main.o: configure Makefile config.h src/main.c src/common.h
 	neo-c -c $(NCFLAGS) src/main.c -Isrc $(CFLAGS) -I/usr/local/include -I.
@@ -89,9 +89,6 @@ src/18vvisual.o: configure Makefile config.h src/18vvisual.c src/common.h
 
 src/19rewrite_mode.o: configure Makefile config.h src/19rewrite_mode.c src/common.h
 	neo-c -c $(NCFLAGS) src/19rewrite_mode.c -Isrc $(CFLAGS) -I/usr/local/include -I.
-
-src/20completion-neo-c.o: configure Makefile config.h src/20completion-neo-c.c src/common.h
-	neo-c -c $(NCFLAGS) src/20completion-neo-c.c -Isrc $(CFLAGS) -I/usr/local/include -I.
 	mkdir -p ~/.vin/backup
 
 #########################################

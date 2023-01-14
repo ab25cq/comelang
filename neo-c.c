@@ -1,10 +1,11 @@
 #include "neo-c.h"
 
+static int XXX = 0;
+
 struct sGCInfo
 {
     void* mem;
     int count;
-    size_t size;
 };
 
 long gSizeGCTable;
@@ -23,17 +24,26 @@ void come_gc_final()
     free(gGCTable);
 }
 
-void* igc_calloc(long count, size_t size)
+static long get_key(char* mem)
 {
+    return (long)mem;
+}
+
+void* igc_calloc(long count, size_t size, int rust)
+{
+    if(rust) {
+        return calloc(count, size);
+    }
+    
     gNumGCTable++;
 
-    if(gNumGCTable >= gSizeGCTable/3) {
+    if(gNumGCTable >= gSizeGCTable/5) {
         long new_gc_table_size = gSizeGCTable * 2;
         struct sGCInfo* new_gc_table = calloc(1, sizeof(struct sGCInfo)*new_gc_table_size);
         struct sGCInfo* it = gGCTable;
         while(TRUE) {
             if(it->mem) {
-                long key = (long)it->mem % new_gc_table_size;
+                unsigned long key = get_key(it->mem) % new_gc_table_size;
         
                 struct sGCInfo* it2 = new_gc_table + key;
     
@@ -41,7 +51,6 @@ void* igc_calloc(long count, size_t size)
                     if(it2->mem == NULL) {
                         it2->count = it->count;
                         it2->mem = it->mem;
-                        it2->size = it->size;
                         break;
                     }
                     else {
@@ -65,12 +74,14 @@ void* igc_calloc(long count, size_t size)
             }
         }
 
+        free(gGCTable);
         gGCTable = new_gc_table;
         gSizeGCTable = new_gc_table_size;
     }
+    
     void* result = calloc(count, size);
     
-    long key = (long)result % gSizeGCTable;
+    unsigned long key = get_key(result) % gSizeGCTable;
     
     struct sGCInfo* it = gGCTable + key;
     
@@ -78,7 +89,6 @@ void* igc_calloc(long count, size_t size)
         if(it->mem == NULL) {
             it->count = 1;
             it->mem = result;
-            it->size = size;
             break;
         }
         else {
@@ -97,9 +107,13 @@ void* igc_calloc(long count, size_t size)
     return result;
 }
 
-void igc_increment_ref_count(void* mem)
+void igc_increment_ref_count(void* mem, int rust)
 {
-    long key = (long)mem % gSizeGCTable;
+    if(rust) {
+        return;
+    }
+    
+    unsigned long key = get_key(mem) % gSizeGCTable;
     
     struct sGCInfo* it = gGCTable + key;
     
@@ -123,30 +137,31 @@ void igc_increment_ref_count(void* mem)
 }
 
 
-void igc_decrement_ref_count(void* mem)
+void igc_decrement_ref_count(void* mem, int rust)
 {
-    long key = (long)mem % gSizeGCTable;
-    
-    struct sGCInfo* it = gGCTable + key;
-    
     if(mem == NULL) {
         return;
     }
+    if(rust) {
+        ncfree(mem);
+        return;
+    }
+    
+    unsigned long key = get_key(mem) % gSizeGCTable;
+    
+    struct sGCInfo* it = gGCTable + key;
     
     for(;;) {
         if(it->mem == mem) {
             it->count--;
             if(it->count == 0) {
-                if(it->mem) {
-                    ncfree(it->mem);
-                }
+                ncfree(it->mem);
                 it->mem = NULL;
-                it->count = 0;
-                it->size = 0;
             }
             break;
         }
         else {
+XXX++;
             it++;
             
             if(it == gGCTable + gSizeGCTable) {
@@ -154,16 +169,12 @@ void igc_decrement_ref_count(void* mem)
             }
             else if(it == gGCTable + key) {
                 break;
-/*
-                fprintf(stderr, "memory not found in decremeting refference count\n");
-                exit(1);
-*/
             }
         }
     }
 }
 
-void call_finalizer(void* fun, void* mem)
+void call_finalizer(void* fun, void* mem, int rust)
 {
 //printf("call_finalizer %p\n", mem);
     long key = (long)mem % gSizeGCTable;
@@ -174,35 +185,43 @@ void call_finalizer(void* fun, void* mem)
         return;
     }
     
-    for(;;) {
-        if(it->mem == mem) {
-            it->count--;
-            if(it->count == 0) {
-                if(mem) {
-                    if(fun) {
-                        void (*finalizer)(void*) = fun;
-                        finalizer(mem);
-                    }
-                    ncfree(mem);
-                }
-                it->mem = NULL;
-                it->count = 0;
-                it->size = 0;
-            }
-            break;
+    if(rust) {
+        if(fun) {
+            void (*finalizer)(void*) = fun;
+            finalizer(mem);
         }
-        else {
-            it++;
-            
-            if(it == gGCTable + gSizeGCTable) {
-                it = gGCTable;
-            }
-            else if(it == gGCTable + key) {
+        ncfree(mem);
+    }
+    else {
+        for(;;) {
+            if(it->mem == mem) {
+                it->count--;
+                if(it->count == 0) {
+                    if(mem) {
+                        if(fun) {
+                            void (*finalizer)(void*) = fun;
+                            finalizer(mem);
+                        }
+                        ncfree(mem);
+                    }
+                    it->mem = NULL;
+                    it->count = 0;
+                }
                 break;
+            }
+            else {
+                it++;
+                
+                if(it == gGCTable + gSizeGCTable) {
+                    it = gGCTable;
+                }
+                else if(it == gGCTable + key) {
+                    break;
 /*
-                fprintf(stderr, "memory not found in decremeting refference count\n");
-                exit(1);
+                    fprintf(stderr, "memory not found in decremeting refference count\n");
+                    exit(1);
 */
+                }
             }
         }
     }
@@ -233,7 +252,7 @@ void* gc_nccalloc(size_t nmemb, size_t size)
     return result;
 }
 
-void*%? ncmemdup(void*% block)
+void*%? ncmemdup(void*% block, int rust)
 {
     managed block;
 
@@ -247,7 +266,7 @@ void*%? ncmemdup(void*% block)
     size_t size = malloc_usable_size(block);
 #endif
 
-    void*% ret = dummy_heap igc_calloc(1, size);
+    void*% ret = dummy_heap igc_calloc(1, size, rust);
     
     using unsafe;
 

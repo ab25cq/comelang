@@ -17,6 +17,7 @@ BOOL gNCTypedef = FALSE;
 BOOL gNCNoMacro = FALSE;
 BOOL gNCSafeMode = FALSE;
 BOOL gNCCome = FALSE;
+BOOL gNCRust = FALSE;
 
 sBuf gHeader;
 
@@ -408,6 +409,11 @@ int main(int argc, char** argv)
         {
             gNCGC = TRUE;
             xstrncat(optiones, "-gc ", 1024);
+        }
+        else if(strcmp(argv[i], "-rust") == 0)
+        {
+            gNCRust = TRUE;
+            xstrncat(optiones, "-rust ", 1024);
         }
         else if(strcmp(argv[i], "-no-gc") == 0)
         {

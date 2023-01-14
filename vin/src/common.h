@@ -449,11 +449,6 @@ Vi*% Vi*::initialize(Vi*% self) version 19;
 int Vi*::main_loop(Vi* self) version 19;
 
 ////////////////////////////
-// src/20completion-neo-c.c
-////////////////////////////
-void ViWin*::completion_neo_c2(ViWin* self, Vi* nvi) version 20;
-
-////////////////////////////
 // src/main.c
 ////////////////////////////
 int xgetmaxx();
