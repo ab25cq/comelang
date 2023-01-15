@@ -235,7 +235,7 @@ distclean: clean
 #########################################
 # test
 #########################################
-test: gc-test gc-debug-test no-gc-test debug-test rust-test
+test: gc-test gc-debug-test no-gc-test debug-test
 
 no-gc-test:
 	@echo "Compile to gc test code..."
@@ -274,43 +274,6 @@ no-gc-test:
 	PWD=`pwd` ./neo-c -no-gc code/HelloWorld18.c
 	./code/HelloWorld18
 	PWD=`pwd` ./neo-c -no-gc code/HelloWorld19.c
-rust-test:
-	@echo "Compile to gc test code..."
-	PWD=`pwd` ./neo-c -rust -g -clang code/HelloWorld.c
-	./code/HelloWorld
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld3.c
-	./code/HelloWorld3
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld4.c
-	./code/HelloWorld4
-#	PWD=`pwd` ./neo-c -rust -g code/HelloWorld5.c
-#	./code/HelloWorld5
-#	PWD=`pwd` ./neo-c -rust -g code/HelloWorld6.c
-#	./code/HelloWorld6
-#	PWD=`pwd` ./neo-c -rust -g code/HelloWorld7.c
-#	./code/HelloWorld7
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld8.c
-	./code/HelloWorld8
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld9.c
-	./code/HelloWorld9
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld10.c
-	./code/HelloWorld10
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld11.c
-	./code/HelloWorld11
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld12.c
-	./code/HelloWorld12
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld13.c
-	./code/HelloWorld13
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld14.c
-	./code/HelloWorld14
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld15.c
-	./code/HelloWorld15
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld16.c
-	./code/HelloWorld16
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld17.c
-	./code/HelloWorld17
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld18.c
-	./code/HelloWorld18
-	PWD=`pwd` ./neo-c -rust -g code/HelloWorld19.c
 
 tcc-test:
 	PWD=`pwd` ./neo-c -no-gc code/tcctest.c

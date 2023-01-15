@@ -2,7 +2,7 @@
 #include <libgen.h>
 
 char* gVersion;
-BOOL gNCGC = FALSE;
+BOOL gNCGC = TRUE;
 BOOL gNCDebug = FALSE;
 BOOL gExternC = TRUE;
 BOOL gNCClang = TRUE;
@@ -17,7 +17,6 @@ BOOL gNCTypedef = FALSE;
 BOOL gNCNoMacro = FALSE;
 BOOL gNCSafeMode = FALSE;
 BOOL gNCCome = FALSE;
-BOOL gNCRust = FALSE;
 
 sBuf gHeader;
 
@@ -342,7 +341,7 @@ static BOOL linker(char* fname, int num_obj_files, char** obj_files, char* clang
 
 int main(int argc, char** argv)
 {
-    gVersion = "1.0.3";
+    gVersion = "1.0.4";
     
     setlocale(LC_ALL, "");
     
@@ -409,11 +408,6 @@ int main(int argc, char** argv)
         {
             gNCGC = TRUE;
             xstrncat(optiones, "-gc ", 1024);
-        }
-        else if(strcmp(argv[i], "-rust") == 0)
-        {
-            gNCRust = TRUE;
-            xstrncat(optiones, "-rust ", 1024);
         }
         else if(strcmp(argv[i], "-no-gc") == 0)
         {
@@ -654,11 +648,7 @@ int main(int argc, char** argv)
         }
     }
     
-    if(gNCGC) {
-        //GC_enable_incremental();
-        //GC_INIT();
-    }
-    
+    GC_INIT();
     parser_init_onetime();
     
     setenv("C_INCLUDE_PATH", c_include_path, 1);

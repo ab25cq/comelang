@@ -705,6 +705,7 @@ ac_user_opts='
 enable_option_checking
 with_debug
 with_gc
+with_no_gc
 with_optimize
 '
       ac_precious_vars='build_alias
@@ -1332,6 +1333,7 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-debug              include debug info
   --with-gc                 enable Boehm GC
+  --with-no-gc              disable Boehm GC
   --with-optimize           with optimize(-O2 in CFLAGS)
 
 Some influential environment variables:
@@ -3818,6 +3820,13 @@ then :
 fi
 
 
+# Check whether --with-no-gc was given.
+if test ${with_no_gc+y}
+then :
+  withval=$with_no_gc;  ENABLE_GC=0;
+fi
+
+
 # Check whether --with-optimize was given.
 if test ${with_optimize+y}
 then :
@@ -3922,6 +3931,8 @@ fi
 if test $ENABLE_GC = 1
 then
     NCFLAGS="$NCFLAGS -gc"
+else
+    NCFLAGS="$NCFLAGS -no-gc"
 fi
 if test $ENABLE_OPTIMIZE = 1
 then

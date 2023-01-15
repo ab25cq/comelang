@@ -22,6 +22,7 @@ LOGGING=0
 
 AC_ARG_WITH(debug,              [  --with-debug              include debug info ], [ DEBUGGING=1; ], [])
 AC_ARG_WITH(gc,                 [  --with-gc                 enable Boehm GC ], [ ENABLE_GC=1; ], [])
+AC_ARG_WITH(no-gc,              [  --with-no-gc              disable Boehm GC ], [ ENABLE_GC=0; ], [])
 AC_ARG_WITH(optimize,           [  --with-optimize           with optimize(-O2 in CFLAGS) ], [ ENABLE_OPTIMIZE=1 ], [ ENABLE_OPTIMIZE=0 ])
 
 #########################################
@@ -102,6 +103,8 @@ fi
 if test $ENABLE_GC = 1
 then
     NCFLAGS="$NCFLAGS -gc"
+else
+    NCFLAGS="$NCFLAGS -no-gc"
 fi
 if test $ENABLE_OPTIMIZE = 1
 then

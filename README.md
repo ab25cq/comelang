@@ -1,11 +1,12 @@
 
 # neo-c
 
-Modern C compiler. It has a collection and string library using Refference count GC heap system. 
+Modern C compiler. It has a collection and string library using Boehm GC or Refference count GC heap system. 
 
-モダンなCコンパイラ。リファレンスカウントGCを使ったコレクション、文字列ライブラリを備えます。
+モダンなCコンパイラ。boehm GC もしくはリファレンスカウントを使ったコレクション、文字列ライブラリを備えます。
 
-version 1.0.3
+
+version 1.0.4
 
 ```
 #include <neo-c.h>
@@ -393,10 +394,9 @@ If you want to object file only, use -c option.
 
 # Boehm GC libraries
 
-With -gc option for neo-c, enable boehm GC. The default heap system is using Original Heap System.
+With -no-gc option for neo-c, disable boehm GC and enable original refference count GC heap system. The default heap system is boehm GC.
 
-オリジナルのヒープシステムはデフォルトです。BoehmGCを使う場合は-gcをしてください。
-
+boehmGCはデフォルトです。オリジナルのヒープシステムを使うには-no-gcをしてください。
 
 # libraries
 

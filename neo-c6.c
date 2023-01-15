@@ -18,6 +18,7 @@ int come_fd_isset(int fd, fd_set* fds)
 
 void come_boehm_gc_init()
 {
-//    GC_enable_incremental();
     GC_INIT();
+    GC_set_warn_proc(GC_ignore_warn_proc);
+    GC_enable_incremental();
 }

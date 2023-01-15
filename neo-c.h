@@ -61,13 +61,13 @@ inline void xassert(const char* msg, bool exp)
     }
 }
 
-void call_finalizer(void* fun, void* mem, int rust);
+void call_finalizer(void* fun, void* mem);
 void* call_cloner(void* fun, void* mem);
 
 string string(char* str);
 void ncfree(void* mem);
 void* nccalloc(size_t nmemb, size_t size);
-void*%? ncmemdup(void*% block, int rust);
+void*%? ncmemdup(void*% block);
 void* gc_ncmemdup(void* block);
 string xsprintf(char* msg, ...);
 string string::reverse(char* str);
