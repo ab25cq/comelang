@@ -192,34 +192,6 @@ int main()
 
     return 0;
 }
-```
-
-From version 0.9.9p, Incremental GC has been enabled
-
-```
-#include <neo-c.h>
-
-struct sInfo
-{
-    list<string>*% li;
-};
-
-int main()
-{
-    sInfo*% info = new sInfo;
-    info->li = new list<string>();
-    
-    string x = string("AAA");
-
-    info->li.push_back(x);
-    
-    delete info;
-    
-    puts(x);
-    
-    return 0;
-}
-```
 
 In pipes filter or command lines.
 
@@ -240,7 +212,7 @@ a.c,b.c,c.c
 
 1. It is compatible with C language. The C preprocessor also works.
 
-2. The default heap system is using Incremetal GC.
+2. The default heap system is using Boehm GC.
 
 3. It has Generics, Method Generics, inline function, debug info (-g option), and lambda.
 
@@ -270,7 +242,7 @@ a.c,b.c,c.c
 
 1. C言語と互換性があります。Cプリプロセッサーも動きます。
 
-2. インクリメンタルGCを使ったヒープ管理をします。
+2. boehmGCを使ったヒープ管理をします。
 
 3. ジェネリクス、メソッドジェネリクス、インライン関数、デバッグ情報、ラムダをサポートします。
 
@@ -396,7 +368,7 @@ If you want to object file only, use -c option.
 
 With -no-gc option for neo-c, disable boehm GC and enable original refference count GC heap system. The default heap system is boehm GC.
 
-boehmGCはデフォルトです。オリジナルのヒープシステムを使うには-no-gcをしてください。
+boehmGCはデフォルトです。オリジナルのヒープシステムを使うには-no-gcをオプションに加えてください。
 
 # libraries
 
@@ -1291,6 +1263,12 @@ gGlobal2 int
 ~~~
 
 SOURCE_NAMEという環境変数にコンパイル中のソースファイル名が入ってます。
+
+# BoehmGC
+
+The default heap system is boehmGC. And incremental GC is enabled.
+ It's faster then my original heap system. If you write char*% as type name, ignored % and it's char*.
+ 
 
 # Original Heap System(Incremental GC)
 
