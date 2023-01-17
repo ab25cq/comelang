@@ -1,178 +1,178 @@
-==231594== Memcheck, a memory error detector
-==231594== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==231594== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==231594== Command: zed "AAA".sub_block(/A/g)\ {\ it.lower_case()\ }
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49E7E56: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49E7E5B: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Use of uninitialised value of size 8
-==231594==    at 0x49E7C4A: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49E7C59: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Use of uninitialised value of size 8
-==231594==    at 0x49E7C8D: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Use of uninitialised value of size 8
-==231594==    at 0x49D513A: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D54C6: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49D5149: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D54C6: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Use of uninitialised value of size 8
-==231594==    at 0x49D5177: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D54C6: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Use of uninitialised value of size 8
-==231594==    at 0x49D5509: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49D754E: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49D7526: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49D7553: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== Conditional jump or move depends on uninitialised value(s)
-==231594==    at 0x49D752B: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
-==231594==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
-==231594==    by 0x10B3EB: main (in /usr/local/bin/zed)
-==231594== 
-==231594== 
-==231594== HEAP SUMMARY:
-==231594==     in use at exit: 937 bytes in 4 blocks
-==231594==   total heap usage: 14 allocs, 10 frees, 4,137 bytes allocated
-==231594== 
-==231594== LEAK SUMMARY:
-==231594==    definitely lost: 0 bytes in 0 blocks
-==231594==    indirectly lost: 0 bytes in 0 blocks
-==231594==      possibly lost: 864 bytes in 3 blocks
-==231594==    still reachable: 73 bytes in 1 blocks
-==231594==         suppressed: 0 bytes in 0 blocks
-==231594== Rerun with --leak-check=full to see details of leaked memory
-==231594== 
-==231594== Use --track-origins=yes to see where uninitialised values come from
-==231594== For lists of detected and suppressed errors, rerun with: -s
-==231594== ERROR SUMMARY: 148 errors from 13 contexts (suppressed: 0 from 0)
+==247704== Memcheck, a memory error detector
+==247704== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==247704== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==247704== Command: zed "AAA".sub_block(/A/g)\ {\ it.lower_case()\ }
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49E7E56: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49E7E5B: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Use of uninitialised value of size 8
+==247704==    at 0x49E7C4A: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49E7C59: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Use of uninitialised value of size 8
+==247704==    at 0x49E7C8D: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Use of uninitialised value of size 8
+==247704==    at 0x49D513A: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D54C6: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49D5149: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D54C6: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Use of uninitialised value of size 8
+==247704==    at 0x49D5177: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D54C6: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Use of uninitialised value of size 8
+==247704==    at 0x49D5509: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E7E61: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49D5F08: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49ED49D: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DB968: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49D754E: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49D7526: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49D7553: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== Conditional jump or move depends on uninitialised value(s)
+==247704==    at 0x49D752B: GC_mark_from (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6BC0: GC_do_local_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6DEF: GC_mark_local (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49E6F64: GC_do_parallel_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBA5C: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DBC2C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49DD121: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x49EA12B: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.4.4)
+==247704==    by 0x1435F8: come_boehm_gc_init (in /usr/local/bin/zed)
+==247704==    by 0x10B3EB: main (in /usr/local/bin/zed)
+==247704== 
+==247704== 
+==247704== HEAP SUMMARY:
+==247704==     in use at exit: 937 bytes in 4 blocks
+==247704==   total heap usage: 14 allocs, 10 frees, 4,137 bytes allocated
+==247704== 
+==247704== LEAK SUMMARY:
+==247704==    definitely lost: 0 bytes in 0 blocks
+==247704==    indirectly lost: 0 bytes in 0 blocks
+==247704==      possibly lost: 864 bytes in 3 blocks
+==247704==    still reachable: 73 bytes in 1 blocks
+==247704==         suppressed: 0 bytes in 0 blocks
+==247704== Rerun with --leak-check=full to see details of leaked memory
+==247704== 
+==247704== Use --track-origins=yes to see where uninitialised values come from
+==247704== For lists of detected and suppressed errors, rerun with: -s
+==247704== ERROR SUMMARY: 148 errors from 13 contexts (suppressed: 0 from 0)

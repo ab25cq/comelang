@@ -26,5 +26,17 @@ USAGE
     
     > echo abc | zed '(.scan(/./) * 2).join("")'
     abcabc
-
+    > zed '"HELLO WORLD".scan(/./).map { it * 2 }.join("")'
+    HHEELLLLOOO  WWOORRLLDD
+    > zed '"HELLO WORLD".scan(/./).map { it * 2 + "\n" }.join("").chomp()'
+    HH
+    EE
+    LL
+    OO
+    
+    WW
+    OO
+    RR
+    LL
+    DD
 ```

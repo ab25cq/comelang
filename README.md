@@ -212,7 +212,7 @@ a.c,b.c,c.c
 
 1. It is compatible with C language. The C preprocessor also works.
 
-2. The default heap system is using Boehm GC.
+2. The default heap system is using Boehm GC with reffrece count.
 
 3. It has Generics, Method Generics, inline function, debug info (-g option), and lambda.
 
@@ -369,6 +369,11 @@ If you want to object file only, use -c option.
 With -no-gc option for neo-c, disable boehm GC and enable original refference count GC heap system. The default heap system is boehm GC.
 
 boehmGCはデフォルトです。オリジナルのヒープシステムを使うには-no-gcをオプションに加えてください。
+
+neo-c uses boethm gc with reffrence count, so no stop the world in your application.
+
+
+boehmGCはリファレンスカウントをデフォルトにしているため、画面が固まることもないとおもいます。
 
 # libraries
 
