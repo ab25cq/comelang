@@ -107,14 +107,14 @@ struct sObject
 {
     sClass* klass;
     sModule* module;
-    gc_map<char*, ZVALUE>* fields;
+    map<char*, ZVALUE>* fields;
 };
 
 sObject* sObject*::initialize(sObject* self, sModule* module, sClass* klass)
 {
     self.klass = klass;
     self.module = module;
-    self.fields = new (GC) gc_map<char*, ZVALUE>.initialize();
+    self.fields = new map<char*, ZVALUE>.initialize();
     
     return self;
 }
@@ -159,14 +159,14 @@ unsigned int ZVALUE_get_hash_key(ZVALUE self)
             return self.expValue;
             
         case kModuleValue:
-            return self.moduleValue;
+            return (long)self.moduleValue;
             
         case kClassValue: 
-            return self.classValue;
+            return (long)self.classValue;
             
         case kTupleValue:
         case kListValue: {
-            gc_list<ZVALUE>* obj = self.listValue;
+            list<ZVALUE>* obj = self.listValue;
             
             int n = 0;
             
@@ -178,7 +178,7 @@ unsigned int ZVALUE_get_hash_key(ZVALUE self)
             break;
             
         case kMapValue: {
-            gc_map<ZVALUE, ZVALUE>* obj = self.mapValue;
+            map<ZVALUE, ZVALUE>* obj = self.mapValue;
             
             int n = 0;
             
@@ -402,7 +402,7 @@ bool ZVALUE_is(ZVALUE self, ZVALUE right)
 }
 
 
-bool native_sys_exit(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_sys_exit(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE rcode = params.at("rcode", gNoneValue);
     
@@ -411,12 +411,12 @@ bool native_sys_exit(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     return true;
 }
 
-bool native_list_append(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_list_append(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE self = params.at("self", gNoneValue);
     ZVALUE value = params.at("value", gNoneValue);
     
-    gc_list<ZVALUE>* list_object = self.listValue;
+    list<ZVALUE>* list_object = self.listValue;
     
     list_object.push_back(value);
     
@@ -425,7 +425,7 @@ bool native_list_append(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     return true;
 }
 
-bool native_re_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_re_split(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE pattern = params.at("pattern", gNoneValue);
     ZVALUE str = params.at("string", gNoneValue);
@@ -465,12 +465,12 @@ bool native_re_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         return false;
     }
     
-    gc_list<ZVALUE>* result_list = new (GC) gc_list<ZVALUE>.initialize();
+    list<ZVALUE>* result_list = new list<ZVALUE>.initialize();
     
     if(maxsplit.kind == kNoneValue) {
-        char* str_value = str.stringValue.to_gc_string();
+        char* str_value = str.stringValue.to_string();
         
-        char* pattern_value = pattern.stringValue.to_gc_string();
+        char* pattern_value = pattern.stringValue.to_string();
         
         regex_struct*% reg = pattern_value.to_regex();
     
@@ -483,21 +483,21 @@ bool native_re_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         reg.ignore_case = ignore_case;
         reg.global = global;
         
-        gc_list<char*>* str_list = str_value.gc_split(reg);
+        list<char*>* str_list = str_value.split(reg);
         
         foreach(it, str_list) {
             ZVALUE value;
             value.kind = kStringValue;
-            value.stringValue = gc_wstring(it);
+            value.stringValue = wstring(it);
             result_list.push_back(value);
         }
     }
     else if(maxsplit.kind == kIntValue) {
         int maxsplit_value = maxsplit.intValue;
         
-        char* str_value = str.stringValue.to_gc_string();
+        char* str_value = str.stringValue.to_string();
         
-        char* pattern_value = pattern.stringValue.to_gc_string();
+        char* pattern_value = pattern.stringValue.to_string();
         
         regex_struct*% reg = pattern_value.to_regex();
         
@@ -510,12 +510,12 @@ bool native_re_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         reg.ignore_case = ignore_case;
         reg.global = global;
         
-        gc_list<char*>* str_list = str_value.gc_split_maxsplit(reg, maxsplit_value);
+        list<char*>* str_list = str_value.split_maxsplit(reg, maxsplit_value);
         
         foreach(it, str_list) {
             ZVALUE value;
             value.kind = kStringValue;
-            value.stringValue = gc_wstring(it);
+            value.stringValue = wstring(it);
             result_list.push_back(value);
         }
     }
@@ -534,7 +534,8 @@ bool native_re_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     return true;
 }
 
-bool native_re_search(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+/*
+bool native_re_search(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE pattern = params.at("pattern", gNoneValue);
     ZVALUE str = params.at("string", gNoneValue);
@@ -563,11 +564,6 @@ bool native_re_search(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         if(flags_value == RE_IGNORE_CASE) {
             ignore_case = true;
         }
-/*
-        if(flags_value == RE_GLOBAL) {
-            global = true;
-        }
-*/
     }
     else {
         info->exception.kind = kExceptionValue;
@@ -575,11 +571,11 @@ bool native_re_search(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         return false;
     }
     
-    gc_list<ZVALUE>* result_list = new (GC) gc_list<ZVALUE>.initialize();
+    list<ZVALUE>* result_list = new list<ZVALUE>.initialize();
     
-    char* str_value = str.stringValue.to_gc_string();
+    char* str_value = str.stringValue.to_string();
     
-    char* pattern_value = pattern.stringValue.to_gc_string();
+    char* pattern_value = pattern.stringValue.to_string();
     
     regex_struct*% reg = pattern_value.to_regex();
     
@@ -592,7 +588,7 @@ bool native_re_search(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     reg.ignore_case = ignore_case;
     reg.global = global;
     
-    gc_list<match_object*>* match_objects = new (GC)gc_list<match_object*>.initialize();
+    list<match_object*>* match_objects = new list<match_object*>.initialize();
     bool result = str_value.match_object(reg, match_objects);
     
     if(result == false) {
@@ -602,15 +598,16 @@ bool native_re_search(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     
     ZVALUE result_obj;
     result_obj.kind = kMatchObjectValue;
-    result_obj.matchValue.str = clone (GC) str.stringValue;
+    result_obj.matchValue.str = clone  str.stringValue;
     result_obj.matchValue.object = match_objects;
     
     info->return_value = result_obj;
     
     return true;
 }
+*/
 
-bool native_re_compile(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_re_compile(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE pattern = params.at("pattern", gNoneValue);
     ZVALUE flags = params.at("flags", gNoneValue);
@@ -642,7 +639,7 @@ bool native_re_compile(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         return false;
     }
     
-    char* pattern_value = pattern.stringValue.to_gc_string();
+    char* pattern_value = pattern.stringValue.to_string();
     
     regex_struct* regex_value = borrow pattern_value.to_regex_flags(global, ignore_case);
     
@@ -655,7 +652,7 @@ bool native_re_compile(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     return true;
 }
 
-bool native_re_findall(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_re_findall(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE pattern = params.at("pattern", gNoneValue);
     ZVALUE str = params.at("string", gNoneValue);
@@ -694,11 +691,11 @@ bool native_re_findall(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         return false;
     }
     
-    gc_list<ZVALUE>* result_list = new (GC) gc_list<ZVALUE>.initialize();
+    list<ZVALUE>* result_list = new list<ZVALUE>.initialize();
     
-    char* str_value = str.stringValue.to_gc_string();
+    char* str_value = str.stringValue.to_string();
     
-    char* pattern_value = pattern.stringValue.to_gc_string();
+    char* pattern_value = pattern.stringValue.to_string();
     
     regex_struct*% reg = pattern_value.to_regex();
     
@@ -711,27 +708,27 @@ bool native_re_findall(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     reg.ignore_case = ignore_case;
     reg.global = global;
     
-    gc_list<char*>* group_strings = new (GC) gc_list<char*>.initialize();
+    list<char*>* group_strings = new  list<char*>.initialize();
     int num_group_strings_in_regex = 0;
-    gc_list<char*>* str_list = str_value.gc_scan_group_strings(reg, group_strings, &num_group_strings_in_regex);
+    list<char*>* str_list = str_value.scan_group_strings(reg, group_strings, &num_group_strings_in_regex);
     
     if(num_group_strings_in_regex == 1) {
         foreach(it, group_strings) {
             ZVALUE value;
             value.kind = kStringValue;
-            value.stringValue = gc_wstring(it);
+            value.stringValue = wstring(it);
             result_list.push_back(value);
         }
     }
     else if(num_group_strings_in_regex > 1) {
-        gc_list<ZVALUE>* tuple_object = new (GC) gc_list<ZVALUE>.initialize();
+        list<ZVALUE>* tuple_object = new list<ZVALUE>.initialize();
         
         int n = 0;
         foreach(it, group_strings) {
             if(n % num_group_strings_in_regex == num_group_strings_in_regex-1) {
                 ZVALUE value;
                 value.kind = kStringValue;
-                value.stringValue = gc_wstring(it);
+                value.stringValue = wstring(it);
                 
                 tuple_object.push_back(value);
                 
@@ -741,12 +738,12 @@ bool native_re_findall(gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 
                 result_list.push_back(tuple_value);
                 
-                tuple_object = new (GC) gc_list<ZVALUE>.initialize();
+                tuple_object = new  list<ZVALUE>.initialize();
             }
             else {
                 ZVALUE value;
                 value.kind = kStringValue;
-                value.stringValue = gc_wstring(it);
+                value.stringValue = wstring(it);
                 tuple_object.push_back(value);
             }
             
@@ -757,7 +754,7 @@ bool native_re_findall(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         foreach(it, str_list) {
             ZVALUE value;
             value.kind = kStringValue;
-            value.stringValue = gc_wstring(it);
+            value.stringValue = wstring(it);
             result_list.push_back(value);
         }
     }
@@ -772,7 +769,7 @@ bool native_re_findall(gc_map<char*, ZVALUE>* params, sVMInfo* info)
 }
 
 /*
-bool native_re_sub(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_re_sub(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE pattern = params.at("pattern", gNoneValue);
     ZVALUE repl = params.at("repl", gNoneValue);
@@ -785,21 +782,21 @@ bool native_re_sub(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         info->exception.value.expValue = kExceptionTypeError;
         return false;
     }
-    char* pattern_value = pattern.stringValue.to_gc_string();
+    char* pattern_value = pattern.stringValue.to_string();
     
     if(repl.kind != kStringValue) {
         info->exception.kind = kExceptionValue;
         info->exception.value.expValue = kExceptionTypeError;
         return false;
     }
-    char* repl_value = repl.stringValue.to_gc_string();
+    char* repl_value = repl.stringValue.to_string();
     
     if(str.kind != kStringValue) {
         info->exception.kind = kExceptionValue;
         info->exception.value.expValue = kExceptionTypeError;
         return false;
     }
-    char* str_value = str.stringValue.to_gc_string();
+    char* str_value = str.stringValue.to_string();
     
     int count_value = -1;
     
@@ -848,11 +845,11 @@ bool native_re_sub(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     
     char* result_value;
     if(count_value == -1) {
-        gc_list<char*>* group_strings = null;
+        list<char*>* group_strings = null;
         result_value = str_value.sub(reg, replace_value, group_strings);
     }
     else {
-        gc_list<char*>* group_strings = null;
+        list<char*>* group_strings = null;
         result_value = str_value.sub_count(reg, replace_value, count_value, group_strings);
     }
     
@@ -866,7 +863,7 @@ bool native_re_sub(gc_map<char*, ZVALUE>* params, sVMInfo* info)
 }
 */
 
-bool native_str_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_str_split(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE self = params.at("self", gNoneValue);
     ZVALUE sep = params.at("sep", gNoneValue);
@@ -874,16 +871,16 @@ bool native_str_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     
     wchar_t* wstr = self.stringValue;
     
-    gc_list<ZVALUE>* result_list = new (GC) gc_list<ZVALUE>.initialize();
+    list<ZVALUE>* result_list = new list<ZVALUE>.initialize();
     
     if(maxsplit.kind == kNoneValue) {
         if(sep.kind == kStringValue) {
-            gc_list<char*>* str_list = wstr.to_gc_string().gc_split_str(sep.stringValue.to_gc_string());
+            list<char*>* str_list = wstr.to_string().split_str(sep.stringValue.to_string());
             
             foreach(it, str_list) {
                 ZVALUE obj;
                 obj.kind = kStringValue;
-                obj.stringValue = gc_wstring(it);
+                obj.stringValue = wstring(it);
                 result_list.push_back(obj);
             }
         }
@@ -897,13 +894,13 @@ bool native_str_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
         int maxsplit_value = maxsplit.intValue;
         
         if(sep.kind == kStringValue) {
-            gc_list<char*>* str_list = wstr.to_gc_string().gc_split_str(sep.stringValue.to_gc_string());
+            list<char*>* str_list = wstr.to_string().split_str(sep.stringValue.to_string());
             
             int n = 0;
             foreach(it, str_list) {
                 ZVALUE obj;
                 obj.kind = kStringValue;
-                obj.stringValue = gc_wstring(it);
+                obj.stringValue = wstring(it);
                 result_list.push_back(obj);
                 
                 n++;
@@ -913,11 +910,11 @@ bool native_str_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 }
             }
             
-            char* remain_str = str_list.sublist(n, -1).join(sep.stringValue.to_gc_string());
+            char* remain_str = str_list.sublist(n, -1).join(sep.stringValue.to_string());
             
             ZVALUE remain;
             remain.kind = kStringValue;
-            remain.stringValue = gc_wstring(remain_str);
+            remain.stringValue = wstring(remain_str);
             
             result_list.push_back(remain);
         }
@@ -942,7 +939,7 @@ bool native_str_split(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     return true;
 }
 
-bool native_Match_group(gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool native_Match_group(map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE self = params.at("self", gNoneValue);
     ZVALUE group1 = params.at("group1", gNoneValue);
@@ -955,7 +952,7 @@ bool native_Match_group(gc_map<char*, ZVALUE>* params, sVMInfo* info)
     }
     
     wchar_t* match_str = self.matchValue.str;
-    gc_list<match_object*>* match_list = self.matchValue.object;
+    list<match_object*>* match_list = self.matchValue.object;
     
     int group1_value = group1.intValue;
     
@@ -974,7 +971,7 @@ bool native_Match_group(gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 int start = ma.start[group1_value];
                 int end = ma.end[group1_value];
                 
-                result_obj.stringValue = match_str.gc_substring(start, end);
+                result_obj.stringValue = match_str.substring(start, end);
             }
             else {
                 info->exception.kind = kExceptionValue;
@@ -1001,8 +998,8 @@ sClass* add_class(char* class_name, char* class_module_name, char* module_name)
     sModule* module = gModules.at(module_name, null);
     
     if(module) {
-        sClass* klass = new (GC) sClass.initialize(class_name, null, class_module_name);
-        module.classes.insert(gc_string(class_name), klass);
+        sClass* klass = new  sClass.initialize(class_name, null, class_module_name);
+        module.classes.insert(string(class_name), klass);
         
         return klass;
     }
@@ -1020,24 +1017,24 @@ void initialize_modules() version 1
     gUndefined.kind = kUndefinedValue;
     gUndefined.objValue = null;
     
-    gModules = new (GC) gc_map<char*, sModule*>.initialize();
+    gModules = new map<char*, sModule*>.initialize();
     
-    sModule* sys_module = new (GC) sModule.initialize("sys");
+    sModule* sys_module = new  sModule.initialize("sys");
     gModules.insert("sys", sys_module);
     
-    sModule* main_module = new (GC) sModule.initialize("__main__");
+    sModule* main_module = new  sModule.initialize("__main__");
     gModules.insert("__main__", main_module);
     
     main_module.global_vars.insert("None", gNoneValue);
     
-    sModule* re_module = new (GC) sModule.initialize("re");
+    sModule* re_module = new  sModule.initialize("re");
     gModules.insert("re", re_module);
     
-    gc_vector<char*>* param_names = new (GC) gc_vector<char*>.initialize();
+    vector<char*>* param_names = new vector<char*>.initialize();
     
-    param_names.push_back(gc_string("rcode"));
+    param_names.push_back(string("rcode"));
     
-    sFunction* sys_exit = new (GC) sFunction.initialize("exit", null, param_names);
+    sFunction* sys_exit = new  sFunction.initialize("exit", null, param_names);
     
     sys_exit.native_fun = native_sys_exit;
     
@@ -1055,48 +1052,48 @@ void initialize_modules() version 1
     add_class("module", "", "__main__");
     add_class("exception", "", "__main__");
     
-    gc_vector<char*>* param_names2 = new (GC) gc_vector<char*>.initialize();
+    vector<char*>* param_names2 = new vector<char*>.initialize();
     
-    param_names2.push_back(gc_string("self"));
-    param_names2.push_back(gc_string("value"));
+    param_names2.push_back(string("self"));
+    param_names2.push_back(string("value"));
     
-    sFunction* list_append = new (GC) sFunction.initialize("append", null, param_names2);
+    sFunction* list_append = new  sFunction.initialize("append", null, param_names2);
     
     list_class.funcs.insert("append", list_append);
     
     list_append.native_fun = native_list_append;
     
-    gc_vector<char*>* param_names3 = new (GC) gc_vector<char*>.initialize();
+    vector<char*>* param_names3 = new vector<char*>.initialize();
     
-    param_names3.push_back(gc_string("self"));
-    param_names3.push_back(gc_string("sep"));
-    param_names3.push_back(gc_string("maxsplit"));
+    param_names3.push_back(string("self"));
+    param_names3.push_back(string("sep"));
+    param_names3.push_back(string("maxsplit"));
     
-    sFunction* str_split = new (GC) sFunction.initialize("split", null, param_names3);
+    sFunction* str_split = new  sFunction.initialize("split", null, param_names3);
     
     str_class.funcs.insert("split", str_split);
     
     str_split.native_fun = native_str_split;
     
-    gc_vector<char*>* param_names4 = new (GC) gc_vector<char*>.initialize();
+    vector<char*>* param_names4 = new  vector<char*>.initialize();
     
-    param_names4.push_back(gc_string("pattern"));
-    param_names4.push_back(gc_string("string"));
-    param_names4.push_back(gc_string("maxsplit"));
-    param_names4.push_back(gc_string("flags"));
+    param_names4.push_back(string("pattern"));
+    param_names4.push_back(string("string"));
+    param_names4.push_back(string("maxsplit"));
+    param_names4.push_back(string("flags"));
     
-    sFunction* re_split = new (GC) sFunction.initialize("split", null, param_names4);
+    sFunction* re_split = new  sFunction.initialize("split", null, param_names4);
     
     re_split.native_fun = native_re_split;
     
     re_module.funcs.insert("split", re_split);
     
-    gc_vector<char*>* param_names5 = new (GC) gc_vector<char*>.initialize();
+    vector<char*>* param_names5 = new  vector<char*>.initialize();
     
-    param_names5.push_back(gc_string("pattern"));
-    param_names5.push_back(gc_string("flags"));
+    param_names5.push_back(string("pattern"));
+    param_names5.push_back(string("flags"));
     
-    sFunction* re_compile = new (GC) sFunction.initialize("compile", null, param_names5);
+    sFunction* re_compile = new  sFunction.initialize("compile", null, param_names5);
     
     re_compile.native_fun = native_re_compile;
     
@@ -1150,42 +1147,44 @@ void initialize_modules() version 1
     
     re_module.global_vars.insert("VERBOSE", re_verbose);
     
-    gc_vector<char*>* param_names6 = new (GC) gc_vector<char*>.initialize();
+    vector<char*>* param_names6 = new  vector<char*>.initialize();
     
-    param_names6.push_back(gc_string("pattern"));
-    param_names6.push_back(gc_string("string"));
-    param_names6.push_back(gc_string("flags"));
+    param_names6.push_back(string("pattern"));
+    param_names6.push_back(string("string"));
+    param_names6.push_back(string("flags"));
     
-    sFunction* re_findall = new (GC) sFunction.initialize("findall", null, param_names6);
+    sFunction* re_findall = new  sFunction.initialize("findall", null, param_names6);
     
     re_findall.native_fun = native_re_findall;
     
     re_module.funcs.insert("findall", re_findall);
     
+/*
     {
-        gc_vector<char*>* param_names = new (GC) gc_vector<char*>.initialize();
+        vector<char*>* param_names = new  vector<char*>.initialize();
         
-        param_names.push_back(gc_string("pattern"));
-        param_names.push_back(gc_string("string"));
-        param_names.push_back(gc_string("flags"));
+        param_names.push_back(string("pattern"));
+        param_names.push_back(string("string"));
+        param_names.push_back(string("flags"));
         
-        sFunction* re_search = new (GC) sFunction.initialize("search", null, param_names);
+        sFunction* re_search = new  sFunction.initialize("search", null, param_names);
         
         re_search.native_fun = native_re_search;
         
         re_module.funcs.insert("search", re_search);
     }
+*/
     
     sClass* match_class = add_class("Match", "", "__main__");
     
     {
-        gc_vector<char*>* param_names = new (GC) gc_vector<char*>.initialize();
+        vector<char*>* param_names = new  vector<char*>.initialize();
         
-        param_names.push_back(gc_string("self"));
-        param_names.push_back(gc_string("group1"));
-        param_names.push_back(gc_string("group2"));
+        param_names.push_back(string("self"));
+        param_names.push_back(string("group1"));
+        param_names.push_back(string("group2"));
         
-        sFunction* fun = new (GC) sFunction.initialize("group", null, param_names);
+        sFunction* fun = new  sFunction.initialize("group", null, param_names);
         
         fun.native_fun = native_Match_group;
         
@@ -1218,45 +1217,45 @@ char* zvalue_to_str(ZVALUE value)
 {
     switch(value.kind) {
         case kIntValue:
-            return gc_xsprintf("%d", value.intValue);
+            return xsprintf("%d", value.intValue);
             
         case kBoolValue:
             if(value.boolValue) {
-                return gc_string("True");
+                return string("True");
             }
             else {
-                return gc_string("False");
+                return string("False");
             }
             break;
             
         case kStringValue:
-            return value.stringValue.to_gc_string();
+            return value.stringValue.to_string();
             
         case kRegexValue: 
-            return gc_xsprintf("re.compile('%s')", value.regexValue.str);
+            return xsprintf("re.compile('%s')", value.regexValue.str);
             
         case kNoneValue:
-            return gc_string("None");
+            return string("None");
             
         case kUndefinedValue:
-            return gc_string("Undefined");
+            return string("Undefined");
             
         case kClassValue: {
             sClass* klass = value.value.classValue;
-            return gc_xsprintf("<class '%s.%s'>", klass.module_name, klass.name);
+            return xsprintf("<class '%s.%s'>", klass.module_name, klass.name);
             }
             
         case kObjValue: {
             sObject* object = value.value.objValue;
             
-            return gc_xsprintf("%s.%s at %p", object.klass.name, object.module.name, object);
+            return xsprintf("%s.%s at %p", object.klass.name, object.module.name, object);
             }
             break;
             
         case kListValue: {
-            gc_list<ZVALUE>* li = value.value.listValue;
+            list<ZVALUE>* li = value.value.listValue;
             
-            gc_buffer* buf = new (GC) gc_buffer.initialize();
+            buffer* buf = new  buffer.initialize();
             
             buf.append_str("[");
             for(int i= 0; i<li.length(); i++) {
@@ -1267,14 +1266,14 @@ char* zvalue_to_str(ZVALUE value)
             }
             buf.append_str("]");
             
-            return buf.to_gc_string();
+            return buf.to_string();
             }
             break;
             
         case kTupleValue: {
-            immutable gc_list<ZVALUE>* li = value.value.tupleValue;
+            immutable list<ZVALUE>* li = value.value.tupleValue;
             
-            gc_buffer* buf = new (GC) gc_buffer.initialize();
+            buffer* buf = new  buffer.initialize();
             
             buf.append_str("(");
             for(int i= 0; i<li.length(); i++) {
@@ -1285,17 +1284,19 @@ char* zvalue_to_str(ZVALUE value)
             }
             buf.append_str(")");
             
-            return buf.to_gc_string();
+            return buf.to_string();
             }
             break;
     }
+    
+    return NULL;
 }
 
 void print_obj(ZVALUE obj, bool lf)
 {
     switch(obj.kind) {
         case kStringValue: 
-            printf("%s", obj.value.stringValue.to_gc_string());
+            printf("%s", obj.value.stringValue.to_string());
             if(lf) {
                 puts("");
             }
@@ -1372,7 +1373,7 @@ void print_obj(ZVALUE obj, bool lf)
            break;
            
        case kListValue: {
-           gc_list<ZVALUE>* li = obj.value.listValue;
+           list<ZVALUE>* li = obj.value.listValue;
            
            printf("[");
            for(int i= 0; i<li.length(); i++) {
@@ -1389,7 +1390,7 @@ void print_obj(ZVALUE obj, bool lf)
            break;
            
        case kTupleValue: {
-           immutable gc_list<ZVALUE>* li = obj.value.listValue;
+           immutable list<ZVALUE>* li = obj.value.listValue;
            
            printf("(");
            for(int i= 0; i<li.length(); i++) {
@@ -1406,7 +1407,7 @@ void print_obj(ZVALUE obj, bool lf)
            break;
            
        case kMapValue: {
-           immutable gc_map<ZVALUE, ZVALUE>* ma = obj.value.mapValue;
+           immutable map<ZVALUE, ZVALUE>* ma = obj.value.mapValue;
            
            printf("{");
            int n = 0;
@@ -1435,7 +1436,7 @@ void print_obj(ZVALUE obj, bool lf)
            foreach(it, ma.object) {
                for(int i=0; i<it.num; i++) {
                    printf("span=(%d,%d) ", it.start[i], it.end[i]);
-                   printf("match='%ls'", ma.str.gc_substring(it.start[i], it.end[i]));
+                   printf("match='%ls'", ma.str.substring(it.start[i], it.end[i]));
                }
            }
            if(lf) {
@@ -1582,19 +1583,19 @@ void print_op(int op)
     }
 }
 
-bool function_call(sFunction* fun, gc_vector<ZVALUE>* param_values, gc_map<char*, ZVALUE>* named_params, sVMInfo* info)
+bool function_call(sFunction* fun, vector<ZVALUE>* param_values, map<char*, ZVALUE>* named_params, sVMInfo* info)
 {
     if(fun.native_fun) {
         fNativeFun fun2 = fun.native_fun;
         
-        gc_vector<char*>* param_names = fun->param_names;
+        vector<char*>* param_names = fun->param_names;
         
-        gc_map<char*, ZVALUE>* params = new (GC) gc_map<char*, ZVALUE>.initialize();
+        map<char*, ZVALUE>* params = new  map<char*, ZVALUE>.initialize();
         
         int i = 0;
         foreach(it, param_names) {
             ZVALUE value = param_values.item(i, gNoneValue);
-            params.insert(gc_string(it), value);
+            params.insert(string(it), value);
             
             i++;
         }
@@ -1604,7 +1605,7 @@ bool function_call(sFunction* fun, gc_vector<ZVALUE>* param_values, gc_map<char*
             memset(&null_value, 0, sizeof(ZVALUE));
             
             ZVALUE value = named_params.at(key, null_value);
-            params.insert(gc_string(key), value);
+            params.insert(string(key), value);
         }
         
         if(!fun2(params, info)) {
@@ -1612,16 +1613,16 @@ bool function_call(sFunction* fun, gc_vector<ZVALUE>* param_values, gc_map<char*
         }
     }
     else {
-        gc_buffer* codes = fun->codes;
+        buffer* codes = fun->codes;
         
-        gc_vector<char*>* param_names = fun->param_names;
+        vector<char*>* param_names = fun->param_names;
         
-        gc_map<char*, ZVALUE>* params = new (GC) gc_map<char*, ZVALUE>.initialize();
+        map<char*, ZVALUE>* params = new  map<char*, ZVALUE>.initialize();
         
         int i = 0;
         foreach(it, param_names) {
             ZVALUE value = param_values.item(i, gNoneValue);
-            params.insert(gc_string(it), value);
+            params.insert(string(it), value);
             
             i++;
         }
@@ -1631,7 +1632,7 @@ bool function_call(sFunction* fun, gc_vector<ZVALUE>* param_values, gc_map<char*
             memset(&null_value, 0, sizeof(ZVALUE));
             
             ZVALUE value = named_params.at(key, null_value);
-            params.insert(gc_string(key), value);
+            params.insert(string(key), value);
         }
         
         if(!vm(codes, params, info)) {
@@ -1644,10 +1645,10 @@ bool function_call(sFunction* fun, gc_vector<ZVALUE>* param_values, gc_map<char*
 
 bool class_call(sClass* klass, sVMInfo* info)
 {
-    gc_buffer* codes = klass->codes;
+    buffer* codes = klass->codes;
     
     char* class_name = info->class_name;
-    info->class_name = gc_string(klass.name);
+    info->class_name = string(klass.name);
     
     if(!vm(codes, null, info)) {
         return false;
@@ -1658,7 +1659,7 @@ bool class_call(sClass* klass, sVMInfo* info)
     return true;
 }
 
-bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info)
 {
     ZVALUE stack[ZSTACK_MAX];
     int stack_num = 0;
@@ -1668,7 +1669,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
     int* p = (int*)codes.buf;
     int* head = (int*)codes.buf;
     
-    gc_map<char*, ZVALUE>* vtable = new (GC) gc_map<char*, ZVALUE>.initialize();
+    map<char*, ZVALUE>* vtable = new  map<char*, ZVALUE>.initialize();
     
     int get_element_num = 0;
     ZVALUE for_list_value;
@@ -1677,7 +1678,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
         foreach(it, params) {
             char* key = it;
             
-            ZVALUE item = params.at(gc_string(it), gUndefined);
+            ZVALUE item = params.at(string(it), gUndefined);
             
             if(item.kind == kUndefinedValue) {
                 info->exception.kind = kExceptionValue;
@@ -1685,7 +1686,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 return false;
             }
             
-            vtable.insert(gc_string(key), item);
+            vtable.insert(string(key), item);
         }
     }
     
@@ -1736,22 +1737,22 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         break;
                         
                     case kStringValue: {
-                        gc_buffer* buf = new (GC) gc_buffer.initialize();
+                        buffer* buf = new  buffer.initialize();
                         
-                        buf.append_str(lvalue.value.stringValue.to_gc_string());
-                        buf.append_str(rvalue.value.stringValue.to_gc_string());
+                        buf.append_str(lvalue.value.stringValue.to_string());
+                        buf.append_str(rvalue.value.stringValue.to_string());
                         
                         stack[stack_num].kind = kStringValue;
-                        stack[stack_num].value.stringValue = buf.to_gc_string().to_gc_wstring();
+                        stack[stack_num].value.stringValue = buf.to_string().to_wstring();
                         stack_num++;
                         }
                         break;
                         
                     case kListValue: {
-                        gc_list<ZVALUE>* list_object = new (GC) gc_list<ZVALUE>.initialize();
+                        list<ZVALUE>* list_object = new  list<ZVALUE>.initialize();
                         
-                        gc_list<ZVALUE>* li = lvalue.value.listValue;
-                        gc_list<ZVALUE>* li2 = rvalue.value.listValue;
+                        list<ZVALUE>* li = lvalue.value.listValue;
+                        list<ZVALUE>* li2 = rvalue.value.listValue;
                         
                         foreach(it, li) {
                             list_object.push_back(it);
@@ -1767,10 +1768,10 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         break;
                         
                     case kTupleValue: {
-                        gc_list<ZVALUE>* list_object = new (GC) gc_list<ZVALUE>.initialize();
+                        list<ZVALUE>* list_object = new  list<ZVALUE>.initialize();
                         
-                        immutable gc_list<ZVALUE>* li = lvalue.value.tupleValue;
-                        immutable gc_list<ZVALUE>* li2 = rvalue.value.tupleValue;
+                        immutable list<ZVALUE>* li = lvalue.value.tupleValue;
+                        immutable list<ZVALUE>* li2 = rvalue.value.tupleValue;
                         
                         foreach(it, li) {
                             list_object.push_back(it);
@@ -1824,7 +1825,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 
                 wchar_t* str = (wchar_t*)p;
                 
-                wchar_t* str2 = new (GC) wchar_t[len+1];
+                wchar_t* str2 = new  wchar_t[len+1];
                 memcpy(str2, str, sizeof(wchar_t)*len);
                 str2[len] = '\0'
                 
@@ -1857,7 +1858,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num++;
                 }
                 else if(stack[stack_num-1].kind == kListValue) {
-                    gc_list<ZVALUE>* list_object = stack[stack_num-1].value.listValue;
+                    list<ZVALUE>* list_object = stack[stack_num-1].value.listValue;
                     
                     int len = list_object.length();
                     
@@ -1868,7 +1869,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num++;
                 }
                 else if(stack[stack_num-1].kind == kTupleValue) {
-                    immutable gc_list<ZVALUE>* tuple_object = stack[stack_num-1].value.tupleValue;
+                    immutable list<ZVALUE>* tuple_object = stack[stack_num-1].value.tupleValue;
                     
                     int len = tuple_object.length();
                     
@@ -1915,7 +1916,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num--;
                     
                     stack[stack_num].kind = kStringValue;
-                    stack[stack_num].stringValue = str.to_gc_wstring();
+                    stack[stack_num].stringValue = str.to_wstring();
                     stack_num++;
                 }
                 else {
@@ -2045,11 +2046,11 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 bool in_global_context = (bool)*p;
                 p++;
                 
-                sModule* module = gModules.at(gc_string(var_name2), null);
+                sModule* module = gModules.at(string(var_name2), null);
                 
-                sModule* module2 = gModules.at(gc_string(info.module_name), null);
+                sModule* module2 = gModules.at(string(info.module_name), null);
                 
-                sClass* klass = module2.classes.at(gc_string(var_name2), null);
+                sClass* klass = module2.classes.at(string(var_name2), null);
                 
                 if(module) {
                     stack[stack_num].kind = kModuleValue;
@@ -2062,7 +2063,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num++;
                 }
                 else if(in_global_context) {
-                    stack[stack_num] = module2.global_vars.at(gc_string(var_name2), gUndefined);
+                    stack[stack_num] = module2.global_vars.at(string(var_name2), gUndefined);
                     
                     if(stack[stack_num].kind == kUndefinedValue) {
                         info->exception.kind = kExceptionValue;
@@ -2077,7 +2078,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num++;
                     
                     if(stack[stack_num-1].kind == kUndefinedValue) {
-                        stack[stack_num] = module2.global_vars.at(gc_string(var_name2), gUndefined);
+                        stack[stack_num] = module2.global_vars.at(string(var_name2), gUndefined);
                         stack_num++;
                         
                         if(stack[stack_num-1].kind == kUndefinedValue) {
@@ -2130,11 +2131,11 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                             }
                             
                             ZVALUE right = stack[stack_num-1];
-                            klass.class_vars.insert(gc_string(var_name2), right);
+                            klass.class_vars.insert(string(var_name2), right);
                         }
                         else {
                             ZVALUE right = stack[stack_num-1];
-                            module.global_vars.insert(gc_string(var_name2), right);
+                            module.global_vars.insert(string(var_name2), right);
                         }
                     }
                 }
@@ -2158,11 +2159,11 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                             }
                             
                             ZVALUE right = stack[stack_num-1];
-                            klass.class_vars.insert(gc_string(var_name2), right);
+                            klass.class_vars.insert(string(var_name2), right);
                         }
                         else {
                             ZVALUE right = stack[stack_num-1];
-                            vtable.insert(gc_string(var_name2), right);
+                            vtable.insert(string(var_name2), right);
                         }
                     }
                 }
@@ -2193,14 +2194,14 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 
                 p += len_codes / sizeof(int);
                 
-                gc_buffer* codes2 = new (GC) gc_buffer.initialize();
+                buffer* codes2 = new  buffer.initialize();
                 
                 codes2.append(codes, len_codes);
                 
                 int len_param_names = *p;
                 p++;
                 
-                gc_vector<char*>* param_names = new (GC) gc_vector<char*>.initialize();
+                vector<char*>* param_names = new  vector<char*>.initialize();
                 
                 for(int i=0; i<len_param_names; i++) {
                     int offset = *p;
@@ -2217,10 +2218,10 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     
                     p += offset;
                     
-                    param_names.push_back(gc_string(name2));
+                    param_names.push_back(string(name2));
                 }
                 
-                sFunction* fun = new (GC) sFunction.initialize(gc_string(name2), codes2, param_names);
+                sFunction* fun = new  sFunction.initialize(string(name2), codes2, param_names);
                 
                 if(info.class_name) {
                     if(info.module_name) {
@@ -2240,7 +2241,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                             return false;
                         }
                         
-                        klass->funcs.insert(gc_string(name2), fun);
+                        klass->funcs.insert(string(name2), fun);
                     }
                 }
                 else if(info.module_name) {
@@ -2252,7 +2253,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         return false;
                     }
                     
-                    module.funcs.insert(gc_string(name2), fun);
+                    module.funcs.insert(string(name2), fun);
                 }
                 }
                 break;
@@ -2281,7 +2282,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 
                 p += len_codes / sizeof(int);
                 
-                gc_buffer* codes2 = new (GC) gc_buffer.initialize();
+                buffer* codes2 = new  buffer.initialize();
                 
                 codes2.append(codes, len_codes);
                 
@@ -2293,9 +2294,9 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     return false;
                 }
                 
-                sClass* klass = new (GC) sClass.initialize(gc_string(name2), codes2, module.name);
+                sClass* klass = new  sClass.initialize(string(name2), codes2, module.name);
                 
-                module.classes.insert(gc_string(name2), klass);
+                module.classes.insert(string(name2), klass);
                 
                 if(!class_call(klass, info)) {
                     return false;
@@ -2326,7 +2327,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 int num_named_params = *p;
                 p++;
                 
-                gc_map<char*, ZVALUE>* named_params = new (GC) gc_map<char*, ZVALUE>.initialize();
+                map<char*, ZVALUE>* named_params = new  map<char*, ZVALUE>.initialize();
                 
                 for(int i=0; i<num_named_params; i++) {
                     int offset = *p;
@@ -2345,22 +2346,22 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     
                     ZVALUE value = stack[stack_num-num_named_params+i];
                     
-                    named_params.insert(gc_string(named_param2), value);
+                    named_params.insert(string(named_param2), value);
                 }
                 
                 stack_num -= num_named_params;
                 
                 sModule* module = gModules.at(info.module_name, null);
-                sClass* klass = module.classes.at(gc_string(fun_name2), null);
+                sClass* klass = module.classes.at(string(fun_name2), null);
                 
                 /// new object ///
                 if(klass) {
-                    sObject* object = new (GC) sObject.initialize(module, klass);
+                    sObject* object = new  sObject.initialize(module, klass);
                     
                     sFunction* constructor = klass.funcs.at("__init__", null);
                     
                     if(constructor) {
-                        gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                        vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                         
                         ZVALUE object_value;
                         object_value.kind = kObjValue;
@@ -2392,7 +2393,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 }
                 /// function call ///
                 else {
-                    gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                    vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                     
                     for(int i=0; i<num_params; i++) {
                         ZVALUE value = stack[stack_num-num_params+i];
@@ -2549,22 +2550,22 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         break;
                         
                     case kStringValue: {
-                        gc_buffer* buf = new (GC) gc_buffer.initialize();
+                        buffer* buf = new  buffer.initialize();
                         
                         for(int i=0; i<rvalue.intValue; i++) {
-                            buf.append_str(lvalue.value.stringValue.to_gc_string());
+                            buf.append_str(lvalue.value.stringValue.to_string());
                         }
                         
                         stack[stack_num].kind = kStringValue;
-                        stack[stack_num].value.stringValue = buf.to_gc_string().to_gc_wstring();
+                        stack[stack_num].value.stringValue = buf.to_string().to_wstring();
                         stack_num++;
                         }
                         break;
                         
                     case kListValue: {
-                        gc_list<ZVALUE>* list_object = new (GC) gc_list<ZVALUE>.initialize();
+                        list<ZVALUE>* list_object = new  list<ZVALUE>.initialize();
                         
-                        gc_list<ZVALUE>* li = lvalue.value.listValue;
+                        list<ZVALUE>* li = lvalue.value.listValue;
                         
                         for(int i=0; i<rvalue.intValue; i++) {
                             foreach(it, li) {
@@ -2579,9 +2580,9 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         break;
                         
                     case kTupleValue: {
-                        gc_list<ZVALUE>* list_object = new (GC) gc_list<ZVALUE>.initialize();
+                        list<ZVALUE>* list_object = new  list<ZVALUE>.initialize();
                         
-                        immutable gc_list<ZVALUE>* li = lvalue.value.tupleValue;
+                        immutable list<ZVALUE>* li = lvalue.value.tupleValue;
                         
                         for(int i=0; i<rvalue.intValue; i++) {
                             foreach(it, li) {
@@ -2703,7 +2704,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 int num_named_params = *p;
                 p++;
                 
-                gc_map<char*, ZVALUE>* named_params = new (GC) gc_map<char*, ZVALUE>.initialize();
+                map<char*, ZVALUE>* named_params = new  map<char*, ZVALUE>.initialize();
                 
                 for(int i=0; i<num_named_params; i++) {
                     int offset = *p;
@@ -2722,7 +2723,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     
                     ZVALUE value = stack[stack_num-num_named_params+i];
                     
-                    named_params.insert(gc_string(named_param2), value);
+                    named_params.insert(string(named_param2), value);
                 }
                 
                 stack_num -= num_named_params;
@@ -2730,7 +2731,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 if(stack[stack_num-1-num_params].kind == kModuleValue) {
                     sModule* module = (sModule*)stack[stack_num-num_params-1].moduleValue;
                     
-                    gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                    vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                     
                     for(int i=0; i<num_params; i++) {
                         ZVALUE value = stack[stack_num-num_params+i];
@@ -2760,7 +2761,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 else if(stack[stack_num-num_params-1].kind == kObjValue) {
                     sObject* object = (sObject*)stack[stack_num-num_params-1].objValue;
                     
-                    gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                    vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                     
                     ZVALUE object_value;
                     object_value.kind = kObjValue;
@@ -2792,9 +2793,9 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num++;
                 }
                 else if(stack[stack_num-num_params-1].kind == kListValue) {
-                    gc_list<ZVALUE>* object = stack[stack_num-num_params-1].listValue;
+                    list<ZVALUE>* object = stack[stack_num-num_params-1].listValue;
                     
-                    gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                    vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                     
                     ZVALUE object_value;
                     object_value.kind = kListValue;
@@ -2830,9 +2831,9 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num++;
                 }
                 else if(stack[stack_num-num_params-1].kind == kTupleValue) {
-                    immutable gc_list<ZVALUE>* object = stack[stack_num-num_params-1].tupleValue;
+                    immutable list<ZVALUE>* object = stack[stack_num-num_params-1].tupleValue;
                     
-                    gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                    vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                     
                     ZVALUE object_value;
                     object_value.kind = kListValue;
@@ -2870,7 +2871,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 else if(stack[stack_num-num_params-1].kind == kStringValue) {
                     wchar_t* str = stack[stack_num-num_params-1].value.stringValue;
                     
-                    gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                    vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                     
                     ZVALUE object_value;
                     object_value.kind = kStringValue;
@@ -2906,7 +2907,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num++;
                 }
                 else if(stack[stack_num-num_params-1].kind == kMatchObjectValue) {
-                    gc_vector<ZVALUE>* param_values = new (GC) gc_vector<ZVALUE>.initialize();
+                    vector<ZVALUE>* param_values = new  vector<ZVALUE>.initialize();
                     
                     ZVALUE object_value;
                     object_value = stack[stack_num-num_params-1];
@@ -2970,10 +2971,10 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     stack_num--;
                     
                     
-                    sClass* klass = module->classes.at(gc_string(field_name2), null);
+                    sClass* klass = module->classes.at(string(field_name2), null);
                     
                     if(klass == null) {
-                        stack[stack_num] = module->global_vars.at(gc_string(field_name2), gUndefined);
+                        stack[stack_num] = module->global_vars.at(string(field_name2), gUndefined);
                         stack_num++;
                         
                         if(stack[stack_num-1].kind == kUndefinedValue) {
@@ -2992,7 +2993,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     sClass* klass = (sClass*)stack[stack_num-1].classValue;
                     stack_num--;
                     
-                    stack[stack_num] = klass->class_vars.at(gc_string(field_name2), gUndefined);
+                    stack[stack_num] = klass->class_vars.at(string(field_name2), gUndefined);
                     stack_num++;
                     
                     if(stack[stack_num-1].kind == kUndefinedValue) {
@@ -3005,7 +3006,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     sObject* object = (sObject*)stack[stack_num-1].objValue;
                     stack_num--;
                     
-                    stack[stack_num] = object->fields.at(gc_string(field_name2), gUndefined);
+                    stack[stack_num] = object->fields.at(string(field_name2), gUndefined);
                     stack_num++;
                     
                     if(stack[stack_num-1].kind == kUndefinedValue) {
@@ -3045,7 +3046,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 if(left.kind == kModuleValue) {
                     sModule* module = (sModule*)left.moduleValue;
                     
-                    module->global_vars.insert(gc_string(field_name2), right);
+                    module->global_vars.insert(string(field_name2), right);
                     
                     stack_num -= 2;
                     
@@ -3055,7 +3056,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 else if(left.kind == kClassValue) {
                     sClass* klass = (sClass*)left.classValue;
                     
-                    klass->class_vars.insert(gc_string(field_name2), right);
+                    klass->class_vars.insert(string(field_name2), right);
                     
                     stack_num -= 2;
                     
@@ -3065,7 +3066,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 else if(left.kind == kObjValue) {
                     sObject* obj = (sObject*)left.objValue;
                     
-                    obj->fields.insert(gc_string(field_name2), right);
+                    obj->fields.insert(string(field_name2), right);
                     
                     stack_num -= 2;
                     
@@ -3086,7 +3087,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 int len = *p;
                 p++;
                 
-                gc_list<ZVALUE>* list_object = new (GC) gc_list<ZVALUE>.initialize();
+                list<ZVALUE>* list_object = new  list<ZVALUE>.initialize();
                 
                 for(int i=0; i<len; i++) {
                     ZVALUE element = stack[stack_num-len+i];
@@ -3109,7 +3110,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 int len = *p;
                 p++;
                 
-                gc_map<ZVALUE, ZVALUE>* map_object = new (GC) gc_map<ZVALUE, ZVALUE>.initialize();
+                map<ZVALUE, ZVALUE>* map_object = new  map<ZVALUE, ZVALUE>.initialize();
                 
                 for(int i=0; i<len; i++) {
                     ZVALUE key = stack[stack_num-len*2+i*2];
@@ -3133,7 +3134,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 int len = *p;
                 p++;
                 
-                gc_list<ZVALUE>* tuple_object = new (GC) gc_list<ZVALUE>.initialize();
+                list<ZVALUE>* tuple_object = new  list<ZVALUE>.initialize();
                 
                 for(int i=0; i<len; i++) {
                     ZVALUE element = stack[stack_num-len+i];
@@ -3191,7 +3192,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         return false;
                     }
                     
-                    gc_list<ZVALUE>* list_object = array_value.listValue;
+                    list<ZVALUE>* list_object = array_value.listValue;
                     
                     int index = index_value.intValue;
                     int index2 = index_value2.intValue;
@@ -3213,7 +3214,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         index2 = list_object.length();
                     }
                     
-                    gc_list<ZVALUE>* list_object2 = new (GC) gc_list<ZVALUE>.initialize();
+                    list<ZVALUE>* list_object2 = new  list<ZVALUE>.initialize();
                     
                     int i = 0;
                     foreach(it, list_object) {
@@ -3254,12 +3255,12 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                         return false;
                     }
                     
-                    gc_list<ZVALUE>* list_object = array_value.listValue;
+                    list<ZVALUE>* list_object = array_value.listValue;
                     
                     int index = index_value.intValue;
                     int index2 = index_value2.intValue;
                     
-                    gc_list<ZVALUE>* list_object2 = list_object.sublist(index, index2);
+                    list<ZVALUE>* list_object2 = list_object.sublist(index, index2);
                     
                     stack_num -=3;
                     
@@ -3303,7 +3304,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                     }
                     
                     if(array_value.kind == kMapValue) {
-                        gc_map<ZVALUE, ZVALUE>* map_object = array_value.mapValue;
+                        map<ZVALUE, ZVALUE>* map_object = array_value.mapValue;
                         
                         ZVALUE key = index_value;
                         
@@ -3319,7 +3320,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                             return false;
                         }
                         
-                        gc_list<ZVALUE>* list_object = array_value.listValue;
+                        list<ZVALUE>* list_object = array_value.listValue;
                         
                         int index = index_value.intValue;
                         
@@ -3413,7 +3414,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                 p += offset;
                 
                 ZVALUE list_value = for_list_value;
-                gc_list<ZVALUE>* list_object = list_value.listValue;
+                list<ZVALUE>* list_object = list_value.listValue;
                 if(list_value.kind == kListValue) {
                     list_object = list_value.listValue;
                 }
@@ -3437,7 +3438,7 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                             return false;
                         }
                         
-                        module.global_vars.insert(gc_string(var_name2), element);
+                        module.global_vars.insert(string(var_name2), element);
                     }
                 }
                 else {
@@ -3459,10 +3460,10 @@ bool vm(gc_buffer* codes, gc_map<char*, ZVALUE>* params, sVMInfo* info)
                                 return false;
                             }
                             
-                            klass.class_vars.insert(gc_string(var_name2), element);
+                            klass.class_vars.insert(string(var_name2), element);
                         }
                         else {
-                            vtable.insert(gc_string(var_name2), element);
+                            vtable.insert(string(var_name2), element);
                         }
                     }
                 }

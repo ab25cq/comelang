@@ -1,8 +1,8 @@
 #include "common.h"
 
-static sNode* create_while(sNode* while_exp, gc_list<sNode*>* while_nodes, gc_list<sNode*>*? else_nodes, sParserInfo* info)
+static sNode* create_while(sNode* while_exp, list<sNode*>* while_nodes, list<sNode*>*? else_nodes, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kWhile;
     
@@ -15,15 +15,15 @@ static sNode* create_while(sNode* while_exp, gc_list<sNode*>* while_nodes, gc_li
     return result;
 }
 
-static sNode* create_for(char* var_name, gc_list<sNode*>* nodes, sNode* list_node, sParserInfo* info)
+static sNode* create_for(char* var_name, list<sNode*>* nodes, sNode* list_node, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kFor;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.forValue.var_name = gc_string(var_name);
+    result.value.forValue.var_name = string(var_name);
     result.value.forValue.for_nodes = nodes;
     result.value.forValue.list_node = list_node;
     
@@ -32,7 +32,7 @@ static sNode* create_for(char* var_name, gc_list<sNode*>* nodes, sNode* list_nod
 
 static sNode* create_continue(sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kContinue;
     
@@ -44,7 +44,7 @@ static sNode* create_continue(sParserInfo* info)
 
 static sNode* create_break(sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kBreak;
     
@@ -92,9 +92,9 @@ sNode*? exp_node(sParserInfo* info) version 10
             return null;
         }
         
-        gc_list<sNode*>* while_nodes = parse_block(info);
+        list<sNode*>* while_nodes = parse_block(info);
         
-        gc_list<sNode*>*? else_nodes = null;
+        list<sNode*>*? else_nodes = null;
         
         if(word_cmp(info->p, "else")) {
             info->p += strlen("else");
@@ -118,7 +118,7 @@ sNode*? exp_node(sParserInfo* info) version 10
         info->p += strlen("for");
         skip_spaces_until_eol(info);
         
-        gc_buffer* buf = new (GC) gc_buffer.initialize();
+        buffer* buf = new  buffer.initialize();
         
         if(xisalpha(*info->p)) {
             while(xisalnum(*info->p)) {
@@ -128,7 +128,7 @@ sNode*? exp_node(sParserInfo* info) version 10
             skip_spaces_until_eol(info);
         }
         
-        char* var_name = buf.to_gc_string();
+        char* var_name = buf.to_string();
         
         if(memcmp(info->p, "in", strlen("in")) == 0) {
             info->p += strlen("in");
@@ -152,7 +152,7 @@ sNode*? exp_node(sParserInfo* info) version 10
             return null;
         }
         
-        gc_list<sNode*>* for_nodes = parse_block(info);
+        list<sNode*>* for_nodes = parse_block(info);
         
         result = nullable create_for(var_name, for_nodes, list_node, info);
     }
@@ -176,22 +176,22 @@ sNode*? exp_node(sParserInfo* info) version 10
     return result;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 10
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 10
 {
     inherit(node, codes, info);
     
     if(node.kind == kWhile) {
         sNode* while_exp = node.value.whileValue.while_exp;
-        gc_list<sNode*>* while_nodes = node.value.whileValue.while_nodes;
-        gc_list<sNode*>* else_nodes = node.value.whileValue.else_nodes;
+        list<sNode*>* while_nodes = node.value.whileValue.while_nodes;
+        list<sNode*>* else_nodes = node.value.whileValue.else_nodes;
         
         int head = codes.len;
         
         int head_before = info->loop_head;
         info->loop_head = head;
         
-        gc_vector<int>* breaks_before = info->breaks;
-        info->breaks = new (GC) gc_vector<int>.initialize();
+        vector<int>* breaks_before = info->breaks;
+        info->breaks = new  vector<int>.initialize();
         
         if(!compile(while_exp, codes, info)) {
             return false;
@@ -250,7 +250,7 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 10
     }
     else if(node.kind == kFor) {
         sNode* list_node = node.value.forValue.list_node;
-        gc_list<sNode*>* for_nodes = node.value.forValue.for_nodes;
+        list<sNode*>* for_nodes = node.value.forValue.for_nodes;
         char* var_name = node.value.forValue.var_name;
         
         if(!compile(list_node, codes, info)) {
@@ -283,8 +283,8 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 10
         codes.append_str(name);
         codes.alignment();
         
-        gc_vector<int>* breaks_before = info->breaks;
-        info->breaks = new (GC) gc_vector<int>.initialize();
+        vector<int>* breaks_before = info->breaks;
+        info->breaks = new  vector<int>.initialize();
         
         int head2 = codes.length();
         int head_before = info->loop_head;

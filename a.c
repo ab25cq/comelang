@@ -2,7 +2,12 @@
 
 int main()
 {
-   tuple2<int, char*>*% t = new tuple2<int, char*>;
+    int len = 111;
+    char* var_name = (char*)"ABC";
+    
+    char var_name2[1042];
+    memcpy(var_name2, var_name, len);
+    var_name2[len] = '\0'
     
     return 0;
 }

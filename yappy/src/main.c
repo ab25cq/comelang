@@ -60,13 +60,13 @@ static list<sNode*%>*% parse(sParserInfo* info, int block_space_num)
     auto nodes = new list<sNode*%>.initialize();
     
     while(*info->p) {
-        sNode%*? node = null;
+        sNode%* node = nonullable null;
         
         if(info.space_num < block_space_num) {
             break;
         }
         
-        if(!expression(&node!, info)) {
+        if(!expression(&node, info)) {
             fprintf(stderr, "%s %d: unexpected character (%c)\n", info->fname, info->sline, *info->p);
             exit(2);
         }

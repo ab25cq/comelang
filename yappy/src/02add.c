@@ -3,7 +3,7 @@
 
 static sNode*? create_add_node(sNode*? left, sNode*? right, sParserInfo* info)
 {
-    sNode*? result = nullable new (GC) sNode;
+    sNode*? result = nullable new  sNode;
     
     result!.kind = kOpAdd;
     
@@ -17,11 +17,11 @@ static sNode*? create_add_node(sNode*? left, sNode*? right, sParserInfo* info)
 
 static sNode*? create_sub_node(sNode*? left, sNode*? right, sParserInfo* info)
 {
-    sNode*? result = nullable new (GC) sNode;
+    sNode*? result = nullable new  sNode;
     
     result!.kind = kOpSub;
     
-    result!.fname = gc_string(info->fname);
+    result!.fname = string(info->fname);
     result!.sline = info->sline;
     result!.value.opValue.left = left!;
     result!.value.opValue.right = right!;
@@ -74,7 +74,7 @@ bool expression(sNode** node, sParserInfo* info) version 2
     return true;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 2
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 2
 {
     inherit(node, codes, info);
     

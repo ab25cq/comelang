@@ -1,8 +1,8 @@
 #include "common.h"
 
-static sNode* create_if(sNode* if_exp, gc_list<sNode*>* if_nodes, gc_vector<sNode*>* elif_exps, gc_vector<gc_list<sNode*>*>* elif_blocks, gc_list<sNode*>*? else_nodes, sParserInfo* info)
+static sNode* create_if(sNode* if_exp, list<sNode*>* if_nodes, vector<sNode*>* elif_exps, vector<list<sNode*>*>* elif_blocks, list<sNode*>*? else_nodes, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kIf;
     
@@ -60,10 +60,10 @@ sNode*? exp_node(sParserInfo* info) version 8
             return null;
         }
         
-        gc_list<sNode*>* if_nodes = parse_block(info);
+        list<sNode*>* if_nodes = parse_block(info);
         
-        gc_vector<sNode*>* elif_exps = new (GC) gc_vector<sNode*>.initialize();
-        gc_vector<gc_list<sNode*>*>* elif_blocks = new (GC) gc_vector<gc_list<sNode*>*>.initialize();
+        vector<sNode*>* elif_exps = new  vector<sNode*>.initialize();
+        vector<list<sNode*>*>* elif_blocks = new  vector<list<sNode*>*>.initialize();
         
         while(word_cmp(info->p, "elif")) {
             info->p += strlen("elif");
@@ -86,12 +86,12 @@ sNode*? exp_node(sParserInfo* info) version 8
                 return null;
             }
             
-            gc_list<sNode*>* elif_block = parse_block(info);
+            list<sNode*>* elif_block = parse_block(info);
             
             elif_blocks.push_back(elif_block);
         }
         
-        gc_list<sNode*>*? else_nodes = null;
+        list<sNode*>*? else_nodes = null;
         
         if(word_cmp(info->p, "else")) {
             info->p += strlen("else");
@@ -120,18 +120,18 @@ sNode*? exp_node(sParserInfo* info) version 8
 }
 
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 8
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 8
 {
     inherit(node, codes, info);
     
     if(node.kind == kIf) {
         sNode* if_exp = node.value.ifValue.if_exp;
-        gc_list<sNode*>* if_nodes = node.value.ifValue.if_nodes;
-        gc_vector<sNode*>* elif_exps = node.value.ifValue.elif_exps;
-        gc_vector<gc_list<sNode*>*>* elif_blocks = node.value.ifValue.elif_blocks;
-        gc_list<sNode*>* else_nodes = node.value.ifValue.else_nodes;
+        list<sNode*>* if_nodes = node.value.ifValue.if_nodes;
+        vector<sNode*>* elif_exps = node.value.ifValue.elif_exps;
+        vector<list<sNode*>*>* elif_blocks = node.value.ifValue.elif_blocks;
+        list<sNode*>* else_nodes = node.value.ifValue.else_nodes;
         
-        gc_vector<int>* end_points = new (GC) gc_vector<int>.initialize();
+        vector<int>* end_points = new  vector<int>.initialize();
         
         if(!compile(if_exp, codes, info)) {
             return false;
@@ -156,7 +156,7 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 8
         
         for(int i= 0; i<elif_exps.length(); i++) {
             sNode* elif_exp = elif_exps.item(i, null);
-            gc_list<sNode*>* elif_nodes = elif_blocks.item(i, null);
+            list<sNode*>* elif_nodes = elif_blocks.item(i, null);
             
             if(!compile(elif_exp, codes, info)) {
                 return false;

@@ -3,7 +3,7 @@
 
 static sNode* create_print_node(sNode* exp, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kPrint;
     
@@ -16,7 +16,7 @@ static sNode* create_print_node(sNode* exp, sParserInfo* info)
 
 static sNode* create_len_node(sNode* exp, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kLen;
     
@@ -29,7 +29,7 @@ static sNode* create_len_node(sNode* exp, sParserInfo* info)
 
 static sNode* create_str_to_int_node(sNode* exp, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kInt;
     
@@ -42,7 +42,7 @@ static sNode* create_str_to_int_node(sNode* exp, sParserInfo* info)
 
 static sNode* create_str_node(sNode* exp, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kStr;
     
@@ -55,7 +55,7 @@ static sNode* create_str_node(sNode* exp, sParserInfo* info)
 
 static sNode* create_type_node(sNode* exp, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kType;
     
@@ -68,7 +68,7 @@ static sNode* create_type_node(sNode* exp, sParserInfo* info)
 
 static sNode* create_exit_node(sNode* exp, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kExit;
     
@@ -81,7 +81,7 @@ static sNode* create_exit_node(sNode* exp, sParserInfo* info)
 
 static sNode* create_return_node(sNode* exp, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kReturn;
     
@@ -263,7 +263,7 @@ sNode*? exp_node(sParserInfo* info) version 4
     return result;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 4
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 4
 {
     inherit(node, codes, info);
     

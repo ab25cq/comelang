@@ -1,33 +1,25 @@
 #include "common.h"
 #include <ctype.h>
 
-struct sIntNode 
+class sIntNode(int value)
 {
-    int intValue;
+    int self.intValue = value;
+    
+    unsigned int get_hash_key(sIntNode* self)
+    {
+        return self.intValue;
+    }
+    
+    bool compile(sIntNode* self, buffer* codes, sParserInfo* info)
+    {
+        codes.append_int(OP_INT_VALUE);
+        codes.append_int(self.intValue);
+        
+        info->stack_num++;
+        
+        return true;
+    }
 };
-
-
-sIntNode* sIntNode*::initialize(sIntNode* self, int value)
-{
-    self.intValue = value;
-    
-    return self;
-}
-
-unsigned int sIntNode*::get_hash_key(sIntNode* self)
-{
-    return self.intValue;
-}
-
-bool sIntNode*::compile(sIntNode* self, buffer* codes, sParserInfo* info)
-{
-    codes.append_int(OP_INT_VALUE);
-    codes.append_int(self.intValue);
-    
-    info->stack_num++;
-    
-    return true;
-}
 
 sNode*? exp_node(sParserInfo* info) version 1
 {
@@ -39,7 +31,7 @@ sNode*? exp_node(sParserInfo* info) version 1
         }
         skip_spaces_until_eol(info);
         
-        return nullable new sNode(new sIntNode(value));
+        return nullable new sNode(new sIntNode(n));
     }
     
     return null;

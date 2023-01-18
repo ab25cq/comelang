@@ -3,26 +3,26 @@
 
 static sNode* create_import_node(char* name, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kImport;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.importValue.name = gc_string(name);
+    result.value.importValue.name = string(name);
     
     return result;
 }
 
-static sNode* create_method_call(sNode* left, char* fun_name, gc_vector<sNode*>* params, gc_map<char*, sNode*>* named_params, sParserInfo* info)
+static sNode* create_method_call(sNode* left, char* fun_name, vector<sNode*>* params, map<char*, sNode*>* named_params, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kMethodCall;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.methodCallValue.name = gc_string(fun_name);
+    result.value.methodCallValue.name = string(fun_name);
     result.value.methodCallValue.params = params;
     result.value.methodCallValue.named_params = named_params;
     result.value.methodCallValue.left = left;
@@ -32,13 +32,13 @@ static sNode* create_method_call(sNode* left, char* fun_name, gc_vector<sNode*>*
 
 static sNode* create_store_field(sNode* left, char* field_name, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kStoreField;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.storeField.name = gc_string(field_name);
+    result.value.storeField.name = string(field_name);
     result.value.storeField.left = left;
     result.value.storeField.right = right;
     
@@ -47,13 +47,13 @@ static sNode* create_store_field(sNode* left, char* field_name, sNode* right, sP
 
 static sNode* create_load_field(sNode* left, char* field_name, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kLoadField;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.loadField.name = gc_string(field_name);
+    result.value.loadField.name = string(field_name);
     result.value.loadField.left = left;
     
     return result;
@@ -78,7 +78,7 @@ sNode*? method_node(sNode* node, sParserInfo* info)
     skip_spaces_until_eol(info);
     
     if(xisalpha(*info->p) || *info->p == '_') {
-        gc_buffer* buf = new (GC) gc_buffer.initialize();
+        buffer* buf = new  buffer.initialize();
         
         while(xisalnum(*info->p) || *info->p == '_') {
             buf.append_char(*info->p);
@@ -98,7 +98,7 @@ sNode*? method_node(sNode* node, sParserInfo* info)
                 return null;
             }
             
-            sNode*? result = nullable create_store_field(node, buf.to_gc_string(), right, info);
+            sNode*? result = nullable create_store_field(node, buf.to_string(), right, info);
             
             if(*info->p == '.') {
                 result = method_node(result!, info);
@@ -110,8 +110,8 @@ sNode*? method_node(sNode* node, sParserInfo* info)
             info->p++;
             skip_spaces_until_eol(info);
             
-            gc_vector<sNode*>* params = new (GC) gc_vector<sNode*>.initialize();
-            gc_map<char*, sNode*>* named_params = new (GC) gc_map<char*, sNode*>.initialize();
+            vector<sNode*>* params = new  vector<sNode*>.initialize();
+            map<char*, sNode*>* named_params = new  map<char*, sNode*>.initialize();
             
             bool in_fun_call = info->in_fun_call;
             info->in_fun_call = true;
@@ -128,7 +128,7 @@ sNode*? method_node(sNode* node, sParserInfo* info)
                 bool named_param_flag = false;
                 
                 if(xisalpha(*info->p)) {
-                    gc_buffer* buf = new (GC) gc_buffer.initialize();
+                    buffer* buf = new  buffer.initialize();
                     
                     while(xisalnum(*info->p)) {
                         buf.append_char(*info->p);
@@ -147,7 +147,7 @@ sNode*? method_node(sNode* node, sParserInfo* info)
                             exit(1);
                         }
                         
-                        named_params.insert(buf.to_gc_string(), node);
+                        named_params.insert(buf.to_string(), node);
                     }
                     else {
                         info->p = p;
@@ -173,7 +173,7 @@ sNode*? method_node(sNode* node, sParserInfo* info)
             
             info->in_fun_call = in_fun_call;
             
-            sNode*? result = nullable create_method_call(node, buf.to_gc_string(), params, named_params, info);
+            sNode*? result = nullable create_method_call(node, buf.to_string(), params, named_params, info);
             
             if(*info->p == '.') {
                 result = method_node(result!, info);
@@ -182,7 +182,7 @@ sNode*? method_node(sNode* node, sParserInfo* info)
             return result;
         }
         else {
-            sNode*? result = nullable create_load_field(node, buf.to_gc_string(), info);
+            sNode*? result = nullable create_load_field(node, buf.to_string(), info);
             
             if(*info->p == '.') {
                 result = method_node(result!, info);
@@ -213,12 +213,12 @@ sNode*? exp_node(sParserInfo* info) version 12
     return result;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 12
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 12
 {
     inherit(node, codes, info);
     
     if(node.kind == kImport) {
-        char* str = gc_string(node.importValue.name);
+        char* str = string(node.importValue.name);
         
         if(strcmp(str, "sys") != 0 && strcmp(str, "re") != 0) {
             codes.append_int(OP_IMPORT);
@@ -242,14 +242,14 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 12
             return false;
         }
         
-        gc_vector<sNode*>* params = node.value.methodCallValue.params;
+        vector<sNode*>* params = node.value.methodCallValue.params;
         
         foreach(it, params) {
             if(!compile(it, codes, info)) {
                 return false;
             }
         }
-        gc_map<char*, sNode*>* named_params = node.value.methodCallValue.named_params;
+        map<char*, sNode*>* named_params = node.value.methodCallValue.named_params;
         
         foreach(key, named_params) {
             sNode* item = named_params.at(key, null);

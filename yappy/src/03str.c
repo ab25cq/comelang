@@ -3,13 +3,13 @@
 
 static sNode*? create_string_node(char* str, sParserInfo* info)
 {
-    sNode*? result = nullable new (GC) sNode;
+    sNode*? result = nullable new  sNode;
     
     result!.kind = kStringValueNode;
     
     result!.fname = info->fname;
     result!.sline = info->sline;
-    result!.value.stringValue = gc_wstring(str);
+    result!.value.stringValue = wstring(str);
     
     return result;
 }
@@ -22,7 +22,7 @@ sNode*? exp_node(sParserInfo* info) version 3
         if(*info->p == '"') {
             info->p++;
             
-            gc_buffer* buf = new (GC) gc_buffer.initialize();
+            buffer* buf = new  buffer.initialize();
             
             while(true) {
                 if(*info->p == '\0') {
@@ -52,7 +52,7 @@ sNode*? exp_node(sParserInfo* info) version 3
                 }
             }
             
-            result = create_string_node(buf.to_gc_string(), info);
+            result = create_string_node(buf.to_string(), info);
             
             if(*info->p == '.') {
                 result = method_node(result!, info);
@@ -61,7 +61,7 @@ sNode*? exp_node(sParserInfo* info) version 3
         else if(*info->p == '\'') {
             info->p++;
             
-            gc_buffer* buf = new (GC) gc_buffer.initialize();
+            buffer* buf = new  buffer.initialize();
             
             while(true) {
                 if(*info->p == '\0') {
@@ -91,7 +91,7 @@ sNode*? exp_node(sParserInfo* info) version 3
                 }
             }
             
-            result = create_string_node(buf.to_gc_string(), info);
+            result = create_string_node(buf.to_string(), info);
             
             if(*info->p == '.') {
                 result = method_node(result!, info);
@@ -102,7 +102,7 @@ sNode*? exp_node(sParserInfo* info) version 3
     return result;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 3
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 3
 {
     inherit(node, codes, info);
     

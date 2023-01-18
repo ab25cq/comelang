@@ -3,7 +3,7 @@
 
 static sNode* create_equal_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpEq;
     
@@ -17,11 +17,11 @@ static sNode* create_equal_node(sNode* left, sNode* right, sParserInfo* info)
 
 static sNode* create_not_equal_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpNotEq;
     
-    result.fname = gc_string(info->fname);
+    result.fname = string(info->fname);
     result.sline = info->sline;
     result.value.opValue.left = left;
     result.value.opValue.right = right;
@@ -31,7 +31,7 @@ static sNode* create_not_equal_node(sNode* left, sNode* right, sParserInfo* info
 
 static sNode* create_is_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpIs;
     
@@ -45,11 +45,11 @@ static sNode* create_is_node(sNode* left, sNode* right, sParserInfo* info)
 
 static sNode* create_is_not_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpIsNot;
     
-    result.fname = gc_string(info->fname);
+    result.fname = string(info->fname);
     result.sline = info->sline;
     result.value.opValue.left = left;
     result.value.opValue.right = right;
@@ -59,7 +59,7 @@ static sNode* create_is_not_node(sNode* left, sNode* right, sParserInfo* info)
 
 static sNode* create_mult_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpMult;
     
@@ -73,11 +73,11 @@ static sNode* create_mult_node(sNode* left, sNode* right, sParserInfo* info)
 
 static sNode* create_div_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpDiv;
     
-    result.fname = gc_string(info->fname);
+    result.fname = string(info->fname);
     result.sline = info->sline;
     result.value.opValue.left = left;
     result.value.opValue.right = right;
@@ -87,7 +87,7 @@ static sNode* create_div_node(sNode* left, sNode* right, sParserInfo* info)
 
 static sNode* create_andand_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpAndAnd;
     
@@ -101,11 +101,11 @@ static sNode* create_andand_node(sNode* left, sNode* right, sParserInfo* info)
 
 static sNode* create_oror_node(sNode* left, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kOpOrOr;
     
-    result.fname = gc_string(info->fname);
+    result.fname = string(info->fname);
     result.sline = info->sline;
     result.value.opValue.left = left;
     result.value.opValue.right = right;
@@ -255,7 +255,7 @@ bool expression(sNode** node, sParserInfo* info) version 11
     return true;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 11
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 11
 {
     inherit(node, codes, info);
     

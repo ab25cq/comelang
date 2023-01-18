@@ -2,13 +2,13 @@
 
 static sNode* create_load_var(char* str, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kLoadVar;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.loadVarValue.name = gc_string(str);
+    result.value.loadVarValue.name = string(str);
     result.value.loadVarValue.in_global_context = info->in_global_context;
     
     return result;
@@ -16,13 +16,13 @@ static sNode* create_load_var(char* str, sParserInfo* info)
 
 static sNode* create_store_var(char* str, sNode* right, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kStoreVar;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.storeVarValue.name = gc_string(str);
+    result.value.storeVarValue.name = string(str);
     result.value.storeVarValue.in_global_context = info->in_global_context;
     result.value.storeVarValue.right = right;
     
@@ -85,14 +85,14 @@ sPyType* parse_type(sParserInfo* info)
             return null;
         }
         
-        gc_buffer* buf = new (GC) gc_buffer.initialize();
+        buffer* buf = new  buffer.initialize();
         while(xisalnum(*info->p) || *info->p == '_') {
             buf.append_char(*info->p);
             info->p++;
         }
         skip_spaces_until_eol(info);
         
-        type_ = get_type(buf.to_gc_string());
+        type_ = get_type(buf.to_string());
     }
     
     return type_;
@@ -104,7 +104,7 @@ sNode*? exp_node(sParserInfo* info) version 5
     
     if(result == null) {
         if(xisalpha(*info->p) || *info->p == '_') {
-            gc_buffer* buf = new (GC) gc_buffer.initialize();
+            buffer* buf = new  buffer.initialize();
             
             while(xisalnum(*info->p) || *info->p == '_') {
                 buf.append_char(*info->p);
@@ -114,10 +114,10 @@ sNode*? exp_node(sParserInfo* info) version 5
             
             parse_type(info);
             
-            if(strcmp(buf.to_gc_string(), "def") == 0) {
+            if(strcmp(buf.to_string(), "def") == 0) {
                 return def_node(info);
             }
-            else if(strcmp(buf.to_gc_string(), "class") == 0) {
+            else if(strcmp(buf.to_string(), "class") == 0) {
                 return class_node(info);
             }
             else if(*info->p == '=' && *(info->p+1) != '=') {
@@ -130,10 +130,10 @@ sNode*? exp_node(sParserInfo* info) version 5
                     return null;
                 }
                 
-                return nullable create_store_var(buf.to_gc_string(), right, info);
+                return nullable create_store_var(buf.to_string(), right, info);
             }
             else if(*info->p == '(') {
-                result = fun_node(buf.to_gc_string(), info)
+                result = fun_node(buf.to_string(), info)
                 
                 if(*info->p == '.') {
                     result = method_node(result!, info);
@@ -142,7 +142,7 @@ sNode*? exp_node(sParserInfo* info) version 5
                 return result;
             }
             else if(*info->p == '[') {
-                result = nullable index_node(buf.to_gc_string(), info)
+                result = nullable index_node(buf.to_string(), info)
                 
                 if(*info->p == '.') {
                     result = method_node(result!, info);
@@ -151,7 +151,7 @@ sNode*? exp_node(sParserInfo* info) version 5
                 return result;
             }
             else {
-                result = nullable create_load_var(buf.to_gc_string(), info);
+                result = nullable create_load_var(buf.to_string(), info);
                 
                 if(*info->p == '.') {
                     result = method_node(result!, info);
@@ -165,7 +165,7 @@ sNode*? exp_node(sParserInfo* info) version 5
     return result;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 5
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 5
 {
     inherit(node, codes, info);
     

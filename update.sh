@@ -7,6 +7,11 @@ then
     (cd vin && make distclean)
 fi
 
+if [ -e yappy/Makefile ]
+then
+    (cd yappy && make distclean)
+fi
+
 if [ -e zed/Makefile ]
 then
     (cd zed && make distclean)

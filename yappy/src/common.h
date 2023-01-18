@@ -14,13 +14,13 @@ struct sPyType
 {
     sPyClass* mClass;
     
-    gc_vector<sPyType*>* mGenericsTypes;
+    vector<sPyType*>* mGenericsTypes;
 };
 
-void add_type(char* name, gc_vector<sPyType*>* generics_types);
+void add_type(char* name, vector<sPyType*>* generics_types);
 sPyType* get_type(char* name);
 
-sPyType* sPyType_initialize(sPyType* self, char* name, gc_vector<sPyType*>* generics_types, int generics_num, int method_generics_num);
+sPyType* sPyType_initialize(sPyType* self, char* name, vector<sPyType*>* generics_types, int generics_num, int method_generics_num);
 
 void initialize_modules() version 2;
 void finalize_modules() version 2;
@@ -37,9 +37,11 @@ struct sParserInfo
     int space_num;
     
     int loop_head;
-    gc_vector<int>* breaks;
+    vector<int>* breaks;
     bool in_fun_call;
 };
+
+struct ZVALUE;
 
 struct ZVALUE 
 {
@@ -54,14 +56,14 @@ struct ZVALUE
         enum { kExceptionVarNotFound, kExceptionDivisionByZero, kExceptionNameError, kExceptionTypeError, kExceptionMethodNotFound, kExceptionRegCompileError } expValue;
         void* moduleValue;
         void* classValue;
-        gc_list<ZVALUE>* listValue;
-        gc_map<ZVALUE, ZVALUE>* mapValue;
-        immutable gc_list<ZVALUE>* tupleValue;
+        list<ZVALUE>* listValue;
+        map<ZVALUE, ZVALUE>* mapValue;
+        immutable list<ZVALUE>* tupleValue;
         regex_struct* regexValue;
         
         struct matchValueStruct {
             wchar_t* str;
-            gc_list<match_object*>* object;
+            list<match_object*>* object;
         } matchValue;
     } value;
 };
@@ -180,8 +182,8 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info);
 /// node ///
 protocol sNode
 {
-    bool (*compile)(void* self, buffer* codes, sParserInfo* info);
-    unsigned int (*get_hash_key)(void* self);
+    bool compile(buffer* codes, sParserInfo* info);
+    unsigned int get_hash_key();
 };
 
 /// 01int.c ///
@@ -211,9 +213,9 @@ struct sNode
         
         wchar_t* stringValue;
         
-        gc_list<sNode*>* listValue;
+        list<sNode*>* listValue;
         
-        gc_map<sNode*, sNode*>* mapValue;
+        map<sNode*, sNode*>* mapValue;
         
         struct {
             char* var_name;
@@ -236,33 +238,33 @@ struct sNode
         
         struct {
             char* name;
-            gc_buffer* codes;
-            gc_vector<char*>* param_names;
+            buffer* codes;
+            vector<char*>* param_names;
         } funValue;
         
         struct {
             char* name;
-            gc_vector<sNode*>* params;
-            gc_map<char*, sNode*>* named_params;
+            vector<sNode*>* params;
+            map<char*, sNode*>* named_params;
         } funCallValue;
         
         struct {
             sNode* if_exp;
-            gc_list<sNode*>* if_nodes;
-            gc_vector<sNode*>* elif_exps;
-            gc_vector<gc_list<sNode*>*>* elif_blocks;
-            gc_list<sNode*>* else_nodes;
+            list<sNode*>* if_nodes;
+            vector<sNode*>* elif_exps;
+            vector<list<sNode*>*>* elif_blocks;
+            list<sNode*>* else_nodes;
         } ifValue;
         
         struct {
             sNode* while_exp;
-            gc_list<sNode*>* while_nodes;
-            gc_list<sNode*>* else_nodes;
+            list<sNode*>* while_nodes;
+            list<sNode*>* else_nodes;
         } whileValue;
         
         struct {
             char* var_name;
-            gc_list<sNode*>* for_nodes;
+            list<sNode*>* for_nodes;
             sNode* list_node;
         } forValue;
         
@@ -283,14 +285,14 @@ struct sNode
         
         struct {
             char* name;
-            gc_vector<sNode*>* params;
-            gc_map<char*, sNode*>* named_params;
+            vector<sNode*>* params;
+            map<char*, sNode*>* named_params;
             sNode* left;
         } methodCallValue;
         
         struct {
             char* name;
-            gc_vector<sNode*>* methods;
+            vector<sNode*>* methods;
         } classValue;
     } value;
 };
@@ -313,17 +315,17 @@ inline bool sNode*::equals(sNode* left, sNode* right)
 sNode*? op_add_node(sParserInfo* info);
 
 bool expression(sNode** node, sParserInfo* info) version 2;
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 2;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 2;
 
 /// 03str.c ///
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 3;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 3;
 
 sNode*? exp_node(sParserInfo* info) version 3;
 
 /// 04print.c ///
 bool wordcmp(char* p, char* word2);
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 4;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 4;
 
 sNode*? exp_node(sParserInfo* info) version 4;
 
@@ -334,7 +336,7 @@ sNode*? def_node(sParserInfo* info) version 5;   // implemented after layer
 sNode*? class_node(sParserInfo* info) version 5;   // implemented after layer
 sNode*? index_node(char* var_name, sParserInfo* info) version 5;   // implemented after layer
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 5;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 5;
 
 sPyType* parse_type(sParserInfo* info);
 
@@ -343,38 +345,38 @@ sNode*? fun_node(char* fun_name, sParserInfo* info) version 6;
 sNode*? def_node(sParserInfo* info) version 6;
 sNode*? class_node(sParserInfo* info) version 6;   // implemented after layer
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 6;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 6;
 
 /// 07bool.c ///
 sNode*? exp_node(sParserInfo* info) version 7;
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 7;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 7;
 
 /// 08if.c ///
 sNode*? exp_node(sParserInfo* info) version 8;
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 8;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 8;
 
 /// 09comment.c ///
 bool expression(sNode** node, sParserInfo* info) version 99;
 
 /// 10while.c ///
 sNode*? exp_node(sParserInfo* info) version 10;
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 10;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 10;
 
 /// 11op.c ///
 bool expression(sNode** node, sParserInfo* info) version 11;
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 11;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 11;
 
 /// 12module.c ///
 sNode*? exp_node(sParserInfo* info) version 12;
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 12;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 12;
 
 sNode*? method_node(sNode* node, sParserInfo* info);
 
 /// 13list.c ///
 sNode*? exp_node(sParserInfo* info) version 13;
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 13;
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 13;
 
 sNode*? index_node(char* var_name, sParserInfo* info) version 13;
 */

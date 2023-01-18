@@ -751,6 +751,9 @@ BOOL substitution_posibility(sNodeType* left_type, sNodeType* right_type, LLVMVa
     else if(left_type->mSizeNum > 0 && left_type->mSizeNum == right_type->mSizeNum) {
         return TRUE;
     }
+    else if(left_type->mPointerNum == 1 && right_type->mDynamicArrayNum > 0) {
+        return TRUE;
+    }
     else if(type_identify(left_type, right_type) && left_type->mPointerNum+left_type->mNoArrayPointerNum == right_type->mPointerNum+right_type->mNoArrayPointerNum) 
     {
         return TRUE;

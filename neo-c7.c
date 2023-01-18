@@ -570,3 +570,10 @@ list<string>*% char*::split_maxsplit(char* self, regex_struct* reg, int maxsplit
 
     return result;
 }
+
+void bool::expect(bool self, void* parent, void (*block_)(void* parent))
+{
+    if(!self) {
+        block_(parent);
+    }
+}

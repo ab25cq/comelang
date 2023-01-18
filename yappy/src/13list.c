@@ -1,54 +1,54 @@
 #include "common.h"
 #include <ctype.h>
 
-static sNode* create_list_node(gc_list<sNode*>* elements, sParserInfo* info)
+static sNode* create_list_node(list<sNode*>* elements, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kListValueNode;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.listValue = clone (GC) elements;
+    result.value.listValue = clone  elements;
     
     return result;
 }
 
-static sNode* create_tuple_node(gc_list<sNode*>* elements, sParserInfo* info)
+static sNode* create_tuple_node(list<sNode*>* elements, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kTupleValueNode;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.listValue = clone (GC) elements;
+    result.value.listValue = clone  elements;
     
     return result;
 }
 
-static sNode* create_map_node(gc_map<sNode*, sNode*>* elements, sParserInfo* info)
+static sNode* create_map_node(map<sNode*, sNode*>* elements, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kMapValueNode;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.mapValue = clone (GC) elements;
+    result.value.mapValue = clone  elements;
     
     return result;
 }
 
 static sNode* create_index_node(char* var_name, sNode* index_node, sNode* index_node2, sNode* index_node3, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kListIndexNode;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.indexValue.var_name = clone (GC) var_name;
+    result.value.indexValue.var_name = clone  var_name;
     result.value.indexValue.index_node = index_node;
     result.value.indexValue.index_node2 = index_node2;
     result.value.indexValue.index_node3 = index_node3;
@@ -189,7 +189,7 @@ sNode*? exp_node(sParserInfo* info) version 13
             info->p++;
             skip_spaces_until_eol(info);
             
-            gc_list<sNode*>* elements = new (GC) gc_list<sNode*>.initialize();
+            list<sNode*>* elements = new  list<sNode*>.initialize();
             
             bool in_fun_call = info->in_fun_call;
             info->in_fun_call = true;
@@ -240,7 +240,7 @@ sNode*? exp_node(sParserInfo* info) version 13
             info->p++;
             skip_spaces_until_eol(info);
             
-            gc_map<sNode*, sNode*>* elements = new (GC) gc_map<sNode*, sNode*>.initialize();
+            map<sNode*, sNode*>* elements = new  map<sNode*, sNode*>.initialize();
             
             bool in_fun_call = info->in_fun_call;
             info->in_fun_call = true;
@@ -292,7 +292,7 @@ sNode*? exp_node(sParserInfo* info) version 13
             info->p++;
             skip_spaces_until_eol(info);
             
-            gc_list<sNode*>* elements = new (GC) gc_list<sNode*>.initialize();
+            list<sNode*>* elements = new  list<sNode*>.initialize();
             
             bool in_fun_call = info->in_fun_call;
             info->in_fun_call = true;
@@ -336,7 +336,7 @@ sNode*? exp_node(sParserInfo* info) version 13
             info->p++;
             skip_spaces_until_eol(info);
             
-            gc_list<sNode*>* elements = new (GC) gc_list<sNode*>.initialize();
+            list<sNode*>* elements = new  list<sNode*>.initialize();
             
             elements.push_back(result!);
             
@@ -374,12 +374,12 @@ sNode*? exp_node(sParserInfo* info) version 13
     return result;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 13
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 13
 {
     inherit(node, codes, info);
     
     if(node.kind == kListValueNode) {
-        gc_list<sNode*>* elements = node.value.listValue;
+        list<sNode*>* elements = node.value.listValue;
         
         foreach(it, elements) {
             if(!compile(it, codes, info)) {
@@ -398,7 +398,7 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 13
         info->stack_num++;
     }
     else if(node.kind == kMapValueNode) {
-        gc_map<sNode*, sNode*>* elements = node.value.mapValue;
+        map<sNode*, sNode*>* elements = node.value.mapValue;
         
         foreach(key, elements) {
             sNode* item = elements.at(key, null);
@@ -423,7 +423,7 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 13
         info->stack_num++;
     }
     else if(node.kind == kTupleValueNode) {
-        gc_list<sNode*>* elements = node.value.listValue;
+        list<sNode*>* elements = node.value.listValue;
         
         foreach(it, elements) {
             if(!compile(it, codes, info)) {

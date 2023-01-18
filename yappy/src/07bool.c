@@ -2,7 +2,7 @@
 
 static sNode* create_true(sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kTrue;
     
@@ -14,7 +14,7 @@ static sNode* create_true(sParserInfo* info)
 
 static sNode* create_false(sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kFalse;
     
@@ -26,7 +26,7 @@ static sNode* create_false(sParserInfo* info)
 
 static sNode* create_none(sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kNone;
     
@@ -79,7 +79,7 @@ sNode*? exp_node(sParserInfo* info) version 7
     return result;
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 7
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 7
 {
     inherit(node, codes, info);
     

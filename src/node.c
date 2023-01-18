@@ -4589,7 +4589,17 @@ uint64_t get_size_from_node_type(sNodeType* node_type, int* alignment)
     uint64_t result = 0;
     LLVMTypeRef llvm_type = create_llvm_type_from_node_type(node_type);
     
-    result = get_alloc_size(llvm_type);
+    if(node_type->mPointerNum > 0) {
+        result = 8;
+
+        int i;
+        for(i=0; i<node_type->mArrayDimentionNum; i++) {
+            result *= node_type->mArrayNum[i];
+        }
+    }
+    else {
+        result = get_alloc_size(llvm_type);
+    }
 /*
     uint64_t result = 0;
     sNodeType* node_type2 = clone_node_type(node_type);

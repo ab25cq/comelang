@@ -1,44 +1,44 @@
 #include "common.h"
 
-static sNode* create_fun(char* fun_name, gc_buffer* codes, gc_vector<char*>* param_names, sParserInfo* info)
+static sNode* create_fun(char* fun_name, buffer* codes, vector<char*>* param_names, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kFun;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.funValue.name = gc_string(fun_name);
+    result.value.funValue.name = string(fun_name);
     result.value.funValue.codes = codes;
     result.value.funValue.param_names = param_names;
     
     return result;
 }
 
-static sNode* create_class(char* class_name, gc_buffer* codes, sParserInfo* info)
+static sNode* create_class(char* class_name, buffer* codes, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kClass;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.funValue.name = gc_string(class_name);
+    result.value.funValue.name = string(class_name);
     result.value.funValue.codes = codes;
     result.value.funValue.param_names = null;
     
     return result;
 }
 
-static sNode* create_fun_call(char* fun_name, gc_vector<sNode*>* params, gc_map<char*, sNode*>* named_params, sParserInfo* info)
+static sNode* create_fun_call(char* fun_name, vector<sNode*>* params, map<char*, sNode*>* named_params, sParserInfo* info)
 {
-    sNode* result = new (GC) sNode;
+    sNode* result = new  sNode;
     
     result.kind = kFunCall;
     
     result.fname = info->fname;
     result.sline = info->sline;
-    result.value.funCallValue.name = gc_string(fun_name);
+    result.value.funCallValue.name = string(fun_name);
     result.value.funCallValue.params = params;
     result.value.funCallValue.named_params = named_params;
     
@@ -47,7 +47,7 @@ static sNode* create_fun_call(char* fun_name, gc_vector<sNode*>* params, gc_map<
 
 sNode*? def_node(sParserInfo* info) version 6
 {
-    gc_buffer* buf = new (GC) gc_buffer.initialize();
+    buffer* buf = new  buffer.initialize();
     
     while(xisalnum(*info->p) || *info->p == '_') {
         buf.append_char(*info->p);
@@ -55,7 +55,7 @@ sNode*? def_node(sParserInfo* info) version 6
     }
     skip_spaces_until_eol(info);
     
-    char* fun_name = buf.to_gc_string();
+    char* fun_name = buf.to_string();
     
     if(*info->p != '(') {
         fprintf(stderr, "%s %d: require (\n", info->fname, info->sline);
@@ -65,9 +65,9 @@ sNode*? def_node(sParserInfo* info) version 6
     info->p++;
     skip_spaces_until_eol(info);
     
-    gc_vector<char*>* param_names = new (GC) gc_vector<char*>.initialize();
+    vector<char*>* param_names = new  vector<char*>.initialize();
     
-    gc_buffer* buf2 = new (GC) gc_buffer.initialize();
+    buffer* buf2 = new  buffer.initialize();
     
     while(true) {
         if(*info->p == ')') {
@@ -94,9 +94,9 @@ sNode*? def_node(sParserInfo* info) version 6
             
             parse_type(info);
             
-            param_names.push_back(buf2.to_gc_string());
+            param_names.push_back(buf2.to_string());
             
-            buf2 = new (GC) gc_buffer.initialize();
+            buf2 = new  buffer.initialize();
             
             if(*info->p == ',') {
                 info->p++;
@@ -112,10 +112,10 @@ sNode*? def_node(sParserInfo* info) version 6
     bool in_global_context = info.in_global_context;
     info.in_global_context = false;
     
-    gc_list<sNode*>* nodes = parse_block(info);
+    list<sNode*>* nodes = parse_block(info);
     
     info.in_global_context = in_global_context;
-    gc_buffer* codes = compile_nodes(nodes, info);
+    buffer* codes = compile_nodes(nodes, info);
     
     return nullable create_fun(fun_name, codes, param_names, info);
 }
@@ -125,8 +125,8 @@ sNode*? fun_node(char* fun_name, sParserInfo* info) version 6
     info->p++;
     skip_spaces_until_eol(info);
     
-    gc_vector<sNode*>* params = new (GC) gc_vector<sNode*>.initialize();
-    gc_map<char*, sNode*>* named_params = new (GC) gc_map<char*, sNode*>.initialize();
+    vector<sNode*>* params = new  vector<sNode*>.initialize();
+    map<char*, sNode*>* named_params = new  map<char*, sNode*>.initialize();
     
     bool in_fun_call = info->in_fun_call;
     info->in_fun_call = true;
@@ -144,7 +144,7 @@ sNode*? fun_node(char* fun_name, sParserInfo* info) version 6
         bool named_param_flag = false;
         
         if(xisalpha(*info->p)) {
-            gc_buffer* buf = new (GC) gc_buffer.initialize();
+            buffer* buf = new  buffer.initialize();
             
             while(xisalnum(*info->p)) {
                 buf.append_char(*info->p);
@@ -163,7 +163,7 @@ sNode*? fun_node(char* fun_name, sParserInfo* info) version 6
                     exit(1);
                 }
                 
-                named_params.insert(buf.to_gc_string(), node);
+                named_params.insert(buf.to_string(), node);
             }
             else {
                 info->p = p;
@@ -194,7 +194,7 @@ sNode*? fun_node(char* fun_name, sParserInfo* info) version 6
 
 sNode*? class_node(sParserInfo* info) version 6
 {
-    gc_buffer* buf = new (GC) gc_buffer.initialize();
+    buffer* buf = new  buffer.initialize();
     
     while(xisalnum(*info->p) || *info->p == '_') {
         buf.append_char(*info->p);
@@ -207,15 +207,15 @@ sNode*? class_node(sParserInfo* info) version 6
         skip_spaces_until_eol(info);
     }
     
-    char* class_name = buf.to_gc_string();
+    char* class_name = buf.to_string();
     
-    gc_list<sNode*>* nodes = parse_block(info);
-    gc_buffer* codes = compile_nodes(nodes, info);
+    list<sNode*>* nodes = parse_block(info);
+    buffer* codes = compile_nodes(nodes, info);
     
     return nullable create_class(class_name, codes, info);
 }
 
-bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 6
+bool compile(sNode* node, buffer* codes, sParserInfo* info) version 6
 {
     inherit(node, codes, info);
     
@@ -234,13 +234,13 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 6
         codes.append_str(name);
         codes.alignment();
         
-        gc_buffer* codes2 = node.value.funValue.codes;
+        buffer* codes2 = node.value.funValue.codes;
         
         codes.append_int(codes2.len);
         
         codes.append(codes2.buf, codes2.len);
         
-        gc_vector<char*>* param_names = node.value.funValue.param_names;
+        vector<char*>* param_names = node.value.funValue.param_names;
         
         codes.append_int(param_names.length());
         
@@ -273,7 +273,7 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 6
         codes.append_str(name);
         codes.alignment();
         
-        gc_buffer* codes2 = node.value.funValue.codes;
+        buffer* codes2 = node.value.funValue.codes;
         
         codes.append_int(codes2.len);
         
@@ -282,7 +282,7 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 6
     else if(node.kind == kFunCall) {
         int stack_num = info.stack_num;
         
-        gc_vector<sNode*>* params = node.value.funCallValue.params;
+        vector<sNode*>* params = node.value.funCallValue.params;
         
         foreach(it, params) {
             if(!compile(it, codes, info)) {
@@ -290,7 +290,7 @@ bool compile(sNode* node, gc_buffer* codes, sParserInfo* info) version 6
             }
         }
         
-        gc_map<char*, sNode*>* named_params = node.value.funCallValue.named_params;
+        map<char*, sNode*>* named_params = node.value.funCallValue.named_params;
         
         foreach(key, named_params) {
             sNode* item = named_params.at(key, null);
