@@ -10,9 +10,6 @@
 #define RE_DOTALL 7
 #define RE_VERBOSE 8
 
-static ZVALUE gNoneValue;
-static ZVALUE gUndefined;
-
 unsigned int ZVALUE_get_hash_key(ZVALUE self);
 bool ZVALUE::equals(ZVALUE self, ZVALUE right);
 bool ZVALUE::is(ZVALUE self, ZVALUE right);
@@ -1159,22 +1156,6 @@ void initialize_modules() version 1
     
     re_module.funcs.insert("findall", re_findall);
     
-/*
-    {
-        vector<char*>* param_names = new  vector<char*>.initialize();
-        
-        param_names.push_back(string("pattern"));
-        param_names.push_back(string("string"));
-        param_names.push_back(string("flags"));
-        
-        sFunction* re_search = new  sFunction.initialize("search", null, param_names);
-        
-        re_search.native_fun = native_re_search;
-        
-        re_module.funcs.insert("search", re_search);
-    }
-*/
-    
     sClass* match_class = add_class("Match", "", "__main__");
     
     {
@@ -1691,9 +1672,6 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info)
     }
     
     while((p - head) < (codes.length() / sizeof(int))) {
-//print_op(*p);
-//printf("stack_num %d\n", stack_num);
-//printf("byte codes point %d\n", p - head);
         switch(*p) {
             case OP_POP: {
                 p++;
@@ -1707,6 +1685,7 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info)
             case OP_INT_VALUE: {
                 p++;
                 int value = *p;
+printf("value %d\n", value);
                 p++;
                 
                 stack[stack_num].kind = kIntValue;

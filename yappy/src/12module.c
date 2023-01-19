@@ -1,6 +1,60 @@
 #include "common.h"
 #include <ctype.h>
 
+bool import_module(char* module_name)
+{
+    buffer*% source = new buffer.initialize();
+    
+    string fname = xsprintf("%s/%s.py", gDirName, module_name);
+    
+    read_source(fname, source).expect {
+        exit(1);
+    }
+    
+    sParserInfo info;
+    
+    string source2 = source.to_string();
+    
+    info.p = source2;
+    info.fname = fname;
+    info.sline = 1;
+    info.stack_num = 0;
+    info.in_global_context = true;
+    info.space_num = 0;
+    info.loop_head = -1;
+    
+    while(true) {
+        skip_spaces_until_eol(&info);
+        if(*info.p == '\n') {
+            info.p++;
+        }
+        else {
+            break;
+        }
+    }
+    
+    auto nodes = parse(&info, block_space_num:0);
+    
+    buffer*% codes = compile_nodes(nodes, &info);
+    
+    sVMInfo vm_info;
+    
+    memset(&vm_info, 0, sizeof(sVMInfo));
+    
+    vm_info.module_name = borrow string(module_name);
+    
+    add_module(module_name);
+    
+    vm(codes, null, &vm_info).expect {
+        print_exception(parent->vm_info->exception);
+        exit(1);
+    }
+    
+    delete vm_info.module_name;
+
+    return true;
+}
+
 static sNode* create_import_node(char* name, sParserInfo* info)
 {
     sNode* result = new  sNode;

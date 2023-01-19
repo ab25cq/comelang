@@ -57,10 +57,10 @@ static bool read_source(char* fname, buffer* source)
 
 static list<sNode*%>*% parse(sParserInfo* info, int block_space_num)
 {
-    auto nodes = new list<sNode*%>.initialize();
+    auto nodes = new list<sNode*>();
     
     while(*info->p) {
-        sNode%* node = nonullable null;
+        sNode* node = nonullable null;
         
         if(info.space_num < block_space_num) {
             break;
@@ -71,7 +71,7 @@ static list<sNode*%>*% parse(sParserInfo* info, int block_space_num)
             exit(2);
         }
         
-        nodes.push_back(node!);
+        nodes.push_back(node);
         
         if(*info->p == ';') {
             info->p++;
@@ -113,7 +113,7 @@ static list<sNode*%>*% parse(sParserInfo* info, int block_space_num)
         }
     }
     
-    return null;
+    return nodes;
 }
 
 list<sNode*%>*%? parse_block(sParserInfo* info)
@@ -193,60 +193,6 @@ void compile_block(buffer* codes, list<sNode*>* nodes, sParserInfo* info)
             exit(2);
         }
     }
-}
-
-bool import_module(char* module_name)
-{
-    buffer*% source = new buffer.initialize();
-    
-    string fname = xsprintf("%s/%s.py", gDirName, module_name);
-    
-    read_source(fname, source).expect {
-        exit(1);
-    }
-    
-    sParserInfo info;
-    
-    string source2 = source.to_string();
-    
-    info.p = source2;
-    info.fname = fname;
-    info.sline = 1;
-    info.stack_num = 0;
-    info.in_global_context = true;
-    info.space_num = 0;
-    info.loop_head = -1;
-    
-    while(true) {
-        skip_spaces_until_eol(&info);
-        if(*info.p == '\n') {
-            info.p++;
-        }
-        else {
-            break;
-        }
-    }
-    
-    auto nodes = parse(&info, block_space_num:0);
-    
-    buffer*% codes = compile_nodes(nodes, &info);
-    
-    sVMInfo vm_info;
-    
-    memset(&vm_info, 0, sizeof(sVMInfo));
-    
-    vm_info.module_name = borrow string(module_name);
-    
-    add_module(module_name);
-    
-    vm(codes, null, &vm_info).expect {
-        print_exception(parent->vm_info->exception);
-        exit(1);
-    }
-    
-    delete vm_info.module_name;
-
-    return true;
 }
 
 int main(int argc, char** argv)

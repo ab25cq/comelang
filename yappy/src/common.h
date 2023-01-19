@@ -162,11 +162,27 @@ void compile_block(buffer* codes, list<sNode*>* nodes, sParserInfo* info);
 
 bool import_module(char* module_name);
 
-/// vm.c ///
+
+/// node ///
+protocol sNode
+{
+    bool compile(buffer* codes, sParserInfo* info);
+};
+
+/// 01int.c ///
+bool expression(sNode** node, sParserInfo* info) version 1;
+sNode*? exp_node(sParserInfo* info) version 1;
+
+inline bool sNode*::equals(sNode* left, sNode* right)
+{
+    return left == right;
+}
+
 void initialize_modules() version 1;
 void finalize_modules() version 1;
 
-void add_module(char* module_name) ;
+extern ZVALUE gNoneValue;
+extern ZVALUE gUndefined;
 
 struct sVMInfo 
 {
@@ -175,148 +191,23 @@ struct sVMInfo
     
     char* module_name;
     char* class_name;
-};
-
-bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info);
-
-/// node ///
-protocol sNode
-{
-    bool compile(buffer* codes, sParserInfo* info);
-    unsigned int get_hash_key();
-};
-
-/// 01int.c ///
-
-bool expression(sNode** node, sParserInfo* info) version 1;
-sNode*? exp_node(sParserInfo* info) version 1;
-sNode*% create_int_node(int value, sParserInfo* info);
-
-/*
-struct sNode;
-
-struct sNode
-{
-    enum { kIntValueNode, kOpAdd, kOpSub, kStringValueNode, kPrint, kLen, kInt, kStr, kType, kExit, kReturn, kLoadVar, kStoreVar, kFun, kClass, kFunCall, kTrue, kFalse, kNone, kIf, kFor, kWhile, kContinue, kBreak, kOpEq, kOpNotEq, kOpDiv, kOpMult, kImport, kMethodCall, kLoadField, kStoreField, kListValueNode, kMapValueNode, kListIndexNode, kTupleValueNode, kOpAndAnd, kOpOrOr, kOpIs, kOpIsNot } kind;
     
-    char* fname;
-    int sline;
+    int* p;
+    int* head;
     
-    union {
-        int intValue;
-        
-        struct {
-            sNode* left
-            sNode* right
-            sNode* middle
-        } opValue;
-        
-        wchar_t* stringValue;
-        
-        list<sNode*>* listValue;
-        
-        map<sNode*, sNode*>* mapValue;
-        
-        struct {
-            char* var_name;
-            sNode* index_node;
-            sNode* index_node2;
-            sNode* index_node3;
-            bool in_global_context;
-        } indexValue;
-        
-        struct {
-            char* name;
-            sNode* right;
-            bool in_global_context;
-        } storeVarValue;
-        
-        struct {
-            char* name;
-            bool in_global_context;
-        } loadVarValue;
-        
-        struct {
-            char* name;
-            buffer* codes;
-            vector<char*>* param_names;
-        } funValue;
-        
-        struct {
-            char* name;
-            vector<sNode*>* params;
-            map<char*, sNode*>* named_params;
-        } funCallValue;
-        
-        struct {
-            sNode* if_exp;
-            list<sNode*>* if_nodes;
-            vector<sNode*>* elif_exps;
-            vector<list<sNode*>*>* elif_blocks;
-            list<sNode*>* else_nodes;
-        } ifValue;
-        
-        struct {
-            sNode* while_exp;
-            list<sNode*>* while_nodes;
-            list<sNode*>* else_nodes;
-        } whileValue;
-        
-        struct {
-            char* var_name;
-            list<sNode*>* for_nodes;
-            sNode* list_node;
-        } forValue;
-        
-        struct {
-            char* name;
-        } importValue;
-        
-        struct {
-            char* name;
-            sNode* left;
-            sNode* right;
-        } storeField;
-        
-        struct {
-            char* name;
-            sNode* left;
-        } loadField;
-        
-        struct {
-            char* name;
-            vector<sNode*>* params;
-            map<char*, sNode*>* named_params;
-            sNode* left;
-        } methodCallValue;
-        
-        struct {
-            char* name;
-            vector<sNode*>* methods;
-        } classValue;
-    } value;
+    ZVALUE stack[ZSTACK_MAX];
+    int stack_num;
 };
 
-sNode* sNode*::clone(sNode* self);
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 1;
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 99;
 
-inline unsigned int sNode*::get_hash_key(sNode* self)
-{
-    return self;
-}
-
-inline bool sNode*::equals(sNode* left, sNode* right)
-{
-    return left == right;
-}
-*/
-
-/*
 /// 02add.c ///
-sNode*? op_add_node(sParserInfo* info);
-
 bool expression(sNode** node, sParserInfo* info) version 2;
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 2;
 
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 98;
+
+/*
 /// 03str.c ///
 bool compile(sNode* node, buffer* codes, sParserInfo* info) version 3;
 
