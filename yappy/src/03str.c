@@ -1,28 +1,46 @@
 #include "common.h"
 #include <ctype.h>
 
-static sNode*? create_string_node(char* str, sParserInfo* info)
+class sStrNode(char* str)
 {
-    sNode*? result = nullable new  sNode;
+    wchar_t*% self.stringValue = wstring(str);
     
-    result!.kind = kStringValueNode;
+    unsigned int get_hash_key(sStrNode* self)
+    {
+        return self.get_hash_key();
+    }
     
-    result!.fname = info->fname;
-    result!.sline = info->sline;
-    result!.value.stringValue = wstring(str);
-    
-    return result;
+    bool compile(sStrNode* self, buffer* codes, sParserInfo* info)
+    {
+        codes.append_int(OP_STRING_VALUE);
+        
+        wchar_t* str = self.stringValue;
+        
+        int len = wcslen(str);
+        
+        codes.append_int(len);
+        codes.append((char*)str, sizeof(wchar_t)*len);
+        
+        info->stack_num++;
+        
+        return true;
+    }
+};
+
+sNode* method_node(sNode* node, sParserInfo* info) version 1
+{
+    return nonullable null;
 }
 
-sNode*? exp_node(sParserInfo* info) version 3
+sNode* exp_node(sParserInfo* info) version 3
 {
-    sNode*? result = inherit(info);
+    sNode* result = inherit(info);
     
     if(result == null) {
         if(*info->p == '"') {
             info->p++;
             
-            buffer* buf = new  buffer.initialize();
+            buffer* buf = new buffer.initialize();
             
             while(true) {
                 if(*info->p == '\0') {
@@ -52,7 +70,7 @@ sNode*? exp_node(sParserInfo* info) version 3
                 }
             }
             
-            result = create_string_node(buf.to_string(), info);
+            result = new sNode(new sStrNode(buf.to_string()));
             
             if(*info->p == '.') {
                 result = method_node(result!, info);
@@ -61,7 +79,7 @@ sNode*? exp_node(sParserInfo* info) version 3
         else if(*info->p == '\'') {
             info->p++;
             
-            buffer* buf = new  buffer.initialize();
+            buffer* buf = new buffer.initialize();
             
             while(true) {
                 if(*info->p == '\0') {
@@ -91,7 +109,7 @@ sNode*? exp_node(sParserInfo* info) version 3
                 }
             }
             
-            result = create_string_node(buf.to_string(), info);
+            result = new sNode(new sStrNode(buf.to_string()));
             
             if(*info->p == '.') {
                 result = method_node(result!, info);
@@ -102,23 +120,39 @@ sNode*? exp_node(sParserInfo* info) version 3
     return result;
 }
 
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 3
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 97
 {
-    inherit(node, codes, info);
-    
-    if(node.kind == kStringValueNode) {
-        codes.append_int(OP_STRING_VALUE);
+    bool result = false;
+    switch(*info->p) {
+        case OP_STRING_VALUE: {
+            info->p++;
+            
+            int len = *info->p;
+            info->p++;
+            
+            wchar_t* str = (wchar_t*)info->p;
+            
+            wchar_t* str2 = new wchar_t[len+1];
+            memcpy(str2, str, sizeof(wchar_t)*len);
+            str2[len] = '\0'
+            
+printf("OP_STRING_VALUE %ls\n", str2);
+            
+            info->p += len;
         
-        wchar_t* str = node.value.stringValue;
-        
-        int len = wcslen(str);
-        
-        codes.append_int(len);
-        codes.append((char*)str, sizeof(wchar_t)*len);
-        
-        info->stack_num++;
+            info->stack[info->stack_num].kind = kStringValue;
+            info->stack[info->stack_num].stringValue = str2;
+            info->stack_num++;
+            }
+            break;
+            
+        default:
+            result = inherit(codes, params, info);
+            if(!result) {
+                return false;
+            }
+            break;
     }
     
     return true;
 }
-

@@ -48,11 +48,6 @@ bool expression(sNode** node, sParserInfo* info) version 1
     return true;
 }
 
-bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 1
-{
-    return true;
-}
-
 ZVALUE gNoneValue;
 ZVALUE gUndefined;
 
@@ -71,7 +66,7 @@ void finalize_modules() version 1
 {
 }
 
-bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 99
+void vm_init(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info)
 {
     info->stack_num = 0;
     info->return_value = gNoneValue;
@@ -99,6 +94,16 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 99
             vtable.insert(string(key), item);
         }
     }
+}
+
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 1
+{
+    return true;
+}
+
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 99
+{
+    bool result = false;
     
     while((info->p - info->head) < (codes.length() / sizeof(int))) {
         switch(*info->p) {
@@ -125,7 +130,11 @@ printf("OP_INT_VALUE %d\n", value);
                 break;
                 
             default:
-                return inherit(codes, params, info);
+                result = inherit(codes, params, info);
+                if(!result) {
+                    return false;
+                }
+                break;
         }
         
         if(info->stack_num < 0 || info->stack_num >= ZSTACK_MAX) {

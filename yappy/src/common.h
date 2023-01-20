@@ -199,6 +199,7 @@ struct sVMInfo
     int stack_num;
 };
 
+void vm_init(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info);
 bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 1;
 bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 99;
 
@@ -207,12 +208,13 @@ bool expression(sNode** node, sParserInfo* info) version 2;
 
 bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 98;
 
-/*
 /// 03str.c ///
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 3;
-
 sNode*? exp_node(sParserInfo* info) version 3;
+sNode* method_node(sNode* node, sParserInfo* info) version 1;
 
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 97;
+
+/*
 /// 04print.c ///
 bool wordcmp(char* p, char* word2);
 
