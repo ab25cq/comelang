@@ -4208,7 +4208,7 @@ DESTDIR=$myprefix
 
 
 
-OBJS="src/main.o src/01int.o src/02add.o src/type.o"
+OBJS="src/main.o src/01int.o src/02add.o src/03str.o src/type.o"
 #OBJS="src/main.o src/01int.o src/02add.o src/03str.o src/04print.o src/05var.o src/06fun.o src/07bool.o src/08if.o src/09comment.o src/10while.o src/11op.o src/12module.o src/13list.o src/vm.o src/type.o"
 
 ac_fn_c_check_func "$LINENO" "execvpe" "ac_cv_func_execvpe"

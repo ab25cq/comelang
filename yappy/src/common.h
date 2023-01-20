@@ -149,8 +149,42 @@ struct sVar
 #define OP_IS 38
 #define OP_IS_NOT 39
 
-/// main.c ///
+typedef bool (*fNativeFun)(map<string, ZVALUE>* params, sVMInfo* info);
 
+struct sFunction
+{
+    string name;
+    buffer* codes;
+    fNativeFun native_fun;
+    vector<string>* param_names;
+};
+
+struct sClass
+{
+    string name;
+    string module_name;
+    buffer* codes;
+    
+    map<string, ZVALUE>* class_vars;
+    map<string, sFunction*%>* funcs;
+};
+
+struct sModule
+{
+    char* name;
+    map<char*, sFunction*>* funcs;
+    map<char*, ZVALUE>* global_vars;
+    map<char*, sClass*>* classes;
+};
+
+struct sObject
+{
+    sClass* klass;
+    sModule* module;
+    map<char*, ZVALUE>* fields;
+};
+
+/// main.c ///
 protocol sNode;
 
 void skip_spaces(sParserInfo* info);
@@ -214,62 +248,12 @@ sNode* method_node(sNode* node, sParserInfo* info) version 1;
 
 bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 97;
 
-/*
 /// 04print.c ///
-bool wordcmp(char* p, char* word2);
+sNode* exp_node(sParserInfo* info) version 4;
 
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 4;
+unsigned int ZVALUE::get_hash_key(ZVALUE self);
+bool ZVALUE::equals(ZVALUE self, ZVALUE right);
 
-sNode*? exp_node(sParserInfo* info) version 4;
+bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 96;
 
-/// 05var.c ///
-sNode*? exp_node(sParserInfo* info) version 5;
-sNode*? fun_node(char* fun_name, sParserInfo* info) version 5;   // implemented after layer
-sNode*? def_node(sParserInfo* info) version 5;   // implemented after layer
-sNode*? class_node(sParserInfo* info) version 5;   // implemented after layer
-sNode*? index_node(char* var_name, sParserInfo* info) version 5;   // implemented after layer
 
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 5;
-
-sPyType* parse_type(sParserInfo* info);
-
-/// 06fun.c ///
-sNode*? fun_node(char* fun_name, sParserInfo* info) version 6;
-sNode*? def_node(sParserInfo* info) version 6;
-sNode*? class_node(sParserInfo* info) version 6;   // implemented after layer
-
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 6;
-
-/// 07bool.c ///
-sNode*? exp_node(sParserInfo* info) version 7;
-
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 7;
-
-/// 08if.c ///
-sNode*? exp_node(sParserInfo* info) version 8;
-
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 8;
-
-/// 09comment.c ///
-bool expression(sNode** node, sParserInfo* info) version 99;
-
-/// 10while.c ///
-sNode*? exp_node(sParserInfo* info) version 10;
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 10;
-
-/// 11op.c ///
-bool expression(sNode** node, sParserInfo* info) version 11;
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 11;
-
-/// 12module.c ///
-sNode*? exp_node(sParserInfo* info) version 12;
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 12;
-
-sNode*? method_node(sNode* node, sParserInfo* info);
-
-/// 13list.c ///
-sNode*? exp_node(sParserInfo* info) version 13;
-bool compile(sNode* node, buffer* codes, sParserInfo* info) version 13;
-
-sNode*? index_node(char* var_name, sParserInfo* info) version 13;
-*/

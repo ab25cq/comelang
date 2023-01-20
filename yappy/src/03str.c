@@ -5,11 +5,6 @@ class sStrNode(char* str)
 {
     wchar_t*% self.stringValue = wstring(str);
     
-    unsigned int get_hash_key(sStrNode* self)
-    {
-        return self.get_hash_key();
-    }
-    
     bool compile(sStrNode* self, buffer* codes, sParserInfo* info)
     {
         codes.append_int(OP_STRING_VALUE);
@@ -122,7 +117,6 @@ sNode* exp_node(sParserInfo* info) version 3
 
 bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 97
 {
-    bool result = false;
     switch(*info->p) {
         case OP_STRING_VALUE: {
             info->p++;
@@ -136,8 +130,6 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 97
             memcpy(str2, str, sizeof(wchar_t)*len);
             str2[len] = '\0'
             
-printf("OP_STRING_VALUE %ls\n", str2);
-            
             info->p += len;
         
             info->stack[info->stack_num].kind = kStringValue;
@@ -146,10 +138,11 @@ printf("OP_STRING_VALUE %ls\n", str2);
             }
             break;
             
-        default:
-            result = inherit(codes, params, info);
+        default: {
+            bool result = inherit(codes, params, info);
             if(!result) {
                 return false;
+            }
             }
             break;
     }

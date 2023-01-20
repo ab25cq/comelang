@@ -5,11 +5,6 @@ class sIntNode(int value)
 {
     int self.intValue = value;
     
-    unsigned int get_hash_key(sIntNode* self)
-    {
-        return self.intValue;
-    }
-    
     bool compile(sIntNode* self, buffer* codes, sParserInfo* info)
     {
         codes.append_int(OP_INT_VALUE);
@@ -101,11 +96,147 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 1
     return true;
 }
 
+void print_op(int op)
+{
+    switch(op) {
+        case OP_POP:
+            puts("OP_POP");
+            break;
+        case OP_STORE_FIELD:
+            puts("OP_STORE_FIELD");
+            break;
+            
+        case OP_EQ:
+            puts("OP_EQ");
+            break;
+            
+        case OP_ANDAND:
+            puts("OP_ANDAND");
+            break;
+            
+        case OP_OROR:
+            puts("OP_OROR");
+            break;
+            
+        case OP_CLASS:
+            puts("OP_CLASS");
+            break;
+                
+        case OP_INT_VALUE: 
+            puts("OP_INT_VALUE");
+            break;
+                
+        case OP_ADD: 
+            puts("OP_ADD");
+            break;
+                
+        case OP_SUB:
+            puts("OP_SUB");
+            break;
+                 
+        case OP_STRING_VALUE:
+            puts("OP_STRING_VALUE");
+            break;
+                 
+        case OP_STR:
+            puts("OP_STR");
+            break;
+                 
+        case OP_TYPE:
+            puts("OP_TYPE");
+            break;
+                
+        case OP_PRINT: 
+            puts("OP_PRINT");
+            break;
+                
+        case OP_LEN: 
+            puts("OP_LEN");
+            break;
+                
+        case OP_INT: 
+            puts("OP_INT");
+            break;
+                
+        case OP_LOAD: 
+            puts("OP_LOAD");
+            break;
+                
+        case OP_STORE: 
+            puts("OP_STORE");
+            break;
+                
+        case OP_FUNCALL:
+            puts("OP_FUNCALL");
+            break;
+            
+        case OP_METHOD_CALL:
+            puts("OP_METHOD_CALL");
+            break;
+                
+        case OP_BOOL_VALUE: 
+            puts("OP_BOOL_VALUE");
+            break;
+            
+        case OP_NONE_VALUE: 
+            puts("OP_NONE_VALUE");
+            break;
+                
+        case OP_GOTO: 
+            puts("OP_GOTO");
+            break;
+                
+        case OP_IF: 
+            puts("OP_IF");
+            break;
+            
+        case OP_EXIT: 
+            puts("OP_EXIT");
+            break;
+            
+        case OP_RETURN: 
+            puts("OP_RETURN");
+            break;
+            
+        case OP_FUN: 
+            puts("OP_FUN");
+            break;
+            
+        case OP_LOAD_FIELD:
+            puts("OP_LOAD_FIELD");
+            break;
+            
+        case OP_LOAD_FIELD:
+            puts("OP_STORE_FIELD");
+            break;
+            
+        case OP_LIST_VALUE:
+            puts("OP_LIST_VALUE");
+            break;
+            
+        case OP_MAP_VALUE:
+            puts("OP_MAP_VALUE");
+            break;
+            
+        case OP_TUPLE_VALUE:
+            puts("OP_TUPLE_VALUE");
+            break;
+            
+        case OP_LIST_INDEX:
+            puts("OP_LIST_INDEX");
+            break;
+                
+        default:
+            printf("invalid op code %d\n", op);
+            break;
+    }
+}
+
 bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 99
 {
-    bool result = false;
-    
     while((info->p - info->head) < (codes.length() / sizeof(int))) {
+printf("p %d max %d\n", info->p - info->head, codes.length() /sizeof(int));
+print_op(*info->p);
         switch(*info->p) {
             case OP_POP: {
                 info->p++;
@@ -121,18 +252,17 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 99
                 int value = *info->p;
                 info->p++;
                 
-printf("OP_INT_VALUE %d\n", value);
-                
                 info->stack[info->stack_num].kind = kIntValue;
                 info->stack[info->stack_num].value.intValue = value;
                 info->stack_num++;
                 }
                 break;
                 
-            default:
-                result = inherit(codes, params, info);
+            default: {
+                bool result = inherit(codes, params, info);
                 if(!result) {
                     return false;
+                }
                 }
                 break;
         }

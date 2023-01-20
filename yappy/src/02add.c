@@ -104,7 +104,6 @@ bool expression(sNode** node, sParserInfo* info) version 2
 
 bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 98
 {
-    bool result = false;
     switch(*info->p) {
         case OP_ADD: {
             info->p++;
@@ -124,7 +123,6 @@ bool vm(buffer* codes, map<char*, ZVALUE>* params, sVMInfo* info) version 98
                 case kIntValue:
                     info->stack[info->stack_num].kind = kIntValue;
                     info->stack[info->stack_num].value.intValue = lvalue.intValue + rvalue.intValue;
-printf("OP_ADD %d\n", info->stack[info->stack_num].value.intValue);
                     info->stack_num++;
                     break;
                     
@@ -209,10 +207,11 @@ printf("OP_ADD %d\n", info->stack[info->stack_num].value.intValue);
             }
             break;
             
-        default:
-            result = inherit(codes, params, info);
+        default: {
+            bool result = inherit(codes, params, info);
             if(!result) {
                 return false;
+            }
             }
             break;
     }
