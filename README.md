@@ -85,7 +85,7 @@ int main()
         printf("%d\n", it);       // 2\n3\n
     }
     
-    list<char*>*% li2 = ["1", "2", "3", "4", "5"]
+    list<char*>* li2 = ["1", "2", "3", "4", "5"]
 
     li2.map { atoi(it); }.filter { it > 3; }.each { printf("%d\n", it); }  // 4\n5\n
     
@@ -123,7 +123,7 @@ int main()
     xassert("operator overload test2", [1,2] + [3] === [1,2,3]);
     xassert("operator overload test3", [1,2] * 2 === [1,2,1,2]);
     
-    list<int>*% z = [1,2,3];
+    list<int>* z = [1,2,3];
     
     xassert("operator overload test", z[0] == 1 && z[1] == 2 && z[2] == 3);
     
@@ -131,7 +131,7 @@ int main()
     
     xassert("operator overload test", z[0] == 1 && z[1] == 22 && z[2] == 3);
     
-    map<char*, int>*% zz = ["AAA":1, "BBB":2, "CCC":3];
+    map<char*, int>* zz = ["AAA":1, "BBB":2, "CCC":3];
     
     xassert("operator overload test", zz["AAA"] == 1 && z["BBB"] == 22 && z["CCC"] == 3);
     
