@@ -1,14 +1,16 @@
-#include <neo-c.h>
+#include "src/common.h"
 
-int main()
+int main(int argc, char** argv)
 {
-    int len = 111;
-    char* var_name = (char*)"ABC";
+    char module_name3[PATH_MAX];
     
-    char var_name2[1042];
-    memcpy(var_name2, var_name, len);
-    var_name2[len] = '\0'
+    char* p = module_name3 + strlen(module_name3);
+    while(p >= module_name3) {
+        if(*p == '.') {
+            *p = '\0';
+            break;
+        }
+    }
     
     return 0;
 }
-

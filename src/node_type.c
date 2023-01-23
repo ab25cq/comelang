@@ -1433,6 +1433,9 @@ BOOL is_left_type_bigger_size(sNodeType* left_type, sNodeType* right_type)
     else if(type_identify_with_class_name(left_type, "long") && !type_identify_with_class_name(right_type, "long")) {
         return TRUE;
     }
+    else if(left_type->mPointerNum > 0 && !type_identify_with_class_name(right_type, "long")) {
+        return TRUE;
+    }
     else if(type_identify_with_class_name(left_type, "int")) {
         if(type_identify_with_class_name(right_type, "float")) {
             return FALSE;

@@ -5093,6 +5093,29 @@ BOOL compile_load_variable(unsigned int node, sCompileInfo* info)
         info->type = clone_node_type(var_type);
     }
     else if(var_type->mArrayDimentionNum >= 1 || var_type->mDynamicArrayNum != 0) {
+/*
+        sNodeType* node_type = clone_node_type(var_type);
+        node_type->mPointerNum++;
+        node_type->mArrayDimentionNum = 0;
+        node_type->mDynamicArrayNum = 0;
+        
+        LVALUE llvm_value = var_->mLLVMValue;
+        
+        if(!cast_right_type_to_left_type(var_type, &node_type, &llvm_value, info))
+        {
+            compile_err_msg(info, "Cast failed");
+            return TRUE;
+        }
+
+
+        llvm_value.type = node_type;
+        llvm_value.address = var_address;
+        llvm_value.var = var_;
+
+        push_value_to_stack_ptr(&llvm_value, info);
+
+        info->type = clone_node_type(node_type);
+*/
         llvm_value.value = var_address;
 
         llvm_value.type = var_type;
@@ -7424,27 +7447,32 @@ BOOL compile_load_element(unsigned int node, sCompileInfo* info)
                     element_value = LLVMBuildLoad2(gBuilder, create_llvm_type_from_node_type(element_type), load_element_addresss, "elementKKK");
                 }
                 else {
+                    sNodeType* node_type = clone_node_type(element_type);
+                    
                     LLVMValueRef indices[2];
                 
                     indices[0] = LLVMConstInt(LLVMInt32Type(), 0, FALSE);
                     indices[1] = rvalue[0].value;
-            
+                    
                     if(type_identify_with_class_name(lvalue.type, "float") || type_identify_with_class_name(lvalue.type, "double") || type_identify_with_class_name(lvalue.type, "fp128"))
                     {
-                        load_element_addresss = LLVMBuildCast(gBuilder, LLVMFPToUI, lvalue.address, create_llvm_type_from_node_type(element_type), "castLEX");
-                        load_element_addresss = LLVMBuildGEP2(gBuilder, create_llvm_type_from_node_type(element_type), lvalue.address, indices, 2, "gepOL");
+                        load_element_addresss = LLVMBuildCast(gBuilder, LLVMFPToUI, lvalue.address, create_llvm_type_from_node_type(node_type), "castLEX");
+                        load_element_addresss = LLVMBuildGEP2(gBuilder, create_llvm_type_from_node_type(node_type), lvalue.address, indices, 2, "gepOL");
                     }
                     else {
-                        load_element_addresss = LLVMBuildGEP2(gBuilder, create_llvm_type_from_node_type(element_type), lvalue.address, indices, 2, "gepOL");
+                        load_element_addresss = LLVMBuildGEP2(gBuilder, create_llvm_type_from_node_type(node_type), lvalue.address, indices, 2, "gepOL");
                     }
             
+/*
                     if(getting_refference) {
                         element_value = NULL;
                     }
                     else {
+*/
                         element_type->mArrayDimentionNum = 0;
+                        element_type->mDynamicArrayNum = 0;
                         element_value = LLVMBuildLoad2(gBuilder, create_llvm_type_from_node_type(element_type), load_element_addresss, "elementXXX");
-                    }
+//                    }
                 }
         
                 LVALUE llvm_value;

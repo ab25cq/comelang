@@ -1143,7 +1143,7 @@ BOOL compile_equals(unsigned int node, sCompileInfo* info)
 
     LVALUE rvalue = *get_value_from_stack(-1);
 
-    if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+    if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0) 
     {
         sNodeType* node_type = clone_node_type(left_type);
         left_type = create_node_type_with_class_name("int");
@@ -1243,7 +1243,7 @@ BOOL compile_equals2(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0) 
         {
             sNodeType* node_type = clone_node_type(left_type);
             left_type = create_node_type_with_class_name("int");
@@ -1333,7 +1333,7 @@ BOOL compile_not_equals(unsigned int node, sCompileInfo* info)
 
     LVALUE rvalue = *get_value_from_stack(-1);
     
-    if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+    if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0) 
     {
         sNodeType* node_type = clone_node_type(left_type);
         left_type = create_node_type_with_class_name("int");
@@ -1433,7 +1433,7 @@ BOOL compile_not_equals2(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0) 
         {
             sNodeType* node_type = clone_node_type(left_type);
             left_type = create_node_type_with_class_name("int");
@@ -1535,7 +1535,7 @@ BOOL compile_gteq(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0 && left_type->mNoArrayPointerNum == 0) 
         {
             sNodeType* node_type = clone_node_type(left_type);
             left_type = create_node_type_with_class_name("int");
@@ -1640,7 +1640,7 @@ BOOL compile_leeq(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0) 
         {
             sNodeType* node_type = clone_node_type(left_type);
             left_type = create_node_type_with_class_name("int");
@@ -1745,7 +1745,7 @@ BOOL compile_gt(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0) 
         {
             sNodeType* node_type = clone_node_type(left_type);
             left_type = create_node_type_with_class_name("int");
@@ -1850,7 +1850,7 @@ BOOL compile_le(unsigned int node, sCompileInfo* info)
     }
     
     if(!found) {
-        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short"))) 
+        if(!left_type->mUnsigned && (type_identify_with_class_name(left_type, "char") || type_identify_with_class_name(left_type, "short")) && left_type->mPointerNum == 0) 
         {
             sNodeType* node_type = clone_node_type(left_type);
             left_type = create_node_type_with_class_name("int");
