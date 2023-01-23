@@ -2468,13 +2468,7 @@ BOOL compile_store_element(unsigned int node, sCompileInfo* info)
             
             sNodeType* array_type = clone_node_type(left_type);
             
-/*
             for(i=0; i<num_dimention; i++) {
-                if(array_type->mArrayDimentionNum == 0) {
-                    LLVMTypeRef llvm_type = create_llvm_type_from_node_type(array_type);
-                    element_address = LLVMBuildLoad2(gBuilder, llvm_type, element_address, "element_addressABC");
-                }
-                
                 if(array_type->mArrayDimentionNum > 0) {
                     LLVMTypeRef llvm_type = create_llvm_type_from_node_type(array_type);
                     
@@ -2493,44 +2487,7 @@ BOOL compile_store_element(unsigned int node, sCompileInfo* info)
                 }
                 else {
                     array_type->mPointerNum--;
-                    LLVMTypeRef llvm_type = create_llvm_type_from_node_type(array_type);
                     
-                    LLVMValueRef indices[2];
-                    
-                    indices[0] = mvalue[i].value;
-                    
-                    
-                    element_address = LLVMBuildGEP2(gBuilder, llvm_type, element_address, indices,  1, "element_addressXY");
-                }
-            }
-*/
-            for(i=0; i<num_dimention; i++) {
-/*
-                if(array_type->mArrayDimentionNum == 0) {
-                    array_type->mPointerNum--;
-                    LLVMTypeRef llvm_type = create_llvm_type_from_node_type(array_type);
-                    element_address = LLVMBuildLoad2(gBuilder, llvm_type, element_address, "element_addressABX");
-                }
-*/
-                
-                if(array_type->mArrayDimentionNum > 0) {
-                    LLVMTypeRef llvm_type = create_llvm_type_from_node_type(array_type);
-                    
-                    LLVMValueRef indices[2];
-                    
-                    indices[0] = LLVMConstInt(LLVMInt32Type(), 0, FALSE);
-                    indices[1] = mvalue[i].value;
-                    
-                    element_address = LLVMBuildGEP2(gBuilder, llvm_type, element_address, indices,  2, "element_addressX");
-                    array_type->mArrayDimentionNum--;
-                    
-                    int j;
-                    for(j=0; j<array_type->mArrayDimentionNum; j++) {
-                        array_type->mArrayNum[j] = array_type->mArrayNum[j+1];
-                    }
-                }
-                else {
-                    array_type->mPointerNum--;
                     LLVMTypeRef llvm_type = create_llvm_type_from_node_type(array_type);
                     
                     LLVMValueRef indices[2];
@@ -2538,6 +2495,9 @@ BOOL compile_store_element(unsigned int node, sCompileInfo* info)
                     indices[0] = mvalue[i].value;
                     
                     element_address = LLVMBuildGEP2(gBuilder, llvm_type, element_address, indices,  1, "element_addressXYXY");
+                    if(num_dimention > 0 && i != num_dimention-1) {
+                        element_address = LLVMBuildLoad2(gBuilder, llvm_type, element_address, "element_addressXYXYABAB");
+                    }
                 }
             }
     
@@ -6702,8 +6662,8 @@ BOOL compile_load_field(unsigned int node, sCompileInfo* info)
         }
 
         llvm_value.type = clone_node_type(field_type);
-        llvm_value.address = field_address;
         llvm_value.var = lvalue.var;
+        llvm_value.address = field_address;
 
         dec_stack_ptr(1, info);
         push_value_to_stack_ptr(&llvm_value, info);
