@@ -5085,7 +5085,6 @@ BOOL compile_block(sNodeBlock* block, BOOL force_hash_result, sCompileInfo* info
                 llvm_value = *get_value_from_stack(-1);
             }
             else if(gNCCome && i == block->mNumNodes -1 && function_body && !(type_identify_with_class_name(gComeFunctionResultType, "void") && gComeFunctionResultType->mPointerNum == 0) && type_identify_with_class_name(info->type, "void") && info->type->mPointerNum == 0 && gNodes[node].mNodeType != kNodeTypeReturn && gNodes[node].mNodeType != kNodeTypeGoto)
-            
             {
                 compile_err_msg(info, "require function result value");
                 return FALSE;
@@ -5110,47 +5109,24 @@ BOOL compile_block(sNodeBlock* block, BOOL force_hash_result, sCompileInfo* info
                         return FALSE;
                     }
                     
+                    LVALUE llvm_value = *get_value_from_stack(-1);
+                    
+                    if(!is_generics_type(gComeFunctionResultType) && !is_method_generics_type(gComeFunctionResultType) && !(type_identify_with_class_name(gComeFunctionResultType, "void") && gComeFunctionResultType->mPointerNum == 0))
+                    {
+                        if(!substitution_posibility(gComeFunctionResultType, info->return_result_type, &llvm_value, info))
+                        {
+                            compile_err_msg(info, "The different type between left type and right type.");
+                            puts("return_type");
+                            show_node_type_one_line(gComeFunctionResultType);
+                            puts("right_type");
+                            show_node_type_one_line(info->return_result_type);
+                            return TRUE;
+                        }
+                    }
+                    
                     last_expression_is_return = TRUE;
                 }
             }
-/*
-            else if(has_result && i == block->mNumNodes -1) {
-                if(function_body) {
-                    if(!(type_identify_with_class_name(gComeFunctionResultType, "void") 
-                        && gComeFunctionResultType->mPointerNum == 0) 
-                        && type_identify_with_class_name(info->type, "void")
-                        && info->type->mPointerNum == 0)
-                    {
-                        compile_err_msg(info, "require return value");
-                        show_node_type(info->type);
-                        return FALSE;
-                    }
-                    else if(
-                        !(type_identify_with_class_name(
-                            gComeFunctionResultType, "void") 
-                        && gComeFunctionResultType->mPointerNum == 0 
-                        && !gComeFunctionResultType->mMethodGenericsResult)
-                        && gNodes[node].mNodeType != kNodeTypeReturn 
-                        && gNodes[node].mNodeType != kNodeTypeGoto) 
-                    {
-                        dec_stack_ptr(1, info);
-                        
-                        node = sNodeTree_create_return(node, info->pinfo);
-                        
-                        if(!compile(node, info)) {
-                            if(gNCType && !gNCGlobal && !gNCFunction && !gNCClass && !gNCTypedef) {
-                                show_node_type(info->type);
-                                gNCType = FALSE;
-                            }
-                            info->pinfo->lv_table = old_table;
-                            return FALSE;
-                        }
-                        
-                        last_expression_is_return = TRUE;
-                    }
-                }
-            }
-*/
             else {
                 if(gNodes[node].mNodeType == kNodeTypeReturn) {
                     last_expression_is_return = TRUE;
