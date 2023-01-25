@@ -247,10 +247,11 @@ fi
 
 AC_HAVE_LIBRARY(rt, [ LIBS="$LIBS -lrt"; ], [])
 
-if which /opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15
+if which /opt/homebrew/Cellar/llvm/15.*/bin/clang-15
 then
     echo Darwin-clang
-    CC=/opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15
+    CC=$(ls /opt/homebrew/Cellar/llvm/15.*/bin/clang-15)
+    CLANG=$(ls /opt/homebrew/Cellar/llvm/15.*/bin/clang-15)
 elif test `uname -s` = "Darwin"; then
     CC=clang
 elif which clang-11 2> /dev/null
@@ -305,13 +306,13 @@ echo checking for llvm-config...
 
 export PATH=$PATH:/opt/homebrew/opt/llvm/bin
 
-if ls /opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15 1> /dev/null 2>/dev/null
+if ls /opt/homebrew/Cellar/llvm/15.*/bin/clang-15 1> /dev/null 2>/dev/null
 then
     CFLAGS=`/opt/homebrew/opt/llvm/bin/llvm-config --cflags | tr '\n' ' '`" $CFLAGS"
     CXXFLAGS=`/opt/homebrew/opt/llvm/bin/llvm-config --cxxflags --ldflags --system-libs --libs core | tr '\n' ' '`" $CXXFLAGS"
     LLVM_VERSION=`/opt/homebrew/opt/llvm/bin/llvm-config --version | sed 's/\([[0-9]]*\)\.[[0-9]]*\.[[0-9]]*/\1/'`
     CFLAGS="$CFLAGS -DLLVM_VERSION=$LLVM_VERSION"
-    CFLAGS=$CFLAGS' -DCLANG="\"/opt/homebrew/Cellar/llvm/15.0.6/bin/clang-15\""'
+    CFLAGS=$CFLAGS' -DCLANG="\"'$CLANG'\""'
     echo home-brew-ok
 elif which llvm-config-11 1> /dev/null 2>/dev/null
 then

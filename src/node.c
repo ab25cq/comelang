@@ -3845,7 +3845,7 @@ BOOL cast_right_type_to_left_type(sNodeType* left_type, sNodeType** right_type, 
                 rvalue->value = LLVMBuildGEP2(gBuilder, create_llvm_type_with_class_name("void*"), rvalue->address, indices, 2, "gepXYZ");
             }
             else {
-                rvalue->value = LLVMBuildGEP2(gBuilder, create_llvm_type_with_class_name("void*"),brvalue->value, indices, 2, "gepYZY");
+                rvalue->value = LLVMBuildGEP2(gBuilder, create_llvm_type_with_class_name("void*"), rvalue->value, indices, 2, "gepYZY");
             }
 
             rvalue->type = clone_node_type(left_type);
