@@ -8,7 +8,7 @@ Modern C compiler. It has a collection and string library using Boehm GC or Reff
 
 version 1.0.5
 
-```
+``` C
 #include <neo-c.h>
 
 int fun(int x=123, int y = 234, int z = 345) 
@@ -703,7 +703,7 @@ bufferもあります。
 
 sample
 
-```
+``` C
 #include <neo-c.h>
 
 int main()
@@ -800,7 +800,7 @@ int main()
 
 # Default parametor values, parametor labels
 
-```
+``` C
 #include<stdio.h>
 
 int fun(int x = 123, int y = 345, int z = 456) 
@@ -908,7 +908,7 @@ fun finish
 
 # -e command option
 
-```
+``` C
 > ls
 a.c
 b.c
@@ -923,7 +923,7 @@ a.c,b.c,c.c
 
 # extra, file
 
-```
+``` C
 list<string>*% FILE*::readlines(FILE* f);
 string FILE*::read(FILE* f);
 FILE* FILE*::fprintf(FILE* f, const char* msg, ...);
@@ -940,7 +940,7 @@ string char*::strip(string self);
 ```
 
 
-```
+``` C
 
 stdin.readlines().map { it.strip(); }.join(",").printf("[%s]\n");
 
@@ -974,7 +974,7 @@ list, vector, map, bufferもそのように設計されています。immutable�
 immutableとmutableは相互に代入することができます。ただ、immutable指定された変数にmutalbe指定された関数が呼び出せないだけです。
 
 
-```
+``` C
 struct vector<T> 
 {
     T* items;
@@ -991,7 +991,7 @@ impl vector<T>
 }
 ```
 
-```
+``` C
 immutable vector<int>*% li = [1,2,3].to_immutable();
 li.push_back(4);
 ```
@@ -1002,14 +1002,14 @@ is compile error.
 
 varはmutable, valはimmutableになります。
 
-```
+``` C
 var v = [1,2,3];      /// v is mutable
 val v2 = [1,2,3];     /// v2 is immutable
 ```
 
 # operator overloads
 
-```
+``` C
 string char*::operator_mult(char* str, int n);
 string string::operator_mult(char* str, int n);
 bool char*::operator_equals(char* left, char* right);
@@ -1027,7 +1027,7 @@ bool string::operator_equals(char* left, char* right);
     ma1["CCC"] = 3
 ```
 
-```
+``` C
 + operator_add
 - operator_sub
 * operator_mult
@@ -1052,7 +1052,7 @@ bool string::operator_equals(char* left, char* right);
 
 # Guarding from the segmetation of null poiner
 
-```
+``` C
     //int* a = null;   /// compile error
     
     int*? a = null;
@@ -1072,7 +1072,7 @@ bool string::operator_equals(char* left, char* right);
     b = *(nonullable a);
 ```
 
-```
+``` C
 #include <neo-c.h>
 
 int main(int argc, char** argv)
@@ -1096,7 +1096,7 @@ Mixin-layers is a programming technique that creates an application so that laye
 
 mixin-layersとはレイヤーを重ねるようにアプリケーションを作るプログラミング技法で、仕組み的には関数の上書きを許して、上書きされた関数を上書きした関数から呼び出せるというものです。
 
-```
+``` C
 #include <stdio.h>
 
 int fun(char* str) version 1
@@ -1131,7 +1131,7 @@ int main()
 
 # Annotation
 
-```
+``` C
 int fun(bool flag) 
 {
     if(flag) {
@@ -1154,7 +1154,7 @@ int main()
 
 # Reflection
 
-```
+``` C
 > vim a.c
 struct sB {
     int a;
@@ -1176,7 +1176,7 @@ neo-c type file name outputs the type of last expression and the type inner cont
 
 neo-c type ファイル名で最後の式の型とその内容を出力することができます。これはリフレクションで便利です。プログラムを生成するプログラムを任意のスクリプト言語やneo-c自身で作ることができるでしょう。
 
-```
+``` C
 > vim a.c
 int gGlobal1;
 int gGlobal2;
@@ -1185,7 +1185,7 @@ gGlobal1 int
 gGlobal2 int
 ```
 
-```
+``` C
 > vim a.c
 int fun(int a, int b)
 {
@@ -1205,7 +1205,7 @@ fun2 extern 0 var args 0 gnerics function 0 num params 0
 result type int
 ```
 
-```
+``` C
 > vim a.c
 struct sA 
 {
@@ -1223,7 +1223,7 @@ kA 0
 kB 1
 ```
 
-```
+``` C
 > vim a.c
 typedef int tType;
 typedef int tType2;
@@ -1234,7 +1234,7 @@ tType2 int
 
 9. MACRO
 
-~~~
+~~~ C
 ```
 ruby <<EOS
     puts("int gGlobal2;");
@@ -1252,17 +1252,20 @@ Do not expand macros with the -n option.
 
 Compile Time Reflection and code generation is below:
 
-~~~
+~~~ shell
 > vim g.c
+~~~
+
+``` C
 int gGlobal;
 
 
-```
 ruby <<EOS
     type = "`neo-c -n global $SOURCE_NAME | grep gGlobal`".split()[1];
     puts(type + " gGlobal2;");
 EOS
 ```
+~~~ shell
 > neo-c global g.c
 gGlobal int
 gGlobal2 int
@@ -1278,7 +1281,7 @@ The default heap system is boehmGC. And incremental GC is enabled.
 
 # Original Heap System(Incremental GC)
 
-```
+``` C
 puts(xsprintf("1 + 1 == %d\n", 1 + 1));
 ```
 
@@ -1287,7 +1290,7 @@ xsprintfはヒープを使ったメモリが生成されますが、右辺値な
 
 次のルールは%をつけた変数に代入されたヒープを生成する関数やnewなどのメモリはブロックの脱出後にリファレンスカウントが-1されます。
 
-```
+``` C
 char*% str = new char[123];
 
 strncpy(str, "AAA", 123);
@@ -1307,7 +1310,7 @@ If you want to manage the memory yourself, add borrow to declare heap memory tha
 
 自分でメモリを管理したい場合はborrowをつけて右辺値じゃないヒープメモリと宣言してから%をつけないポインタに代入してください。
 
-```
+``` C
 char* str = borrow char str[123];
 
 strncpy(str, "ABC", 123);
@@ -1326,7 +1329,7 @@ stringはchar*%型の文字列を返す関数です。この場合はfunの呼�
 
 stringは以下のように定義されています。
 
-```
+``` C
 typedef char*% string;
 
 string string(char* str)
@@ -1346,7 +1349,7 @@ dummy_heapは普通のポインタに%を付与します。
 
 dummy_heap gives% to ordinary pointers. Some useful string functions are:
 
-```
+``` C
 string xsprintf(char* msg, ...);
 string char*::reverse(char* str);
 string char*::substring(char* str, int head, int tail);
@@ -1356,7 +1359,7 @@ string char*::substring(char* str, int head, int tail);
 
 Usage is bellow:
 
-```
+``` C
 if(xsprintf("%d", 2) ===, "2") {
     puts("OK");
 }
@@ -1376,7 +1379,7 @@ It will be. It is called when "object type name_method name" is called as an OOP
 
 もう一つ重要な点はヒープで確保されたメモリは型名に応じてfinalizerが呼ばれることです。
 
-```
+``` C
 struct sData
 {
     string value1;
@@ -1404,7 +1407,7 @@ int main(int argc, char** argv)
 sData*::finalizeではvalue1とvalue2がdeleteされます。自動的に定義されます。
 
 
-```
+``` C
 struct sData
 {
     int value1;
@@ -1437,7 +1440,7 @@ sData*::cloneも自動的に定義されます。浅いコピーでなく深い�
 
 構造体やunionも普通の変数と同じルールです。
 
-```
+``` C
 struct sA {
    int*% a;
 };
@@ -1459,7 +1462,7 @@ aのリファレンスカウントは２なので、aがfreeされるのはブ�
 
 finalizeとcloneメソッドとequalsメソッドは自動的に定義されます。
 
-```
+``` C
 #include <neo-c.h>
 
 struct sInfo
@@ -1494,7 +1497,7 @@ Genericsはコード生成方式です。実装してますが、基本的に基
 
 vectorは以下のように定義されています。
 
-```
+``` C
 struct vector<T> 
 {
     T&* items;
@@ -1531,7 +1534,7 @@ The & in the type name removes% from the generic type name. Even if T has a%, it
 
 使い方は以下です。
 
-```
+``` C
 vector<int>*% v = new vector<int>();
 
 v.push_back(1);
@@ -1553,7 +1556,7 @@ itemの-1はデフォルト値でもしindexが範囲外ならデフォルト値
 
 listは以下です。
 
-```
+``` C
 impl list <T>
 {
     list<T>*% initialize(list<T>*% self);
@@ -1587,7 +1590,7 @@ Usage is almost the same as vector.
 
 使い方はvectorとほぼ同じです。
 
-```
+``` C
 list<int>*% l = new list<int>();
 
 l.push_back(1);
@@ -1603,7 +1606,7 @@ foreach(it, l) {
 }
 ```
 
-```
+``` C
 list<int>*% l = [1,2,3];
 
 if(l.length() == 3 && l[0] == 1 && l[1] == 2 && l[2] == 3 && l.item(1000, -1) == -1) {
@@ -1621,7 +1624,7 @@ vectorと違う点は要素の挿入のinsertがある点です。insertは高�
 
 sortは以下のように使います。
 
-```
+``` C
 int main(int argc, char** argv)
 {
     list<int>*% l = [7,1,2];
@@ -1638,7 +1641,7 @@ The map is below.
 
 mapは以下です。
 
-```
+``` C
 impl map <T, T2>
 {
     map<T,T2>*% initialize(map<T,T2>*% self);
@@ -1659,7 +1662,7 @@ impl map <T, T2>
 
 Usage is bellow:
 
-```
+``` C
 map<char*, int>*% m = new map<char*, int>();
 
 m.insert("AAA", 1);
@@ -1671,7 +1674,7 @@ if(m.length() == 3 && m["AAA"] == 1 && m["BBB"] == 2 && m["CCC"] == 3 && m.at("D
 }
 ```
 
-```
+``` C
 map<char*, int>*% m = ["AAA":1, "BBB":2, "CCC":3]
 
 if(m.length() == 3 && m["AAA"] == 1 && m["BBB"] == 2 && m["CCC"] == 3 && m.at("DDD", -1) == -1) {
@@ -1685,7 +1688,7 @@ It will be. There is also a tuple. It is defined as follows.
 
 tupleもあります。以下のように定義されています。
 
-```
+``` C
 struct tuple1<T>
 {
     T v1;
@@ -1756,7 +1759,7 @@ The definition is as follows.
 
 定義は以下です。
 
-```
+``` C
 impl buffer*
 {
 buffer*% initialize(buffer*% self);
@@ -1779,7 +1782,7 @@ int compare(buffer* left, buffer* right);
 
 Usage is bellow:
 
-```
+``` C
 buffer*% b1 = new buffer();
 
 b1.append_str("ABC");
@@ -1792,7 +1795,7 @@ if(b1.to_string() === "ABCDEF") {
 
 # lambda
 
-```
+``` C
 var fun = int lambda(int x, int y) { return x + y; }
 
 if(fun(1, 2) == 3) {
@@ -1822,7 +1825,7 @@ __stack__は現在のスタックフレームのすべての変数のポイン�
 
 # Method block
 
-```
+``` C
 void times(int n, void* parent, void (*fun)(void* parent))
 {
     int i;
@@ -1844,7 +1847,7 @@ int main(int argc, char** argv)
 
 メソッドブロックの引数はit, it2, it3, it4,... という変数に代入されます。
 
-```
+``` C
 static int int::expect(int self, void* parent, void (*block)(void* parent))
 {
     if(self < 0) {
@@ -1869,7 +1872,7 @@ impl list<T>
 }
 ```
 
-```
+``` C
 int fd = open("ABC", O_RDONLY).expect {
     fprintf(stderr, "can't open ABC");
     exit(1);
@@ -1908,7 +1911,7 @@ printf("a %d\n", a);
 
 # Method Generics
 
-```
+``` C
 struct sStruct<T>
 {
     T a;
@@ -1942,7 +1945,7 @@ int main()
 }
 ```
 
-```
+``` C
 impl list<T> {
     template <R> list<R>* map(list<T>* self, void* parent, R (*block)(void*, T))
     {
@@ -1982,7 +1985,7 @@ public { #include <neo-c.h> }
 
 ファイル内だけの宣言はprivate int A;などとします。static int A;でも同じです。関数、union, struct, typedefも同様です。
 
-```
+``` C
 > vim a.c
 #include "common.h"
 
@@ -2063,7 +2066,7 @@ int fun();
 
 # multiple assign
 
-```
+``` C
 #include <neo-c.h>
 
 int, string fun(int n, string m) 
@@ -2091,7 +2094,7 @@ int main(int argc, char** argv)
 
 # auto, auto_immutable
 
-```
+``` C
 
 int main(int argc, char** argv)
 {
@@ -2107,7 +2110,7 @@ int main(int argc, char** argv)
 
 # class
 
-```
+``` C
 class sData(int x, int y, int z)
 {
     int self.x = x;
@@ -2139,7 +2142,7 @@ int main()
 
 # smart pointer
 
-```
+``` C
 #include <neo-c.h>
 
 int main(int argc, char** argv)
@@ -2158,13 +2161,13 @@ int main(int argc, char** argv)
 }
 ```
 
-```
+``` shell
 > neo-c a.c
 > ./a
 a.c 12: out of range of smart pointer
 ```
 
-```
+``` C
 #include <neo-c.h>
 
 int main(int argc, char** argv)
@@ -2186,7 +2189,7 @@ int main(int argc, char** argv)
 
 # exception
 
-```
+``` C
 #include <neo-c.h>
 
 exception int div_op(int left, int right)
@@ -2219,7 +2222,7 @@ int main()
 
 # unsafe, safe
 
-```
+``` C
 #include <neo-c.h>
 
 using safe;
@@ -2234,7 +2237,7 @@ void fun(char* p)
 
 # fn
 
-```
+``` C
 fn fun(a:int, b:int*) -> int
 {
     return a + b[0];
@@ -2256,7 +2259,7 @@ printf("%d %d\n", i, a[i]);
 
 # as
 
-```
+``` C
 int main()
 {
     var a = 123;
@@ -2270,7 +2273,7 @@ int main()
 
 # val
 
-```
+``` C
 int main()
 {
     val a = [1,2,3];
@@ -2283,7 +2286,7 @@ int main()
 
 # detected dagling pointer
 
-```
+``` C
     int* fun() 
     {
         int b;
@@ -2309,7 +2312,7 @@ int main()
 
 # Protocol, interface
 
-```
+``` C
 #include <neo-c.h>
 
 interface sBase
