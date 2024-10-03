@@ -1,14 +1,14 @@
 
-# comelang2
+# comelang
 
 Another modern Object Oriented C traspiler. It has a heap system that is a cross between an automatically-free-system and a reference-counted GC, and includes a collection library and a string library. 
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 1.0.0
+version 2.0.0
 
 ``` C
-#include <comelang2.h>
+#include <comelang.h>
 
 int fun(int x=123, int y = 234, int z = 345) 
 {
@@ -258,7 +258,7 @@ int main()
 
 14. class and inheritance system supported.
 
-15. comelang2 only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
+15. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
 
 1. C言語と互換性があります。Cプリプロセッサーも動きます。
 
@@ -288,7 +288,7 @@ int main()
 
 14. クラスと継承システムをサポートします。
 
-15. comelang2は標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
+15. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
 
 # インストール
 
@@ -309,8 +309,8 @@ sudoとgitは事前にインストールしてください。
 Please install sudo and git before the build.
 
 ```
-git clone https://github.com/ab25cq/comelang2
-cd comelang2
+git clone https://github.com/ab25cq/comelang
+cd comelang
 sh fast_build.sh
 sh clean-self-host.sh
 ```
@@ -325,13 +325,13 @@ sh all_build.sh
 
 # Histories
 
-1.0.0 Release
+2.0.0 Release
 
 # Language specifications
 
-The syntax is almost the same as C language. It may not be POSIX compliant. If you do not #include <comelang2.h>, you can use it as a normal C compiler.
+The syntax is almost the same as C language. It may not be POSIX compliant. If you do not #include <comelang.h>, you can use it as a normal C compiler.
 
-文法はC言語とほとんど一緒です。POSIXに準拠しているとは言えないかもしれません。#include <comelang2.h>をしないと普通のCコンパイラとして使えます。
+文法はC言語とほとんど一緒です。POSIXに準拠しているとは言えないかもしれません。#include <comelang.h>をしないと普通のCコンパイラとして使えます。
 
 # HELLO WORLD
 
@@ -344,7 +344,7 @@ int main()
     puts("HELLO WORLD");
     return 0;
 }
-> comelang2 a.c
+> comelang a.c
 > ./a
 HELLO WORLD
 ```
@@ -364,7 +364,7 @@ The grammar library includes list, vector, map, tuple, buffer, and string.
 # list
 
 ```
-#incldue <comelang2.h>
+#incldue <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -559,11 +559,11 @@ string to_string(list<T>* self)
     puts(li.to_string());
 ```
 
-[ABC,DEF,GHQ] will be output. to_string is executed on all elements. The type defined in comelang2 has to_string() implemented. For the original class, you must implement to_string in order to execute this method.
+[ABC,DEF,GHQ] will be output. to_string is executed on all elements. The type defined in comelang has to_string() implemented. For the original class, you must implement to_string in order to execute this method.
 
 li is list<char*>*%, which stores string pointers. The stored element will not be freed because it is not char*%.
 
-[ABC,DEF,GHQ]が出力されます。要素の全てにto_stringが実行されます。comelang2で定義されている型はto_string()が実装されています。オリジナルのクラスの場合、このメソッドを実行するためにはto_stringを実装する必要があります。
+[ABC,DEF,GHQ]が出力されます。要素の全てにto_stringが実行されます。comelangで定義されている型はto_string()が実装されています。オリジナルのクラスの場合、このメソッドを実行するためにはto_stringを実装する必要があります。
 
 liはlist<char*>*%で文字列のポインタが格納されています。char*%ではないため格納された要素はfreeされません。
 
@@ -941,7 +941,7 @@ map is a dictionary.
 mapは辞書です。
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -1006,9 +1006,9 @@ string to_string(map<T,T2>* self)
     ["AAA":1, "BBB":2, "CCC":3].to_string().puts();   // [AAA:1,BBB:2,CCC:3]
 ```
 
-All elements and keys must implement to_string(). All basic types of comelang2 have to_string() implemented.
+All elements and keys must implement to_string(). All basic types of comelang have to_string() implemented.
 
-すべての要素とキーにto_string()が実装されている必要があります。comelang2の基本的な型はすべてto_string()が実装されてます。
+すべての要素とキーにto_string()が実装されている必要があります。comelangの基本的な型はすべてto_string()が実装されてます。
 
 ```C
 T2& at(map<T, T2>* self, T& key, T2 default_value) 
@@ -1203,7 +1203,7 @@ A tuple is a collection of elements of different types. It may be called a simpl
 タプルは型の違う要素を持つコレクションです。簡易的な構造体と呼べるかもしれません。
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -1445,7 +1445,7 @@ Buffer is memory that can be appended.
 bufferは追記できるメモリーです。
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -1830,7 +1830,7 @@ string to_string(smart_pointer<T>* self)
 # string 
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2293,7 +2293,7 @@ int main()
 # multiple assign
 
 ``` C
-#include <comelang2.h>
+#include <comelang.h>
 
 int, string fun(int n, string m) 
 {
@@ -2585,7 +2585,7 @@ int main(int argc, char* argv)
 # System call errro handling like perl
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 using c
 {
 #include <sys/types.h>
@@ -2611,7 +2611,7 @@ int main(int argc, char** argv)
 ```
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2624,7 +2624,7 @@ int main(int argc, char** argv)
 # Here document
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2643,7 +2643,7 @@ CCC
 # method block
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2656,7 +2656,7 @@ int main(int argc, char** argv)
 ```
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2667,7 +2667,7 @@ int main(int argc, char** argv)
 ```
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2683,7 +2683,7 @@ int main(int argc, char** argv)
 # Package manager
 
 ```
-> comelang2 new xyz
+> comelang new xyz
 > cd xyz
 > cat <EOS > a.c
 int main(int argc, char** argv)
@@ -2697,21 +2697,21 @@ int fun(int a, int b)
     return a + b;
 }
 EOS
-> comelang2 header
+> comelang header
 (make header file named common.h)
-> comelang2 compile
+> comelang compile
 (compile with -O2 option)
-> comelang2 run
+> comelang run
 (compile with -O2 option)
 (run)
-> comelang2 header
+> comelang header
 (make header file named common.h)
-> comelang2 debug
+> comelang debug
 (compile with -g and -cg option)
 (run)
-> comelang2 clean
+> comelang clean
 (clean up tmp files)
-> comelang2 install (target-directory:default is /usr/local)
+> comelang install (target-directory:default is /usr/local)
 (install command file to target-directory)
 ```
 
@@ -2724,8 +2724,8 @@ with -str option to comandline.
 sample
 
 ``` C
-#include <comelang2.h>
-#include <comelang2-str.h>
+#include <comelang.h>
+#include <comelang-str.h>
 
 int main()
 {
@@ -2827,7 +2827,7 @@ int main()
 
 ```C
 > vin a.c
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2851,7 +2851,7 @@ a.c 9: out of range of smart pointer(2)
 
 ```C
 > vin a.c
-#include <comelang2.h>
+#include <comelang.h>
 
 int fun()
 {
@@ -2870,7 +2870,7 @@ int main(int argc, char** argv)
     
     return 0;
 }
-> comelang2 -cg a.c
+> comelang -cg a.c
 > ./a
 a.c 5
 a.c 11
@@ -2881,7 +2881,7 @@ for debugging.
 require -cg option.
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 record void fun()
 {
@@ -2901,7 +2901,7 @@ append record attribute to show stackframe. It's not required -cg option
 
 ```C
 > vin a.c
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv) 
 {
@@ -2911,11 +2911,11 @@ int main(int argc, char** argv)
     
     return 0;
 }
-> comelang2 -cg a.c
+> comelang -cg a.c
 > ./a
 2
 > vin a.c
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv) 
 {
@@ -2925,19 +2925,19 @@ int main(int argc, char** argv)
     
     return 0;
 }
-> comelang2 -cg a.c
+> comelang -cg a.c
 > ./a
 a.c 7: range check error
-libcomelang2.c 96
+libcomelang.c 96
 a.c 7
 ```
 
 require -cg option for show stackframe()
 
 ```
-> comelang2 new x
+> comelang new x
 > cd x; vin a.c
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
@@ -2947,10 +2947,10 @@ int main(int argc, char** argv)
     
     return 0;
 }
-> comelang2 debug
-comelang2 header -common-header a.c
-comelang2 -common-header -gdwarf-4 -cg  -c a.c -o a.debug.o
-comelang2 -common-header -gdwarf-4 -cg  a.debug.o -o x-debug
+> comelang debug
+comelang header -common-header a.c
+comelang -common-header -gdwarf-4 -cg  -c a.c -o a.debug.o
+comelang -common-header -gdwarf-4 -cg  a.debug.o -o x-debug
 rm -f *.log
 ./x-debug
 a.c 8: range check error
@@ -3000,7 +3000,7 @@ int main(int argc, char** argv)
 no type inference
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 template<R> R fun(R a, R b)
 {
@@ -3020,7 +3020,7 @@ int main(int argc, char** argv)
 # typeof
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv) 
 {
@@ -3036,7 +3036,7 @@ statically typeof
 # Memory leak detector
 
 ```c 
-#include <comelang2.h>
+#include <comelang.h>
 
 void fun()
 {
@@ -3054,24 +3054,24 @@ int main(int argc, char** argv)
                                     
     return 0;
 }
-~/comelang2 # comelang2 a.c
-~/comelang2 # ./a
+~/comelang # comelang a.c
+~/comelang # ./a
 123
 1 memory leaks. 1 alloc, 0 free.If you require debugging, copmpile with -cg option
-~/comelang2 # comelang2 -cg a.c
-~/comelang2 # ./a
+~/comelang # comelang -cg a.c
+~/comelang # ./a
 a.c 9
 a.c 16
 123
 #1 (int): a.c 16, a.c 5, 
 1 memory leaks. 1 alloc, 0 free.
-~/comelang2 # 
+~/comelang # 
 ```
 
 # Class
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 class sData
 {
@@ -3101,7 +3101,7 @@ int main(int argc, char** argv)
 ```
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 class sData
 {
@@ -3157,7 +3157,7 @@ int main(int argc, char** argv)
 ```
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 class sData
 {
@@ -3196,7 +3196,7 @@ class sData2 extends sData
 ```
 
 ```C
-#include <comelang2.h>
+#include <comelang.h>
 
 class sData
 {
@@ -3225,7 +3225,7 @@ int main(int argc, char** argv)
 # Module
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 module MModule<T>
 {
@@ -3260,7 +3260,7 @@ int main(int argc, char** argv)
 # User finalize
 
 ```
-#include <comelang2.h>
+#include <comelang.h>
 
 class sData
 {
@@ -3320,8 +3320,8 @@ void fun2()
 {
     fun();
 }
-> comelang2 -c b.c
-> comelang2 a.c b.c.o
+> comelang -c b.c
+> comelang a.c b.c.o
 > ./a
 777
 ```
@@ -3331,13 +3331,13 @@ In other module, not defined contents.
 
 # Output of standard c targeted C Source
 
-Don't include comelang2-str.h. Inlucde comelang2.h only. It depends standard c library only. If you get c source depends standard c library only, use to "comelang2 -s"
+Don't include comelang-str.h. Inlucde comelang.h only. It depends standard c library only. If you get c source depends standard c library only, use to "comelang -s"
 
 # Extra libraries
 
-Please use the C language extension library. The strength of comelang2 is that the C library can be used as is.
+Please use the C language extension library. The strength of comelang is that the C library can be used as is.
 
-拡張ライブラリはC言語のものを使ってください。comelang2の強みはCライブラリがそのまま使える点です。
+拡張ライブラリはC言語のものを使ってください。comelangの強みはCライブラリがそのまま使える点です。
 
 # Boehm gc
 
@@ -3345,7 +3345,7 @@ with -gc option, enable boehm GC. All finalizer no called.
 
 # Net libraries
 
-See libcomelang2-net.c and comelang2-net.h
+See libcomelang-net.c and comelang-net.h
 
 with -net option to comandline.
 

@@ -1366,24 +1366,24 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         return new sIsPointer(type2, info) implements sNode;
     }
     else if(buf === "using") {
-        if(parsecmp("comelang2")) {
-            info->p += strlen("comelang2");
+        if(parsecmp("comelang")) {
+            info->p += strlen("comelang");
             skip_spaces_and_lf();
             
             gComeC = false;
         
             return new sNothingNode(info) implements sNode;
         }
-        else if(parsecmp("comelang2-str")) {
-            info->p += strlen("comelang2-str");
+        else if(parsecmp("comelang-str")) {
+            info->p += strlen("comelang-str");
             skip_spaces_and_lf();
             
             gComeStr = true;
         
             return new sNothingNode(info) implements sNode;
         }
-        else if(parsecmp("comelang2-net")) {
-            info->p += strlen("comelang2-net");
+        else if(parsecmp("comelang-net")) {
+            info->p += strlen("comelang-net");
             skip_spaces_and_lf();
             
             gComeNet = true;
@@ -1689,22 +1689,22 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
 {
    if(buf === "using") {
-        if(parsecmp("comelang2")) {
-            info->p += strlen("comelang2");
+        if(parsecmp("comelang")) {
+            info->p += strlen("comelang");
             skip_spaces_and_lf();
             
             gComeC = false;
         }
-        else if(parsecmp("comelang2-str")) {
-            info->p += strlen("comelang2-str");
+        else if(parsecmp("comelang-str")) {
+            info->p += strlen("comelang-str");
             skip_spaces_and_lf();
             
             gComeStr = true;
         
             return new sNothingNode(info) implements sNode;
         }
-        else if(parsecmp("comelang2-net")) {
-            info->p += strlen("comelang2-net");
+        else if(parsecmp("comelang-net")) {
+            info->p += strlen("comelang-net");
             skip_spaces_and_lf();
             
             gComeNet = true;

@@ -1,4 +1,4 @@
-#include <comelang2-net.h>
+#include <comelang-net.h>
 header {struct SSL;}
 #include <sys/stat.h>
 #include <unistd.h>

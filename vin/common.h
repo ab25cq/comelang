@@ -2,8 +2,8 @@
 ////////////////////////////
 // src/01init.c
 ////////////////////////////
-#include <comelang2.h> 
-#include <comelang2-str.h> 
+#include <comelang.h> 
+#include <comelang-str.h> 
 #include <curses.h>
 #include <unistd.h>
 #include <poll.h>

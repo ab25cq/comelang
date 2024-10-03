@@ -1,6 +1,6 @@
-#include <comelang2.h>
-#include <comelang2-str.h>
-header {#include <comelang2-str.h>}
+#include <comelang.h>
+#include <comelang-str.h>
+header {#include <comelang-str.h>}
 
 struct sInfo;
 

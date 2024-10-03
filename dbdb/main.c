@@ -1,6 +1,6 @@
-#include <comelang2.h>
-#include <comelang2-str.h>
-#include <comelang2-net.h>
+#include <comelang.h>
+#include <comelang-str.h>
+#include <comelang-net.h>
 
 class sType
 {

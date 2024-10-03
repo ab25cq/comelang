@@ -16,7 +16,7 @@ libdir=${exec_prefix}/lib
 #########################################
 # environmnet variables
 #########################################
-CC=comelang2
+CC=comelang
 INSTALL=install
 CFLAGS= -common-header -O2 -str -I/opt/homebrew/opt/readline/include -L/opt/homebrew/opt/readline/lib -lreadline
 CFLAGS_DEBUG= -common-header -gdwarf-4 -cg -lreadline -str
@@ -54,7 +54,7 @@ $(TARGET_DEBUG): $(DEBUG_OBJS)
 header: common.h
 
 common.h: $(SINGLE_SRCS)
-	comelang2 header -common-header $(SINGLE_SRCS)
+	comelang header -common-header $(SINGLE_SRCS)
 
 #########################################
 # install

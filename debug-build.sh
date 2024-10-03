@@ -3,8 +3,8 @@ sh install_pkg.sh
 
 if uname -a | grep Android
 then
-    make DESTDIR=$HOME CFLAGS_OPT="-cg" comelang2 && make install
+    make DESTDIR=$HOME CFLAGS_OPT="-cg" comelang && make install
 else
-    make comelang2 CFLAGS_OPT="-cg" && sudo make install
+    make comelang CFLAGS_OPT="-cg" && sudo make install
 fi
 

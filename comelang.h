@@ -1,7 +1,7 @@
-#ifndef COMELANG2_H
-#define COMELANG2_H
+#ifndef COMELANG_H
+#define COMELANG_H
 
-using comelang2;
+using comelang;
 
 #define _GNU_SOURCE
 

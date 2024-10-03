@@ -999,7 +999,7 @@ bool output_header_file(sInfo* info)
     if(info.output_file_name === "common.h") {
         fprintf(f, "#ifndef __COMMON_H__\n");
         fprintf(f, "#define __COMMON_H__\n");
-        fprintf(f, "#include <comelang2.h>\n");
+        fprintf(f, "#include <comelang.h>\n");
     }
     
     fprintf(f, "%s\n", info.module.mHeader.to_string());

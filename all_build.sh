@@ -4,22 +4,22 @@ sh remove_all_build.sh
 
 if uname -a | grep Android
 then
-    (echo zed && cd zed && comelang2 compile && comelang2 install $HOME)
+    (echo zed && cd zed && comelang compile && comelang install $HOME)
 else
-    (echo zed && cd zed && comelang2 compile && sudo comelang2 install)
+    (echo zed && cd zed && comelang compile && sudo comelang install)
 fi
 
 if uname -a | grep Android
 then
-    (echo shsh && cd shsh && comelang2 compile && comelang2 install $HOME)
+    (echo shsh && cd shsh && comelang compile && comelang install $HOME)
 else
-    (echo shsh && cd shsh && comelang2 compile && sudo comelang2 install)
+    (echo shsh && cd shsh && comelang compile && sudo comelang install)
 fi
 
 if uname -a | grep Android
 then
-    (echo mf && cd mf && comelang2 compile && comelang2 install $HOME)
+    (echo mf && cd mf && comelang compile && comelang install $HOME)
 else
-    (echo mf && cd mf && comelang2 compile && sudo comelang2 install)
+    (echo mf && cd mf && comelang compile && sudo comelang install)
 fi
 

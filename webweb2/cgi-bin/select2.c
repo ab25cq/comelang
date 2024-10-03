@@ -1,4 +1,4 @@
-#include <comelang2.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {

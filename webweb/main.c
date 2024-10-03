@@ -1,4 +1,4 @@
-#include <comelang2-net.h>
+#include <comelang-net.h>
 
 #define RESPONSE "HTTP/1.1 200 OK\r\n" \
                  "Content-Type: text/plain\r\n" \

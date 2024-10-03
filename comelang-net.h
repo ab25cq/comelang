@@ -1,7 +1,7 @@
-#ifndef __COMELANG2_NET_H__
-#define __COMELANG2_NET_H__
+#ifndef __COMELANG_NET_H__
+#define __COMELANG_NET_H__
 
-#include <comelang2.h>
+#include <comelang.h>
 
 using c
 {
@@ -17,7 +17,7 @@ using c
 #include <openssl/err.h>
 }
 
-using comelang2-net;
+using comelang-net;
 
 typedef int socket_fd;
 

@@ -15,18 +15,18 @@ fi
 
 if [ -e webweb/Makefile ]
 then
-    (cd webweb; comelang2 clean)
+    (cd webweb; comelang clean)
 fi
 
 if [ -e webweb2/Makefile ]
 then
-    (cd webweb2; comelang2 clean)
+    (cd webweb2; comelang clean)
     (cd webweb2/cgi-bin; make clean)
 fi
 
 if [ -e viw/Makefile ]
 then
-    (cd viw; comelang2 clean)
+    (cd viw; comelang clean)
 fi
 
 if [ -e trueby/Makefile ]
@@ -41,7 +41,7 @@ fi
 
 if [ -e mf/Makefile ]
 then
-    (cd mf; comelang2 clean)
+    (cd mf; comelang clean)
 fi
 
 if [ -e shsh/Makefile ]

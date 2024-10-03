@@ -332,10 +332,10 @@ static bool linker(sInfo* info, list<string>* object_files)
     command.append_str(xsprintf(" %s ", info.clang_option));
     
     if(gComeStr) {
-        command.append_str(" -lcomelang2-str -lpcre ");
+        command.append_str(" -lcomelang-str -lpcre ");
     }
     if(gComeGC) {
-        command.append_str(" -lcomelang2-gc -lgc ");
+        command.append_str(" -lcomelang-gc -lgc ");
     }
     if(gComeNet) {
         cmd = xsprintf("which apk 1> /dev/null 2>/dev/null");
@@ -346,17 +346,17 @@ static bool linker(sInfo* info, list<string>* object_files)
         int rc2 = system(cmd2);
         int rc3 = system(cmd3);
         if(rc3 == 0) {
-            command.append_str(" -lcomelang2-net -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
+            command.append_str(" -lcomelang-net -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
         }
         else if(rc == 0 || rc2 == 0) {
-            command.append_str(" -lcomelang2-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
+            command.append_str(" -lcomelang-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
         }
         else {
-            command.append_str(" -lcomelang2-net -lssl `mysql_config --cflags --libs`");
+            command.append_str(" -lcomelang-net -lssl `mysql_config --cflags --libs`");
         }
     }
     
-    command.append_str(" -lcomelang2 ");
+    command.append_str(" -lcomelang ");
     
     if(info.verbose) puts(command.to_string());
     rc = system(command.to_string());
@@ -373,7 +373,7 @@ bool new_project(int argc, char** argv)
 {
     string project_name = string(argv[2]);
     string project_name_debug = string(argv[2]) + string("-debug");
-    string cc = string("comelang2");
+    string cc = string("comelang");
     string install = string("install");
     string libs = string("-lpcre");
     string os = string("linux");
@@ -440,7 +440,7 @@ $(TARGET_DEBUG): $(DEBUG_OBJS)
 header: common.h
 
 common.h: $(SINGLE_SRCS)
-\tcomelang2 header -common-header $(SINGLE_SRCS)
+\tcomelang header -common-header $(SINGLE_SRCS)
 
 \#########################################
 \# install

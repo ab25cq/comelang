@@ -1,5 +1,5 @@
-#include <comelang2.h>
-#include <comelang2-str.h>
+#include <comelang.h>
+#include <comelang-str.h>
 
 #include <signal.h>
 #include <readline/readline.h>

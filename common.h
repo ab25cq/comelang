@@ -1,7 +1,7 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#include <comelang2.h>
+#include <comelang.h>
 
 #define FUN_VERSION_MAX 128
 #define GENERICS_TYPE_MAX 12
