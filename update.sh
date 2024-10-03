@@ -8,6 +8,6 @@ sh remove_all_build.sh
 
 git add .
 git commit 
-#git remote set-url origin git@github.com:ab25cq/comelang.git
-git push -f -u origin main
+git remote set-url origin git@github.com:ab25cq/comelang.git
+git push -f -u origin master
 
