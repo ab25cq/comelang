@@ -1,6 +1,5 @@
-#include <comelang2.h>
-#include <comelang2-str.h>
-#include <libgen.h>
+#include "comelang2.h"
+#include "comelang2-str.h"
 
 come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
 {
@@ -24,16 +23,12 @@ come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_c
     self.re = pcre_compile(str, options, &err, &erro_ofs, NULL);
 
     if(self.re == null) {
-        fprintf(stderr, "regex error (%s)\n", str);
+        printf("regex error (%s)\n", str);
+        stackframe();
         exit(1);
     }
 
     return self;
-}
-
-come_regex*% char*::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
-{
-    return new come_regex(self, ignore_case, multiline, global, extended, dotall, anchored, dollar_endonly, ungreedy);
 }
 
 void come_regex*::finalize(come_regex* reg)
@@ -45,6 +40,17 @@ void come_regex*::finalize(come_regex* reg)
         free(reg.re);
     }
 }
+
+come_regex*% char*::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
+{
+    return new come_regex(self, ignore_case, multiline, global, extended, dotall, anchored, dollar_endonly, ungreedy);
+}
+
+come_regex*% string::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
+{
+    return new come_regex(self, ignore_case, multiline, global, extended, dotall, anchored, dollar_endonly, ungreedy);
+}
+
 
 come_regex*% come_regex*::clone(come_regex* reg)
 {
@@ -73,21 +79,11 @@ come_regex*% come_regex*::clone(come_regex* reg)
     result.re = pcre_compile(result.str, result.options, &err, &erro_ofs, NULL);
 
     if(result.re == null) {
-        fprintf(stderr, "regex compile error(%s)\n", result.str);
+        printf("regex compile error(%s)\n", result.str);
+        stackframe();
         exit(1);
     }
 
-    return result;
-}
-
-string string::chomp(char* str)
-{
-    string result = string(str);
-    
-    if(result[result.length()-1] == '\n') {
-        return result.substring(0, -2);
-    }
-    
     return result;
 }
 
@@ -118,43 +114,6 @@ string string::upper_case(char* str)
     }
     
     return result;
-}
-
-string char*::delete(char* str, int head, int tail) 
-{
-    using unsafe;
-    
-    int len = strlen(str);
-
-    if(strcmp(str, "") == 0) {
-        return string(str);
-    }
-    
-    if(head < 0) {
-       head += len;
-    }
-    
-    if(tail < 0) {
-       tail += len + 1;
-    }
-
-    if(head < 0) {
-        head = 0;
-    }
-
-    if(tail < 0) {
-        return string(str);
-    }
-
-    if(tail >= len) {
-        tail = len;
-    }
-    
-    string sub_str = str.substring(tail, -1);
-
-    memcpy(str + head, sub_str, sub_str.length()+1);
-
-    return string(str);
 }
 
 wstring wchar_t*::substring(wchar_t* str, int head, int tail)
@@ -204,6 +163,9 @@ wstring wchar_t*::substring(wchar_t* str, int head, int tail)
 
 wstring __builtin_wstring(char* str)
 {
+    if(str == null) {
+        return null;
+    }
     int len = strlen(str);
 
     wstring wstr = new wchar_t[len+1];
@@ -602,6 +564,7 @@ list<string>*% char*::split_block(char* self, come_regex* reg, void* parent, str
             
             list<string>*% match_strings = new list<string>.initialize();
             string str2 = block(parent, str, match_strings);
+            
             result.push_back(str2);
 
             if(offset == end[0]) {
@@ -629,6 +592,7 @@ list<string>*% char*::split_block(char* self, come_regex* reg, void* parent, str
             }
             
             string str2 = block(parent, str, match_strings);
+            
             result.push_back(str2);
         }
         /// no match ///
@@ -689,6 +653,7 @@ list<string>*% char*::split_block_count(char* self, come_regex* reg, int count, 
             
             list<string>*% match_strings = new list<string>.initialize();
             string str2 = block(parent, str, match_strings);
+            
             result.push_back(str2);
 
             if(offset == end[0]) {
@@ -716,6 +681,7 @@ list<string>*% char*::split_block_count(char* self, come_regex* reg, int count, 
             }
             
             string str2 = block(parent, str, match_strings);
+            
             result.push_back(str2);
         }
         /// no match ///
@@ -1122,31 +1088,26 @@ bool char*::match_group_strings(char* self, come_regex* reg, int count, list<str
     return false;
 }
 
-bool wchar_t*::compare(wchar_t* left, wchar_t* right)
+int wchar_t*::compare(wchar_t* left, wchar_t* right)
 {
-    return wcscmp(left, right) == 0;
+    return wcscmp(left, right);
 }
 
-unsigned int wchar_t::get_hash_key(wchar_t value)
+int wstring::compare(wchar_t* left, wchar_t* right)
 {
-    return value;
+    return wcscmp(left, right);
 }
 
-bool wchar_t::equals(wchar_t left, wchar_t right)
+unsigned int come_regex*::get_hash_key(come_regex* reg)
+{
+    return reg->str.get_hash_key();
+}
+
+bool wchar_t*::equals(wchar_t left, wchar_t right)
 {
     return left == right;
 }
 
-
-string char*::operator_mult(char* str, int n)
-{
-    return charp_multiply(str, n);
-}
-
-string string::operator_mult(char* str, int n)
-{
-    return charp_multiply(str, n);
-}
 
 wstring wchar_t*::operator_mult(wchar_t* str, int n)
 {
@@ -1163,7 +1124,17 @@ bool wchar_t*::operator_equals(wchar_t* left, wchar_t* right)
     return wcscmp(left, right) == 0;
 }
 
+bool wstring::operator_equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) == 0;
+}
+
 bool wchar_t*::operator_not_equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) != 0;
+}
+
+bool wstring::operator_not_equals(wchar_t* left, wchar_t* right)
 {
     return wcscmp(left, right) != 0;
 }
@@ -1176,11 +1147,6 @@ bool come_regex*::operator_equals(come_regex* left, come_regex* right)
 bool come_regex*::operator_not_equals(come_regex* left, come_regex* right)
 {
     return !left.equals(right);
-}
-
-bool wstring::operator_not_equals(wchar_t* left, wchar_t* right)
-{
-    return wcscmp(left, right) != 0;
 }
 
 wstring wchar_t*::operator_add(wchar_t* left, wchar_t* right)
@@ -1459,28 +1425,6 @@ list<string>*% char*::split_str(char* self, char* str)
     }
     if(buf.length() != 0) {
         result.push_back(string(buf.buf));
-    }
-
-    return result;
-}
-
-list<string>*% char*::split_char(char* self, char c) 
-{
-    auto result = new list<string>.initialize();
-
-    auto str = new buffer.initialize();
-
-    for(int i=0; i<self.length(); i++) {
-        if(self[i] == c) {
-            result.push_back(string(str.buf));
-            str.reset();
-        }
-        else {
-            str.append_char(self[i]);
-        }
-    }
-    if(str.length() != 0) {
-        result.push_back(string(str.buf));
     }
 
     return result;
@@ -1930,6 +1874,7 @@ string char*::sub_block(char* self, come_regex* reg, void* parent, string (*bloc
             group_strings.push_back(self.substring(start[0], end[0]));
             
             string block_result = block(parent, match_string, group_strings);
+            
             result.append_str(block_result);
 
             if(offset == end[0]) {
@@ -1967,6 +1912,7 @@ string char*::sub_block(char* self, come_regex* reg, void* parent, string (*bloc
             string match_string = self.substring(start[0], end[0]);
             
             string block_result = block(parent, match_string, group_strings);
+            
             result.append_str(block_result);
 
             if(!reg.global) {
@@ -2032,6 +1978,7 @@ string char*::sub_block_count(char* self, come_regex* reg, int count, void* pare
             string match_string = self.substring(start[0], end[0]);
             
             string block_result = block(parent, match_string, group_strings);
+            
             result.append_str(block_result);
 
             if(offset == end[0]) {
@@ -2077,6 +2024,7 @@ string char*::sub_block_count(char* self, come_regex* reg, int count, void* pare
             string match_string = self.substring(start[0], end[0]);
             
             string block_result = block(parent, match_string, group_strings);
+            
             result.append_str(block_result);
 
             if(!reg.global) {
@@ -2100,16 +2048,6 @@ string char*::sub_block_count(char* self, come_regex* reg, int count, void* pare
     }
 
     return result.to_string();
-}
-
-
-int wchar_t*::compare(wchar_t* left, wchar_t* right) 
-{
-    return wcscmp(left,right);
-}
-int wstring::compare(wchar_t* left, wchar_t* right) 
-{
-    return wcscmp(left,right);
 }
 
 unsigned int wchar_t*::get_hash_key(wchar_t* value)
@@ -2140,3 +2078,75 @@ unsigned int come_regex*::get_hash_key(come_regex* self)
 {
     return self.str.get_hash_key();
 }
+
+bool wchar_t::operator_equals(wchar_t left, wchar_t right)
+{
+    return left == right;
+}
+
+bool wchar_t::operator_not_equals(wchar_t left, wchar_t right)
+{
+    return left != right;
+}
+
+unsigned int wchar_t::get_hash_key(wchar_t value)
+{
+    return value;
+}
+
+bool wchar_t::equals(wchar_t left, wchar_t right)
+{
+    return left == right;
+}
+
+string wchar_t::to_string(wchar_t wc)
+{
+    return xsprintf("%ls", wc);
+}
+
+string string::chomp(char* str)
+{
+    string result = string(str);
+    
+    if(result[result.length()-1] == '\n') {
+        return result.substring(0, -2);
+    }
+    
+    return result;
+}
+
+string xrealpath(char* path)
+{
+    if(path == null) {
+        return string("");
+    }
+    char* result = realpath(path, null);
+
+    string result2 = string(result);
+
+    free(result);
+
+    return result2;
+}
+
+string xdirname(char* path)
+{
+    if(path == null) {
+        return string("");
+    }
+    return string(dirname(string(path)));
+}
+
+size_t xwcslen(wchar_t* wstr)
+{
+    wchar_t* p = wstr;
+    
+    size_t len = 0;
+    while(*p) {
+        p++;
+        len++;
+    }
+    
+    return len;
+}
+

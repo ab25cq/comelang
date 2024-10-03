@@ -1,231 +1,271 @@
 #include "common.h"
 
-struct sSwitchNode
+class sSwitchNode extends sNodeBase
 {
-  sNode*% mExpressionNode;
-  sBlock*% mBlock;
-  
-  int sline;
-  string sname;
-};
-
-
-sSwitchNode*% sSwitchNode*::initialize(sSwitchNode*% self, sNode*% expression_node, sBlock* block, sInfo* info)
-{
-    self.sline = info.sline;
-    self.sname = string(info.sname);
-
-    self.mExpressionNode = clone expression_node;
-    self.mBlock = clone block;
-
-    return self;
-}
-
-bool sSwitchNode*::terminated()
-{
-    return true;
-}
-
-bool sSwitchNode*::compile(sSwitchNode* self, sInfo* info)
-{
-    sBlock* block = self.mBlock;
+    new(sNode*% expression_node, sBlock* block, sInfo* info)
+    {
+        self.super();
     
-    /// compile expression ///
-    sNode* expression_node = self.mExpressionNode;
-
-    if(!expression_node.compile->(info)) {
-        return false;
+        sNode*% self.mExpressionNode = clone expression_node;
+        sBlock*% self.mBlock = clone block;
     }
     
-    CVALUE*% conditional_value = get_value_from_stack(-1, info);
-    dec_stack_ptr(1, info);
-    
-    add_come_code(info, "switch (%s) {\n", conditional_value.c_value);
-    
-/*
-    static int num_switch_conditional = 0;
-    add_come_code_at_function_head(info, "_Bool _switch_conditional%d;\n", ++num_switch_conditional);
-    
-    add_come_code(info, "switch (_switch_conditional%d=%s,", num_switch_conditional,conditional_value.c_value);
-    free_right_value_objects(info, comma:true);
-    add_come_code(info, "_switch_conditional%d) {\n", num_switch_conditional);
-*/
-
-    transpile_block(block, null, null, info);
-
-    add_come_code(info, "}\n");
-    
-    transpiler_clear_last_code(info);
-
-    return true;
-}
-
-int sSwitchNode*::sline(sSwitchNode* self, sInfo* info)
-{
-    return self.sline;
-}
-
-string sSwitchNode*::sname(sSwitchNode* self, sInfo* info)
-{
-    return string(self.sname);
-}
-
-struct sCaseNode
-{
-  sNode*% mNode;
-  
-  int sline;
-  string sname;
-};
-
-
-sCaseNode*% sCaseNode*::initialize(sCaseNode*% self, sNode*% node, sInfo* info)
-{
-    self.sline = info.sline;
-    self.sname = string(info.sname);
-
-    self.mNode = clone node;
-
-    return self;
-}
-
-bool sCaseNode*::terminated()
-{
-    return false;
-}
-
-bool sCaseNode*::compile(sCaseNode* self, sInfo* info)
-{
-    sNode* node = self.mNode;
-    
-    if(!node.compile->(info)) {
-        return false;
+    bool terminated()
+    {
+        return true;
     }
     
-    CVALUE*% label_value = get_value_from_stack(-1, info);
-    dec_stack_ptr(1, info);
+    string kind()
+    {
+        return string("sSwitchNode");
+    }
     
-    add_come_code(info, "case %s:\n", label_value.c_value);
+    bool compile(sInfo* info)
+    {
+        sBlock* block = self.mBlock;
+        
+        /// compile expression ///
+        sNode* expression_node = self.mExpressionNode;
     
-    transpiler_clear_last_code(info);
-
-    return true;
-}
-
-int sCaseNode*::sline(sCaseNode* self, sInfo* info)
-{
-    return self.sline;
-}
-
-string sCaseNode*::sname(sCaseNode* self, sInfo* info)
-{
-    return string(self.sname);
-}
-
-struct sDefaultNode
-{
-  int sline;
-  string sname;
+        if(!node_compile(expression_node)) {
+            return false;
+        }
+        
+        CVALUE*% conditional_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        add_come_code(info, "switch (%s) {\n", conditional_value.c_value);
+    
+        transpile_block(block, null, null, info, false, true);
+    
+        add_come_code(info, "}\n");
+        
+        transpiler_clear_last_code(info);
+    
+        return true;
+    }
 };
 
-
-sDefaultNode*% sDefaultNode*::initialize(sDefaultNode*% self, sInfo* info)
+class sCaseNode extends sNodeBase
 {
-    self.sline = info.sline;
-    self.sname = string(info.sname);
-
-    return self;
-}
-
-bool sDefaultNode*::terminated()
-{
-    return false;
-}
-
-bool sDefaultNode*::compile(sDefaultNode* self, sInfo* info)
-{
-    add_come_code(info, "default:\n");
+    new(sNode*% node, sInfo* info)
+    {
+        self.super();
     
-    transpiler_clear_last_code(info);
-
-    return true;
-}
-
-int sDefaultNode*::sline(sDefaultNode* self, sInfo* info)
-{
-    return self.sline;
-}
-
-string sDefaultNode*::sname(sDefaultNode* self, sInfo* info)
-{
-    return string(self.sname);
-}
-
-struct sBreakNode
-{
-  int sline;
-  string sname;
+        sNode*% self.mNode = clone node;
+    }
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    string kind()
+    {
+        return string("sCaseNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode* node = self.mNode;
+        
+        if(!node_compile(node)) {
+            return false;
+        }
+        
+        CVALUE*% label_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        add_come_code(info, "case %s:\n", label_value.c_value);
+        
+        transpiler_clear_last_code(info);
+    
+        return true;
+    }
 };
 
-
-sBreakNode*% sBreakNode*::initialize(sBreakNode*% self, sInfo* info)
+class sDefaultNode extends sNodeBase
 {
-    self.sline = info.sline;
-    self.sname = string(info.sname);
-
-    return self;
-}
-
-bool sBreakNode*::terminated()
-{
-    return false;
-}
-
-bool sBreakNode*::compile(sBreakNode* self, sInfo* info)
-{
-    add_come_code(info, "break;\n");
+    new(sInfo* info)
+    {
+        self.super();
+    }
     
-    transpiler_clear_last_code(info);
+    bool terminated()
+    {
+        return true;
+    }
+    
+    string kind()
+    {
+        return string("sDefaultNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        add_come_code(info, "default:\n");
+        
+        transpiler_clear_last_code(info);
+    
+        return true;
+    }
+};
 
-    return true;
-}
-
-int sBreakNode*::sline(sBreakNode* self, sInfo* info)
+class sLabelNode extends sNodeBase
 {
-    return self.sline;
-}
+    new(string label, sInfo* info, bool semi_colon=false)
+    {
+        self.super();
+        
+        string self.label = label;
+        bool self.semi_colon = semi_colon;
+    }
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    string kind()
+    {
+        return string("sLabelNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        if(self.semi_colon) {
+            add_come_code(info, s"\{self.label}: ;\n");
+        }
+        else {
+            add_come_code(info, s"\{self.label}:\n");
+        }
+        
+        transpiler_clear_last_code(info);
+    
+        return true;
+    }
+};
 
-string sBreakNode*::sname(sBreakNode* self, sInfo* info)
+class sGotoNode extends sNodeBase
 {
-    return string(self.sname);
-}
+    new(string label, sInfo* info)
+    {
+        self.super();
+        
+        string self.label = label;
+    }
+    
+    string kind()
+    {
+        return string("sGotoNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        add_come_code(info, s"goto \{self.label};\n");
+        
+        transpiler_clear_last_code(info);
+    
+        return true;
+    }
+};
+
+class sBreakNode extends sNodeBase
+{
+    new(sInfo* info)
+    {
+        self.super();
+    }
+    
+    string kind()
+    {
+        return string("sBreakNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        free_objects_on_break(info);
+    
+        add_come_code(info, "break;\n");
+        
+        transpiler_clear_last_code(info);
+    
+        return true;
+    }
+};
+
+class sContinueNode extends sNodeBase
+{
+    new(sInfo* info)
+    {
+        self.super();
+    }
+    
+    string kind()
+    {
+        return string("sContinueNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        free_objects_on_break(info);
+    
+        add_come_code(info, "continue;\n");
+        
+        transpiler_clear_last_code(info);
+    
+        return true;
+    }
+};
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 12
 {
     if(buf === "case") {
-        sNode*% node = expression(info);
-        expected_next_character(':', info);
+        bool no_label = info.no_label;
+        info.no_label = true;
+        sNode*% node = expression();
+        info.no_label = no_label;
+        expected_next_character(':');
         
-        return new sNode(new sCaseNode(node, info));
+        return new sCaseNode(node, info) implements sNode;
     }
     else if(buf === "default") {
-        expected_next_character(':', info);
+        expected_next_character(':');
         
-        return new sNode(new sDefaultNode(info));
+        return new sDefaultNode(info) implements sNode;
     }
     else if(buf === "break") {
-        return new sNode(new sBreakNode(info));
+        return new sBreakNode(info) implements sNode;
+    }
+    else if(buf === "continue") {
+        return new sContinueNode(info) implements sNode;
+    }
+    else if(!info->no_label && *info->p == ':') {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        if(*info->p == ';') {
+            return new sLabelNode(string(buf), info, true@semi_colon) implements sNode;
+        }
+        else {
+            return new sLabelNode(string(buf), info, false@semi_colon) implements sNode;
+        }
+    }
+    else if(buf === "goto") {
+        string buf = parse_word();
+        
+        return new sGotoNode(buf, info) implements sNode;
     }
     else if(buf === "switch") {
-        expected_next_character('(', info);
+        expected_next_character('(');
         
         /// expression ///
-        sNode*% expression_node = expression(info);
-        expected_next_character(')', info);
+        sNode*% expression_node = expression();
+        expected_next_character(')');
         
-        sBlock*% block = parse_block(info);
+        sBlock*% block = parse_block();
     
-        return new sNode(new sSwitchNode(expression_node, block, info));
+        return new sSwitchNode(expression_node, block, info) implements sNode;
     }
     
     return inherit(buf, head ,head_sline, info);

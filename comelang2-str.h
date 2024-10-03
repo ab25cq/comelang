@@ -1,8 +1,16 @@
 #ifndef COMELANG2_STR_H
 #define COMELANG2_STR_H
 
+using comelang2-str;
+
 #include <pcre.h>
+
+#ifndef _XOPEN_SOURCE
+#define _XOPEN_SOURCE
+#endif
+
 #include <wchar.h>
+#include <libgen.h>
 
 typedef wchar_t*% wstring;
 
@@ -27,16 +35,15 @@ struct come_regex
 
 come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false);
 come_regex*% char*::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false);
+come_regex*% string::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false);
 void come_regex*::finalize(come_regex* reg);
 come_regex*% come_regex*::clone(come_regex* reg);
 bool come_regex*::equals(come_regex* left, come_regex* right);
-
-string string::chomp(char* str);
+unsigned int come_regex*::get_hash_key(come_regex* reg);
 
 string come_regex*::to_string(come_regex* regex);
 string string::lower_case(char* str);
 string string::upper_case(char* str);
-string char*::delete(char* str, int head, int tail) ;
 
 wstring wchar_t*::substring(wchar_t* str, int head, int tail);
 static inline wstring wstring::substring(wchar_t* str, int head, int tail) 
@@ -122,11 +129,17 @@ static inline wstring string::to_wstring(char* str)
     return char*::to_wstring(str);
 }
 
+string wchar_t::to_string(wchar_t wc);
 
 string wchar_t*::to_string(wchar_t* wstr);
 static inline string wstring::to_string(wchar_t* wstr)
 {
     return wchar_t*::to_string(wstr);
+}
+
+static inline wstring int::to_wstring(int self)
+{
+    return xsprintf("%d", self).to_wstring();
 }
 
 int wchar_t*::length(wchar_t* str);
@@ -171,15 +184,11 @@ static inline wstring wstring::printable(wchar_t* str)
     return wchar_t*::printable(str);
 }
 
-bool wchar_t*::compare(wchar_t* left, wchar_t* right);
-static inline bool wstring::compare(wchar_t* left, wchar_t* right)
-{
-    return wchar_t*::compare(left, right);
-}
+int wchar_t*::compare(wchar_t* left, wchar_t* right);
+int wstring::compare(wchar_t* left, wchar_t* right);
 
-unsigned int wchar_t::get_hash_key(wchar_t value);
-bool wchar_t::equals(wchar_t left, wchar_t right);
-
+bool wchar_t::operator_equals(wchar_t left, wchar_t right);
+bool wchar_t::operator_not_equals(wchar_t left, wchar_t right);
 bool wchar_t*::operator_equals(wchar_t* left, wchar_t* right);
 bool wstring::operator_equals(wchar_t* left, wchar_t* right);
 bool wchar_t*::operator_not_equals(wchar_t* left, wchar_t* right);
@@ -189,19 +198,18 @@ wstring wstring::operator_add(wchar_t* left, wchar_t* right);
 wstring wchar_t*::operator_mult(wchar_t* str, int n);
 wstring wstring::operator_mult(wchar_t* str, int n);
 
+unsigned int wchar_t::get_hash_key(wchar_t value);
+
 unsigned int wchar_t*::get_hash_key(wchar_t* value);
 static inline unsigned int wstring::get_hash_key(wchar_t* value)
 {
     return wchar_t*::get_hash_key(value);
 }
 
+bool wchar_t::equals(wchar_t left, wchar_t right);
+
 bool wchar_t*::equals(wchar_t* left, wchar_t* right);
-static inline bool wstring::equals(wchar_t* left, wchar_t* right)
-{
-    return wchar_t*::equals(left, right);
-}
-
-
+bool wstring::equals(wchar_t* left, wchar_t* right);
 
 
 bool char*::match_group_strings(char* self, come_regex* reg, int count, list<string>* group_strings);
@@ -210,21 +218,11 @@ static inline bool string::match_group_strings(char* self, come_regex* reg, int 
     return char*::match_group_strings(self, reg, count, group_strings);
 }
 
-
-string char*::operator_mult(char* str, int n);
-string string::operator_mult(char* str, int n);
-
-
-
-
 int char*::index(char* str, char* search_str, int default_value=-1);
 static inline int string::index(char* str, char* search_str, int default_value=-1)
 {
     return char*::index(str, search_str, default_value);
 }
-
-
-
 
 int char*::index_regex(char* self, come_regex* reg, int default_value=-1);
 static inline int string::index_regex(char* self, come_regex* reg, int default_value=-1)
@@ -261,12 +259,6 @@ list<string>*% char*::split_str(char* self, char* str);
 static inline list<string>*% string::split_str(char* self, char* str)
 {
     return char*::split_str(self, str);
-}
-
-list<string>*% char*::split_char(char* self, char c);
-static inline list<string>*% string::split_char(char* self, char c)
-{
-    return char*::split_char(self, c);
 }
 
 list<string>*% char*::scan(char* self, come_regex* reg);
@@ -326,6 +318,22 @@ static inline wstring string::to_wstring(char* str)
     return char*::to_wstring(str);
 }
 
-string __builtin_wstring(char* str);
+wstring __builtin_wstring(char* str);
+
+string string::chomp(char* str);
+
+static inline string char*::chomp(char* str)
+{
+    return string::chomp(str);
+}
+
+string xrealpath(char* path);
+string xdirname(char* path);
+
+size_t xwcslen(wchar_t* wstr); // for debian, ubuntu
+
+#ifdef __DEBIAN__
+#define wcslen(o) xwcslen(o)
+#endif
 
 #endif

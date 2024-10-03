@@ -11,8 +11,6 @@ C-p --> yank from another yank over another process
 
 version 1.0.5
 
-If you don't want to use BoehmGC, ./configure --with-no-gc
-
 * INSTALL
 
 ./configure --with-optimize

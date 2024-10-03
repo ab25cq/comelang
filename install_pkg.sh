@@ -1,23 +1,21 @@
 
 # alpine linux
-if uname -v | grep iSH
+
+if uname | grep Darwin
 then
-    apk add sudo git clang g++ gcc llvm-dev pcre-dev gc-dev readline-dev ncurses-dev make samurai cmake autoconf valgrind gdb musl-dev
-elif uname | grep Darwin
-then
-    brew install git llvm pcre libgc readline ncurses make ninja cmake autoconf 
+    brew install git pcre readline ncurses make autoconf libgc readline openssl mysql-client mysql
 elif which apk > /dev/null
 then
-    sudo apk add sudo git clang g++ gcc llvm-dev pcre-dev gc-dev readline-dev ncurses-dev make samurai cmake autoconf valgrind gdb lldb musl-dev
+    sudo apk add sudo git clang gcc pcre-dev readline-dev ncurses-dev make samurai autoconf valgrind gdb lldb musl-dev gc-dev readline-dev openssl-dev mariadb-connector-c-dev mariadb-client mariadb
 # termux
 elif test `uname -o` = Android
 then
-    apt install which clang libllvm pcre libgc readline ncurses make ninja cmake autoconf valgrind gdb lldb binutils libandroid-glob
+    apt install which clang pcre readline ncurses make autoconf valgrind gdb lldb binutils libandroid-glob libgc openssl mariadb
 # debian
-elif ls /etc/debian_version
+elif uname -a | grep Debian
 then
-    sudo apt install  clang g++ gcc llvm-dev libpcre3-dev libgc-dev libreadline-dev ncurses-dev make ninja-build cmake autoconf valgrind gdb lldb
+    sudo apt install clang gcc libpcre3-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmariadb-dev-compat libmariadb-dev mariadb-server mariadb-client
 elif which apt > /dev/null
 then
-    sudo apt install  clang g++ gcc llvm-dev libpcre++-dev libgc-dev libreadline-dev ncurses-dev make ninja-build cmake autoconf valgrind gdb lldb
+    sudo apt install  clang gcc libpcre++-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmysqlclient-dev mysql-server
 fi

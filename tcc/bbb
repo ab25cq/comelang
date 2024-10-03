@@ -1,5 +1,0 @@
-make -C tests test
-make[1]: Entering directory '/home/ab25cq/comelang/tcc/tests'
------------- libtest ------------
-./libtcc_test lib_path=..
-make[1]: Leaving directory '/home/ab25cq/comelang/tcc/tests'

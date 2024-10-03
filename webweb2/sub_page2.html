@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排他的に選べる果物のテーブル</title>
+</head>
+<body>
+    <h2>果物を選んでください</h2>
+    <form action="cgi-bin/select.cgi" method="POST">
+    <table border="1">
+        <tr>
+            <th>果物</th>
+            <th>選択</th>
+        </tr>
+        <tr>
+            <td>りんご</td>
+            <td><input type="radio" name="fruit" value="apple"> りんご</td>
+        </tr>
+        <tr>
+            <td>みかん</td>
+            <td><input type="radio" name="fruit" value="orange"> みかん</td>
+        </tr>
+        <tr>
+            <td>バナナ</td>
+            <td><input type="radio" name="fruit" value="banana"> バナナ</td>
+        </tr>
+    </table>
+    <input type="submit" value="決定する">
+    </form>
+</body>
+</html>
+

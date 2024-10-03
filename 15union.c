@@ -1,132 +1,202 @@
 #include "common.h"
 
-struct sUnionNode
+class sUnionNode extends sNodeBase
 {
-    sType*% mType;
-  
-    int sline;
-    string sname;
-};
-
-sUnionNode*% sUnionNode*::initialize(sUnionNode*% self, sType*% type, sInfo* info)
-{
-    self.sline = info.sline;
-    self.sname = string(info.sname);
-
-    self.mType = clone type;
+    new(sType*% type, bool output, sInfo* info)
+    {
+        self.super();
     
-    info.types.insert(string(type.mClass.mName), clone type);
-
-    return self;
-}
-
-bool sUnionNode*::terminated()
-{
-    return true;
-}
-
-bool sUnionNode*::compile(sUnionNode* self, sInfo* info)
-{
-    sType* type = self.mType;
-    sClass* klass = type->mClass;
-    
-    if(!klass->mOutputed) {
-        klass->mOutputed = true;
+        sType*% self.mType = clone type;
         
-        buffer*% buf = new buffer();
+        string name = type.mClass.mName;
         
-        buf.append_str(xsprintf("union %s\n{\n", type.mClass.mName));
-        
-        //klass = info.classes[klass->mName];
-        foreach(it, klass.mFields) {
-            var name, type = it;
-            
-            buf.append_str(make_define_var(type, name, info));
-            buf.append_str(";\n");
+        if(info.types[name]?? != null && info.types[name].mTypedef) {
+        }
+        else {
+            info.types.insert(string(name), clone type);
         }
         
-        buf.append_str(xsprintf("};\n", type.mClass.mName));
-        
-        add_come_code_at_source_head(info, "%s", buf.to_string());
+        bool self.mOutput = output;
     }
-
-    return true;
-}
-
-int sUnionNode*::sline(sUnionNode* self, sInfo* info)
-{
-    return self.sline;
-}
-
-string sUnionNode*::sname(sUnionNode* self, sInfo* info)
-{
-    return string(self.sname);
-}
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    string kind()
+    {
+        return string("sUnionNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sType* type = self.mType;
+        sClass* klass = type->mClass;
+        
+        if(!klass->mOutputed) {
+            klass->mOutputed = true;
+            
+            if(klass.mFields.length() > 0) {
+                buffer*% buf = new buffer();
+                
+                buf.append_str(xsprintf("union %s\n{\n", type.mClass.mName));
+                
+                foreach(it, klass.mFields) {
+                    var name, type = it;
+                    
+                    buf.append_str(make_define_var(type, name));
+                    buf.append_str(";\n");
+                }
+                
+                buf.append_str(xsprintf("};\n"));
+                
+                if(info.output_header_file && klass.mDeclareSName !== info->base_sname) {
+                }
+                else {
+                    if(self.mOutput) {
+                        add_come_code_at_source_head(info, "%s", buf.to_string());
+                    }
+                }
+            }
+        }
+    
+        return true;
+    }
+};
 
 sNode*% parse_union(string type_name, sInfo* info)
 {
-    info.classes.insert(type_name, new sClass(name:type_name, union_:true));
+    sClass*% klass;
+    bool output;
+    if(info.classes.at(type_name, null) == null) {
+        klass = new sClass(name:string(type_name), union_:true);
+        info.classes.insert(string(type_name), clone klass);
+    }
+    else {
+        klass = clone info.classes.at(type_name, null);
+    }
     
-    sType*% type = new sType(type_name, info);
+    if(klass->mFields.length() == 0) {
+        output = true;
+    }
     
-    expected_next_character('{', info);
+    sType*% type = new sType(type_name);
     
-    type.mClass.mFields.reset();
+    expected_next_character('{');
+    
+    //type.mClass.mFields.reset();
     
     while(true) {
-        var type2, name, err = parse_type(info, true@parse_variable_name);
+        var type2, name, err = parse_type(parse_variable_name:true);
         
         if(!err) {
             printf("%s %d: parse_type failed\n", info->sname, info->sline);
             exit(2);
         }
-        expected_next_character(';', info);
+        expected_next_character(';');
         
-        type.mClass.mFields.push_back(new tuple2<string, sType*%>(name, type2));
+        if(output) {
+            type.mClass.mFields.push_back((name, type2));
+        }
         
         if(*info->p == '}') {
             info->p++;
-            skip_spaces_and_lf(info);
+            skip_spaces_and_lf();
             break;
         }
     }
     
-    return new sNode(new sUnionNode(type, info));
+    return new sUnionNode(type, output, info) implements sNode;
 }
 
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 97
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
 {
     if(buf === "union") {
-        string type_name = parse_word(info);
+        char* source_head = info.p;
         
-        info.classes.insert(type_name, new sClass(name:type_name, union_:true));
+        string type_name = parse_word();
         
-        sType*% type = new sType(type_name, info);
+        if(info.classes.at(type_name, null) == null) {
+            info.classes.insert(type_name, new sClass(name:string(type_name), union_:true));
+        }
         
-        expected_next_character('{', info);
+        bool output = false;
+        if(info.classes.at(type_name, null).mFields.length() == 0) {
+            output = true;
+        }
         
-        type.mClass.mFields.reset();
+        sType*% type = new sType(type_name);
+        
+        expected_next_character('{');
+        
+        //type.mClass.mFields.reset();
         
         while(true) {
-            var type2, name, err = parse_type(info, true@parse_variable_name);
+            var type2, name, err = parse_type(parse_variable_name:true);
             if(!err) {
                 printf("%s %d: parse_type failed\n", info->sname, info->sline);
                 exit(2);
             }
-            expected_next_character(';', info);
+            expected_next_character(';');
             
-            type.mClass.mFields.push_back(new tuple2<string, sType*%>(name, type2));
+            if(output) {
+                type.mClass.mFields.push_back((name, type2));
+            }
             
             if(*info->p == '}') {
                 info->p++;
-                skip_spaces_and_lf(info);
+                skip_spaces_and_lf();
                 break;
             }
         }
         
-        return new sNode(new sUnionNode(type, info));
+        char* source_tail = info.p;
+        
+        buffer*% header = new buffer();
+        header.append_str("union ");
+        header.append(source_head, source_tail - source_head);
+        
+        add_come_code_at_come_header(info, "%s;\n", header.to_string());
+        
+        return new sUnionNode(type, output, info) implements sNode;
     }
     
-    return inherit(string(buf), head, head_sline, info);
+    return inherit(buf, head, head_sline, info);
 }
 
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 15
+{
+    /// backtrace ///
+    bool define_union = false;
+    {
+        char* p = info.p;
+        int sline = info.sline;
+        
+        if(buf === "union") {
+            string type_name;
+            if(*info->p == '_' || xisalpha(*info->p)) {
+                type_name = parse_word();
+                
+                if(*info->p == '{') {
+                    skip_block();
+                    
+                    if(*info->p == ';') {
+                        define_union = true;
+                    }
+                }
+            }
+        }
+        
+        info.p = p;
+        info.sline = sline;
+    }
+    
+    if(define_union) {
+        string type_name = parse_word();
+        
+        return parse_union(type_name, info);
+    }
+    
+    return inherit(buf, head, head_sline, info);
+}

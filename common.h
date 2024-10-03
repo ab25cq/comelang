@@ -1,27 +1,33 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-using unsafe;
-using no-null-check;
-
-#ifdef COMELANG2
 #include <comelang2.h>
-#else
-#include <comelang.h>
-#endif
-
-//#define exit(o); { int* a = (void*)0; *a = 1; exit(2); }
 
 #define FUN_VERSION_MAX 128
 #define GENERICS_TYPE_MAX 12
+#define METHOD_GENERICS_TYPE_MAX 7
+#define RIGHT_VALUE_OBJECT_NUM_MAX 1024
 
-extern bool gComelang;
-extern bool gGC;
+#define METHOD_BLOCK_RESULT_KIND_BREAK 1
+#define METHOD_BLOCK_RESULT_KIND_CONTINUE 2
+#define METHOD_BLOCK_RESULT_KIND_RETURN 3
+#define METHOD_BLOCK_RESULT_KIND_RETURN_VOID 4
+
 extern bool gComeDebug;
+extern bool gComeGC;
+extern bool gComeC;
+extern bool gComeStr;
+extern bool gComeNet;
+extern bool gComeMalloc;
+extern bool gCommonHeader;
+extern int gComeDebugStackFrameID;
 
 struct sType;
 
-struct sClass {
+struct sClass;
+
+struct sClass 
+{
     bool mStruct;
     bool mFloat;
     bool mUnion;
@@ -39,22 +45,40 @@ struct sClass {
     list<tuple2<string, sType*%>*%>*% mFields;
     
     bool mOutputed;
+    bool mOutputed2;
+    string mDeclareSName;
+    bool mNobodyStruct;
+    
+    string mParentClassName;
 };
 
 struct sInfo;
 
-interface sNode {
+interface sNode 
+{
     bool compile(sInfo* info);
     int sline();
     string sname();
     bool terminated();
+    string kind();
 };
+
+struct sNodeBase
+{
+    int sline;
+    string sname;
+};
+
+int sNodeBase*::sline(sNodeBase* self, sInfo* info);
+string sNodeBase*::sname(sNodeBase* self, sInfo* info);
 
 struct sType
 {
     sClass* mClass;
     
+    
     tuple1<sType*%>*% mNoSolvedGenericsType;
+    tuple1<sType*%>*% mOriginalLoadVarType;
     
     string mGenericsName;
 
@@ -68,6 +92,8 @@ struct sType
     tuple1<sType*%>*% mResultType;
     bool mVarArgs;
     
+    sNode*% mAlignas;
+    
     bool mUnsigned;
     bool mShort;
     bool mLong;
@@ -76,19 +102,28 @@ struct sType
     bool mRegister;
     bool mVolatile;
     bool mStatic;
+    bool mUniq;
+    bool mRecord;
     bool mExtern;
     bool mRestrict;
     bool mImmutable;
     bool mHeap;
     bool mDummyHeap;
+    bool mDelegate;
+    bool mShare;
+    bool mClone;
     bool mNoHeap;
     bool mNoCallingDestructor;
     bool mRefference;
     bool mException;
     
     int mPointerNum;
+    int mOriginalTypeNamePointerNum;
+    int mOriginalTypeNameHeap;
     int mNoArrayPointerNum;
-    int mSizeNum;
+    int mTypedefOriginalPointerNum;
+    sNode*% mSizeNum;
+    int mFunctionPointerNum;
     
     unsigned int mDynamicArrayNum;
     unsigned int mTypeOfExpression;
@@ -103,17 +138,36 @@ struct sType
     bool mComeMemCore;
     
     bool mInline;
+    bool mNullValue;
+    bool mGuardValue;
+    
+    string mAsmName;
+    bool mArrayPointerType;
+    bool mLambdaArray;
+    bool mNoNumberArray;
+    
+    bool mTypedef;
+    
+    bool mMultipleTypes;
 };
 
 struct sVar;
 
-struct CVALUE {
+struct sRightValueObject;
+
+struct CVALUE 
+{
     string c_value;
     sType*% type;
     sVar* var;
+    sRightValueObject* right_value_objects;
+    string c_value_without_right_value_objects;
 };
 
-struct sVar {
+CVALUE*% CVALUE*::initialize(CVALUE*% self);
+
+struct sVar 
+{
     string mName;
     string mCValueName;
     sType*% mType;
@@ -124,6 +178,8 @@ struct sVar {
     bool mAllocaValue;
     bool mFunctionParam;
     bool mNoFree;
+    
+    string mFunName;
 };
 
 struct sVarTable;
@@ -154,36 +210,52 @@ struct sFun
     bool mStatic;
     
     string mComeHeader;
+    bool mCloner;
+    
+    string mDeclareSName;
+    bool mNoResultType;
+    bool mDeclaredResultObject;
 };
 
 struct sGenericsFun
 {
     sType*% mImplType;
     list<string>*% mGenericsTypeNames;
+    list<string>*% mMethodGenericsTypeNames;
     
     string mName;
     
     sType*% mResultType;
     list<sType*%>*% mParamTypes;
-    list<string%>*% mParamNames;
+    list<string>*% mParamNames;
+    list<string>*% mParamDefaultParametors;
     
     string mBlock;
     int mSLine;
     
     bool mVarArgs;
+    
+    string mGenericsSName;
+    int mGenericsSLine;
 };
 
 struct sModule
 {
     buffer*% mSourceHead;
+    buffer*% mSourceHead2;
+    buffer*% mSourceHead3;
     buffer*% mSource;
     string mLastCode;
     string mLastCode2;
+    string mLastCode3;
+    
+    buffer*% mHeader;
 };
 
 struct sVarTable;
 
-struct sVarTable {
+struct sVarTable 
+{
     map<string, sVar*%>*% mVars;
     bool mGlobal;
     struct sVarTable* mParent;
@@ -204,29 +276,52 @@ struct sRightValueObject
     bool mFreed;
     int mID;
     int mBlockLevel;
+    bool mStored;
+    bool mDecrementRefCount;
+};
+
+struct sClassModule
+{
+    string mName;
+    string mText;
+    list<string>*% mParams;
+    string mSName;
+    int mSLine;
 };
 
 struct sInfo
 {
     char* p;
     char* head;
+    buffer*% original_source;
     buffer*% source;
     string sname;
+    string base_sname;
     int sline;
     int err_num;
     string err_line;
     string clang_option;
+    string cpp_option;
     bool no_output_err;
     bool no_output_come_code;
     
     sFun* come_fun;
+    
+    string come_fun_name;
+    
+    sFun* caller_fun;
+    int caller_line;
+    char* caller_sname;
+    
     int block_level;
 
     map<string, sFun*%>*% funcs;
     map<string, sGenericsFun*%>*% generics_funcs;
     map<string, sClass*%>*% classes;
+    map<string, sClassModule*%>*% modules;
     map<string, sType*%>*% types;
     map<string, sClass*%>*% generics_classes;
+    
     sModule*% module;
     
     sType*% type;
@@ -244,21 +339,188 @@ struct sInfo
     sVarTable*% gv_table;
     
     bool no_comma;
+    bool no_assign;
+    bool no_label;
     bool last_statment_is_return;
     
     list<string>*% generics_type_names;
+    list<string>*% method_generics_type_names;
     sType*% impl_type;
     
     int current_stack_num;
     int num_method_block;
     sClass* current_stack_frame_struct;
-    list<sType*%>*? param_types;
-    list<string>*? param_names;
+    list<sType*%>* param_types;
+    list<string>* param_names;
     
     bool define_struct;
     bool in_typedef;
+    bool in_loop;
     
     string output_file_name;
+
+    sVarTable* current_loop_vtable;
+    bool verbose;
+    
+    bool output_header_file;
+    int num_current_stack;
+    
+    int num_source_files;
+    int max_source_files;
+    
+    bool without_semicolon;
+    bool writing_source_file_position;
+    
+    sType*% function_result_type;
+    bool in_class;
+    
+    map<string,string>*% module_params;
+    
+    bool constructor_;
+    sClass* defining_class;
+    bool array_initializer;
+    
+    bool va_arg;
+    bool in_fun_param;
+    
+    bool inhibits_output_code;
+    bool inhibits_output_code2;
+    
+    bool in_generics_fun;
+    bool in_clone_object;
+};
+
+module sCurrentNodeModule
+{
+    new(sInfo* info)
+    {
+        self.super();
+    }
+    
+    int sline(sInfo* info)
+    {
+        return self.sline;
+    }
+    
+    string sname(sInfo* info)
+    {
+        return string(self.sname);
+    }
+    
+    string kind()
+    {
+        return string("sCurrentNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        info->current_stack_num++;
+        string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
+        sClass*% current_stack = new sClass(name: class_name, struct_:true);
+            
+        sVarTable* vtable = info->lv_table;
+        
+        while(vtable) {
+            foreach(it, vtable.mVars) {
+                char* key = it;
+                sVar* value = vtable.mVars[key];
+                
+                sType*% type2 = clone value.mType;
+                
+                type2.mPointerNum++;
+                
+                tuple2<string, sType*%>*% item = (string(value.mCValueName), type2);
+                
+                if(value.mCValueName != null) {
+                    if(strcmp(value.mCValueName, "__list_values") == 0)
+                    {
+                    }
+                    else if(strcmp(value.mCValueName, "__map_keys") == 0)
+                    {
+                    }
+                    else if(strcmp(value.mCValueName, "__map_element") == 0)
+                    {
+                    }
+                    else if(value.mType.mClass.mName === "va_list" || value.mType.mClass.mName === "__builtin_va_list") 
+                    {
+                    }
+                    else if(type2->mArrayNum.length() == 1) {
+                        sType*% type3 = clone type2;
+                        type3->mArrayNum.reset();
+                        type3->mPointerNum++;
+                        tuple2<string, sType*%>*% item2 = (string(value.mCValueName), type3);
+                        current_stack.mFields.push_back(clone item2);
+                    }
+                    else {
+                        current_stack.mFields.push_back(clone item);
+                    }
+                }
+            }
+            
+            vtable = vtable->mParent;
+        }
+        
+        output_struct(current_stack, info);
+        
+        info.classes.insert(class_name, current_stack);
+        
+        static int num_current_stack = 0;
+        num_current_stack++;
+        add_come_code_at_function_head(info, "struct %s __current_stack%d__;\n", class_name, num_current_stack);
+        add_come_code_at_function_head2(info, "memset(&__current_stack%d__, 0, sizeof(struct %s));\n", num_current_stack, class_name);
+        
+        vtable = info->lv_table;
+        
+        while(vtable) {
+            foreach(it, vtable.mVars) {
+                char* key = it;
+                sVar* value = vtable.mVars[key];
+                
+                sType*% type2 = clone value.mType;
+                
+                tuple2<string, sType*%>*% item = (value.mCValueName, type2);
+                
+                if(value.mCValueName != null) {
+                    if(strcmp(value.mCValueName, "__list_values") == 0)
+                    {
+                    }
+                    else if(strcmp(value.mCValueName, "__map_keys") == 0)
+                    {
+                    }
+                    else if(strcmp(value.mCValueName, "__map_element") == 0)
+                    {
+                    }
+                    else if(value.mType.mClass.mName === "va_list" || value.mType.mClass.mName === "__builtin_va_list") 
+                    {
+                    }
+                    else {
+                        if(type2->mClass->mName === "lambda") {
+                            add_come_code(info, "__current_stack%d__.%s = %s;\n", num_current_stack, value.mCValueName, value.mCValueName);
+                        }
+                        else {
+                            add_come_code(info, "__current_stack%d__.%s = &%s;\n", num_current_stack, value.mCValueName, value.mCValueName);
+                        }
+                    }
+                }
+            }
+            
+            vtable = vtable->mParent;
+        }
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = xsprintf("&__current_stack%d__", num_current_stack);
+        come_value.type = new sType(class_name);
+        come_value.var = null;
+        
+        add_come_last_code(info, "%s;\n", come_value.c_value);
+        
+        info.stack.push_back(come_value);
+        
+        info.num_current_stack = num_current_stack;
+        
+        return true;
+    }
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -269,27 +531,28 @@ int come_main(int argc, char** argv) version 1;
 /////////////////////////////////////////////////////////////////////
 /// 02transpile.c ///
 /////////////////////////////////////////////////////////////////////
+sNodeBase*% sNodeBase*::initialize(sNodeBase*% self, sInfo* info=info);
+bool node_compile(sNode* node, sInfo* info=info);
 int come_main(int argc, char** argv) version 2;
-void come_init() version 2;
-void come_final() version 2;
 void err_msg(sInfo* info, char* msg, ...);
+bool sNodeBase*::terminated(sNodeBase* self);
 int transpile(sInfo* info) version 2;
 bool output_source_file(sInfo* info) version 2;
 sModule*% sModule*::initialize(sModule*% self);
-sType*% sType*::initialize(sType*% self, char* name, sInfo* info, bool heap=false);
+sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* info=info);
 sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent);
 void sVarTable*::finalize(sVarTable* self);
-sClass*% sClass*::initialize(sClass*% self, char* name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false);
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool external, bool var_args, sBlock*%? block, bool static_, string come_header, sInfo* info);
-string make_type_name_string(sType* type, bool in_header, bool array_cast_pointer, sInfo* info, bool no_pointer=false);
-string make_come_type_name_string(sType* type, sInfo* info);
+sClass*% sClass*::initialize(sClass*% self, char* name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, sInfo* info=info);
+sClassModule*% sClassModule*::initialize(sClassModule*% self, char* name, string text, string sname, int sline, sInfo* info);
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string come_header, string declare_sname, sInfo* info);
+string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false);
+string make_come_type_name_string(sType* type, sInfo* info=info);
+string make_come_type_name_string_no_solved(sType* type, bool original_type_name=false, sInfo* info=info);
 
 /////////////////////////////////////////////////////////////////////
 /// 03transpile2.c ///
 /////////////////////////////////////////////////////////////////////
-void come_init() version 3;
-void come_final() version 3;
-
+string make_define_var_no_solved(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info);
 string header_function(sFun* fun, sInfo* info);
 int transpile(sInfo* info) version 3;
 bool output_source_file(sInfo* info) version 3;
@@ -297,94 +560,120 @@ void show_type(sType* type, sInfo* info);
 string create_generics_name(sType* generics_type, sInfo* info);
 void add_last_code_to_source(sInfo* info);
 void add_come_code_at_function_head(sInfo* info, char* code, ...);
+void add_come_code_at_come_header(sInfo* info, const char* msg, ...);
 void add_come_code_at_function_head2(sInfo* info, char* code, ...);
 void add_come_code_at_source_head(sInfo* info, const char* msg, ...);
+void add_come_code_at_source_head3(sInfo* info, const char* msg, ...);
+void add_come_code_at_source_head2(sInfo* info, const char* msg, ...);
 void add_come_code(sInfo* info, const char* msg, ...);
 void add_come_last_code(sInfo* info, const char* msg, ...);
 void add_come_last_code2(sInfo* info, const char* msg, ...);
-void add_last_code_to_source_without_semicolon(sInfo* info);
+void add_come_last_code3(sInfo* info, const char* msg, ...);
+void add_last_code_to_source_with_comma(sInfo* info);
 void dec_stack_ptr(int value, sInfo* info);
 CVALUE*% get_value_from_stack(int offset, sInfo* info);
-string make_define_var(sType* type, char* name, sInfo* info, bool in_header=false);
-string make_come_define_var(sType* type, char* name, sInfo* info);
+string make_define_var(sType* type, char* name, bool in_header=false, sInfo* info=info);
 void transpiler_clear_last_code(sInfo* info);
+bool output_header_file(sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 04heap.c ///
 /////////////////////////////////////////////////////////////////////
+sType*% solve_method_generics(sType* type, sInfo* info);
+bool existance_free_right_value_objects(sInfo* info);
+bool existance_free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
+void std_move(sType* left_type, sType* right_type, CVALUE* right_value, sInfo* info=info, bool no_delete_from_right_value_objects=false);
+string append_stackframe(char* c_value, sType* type, sInfo* info);
 bool create_equals_method(sType* type, sInfo* info);
 bool create_operator_equals_method(sType* type, sInfo* info);
 bool create_operator_not_equals_method(sType* type, sInfo* info);
 sType*% solve_generics(sType* type, sType* generics_type, sInfo* info);
 sVar* get_variable_from_table(sVarTable* table, char* name);
 void free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
-void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false);
+void free_objects_on_break(sInfo* info);
+void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false, bool force_delete_=false);
 sType*%, string clone_object(sType* type, char* obj, sInfo* info);
 void free_right_value_objects(sInfo* info, bool comma=false);
 void free_objects(sVarTable* table, sVar* ret_value, sInfo* info);
 string append_object_to_right_values(char* obj, sType*% type, sInfo* info);
-bool is_right_values(int right_value_num, sInfo* info);
-int get_right_value_id_from_obj(string obj);
+void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false);
 void remove_object_from_right_values(int right_value_num, sInfo* info);
 string increment_ref_count_object(sType* type, char* obj, sInfo* info);
-void decrement_ref_count_object(sType* type, char* obj, sInfo* info);
+void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_delete_=false, bool no_free=false);
 
 /////////////////////////////////////////////////////////////////////
 /// 05function.c ///
 /////////////////////////////////////////////////////////////////////
-void come_init() version 5;
-void come_final() version 5;
-sNode*% parse_global_variable(sInfo* info);
+sNode*% post_position_operator(sNode*% node, sInfo* info);
+bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sInfo* info);
+bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value, sInfo* info);
+bool strmemcmp(char* p, char* p2);
+void caller_begin(sInfo* info=info);
+void caller_end(sInfo* info=info);
+sNode*% craete_logical_denial(sNode*% node, sInfo* info);
+tuple3<sType*%,string,bool>*% backtrace_parse_type(bool parse_variable_name=false,sInfo* info=info);
+void transpile_toplevel(bool block=false, sInfo* info=info);
+void skip_pointer_attribute(sInfo* info=info);
+sNode*% parse_normal_block(bool clang=false, sInfo* info=info);
+bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, sInfo* info=info);
+void cast_type(sType* left_type, sType* right_type, CVALUE* come_value, sInfo* info=info);
+string parse_attribute(sInfo* info=info);
 sNode*% get_number(bool minus, sInfo* info);
 sNode*% get_oct_number(sInfo* info);
 sNode*% get_hex_number(bool minus, sInfo* info);
 sNode*% create_int_node(int value, sInfo* info);
-sNode*% post_position_operator3(sNode*% node, sInfo* info) version 5;
-list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info);
+list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false);
 sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* info);
+sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_name, sInfo* info);
-string skip_block(sInfo* info);
+string skip_block(sInfo* info=info);
 bool is_contained_generics_class(sType* type, sInfo* info);
-bool is_type_name(char* buf, sInfo* info);
-bool parsecmp(char* str, sInfo* info);
-string parse_word(sInfo* info);
-void skip_spaces_and_lf(sInfo* info);
-int expected_next_character(char c, sInfo* info);
+bool is_type_name(char* buf, sInfo* info=info);
+bool parsecmp(char* str, sInfo* info=info);
+string parse_word(sInfo* info=info);
+string backtrace_parse_word(sInfo* info=info);
+void skip_spaces_and_lf(sInfo* info=info);
+int expected_next_character(char c, sInfo* info=info);
 sBlock*% sBlock*::initialize(sBlock*% self, sInfo* info);
 bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info);
 
-sType*%,string,bool parse_type(sInfo* info, bool parse_variable_name=false, bool parse_multiple_type=true);
-sBlock*% parse_block(sInfo* info, bool no_block_level=false);
-int transpile_block(sBlock* block, list<sType*%>*? param_types, list<string>*? param_names, sInfo* info, bool no_var_table=false);
+tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);
+tuple2<sType*%, string>*% parse_variable_name(sType*% base_type_name, bool first, sInfo* info);
+sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_self_at_last=false);
+int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false);
 void arrange_stack(sInfo* info, int top);
-int expected_next_character(char c, sInfo* info);
 sNode*% parse_function(sInfo* info);
 
-sNode*% expression(sInfo* info) version 5;
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 1;
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 99;
-sNode*% expression_node(sInfo* info) version 1;
-sNode*% expression_node(sInfo* info) version 99;
+sNode*% expression(sInfo* info=info) version 5;
+sNode*% statment(sInfo* info=info);
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 1;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99;
+sNode*% expression_node(sInfo* info=info) version 1;
+sNode*% expression_node(sInfo* info=info) version 99;
+sNode*% expression_node(sInfo* info=info) version 98;
+sNode*% expression_node(sInfo* info=info) version 97;
 
 int transpile(sInfo* info) version 5;
-void parse_sharp(sInfo* info) version 5;
-sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 5;
-sNode*% post_position_operator(sNode*% node, sInfo* info) version 5;
-string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info);
+void parse_sharp(sInfo* info=info) version 5;
+string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true);
+string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true);
+string create_method_name_using_class(sClass* obj_class, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true);
 
 /////////////////////////////////////////////////////////////////////
 /// 06str.c ///
 /////////////////////////////////////////////////////////////////////
-sNode*% expression_node(sInfo* info) version 98;
+sNode*% expression_node(sInfo* info=info) version 96;
 sNode*% parse_tuple(sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 07var.c
 /////////////////////////////////////////////////////////////////////
-sNode*% store_var(string name, list<string>*%? multiple_assign, sType*% type, bool alloc, sNode*%? right_node, sInfo* info);
+sNode*% parse_array_initializer(sInfo* info=info);
+sNode*% parse_global_variable(sInfo* info);
+sNode*% store_var(string name, list<string>*% multiple_assign, sType*% type, bool alloc, sNode*% right_node, sInfo* info);
 sNode*% load_var(string name, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 7;
 void add_variable_to_table(char* name, sType*% type, sInfo* info);
@@ -395,83 +684,90 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;
+sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info);
+sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info);
+sNode*% parse_or_statment(sNode*% expression_node, sInfo* info);
+sNode*% parse_and_statment(sNode*% expression_node, sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 09while.c
 /////////////////////////////////////////////////////////////////////
- sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 9;
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 9;
 
 /////////////////////////////////////////////////////////////////////
 /// 10do_while.c
 /////////////////////////////////////////////////////////////////////
- sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 10;
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 10;
 
 /////////////////////////////////////////////////////////////////////
 /// 11for.c
 /////////////////////////////////////////////////////////////////////
- sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 11;
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 11;
 
 /////////////////////////////////////////////////////////////////////
 /// 12switch.c
 /////////////////////////////////////////////////////////////////////
- sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 12;
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 12;
 
 /////////////////////////////////////////////////////////////////////
 /// 13op.c
 /////////////////////////////////////////////////////////////////////
-bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVALUE* right_value, sInfo* info);
- sNode*% expression(sInfo* info) version 13;
- sNode*% post_op(sNode*% node, sInfo* info) version 13;
- sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 13;
-sNode*% create_null_object(sInfo* info);
+sNode*% create_null_node(sInfo* info=info);
+bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVALUE* right_value, bool break_guard, sInfo* info);
+sNode*% expression(sInfo* info=info) version 13;
+sNode*% post_op(sNode*% node, sInfo* info) version 13;
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 13;
 
 /////////////////////////////////////////////////////////////////////
 /// 14struct.c
 /////////////////////////////////////////////////////////////////////
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 14;
 sNode*% parse_struct(string type_name, sInfo* info);
 string get_none_generics_name(char* class_name);
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 98;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98;
 bool output_generics_struct(sType* type, sType* generics_type, sInfo* info);
 void output_struct(sClass* klass, sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 15union.c
 /////////////////////////////////////////////////////////////////////
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 15;
 sNode*% parse_union(string type_name, sInfo* info);
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 97;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97;
 
 /////////////////////////////////////////////////////////////////////
 /// 16enum.c
 /////////////////////////////////////////////////////////////////////
 sNode*% parse_enum(string type_name, sInfo* info);
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 96;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96;
 
 /////////////////////////////////////////////////////////////////////
 /// 17typedef.c
 /////////////////////////////////////////////////////////////////////
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 95;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95;
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 17;
 
 /////////////////////////////////////////////////////////////////////
 /// 18field.c
 /////////////////////////////////////////////////////////////////////
+bool compiletime_get_exception_value(sInfo* info);
 sNode*% store_field(sNode* left, sNode*% right, string name, sInfo* info);
+sNode*% exception_get_value(sNode*% node, sInfo* info);
 
- sNode*% post_position_operator(sNode*% node, sInfo* info) version 18;
- sNode*% post_position_operator2(sNode*% node, sInfo* info) version 18;
- sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 18;
+sNode*% post_position_operator(sNode*% node, sInfo* info) version 99;
+sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 18;
 
 /////////////////////////////////////////////////////////////////////
 /// 19eq.c
 /////////////////////////////////////////////////////////////////////
- sNode*% post_position_operator2(sNode*% node, sInfo* info) version 19;
+sNode*% post_position_operator(sNode*% node, sInfo* info) version 19;
 
 /////////////////////////////////////////////////////////////////////
 /// 20method.c
 /////////////////////////////////////////////////////////////////////
-string make_generics_function(sType* type, string fun_name, sInfo* info);
+string make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true);
  sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20;
- sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 20;
- sNode*% post_position_operator3(sNode*% node, sInfo* info) version 20;
+sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 20;
 
 /////////////////////////////////////////////////////////////////////
 /// 21obj.c
@@ -481,17 +777,22 @@ sNode*% create_true_object(sInfo* info);
 sNode*% create_false_object(sInfo* info);
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 21;
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 94;
-sNode*% post_position_operator3(sNode*% node, sInfo* info) version 21;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94;
+sNode*% post_position_operator(sNode*% node, sInfo* info) version 21;
 
 /////////////////////////////////////////////////////////////////////
 /// 22impl.c
 /////////////////////////////////////////////////////////////////////
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 93;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93;
 
 /////////////////////////////////////////////////////////////////////
 /// 23interface.c
 /////////////////////////////////////////////////////////////////////
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 92;
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92;
+
+/////////////////////////////////////////////////////////////////////
+/// 24module.c
+/////////////////////////////////////////////////////////////////////
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91;
 
 #endif

@@ -1,18 +1,51 @@
 #include "common.h"
 
-bool gComelang;
-bool gGC;
-bool gComeDebug = false;
+bool gComeGC = false;
+bool gComeLink = true;
+bool gComeC = true;
+bool gComeStr = false;
+bool gComeNet = false;
 char* gProgramName = NULL;
+bool gCommonHeader = false;
+bool gComeMalloc = false;
+bool gComeDebug = false;
+bool gComeOriginalSourcePosition = true;
+int gComeDebugStackFrameID = 0;
 
-void come_init() version 2
+#ifdef __LINUX__
+static char* RM = "rm -rf";
+#elif __MAC__
+static char* RM = "rm -rf";
+#else
+static char* RM = "rm -rf";
+#endif
+
+static void write_source_file_position_to_source(sInfo* info=info)
 {
-    gComelang = false;
-    gGC = false;
+    if(gComeOriginalSourcePosition) {
+        if(info.writing_source_file_position) {
+            add_come_code(info, s"# \{info->sline} \"\{info->sname}\"\n");
+            info.writing_source_file_position = false;
+        }
+    }
 }
 
-void come_final() version 2
+bool node_compile(sNode* node, sInfo* info=info)
 {
+    string sname = string(info->sname);
+    int sline = info->sline;
+    
+    info->sname = string(node->sname());
+    info->sline = node->sline();
+    
+    write_source_file_position_to_source();
+    
+    bool result = node->compile(info);
+    
+    info->sname = string(sname);
+    info->sline = sline;
+    
+    return result;
 }
 
 void err_msg(sInfo* info, char* msg, ...)
@@ -25,8 +58,35 @@ void err_msg(sInfo* info, char* msg, ...)
         vasprintf(&msg2,msg,args);
         va_end(args);
         
-        printf("%s %d: %s\n", info.sname, info.sline, msg2);
+        char* p = info.p;
+        
+        char* last_lf = null;
+        while(p >= info.head) {
+            if(*p == '\n') {
+                last_lf = p;
+                break;
+            }
+            p--;
+        }
+        
+        if(last_lf) {
+            int col = info.p - last_lf;
+        
+            printf("%s %d %d: %s\n", info.sname, info.sline, col, msg2);
+        }
+        else {
+            int col = info.p - info.head;
+        
+            printf("%s %d %d: %s\n", info.sname, info.sline, col, msg2);
+        }
+        
         info.err_num++;
+        stackframe();
+        
+        if(info.come_fun) {
+            int n = info->sline-5;
+            info.original_source.to_string().split_char('\n').sublist(n, n+10).map2<string> { return xsprintf("%d %s", ++n, it); }.join("\n").puts();
+        }
 
         free(msg2);
     }
@@ -48,25 +108,87 @@ bool output_source_file(sInfo* info) version 2
     return true;
 }
 
+static void clear_tmp_file(sInfo* info)
+{
+    string input_file_name = info.sname;
+    
+    if(input_file_name != null && input_file_name !== "") {
+        system(xsprintf("%s %s.*", RM, input_file_name));
+    }
+}
+
+static void clear_tmp_file_without_object_file(sInfo* info)
+{
+    string input_file_name = info.sname;
+    
+    if(input_file_name != null && input_file_name !== "") {
+        system(xsprintf("%s %s.i* %s.c*", RM, input_file_name, input_file_name));
+    }
+}
+
+static void clear_tmp_file_without_object_file_and_ccfile(sInfo* info)
+{
+    string input_file_name = info.sname;
+    
+    if(input_file_name != null && input_file_name !== "") {
+        system(xsprintf("%s %s.i* %s.c.out", RM, input_file_name, input_file_name));
+    }
+}
+
 static bool cpp(sInfo* info)
 {
     string input_file_name = info.sname;
     
     string output_file_name;
-    if(info.output_file_name) {
+    if(!info.output_header_file && info.output_file_name) {
         output_file_name = info.output_file_name + ".i";
     }
     else {
         output_file_name = info.sname + ".i";
     }
     
-    string cmd = xsprintf("which /opt/homebrew/opt/llvm/bin/clang-cpp 1> /dev/null 2>/dev/null");
-
+    string cmd = xsprintf("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
+    
+    bool exist_common_h = false;
+    {
+        FILE* f = fopen("common.h", "r");
+        if(f) {
+            exist_common_h = true;
+        }
+        if(info.output_file_name === "common.h") {
+            exist_common_h = false;
+        }
+        if(f) {
+            fclose(f);
+        }
+    }
+    
+    if(!gCommonHeader) {
+        exist_common_h = false;
+    }
+    int rc2 = system("uname -a | grep Android 1> /dev/null 2>/dev/null");
+    
+    /// Mac ///
     int rc = system(cmd);
-    if(rc == 0) {
-        //string cmd2 = xsprintf("/opt/homebrew/opt/llvm/bin/clang-cpp -lang-c -I. -I/usr/local/include -DCOMELANG2 -D__DARWIN_ARM__ -U__GNUC__ %s > %s", input_file_name, output_file_name);
-        string cmd2 = xsprintf("/opt/homebrew/opt/llvm/bin/clang-cpp -lang-c -I. -I/usr/local/include -DCOMELANG2 -D__DARWIN_ARM__ -I/opt/homebrew/opt/pcre/include -U__GNUC__ %s > %s", input_file_name, output_file_name);
-        puts(cmd2);
+    if(rc2 == 0) {
+        string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        
+        if(info.verbose) puts(cmd3);
+        int rc = system(cmd3);
+        
+        var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
+        
+        if(rc != 0) {
+            printf("cpp failed\n");
+            exit(2);
+        }
+    }
+    else if(rc == 0) {
+        string cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include -U__GNUC__ %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        if(info.verbose) puts(cmd2);
         
         int rc = system(cmd2);
         
@@ -74,18 +196,48 @@ static bool cpp(sInfo* info)
             printf("failed to cpp(2) (%s)\n", cmd2);
             exit(5);
         }
-    }
-    else {
-        string cmd3 = xsprintf("cpp -lang-c -I. -DCOMELANG2 -U__GNUC__ %s > %s", input_file_name, output_file_name);
         
-        puts(cmd3);
-        rc = system(cmd3);
+        var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
+    }
+    /// Other ///
+    else {
+        string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        
+	string cmd_debian = xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null")
+	int rc_debian = system(cmd_debian);
+
+	if(rc_debian == 0) {
+		cmd3 = xsprintf("cpp -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+	}
+
+
+
+        if(info.verbose) puts(cmd3);
+        int rc = system(cmd3);
+        
+        var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
         
         if(rc != 0) {
-            string cmd4 = xsprintf("cpp -I. -C %s > %s", input_file_name, output_file_name);
+            string cmd4 = xsprintf("cpp -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+
+		if(rc_debian == 0) {
+		    cmd4 = xsprintf("cpp -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+		}
+    var command = xsprintf("clang -o %s -c %s %s >> %s.out 2>&1", output_file_name, input_file_name, info.clang_option, input_file_name);
     
-            puts(cmd4);
+            if(info.verbose) puts(cmd4);
             rc = system(cmd4);
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
     
             if(rc != 0) {
                 printf("failed to cpp(2) (%s)\n", cmd4);
@@ -102,25 +254,30 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     string input_file_name = info.sname + ".c";
     
     string output_file_name = null;
-    if(info.output_file_name) {
+    if(info.output_file_name && output_object_file) {
         output_file_name = string(info.output_file_name);
     }
     else {
         output_file_name = info.sname + ".o";
     }
     
-    var command = xsprintf("clang -o %s -c %s %s", output_file_name, input_file_name, info.clang_option);
+    var command = xsprintf("clang -o %s -c %s %s >> %s.out 2>&1", output_file_name, input_file_name, info.clang_option, input_file_name);
     
-    puts(command);
+    if(info.verbose) puts(command);
     int rc = system(command);
     
+    var command2 = xsprintf("grep error\\: %s.out", input_file_name);
+    
+    if(info.verbose) puts(command2);
+    (void)system(command2);
+    
     if(rc != 0) {
-        err_msg(info, "clang is faield");
+        printf("%s %d: clang is faild\n", info->sname, info->sline);
         return false;
     }
     
     if(!output_object_file) {
-        object_files.push_back(string(output_file_name));
+        object_files.insert(0, string(output_file_name));
     }
     
     return true;
@@ -144,181 +301,253 @@ static bool linker(sInfo* info, list<string>* object_files)
         command.append_str(xsprintf("%s ", it));
     }
     
-#ifndef COMPILING_LIBRARY
-    //if(gProgramName === "comelang2") {
-        command.append_str("-L/usr/local/lib -lcomelang2 ");
-    //}
-    //else {
-    //    command.append_str("-lcomelang2-sh ");
-    //}
-#endif
-    command.append_str(xsprintf("%s ", info.clang_option));
+    string cmd = xsprintf("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
     
-    puts(command.to_string());
-    int rc = system(command.to_string());
+    int rc = system(cmd);
+    if(rc == 0) {
+        command.append_str(" -L/opt/homebrew/opt/pcre/lib -L/opt/homebrew/opt/openssl/lib -L/opt/homebrew/opt/boehmgc/lib -L/opt/homebrew/opt/mysql/lib -L/opt/homebrew/opt/zstd/lib ");
+    }
+    
+    cmd = xsprintf("ls /usr/local/lib 1> /dev/null 2>/dev/null"); // /usr/local/lib?
+    
+    rc = system(cmd);
+    if(rc == 0) {
+        command.append_str(" -L/usr/local/lib ");
+    }
+    
+    cmd = xsprintf("ls %s/lib 1> /dev/null 2>/dev/null", getenv("HOME")); // usr/lib?
+    
+    rc = system(cmd);
+    if(rc == 0) {
+        command.append_str(xsprintf(" -L%s/lib ", getenv("HOME")));
+    }
+    
+    cmd = xsprintf("ls %s/lib 1> /dev/null 2>/dev/null", PREFIX); // PREFIX/lib?
+    
+    rc = system(cmd);
+    if(rc == 0) {
+        command.append_str(xsprintf(" -L%s/lib ", PREFIX));
+    }
+    
+    command.append_str(xsprintf(" %s ", info.clang_option));
+    
+    if(gComeStr) {
+        command.append_str(" -lcomelang2-str -lpcre ");
+    }
+    if(gComeGC) {
+        command.append_str(" -lcomelang2-gc -lgc ");
+    }
+    if(gComeNet) {
+        cmd = xsprintf("which apk 1> /dev/null 2>/dev/null");
+        string cmd2 = xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null");
+        string cmd3 = xsprintf("uname -a | grep Android 1>/dev/null 2>/dev/null");
+        
+        rc = system(cmd);
+        int rc2 = system(cmd2);
+        int rc3 = system(cmd3);
+        if(rc3 == 0) {
+            command.append_str(" -lcomelang2-net -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
+        }
+        else if(rc == 0 || rc2 == 0) {
+            command.append_str(" -lcomelang2-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
+        }
+        else {
+            command.append_str(" -lcomelang2-net -lssl `mysql_config --cflags --libs`");
+        }
+    }
+    
+    command.append_str(" -lcomelang2 ");
+    
+    if(info.verbose) puts(command.to_string());
+    rc = system(command.to_string());
     
     if(rc != 0) {
-        err_msg(info, "clang is faield");
+        printf("%s %d: clang is faild\n", info->sname, info->sline);
         return false;
     }
     
     return true;
 }
 
-sModule*% sModule*::initialize(sModule*% self)
+bool new_project(int argc, char** argv)
 {
-    self.mSourceHead = new buffer();
-    self.mSource = new buffer();
-    self.mLastCode = null;
-    self.mLastCode2 = null;
+    string project_name = string(argv[2]);
+    string project_name_debug = string(argv[2]) + string("-debug");
+    string cc = string("comelang2");
+    string install = string("install");
+    string libs = string("-lpcre");
+    string os = string("linux");
+    string prefix = string("/usr/local/");
+    string cflags = string(" -common-header -O2 ");
+    string cflags_debug = string(" -common-header -gdwarf-4 -cg ");
     
-    return self;
+    system(s"mkdir \{project_name}") or die("mkdir error");
+    
+    """
+\#########################################
+\# istalled directories
+\#########################################
+prefix=\{prefix}
+exec_prefix=${prefix}
+bindir=${exec_prefix}/bin
+datadir=${datarootdir}
+mandir=${datarootdir}/man
+sharedstatedir=${prefix}/\{project_name}
+sysconfdir=${prefix}/etc/\{project_name}
+includedir=${prefix}/include/\{project_name}
+datarootdir=${prefix}/share/\{project_name}
+docdir=${datarootdir}/doc
+libdir=${exec_prefix}/lib
+
+\#########################################
+\# environmnet variables
+\#########################################
+CC=\{cc}
+INSTALL=\{install}
+CFLAGS=\{cflags}
+CFLAGS_DEBUG=\{cflags_debug}
+LIBS=\{libs}
+OS=\{os}
+DESTDIR=\{prefix}
+SRCS=$(wildcard *.c)
+SINGLE_SRCS=$(filter-out %.c.c, $(SRCS))
+OBJS=$(SINGLE_SRCS:.c=.o)
+DEBUG_OBJS=$(SINGLE_SRCS:.c=.debug.o)
+TARGET=\{project_name}
+TARGET_DEBUG=\{project_name_debug}
+
+\#########################################
+\# main
+\#########################################
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+\t$(CC) $(CFLAGS) $^ -o $@
+
+$(TARGET_DEBUG): $(DEBUG_OBJS)
+\t$(CC) $(CFLAGS_DEBUG) $^ -o $@
+
+%.o: %.c
+\t$(CC) $(CFLAGS) -c $< -o $@
+
+%.debug.o: %.c
+\t$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+\#########################################
+\# header
+\#########################################
+
+header: common.h
+
+common.h: $(SINGLE_SRCS)
+\tcomelang2 header -common-header $(SINGLE_SRCS)
+
+\#########################################
+\# install
+\#########################################
+install:
+\tmkdir -p "$(DESTDIR)/bin"
+\t$(INSTALL) -m 755 ./\{project_name} "$(DESTDIR)/bin"
+\tmkdir -p "$(DESTDIR)/include"
+\tmkdir -p "$(DESTDIR)/lib"
+\tmkdir -p "$(DESTDIR)/share/doc/\{project_name}"
+\t$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/\{project_name}/README.md"
+
+\#########################################
+\# clean
+\#########################################
+clean:
+\trm -fR *.o *.c.i *.c.out *.c.c \{project_name} *.log *.out common.h \{project_name_debug}
+
+\#########################################
+\# uninstall
+\#########################################
+uninstall:
+\trm -f "$(DESTDIR)"/bin/\{project_name}
+\trm -f "$(DESTDIR)/share/doc/\{project_name}/README.md"
+
+run: \{project_name}
+\trm -f *.log
+\t./\{project_name}
+
+compile: \{project_name}
+
+debug: \{project_name_debug}
+\trm -f *.log
+\t./\{project_name_debug}
+    """.write(s"\{project_name}/Makefile", append:false);
+    
+    return true;
 }
 
-sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent)
+bool run_project(int argc, char** argv)
 {
-    self.mVars = new map<string, sVar*%>();
-    self.mGlobal = global;
-    self.mParent = parent;
-    static int id = 0;
-    self.mID = ++id;
+    FILE* f = fopen("common.h", "r");
     
-    return self;
-}
-
-void sVarTable*::finalize(sVarTable* self)
-{
-    delete borrow self.mVars;
-}
-
-sType*% sType*::initialize(sType*% self, char* name, sInfo* info, bool heap=false)
-{
-    int pointer_num = 0;
-    char* p = name;
-    while(*p) {
-        if(xisalpha(*p)) {
-            p++;
-        }
-        else {
-            break;
-        }
-    }
-    while(*p == '*') {
-        pointer_num++;
-        p++;
-    }
-    
-    string name2 = string(name).substring(0, -pointer_num-1);
-    
-    sClass* klass = info.classes[name2];
-    sClass* generics_class = info.generics_classes[name2]
-    
-    if(klass == null && generics_class == null) {
-        err_msg(info, "class not found(%s)(1)\n", name2);
-    }
-    if(klass) {
-        self.mClass = klass;
+    if(f == NULL) {
+        system("make header") or die("system");
     }
     else {
-        self.mClass = borrow new sClass;
-        self.mClass.mName = string(name);
+        fclose(f);
     }
     
-    self.mNoSolvedGenericsType = new tuple1<sType*%>(null);
-    self.mGenericsTypes = new list<sType*%>();
-    self.mArrayNum = new list<sNode*%>();
-    self.mOmitArrayNum = false;
-    self.mParamTypes = new list<sType*%>();
-    self.mParamNames = new list<string>();
-    self.mVarArgs = false;
-    self.mResultType = null;
-    self.mUnsigned = false;
-    self.mConstant = false;
-    self.mRegister = false;
-    self.mVolatile = false;
-    self.mStatic = false;
-    self.mRestrict = false;
-    self.mImmutable = false;
-    self.mLongLong = false;
-    self.mHeap = heap;
-    self.mDummyHeap = false;
-    self.mNoHeap = false;
-    self.mRefference = false;
+    system("make run") or die("system");
     
-    self.mPointerNum = pointer_num;
-    self.mNoArrayPointerNum = 0;
-    self.mSizeNum = 0;
-    
-    self.mDynamicArrayNum = 0;
-    self.mTypeOfExpression = 0;
-
-    self.mOriginalTypeName = string("");
-    self.mOriginalPointerNum = 0;
-    
-    self.mFunctionParam = false;
-    
-    return self;
+    return true;
 }
 
-sClass*% sClass*::initialize(sClass*% self, char* name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false)
+bool make_header_project(int argc, char** argv)
 {
-    self.mNumber = number;
-    self.mStruct = struct_;
-    self.mUnion = union_;
-    self.mGenerics = generics;
-    self.mMethodGenerics = method_generics;
-    self.mEnum = false;
-    self.mProtocol = protocol_;
-    self.mFloat = float_;
-    self.mEnum = enum_;
+    system("make header") or die("system");
     
-    self.mName = string(name);
-    
-    self.mGenericsNum = generics_num;
-    self.mMethodGenericsNum = method_generics_num;
-    
-    self.mFields = new list<tuple2<string, sType*%>*%>();
-    
-    return self;
-};
-
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*%? block, bool static_, string come_header, sInfo* info)
-{
-    self.mName = name;
-    self.mResultType = result_type;
-    self.mParamTypes = param_types;
-    self.mParamNames = param_names;
-    self.mParamDefaultParametors = param_default_parametors;
-    self.mExternal = external;
-    self.mVarArgs = var_args;
-    self.mStatic = static_;
-    
-    self.mLambdaType = new sType("lambda", info);
-    
-    foreach(it, param_types) {
-        self.mLambdaType.mParamTypes.push_back(clone it);
-    }
-    
-    foreach(it, param_names) {
-        self.mLambdaType.mParamNames.push_back(clone it);
-    }
-    
-    self.mLambdaType.mResultType = new tuple1<sType*%>(result_type);
-    self.mLambdaType.mVarArgs = var_args;
-    
-    self.mSource = new buffer();
-    self.mSourceHead = new buffer();
-    self.mSourceHead2 = new buffer();
-    self.mSourceDefer = new buffer();
-    
-    self.mBlock = clone block;
-    
-    self.mComeHeader = come_header;
-    
-    return self;
+    return true;
 }
 
-void init_classes(sInfo* info)
+bool compile_project(int argc, char** argv)
+{
+    FILE* f = fopen("common.h", "r");
+    
+    if(f == NULL) {
+        system("make header") or die("system");
+    }
+    else {
+        fclose(f);
+    }
+    system("make compile") or die("system");
+    
+    return true;
+}
+
+bool debug_run_project(int argc, char** argv)
+{
+    FILE* f = fopen("common.h", "r");
+    
+    if(f == NULL) {
+        system("make header") or die("system");
+    }
+    else {
+        fclose(f);
+    }
+    system("make debug") or die("system");
+    
+    return true;
+}
+
+bool clean_project(int argc, char** argv)
+{
+    system("make clean") or die("system");
+    
+    return true;
+}
+
+bool install_project(int argc, char** argv, char* prefix="/usr/local")
+{
+    system(s"make install DESTDIR=\{prefix}") or die("system");
+    
+    return true;
+}
+
+static void init_classes(sInfo* info)
 {
     info.classes.insert(string("int"), new sClass("int", number:true));
     info.classes.insert(string("short"), new sClass("short", number:true));
@@ -331,13 +560,17 @@ void init_classes(sInfo* info)
     info.classes.insert(string("double"), new sClass("double", float_:true));
     info.classes.insert(string("lambda"), new sClass("lambda"));
     info.classes.insert(string("__uint128_t"), new sClass("__uint128_t", number:true));
+    info.classes.insert(string("__int128"), new sClass("__int128", number:true));
     for(int i=0; i<GENERICS_TYPE_MAX; i++) {
         string generics_type = xsprintf("generics_type%d", i);
         info.classes.insert(generics_type, new sClass(generics_type, generics:true, generics_num:i));
     }
+    for(int i=0; i<METHOD_GENERICS_TYPE_MAX; i++) {
+        string generics_type = xsprintf("mgenerics_type%d", i);
+        info.classes.insert(generics_type, new sClass(generics_type, method_generics:true, method_generics_num:i));
+    }
     
-    char cmd[1024];
-    snprintf(cmd, 1024, "which /opt/homebrew/opt/llvm/bin/clang-cpp 1> /dev/null 2>/dev/null");
+    string cmd = xsprintf("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
 
     int rc = system(cmd);
     if(rc == 0) {
@@ -345,97 +578,139 @@ void init_classes(sInfo* info)
         
         string type_name = string("__builtin_va_list");
         
-        sType*% type = new sType("__builtin_va_list", info);
+        sType*% type = new sType("__builtin_va_list");
         type->mOriginalTypeName = string("__builtin_va_list");
         
         info.types.insert(string(type_name), type);
         
-//        add_come_code_at_source_head(info, "typedef %s;\n", make_define_var(type, type_name, info, true@in_header));
+//        add_come_code_at_source_head(info, "typedef %s;\n", make_define_var(type, type_name, in_header:true));
     }
     else {
         sClass*% klass = new sClass("__builtin_va_list", struct_:true);
         
-        klass.mFields.push_back(new tuple2<string, sType*%>(string("v1"), new sType("char*", info)));
-        klass.mFields.push_back(new tuple2<string, sType*%>(string("v2"), new sType("char*", info)));
-        klass.mFields.push_back(new tuple2<string, sType*%>(string("v3"), new sType("char*", info)));
-        klass.mFields.push_back(new tuple2<string, sType*%>(string("v4"), new sType("int", info)));
-        klass.mFields.push_back(new tuple2<string, sType*%>(string("v5"), new sType("int", info)));
+        klass.mFields.push_back((string("v1"), new sType("char*")));
+        klass.mFields.push_back((string("v2"), new sType("char*")));
+        klass.mFields.push_back((string("v3"), new sType("char*")));
+        klass.mFields.push_back((string("v4"), new sType("int")));
+        klass.mFields.push_back((string("v5"), new sType("int")));
         
         info.classes.insert(string("__builtin_va_list"), klass);
     }
 }
 
-void init_module(sInfo* info)
-{
-    char fname[PATH_MAX];
-    char* p = info.sname;
-    char* p2 = fname;
-    while(*p) {
-        if(xisalpha(*p)) {
-            *p2++ = *p++;
-        }
-        else {
-            *p2++ = '_';
-            p++;
-        }
-    }
-    
-    *p2 = '\0';
-}
-                
 int come_main(int argc, char** argv) version 2
 {
-    gProgramName = argv[0];
-    
-    var clang_option = new buffer();
-    var files = new list<string>();
-    var object_files = new list<string>();
-    bool output_object_file = false;
-    bool output_cpp_file = false;
-    bool output_source_file_flag = false;
-    string output_file_name = null;
-    for(int i=1; i<argc; i++) {
-        if(argv[i] === "-o" && i+1 < argc) {
-            output_file_name = string(argv[i+1]);
-            i++;
+    if(argv[1] === "header" && argc >= 3) {
+        gProgramName = argv[0];
+        
+        var clang_option = new buffer();
+        var cpp_option = new buffer();
+        var files = new list<string>();
+        var object_files = new list<string>();
+        bool output_object_file = false;
+        bool output_cpp_file = false;
+        bool output_source_file_flag = false;
+        string output_file_name = string("common.h");
+        bool verbose = false;
+        bool prohibit_common_header = false;
+        bool come_debug = false;
+        bool come_malloc = false;
+        for(int i=2; i<argc; i++) {
+            if(argv[i] === "-o" && i+1 < argc) {
+                output_file_name = string(argv[i+1]);
+                i++;
+            }
+            else if(argv[i] === "-str") {
+                gComeStr = true;
+            }
+            else if(argv[i] === "-net") {
+                gComeNet = true;
+            }
+            else if(argv[i] === "-gc") {
+                gComeGC = true;
+            }
+            else if(argv[i] === "-g") {
+                clang_option.append_str("-g ");
+            }
+            else if(argv[i] === "-cg") {
+                clang_option.append_str("-g ");
+                come_debug = true;
+            }
+            else if(argv[i] === "-common-header") {
+                gCommonHeader = true;
+            }
+            else if(argv[i] === "-original-position") {
+                gComeOriginalSourcePosition = false;
+            }
+            else if(argv[i][0..2] === "-O") {
+                clang_option.append_str(s" \{argv[i]} ");
+                come_debug = false;
+            }
+            else if(argv[i][0..2] === "-D") {
+                cpp_option.append_str(s" \{argv[i]} ");
+                clang_option.append_str(s" \{argv[i]} ");
+            }
+            else if(argv[i] === "-v") {
+                clang_option.append_str("-v ");
+                verbose = true;
+            }
+            else if(strlen(argv[i]) >= 2 && memcmp(argv[i], "-I", strlen("-I")) == 0) {
+                cpp_option.append_str(" " + argv[i] + " ");
+            }
+            else if(argv[i] === "-gdwarf-4") {
+                clang_option.append_str("-gdwarf-4 ");
+            }
+            else if(argv[i] === "-s" || argv[i] === "-S") {
+                output_source_file_flag = true;
+                gComeOriginalSourcePosition = false;
+            }
+            else if(argv[i] === "-c") {
+                output_object_file = true;
+            }
+            else if(argv[i] === "-E") {
+                output_cpp_file = true;
+            }
+            else if(argv[i][0] == '-') {
+                clang_option.append_str(argv[i] + " ");
+            }
+            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".o", 2) == 0) {
+                object_files.push_back(string(argv[i]));
+            }
+            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".a", 2) == 0) {
+                object_files.push_back(string(argv[i]));
+            }
+            else {
+                files.push_back(string(argv[i]));
+            }
         }
-        else if(argv[i] === "-g") {
-            clang_option.append_str("-g ");
-            gComeDebug = true;
-        }
-        else if(argv[i] === "-s" || argv[i] === "-S") {
-            output_source_file_flag = true;
-        }
-        else if(argv[i] === "-c") {
-            output_object_file = true;
-        }
-        else if(argv[i] === "-E") {
-            output_cpp_file = true;
-        }
-        else if(argv[i][0] == '-') {
-            clang_option.append_str(argv[i] + " ");
-        }
-        else if(memcmp(argv[i] + strlen(argv[i]) -2, ".o", 2) == 0) {
-            object_files.push_back(string(argv[i]));
-        }
-        else {
-            files.push_back(string(argv[i]));
-        }
-    }
-    
-    come_init();
-    
-    foreach(it, files) {
+        
+        gComeDebug = come_debug;
+        gComeMalloc = come_malloc;
+        
+        system(xsprintf("%s %s", RM, output_file_name)) or die("rm");
+        
+        FILE* f = fopen(output_file_name, "w") and die("fopen");
+        fclose(f);
+        
+        string tmp_file = string("tmp-common-header.c");
+        
+        system(s"cat \{files.join(" ")} > \{tmp_file}");
+        
         sInfo info;
         
-        info.sname = string(it);
+        memset(&info, 0, sizeof(sInfo));
+        
+        info.base_sname = string(tmp_file);
+        info.sname = string(tmp_file);
         info.sline = 1;
         info.err_num = 0;
         info.clang_option = clang_option.to_string();
+        info.cpp_option = cpp_option.to_string();
         info.no_output_err = false;
         info.funcs = new map<string, sFun*%>();
         info.generics_funcs = new map<string, sGenericsFun*%>();
         info.classes = new map<string, sClass*%>();
+        info.modules = new map<string, sClassModule*%>();
         info.types = new map<string, sType*%>();
         info.module = new sModule();
         info.right_value_objects = new list<sRightValueObject*%>();
@@ -444,70 +719,288 @@ int come_main(int argc, char** argv) version 2
         sVarTable*% lv_table = new sVarTable(global:false, parent:null);
         info.lv_table = lv_table;
         info.generics_type_names = new list<string>();
+        info.method_generics_type_names = new list<string>();
         info.generics_classes = new map<string, sClass*%>();
+        info.verbose = verbose;
+        info.output_header_file = true;
+        
+        static int n = 0;
+        info.num_source_files = n++;
+        info.max_source_files = files.length();
+        
+        info.output_file_name = string(output_file_name);
         
         init_classes(&info);
-        init_module(&info);
+        
+        clear_tmp_file(&info);
         
         if(!cpp(&info)) {
             printf("%s %d: transpile failed\n", info.sname, info.sline);
             exit(2);
         }
         
-        info.source = xsprintf("%s.i", it).read().to_buffer();
+        info.original_source = xsprintf("%s", tmp_file).read().to_buffer();
+        info.source = xsprintf("%s.i", tmp_file).read().to_buffer();
         info.p = info.source.buf;
         info.head = info.source.buf;
         
-        if(output_file_name) {
-            info.output_file_name = string(output_file_name);
-        }
-        else {
-            info.output_file_name = null;
-        }
-        
         if(!output_cpp_file) {
-            transpile(&info);
+            transpile(&info)
             
-            if(!output_source_file(&info)) {
+            if(!output_header_file(&info)) {
                 printf("%s %d: output source file faield\n", info->sname, info->sline);
                 exit(2);
             }
-            
-            if(info.err_num > 0) {
-                printf("transpile error. err num %d\n", info->err_num);
-                
-                exit(2);
+        }
+        
+        system(xsprintf("%s %s*", RM, tmp_file));
+    }
+    else if(argv[1] === "new" && argc == 3) {
+        if(!new_project(argc, argv)) {
+            return false;
+        }
+    }
+    else if(argv[1] === "run" && argc == 2) {
+        if(!run_project(argc, argv)) {
+            return false;
+        }
+    }
+    else if(argv[1] === "header" && argc == 2) {
+        if(!make_header_project(argc, argv)) {
+            return false;
+        }
+    }
+    else if(argv[1] === "compile" && argc == 2) {
+        if(!compile_project(argc, argv)) {
+            return false;
+        }
+    }
+    else if(argv[1] === "debug" && argc == 2) {
+        if(!debug_run_project(argc, argv)) {
+            return false;
+        }
+    }
+    else if(argv[1] === "clean" && argc == 2) {
+        if(!clean_project(argc, argv)) {
+            return false;
+        }
+    }
+    else if(argv[1] === "install" && argc >= 2) {
+        if(argc == 2) {
+            if(!install_project(argc, argv)) {
+                return false;
+            }
+        }
+        else if(argc >= 3) {
+            if(!install_project(argc, argv, argv[2])) {
+                return false;
+            }
+        }
+    }
+    else {
+        gProgramName = argv[0];
+        
+        var clang_option = new buffer();
+        var cpp_option = new buffer();
+        var files = new list<string>();
+        var object_files = new list<string>();
+        bool output_object_file = false;
+        bool output_cpp_file = false;
+        bool output_source_file_flag = false;
+        string output_file_name = null;
+        bool verbose = false;
+        bool come_debug = false;
+        bool come_malloc = false;
+        for(int i=1; i<argc; i++) {
+            if(argv[i] === "-o" && i+1 < argc) {
+                output_file_name = string(argv[i+1]);
+                i++;
+            }
+            else if(argv[i] === "-str") {
+                gComeStr = true;
+            }
+            else if(argv[i] === "-net") {
+                gComeNet = true;
+            }
+            else if(argv[i] === "-gc") {
+                gComeGC = true;
+            }
+            else if(argv[i] === "-cg") {
+                come_debug = true;
+                clang_option.append_str("-g ");
+            }
+            else if(argv[i] === "-common-header") {
+                gCommonHeader = true;
+            }
+            else if(argv[i] === "-original-position") {
+                gComeOriginalSourcePosition = false;
+            }
+            else if(argv[i][0..2] === "-O") {
+                clang_option.append_str(s" \{argv[i]} ");
+                come_debug = false;
+            }
+            else if(argv[i][0..2] === "-D") {
+                cpp_option.append_str(s" \{argv[i]} ");
+                clang_option.append_str(s" \{argv[i]} ");
+            }
+            else if(argv[i] === "-g") {
+                clang_option.append_str("-g ");
+            }
+            else if(argv[i] === "-v") {
+                clang_option.append_str("-v ");
+                verbose = true;
+            }
+            else if(strlen(argv[i]) >= 2 && memcmp(argv[i], "-I", strlen("-I")) == 0) {
+                cpp_option.append_str(" " + argv[i] + " ");
+            }
+            else if(argv[i] === "-gdwarf-4") {
+                clang_option.append_str("-gdwarf-4 ");
+            }
+            else if(argv[i] === "-s" || argv[i] === "-S") {
+                output_source_file_flag = true;
+                gComeOriginalSourcePosition = false;
+            }
+            else if(argv[i] === "-c") {
+                output_object_file = true;
+            }
+            else if(argv[i] === "-E") {
+                output_cpp_file = true;
+            }
+            else if(argv[i][0] == '-') {
+                clang_option.append_str(argv[i] + " ");
+            }
+            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".o", 2) == 0) {
+                object_files.push_back(string(argv[i]));
+            }
+            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".a", 2) == 0) {
+                object_files.push_back(string(argv[i]));
             }
             else {
-                if(!compile(&info, output_object_file, object_files)) {
-                    printf("%s %d: compile faield\n", info.sname, info.sline);
-                    exit(1);
+                files.push_back(string(argv[i]));
+            }
+        }
+        
+        gComeDebug = come_debug;
+        gComeMalloc = come_malloc;
+        
+        foreach(it, files) {
+            sInfo info;
+            
+            memset(&info, 0, sizeof(sInfo));
+            
+            FILE* tmp_file = fopen(it, "r");
+            if(tmp_file == NULL) {
+                continue;
+            }
+            else {
+                fclose(tmp_file);
+            }
+            
+            info.sname = string(it);
+            info.sline = 1;
+            info.err_num = 0;
+            info.clang_option = clang_option.to_string();
+            info.cpp_option = cpp_option.to_string();
+            info.no_output_err = false;
+            info.funcs = new map<string, sFun*%>();
+            info.generics_funcs = new map<string, sGenericsFun*%>();
+            info.classes = new map<string, sClass*%>();
+            info.modules = new map<string, sClassModule*%>();
+            info.types = new map<string, sType*%>();
+            info.module = new sModule();
+            info.right_value_objects = new list<sRightValueObject*%>();
+            info.stack = new list<CVALUE*%>();
+            info.gv_table = new sVarTable(global:true, parent:null);
+            sVarTable*% lv_table = new sVarTable(global:false, parent:null);
+            info.lv_table = lv_table;
+            info.generics_type_names = new list<string>();
+            info.method_generics_type_names = new list<string>();
+            info.generics_classes = new map<string, sClass*%>();
+            info.verbose = verbose;
+            
+            init_classes(&info);
+            
+            clear_tmp_file(&info);
+            
+            if(!cpp(&info)) {
+                printf("%s %d: transpile failed\n", info.sname, info.sline);
+                exit(2);
+            }
+            
+            info.original_source = xsprintf("%s", it).read().to_buffer();
+            info.source = xsprintf("%s.i", it).read().to_buffer();
+            info.p = info.source.buf;
+            info.head = info.source.buf;
+            
+            if(output_file_name) {
+                info.output_file_name = string(output_file_name);
+            }
+            else {
+                info.output_file_name = null;
+            }
+            
+            if(!output_cpp_file) {
+                transpile(&info);
+                
+                if(!output_source_file(&info)) {
+                    printf("%s %d: output source file faield\n", info->sname, info->sline);
+                    exit(2);
                 }
                 
+                if(info.err_num > 0) {
+                    printf("transpile error. err num %d\n", info->err_num);
+                    
+                    exit(2);
+                }
+                else {
+                    if(!compile(&info, output_object_file, object_files)) {
+                        printf("%s %d: compile faield\n", info.sname, info.sline);
+                        exit(27);
+                    }
+                    
+                }
+    
+            }
+            
+            if(output_cpp_file){
+            }
+            else if(info.err_num > 0) {
+            }
+            else if(output_source_file_flag) {
+                clear_tmp_file_without_object_file_and_ccfile(&info);
+            }
+            else {
+                clear_tmp_file_without_object_file(&info);
+            }
+        }
+        
+        if(!output_object_file && !output_cpp_file && (files.length() > 0 || object_files.length() > 0)) {
+            sInfo info;
+            
+            memset(&info, 0, sizeof(sInfo));
+            
+            info.sname = clone files[0]??;
+            info.clang_option = clang_option.to_string();
+            info.verbose = verbose;
+            
+            if(output_file_name) {
+                info.output_file_name = string(output_file_name);
+            }
+            else {
+                info.output_file_name = null;
+            }
+            
+            linker(&info, object_files).expect {
+                printf("%s %d: linker faield\n", info.sname, info.sline);
+                exit(13);
+            }
+            
+            if(!output_cpp_file && !output_source_file_flag) {
+                clear_tmp_file(&info);
             }
         }
     }
-    
-    if(!output_object_file && !output_cpp_file && (files.length() > 0 || object_files.length() > 0)) {
-        sInfo info;
-        
-        info.sname = clone files[0];
-        info.clang_option = clang_option.to_string();
-        
-        if(output_file_name) {
-            info.output_file_name = string(output_file_name);
-        }
-        else {
-            info.output_file_name = null;
-        }
-        
-        linker(&info, object_files).expect {
-            printf("%s %d: linker faield\n", info.sname, info.sline);
-            exit(1);
-        }
-    }
-    
-    come_final();
+
     
     return 0;
 }

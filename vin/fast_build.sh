@@ -1,2 +1,6 @@
-#./configure && make clean && make && sudo make install
-./configure && make clean && make && sudo make install
+if uname -a | grep Android
+then
+    make DESTDIR=$HOME && make DESTDIR=$HOME install
+else
+    make && sudo make install
+fi

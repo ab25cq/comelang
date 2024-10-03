@@ -1,26 +1,29 @@
 #include "common.h"
 
-sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 93
+sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93
 {
     if(buf === "impl") {
+        char* source_head = info.p;
+        
         var word = parse_word(info);
         
         if(*info->p == '<') {
             info->p++;
-            skip_spaces_and_lf(info);
+            skip_spaces_and_lf();
             
             info.generics_type_names.reset();
             while(true) {
-                var generics_name = parse_word(info);
-                info.generics_type_names.push_back(generics_name);
+                var generics_name = parse_word();
+ 
+                info.generics_type_names.push_back(clone generics_name);
                 
                 if(*info->p == ',') {
                     info->p++;
-                    skip_spaces_and_lf(info);
+                    skip_spaces_and_lf();
                 }
                 else if(*info->p == '>') {
                     info->p++;
-                    skip_spaces_and_lf(info);
+                    skip_spaces_and_lf();
                     break;
                 }
                 else {
@@ -33,20 +36,20 @@ sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 9
         int pointer_num = 0;
         while(*info->p == '*') {
             info->p++;
-            skip_spaces_and_lf(info);
+            skip_spaces_and_lf();
             pointer_num++;
         }
         
         expected_next_character('{', info);
         
-        info->impl_type = new sType(word, info);
+        info->impl_type = new sType(word);
         info->impl_type->mPointerNum = pointer_num;
         
         while(*info->p != '}') {
-            parse_sharp(info);
+            parse_sharp();
             
             char* head = info.p;
-            string buf = parse_word(info);
+            string buf = parse_word();
             
             parse_sharp(info);
             
@@ -55,27 +58,34 @@ sNode*% top_level(string buf, char* head, int head_sline, sInfo* info) version 9
             
             while(*info->p == ';') {
                 info->p++;
-                skip_spaces_and_lf(info);
+                skip_spaces_and_lf();
             }
             parse_sharp(info);
             
             if(node != null) {
-                if(!node.compile->(info)) {
+                if(!node_compile(node)) {
                     err_msg(info, "compiling is faield(Y)");
                     exit(2);
                 }
             }
             parse_sharp(info);
             
-            skip_spaces_and_lf(info);
+            skip_spaces_and_lf();
         }
         
-        expected_next_character('}', info);
+        expected_next_character('}');
         info.generics_type_names.reset();
         info->impl_type = null;
+        
+        char* source_tail = info.p;
+        
+        buffer*% header = new buffer();
+        header.append(source_head, source_tail - source_head);
+        
+        add_come_code_at_come_header(info, "impl %s\n", header.to_string());
         
         return (sNode*%)null;
     }
     
-    return inherit(string(buf), head, head_sline, info);
+    return inherit(buf, head, head_sline, info);
 }
