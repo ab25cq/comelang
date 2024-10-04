@@ -15,6 +15,9 @@ then
 elif uname -a | grep Debian
 then
     sudo apt install clang gcc libpcre3-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmariadb-dev-compat libmariadb-dev mariadb-server mariadb-client
+elif uname -a | grep raspberry
+then
+    sudo apt install clang gcc libpcre3-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmariadb-dev-compat libmariadb-dev mariadb-server mariadb-client
 elif which apt > /dev/null
 then
     sudo apt install  clang gcc libpcre++-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmysqlclient-dev mysql-server
