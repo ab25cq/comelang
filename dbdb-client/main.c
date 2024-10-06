@@ -10,7 +10,7 @@ int main(int argc, char** argv)
             "CREATE DATABASE testdb", 
             "use testdb", 
             "show tables", 
-            "CREATE TABLE IF NOT EXISTS meal(morning VARCHAR(100) NOT NULL, lunch VARCHAR(100) NOT NULL, dinner VARCHAR(100) NOT NULL)", "show tables", 
+            "CREATE TABLE IF NOT EXISTS meal(id INT AUTO_INCREMENT PRIMARY KEY, morning VARCHAR(100) NOT NULL, lunch VARCHAR(100) NOT NULL, dinner VARCHAR(100) NOT NULL)", "show tables", 
             "INSERT INTO meal(morning, lunch, dinner) VALUES ('PAN', 'UDON', 'PASTA')", 
             "INSERT INTO meal(morning, lunch, dinner) VALUES ('ONIGIRI', 'KARAAGE', 'SHAKE')", 
             "SELECT * FROM meal WHERE lunch NOT IN ('KARAAGE', 'SHAKE')", 

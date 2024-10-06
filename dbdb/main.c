@@ -341,6 +341,29 @@ bool eval_insert_into(sInfo* info)
             n++;
         }
         
+        int last_index = table.rows.length();
+        
+        map<string, string>* last_row = table.rows[last_index-1]??;
+        
+        if(last_row) {
+            foreach(it, table.types) {
+                var name, type = it;
+                
+                if(type->auto_increment) {
+                    row[name] = xsprintf("%d", atoi(last_row[name]) + 1);
+                }
+            }
+        }
+        else {
+            foreach(it, table.types) {
+                var name, type = it;
+                
+                if(type->auto_increment) {
+                    row[name] = xsprintf("%d", 1);
+                }
+            }
+        }
+        
         table.rows.add(row);
     }
     else {
