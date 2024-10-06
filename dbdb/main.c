@@ -374,6 +374,7 @@ bool eval_insert_into(sInfo* info)
 }
 
 header { struct WhereNode; };
+struct WhereNode;
 
 struct WhereNode
 {
@@ -688,7 +689,9 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
     skip_spaces();
     
     bool all_ = false;
+    bool max_ = false;
     list<string>*% field_names = new list<string>();
+    map<string,bool>*% max_field = new map<string,bool>();
     if(*info->p =='*') {
         info->p++;
         skip_spaces();
@@ -701,9 +704,20 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
     }
     else {
         while(1) {
-            string field = parse_word();
+            string field = null;
+            bool max_flag = false;
+            if(strncmp(info->p, "MAX(", strlen("MAX(")) == 0) {
+                info->p += strlen("MAX(");
+                field = parse_word();
+                expected_next_charactor(')');
+                max_flag = max_ = true;
+            }
+            else {
+                field = parse_word();
+            }
             
             field_names.add(field);
+            max_field.insert(field, max_flag);
             
             if(strncmp(info->p, "FROM", strlen("FROM")) == 0) {
                 info->p += strlen("FROM");
@@ -827,35 +841,102 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
     
     if(table) {
         if(in_target && not_in) {
-            list<map<string,string>*%>*% rows = table.rows;
-            
-            foreach(it, rows) {
-                map<string,string>* row = it;
+            if(all_) {
+                list<map<string,string>*%>*% rows = table.rows;
                 
-                bool check = true;
-                foreach(it2, in_values) {
-                    if(row[in_target] === it2) {
-                        check = false;
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    bool check = true;
+                    foreach(it2, in_values) {
+                        if(row[in_target] === it2) {
+                            check = false;
+                        }
+                    }
+                    
+                    if(check) {
+                        foreach(it3, row) {
+                            char* value = row[it3];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
                     }
                 }
+            }
+            else {
+                list<map<string,string>*%>*% rows = table.rows;
                 
-                if(check) {
-                    foreach(it3, row) {
-                        char* value = row[it3];
-                        string value2 = value + string(deliminater);
-                        buf.append_str(value2);
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    bool check = true;
+                    foreach(it2, in_values) {
+                        if(row[in_target] === it2) {
+                            check = false;
+                        }
+                    }
+                    
+                    if(check) {
+                        foreach(it3, field_names) {
+                            char* value = row[it3];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
                     }
                 }
             }
         }
         else if(in_target) {
-            list<map<string,string>*%>*% rows = table.rows;
-            
-            foreach(it, rows) {
-                map<string,string>* row = it;
+            if(all_) {
+                list<map<string,string>*%>*% rows = table.rows;
                 
-                foreach(it2, in_values) {
-                    if(row[in_target] === it2) {
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    foreach(it2, in_values) {
+                        if(row[in_target] === it2) {
+                            foreach(it3, row) {
+                                char* value = row[it3];
+                                string value2 = value + string(deliminater);
+                                buf.append_str(value2);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            else {
+                list<map<string,string>*%>*% rows = table.rows;
+                
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    foreach(it2, in_values) {
+                        if(row[in_target] === it2) {
+                            foreach(it3, field_names) {
+                                char* value = row[it3];
+                                string value2 = value + string(deliminater);
+                                buf.append_str(value2);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        else if(between_target) {
+            if(all_) {
+                list<map<string,string>*%>*% rows = table.rows;
+                
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    char* value = row[between_target];
+                    
+                    char* start = between_values.v1;
+                    char* end = between_values.v2;
+                    
+                    if(atoi(value) >= atoi(start) && atoi(value) <= atoi(end)) {
                         foreach(it3, row) {
                             char* value = row[it3];
                             string value2 = value + string(deliminater);
@@ -865,78 +946,164 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
                     }
                 }
             }
-        }
-        else if(between_target) {
-            list<map<string,string>*%>*% rows = table.rows;
-            
-            foreach(it, rows) {
-                map<string,string>* row = it;
+            else {
+                list<map<string,string>*%>*% rows = table.rows;
                 
-                char* value = row[between_target];
-                
-                char* start = between_values.v1;
-                char* end = between_values.v2;
-                
-                if(atoi(value) >= atoi(start) && atoi(value) <= atoi(end)) {
-                    foreach(it3, row) {
-                        char* value = row[it3];
-                        string value2 = value + string(deliminater);
-                        buf.append_str(value2);
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    char* value = row[between_target];
+                    
+                    char* start = between_values.v1;
+                    char* end = between_values.v2;
+                    
+                    if(atoi(value) >= atoi(start) && atoi(value) <= atoi(end)) {
+                        foreach(it3, field_names) {
+                            char* value = row[it3];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
         else if(like_target) {
-            list<map<string,string>*%>*% rows = table.rows;
-            
-            foreach(it, rows) {
-                map<string,string>* row = it;
+            if(all_) {
+                list<map<string,string>*%>*% rows = table.rows;
                 
-                char* value = row[like_target];
-                
-                char* pattern = like_value;
-                
-                if(like(value, pattern)) {
-                    foreach(it3, row) {
-                        char* value = row[it3];
-                        string value2 = value + string(deliminater);
-                        buf.append_str(value2);
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    char* value = row[like_target];
+                    
+                    char* pattern = like_value;
+                    
+                    if(like(value, pattern)) {
+                        foreach(it3, row) {
+                            char* value = row[it3];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
+                        break;
                     }
-                    break;
+                }
+            }
+            else {
+                list<map<string,string>*%>*% rows = table.rows;
+                
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    char* value = row[like_target];
+                    
+                    char* pattern = like_value;
+                    
+                    if(like(value, pattern)) {
+                        foreach(it3, field_names) {
+                            char* value = row[it3];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
+                        break;
+                    }
                 }
             }
         }
         else if(not_like_target) {
-            list<map<string,string>*%>*% rows = table.rows;
-            
-            foreach(it, rows) {
-                map<string,string>* row = it;
+            if(all_) {
+                list<map<string,string>*%>*% rows = table.rows;
                 
-                char* value = row[not_like_target];
-                
-                char* pattern = not_like_value;
-                
-                if(!like(value, pattern)) {
-                    foreach(it3, row) {
-                        char* value = row[it3];
-                        string value2 = value + string(deliminater);
-                        buf.append_str(value2);
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    char* value = row[not_like_target];
+                    
+                    char* pattern = not_like_value;
+                    
+                    if(!like(value, pattern)) {
+                        foreach(it3, row) {
+                            char* value = row[it3];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
+                        break;
                     }
-                    break;
+                }
+            }
+            else {
+                list<map<string,string>*%>*% rows = table.rows;
+                
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    
+                    char* value = row[not_like_target];
+                    
+                    char* pattern = not_like_value;
+                    
+                    if(!like(value, pattern)) {
+                        foreach(it3, field_names) {
+                            char* value = row[it3];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
+                        break;
+                    }
                 }
             }
         }
         else if(where_node) {
-            list<map<string,string>*%>*% rows = table.rows;
-            
-            foreach(it, rows) {
-                map<string,string>* row = it;
-                if(where_select(row, where_node)) {
-                    foreach(it2, row) {
-                        char* value = row[it2];
-                        string value2 = value + string(deliminater);
-                        buf.append_str(value2);
+            if(all_) {
+                list<map<string,string>*%>*% rows = table.rows;
+                
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    if(where_select(row, where_node)) {
+                        foreach(it2, row) {
+                            char* value = row[it2];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
+                    }
+                }
+            }
+            else if(max_) {
+                list<map<string,string>*%>*% rows = table.rows;
+                
+                int max_value = 0;
+                map<string,string>* max_row = null;
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    if(where_select(row, where_node)) {
+                        foreach(it2, field_names) {
+                            char* value = row[it2];
+                            if(max_field[it2]) {
+                                if(atoi(value) > max_value) {
+                                    max_value = atoi(value);
+                                    max_row = row;
+                                }
+                            }
+                        }
+                    }
+                }
+                foreach(it2, field_names) {
+                    char* value = max_row[it2];
+                    string value2 = value + string(deliminater);
+                    buf.append_str(value2);
+                }
+            }
+            else { // field_names.length() > 0
+                list<map<string,string>*%>*% rows = table.rows;
+                
+                foreach(it, rows) {
+                    map<string,string>* row = it;
+                    int max_value = 0;
+                    if(where_select(row, where_node)) {
+                        foreach(it2, field_names) {
+                            char* value = row[it2];
+                            string value2 = value + string(deliminater);
+                            buf.append_str(value2);
+                        }
                     }
                 }
             }
