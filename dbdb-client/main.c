@@ -14,7 +14,7 @@ int main(int argc, char** argv)
             "INSERT INTO meal(morning, lunch, dinner) VALUES ('PAN', 'UDON', 'PASTA')", 
             "INSERT INTO meal(morning, lunch, dinner) VALUES ('ONIGIRI', 'KARAAGE', 'SHAKE')", 
             "SELECT * FROM meal WHERE lunch NOT IN ('KARAAGE', 'SHAKE')", 
-            "CREATE TABLE IF NOT EXISTS meal_time(morning VARCHAR(100), lunch VARCHAR(100), dinner VARCHAR(100))", 
+            "CREATE TABLE IF NOT EXISTS meal_time(id INT AUTO_INCREMENT PRIMARY KEY, morning VARCHAR(100), lunch VARCHAR(100), dinner VARCHAR(100))", 
             "INSERT INTO meal_time(morning, lunch, dinner) VALUES ('030000', '120000', '180000')", 
             "INSERT INTO meal_time(morning, lunch, dinner) VALUES ('090000', '150000', '220000')", 
             "SELECT * FROM meal_time WHERE lunch BETWEEN 120000 AND 140000", 
