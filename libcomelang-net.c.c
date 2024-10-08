@@ -8488,6 +8488,7 @@ int socket_fd_write(int self, char* str);
 void server_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*,_Bool*));
 static void sockaddr_in_finalize(struct sockaddr_in* self);
 void client_socket(int port, char* address, void* parent, void (*block)(void*,int,_Bool*));
+char* client_socket2(int port, char* data, char* address);
 void httpd_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*));
 void ERR_print_errors_fp(struct __sFILE* f);
 int httpsd_socket(int port, _Bool reuse, void* parent, void (*block)(void*,struct ssl_st*,_Bool*));
@@ -12106,146 +12107,193 @@ memset(&serv_addr_92, 0, sizeof(struct sockaddr_in));
     /*i*/come_call_finalizer3((&serv_addr_92),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
 }
 
-void httpd_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*)){
+char* client_socket2(int port, char* data, char* address){
+void* __result_obj__=(void*)0;
 int sock_95;
+struct sockaddr_in serv_addr_96;
+void* __right_value116 = (void*)0;
+void* __right_value117 = (void*)0;
+struct buffer* buf_97;
+int size_99;
+void* __right_value118 = (void*)0;
+char* __result68__;
+memset(&serv_addr_96, 0, sizeof(struct sockaddr_in));
+    sock_95=0;
+    if((sock_95=socket(2,1,0))<0) {
+        printf("\n Socket creation error \n");
+        exit(1);
+    }
+    serv_addr_96.sin_family=2;
+    serv_addr_96.sin_port=_OSSwapInt16(port);
+    if(inet_pton(2,address,&serv_addr_96.sin_addr)<=0) {
+        printf("\nInvalid address/ Address not supported \n");
+        exit(1);
+    }
+    if(connect(sock_95,(struct sockaddr*)&serv_addr_96,sizeof(serv_addr_96))<0) {
+        printf("\nConnection Failed \n");
+        exit(1);
+    }
+    if(write(sock_95,data,strlen(data))<0) {
+        printf("Write Failed \n");
+        exit(1);
+    }
+    buf_97=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net.c", 131, "buffer"))));
+    char buf2_98[1024]={0};
+    size_99=read(sock_95,buf2_98,1024);
+    if(size_99<0) {
+        printf("Read Failed \n");
+        exit(1);
+    }
+    buffer_append(buf_97,buf2_98,size_99);
+    close(sock_95);
+    __result68__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value118=buffer_to_string(buf_97)));
+    /*i*/come_call_finalizer3((&serv_addr_96),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
+    /*i*/come_call_finalizer3(buf_97,buffer_finalize, 0, 0, 0, 0, (void*)0);
+    __right_value118 = come_decrement_ref_count2(__right_value118, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    gComeFunResultObject = (void*)0;
+    return __result68__;
+}
+
+void httpd_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*)){
+int sock_100;
 _Bool _and_conditional2;
 _Bool __exception_result_var_b2;
-int opt_96;
-struct sockaddr_in address_97;
-int addrlen_98;
-int new_socket_99;
-_Bool break__100;
-memset(&address_97, 0, sizeof(struct sockaddr_in));
-    if((_and_conditional2=(sock_95=socket(socket_family,socket_type,protocol))),    _and_conditional2 == 0) {
-        (come_push_stackframe("libcomelang-net.c", 106, 1),__exception_result_var_b2=die("socket failed"), come_pop_stackframe(), __exception_result_var_b2);
+int opt_101;
+struct sockaddr_in address_102;
+int addrlen_103;
+int new_socket_104;
+_Bool break__105;
+memset(&address_102, 0, sizeof(struct sockaddr_in));
+    if((_and_conditional2=(sock_100=socket(socket_family,socket_type,protocol))),    _and_conditional2 == 0) {
+        (come_push_stackframe("libcomelang-net.c", 151, 1),__exception_result_var_b2=die("socket failed"), come_pop_stackframe(), __exception_result_var_b2);
     }
     if(reuse) {
-        opt_96=1;
-        if(setsockopt(sock_95,65535,4,&opt_96,sizeof(opt_96))) {
+        opt_101=1;
+        if(setsockopt(sock_100,65535,4,&opt_101,sizeof(opt_101))) {
             perror("setsockopt failed");
-            close(sock_95);
+            close(sock_100);
             exit(1);
         }
     }
-    address_97.sin_family=2;
-    address_97.sin_addr.s_addr=(unsigned int)0;
-    address_97.sin_port=_OSSwapInt16(port);
-    addrlen_98=sizeof(address_97);
-    if(bind(sock_95,(struct sockaddr*)&address_97,sizeof(address_97))<0) {
+    address_102.sin_family=2;
+    address_102.sin_addr.s_addr=(unsigned int)0;
+    address_102.sin_port=_OSSwapInt16(port);
+    addrlen_103=sizeof(address_102);
+    if(bind(sock_100,(struct sockaddr*)&address_102,sizeof(address_102))<0) {
         perror("Unable to bind");
         exit(1);
     }
-    if(listen(sock_95,3)<0) {
+    if(listen(sock_100,3)<0) {
         perror("Unable to listen");
         exit(1);
     }
     while(1) {
-        new_socket_99=accept(sock_95,(struct sockaddr*)&address_97,(unsigned int*)&addrlen_98);
-        break__100=0;
-        block(parent,new_socket_99,&break__100);
-        close(new_socket_99);
-        if(break__100) {
+        new_socket_104=accept(sock_100,(struct sockaddr*)&address_102,(unsigned int*)&addrlen_103);
+        break__105=0;
+        block(parent,new_socket_104,&break__105);
+        close(new_socket_104);
+        if(break__105) {
             break;
         }
     }
-    close(sock_95);
-    /*i*/come_call_finalizer3((&address_97),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
+    close(sock_100);
+    /*i*/come_call_finalizer3((&address_102),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
 }
 
 void ERR_print_errors_fp(struct __sFILE* f){
 }
 
 int httpsd_socket(int port, _Bool reuse, void* parent, void (*block)(void*,struct ssl_st*,_Bool*)){
-int sock_101;
-struct ssl_ctx_st* ctx_102;
-const struct ssl_method_st* method_103;
-int opt_104;
-struct sockaddr_in addr_105;
-struct sockaddr_in addr_106;
-unsigned int len_107;
-int client_108;
-struct ssl_st* ssl_109;
-_Bool break__110;
-int __result68__;
-memset(&sock_101, 0, sizeof(int));
-ctx_102 = (void*)0;
-method_103 = (void*)0;
-memset(&addr_105, 0, sizeof(struct sockaddr_in));
-memset(&addr_106, 0, sizeof(struct sockaddr_in));
+int sock_106;
+struct ssl_ctx_st* ctx_107;
+const struct ssl_method_st* method_108;
+int opt_109;
+struct sockaddr_in addr_110;
+struct sockaddr_in addr_111;
+unsigned int len_112;
+int client_113;
+struct ssl_st* ssl_114;
+_Bool break__115;
+int __result69__;
+memset(&sock_106, 0, sizeof(int));
+ctx_107 = (void*)0;
+method_108 = (void*)0;
+memset(&addr_110, 0, sizeof(struct sockaddr_in));
+memset(&addr_111, 0, sizeof(struct sockaddr_in));
     OPENSSL_init_ssl(2097152|2,((void*)0));
     OPENSSL_init_ssl(0,((void*)0));
-    method_103=TLS_server_method();
-    ctx_102=SSL_CTX_new(method_103);
-    if(!ctx_102) {
+    method_108=TLS_server_method();
+    ctx_107=SSL_CTX_new(method_108);
+    if(!ctx_107) {
         perror("Unable to create SSL context");
         ERR_print_errors_fp(__stdoutp);
         exit(1);
     }
-    if(SSL_CTX_use_certificate_file(ctx_102,"cert.pem",1)<=0) {
+    if(SSL_CTX_use_certificate_file(ctx_107,"cert.pem",1)<=0) {
         ERR_print_errors_fp(__stdoutp);
         exit(1);
     }
-    if(SSL_CTX_use_PrivateKey_file(ctx_102,"key.pem",1)<=0) {
+    if(SSL_CTX_use_PrivateKey_file(ctx_107,"key.pem",1)<=0) {
         ERR_print_errors_fp(__stdoutp);
         exit(1);
     }
-    sock_101=socket(2,1,0);
-    if(sock_101<0) {
+    sock_106=socket(2,1,0);
+    if(sock_106<0) {
         perror("Unable to create socket");
         exit(1);
     }
     if(reuse) {
-        opt_104=1;
-        if(setsockopt(sock_101,65535,4|512,&opt_104,sizeof(opt_104))) {
+        opt_109=1;
+        if(setsockopt(sock_106,65535,4|512,&opt_109,sizeof(opt_109))) {
             perror("setsockopt failed");
-            close(sock_101);
+            close(sock_106);
             exit(1);
         }
     }
-    addr_105.sin_family=2;
-    addr_105.sin_port=_OSSwapInt16(port);
-    addr_105.sin_addr.s_addr=(unsigned int)0;
-    if(bind(sock_101,(struct sockaddr*)&addr_105,sizeof(addr_105))<0) {
+    addr_110.sin_family=2;
+    addr_110.sin_port=_OSSwapInt16(port);
+    addr_110.sin_addr.s_addr=(unsigned int)0;
+    if(bind(sock_106,(struct sockaddr*)&addr_110,sizeof(addr_110))<0) {
         perror("Unable to bind");
         exit(1);
     }
-    if(listen(sock_101,1)<0) {
+    if(listen(sock_106,1)<0) {
         perror("Unable to listen");
         exit(1);
     }
     while(1) {
-        len_107=sizeof(addr_106);
-        client_108=accept(sock_101,(struct sockaddr*)&addr_106,&len_107);
-        if(client_108<0) {
+        len_112=sizeof(addr_111);
+        client_113=accept(sock_106,(struct sockaddr*)&addr_111,&len_112);
+        if(client_113<0) {
             perror("Unable to accept");
             exit(1);
         }
-        ssl_109=SSL_new(ctx_102);
-        SSL_set_fd(ssl_109,client_108);
-        if(SSL_accept(ssl_109)<=0) {
+        ssl_114=SSL_new(ctx_107);
+        SSL_set_fd(ssl_114,client_113);
+        if(SSL_accept(ssl_114)<=0) {
             ERR_print_errors_fp(__stdoutp);
         }
         else {
-            break__110=0;
-            block(parent,ssl_109,&break__110);
-            if(break__110) {
-                /*i*/come_call_finalizer3((&addr_106),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
+            break__115=0;
+            block(parent,ssl_114,&break__115);
+            if(break__115) {
+                /*i*/come_call_finalizer3((&addr_111),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
                 break;
             }
         }
-        SSL_shutdown(ssl_109);
-        SSL_free(ssl_109);
-        close(client_108);
-        /*i*/come_call_finalizer3((&addr_106),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
+        SSL_shutdown(ssl_114);
+        SSL_free(ssl_114);
+        close(client_113);
+        /*i*/come_call_finalizer3((&addr_111),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
     }
-    close(sock_101);
-    SSL_CTX_free(ctx_102);
+    close(sock_106);
+    SSL_CTX_free(ctx_107);
     while(0) {
         continue;
     }
-    __result68__ = 0;
-    /*i*/come_call_finalizer3((&addr_105),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
-    return __result68__;
+    __result69__ = 0;
+    /*i*/come_call_finalizer3((&addr_110),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
+    return __result69__;
 }
 
 void come_mysql_init(){
@@ -12273,52 +12321,52 @@ int finish_with_error(){
 
 void create_user_if_not_exists(char* user, char* password, char* root_password, char* host_name){
 _Bool _and_conditional3;
-void* __right_value116 = (void*)0;
-void* __right_value117 = (void*)0;
-void* __right_value118 = (void*)0;
-char* check_user_query_111;
-_Bool _or_conditional1;
-struct MYSQL_RES* result_112;
-_Bool _and_conditional4;
-char** row_113;
-int user_exists_114;
 void* __right_value119 = (void*)0;
 void* __right_value120 = (void*)0;
 void* __right_value121 = (void*)0;
+char* check_user_query_116;
+_Bool _or_conditional1;
+struct MYSQL_RES* result_117;
+_Bool _and_conditional4;
+char** row_118;
+int user_exists_119;
 void* __right_value122 = (void*)0;
-_Bool _or_conditional2;
 void* __right_value123 = (void*)0;
 void* __right_value124 = (void*)0;
 void* __right_value125 = (void*)0;
+_Bool _or_conditional2;
+void* __right_value126 = (void*)0;
+void* __right_value127 = (void*)0;
+void* __right_value128 = (void*)0;
 _Bool _or_conditional3;
 _Bool _or_conditional4;
     come_mysql_init();
     if((_and_conditional3=(mysql_real_connect(gComeMySQL,host_name,"root",root_password,((void*)0),0,((void*)0),0))),    _and_conditional3 == 0) {
         finish_with_error();
     }
-    check_user_query_111=(char*)come_increment_ref_count(xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",((char*)(__right_value116=charp_to_string(user))),((char*)(__right_value117=charp_to_string(host_name)))));
-    __right_value116 = come_decrement_ref_count2(__right_value116, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value117 = come_decrement_ref_count2(__right_value117, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    if((_or_conditional1=(mysql_query(gComeMySQL,check_user_query_111))),    _or_conditional1 != 0) {
+    check_user_query_116=(char*)come_increment_ref_count(xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",((char*)(__right_value119=charp_to_string(user))),((char*)(__right_value120=charp_to_string(host_name)))));
+    __right_value119 = come_decrement_ref_count2(__right_value119, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value120 = come_decrement_ref_count2(__right_value120, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    if((_or_conditional1=(mysql_query(gComeMySQL,check_user_query_116))),    _or_conditional1 != 0) {
         finish_with_error();
     }
-    if((_and_conditional4=(result_112=mysql_store_result(gComeMySQL))),    _and_conditional4 == 0) {
+    if((_and_conditional4=(result_117=mysql_store_result(gComeMySQL))),    _and_conditional4 == 0) {
         finish_with_error();
     }
-    row_113=mysql_fetch_row(result_112);
-    user_exists_114=atoi(row_113[0]);
-    mysql_free_result(result_112);
-    if(user_exists_114==0) {
-        if((_or_conditional2=(mysql_query(gComeMySQL,((char*)(__right_value122=xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",((char*)(__right_value119=charp_to_string(user))),((char*)(__right_value120=charp_to_string(host_name))),((char*)(__right_value121=charp_to_string(password))))))))),        (__right_value119 = come_decrement_ref_count2(__right_value119, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value120 = come_decrement_ref_count2(__right_value120, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value121 = come_decrement_ref_count2(__right_value121, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value122 = come_decrement_ref_count2(__right_value122, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+    row_118=mysql_fetch_row(result_117);
+    user_exists_119=atoi(row_118[0]);
+    mysql_free_result(result_117);
+    if(user_exists_119==0) {
+        if((_or_conditional2=(mysql_query(gComeMySQL,((char*)(__right_value125=xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",((char*)(__right_value122=charp_to_string(user))),((char*)(__right_value123=charp_to_string(host_name))),((char*)(__right_value124=charp_to_string(password))))))))),        (__right_value122 = come_decrement_ref_count2(__right_value122, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value123 = come_decrement_ref_count2(__right_value123, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value124 = come_decrement_ref_count2(__right_value124, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value125 = come_decrement_ref_count2(__right_value125, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
         _or_conditional2 != 0) {
             finish_with_error();
         }
-        if((_or_conditional3=(mysql_query(gComeMySQL,((char*)(__right_value125=xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",((char*)(__right_value123=charp_to_string(user))),((char*)(__right_value124=charp_to_string(host_name))))))))),        (__right_value123 = come_decrement_ref_count2(__right_value123, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value124 = come_decrement_ref_count2(__right_value124, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value125 = come_decrement_ref_count2(__right_value125, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        if((_or_conditional3=(mysql_query(gComeMySQL,((char*)(__right_value128=xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",((char*)(__right_value126=charp_to_string(user))),((char*)(__right_value127=charp_to_string(host_name))))))))),        (__right_value126 = come_decrement_ref_count2(__right_value126, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value127 = come_decrement_ref_count2(__right_value127, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value128 = come_decrement_ref_count2(__right_value128, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
         _or_conditional3 != 0) {
             finish_with_error();
         }
@@ -12327,26 +12375,26 @@ _Bool _or_conditional4;
         }
     }
     come_mysql_final();
-    check_user_query_111 = come_decrement_ref_count2(check_user_query_111, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    check_user_query_116 = come_decrement_ref_count2(check_user_query_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
 }
 
 void create_database_if_not_exists(char* database_name, char* user_name, char* password, char* host_name){
 _Bool _and_conditional5;
-void* __right_value126 = (void*)0;
-void* __right_value127 = (void*)0;
-char* create_db_query_115;
+void* __right_value129 = (void*)0;
+void* __right_value130 = (void*)0;
+char* create_db_query_120;
 _Bool _or_conditional5;
     come_mysql_init();
     if((_and_conditional5=(mysql_real_connect(gComeMySQL,host_name,user_name,password,((void*)0),0,((void*)0),0))),    _and_conditional5 == 0) {
         finish_with_error();
     }
-    create_db_query_115=(char*)come_increment_ref_count(xsprintf("CREATE DATABASE IF NOT EXISTS \%s",((char*)(__right_value126=charp_to_string(database_name)))));
-    __right_value126 = come_decrement_ref_count2(__right_value126, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    if((_or_conditional5=(mysql_query(gComeMySQL,create_db_query_115))),    _or_conditional5 != 0) {
+    create_db_query_120=(char*)come_increment_ref_count(xsprintf("CREATE DATABASE IF NOT EXISTS \%s",((char*)(__right_value129=charp_to_string(database_name)))));
+    __right_value129 = come_decrement_ref_count2(__right_value129, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    if((_or_conditional5=(mysql_query(gComeMySQL,create_db_query_120))),    _or_conditional5 != 0) {
         finish_with_error();
     }
     come_mysql_final();
-    create_db_query_115 = come_decrement_ref_count2(create_db_query_115, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    create_db_query_120 = come_decrement_ref_count2(create_db_query_120, (void*)0, (void*)0, 0, 0, 0, (void*)0);
 }
 
 void xmysql_query(char* query, char* user, char* password, _Bool create_user, _Bool create_database, char* root_password, char* database_name, char* host_name){
@@ -12377,20 +12425,20 @@ void* __result_obj__=(void*)0;
 _Bool _and_conditional8;
 _Bool _and_conditional9;
 _Bool _or_conditional7;
-struct MYSQL_RES* res_116;
+struct MYSQL_RES* res_121;
 _Bool _and_conditional10;
-int num_fields_117;
-void* __right_value128 = (void*)0;
-void* __right_value129 = (void*)0;
-struct list$1list$1charphph* result_118;
-char** row_125;
-void* __right_value130 = (void*)0;
+int num_fields_122;
 void* __right_value131 = (void*)0;
-struct list$1charph* li_126;
-int i_127;
-void* __right_value135 = (void*)0;
-struct list$1list$1charphph* __result73__;
-row_125 = (void*)0;
+void* __right_value132 = (void*)0;
+struct list$1list$1charphph* result_123;
+char** row_130;
+void* __right_value133 = (void*)0;
+void* __right_value134 = (void*)0;
+struct list$1charph* li_131;
+int i_132;
+void* __right_value138 = (void*)0;
+struct list$1list$1charphph* __result74__;
+row_130 = (void*)0;
     if(create_user) {
         create_user_if_not_exists(user,password,root_password,"localhost");
     }
@@ -12407,49 +12455,49 @@ row_125 = (void*)0;
     if((_or_conditional7=(mysql_query(gComeMySQL,query))),    _or_conditional7 != 0) {
         finish_with_error();
     }
-    if((_and_conditional10=(res_116=mysql_store_result(gComeMySQL))),    _and_conditional10 == 0) {
+    if((_and_conditional10=(res_121=mysql_store_result(gComeMySQL))),    _and_conditional10 == 0) {
         finish_with_error();
     }
-    num_fields_117=mysql_num_fields(res_116);
-    result_118=(struct list$1list$1charphph*)come_increment_ref_count(list$1list$1charphph_initialize((struct list$1list$1charphph*)come_increment_ref_count((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net.c", 371, "list$1list$1charphph"))));
-    while((row_125=mysql_fetch_row(res_116))!=((void*)0)) {
-        li_126=(struct list$1charph*)come_increment_ref_count(list$1charph_initialize((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net.c", 375, "list$1charph"))));
-        for(        i_127=0;        i_127<num_fields_117;        i_127++        ){
-            if(row_125[i_127]) {
-                list$1charph_add(li_126,(char*)come_increment_ref_count(__builtin_string(row_125[i_127])));
+    num_fields_122=mysql_num_fields(res_121);
+    result_123=(struct list$1list$1charphph*)come_increment_ref_count(list$1list$1charphph_initialize((struct list$1list$1charphph*)come_increment_ref_count((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net.c", 416, "list$1list$1charphph"))));
+    while((row_130=mysql_fetch_row(res_121))!=((void*)0)) {
+        li_131=(struct list$1charph*)come_increment_ref_count(list$1charph_initialize((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net.c", 420, "list$1charph"))));
+        for(        i_132=0;        i_132<num_fields_122;        i_132++        ){
+            if(row_130[i_132]) {
+                list$1charph_add(li_131,(char*)come_increment_ref_count(__builtin_string(row_130[i_132])));
             }
         }
-        list$1list$1charphph_add(result_118,(struct list$1charph*)come_increment_ref_count(li_126));
-        /*i*/come_call_finalizer3(li_126,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
+        list$1list$1charphph_add(result_123,(struct list$1charph*)come_increment_ref_count(li_131));
+        /*i*/come_call_finalizer3(li_131,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
     }
-    mysql_free_result(res_116);
+    mysql_free_result(res_121);
     come_mysql_final();
-    __result73__ = gComeFunResultObject = __result_obj__ = result_118;
-    /*i*/come_call_finalizer3(result_118,list$1list$1charphphp_finalize, 0, 0, 1, 0, (void*)0);
+    __result74__ = gComeFunResultObject = __result_obj__ = result_123;
+    /*i*/come_call_finalizer3(result_123,list$1list$1charphphp_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
-    return __result73__;
+    return __result74__;
 }
 
 static struct list$1list$1charphph* list$1list$1charphph_initialize(struct list$1list$1charphph* self){
 void* __result_obj__=(void*)0;
-struct list$1list$1charphph* __result69__;
+struct list$1list$1charphph* __result70__;
     self->head=((void*)0);
     self->tail=((void*)0);
     self->len=0;
-    __result69__ = gComeFunResultObject = __result_obj__ = self;
+    __result70__ = gComeFunResultObject = __result_obj__ = self;
     /*i*/come_call_finalizer3(self,list$1list$1charphphp_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
-    return __result69__;
+    return __result70__;
 }
 
 static void list$1list$1charphphp_finalize(struct list$1list$1charphph* self){
-struct list_item$1list$1charphph* it_119;
-struct list_item$1list$1charphph* prev_it_120;
-    it_119=self->head;
-    while(it_119!=((void*)0)) {
-        prev_it_120=it_119;
-        it_119=it_119->next;
-        /*i*/come_call_finalizer3(prev_it_120,list_item$1list$1charphphp_finalize, 0, 0, 0, 0, (void*)0);
+struct list_item$1list$1charphph* it_124;
+struct list_item$1list$1charphph* prev_it_125;
+    it_124=self->head;
+    while(it_124!=((void*)0)) {
+        prev_it_125=it_124;
+        it_124=it_124->next;
+        /*i*/come_call_finalizer3(prev_it_125,list_item$1list$1charphphp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 
@@ -12467,13 +12515,13 @@ struct list$1charph* __dec_obj15;
 }
 
 static void list$1charph_finalize(struct list$1charph* self){
-struct list_item$1charph* it_121;
-struct list_item$1charph* prev_it_122;
-    it_121=self->head;
-    while(it_121!=((void*)0)) {
-        prev_it_122=it_121;
-        it_121=it_121->next;
-        /*i*/come_call_finalizer3(prev_it_122,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
+struct list_item$1charph* it_126;
+struct list_item$1charph* prev_it_127;
+    it_126=self->head;
+    while(it_126!=((void*)0)) {
+        prev_it_127=it_126;
+        it_126=it_126->next;
+        /*i*/come_call_finalizer3(prev_it_127,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 
@@ -12491,127 +12539,127 @@ char* __dec_obj16;
 }
 
 static void list$1charphp_finalize(struct list$1charph* self){
-struct list_item$1charph* it_123;
-struct list_item$1charph* prev_it_124;
-    it_123=self->head;
-    while(it_123!=((void*)0)) {
-        prev_it_124=it_123;
-        it_123=it_123->next;
-        /*i*/come_call_finalizer3(prev_it_124,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
+struct list_item$1charph* it_128;
+struct list_item$1charph* prev_it_129;
+    it_128=self->head;
+    while(it_128!=((void*)0)) {
+        prev_it_129=it_128;
+        it_128=it_128->next;
+        /*i*/come_call_finalizer3(prev_it_129,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 
 static struct list$1charph* list$1charph_initialize(struct list$1charph* self){
 void* __result_obj__=(void*)0;
-struct list$1charph* __result70__;
+struct list$1charph* __result71__;
     self->head=((void*)0);
     self->tail=((void*)0);
     self->len=0;
-    __result70__ = gComeFunResultObject = __result_obj__ = self;
-    /*i*/come_call_finalizer3(self,list$1charphp_finalize, 0, 0, 1, 0, (void*)0);
-    gComeFunResultObject = (void*)0;
-    return __result70__;
-}
-
-static struct list$1charph* list$1charph_add(struct list$1charph* self, char* item){
-void* __result_obj__=(void*)0;
-void* __right_value132 = (void*)0;
-struct list_item$1charph* litem_128;
-char* __dec_obj17;
-void* __right_value133 = (void*)0;
-struct list_item$1charph* litem_129;
-char* __dec_obj18;
-void* __right_value134 = (void*)0;
-struct list_item$1charph* litem_130;
-char* __dec_obj19;
-struct list$1charph* __result71__;
-    if(self->len==0) {
-        litem_128=(struct list_item$1charph*)come_increment_ref_count(((struct list_item$1charph*)(__right_value132=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 151, "list_item$1charph"))));
-        litem_128->prev=((void*)0);
-        litem_128->next=((void*)0);
-        __dec_obj17=litem_128->item;
-        litem_128->item=(char*)come_increment_ref_count(item);
-        __dec_obj17 = come_decrement_ref_count2(__dec_obj17, (void*)0, (void*)0, 0,0,0, (void*)0);
-        self->tail=litem_128;
-        self->head=litem_128;
-    }
-    else {
-        if(self->len==1) {
-            litem_129=(struct list_item$1charph*)come_increment_ref_count(((struct list_item$1charph*)(__right_value133=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 161, "list_item$1charph"))));
-            litem_129->prev=self->head;
-            litem_129->next=((void*)0);
-            __dec_obj18=litem_129->item;
-            litem_129->item=(char*)come_increment_ref_count(item);
-            __dec_obj18 = come_decrement_ref_count2(__dec_obj18, (void*)0, (void*)0, 0,0,0, (void*)0);
-            self->tail=litem_129;
-            self->head->next=litem_129;
-        }
-        else {
-            litem_130=(struct list_item$1charph*)come_increment_ref_count(((struct list_item$1charph*)(__right_value134=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 171, "list_item$1charph"))));
-            litem_130->prev=self->tail;
-            litem_130->next=((void*)0);
-            __dec_obj19=litem_130->item;
-            litem_130->item=(char*)come_increment_ref_count(item);
-            __dec_obj19 = come_decrement_ref_count2(__dec_obj19, (void*)0, (void*)0, 0,0,0, (void*)0);
-            self->tail->next=litem_130;
-            self->tail=litem_130;
-        }
-    }
-    self->len++;
     __result71__ = gComeFunResultObject = __result_obj__ = self;
-    item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    /*i*/come_call_finalizer3(self,list$1charphp_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result71__;
 }
 
-static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item){
+static struct list$1charph* list$1charph_add(struct list$1charph* self, char* item){
 void* __result_obj__=(void*)0;
+void* __right_value135 = (void*)0;
+struct list_item$1charph* litem_133;
+char* __dec_obj17;
 void* __right_value136 = (void*)0;
-struct list_item$1list$1charphph* litem_131;
-struct list$1charph* __dec_obj20;
+struct list_item$1charph* litem_134;
+char* __dec_obj18;
 void* __right_value137 = (void*)0;
-struct list_item$1list$1charphph* litem_132;
-struct list$1charph* __dec_obj21;
-void* __right_value138 = (void*)0;
-struct list_item$1list$1charphph* litem_133;
-struct list$1charph* __dec_obj22;
-struct list$1list$1charphph* __result72__;
+struct list_item$1charph* litem_135;
+char* __dec_obj19;
+struct list$1charph* __result72__;
     if(self->len==0) {
-        litem_131=(struct list_item$1list$1charphph*)come_increment_ref_count(((struct list_item$1list$1charphph*)(__right_value136=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 151, "list_item$1list$1charphph"))));
-        litem_131->prev=((void*)0);
-        litem_131->next=((void*)0);
-        __dec_obj20=litem_131->item;
-        litem_131->item=(struct list$1charph*)come_increment_ref_count(item);
-        /* a*/come_call_finalizer3(__dec_obj20,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
-        self->tail=litem_131;
-        self->head=litem_131;
+        litem_133=(struct list_item$1charph*)come_increment_ref_count(((struct list_item$1charph*)(__right_value135=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 151, "list_item$1charph"))));
+        litem_133->prev=((void*)0);
+        litem_133->next=((void*)0);
+        __dec_obj17=litem_133->item;
+        litem_133->item=(char*)come_increment_ref_count(item);
+        __dec_obj17 = come_decrement_ref_count2(__dec_obj17, (void*)0, (void*)0, 0,0,0, (void*)0);
+        self->tail=litem_133;
+        self->head=litem_133;
     }
     else {
         if(self->len==1) {
-            litem_132=(struct list_item$1list$1charphph*)come_increment_ref_count(((struct list_item$1list$1charphph*)(__right_value137=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 161, "list_item$1list$1charphph"))));
-            litem_132->prev=self->head;
-            litem_132->next=((void*)0);
-            __dec_obj21=litem_132->item;
-            litem_132->item=(struct list$1charph*)come_increment_ref_count(item);
-            /* a*/come_call_finalizer3(__dec_obj21,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
-            self->tail=litem_132;
-            self->head->next=litem_132;
+            litem_134=(struct list_item$1charph*)come_increment_ref_count(((struct list_item$1charph*)(__right_value136=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 161, "list_item$1charph"))));
+            litem_134->prev=self->head;
+            litem_134->next=((void*)0);
+            __dec_obj18=litem_134->item;
+            litem_134->item=(char*)come_increment_ref_count(item);
+            __dec_obj18 = come_decrement_ref_count2(__dec_obj18, (void*)0, (void*)0, 0,0,0, (void*)0);
+            self->tail=litem_134;
+            self->head->next=litem_134;
         }
         else {
-            litem_133=(struct list_item$1list$1charphph*)come_increment_ref_count(((struct list_item$1list$1charphph*)(__right_value138=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 171, "list_item$1list$1charphph"))));
-            litem_133->prev=self->tail;
-            litem_133->next=((void*)0);
-            __dec_obj22=litem_133->item;
-            litem_133->item=(struct list$1charph*)come_increment_ref_count(item);
-            /* a*/come_call_finalizer3(__dec_obj22,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
-            self->tail->next=litem_133;
-            self->tail=litem_133;
+            litem_135=(struct list_item$1charph*)come_increment_ref_count(((struct list_item$1charph*)(__right_value137=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 171, "list_item$1charph"))));
+            litem_135->prev=self->tail;
+            litem_135->next=((void*)0);
+            __dec_obj19=litem_135->item;
+            litem_135->item=(char*)come_increment_ref_count(item);
+            __dec_obj19 = come_decrement_ref_count2(__dec_obj19, (void*)0, (void*)0, 0,0,0, (void*)0);
+            self->tail->next=litem_135;
+            self->tail=litem_135;
         }
     }
     self->len++;
     __result72__ = gComeFunResultObject = __result_obj__ = self;
-    /*i*/come_call_finalizer3(item,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
+    item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result72__;
+}
+
+static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item){
+void* __result_obj__=(void*)0;
+void* __right_value139 = (void*)0;
+struct list_item$1list$1charphph* litem_136;
+struct list$1charph* __dec_obj20;
+void* __right_value140 = (void*)0;
+struct list_item$1list$1charphph* litem_137;
+struct list$1charph* __dec_obj21;
+void* __right_value141 = (void*)0;
+struct list_item$1list$1charphph* litem_138;
+struct list$1charph* __dec_obj22;
+struct list$1list$1charphph* __result73__;
+    if(self->len==0) {
+        litem_136=(struct list_item$1list$1charphph*)come_increment_ref_count(((struct list_item$1list$1charphph*)(__right_value139=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 151, "list_item$1list$1charphph"))));
+        litem_136->prev=((void*)0);
+        litem_136->next=((void*)0);
+        __dec_obj20=litem_136->item;
+        litem_136->item=(struct list$1charph*)come_increment_ref_count(item);
+        /* a*/come_call_finalizer3(__dec_obj20,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
+        self->tail=litem_136;
+        self->head=litem_136;
+    }
+    else {
+        if(self->len==1) {
+            litem_137=(struct list_item$1list$1charphph*)come_increment_ref_count(((struct list_item$1list$1charphph*)(__right_value140=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 161, "list_item$1list$1charphph"))));
+            litem_137->prev=self->head;
+            litem_137->next=((void*)0);
+            __dec_obj21=litem_137->item;
+            litem_137->item=(struct list$1charph*)come_increment_ref_count(item);
+            /* a*/come_call_finalizer3(__dec_obj21,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
+            self->tail=litem_137;
+            self->head->next=litem_137;
+        }
+        else {
+            litem_138=(struct list_item$1list$1charphph*)come_increment_ref_count(((struct list_item$1list$1charphph*)(__right_value141=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 171, "list_item$1list$1charphph"))));
+            litem_138->prev=self->tail;
+            litem_138->next=((void*)0);
+            __dec_obj22=litem_138->item;
+            litem_138->item=(struct list$1charph*)come_increment_ref_count(item);
+            /* a*/come_call_finalizer3(__dec_obj22,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
+            self->tail->next=litem_138;
+            self->tail=litem_138;
+        }
+    }
+    self->len++;
+    __result73__ = gComeFunResultObject = __result_obj__ = self;
+    /*i*/come_call_finalizer3(item,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
+    gComeFunResultObject = (void*)0;
+    return __result73__;
 }
 

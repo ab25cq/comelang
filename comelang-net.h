@@ -25,6 +25,7 @@ int socket_fd::write(socket_fd self, string str);
 void server_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_, bool* reconnection));
 void httpd_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_));
 void client_socket(int port=8080, char* address="127.0.0.1", void* parent, void (*block)(void* parent, socket_fd it, bool* break_));
+string client_socket2(int port, char* data, char* address="127.0.0.1");
 
 int httpsd_socket(int port=443, bool reuse=false, void* parent, void (*block)(void* parent, SSL* it));
 //void SSL*::write(SSL* self, char* str);

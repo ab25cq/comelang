@@ -1,0 +1,42 @@
+Recived: CREATE DATABASE testdb
+OK
+
+Recived: use testdb
+OK
+
+Recived: CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(100) NOT NULL, password VARCHAR(100) NOT NULL)
+OK
+
+Recived: SELECT username, password FROM users WHERE username = 'ab25cq'
+NOT FOUND
+
+Recived: INSERT INTO users(username, password) VALUES('ab25cq', 'locate')
+OK
+
+Recived: CREATE DATABASE testdb
+OK
+
+Recived: use testdb
+OK
+
+Recived: CREATE TABLE IF NOT EXISTS food (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(100) NOT NULL, time VARCHAR(100) NOT NULL)
+OK
+
+Recived: SELECT MAX(time) FROM food WHERE username = 'ab25cq'
+NOT FOUND
+
+Recived: INSERT INTO food(username, time) VALUES('ab25cq', '1728412335')
+OK
+
+Recived: CREATE DATABASE testdb
+OK
+
+Recived: use testdb
+OK
+
+Recived: CREATE TABLE IF NOT EXISTS food (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(100) NOT NULL, time VARCHAR(100) NOT NULL)
+OK
+
+Recived: SELECT MAX(time) FROM food WHERE username = 'ab25cq'
+1728412335
+

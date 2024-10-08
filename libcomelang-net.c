@@ -101,6 +101,51 @@ void client_socket(int port=8080, char* address="127.0.0.1", void* parent, void 
     close(sock);
 }
 
+string client_socket2(int port, char* data, char* address="127.0.0.1")
+{
+    int sock = 0;
+    struct sockaddr_in serv_addr;
+
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        printf("\n Socket creation error \n");
+        exit(1);
+    }
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(port);
+
+    if (inet_pton(AF_INET, address, &serv_addr.sin_addr) <= 0) {
+        printf("\nInvalid address/ Address not supported \n");
+        exit(1);
+    }
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        printf("\nConnection Failed \n");
+        exit(1);
+    }
+    
+    if(write(sock, data, strlen(data)) < 0) {
+        printf("Write Failed \n");
+        exit(1);
+    }
+    
+    buffer*% buf = new buffer();
+    
+    char buf2[1024] = { '\0' };
+
+    int size = read(sock, buf2, 1024);
+    
+    if(size < 0) {
+        printf("Read Failed \n");
+        exit(1);
+    }
+    
+    buf.append(buf2, size);
+
+    close(sock);
+    
+    return buf.to_string();
+}
+
 void httpd_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_))
 {
     socket_fd sock = socket(socket_family, socket_type, protocol) and die("socket failed");

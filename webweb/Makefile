@@ -6,10 +6,10 @@ exec_prefix=${prefix}
 bindir=${exec_prefix}/bin
 datadir=${datarootdir}
 mandir=${datarootdir}/man
-sharedstatedir=${prefix}/webweb
-sysconfdir=${prefix}/etc/webweb
-includedir=${prefix}/include/webweb
-datarootdir=${prefix}/share/webweb
+sharedstatedir=${prefix}/webweb2
+sysconfdir=${prefix}/etc/webweb2
+includedir=${prefix}/include/webweb2
+datarootdir=${prefix}/share/webweb2
 docdir=${datarootdir}/doc
 libdir=${exec_prefix}/lib
 
@@ -18,8 +18,8 @@ libdir=${exec_prefix}/lib
 #########################################
 CC=comelang
 INSTALL=install
-CFLAGS= -common-header -O2  -net
-CFLAGS_DEBUG= -common-header -gdwarf-4 -cg 
+CFLAGS= -common-header -O2 -net -str
+CFLAGS_DEBUG= -common-header -gdwarf-4 -cg -net -str
 LIBS=-lpcre
 OS=linux
 DESTDIR=/usr/local/
@@ -27,13 +27,14 @@ SRCS=$(wildcard *.c)
 SINGLE_SRCS=$(filter-out %.c.c, $(SRCS))
 OBJS=$(SINGLE_SRCS:.c=.o)
 DEBUG_OBJS=$(SINGLE_SRCS:.c=.debug.o)
-TARGET=webweb
-TARGET_DEBUG=webweb-debug
+TARGET=webweb2
+TARGET_DEBUG=webweb2-debug
 
 #########################################
 # main
 #########################################
 all: $(TARGET)
+	(cd cgi-bin && make)
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@
@@ -61,31 +62,32 @@ common.h: $(SINGLE_SRCS)
 #########################################
 install:
 	mkdir -p "$(DESTDIR)/bin"
-	$(INSTALL) -m 755 ./webweb "$(DESTDIR)/bin"
+	$(INSTALL) -m 755 ./webweb2 "$(DESTDIR)/bin"
 	mkdir -p "$(DESTDIR)/include"
 	mkdir -p "$(DESTDIR)/lib"
-	mkdir -p "$(DESTDIR)/share/doc/webweb"
-	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/webweb/README.md"
+	mkdir -p "$(DESTDIR)/share/doc/webweb2"
+	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/webweb2/README.md"
 
 #########################################
 # clean
 #########################################
 clean:
-	rm -fR *.o *.c.i *.c.out *.c.c webweb *.log *.out common.h webweb-debug
+	rm -fR *.o *.c.i *.c.out *.c.c webweb2 *.log *.out common.h webweb2-debug
 
 #########################################
 # uninstall
 #########################################
 uninstall:
-	rm -f "$(DESTDIR)"/bin/webweb
-	rm -f "$(DESTDIR)/share/doc/webweb/README.md"
+	rm -f "$(DESTDIR)"/bin/webweb2
+	rm -f "$(DESTDIR)/share/doc/webweb2/README.md"
 
-run: webweb
+run: webweb2
+	(cd cgi-bin && make)
 	rm -f *.log
-	./webweb
+	./webweb2 -http
 
-compile: webweb
+compile: webweb2
 
-debug: webweb-debug
+debug: webweb2-debug
 	rm -f *.log
-	./webweb-debug
+	./webweb2-debug
