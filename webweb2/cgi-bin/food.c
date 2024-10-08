@@ -15,22 +15,105 @@ int main(int argc, char** argv)
     }
     
     if(username) {
-        const char *create_table_query = "CREATE TABLE IF NOT EXISTS food ("
+        client_socket(port:3336) {
+            const char *create_table_query = "CREATE DATABASE testdb";
+            
+            write(it, create_table_query, strlen(create_table_query));
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+            
+            *it2 = true;
+            return;
+        }
+        client_socket(port:3336) {
+            const char *create_table_query = "use testdb";
+            
+            write(it, create_table_query, strlen(create_table_query));
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+            
+            *it2 = true;
+            return;
+        }
+        client_socket(port:3336) {
+            const char *create_table_query = "CREATE TABLE IF NOT EXISTS food ("
                                          "id INT AUTO_INCREMENT PRIMARY KEY, "
                                          "username VARCHAR(100) NOT NULL, "
                                          "time VARCHAR(100) NOT NULL"
                                          ")";
-
-        xmysql_query(create_table_query, create_user:true, create_database:true);
-
-        string query = s"SELECT MAX(time) FROM food WHERE username = '\{username}'";
-        list<list<string>*%>*% li = xmysql_query_and_fetch_row(query)
+            
+            write(it, create_table_query, strlen(create_table_query));
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+FILE* f = fopen("UUUUU", "a");
+fprintf(f,"U\n");
+fclose(f);
+            
+            *it2 = true;
+            return;
+        }
         
-        if(li[0]??.length() == 0) {
+FILE* f = fopen("UUUUU", "a");
+fprintf(f,"UUUUUU\n");
+fclose(f);
+
+        list<string>*% li = new list<string>();
+        client_socket(port:3336) {
+FILE* f = fopen("UUUUU", "a");
+fprintf(f,"UUUUUU OPPAI\n");
+fclose(f);
+            string query = s"SELECT MAX(time) FROM food WHERE username = '\{username}'";
+f = fopen("UUUUU", "a");
+fprintf(f,"qurery %s\n", query);
+fclose(f);
+            
+            write(it, query, query.length());
+f = fopen("UUUUU", "w");
+fprintf(f,"UUUUUU OPPAI2\n");
+fclose(f);
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+f = fopen("UUUUU", "w");
+fprintf(f,"UUUUUU OPPAI2\n");
+fclose(f);
+            
+            li = string(buf).scan(/\n/);
+            
+            *it2 = true;
+f = fopen("UUUUU", "w");
+fprintf(f,"UUUUUU OPPAI2\n");
+fclose(f);
+            return;
+        }
+        
+f = fopen("UUUUU", "w");
+fprintf(f,"li.length() %d li[0] %p\n", li.length(), li[0]??);
+fclose(f);
+        
+        if(li[0]??.chomp() === "") {
             long time_value = time(NULL);
             string time = xsprintf("%ld", time_value);
             
-            xmysql_query(s"INSERT INTO food(username, time) VALUES('\{username}', '\{time}')");
+            client_socket(port:3336) {
+                string query = s"INSERT INTO food(username, time) VALUES('\{username}', '\{time}')";
+                
+                write(it, query, strlen(query));
+                
+                char buf[1024] = {0};
+                int size = read(it, buf, 1023);
+                buf[size] = '\0';
+                
+                *it2 = true;
+                return;
+            }
             puts("""
 <!DOCTYPE html>
 <html lang="ja">
@@ -54,8 +137,7 @@ int main(int argc, char** argv)
         else {
             long time_value = time(NULL);
             
-            list<string>* li2 = li[0]??;
-            char* time_str = li2[0]??;
+            char* time_str = li[0]??;
             
             long time_ = 0L;
             (void)sscanf(time_str, "%ld", &time_);
@@ -63,7 +145,18 @@ int main(int argc, char** argv)
             if((time_value - time_) > 60*60*3) {
                 string time_str2 = xsprintf("%ld", time_value);
                 
-                xmysql_query(s"INSERT INTO food(username, time) VALUES('\{username}', '\{time_str2}')");
+                client_socket(port:3336) {
+                    string query = s"INSERT INTO food(username, time) VALUES('\{username}', '\{time_str2}')";
+                    
+                    write(it, query, strlen(query));
+                    
+                    char buf[1024] = {0};
+                    int size = read(it, buf, 1023);
+                    buf[size] = '\0';
+                    
+                    *it2 = true;
+                    return;
+                }
                 puts("""
 <!DOCTYPE html>
 <html lang="ja">

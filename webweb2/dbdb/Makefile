@@ -82,7 +82,7 @@ uninstall:
 
 run: dbdb
 	rm -f *.log
-	./dbdb
+	./dbdb &
 
 compile: dbdb
 

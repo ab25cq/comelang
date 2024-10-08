@@ -149,6 +149,7 @@ struct sType
     bool mTypedef;
     
     bool mMultipleTypes;
+    bool mOriginIsArray;
 };
 
 struct sVar;
@@ -448,8 +449,10 @@ module sCurrentNodeModule
                         sType*% type3 = clone type2;
                         type3->mArrayNum.reset();
                         type3->mPointerNum++;
+                        type3->mOriginIsArray = true;
                         tuple2<string, sType*%>*% item2 = (string(value.mCValueName), type3);
                         current_stack.mFields.push_back(clone item2);
+                        value->mType->mOriginIsArray = true;
                     }
                     else {
                         current_stack.mFields.push_back(clone item);

@@ -49,12 +49,12 @@ then
     (cd shsh; make clean)
 fi
 
-if [ -e dbdb/Makefile ]
+if [ -e webweb2/dbdb/Makefile ]
 then
-    (cd dbdb; make clean)
+    (cd webweb2/dbdb; make clean)
 fi
 
-if [ -e dbdb-client/Makefile ]
+if [ -e webweb2/dbdb-client/Makefile ]
 then
-    (cd dbdb-client; make clean)
+    (cd webweb2/dbdb-client; make clean)
 fi

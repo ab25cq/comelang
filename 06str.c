@@ -65,7 +65,13 @@ class sSStringNode extends sNodeBase
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 dec_stack_ptr(1, info);
                 
-                string method_name = create_method_name(come_value.type, false@no_pointer_name, "to_string", info);
+                sType*% come_value_type = clone come_value.type;
+                
+                if(come_value_type->mArrayNum.length() > 0) {
+                    come_value_type->mPointerNum += come_value_type->mArrayNum.length();
+                }
+                
+                string method_name = create_method_name(come_value_type, false@no_pointer_name, "to_string", info);
                 
                 if(info.funcs.at(method_name, null) == null) {
                     sType* obj_type = come_value.type.mNoSolvedGenericsType.v1;

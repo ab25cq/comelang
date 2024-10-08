@@ -692,6 +692,9 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
     bool max_ = false;
     list<string>*% field_names = new list<string>();
     map<string,bool>*% max_field = new map<string,bool>();
+FILE* f = fopen("UHE", "a");
+fprintf(f, "%c\n", *info->p);
+fclose(f);
     if(*info->p =='*') {
         info->p++;
         skip_spaces();
@@ -709,11 +712,17 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
             if(strncmp(info->p, "MAX(", strlen("MAX(")) == 0) {
                 info->p += strlen("MAX(");
                 field = parse_word();
+FILE* f = fopen("UHE", "a");
+fprintf(f, "UHE MAX %s\n", field);
+fclose(f);
                 expected_next_charactor(')');
                 max_flag = max_ = true;
             }
             else {
                 field = parse_word();
+FILE* f = fopen("UHE", "a");
+fprintf(f, "%s\n", field);
+fclose(f);
             }
             
             field_names.add(field);
@@ -1068,6 +1077,9 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
                 }
             }
             else if(max_) {
+FILE* f = fopen("UHE", "w");
+fprintf(f, "UHE1\n");
+fclose(f);
                 list<map<string,string>*%>*% rows = table.rows;
                 
                 int max_value = 0;
@@ -1081,6 +1093,9 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
                                 if(atoi(value) > max_value) {
                                     max_value = atoi(value);
                                     max_row = row;
+FILE* f = fopen("UHE", "w");
+fprintf(f, "UHE\n");
+fclose(f);
                                 }
                             }
                         }
@@ -1089,6 +1104,9 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
                 foreach(it2, field_names) {
                     char* value = max_row[it2];
                     string value2 = value + string(deliminater);
+FILE* f = fopen("UHE", "w");
+fprintf(f, "UHO\n");
+fclose(f);
                     buf.append_str(value2);
                 }
             }

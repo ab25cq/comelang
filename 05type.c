@@ -994,6 +994,8 @@ tuple2<sType*%, string>*% parse_variable_name(sType*% base_type_name, bool first
         result_type.mArrayNum.push_back(node);
         parse_sharp();
         
+        result_type.mOriginIsArray = true;
+        
         expected_next_character(']');
     }
     

@@ -13,34 +13,87 @@ int main(int argc, char** argv)
     var password = result[2]??;
     
     if(username && password) {
-        const char *create_table_query = "CREATE TABLE IF NOT EXISTS users ("
-                                         "id INT AUTO_INCREMENT PRIMARY KEY, "
-                                         "username VARCHAR(100) NOT NULL, "
-                                         "password VARCHAR(100) NOT NULL"
-                                         ")";
+        client_socket(port:3336) {
+            const char *create_table_query = "CREATE DATABASE testdb";
+            
+            write(it, create_table_query, strlen(create_table_query));
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+            
+            *it2 = true;
+            return;
+        }
+        client_socket(port:3336) {
+            const char *create_table_query = "use testdb";
+            
+            write(it, create_table_query, strlen(create_table_query));
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+            
+            *it2 = true;
+            return;
+        }
+        client_socket(port:3336) {
+            const char *create_table_query = "CREATE TABLE IF NOT EXISTS users ("
+                                             "id INT AUTO_INCREMENT PRIMARY KEY, "
+                                             "username VARCHAR(100) NOT NULL, "
+                                             "password VARCHAR(100) NOT NULL"
+                                             ")";
+            
+            write(it, create_table_query, strlen(create_table_query));
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+            
+            *it2 = true;
+            return;
+        }
 
-        xmysql_query(create_table_query, create_user:true, create_database:true);
+        list<string>*% li = new list<string>();
+        client_socket(port:3336) {
+            string query = s"SELECT username, password FROM users WHERE username = '\{username}'";
+            write(it, query, strlen(query));
+            
+            char buf[1024] = {0};
+            int size = read(it, buf, 1023);
+            buf[size] = '\0';
+            
+            li = string(buf).scan(/\n/);
+            
+            *it2 = true;
+            return;
+        }
 
-        string query = s"SELECT username, password FROM users WHERE username = '\{username}'";
-        list<list<string>*%>*% li = xmysql_query_and_fetch_row(query)
-
-        if(li.length() == 0) {
-            xmysql_query(s"INSERT INTO users(username, password) VALUES('\{username}', '\{password}')");
-
-            string redirect_response = """
+        if(li.length() == 1 && li[0]??.chomp() === "") {
+            client_socket(port:3336) {
+                string query = s"INSERT INTO users(username, password) VALUES('\{username}', '\{password}')";
+                write(it, query, strlen(query));
+                
+                char buf[1024] = {0};
+                int size = read(it, buf, 1023);
+                buf[size] = '\0';
+    
+                string redirect_response = """
 HTTP/1.1 302 Found\r
 Set-Cookie: username=\{username};\r
 Location: /cgi-bin/main.cgi\r
 Content-Length: 0\r
 \r
-            """;
-
-            printf(redirect_response);
+                """;
+    
+                printf(redirect_response);
+                
+                *it2 = true;
+                return;
+            }
         }
         else {
-            list<string>* li2 = li[0]??;
-            
-            if(password === li2[1]??) {
+            if(password === li[1]??) {
                 string redirect_response = """
 HTTP/1.1 302 Found\r
 Set-Cookie: username=\{username};\r
