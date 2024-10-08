@@ -527,9 +527,9 @@ puts("header end");
             buf2.append(p + 4, p + 4 - data);
             
             var contents = buf2.to_string();
-    puts("contents");
-    puts(contents);
-    puts("contents end");
+puts("contents");
+puts(contents);
+puts("contents end");
     
             if(header.match(/^GET /) && header.match(/Accept: text\/html/)) {
                 char* str = header.scan(/GET (.+) HTTP/)[1]??;

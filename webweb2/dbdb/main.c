@@ -81,7 +81,7 @@ class Database
         self.name = name;
         self.tables = new map<string, Table*%>();
         
-        self.tables.insert(s"users", new Table(s"users", [(s"name", new sType(s"CHAR", array_num:100)), (s"password", new sType(s"CHAR", array_num:100))]));
+        //self.tables.insert(s"users", new Table(s"users", [(s"name", new sType(s"CHAR", array_num:100)), (s"password", new sType(s"CHAR", array_num:100))]));
     }
 }
 
@@ -226,12 +226,19 @@ bool eval_create_table(sInfo* info)
     
     expected_next_charactor(')') and return false;
     
-    
     Database* current_db = gDatabases[info.current_db_name];
     
-    current_db.tables.insert(table_name, new Table(table_name, types));
-    
-    return true;
+    if(current_db.tables[table_name]?? == null) {
+        current_db.tables.insert(table_name, new Table(table_name, types));
+        
+        return true;
+    }
+    else if(if_not_exists) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 string parse_value(sInfo* info=info)
@@ -692,9 +699,6 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
     bool max_ = false;
     list<string>*% field_names = new list<string>();
     map<string,bool>*% max_field = new map<string,bool>();
-FILE* f = fopen("UHE", "a");
-fprintf(f, "%c\n", *info->p);
-fclose(f);
     if(*info->p =='*') {
         info->p++;
         skip_spaces();
@@ -712,17 +716,11 @@ fclose(f);
             if(strncmp(info->p, "MAX(", strlen("MAX(")) == 0) {
                 info->p += strlen("MAX(");
                 field = parse_word();
-FILE* f = fopen("UHE", "a");
-fprintf(f, "UHE MAX %s\n", field);
-fclose(f);
                 expected_next_charactor(')');
                 max_flag = max_ = true;
             }
             else {
                 field = parse_word();
-FILE* f = fopen("UHE", "a");
-fprintf(f, "%s\n", field);
-fclose(f);
             }
             
             field_names.add(field);
@@ -1077,9 +1075,6 @@ fclose(f);
                 }
             }
             else if(max_) {
-FILE* f = fopen("UHE", "w");
-fprintf(f, "UHE1\n");
-fclose(f);
                 list<map<string,string>*%>*% rows = table.rows;
                 
                 int max_value = 0;
@@ -1093,21 +1088,17 @@ fclose(f);
                                 if(atoi(value) > max_value) {
                                     max_value = atoi(value);
                                     max_row = row;
-FILE* f = fopen("UHE", "w");
-fprintf(f, "UHE\n");
-fclose(f);
                                 }
                             }
                         }
                     }
                 }
-                foreach(it2, field_names) {
-                    char* value = max_row[it2];
-                    string value2 = value + string(deliminater);
-FILE* f = fopen("UHE", "w");
-fprintf(f, "UHO\n");
-fclose(f);
-                    buf.append_str(value2);
+                if(max_row) {
+                    foreach(it2, field_names) {
+                        char* value = max_row[it2];
+                        string value2 = value + string(deliminater);
+                        buf.append_str(value2);
+                    }
                 }
             }
             else { // field_names.length() > 0
@@ -1156,9 +1147,15 @@ fclose(f);
         if(str === "") {
             char *not_found = "NOT FOUND\n";
             write(info->socket, not_found, strlen(not_found));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", not_found);
+fclose(f);
         }
         else {
             write(info->socket, str, str.length());
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", str);
+fclose(f);
         }
     }
     else {
@@ -1200,8 +1197,10 @@ int main() {
             return;
         }
         data[size] = '\0';
-    
-        printf("Received: %s\n", data);
+        
+FILE* f = fopen("database.log", "a");
+fprintf(f, "Recived: %s\n", data);
+fclose(f);
         
         char* p = data;
         
@@ -1219,10 +1218,16 @@ int main() {
                 
                 char *ok_message = "OK\n";
                 write(it, ok_message, strlen(ok_message));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", ok_message);
+fclose(f);
             }
             else {
                 char *not_found = "NOT FOUND\n";
                 write(it, not_found, strlen(not_found));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", not_found);
+fclose(f);
             }
         }
         else if(strncmp(info->p, "show tables", strlen("show tables")) == 0) {
@@ -1233,10 +1238,16 @@ int main() {
                 string str = show_tables(&info);
                 
                 write(it, str, strlen(str));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", str);
+fclose(f);
             }
             else {
                 char *not_found = "NOT FOUND\n";
                 write(it, not_found, strlen(not_found));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", not_found);
+fclose(f);
             }
         }
         else if(strncmp(info->p, "CREATE DATABASE", strlen("CREATE DATABASE")) == 0) {
@@ -1245,18 +1256,29 @@ int main() {
             
             string word = parse_word(&info);
             
-            gDatabases[word] = new Database(word);
+            if(gDatabases[word]?? == null) {
+                gDatabases[word] = new Database(word);
+            }
             
             char *ok_message = "OK\n";
             write(it, ok_message, strlen(ok_message));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", ok_message);
+fclose(f);
         }
         else if(strncmp(info->p, "CREATE TABLE", strlen("CREATE TABLE")) == 0) {
             if(!eval_create_table(&info)) {
+FILE* f = fopen("database.log", "a");
+fprintf(f, "FAILED\n");
+fclose(f);
                 return;
             }
             
             char *ok_message = "OK\n";
             write(it, ok_message, strlen(ok_message));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", ok_message);
+fclose(f);
         }
         else if(strncmp(info->p, "INSERT INTO", strlen("INSERT INTO")) == 0) {
             if(!eval_insert_into(&info)) {
@@ -1265,6 +1287,9 @@ int main() {
             
             char *ok_message = "OK\n";
             write(it, ok_message, strlen(ok_message));
+FILE* f = fopen("database.log", "a");
+fprintf(f, "%s\n", ok_message);
+fclose(f);
         }
         else if(strncmp(info->p, "SELECT", strlen("SELECT")) == 0) {
             if(!eval_select_from("\n", &info)) {

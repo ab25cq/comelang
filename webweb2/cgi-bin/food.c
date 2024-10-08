@@ -51,54 +51,30 @@ int main(int argc, char** argv)
             char buf[1024] = {0};
             int size = read(it, buf, 1023);
             buf[size] = '\0';
-FILE* f = fopen("UUUUU", "a");
-fprintf(f,"U\n");
-fclose(f);
             
             *it2 = true;
             return;
         }
         
-FILE* f = fopen("UUUUU", "a");
-fprintf(f,"UUUUUU\n");
-fclose(f);
-
-        list<string>*% li = new list<string>();
+        long time_ = 0L;
         client_socket(port:3336) {
-FILE* f = fopen("UUUUU", "a");
-fprintf(f,"UUUUUU OPPAI\n");
-fclose(f);
             string query = s"SELECT MAX(time) FROM food WHERE username = '\{username}'";
-f = fopen("UUUUU", "a");
-fprintf(f,"qurery %s\n", query);
-fclose(f);
             
             write(it, query, query.length());
-f = fopen("UUUUU", "w");
-fprintf(f,"UUUUUU OPPAI2\n");
-fclose(f);
             
             char buf[1024] = {0};
             int size = read(it, buf, 1023);
             buf[size] = '\0';
-f = fopen("UUUUU", "w");
-fprintf(f,"UUUUUU OPPAI2\n");
-fclose(f);
             
-            li = string(buf).scan(/\n/);
+            char* time_str = buf;
+            
+            (void)sscanf(time_str, "%ld", &time_);
             
             *it2 = true;
-f = fopen("UUUUU", "w");
-fprintf(f,"UUUUUU OPPAI2\n");
-fclose(f);
             return;
         }
         
-f = fopen("UUUUU", "w");
-fprintf(f,"li.length() %d li[0] %p\n", li.length(), li[0]??);
-fclose(f);
-        
-        if(li[0]??.chomp() === "") {
+        if(time_ == 0L) {
             long time_value = time(NULL);
             string time = xsprintf("%ld", time_value);
             
@@ -136,11 +112,6 @@ fclose(f);
         }
         else {
             long time_value = time(NULL);
-            
-            char* time_str = li[0]??;
-            
-            long time_ = 0L;
-            (void)sscanf(time_str, "%ld", &time_);
             
             if((time_value - time_) > 60*60*3) {
                 string time_str2 = xsprintf("%ld", time_value);

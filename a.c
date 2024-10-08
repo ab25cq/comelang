@@ -13,8 +13,9 @@ int main(int argc, char** argv)
     
     puts(str);
     
+    string buf2 = string("AAA");
     3.test() {
-        puts(s"HELLO \{buf}");
+        puts(s"HELLO \{buf} \{buf2}");
     }
     
     return 0;
