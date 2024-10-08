@@ -13,10 +13,19 @@ int main(int argc, char** argv)
     
     puts(str);
     
+    list<string>*% li = new list<string>();
     string buf2 = string("AAA");
     3.test() {
         puts(s"HELLO \{buf} \{buf2}");
+        buf2 = s"ABC";
+        puts(buf2);
+        
+        li = [s"ABC", s"DEF"];
     }
+    
+    puts(buf2);
+    
+    li.join("+").puts();
     
     return 0;
 }
