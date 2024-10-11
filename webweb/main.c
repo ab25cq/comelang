@@ -372,7 +372,7 @@ int main(int argc, char **argv) {
     
     while(true) {
         if(http) {
-            httpd_socket(port:80, reuse:true) {
+            httpd_socket(port:8080, reuse:true) {
                 char data[1024*2*2*2] = {0};
                 int size = read(it, data, 1024*2*2*2-1);
 printf("size %d\n", size);
