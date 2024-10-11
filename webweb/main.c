@@ -372,8 +372,20 @@ int main(int argc, char **argv) {
     
     if(http) {
         httpd_socket(port:8080, reuse:true) {
-            char data[1024] = {0};
-            read(it, data, 1023);
+            char data[1024*2*2*2] = {0};
+rewind:
+            int size = read(it, data, 1024*2*2*2);
+FILE* f = fopen("AAA", "a");
+fprintf(f, "%d\n", size);
+fclose(f);
+            if(size < 0) {
+                puts("read");
+                exit(2);
+            }
+            
+            if(size == 0) {
+                goto rewind;
+            }
             
             char* p = strstr(data, "\r\n\r\n");
             
