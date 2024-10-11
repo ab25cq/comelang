@@ -27,7 +27,7 @@ void httpd_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK
 void client_socket(int port=8080, char* address="127.0.0.1", void* parent, void (*block)(void* parent, socket_fd it, bool* break_));
 string client_socket2(int port, char* data, char* address="127.0.0.1");
 
-int httpsd_socket(int port=443, bool reuse=false, void* parent, void (*block)(void* parent, SSL* it));
+int httpsd_socket(int port=443, bool reuse=false, void* parent, void (*block)(void* parent, SSL* it, bool* break_));
 //void SSL*::write(SSL* self, char* str);
 
 void xmysql_query(char* query, char* user="user", char* password="user", bool create_user=true, bool create_database=true, char* root_password="", char* database_name="testdb", char* host_name="localhost");

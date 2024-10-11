@@ -11,12 +11,6 @@ int main(int argc, char** argv)
     var username = result[1]??;
     
     var password = result[2]??;
-    
-FILE* f = fopen("AAA", "a");
-fprintf(f, "%s\n", input);
-fprintf(f, "%p %p\n", username, password);
-fclose(f);
-    
     if(username && password) {
         (void)client_socket2(port:3336, "CREATE DATABASE testdb");
         
