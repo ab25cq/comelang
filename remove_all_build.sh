@@ -15,7 +15,7 @@ fi
 
 if [ -e webweb/Makefile ]
 then
-    (cd webweb; comelang clean)
+    (cd webweb; sh clean_build.sh)
 fi
 
 if [ -e webweb2/Makefile ]
