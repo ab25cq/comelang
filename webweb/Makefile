@@ -84,7 +84,8 @@ uninstall:
 run: webweb2
 	(cd cgi-bin && make)
 	rm -f *.log
-	./webweb2 -http
+#	./webweb2 -http
+	./webweb2 #-http
 
 compile: webweb2
 

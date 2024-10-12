@@ -240,6 +240,7 @@ int httpsd_socket(int port=443, bool reuse=false, void* parent, void (*block)(vo
         exit(EXIT_FAILURE);
     }
     
+/*
 #ifndef __ANDROID__
     if(reuse) {
         int opt = 1;
@@ -250,6 +251,7 @@ int httpsd_socket(int port=443, bool reuse=false, void* parent, void (*block)(vo
         }
     }
 #endif
+*/
 
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;

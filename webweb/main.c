@@ -356,7 +356,8 @@ void run_get_cgi_http(int it, string cgi_path, string header, string contents, s
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
     bool http = false;
     for(int i=1; i<argc; i++) {
         if(argv[i] === "-http") {
