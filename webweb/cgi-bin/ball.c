@@ -18,15 +18,22 @@ int main(int argc, char** argv)
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, user-scalable=no">
     <title>メインページ</title>
+    <style>
+        a {
+            touch-action: manipulation;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
 </head>
 <body>
 <p>ボールで遊んでます</p>
 
-<img src="images/ball.jpeg" alt="title" style="width: 30%; height: 30%;">
+<img src="/cgi-bin/images/ball.jpeg" alt="title" style="width: 30%; height: 30%;">
 
-<a href="/cgi-bin/main.cgi">戻る</a>
+<a href="/cgi-bin/main.cgi" rel="nofollow">戻る</a>
 
 
 </body>

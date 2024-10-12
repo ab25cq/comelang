@@ -18,22 +18,29 @@ int main(int argc, char** argv)
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, user-scalable=no">
     <title>メインページ</title>
+    <style>
+        a {
+            touch-action: manipulation;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
 </head>
 <body>
 <p>シバ犬物語</p>
 
 <p>ようこそ、\{username}さん。</p>
 
-<img src="images/title.jpeg" alt="title" style="width: 30%; height: 30%;">
+<img src="/cgi-bin/images/title.jpeg" alt="title" style="width: 30%; height: 30%;">
 
 <p>メニュー</p>
 
-<a href="food.cgi">エサをやる</a>
-<a href="walking.cgi">散歩に行く</a>
-<a href="ball.cgi">ボールで遊ぶ</a>
-<a href="pet.cgi">撫でる</a>
+<a href="/cgi-bin/food.cgi" rel="nofollow">エサをやる</a>
+<a href="/cgi-bin/walking.cgi" rel="nofollow">散歩に行く</a>
+<a href="/cgi-bin/ball.cgi" rel="nofollow">ボールで遊ぶ</a>
+<a href="/cgi-bin/pet.cgi" rel="nofollow">撫でる</a>
 
 
 </body>

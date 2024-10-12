@@ -499,18 +499,8 @@ printf("image_size %ld\n", image_size);
                                  "HTTP/1.1 200 OK\r\n"
                                  "Content-Type: image/jpeg\r\n"
                                  "Content-Length: %ld\r\n"
-//                                 "Cache-Control: public, max-age=86400\r\n"
                                  "Connection: keep-alive\r\n"
                                  "\r\n", image_size);
- /*
-                        snprintf(header, sizeof(header),
-                                 "HTTP/1.1 200 OK\r\n"
-                                 "Content-Type: image/jpeg\r\n"
-                                 "Content-Length: %ld\r\n"
-                                 "Connection: close\r\n"
-                                 "\r\n", image_size);
-                    
-*/
                         write(it, header, strlen(header));
                         
                         size_t bytes_read;
@@ -663,7 +653,6 @@ printf("image_size %ld\n", image_size);
                                  "HTTP/1.1 200 OK\r\n"
                                  "Content-Type: image/jpeg\r\n"
                                  "Content-Length: %ld\r\n"
-//                                 "Connection: close\r\n"
                                  "Connection: keep-alive\r\n"
                                  "\r\n", image_size);
                     
