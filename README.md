@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 2.1.0
+version 2.2.0
 
 ``` C
 #include <comelang.h>
@@ -132,7 +132,7 @@ int main()
     
     unlink("AAA");
     
-    stdin.readlines().map { return it.strip(); }.join(",").printf("[%s]\n"); // if stdin is aaa\nbbb\nccc --> [aaa,bbb,ccc]\n
+    stdin.readlines().map { it.strip() }.join(",").printf("[%s]\n"); // if stdin is aaa\nbbb\nccc --> [aaa,bbb,ccc]\n
     
     int, int, char* t1 = (1,2,"ABC");
     
@@ -189,7 +189,7 @@ int main()
     
     printf("x %d\n", x);   // x 3\n
     
-    ["1","7","3","2","9"].map { return atoi(it); }.each { // 1\n7\n3\n2\n9\n
+    ["1","7","3","2","9"].map { atoi(it) }.each { // 1\n7\n3\n2\n9\n
         printf("%d\n", it);
     }
     
@@ -326,7 +326,8 @@ sh all_build.sh
 # Histories
 
 ```
-2.1.0 [1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); ]
+2.2.0 [1,2,3].map<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map { it.to_string() }.each { puts(it); }
+2.1.0 [1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); }
 2.0.1 an embbeded string bug fiexed.
 2.0.0 Release
 ```
@@ -863,28 +864,20 @@ list<T>*% sort(list<T>* self)
 ```
 
 ```C
-list<any>*% map(list<T>* self, void* parent, any (*block)(void*, T&))
+template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
 ```
 
 ```C
-    ["1","2","3"].map { return atoi(it) }  // [1,2,3]
+    ["1","2","3"].map { atoi(it) }  // [1,2,3]
 ```
 
-Executes an expression on each element and returns a list of results. However, since this map returns any, anything that uses the heap will cause a memory leak. Please use the following map2.
+Executes an expression on each element and returns a list of results. 
 
-各要素に式を実行して、その結果のリストを返します。ただ、このmapはanyを返すのでヒープを使うものはメモリリークを起こします。次のmap2を使ってください。
+各要素に式を実行して、その結果のリストを返します。
 
 ```C
 template<R> list<R>*% map2(list<T>* self, void* parent, R (*block)(void*, T&))
 ```
-
-```C
-    [1,2,3].map2<string> { return it.to_string() } // ["1", "2", "3"]
-```
-
-no type inference.
-
-型推論はありません。
 
 ```C
 list<T>*% reverse(list<T>* self) 
@@ -2967,7 +2960,7 @@ system: No error information
 ```C
 impl list<T>
 {
-    template<R> list<R>*% map2(list<T>* self, void* parent, R (*block)(void*, T&))
+    template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
     {
         auto result = new list<R>.initialize();
 
@@ -2992,7 +2985,7 @@ int main(int argc, char** argv)
     
     li.add(1).add(2).add(3);
     
-    li.map2<string> {
+    li.map {
         return xsprintf("%d", it);
     }.each {
         puts(it);
@@ -3000,7 +2993,18 @@ int main(int argc, char** argv)
 }
 ```
 
-no type inference
+no type inference. version 2.2.0 including type inference
+
+```C
+#include <comelang.h>
+
+int main(int argc, char** argv)
+{
+    [1,2,3].map { it.to_string() }.each { puts(it); }
+    
+    return 0;
+}
+```
 
 ```C
 #include <comelang.h>
@@ -3355,8 +3359,8 @@ with -net option to comandline.
 # Omit return statment
 
 ```C
-[1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } 
-    <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); ]
+[1,2,3].map{ return it.to_string(); }.each { puts(it); } 
+    <=> [1,2,3].map { it.to_string() }.each { puts(it); ]
 ```
 
 Omitting semicolon at the function block end means return statment.

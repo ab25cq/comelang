@@ -842,13 +842,14 @@ impl list <T>
     list<T>*% sort(list<T>* self) {
         return self.merge_sort_with_lambda(int lambda(T& left, T& right) { return left.compare(right); });
     }
-    list<any>*% map(list<T>* self, void* parent, any (*block)(void*, T&))
+    template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
     {
-        auto result = new list<any>.initialize();
+        auto result = new list<R>.initialize();
 
         list_item<T>* it = self.head;
         while(it != null) {
-            result.push_back(block(parent, it.item));
+            R item = block(parent, it.item);
+            result.push_back(item);
 
             it = it.next;
         }

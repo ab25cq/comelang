@@ -1872,7 +1872,6 @@ sNode*% parse_function(sInfo* info)
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
-    
             info.funcs.insert(clone fun_name, fun);
         }
         

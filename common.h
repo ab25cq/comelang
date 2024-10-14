@@ -335,6 +335,7 @@ struct sInfo
     list<CVALUE*%>*% stack;
     
     sType*% come_function_result_type;
+    sType*% come_method_block_function_result_type;
     
     sVarTable* lv_table;
     sVarTable*% gv_table;
@@ -725,6 +726,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 /// 14struct.c
 /////////////////////////////////////////////////////////////////////
+bool is_contained_method_generics_types(sType* type, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 14;
 sNode*% parse_struct(string type_name, sInfo* info);
 string get_none_generics_name(char* class_name);

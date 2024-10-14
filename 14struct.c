@@ -229,7 +229,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
             sType*% new_type = solve_generics(type, generics_type, info);
             
             if(is_contained_method_generics_types(new_type, info)) {
-                //existance_method_generics = true;
+                existance_method_generics = true;
             }
             
             new_class.mFields.push_back((clone name, clone new_type));

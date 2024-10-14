@@ -1314,6 +1314,7 @@ struct sInfo
     struct list$1sTypeph* method_generics_types;
     struct list$1CVALUEph* stack;
     struct sType* come_function_result_type;
+    struct sType* come_method_block_function_result_type;
     struct sVarTable* lv_table;
     struct sVarTable* gv_table;
     _Bool no_comma;
@@ -4279,6 +4280,7 @@ _Bool __result124__;
                 type_199=(struct sType*)come_increment_ref_count(multiple_assign_var4->v2);
                 new_type_200=(struct sType*)come_increment_ref_count(solve_generics(type_199,generics_type,info));
                 if(is_contained_method_generics_types(new_type_200,info)) {
+                    existance_method_generics_194=(_Bool)1;
                 }
                 list$1tuple2$2charphsTypephph_push_back(new_class_193->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "14struct.c", 235, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(string_clone(name_198)),(struct sType*)come_increment_ref_count(sType_clone(new_type_200)))));
                 name_198 = come_decrement_ref_count2(name_198, (void*)0, (void*)0, 0, 0, 0, (void*)0);
