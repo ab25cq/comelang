@@ -325,9 +325,11 @@ sh all_build.sh
 
 # Histories
 
+```
 2.1.0 [1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); ]
 2.0.1 an embbeded string bug fiexed.
 2.0.0 Release
+```
 
 # Language specifications
 
