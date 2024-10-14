@@ -2677,7 +2677,6 @@ int main(int argc, char** argv)
 {
     3.times {
         printf("%d\n", it);
-        return! 1;     /// parent function is returned
     }
     
     return 0;
