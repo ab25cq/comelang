@@ -1255,6 +1255,11 @@ sNode*% expression_node(sInfo* info=info) version 1
     return (sNode*%)null;
 }
 
+sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info)
+{
+    return new sReturnNode(value, value_source, info) implements sNode;
+}
+
 sNode*% expression_node(sInfo* info=info) version 97
 {
     skip_spaces_and_lf();

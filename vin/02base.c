@@ -722,7 +722,7 @@ int Vi*::main_loop(Vi* self) version 2
         self.activeWin.input(self);
     }
 
-    0
+    return 0;
 }
 
 void Vi*::openFile(Vi* self, string file_name, int line_num, bool binary_mode=false) version 2

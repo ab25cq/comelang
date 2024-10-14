@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 2.0.1
+version 2.1.0
 
 ``` C
 #include <comelang.h>
@@ -325,6 +325,7 @@ sh all_build.sh
 
 # Histories
 
+2.1.0 [1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); ]
 2.0.1 an embbeded string bug fiexed.
 2.0.0 Release
 
@@ -3349,6 +3350,15 @@ with -gc option, enable boehm GC. All finalizer no called.
 See libcomelang-net.c and comelang-net.h
 
 with -net option to comandline.
+
+# Omit return statment
+
+```C
+[1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } 
+    <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); ]
+```
+
+Omitting semicolon at the function block end means return statment.
 
 # afterword
 

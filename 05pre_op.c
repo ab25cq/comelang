@@ -705,7 +705,7 @@ sNode*% pre_position_operator(sInfo* info=info)
         sNode*% value = expression_node();
         info.no_assign = no_assign;
         
-        return new sDerefferenceNode(value, quote, info) implements sNode
+        return new sDerefferenceNode(value, quote, info) implements sNode;
     }
     else if(*info->p == '&' && refference) {
         info->p ++;

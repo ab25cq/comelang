@@ -1299,7 +1299,7 @@ impl vector<T>
         return self.quick_sort(0, self.length()-1, compare_);
     }
     vector<T>*% sort(vector<T>* self)  {
-        return self.quick_sort(0, self.length()-1, int lambda(T& left, T& right) { return left.compare(right) });
+        return self.quick_sort(0, self.length()-1, int lambda(T& left, T& right) { return left.compare(right); });
     }
     string to_string(vector<T>* self)
     {

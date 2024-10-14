@@ -153,7 +153,7 @@ sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type,
 }
 
 
-sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_self_at_last=false)
+sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_self_at_last=false, bool in_function=false)
 {
     var result = new sBlock(info);
     
@@ -175,6 +175,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
             
             parse_sharp();
             
+            char* p = info.p;
             int sline = info.sline;
             char* sname = info.sname;
             
@@ -200,16 +201,51 @@ info->sline = node.sline();
                 skip_spaces_and_lf();
             }
             
+            
+            bool omit_semicolon = true;
+            if(node.terminated()) {
+                omit_semicolon = false;
+            }
             while(*info->p == ';') {
                 info->p++;
                 skip_spaces_and_lf();
+                
+                omit_semicolon = false;
             }
             parse_sharp();
             
             if(*info->p == '}') {
-                info->p++;
-                skip_spaces_and_lf();
-                break;
+                if(omit_semicolon && in_function) {
+                    result.mNodes.delete(-1, -1);
+                    dec_stack_ptr(1, info);
+                    
+                    info.p = p;
+                    info.sline = sline;
+                    info.sname = string(sname);
+                    
+                    char* head = info.p;
+                    sNode*% value = expression();
+                    char* tail = info.p;
+                    value = post_position_operator(value, info);
+                    
+                    char buf[tail-head+1];
+                    memcpy(buf, head, tail-head);
+                    buf[tail-head] = '\0';
+                    
+                    info->p++; // }
+                    skip_spaces_and_lf();
+                    
+                    sNode*% node = create_return_node(value, string(buf));
+                    
+                    result.mNodes.push_back(node);
+                    
+                    break;
+                }
+                else {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
+                }
             }
         }
     }
@@ -1543,7 +1579,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     info.sline = generics_fun->mGenericsSLine;
     info.sname = generics_fun->mGenericsSName;
     
-    sBlock*% block = parse_block();
+    sBlock*% block = parse_block(in_function:true);
     
     info.head = head;
     info.source = source;
@@ -1650,7 +1686,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     info.sline = generics_fun->mGenericsSLine;
     info.sname = generics_fun->mGenericsSName;
     
-    sBlock*% block = parse_block();
+    sBlock*% block = parse_block(in_function:true);
     
     info.head = head;
     info.source = source;
@@ -1820,7 +1856,7 @@ sNode*% parse_function(sInfo* info)
     }
     
     if(base_fun_name === "lambda") {
-        sBlock*% block = parse_block();
+        sBlock*% block = parse_block(in_function:true);
         
         static int lambda_num = 0;
         lambda_num++;
@@ -1946,7 +1982,7 @@ sNode*% parse_function(sInfo* info)
             add_come_code_at_come_header(info, "%s", header.to_string());
         }
         
-        sBlock*% block = parse_block(info, false, constructor_);
+        sBlock*% block = parse_block(in_function:true, info, false, constructor_);
         
         bool static_ = false;
         if(result_type->mStatic) {
