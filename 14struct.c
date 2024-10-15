@@ -151,6 +151,30 @@ bool is_no_contained_generics_types(sType* type, sInfo* info)
     return true;
 }
 
+bool is_contained_generics_types(sType* type, sInfo* info)
+{
+    sType* type2 = type->mNoSolvedGenericsType.v1;
+    
+    if(type2 && is_contained_generics_types(type2, info)) {
+        return true;
+    }
+    
+    sClass* klass = type->mClass;
+    
+    if(klass->mGenerics) {
+        return true;
+    }
+    for(int i=0; i<type->mGenericsTypes.length(); i++) {
+        bool result = is_contained_generics_types(type->mGenericsTypes[i], info);
+        
+        if(result) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 bool is_contained_method_generics_types(sType* type, sInfo* info)
 {
     sType* type2 = type->mNoSolvedGenericsType.v1;

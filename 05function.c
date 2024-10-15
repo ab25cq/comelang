@@ -1903,7 +1903,12 @@ sNode*% parse_function(sInfo* info)
         
         string fun_name3 = clone base_fun_name;
         
-        info.generics_funcs.insert(string(fun_name3), fun);
+        if(method_definition) {
+            info.generics_funcs.insert(string(fun_name), fun);
+        }
+        else {
+            info.generics_funcs.insert(string(fun_name3), fun);
+        }
         
         return (sNode*%)null;
     }

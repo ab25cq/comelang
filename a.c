@@ -1,12 +1,8 @@
+#include <comelang.h>
 
-struct sData
-{
-    int a;
-    char* b;
-};
 int main(int argc, char** argv)
 {
-    struct sData data = { .a = 123, .b = "ABC" };
+    [1,2,3].map { it.to_string() }.each { puts(it); }
     
     return 0;
 }

@@ -179,8 +179,18 @@ class sMethodCallNode extends sNodeBase
         
         info->current_stack_frame_struct = current_stack_frame_struct;
         info->come_method_block_function_result_type = clone info->function_result_type;
-
+        
+        bool contained_method_generics_method_block = false;
+        foreach(it, param_types) {
+            if(is_contained_method_generics_types(it, info)) {
+                contained_method_generics_method_block = true;
+            }
+        }
         if(is_contained_method_generics_types(result_type, info)) {
+            contained_method_generics_method_block = true;
+        }
+
+        if(contained_method_generics_method_block) {
             info.funcs.remove(method_block_name);
         }
         
@@ -228,10 +238,9 @@ class sMethodCallNode extends sNodeBase
             sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
             
             if(generics_fun) {
-                bool method_generics = is_contained_method_generics_types(generics_fun.mResultType, info);
+                bool method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
                 
                 if(method_generics && info->method_generics_types.length() == 0) {
-                    int result_method_generics = generics_fun.mResultType.mMethodGenericsNum;
                     string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
                     
                     sFun* fun = info.funcs.at(generics_fun_name, null);
@@ -241,12 +250,104 @@ class sMethodCallNode extends sNodeBase
                         if(!self.compile_method_block(method_block, come_params, fun, fun_name3, method_block_sline, info)) {
                             return false;
                         }
+                        CVALUE* method_block_node = come_params[-1]??;
                         
+                        sType*% method_block_lambda_type = clone method_block_node.type;
+                        sType*% method_block_result_type = clone info.come_method_block_function_result_type;
+                        
+                        sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
+                        sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType.v1;
+                        
+                        if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
+                            int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
+                            info.method_generics_types[method_generics_num] = clone method_block_result_type;
+                        }
+                        int n = 0;
+                        foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
+                            if(it.mClass.mMethodGenerics) {
+                                int method_generics_num = it.mMethodGenericsNum;
+                                info.method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
+                            }
+                            n++;
+                        }
+                        
+                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            
+                        int i = 0;
+                        foreach(it, params) {
+                            var label, node = it;
+                            
+                            if(i == 0) {
+                                come_params.push_back(obj_value);
+                                i++;
+                            }
+                            else {
+                                if(!node_compile(node)) {
+                                    return false;
+                                }
+                                
+                                CVALUE*% come_value = get_value_from_stack(-1, info);
+                                dec_stack_ptr(1, info);
+                                come_params.push_back(come_value);
+                            }
+                        }
+                        if(generics_fun.mResultType.mClass.mMethodGenerics) {
+                            int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
+                            
+                            if(info->function_result_type) {
+                                info.method_generics_types[method_generics_num] = clone info->function_result_type;
+                            }
+                        }
+                        n = 0;
+                        foreach(it, generics_fun.mParamTypes) {
+                            if(it.mClass.mMethodGenerics) {
+                                int method_generics_num = it.mMethodGenericsNum;
+                                if(n < come_params.length()) {
+                                    info.method_generics_types[method_generics_num] = clone come_params[n]??.type;
+                                }
+                            }
+                            n++;
+                        }
                     }
-                    
-                    sType*% result_type2 = clone info.come_method_block_function_result_type;
-                    
-                    info.method_generics_types.push_back(result_type2);
+                    else {
+                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            
+                        int i = 0;
+                        foreach(it, params) {
+                            var label, node = it;
+                            
+                            if(i == 0) {
+                                come_params.push_back(obj_value);
+                                i++;
+                            }
+                            else {
+                                if(!node_compile(node)) {
+                                    return false;
+                                }
+                                
+                                CVALUE*% come_value = get_value_from_stack(-1, info);
+                                dec_stack_ptr(1, info);
+                                come_params.push_back(come_value);
+                            }
+                        }
+                        if(generics_fun.mResultType.mClass.mMethodGenerics) {
+                            int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
+                            
+                            if(info->function_result_type) {
+                                info.method_generics_types[method_generics_num] = clone info->function_result_type;
+                            }
+                        }
+                        int n = 0;
+                        foreach(it, generics_fun.mParamTypes) {
+                            if(it.mClass.mMethodGenerics) {
+                                int method_generics_num = it.mMethodGenericsNum;
+                                if(n < come_params.length()) {
+                                    info.method_generics_types[method_generics_num] = clone come_params[n]??.type;
+                                }
+                            }
+                            n++;
+                        }
+                    }
                     
                     info.funcs.remove(generics_fun_name);
                 }
@@ -360,7 +461,17 @@ class sMethodCallNode extends sNodeBase
                 
             }
             else {
-                generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+                if(obj_type && obj_type.mNoSolvedGenericsType && obj_type.mNoSolvedGenericsType.v1 && obj_type.mNoSolvedGenericsType.v1.mGenericsTypes.length() > 0) {
+                    generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+                }
+                else if(info.method_generics_types.length() > 0) {
+                    string none_generics_name = get_none_generics_name(obj_type.mClass.mName);
+                    string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
+                    generics_fun_name = make_method_generics_function(string(fun_name3), info.method_generics_types, info).to_string();
+                }
+                else {
+                    generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+                }
                 
                 for(int i=FUN_VERSION_MAX; i>=1; i--) {
                     string new_fun_name = xsprintf("%s_v%d", generics_fun_name, i);

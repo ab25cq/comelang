@@ -609,6 +609,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
 /////////////////////////////////////////////////////////////////////
 /// 05function.c ///
 /////////////////////////////////////////////////////////////////////
+string make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info);
 sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info);
 sNode*% post_position_operator(sNode*% node, sInfo* info);
 bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sInfo* info);
@@ -729,6 +730,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /// 14struct.c
 /////////////////////////////////////////////////////////////////////
 bool is_contained_method_generics_types(sType* type, sInfo* info);
+bool is_contained_generics_types(sType* type, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 14;
 sNode*% parse_struct(string type_name, sInfo* info);
 string get_none_generics_name(char* class_name);

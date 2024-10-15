@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 2.2.2
+version 3.0.0
 
 ``` C
 #include <comelang.h>
@@ -324,6 +324,7 @@ sh all_build.sh
 # Histories
 
 ```
+3.0.0 Method generics is complete. Type infference is enabled.
 2.2.2 struct initializer.
 2.2.0 [1,2,3].map<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map { it.to_string() }.each { puts(it); }
 2.1.0 [1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); }
@@ -2964,13 +2965,13 @@ template<R> R fun(R x, R y)
 
 int main(int argc, char** argv)
 {
-    fun<int>(1,2).printf("%d\n");
+    fun(1,2).printf("%d\n");
     
     return 0;
 }
 ```
 
-no type inference. version 2.2.0 including type inference for list::map only.
+type inference is enabled.
 
 ```C
 #include <comelang.h>
@@ -2978,24 +2979,6 @@ no type inference. version 2.2.0 including type inference for list::map only.
 int main(int argc, char** argv)
 {
     [1,2,3].map { it.to_string() }.each { puts(it); }
-    
-    return 0;
-}
-```
-
-```C
-#include <comelang.h>
-
-template<R> R fun(R a, R b)
-{
-    return a + b;
-}
-
-int main(int argc, char** argv)
-{
-    int a = fun<int>(1, 2);
-    
-    printf("%d\n", a);
     
     return 0;
 }

@@ -442,8 +442,61 @@ class sFunCallNode extends sNodeBase
             info.stack.push_back(come_value);
         }
         else {
-            if(self.method_generics_types.length() > 0) {
-                fun_name = make_method_generics_function(fun_name, self.method_generics_types, info);
+            sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
+            bool method_generics = false;
+            if(generics_fun) {
+                method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
+            }
+            if(self.method_generics_types.length() > 0 || method_generics) {
+                if(self.method_generics_types.length() == 0) {
+                    list<sType*%>*% method_generics_types = new list<sType*%>();
+                    
+                    string generics_fun_name = make_method_generics_function(fun_name, method_generics_types, info);
+                    
+                    sFun* fun = info.funcs.at(generics_fun_name, null);
+                    
+                    list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+                    
+                    int i = 0;
+                    sType*% result_type = null;
+                    foreach(it, params) {
+                        var label, node = it;
+                        
+                        if(!node_compile(node)) {
+                            return false;
+                        }
+                        
+                        CVALUE*% come_value = get_value_from_stack(-1, info);
+                        dec_stack_ptr(1, info);
+                        
+                        come_params.add(come_value);
+                    }
+                    
+                    if(generics_fun.mResultType.mClass.mMethodGenerics) {
+                        int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
+            
+                        if(info->function_result_type) {
+                            method_generics_types[method_generics_num] = clone info->function_result_type;
+                        }
+                    }
+                    int n = 0;
+                    foreach(it, generics_fun.mParamTypes) {
+                        if(it.mClass.mMethodGenerics) {
+                            int method_generics_num = it.mMethodGenericsNum;
+                            if(n < come_params.length()) {
+                                method_generics_types[method_generics_num] = clone come_params[n]??.type;
+                            }
+                        }
+                        n++;
+                    }
+                    
+                    info.funcs.remove(generics_fun_name);
+                    
+                    fun_name = make_method_generics_function(fun_name, method_generics_types, info);
+                }
+                else {
+                    fun_name = make_method_generics_function(fun_name, self.method_generics_types, info);
+                }
             }
             
             if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" || fun_name === "__builtin_constant_p") 
