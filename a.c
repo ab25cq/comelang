@@ -1,13 +1,12 @@
-#include <comelang.h>
 
-template<R> R fun(R x, R y)
+struct sData
 {
-    return x + y;
-}
-
+    int a;
+    char* b;
+};
 int main(int argc, char** argv)
 {
-    fun<int>(1,2).printf("%d\n");
+    struct sData data = { .a = 123, .b = "ABC" };
     
     return 0;
 }

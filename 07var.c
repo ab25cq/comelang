@@ -233,6 +233,7 @@ class sStoreNode extends sNodeBase
             }
             
             bool array_initializer = self.right_value.kind() === "sArrayInitializer";
+            bool struct_initializer = self.right_value.kind() === "sStructInitializer";
             
             CVALUE*% right_value = get_value_from_stack(-1, info);
             sType* right_type = right_value.type;
@@ -250,7 +251,7 @@ class sStoreNode extends sNodeBase
             sType*% var_type = clone var_->mType;
             var_type->mStatic = false;
             
-            if(!array_initializer && !var_->mType->mStatic && !var_type->mConstant && var_type->mArrayNum.length() == 0) {
+            if(!array_initializer && !struct_initializer && !var_->mType->mStatic && !var_type->mConstant && var_type->mArrayNum.length() == 0) {
                 if(var_type->mNumber) {
                 }
                 else if((var_type->mStruct || var_type->mUnion || var_type->mEnum) || var_type->mPointerNum > 0) {
@@ -263,6 +264,16 @@ class sStoreNode extends sNodeBase
             sType*% left_type = clone var_->mType;
             
             if(array_initializer) {
+                sVar* var_ = info.lv_table.mVars[self.name]??;
+                add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                
+                CVALUE*% come_value = new CVALUE();
+                come_value.c_value = string("");
+                info.stack.push_back(come_value);
+                
+                transpiler_clear_last_code(info);
+            }
+            else if(struct_initializer) {
                 sVar* var_ = info.lv_table.mVars[self.name]??;
                 add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
                 
@@ -796,6 +807,133 @@ sNode*% parse_array_initializer(sInfo* info=info)
     return new sArrayInitializer(initializer, info) implements sNode;
 }
 
+class sStructInitializer extends sNodeBase
+{
+    new(list<tuple2<string, sNode*%>*%>*% initializer, sInfo* info)
+    {
+        self.super();
+       
+        list<tuple2<string, sNode*%>*%>*% self.initializer = clone initializer;
+    }
+    
+    string kind()
+    {
+        return string("sStructInitializer");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        var initializer = self.initializer;
+        
+        var buf = new buffer();
+        buf.append_str("{");
+        int i = 0;
+        foreach(it, initializer) {
+            var name, value = it;
+            
+            if(!node_compile(value)) {
+                return false;
+            }
+            CVALUE*% come_value2 = get_value_from_stack(-1, info);
+            dec_stack_ptr(1, info);
+            
+            if(name) {
+                buf.append_str(xsprintf(".%s = %s", name, come_value2.c_value));
+            }
+            else {
+                buf.append_str(xsprintf("%s", come_value2.c_value));
+            }
+            
+            i++;
+            
+            if(i != initializer.length()) {
+                buf.append_str(",");
+            }
+        }
+        buf.append_str("}");
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = buf.to_string();
+        come_value.type = new sType("void*");
+        come_value.var = null;
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
+sNode*% parse_struct_initializer(sInfo* info=info)
+{
+    expected_next_character('{');
+    
+    list<tuple2<string,sNode*%>*%>*% initializer = new list<tuple2<string,sNode*%>*%>();
+    
+    if(*info->p == '.') {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        string name = parse_word();
+        
+        expected_next_character('=');
+        
+        bool no_comma = info->no_comma;
+        info->no_comma = true;
+        sNode*% exp = expression();
+        info->no_comma = no_comma;
+        
+        initializer.add((name, exp));
+    }
+    else {
+        bool no_comma = info->no_comma;
+        info->no_comma = true;
+        sNode*% exp = expression();
+        info->no_comma = no_comma;
+        
+        initializer.add((null, exp));
+    }
+    
+    while(*info->p == ',') {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        parse_sharp();
+        
+        if(*info->p == '}') {
+            break;
+        }
+        
+        if(*info->p == '.') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            string name = parse_word();
+            
+            expected_next_character('=');
+            
+            bool no_comma = info->no_comma;
+            info->no_comma = true;
+            sNode*% exp = expression();
+            info->no_comma = no_comma;
+            
+            initializer.add((name, exp));
+        }
+        else {
+            bool no_comma = info->no_comma;
+            info->no_comma = true;
+            sNode*% exp = expression();
+            info->no_comma = no_comma;
+            
+            initializer.add((null,exp));
+        }
+    }
+    
+    expected_next_character('}');
+    
+    return new sStructInitializer(initializer, info) implements sNode;
+}
+
 void add_variable_to_table(char* name, sType*% type, sInfo* info)
 {
     sVar*% self = new sVar;
@@ -1009,14 +1147,26 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             info->p++;
             skip_spaces_and_lf();
             
-            info->array_initializer = true;
-            bool no_comma = info->no_comma;
-            info->no_comma = true;
-            sNode*% exp = expression();
-            info->no_comma = no_comma;
-            info->array_initializer = false;
-            
-            multiple_declare.push_back((type2, var_name, exp));
+            if(type2->mClass->mStruct && type2->mArrayNum.length() == 0) {
+                info->struct_initializer = true;
+                bool no_comma = info->no_comma;
+                info->no_comma = true;
+                sNode*% exp = expression();
+                info->no_comma = no_comma;
+                info->struct_initializer = false;
+                
+                multiple_declare.push_back((type2, var_name, exp));
+            }
+            else {
+                info->array_initializer = true;
+                bool no_comma = info->no_comma;
+                info->no_comma = true;
+                sNode*% exp = expression();
+                info->no_comma = no_comma;
+                info->array_initializer = false;
+                
+                multiple_declare.push_back((type2, var_name, exp));
+            }
         }
         else {
             multiple_declare.push_back((type2, var_name, null));
@@ -1034,16 +1184,28 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 info->p++;
                 skip_spaces_and_lf();
                 
-                bool no_comma = info->no_comma;
-                info->no_comma = true;
-                info->array_initializer = true;
-                
-                sNode*% exp = expression();
-                
-                info->no_comma = no_comma;
-                info->array_initializer = false;
-                
-                multiple_declare.push_back((type2, var_name, exp));
+                if(type2->mClass->mStruct && type2->mArrayNum.length() == 0) {
+                    info->struct_initializer = true;
+                    bool no_comma = info->no_comma;
+                    info->no_comma = true;
+                    sNode*% exp = expression();
+                    info->no_comma = no_comma;
+                    info->struct_initializer = false;
+                    
+                    multiple_declare.push_back((type2, var_name, exp));
+                }
+                else {
+                    bool no_comma = info->no_comma;
+                    info->no_comma = true;
+                    info->array_initializer = true;
+                    
+                    sNode*% exp = expression();
+                    
+                    info->no_comma = no_comma;
+                    info->array_initializer = false;
+                    
+                    multiple_declare.push_back((type2, var_name, exp));
+                }
             }
             else {
                 multiple_declare.push_back((type2, var_name, null));
@@ -1156,11 +1318,22 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 
                 parse_sharp();
                 
-                info.array_initializer = true;
-                parse_sharp();
-                sNode*% right_value = expression();
-                parse_sharp();
-                info.array_initializer = false;
+                sNode*% right_value = null;
+                if(type->mClass->mStruct && type->mArrayNum.length() == 0) {
+                    info->struct_initializer = true;
+                    bool no_comma = info->no_comma;
+                    info->no_comma = true;
+                    right_value = expression();
+                    info->no_comma = no_comma;
+                    info->struct_initializer = false;
+                }
+                else {
+                    info.array_initializer = true;
+                    parse_sharp();
+                    right_value = expression();
+                    parse_sharp();
+                    info.array_initializer = false;
+                }
                 
                 right_value = post_position_operator(right_value, info);
                 

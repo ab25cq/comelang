@@ -643,6 +643,9 @@ sNode*% pre_position_operator(sInfo* info=info)
         if(info.array_initializer) {
             return parse_array_initializer();
         }
+        else if(info.struct_initializer) {
+            return parse_struct_initializer();
+        }
         else {
             return parse_normal_block();
         }
