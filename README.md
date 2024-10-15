@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 2.2.0
+version 2.2.1
 
 ``` C
 #include <comelang.h>
@@ -189,9 +189,7 @@ int main()
     
     printf("x %d\n", x);   // x 3\n
     
-    ["1","7","3","2","9"].map { atoi(it) }.each { // 1\n7\n3\n2\n9\n
-        printf("%d\n", it);
-    }
+    ["1","7","3","2","9"].map { atoi(it) }.each { printf("%d\n", it); } // 1\n7\n3\n2\n9\n
     
     int zzz = 123;
     puts(s"zzz == \{zzz}");    // zzz == 123
@@ -871,9 +869,9 @@ template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
     ["1","2","3"].map { atoi(it) }  // [1,2,3]
 ```
 
-Executes an expression on each element and returns a list of results. 
+Executes an expression on each element and returns a list of results. Type infference only list::map
 
-各要素に式を実行して、その結果のリストを返します。
+各要素に式を実行して、その結果のリストを返します。templateはmapだけ型推論します。
 
 ```C
 template<R> list<R>*% map2(list<T>* self, void* parent, R (*block)(void*, T&))
@@ -2958,42 +2956,20 @@ system: No error information
 # Method Generics
 
 ```C
-impl list<T>
+template<R> R fun(R x, R y)
 {
-    template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
-    {
-        auto result = new list<R>.initialize();
-
-        list_item<T>* it = self.head;
-        while(it != null) {
-            result.push_back(block(parent, it.item));
-            
-            if(((sDummyCurrentStack*)parent)->__method_block_result_kind__ != 0) {
-                return result;
-            }
-
-            it = it.next;
-        }
-
-        return result;
-    }
+    return x + y;
 }
 
 int main(int argc, char** argv)
 {
-    list<int>*% li = new list<int>();
+    fun<int>(1,2).printf("%d\n");
     
-    li.add(1).add(2).add(3);
-    
-    li.map {
-        return xsprintf("%d", it);
-    }.each {
-        puts(it);
-    }
+    return 0;
 }
 ```
 
-no type inference. version 2.2.0 including type inference
+no type inference. version 2.2.0 including type inference for list::map only.
 
 ```C
 #include <comelang.h>
