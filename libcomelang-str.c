@@ -10,7 +10,6 @@ using C
 #include <gc.h>
 #endif
 }
-#endif
 
 
 void come_regex_finalizer(void *obj, void *client_data) 
@@ -20,6 +19,7 @@ void come_regex_finalizer(void *obj, void *client_data)
         free(reg.re);
     }
 }
+#endif
 
 record come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
 {
@@ -107,6 +107,9 @@ come_regex*% come_regex*::clone(come_regex* reg)
         stackframe();
         exit(1);
     }
+#ifdef ENABLE_GC
+    GC_REGISTER_FINALIZER(result, come_regex_finalizer, NULL, NULL, NULL);
+#endif
 
     return result;
 }

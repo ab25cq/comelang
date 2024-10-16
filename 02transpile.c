@@ -332,7 +332,12 @@ static bool linker(sInfo* info, list<string>* object_files)
     command.append_str(xsprintf(" %s ", info.clang_option));
     
     if(gComeStr) {
-        command.append_str(" -lcomelang-str -lpcre ");
+        if(gComeGC) {
+            command.append_str(" -lcomelang-str-gc -lpcre ");
+        }
+        else {
+            command.append_str(" -lcomelang-str -lpcre ");
+        }
     }
     if(gComeGC) {
         command.append_str(" -lcomelang-gc -lgc ");
@@ -346,13 +351,28 @@ static bool linker(sInfo* info, list<string>* object_files)
         int rc2 = system(cmd2);
         int rc3 = system(cmd3);
         if(rc3 == 0) {
-            command.append_str(" -lcomelang-net -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
+            if(gComeGC) {
+                command.append_str(" -lcomelang-net-gc -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
+            }
+            else {
+                command.append_str(" -lcomelang-net -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
+            }
         }
         else if(rc == 0 || rc2 == 0) {
-            command.append_str(" -lcomelang-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
+            if(gComeGC) {
+                command.append_str(" -lcomelang-net-gc -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
+            }
+            else {
+                command.append_str(" -lcomelang-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
+            }
         }
         else {
-            command.append_str(" -lcomelang-net -lssl `mysql_config --cflags --libs`");
+            if(gComeGC) {
+                command.append_str(" -lcomelang-net-gc -lssl `mysql_config --cflags --libs`");
+            }
+            else {
+                command.append_str(" -lcomelang-net -lssl `mysql_config --cflags --libs`");
+            }
         }
     }
     

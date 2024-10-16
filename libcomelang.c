@@ -281,6 +281,9 @@ void come_heap_final()
     }
     
     if(gComeGCLib) {
+#ifdef ENABLE_GC
+        GC_gcollect();
+#endif
     }
     else if(gComeDebugLib) {
         sMemHeader* it = gAllocMem;

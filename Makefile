@@ -123,7 +123,7 @@ libcomelang-gc.a: libcomelang-gc.c
 	ar rcs libcomelang-gc.a libcomelang-gc.c.o
 
 libcomelang-str-gc.a: libcomelang-str-gc.c
-	comelang -str -g -S -c libcomelang-str-gc.c -DENABLE_GC $(CFLAGS) 
+	comelang -str -gc -g -S -c libcomelang-str-gc.c -DENABLE_GC $(CFLAGS) 
 	ar rcs libcomelang-str-gc.a libcomelang-str-gc.c.o
 
 libcomelang-net-gc.a: libcomelang-net-gc.c
