@@ -450,10 +450,42 @@ class sFunCallNode extends sNodeBase
             if(self.method_generics_types.length() > 0 || method_generics) {
                 if(self.method_generics_types.length() == 0) {
                     list<sType*%>*% method_generics_types = new list<sType*%>();
-                    
                     string generics_fun_name = make_method_generics_function(fun_name, method_generics_types, info);
                     
                     sFun* fun = info.funcs.at(generics_fun_name, null);
+                    
+                    if(method_block) {
+                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+                        
+                        sFun* fun = info.funcs.at(generics_fun_name, null);
+                        
+                        bool no_output_come_code = info->no_output_come_code;
+                        info->no_output_come_code = true;
+                        if(!compile_method_block(method_block, come_params, fun, fun_name, method_block_sline, info, true)) {
+                            return false;
+                        }
+                        info->no_output_come_code = no_output_come_code;
+                        CVALUE* method_block_node = come_params[-1]??;
+                        
+                        sType*% method_block_lambda_type = clone method_block_node.type;
+                        sType*% method_block_result_type = clone info.come_method_block_function_result_type;
+                        
+                        sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
+                        sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType.v1;
+                        
+                        if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
+                            int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
+                            method_generics_types[method_generics_num] = clone method_block_result_type;
+                        }
+                        int n = 0;
+                        foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
+                            if(it.mClass.mMethodGenerics) {
+                                int method_generics_num = it.mMethodGenericsNum;
+                                method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
+                            }
+                            n++;
+                        }
+                    }
                     
                     list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                     

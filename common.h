@@ -469,10 +469,8 @@ module sCurrentNodeModule
         
         info.classes.insert(class_name, current_stack);
         
-        static int num_current_stack = 0;
-        num_current_stack++;
-        add_come_code_at_function_head(info, "struct %s __current_stack%d__;\n", class_name, num_current_stack);
-        add_come_code_at_function_head2(info, "memset(&__current_stack%d__, 0, sizeof(struct %s));\n", num_current_stack, class_name);
+        add_come_code_at_function_head(info, "struct %s __current_stack%d__;\n", class_name, info->current_stack_num);
+        add_come_code_at_function_head2(info, "memset(&__current_stack%d__, 0, sizeof(struct %s));\n", info->current_stack_num, class_name);
         
         vtable = info->lv_table;
         
@@ -500,10 +498,10 @@ module sCurrentNodeModule
                     }
                     else {
                         if(type2->mClass->mName === "lambda") {
-                            add_come_code(info, "__current_stack%d__.%s = %s;\n", num_current_stack, value.mCValueName, value.mCValueName);
+                            add_come_code(info, "__current_stack%d__.%s = %s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
                         }
                         else {
-                            add_come_code(info, "__current_stack%d__.%s = &%s;\n", num_current_stack, value.mCValueName, value.mCValueName);
+                            add_come_code(info, "__current_stack%d__.%s = &%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
                         }
                     }
                 }
@@ -514,15 +512,13 @@ module sCurrentNodeModule
         
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("&__current_stack%d__", num_current_stack);
+        come_value.c_value = xsprintf("&__current_stack%d__", info->current_stack_num);
         come_value.type = new sType(class_name);
         come_value.var = null;
         
         add_come_last_code(info, "%s;\n", come_value.c_value);
         
         info.stack.push_back(come_value);
-        
-        info.num_current_stack = num_current_stack;
         
         return true;
     }
@@ -775,6 +771,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 19;
 /////////////////////////////////////////////////////////////////////
 /// 20method.c
 /////////////////////////////////////////////////////////////////////
+bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sFun* fun, char* fun_name, int method_block_sline, sInfo* info, bool no_create_current_stack=false) ;
 string make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true);
  sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20;
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 20;

@@ -232,6 +232,21 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         }
     }
     
+    int i = 0;
+    foreach(it, type->mGenericsTypes) {
+        result->mGenericsTypes[i] = solve_method_generics(it, info);
+        i++;
+    }
+    i = 0;
+    foreach(it, type->mParamTypes) {
+        result->mParamTypes[i] = solve_method_generics(it, info);
+        i++;
+    }
+    
+    if(type->mResultType) {
+        result->mResultType.v1 = solve_method_generics(type->mResultType.v1, info);
+    }
+    
     return result;
 }
 
