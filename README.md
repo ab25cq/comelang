@@ -256,7 +256,9 @@ int main()
 
 14. class and inheritance system supported.
 
-15. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
+15. Type inferrence of template.
+
+16. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
 
 1. C言語と互換性があります。Cプリプロセッサーも動きます。
 
@@ -286,7 +288,9 @@ int main()
 
 14. クラスと継承システムをサポートします。
 
-15. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
+15. テンプレートの型推論があります。
+
+16. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
 
 # インストール
 
