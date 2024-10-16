@@ -1,7 +1,27 @@
 #include "comelang.h"
 #include "comelang-str.h"
 
-come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
+#ifdef ENABLE_GC
+using C
+{
+#ifdef __MAC__
+#include <gc/gc.h>
+#else
+#include <gc.h>
+#endif
+}
+#endif
+
+
+void come_regex_finalizer(void *obj, void *client_data) 
+{
+    come_regex* reg = obj;
+    if(reg && reg.re) {
+        free(reg.re);
+    }
+}
+
+record come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
 {
     const char* err;
     int erro_ofs;
@@ -27,6 +47,10 @@ come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_c
         stackframe();
         exit(1);
     }
+    
+#ifdef ENABLE_GC
+    GC_REGISTER_FINALIZER(self, come_regex_finalizer, NULL, NULL, NULL);
+#endif
 
     return self;
 }

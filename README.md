@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 3.0.1
+version 3.0.3
 
 ``` C
 #include <comelang.h>
@@ -328,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+3.0.3 -gc and regex bug fixed.
 3.0.1 Method generics is complete. Type infference is maybe perfect.
 3.0.0 Method generics is complete. Type infference is enabled.
 2.2.2 struct initializer.
