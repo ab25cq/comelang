@@ -282,7 +282,7 @@ void come_heap_final()
     
     if(gComeGCLib) {
 #ifdef ENABLE_GC
-        GC_gcollect();
+        //GC_gcollect();
 #endif
     }
     else if(gComeDebugLib) {
