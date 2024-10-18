@@ -521,6 +521,59 @@ sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info)
     return new sMultipleNode(multiple_node, info) implements sNode;
 }
 
+sNode*% create_throw(sNode*% expression_node, sInfo* info)
+{
+    string sname = clone info->sname;
+    int sline = info->sline;
+    
+    parse_sharp();
+    
+    static int var_num = 0;
+    var_num++;
+    
+    var multiple_assign = [s"come_exception_var_\{var_num}", s"come_exception_var2_\{var_num}" ];
+    
+    sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
+                                        , null@type, true@alloc, expression_node, info);
+    
+    buffer*% source = info.source;
+    char* p = info.p;
+    char* head = info.head;
+    
+    var buf = new buffer();
+    
+    buf.append_str(xsprintf("{ return none((void*)0); }"));
+    
+    info.source = buf;
+    info.p = info.source.buf;
+    info.head = info.source.buf;
+    info.sline = sline;
+    
+    sBlock*% if_block = parse_block();
+    
+    info.source = source;
+    info.p = p;
+    info.head = head;
+    info.sline = sline;
+    
+    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
+    int elif_num = 0;
+
+    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
+
+    sBlock*% else_block = null;
+    
+    sNode*% expression_node2 = create_load_var(s"come_exception_var2_\{var_num}");
+    sNode*% expression_node3 = craete_logical_denial(expression_node2, info);
+
+    sNode*% if_node = new sIfNode(expression_node3, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
+    sNode*% load_var = create_load_var(s"come_exception_var_\{var_num}");
+    
+    list<sNode*%>*% multiple_node = [get_return_value, if_node, load_var];
+    
+    return new sMultipleNode(multiple_node, info) implements sNode;
+}
+
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8
 {
     if(buf === "if") {

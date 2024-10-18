@@ -79,6 +79,7 @@ struct sType
     
     tuple1<sType*%>*% mNoSolvedGenericsType;
     tuple1<sType*%>*% mOriginalLoadVarType;
+    tuple1<sType*%>*% mNoExceptionType;
     
     string mGenericsName;
 
@@ -668,6 +669,7 @@ string create_method_name_using_class(sClass* obj_class, bool no_pointer_name, c
 /////////////////////////////////////////////////////////////////////
 /// 06str.c ///
 /////////////////////////////////////////////////////////////////////
+sNode*% create_some(sNode*% exp, sInfo* info);
 sNode*% expression_node(sInfo* info=info) version 96;
 sNode*% parse_tuple(sInfo* info);
 sNode*% parse_some(sInfo* info);
@@ -690,6 +692,7 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 /////////////////////////////////////////////////////////////////////
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
+sNode*% create_throw(sNode*% expression_node, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;
 sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info);

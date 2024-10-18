@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 3.5.0
+version 3.5.1
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+3.5.1 More improvement of exception
 3.5.0 Exception
 3.0.4 -gc and regex bug fixed.
 3.0.3 -gc and regex bug fixed.
@@ -3344,26 +3345,69 @@ Omitting semicolon at the function block end means return statment.
 
 exception int fun()
 {
-    return none(1);
+    return 1;
+}
+
+exception int fun2()
+{
+    return fun().throw;
 }
 
 int main(int argc, char** argv)
 {
-    int a = 1;
-    int x = fun().rescue {
-        printf("a %d\n", a);
-        puts("AAA");
-        return 2;
+    int x = fun2().rescue {
+        puts("ERR");
+        return 0;
     }
+    
+    puts("OK");
+    printf("x %d\n", x);
     
     return 0;
 }
 ```
 
-some() is ok value, none() is exception value, resucue is runned if it ocurrs exception.
-Maybe this will be changed this.
+```
+OK
+x 1
+```
 
+```C
+#include <comelang.h>
 
+exception int fun()
+{
+    return none(1);
+}
+
+exception int fun2()
+{
+    return fun().throw;
+}
+
+int main(int argc, char** argv)
+{
+    int x = fun2().rescue {
+        puts("ERR");
+        return 0;
+    }
+    
+    puts("OK");
+    printf("x %d\n", x);
+    
+    return 0;
+}
+```
+
+```
+ERR
+```
+
+none() is exception value, resucue is runned if it ocurrs exception.
+
+throw is return none value for caller.
+
+if not none() value, rescue is not runned.
 
 # afterword
 

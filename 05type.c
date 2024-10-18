@@ -2423,6 +2423,9 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         
         sType*% type4 = solve_generics(type2,  type3, info);
         
+        type4->mException = true;
+        type4->mNoExceptionType.v1 = clone type;
+        
         return (type4, var_name, true);
     }
     

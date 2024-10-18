@@ -567,6 +567,280 @@ class sTupleNode extends sNodeBase
     }
 };
 
+class sSomeNode extends sNodeBase
+{
+    new(list<sNode*%>*% tuple_elements, sInfo* info)
+    {
+        self.super();
+        
+        list<sNode*%>*% self.tuple_elements = tuple_elements;
+    }
+    
+    string kind()
+    {
+        return string("sSomeNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        list<sNode*%>* tuple_elements = self.tuple_elements;
+        list<sType*%>*% tuple_types = new list<sType*%>();
+        list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
+        
+        foreach(it, tuple_elements) {
+            if(!node_compile(it)) {
+                return false;
+            }
+            
+            CVALUE*% come_value = get_value_from_stack(-1, info);
+            dec_stack_ptr(1, info);
+            
+            tuple_values.push_back(clone come_value);
+            tuple_types.push_back(clone come_value.type);
+        }
+        
+        sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
+        
+        foreach(it, tuple_types) {
+            type->mGenericsTypes.push_back(clone it);
+        }
+        
+        CVALUE*% obj_value = new CVALUE();
+        
+        buffer*% num_string = new buffer();
+        
+        num_string.append_str("1");
+        
+        sType*% type2 = solve_generics(type, type, info);
+        
+        string type_name = make_type_name_string(type2, array_cast_pointer:true);
+        
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        
+        sType*% type3 = clone type2;
+        type3->mPointerNum++;
+        type3->mHeap = true;
+        type2->mHeap = true;
+        obj_value.type = clone type2;
+        obj_value.type->mPointerNum ++;
+        obj_value.var = null;
+        
+        append_object_to_right_values2(obj_value, type3 ,info);
+        
+        sType*% obj_type = clone type2;
+        char* fun_name = "initialize";
+        
+        string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+        
+        sFun* fun = info.funcs.at(generics_fun_name, null);
+        
+        if(fun == null) {
+            generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
+            
+            fun = info.funcs.at(generics_fun_name, null);
+            
+            if(fun == null) {
+                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName);
+                return true;
+            }
+        }
+            
+        sType*% result_type = clone fun->mResultType;
+        result_type->mStatic = false;
+            
+        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+        
+        if(fun.mParamTypes[0].mHeap && obj_value.type.mHeap) {
+            std_move(fun.mParamTypes[0], obj_value.type, obj_value, no_delete_from_right_value_objects:true);
+        }
+        come_params.push_back(obj_value);
+    
+        int i = 1;
+        foreach(it, tuple_values) {
+            CVALUE*% come_value = clone it;
+            
+            if(fun.mParamTypes[i] && fun.mParamTypes[i].mHeap && come_value.type.mHeap) {
+                std_move(fun.mParamTypes[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
+            }
+            come_params.push_back(come_value);
+            
+            i++;
+        }
+        
+        buffer*% buf = new buffer();
+        
+        buf.append_str(generics_fun_name);
+        buf.append_str("(");
+        
+        int j = 0;
+        foreach(it, come_params) {
+            buf.append_str(it.c_value);
+            
+            if(j != come_params.length()-1) {
+                buf.append_str(",");
+            }
+            
+            j++;
+        }
+        buf.append_str(")");
+        
+        CVALUE*% come_value2 = new CVALUE();
+        
+        come_value2.c_value = buf.to_string();
+        
+        come_value2.type = clone result_type;
+        come_value2.type->mStatic = false;
+        come_value2.var = null;
+        
+        if(result_type->mHeap) {
+            append_object_to_right_values2(come_value2, result_type, info);
+        }
+        
+        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        
+        info.stack.push_back(come_value2);
+        
+        return true;
+    }
+};
+
+class sNoneNode extends sNodeBase
+{
+    new(list<sNode*%>*% tuple_elements, sInfo* info)
+    {
+        self.super();
+        
+        list<sNode*%>*% self.tuple_elements = tuple_elements;
+    }
+    
+    string kind()
+    {
+        return string("sNoneNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        list<sNode*%>* tuple_elements = self.tuple_elements;
+        list<sType*%>*% tuple_types = new list<sType*%>();
+        list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
+        
+        foreach(it, tuple_elements) {
+            if(!node_compile(it)) {
+                return false;
+            }
+            
+            CVALUE*% come_value = get_value_from_stack(-1, info);
+            dec_stack_ptr(1, info);
+            
+            tuple_values.push_back(clone come_value);
+            tuple_types.push_back(clone come_value.type);
+        }
+        
+        sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
+        
+        foreach(it, tuple_types) {
+            type->mGenericsTypes.push_back(clone it);
+        }
+        
+        CVALUE*% obj_value = new CVALUE();
+        
+        buffer*% num_string = new buffer();
+        
+        num_string.append_str("1");
+        
+        sType*% type2 = solve_generics(type, type, info);
+        
+        string type_name = make_type_name_string(type2, array_cast_pointer:true);
+        
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        
+        sType*% type3 = clone type2;
+        type3->mPointerNum++;
+        type3->mHeap = true;
+        type2->mHeap = true;
+        obj_value.type = clone type2;
+        obj_value.type->mPointerNum ++;
+        obj_value.var = null;
+        
+        append_object_to_right_values2(obj_value, type3 ,info);
+        
+        sType*% obj_type = clone type2;
+        char* fun_name = "initialize";
+        
+        string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+        
+        sFun* fun = info.funcs.at(generics_fun_name, null);
+        
+        if(fun == null) {
+            generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
+            
+            fun = info.funcs.at(generics_fun_name, null);
+            
+            if(fun == null) {
+                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName);
+                return true;
+            }
+        }
+            
+        sType*% result_type = clone fun->mResultType;
+        result_type->mStatic = false;
+            
+        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+        
+        if(fun.mParamTypes[0].mHeap && obj_value.type.mHeap) {
+            std_move(fun.mParamTypes[0], obj_value.type, obj_value, no_delete_from_right_value_objects:true);
+        }
+        come_params.push_back(obj_value);
+    
+        int i = 1;
+        foreach(it, tuple_values) {
+            CVALUE*% come_value = clone it;
+            
+            if(fun.mParamTypes[i] && fun.mParamTypes[i].mHeap && come_value.type.mHeap) {
+                std_move(fun.mParamTypes[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
+            }
+            come_params.push_back(come_value);
+            
+            i++;
+        }
+        
+        buffer*% buf = new buffer();
+        
+        buf.append_str(generics_fun_name);
+        buf.append_str("(");
+        
+        int j = 0;
+        foreach(it, come_params) {
+            buf.append_str(it.c_value);
+            
+            if(j != come_params.length()-1) {
+                buf.append_str(",");
+            }
+            
+            j++;
+        }
+        buf.append_str(")");
+        
+        CVALUE*% come_value2 = new CVALUE();
+        
+        come_value2.c_value = buf.to_string();
+        
+        come_value2.type = clone result_type;
+        come_value2.type->mStatic = false;
+        come_value2.var = null;
+        
+        if(result_type->mHeap) {
+            append_object_to_right_values2(come_value2, result_type, info);
+        }
+        
+        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        
+        info.stack.push_back(come_value2);
+        
+        return true;
+    }
+};
+
 class sMapNode extends sNodeBase
 {
     new(list<sNode*%>*% map_key_elements, list<sNode*%>*% map_elements, sInfo* info)
@@ -1802,6 +2076,21 @@ sNode*% parse_tuple(sInfo* info)
     return new sTupleNode(tuple_elements, info) implements sNode;
 }
 
+sNode*% create_some(sNode*% exp, sInfo* info)
+{
+    list<sNode*%>*% tuple_elements = new list<sNode*%>();
+    
+    sNode*% node = exp
+    
+    tuple_elements.push_back(node);
+    
+    sNode*% node2 = create_true_object(info);
+    
+    tuple_elements.push_back(node2);
+    
+    return new sSomeNode(tuple_elements, info) implements sNode;
+}
+
 sNode*% parse_some(sInfo* info)
 {
     list<sNode*%>*% tuple_elements = new list<sNode*%>();
@@ -1817,7 +2106,7 @@ sNode*% parse_some(sInfo* info)
     
     tuple_elements.push_back(node2);
     
-    return new sTupleNode(tuple_elements, info) implements sNode;
+    return new sSomeNode(tuple_elements, info) implements sNode;
 }
 
 sNode*% parse_none(sInfo* info)
@@ -1835,5 +2124,5 @@ sNode*% parse_none(sInfo* info)
     
     tuple_elements.push_back(node2);
     
-    return new sTupleNode(tuple_elements, info) implements sNode;
+    return new sNoneNode(tuple_elements, info) implements sNode;
 }
