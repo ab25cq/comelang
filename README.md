@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 3.0.4
+version 3.5.0
 
 ``` C
 #include <comelang.h>
@@ -258,7 +258,9 @@ int main()
 
 15. Type inferrence of template.
 
-16. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
+16. Exception 
+
+17. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
 
 1. C言語と互換性があります。Cプリプロセッサーも動きます。
 
@@ -289,6 +291,8 @@ int main()
 14. クラスと継承システムをサポートします。
 
 15. テンプレートの型推論があります。
+
+16. exception
 
 16. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
 
@@ -328,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+3.5.0 Exception
 3.0.4 -gc and regex bug fixed.
 3.0.3 -gc and regex bug fixed.
 3.0.1 Method generics is complete. Type infference is maybe perfect.
@@ -3331,6 +3336,34 @@ with -net option to comandline.
 ```
 
 Omitting semicolon at the function block end means return statment.
+
+# Exception
+
+```C
+#include <comelang.h>
+
+exception int fun()
+{
+    return none(1);
+}
+
+int main(int argc, char** argv)
+{
+    int a = 1;
+    int x = fun().rescue {
+        printf("a %d\n", a);
+        puts("AAA");
+        return 2;
+    }
+    
+    return 0;
+}
+```
+
+some() is ok value, none() is exception value, resucue is runned if it ocurrs exception.
+Maybe this will be changed this.
+
+
 
 # afterword
 
