@@ -533,6 +533,11 @@ class sStoreNode extends sNodeBase
     }
 };
 
+sNode*% store_var(string name, list<string>*% multiple_assign, list<tuple3<sType*%, string, sNode*%>*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info)
+{
+    return new sStoreNode(name, multiple_assign, multiple_declare, type, alloc, right_value, info) implements sNode;
+}
+
 class sLoadNode extends sNodeBase
 {
     new(string name, sInfo* info)
@@ -627,6 +632,11 @@ class sLoadNode extends sNodeBase
         return true;
     }
 };
+
+sNode*% create_load_var(char* var_name, sInfo* info=info)
+{
+    return new sLoadNode(string(var_name), info) implements sNode;
+}
 
 class sFunLoadNode extends sNodeBase
 {

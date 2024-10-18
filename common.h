@@ -670,14 +670,17 @@ string create_method_name_using_class(sClass* obj_class, bool no_pointer_name, c
 /////////////////////////////////////////////////////////////////////
 sNode*% expression_node(sInfo* info=info) version 96;
 sNode*% parse_tuple(sInfo* info);
+sNode*% parse_some(sInfo* info);
+sNode*% parse_none(sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 07var.c
 /////////////////////////////////////////////////////////////////////
+sNode*% store_var(string name, list<string>*% multiple_assign, list<tuple3<sType*%, string, sNode*%>*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info);
+sNode*% create_load_var(char* var_name, sInfo* info=info);
 sNode*% parse_array_initializer(sInfo* info=info);
 sNode*% parse_struct_initializer(sInfo* info=info);
 sNode*% parse_global_variable(sInfo* info);
-sNode*% store_var(string name, list<string>*% multiple_assign, sType*% type, bool alloc, sNode*% right_node, sInfo* info);
 sNode*% load_var(string name, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 7;
 void add_variable_to_table(char* name, sType*% type, sInfo* info);
@@ -692,6 +695,7 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_or_statment(sNode*% expression_node, sInfo* info);
 sNode*% parse_and_statment(sNode*% expression_node, sInfo* info);
+sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 09while.c

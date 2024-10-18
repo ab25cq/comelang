@@ -1801,3 +1801,39 @@ sNode*% parse_tuple(sInfo* info)
     
     return new sTupleNode(tuple_elements, info) implements sNode;
 }
+
+sNode*% parse_some(sInfo* info)
+{
+    list<sNode*%>*% tuple_elements = new list<sNode*%>();
+    
+    expected_next_character('(');
+    sNode*% node = expression();
+    node = post_position_operator(node, info);
+    expected_next_character(')');
+    
+    tuple_elements.push_back(node);
+    
+    sNode*% node2 = create_true_object(info);
+    
+    tuple_elements.push_back(node2);
+    
+    return new sTupleNode(tuple_elements, info) implements sNode;
+}
+
+sNode*% parse_none(sInfo* info)
+{
+    list<sNode*%>*% tuple_elements = new list<sNode*%>();
+    
+    expected_next_character('(');
+    sNode*% node = expression();
+    node = post_position_operator(node, info);
+    expected_next_character(')');
+    
+    tuple_elements.push_back(node);
+    
+    sNode*% node2 = create_false_object(info);
+    
+    tuple_elements.push_back(node2);
+    
+    return new sTupleNode(tuple_elements, info) implements sNode;
+}

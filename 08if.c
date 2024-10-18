@@ -286,6 +286,51 @@ class sAndStatmentNode extends sNodeBase
         return true;
     }
 };
+    
+class sMultipleNode extends sNodeBase
+{
+    new(list<sNode*%>*% multiple_node, sInfo* info)
+    {
+        self.super();
+    
+        list<sNode*%>*% self.multiple_node = clone multiple_node;
+    }
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    string kind()
+    {
+        return string("sMultipleNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        list<sNode*%>*% multiple_node = self.multiple_node;
+        
+        CVALUE*% come_value = null
+        foreach(it, multiple_node) {
+            if(!node_compile(it)) {
+                return false;
+            }
+            
+            add_last_code_to_source(info);
+            
+            if(info.stack.length() > 0) {
+                come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+            }
+        }
+        
+        if(come_value) {
+            info.stack.push_back(come_value);
+        }
+        
+        return true;
+    }
+};
 
 sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
 {
@@ -439,6 +484,41 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
     sNode*% result = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
     
     return result;
+}
+
+sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info)
+{
+    string sname = clone info->sname;
+    int sline = info->sline;
+    
+    parse_sharp();
+    
+    static int var_num = 0;
+    var_num++;
+    
+    var multiple_assign = [s"come_exception_var_\{var_num}", s"come_exception_var2_\{var_num}" ];
+    
+    sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
+                                        , null@type, true@alloc, expression_node, info);
+    
+    sBlock*% if_block = parse_block();
+    
+    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
+    int elif_num = 0;
+
+    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
+
+    sBlock*% else_block = null;
+    
+    sNode*% expression_node2 = create_load_var(s"come_exception_var2_\{var_num}");
+    sNode*% expression_node3 = craete_logical_denial(expression_node2, info);
+
+    sNode*% if_node = new sIfNode(expression_node3, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
+    sNode*% load_var = create_load_var(s"come_exception_var_\{var_num}");
+    
+    list<sNode*%>*% multiple_node = [get_return_value, if_node, load_var];
+    
+    return new sMultipleNode(multiple_node, info) implements sNode;
 }
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8

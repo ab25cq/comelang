@@ -736,6 +736,25 @@ struct tuple2$2sFunpcharph
     struct sFun* v1;
     char* v2;
 };
+struct tuple3$3sTypephcharphsNodeph
+{
+    struct sType* v1;
+    char* v2;
+    struct sNode* v3;
+};
+struct list_item$1tuple3$3sTypephcharphsNodephph
+{
+    struct tuple3$3sTypephcharphsNodeph* item;
+    struct list_item$1tuple3$3sTypephcharphsNodephph* prev;
+    struct list_item$1tuple3$3sTypephcharphsNodephph* next;
+};
+struct list$1tuple3$3sTypephcharphsNodephph
+{
+    struct list_item$1tuple3$3sTypephcharphsNodephph* head;
+    struct list_item$1tuple3$3sTypephcharphsNodephph* tail;
+    int len;
+    struct list_item$1tuple3$3sTypephcharphsNodephph* it;
+};
 struct sMemHeaderTiny
 {
     unsigned long unsigned  int size;
@@ -1185,10 +1204,13 @@ char* create_non_method_name(struct sType* obj_type, _Bool no_pointer_name, char
 char* create_method_name_using_class(struct sClass* obj_class, _Bool no_pointer_name, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
 struct sNode* expression_node_v96(struct sInfo* info);
 struct sNode* parse_tuple(struct sInfo* info);
+struct sNode* parse_some(struct sInfo* info);
+struct sNode* parse_none(struct sInfo* info);
+struct sNode* store_var(char* name, struct list$1charph* multiple_assign, struct list$1tuple3$3sTypephcharphsNodephph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info);
+struct sNode* create_load_var(char* var_name, struct sInfo* info);
 struct sNode* parse_array_initializer(struct sInfo* info);
 struct sNode* parse_struct_initializer(struct sInfo* info);
 struct sNode* parse_global_variable(struct sInfo* info);
-struct sNode* store_var(char* name, struct list$1charph* multiple_assign, struct sType* type, _Bool alloc, struct sNode* right_node, struct sInfo* info);
 struct sNode* load_var(char* name, struct sInfo* info);
 struct sNode* string_node_v7(char* buf, char* head, int head_sline, struct sInfo* info);
 void add_variable_to_table(char* name, struct sType* type, struct sInfo* info);
@@ -1199,6 +1221,7 @@ struct sNode* parse_if_method_call(struct sNode* expression_node, struct sInfo* 
 struct sNode* parse_elif_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_or_statment(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_and_statment(struct sNode* expression_node, struct sInfo* info);
+struct sNode* parse_catch_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);

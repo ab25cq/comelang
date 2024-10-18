@@ -1380,7 +1380,7 @@ sNode*% expression_node(sInfo* info=info) version 97
         
         /// backtrace ///
         bool define_function_pointer_flag = false;
-        if(buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "isheap" && buf !== "guard" && buf !== "ispointer" && buf !== "__typeof__" && buf !== "dynamic_typeof" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec" && buf !== "gc_dec_nofree" && buf !== "case" && buf !== "_Alignof" && buf !== "_Alignas" && buf !== "__alignof__" && *info->p == '(' && *(info->p+1) != '*')
+        if(buf !== "rescue" && buf !== "some" && buf !== "none" && buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "isheap" && buf !== "guard" && buf !== "ispointer" && buf !== "__typeof__" && buf !== "dynamic_typeof" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec" && buf !== "gc_dec_nofree" && buf !== "case" && buf !== "_Alignof" && buf !== "_Alignas" && buf !== "__alignof__" && *info->p == '(' && *(info->p+1) != '*')
         {
             backtrace_parse_type();
             
@@ -1402,7 +1402,7 @@ sNode*% expression_node(sInfo* info=info) version 97
         
         /// backtrace ///
         bool lambda_flag = false;
-        if(buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "_Alignof" && buf !== "__alignof__" && buf !== "_Alignas" && buf !== "isheap" && buf !== "guard" && buf !== "ispointer" && buf !== "__typeof__" && buf !== "dynamic_typeof" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec" && buf !== "gc_dec_nofree" && buf !== "case" && is_type_name_)
+        if(buf !== "rescue" && buf !== "some" && buf !== "none" && buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "_Alignof" && buf !== "__alignof__" && buf !== "_Alignas" && buf !== "isheap" && buf !== "guard" && buf !== "ispointer" && buf !== "__typeof__" && buf !== "dynamic_typeof" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec" && buf !== "gc_dec_nofree" && buf !== "case" && is_type_name_)
         {
             info.p = head;
             info.sline = head_sline;
@@ -1421,7 +1421,7 @@ sNode*% expression_node(sInfo* info=info) version 97
         
         /// backtrace ///
         bool fun_name_with_type_name = false;
-        if(buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "_Alignof" && buf !== "__alignof__" && buf !== "_Alignas" && buf !== "isheap" && buf !== "guard" && buf !== "ispointer" && buf !== "dynamic_typeof" && buf !== "__typeof__" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec"&& buf !== "gc_dec_nofree" && buf !== "case")
+        if(buf !== "rescue" && buf !== "some" && buf !== "none" && buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "_Alignof" && buf !== "__alignof__" && buf !== "_Alignas" && buf !== "isheap" && buf !== "guard" && buf !== "ispointer" && buf !== "dynamic_typeof" && buf !== "__typeof__" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec"&& buf !== "gc_dec_nofree" && buf !== "case")
         {
             info.p = head;
             info.sline = head_sline;
@@ -1604,11 +1604,17 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             return node;
         }
-        else if(buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "isheap" && buf !== "ispointer" && buf !== "guard" && buf !== "__typeof__" && buf !== "dynamic_typeof" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec"&& buf !== "gc_dec_nofree" && buf !== "case" && buf !== "_Alignof" && buf !== "__alignof__" && buf !== "_Alignas"  && *info->p == '(' && !(*(info->p+1) == '*' && is_type_name_))
+        else if(buf !== "rescue" && buf !== "some" && buf !== "none" && buf !== "if" && buf !== "while" && buf !== "for" && buf !== "switch" && buf !== "return" && buf !== "sizeof" && buf !== "isheap" && buf !== "ispointer" && buf !== "guard" && buf !== "__typeof__" && buf !== "dynamic_typeof" && buf !== "typeof" && buf !== "gc_inc" && buf !== "gc_dec"&& buf !== "gc_dec_nofree" && buf !== "case" && buf !== "_Alignof" && buf !== "__alignof__" && buf !== "_Alignas"  && *info->p == '(' && !(*(info->p+1) == '*' && is_type_name_))
         {
             sNode*% node = parse_function_call(buf, info);
             
             return node;
+        }
+        else if(buf === "some" && *info->p === '(') {
+            return parse_some(info);
+        }
+        else if(buf === "none" && *info->p === '(') {
+            return parse_none(info);
         }
         else {
             sNode*% node = string_node(buf, head, head_sline, info);

@@ -1,5 +1,21 @@
 #include "common.h"
 
+bool is_type_name(char* buf, sInfo* info=info)
+{
+    sClass* klass = info.classes[buf]??;
+    sType* type = info.types[buf]??;
+    sClass* generics_class = info.generics_classes[buf]??;
+    bool generics_type_name = info.generics_type_names.contained(string(buf));
+    bool mgenerics_type_name = info.method_generics_type_names.contained(string(buf));
+    
+    if(gComeC) {
+        return (type && type->mTypedef) || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || (klass && klass->mNumber) || (klass && klass->mFloat) || buf === "void" || buf === "_Nullable";
+    }
+    else {
+        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable" || buf === "exception";
+    }
+}
+
 void skip_paren(sInfo* info)
 {
     int nest = 0;
@@ -1048,6 +1064,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
     }
     
     bool record_ = false;
+    bool exception_ = false;
     bool constant = false;
     bool static_ = false;
     bool volatile_ = false;
@@ -1334,6 +1351,11 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         }
         else if(type_name === "record") {
             record_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "exception") {
+            exception_ = true;
             
             type_name = parse_word();
         }
@@ -1828,6 +1850,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         result_type->mRecord = result_type->mStatic || static_;
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mStatic = result_type->mRecord || record_;
+        result_type->mException = result_type->mException || exception_;
         result_type->mExtern = result_type->mExtern || extern_;
         result_type->mInline = result_type->mInline || inline_;
         result_type->mRestrict = result_type->mRestrict || restrict_;
@@ -1897,6 +1920,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         result_type->mStatic = result_type->mStatic || static_;
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mRecord = result_type->mRecord || record_;
+        result_type->mException = result_type->mException || exception_;
         result_type->mExtern = result_type->mExtern || extern_;
         result_type->mInline = result_type->mInline || inline_;
         result_type->mRestrict = result_type->mRestrict || restrict_;
@@ -2023,6 +2047,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
             type->mRecord = type->mRecord || record_;
+            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2048,6 +2073,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
             type->mRecord = type->mRecord || record_;
+            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2073,6 +2099,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
             type->mRecord = type->mRecord || record_;
+            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2139,6 +2166,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
             type->mRecord = type->mRecord || record_;
+            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2175,6 +2203,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
             type->mRecord = type->mRecord || record_;
+            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2380,6 +2409,22 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
     type->mAsmName = asm_name;
     
     parse_sharp();
+    
+    if(type->mException) {
+        sType*% type2 = new sType("tuple2");
+        type2->mGenericsTypes[0] = new sType("generics_type0");
+        type2->mGenericsTypes[1] = new sType("generics_type1");
+        type2->mPointerNum = 1;
+        type2->mHeap = true;
+        
+        sType*% type3 = new sType("tuple2");
+        type3->mGenericsTypes[0] = type;
+        type3->mGenericsTypes[1] = new sType("bool");
+        
+        sType*% type4 = solve_generics(type2,  type3, info);
+        
+        return (type4, var_name, true);
+    }
     
     return (type, var_name, true);
 }

@@ -1,9 +1,18 @@
 #include <comelang.h>
-#include <comelang-str.h>
+
+exception int fun()
+{
+    return none(1);
+}
 
 int main(int argc, char** argv)
 {
-    come_regex*% reg = /aaaa/;
+    int a = 1;
+    int x = fun().rescue {
+        printf("a %d\n", a);
+        puts("AAA");
+        return 2;
+    }
     
     return 0;
 }

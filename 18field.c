@@ -1575,6 +1575,9 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 else if(field_name === "elif") {
                     node = parse_elif_method_call(clone node, info);
                 }
+                else if(field_name === "rescue") {
+                    node = parse_catch_method_call(clone node, info);
+                }
                 else {
                     node = parse_method_call(clone node, field_name, info);
                 }

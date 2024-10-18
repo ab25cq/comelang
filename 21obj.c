@@ -222,6 +222,11 @@ class sTrueNode extends sNodeBase
     }
 };
 
+sNode*% create_true_object(sInfo* info)
+{
+    return new sTrueNode(info) implements sNode;
+}
+
 class sFalseNode extends sNodeBase
 {
     new(sInfo* info)
@@ -249,6 +254,11 @@ class sFalseNode extends sNodeBase
         return true;
     }
 };
+
+sNode*% create_false_object(sInfo* info)
+{
+    return new sFalseNode(info) implements sNode;
+}
 
 class sSizeOfNode extends sNodeBase
 {

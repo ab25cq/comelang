@@ -1496,21 +1496,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
     return inherit(buf2, head, head_sline, info);
 }
 
-bool is_type_name(char* buf, sInfo* info=info)
-{
-    sClass* klass = info.classes[buf]??;
-    sType* type = info.types[buf]??;
-    sClass* generics_class = info.generics_classes[buf]??;
-    bool generics_type_name = info.generics_type_names.contained(string(buf));
-    bool mgenerics_type_name = info.method_generics_type_names.contained(string(buf));
-    
-    if(gComeC) {
-        return (type && type->mTypedef) || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || (klass && klass->mNumber) || (klass && klass->mFloat) || buf === "void" || buf === "_Nullable";
-    }
-    else {
-        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable";
-    }
-}
 
 bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info)
 {
