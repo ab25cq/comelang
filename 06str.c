@@ -704,6 +704,170 @@ class sSomeNode extends sNodeBase
     }
 };
 
+class sNullReturnValue extends sNodeBase
+{
+    new(sInfo* info)
+    {
+        self.super();
+    }
+    
+    string kind()
+    {
+        return string("sNullReturnValue");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        if(info.come_fun) {
+            CVALUE*% come_value = new CVALUE();
+            
+            buffer*% buf = new buffer();
+            
+            static int num = 0;
+            num++;
+            
+            string var_name = s"__null_value\{num}";
+            
+            sType*% result_type = clone info.come_fun.mResultType;
+            
+            sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
+            
+            sType*% left_type = result_type2;
+            
+            add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_name));
+            add_come_code_at_function_head2(info, "memset(&%s, 0, sizeof(%s));\n", var_name, make_type_name_string(left_type, no_static:true));
+            
+            CVALUE*% come_value2 = new CVALUE();
+            
+            come_value2.c_value = var_name;
+            
+            come_value2.type = result_type2;
+            come_value2.type->mStatic = false;
+            come_value2.var = null;
+            
+            info.stack.push_back(come_value2);
+        }
+        
+        return true;
+    }
+};
+
+sNode*% create_null_return_value(sInfo* info=info)
+{
+    return new sNullReturnValue(info) implements sNode;
+}
+
+class sNullReturnValueOfException extends sNodeBase
+{
+    new(sInfo* info)
+    {
+        self.super();
+    }
+    
+    string kind()
+    {
+        return string("sNullReturnValue");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        if(info.come_fun) {
+            CVALUE*% come_value = new CVALUE();
+            
+            buffer*% buf = new buffer();
+            
+            static int num = 0;
+            num++;
+            
+            string var_name = s"__null_value\{num}";
+            
+            sType*% result_type = clone info.come_fun.mResultType;
+            
+            sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
+            
+            if(result_type2->mNoSolvedGenericsType.v1) {
+                result_type2 = result_type2->mNoSolvedGenericsType.v1;
+            }
+            
+            sType*% left_type = clone result_type2->mGenericsTypes[0]??;
+            
+            if(left_type == null || result_type2.mClass.mName !== "tuple2") {
+                err_msg(info, "function is not exception type");
+                return false;
+            }
+            
+            add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_name));
+            add_come_code_at_function_head2(info, "memset(&%s, 0, sizeof(%s));\n", var_name, make_type_name_string(left_type, no_static:true));
+            
+            CVALUE*% come_value2 = new CVALUE();
+            
+            come_value2.c_value = var_name;
+            
+            come_value2.type = left_type;
+            come_value2.type->mStatic = false;
+            come_value2.var = null;
+            
+            info.stack.push_back(come_value2);
+        }
+        
+        return true;
+    }
+};
+
+sNode*% create_null_return_value_of_exception(sInfo* info=info)
+{
+    return new sNullReturnValueOfException(info) implements sNode;
+}
+
+class sNullValue extends sNodeBase
+{
+    new(sType*% type, sInfo* info)
+    {
+        self.super();
+        
+        sType*% self.type = type;
+    }
+    
+    string kind()
+    {
+        return string("sNullValue");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        CVALUE*% come_value = new CVALUE();
+        
+        buffer*% buf = new buffer();
+        
+        static int num = 0;
+        num++;
+        
+        string var_name = s"__null_value2_\{num}";
+        
+        sType*% left_type = self.type;
+        
+        add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_name));
+        add_come_code_at_function_head2(info, "memset(&%s, 0, sizeof(%s));\n", var_name, make_type_name_string(left_type, no_static:true));
+        
+        CVALUE*% come_value2 = new CVALUE();
+        
+        come_value2.c_value = var_name;
+        
+        come_value2.type = self.type;
+        come_value2.type->mStatic = false;
+        come_value2.var = null;
+        
+        info.stack.push_back(come_value2);
+        
+        return true;
+    }
+};
+
+sNode*% create_null_value(sType*% type, sInfo* info=info)
+{
+    return new sNullValue(type, info) implements sNode;
+}
+
 class sNoneNode extends sNodeBase
 {
     new(list<sNode*%>*% tuple_elements, sInfo* info)
@@ -724,6 +888,7 @@ class sNoneNode extends sNodeBase
         list<sType*%>*% tuple_types = new list<sType*%>();
         list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
         
+        int i = 0;
         foreach(it, tuple_elements) {
             if(!node_compile(it)) {
                 return false;
@@ -734,6 +899,14 @@ class sNoneNode extends sNodeBase
             
             tuple_values.push_back(clone come_value);
             tuple_types.push_back(clone come_value.type);
+            
+            if(i == 1) {
+                sType*% string_type = new sType("char*");
+                string_type->mHeap = true;
+                check_assign_type(s"invalid none type", string_type, come_value.type, come_value);
+            }
+            
+            i++;
         }
         
         sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
@@ -792,7 +965,7 @@ class sNoneNode extends sNodeBase
         }
         come_params.push_back(obj_value);
     
-        int i = 1;
+        i = 1;
         foreach(it, tuple_values) {
             CVALUE*% come_value = clone it;
             
@@ -2080,11 +2253,11 @@ sNode*% create_some(sNode*% exp, sInfo* info)
 {
     list<sNode*%>*% tuple_elements = new list<sNode*%>();
     
-    sNode*% node = exp
+    sNode*% node = exp;
     
     tuple_elements.push_back(node);
     
-    sNode*% node2 = create_true_object(info);
+    sNode*% node2 = create_null_node();
     
     tuple_elements.push_back(node2);
     
@@ -2102,7 +2275,7 @@ sNode*% parse_some(sInfo* info)
     
     tuple_elements.push_back(node);
     
-    sNode*% node2 = create_true_object(info);
+    sNode*% node2 = create_null_node();
     
     tuple_elements.push_back(node2);
     
@@ -2118,11 +2291,13 @@ sNode*% parse_none(sInfo* info)
     node = post_position_operator(node, info);
     expected_next_character(')');
     
-    tuple_elements.push_back(node);
-    
-    sNode*% node2 = create_false_object(info);
+    sNode*% node2 = create_null_return_value_of_exception();
     
     tuple_elements.push_back(node2);
+    
+    sNode*% node3 = node;
+    
+    tuple_elements.push_back(node3);
     
     return new sNoneNode(tuple_elements, info) implements sNode;
 }

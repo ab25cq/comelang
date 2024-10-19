@@ -7,21 +7,19 @@ exception int fun()
 
 exception int fun2()
 {
-    return fun().throw;
+    int y = fun();
+    
+    printf("y %d\n", y);
+    
+    return none(s"ERR");;
 }
 
 int main(int argc, char** argv)
 {
-    int a = 1;
-    int x = fun2().rescue {
-        printf("a %d\n", a);
-        puts("AAA");
-        return 2;
-    }
+    int x = fun2();
     
     puts("OK");
     printf("x %d\n", x);
     
     return 0;
 }
-

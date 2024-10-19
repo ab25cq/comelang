@@ -2419,7 +2419,8 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         
         sType*% type3 = new sType("tuple2");
         type3->mGenericsTypes[0] = type;
-        type3->mGenericsTypes[1] = new sType("bool");
+        type3->mGenericsTypes[1] = new sType("char*");
+        type3->mGenericsTypes[1].mHeap = true;
         
         sType*% type4 = solve_generics(type2,  type3, info);
         

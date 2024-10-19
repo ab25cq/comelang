@@ -335,7 +335,7 @@ string make_method_generics_function(string fun_name, list<sType*%>*% method_gen
 
 class sFunCallNode extends sNodeBase
 {
-    new(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+    new(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, bool throw_or_rescue, sInfo* info)
     {
         self.super();
         
@@ -345,6 +345,7 @@ class sFunCallNode extends sNodeBase
         list<sType*%>*% self.method_generics_types = method_generics_types;
         buffer*% self.method_block = method_block;
         int self.method_block_sline = method_block_sline;
+        bool self.throw_or_rescue = throw_or_rescue;
     }
     
     string kind()
@@ -368,6 +369,7 @@ class sFunCallNode extends sNodeBase
         list<tuple2<string,sNode*%>*%>* params = self.params;
         buffer* method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
+        bool throw_or_rescue = self.throw_or_rescue;
         
         sVar* var_ = get_variable_from_table(info.lv_table, fun_name);
         
@@ -1053,6 +1055,42 @@ class sFunCallNode extends sNodeBase
                 add_come_last_code(info, "%s;\n", come_value.c_value);
                 
                 info.stack.push_back(come_value);
+                
+                static bool recursive = false;
+                if(result_type.mException && !throw_or_rescue && !recursive) {
+                    sType*% come_fun_result_type = clone info.come_fun.mResultType;
+                    
+                    sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
+                    
+                    if(come_fun_result_type2.mException) {
+                        recursive = true;
+                        dec_stack_ptr(1, info);
+                        transpiler_clear_last_code(info);
+                        
+                        sNode*% expression_node = (clone self) implements sNode;
+                        sNode*% node = create_throw(expression_node, info);
+                        
+                        if(!node_compile(node)) {
+                            return false;
+                        }
+                        
+                        recursive = false;
+                    }
+                    else {
+                        recursive = true;
+                        dec_stack_ptr(1, info);
+                        transpiler_clear_last_code(info);
+                        
+                        sNode*% expression_node = (clone self) implements sNode;
+                        sNode*% node = create_exception_value(expression_node, info);
+                        
+                        if(!node_compile(node)) {
+                            return false;
+                        }
+                        
+                        recursive = false;
+                    }
+                }
             }
         }
         
@@ -1329,7 +1367,14 @@ sNode*% parse_function_call(char* fun_name, sInfo* info)
     
     parse_sharp();
     
-    sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
+    bool throw_or_rescue = false;
+    if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0) {
+        throw_or_rescue = true;
+    }
+    
+    parse_sharp();
+    
+    sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, throw_or_rescue, info) implements sNode;
     
     node = post_position_operator(node, info);
     

@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 3.5.1
+version 4.0.0
 
 ``` C
 #include <comelang.h>
@@ -292,9 +292,9 @@ int main()
 
 15. テンプレートの型推論があります。
 
-16. exception
+16. 例外処理。
 
-16. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
+17. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
 
 # インストール
 
@@ -332,6 +332,8 @@ sh all_build.sh
 # Histories
 
 ```
+4.0.0 Exception is perfect like Java, ruby, Python.
+3.5.2 More improvement of exception
 3.5.1 More improvement of exception
 3.5.0 Exception
 3.0.4 -gc and regex bug fixed.
@@ -3350,15 +3352,12 @@ exception int fun()
 
 exception int fun2()
 {
-    return fun().throw;
+    return fun();
 }
 
 int main(int argc, char** argv)
 {
-    int x = fun2().rescue {
-        puts("ERR");
-        return 0;
-    }
+    int x = fun2();
     
     puts("OK");
     printf("x %d\n", x);
@@ -3377,20 +3376,21 @@ x 1
 
 exception int fun()
 {
-    return none(1);
+    return none(s"ERR");
 }
 
 exception int fun2()
 {
-    return fun().throw;
+    int y = fun();
+    
+    printf("y %d\n", y);
+    
+    return 9;
 }
 
 int main(int argc, char** argv)
 {
-    int x = fun2().rescue {
-        puts("ERR");
-        return 0;
-    }
+    int x = fun2();
     
     puts("OK");
     printf("x %d\n", x);
@@ -3403,11 +3403,115 @@ int main(int argc, char** argv)
 ERR
 ```
 
-none() is exception value, resucue is runned if it ocurrs exception.
+```C
+#include <comelang.h>
 
-throw is return none value for caller.
+exception int fun()
+{
+    return 1;
+}
 
-if not none() value, rescue is not runned.
+exception int fun2()
+{
+    int y = fun();
+    
+    printf("y %d\n", y);
+    
+    return 9;
+}
+
+int main(int argc, char** argv)
+{
+    int x = fun2();
+    
+    puts("OK");
+    printf("x %d\n", x);
+    
+    return 0;
+}
+```
+
+```
+y 1
+OK
+x 9
+```
+
+
+```C
+#include <comelang.h>
+
+exception int fun()
+{
+    return none(s"ERR");
+}
+
+exception int fun2()
+{
+    int y = fun();
+    
+    printf("y %d\n", y);
+    
+    return 9;
+}
+
+int main(int argc, char** argv)
+{
+    int x = fun2().rescue {
+        puts("UHO!");
+        puts(it);
+        return 0;
+    }
+    
+    puts("OK");
+    printf("x %d\n", x);
+    
+    return 0;
+}
+```
+
+```
+UHO!
+ERR
+```
+
+```C
+#include <comelang.h>
+
+exception int fun()
+{
+    return 1;
+}
+
+exception int fun2()
+{
+    int y = fun();
+    
+    printf("y %d\n", y);
+    
+    return none(s"ERR");
+}
+
+int main(int argc, char** argv)
+{
+    int x = fun2().rescue {
+        puts("UHO!");
+        puts(it);
+        return 0;
+    }
+    
+    puts("OK");
+    printf("x %d\n", x);
+    
+    return 0;
+}
+```
+
+```
+y 1
+UHO!
+ERR
+```
 
 # afterword
 

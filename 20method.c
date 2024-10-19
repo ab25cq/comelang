@@ -170,7 +170,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
 
 class sMethodCallNode extends sNodeBase
 {
-    new(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types , sInfo* info)
+    new(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool throw_or_rescue, sInfo* info)
     {
         self.super();
         
@@ -180,6 +180,7 @@ class sMethodCallNode extends sNodeBase
         buffer*% self.method_block = clone method_block;
         int self.method_block_sline = method_block_sline;
         list<sType*%>*% self.method_generics_types = clone method_generics_types;
+        bool self.throw_or_rescue = throw_or_rescue;
     }
     
     bool terminated()
@@ -205,6 +206,7 @@ class sMethodCallNode extends sNodeBase
         sNode* obj = self.obj;
         buffer* method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
+        bool throw_or_rescue = self.throw_or_rescue;
         
         list<sType*%>*% method_generics_types = info->method_generics_types;
         info->method_generics_types = clone self.method_generics_types;
@@ -444,6 +446,9 @@ class sMethodCallNode extends sNodeBase
             add_come_last_code(info, "%s;\n", come_value2.c_value);
             
             info.stack.push_back(come_value2);
+            
+            delete info->method_generics_types;
+            info->method_generics_types = method_generics_types;
         }
         else {
             string generics_fun_name = null;
@@ -908,29 +913,49 @@ class sMethodCallNode extends sNodeBase
             
             info.stack.push_back(come_value2);
             
-            if(method_block) {
-                string var_name = xsprintf("__current_stack%d__", info.num_current_stack);
-                
-                sType*% result_type = clone info.come_fun.mResultType;
-                
-                sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
-                
-                sType* result_type3 = result_type2->mNoSolvedGenericsType.v1;
-                if(result_type2->mNoSolvedGenericsType.v1) {
-                    result_type3 = result_type2->mNoSolvedGenericsType.v1;
-                }
-                else {
-                    result_type3 = result_type2;
-                }
-            }
-            
             if(is_contained_method_generics_types(obj_type, info) && generics_fun_name) {
                 info.funcs.remove(generics_fun_name);
             }
+            
+            delete info->method_generics_types;
+            info->method_generics_types = method_generics_types;
+            
+            static bool recursive = false;
+            if(result_type2.mException && !throw_or_rescue && !recursive) {
+                sType*% come_fun_result_type = clone info.come_fun.mResultType;
+                
+                sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
+                
+                if(come_fun_result_type2.mException) {
+                    recursive = true;
+                    dec_stack_ptr(1, info);
+                    transpiler_clear_last_code(info);
+                    
+                    sNode*% expression_node = (clone self) implements sNode;
+                    sNode*% node = create_throw(expression_node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                    
+                    recursive = false;
+                }
+                else {
+                    recursive = true;
+                    dec_stack_ptr(1, info);
+                    transpiler_clear_last_code(info);
+                    
+                    sNode*% expression_node = (clone self) implements sNode;
+                    sNode*% node = create_exception_value(expression_node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                    
+                    recursive = false;
+                }
+            }
         }
-        
-        delete info->method_generics_types;
-        info->method_generics_types = method_generics_types;
         
         return true;
     }
@@ -1082,7 +1107,14 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     
     parse_sharp();
     
-    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, info) implements sNode;
+    bool throw_or_rescue = false;
+    if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0) {
+        throw_or_rescue = true;
+    }
+    
+    parse_sharp();
+    
+    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, info) implements sNode;
     
     node = post_position_operator(node, info);
     
