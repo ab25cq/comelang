@@ -1348,6 +1348,24 @@ struct tuple2$2sTypephcharph
     struct sType* v1;
     char* v2;
 };
+struct tuple2$2charphsNodeph
+{
+    char* v1;
+    struct sNode* v2;
+};
+struct list_item$1tuple2$2charphsNodephph
+{
+    struct tuple2$2charphsNodeph* item;
+    struct list_item$1tuple2$2charphsNodephph* prev;
+    struct list_item$1tuple2$2charphsNodephph* next;
+};
+struct list$1tuple2$2charphsNodephph
+{
+    struct list_item$1tuple2$2charphsNodephph* head;
+    struct list_item$1tuple2$2charphsNodephph* tail;
+    int len;
+    struct list_item$1tuple2$2charphsNodephph* it;
+};
 struct tuple3$3sTypephcharphbool
 {
     struct sType* v1;
@@ -2022,6 +2040,7 @@ void append_object_to_right_values2(struct CVALUE* come_value, struct sType* typ
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 char* increment_ref_count_object(struct sType* type, char* obj, struct sInfo* info);
 void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* info, _Bool force_delete_, _Bool no_free);
+struct sNode* craete_fun_call(char* fun_name, struct list$1tuple2$2charphsNodephph* params, _Bool guard_break, struct list$1sTypeph* method_generics_types, struct buffer* method_block, int method_block_sline, _Bool throw_or_rescue, struct sInfo* info);
 char* make_method_generics_function(char* fun_name, struct list$1sTypeph* method_generics_types, struct sInfo* info);
 struct sNode* create_return_node(struct sNode* value, char* value_source, struct sInfo* info);
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
@@ -2125,6 +2144,7 @@ struct sNode* exception_get_value(struct sNode* node, struct sInfo* info);
 struct sNode* post_position_operator_v99(struct sNode* node, struct sInfo* info);
 struct sNode* parse_method_call_v18(struct sNode* obj, char* fun_name, struct sInfo* info);
 struct sNode* post_position_operator_v19(struct sNode* node, struct sInfo* info);
+struct sNode* create_method_call(char* fun_name, struct sNode* obj, struct list$1tuple2$2charphsNodephph* params, struct buffer* method_block, int method_block_sline, struct list$1sTypeph* method_generics_types, _Bool throw_or_rescue, struct sInfo* info);
 _Bool compile_method_block(struct buffer* method_block, struct list$1CVALUEph* come_params, struct sFun* fun, char* fun_name, int method_block_sline, struct sInfo* info, _Bool no_create_current_stack);
 char* make_generics_function(struct sType* type, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
 struct sNode* parse_method_call_v20(struct sNode* obj, char* fun_name, struct sInfo* info);
@@ -5465,7 +5485,7 @@ char* c_value_196;
 void* __right_value177 = (void*)0;
 void* __right_value178 = (void*)0;
 struct sType* string_type_197;
-    var__192=map$2charphsVarphp_operator_load_element(info->lv_table->mVars,((char*)(__right_value176=xsprintf("it"))));
+    var__192=map$2charphsVarphp_operator_load_element(info->lv_table->mVars,((char*)(__right_value176=xsprintf("Err"))));
     __right_value176 = come_decrement_ref_count2(__right_value176, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     if(var__192) {
         c_value_196=(char*)come_increment_ref_count(var__192->mCValueName);
@@ -5913,7 +5933,7 @@ struct sNode* __result150__;
     static int var_num_235=0;
     var_num_235++;
     {__list_values1___236[0]=come_increment_ref_count(((char*)(__right_value228=xsprintf("come_exception_var_\%s",((char*)(__right_value227=int_to_string(var_num_235)))))));
-__list_values1___236[1]=come_increment_ref_count(((char*)(__right_value229=xsprintf("it"))));
+__list_values1___236[1]=come_increment_ref_count(((char*)(__right_value229=xsprintf("Err"))));
 }    multiple_assign_241=(struct list$1charph*)come_increment_ref_count(list$1charph_initialize_with_values((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "08if.c", 531, "struct list$1charph")),2,__list_values1___236));
     __right_value227 = come_decrement_ref_count2(__right_value227, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     __right_value228 = come_decrement_ref_count2(__right_value228, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
@@ -5924,7 +5944,7 @@ __list_values1___236[1]=come_increment_ref_count(((char*)(__right_value229=xspri
     elif_num_245=0;
     elif_blocks_246=(struct list$1sBlockph*)come_increment_ref_count(list$1sBlockph_initialize((struct list$1sBlockph*)come_increment_ref_count((struct list$1sBlockph*)come_calloc(1, sizeof(struct list$1sBlockph)*(1), "08if.c", 541, "list$1sBlockph"))));
     else_block_247=((void*)0);
-    expression_node2_248=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value242=xsprintf("it"))),info));
+    expression_node2_248=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value242=xsprintf("Err"))),info));
     __right_value242 = come_decrement_ref_count2(__right_value242, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     _inf_value3=(struct sNode*)come_calloc(1, sizeof(struct sNode), "08if.c", 547, "struct sNode");
     _inf_obj_value3=come_increment_ref_count(((struct sIfNode*)(__right_value245=sIfNode_initialize((struct sIfNode*)come_increment_ref_count((struct sIfNode*)come_calloc(1, sizeof(struct sIfNode)*(1), "08if.c", 547, "sIfNode")),(struct sNode*)come_increment_ref_count(expression_node2_248),if_block_243,elif_expression_nodes_244,elif_blocks_246,elif_num_245,else_block_247,(_Bool)0,info))));
@@ -6140,7 +6160,7 @@ struct sNode* __result157__;
     static int var_num_260=0;
     var_num_260++;
     {__list_values3___261[0]=come_increment_ref_count(((char*)(__right_value272=xsprintf("come_exception_var_a\%s",((char*)(__right_value271=int_to_string(var_num_260)))))));
-__list_values3___261[1]=come_increment_ref_count(((char*)(__right_value273=xsprintf("it"))));
+__list_values3___261[1]=come_increment_ref_count(((char*)(__right_value273=xsprintf("Err"))));
 }    multiple_assign_262=(struct list$1charph*)come_increment_ref_count(list$1charph_initialize_with_values((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "08if.c", 566, "struct list$1charph")),2,__list_values3___261));
     __right_value271 = come_decrement_ref_count2(__right_value271, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     __right_value272 = come_decrement_ref_count2(__right_value272, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
@@ -6150,7 +6170,7 @@ __list_values3___261[1]=come_increment_ref_count(((char*)(__right_value273=xspri
     p_265=info->p;
     head_266=info->head;
     buf_267=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "08if.c", 575, "buffer"))));
-    buffer_append_str(buf_267,((char*)(__right_value280=xsprintf("{ return none(it); }"))));
+    buffer_append_str(buf_267,((char*)(__right_value280=xsprintf("{ return none(Err); }"))));
     __right_value280 = come_decrement_ref_count2(__right_value280, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     __dec_obj140=info->source;
     info->source=(struct buffer*)come_increment_ref_count(buf_267);
@@ -6169,7 +6189,7 @@ __list_values3___261[1]=come_increment_ref_count(((char*)(__right_value273=xspri
     elif_num_270=0;
     elif_blocks_271=(struct list$1sBlockph*)come_increment_ref_count(list$1sBlockph_initialize((struct list$1sBlockph*)come_increment_ref_count((struct list$1sBlockph*)come_calloc(1, sizeof(struct list$1sBlockph)*(1), "08if.c", 594, "list$1sBlockph"))));
     else_block_272=((void*)0);
-    expression_node2_273=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value286=xsprintf("it"))),info));
+    expression_node2_273=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value286=xsprintf("Err"))),info));
     __right_value286 = come_decrement_ref_count2(__right_value286, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     _inf_value6=(struct sNode*)come_calloc(1, sizeof(struct sNode), "08if.c", 600, "struct sNode");
     _inf_obj_value6=come_increment_ref_count(((struct sIfNode*)(__right_value289=sIfNode_initialize((struct sIfNode*)come_increment_ref_count((struct sIfNode*)come_calloc(1, sizeof(struct sIfNode)*(1), "08if.c", 600, "sIfNode")),(struct sNode*)come_increment_ref_count(expression_node2_273),if_block_268,elif_expression_nodes_269,elif_blocks_271,elif_num_270,else_block_272,(_Bool)0,info))));
@@ -6304,7 +6324,7 @@ struct sNode* __result171__;
     static int var_num_308=0;
     var_num_308++;
     {__list_values7___309[0]=come_increment_ref_count(((char*)(__right_value360=xsprintf("come_exception_var_c\%s",((char*)(__right_value359=int_to_string(var_num_308)))))));
-__list_values7___309[1]=come_increment_ref_count(((char*)(__right_value361=xsprintf("it"))));
+__list_values7___309[1]=come_increment_ref_count(((char*)(__right_value361=xsprintf("Err"))));
 }    multiple_assign_310=(struct list$1charph*)come_increment_ref_count(list$1charph_initialize_with_values((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "08if.c", 672, "struct list$1charph")),2,__list_values7___309));
     __right_value359 = come_decrement_ref_count2(__right_value359, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     __right_value360 = come_decrement_ref_count2(__right_value360, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
@@ -6314,7 +6334,7 @@ __list_values7___309[1]=come_increment_ref_count(((char*)(__right_value361=xspri
     p_313=info->p;
     head_314=info->head;
     buf_315=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "08if.c", 681, "buffer"))));
-    buffer_append_str(buf_315,((char*)(__right_value368=xsprintf("{ puts(it); exit(0); }"))));
+    buffer_append_str(buf_315,((char*)(__right_value368=xsprintf("{ puts(Err); exit(0); }"))));
     __right_value368 = come_decrement_ref_count2(__right_value368, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     __dec_obj180=info->source;
     info->source=(struct buffer*)come_increment_ref_count(buf_315);
@@ -6333,7 +6353,7 @@ __list_values7___309[1]=come_increment_ref_count(((char*)(__right_value361=xspri
     elif_num_318=0;
     elif_blocks_319=(struct list$1sBlockph*)come_increment_ref_count(list$1sBlockph_initialize((struct list$1sBlockph*)come_increment_ref_count((struct list$1sBlockph*)come_calloc(1, sizeof(struct list$1sBlockph)*(1), "08if.c", 700, "list$1sBlockph"))));
     else_block_320=((void*)0);
-    expression_node2_321=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value374=xsprintf("it"))),info));
+    expression_node2_321=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value374=xsprintf("Err"))),info));
     __right_value374 = come_decrement_ref_count2(__right_value374, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     _inf_value12=(struct sNode*)come_calloc(1, sizeof(struct sNode), "08if.c", 706, "struct sNode");
     _inf_obj_value12=come_increment_ref_count(((struct sIfNode*)(__right_value377=sIfNode_initialize((struct sIfNode*)come_increment_ref_count((struct sIfNode*)come_calloc(1, sizeof(struct sIfNode)*(1), "08if.c", 706, "sIfNode")),(struct sNode*)come_increment_ref_count(expression_node2_321),if_block_316,elif_expression_nodes_317,elif_blocks_319,elif_num_318,else_block_320,(_Bool)0,info))));

@@ -1507,7 +1507,34 @@ sNode*% expression_node(sInfo* info) version 96
         
         skip_spaces_and_lf();
         
-        return new sRegexNode(buf.to_string(), global, ignore_case, sline, info) implements sNode;
+        bool throw_or_rescue = false;
+        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0) {
+            throw_or_rescue = true;
+        }
+        
+        sNode*% obj = new sStrNode(buf.to_string(), sline, info) implements sNode;
+        
+        list<tuple2<string, sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+        
+        params.add((s"self", obj));
+        params.add((s"ignore_case", ignore_case ? create_int_node(1, info) : create_int_node(0, info)));
+        params.add((s"multiline", create_int_node(0, info)));
+        params.add((s"global", global ? create_int_node(1, info) : create_int_node(0, info)));
+        params.add((s"extended", create_int_node(0, info)));
+        params.add((s"dotall", create_int_node(0, info)));
+        params.add((s"anchored", create_int_node(0, info)));
+        params.add((s"dollar_endonly", create_int_node(0, info)));
+        params.add((s"ungreedy", create_int_node(0, info)));
+        
+        buffer* method_block = null;
+        
+        int method_block_sline = info.sline;
+        
+        list<sType*%>*% method_generics_types = new list<sType*%>();
+        
+        return create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, info);
+        
+       // return new sRegexNode(buf.to_string(), global, ignore_case, sline, info) implements sNode;
     }
     else if(*info->p == '\'') {
         info->p++;

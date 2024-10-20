@@ -1098,6 +1098,11 @@ class sFunCallNode extends sNodeBase
     }
 };
 
+sNode*% craete_fun_call(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, bool throw_or_rescue, sInfo* info)
+{
+    return new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline,  throw_or_rescue, info) implements sNode;
+}
+
 class sLambdaCall extends sNodeBase
 {
     new(sNode*% node, list<tuple2<string,sNode*%>*%>* params, sInfo* info)

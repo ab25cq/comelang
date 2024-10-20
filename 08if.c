@@ -351,7 +351,7 @@ class sFreeITNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sVar* var_ = info.lv_table.mVars[s"it"]??;
+        sVar* var_ = info.lv_table.mVars[s"Err"]??;
         
         if(var_) {
             string c_value = var_->mCValueName;
@@ -528,7 +528,7 @@ sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info)
     static int var_num = 0;
     var_num++;
     
-    var multiple_assign = [s"come_exception_var_\{var_num}", s"it" ];
+    var multiple_assign = [s"come_exception_var_\{var_num}", s"Err" ];
     
     sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
                                         , null@type, true@alloc, expression_node, info);
@@ -542,7 +542,7 @@ sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info)
 
     sBlock*% else_block = null;
     
-    sNode*% expression_node2 = create_load_var(s"it");
+    sNode*% expression_node2 = create_load_var(s"Err");
 
     sNode*% if_node = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
     sNode*% free_it_node = new sFreeITNode(info) implements sNode;
@@ -563,7 +563,7 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
     static int var_num = 0;
     var_num++;
     
-    var multiple_assign = [s"come_exception_var_a\{var_num}", s"it" ];
+    var multiple_assign = [s"come_exception_var_a\{var_num}", s"Err" ];
     
     sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
                                         , null@type, true@alloc, expression_node, info);
@@ -574,7 +574,7 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
     
     var buf = new buffer();
     
-    buf.append_str(xsprintf("{ return none(it); }"));
+    buf.append_str(xsprintf("{ return none(Err); }"));
     
     info.source = buf;
     info.p = info.source.buf;
@@ -595,7 +595,7 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
 
     sBlock*% else_block = null;
     
-    sNode*% expression_node2 = create_load_var(s"it");
+    sNode*% expression_node2 = create_load_var(s"Err");
 
     sNode*% if_node = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
     sNode*% load_var = create_load_var(s"come_exception_var_a\{var_num}");
@@ -616,7 +616,7 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
     static int var_num = 0;
     var_num++;
     
-    var multiple_assign = [s"come_exception_var_b\{var_num}", s"it" ];
+    var multiple_assign = [s"come_exception_var_b\{var_num}", s"Err" ];
     
     sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
                                         , null@type, true@alloc, expression_node, info);
@@ -627,7 +627,7 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
     
     var buf = new buffer();
     
-    buf.append_str(xsprintf("{ return none(it); }"));
+    buf.append_str(xsprintf("{ return none(Err); }"));
     
     info.source = buf;
     info.p = info.source.buf;
@@ -648,7 +648,7 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
 
     sBlock*% else_block = null;
     
-    sNode*% expression_node2 = create_load_var(s"it");
+    sNode*% expression_node2 = create_load_var(s"Err");
 
     sNode*% if_node = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
     sNode*% load_var = create_load_var(s"come_exception_var_b\{var_num}");
@@ -669,7 +669,7 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     static int var_num = 0;
     var_num++;
     
-    var multiple_assign = [s"come_exception_var_c\{var_num}", s"it" ];
+    var multiple_assign = [s"come_exception_var_c\{var_num}", s"Err" ];
     
     sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
                                         , null@type, true@alloc, expression_node, info);
@@ -680,7 +680,7 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     
     var buf = new buffer();
     
-    buf.append_str(xsprintf("{ puts(it); exit(0); }"));
+    buf.append_str(xsprintf("{ puts(Err); exit(0); }"));
     
     info.source = buf;
     info.p = info.source.buf;
@@ -701,7 +701,7 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
 
     sBlock*% else_block = null;
     
-    sNode*% expression_node2 = create_load_var(s"it");
+    sNode*% expression_node2 = create_load_var(s"Err");
 
     sNode*% if_node = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
     sNode*% load_var = create_load_var(s"come_exception_var_c\{var_num}");

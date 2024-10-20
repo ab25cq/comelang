@@ -961,6 +961,11 @@ class sMethodCallNode extends sNodeBase
     }
 };
 
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool throw_or_rescue, sInfo* info)
+{
+    return new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, info) implements sNode;
+}
+
 sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
 {
     list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string,sNode*%>*%>();
