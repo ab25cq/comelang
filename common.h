@@ -695,6 +695,8 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 /////////////////////////////////////////////////////////////////////
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
+extern list<sRightValueObject*%>*% gRightValueObjects;
+
 sNode*% create_throw(sNode*% expression_node, sInfo* info);
 sNode*% create_exception_value(sNode*% expression_node, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;

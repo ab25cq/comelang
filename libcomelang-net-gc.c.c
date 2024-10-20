@@ -11494,27 +11494,27 @@ memset(&__null_value23, 0, sizeof(int));
 struct tuple2$2intcharph* create_user_if_not_exists(char* user, char* password, char* root_password, char* host_name){
 void* __result_obj__=(void*)0;
 struct tuple2$2intcharph* multiple_assign_var1;
-int come_exception_var_a1_94;
+int come_exception_var_b1_94;
 char* Err_95;
 int __null_value24;
 struct tuple2$2intcharph* __result97__;
 _Bool _and_conditional3;
 struct tuple2$2intcharph* multiple_assign_var2;
-int come_exception_var_a2_96;
+int come_exception_var_b2_96;
 char* Err_97;
 int __null_value25;
 struct tuple2$2intcharph* __result98__;
 char* check_user_query_98;
 _Bool _or_conditional1;
 struct tuple2$2intcharph* multiple_assign_var3;
-int come_exception_var_a3_99;
+int come_exception_var_b3_99;
 char* Err_100;
 int __null_value26;
 struct tuple2$2intcharph* __result99__;
 struct st_mysql_res* result_101;
 _Bool _and_conditional4;
 struct tuple2$2intcharph* multiple_assign_var4;
-int come_exception_var_a4_102;
+int come_exception_var_b4_102;
 char* Err_103;
 int __null_value27;
 struct tuple2$2intcharph* __result100__;
@@ -11522,19 +11522,19 @@ char** row_104;
 int user_exists_105;
 _Bool _or_conditional2;
 struct tuple2$2intcharph* multiple_assign_var5;
-int come_exception_var_a5_106;
+int come_exception_var_b5_106;
 char* Err_107;
 int __null_value28;
 struct tuple2$2intcharph* __result101__;
 _Bool _or_conditional3;
 struct tuple2$2intcharph* multiple_assign_var6;
-int come_exception_var_a6_108;
+int come_exception_var_b6_108;
 char* Err_109;
 int __null_value29;
 struct tuple2$2intcharph* __result102__;
 _Bool _or_conditional4;
 struct tuple2$2intcharph* multiple_assign_var7;
-int come_exception_var_a7_110;
+int come_exception_var_b7_110;
 char* Err_111;
 int __null_value30;
 struct tuple2$2intcharph* __result103__;
@@ -11547,7 +11547,7 @@ memset(&__null_value28, 0, sizeof(int));
 memset(&__null_value29, 0, sizeof(int));
 memset(&__null_value30, 0, sizeof(int));
     multiple_assign_var1=come_mysql_init();
-    come_exception_var_a1_94=multiple_assign_var1->v1;
+    come_exception_var_b1_94=multiple_assign_var1->v1;
     Err_95=multiple_assign_var1->v2;
     if(Err_95) {
         __result97__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 317, "struct tuple2$2intcharph"),__null_value24,Err_95);
@@ -11556,7 +11556,7 @@ memset(&__null_value30, 0, sizeof(int));
     }
     if((_and_conditional3=(mysql_real_connect(gComeMySQL,host_name,"root",root_password,((void*)0),0,((void*)0),0))),    _and_conditional3 == 0) {
         multiple_assign_var2=finish_with_error();
-        come_exception_var_a2_96=multiple_assign_var2->v1;
+        come_exception_var_b2_96=multiple_assign_var2->v1;
         Err_97=multiple_assign_var2->v2;
         if(Err_97) {
             __result98__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 319, "struct tuple2$2intcharph"),__null_value25,Err_97);
@@ -11567,7 +11567,7 @@ memset(&__null_value30, 0, sizeof(int));
     check_user_query_98=xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",charp_to_string(user),charp_to_string(host_name));
     if((_or_conditional1=(mysql_query(gComeMySQL,check_user_query_98))),    _or_conditional1 != 0) {
         multiple_assign_var3=finish_with_error();
-        come_exception_var_a3_99=multiple_assign_var3->v1;
+        come_exception_var_b3_99=multiple_assign_var3->v1;
         Err_100=multiple_assign_var3->v2;
         if(Err_100) {
             __result99__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 324, "struct tuple2$2intcharph"),__null_value26,Err_100);
@@ -11577,7 +11577,7 @@ memset(&__null_value30, 0, sizeof(int));
     }
     if((_and_conditional4=(result_101=mysql_store_result(gComeMySQL))),    _and_conditional4 == 0) {
         multiple_assign_var4=finish_with_error();
-        come_exception_var_a4_102=multiple_assign_var4->v1;
+        come_exception_var_b4_102=multiple_assign_var4->v1;
         Err_103=multiple_assign_var4->v2;
         if(Err_103) {
             __result100__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 326, "struct tuple2$2intcharph"),__null_value27,Err_103);
@@ -11591,7 +11591,7 @@ memset(&__null_value30, 0, sizeof(int));
     if(user_exists_105==0) {
         if((_or_conditional2=(mysql_query(gComeMySQL,xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",charp_to_string(user),charp_to_string(host_name),charp_to_string(password))))),        _or_conditional2 != 0) {
             multiple_assign_var5=finish_with_error();
-            come_exception_var_a5_106=multiple_assign_var5->v1;
+            come_exception_var_b5_106=multiple_assign_var5->v1;
             Err_107=multiple_assign_var5->v2;
             if(Err_107) {
                 __result101__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 334, "struct tuple2$2intcharph"),__null_value28,Err_107);
@@ -11601,7 +11601,7 @@ memset(&__null_value30, 0, sizeof(int));
         }
         if((_or_conditional3=(mysql_query(gComeMySQL,xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",charp_to_string(user),charp_to_string(host_name))))),        _or_conditional3 != 0) {
             multiple_assign_var6=finish_with_error();
-            come_exception_var_a6_108=multiple_assign_var6->v1;
+            come_exception_var_b6_108=multiple_assign_var6->v1;
             Err_109=multiple_assign_var6->v2;
             if(Err_109) {
                 __result102__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 336, "struct tuple2$2intcharph"),__null_value29,Err_109);
@@ -11611,7 +11611,7 @@ memset(&__null_value30, 0, sizeof(int));
         }
         if((_or_conditional4=(mysql_query(gComeMySQL,"FLUSH PRIVILEGES"))),        _or_conditional4 != 0) {
             multiple_assign_var7=finish_with_error();
-            come_exception_var_a7_110=multiple_assign_var7->v1;
+            come_exception_var_b7_110=multiple_assign_var7->v1;
             Err_111=multiple_assign_var7->v2;
             if(Err_111) {
                 __result103__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 338, "struct tuple2$2intcharph"),__null_value30,Err_111);
@@ -11629,20 +11629,20 @@ memset(&__null_value30, 0, sizeof(int));
 struct tuple2$2intcharph* create_database_if_not_exists(char* database_name, char* user_name, char* password, char* host_name){
 void* __result_obj__=(void*)0;
 struct tuple2$2intcharph* multiple_assign_var8;
-int come_exception_var_a8_112;
+int come_exception_var_b8_112;
 char* Err_113;
 int __null_value31;
 struct tuple2$2intcharph* __result105__;
 _Bool _and_conditional5;
 struct tuple2$2intcharph* multiple_assign_var9;
-int come_exception_var_a9_114;
+int come_exception_var_b9_114;
 char* Err_115;
 int __null_value32;
 struct tuple2$2intcharph* __result106__;
 char* create_db_query_116;
 _Bool _or_conditional5;
 struct tuple2$2intcharph* multiple_assign_var10;
-int come_exception_var_a10_117;
+int come_exception_var_b10_117;
 char* Err_118;
 int __null_value33;
 struct tuple2$2intcharph* __result107__;
@@ -11651,7 +11651,7 @@ memset(&__null_value31, 0, sizeof(int));
 memset(&__null_value32, 0, sizeof(int));
 memset(&__null_value33, 0, sizeof(int));
     multiple_assign_var8=come_mysql_init();
-    come_exception_var_a8_112=multiple_assign_var8->v1;
+    come_exception_var_b8_112=multiple_assign_var8->v1;
     Err_113=multiple_assign_var8->v2;
     if(Err_113) {
         __result105__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 348, "struct tuple2$2intcharph"),__null_value31,Err_113);
@@ -11660,7 +11660,7 @@ memset(&__null_value33, 0, sizeof(int));
     }
     if((_and_conditional5=(mysql_real_connect(gComeMySQL,host_name,user_name,password,((void*)0),0,((void*)0),0))),    _and_conditional5 == 0) {
         multiple_assign_var9=finish_with_error();
-        come_exception_var_a9_114=multiple_assign_var9->v1;
+        come_exception_var_b9_114=multiple_assign_var9->v1;
         Err_115=multiple_assign_var9->v2;
         if(Err_115) {
             __result106__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 350, "struct tuple2$2intcharph"),__null_value32,Err_115);
@@ -11671,7 +11671,7 @@ memset(&__null_value33, 0, sizeof(int));
     create_db_query_116=xsprintf("CREATE DATABASE IF NOT EXISTS \%s",charp_to_string(database_name));
     if((_or_conditional5=(mysql_query(gComeMySQL,create_db_query_116))),    _or_conditional5 != 0) {
         multiple_assign_var10=finish_with_error();
-        come_exception_var_a10_117=multiple_assign_var10->v1;
+        come_exception_var_b10_117=multiple_assign_var10->v1;
         Err_118=multiple_assign_var10->v2;
         if(Err_118) {
             __result107__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 354, "struct tuple2$2intcharph"),__null_value33,Err_118);
@@ -11688,35 +11688,35 @@ memset(&__null_value33, 0, sizeof(int));
 struct tuple2$2intcharph* xmysql_query(char* query, char* user, char* password, _Bool create_user, _Bool create_database, char* root_password, char* database_name, char* host_name){
 void* __result_obj__=(void*)0;
 struct tuple2$2intcharph* multiple_assign_var11;
-int come_exception_var_a11_119;
+int come_exception_var_b11_119;
 char* Err_120;
 int __null_value34;
 struct tuple2$2intcharph* __result109__;
 struct tuple2$2intcharph* multiple_assign_var12;
-int come_exception_var_a12_121;
+int come_exception_var_b12_121;
 char* Err_122;
 int __null_value35;
 struct tuple2$2intcharph* __result110__;
 struct tuple2$2intcharph* multiple_assign_var13;
-int come_exception_var_a13_123;
+int come_exception_var_b13_123;
 char* Err_124;
 int __null_value36;
 struct tuple2$2intcharph* __result111__;
 _Bool _and_conditional6;
 struct tuple2$2intcharph* multiple_assign_var14;
-int come_exception_var_a14_125;
+int come_exception_var_b14_125;
 char* Err_126;
 int __null_value37;
 struct tuple2$2intcharph* __result112__;
 _Bool _and_conditional7;
 struct tuple2$2intcharph* multiple_assign_var15;
-int come_exception_var_a15_127;
+int come_exception_var_b15_127;
 char* Err_128;
 int __null_value38;
 struct tuple2$2intcharph* __result113__;
 _Bool _or_conditional6;
 struct tuple2$2intcharph* multiple_assign_var16;
-int come_exception_var_a16_129;
+int come_exception_var_b16_129;
 char* Err_130;
 int __null_value39;
 struct tuple2$2intcharph* __result114__;
@@ -11729,7 +11729,7 @@ memset(&__null_value38, 0, sizeof(int));
 memset(&__null_value39, 0, sizeof(int));
     if(create_user) {
         multiple_assign_var11=create_user_if_not_exists(user,password,root_password,"localhost");
-        come_exception_var_a11_119=multiple_assign_var11->v1;
+        come_exception_var_b11_119=multiple_assign_var11->v1;
         Err_120=multiple_assign_var11->v2;
         if(Err_120) {
             __result109__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 364, "struct tuple2$2intcharph"),__null_value34,Err_120);
@@ -11739,7 +11739,7 @@ memset(&__null_value39, 0, sizeof(int));
     }
     if(create_database) {
         multiple_assign_var12=create_database_if_not_exists(database_name,user,password,host_name);
-        come_exception_var_a12_121=multiple_assign_var12->v1;
+        come_exception_var_b12_121=multiple_assign_var12->v1;
         Err_122=multiple_assign_var12->v2;
         if(Err_122) {
             __result110__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 367, "struct tuple2$2intcharph"),__null_value35,Err_122);
@@ -11748,7 +11748,7 @@ memset(&__null_value39, 0, sizeof(int));
         }
     }
     multiple_assign_var13=come_mysql_init();
-    come_exception_var_a13_123=multiple_assign_var13->v1;
+    come_exception_var_b13_123=multiple_assign_var13->v1;
     Err_124=multiple_assign_var13->v2;
     if(Err_124) {
         __result111__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 370, "struct tuple2$2intcharph"),__null_value36,Err_124);
@@ -11757,7 +11757,7 @@ memset(&__null_value39, 0, sizeof(int));
     }
     if((_and_conditional6=(mysql_select_db(gComeMySQL,database_name))),    _and_conditional6 == 0) {
         multiple_assign_var14=finish_with_error();
-        come_exception_var_a14_125=multiple_assign_var14->v1;
+        come_exception_var_b14_125=multiple_assign_var14->v1;
         Err_126=multiple_assign_var14->v2;
         if(Err_126) {
             __result112__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 372, "struct tuple2$2intcharph"),__null_value37,Err_126);
@@ -11767,7 +11767,7 @@ memset(&__null_value39, 0, sizeof(int));
     }
     if((_and_conditional7=(mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0))),    _and_conditional7 == 0) {
         multiple_assign_var15=finish_with_error();
-        come_exception_var_a15_127=multiple_assign_var15->v1;
+        come_exception_var_b15_127=multiple_assign_var15->v1;
         Err_128=multiple_assign_var15->v2;
         if(Err_128) {
             __result113__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 374, "struct tuple2$2intcharph"),__null_value38,Err_128);
@@ -11777,7 +11777,7 @@ memset(&__null_value39, 0, sizeof(int));
     }
     if((_or_conditional6=(mysql_query(gComeMySQL,query))),    _or_conditional6 != 0) {
         multiple_assign_var16=finish_with_error();
-        come_exception_var_a16_129=multiple_assign_var16->v1;
+        come_exception_var_b16_129=multiple_assign_var16->v1;
         Err_130=multiple_assign_var16->v2;
         if(Err_130) {
             __result114__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 376, "struct tuple2$2intcharph"),__null_value39,Err_130);
@@ -11794,42 +11794,42 @@ memset(&__null_value39, 0, sizeof(int));
 struct tuple2$2list$1list$1charphphphcharph* xmysql_query_and_fetch_row(char* query, char* user, char* password, _Bool create_user, _Bool create_database, char* root_password, char* database_name, char* host_name){
 void* __result_obj__=(void*)0;
 struct tuple2$2intcharph* multiple_assign_var17;
-int come_exception_var_a17_131;
+int come_exception_var_b17_131;
 char* Err_132;
 struct list$1list$1charphph* __null_value40;
 struct tuple2$2list$1list$1charphphphcharph* __result117__;
 struct tuple2$2intcharph* multiple_assign_var18;
-int come_exception_var_a18_133;
+int come_exception_var_b18_133;
 char* Err_134;
 struct list$1list$1charphph* __null_value41;
 struct tuple2$2list$1list$1charphphphcharph* __result118__;
 struct tuple2$2intcharph* multiple_assign_var19;
-int come_exception_var_a19_135;
+int come_exception_var_b19_135;
 char* Err_136;
 struct list$1list$1charphph* __null_value42;
 struct tuple2$2list$1list$1charphphphcharph* __result119__;
 _Bool _and_conditional8;
 struct tuple2$2intcharph* multiple_assign_var20;
-int come_exception_var_a20_137;
+int come_exception_var_b20_137;
 char* Err_138;
 struct list$1list$1charphph* __null_value43;
 struct tuple2$2list$1list$1charphphphcharph* __result120__;
 _Bool _and_conditional9;
 struct tuple2$2intcharph* multiple_assign_var21;
-int come_exception_var_a21_139;
+int come_exception_var_b21_139;
 char* Err_140;
 struct list$1list$1charphph* __null_value44;
 struct tuple2$2list$1list$1charphphphcharph* __result121__;
 _Bool _or_conditional7;
 struct tuple2$2intcharph* multiple_assign_var22;
-int come_exception_var_a22_141;
+int come_exception_var_b22_141;
 char* Err_142;
 struct list$1list$1charphph* __null_value45;
 struct tuple2$2list$1list$1charphphphcharph* __result122__;
 struct st_mysql_res* res_143;
 _Bool _and_conditional10;
 struct tuple2$2intcharph* multiple_assign_var23;
-int come_exception_var_a23_144;
+int come_exception_var_b23_144;
 char* Err_145;
 struct list$1list$1charphph* __null_value46;
 struct tuple2$2list$1list$1charphphphcharph* __result123__;
@@ -11849,7 +11849,7 @@ memset(&__null_value46, 0, sizeof(struct list$1list$1charphph*));
 row_148 = (void*)0;
     if(create_user) {
         multiple_assign_var17=create_user_if_not_exists(user,password,root_password,"localhost");
-        come_exception_var_a17_131=multiple_assign_var17->v1;
+        come_exception_var_b17_131=multiple_assign_var17->v1;
         Err_132=multiple_assign_var17->v2;
         if(Err_132) {
             __result117__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 386, "struct tuple2$2list$1list$1charphphphcharph"),__null_value40,Err_132);
@@ -11859,7 +11859,7 @@ row_148 = (void*)0;
     }
     if(create_database) {
         multiple_assign_var18=create_database_if_not_exists(database_name,user,password,host_name);
-        come_exception_var_a18_133=multiple_assign_var18->v1;
+        come_exception_var_b18_133=multiple_assign_var18->v1;
         Err_134=multiple_assign_var18->v2;
         if(Err_134) {
             __result118__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 389, "struct tuple2$2list$1list$1charphphphcharph"),__null_value41,Err_134);
@@ -11868,7 +11868,7 @@ row_148 = (void*)0;
         }
     }
     multiple_assign_var19=come_mysql_init();
-    come_exception_var_a19_135=multiple_assign_var19->v1;
+    come_exception_var_b19_135=multiple_assign_var19->v1;
     Err_136=multiple_assign_var19->v2;
     if(Err_136) {
         __result119__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 392, "struct tuple2$2list$1list$1charphphphcharph"),__null_value42,Err_136);
@@ -11877,7 +11877,7 @@ row_148 = (void*)0;
     }
     if((_and_conditional8=(mysql_select_db(gComeMySQL,database_name))),    _and_conditional8 == 0) {
         multiple_assign_var20=finish_with_error();
-        come_exception_var_a20_137=multiple_assign_var20->v1;
+        come_exception_var_b20_137=multiple_assign_var20->v1;
         Err_138=multiple_assign_var20->v2;
         if(Err_138) {
             __result120__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 394, "struct tuple2$2list$1list$1charphphphcharph"),__null_value43,Err_138);
@@ -11887,7 +11887,7 @@ row_148 = (void*)0;
     }
     if((_and_conditional9=(mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0))),    _and_conditional9 == 0) {
         multiple_assign_var21=finish_with_error();
-        come_exception_var_a21_139=multiple_assign_var21->v1;
+        come_exception_var_b21_139=multiple_assign_var21->v1;
         Err_140=multiple_assign_var21->v2;
         if(Err_140) {
             __result121__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 396, "struct tuple2$2list$1list$1charphphphcharph"),__null_value44,Err_140);
@@ -11897,7 +11897,7 @@ row_148 = (void*)0;
     }
     if((_or_conditional7=(mysql_query(gComeMySQL,query))),    _or_conditional7 != 0) {
         multiple_assign_var22=finish_with_error();
-        come_exception_var_a22_141=multiple_assign_var22->v1;
+        come_exception_var_b22_141=multiple_assign_var22->v1;
         Err_142=multiple_assign_var22->v2;
         if(Err_142) {
             __result122__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 398, "struct tuple2$2list$1list$1charphphphcharph"),__null_value45,Err_142);
@@ -11907,7 +11907,7 @@ row_148 = (void*)0;
     }
     if((_and_conditional10=(res_143=mysql_store_result(gComeMySQL))),    _and_conditional10 == 0) {
         multiple_assign_var23=finish_with_error();
-        come_exception_var_a23_144=multiple_assign_var23->v1;
+        come_exception_var_b23_144=multiple_assign_var23->v1;
         Err_145=multiple_assign_var23->v2;
         if(Err_145) {
             __result123__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 400, "struct tuple2$2list$1list$1charphphphcharph"),__null_value46,Err_145);

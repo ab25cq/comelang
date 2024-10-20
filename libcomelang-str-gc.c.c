@@ -2644,21 +2644,21 @@ void come_regex_finalize(struct come_regex* reg){
 struct tuple2$2come_regexphcharph* charp_to_regex(char* self, _Bool ignore_case, _Bool multiline, _Bool global, _Bool extended, _Bool dotall, _Bool anchored, _Bool dollar_endonly, _Bool ungreedy){
 void* __result_obj__=(void*)0;
 struct tuple2$2come_regexphcharph* multiple_assign_var1;
-struct come_regex* come_exception_var_a1_47;
+struct come_regex* come_exception_var_b1_47;
 char* Err_48;
 struct come_regex* __null_value2;
 struct tuple2$2come_regexphcharph* __result96__;
 struct tuple2$2come_regexphcharph* __result97__;
 memset(&__null_value2, 0, sizeof(struct come_regex*));
     multiple_assign_var1=come_regex_initialize((struct come_regex*)come_calloc(1, sizeof(struct come_regex)*(1), "libcomelang-str-gc.c", 68, "come_regex"),self,ignore_case,multiline,global,extended,dotall,anchored,dollar_endonly,ungreedy);
-    come_exception_var_a1_47=multiple_assign_var1->v1;
+    come_exception_var_b1_47=multiple_assign_var1->v1;
     Err_48=multiple_assign_var1->v2;
     if(Err_48) {
         __result96__ = gComeFunResultObject = __result_obj__ = tuple2$2come_regexphcharph_initialize((struct tuple2$2come_regexphcharph*)come_calloc(1, sizeof(struct tuple2$2come_regexphcharph)*(1), "libcomelang-str-gc.c", 68, "struct tuple2$2come_regexphcharph"),__null_value2,Err_48);
         gComeFunResultObject = (void*)0;
         return __result96__;
     }
-    __result97__ = gComeFunResultObject = __result_obj__ = tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str-gc.c", 68, "struct tuple2$2come_regexphvoidp"),come_exception_var_a1_47,((void*)0));
+    __result97__ = gComeFunResultObject = __result_obj__ = tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str-gc.c", 68, "struct tuple2$2come_regexphvoidp"),come_exception_var_b1_47,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result97__;
 }
@@ -2666,21 +2666,21 @@ memset(&__null_value2, 0, sizeof(struct come_regex*));
 struct tuple2$2come_regexphcharph* string_to_regex(char* self, _Bool ignore_case, _Bool multiline, _Bool global, _Bool extended, _Bool dotall, _Bool anchored, _Bool dollar_endonly, _Bool ungreedy){
 void* __result_obj__=(void*)0;
 struct tuple2$2come_regexphcharph* multiple_assign_var2;
-struct come_regex* come_exception_var_a2_49;
+struct come_regex* come_exception_var_b2_49;
 char* Err_50;
 struct come_regex* __null_value3;
 struct tuple2$2come_regexphcharph* __result98__;
 struct tuple2$2come_regexphcharph* __result99__;
 memset(&__null_value3, 0, sizeof(struct come_regex*));
     multiple_assign_var2=come_regex_initialize((struct come_regex*)come_calloc(1, sizeof(struct come_regex)*(1), "libcomelang-str-gc.c", 73, "come_regex"),self,ignore_case,multiline,global,extended,dotall,anchored,dollar_endonly,ungreedy);
-    come_exception_var_a2_49=multiple_assign_var2->v1;
+    come_exception_var_b2_49=multiple_assign_var2->v1;
     Err_50=multiple_assign_var2->v2;
     if(Err_50) {
         __result98__ = gComeFunResultObject = __result_obj__ = tuple2$2come_regexphcharph_initialize((struct tuple2$2come_regexphcharph*)come_calloc(1, sizeof(struct tuple2$2come_regexphcharph)*(1), "libcomelang-str-gc.c", 73, "struct tuple2$2come_regexphcharph"),__null_value3,Err_50);
         gComeFunResultObject = (void*)0;
         return __result98__;
     }
-    __result99__ = gComeFunResultObject = __result_obj__ = tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str-gc.c", 73, "struct tuple2$2come_regexphvoidp"),come_exception_var_a2_49,((void*)0));
+    __result99__ = gComeFunResultObject = __result_obj__ = tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str-gc.c", 73, "struct tuple2$2come_regexphvoidp"),come_exception_var_b2_49,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result99__;
 }

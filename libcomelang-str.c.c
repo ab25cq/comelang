@@ -3021,9 +3021,8 @@ void* __right_value152 = (void*)0;
 void* __right_value153 = (void*)0;
 void* __right_value154 = (void*)0;
 struct tuple2$2come_regexphcharph* multiple_assign_var1;
-struct come_regex* come_exception_var_a1_69;
+struct come_regex* come_exception_var_b1_69;
 char* Err_70;
-_Bool _if_conditional1;
 struct come_regex* __null_value2;
 void* __right_value155 = (void*)0;
 void* __right_value156 = (void*)0;
@@ -3034,13 +3033,11 @@ void* __right_value158 = (void*)0;
 struct tuple2$2come_regexphcharph* __result97__;
 memset(&__null_value2, 0, sizeof(struct come_regex*));
     multiple_assign_var1=((struct tuple2$2come_regexphcharph*)(__right_value154=come_regex_initialize((struct come_regex*)come_increment_ref_count((struct come_regex*)come_calloc(1, sizeof(struct come_regex)*(1), "libcomelang-str.c", 68, "come_regex")),self,ignore_case,multiline,global,extended,dotall,anchored,dollar_endonly,ungreedy)));
-    come_exception_var_a1_69=(struct come_regex*)come_increment_ref_count(multiple_assign_var1->v1);
+    come_exception_var_b1_69=(struct come_regex*)come_increment_ref_count(multiple_assign_var1->v1);
     Err_70=(char*)come_increment_ref_count(multiple_assign_var1->v2);
-    if((_if_conditional1=(Err_70)),    /*f*/come_call_finalizer3(__right_value152,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__),
-    /*f*/come_call_finalizer3(__right_value154,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__),
-    _if_conditional1) {
+    if(Err_70) {
         __result96__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2come_regexphcharph*)(__right_value156=tuple2$2come_regexphcharph_initialize((struct tuple2$2come_regexphcharph*)come_increment_ref_count((struct tuple2$2come_regexphcharph*)come_calloc(1, sizeof(struct tuple2$2come_regexphcharph)*(1), "libcomelang-str.c", 68, "struct tuple2$2come_regexphcharph")),(struct come_regex*)come_increment_ref_count(__null_value2),(char*)come_increment_ref_count(Err_70))));
-        /*i*/come_call_finalizer3(come_exception_var_a1_69,come_regex_finalize, 0, 0, 0, 0, (void*)0);
+        /*i*/come_call_finalizer3(come_exception_var_b1_69,come_regex_finalize, 0, 0, 0, 0, (void*)0);
         Err_70 = come_decrement_ref_count2(Err_70, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value156,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
@@ -3048,9 +3045,11 @@ memset(&__null_value2, 0, sizeof(struct come_regex*));
     }
     __dec_obj23=Err_70;
     __dec_obj23 = come_decrement_ref_count2(__dec_obj23, (void*)0, (void*)0, 0,0,0, (void*)0);
-    __result97__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2come_regexphvoidp*)(__right_value158=tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_increment_ref_count((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str.c", 68, "struct tuple2$2come_regexphvoidp")),(struct come_regex*)come_increment_ref_count(come_exception_var_a1_69),((void*)0))));
-    /*i*/come_call_finalizer3(come_exception_var_a1_69,come_regex_finalize, 0, 0, 0, 0, (void*)0);
+    __result97__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2come_regexphvoidp*)(__right_value158=tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_increment_ref_count((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str.c", 68, "struct tuple2$2come_regexphvoidp")),(struct come_regex*)come_increment_ref_count(come_exception_var_b1_69),((void*)0))));
+    /*i*/come_call_finalizer3(come_exception_var_b1_69,come_regex_finalize, 0, 0, 0, 0, (void*)0);
     Err_70 = come_decrement_ref_count2(Err_70, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    /*g*/come_call_finalizer3(__right_value152,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
+    /*g*/come_call_finalizer3(__right_value154,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
     /*g*/come_call_finalizer3(__right_value158,tuple2$2come_regexphvoidpp_finalize, 0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result97__;
@@ -3063,9 +3062,8 @@ void* __right_value160 = (void*)0;
 void* __right_value161 = (void*)0;
 void* __right_value162 = (void*)0;
 struct tuple2$2come_regexphcharph* multiple_assign_var2;
-struct come_regex* come_exception_var_a2_71;
+struct come_regex* come_exception_var_b2_71;
 char* Err_72;
-_Bool _if_conditional2;
 struct come_regex* __null_value3;
 void* __right_value163 = (void*)0;
 void* __right_value164 = (void*)0;
@@ -3076,13 +3074,11 @@ void* __right_value166 = (void*)0;
 struct tuple2$2come_regexphcharph* __result99__;
 memset(&__null_value3, 0, sizeof(struct come_regex*));
     multiple_assign_var2=((struct tuple2$2come_regexphcharph*)(__right_value162=come_regex_initialize((struct come_regex*)come_increment_ref_count((struct come_regex*)come_calloc(1, sizeof(struct come_regex)*(1), "libcomelang-str.c", 73, "come_regex")),self,ignore_case,multiline,global,extended,dotall,anchored,dollar_endonly,ungreedy)));
-    come_exception_var_a2_71=(struct come_regex*)come_increment_ref_count(multiple_assign_var2->v1);
+    come_exception_var_b2_71=(struct come_regex*)come_increment_ref_count(multiple_assign_var2->v1);
     Err_72=(char*)come_increment_ref_count(multiple_assign_var2->v2);
-    if((_if_conditional2=(Err_72)),    /*f*/come_call_finalizer3(__right_value160,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__),
-    /*f*/come_call_finalizer3(__right_value162,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__),
-    _if_conditional2) {
+    if(Err_72) {
         __result98__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2come_regexphcharph*)(__right_value164=tuple2$2come_regexphcharph_initialize((struct tuple2$2come_regexphcharph*)come_increment_ref_count((struct tuple2$2come_regexphcharph*)come_calloc(1, sizeof(struct tuple2$2come_regexphcharph)*(1), "libcomelang-str.c", 73, "struct tuple2$2come_regexphcharph")),(struct come_regex*)come_increment_ref_count(__null_value3),(char*)come_increment_ref_count(Err_72))));
-        /*i*/come_call_finalizer3(come_exception_var_a2_71,come_regex_finalize, 0, 0, 0, 0, (void*)0);
+        /*i*/come_call_finalizer3(come_exception_var_b2_71,come_regex_finalize, 0, 0, 0, 0, (void*)0);
         Err_72 = come_decrement_ref_count2(Err_72, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value164,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
@@ -3090,9 +3086,11 @@ memset(&__null_value3, 0, sizeof(struct come_regex*));
     }
     __dec_obj24=Err_72;
     __dec_obj24 = come_decrement_ref_count2(__dec_obj24, (void*)0, (void*)0, 0,0,0, (void*)0);
-    __result99__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2come_regexphvoidp*)(__right_value166=tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_increment_ref_count((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str.c", 73, "struct tuple2$2come_regexphvoidp")),(struct come_regex*)come_increment_ref_count(come_exception_var_a2_71),((void*)0))));
-    /*i*/come_call_finalizer3(come_exception_var_a2_71,come_regex_finalize, 0, 0, 0, 0, (void*)0);
+    __result99__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2come_regexphvoidp*)(__right_value166=tuple2$2come_regexphvoidp_initialize((struct tuple2$2come_regexphvoidp*)come_increment_ref_count((struct tuple2$2come_regexphvoidp*)come_calloc(1, sizeof(struct tuple2$2come_regexphvoidp)*(1), "libcomelang-str.c", 73, "struct tuple2$2come_regexphvoidp")),(struct come_regex*)come_increment_ref_count(come_exception_var_b2_71),((void*)0))));
+    /*i*/come_call_finalizer3(come_exception_var_b2_71,come_regex_finalize, 0, 0, 0, 0, (void*)0);
     Err_72 = come_decrement_ref_count2(Err_72, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    /*g*/come_call_finalizer3(__right_value160,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
+    /*g*/come_call_finalizer3(__right_value162,tuple2$2come_regexphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
     /*g*/come_call_finalizer3(__right_value166,tuple2$2come_regexphvoidpp_finalize, 0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result99__;

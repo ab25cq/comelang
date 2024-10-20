@@ -774,6 +774,7 @@ struct list$1tuple3$3sTypephcharphsNodephph
     int len;
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
+extern struct list$1sRightValueObjectph* gRightValueObjects;
 struct sCurrentNode
 {
     int sline;
@@ -8401,7 +8402,7 @@ struct sNode* __result239__;
     }
     parse_sharp_v5(info);
     throw_or_rescue_471=(_Bool)0;
-    if(strncmp(info->p,".rescue",strlen(".rescue"))==0) {
+    if(strncmp(info->p,".rescue",strlen(".rescue"))==0||strncmp(info->p,".exception_value",strlen(".exception_value"))==0||strncmp(info->p,".exception_throw",strlen(".exception_throw"))==0) {
         throw_or_rescue_471=(_Bool)1;
     }
     parse_sharp_v5(info);

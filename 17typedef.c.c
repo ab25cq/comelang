@@ -774,6 +774,7 @@ struct list$1tuple3$3sTypephcharphsNodephph
     int len;
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
+extern struct list$1sRightValueObjectph* gRightValueObjects;
 struct list_item$1tuple2$2sTypephcharphph
 {
     struct tuple2$2sTypephcharph* item;

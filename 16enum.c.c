@@ -774,6 +774,7 @@ struct list$1tuple3$3sTypephcharphsNodephph
     int len;
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
+extern struct list$1sRightValueObjectph* gRightValueObjects;
 struct sEnumNode
 {
     int sline;
@@ -5463,7 +5464,7 @@ struct sNode* __result148__;
             __dec_obj145 = come_decrement_ref_count2(__dec_obj145, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            if(map$2charphsClassph_at(info->classes,type_name_194,((void*)0))==((void*)0)) {
+            if(type_name_194==((void*)0)||map$2charphsClassph_at(info->classes,type_name_194,((void*)0))==((void*)0)) {
             }
             else {
                 output_193=(_Bool)0;

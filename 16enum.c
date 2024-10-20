@@ -217,7 +217,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             type_name = string("");
         }
         else {
-            if(info.classes.at(type_name, null) == null) {
+            if(type_name == null || info.classes.at(type_name, null) == null) {
             }
             else {
                 output = false;

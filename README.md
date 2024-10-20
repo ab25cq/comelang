@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 4.0.1
+version 4.0.2
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+4.0.2 Some library function which uses regex entered bug when 4.0.1, fixed.
 4.0.1 Some library function start to use exception. When exception, resuce Err Msg is now "Err" not "it".
 4.0.0 Exception is perfect like Java, ruby, Python.
 3.5.2 More improvement of exception
@@ -3522,7 +3523,10 @@ exceptionを戻り値に持つ関数の中ではreturn none(string);が使えま
 
 You can use return none(string); in functions that have exception as a return value. Calling this will raise an exception. string is the exception message. If you do not use .resuce in the calling function, the exception string will be displayed and the function will exit. If you use .resuce, the program will not terminate even if an exception occurs. In .resuce, the exception message is stored in a variable called Err. If functions are nested, attaching exception to the calling function will allow the exception to be caught with .resuce after a global escape when return none(string); is called, even in deeply nested cases.
 
+例外がある関数の引数に例外がある関数呼び出しがあるとメモリーリークとなります。これは実装上仕方がないことで、その時は明示的に.exception_value, .exception_throwと.rescueを呼び出してください。メモリーリークが防げます。また気が向けば直すかもしれません。
 
+If a function with an exception is called as an argument to a function with an exception, a memory leak will occur.
+This is unavoidable due to the implementation, so in that case, please explicitly call .exception_value, .exception_throw and .rescue. This will prevent memory leaks. I may fix it again if I feel like it.
 
 # afterword
 
