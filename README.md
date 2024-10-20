@@ -2835,6 +2835,10 @@ int main()
 
 ```
 
+```
+    /193(#)#"00~|{}|{/.rescue { /* Catch invalid regex */ }
+```
+
 # smart pointer
 
 ```C
