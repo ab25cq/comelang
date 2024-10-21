@@ -667,6 +667,7 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
     return new sMultipleNode(multiple_node, info) implements sNode;
 }
 
+
 sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
 {
     string sname = clone info->sname;

@@ -1,21 +1,22 @@
 #include <comelang.h>
 #include <comelang-str.h>
 
-exception int char*::test(char* self, come_regex* regex) 
+exception string test(char* self, come_regex* reg) 
 {
-    return 0;
+    printf("self %p\n", self);
+    return none(s"ABC");
 }
 
-exception int string::test(char* self, come_regex* regex) 
+int fun()
 {
+    var a = test(s"ABC", /./).rescue { printf("%p\n", Err); puts(Err); };
+    
     return 0;
 }
 
 int main(int argc, char** argv)
 {
-    int a = s"ABC".test(/./).exception_value;
-    
-    printf("a %d\n", a);
+    fun();
     
     return 0;
 }

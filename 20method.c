@@ -207,20 +207,26 @@ class sMethodCallNode extends sNodeBase
         buffer* method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
         bool throw_or_rescue = self.throw_or_rescue;
+        list<sRightValueObject*%>*% right_value_objects = clone info.right_value_objects;
         
         list<sType*%>*% method_generics_types = info->method_generics_types;
         info->method_generics_types = clone self.method_generics_types;
         
+        bool no_output_come_code = info.no_output_come_code;
+        info.no_output_come_code = true;
         if(!node_compile(obj)) {
             return false;
         }
+        info.no_output_come_code = no_output_come_code;
         
         CVALUE*% obj_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
+/*
         if(gComeDebug && obj_value.type->mPointerNum > 0) {
             obj_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(obj_value.type)!, obj_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
+*/
         
 /*
         sType*% obj_type = solve_generics(obj_value.type, info.generics_type, info);
@@ -561,6 +567,63 @@ class sMethodCallNode extends sNodeBase
             result_type->mStatic = false;
             
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
+            
+            static bool recursive = false;
+            if(result_type2.mException && !throw_or_rescue && !recursive) {
+                sType*% come_fun_result_type = clone info.come_fun.mResultType;
+                
+                sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
+                
+                if(come_fun_result_type2.mException) {
+                    info->right_value_objects = clone right_value_objects;
+                    
+                    recursive = true;
+                    dec_stack_ptr(1, info);
+                    transpiler_clear_last_code(info);
+                    
+                    sNode*% expression_node = (clone self) implements sNode;
+                    sNode*% node = create_throw(expression_node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                    
+                    recursive = false;
+                }
+                else {
+                    info->right_value_objects = clone right_value_objects;
+                    
+                    recursive = true;
+                    dec_stack_ptr(1, info);
+                    transpiler_clear_last_code(info);
+                    
+                    sNode*% expression_node = (clone self) implements sNode;
+                    sNode*% node = create_exception_value(expression_node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                    
+                    recursive = false;
+                }
+                
+                return true;
+            }
+            
+            if(!node_compile(obj)) {
+                return false;
+            }
+            
+            obj_value = get_value_from_stack(-1, info);
+            dec_stack_ptr(1, info);
+            
+            if(gComeDebug && obj_value.type->mPointerNum > 0) {
+                obj_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(obj_value.type)!, obj_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            }
+            
+            
+            
+            
             
             list<sType*%>*% param_types = new list<sType*%>();
             foreach(it, fun.mParamTypes) {
@@ -920,41 +983,6 @@ class sMethodCallNode extends sNodeBase
             delete info->method_generics_types;
             info->method_generics_types = method_generics_types;
             
-            static bool recursive = false;
-            if(result_type2.mException && !throw_or_rescue && !recursive) {
-                sType*% come_fun_result_type = clone info.come_fun.mResultType;
-                
-                sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
-                
-                if(come_fun_result_type2.mException) {
-                    recursive = true;
-                    dec_stack_ptr(1, info);
-                    transpiler_clear_last_code(info);
-                    
-                    sNode*% expression_node = (clone self) implements sNode;
-                    sNode*% node = create_throw(expression_node, info);
-                    
-                    if(!node_compile(node)) {
-                        return false;
-                    }
-                    
-                    recursive = false;
-                }
-                else {
-                    recursive = true;
-                    dec_stack_ptr(1, info);
-                    transpiler_clear_last_code(info);
-                    
-                    sNode*% expression_node = (clone self) implements sNode;
-                    sNode*% node = create_exception_value(expression_node, info);
-                    
-                    if(!node_compile(node)) {
-                        return false;
-                    }
-                    
-                    recursive = false;
-                }
-            }
         }
         
         return true;
