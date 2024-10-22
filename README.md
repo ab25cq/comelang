@@ -3529,6 +3529,11 @@ You can use return none(string); in functions that have exception as a return va
 If a function with an exception is called as an argument to a function with an exception, a memory leak will occur.
 This is unavoidable due to the implementation, so in that case, please explicitly call .exception_value, .exception_throw and .rescue. This will prevent memory leaks. I may fix it again if I feel like it.
 
+一応上記のバグは修正しましたが、例外があるメソッドの引数に例外がある関数があると、コンパイルエラーとなります。その場合は明示的に.exception_value, exception_throwしてください。実は内部的には.exception_value, .exception_throw呼んでいて、割と無理やり省略できるようにしているところがあります。しかたがないバグです。メモリーリークは修正しました。
+
+The above bug has been fixed, but if a function that has an exception as an argument to a method that has an exception, a compilation error will occur. In that case, please explicitly call .exception_value and exception_throw. In fact, .exception_value and .exception_throw are called internally, and there are some parts that make it possible to omit them quite forcibly. It's a bug that can't be helped. The memory leak has been fixed.
+
+
 # afterword
 
 LLVM-C++, LLVM-C, Cトランスパイラと、このコンパイラは実は３作目なんですが、ようやく満足のいくヒープシステムが作れました。
