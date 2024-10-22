@@ -675,6 +675,51 @@ class sFunCallNode extends sNodeBase
             
             sFun* fun = info.funcs.at(fun_name, null);
             
+            if(fun) {
+                sType*% result_type = clone fun.mResultType;
+                result_type->mStatic = false;
+                
+                result_type = solve_generics(result_type, info.generics_type, info);
+                
+                static bool recursive = false;
+                if(result_type.mException && !throw_or_rescue && !recursive) {
+                    sType*% come_fun_result_type = clone info.come_fun.mResultType;
+                    
+                    sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
+                    
+                    if(come_fun_result_type2.mException) {
+                        recursive = true;
+                        dec_stack_ptr(1, info);
+                        transpiler_clear_last_code(info);
+                        
+                        sNode*% expression_node = (clone self) implements sNode;
+                        sNode*% node = create_throw(expression_node, info);
+                        
+                        if(!node_compile(node)) {
+                            return false;
+                        }
+                        
+                        recursive = false;
+                    }
+                    else {
+                        recursive = true;
+                        dec_stack_ptr(1, info);
+                        transpiler_clear_last_code(info);
+                        
+                        sNode*% expression_node = (clone self) implements sNode;
+                        sNode*% node = create_exception_value(expression_node, info);
+                        
+                        if(!node_compile(node)) {
+                            return false;
+                        }
+                        
+                        recursive = false;
+                    }
+                    
+                    return true;
+                }
+            }
+            
             if(fun_name === "__builtin_va_arg") {
                 list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                 
@@ -736,6 +781,7 @@ class sFunCallNode extends sNodeBase
                 }
                 
                 result_type = solve_generics(result_type, info.generics_type, info);
+                
                 
                 list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                 
@@ -1056,41 +1102,6 @@ class sFunCallNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                static bool recursive = false;
-                if(result_type.mException && !throw_or_rescue && !recursive) {
-                    sType*% come_fun_result_type = clone info.come_fun.mResultType;
-                    
-                    sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
-                    
-                    if(come_fun_result_type2.mException) {
-                        recursive = true;
-                        dec_stack_ptr(1, info);
-                        transpiler_clear_last_code(info);
-                        
-                        sNode*% expression_node = (clone self) implements sNode;
-                        sNode*% node = create_throw(expression_node, info);
-                        
-                        if(!node_compile(node)) {
-                            return false;
-                        }
-                        
-                        recursive = false;
-                    }
-                    else {
-                        recursive = true;
-                        dec_stack_ptr(1, info);
-                        transpiler_clear_last_code(info);
-                        
-                        sNode*% expression_node = (clone self) implements sNode;
-                        sNode*% node = create_exception_value(expression_node, info);
-                        
-                        if(!node_compile(node)) {
-                            return false;
-                        }
-                        
-                        recursive = false;
-                    }
-                }
             }
         }
         

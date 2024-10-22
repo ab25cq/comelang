@@ -3,12 +3,12 @@
 
 exception int char*::test(char* self, come_regex* regex) 
 {
-    return 0;
+    return none(s"AAA");
 }
 
-exception int string::test(char* self, come_regex* regex) 
+exception int char*::test(char* self, come_regex* regex) 
 {
-    return 0;
+    return none(s"AAA");
 }
 
 int main(int argc, char** argv)
