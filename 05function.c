@@ -386,7 +386,7 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
 
             free_right_value_objects(info);
             
-            info.right_value_objects.reset();
+            if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
         }
     }

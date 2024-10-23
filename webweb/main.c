@@ -372,7 +372,7 @@ int main(int argc, char **argv)
     string cgi_redirect_path = null;
     
     while(true) {
-        //if(http) {
+        if(http) {
             httpd_socket(port:8080, reuse:true) {
                 char data[1024*2*2*2] = {0};
                 int size = read(it, data, 1024*2*2*2-1);
@@ -534,7 +534,6 @@ puts(file_path);
                     write(it, not_found, strlen(not_found));
                 }
             }
-/*
         }
         else {
             signal(SIGINT, handle_sigint);
@@ -687,7 +686,6 @@ printf("image_size %ld\n", image_size);
                 }
             }
         }
-*/
     }
     
     finalize_modules();
