@@ -164,7 +164,7 @@ class sIfNode extends sNodeBase
         }
         
         transpiler_clear_last_code(info);
-    
+        
         return true;
     }
 };
@@ -365,7 +365,7 @@ class sFreeITNode extends sNodeBase
     }
 };
 
-list<sRightValueObject*%>*% gRightValueObjects;
+list<sRightValueObject*%>*% gExceptionRightValueObjects = (void*)0;
 
 class sSaveRightValueObjects extends sNodeBase
 {
@@ -386,7 +386,7 @@ class sSaveRightValueObjects extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        gRightValueObjects = info.right_value_objects;
+        gExceptionRightValueObjects = info.right_value_objects;
         info.right_value_objects = new list<sRightValueObject*%>();
         
         return true;
@@ -413,7 +413,8 @@ class sRestoreRightValueObjects extends sNodeBase
     bool compile(sInfo* info)
     {
         free_right_value_objects(info);
-        info.right_value_objects = gRightValueObjects;
+        info.right_value_objects = gExceptionRightValueObjects;
+        gExceptionRightValueObjects = null;
         
         return true;
     }
@@ -606,7 +607,8 @@ sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info)
     sNode*% save_right_value_objects = new sSaveRightValueObjects() implements sNode;
     sNode*% restore_right_value_objects = new sRestoreRightValueObjects() implements sNode;
     
-    list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
+    //list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
+    list<sNode*%>*% multiple_node = [save_right_value_objects, get_return_value, if_node, restore_right_value_objects, free_it_node, load_var];
     
     return new sMultipleNode(multiple_node, info) implements sNode;
 }
@@ -662,7 +664,8 @@ sNode*% create_throw(sNode*% expression_node, sInfo* info)
     sNode*% save_right_value_objects = new sSaveRightValueObjects() implements sNode;
     sNode*% restore_right_value_objects = new sRestoreRightValueObjects() implements sNode;
     
-    list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
+    //list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
+    list<sNode*%>*% multiple_node = [save_right_value_objects, get_return_value, if_node, restore_right_value_objects, free_it_node, load_var];
     
     return new sMultipleNode(multiple_node, info) implements sNode;
 }
@@ -718,7 +721,8 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     sNode*% save_right_value_objects = new sSaveRightValueObjects() implements sNode;
     sNode*% restore_right_value_objects = new sRestoreRightValueObjects() implements sNode;
     
-    list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
+    //list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
+    list<sNode*%>*% multiple_node = [save_right_value_objects, get_return_value, if_node, restore_right_value_objects, free_it_node, load_var];
     
     return new sMultipleNode(multiple_node, info) implements sNode;
 }

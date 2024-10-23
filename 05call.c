@@ -89,6 +89,8 @@ class sReturnNode extends sNodeBase
         
                 free_objects_on_return(come_fun.mBlock, info, come_value.var, false@top_block);
                 free_right_value_objects(info);
+                //free_exception_right_value_objects(info);
+
                 
                 if(!gComeC && info.come_fun.mName === "main") {
                     free_objects(info->gv_table, null@ret_value, info);
@@ -112,6 +114,7 @@ class sReturnNode extends sNodeBase
             add_last_code_to_source(info);
             free_objects_on_return(come_fun.mBlock, info, null, false@top_block);
             free_right_value_objects(info);
+            //free_exception_right_value_objects(info);
             
             if(!gComeC && info.come_fun.mName === "main") {
                 free_objects(info->gv_table, null@ret_value, info);

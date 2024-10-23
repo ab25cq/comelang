@@ -12703,6 +12703,7 @@ void* __right_value199 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var1;
 int come_exception_var_b1_115;
 char* Err_116;
+_Bool _if_conditional1;
 int __null_value24;
 void* __right_value200 = (void*)0;
 void* __right_value201 = (void*)0;
@@ -12713,6 +12714,7 @@ void* __right_value202 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var2;
 int come_exception_var_b2_117;
 char* Err_118;
+_Bool _if_conditional2;
 int __null_value25;
 void* __right_value203 = (void*)0;
 void* __right_value204 = (void*)0;
@@ -12727,6 +12729,7 @@ void* __right_value208 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var3;
 int come_exception_var_b3_120;
 char* Err_121;
+_Bool _if_conditional3;
 int __null_value26;
 void* __right_value209 = (void*)0;
 void* __right_value210 = (void*)0;
@@ -12738,6 +12741,7 @@ void* __right_value211 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var4;
 int come_exception_var_b4_123;
 char* Err_124;
+_Bool _if_conditional4;
 int __null_value27;
 void* __right_value212 = (void*)0;
 void* __right_value213 = (void*)0;
@@ -12754,6 +12758,7 @@ void* __right_value218 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var5;
 int come_exception_var_b5_127;
 char* Err_128;
+_Bool _if_conditional5;
 int __null_value28;
 void* __right_value219 = (void*)0;
 void* __right_value220 = (void*)0;
@@ -12767,6 +12772,7 @@ void* __right_value224 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var6;
 int come_exception_var_b6_129;
 char* Err_130;
+_Bool _if_conditional6;
 int __null_value29;
 void* __right_value225 = (void*)0;
 void* __right_value226 = (void*)0;
@@ -12777,6 +12783,7 @@ void* __right_value227 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var7;
 int come_exception_var_b7_131;
 char* Err_132;
+_Bool _if_conditional7;
 int __null_value30;
 void* __right_value228 = (void*)0;
 void* __right_value229 = (void*)0;
@@ -12795,7 +12802,8 @@ memset(&__null_value30, 0, sizeof(int));
     multiple_assign_var1=((struct tuple2$2intcharph*)(__right_value199=come_mysql_init()));
     come_exception_var_b1_115=multiple_assign_var1->v1;
     Err_116=(char*)come_increment_ref_count(multiple_assign_var1->v2);
-    if(Err_116) {
+    if((_if_conditional1=(Err_116)),    /*f*/come_call_finalizer3(__right_value199,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+    _if_conditional1) {
         __result100__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value201=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 317, "struct tuple2$2intcharph")),__null_value24,(char*)come_increment_ref_count(Err_116))));
         Err_116 = come_decrement_ref_count2(Err_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value201,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -12804,12 +12812,12 @@ memset(&__null_value30, 0, sizeof(int));
     }
     __dec_obj23=Err_116;
     __dec_obj23 = come_decrement_ref_count2(__dec_obj23, (void*)0, (void*)0, 0,0,0, (void*)0);
-    /*g*/come_call_finalizer3(__right_value199,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
     if((_and_conditional3=(mysql_real_connect(gComeMySQL,host_name,"root",root_password,((void*)0),0,((void*)0),0))),    _and_conditional3 == 0) {
         multiple_assign_var2=((struct tuple2$2intcharph*)(__right_value202=finish_with_error()));
         come_exception_var_b2_117=multiple_assign_var2->v1;
         Err_118=(char*)come_increment_ref_count(multiple_assign_var2->v2);
-        if(Err_118) {
+        if((_if_conditional2=(Err_118)),        /*f*/come_call_finalizer3(__right_value202,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional2) {
             __result101__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value204=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 319, "struct tuple2$2intcharph")),__null_value25,(char*)come_increment_ref_count(Err_118))));
             Err_118 = come_decrement_ref_count2(Err_118, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_116 = come_decrement_ref_count2(Err_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -12819,7 +12827,6 @@ memset(&__null_value30, 0, sizeof(int));
         }
         __dec_obj24=Err_118;
         __dec_obj24 = come_decrement_ref_count2(__dec_obj24, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value202,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_118 = come_decrement_ref_count2(Err_118, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     check_user_query_119=(char*)come_increment_ref_count(xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",((char*)(__right_value205=charp_to_string(user))),((char*)(__right_value206=charp_to_string(host_name)))));
@@ -12829,7 +12836,8 @@ memset(&__null_value30, 0, sizeof(int));
         multiple_assign_var3=((struct tuple2$2intcharph*)(__right_value208=finish_with_error()));
         come_exception_var_b3_120=multiple_assign_var3->v1;
         Err_121=(char*)come_increment_ref_count(multiple_assign_var3->v2);
-        if(Err_121) {
+        if((_if_conditional3=(Err_121)),        /*f*/come_call_finalizer3(__right_value208,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional3) {
             __result102__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value210=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 324, "struct tuple2$2intcharph")),__null_value26,(char*)come_increment_ref_count(Err_121))));
             Err_121 = come_decrement_ref_count2(Err_121, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_116 = come_decrement_ref_count2(Err_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -12840,14 +12848,14 @@ memset(&__null_value30, 0, sizeof(int));
         }
         __dec_obj25=Err_121;
         __dec_obj25 = come_decrement_ref_count2(__dec_obj25, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value208,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_121 = come_decrement_ref_count2(Err_121, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if((_and_conditional4=(result_122=mysql_store_result(gComeMySQL))),    _and_conditional4 == 0) {
         multiple_assign_var4=((struct tuple2$2intcharph*)(__right_value211=finish_with_error()));
         come_exception_var_b4_123=multiple_assign_var4->v1;
         Err_124=(char*)come_increment_ref_count(multiple_assign_var4->v2);
-        if(Err_124) {
+        if((_if_conditional4=(Err_124)),        /*f*/come_call_finalizer3(__right_value211,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional4) {
             __result103__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value213=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 326, "struct tuple2$2intcharph")),__null_value27,(char*)come_increment_ref_count(Err_124))));
             Err_124 = come_decrement_ref_count2(Err_124, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_116 = come_decrement_ref_count2(Err_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -12858,7 +12866,6 @@ memset(&__null_value30, 0, sizeof(int));
         }
         __dec_obj26=Err_124;
         __dec_obj26 = come_decrement_ref_count2(__dec_obj26, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value211,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_124 = come_decrement_ref_count2(Err_124, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     row_125=mysql_fetch_row(result_122);
@@ -12873,7 +12880,8 @@ memset(&__null_value30, 0, sizeof(int));
             multiple_assign_var5=((struct tuple2$2intcharph*)(__right_value218=finish_with_error()));
             come_exception_var_b5_127=multiple_assign_var5->v1;
             Err_128=(char*)come_increment_ref_count(multiple_assign_var5->v2);
-            if(Err_128) {
+            if((_if_conditional5=(Err_128)),            /*f*/come_call_finalizer3(__right_value218,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+            _if_conditional5) {
                 __result104__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value220=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 334, "struct tuple2$2intcharph")),__null_value28,(char*)come_increment_ref_count(Err_128))));
                 Err_128 = come_decrement_ref_count2(Err_128, (void*)0, (void*)0, 0, 0, 0, (void*)0);
                 Err_116 = come_decrement_ref_count2(Err_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -12884,7 +12892,6 @@ memset(&__null_value30, 0, sizeof(int));
             }
             __dec_obj27=Err_128;
             __dec_obj27 = come_decrement_ref_count2(__dec_obj27, (void*)0, (void*)0, 0,0,0, (void*)0);
-            /*g*/come_call_finalizer3(__right_value218,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
             Err_128 = come_decrement_ref_count2(Err_128, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
         if((_or_conditional3=(mysql_query(gComeMySQL,((char*)(__right_value223=xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",((char*)(__right_value221=charp_to_string(user))),((char*)(__right_value222=charp_to_string(host_name))))))))),        (__right_value221 = come_decrement_ref_count2(__right_value221, (void*)0, (void*)0, 1, 0, 0, __result_obj__)),
@@ -12894,7 +12901,8 @@ memset(&__null_value30, 0, sizeof(int));
             multiple_assign_var6=((struct tuple2$2intcharph*)(__right_value224=finish_with_error()));
             come_exception_var_b6_129=multiple_assign_var6->v1;
             Err_130=(char*)come_increment_ref_count(multiple_assign_var6->v2);
-            if(Err_130) {
+            if((_if_conditional6=(Err_130)),            /*f*/come_call_finalizer3(__right_value224,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+            _if_conditional6) {
                 __result105__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value226=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 336, "struct tuple2$2intcharph")),__null_value29,(char*)come_increment_ref_count(Err_130))));
                 Err_130 = come_decrement_ref_count2(Err_130, (void*)0, (void*)0, 0, 0, 0, (void*)0);
                 Err_116 = come_decrement_ref_count2(Err_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -12905,14 +12913,14 @@ memset(&__null_value30, 0, sizeof(int));
             }
             __dec_obj28=Err_130;
             __dec_obj28 = come_decrement_ref_count2(__dec_obj28, (void*)0, (void*)0, 0,0,0, (void*)0);
-            /*g*/come_call_finalizer3(__right_value224,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
             Err_130 = come_decrement_ref_count2(Err_130, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
         if((_or_conditional4=(mysql_query(gComeMySQL,"FLUSH PRIVILEGES"))),        _or_conditional4 != 0) {
             multiple_assign_var7=((struct tuple2$2intcharph*)(__right_value227=finish_with_error()));
             come_exception_var_b7_131=multiple_assign_var7->v1;
             Err_132=(char*)come_increment_ref_count(multiple_assign_var7->v2);
-            if(Err_132) {
+            if((_if_conditional7=(Err_132)),            /*f*/come_call_finalizer3(__right_value227,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+            _if_conditional7) {
                 __result106__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value229=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 338, "struct tuple2$2intcharph")),__null_value30,(char*)come_increment_ref_count(Err_132))));
                 Err_132 = come_decrement_ref_count2(Err_132, (void*)0, (void*)0, 0, 0, 0, (void*)0);
                 Err_116 = come_decrement_ref_count2(Err_116, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -12923,7 +12931,6 @@ memset(&__null_value30, 0, sizeof(int));
             }
             __dec_obj29=Err_132;
             __dec_obj29 = come_decrement_ref_count2(__dec_obj29, (void*)0, (void*)0, 0,0,0, (void*)0);
-            /*g*/come_call_finalizer3(__right_value227,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
             Err_132 = come_decrement_ref_count2(Err_132, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
     }
@@ -12942,6 +12949,7 @@ void* __right_value232 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var8;
 int come_exception_var_b8_133;
 char* Err_134;
+_Bool _if_conditional8;
 int __null_value31;
 void* __right_value233 = (void*)0;
 void* __right_value234 = (void*)0;
@@ -12952,6 +12960,7 @@ void* __right_value235 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var9;
 int come_exception_var_b9_135;
 char* Err_136;
+_Bool _if_conditional9;
 int __null_value32;
 void* __right_value236 = (void*)0;
 void* __right_value237 = (void*)0;
@@ -12965,6 +12974,7 @@ void* __right_value240 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var10;
 int come_exception_var_b10_138;
 char* Err_139;
+_Bool _if_conditional10;
 int __null_value33;
 void* __right_value241 = (void*)0;
 void* __right_value242 = (void*)0;
@@ -12979,7 +12989,8 @@ memset(&__null_value33, 0, sizeof(int));
     multiple_assign_var8=((struct tuple2$2intcharph*)(__right_value232=come_mysql_init()));
     come_exception_var_b8_133=multiple_assign_var8->v1;
     Err_134=(char*)come_increment_ref_count(multiple_assign_var8->v2);
-    if(Err_134) {
+    if((_if_conditional8=(Err_134)),    /*f*/come_call_finalizer3(__right_value232,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+    _if_conditional8) {
         __result108__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value234=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 348, "struct tuple2$2intcharph")),__null_value31,(char*)come_increment_ref_count(Err_134))));
         Err_134 = come_decrement_ref_count2(Err_134, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value234,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -12988,12 +12999,12 @@ memset(&__null_value33, 0, sizeof(int));
     }
     __dec_obj30=Err_134;
     __dec_obj30 = come_decrement_ref_count2(__dec_obj30, (void*)0, (void*)0, 0,0,0, (void*)0);
-    /*g*/come_call_finalizer3(__right_value232,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
     if((_and_conditional5=(mysql_real_connect(gComeMySQL,host_name,user_name,password,((void*)0),0,((void*)0),0))),    _and_conditional5 == 0) {
         multiple_assign_var9=((struct tuple2$2intcharph*)(__right_value235=finish_with_error()));
         come_exception_var_b9_135=multiple_assign_var9->v1;
         Err_136=(char*)come_increment_ref_count(multiple_assign_var9->v2);
-        if(Err_136) {
+        if((_if_conditional9=(Err_136)),        /*f*/come_call_finalizer3(__right_value235,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional9) {
             __result109__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value237=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 350, "struct tuple2$2intcharph")),__null_value32,(char*)come_increment_ref_count(Err_136))));
             Err_136 = come_decrement_ref_count2(Err_136, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_134 = come_decrement_ref_count2(Err_134, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13003,7 +13014,6 @@ memset(&__null_value33, 0, sizeof(int));
         }
         __dec_obj31=Err_136;
         __dec_obj31 = come_decrement_ref_count2(__dec_obj31, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value235,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_136 = come_decrement_ref_count2(Err_136, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     create_db_query_137=(char*)come_increment_ref_count(xsprintf("CREATE DATABASE IF NOT EXISTS \%s",((char*)(__right_value238=charp_to_string(database_name)))));
@@ -13012,7 +13022,8 @@ memset(&__null_value33, 0, sizeof(int));
         multiple_assign_var10=((struct tuple2$2intcharph*)(__right_value240=finish_with_error()));
         come_exception_var_b10_138=multiple_assign_var10->v1;
         Err_139=(char*)come_increment_ref_count(multiple_assign_var10->v2);
-        if(Err_139) {
+        if((_if_conditional10=(Err_139)),        /*f*/come_call_finalizer3(__right_value240,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional10) {
             __result110__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value242=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 354, "struct tuple2$2intcharph")),__null_value33,(char*)come_increment_ref_count(Err_139))));
             Err_139 = come_decrement_ref_count2(Err_139, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_134 = come_decrement_ref_count2(Err_134, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13023,7 +13034,6 @@ memset(&__null_value33, 0, sizeof(int));
         }
         __dec_obj32=Err_139;
         __dec_obj32 = come_decrement_ref_count2(__dec_obj32, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value240,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_139 = come_decrement_ref_count2(Err_139, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     come_mysql_final();
@@ -13041,6 +13051,7 @@ void* __right_value245 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var11;
 int come_exception_var_b11_140;
 char* Err_141;
+_Bool _if_conditional11;
 int __null_value34;
 void* __right_value246 = (void*)0;
 void* __right_value247 = (void*)0;
@@ -13050,6 +13061,7 @@ void* __right_value248 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var12;
 int come_exception_var_b12_142;
 char* Err_143;
+_Bool _if_conditional12;
 int __null_value35;
 void* __right_value249 = (void*)0;
 void* __right_value250 = (void*)0;
@@ -13059,6 +13071,7 @@ void* __right_value251 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var13;
 int come_exception_var_b13_144;
 char* Err_145;
+_Bool _if_conditional13;
 int __null_value36;
 void* __right_value252 = (void*)0;
 void* __right_value253 = (void*)0;
@@ -13069,6 +13082,7 @@ void* __right_value254 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var14;
 int come_exception_var_b14_146;
 char* Err_147;
+_Bool _if_conditional14;
 int __null_value37;
 void* __right_value255 = (void*)0;
 void* __right_value256 = (void*)0;
@@ -13079,6 +13093,7 @@ void* __right_value257 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var15;
 int come_exception_var_b15_148;
 char* Err_149;
+_Bool _if_conditional15;
 int __null_value38;
 void* __right_value258 = (void*)0;
 void* __right_value259 = (void*)0;
@@ -13089,6 +13104,7 @@ void* __right_value260 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var16;
 int come_exception_var_b16_150;
 char* Err_151;
+_Bool _if_conditional16;
 int __null_value39;
 void* __right_value261 = (void*)0;
 void* __right_value262 = (void*)0;
@@ -13107,7 +13123,8 @@ memset(&__null_value39, 0, sizeof(int));
         multiple_assign_var11=((struct tuple2$2intcharph*)(__right_value245=create_user_if_not_exists(user,password,root_password,"localhost")));
         come_exception_var_b11_140=multiple_assign_var11->v1;
         Err_141=(char*)come_increment_ref_count(multiple_assign_var11->v2);
-        if(Err_141) {
+        if((_if_conditional11=(Err_141)),        /*f*/come_call_finalizer3(__right_value245,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional11) {
             __result112__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value247=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 364, "struct tuple2$2intcharph")),__null_value34,(char*)come_increment_ref_count(Err_141))));
             Err_141 = come_decrement_ref_count2(Err_141, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             /*g*/come_call_finalizer3(__right_value247,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -13116,14 +13133,14 @@ memset(&__null_value39, 0, sizeof(int));
         }
         __dec_obj33=Err_141;
         __dec_obj33 = come_decrement_ref_count2(__dec_obj33, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value245,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_141 = come_decrement_ref_count2(Err_141, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if(create_database) {
         multiple_assign_var12=((struct tuple2$2intcharph*)(__right_value248=create_database_if_not_exists(database_name,user,password,host_name)));
         come_exception_var_b12_142=multiple_assign_var12->v1;
         Err_143=(char*)come_increment_ref_count(multiple_assign_var12->v2);
-        if(Err_143) {
+        if((_if_conditional12=(Err_143)),        /*f*/come_call_finalizer3(__right_value248,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional12) {
             __result113__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value250=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 367, "struct tuple2$2intcharph")),__null_value35,(char*)come_increment_ref_count(Err_143))));
             Err_143 = come_decrement_ref_count2(Err_143, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             /*g*/come_call_finalizer3(__right_value250,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -13132,13 +13149,13 @@ memset(&__null_value39, 0, sizeof(int));
         }
         __dec_obj34=Err_143;
         __dec_obj34 = come_decrement_ref_count2(__dec_obj34, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value248,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_143 = come_decrement_ref_count2(Err_143, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     multiple_assign_var13=((struct tuple2$2intcharph*)(__right_value251=come_mysql_init()));
     come_exception_var_b13_144=multiple_assign_var13->v1;
     Err_145=(char*)come_increment_ref_count(multiple_assign_var13->v2);
-    if(Err_145) {
+    if((_if_conditional13=(Err_145)),    /*f*/come_call_finalizer3(__right_value251,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+    _if_conditional13) {
         __result114__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value253=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 370, "struct tuple2$2intcharph")),__null_value36,(char*)come_increment_ref_count(Err_145))));
         Err_145 = come_decrement_ref_count2(Err_145, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value253,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -13147,12 +13164,12 @@ memset(&__null_value39, 0, sizeof(int));
     }
     __dec_obj35=Err_145;
     __dec_obj35 = come_decrement_ref_count2(__dec_obj35, (void*)0, (void*)0, 0,0,0, (void*)0);
-    /*g*/come_call_finalizer3(__right_value251,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
     if((_and_conditional6=(mysql_select_db(gComeMySQL,database_name))),    _and_conditional6 == 0) {
         multiple_assign_var14=((struct tuple2$2intcharph*)(__right_value254=finish_with_error()));
         come_exception_var_b14_146=multiple_assign_var14->v1;
         Err_147=(char*)come_increment_ref_count(multiple_assign_var14->v2);
-        if(Err_147) {
+        if((_if_conditional14=(Err_147)),        /*f*/come_call_finalizer3(__right_value254,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional14) {
             __result115__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value256=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 372, "struct tuple2$2intcharph")),__null_value37,(char*)come_increment_ref_count(Err_147))));
             Err_147 = come_decrement_ref_count2(Err_147, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_145 = come_decrement_ref_count2(Err_145, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13162,14 +13179,14 @@ memset(&__null_value39, 0, sizeof(int));
         }
         __dec_obj36=Err_147;
         __dec_obj36 = come_decrement_ref_count2(__dec_obj36, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value254,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_147 = come_decrement_ref_count2(Err_147, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if((_and_conditional7=(mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0))),    _and_conditional7 == 0) {
         multiple_assign_var15=((struct tuple2$2intcharph*)(__right_value257=finish_with_error()));
         come_exception_var_b15_148=multiple_assign_var15->v1;
         Err_149=(char*)come_increment_ref_count(multiple_assign_var15->v2);
-        if(Err_149) {
+        if((_if_conditional15=(Err_149)),        /*f*/come_call_finalizer3(__right_value257,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional15) {
             __result116__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value259=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 374, "struct tuple2$2intcharph")),__null_value38,(char*)come_increment_ref_count(Err_149))));
             Err_149 = come_decrement_ref_count2(Err_149, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_145 = come_decrement_ref_count2(Err_145, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13179,14 +13196,14 @@ memset(&__null_value39, 0, sizeof(int));
         }
         __dec_obj37=Err_149;
         __dec_obj37 = come_decrement_ref_count2(__dec_obj37, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value257,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_149 = come_decrement_ref_count2(Err_149, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if((_or_conditional6=(mysql_query(gComeMySQL,query))),    _or_conditional6 != 0) {
         multiple_assign_var16=((struct tuple2$2intcharph*)(__right_value260=finish_with_error()));
         come_exception_var_b16_150=multiple_assign_var16->v1;
         Err_151=(char*)come_increment_ref_count(multiple_assign_var16->v2);
-        if(Err_151) {
+        if((_if_conditional16=(Err_151)),        /*f*/come_call_finalizer3(__right_value260,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional16) {
             __result117__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2intcharph*)(__right_value262=tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_increment_ref_count((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net.c", 376, "struct tuple2$2intcharph")),__null_value39,(char*)come_increment_ref_count(Err_151))));
             Err_151 = come_decrement_ref_count2(Err_151, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_145 = come_decrement_ref_count2(Err_145, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13196,7 +13213,6 @@ memset(&__null_value39, 0, sizeof(int));
         }
         __dec_obj38=Err_151;
         __dec_obj38 = come_decrement_ref_count2(__dec_obj38, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value260,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_151 = come_decrement_ref_count2(Err_151, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     come_mysql_final();
@@ -13213,6 +13229,7 @@ void* __right_value265 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var17;
 int come_exception_var_b17_152;
 char* Err_153;
+_Bool _if_conditional17;
 struct list$1list$1charphph* __null_value40;
 void* __right_value266 = (void*)0;
 void* __right_value267 = (void*)0;
@@ -13222,6 +13239,7 @@ void* __right_value268 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var18;
 int come_exception_var_b18_162;
 char* Err_163;
+_Bool _if_conditional18;
 struct list$1list$1charphph* __null_value41;
 void* __right_value269 = (void*)0;
 void* __right_value270 = (void*)0;
@@ -13231,6 +13249,7 @@ void* __right_value271 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var19;
 int come_exception_var_b19_164;
 char* Err_165;
+_Bool _if_conditional19;
 struct list$1list$1charphph* __null_value42;
 void* __right_value272 = (void*)0;
 void* __right_value273 = (void*)0;
@@ -13241,6 +13260,7 @@ void* __right_value274 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var20;
 int come_exception_var_b20_166;
 char* Err_167;
+_Bool _if_conditional20;
 struct list$1list$1charphph* __null_value43;
 void* __right_value275 = (void*)0;
 void* __right_value276 = (void*)0;
@@ -13251,6 +13271,7 @@ void* __right_value277 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var21;
 int come_exception_var_b21_168;
 char* Err_169;
+_Bool _if_conditional21;
 struct list$1list$1charphph* __null_value44;
 void* __right_value278 = (void*)0;
 void* __right_value279 = (void*)0;
@@ -13261,6 +13282,7 @@ void* __right_value280 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var22;
 int come_exception_var_b22_170;
 char* Err_171;
+_Bool _if_conditional22;
 struct list$1list$1charphph* __null_value45;
 void* __right_value281 = (void*)0;
 void* __right_value282 = (void*)0;
@@ -13272,6 +13294,7 @@ void* __right_value283 = (void*)0;
 struct tuple2$2intcharph* multiple_assign_var23;
 int come_exception_var_b23_173;
 char* Err_174;
+_Bool _if_conditional23;
 struct list$1list$1charphph* __null_value46;
 void* __right_value284 = (void*)0;
 void* __right_value285 = (void*)0;
@@ -13302,7 +13325,8 @@ row_177 = (void*)0;
         multiple_assign_var17=((struct tuple2$2intcharph*)(__right_value265=create_user_if_not_exists(user,password,root_password,"localhost")));
         come_exception_var_b17_152=multiple_assign_var17->v1;
         Err_153=(char*)come_increment_ref_count(multiple_assign_var17->v2);
-        if(Err_153) {
+        if((_if_conditional17=(Err_153)),        /*f*/come_call_finalizer3(__right_value265,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional17) {
             __result120__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2list$1list$1charphphphcharph*)(__right_value267=tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_increment_ref_count((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net.c", 386, "struct tuple2$2list$1list$1charphphphcharph")),(struct list$1list$1charphph*)come_increment_ref_count(__null_value40),(char*)come_increment_ref_count(Err_153))));
             Err_153 = come_decrement_ref_count2(Err_153, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             /*g*/come_call_finalizer3(__right_value267,tuple2$2list$1list$1charphphphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -13311,14 +13335,14 @@ row_177 = (void*)0;
         }
         __dec_obj45=Err_153;
         __dec_obj45 = come_decrement_ref_count2(__dec_obj45, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value265,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_153 = come_decrement_ref_count2(Err_153, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if(create_database) {
         multiple_assign_var18=((struct tuple2$2intcharph*)(__right_value268=create_database_if_not_exists(database_name,user,password,host_name)));
         come_exception_var_b18_162=multiple_assign_var18->v1;
         Err_163=(char*)come_increment_ref_count(multiple_assign_var18->v2);
-        if(Err_163) {
+        if((_if_conditional18=(Err_163)),        /*f*/come_call_finalizer3(__right_value268,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional18) {
             __result121__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2list$1list$1charphphphcharph*)(__right_value270=tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_increment_ref_count((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net.c", 389, "struct tuple2$2list$1list$1charphphphcharph")),(struct list$1list$1charphph*)come_increment_ref_count(__null_value41),(char*)come_increment_ref_count(Err_163))));
             Err_163 = come_decrement_ref_count2(Err_163, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             /*g*/come_call_finalizer3(__right_value270,tuple2$2list$1list$1charphphphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -13327,13 +13351,13 @@ row_177 = (void*)0;
         }
         __dec_obj46=Err_163;
         __dec_obj46 = come_decrement_ref_count2(__dec_obj46, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value268,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_163 = come_decrement_ref_count2(Err_163, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     multiple_assign_var19=((struct tuple2$2intcharph*)(__right_value271=come_mysql_init()));
     come_exception_var_b19_164=multiple_assign_var19->v1;
     Err_165=(char*)come_increment_ref_count(multiple_assign_var19->v2);
-    if(Err_165) {
+    if((_if_conditional19=(Err_165)),    /*f*/come_call_finalizer3(__right_value271,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+    _if_conditional19) {
         __result122__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2list$1list$1charphphphcharph*)(__right_value273=tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_increment_ref_count((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net.c", 392, "struct tuple2$2list$1list$1charphphphcharph")),(struct list$1list$1charphph*)come_increment_ref_count(__null_value42),(char*)come_increment_ref_count(Err_165))));
         Err_165 = come_decrement_ref_count2(Err_165, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value273,tuple2$2list$1list$1charphphphcharphp_finalize, 0, 1, 0, 0, __result_obj__);
@@ -13342,12 +13366,12 @@ row_177 = (void*)0;
     }
     __dec_obj47=Err_165;
     __dec_obj47 = come_decrement_ref_count2(__dec_obj47, (void*)0, (void*)0, 0,0,0, (void*)0);
-    /*g*/come_call_finalizer3(__right_value271,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
     if((_and_conditional8=(mysql_select_db(gComeMySQL,database_name))),    _and_conditional8 == 0) {
         multiple_assign_var20=((struct tuple2$2intcharph*)(__right_value274=finish_with_error()));
         come_exception_var_b20_166=multiple_assign_var20->v1;
         Err_167=(char*)come_increment_ref_count(multiple_assign_var20->v2);
-        if(Err_167) {
+        if((_if_conditional20=(Err_167)),        /*f*/come_call_finalizer3(__right_value274,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional20) {
             __result123__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2list$1list$1charphphphcharph*)(__right_value276=tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_increment_ref_count((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net.c", 394, "struct tuple2$2list$1list$1charphphphcharph")),(struct list$1list$1charphph*)come_increment_ref_count(__null_value43),(char*)come_increment_ref_count(Err_167))));
             Err_167 = come_decrement_ref_count2(Err_167, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_165 = come_decrement_ref_count2(Err_165, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13357,14 +13381,14 @@ row_177 = (void*)0;
         }
         __dec_obj48=Err_167;
         __dec_obj48 = come_decrement_ref_count2(__dec_obj48, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value274,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_167 = come_decrement_ref_count2(Err_167, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if((_and_conditional9=(mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0))),    _and_conditional9 == 0) {
         multiple_assign_var21=((struct tuple2$2intcharph*)(__right_value277=finish_with_error()));
         come_exception_var_b21_168=multiple_assign_var21->v1;
         Err_169=(char*)come_increment_ref_count(multiple_assign_var21->v2);
-        if(Err_169) {
+        if((_if_conditional21=(Err_169)),        /*f*/come_call_finalizer3(__right_value277,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional21) {
             __result124__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2list$1list$1charphphphcharph*)(__right_value279=tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_increment_ref_count((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net.c", 396, "struct tuple2$2list$1list$1charphphphcharph")),(struct list$1list$1charphph*)come_increment_ref_count(__null_value44),(char*)come_increment_ref_count(Err_169))));
             Err_169 = come_decrement_ref_count2(Err_169, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_165 = come_decrement_ref_count2(Err_165, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13374,14 +13398,14 @@ row_177 = (void*)0;
         }
         __dec_obj49=Err_169;
         __dec_obj49 = come_decrement_ref_count2(__dec_obj49, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value277,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_169 = come_decrement_ref_count2(Err_169, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if((_or_conditional7=(mysql_query(gComeMySQL,query))),    _or_conditional7 != 0) {
         multiple_assign_var22=((struct tuple2$2intcharph*)(__right_value280=finish_with_error()));
         come_exception_var_b22_170=multiple_assign_var22->v1;
         Err_171=(char*)come_increment_ref_count(multiple_assign_var22->v2);
-        if(Err_171) {
+        if((_if_conditional22=(Err_171)),        /*f*/come_call_finalizer3(__right_value280,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional22) {
             __result125__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2list$1list$1charphphphcharph*)(__right_value282=tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_increment_ref_count((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net.c", 398, "struct tuple2$2list$1list$1charphphphcharph")),(struct list$1list$1charphph*)come_increment_ref_count(__null_value45),(char*)come_increment_ref_count(Err_171))));
             Err_171 = come_decrement_ref_count2(Err_171, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_165 = come_decrement_ref_count2(Err_165, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13391,14 +13415,14 @@ row_177 = (void*)0;
         }
         __dec_obj50=Err_171;
         __dec_obj50 = come_decrement_ref_count2(__dec_obj50, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value280,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_171 = come_decrement_ref_count2(Err_171, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     if((_and_conditional10=(res_172=mysql_store_result(gComeMySQL))),    _and_conditional10 == 0) {
         multiple_assign_var23=((struct tuple2$2intcharph*)(__right_value283=finish_with_error()));
         come_exception_var_b23_173=multiple_assign_var23->v1;
         Err_174=(char*)come_increment_ref_count(multiple_assign_var23->v2);
-        if(Err_174) {
+        if((_if_conditional23=(Err_174)),        /*f*/come_call_finalizer3(__right_value283,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__),
+        _if_conditional23) {
             __result126__ = gComeFunResultObject = __result_obj__ = ((struct tuple2$2list$1list$1charphphphcharph*)(__right_value285=tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_increment_ref_count((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net.c", 400, "struct tuple2$2list$1list$1charphphphcharph")),(struct list$1list$1charphph*)come_increment_ref_count(__null_value46),(char*)come_increment_ref_count(Err_174))));
             Err_174 = come_decrement_ref_count2(Err_174, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             Err_165 = come_decrement_ref_count2(Err_165, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -13408,7 +13432,6 @@ row_177 = (void*)0;
         }
         __dec_obj51=Err_174;
         __dec_obj51 = come_decrement_ref_count2(__dec_obj51, (void*)0, (void*)0, 0,0,0, (void*)0);
-        /*g*/come_call_finalizer3(__right_value283,tuple2$2intcharphp_finalize, 0, 1, 0, 0, __result_obj__);
         Err_174 = come_decrement_ref_count2(Err_174, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     num_fields_175=mysql_num_fields(res_172);

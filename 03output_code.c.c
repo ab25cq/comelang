@@ -1403,7 +1403,7 @@ struct list$1tuple3$3sTypephcharphsNodephph
     int len;
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
-extern struct list$1sRightValueObjectph* gRightValueObjects;
+extern struct list$1sRightValueObjectph* gExceptionRightValueObjects;
 
 // header function
 void come_heap_init(int come_malloc, int come_debug, int come_gc);
@@ -1946,6 +1946,7 @@ struct sClassModule* sClassModule_initialize(struct sClassModule* self, char* na
 struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct list$1charph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, char* come_header, char* declare_sname, struct sInfo* info);
 char* create_generics_name(struct sType* generics_type, struct sInfo* info);
 struct sType* solve_method_generics(struct sType* type, struct sInfo* info);
+void free_exception_right_value_objects(struct sInfo* info, _Bool comma);
 _Bool existance_free_right_value_objects(struct sInfo* info);
 _Bool existance_free_objects_on_return(struct sBlock* current_block, struct sInfo* info, struct sVar* ret_value, _Bool top_block);
 void std_move(struct sType* left_type, struct sType* right_type, struct CVALUE* right_value, struct sInfo* info, _Bool no_delete_from_right_value_objects);

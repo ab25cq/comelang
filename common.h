@@ -582,6 +582,7 @@ bool output_header_file(sInfo* info);
 /// 04heap.c ///
 /////////////////////////////////////////////////////////////////////
 sType*% solve_method_generics(sType* type, sInfo* info);
+void free_exception_right_value_objects(sInfo* info, bool comma=false);
 bool existance_free_right_value_objects(sInfo* info);
 bool existance_free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
 void std_move(sType* left_type, sType* right_type, CVALUE* right_value, sInfo* info=info, bool no_delete_from_right_value_objects=false);
@@ -695,7 +696,7 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 /////////////////////////////////////////////////////////////////////
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
-extern list<sRightValueObject*%>*% gRightValueObjects;
+extern list<sRightValueObject*%>*% gExceptionRightValueObjects;
 
 sNode*% create_throw(sNode*% expression_node, sInfo* info);
 sNode*% create_exception_value(sNode*% expression_node, sInfo* info);

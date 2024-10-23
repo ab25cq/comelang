@@ -1403,7 +1403,7 @@ struct list$1tuple3$3sTypephcharphsNodephph
     int len;
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
-extern struct list$1sRightValueObjectph* gRightValueObjects;
+extern struct list$1sRightValueObjectph* gExceptionRightValueObjects;
 
 // header function
 void come_heap_init(int come_malloc, int come_debug, int come_gc);
@@ -1970,6 +1970,7 @@ char* make_define_var(struct sType* type, char* name, _Bool in_header, struct sI
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 struct sType* solve_method_generics(struct sType* type, struct sInfo* info);
+void free_exception_right_value_objects(struct sInfo* info, _Bool comma);
 _Bool existance_free_right_value_objects(struct sInfo* info);
 _Bool existance_free_objects_on_return(struct sBlock* current_block, struct sInfo* info, struct sVar* ret_value, _Bool top_block);
 void std_move(struct sType* left_type, struct sType* right_type, struct CVALUE* right_value, struct sInfo* info, _Bool no_delete_from_right_value_objects);
@@ -3513,7 +3514,7 @@ int __result65__;
     come_heap_init(0, 0, 0);
     setlocale(0,"");
     __result65__ = come_main_v2(argc,argv);
-    /*i*/come_call_finalizer3(gRightValueObjects,list$1sRightValueObjectphp_finalize, 0, 0, 0, 0, (void*)0);
+    /*i*/come_call_finalizer3(gExceptionRightValueObjects,list$1sRightValueObjectphp_finalize, 0, 0, 0, 0, (void*)0);
     come_heap_final();
     return __result65__;
 }

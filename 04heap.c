@@ -1188,6 +1188,37 @@ void free_right_value_objects(sInfo* info, bool comma=false)
     }
 }
 
+void free_exception_right_value_objects(sInfo* info, bool comma=false)
+{
+    if(gComeGC || gComeC) {
+        return;
+    }
+    bool free_right_value = false;
+    list<sRightValueObject*%>* right_value_objects = gExceptionRightValueObjects;
+    
+    if(right_value_objects) {
+        int n = 0;
+        foreach(it, right_value_objects) {
+            if(it && !it->mFreed) {
+                if(it->mFunName === info->come_fun->mName && it->mBlockLevel == info->block_level && !it->mStored) {
+                    sType*% type = it->mType;
+                    
+                    type = solve_type(type, info->generics_type, info->method_generics_types, info);
+                    
+    
+                    free_object(type, it->mVarName, !it->mDecrementRefCount@no_decrement, false@no_free, info, comma:comma, force_delete_:false);
+                    
+                    
+                    it->mFreed = true;
+                    free_right_value = true;
+                }
+            }
+            
+            n++;
+        }
+    }
+}
+
 sVar* get_variable_from_table(sVarTable* table, char* name)
 {
     sVarTable* it = table;
