@@ -51,8 +51,14 @@ void ViWin*::search(ViWin* self, Vi* nvi)
             int x;
             
             if(nvi.regexSearch) {
-                come_regex*% reg = new come_regex(nvi.searchString.to_string());
-                x = it.to_string().index_regex(reg, -1);
+                bool rescue_ = false;
+                come_regex*% reg = new come_regex(nvi.searchString.to_string()).rescue {
+                    rescue_ = true;
+                }
+                
+                if(!rescue_) {
+                    x = it.to_string().index_regex(reg, -1);
+                }
             }
             else {
                 x = it.index(nvi.searchString, -1);
@@ -99,9 +105,14 @@ void ViWin*::searchReverse(ViWin* self, Vi* nvi)
         foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
             int x;
             if(nvi.regexSearch) {
-                come_regex*% reg = new come_regex(nvi.searchString.to_string());
+                bool rescue_ = false;
+                come_regex*% reg = new come_regex(nvi.searchString.to_string()).rescue {
+                    rescue_ = true;
+                }
                 
-                x = it.to_string().index_regex(reg, -1);
+                if(!rescue_) {
+                    x = it.to_string().index_regex(reg, -1);
+                }
             }
             else {
                 x = it.rindex(nvi.searchString, -1);
