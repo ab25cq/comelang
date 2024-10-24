@@ -5942,7 +5942,7 @@ _Bool __result136__;
                     }
                     else {
                         if(string_operator_not_equals(it_246,"__builtin_va_start")&&string_operator_not_equals(it_246,"__builtin_va_end")) {
-                            fprintf(f_242,"%s",header_250,it_246);
+                            fprintf(f_242,"%s",header_250);
                         }
                     }
                 }
