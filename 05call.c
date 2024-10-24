@@ -1442,7 +1442,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             return new sReturnNode(value, string(buf), info) implements sNode;
         }
     }
-    else if((xisalpha(*info->p) || *info->p == '_' ) && !(*info->p == 'L' && *(info->p+1) == '"' || (*info->p == 's' || *info->p == 'S') && *(info->p+1) == '"' || (*info->p == 'L' && *(info->p+1) == '\''))) {
+    else if((xisalpha(*info->p) || *info->p == '_' ) && !(*info->p == 'L' && *(info->p+1) == '"' || (*info->p == 's' || *info->p == 'S') && *(info->p+1) == '"' || (*info->p == 'L' && *(info->p+1) == '\'') || (*info->p == 'r' || *info->p == 'R') && *(info->p+1) == '"')) {
         char* head = info.p;
         int head_sline = info.sline;
         

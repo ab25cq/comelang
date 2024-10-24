@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 5.0.2
+version 5.0.3
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.0.3 to_string method defined automatically. r"" is regex.
 5.0.2 Fixed bug maybe.
 5.0.1 Exception bug is fiexed maybe.
 5.0.0 Exception is perfect. 
@@ -589,7 +590,7 @@ string to_string(list<T>* self)
 
 li is list<char*>*%, which stores string pointers. The stored element will not be freed because it is not char*%.
 
-[ABC,DEF,GHQ]が出力されます。要素の全てにto_stringが実行されます。comelangで定義されている型はto_string()が実装されています。オリジナルのクラスの場合、このメソッドを実行するためにはto_stringを実装する必要があります。
+[ABC,DEF,GHQ]が出力されます。要素の全てにto_stringが実行されます。comelangで定義されている型はto_string()が実装されています。
 
 liはlist<char*>*%で文字列のポインタが格納されています。char*%ではないため格納された要素はfreeされません。
 
@@ -2737,6 +2738,8 @@ auto included common.h
 # String libraries
 
 with -str option to comandline.
+
+regex value is r"regex string"[gi] or /regex string/[gi].
 
 sample
 

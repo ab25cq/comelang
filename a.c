@@ -1,10 +1,19 @@
-#include <stdio.h>
+#include <comelang.h>
+
+struct sData
+{
+    int a;
+    int b;
+};
 
 int main(int argc, char** argv)
 {
-    char* a = "aaa";
+    var data = new sData;
     
-    printf("%d", a);
+    data.a = 123;
+    data.b = 234;
+    
+    data.to_string().puts();
     
     return 0;
 }

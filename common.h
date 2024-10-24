@@ -590,6 +590,7 @@ string append_stackframe(char* c_value, sType* type, sInfo* info);
 bool create_equals_method(sType* type, sInfo* info);
 bool create_operator_equals_method(sType* type, sInfo* info);
 bool create_operator_not_equals_method(sType* type, sInfo* info);
+sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* info);
 sType*% solve_generics(sType* type, sType* generics_type, sInfo* info);
 sVar* get_variable_from_table(sVarTable* table, char* name);
 void free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);

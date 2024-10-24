@@ -284,8 +284,30 @@ bool parse_statment(sInfo* info)
             info->p = p;
             
             buffer*% arg = new buffer();
+            bool dquort = false;
+            bool squort = false;
+            bool slash = false;
             while(*info->p) {
-                if(*info->p == '|' && *(info->p+1) != '|') {
+                if(!squort && !dquort && *info->p == '/') {
+                    slash = !slash;
+                    arg.append_char(*info->p);
+                    info->p++;
+                }
+                else if(!squort && !slash && *info->p == '"') {
+                    dquort = !dquort;
+                    arg.append_char(*info->p);
+                    info->p++;
+                }
+                else if(!dquort && !slash && *info->p == '\'') {
+                    squort = !squort;
+                    arg.append_char(*info->p);
+                    info->p++;
+                }
+                else if(squort || dquort || slash) {
+                    arg.append_char(*info->p);
+                    info->p++;
+                }
+                else if(*info->p == '|' && *(info->p+1) != '|') {
                     break;
                 }
                 else if(*info->p == '{') {

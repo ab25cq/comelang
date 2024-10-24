@@ -1335,6 +1335,11 @@ struct sInfo
     _Bool in_generics_fun;
     _Bool in_clone_object;
 };
+struct tuple2$2sFunpcharph
+{
+    struct sFun* v1;
+    char* v2;
+};
 struct tuple2$2sTypephcharph
 {
     struct sType* v1;
@@ -1370,11 +1375,6 @@ struct tuple4$4list$1sTypephphlist$1charphphlist$1charphphbool
     struct list$1charph* v2;
     struct list$1charph* v3;
     _Bool v4;
-};
-struct tuple2$2sFunpcharph
-{
-    struct sFun* v1;
-    char* v2;
 };
 struct tuple3$3sTypephcharphsNodeph
 {
@@ -2036,6 +2036,7 @@ char* append_stackframe(char* c_value, struct sType* type, struct sInfo* info);
 _Bool create_equals_method(struct sType* type, struct sInfo* info);
 _Bool create_operator_equals_method(struct sType* type, struct sInfo* info);
 _Bool create_operator_not_equals_method(struct sType* type, struct sInfo* info);
+struct tuple2$2sFunpcharph* create_to_string_automatically(struct sType* type, char* fun_name, struct sInfo* info);
 struct sType* solve_generics(struct sType* type, struct sType* generics_type, struct sInfo* info);
 struct sVar* get_variable_from_table(struct sVarTable* table, char* name);
 void free_objects_on_return(struct sBlock* current_block, struct sInfo* info, struct sVar* ret_value, _Bool top_block);
@@ -9839,7 +9840,7 @@ struct sNode* __result305__;
         }
     }
     else {
-        if((xisalpha(*info->p)||*info->p==95)&&!(*info->p==76&&*(info->p+1)==34||(*info->p==115||*info->p==83)&&*(info->p+1)==34||(*info->p==76&&*(info->p+1)==39))) {
+        if((xisalpha(*info->p)||*info->p==95)&&!(*info->p==76&&*(info->p+1)==34||(*info->p==115||*info->p==83)&&*(info->p+1)==34||(*info->p==76&&*(info->p+1)==39)||(*info->p==114||*info->p==82)&&*(info->p+1)==34)) {
             head_471=info->p;
             head_sline_472=info->sline;
             buf_473=(char*)come_increment_ref_count(backtrace_parse_word(info));

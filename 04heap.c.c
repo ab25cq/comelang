@@ -1335,6 +1335,11 @@ struct sInfo
     _Bool in_generics_fun;
     _Bool in_clone_object;
 };
+struct tuple2$2sFunpcharph
+{
+    struct sFun* v1;
+    char* v2;
+};
 struct tuple2$2sTypephcharph
 {
     struct sType* v1;
@@ -1370,11 +1375,6 @@ struct tuple4$4list$1sTypephphlist$1charphphlist$1charphphbool
     struct list$1charph* v2;
     struct list$1charph* v3;
     _Bool v4;
-};
-struct tuple2$2sFunpcharph
-{
-    struct sFun* v1;
-    char* v2;
 };
 struct tuple3$3sTypephcharphsNodeph
 {
@@ -1960,6 +1960,7 @@ struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
 char* make_define_var(struct sType* type, char* name, _Bool in_header, struct sInfo* info);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
+struct tuple2$2sFunpcharph* create_to_string_automatically(struct sType* type, char* fun_name, struct sInfo* info);
 struct sNode* craete_fun_call(char* fun_name, struct list$1tuple2$2charphsNodephph* params, _Bool guard_break, struct list$1sTypeph* method_generics_types, struct buffer* method_block, int method_block_sline, _Bool throw_or_rescue, struct sInfo* info);
 char* make_method_generics_function(char* fun_name, struct list$1sTypeph* method_generics_types, struct sInfo* info);
 struct sNode* create_return_node(struct sNode* value, char* value_source, struct sInfo* info);
