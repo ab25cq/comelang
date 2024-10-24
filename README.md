@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 5.0.3
+version 5.0.4
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.0.4 Object initializer
 5.0.3 to_string method defined automatically. r"" is regex.
 5.0.2 Fixed bug maybe.
 5.0.1 Exception bug is fiexed maybe.
@@ -3352,6 +3353,27 @@ with -net option to comandline.
 ```
 
 Omitting semicolon at the function block end means return statment.
+
+# Object initializer
+
+```C
+#include <comelang.h>
+
+struct sData
+{
+    int a;
+    int b;
+};
+
+int main(int argc, char** argv)
+{
+    var data = new sData { a: 123, b: 234 };
+    
+    data.to_string().puts();
+    
+    return 0;
+}
+```
 
 # Exception
 

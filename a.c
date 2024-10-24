@@ -8,10 +8,7 @@ struct sData
 
 int main(int argc, char** argv)
 {
-    var data = new sData;
-    
-    data.a = 123;
-    data.b = 234;
+    var data = new sData { a: 123, b: 234 };
     
     data.to_string().puts();
     
