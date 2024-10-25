@@ -713,6 +713,7 @@ struct sInfo
     _Bool inhibits_output_code2;
     _Bool in_generics_fun;
     _Bool in_clone_object;
+    _Bool in_conditional_operator;
 };
 struct tuple2$2sTypephcharph
 {
@@ -1392,7 +1393,8 @@ struct sNode* craete_logical_denial(struct sNode* node, struct sInfo* info);
 struct tuple3$3sTypephcharphbool* backtrace_parse_type(_Bool parse_variable_name, struct sInfo* info);
 void transpile_toplevel(_Bool block, struct sInfo* info);
 void skip_pointer_attribute(struct sInfo* info);
-struct sNode* parse_normal_block(_Bool clang, struct sInfo* info);
+struct sNode* parse_normal_block(_Bool clang, _Bool comma, struct sInfo* info);
+struct sNode* parse_comma_block(struct sInfo* info);
 _Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, struct sInfo* info);
 void cast_type(struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, struct sInfo* info);
 char* parse_attribute(struct sInfo* info);
@@ -1420,7 +1422,7 @@ _Bool create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, str
 struct tuple3$3sTypephcharphbool* parse_type(struct sInfo* info, _Bool parse_variable_name, _Bool parse_multiple_type, _Bool in_function_parametor);
 struct tuple2$2sTypephcharph* parse_variable_name(struct sType* base_type_name, _Bool first, struct sInfo* info);
 struct sBlock* parse_block(struct sInfo* info, _Bool no_block_level, _Bool return_self_at_last, _Bool in_function);
-int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block);
+int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block, _Bool comma);
 void arrange_stack(struct sInfo* info, int top);
 struct sNode* parse_function(struct sInfo* info);
 struct sNode* expression_v5(struct sInfo* info);
@@ -1445,6 +1447,7 @@ struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
 struct sNode* parse_global_variable(struct sInfo* info);
 struct sNode* load_var(char* name, struct sInfo* info);
+struct sNode* parse_match(struct sNode* expression_node, struct sInfo* info);
 struct sNode* create_throw(struct sNode* expression_node, struct sInfo* info);
 struct sNode* create_exception_value(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v8(char* buf, char* head, int head_sline, struct sInfo* info);
@@ -1458,6 +1461,7 @@ struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInf
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
+struct sNode* condtional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
 _Bool operator_overload_fun(struct sType* type, char* fun_name, struct CVALUE* left_value, struct CVALUE* right_value, _Bool break_guard, struct sInfo* info);
 struct sNode* expression_v13(struct sInfo* info);
 struct sNode* post_op_v13(struct sNode* node, struct sInfo* info);
@@ -7835,7 +7839,7 @@ word_389 = (void*)0;
                 type_330=(struct sType*)come_increment_ref_count(multiple_assign_var5->v1);
                 name_331=(char*)come_increment_ref_count(multiple_assign_var5->v2);
                 /*g*/come_call_finalizer3(__right_value451,tuple2$2sTypephcharphp_finalize, 0, 1, 0, 0, __result_obj__);
-                if(*info->p==61&&!info->no_assign) {
+                if(*info->p==61&&*(info->p+1)!=62&&!info->no_assign) {
                     info->p++;
                     skip_spaces_and_lf(info);
                     if(*info->p==123) {
@@ -7910,7 +7914,7 @@ word_389 = (void*)0;
             }
         }
         parse_sharp_v5(info);
-        if(*info->p==61&&*(info->p+1)!=61&&!info->no_assign) {
+        if(*info->p==61&&*(info->p+1)!=61&&*(info->p+1)!=62&&!info->no_assign) {
             info->p++;
             skip_spaces_and_lf(info);
             parse_sharp_v5(info);
@@ -8088,7 +8092,7 @@ word_389 = (void*)0;
                 __dec_obj298 = come_decrement_ref_count2(__dec_obj298, (void*)0, (void*)0, 0,0,0, (void*)0);
                 parse_sharp_v5(info);
                 list$1tuple2$2charphsTypephph_add(info->defining_class->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "07var.c", 1248, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name_375),(struct sType*)come_increment_ref_count(type_374))));
-                if(*info->p==61&&*(info->p+1)!=61) {
+                if(*info->p==61&&*(info->p+1)!=61&&*(info->p+1)!=62) {
                     info->p++;
                     skip_spaces_and_lf(info);
                     parse_sharp_v5(info);
@@ -8128,7 +8132,7 @@ word_389 = (void*)0;
                 name_375 = come_decrement_ref_count2(name_375, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
             else {
-                if(!is_type_name_flag_323&&*info->p==61&&*(info->p+1)!=61&&!info->no_assign) {
+                if(!is_type_name_flag_323&&*info->p==61&&*(info->p+1)!=61&&*(info->p+1)!=62&&!info->no_assign) {
                     info->p++;
                     skip_spaces_and_lf(info);
                     parse_sharp_v5(info);
@@ -8230,7 +8234,7 @@ word_389 = (void*)0;
                                     exit(2);
                                 }
                                 parse_sharp_v5(info);
-                                if(*info->p==61&&info->no_assign) {
+                                if(*info->p==61&&*(info->p+1)!=62&&info->no_assign) {
                                     _inf_value11=(struct sNode*)come_calloc(1, sizeof(struct sNode), "07var.c", 1323, "struct sNode");
                                     _inf_obj_value11=come_increment_ref_count(((struct sLoadNode*)(__right_value563=sLoadNode_initialize((struct sLoadNode*)come_increment_ref_count((struct sLoadNode*)come_calloc(1, sizeof(struct sLoadNode)*(1), "07var.c", 1323, "sLoadNode")),(char*)come_increment_ref_count(name_392),info))));
                                     _inf_value11->_protocol_obj=_inf_obj_value11;
@@ -8251,7 +8255,7 @@ word_389 = (void*)0;
                                     return __result234__;
                                 }
                                 else {
-                                    if(*info->p==61&&!info->no_assign) {
+                                    if(*info->p==61&&*(info->p+1)!=62&&!info->no_assign) {
                                         info->p++;
                                         skip_spaces_and_lf(info);
                                         parse_sharp_v5(info);

@@ -713,6 +713,7 @@ struct sInfo
     _Bool inhibits_output_code2;
     _Bool in_generics_fun;
     _Bool in_clone_object;
+    _Bool in_conditional_operator;
 };
 struct tuple2$2sTypephcharph
 {
@@ -1339,7 +1340,8 @@ void caller_begin(struct sInfo* info);
 void caller_end(struct sInfo* info);
 struct sNode* craete_logical_denial(struct sNode* node, struct sInfo* info);
 void transpile_toplevel(_Bool block, struct sInfo* info);
-struct sNode* parse_normal_block(_Bool clang, struct sInfo* info);
+struct sNode* parse_normal_block(_Bool clang, _Bool comma, struct sInfo* info);
+struct sNode* parse_comma_block(struct sInfo* info);
 char* parse_attribute(struct sInfo* info);
 struct sNode* get_number(_Bool minus, struct sInfo* info);
 struct sNode* get_oct_number(struct sInfo* info);
@@ -1356,7 +1358,7 @@ int expected_next_character(char c, struct sInfo* info);
 struct sBlock* sBlock_initialize(struct sBlock* self, struct sInfo* info);
 _Bool create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sType* generics_type, struct sInfo* info);
 struct sBlock* parse_block(struct sInfo* info, _Bool no_block_level, _Bool return_self_at_last, _Bool in_function);
-int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block);
+int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block, _Bool comma);
 void arrange_stack(struct sInfo* info, int top);
 struct sNode* parse_function(struct sInfo* info);
 struct sNode* expression_v5(struct sInfo* info);
@@ -1388,6 +1390,7 @@ struct sNode* string_node_v7(char* buf, char* head, int head_sline, struct sInfo
 void add_variable_to_table(char* name, struct sType* type, struct sInfo* info);
 void add_variable_to_global_table(char* name, struct sType* type, struct sInfo* info);
 void add_variable_to_global_table_with_int_value(char* name, struct sType* type, char* c_value, struct sInfo* info);
+struct sNode* parse_match(struct sNode* expression_node, struct sInfo* info);
 struct sNode* create_throw(struct sNode* expression_node, struct sInfo* info);
 struct sNode* create_exception_value(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v8(char* buf, char* head, int head_sline, struct sInfo* info);
@@ -1401,6 +1404,7 @@ struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInf
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
+struct sNode* condtional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
 _Bool operator_overload_fun(struct sType* type, char* fun_name, struct CVALUE* left_value, struct CVALUE* right_value, _Bool break_guard, struct sInfo* info);
 struct sNode* expression_v13(struct sInfo* info);
 struct sNode* post_op_v13(struct sNode* node, struct sInfo* info);
@@ -3887,7 +3891,7 @@ struct tuple4$4list$1sTypephphlist$1charphphlist$1charphphbool* __result117__;
             param_type2_143->mFunctionParam=(_Bool)1;
             list$1sTypeph_push_back(param_types_114,(struct sType*)come_increment_ref_count(sType_clone(param_type2_143)));
             list$1charph_push_back(param_names_115,(char*)come_increment_ref_count(string_clone(param_name_141)));
-            if(*info->p==61) {
+            if(*info->p==61&&*(info->p+1)!=62) {
                 info->p++;
                 skip_spaces_and_lf(info);
                 parse_sharp_v5(info);

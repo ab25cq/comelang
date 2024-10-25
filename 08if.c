@@ -34,6 +34,11 @@ class sIfNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        if(info.in_conditional_operator) {
+            err_msg(info, "In conditional operator comelang can't use if statment");
+            return false;
+        }
+        
         sBlock* else_block = self.mElseBlock;
         int elif_num = self.mElifNum;
         bool guard_ = self.mGuard;
@@ -164,6 +169,55 @@ class sIfNode extends sNodeBase
         }
         
         transpiler_clear_last_code(info);
+        
+        return true;
+    }
+};
+
+class sMatchNode extends sNodeBase
+{
+    new(sNode*% it_node, sNode*% match_node, sInfo* info)
+    {
+        self.super();
+    
+        sNode*% self.it_node = clone it_node;
+        sNode*% self.match_node = clone match_node;
+    }
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    string kind()
+    {
+        return string("sMatch");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% it_node = self.it_node;
+        sNode*% match_node = self.match_node;
+        
+        sVarTable* lv_table = info->lv_table;
+        sVarTable*% for_var_table = new sVarTable(global:false, parent:lv_table);
+        info->lv_table = for_var_table;
+        
+        if(!node_compile(it_node, info)) {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        add_come_code(info, "%s;\n", come_value.c_value);
+        dec_stack_ptr(1, info);
+        
+        if(!node_compile(match_node, info)) {
+            return false;
+        }
+        
+        free_objects(for_var_table, null, info);
+        
+        info->lv_table = lv_table;
         
         return true;
     }
@@ -837,4 +891,54 @@ sNode*% parse_and_statment(sNode*% expression_node, sInfo* info)
     sBlock*% if_block = parse_block();
     
     return new sAndStatmentNode(expression_node, if_block, info) implements sNode;
+}
+
+sNode*% parse_match(sNode*% expression_node, sInfo* info)
+{
+    string sname = clone info->sname;
+    int sline = info->sline;
+    
+    expected_next_character('{');
+    
+    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
+    
+    expected_next_character('(');
+    
+    sNode*% conditional_value = expression();
+    
+    expected_next_character(')');
+    
+    parse_sharp();
+    
+    sBlock*% if_block = parse_block();
+    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
+    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
+    int elif_num = 0;
+    sBlock*% else_block = null;
+    
+    while(true) {
+        expected_next_character('(');
+        
+        sNode*% conditional_value = expression();
+        
+        elif_expression_nodes.add(conditional_value);
+        
+        expected_next_character(')');
+        
+        parse_sharp();
+        
+        sBlock*% elif_block = parse_block();
+        
+        elif_blocks.add(elif_block);
+        
+        elif_num++;
+        
+        if(*info->p == '}') {
+            info->p++;
+            skip_spaces_and_lf();
+            break;
+        }
+    }
+    
+    return new sMatchNode(it_node, new sIfNode(conditional_value, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
 }

@@ -22,6 +22,11 @@ class sSwitchNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        if(info.in_conditional_operator) {
+            err_msg(info, "In conditional operator comelang can't use switch statment");
+            return false;
+        }
+        
         sBlock* block = self.mBlock;
         
         /// compile expression ///

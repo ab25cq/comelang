@@ -392,6 +392,7 @@ struct sInfo
     
     bool in_generics_fun;
     bool in_clone_object;
+    bool in_conditional_operator;
 };
 
 module sCurrentNodeModule
@@ -620,7 +621,8 @@ sNode*% craete_logical_denial(sNode*% node, sInfo* info);
 tuple3<sType*%,string,bool>*% backtrace_parse_type(bool parse_variable_name=false,sInfo* info=info);
 void transpile_toplevel(bool block=false, sInfo* info=info);
 void skip_pointer_attribute(sInfo* info=info);
-sNode*% parse_normal_block(bool clang=false, sInfo* info=info);
+sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info);
+sNode*% parse_comma_block(sInfo* info=info);
 bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, sInfo* info=info);
 void cast_type(sType* left_type, sType* right_type, CVALUE* come_value, sInfo* info=info);
 string parse_attribute(sInfo* info=info);
@@ -649,7 +651,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
 tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);
 tuple2<sType*%, string>*% parse_variable_name(sType*% base_type_name, bool first, sInfo* info);
 sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_self_at_last=false, bool in_function=false);
-int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false);
+int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false, bool comma=false);
 void arrange_stack(sInfo* info, int top);
 sNode*% parse_function(sInfo* info);
 
@@ -697,6 +699,7 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
 extern list<sRightValueObject*%>*% gExceptionRightValueObjects;
+sNode*% parse_match(sNode*% expression_node, sInfo* info);
 
 sNode*% create_throw(sNode*% expression_node, sInfo* info);
 sNode*% create_exception_value(sNode*% expression_node, sInfo* info);
@@ -731,6 +734,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /// 13op.c
 /////////////////////////////////////////////////////////////////////
 sNode*% create_null_node(sInfo* info=info);
+sNode*% condtional_node(sNode*% value1, sNode*% value2, sNode*% value3, sInfo* info);
 bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVALUE* right_value, bool break_guard, sInfo* info);
 sNode*% expression(sInfo* info=info) version 13;
 sNode*% post_op(sNode*% node, sInfo* info) version 13;

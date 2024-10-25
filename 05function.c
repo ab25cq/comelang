@@ -306,7 +306,7 @@ info->sline = node.sline();
     return result;
 }
 
-int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false)
+int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false, bool comma=false)
 {
     if(info.output_header_file) {
         return 0;
@@ -380,7 +380,12 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             info.sline = sline;
             info.sname = string(sname);
     
-            add_last_code_to_source(info);
+            if(comma) {
+                add_last_code_to_source_with_comma(info);
+            }
+            else {
+                add_last_code_to_source(info);
+            }
 
             arrange_stack(info, stack_num_before);
 

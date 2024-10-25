@@ -713,6 +713,7 @@ struct sInfo
     _Bool inhibits_output_code2;
     _Bool in_generics_fun;
     _Bool in_clone_object;
+    _Bool in_conditional_operator;
 };
 struct tuple2$2sTypephcharph
 {
@@ -1369,7 +1370,8 @@ struct sNode* craete_logical_denial(struct sNode* node, struct sInfo* info);
 struct tuple3$3sTypephcharphbool* backtrace_parse_type(_Bool parse_variable_name, struct sInfo* info);
 void transpile_toplevel(_Bool block, struct sInfo* info);
 void skip_pointer_attribute(struct sInfo* info);
-struct sNode* parse_normal_block(_Bool clang, struct sInfo* info);
+struct sNode* parse_normal_block(_Bool clang, _Bool comma, struct sInfo* info);
+struct sNode* parse_comma_block(struct sInfo* info);
 _Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, struct sInfo* info);
 void cast_type(struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, struct sInfo* info);
 char* parse_attribute(struct sInfo* info);
@@ -1397,7 +1399,7 @@ _Bool create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, str
 struct tuple3$3sTypephcharphbool* parse_type(struct sInfo* info, _Bool parse_variable_name, _Bool parse_multiple_type, _Bool in_function_parametor);
 struct tuple2$2sTypephcharph* parse_variable_name(struct sType* base_type_name, _Bool first, struct sInfo* info);
 struct sBlock* parse_block(struct sInfo* info, _Bool no_block_level, _Bool return_self_at_last, _Bool in_function);
-int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block);
+int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block, _Bool comma);
 void arrange_stack(struct sInfo* info, int top);
 struct sNode* parse_function(struct sInfo* info);
 struct sNode* expression_v5(struct sInfo* info);
@@ -1430,6 +1432,7 @@ struct sNode* string_node_v7(char* buf, char* head, int head_sline, struct sInfo
 void add_variable_to_table(char* name, struct sType* type, struct sInfo* info);
 void add_variable_to_global_table(char* name, struct sType* type, struct sInfo* info);
 void add_variable_to_global_table_with_int_value(char* name, struct sType* type, char* c_value, struct sInfo* info);
+struct sNode* parse_match(struct sNode* expression_node, struct sInfo* info);
 struct sNode* create_throw(struct sNode* expression_node, struct sInfo* info);
 struct sNode* create_exception_value(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v8(char* buf, char* head, int head_sline, struct sInfo* info);
@@ -1442,6 +1445,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
+struct sNode* condtional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
 _Bool operator_overload_fun(struct sType* type, char* fun_name, struct CVALUE* left_value, struct CVALUE* right_value, _Bool break_guard, struct sInfo* info);
 struct sNode* expression_v13(struct sInfo* info);
 struct sNode* post_op_v13(struct sNode* node, struct sInfo* info);
@@ -2972,6 +2976,10 @@ struct sNode* expression_node_135;
 void* __right_value144 = (void*)0;
 struct CVALUE* conditional_value_136;
 _Bool __result102__;
+    if(info->in_conditional_operator) {
+        err_msg(info,"In conditional operator comelang can't use switch statment");
+        return (_Bool)0;
+    }
     block_134=self->mBlock;
     expression_node_135=self->mExpressionNode;
     if(!node_compile(expression_node_135,info)) {
@@ -2980,7 +2988,7 @@ _Bool __result102__;
     conditional_value_136=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     dec_stack_ptr(1,info);
     add_come_code(info,"switch (%s) {\n",conditional_value_136->c_value);
-    transpile_block(block_134,((void*)0),((void*)0),info,(_Bool)0,(_Bool)1);
+    transpile_block(block_134,((void*)0),((void*)0),info,(_Bool)0,(_Bool)1,(_Bool)0);
     add_come_code(info,"}\n");
     transpiler_clear_last_code(info);
     __result102__ = (_Bool)1;
@@ -4429,8 +4437,8 @@ struct sNode* __result140__;
         node_140=(struct sNode*)come_increment_ref_count(expression_v13(info));
         info->no_label=no_label_139;
         expected_next_character(58,info);
-        _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 230, "struct sNode");
-        _inf_obj_value1=come_increment_ref_count(((struct sCaseNode*)(__right_value167=sCaseNode_initialize((struct sCaseNode*)come_increment_ref_count((struct sCaseNode*)come_calloc(1, sizeof(struct sCaseNode)*(1), "12switch.c", 230, "sCaseNode")),(struct sNode*)come_increment_ref_count(node_140),info))));
+        _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 235, "struct sNode");
+        _inf_obj_value1=come_increment_ref_count(((struct sCaseNode*)(__right_value167=sCaseNode_initialize((struct sCaseNode*)come_increment_ref_count((struct sCaseNode*)come_calloc(1, sizeof(struct sCaseNode)*(1), "12switch.c", 235, "sCaseNode")),(struct sNode*)come_increment_ref_count(node_140),info))));
         _inf_value1->_protocol_obj=_inf_obj_value1;
         _inf_value1->finalize=(void*)sCaseNode_finalize;
         _inf_value1->clone=(void*)sCaseNode_clone;
@@ -4450,8 +4458,8 @@ struct sNode* __result140__;
     else {
         if(charp_operator_equals(buf,"default")) {
             expected_next_character(58,info);
-            _inf_value2=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 235, "struct sNode");
-            _inf_obj_value2=come_increment_ref_count(((struct sDefaultNode*)(__right_value173=sDefaultNode_initialize((struct sDefaultNode*)come_increment_ref_count((struct sDefaultNode*)come_calloc(1, sizeof(struct sDefaultNode)*(1), "12switch.c", 235, "sDefaultNode")),info))));
+            _inf_value2=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 240, "struct sNode");
+            _inf_obj_value2=come_increment_ref_count(((struct sDefaultNode*)(__right_value173=sDefaultNode_initialize((struct sDefaultNode*)come_increment_ref_count((struct sDefaultNode*)come_calloc(1, sizeof(struct sDefaultNode)*(1), "12switch.c", 240, "sDefaultNode")),info))));
             _inf_value2->_protocol_obj=_inf_obj_value2;
             _inf_value2->finalize=(void*)sDefaultNode_finalize;
             _inf_value2->clone=(void*)sDefaultNode_clone;
@@ -4468,8 +4476,8 @@ struct sNode* __result140__;
         }
         else {
             if(charp_operator_equals(buf,"break")) {
-                _inf_value3=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 238, "struct sNode");
-                _inf_obj_value3=come_increment_ref_count(((struct sBreakNode*)(__right_value178=sBreakNode_initialize((struct sBreakNode*)come_increment_ref_count((struct sBreakNode*)come_calloc(1, sizeof(struct sBreakNode)*(1), "12switch.c", 238, "sBreakNode")),info))));
+                _inf_value3=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 243, "struct sNode");
+                _inf_obj_value3=come_increment_ref_count(((struct sBreakNode*)(__right_value178=sBreakNode_initialize((struct sBreakNode*)come_increment_ref_count((struct sBreakNode*)come_calloc(1, sizeof(struct sBreakNode)*(1), "12switch.c", 243, "sBreakNode")),info))));
                 _inf_value3->_protocol_obj=_inf_obj_value3;
                 _inf_value3->finalize=(void*)sBreakNode_finalize;
                 _inf_value3->clone=(void*)sBreakNode_clone;
@@ -4486,8 +4494,8 @@ struct sNode* __result140__;
             }
             else {
                 if(charp_operator_equals(buf,"continue")) {
-                    _inf_value4=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 241, "struct sNode");
-                    _inf_obj_value4=come_increment_ref_count(((struct sContinueNode*)(__right_value183=sContinueNode_initialize((struct sContinueNode*)come_increment_ref_count((struct sContinueNode*)come_calloc(1, sizeof(struct sContinueNode)*(1), "12switch.c", 241, "sContinueNode")),info))));
+                    _inf_value4=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 246, "struct sNode");
+                    _inf_obj_value4=come_increment_ref_count(((struct sContinueNode*)(__right_value183=sContinueNode_initialize((struct sContinueNode*)come_increment_ref_count((struct sContinueNode*)come_calloc(1, sizeof(struct sContinueNode)*(1), "12switch.c", 246, "sContinueNode")),info))));
                     _inf_value4->_protocol_obj=_inf_obj_value4;
                     _inf_value4->finalize=(void*)sContinueNode_finalize;
                     _inf_value4->clone=(void*)sContinueNode_clone;
@@ -4507,8 +4515,8 @@ struct sNode* __result140__;
                         info->p++;
                         skip_spaces_and_lf(info);
                         if(*info->p==59) {
-                            _inf_value5=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 248, "struct sNode");
-                            _inf_obj_value5=come_increment_ref_count(((struct sLabelNode*)(__right_value189=sLabelNode_initialize((struct sLabelNode*)come_increment_ref_count((struct sLabelNode*)come_calloc(1, sizeof(struct sLabelNode)*(1), "12switch.c", 248, "sLabelNode")),(char*)come_increment_ref_count(__builtin_string(buf)),info,(_Bool)1))));
+                            _inf_value5=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 253, "struct sNode");
+                            _inf_obj_value5=come_increment_ref_count(((struct sLabelNode*)(__right_value189=sLabelNode_initialize((struct sLabelNode*)come_increment_ref_count((struct sLabelNode*)come_calloc(1, sizeof(struct sLabelNode)*(1), "12switch.c", 253, "sLabelNode")),(char*)come_increment_ref_count(__builtin_string(buf)),info,(_Bool)1))));
                             _inf_value5->_protocol_obj=_inf_obj_value5;
                             _inf_value5->finalize=(void*)sLabelNode_finalize;
                             _inf_value5->clone=(void*)sLabelNode_clone;
@@ -4524,8 +4532,8 @@ struct sNode* __result140__;
                             return __result130__;
                         }
                         else {
-                            _inf_value6=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 251, "struct sNode");
-                            _inf_obj_value6=come_increment_ref_count(((struct sLabelNode*)(__right_value196=sLabelNode_initialize((struct sLabelNode*)come_increment_ref_count((struct sLabelNode*)come_calloc(1, sizeof(struct sLabelNode)*(1), "12switch.c", 251, "sLabelNode")),(char*)come_increment_ref_count(__builtin_string(buf)),info,(_Bool)0))));
+                            _inf_value6=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 256, "struct sNode");
+                            _inf_obj_value6=come_increment_ref_count(((struct sLabelNode*)(__right_value196=sLabelNode_initialize((struct sLabelNode*)come_increment_ref_count((struct sLabelNode*)come_calloc(1, sizeof(struct sLabelNode)*(1), "12switch.c", 256, "sLabelNode")),(char*)come_increment_ref_count(__builtin_string(buf)),info,(_Bool)0))));
                             _inf_value6->_protocol_obj=_inf_obj_value6;
                             _inf_value6->finalize=(void*)sLabelNode_finalize;
                             _inf_value6->clone=(void*)sLabelNode_clone;
@@ -4544,8 +4552,8 @@ struct sNode* __result140__;
                     else {
                         if(charp_operator_equals(buf,"goto")) {
                             buf_147=(char*)come_increment_ref_count(parse_word(info));
-                            _inf_value7=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 257, "struct sNode");
-                            _inf_obj_value7=come_increment_ref_count(((struct sGotoNode*)(__right_value203=sGotoNode_initialize((struct sGotoNode*)come_increment_ref_count((struct sGotoNode*)come_calloc(1, sizeof(struct sGotoNode)*(1), "12switch.c", 257, "sGotoNode")),(char*)come_increment_ref_count(buf_147),info))));
+                            _inf_value7=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 262, "struct sNode");
+                            _inf_obj_value7=come_increment_ref_count(((struct sGotoNode*)(__right_value203=sGotoNode_initialize((struct sGotoNode*)come_increment_ref_count((struct sGotoNode*)come_calloc(1, sizeof(struct sGotoNode)*(1), "12switch.c", 262, "sGotoNode")),(char*)come_increment_ref_count(buf_147),info))));
                             _inf_value7->_protocol_obj=_inf_obj_value7;
                             _inf_value7->finalize=(void*)sGotoNode_finalize;
                             _inf_value7->clone=(void*)sGotoNode_clone;
@@ -4568,8 +4576,8 @@ struct sNode* __result140__;
                                 expression_node_149=(struct sNode*)come_increment_ref_count(expression_v13(info));
                                 expected_next_character(41,info);
                                 block_150=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
-                                _inf_value8=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 268, "struct sNode");
-                                _inf_obj_value8=come_increment_ref_count(((struct sSwitchNode*)(__right_value211=sSwitchNode_initialize((struct sSwitchNode*)come_increment_ref_count((struct sSwitchNode*)come_calloc(1, sizeof(struct sSwitchNode)*(1), "12switch.c", 268, "sSwitchNode")),(struct sNode*)come_increment_ref_count(expression_node_149),block_150,info))));
+                                _inf_value8=(struct sNode*)come_calloc(1, sizeof(struct sNode), "12switch.c", 273, "struct sNode");
+                                _inf_obj_value8=come_increment_ref_count(((struct sSwitchNode*)(__right_value211=sSwitchNode_initialize((struct sSwitchNode*)come_increment_ref_count((struct sSwitchNode*)come_calloc(1, sizeof(struct sSwitchNode)*(1), "12switch.c", 273, "sSwitchNode")),(struct sNode*)come_increment_ref_count(expression_node_149),block_150,info))));
                                 _inf_value8->_protocol_obj=_inf_obj_value8;
                                 _inf_value8->finalize=(void*)sSwitchNode_finalize;
                                 _inf_value8->clone=(void*)sSwitchNode_clone;

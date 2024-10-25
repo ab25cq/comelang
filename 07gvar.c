@@ -176,7 +176,7 @@ sNode*% parse_global_variable(sInfo* info)
             if(err) {
                 var type,name = parse_variable_name(type@base_type_name, true@first, info);
                 
-                if(*info->p == '=') {
+                if(*info->p == '=' && *(info->p+1) != '>') {
                     info->p++;
                     skip_spaces_and_lf();
                     

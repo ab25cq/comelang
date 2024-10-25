@@ -1541,6 +1541,9 @@ class sConditionalNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        bool in_conditional_operator = info.in_conditional_operator;
+        info.in_conditional_operator = true;
+        
         /// compile expression ///
         sNode* value1 = self.mValue1;
     
@@ -1571,17 +1574,24 @@ class sConditionalNode extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%s?%s:%s", value1_value.c_value, value2_value.c_value, value3_value.c_value);
+        come_value.c_value = xsprintf("((%s)?(%s):(%s))", value1_value.c_value, value2_value.c_value, value3_value.c_value);
         come_value.type = clone value2_value.type;
         come_value.var = null;
         
         add_come_last_code(info, "%s;\n", come_value.c_value);
         
         info.stack.push_back(come_value);
+        
+        info.in_conditional_operator = in_conditional_operator;
     
         return true;
     }
 };
+
+sNode*% condtional_node(sNode*% value1, sNode*% value2, sNode*% value3, sInfo* info)
+{
+    return new sConditionalNode(value1, value2, value3, info) implements sNode;
+}
 
 sNode*% mult_exp(sInfo* info)
 {

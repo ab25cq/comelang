@@ -1467,7 +1467,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 break_guard = true;
             }
             
-            if(!info.no_assign && *info->p == '=' && *(info->p+1) != '=') {
+            if(!info.no_assign && *info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>') {
                 info->p++;
                 skip_spaces_and_lf();
                 
@@ -1558,7 +1558,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 info->sline = sline;
             }
             
-            if(!info.no_assign && *info->p == '=' && *(info->p+1) != '=') {
+            if(!info.no_assign && *info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>') {
                 info->p++;
                 skip_spaces_and_lf();
                 
@@ -1574,6 +1574,9 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 }
                 else if(field_name === "elif") {
                     node = parse_elif_method_call(clone node, info);
+                }
+                else if(field_name === "case") {
+                    node = parse_match(clone node, info);
                 }
                 else if(field_name === "rescue") {
                     node = parse_catch_method_call(clone node, info);

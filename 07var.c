@@ -1032,7 +1032,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             if(err) {
                 var type,name = parse_variable_name(type@base_type_name, true@first, info);
                 
-                if(*info->p == '=' && !info->no_assign) {
+                if(*info->p == '=' && *(info->p+1) != '>' && !info->no_assign) {
                     info->p++;
                     skip_spaces_and_lf();
                     
@@ -1114,7 +1114,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         }
         parse_sharp();
         
-        if(*info->p == '=' && *(info->p+1) != '=' && !info->no_assign) {
+        if(*info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>' && !info->no_assign) {
             info.p++;
             skip_spaces_and_lf();
             
@@ -1247,7 +1247,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         parse_sharp();
         info.defining_class->mFields.add((name, type));
         
-        if(*info->p == '=' && *(info->p+1) != '=') {
+        if(*info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>') {
             info->p++;
             skip_spaces_and_lf();
             
@@ -1263,7 +1263,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             return create_null_node();
         }
     }
-    else if(!is_type_name_flag && *info->p == '=' && *(info->p+1) != '=' && !info->no_assign) {
+    else if(!is_type_name_flag && *info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>' && !info->no_assign) {
         info.p++;
         skip_spaces_and_lf();
         
@@ -1319,10 +1319,10 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             }
             parse_sharp();
             
-            if(*info->p == '=' && info->no_assign) {
+            if(*info->p == '=' && *(info->p+1) != '>' && info->no_assign) {
                 return new sLoadNode(name@name, info) implements sNode;
             }
-            else if(*info->p == '=' && !info->no_assign) {
+            else if(*info->p == '=' && *(info->p+1) != '>' && !info->no_assign) {
                 info.p++;
                 skip_spaces_and_lf();
                 

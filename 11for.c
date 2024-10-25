@@ -43,6 +43,11 @@ class sForNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        if(info.in_conditional_operator) {
+            err_msg(info, "In conditional operator comelang can't use for statment");
+            return false;
+        }
+        
         bool in_loop = info.in_loop;
         info.in_loop = true;
         

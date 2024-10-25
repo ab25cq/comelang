@@ -184,7 +184,7 @@ class sDerefferenceNode extends sNodeBase
                 char* p = left_value.c_value;
                 char* p2 = null;
                 while(*p) {
-                    if(*p == '=') {
+                    if(*p == '=' && *(p+1) != '>') {
                         p2 = p;
                         break;
                     }
@@ -429,12 +429,13 @@ class sMinusMinusNode2 extends sNodeBase
 
 class sNormalBlock extends sNodeBase
 {
-    new(sBlock* block, bool clang, sInfo* info)
+    new(sBlock* block, bool clang, bool comma, sInfo* info)
     {
         self.super();
         
         sBlock*% self.mBlock = clone block;
         bool self.clang = clang;
+        bool self.comma = comma;
     }
     
     bool terminated()
@@ -451,14 +452,18 @@ class sNormalBlock extends sNodeBase
     {
         sBlock* block = self.mBlock;
         
-        add_come_code(info, "{\n");
+        if(!self.comma) {
+            add_come_code(info, "{\n");
+        }
         
         bool come_c = gComeC;
         if(self.clang) { gComeC = true; }
     
-        transpile_block(block, null, null, info);
+        transpile_block(block, null, null, info, comma:self.comma);
         
-        add_come_code(info, "}\n");
+        if(!self.comma) {
+            add_come_code(info, "}\n");
+        }
         
         gComeC = come_c;
         
@@ -467,6 +472,7 @@ class sNormalBlock extends sNodeBase
         return true;
     }
 };
+
 
 class sComplement extends sNodeBase
 {
@@ -589,11 +595,11 @@ class sCastNode extends sNodeBase
     }
 }
 
-sNode*% parse_normal_block(bool clang=false, sInfo* info=info)
+sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info)
 {
     sBlock*% block = parse_block();
     
-    return new sNormalBlock(block, clang, info) implements sNode;
+    return new sNormalBlock(block, clang, comma, info) implements sNode;
 }
 
 sNode*% craete_logical_denial(sNode*% node, sInfo* info)
