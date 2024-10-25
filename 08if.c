@@ -34,6 +34,21 @@ class sIfNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        bool existance_of_result_value = true;
+        {
+            if(!self.mIfBlock.mOmitSemicolon) {
+                existance_of_result_value = false;
+            }
+            for(int i=0; i<self.mElifNum; i++) {
+                if(!self.mElifBlocks[i]??.mOmitSemicolon) {
+                    existance_of_result_value = false;
+                }
+            }
+            if(self.mElseBlock && !self.mElseBlock.mOmitSemicolon) {
+                existance_of_result_value = false;
+            }
+        }
+        
         if(info.in_conditional_operator) {
             err_msg(info, "In conditional operator comelang can't use if statment");
             return false;
@@ -42,6 +57,19 @@ class sIfNode extends sNodeBase
         sBlock* else_block = self.mElseBlock;
         int elif_num = self.mElifNum;
         bool guard_ = self.mGuard;
+        
+        sVarTable* lv_table = info->lv_table;
+        sVarTable*% for_var_table = new sVarTable(global:false, parent:lv_table);
+        info->lv_table = for_var_table;
+        
+        if(existance_of_result_value) {
+            sType*% if_result_type = new sType("void*");
+            
+            add_variable_to_table(s"__if_result__", clone if_result_type, info);
+            
+            sVar* var_ = get_variable_from_table(info.lv_table, s"__if_result__");
+            add_come_code(info, "%s = (void*)0;\n", make_define_var(var_->mType, var_->mCValueName));
+        }
         
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
@@ -106,7 +134,7 @@ class sIfNode extends sNodeBase
             add_come_code(info, "_if_conditional%d) {\n", num_if_conditional_stack);
         }
     
-        transpile_block(if_block, null, null, info);
+        transpile_block(if_block, null, null, info, if_result:existance_of_result_value);
         
         add_come_code(info, "}\n");
     
@@ -154,7 +182,7 @@ class sIfNode extends sNodeBase
                     add_come_code(info, "_elif_conditional%d) {\n", num_elif_conditional_stack);
                 }
                 
-                transpile_block(elif_node_block, null, null, info);
+                transpile_block(elif_node_block, null, null, info, if_result:existance_of_result_value);
     
                 add_come_code(info, "}\n");
             }
@@ -163,12 +191,24 @@ class sIfNode extends sNodeBase
         if(else_block) {
             add_come_code(info, "else {\n");
     
-            transpile_block(else_block, null, null, info);
+            transpile_block(else_block, null, null, info, if_result:existance_of_result_value);
             
             add_come_code(info, "}\n");
         }
         
         transpiler_clear_last_code(info);
+        
+        if(existance_of_result_value) {
+            sNode*% result_node = create_load_var(s"__if_result__");
+            
+            if(!node_compile(result_node, info)) {
+                return false;
+            }
+        }
+        
+        free_objects(for_var_table, null, info);
+        
+        info->lv_table = lv_table;
         
         return true;
     }

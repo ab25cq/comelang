@@ -2907,7 +2907,7 @@ struct tuple2$2come_regexphcharph* __result95__;
 err_66 = (void*)0;
 memset(&erro_ofs_67, 0, sizeof(int));
 memset(&__null_value1, 0, sizeof(struct come_regex*));
-    options_68=2048|(ignore_case?1:0)|(multiline?2:0)|(extended?8:0)|(dotall?4:0)|(dollar_endonly?32:0)|(ungreedy?512:0);
+    options_68=2048|(((ignore_case)?(1):(0)))|(((multiline)?(2):(0)))|(((extended)?(8):(0)))|(((dotall)?(4):(0)))|(((dollar_endonly)?(32):(0)))|(((ungreedy)?(512):(0)));
     __dec_obj16=self->str;
     self->str=(char*)come_increment_ref_count(__builtin_string(str));
     __dec_obj16 = come_decrement_ref_count2(__dec_obj16, (void*)0, (void*)0, 0,0,0, (void*)0);

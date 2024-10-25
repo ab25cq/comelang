@@ -268,6 +268,7 @@ struct sBlock
 {
     list<sNode*%>*% mNodes;
     sVarTable*% mVarTable;
+    bool mOmitSemicolon;
 };
 
 struct sRightValueObject 
@@ -651,7 +652,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
 tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);
 tuple2<sType*%, string>*% parse_variable_name(sType*% base_type_name, bool first, sInfo* info);
 sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_self_at_last=false, bool in_function=false);
-int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false, bool comma=false);
+int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false, bool comma=false, bool if_result=false);
 void arrange_stack(sInfo* info, int top);
 sNode*% parse_function(sInfo* info);
 

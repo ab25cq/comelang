@@ -533,6 +533,7 @@ struct sBlock
 {
     struct list$1sNodeph* mNodes;
     struct sVarTable* mVarTable;
+    _Bool mOmitSemicolon;
 };
 struct sRightValueObject
 {
@@ -1379,7 +1380,7 @@ _Bool create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, str
 struct tuple3$3sTypephcharphbool* parse_type(struct sInfo* info, _Bool parse_variable_name, _Bool parse_multiple_type, _Bool in_function_parametor);
 struct tuple2$2sTypephcharph* parse_variable_name(struct sType* base_type_name, _Bool first, struct sInfo* info);
 struct sBlock* parse_block(struct sInfo* info, _Bool no_block_level, _Bool return_self_at_last, _Bool in_function);
-int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block, _Bool comma);
+int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block, _Bool comma, _Bool if_result);
 void arrange_stack(struct sInfo* info, int top);
 struct sNode* parse_function(struct sInfo* info);
 struct sNode* expression_v5(struct sInfo* info);
@@ -3437,7 +3438,7 @@ output_file_name_103 = (void*)0;
     rc2_107=system("uname -a | grep Android 1> /dev/null 2>/dev/null");
     rc_108=system(cmd_104);
     if(rc2_107==0) {
-        cmd3_109=(char*)come_increment_ref_count(xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out",info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",exist_common_h_105?((char*)(__right_value149=__builtin_string(" -include common.h "))):"",input_file_name_102,output_file_name_103,output_file_name_103));
+        cmd3_109=(char*)come_increment_ref_count(xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out",info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_105)?(((char*)(__right_value149=__builtin_string(" -include common.h ")))):("")),input_file_name_102,output_file_name_103,output_file_name_103));
         __right_value149 = come_decrement_ref_count2(__right_value149, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         if(info->verbose) {
             puts(cmd3_109);
@@ -3457,7 +3458,7 @@ output_file_name_103 = (void*)0;
     }
     else {
         if(rc_108==0) {
-            cmd2_112=(char*)come_increment_ref_count(xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include -U__GNUC__ %s %s > %s 2> %s.cpp.out",info->cpp_option,"/usr/local/","/usr/local/",exist_common_h_105?((char*)(__right_value152=__builtin_string(" -include common.h "))):"",input_file_name_102,output_file_name_103,output_file_name_103));
+            cmd2_112=(char*)come_increment_ref_count(xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include -U__GNUC__ %s %s > %s 2> %s.cpp.out",info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_105)?(((char*)(__right_value152=__builtin_string(" -include common.h ")))):("")),input_file_name_102,output_file_name_103,output_file_name_103));
             __right_value152 = come_decrement_ref_count2(__right_value152, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             if(info->verbose) {
                 puts(cmd2_112);
@@ -3476,13 +3477,13 @@ output_file_name_103 = (void*)0;
             command2_114 = come_decrement_ref_count2(command2_114, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
         else {
-            cmd3_115=(char*)come_increment_ref_count(xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out",info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",exist_common_h_105?((char*)(__right_value155=__builtin_string(" -include common.h "))):"",input_file_name_102,output_file_name_103,output_file_name_103));
+            cmd3_115=(char*)come_increment_ref_count(xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out",info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_105)?(((char*)(__right_value155=__builtin_string(" -include common.h ")))):("")),input_file_name_102,output_file_name_103,output_file_name_103));
             __right_value155 = come_decrement_ref_count2(__right_value155, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             cmd_debian_116=(char*)come_increment_ref_count(xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null"));
             rc_debian_117=system(cmd_debian_116);
             if(rc_debian_117==0) {
                 __dec_obj23=cmd3_115;
-                cmd3_115=(char*)come_increment_ref_count(xsprintf("cpp -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out",info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",exist_common_h_105?((char*)(__right_value158=__builtin_string(" -include common.h "))):"",input_file_name_102,output_file_name_103,output_file_name_103));
+                cmd3_115=(char*)come_increment_ref_count(xsprintf("cpp -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out",info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_105)?(((char*)(__right_value158=__builtin_string(" -include common.h ")))):("")),input_file_name_102,output_file_name_103,output_file_name_103));
                 __dec_obj23 = come_decrement_ref_count2(__dec_obj23, (void*)0, (void*)0, 0,0,0, (void*)0);
                 __right_value158 = come_decrement_ref_count2(__right_value158, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             }
@@ -3496,11 +3497,11 @@ output_file_name_103 = (void*)0;
             }
             (void)system(command2_119);
             if(rc_118!=0) {
-                cmd4_120=(char*)come_increment_ref_count(xsprintf("cpp -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out",info->cpp_option,"/usr/local/","/usr/local/",exist_common_h_105?((char*)(__right_value161=__builtin_string(" -include common.h "))):"",input_file_name_102,output_file_name_103,output_file_name_103));
+                cmd4_120=(char*)come_increment_ref_count(xsprintf("cpp -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out",info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_105)?(((char*)(__right_value161=__builtin_string(" -include common.h ")))):("")),input_file_name_102,output_file_name_103,output_file_name_103));
                 __right_value161 = come_decrement_ref_count2(__right_value161, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                 if(rc_debian_117==0) {
                     __dec_obj24=cmd4_120;
-                    cmd4_120=(char*)come_increment_ref_count(xsprintf("cpp -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out",info->cpp_option,"/usr/local/","/usr/local/",exist_common_h_105?((char*)(__right_value163=__builtin_string(" -include common.h "))):"",input_file_name_102,output_file_name_103,output_file_name_103));
+                    cmd4_120=(char*)come_increment_ref_count(xsprintf("cpp -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out",info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_105)?(((char*)(__right_value163=__builtin_string(" -include common.h ")))):("")),input_file_name_102,output_file_name_103,output_file_name_103));
                     __dec_obj24 = come_decrement_ref_count2(__dec_obj24, (void*)0, (void*)0, 0,0,0, (void*)0);
                     __right_value163 = come_decrement_ref_count2(__right_value163, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                 }

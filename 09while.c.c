@@ -533,6 +533,7 @@ struct sBlock
 {
     struct list$1sNodeph* mNodes;
     struct sVarTable* mVarTable;
+    _Bool mOmitSemicolon;
 };
 struct sRightValueObject
 {
@@ -1365,7 +1366,7 @@ _Bool create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, str
 struct tuple3$3sTypephcharphbool* parse_type(struct sInfo* info, _Bool parse_variable_name, _Bool parse_multiple_type, _Bool in_function_parametor);
 struct tuple2$2sTypephcharph* parse_variable_name(struct sType* base_type_name, _Bool first, struct sInfo* info);
 struct sBlock* parse_block(struct sInfo* info, _Bool no_block_level, _Bool return_self_at_last, _Bool in_function);
-int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block, _Bool comma);
+int transpile_block(struct sBlock* block, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct sInfo* info, _Bool no_var_table, _Bool loop_block, _Bool comma, _Bool if_result);
 void arrange_stack(struct sInfo* info, int top);
 struct sNode* parse_function(struct sInfo* info);
 struct sNode* expression_v5(struct sInfo* info);
@@ -2948,7 +2949,7 @@ int num_while_conditional_stack_141;
         add_come_code(info,"_while_condtional%d) {\n",num_while_conditional_stack_141);
         /*i*/come_call_finalizer3(conditional_value_139,CVALUE_finalize, 0, 0, 0, 0, (void*)0);
     }
-    transpile_block(block_136,((void*)0),((void*)0),info,(_Bool)0,(_Bool)1,(_Bool)0);
+    transpile_block(block_136,((void*)0),((void*)0),info,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0);
     add_come_code(info,"}\n");
     transpiler_clear_last_code(info);
     info->in_loop=in_loop_134;
@@ -3035,6 +3036,9 @@ struct sBlock* __result99__;
         __dec_obj48=result_65->mVarTable;
         result_65->mVarTable=(struct sVarTable*)come_increment_ref_count(sVarTable_clone(self->mVarTable));
         /* a*/come_call_finalizer3(__dec_obj48,sVarTable_finalize, 0, 0, 0, 0, (void*)0);
+    }
+    if(self!=((void*)0)) {
+        result_65->mOmitSemicolon=self->mOmitSemicolon;
     }
     __result99__ = gComeFunResultObject = __result_obj__ = result_65;
     /*i*/come_call_finalizer3(result_65,sBlock_finalize, 0, 0, 1, 0, (void*)0);

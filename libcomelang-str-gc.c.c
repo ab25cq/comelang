@@ -2591,7 +2591,7 @@ struct tuple2$2come_regexphcharph* __result95__;
 err_44 = (void*)0;
 memset(&erro_ofs_45, 0, sizeof(int));
 memset(&__null_value1, 0, sizeof(struct come_regex*));
-    options_46=2048|(ignore_case?1:0)|(multiline?2:0)|(extended?8:0)|(dotall?4:0)|(dollar_endonly?32:0)|(ungreedy?512:0);
+    options_46=2048|(((ignore_case)?(1):(0)))|(((multiline)?(2):(0)))|(((extended)?(8):(0)))|(((dotall)?(4):(0)))|(((dollar_endonly)?(32):(0)))|(((ungreedy)?(512):(0)));
     self->str=__builtin_string(str);
     self->ignore_case=ignore_case;
     self->multiline=multiline;

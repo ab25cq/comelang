@@ -787,15 +787,15 @@ struct anonymous_typeX13
 typedef struct anonymous_typeX13 pthread_rwlockattr_t;
 union anonymous_typeZ15
 {
-int __i[sizeof(long)==8?14:9];
-int __vi[sizeof(long)==8?14:9];
-unsigned long unsigned  int __s[sizeof(long)==8?7:9];
+int __i[((sizeof(long)==8)?(14):(9))];
+int __vi[((sizeof(long)==8)?(14):(9))];
+unsigned long unsigned  int __s[((sizeof(long)==8)?(7):(9))];
 };
 union anonymous_typeZ16
 {
-int __i[sizeof(long)==8?14:9];
-int __vi[sizeof(long)==8?14:9];
-unsigned long unsigned  int __s[sizeof(long)==8?7:9];
+int __i[((sizeof(long)==8)?(14):(9))];
+int __vi[((sizeof(long)==8)?(14):(9))];
+unsigned long unsigned  int __s[((sizeof(long)==8)?(7):(9))];
 };
 struct anonymous_typeX14
 {
@@ -804,15 +804,15 @@ struct anonymous_typeX14
 typedef struct anonymous_typeX14 pthread_attr_t;
 union anonymous_typeZ18
 {
-int __i[sizeof(long)==8?10:6];
-int __vi[sizeof(long)==8?10:6];
-void* __p[sizeof(long)==8?5:6];
+int __i[((sizeof(long)==8)?(10):(6))];
+int __vi[((sizeof(long)==8)?(10):(6))];
+void* __p[((sizeof(long)==8)?(5):(6))];
 };
 union anonymous_typeZ19
 {
-int __i[sizeof(long)==8?10:6];
-int __vi[sizeof(long)==8?10:6];
-void* __p[sizeof(long)==8?5:6];
+int __i[((sizeof(long)==8)?(10):(6))];
+int __vi[((sizeof(long)==8)?(10):(6))];
+void* __p[((sizeof(long)==8)?(5):(6))];
 };
 struct anonymous_typeX17
 {
@@ -838,15 +838,15 @@ struct anonymous_typeX20
 typedef struct anonymous_typeX20 pthread_cond_t;
 union anonymous_typeZ24
 {
-int __i[sizeof(long)==8?14:8];
-int __vi[sizeof(long)==8?14:8];
-void* __p[sizeof(long)==8?7:8];
+int __i[((sizeof(long)==8)?(14):(8))];
+int __vi[((sizeof(long)==8)?(14):(8))];
+void* __p[((sizeof(long)==8)?(7):(8))];
 };
 union anonymous_typeZ25
 {
-int __i[sizeof(long)==8?14:8];
-int __vi[sizeof(long)==8?14:8];
-void* __p[sizeof(long)==8?7:8];
+int __i[((sizeof(long)==8)?(14):(8))];
+int __vi[((sizeof(long)==8)?(14):(8))];
+void* __p[((sizeof(long)==8)?(7):(8))];
 };
 struct anonymous_typeX23
 {
@@ -855,15 +855,15 @@ struct anonymous_typeX23
 typedef struct anonymous_typeX23 pthread_rwlock_t;
 union anonymous_typeZ27
 {
-int __i[sizeof(long)==8?8:5];
-int __vi[sizeof(long)==8?8:5];
-void* __p[sizeof(long)==8?4:5];
+int __i[((sizeof(long)==8)?(8):(5))];
+int __vi[((sizeof(long)==8)?(8):(5))];
+void* __p[((sizeof(long)==8)?(4):(5))];
 };
 union anonymous_typeZ28
 {
-int __i[sizeof(long)==8?8:5];
-int __vi[sizeof(long)==8?8:5];
-void* __p[sizeof(long)==8?4:5];
+int __i[((sizeof(long)==8)?(8):(5))];
+int __vi[((sizeof(long)==8)?(8):(5))];
+void* __p[((sizeof(long)==8)?(4):(5))];
 };
 struct anonymous_typeX26
 {

@@ -392,6 +392,13 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     if(left_no_solved_generics_type && right_no_solved_generics_type) {
         if(right_type->mPointerNum == 0 && left_type->mPointerNum > 0) {
         }
+        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
+            come_value.c_value = xsprintf("(%s)%s", left_type->mClass->mName, come_value.c_value);
+            come_value.type = clone left_type;
+            come_value.var = null;
+            
+            right_type2 = clone left_type;
+        }
         else if(left_type->mClass->mName === right_type2->mClass->mName && left_type->mPointerNum == right_type2->mPointerNum) {
         }
         else if(left_type->mClass->mName === right_type2->mClass->mName && (left_type->mPointerNum != right_type2->mPointerNum || left_type->mHeap != right_type2->mHeap)) {
@@ -435,6 +442,13 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     }
     else if(parent_class && left_type->mPointerNum == 1 && right_type->mPointerNum == 1) {
         come_value.c_value = xsprintf("(struct %s*)%s", left_type->mClass->mName, come_value.c_value);
+        come_value.type = clone left_type;
+        come_value.var = null;
+        
+        right_type2 = clone left_type;
+    }
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
+        come_value.c_value = xsprintf("(%s)%s", left_type->mClass->mName, come_value.c_value);
         come_value.type = clone left_type;
         come_value.var = null;
         

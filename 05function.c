@@ -215,6 +215,7 @@ info->sline = node.sline();
             parse_sharp();
             
             if(*info->p == '}') {
+                result.mOmitSemicolon = omit_semicolon;
                 if(omit_semicolon && in_function) {
                     result.mNodes.delete(-1, -1);
                     dec_stack_ptr(1, info);
@@ -306,7 +307,7 @@ info->sline = node.sline();
     return result;
 }
 
-int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false, bool comma=false)
+int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false, bool comma=false, bool if_result=false)
 {
     if(info.output_header_file) {
         return 0;
@@ -372,9 +373,45 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             
             info.writing_source_file_position = true;
             
-            if(!node_compile(node)) {
-                printf("%s %d: compiling is failed(5)\n", info->sname, info->sline);
-                exit(2);
+            if(i == block->mNodes.length()-1 && if_result && block->mOmitSemicolon) {
+                if(!node_compile(node)) {
+                    printf("%s %d: compiling is failed(5)\n", info->sname, info->sline);
+                    exit(2);
+                }
+                
+                if(info.stack.length() == stack_num_before + 1) {
+                    CVALUE*% come_value = get_value_from_stack(-1, info);
+                    dec_stack_ptr(1, info);
+                    
+                    if(come_value.type.mClass.mName === "void" && come_value.type.mPointerNum == 0) {
+                        CVALUE*% come_value2 = clone come_value;
+                        
+                        info.stack.push_back(come_value2);
+                        info.module.mLastCode = xsprintf("%s;\n", come_value2.c_value);
+                    }
+                    else {
+                        CVALUE*% come_value2 = clone come_value;
+                        
+                        sVar* var_ = get_variable_from_table(info.lv_table, "__if_result__");
+                        if(var_) {
+                            if(come_value2.type.mHeap) {
+                                come_value2.c_value = xsprintf("%s=(void*)(come_increment_ref_count(%s))", var_->mCValueName, come_value.c_value);
+                            }
+                            else {
+                                come_value2.c_value = xsprintf("%s=(void*)(%s)", var_->mCValueName, come_value.c_value);
+                            }
+                        }
+                        
+                        info.stack.push_back(come_value2);
+                        info.module.mLastCode = xsprintf("%s;\n", come_value2.c_value);
+                    }
+                }
+            }
+            else {
+                if(!node_compile(node)) {
+                    printf("%s %d: compiling is failed(5)\n", info->sname, info->sline);
+                    exit(2);
+                }
             }
             
             info.sline = sline;
@@ -386,13 +423,15 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             else {
                 add_last_code_to_source(info);
             }
-
+            
             arrange_stack(info, stack_num_before);
 
             free_right_value_objects(info);
             
             if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
+            
+            i++;
         }
     }
 
