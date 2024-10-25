@@ -10,9 +10,7 @@ int main(int argc, char** argv)
     }
 */
 
-    int a = if(false) { 1 } else { 2 };
-    
-    printf("a %d\n", a);
+    string a = if(false) { s"AAA" } else { s"BBB" };
     
     return 0;
 }

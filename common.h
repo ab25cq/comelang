@@ -394,6 +394,7 @@ struct sInfo
     bool in_generics_fun;
     bool in_clone_object;
     bool in_conditional_operator;
+    string if_result_var_name;
 };
 
 module sCurrentNodeModule

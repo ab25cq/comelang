@@ -392,9 +392,10 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
                     else {
                         CVALUE*% come_value2 = clone come_value;
                         
-                        sVar* var_ = get_variable_from_table(info.lv_table, "__if_result__");
+                        sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
                         if(var_) {
                             if(come_value2.type.mHeap) {
+                                var_->mType.mHeap = true;
                                 come_value2.c_value = xsprintf("%s=(void*)(come_increment_ref_count(%s))", var_->mCValueName, come_value.c_value);
                             }
                             else {

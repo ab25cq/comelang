@@ -715,6 +715,7 @@ struct sInfo
     _Bool in_generics_fun;
     _Bool in_clone_object;
     _Bool in_conditional_operator;
+    char* if_result_var_name;
 };
 struct tuple2$2sTypephcharph
 {

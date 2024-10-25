@@ -58,16 +58,21 @@ class sIfNode extends sNodeBase
         int elif_num = self.mElifNum;
         bool guard_ = self.mGuard;
         
+/*
         sVarTable* lv_table = info->lv_table;
         sVarTable*% for_var_table = new sVarTable(global:false, parent:lv_table);
         info->lv_table = for_var_table;
+*/
         
         if(existance_of_result_value) {
             sType*% if_result_type = new sType("void*");
             
-            add_variable_to_table(s"__if_result__", clone if_result_type, info);
+            static int var_num = 0;
+            info->if_result_var_name = xsprintf("__if_result__%d", var_num++);
             
-            sVar* var_ = get_variable_from_table(info.lv_table, s"__if_result__");
+            add_variable_to_table(info->if_result_var_name, clone if_result_type, info);
+            
+            sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
             add_come_code(info, "%s = (void*)0;\n", make_define_var(var_->mType, var_->mCValueName));
         }
         
@@ -199,16 +204,40 @@ class sIfNode extends sNodeBase
         transpiler_clear_last_code(info);
         
         if(existance_of_result_value) {
-            sNode*% result_node = create_load_var(s"__if_result__");
+            sNode*% result_node = create_load_var(info->if_result_var_name);
             
             if(!node_compile(result_node, info)) {
                 return false;
             }
+            
+/*
+            CVALUE*% come_value = get_value_from_stack(-1, info);
+            
+            sVar* var_ = get_variable_from_table(info.lv_table, "__if_result__");
+            if(var_) {
+                if(var_->mType->mHeap) {
+                    add_last_code_to_source(info);
+                    CVALUE*% come_value2 = clone come_value;
+                    
+                    append_object_to_right_values2(come_value2, var_->mType, info);
+                    
+puts(come_value2.c_value);
+                    
+                    dec_stack_ptr(1, info);
+                    
+                    info.stack.add(come_value2);
+                    
+                    add_come_last_code(info, "%s;\n", come_value2.c_value);
+                }
+            }
+*/
         }
         
+/*
         free_objects(for_var_table, null, info);
         
         info->lv_table = lv_table;
+*/
         
         return true;
     }
