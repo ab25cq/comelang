@@ -91,14 +91,20 @@ class sReturnNode extends sNodeBase
                 free_right_value_objects(info);
                 //free_exception_right_value_objects(info);
 
+                if(info->block_level == 1) {
+                    info->inhibits_output_code = true;
+                    
+                    if(info->match_it_var) {
+                        foreach(it, info->match_it_var) {
+                            free_object(it->mType, it->mCValueName, false@no_decrement, false@no_free, info);
+                        }
+                        info->match_it_var = null
+                    }
+                }
                 
                 if(!gComeC && info.come_fun.mName === "main") {
                     free_objects(info->gv_table, null@ret_value, info);
                     add_come_code(info, xsprintf("come_heap_final();\n"));
-                }
-                
-                if(info->block_level == 1) {
-                    info->inhibits_output_code = true;
                 }
                 
                 if(!info.come_fun.mNoResultType) {
@@ -116,13 +122,20 @@ class sReturnNode extends sNodeBase
             free_right_value_objects(info);
             //free_exception_right_value_objects(info);
             
+            if(info->block_level == 1) {
+                info->inhibits_output_code = true;
+                
+                if(info->match_it_var) {
+                    foreach(it, info->match_it_var) {
+                        free_object(it->mType, it->mCValueName, false@no_decrement, false@no_free, info);
+                    }
+                    info->match_it_var = null
+                }
+            }
+            
             if(!gComeC && info.come_fun.mName === "main") {
                 free_objects(info->gv_table, null@ret_value, info);
                 add_come_code(info, xsprintf("come_heap_final();\n"));
-            }
-            
-            if(info->block_level == 1) {
-                info->inhibits_output_code = true;
             }
             
             add_come_code(info, "return;\n");

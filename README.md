@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 5.0.4
+version 5.0.5
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.0.5 if statment has the result type. pattern matching is coming.
 5.0.4 if statment has the result type.
 5.0.3 pattern matching is coming soon.
 5.0.2 Fixed bug maybe.
@@ -3525,13 +3526,40 @@ UHO!
 ERR
 ```
 
-exceptionを戻り値に持つ関数の中ではreturn none(string);が使えます。これを呼び出すと例外が発生します。stringは例外のメッセージです。呼び出し元の関数では.resuceしないと例外の文字列を表示してexitしてしまいます。.resuceすると例外が発生してもプログラムは終了しません。.resuceの中ではErrという変数に例外のメッセージが入ってます。関数がネストする場合はexceptionを呼び出し元の関数につけると深いネストでもreturn none(string);された時点で大域脱出して.resuceで例外を捕捉できます。
+# the resul type of if statment 
 
-You can use return none(string); in functions that have exception as a return value. Calling this will raise an exception. string is the exception message. If you do not use .resuce in the calling function, the exception string will be displayed and the function will exit. If you use .resuce, the program will not terminate even if an exception occurs. In .resuce, the exception message is stored in a variable called Err. If functions are nested, attaching exception to the calling function will allow the exception to be caught with .resuce after a global escape when return none(string); is called, even in deeply nested cases.
+```C
+    string a = if(true) { s"AAA" } else { s"BBB" };
+    
+    puts(a);
+    
+    puts(if(true) { "AAA" } else { "BBB" });
+```
 
-From version 5.0.0, Exception is perfect.
+# Pattern Matching
 
-バージョン 5.0.0から例外は完璧となりました。
+```C
+#include <comelang.h>
+
+int main(int argc, char** argv)
+{
+    string x = strcmp("A", "B").case {
+        (it < 0) { puts("Lesser"); puts("UHO!"); s"AAA" }
+        (it == 0) { puts("Equal"); s"BBB" }
+        (it > 0) { puts("Greater"); s"CCC" }
+    }
+    puts(x);
+    string y = strcmp("A", "A").case {
+        (it < 0) { puts("Lesser"); puts("UHO!"); s"AAA" }
+        (it == 0) { puts("Equal"); s"BBB" }
+        (it > 0) { puts("Greater"); s"CCC" }
+    }
+    
+    puts(y);
+    
+    return 0;
+}
+```
 
 # afterword
 

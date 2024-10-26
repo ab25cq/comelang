@@ -2,15 +2,19 @@
 
 int main(int argc, char** argv)
 {
-/*
-    strcmp("A", "B").case {
-        (it < 0) puts("Lesser");
-        (it == 0) puts("Equal");
-        (it > 0) puts("Greater");
+    string x = strcmp("A", "B").case {
+        (it < 0) { puts("Lesser"); puts("UHO!"); s"AAA" }
+        (it == 0) { puts("Equal"); s"BBB" }
+        (it > 0) { puts("Greater"); s"CCC" }
     }
-*/
-
-    string a = if(false) { s"AAA" } else { s"BBB" };
+    puts(x);
+    string y = strcmp("A", "A").case {
+        (it < 0) { puts("Lesser"); puts("UHO!"); s"AAA" }
+        (it == 0) { puts("Equal"); s"BBB" }
+        (it > 0) { puts("Greater"); s"CCC" }
+    }
+    
+    puts(y);
     
     return 0;
 }

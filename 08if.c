@@ -210,34 +210,7 @@ class sIfNode extends sNodeBase
                 return false;
             }
             
-/*
-            CVALUE*% come_value = get_value_from_stack(-1, info);
-            
-            sVar* var_ = get_variable_from_table(info.lv_table, "__if_result__");
-            if(var_) {
-                if(var_->mType->mHeap) {
-                    add_last_code_to_source(info);
-                    CVALUE*% come_value2 = clone come_value;
-                    
-                    append_object_to_right_values2(come_value2, var_->mType, info);
-                    
-puts(come_value2.c_value);
-                    
-                    dec_stack_ptr(1, info);
-                    
-                    info.stack.add(come_value2);
-                    
-                    add_come_last_code(info, "%s;\n", come_value2.c_value);
-                }
-            }
-*/
         }
-        
-/*
-        free_objects(for_var_table, null, info);
-        
-        info->lv_table = lv_table;
-*/
         
         return true;
     }
@@ -265,12 +238,12 @@ class sMatchNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sNode*% it_node = self.it_node;
-        sNode*% match_node = self.match_node;
-        
         sVarTable* lv_table = info->lv_table;
         sVarTable*% for_var_table = new sVarTable(global:false, parent:lv_table);
         info->lv_table = for_var_table;
+        
+        sNode*% it_node = self.it_node;
+        sNode*% match_node = self.match_node;
         
         if(!node_compile(it_node, info)) {
             return false;
@@ -284,9 +257,26 @@ class sMatchNode extends sNodeBase
             return false;
         }
         
-        free_objects(for_var_table, null, info);
         
-        info->lv_table = lv_table;
+        if(info->if_result_var_name) {
+            sVar* var_ = get_variable_from_table(for_var_table, info->if_result_var_name);
+        
+            assert(var_ != null);
+        
+            if(info->match_it_var == null) {
+                info->match_it_var = new list<sVar*%>();
+            }
+            info->match_it_var.add(clone var_);
+        
+            free_objects(for_var_table, var_, info);
+            
+            info->lv_table = lv_table;
+        }
+        else {
+            free_objects(for_var_table, null, info);
+            
+            info->lv_table = lv_table;
+        }
         
         return true;
     }

@@ -395,6 +395,8 @@ struct sInfo
     bool in_clone_object;
     bool in_conditional_operator;
     string if_result_var_name;
+    
+    list<sVar*%>*% match_it_var;
 };
 
 module sCurrentNodeModule
@@ -596,6 +598,7 @@ bool create_operator_not_equals_method(sType* type, sInfo* info);
 sType*% solve_generics(sType* type, sType* generics_type, sInfo* info);
 sVar* get_variable_from_table(sVarTable* table, char* name);
 void free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
+void free_objects_of_match_lv_tables(sInfo* info);
 void free_objects_on_break(sInfo* info);
 void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false, bool force_delete_=false);
 sType*%, string clone_object(sType* type, char* obj, sInfo* info);

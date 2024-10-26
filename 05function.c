@@ -114,6 +114,7 @@ class sFunNode extends sNodeBase
                 free_objects(info->gv_table, null@ret_value, info);
                 add_come_code(info, xsprintf("come_heap_final();\n"));
             }
+    
         }
         
         info.come_fun = come_fun;
@@ -394,8 +395,8 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
                         
                         sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
                         if(var_) {
-                            if(come_value2.type.mHeap) {
-                                var_->mType.mHeap = true;
+                            var_->mType = clone come_value.type;
+                            if(come_value.type.mHeap) {
                                 come_value2.c_value = xsprintf("%s=(void*)(come_increment_ref_count(%s))", var_->mCValueName, come_value.c_value);
                             }
                             else {
@@ -438,6 +439,13 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
 
     if(!no_var_table && !info.inhibits_output_code) {
         free_objects(info->lv_table, null, info);
+        
+        if(info->match_it_var && block_level == 0) {
+            foreach(it, info->match_it_var) {
+                free_object(it->mType, it->mCValueName, false@no_decrement, false@no_free, info);
+            }
+            info->match_it_var = null
+        }
     }
     
     info->lv_table = old_table;

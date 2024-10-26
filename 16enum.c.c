@@ -640,6 +640,19 @@ struct map$2charphcharph
     struct list$1charp* key_list;
     int it;
 };
+struct list_item$1sVarph
+{
+    struct sVar* item;
+    struct list_item$1sVarph* prev;
+    struct list_item$1sVarph* next;
+};
+struct list$1sVarph
+{
+    struct list_item$1sVarph* head;
+    struct list_item$1sVarph* tail;
+    int len;
+    struct list_item$1sVarph* it;
+};
 struct sInfo
 {
     char* p;
@@ -716,6 +729,7 @@ struct sInfo
     _Bool in_clone_object;
     _Bool in_conditional_operator;
     char* if_result_var_name;
+    struct list$1sVarph* match_it_var;
 };
 struct tuple2$2sTypephcharph
 {
@@ -1323,6 +1337,7 @@ _Bool create_operator_not_equals_method(struct sType* type, struct sInfo* info);
 struct sType* solve_generics(struct sType* type, struct sType* generics_type, struct sInfo* info);
 struct sVar* get_variable_from_table(struct sVarTable* table, char* name);
 void free_objects_on_return(struct sBlock* current_block, struct sInfo* info, struct sVar* ret_value, _Bool top_block);
+void free_objects_of_match_lv_tables(struct sInfo* info);
 void free_objects_on_break(struct sInfo* info);
 void free_object(struct sType* type, char* obj, _Bool no_decrement, _Bool no_free, struct sInfo* info, _Bool comma, _Bool ret_value, _Bool force_delete_);
 struct tuple2$2sTypephcharph* clone_object(struct sType* type, char* obj, struct sInfo* info);
