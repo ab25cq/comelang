@@ -3125,11 +3125,13 @@ char* var_name_101;
 int num_result_stack_102;
 void* __right_value162 = (void*)0;
 void* __right_value163 = (void*)0;
+void* __if_result__0_103 = (void*)0;
 struct list$1sVarph* o2_saved_104;
 struct sVar* it_107;
 struct list$1sVarph* __dec_obj72;
 void* __right_value164 = (void*)0;
 struct sFun* come_fun_114;
+void* __if_result__1_115 = (void*)0;
 struct list$1sVarph* o2_saved_116;
 struct sVar* it_117;
 struct list$1sVarph* __dec_obj76;
@@ -3196,7 +3198,6 @@ void* __right_value165 = (void*)0;
                 free_right_value_objects(info,(_Bool)0);
                 if(info->block_level==1) {
                     info->inhibits_output_code=(_Bool)1;
-                    void* __if_result__0_103 = (void*)0;
                     if(info->match_it_var) {
                         for(                        o2_saved_104=(struct list$1sVarph*)come_increment_ref_count((info->match_it_var)),it_107=list$1sVarph_begin((o2_saved_104));                        !list$1sVarph_end((o2_saved_104));                        it_107=list$1sVarph_next((o2_saved_104))                        ){
                             free_object(it_107->mType,it_107->mCValueName,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0);
@@ -3232,7 +3233,6 @@ void* __right_value165 = (void*)0;
         free_right_value_objects(info,(_Bool)0);
         if(info->block_level==1) {
             info->inhibits_output_code=(_Bool)1;
-            void* __if_result__1_115 = (void*)0;
             if(info->match_it_var) {
                 for(                o2_saved_116=(struct list$1sVarph*)come_increment_ref_count((info->match_it_var)),it_117=list$1sVarph_begin((o2_saved_116));                !list$1sVarph_end((o2_saved_116));                it_117=list$1sVarph_next((o2_saved_116))                ){
                     free_object(it_117->mType,it_117->mCValueName,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0);

@@ -3155,7 +3155,7 @@ _Bool __result122__;
         __dec_obj66 = come_decrement_ref_count2(__dec_obj66, (void*)0, (void*)0, 0,0,0, (void*)0);
         add_variable_to_table(info->if_result_var_name,(struct sType*)come_increment_ref_count(sType_clone(if_result_type_151)),info);
         var__165=get_variable_from_table(info->lv_table,info->if_result_var_name);
-        add_come_code(info,"%s = (void*)0;\n",((char*)(__right_value185=make_define_var(var__165->mType,var__165->mCValueName,(_Bool)0,info))));
+        add_come_code_at_function_head(info,"%s = (void*)0;\n",((char*)(__right_value185=make_define_var(var__165->mType,var__165->mCValueName,(_Bool)0,info))));
         __right_value185 = come_decrement_ref_count2(__right_value185, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         /*i*/come_call_finalizer3(if_result_type_151,sType_finalize, 0, 0, 0, 0, (void*)0);
     }

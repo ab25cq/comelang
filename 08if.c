@@ -73,7 +73,7 @@ class sIfNode extends sNodeBase
             add_variable_to_table(info->if_result_var_name, clone if_result_type, info);
             
             sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
-            add_come_code(info, "%s = (void*)0;\n", make_define_var(var_->mType, var_->mCValueName));
+            add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(var_->mType, var_->mCValueName));
         }
         
         /// compile expression ///

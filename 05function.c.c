@@ -4913,6 +4913,7 @@ char* __dec_obj138;
 void* __right_value218 = (void*)0;
 char* __dec_obj139;
 struct list$1sRightValueObjectph* __dec_obj140;
+void* __if_result__0_179 = (void*)0;
 struct list$1sVarph* o2_saved_180;
 struct sVar* it_183;
 struct list$1sVarph* __dec_obj146;
@@ -5053,7 +5054,6 @@ memset(&i_157, 0, sizeof(int));
     }
     if(!no_var_table&&!info->inhibits_output_code) {
         free_objects(info->lv_table,((void*)0),info);
-        void* __if_result__0_179 = (void*)0;
         if(info->match_it_var&&block_level_156==0) {
             for(            o2_saved_180=(struct list$1sVarph*)come_increment_ref_count((info->match_it_var)),it_183=list$1sVarph_begin((o2_saved_180));            !list$1sVarph_end((o2_saved_180));            it_183=list$1sVarph_next((o2_saved_180))            ){
                 free_object(it_183->mType,it_183->mCValueName,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0);
@@ -8619,6 +8619,7 @@ struct sFunNode* _inf_obj_value3;
 void* __right_value645 = (void*)0;
 struct sNode* node_488;
 _Bool in_generics_fun_490;
+void* __if_result__1_491 = (void*)0;
 _Bool __result196__;
 struct sType* __dec_obj200;
 struct list$1charph* __dec_obj201;
@@ -8731,7 +8732,6 @@ _Bool __result197__;
     /*g*/come_call_finalizer3(__right_value641,sFunNode_finalize, 0, 1, 0, 0, (void*)0);
     in_generics_fun_490=info->in_generics_fun;
     info->in_generics_fun=(_Bool)1;
-    void* __if_result__1_491 = (void*)0;
     if(!node_compile(node_488,info)) {
         __result196__ = (_Bool)0;
         fun_name = come_decrement_ref_count2(fun_name, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -8919,6 +8919,7 @@ struct sNode* _inf_value4;
 struct sFunNode* _inf_obj_value4;
 void* __right_value673 = (void*)0;
 struct sNode* node_519;
+void* __if_result__2_521 = (void*)0;
 _Bool __result201__;
 struct list$1charph* __dec_obj219;
 void* __right_value674 = (void*)0;
@@ -9021,7 +9022,6 @@ _Bool __result202__;
     _inf_value4->kind=(void*)sFunNode_kind;
     node_519=(struct sNode*)come_increment_ref_count(_inf_value4);
     /*g*/come_call_finalizer3(__right_value669,sFunNode_finalize, 0, 1, 0, 0, (void*)0);
-    void* __if_result__2_521 = (void*)0;
     if(!node_compile(node_519,info)) {
         __result201__ = (_Bool)0;
         fun_name = come_decrement_ref_count2(fun_name, (void*)0, (void*)0, 0, 0, 0, (void*)0);

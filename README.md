@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 5.0.5
+version 5.0.6
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.0.6 if statment has the result type. pattern matching is coming. The bug fixed.
 5.0.5 if statment has the result type. pattern matching is coming.
 5.0.4 if statment has the result type.
 5.0.3 pattern matching is coming soon.
