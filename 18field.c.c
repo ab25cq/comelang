@@ -1410,7 +1410,7 @@ void transpile_toplevel(_Bool block, struct sInfo* info);
 void skip_pointer_attribute(struct sInfo* info);
 struct sNode* parse_normal_block(_Bool clang, _Bool comma, struct sInfo* info);
 struct sNode* parse_comma_block(struct sInfo* info);
-_Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, struct sInfo* info);
+_Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, _Bool pointer_massive, struct sInfo* info);
 void cast_type(struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, struct sInfo* info);
 char* parse_attribute(struct sInfo* info);
 struct sNode* get_number(_Bool minus, struct sInfo* info);
@@ -3130,7 +3130,7 @@ right_value2_117 = (void*)0;
     result_110=(_Bool)0;
     if(operator_fun_98) {
         come_value_111=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 61, "CVALUE"))));
-        check_assign_type(((char*)(__right_value163=xsprintf("\%s is assigned to",((char*)(__right_value162=string_to_string(fun_name2_97)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,0), "18field.c", 63, 0)),left_value->type,left_value,(_Bool)0,(_Bool)1,info);
+        check_assign_type(((char*)(__right_value163=xsprintf("\%s is assigned to",((char*)(__right_value162=string_to_string(fun_name2_97)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,0), "18field.c", 63, 0)),left_value->type,left_value,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value162 = come_decrement_ref_count2(__right_value162, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         __right_value163 = come_decrement_ref_count2(__right_value163, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         if(((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,0), "18field.c", 64, 1))->mHeap&&left_value->type->mHeap) {
@@ -3144,7 +3144,7 @@ right_value2_117 = (void*)0;
             left_value2_112=(char*)come_increment_ref_count(string_clone(left_value->c_value));
             __dec_obj89 = come_decrement_ref_count2(__dec_obj89, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
-        check_assign_type(((char*)(__right_value167=xsprintf("\%s is assigned to",((char*)(__right_value166=string_to_string(fun_name2_97)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,1), "18field.c", 72, 3)),middle_value->type,middle_value,(_Bool)0,(_Bool)1,info);
+        check_assign_type(((char*)(__right_value167=xsprintf("\%s is assigned to",((char*)(__right_value166=string_to_string(fun_name2_97)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,1), "18field.c", 72, 3)),middle_value->type,middle_value,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value166 = come_decrement_ref_count2(__right_value166, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         __right_value167 = come_decrement_ref_count2(__right_value167, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         if(((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,1), "18field.c", 73, 4))->mHeap&&middle_value->type->mHeap) {
@@ -3158,7 +3158,7 @@ right_value2_117 = (void*)0;
             middle_value2_116=(char*)come_increment_ref_count(string_clone(middle_value->c_value));
             __dec_obj91 = come_decrement_ref_count2(__dec_obj91, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
-        check_assign_type(((char*)(__right_value171=xsprintf("\%s is assigned to",((char*)(__right_value170=string_to_string(fun_name2_97)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,2), "18field.c", 81, 6)),right_value->type,right_value,(_Bool)0,(_Bool)1,info);
+        check_assign_type(((char*)(__right_value171=xsprintf("\%s is assigned to",((char*)(__right_value170=string_to_string(fun_name2_97)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,2), "18field.c", 81, 6)),right_value->type,right_value,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value170 = come_decrement_ref_count2(__right_value170, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         __right_value171 = come_decrement_ref_count2(__right_value171, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         if(((struct sType*)come_null_check(list$1sTypephp_operator_load_element(operator_fun_98->mParamTypes,2), "18field.c", 82, 7))->mHeap&&right_value->type->mHeap) {
@@ -4825,7 +4825,7 @@ c_value_167 = (void*)0;
         }
     }
     come_value_160=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 228, "CVALUE"))));
-    check_assign_type(((char*)(__right_value206=xsprintf("\%s is assigned to",((char*)(__right_value205=string_to_string(name_125)))))),field_type_139,right_type_128,right_value_127,(_Bool)0,(_Bool)1,info);
+    check_assign_type(((char*)(__right_value206=xsprintf("\%s is assigned to",((char*)(__right_value205=string_to_string(name_125)))))),field_type_139,right_type_128,right_value_127,(_Bool)0,(_Bool)1,(_Bool)0,info);
     __right_value205 = come_decrement_ref_count2(__right_value205, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     __right_value206 = come_decrement_ref_count2(__right_value206, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     right_type_128=((struct sType*)(__right_value207=sType_clone(right_value_127->type)));
@@ -6327,7 +6327,7 @@ memset(&calling_fun_238, 0, sizeof(_Bool));
         }
         /*i*/come_call_finalizer3(o2_saved_275,list$1CVALUEphp_finalize, 0, 0, 0, 0, (void*)0);
         left_value_code_277=(char*)come_increment_ref_count(buffer_to_string(buf_274));
-        check_assign_type(((char*)(__right_value340=xsprintf("array is assinged to"))),left_type_222,right_type_234,right_value_233,(_Bool)0,(_Bool)1,info);
+        check_assign_type(((char*)(__right_value340=xsprintf("array is assinged to"))),left_type_222,right_type_234,right_value_233,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value340 = come_decrement_ref_count2(__right_value340, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         if(left_type_222->mHeap&&right_type_234->mHeap&&left_type_222->mPointerNum>0&&right_type_234->mPointerNum>0) {
             if(left_value_221->type->mPointerNum>=1) {

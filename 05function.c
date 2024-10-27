@@ -395,6 +395,13 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
                         
                         sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
                         if(var_) {
+                            CVALUE*% come_value3 = new CVALUE;
+                            if(!check_assign_type("invalid if result value", var_->mType, clone come_value.type, come_value3, pointer_massive:true, info)) 
+                            {
+                                err_msg(info, "invalid if result value");
+                                exit(2);
+                            }
+                            
                             var_->mType = clone come_value.type;
                             if(come_value.type.mHeap) {
                                 come_value2.c_value = xsprintf("%s=(void*)(come_increment_ref_count(%s))", var_->mCValueName, come_value.c_value);

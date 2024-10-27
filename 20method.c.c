@@ -1372,7 +1372,7 @@ void transpile_toplevel(_Bool block, struct sInfo* info);
 void skip_pointer_attribute(struct sInfo* info);
 struct sNode* parse_normal_block(_Bool clang, _Bool comma, struct sInfo* info);
 struct sNode* parse_comma_block(struct sInfo* info);
-_Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, struct sInfo* info);
+_Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, _Bool pointer_massive, struct sInfo* info);
 void cast_type(struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, struct sInfo* info);
 char* parse_attribute(struct sInfo* info);
 struct sNode* get_number(_Bool minus, struct sInfo* info);
@@ -6593,7 +6593,7 @@ _Bool __result231__;
                     return __result185__;
                 }
                 come_value_327=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
-                check_assign_type(((char*)(__right_value278=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value276=string_to_string(fun_name_238))),((char*)(__right_value277=int_to_string(i_322)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_311->mParamTypes,i_322-1), "20method.c", 407, 5)),come_value_327->type,come_value_327,(_Bool)0,(_Bool)1,info);
+                check_assign_type(((char*)(__right_value278=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value276=string_to_string(fun_name_238))),((char*)(__right_value277=int_to_string(i_322)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_311->mParamTypes,i_322-1), "20method.c", 407, 5)),come_value_327->type,come_value_327,(_Bool)0,(_Bool)1,(_Bool)0,info);
                 __right_value276 = come_decrement_ref_count2(__right_value276, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                 __right_value277 = come_decrement_ref_count2(__right_value277, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                 __right_value278 = come_decrement_ref_count2(__right_value278, (void*)0, (void*)0, 1, 0, 0, (void*)0);
@@ -6973,7 +6973,7 @@ _Bool __result231__;
                     }
                     /*i*/come_call_finalizer3(o2_saved_379,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
                     if(list$1sTypephp_operator_load_element(param_types_363,n_378)) {
-                        check_assign_type(((char*)(__right_value351=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value349=string_to_string(fun_name_238))),((char*)(__right_value350=int_to_string(n_378)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,n_378), "20method.c", 648, 8)),come_value_377->type,come_value_377,(_Bool)0,(_Bool)1,info);
+                        check_assign_type(((char*)(__right_value351=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value349=string_to_string(fun_name_238))),((char*)(__right_value350=int_to_string(n_378)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,n_378), "20method.c", 648, 8)),come_value_377->type,come_value_377,(_Bool)0,(_Bool)1,(_Bool)0,info);
                         __right_value349 = come_decrement_ref_count2(__right_value349, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         __right_value350 = come_decrement_ref_count2(__right_value350, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         __right_value351 = come_decrement_ref_count2(__right_value351, (void*)0, (void*)0, 1, 0, 0, (void*)0);
@@ -6995,7 +6995,7 @@ _Bool __result231__;
             label_393=(char*)come_increment_ref_count(multiple_assign_var6->v1);
             node_394=(struct sNode*)come_increment_ref_count(multiple_assign_var6->v2);
             if(i_390==0) {
-                check_assign_type(((char*)(__right_value354=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value352=string_to_string(fun_name_238))),((char*)(__right_value353=int_to_string(i_390)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,i_390), "20method.c", 663, 11)),obj_value_248->type,obj_value_248,(_Bool)0,(_Bool)1,info);
+                check_assign_type(((char*)(__right_value354=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value352=string_to_string(fun_name_238))),((char*)(__right_value353=int_to_string(i_390)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,i_390), "20method.c", 663, 11)),obj_value_248->type,obj_value_248,(_Bool)0,(_Bool)1,(_Bool)0,info);
                 __right_value352 = come_decrement_ref_count2(__right_value352, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                 __right_value353 = come_decrement_ref_count2(__right_value353, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                 __right_value354 = come_decrement_ref_count2(__right_value354, (void*)0, (void*)0, 1, 0, 0, (void*)0);
@@ -7046,7 +7046,7 @@ _Bool __result231__;
                         }
                     }
                     if(list$1sTypephp_operator_load_element(param_types_363,i_390)) {
-                        check_assign_type(((char*)(__right_value358=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value356=string_to_string(fun_name_238))),((char*)(__right_value357=int_to_string(i_390)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,i_390), "20method.c", 695, 16)),come_value_398->type,come_value_398,(_Bool)0,(_Bool)1,info);
+                        check_assign_type(((char*)(__right_value358=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value356=string_to_string(fun_name_238))),((char*)(__right_value357=int_to_string(i_390)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,i_390), "20method.c", 695, 16)),come_value_398->type,come_value_398,(_Bool)0,(_Bool)1,(_Bool)0,info);
                         __right_value356 = come_decrement_ref_count2(__right_value356, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         __right_value357 = come_decrement_ref_count2(__right_value357, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         __right_value358 = come_decrement_ref_count2(__right_value358, (void*)0, (void*)0, 1, 0, 0, (void*)0);
@@ -7289,7 +7289,7 @@ _Bool __result231__;
                     info->sline=sline_443;
                     come_value_445=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
                     if(((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,i_390), "20method.c", 896, 20))) {
-                        check_assign_type(((char*)(__right_value429=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value427=string_to_string(fun_name_238))),((char*)(__right_value428=int_to_string(i_390)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,i_390), "20method.c", 897, 21)),come_value_445->type,come_value_445,(_Bool)0,(_Bool)1,info);
+                        check_assign_type(((char*)(__right_value429=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value427=string_to_string(fun_name_238))),((char*)(__right_value428=int_to_string(i_390)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(param_types_363,i_390), "20method.c", 897, 21)),come_value_445->type,come_value_445,(_Bool)0,(_Bool)1,(_Bool)0,info);
                         __right_value427 = come_decrement_ref_count2(__right_value427, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         __right_value428 = come_decrement_ref_count2(__right_value428, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         __right_value429 = come_decrement_ref_count2(__right_value429, (void*)0, (void*)0, 1, 0, 0, (void*)0);

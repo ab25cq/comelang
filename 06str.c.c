@@ -1435,7 +1435,7 @@ void transpile_toplevel(_Bool block, struct sInfo* info);
 void skip_pointer_attribute(struct sInfo* info);
 struct sNode* parse_normal_block(_Bool clang, _Bool comma, struct sInfo* info);
 struct sNode* parse_comma_block(struct sInfo* info);
-_Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, struct sInfo* info);
+_Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, _Bool pointer_massive, struct sInfo* info);
 void cast_type(struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, struct sInfo* info);
 char* parse_attribute(struct sInfo* info);
 struct sNode* get_number(_Bool minus, struct sInfo* info);
@@ -4848,7 +4848,7 @@ _Bool __result130__;
         come_value_128=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
         dec_stack_ptr(1,info);
         if(list_element_type_125) {
-            check_assign_type(((char*)(__right_value224=xsprintf("invalid list element type"))),list_element_type_125,come_value_128->type,come_value_128,(_Bool)0,(_Bool)1,info);
+            check_assign_type(((char*)(__right_value224=xsprintf("invalid list element type"))),list_element_type_125,come_value_128->type,come_value_128,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value224 = come_decrement_ref_count2(__right_value224, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
         list$1CVALUEph_push_back(params_122,(struct CVALUE*)come_increment_ref_count(come_value_128));
@@ -6429,7 +6429,7 @@ _Bool __result170__;
         if(i_264==1) {
             string_type_268=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "06str.c", 904, "sType")),"char*",(_Bool)0,info));
             string_type_268->mHeap=(_Bool)1;
-            check_assign_type(((char*)(__right_value426=xsprintf("invalid none type"))),string_type_268,come_value_267->type,come_value_267,(_Bool)0,(_Bool)1,info);
+            check_assign_type(((char*)(__right_value426=xsprintf("invalid none type"))),string_type_268,come_value_267->type,come_value_267,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value426 = come_decrement_ref_count2(__right_value426, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             /*i*/come_call_finalizer3(string_type_268,sType_finalize, 0, 0, 0, 0, (void*)0);
         }
@@ -6728,7 +6728,7 @@ _Bool __result178__;
         come_value_303=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
         dec_stack_ptr(1,info);
         if(map_key_type_295) {
-            check_assign_type(((char*)(__right_value464=xsprintf("invalid map key type"))),map_key_type_295,come_value_303->type,come_value_303,(_Bool)0,(_Bool)1,info);
+            check_assign_type(((char*)(__right_value464=xsprintf("invalid map key type"))),map_key_type_295,come_value_303->type,come_value_303,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value464 = come_decrement_ref_count2(__right_value464, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
         list$1CVALUEph_push_back(key_params_293,(struct CVALUE*)come_increment_ref_count(come_value_303));
@@ -6744,7 +6744,7 @@ _Bool __result178__;
         come_value2_304=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
         dec_stack_ptr(1,info);
         if(map_element_type_296) {
-            check_assign_type(((char*)(__right_value466=xsprintf("invalid map element type"))),map_element_type_296,come_value2_304->type,come_value2_304,(_Bool)0,(_Bool)1,info);
+            check_assign_type(((char*)(__right_value466=xsprintf("invalid map element type"))),map_element_type_296,come_value2_304->type,come_value2_304,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value466 = come_decrement_ref_count2(__right_value466, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
         list$1CVALUEph_push_back(element_params_294,(struct CVALUE*)come_increment_ref_count(come_value2_304));

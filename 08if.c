@@ -188,6 +188,7 @@ class sIfNode extends sNodeBase
                 }
                 
                 transpile_block(elif_node_block, null, null, info, if_result:existance_of_result_value);
+                
     
                 add_come_code(info, "}\n");
             }
