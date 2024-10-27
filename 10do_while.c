@@ -39,12 +39,14 @@ class sDoWhileNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
     
-        info.writing_source_file_position = true;
+        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+        info.comma_instead_of_semicolon = true;
         info.without_semicolon = true;
         if(!node_compile(expression_node)) {
             return false;
         }
         info.without_semicolon = false;
+        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
         
         bool normal_if = true;
 /*

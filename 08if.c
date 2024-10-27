@@ -82,22 +82,20 @@ class sIfNode extends sNodeBase
         int sline = info.sline;
         char* sname = info.sname;
         
-        info.writing_source_file_position = true;
+        add_come_code(info, "if(");
     
+        bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
+        info.comma_instead_of_semicolon = true;
         info.without_semicolon = true;
         if(!node_compile(expression_node)) {
             return false;
         }
         info.without_semicolon = false;
+        info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
     
         sBlock* if_block = self.mIfBlock;
         
         bool normal_if = true;
-/*
-        if(info.module.mLastCode || info.module.mLastCode2 || info.module.mLastCode3) {
-            normal_if = false;
-        }
-*/
         if(existance_free_right_value_objects(info)) {
             normal_if = false;
         }
@@ -114,7 +112,7 @@ class sIfNode extends sNodeBase
                 }
             }
             
-            add_come_code(info, "if(%s) {\n", conditional_value.c_value);
+            add_come_code(info, "%s) {\n", conditional_value.c_value);
         }
         else {
             static int num_if_conditional = 0;
@@ -132,8 +130,7 @@ class sIfNode extends sNodeBase
                 }
             }
             
-            add_come_code(info, "if((_if_conditional%d=(%s)),", num_if_conditional, conditional_value.c_value);
-            add_last_code_to_source_with_comma(info);
+            add_come_code(info, "(_if_conditional%d=(%s)),", num_if_conditional, conditional_value.c_value);
             
             free_right_value_objects(info, comma:true);
             add_come_code(info, "_if_conditional%d) {\n", num_if_conditional_stack);
@@ -148,21 +145,21 @@ class sIfNode extends sNodeBase
             for(int i=0; i<elif_num; i++) {
                 sNode* expression_node2 = self.mElifExpressionNodes[i];
     
-                info.writing_source_file_position = true;
+                add_come_code(info, "else if(");
+                
+                bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
+                info.comma_instead_of_semicolon = true;
                 info.without_semicolon = true;
                 if(!node_compile(expression_node2)) {
                     return false;
                 }
                 info.without_semicolon = false;
+                info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
+                
                 sBlock* elif_node_block = self.mElifBlocks[i];
                 
         
                 bool normal_if = true;
-/*
-                if(info.module.mLastCode || info.module.mLastCode2 || info.module.mLastCode3) {
-                    normal_if = false;
-                }
-*/
                 if(existance_free_right_value_objects(info)) {
                     normal_if = false;
                 }
@@ -171,7 +168,7 @@ class sIfNode extends sNodeBase
                     CVALUE*% conditional_value = get_value_from_stack(-1, info);
                     dec_stack_ptr(1, info);
     
-                    add_come_code(info, "else if(%s) {\n", conditional_value.c_value);
+                    add_come_code(info, "%s) {\n", conditional_value.c_value);
                 }
                 else {
                     CVALUE*% conditional_value = get_value_from_stack(-1, info);
@@ -181,8 +178,7 @@ class sIfNode extends sNodeBase
                     add_come_code_at_function_head(info, "_Bool _elif_conditional%d;\n", ++num_elif_conditional);
                     int num_elif_conditional_stack = num_elif_conditional;
         
-                    add_come_code(info, "else if((_elif_conditional%d=(%s)),", num_elif_conditional, conditional_value.c_value);
-                    add_last_code_to_source_with_comma(info);
+                    add_come_code(info, "(_elif_conditional%d=(%s)),", num_elif_conditional, conditional_value.c_value);
                     free_right_value_objects(info, comma:true);
                     add_come_code(info, "_elif_conditional%d) {\n", num_elif_conditional_stack);
                 }
@@ -335,9 +331,6 @@ class sOrStatmentNode extends sNodeBase
         
         transpiler_clear_last_code(info);
         
-    //    info.stack.push_back(conditional_value);
-    //    add_come_last_code(info, "%s;\n", conditional_value.c_value);
-    
         return true;
     }
 };
@@ -394,9 +387,6 @@ class sAndStatmentNode extends sNodeBase
         
         transpiler_clear_last_code(info);
         
-    //    info.stack.push_back(conditional_value);
-    //    add_come_last_code(info, "%s;\n", conditional_value.c_value);
-        
         return true;
     }
 };
@@ -404,7 +394,7 @@ class sAndStatmentNode extends sNodeBase
 
 class sMultipleNode extends sNodeBase
 {
-    new(list<sNode*%>*% multiple_node, sInfo* info)
+    new(list<sNode*%>*% multiple_node, sInfo* info=info)
     {
         self.super();
     
@@ -466,14 +456,16 @@ class sFreeITNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+/*
         sVar* var_ = info.lv_table.mVars[s"Err"]??;
         
         if(var_) {
-            string c_value = var_->mCValueName;
+            string c_value = string(var_->mCValueName);
             sType*% string_type = new sType("char*");
             string_type->mHeap = true;
             decrement_ref_count_object(string_type, c_value, info);
         }
+*/
         
         return true;
     }
@@ -688,7 +680,7 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
     return result;
 }
 
-sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info)
+sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
 {
     string sname = clone info->sname;
     int sline = info->sline;
@@ -721,16 +713,20 @@ sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info)
     sNode*% save_right_value_objects = new sSaveRightValueObjects() implements sNode;
     sNode*% restore_right_value_objects = new sRestoreRightValueObjects() implements sNode;
     
-    //list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
     list<sNode*%>*% multiple_node = [save_right_value_objects, get_return_value, if_node, restore_right_value_objects, free_it_node, load_var];
     
     return new sMultipleNode(multiple_node, info) implements sNode;
 }
 
-sNode*% create_throw(sNode*% expression_node, sInfo* info)
+sNode*% create_exception_throw(sNode*% expression_node, sInfo* info)
 {
     string sname = clone info->sname;
     int sline = info->sline;
+    
+    if(info.comma_instead_of_semicolon) {
+        err_msg(info, "can't be called exception_throw in conditional expression");
+        exit(1);
+    }
     
     parse_sharp();
     
@@ -805,38 +801,30 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     
     var buf = new buffer();
     
-    buf.append_str(xsprintf("{ puts(Err); exit(0); }"));
+    buf.append_str(xsprintf("puts(Err), exit(0)"));
     
     info.source = buf;
     info.p = info.source.buf;
     info.head = info.source.buf;
     info.sline = sline;
     
-    sBlock*% if_block = parse_block();
+    sNode*% exp = expression();
     
     info.source = source;
     info.p = p;
     info.head = head;
     info.sline = sline;
     
-    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
-    int elif_num = 0;
-
-    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
-
-    sBlock*% else_block = null;
-    
     sNode*% expression_node2 = create_load_var(s"Err");
+    sNode*% cond = conditional_node(expression_node2, exp, create_int_node(0, info), info);
 
-    sNode*% if_node = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
     sNode*% load_var = create_load_var(s"come_exception_var_c\{var_num}");
     sNode*% free_it_node = new sFreeITNode(info) implements sNode;
     
     sNode*% save_right_value_objects = new sSaveRightValueObjects() implements sNode;
     sNode*% restore_right_value_objects = new sRestoreRightValueObjects() implements sNode;
     
-    //list<sNode*%>*% multiple_node = [get_return_value, save_right_value_objects, if_node, restore_right_value_objects, free_it_node, load_var];
-    list<sNode*%>*% multiple_node = [save_right_value_objects, get_return_value, if_node, restore_right_value_objects, free_it_node, load_var];
+    list<sNode*%>*% multiple_node = [save_right_value_objects, get_return_value, cond, restore_right_value_objects, free_it_node, load_var];
     
     return new sMultipleNode(multiple_node, info) implements sNode;
 }

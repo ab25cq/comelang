@@ -81,7 +81,7 @@ class sNewNode extends sNodeBase
         
         append_object_to_right_values2(come_value, type2 ,info);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -185,7 +185,7 @@ class sImplementsNode extends sNodeBase
         
         append_object_to_right_values2(come_value2, type3 ,info);
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         info.stack.push_back(come_value2);
         
@@ -214,7 +214,7 @@ class sTrueNode extends sNodeBase
         come_value.type = new sType("bool");
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -247,7 +247,7 @@ class sFalseNode extends sNodeBase
         come_value.type = new sType("bool");
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -289,7 +289,7 @@ class sSizeOfNode extends sNodeBase
         come_value.type->mUnsigned = true;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -331,7 +331,7 @@ class sSizeOfExpNode extends sNodeBase
         come_value2.type->mUnsigned = true;
         come_value2.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         info.stack.push_back(come_value2);
         
@@ -367,7 +367,7 @@ class sTypeOfNode extends sNodeBase
         come_value.type = new sType("char*");
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -410,7 +410,7 @@ class sTypeOfExpNode extends sNodeBase
         come_value.type = new sType("char*");
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -454,7 +454,7 @@ class sDynamicTypeOfNode extends sNodeBase
             come_value.type = new sType("char*");
             come_value.var = null;
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
             
             info.stack.push_back(come_value);
             
@@ -467,7 +467,7 @@ class sDynamicTypeOfNode extends sNodeBase
             come_value2.type = new sType("char*");
             come_value2.var = null;
             
-            add_come_last_code(info, "%s;\n", come_value2.c_value);
+            add_come_last_code(info, "%s", come_value2.c_value);
             
             info.stack.push_back(come_value2);
         }
@@ -507,7 +507,7 @@ class sAlignOfNode extends sNodeBase
         come_value.type->mUnsigned = true;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -547,7 +547,7 @@ class sAlignOfExpNode extends sNodeBase
         come_value2.type->mUnsigned = true;
         come_value2.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         info.stack.push_back(come_value2);
         
@@ -584,7 +584,7 @@ class sAlignOfNode2 extends sNodeBase
         come_value.type->mUnsigned = true;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -624,7 +624,7 @@ class sAlignOfExpNode2 extends sNodeBase
         come_value2.type->mUnsigned = true;
         come_value2.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         info.stack.push_back(come_value2);
         
@@ -661,7 +661,7 @@ class sAlignAsNode extends sNodeBase
         come_value.type->mUnsigned = true;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -701,7 +701,7 @@ class sAlignAsExpNode extends sNodeBase
         come_value2.type->mUnsigned = true;
         come_value2.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         info.stack.push_back(come_value2);
         
@@ -1170,7 +1170,7 @@ class sIsHeap extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
         else {
             CVALUE*% come_value = new CVALUE();
@@ -1181,7 +1181,7 @@ class sIsHeap extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
         
         return true;
@@ -1215,7 +1215,7 @@ class sIsPointer extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
         else {
             CVALUE*% come_value = new CVALUE();
@@ -1226,7 +1226,7 @@ class sIsPointer extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
         
         return true;

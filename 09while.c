@@ -33,11 +33,14 @@ class sWhileNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
     
+        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+        info.comma_instead_of_semicolon = true;
         info.without_semicolon = true;
         if(!node_compile(expression_node)) {
             return false;
         }
         info.without_semicolon = false;
+        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
     
         sBlock* block = self.mBlock;
         

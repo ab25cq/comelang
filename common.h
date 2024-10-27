@@ -342,6 +342,7 @@ struct sInfo
     sVarTable* lv_table;
     sVarTable*% gv_table;
     
+    bool comma_instead_of_semicolon;
     bool no_comma;
     bool no_assign;
     bool no_label;
@@ -540,6 +541,7 @@ int come_main(int argc, char** argv) version 1;
 /////////////////////////////////////////////////////////////////////
 sNodeBase*% sNodeBase*::initialize(sNodeBase*% self, sInfo* info=info);
 bool node_compile(sNode* node, sInfo* info=info);
+bool node_condional_compile(sNode* node, sInfo* info=info);
 int come_main(int argc, char** argv) version 2;
 void err_msg(sInfo* info, char* msg, ...);
 bool sNodeBase*::terminated(sNodeBase* self);
@@ -706,14 +708,14 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 extern list<sRightValueObject*%>*% gExceptionRightValueObjects;
 sNode*% parse_match(sNode*% expression_node, sInfo* info);
 
-sNode*% create_throw(sNode*% expression_node, sInfo* info);
+sNode*% create_exception_throw(sNode*% expression_node, sInfo* info);
 sNode*% create_exception_value(sNode*% expression_node, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;
 sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_or_statment(sNode*% expression_node, sInfo* info);
 sNode*% parse_and_statment(sNode*% expression_node, sInfo* info);
-sNode*% parse_catch_method_call(sNode*% expression_node, sInfo* info);
+sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 09while.c
@@ -739,7 +741,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /// 13op.c
 /////////////////////////////////////////////////////////////////////
 sNode*% create_null_node(sInfo* info=info);
-sNode*% condtional_node(sNode*% value1, sNode*% value2, sNode*% value3, sInfo* info);
+sNode*% conditional_node(sNode*% value1, sNode*% value2, sNode*% value3, sInfo* info);
 bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVALUE* right_value, bool break_guard, sInfo* info);
 sNode*% expression(sInfo* info=info) version 13;
 sNode*% post_op(sNode*% node, sInfo* info) version 13;

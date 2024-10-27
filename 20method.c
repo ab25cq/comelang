@@ -451,7 +451,7 @@ class sMethodCallNode extends sNodeBase
                 append_object_to_right_values2(come_value2, result_type2, info);
             }
             
-            add_come_last_code(info, "%s;\n", come_value2.c_value);
+            add_come_last_code(info, "%s", come_value2.c_value);
             
             info.stack.push_back(come_value2);
             
@@ -573,7 +573,7 @@ class sMethodCallNode extends sNodeBase
                     
                     if(come_fun_result_type2.mException) {
                         sNode*% expression_node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, false@no_infference_method_generics, false@recursive, info) implements sNode;
-                        sNode*% node = create_throw(expression_node, info);
+                        sNode*% node = create_exception_throw(expression_node, info);
                         
                         if(!node_compile(node)) {
                             return false;
@@ -949,7 +949,7 @@ class sMethodCallNode extends sNodeBase
             
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
             
-            add_come_last_code(info, "%s;\n", come_value2.c_value);
+            add_come_last_code(info, "%s", come_value2.c_value);
             
             info.stack.push_back(come_value2);
             

@@ -1058,17 +1058,22 @@ void add_last_code_to_source(sInfo* info)
     if(info->no_output_come_code) {
         return;
     }
-    if(info.module.mLastCode) {
-       add_come_code(info, "%s", info.module.mLastCode);
-       info.module.mLastCode = null;
+    if(info.comma_instead_of_semicolon) {
+        add_last_code_to_source_with_comma(info);
     }
-    if(info.module.mLastCode2) {
-       add_come_code(info, "%s", info.module.mLastCode2);
-       info.module.mLastCode2 = null;
-    }
-    if(info.module.mLastCode3) {
-       add_come_code(info, "%s", info.module.mLastCode3);
-       info.module.mLastCode3 = null;
+    else {
+        if(info.module.mLastCode) {
+           add_come_code(info, "%s;\n", info.module.mLastCode);
+           info.module.mLastCode = null;
+        }
+        if(info.module.mLastCode2) {
+           add_come_code(info, "%s;\n", info.module.mLastCode2);
+           info.module.mLastCode2 = null;
+        }
+        if(info.module.mLastCode3) {
+           add_come_code(info, "%s;\n", info.module.mLastCode3);
+           info.module.mLastCode3 = null;
+        }
     }
 }
 
@@ -1078,15 +1083,15 @@ void add_last_code_to_source_with_comma(sInfo* info)
         return;
     }
     if(info.module.mLastCode) {
-       add_come_code(info, "%s ,", info.module.mLastCode.substring(0,-3));
+       add_come_code(info, "%s ,", info.module.mLastCode);
        info.module.mLastCode = null;
     }
     if(info.module.mLastCode2) {
-       add_come_code(info, "%s ,", info.module.mLastCode2.substring(0,-3));
+       add_come_code(info, "%s ,", info.module.mLastCode2);
        info.module.mLastCode2 = null;
     }
     if(info.module.mLastCode3) {
-       add_come_code(info, "%s ,", info.module.mLastCode3.substring(0,-3));
+       add_come_code(info, "%s ,", info.module.mLastCode3);
        info.module.mLastCode3 = null;
     }
 }
@@ -1103,7 +1108,7 @@ void add_come_last_code(sInfo* info, const char* msg, ...)
     int len = vasprintf(&msg2, msg, args);
     va_end(args);
     
-    info.module.mLastCode = xsprintf("%s", msg2);
+    info.module.mLastCode = string(msg2);
     
     free(msg2);
 }
@@ -1120,7 +1125,7 @@ void add_come_last_code2(sInfo* info, const char* msg, ...)
     int len = vasprintf(&msg2, msg, args);
     va_end(args);
     
-    info.module.mLastCode2 = xsprintf("%s", msg2);
+    info.module.mLastCode2 = string(msg2);
     
     free(msg2);
 }
@@ -1137,7 +1142,7 @@ void add_come_last_code3(sInfo* info, const char* msg, ...)
     int len = vasprintf(&msg2, msg, args);
     va_end(args);
     
-    info.module.mLastCode3 = xsprintf("%s", msg2);
+    info.module.mLastCode3 = string(msg2);
     
     free(msg2);
 }

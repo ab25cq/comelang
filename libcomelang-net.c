@@ -191,6 +191,8 @@ exception int httpd_socket(int port=8080, int socket_family=AF_INET, int socket_
     }
     
     close(sock);
+    
+    return 0;
 }
 
 void ERR_print_errors_fp(FILE* f)
@@ -280,6 +282,7 @@ exception int httpsd_socket(int port=443, bool reuse=false, void* parent, void (
     close(sock);
     SSL_CTX_free(ctx);
     EVP_cleanup();
+    
     return 0;
 }
 

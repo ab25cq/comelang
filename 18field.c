@@ -106,7 +106,7 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
         
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -392,7 +392,7 @@ class sStoreFieldNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
     
         return true;
     }
@@ -458,7 +458,7 @@ class sNullCheckNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
         else if(!gComeDebug) {
             info.stack.push_back(left_value);
@@ -472,7 +472,7 @@ class sNullCheckNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
         else {
             info.stack.push_back(left_value);
@@ -514,7 +514,7 @@ class sNullableNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
         else {
             info.stack.push_back(left_value);
@@ -581,7 +581,7 @@ class sRangeCheckNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else {
                 CVALUE*% come_value = new CVALUE();
@@ -593,7 +593,7 @@ class sRangeCheckNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
         }
         else {
@@ -972,7 +972,7 @@ class sStoreArrayNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -1126,7 +1126,7 @@ class sLoadArrayNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else {
                 CVALUE*% come_value = new CVALUE();
@@ -1188,7 +1188,7 @@ class sLoadArrayNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
         }
     
@@ -1311,7 +1311,7 @@ class sLoadRangeArrayNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -1579,10 +1579,10 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                     node = parse_match(clone node, info);
                 }
                 else if(field_name === "rescue") {
-                    node = parse_catch_method_call(clone node, info);
+                    node = parse_rescue_method_call(clone node, info);
                 }
                 else if(field_name === "exception_throw") {
-                    node = create_throw(clone node, info);
+                    node = create_exception_throw(clone node, info);
                 }
                 else if(field_name === "exception_value") {
                     node = create_exception_value(clone node, info);

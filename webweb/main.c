@@ -371,6 +371,7 @@ int main(int argc, char **argv)
     
     string cgi_redirect_path = null;
     
+int count = 0;
     while(true) {
         if(http) {
             httpd_socket(port:8080, reuse:true) {
@@ -533,7 +534,22 @@ puts(file_path);
                                             "<html><body><h1>404 Not Found</h1></body></html>";
                     write(it, not_found, strlen(not_found));
                 }
+/*
+count++;
+printf("count %d\n", count);
+if(count >= 10) {
+*it2 = true;
+return;
+}
+*/
             }
+            
+/*
+printf("COUNT %d\n", count);
+if(count >= 10) {
+    break;
+}
+*/
         }
         else {
             signal(SIGINT, handle_sigint);

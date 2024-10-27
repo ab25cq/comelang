@@ -47,7 +47,7 @@ class sPlusPlusNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -101,7 +101,7 @@ class sMinusMinusNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -164,7 +164,7 @@ class sPlusEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -228,7 +228,7 @@ class sMinusEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -292,7 +292,7 @@ class sMultEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -356,7 +356,7 @@ class sDivEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -420,7 +420,7 @@ class sModEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -484,7 +484,7 @@ class sLShifEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -548,7 +548,7 @@ class sRShiftEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -612,7 +612,7 @@ class sXorEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -676,7 +676,7 @@ class sOrEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -740,7 +740,7 @@ class sAndEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -804,7 +804,7 @@ class sExpEqualNode extends sNodeBase
             
             info.stack.push_back(come_value);
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;

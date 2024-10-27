@@ -65,9 +65,12 @@ class sForNode extends sNodeBase
         CVALUE*% conditional_value = null;
         if(expression_node) {
             info.without_semicolon = true;
+            bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+            info.comma_instead_of_semicolon = true;
             if(!node_compile(expression_node)) {
                 return false;
             }
+            info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
             bool normal_if = true;
             if(existance_free_right_value_objects(info)) {
@@ -101,10 +104,13 @@ class sForNode extends sNodeBase
         CVALUE*% conditional_value2 = null;
         if(expression_node2) {
             info.without_semicolon = true;
+            bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+            info.comma_instead_of_semicolon = true;
             if(!node_compile(expression_node2)) {
                 return false;
             }
             info.without_semicolon = false;
+            info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
             bool normal_if = true;
             if(existance_free_right_value_objects(info)) {
@@ -142,11 +148,14 @@ class sForNode extends sNodeBase
         
         CVALUE*% conditional_value3;
         if(expression_node3) {
+            bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+            info.comma_instead_of_semicolon = true;
             info.without_semicolon = true;
             if(!node_compile(expression_node3)) {
                 return false;
             }
             info.without_semicolon = false;
+            info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
             bool normal_if = true;
             if(existance_free_right_value_objects(info)) {

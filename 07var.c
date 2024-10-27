@@ -95,7 +95,12 @@ class sStoreNode extends sNodeBase
             string multiple_var_name = xsprintf("multiple_assign_var%d", ++num_multiple_var);
             add_come_code_at_function_head(info, "%s;\n", make_define_var(right_value.type, multiple_var_name));
             
-            add_come_code(info, "%s=%s;\n", multiple_var_name, right_value.c_value);
+            if(info->comma_instead_of_semicolon) {
+                add_come_code(info, "%s=%s,\n", multiple_var_name, right_value.c_value);
+            }
+            else {
+                add_come_code(info, "%s=%s;\n", multiple_var_name, right_value.c_value);
+            }
             
             right_value.c_value = clone multiple_var_name;
             
@@ -133,7 +138,12 @@ class sStoreNode extends sNodeBase
                     come_value.var = var_;
                     
                     add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                    add_come_code(info, "%s;\n", come_value.c_value);
+                    if(info->comma_instead_of_semicolon) {
+                        add_come_code(info, "%s,\n", come_value.c_value);
+                    }
+                    else {
+                        add_come_code(info, "%s;\n", come_value.c_value);
+                    }
                 }
                 
                 i++;
@@ -309,7 +319,7 @@ class sStoreNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
             {
@@ -327,7 +337,7 @@ class sStoreNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
@@ -347,7 +357,7 @@ class sStoreNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
         }
         else {
@@ -387,7 +397,7 @@ class sStoreNode extends sNodeBase
                             come_value.type = clone left_type;
                             come_value.var = null;
                             
-                            add_come_last_code(info, "%s;\n", come_value.c_value);
+                            add_come_last_code(info, "%s", come_value.c_value);
                             
                             info.stack.push_back(come_value);
                             
@@ -411,7 +421,7 @@ class sStoreNode extends sNodeBase
                             come_value.type = clone left_type;
                             come_value.var = null;
                             
-                            add_come_last_code(info, "%s;\n", come_value.c_value);
+                            add_come_last_code(info, "%s", come_value.c_value);
                             
                             info.stack.push_back(come_value);
                             
@@ -436,7 +446,7 @@ class sStoreNode extends sNodeBase
                             come_value.type = clone left_type;
                             come_value.var = null;
                             
-                            add_come_last_code(info, "%s;\n", come_value.c_value);
+                            add_come_last_code(info, "%s", come_value.c_value);
                             
                             info.stack.push_back(come_value);
                             
@@ -474,7 +484,7 @@ class sStoreNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
             {
@@ -491,7 +501,7 @@ class sStoreNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
             {
@@ -507,7 +517,7 @@ class sStoreNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
             else {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
@@ -525,7 +535,7 @@ class sStoreNode extends sNodeBase
                 
                 info.stack.push_back(come_value);
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
             }
         }
         
@@ -579,7 +589,7 @@ class sLoadNode extends sNodeBase
                     come_value.type = clone type;
                     come_value.var = null;
                     
-                    add_come_last_code(info, "%s;\n", come_value.c_value);
+                    add_come_last_code(info, "%s", come_value.c_value);
                     
                     info.stack.push_back(come_value);
                     

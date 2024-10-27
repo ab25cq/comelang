@@ -174,7 +174,7 @@ class sLineNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -202,7 +202,7 @@ class sSNameNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -231,7 +231,7 @@ class sFuncNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -265,7 +265,7 @@ class sCallerFuncNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -288,7 +288,7 @@ class sCallerLineNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -316,7 +316,7 @@ class sCallerSNameNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -463,7 +463,7 @@ class sFunCallNode extends sNodeBase
                 append_object_to_right_values2(come_value, lambda_type->mResultType.v1, info);
             }
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
             
             info.stack.push_back(come_value);
         }
@@ -620,7 +620,7 @@ class sFunCallNode extends sNodeBase
                 
                 come_value.var = null;
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
                 
                 info.stack.push_back(come_value);
                 
@@ -709,7 +709,7 @@ class sFunCallNode extends sNodeBase
                         transpiler_clear_last_code(info);
                         
                         sNode*% expression_node = (clone self) implements sNode;
-                        sNode*% node = create_throw(expression_node, info);
+                        sNode*% node = create_exception_throw(expression_node, info);
                         
                         if(!node_compile(node)) {
                             return false;
@@ -778,7 +778,7 @@ class sFunCallNode extends sNodeBase
                 come_value.type = result_type;
                 come_value.var = null;
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
                 
                 info.stack.push_back(come_value);
             }
@@ -1114,7 +1114,7 @@ class sFunCallNode extends sNodeBase
                     come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
                 }
                 
-                add_come_last_code(info, "%s;\n", come_value.c_value);
+                add_come_last_code(info, "%s", come_value.c_value);
                 
                 info.stack.push_back(come_value);
                 
@@ -1223,7 +1223,7 @@ class sLambdaCall extends sNodeBase
         come_value2.type->mStatic = false;
         come_value2.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         info.stack.push_back(come_value2);
         

@@ -31,10 +31,14 @@ class sSwitchNode extends sNodeBase
         
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
+        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+        info.comma_instead_of_semicolon = true;
     
         if(!node_compile(expression_node)) {
             return false;
         }
+        
+        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
         
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);

@@ -100,7 +100,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
     
@@ -142,7 +142,7 @@ class sRefferenceNode extends sNodeBase
         come_value.type->mPointerNum++;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -230,7 +230,7 @@ class sDerefferenceNode extends sNodeBase
             come_value.type->mPointerNum--;
             come_value.var = null;
             
-            add_come_last_code(info, "%s;\n", come_value.c_value);
+            add_come_last_code(info, "%s", come_value.c_value);
             
             info.stack.push_back(come_value);
         }
@@ -270,7 +270,7 @@ class sLogicalDenial extends sNodeBase
         
         info.stack.push_back(come_value2);
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         return true;
     }
@@ -308,7 +308,7 @@ class sReverseNode extends sNodeBase
         come_value.type->mPointerNum--;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -347,7 +347,7 @@ class sMinusNode2 extends sNodeBase
         
         info.stack.push_back(come_value2);
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         return true;
     }
@@ -384,7 +384,7 @@ class sPlusPlusNode2 extends sNodeBase
         
         info.stack.push_back(come_value2);
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         return true;
     }
@@ -421,7 +421,7 @@ class sMinusMinusNode2 extends sNodeBase
         
         info.stack.push_back(come_value2);
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         return true;
     }
@@ -505,7 +505,7 @@ class sComplement extends sNodeBase
         
         info.stack.push_back(come_value2);
         
-        add_come_last_code(info, "%s;\n", come_value2.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         return true;
     }
@@ -542,7 +542,7 @@ class sParenNode extends sNodeBase
         come_value.type = clone left_value.type;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -587,7 +587,7 @@ class sCastNode extends sNodeBase
         come_value.type = clone type2;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         

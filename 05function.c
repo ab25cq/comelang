@@ -60,7 +60,7 @@ class sLambdaNode extends sNodeBase
         come_value.type = clone self.mFun.mLambdaType;
         come_value.var = null;
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
         
@@ -371,8 +371,6 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             
             info.sline = node.sline->();
             info.sname = node.sname->();
-            
-            info.writing_source_file_position = true;
             
             if(i == block->mNodes.length()-1 && if_result && block->mOmitSemicolon) {
                 if(!node_compile(node)) {
@@ -1565,6 +1563,8 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     info->caller_line = info->sline;
     char* caller_sname = info->caller_sname;
     info->caller_sname = info->sname;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -1666,6 +1666,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     info->caller_fun = caller_fun;
     info->caller_line = caller_line;
     info->caller_sname = caller_sname;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return true;
 }
@@ -1678,6 +1679,8 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     info->caller_line = info->sline;
     char* caller_sname = info->caller_sname;
     info->caller_sname = info->sname;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -1769,6 +1772,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     info->caller_fun = caller_fun;
     info->caller_line = caller_line;
     info->caller_sname = caller_sname;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return true;
 }
@@ -2155,6 +2159,8 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
     string last_code3 = info.module.mLastCode3;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     info.module.mLastCode3 = null;
     
@@ -2291,6 +2297,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
     info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (finalizer, real_fun_name);
 }
@@ -2302,6 +2309,8 @@ sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, s
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
     string last_code3 = info.module.mLastCode3;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     info.module.mLastCode3 = null;
     
@@ -2428,6 +2437,7 @@ sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, s
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
     info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (finalizer, real_fun_name);
 }
@@ -2440,6 +2450,8 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode2 = null;
     string last_code3 = info.module.mLastCode3;
     info.module.mLastCode3 = null;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
@@ -2570,6 +2582,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
     info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (equaler, real_fun_name);
 }
@@ -2582,6 +2595,8 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
     info.module.mLastCode2 = null;
     string last_code3 = info.module.mLastCode3;
     info.module.mLastCode3 = null;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
@@ -2729,6 +2744,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
     info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (equaler, real_fun_name);
 }
@@ -2741,6 +2757,8 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
     info.module.mLastCode2 = null;
     string last_code3 = info.module.mLastCode3;
     info.module.mLastCode3 = null;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
@@ -2871,6 +2889,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
     info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (equaler, real_fun_name);
 }
@@ -2883,6 +2902,8 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode2 = null;
     string last_code3 = info.module.mLastCode3;
     info.module.mLastCode3 = null;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
     
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
@@ -3057,6 +3078,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
     info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (cloner, real_fun_name);
 }

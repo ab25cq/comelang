@@ -48,6 +48,27 @@ bool node_compile(sNode* node, sInfo* info=info)
     return result;
 }
 
+bool node_condional_compile(sNode* node, sInfo* info=info)
+{
+    string sname = string(info->sname);
+    int sline = info->sline;
+    bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+    info.comma_instead_of_semicolon = true;
+    
+    info->sname = string(node->sname());
+    info->sline = node->sline();
+    
+    write_source_file_position_to_source();
+    
+    bool result = node->compile(info);
+    
+    info->sname = string(sname);
+    info->sline = sline;
+    info.comma_instead_of_semicolon = comma_instead_of_semicolon;
+    
+    return result;
+}
+
 void err_msg(sInfo* info, char* msg, ...)
 {
     if(!info.no_output_err) {

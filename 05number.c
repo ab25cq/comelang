@@ -24,7 +24,7 @@ class sIntNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -54,7 +54,7 @@ class sUIntNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -84,7 +84,7 @@ class sLongNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -114,7 +114,7 @@ class sULongNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -144,7 +144,7 @@ class sFloatNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -174,7 +174,7 @@ class sDoubleNode extends sNodeBase
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s;\n", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }

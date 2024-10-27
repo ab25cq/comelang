@@ -379,7 +379,12 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
     string name = xsprintf("__dec_obj%d", ++dec_num);
     add_come_code_at_function_head(info, "%s;\n", make_define_var(type, name));
     
-    add_come_code(info, "%s=%s;\n", name, obj);
+    if(info.comma_instead_of_semicolon) {
+        add_come_code(info, "%s=%s,\n", name, obj);
+    }
+    else {
+        add_come_code(info, "%s=%s;\n", name, obj);
+    }
     
     obj = name;
     bool no_decrement = false;
@@ -452,22 +457,24 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
             if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
                 if(c_value) {
-                    add_come_last_code2(info, "come_call_finalizer2(%s, %s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d, %d, %d, (void*)0);\n", fun_name2, c_value, type_name, c_value, type_name, c_value, type->mAllocaValue, no_decrement, no_free, force_delete_);
+                    add_come_last_code2(info, "come_call_finalizer2(%s, %s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d, %d, %d, (void*)0)", fun_name2, c_value, type_name, c_value, type_name, c_value, type->mAllocaValue, no_decrement, no_free, force_delete_);
                 }
             }
             else {
                 if(c_value) {
-                    add_come_last_code2(info, xsprintf("/* a*/come_call_finalizer3(%s,%s, %d, %d, %d, %d, (void*)0);\n", c_value, fun_name2, type->mAllocaValue, no_decrement, no_free, force_delete_));
+                    add_come_last_code2(info, xsprintf("come_call_finalizer3(%s,%s, %d, %d, %d, %d, (void*)0)", c_value, fun_name2, type->mAllocaValue, no_decrement, no_free, force_delete_));
                 }
             }
         }
         else {
             if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
-                add_come_last_code2(info, xsprintf("if(%s) { %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, 0,0,0, (void*)0); }\n", name, name, name, type_name, name, type_name, name));
+                string str = xsprintf("if(%s) { %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, 0,0,0, (void*)0); }", name, name, name, type_name, name, type_name, name);
+                add_come_last_code2(info, str);
             }
             else {
-                add_come_last_code2(info, xsprintf("%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, 0,0,0, (void*)0);\n", name, name));
+                string str = xsprintf("/*G*/ %s = come_decrement_ref_count2(%s, (void*)0, (void*)0, 0,0,0, (void*)0)", name, name);
+                add_come_last_code2(info, str);
             }
         }
     }
@@ -1164,6 +1171,11 @@ void free_right_value_objects(sInfo* info, bool comma=false)
     if(gComeGC || gComeC) {
         return;
     }
+    
+    if(info.comma_instead_of_semicolon) {
+        comma = true;
+    }
+    
     bool free_right_value = false;
     list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
     

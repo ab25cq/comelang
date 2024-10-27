@@ -2,7 +2,11 @@
 
 int main(int argc, char** argv)
 {
-    var a = 1 ? 2:(void*)0;
+    int a = 1;
+    a && { goto X; }
+    
+X:
+    return 0;
     
     printf("a %d\n", a);
     
