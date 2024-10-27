@@ -473,6 +473,23 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
         }
     }
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
+        if(pointer_massive) {
+            if(print_err_msg) {
+                err_msg(info, "poinetr num err");
+                printf("left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
+                exit(2);
+            }
+        }
+        else {
+            come_value.c_value = xsprintf("(%s)%s", left_type->mClass->mName, come_value.c_value);
+            come_value.type = clone left_type;
+            come_value.var = null;
+            
+            right_type2 = clone left_type;
+        }
+    }
     else if(left_type->mHeap && !right_type2->mHeap && left_type->mPointerNum > 0 && right_type2->mPointerNum > 0 && right_type2->mClass->mName !== "void" && !info.in_generics_fun && !left_type->mMultipleTypes && !right_type->mMultipleTypes)
     {
         err_msg(info, "%s", msg);

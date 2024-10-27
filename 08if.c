@@ -64,6 +64,7 @@ class sIfNode extends sNodeBase
         info->lv_table = for_var_table;
 */
         
+        string if_result_var_name = info.if_result_var_name;
         if(existance_of_result_value) {
             sType*% if_result_type = new sType("void*");
             
@@ -201,13 +202,24 @@ class sIfNode extends sNodeBase
         transpiler_clear_last_code(info);
         
         if(existance_of_result_value) {
+            sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
+            
+            assert(var_ != null);
+            
             sNode*% result_node = create_load_var(info->if_result_var_name);
+            result_node = cast_node(clone var_->mType, result_node);
             
             if(!node_compile(result_node, info)) {
                 return false;
             }
+            CVALUE*% come_value2 = get_value_from_stack(-1, info);
+            dec_stack_ptr(1, info);
             
+            come_value2->type = clone var_->mType;
+            
+            info.stack.push_back(come_value2);
         }
+        info.if_result_var_name = if_result_var_name;
         
         return true;
     }

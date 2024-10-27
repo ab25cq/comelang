@@ -615,6 +615,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
 /////////////////////////////////////////////////////////////////////
 /// 05function.c ///
 /////////////////////////////////////////////////////////////////////
+sNode*% cast_node(sType*% type, sNode*% node, sInfo* info=info);
 sNode*% craete_fun_call(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, bool throw_or_rescue, sInfo* info);
 string make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info);
 sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info);

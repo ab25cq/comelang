@@ -1,22 +1,15 @@
-#include <comelang.h>
-#include <comelang-str.h>
-
-exception int fun()
-{
-    string a = s"AAA";
-    
-    bool result = a.match(/(((((((((/);
-    
-    if(result) {
-        puts("OK");
-    }
-    
-    return 0;
-}
+#include <stdio.h>
 
 int main(int argc, char** argv)
 {
-    fun();
+    int a = if(true) {
+        if(true) {
+            2
+        }
+    }
+    
+    printf("a %d\n", a);
+    
     
     return 0;
 }
