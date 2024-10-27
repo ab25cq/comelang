@@ -3529,6 +3529,48 @@ UHO!
 ERR
 ```
 
+exceptionを戻り値に持つ関数の中ではreturn none(string);が使えます。これを呼び出すと例外が発生します。stringは例外のメッセージです。呼び出し元の関数では.resuceしないと例外の文字列を表示してexitしてしまいます。.resuceすると例外が発生してもプログラムは終了しません。.resuceの中ではErrという変数に例外のメッセージが入ってます。関数がネストする場合はexceptionを呼び出し元の関数につけると深いネストでもreturn none(string);された時点で大域脱出して.resuceで例外を捕捉できます。
+
+You can use return none(string); in functions that have exception as a return value. Calling this will raise an exception. string is the exception message. If you do not use .resuce in the calling function, the exception string will be displayed and the function will exit. If you use .resuce, the program will not terminate even if an exception occurs. In .resuce, the exception message is stored in a variable called Err. If functions are nested, attaching exception to the calling function will allow the exception to be caught with .resuce after a global exit when return none(string); is called, even in deeply nested cases.
+
+version 5.0.8で多分バグは無くなったと思います。
+一応VMのあるよう言語みたいにと書きましたが、一つだけできない処理があります。
+
+I think the bug has been fixed in version 5.0.8.
+I wrote it like a language with a VM, but there is one thing I can't do.
+
+```C
+excetpion int fun()
+{
+    if(s"AAA".match(/((((((((((((/) { puts("OK"); }
+
+    return 0;
+}
+```
+
+It's not work.
+
+これは動きません。
+
+```C
+exception int fun()
+{
+    bool r = s"AAA".match(/((((((((((((/);
+
+    if(r) {
+          puts("OK");
+    }
+
+    rerturn 0;
+}
+```
+
+これは動きます。ちゃんと正規表現の例外をfunの上でキャッチできます。
+これが限界です。
+
+This works. You can catch regular expression exceptions in fun.
+That's about it.
+
 # the resul type of if statment 
 
 ```C
