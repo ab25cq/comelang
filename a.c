@@ -6,6 +6,8 @@ int main(int argc, char** argv)
         if(true) {
             2
         }
+        
+        3
     }
     
     printf("a %d\n", a);
