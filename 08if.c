@@ -49,7 +49,7 @@ class sIfNode extends sNodeBase
             }
         }
         
-        if(info.in_conditional_operator) {
+        if(info.comma_instead_of_semicolon) {
             err_msg(info, "In conditional operator comelang can't use if statment");
             return false;
         }

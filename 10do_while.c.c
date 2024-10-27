@@ -2919,7 +2919,7 @@ struct CVALUE* conditional_value_139;
 void* __right_value145 = (void*)0;
 struct CVALUE* conditional_value_140;
 int num_while_conditional_stack_142;
-    if(    info->in_conditional_operator) {
+    if(    info->comma_instead_of_semicolon) {
         err_msg(info,"In conditional operator comelang can't use do while statment");
         return (_Bool)0;
     }

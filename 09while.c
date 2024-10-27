@@ -22,7 +22,7 @@ class sWhileNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        if(info.in_conditional_operator) {
+        if(info.comma_instead_of_semicolon) {
             err_msg(info, "In conditional operator comelang can't use while statment");
             return false;
         }

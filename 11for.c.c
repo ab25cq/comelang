@@ -2986,7 +2986,7 @@ void* __right_value153 = (void*)0;
 struct CVALUE* conditional_value3_153;
 _Bool __result105__;
 conditional_value3_149 = (void*)0;
-    if(    info->in_conditional_operator) {
+    if(    info->comma_instead_of_semicolon) {
         err_msg(info,"In conditional operator comelang can't use for statment");
         return (_Bool)0;
     }

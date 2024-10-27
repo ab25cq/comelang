@@ -3129,7 +3129,7 @@ _Bool __result122__;
             existance_of_result_value_143=(_Bool)0;
         }
     }
-    if(    info->in_conditional_operator) {
+    if(    info->comma_instead_of_semicolon) {
         err_msg(info,"In conditional operator comelang can't use if statment");
         return (_Bool)0;
     }

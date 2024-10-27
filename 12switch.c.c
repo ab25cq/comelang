@@ -2982,7 +2982,7 @@ _Bool comma_instead_of_semicolon_136;
 void* __right_value144 = (void*)0;
 struct CVALUE* conditional_value_137;
 _Bool __result102__;
-    if(    info->in_conditional_operator) {
+    if(    info->comma_instead_of_semicolon) {
         err_msg(info,"In conditional operator comelang can't use switch statment");
         return (_Bool)0;
     }
