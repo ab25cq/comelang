@@ -1334,14 +1334,27 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             while(true) {
                 string word = parse_word();
-                expected_next_character(':');
                 
-                bool no_comma = info->no_comma;
-                info->no_comma = true;
-                sNode*% exp = expression();
-                info->no_comma = no_comma;
-                
-                initializer.add((word, exp));
+                if(*info->p == ':') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    bool no_comma = info->no_comma;
+                    info->no_comma = true;
+                    sNode*% exp = expression();
+                    info->no_comma = no_comma;
+                    
+                    initializer.add((word, exp));
+                }
+                else if(*info->p == ',') {
+                    sNode*% exp = create_load_var(word);
+                    
+                    initializer.add((word, exp));
+                }
+                else {
+                    err_msg(info, "invalid character %c\n", *info->p);
+                    return false;
+                }
                 
                 if(*info->p == ',') {
                     info->p++;

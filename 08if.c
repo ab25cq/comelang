@@ -247,9 +247,11 @@ class sMatchNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+/*
         sVarTable* lv_table = info->lv_table;
         sVarTable*% for_var_table = new sVarTable(global:false, parent:lv_table);
         info->lv_table = for_var_table;
+*/
         
         sNode*% it_node = self.it_node;
         sNode*% match_node = self.match_node;
@@ -268,7 +270,7 @@ class sMatchNode extends sNodeBase
         
         
         if(info->if_result_var_name) {
-            sVar* var_ = get_variable_from_table(for_var_table, info->if_result_var_name);
+            sVar* var_ = get_variable_from_table(info->lv_table, info->if_result_var_name);
         
             assert(var_ != null);
         
@@ -276,15 +278,17 @@ class sMatchNode extends sNodeBase
                 info->match_it_var = new list<sVar*%>();
             }
             info->match_it_var.add(clone var_);
-        
-            free_objects(for_var_table, var_, info);
             
-            info->lv_table = lv_table;
+//            increment_ref_count_object(var_->mType, var_->mCValueName, info);
+        
+  //          free_objects(for_var_table, var_, info);
+            
+//            info->lv_table = lv_table;
         }
         else {
-            free_objects(for_var_table, null, info);
+//            free_objects(for_var_table, null, info);
             
-            info->lv_table = lv_table;
+//            info->lv_table = lv_table;
         }
         
         return true;

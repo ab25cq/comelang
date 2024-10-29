@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 5.0.9
+version 5.1.1
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.1.1 Pattern matching bug fixed.
 5.1.0 to_string automatically defined. Object Initializer.
 5.0.9 The result of if bug fixed.
 5.0.8 Exception bug is fixed maybe. Smash the damn bug to the sky.

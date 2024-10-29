@@ -1,16 +1,12 @@
 #include <comelang.h>
 
-struct sData
-{
-    int a;
-    int b;
-};
-
 int main(int argc, char** argv)
 {
-    sData*% data = new sData { a:123, b:234 };
-    
-    data.to_string().puts();
+    puts(strcmp("AAA", "AAA").case {
+        (it == 0) { string a = s"AAA"; s"Equal" }
+        (it > 0) { string b = s"BBB"; s"Greater" }
+        (it < 0) { string c = s"CCC"; s"Lesser" }
+    });
     
     return 0;
 }

@@ -3129,12 +3129,22 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
             
             if(i == klass->mFields.length() -1) {
                 char source2[1024];
+                
+                snprintf(source2, 1024, "result.append_str(\"%s:\");\n", name);
+                
+                source.append_str(source2);
+                
                 snprintf(source2, 1024, "result.append_str(self.%s.to_string());\n", name);
                 
                 source.append_str(source2);
             }
             else {
                 char source2[1024];
+                
+                snprintf(source2, 1024, "result.append_str(\"%s:\");\n", name);
+                
+                source.append_str(source2);
+                
                 snprintf(source2, 1024, "result.append_str(self.%s.to_string());\n", name);
                 
                 source.append_str(source2);

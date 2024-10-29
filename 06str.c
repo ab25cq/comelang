@@ -80,8 +80,14 @@ class sSStringNode extends sNodeBase
                         method_name = make_generics_function(obj_type2, string("to_string"), info);
                     }
                     else {
-                        err_msg(info, "require to_string implementation(%s)", come_value.type.mClass.mName);
-                        exit(1);
+                        var fun2, real_fun_name = create_to_string_automatically(come_value_type, "to_string", info);
+                        
+                        method_name = real_fun_name;
+                        
+                        if(fun2 == null) {
+                            err_msg(info, "require to_string implementation(%s)", come_value.type.mClass.mName);
+                            exit(1);
+                        }
                     }
                 }
                 
