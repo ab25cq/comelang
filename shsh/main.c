@@ -174,7 +174,7 @@ string parse_word(sInfo* info)
             info->p++;
             
             var buf2 = new buffer();
-            while(xisalpha(*info->p)) {
+            while(xisalpha(*info->p) || *info->p == '_') {
                 buf2.append_char(*info->p);
                 info->p++;
             }
@@ -244,6 +244,33 @@ int parse_cmp(char* str, char* str2)
 }
 
 int, bool run(char* source);
+string expand_env(string value)
+{
+    var p = value.to_buffer().to_pointer();
+    var result = new buffer();
+    
+    while(*p) {
+        if(*p == '$') {
+            p++;
+            var var_name = new buffer();
+            while(*p && (xisalpha(*p) || *p == '_')) {
+                var_name.append_char(*p);
+                p++;
+            }
+            
+            char* env = getenv(var_name.to_string());
+            if(env) {
+                result.append_str(env);
+            }
+        }
+        else {
+            result.append_char(*p);
+            p++;
+        }
+    }
+    
+    return result.to_string();
+}
 
 bool parse_statment(sInfo* info)
 {
@@ -768,8 +795,10 @@ bool parse_statment(sInfo* info)
             var name = li.item(1, null);
             var value = li.item(2, null);
             
+            var value2 = expand_env(value.to_string());
+            
             if(name && value) {
-                setenv(name, value, 1);
+                setenv(name, value2, 1);
             }
         }
         else {

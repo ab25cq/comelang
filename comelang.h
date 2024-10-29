@@ -2340,7 +2340,7 @@ impl smart_pointer<T>
     
     record T operator_derefference(smart_pointer<T>* self)
     {
-        if((char*)self.p >= self.memory.buf + self.memory.len) {
+        if((char*)self.p > self.memory.buf + self.memory.len) {
             puts("out of range of smart pointer");
             stackframe();
             exit(1);

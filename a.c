@@ -1,17 +1,22 @@
-#include <stdio.h>
+#include <comelang.h>
+#include <comelang-str.h>
+
+exception int fun()
+{
+    come_regex*% reg = /./.rescue { };
+    
+    if(reg) {
+        if(s"AAA".match(reg)) {
+            puts("OK");
+        }
+    }
+    
+    return 0;
+}
 
 int main(int argc, char** argv)
 {
-    int a = if(true) {
-        if(true) {
-            2
-        }
-        
-        3
-    }
-    
-    printf("a %d\n", a);
-    
+    fun();
     
     return 0;
 }
