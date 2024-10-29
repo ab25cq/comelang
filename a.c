@@ -12,9 +12,11 @@ char*% fun(int a)
 
 int main(int argc, char** argv)
 {
-    string a = fun(1).case {
-        (it == null) s"null"
-        else it + "X"
+    string a = fun(0).if {
+        it + "B"
+    }
+    else {
+        s"null"
     }
     
     puts(a);

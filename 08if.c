@@ -576,84 +576,6 @@ class sRestoreRightValueObjects extends sNodeBase
     }
 };
 
-sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
-{
-    string sname = clone info->sname;
-    int sline = info->sline;
-    
-    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
-    
-    parse_sharp();
-
-    sBlock*% if_block = parse_block();
-    
-    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
-
-    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
-
-    int elif_num = 0;
-
-    sBlock*% else_block = null;
-
-    while(1) {
-        char* saved_p = info->p;
-        int saved_sline = info->sline;
-        parse_sharp();
-        
-        if(*info->p == ';') {
-            info->p++;
-            skip_spaces_and_lf();
-        }
-
-        /// else ///
-        if(!xisalpha(*info->p)) {
-            break;
-        }
-        parse_sharp();
-        string buf = parse_word();
-        parse_sharp();
-
-        if(buf === "else") {
-            if(parsecmp("if", info)) {
-                parse_sharp();
-                info->p+=strlen("if");
-                skip_spaces_and_lf();
-                parse_sharp();
-
-                expected_next_character('(');
-
-                /// expression ///
-                sNode*% expression_node = expression();
-                
-                elif_expression_nodes.push_back(expression_node);
-
-                expected_next_character(')');
-                parse_sharp();
-
-                
-                sBlock*% elif_block = parse_block();
-                
-                elif_blocks.push_back(elif_block);
-
-                elif_num++;
-            }
-            else {
-                else_block = parse_block();
-                break;
-            }
-        }
-        else {
-            info->p = saved_p;
-            info->sline = saved_sline;
-            break;
-        }
-    };
-
-    sNode*% result = new sIfMethodNode(it_node, new sIfNode(expression_node, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
-    
-    return result;
-}
-
 sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
 {
     string sname = clone info->sname;
@@ -970,5 +892,99 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
         }
     }
     
+    if(else_block == null) {
+        else_block = new sBlock(info);
+        else_block.mOmitSemicolon = true;
+        
+        else_block.mNodes.push_back(create_load_var("it"));
+    }
+    
     return new sMatchNode(it_node, new sIfNode(conditional_value, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
+}
+
+sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
+{
+    string sname = clone info->sname;
+    int sline = info->sline;
+    
+    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
+    
+    sNode*% conditional_node = create_load_var("it");
+    
+    parse_sharp();
+
+    sBlock*% if_block = parse_block();
+    
+    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
+
+    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
+
+    int elif_num = 0;
+
+    sBlock*% else_block = null;
+
+    while(1) {
+        char* saved_p = info->p;
+        int saved_sline = info->sline;
+        parse_sharp();
+        
+        if(*info->p == ';') {
+            info->p++;
+            skip_spaces_and_lf();
+        }
+
+        /// else ///
+        if(!xisalpha(*info->p)) {
+            break;
+        }
+        parse_sharp();
+        string buf = parse_word();
+        parse_sharp();
+
+        if(buf === "else") {
+            if(parsecmp("if", info)) {
+                parse_sharp();
+                info->p+=strlen("if");
+                skip_spaces_and_lf();
+                parse_sharp();
+
+                expected_next_character('(');
+
+                /// expression ///
+                sNode*% expression_node = expression();
+                
+                elif_expression_nodes.push_back(expression_node);
+
+                expected_next_character(')');
+                parse_sharp();
+
+                
+                sBlock*% elif_block = parse_block();
+                
+                elif_blocks.push_back(elif_block);
+
+                elif_num++;
+            }
+            else {
+                else_block = parse_block();
+                break;
+            }
+        }
+        else {
+            info->p = saved_p;
+            info->sline = saved_sline;
+            break;
+        }
+    };
+    
+    if(else_block == null) {
+        else_block = new sBlock(info);
+        else_block.mOmitSemicolon = true;
+        
+        else_block.mNodes.push_back(create_load_var("it"));
+    }
+
+    sNode*% result = new sIfMethodNode(it_node, new sIfNode(conditional_node, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
+    
+    return result;
 }
