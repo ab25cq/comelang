@@ -12,10 +12,7 @@ char*% fun(int a)
 
 int main(int argc, char** argv)
 {
-    string a = fun(0).if {
-        it + "B"
-    }
-    else {
+    string a = fun(1).elif {
         s"null"
     }
     

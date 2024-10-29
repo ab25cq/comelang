@@ -3629,7 +3629,7 @@ int main(int argc, char** argv)
     string a = fun(1).case {
         (it == null) s"null"
         else it + "X"
-    }
+j   }
     
     puts(a);
     
@@ -3652,14 +3652,11 @@ char*% fun(int a)
 
 int main(int argc, char** argv)
 {
-    string a = fun(0).if {
-        it + "B"
-    }
-    else {
+    string a = fun(0).elif {
         s"null"
     }
     
-    puts(a);
+    puts(a);  // "null"
     
     return 0;
 }
@@ -3680,24 +3677,16 @@ char*% fun(int a)
 
 int main(int argc, char** argv)
 {
-    string a = (fun(0) == null).if {
+    string a = fun(1).elif {
         s"null"
     }
     
-    puts(a); // "null"
-    
-    string b = (fun(1) == null).if {
-        s"null"
-    }
-    
-    puts(b);   // "1"
+    puts(a);  // "1"
     
     return 0;
 }
 ```
-"null" or convertion fun argument to string value.
-
-if omitting block or statment, the value of expression is result value.
+if omitting else block or statment, the value of expression is result value.
 
 # Object initializer
 
