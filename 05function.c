@@ -262,6 +262,8 @@ info->sline = node.sline();
             parse_sharp();
             
             node = new sSemicolonNode() implements sNode;
+            
+            result.mNodes.push_back(node);
         }
         else {
             node = expression();
@@ -272,13 +274,27 @@ info->sline = node.sline();
                 exit(1);
             }
             
-            if(*info->p == ';') {
-                info->p++;
+            parse_sharp();
+            
+            if(node.terminated()) {
                 skip_spaces_and_lf();
             }
+            
+            bool omit_semicolon = true;
+            if(node.terminated()) {
+                omit_semicolon = false;
+            }
+            while(*info->p == ';') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                omit_semicolon = false;
+            }
+            parse_sharp();
+            result.mOmitSemicolon = omit_semicolon;
+            
+            result.mNodes.push_back(node);
         }
-        
-        result.mNodes.push_back(node);
     }
     
     if(return_self_at_last) {

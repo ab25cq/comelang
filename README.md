@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 5.1.2
+version 5.1.3
 
 ``` C
 #include <comelang.h>
@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.1.3 Improved pattern matching.
 5.1.2 Pattern matching else block has been added.
 5.1.1 Pattern matching bug fixed.
 5.1.0 to_string automatically defined. Object Initializer.
@@ -3604,6 +3605,32 @@ int main(int argc, char** argv)
     }
     
     puts(y);
+    
+    return 0;
+}
+```
+
+```C
+#include <comelang.h>
+
+char*% fun(int a)
+{
+    if(a == 0) {
+        return null;
+    }
+    else {
+        return xsprintf("%d", a);
+    }
+}
+
+int main(int argc, char** argv)
+{
+    string a = fun(1).case {
+        (it == null) s"null"
+        else it + "X"
+    }
+    
+    puts(a);
     
     return 0;
 }
