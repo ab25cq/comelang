@@ -3085,3 +3085,160 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     return (cloner, real_fun_name);
 }
 
+sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* info)
+{
+    string last_code = info.module.mLastCode;
+    info.module.mLastCode = null;
+    string last_code2 = info.module.mLastCode2;
+    info.module.mLastCode2 = null;
+    string last_code3 = info.module.mLastCode3;
+    info.module.mLastCode3 = null;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
+    
+    sClass* current_stack_frame_struct = info->current_stack_frame_struct;
+    info->current_stack_frame_struct = null;
+    sFun* cloner = null;
+    
+    string real_fun_name = create_method_name(type, false@no_pointer_name, fun_name, info);
+    
+    sType*% type2 = solve_generics(type, type, info);
+    
+    type = borrow type2;
+    
+    sClass* klass = type->mClass;
+    
+    if(type->mPointerNum > 0 && !klass->mNumber) {
+        var source = new buffer();
+        
+        source.append_str("{\n");
+        source.append_str("var result = new buffer();\n");
+        
+        source.append_str(xsprintf("result.append_str(\"%s {\");\n", klass->mName));
+        
+        int i = 0;
+        klass = info.classes[klass->mName]??;
+        foreach(it, klass->mFields) {
+            var name, field_type = it;
+            
+            if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
+            {
+                err_msg(info, "Define recusively the cloner. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
+                exit(2);
+            }
+            
+            if(i == klass->mFields.length() -1) {
+                char source2[1024];
+                snprintf(source2, 1024, "result.append_str(self.%s.to_string());\n", name);
+                
+                source.append_str(source2);
+            }
+            else {
+                char source2[1024];
+                snprintf(source2, 1024, "result.append_str(self.%s.to_string());\n", name);
+                
+                source.append_str(source2);
+                
+                snprintf(source2, 1024, "result.append_str(\",\");\n");
+                
+                source.append_str(source2);
+            }
+            
+            i++;
+        }
+        source.append_str("result.append_str(\"}\");\n");
+        
+        source.append_str(xsprintf("return result.to_string();\n"));
+        source.append_char('}');
+        
+        char* p = info.p;
+        int sline = info.sline;
+        string sname = info.sname;
+        buffer*% source3 = info.source;
+        char* head = info.head;
+        
+        info.source = source;
+        info.p = info.source.buf;
+        info.head = info.source.buf;
+        
+        info.sname = string(real_fun_name);
+        info.sline = 1;
+        
+        sBlock*% block = parse_block();
+        
+        var result_type = new sType("char*");
+        result_type->mHeap = true;
+        var name = clone real_fun_name;
+        var self_type = clone type;
+        self_type->mHeap = false;
+        var param_types = [self_type];
+        var param_names = [string("self")];
+        var param_default_parametors = new list<string>();
+        param_default_parametors.push_back(null);
+        
+        buffer*% header_buf = new buffer();
+        
+        header_buf.append_str(make_come_type_name_string(result_type));
+        header_buf.append_str(" ");
+        header_buf.append_str(real_fun_name);
+        header_buf.append_str("(");
+        
+        for(int i=0; i<param_types.length(); i++) {
+            sType* param_type = param_types[i];
+            char* param_name = param_names[i];
+            
+            header_buf.append_str(make_come_type_name_string(param_type));
+            header_buf.append_str(" ");
+            header_buf.append_str(param_name);
+            
+            if(i != param_types.length() -1) {
+                header_buf.append_str(",");
+            }
+        }
+        header_buf.append_str(")");
+        
+        result_type->mStatic = false;
+        
+        var fun = new sFun(name, result_type, param_types, param_names
+                        , param_default_parametors
+                        , false@external, false@var_args, block
+                        , true@static_
+                        , header_buf.to_string()
+                        , string("")
+                        , info);
+                        
+        fun->mCloner = true;
+        
+        var fun2 = info.funcs[string(fun_name)]??;
+        if(fun2 == null || fun2.mExternal) {
+            info.funcs.insert(clone name, fun);
+        }
+        
+        cloner = fun;
+        
+        sNode*% node = new sFunNode(fun, info) implements sNode;
+        
+        if(!node_compile(node)) {
+            err_msg(info, "compiling error(Y)");
+            exit(2);
+        }
+        
+        info.sname = sname;
+        info.sline = sline;
+        
+        info.source = source3;
+        info.p = p;
+        info.head = head;
+        info.sline = sline;
+    }
+    
+    info->current_stack_frame_struct = current_stack_frame_struct;
+    
+    info.module.mLastCode = last_code;
+    info.module.mLastCode2 = last_code2;
+    info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
+    
+    return (cloner, real_fun_name);
+}
+

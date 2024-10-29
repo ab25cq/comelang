@@ -547,6 +547,13 @@ class sMethodCallNode extends sNodeBase
                                 }
                             }
                             
+                            if(fun == null && fun_name === "to_string") {
+                                var fun2, real_fun_name = create_to_string_automatically(obj_type, fun_name, info);
+                                
+                                fun = fun2;
+                                generics_fun_name = real_fun_name;
+                            }
+                            
                             if(fun == null) {
                                 err_msg(info, "function not found(%s) at method(%s)(Z2n)\n", generics_fun_name, info.come_fun.mName);
                                 return true;

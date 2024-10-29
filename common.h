@@ -640,6 +640,7 @@ sNode*% get_hex_number(bool minus, sInfo* info);
 sNode*% create_int_node(int value, sInfo* info);
 list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false);
 sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* info);
+sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* info);

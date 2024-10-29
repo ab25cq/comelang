@@ -332,6 +332,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.1.0 to_string automatically defined. Object Initializer.
 5.0.9 The result of if bug fixed.
 5.0.8 Exception bug is fixed maybe. Smash the damn bug to the sky.
 5.0.7 if statment has the result type. pattern matching is coming. The bug fixed.
@@ -592,11 +593,11 @@ string to_string(list<T>* self)
     puts(li.to_string());
 ```
 
-[ABC,DEF,GHQ] will be output. to_string is executed on all elements. The type defined in comelang has to_string() implemented. For the original class, you must implement to_string in order to execute this method.
+[ABC,DEF,GHQ] will be output. to_string is executed on all elements. 
 
 li is list<char*>*%, which stores string pointers. The stored element will not be freed because it is not char*%.
 
-[ABC,DEF,GHQ]が出力されます。要素の全てにto_stringが実行されます。comelangで定義されている型はto_string()が実装されています。オリジナルのクラスの場合、このメソッドを実行するためにはto_stringを実装する必要があります。
+[ABC,DEF,GHQ]が出力されます。要素の全てにto_stringが実行されます。
 
 liはlist<char*>*%で文字列のポインタが格納されています。char*%ではないため格納された要素はfreeされません。
 
@@ -3602,6 +3603,27 @@ int main(int argc, char** argv)
     }
     
     puts(y);
+    
+    return 0;
+}
+```
+
+# Object initializer
+
+```C
+#include <comelang.h>
+
+struct sData
+{
+    int a;
+    int b;
+};
+
+int main(int argc, char** argv)
+{
+    var data = new sData { a:123, b:234 };
+    
+    data.to_string().puts(); // sData {123,234}
     
     return 0;
 }

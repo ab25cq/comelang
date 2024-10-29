@@ -20,11 +20,12 @@ class sNothingNode extends sNodeBase
 
 class sNewNode extends sNodeBase
 {
-    new(sType*% type, sInfo* info)
+    new(sType*% type, list<tuple2<string, sNode*%>*%>*% initializer, sInfo* info)
     {
         self.super();
         
         sType*% self.type = clone type;
+        list<tuple2<string, sNode*%>*%>*% self.initializer = initializer;
     }
     
     string kind()
@@ -35,6 +36,7 @@ class sNewNode extends sNodeBase
     bool compile(sInfo* info)
     {
         sType* type = self.type;
+        list<tuple2<string, sNode*%>*%>*% initializer = self.initializer;
         
         CVALUE*% come_value = new CVALUE();
         
@@ -66,24 +68,86 @@ class sNewNode extends sNodeBase
         
         string type_name2 = make_come_type_name_string(type2);
         
-        come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name2);
-        
-        type2->mHeap = true;
-        type2->mPointerNum++;
-        
-        if(type2->mNoSolvedGenericsType.v1) {
-            type2->mNoSolvedGenericsType.v1->mPointerNum++;
-            type2->mNoSolvedGenericsType.v1->mHeap = true;
+        if(initializer) {
+            static int var_num = 1;
+            var_num++;
+            
+            string var_name = xsprintf("__new_obj__%d", var_num);
+            
+            sType*% type3 = clone type2;
+            type3->mPointerNum++;
+            
+            add_come_code_at_function_head(info, "%s;\n", make_define_var(type3, var_name));
+            
+            var buf = new buffer();
+            
+            buf.append_str("(");
+            
+            string obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name2);
+            
+            buf.append_str(obj);
+            buf.append_str(",");
+            
+            int i = 0;
+            foreach(it, initializer) {
+                var name, exp = it;
+                
+                if(!node_compile(exp)) {
+                    return false;
+                }
+                
+                CVALUE*% come_value2 = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                buf.append_str(xsprintf("%s->%s = %s", var_name, name, come_value2.c_value));
+                
+                buf.append_str(",");
+                
+                i++;
+            }
+            
+            buf.append_str(var_name);
+            buf.append_str(")");
+            
+            come_value.c_value = buf.to_string();
+            
+            type2->mHeap = true;
+            type2->mPointerNum++;
+            
+            if(type2->mNoSolvedGenericsType.v1) {
+                type2->mNoSolvedGenericsType.v1->mPointerNum++;
+                type2->mNoSolvedGenericsType.v1->mHeap = true;
+            }
+            
+            come_value.type = clone type2;
+            come_value.var = null;
+            
+            append_object_to_right_values2(come_value, type2 ,info);
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
         }
-        
-        come_value.type = clone type2;
-        come_value.var = null;
-        
-        append_object_to_right_values2(come_value, type2 ,info);
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
+        else {
+            come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name2);
+            
+            type2->mHeap = true;
+            type2->mPointerNum++;
+            
+            if(type2->mNoSolvedGenericsType.v1) {
+                type2->mNoSolvedGenericsType.v1->mPointerNum++;
+                type2->mNoSolvedGenericsType.v1->mHeap = true;
+            }
+            
+            come_value.type = clone type2;
+            come_value.var = null;
+            
+            append_object_to_right_values2(come_value, type2 ,info);
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+        }
         
         return true;
     }
@@ -1256,14 +1320,47 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 return new sImplementsNode(node, inf_type, info) implements sNode;
             }
             else {
-                sNode*% obj = new sNewNode(type, info) implements sNode;
+                sNode*% obj = new sNewNode(type, null, info) implements sNode;
                 string fun_name = string("initialize");
                 
                 return parse_method_call(clone obj, fun_name, info);
             }
         }
+        else if(*info->p == '{') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            list<tuple2<string, sNode*%>*%>*% initializer = new list<tuple2<string, sNode*%>*%>();
+            
+            while(true) {
+                string word = parse_word();
+                expected_next_character(':');
+                
+                bool no_comma = info->no_comma;
+                info->no_comma = true;
+                sNode*% exp = expression();
+                info->no_comma = no_comma;
+                
+                initializer.add((word, exp));
+                
+                if(*info->p == ',') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                }
+                else if(*info->p == '}') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
+                }
+                else {
+                    err_msg(info, "invalid character %c", *info->p);
+                    return false;
+                }
+            }
+            return new sNewNode(type, initializer, info) implements sNode;
+        }
         else {
-            return new sNewNode(type, info) implements sNode;
+            return new sNewNode(type, null, info) implements sNode;
         }
     }
     else if(buf === "true") {

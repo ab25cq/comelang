@@ -1,22 +1,16 @@
 #include <comelang.h>
-#include <comelang-str.h>
 
-exception int fun()
+struct sData
 {
-    come_regex*% reg = /./.rescue { };
-    
-    if(reg) {
-        if(s"AAA".match(reg)) {
-            puts("OK");
-        }
-    }
-    
-    return 0;
-}
+    int a;
+    int b;
+};
 
 int main(int argc, char** argv)
 {
-    fun();
+    sData*% data = new sData { a:123, b:234 };
+    
+    data.to_string().puts();
     
     return 0;
 }
