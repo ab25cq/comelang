@@ -1,12 +1,27 @@
 #include <comelang.h>
 
+char*% fun(int a)
+{
+    if(a == 0) {
+        return null;
+    }
+    else {
+        return xsprintf("%d", a);
+    }
+}
+
 int main(int argc, char** argv)
 {
-    puts(strcmp("AAA", "AAA").case {
-        (it == 0) { string a = s"AAA"; s"Equal" }
-        (it > 0) { string b = s"BBB"; s"Greater" }
-        (it < 0) { string c = s"CCC"; s"Lesser" }
-    });
+    string a = fun(1).case {
+        (it == null) {
+            null
+        }
+        else {
+            it + "X"
+        }
+    }
+    
+    puts(a);
     
     return 0;
 }

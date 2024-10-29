@@ -247,12 +247,6 @@ class sMatchNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-/*
-        sVarTable* lv_table = info->lv_table;
-        sVarTable*% for_var_table = new sVarTable(global:false, parent:lv_table);
-        info->lv_table = for_var_table;
-*/
-        
         sNode*% it_node = self.it_node;
         sNode*% match_node = self.match_node;
         
@@ -268,6 +262,57 @@ class sMatchNode extends sNodeBase
             return false;
         }
         
+        if(info->if_result_var_name) {
+            sVar* var_ = get_variable_from_table(info->lv_table, info->if_result_var_name);
+        
+            assert(var_ != null);
+        
+            if(info->match_it_var == null) {
+                info->match_it_var = new list<sVar*%>();
+            }
+            info->match_it_var.add(clone var_);
+        }
+        
+        return true;
+    }
+};
+
+class sIfMethodNode extends sNodeBase
+{
+    new(sNode*% it_node, sNode*% match_node, sInfo* info)
+    {
+        self.super();
+    
+        sNode*% self.it_node = clone it_node;
+        sNode*% self.match_node = clone match_node;
+    }
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    string kind()
+    {
+        return string("sMatch");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% it_node = self.it_node;
+        sNode*% match_node = self.match_node;
+        
+        if(!node_compile(it_node, info)) {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        add_come_code(info, "%s;\n", come_value.c_value);
+        dec_stack_ptr(1, info);
+        
+        if(!node_compile(match_node, info)) {
+            return false;
+        }
         
         if(info->if_result_var_name) {
             sVar* var_ = get_variable_from_table(info->lv_table, info->if_result_var_name);
@@ -278,17 +323,6 @@ class sMatchNode extends sNodeBase
                 info->match_it_var = new list<sVar*%>();
             }
             info->match_it_var.add(clone var_);
-            
-//            increment_ref_count_object(var_->mType, var_->mCValueName, info);
-        
-  //          free_objects(for_var_table, var_, info);
-            
-//            info->lv_table = lv_table;
-        }
-        else {
-//            free_objects(for_var_table, null, info);
-            
-//            info->lv_table = lv_table;
         }
         
         return true;
@@ -547,6 +581,8 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
     string sname = clone info->sname;
     int sline = info->sline;
     
+    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
+    
     parse_sharp();
 
     sBlock*% if_block = parse_block();
@@ -613,85 +649,7 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
         }
     };
 
-    sNode*% result = new sIfNode(expression_node, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
-    
-    return result;
-}
-
-sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
-{
-    string sname = clone info->sname;
-    int sline = info->sline;
-    
-    parse_sharp();
-    
-    sNode*% expression_node2 = craete_logical_denial(expression_node, info);
-
-    sBlock*% if_block = parse_block();
-    
-    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
-
-    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
-
-    int elif_num = 0;
-
-    sBlock*% else_block = null;
-
-    while(1) {
-        char* saved_p = info->p;
-        int saved_sline = info->sline;
-        parse_sharp();
-        
-        if(*info->p == ';') {
-            info->p++;
-            skip_spaces_and_lf();
-        }
-
-        /// else ///
-        if(!xisalpha(*info->p)) {
-            break;
-        }
-        parse_sharp();
-        string buf = parse_word();
-        parse_sharp();
-
-        if(buf === "else") {
-            if(parsecmp("if", info)) {
-                parse_sharp();
-                info->p+=strlen("if");
-                skip_spaces_and_lf();
-                parse_sharp();
-
-                expected_next_character('(');
-
-                /// expression ///
-                sNode*% expression_node = expression();
-                
-                elif_expression_nodes.push_back(expression_node);
-
-                expected_next_character(')');
-                parse_sharp();
-
-                
-                sBlock*% elif_block = parse_block();
-                
-                elif_blocks.push_back(elif_block);
-
-                elif_num++;
-            }
-            else {
-                else_block = parse_block();
-                break;
-            }
-        }
-        else {
-            info->p = saved_p;
-            info->sline = saved_sline;
-            break;
-        }
-    };
-
-    sNode*% result = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
+    sNode*% result = new sIfMethodNode(it_node, new sIfNode(expression_node, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
     
     return result;
 }
@@ -981,21 +939,29 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
     sBlock*% else_block = null;
     
     while(true) {
-        expected_next_character('(');
-        
-        sNode*% conditional_value = expression();
-        
-        elif_expression_nodes.add(conditional_value);
-        
-        expected_next_character(')');
-        
-        parse_sharp();
-        
-        sBlock*% elif_block = parse_block();
-        
-        elif_blocks.add(elif_block);
-        
-        elif_num++;
+        if(strncmp(info->p, "else", strlen("else")) == 0) {
+            info->p += strlen("else");
+            skip_spaces_and_lf();
+            
+            else_block = parse_block();
+        }
+        else {
+            expected_next_character('(');
+            
+            sNode*% conditional_value = expression();
+            
+            elif_expression_nodes.add(conditional_value);
+            
+            expected_next_character(')');
+            
+            parse_sharp();
+            
+            sBlock*% elif_block = parse_block();
+            
+            elif_blocks.add(elif_block);
+            
+            elif_num++;
+        }
         
         if(*info->p == '}') {
             info->p++;

@@ -1572,9 +1572,6 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 if(field_name === "if") {
                     node = parse_if_method_call(clone node, info);
                 }
-                else if(field_name === "elif") {
-                    node = parse_elif_method_call(clone node, info);
-                }
                 else if(field_name === "case") {
                     node = parse_match(clone node, info);
                 }
