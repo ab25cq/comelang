@@ -649,17 +649,14 @@ void input(sInfo* info)
 
         case ':': {
             endwin();
-            system("shsh");
+            system("shsh -o");
             read_dir(info);
-            /*
             puts("HIT ANY KEY");
             initscr();
             keypad(stdscr, true);
             raw();
             noecho();
             getchar();
-            */
-
             }
             break;
 
