@@ -208,10 +208,6 @@ int main()
     
     puts(1);             // 1
     
-    int fd2 = open("SEX", 0) or die("NO SEX"); // system call error handling
-    
-    FILE* f2 = fopen("SEX", 0) and die("NO SEX"); // returned null function errror handling
-    
     sData*% data = new sData(111, 222);
     
     data.show();

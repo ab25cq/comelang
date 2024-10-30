@@ -373,7 +373,7 @@ class sOrStatmentNode extends sNodeBase
         int num_or_conditional_stack = num_or_conditional;
         add_last_code_to_source_with_comma(info);
         free_right_value_objects(info, comma:true);
-        add_come_code(info, "_or_conditional%d != 0) {\n", num_or_conditional_stack);
+        add_come_code(info, "_or_conditional%d == 0) {\n", num_or_conditional_stack);
     
         transpile_block(if_block, null, null, info);
         
@@ -429,7 +429,7 @@ class sAndStatmentNode extends sNodeBase
         int num_and_conditional_stack = num_and_conditional;
         add_last_code_to_source_with_comma(info);
         free_right_value_objects(info, comma:true);
-        add_come_code(info, "_and_conditional%d == 0) {\n", num_and_conditional_stack);
+        add_come_code(info, "_and_conditional%d != 0) {\n", num_and_conditional_stack);
     
         transpile_block(if_block, null, null, info);
         
