@@ -1528,8 +1528,6 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 skip_spaces_and_lf();
             }
             
-            node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
-            
             parse_sharp();
             
             string field_name = parse_word();
@@ -1578,6 +1576,9 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 else if(field_name === "case") {
                     node = parse_match(clone node, info);
                 }
+                else if(field_name === "less") {
+                    node = parse_less_method_call(clone node, info);
+                }
                 else if(field_name === "rescue") {
                     node = parse_rescue_method_call(clone node, info);
                 }
@@ -1588,10 +1589,12 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                     node = create_exception_value(clone node, info);
                 }
                 else {
+                    node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
                     node = parse_method_call(clone node, field_name, info);
                 }
             }
             else {
+                node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
                 node = new sLoadFieldNode(node, field_name, info) implements sNode;
             }
         }

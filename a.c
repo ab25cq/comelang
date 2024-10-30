@@ -1,22 +1,18 @@
 #include <comelang.h>
 
-char*% fun(int a)
+char* fun(char* a)
 {
-    if(a == 0) {
-        return null;
-    }
-    else {
-        return xsprintf("%d", a);
-    }
+    return a;
 }
 
 int main(int argc, char** argv)
 {
-    string a = fun(1).elif {
-        s"null"
+    char* a = fun(null).if {
+        puts("ERR");
+        it
     }
     
-    puts(a);
+    printf("a %p\n", a);
     
     return 0;
 }

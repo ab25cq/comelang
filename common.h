@@ -714,6 +714,7 @@ sNode*% create_exception_throw(sNode*% expression_node, sInfo* info);
 sNode*% create_exception_value(sNode*% expression_node, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;
 sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info);
+sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_or_statment(sNode*% expression_node, sInfo* info);
 sNode*% parse_and_statment(sNode*% expression_node, sInfo* info);
@@ -742,6 +743,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 /// 13op.c
 /////////////////////////////////////////////////////////////////////
+sNode*% create_less(sNode*% node, sNode*% right, sInfo* info);
 sNode*% create_null_node(sInfo* info=info);
 sNode*% conditional_node(sNode*% value1, sNode*% value2, sNode*% value3, sInfo* info);
 bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVALUE* right_value, bool break_guard, sInfo* info);

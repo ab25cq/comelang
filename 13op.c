@@ -2196,3 +2196,8 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     
     return inherit(buf, head,head_sline, info);
 }
+
+sNode*% create_less(sNode*% node, sNode*% right, sInfo* info)
+{
+    return new sLtNode(node, right, false@quote, info) implements sNode;
+}
