@@ -252,13 +252,13 @@ int main()
 
 12. Has memory leak detection function.
 
-13. Array range check. 
+13. class and inheritance system supported.
 
-14. class and inheritance system supported.
+14. Type inferrence of template.
 
-15. Type inferrence of template.
+15. Exception 
 
-16. Exception 
+16. Pattern matching.
 
 17. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
 
@@ -286,13 +286,13 @@ int main()
 
 12. メモリリーク検出機能があります。
 
-13. 配列の範囲外アクセスをチェックします。
+13. クラスと継承システムをサポートします。
 
-14. クラスと継承システムをサポートします。
+14. テンプレートの型推論があります。
 
-15. テンプレートの型推論があります。
+15. 例外処理。
 
-16. 例外処理。
+16. Pattern matching.
 
 17. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
 
@@ -2993,7 +2993,7 @@ make: *** [Makefile:90: debug] Error 2
 system: No error information
 ```
 
-# Method Generics
+# Template
 
 ```C
 template<R> R fun(R x, R y)
@@ -3602,8 +3602,8 @@ int main(int argc, char** argv)
     }
     puts(x);
     string y = stringstrcmp("A", "A").case {
-        (it == 0) { puts("Equal"); s"BBB" }
-        else { puts("Not Equal"); s"AAA" }
+        (it == 0) s"Equal" }
+        else s"Not Equal"
     }
     
     puts(y);
@@ -3630,7 +3630,7 @@ int main(int argc, char** argv)
     string a = fun(1).case {
         (it == null) s"null"
         else it + "X"
-j   }
+    }
     
     puts(a);
     
@@ -3734,7 +3734,7 @@ int main(int argc, char** argv)
 {
     var data = new sData { a:123, b:234 };
     
-    data.to_string().puts(); // sData {123,234}
+    data.to_string().puts(); // sData {a:123,b:234}
     
     return 0;
 }

@@ -1,18 +1,15 @@
 #include <comelang.h>
 
-char* fun(char* a)
+exception char* fun(char* a)
 {
-    return a;
+    return none(s"err");
 }
 
 int main(int argc, char** argv)
 {
-    char* a = fun(null).if {
-        puts("ERR");
-        it
-    }
-    
-    printf("a %p\n", a);
+    puts(fun("AAA").rescue {
+        return 1;
+    });
     
     return 0;
 }
