@@ -567,6 +567,7 @@ class sMethodCallNode extends sNodeBase
                 return true;
             }
             
+            /*
             {
                 sType*% result_type = clone fun->mResultType;
                 result_type->mStatic = false;
@@ -598,6 +599,7 @@ class sMethodCallNode extends sNodeBase
                     return true;
                 }
             }
+            */
             
             if(fun.mParamTypes.length() == 0) {
                 err_msg(info, "Method require function parametor");

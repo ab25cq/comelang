@@ -3,6 +3,8 @@
 
 class sModuleNode extends sNodeBase {
     new(string name, sClassModule*% module, sInfo* info) {
+        self.super();
+        
         string self.name = string(name);
         sClassModule*% self.module = clone module;
     }
@@ -23,6 +25,8 @@ class sModuleNode extends sNodeBase {
 
 class sHeaderNode extends sNodeBase {
     new(string contents, sInfo* info) {
+        self.super();
+        
         string self.contents = clone contents;
     }
 

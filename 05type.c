@@ -12,7 +12,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         return (type && type->mTypedef) || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || (klass && klass->mNumber) || (klass && klass->mFloat) || buf === "void" || buf === "_Nullable";
     }
     else {
-        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable" || buf === "exception";
+        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable";
     }
 }
 
@@ -1444,11 +1444,13 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             
             type_name = parse_word();
         }
+/*
         else if(type_name === "exception") {
             exception_ = true;
             
             type_name = parse_word();
         }
+*/
         else if(type_name === "come_mem_core") {
             come_mem_core_ = true;
             
@@ -2500,6 +2502,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
     
     parse_sharp();
     
+/*
     if(type->mException) {
         sType*% type2 = new sType("tuple2");
         type2->mGenericsTypes[0] = new sType("generics_type0");
@@ -2519,6 +2522,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         
         return (type4, var_name, true);
     }
+*/
     
     return (type, var_name, true);
 }
