@@ -158,6 +158,13 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
 {
     var result = new sBlock(info);
     
+    if(info.sline_stack == null) {
+        info.sline_stack = new list<int>();
+    }
+    info.sline_stack.add(info.sline);
+    int sline_top = info.sline_top;
+    info.sline_top = info.sline;
+    
     int block_level = info->block_level;
     if(!no_block_level) {
         info->block_level++;
@@ -180,13 +187,16 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
             int sline = info.sline;
             char* sname = info.sname;
             
+            if(*info->p == '{') {
+                info->sline_top = sline;
+            }
             
 //            add_come_code(info, xsprintf("# %d \"%s\"\n", info->sline, info->sname));
             
             sNode*% node = statment();
             
-info->sname = node.sname();
-info->sline = node.sline();
+            info->sname = node.sname();
+            info->sline = node.sline();
             
             
             if(node == null) {
@@ -320,6 +330,8 @@ info->sline = node.sline();
     }
     
     info->block_level = block_level;
+    
+    info.sline_stack.pop_front();
     
     return result;
 }
@@ -2161,7 +2173,7 @@ sNode*% parse_function(sInfo* info)
         }
     }
     else {
-        err_msg(info, "invalid character(%c)(2)\n", *info->p);
+        err_msg(info, "invalid character(2)(%c)\n", *info->p);
         exit(2);
     }
     

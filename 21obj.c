@@ -1352,7 +1352,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                     initializer.add((word, exp));
                 }
                 else {
-                    err_msg(info, "invalid character %c\n", *info->p);
+                    err_msg(info, "invalid character(21) %c\n", *info->p);
                     return false;
                 }
                 
@@ -1366,7 +1366,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                     break;
                 }
                 else {
-                    err_msg(info, "invalid character %c", *info->p);
+                    err_msg(info, "invalid character(30) %c", *info->p);
                     return false;
                 }
             }

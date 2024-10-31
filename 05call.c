@@ -1161,6 +1161,11 @@ class sLambdaCall extends sNodeBase
         
         sType* lambda_type = come_value.type;
         
+        if(lambda_type->mResultType == null) {
+            err_msg(info, "invalid lambda type");
+            return false;
+        }
+        
         sType*% result_type = clone lambda_type->mResultType.v1;
         result_type->mStatic = false;
         
@@ -1421,7 +1426,7 @@ sNode*% expression_node(sInfo* info=info) version 1
     parse_sharp();
     
     info->no_output_err = false;
-    err_msg(info, "invalid character(%c)(1)\n", *info->p);
+    err_msg(info, "invalid character(1)(%d)(%c)\n", *info->p, *info->p);
     stackframe();
     exit(3);
     return (sNode*%)null;

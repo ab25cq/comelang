@@ -398,6 +398,9 @@ struct sInfo
     string if_result_var_name;
     
     list<sVar*%>*% match_it_var;
+    
+    list<int>*% sline_stack;
+    int sline_top;
 };
 
 module sCurrentNodeModule

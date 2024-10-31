@@ -1,15 +1,29 @@
-#include <comelang.h>
+//#include <comelang.h>
 
-int fun(int x, int y)
-{
-    return x + y;
-}
+#include <stdio.h>
 
 int main(int argc, char** argv)
 {
-    int (*l)(int,int) = fun;
+    if(true) {
+        if(true) {
+        printf("%d\n", 1);
+        }
+        else {
+            puts("UHO");
+            
+            if(true) {
+            }
+            else {
+                if(true) {
+                }
+                else {
+                puts("AAAA");
+                }
+            }
+        }
+    }
     
-    printf("%d\n", l(1,2));
+    puts("AAAA");
     
     return 0;
 }

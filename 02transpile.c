@@ -93,12 +93,20 @@ void err_msg(sInfo* info, char* msg, ...)
         if(last_lf) {
             int col = info.p - last_lf;
         
-            printf("%s %d %d: %s\n", info.sname, info.sline, col, msg2);
+            printf("%s %d(top %d) %d: %s\n", info.sname, info.sline, info.sline_top, col, msg2);
         }
         else {
             int col = info.p - info.head;
         
-            printf("%s %d %d: %s\n", info.sname, info.sline, col, msg2);
+            printf("%s %d(top %d) %d: %s\n", info.sname, info.sline, info.sline_top, col, msg2);
+        }
+        
+        if(info.sline_stack && info.sline_stack.length() > 0) {
+            printf("sline_stack ");
+            foreach(it, info.sline_stack) {
+                printf("%d ", it);
+            }
+            puts("");
         }
         
         info.err_num++;

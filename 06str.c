@@ -2180,7 +2180,7 @@ sNode*% expression_node(sInfo* info) version 96
                         break;
                     }
                     else {
-                        err_msg(info, "invalid character(%c)(3)", *info->p);
+                        err_msg(info, "invalid character(3)(%c)", *info->p);
                         exit(2);
                     }
                 }
@@ -2225,13 +2225,13 @@ sNode*% expression_node(sInfo* info) version 96
                     break;
                 }
                 else {
-                    err_msg(info, "invalid character(%c)(4)", *info->p);
+                    err_msg(info, "invalid character(4)(%c)", *info->p);
                     exit(2);
                 }
             }
         }
         else {
-            err_msg(info, "invalid character(%c)(5)", *info->p);
+            err_msg(info, "invalid character(5)(%c)", *info->p);
             exit(2);
         }
         
@@ -2274,7 +2274,7 @@ sNode*% parse_tuple(sInfo* info)
             break;
         }
         else {
-            err_msg(info, "invalid character(%c) in tuple expression", *info->p);
+            err_msg(info, "invalid character in tuple expression (%c)", *info->p);
             exit(2);
         }
     }
