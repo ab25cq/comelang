@@ -10,7 +10,7 @@ int socket_fd::write(socket_fd self, string str)
     return write(self, str, str.length());
 }
 
-exception int server_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_, bool* reconnection))
+int server_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_, bool* reconnection))
 {
     socket_fd sock = socket(socket_family, socket_type, protocol);
     if(sock <0) die("socket failed");
@@ -20,7 +20,7 @@ exception int server_socket(int port=8080, int socket_family=AF_INET, int socket
         int opt = 1;
         if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))) {
             close(sock);
-            return none(s"setsockopt");
+            die(s"setsockopt");
         }
     }
 #endif
@@ -34,12 +34,12 @@ exception int server_socket(int port=8080, int socket_family=AF_INET, int socket
     
     if (bind(sock, (struct sockaddr*)&address, sizeof(address)) < 0) {
         close(sock);
-        return none(s"Unable to bind");
+        die(s"Unable to bind");
     }
 
     if (listen(sock, 3) < 0) {
         close(sock);
-        return none(s"Unable to listen");
+        die(s"Unable to listen");
     }
     
     socket_fd new_socket = accept(sock, (struct sockaddr *)&address, (socklen_t*)&addrlen);
@@ -66,13 +66,13 @@ exception int server_socket(int port=8080, int socket_family=AF_INET, int socket
     return 0;
 }
 
-exception int client_socket(int port=8080, char* address="127.0.0.1", void* parent, void (*block)(void* parent, socket_fd it, bool* break_))
+int client_socket(int port=8080, char* address="127.0.0.1", void* parent, void (*block)(void* parent, socket_fd it, bool* break_))
 {
     int sock = 0;
     struct sockaddr_in serv_addr;
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        return none(s"socket");
+        die(s"socket");
     }
 
     serv_addr.sin_family = AF_INET;
@@ -80,11 +80,11 @@ exception int client_socket(int port=8080, char* address="127.0.0.1", void* pare
 
     if (inet_pton(AF_INET, address, &serv_addr.sin_addr) <= 0) {
         close(sock);
-        return none(s"Invalid address/ Address not supported");
+        die(s"Invalid address/ Address not supported");
     }
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         close(sock);
-        return none(s"Connection Failed");
+        die(s"Connection Failed");
     }
     
     bool break_ = false;
@@ -103,13 +103,13 @@ exception int client_socket(int port=8080, char* address="127.0.0.1", void* pare
     return 0;
 }
 
-exception string client_socket2(int port, char* data, char* address="127.0.0.1")
+string client_socket2(int port, char* data, char* address="127.0.0.1")
 {
     int sock = 0;
     struct sockaddr_in serv_addr;
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        return none(s"Socket creation error");
+        die(s"Socket creation error");
     }
 
     serv_addr.sin_family = AF_INET;
@@ -117,16 +117,16 @@ exception string client_socket2(int port, char* data, char* address="127.0.0.1")
 
     if (inet_pton(AF_INET, address, &serv_addr.sin_addr) <= 0) {
         close(sock);
-        return none(s"Invalid address/ Address not supported");
+        die(s"Invalid address/ Address not supported");
     }
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         close(sock);
-        return none(s"Connection Failed");
+        die(s"Connection Failed");
     }
     
     if(write(sock, data, strlen(data)) < 0) {
         close(sock);
-        return none(s"Write Failed");
+        die(s"Write Failed");
     }
     
     buffer*% buf = new buffer();
@@ -137,7 +137,7 @@ exception string client_socket2(int port, char* data, char* address="127.0.0.1")
     
     if(size < 0) {
         close(sock);
-        return none(s"Read Failed");
+        die(s"Read Failed");
     }
     
     buf.append(buf2, size);
@@ -147,7 +147,7 @@ exception string client_socket2(int port, char* data, char* address="127.0.0.1")
     return buf.to_string();
 }
 
-exception int httpd_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_))
+int httpd_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_))
 {
     socket_fd sock = socket(socket_family, socket_type, protocol);
     if(sock < 0) die("socket failed");
@@ -157,7 +157,7 @@ exception int httpd_socket(int port=8080, int socket_family=AF_INET, int socket_
         int opt = 1;
         if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))) {
             close(sock);
-            return none(s"setsockpt failed");
+            die(s"setsockpt failed");
         }
     }
 #endif
@@ -171,12 +171,12 @@ exception int httpd_socket(int port=8080, int socket_family=AF_INET, int socket_
     
     if (bind(sock, (struct sockaddr*)&address, sizeof(address)) < 0) {
         close(sock);
-        return none(s"Unable to bind");
+        die(s"Unable to bind");
     }
 
     if (listen(sock, 3) < 0) {
         close(sock);
-        return none(s"Unable to listen");
+        die(s"Unable to listen");
     }
 
     while (1) {
@@ -207,7 +207,7 @@ fprintf(f, "OpenSSL Error: %s\n", err_str);  // エラーメッセージを標�
 */
 }
 
-exception int httpsd_socket(int port=443, bool reuse=false, void* parent, void (*block)(void* parent, SSL* it, bool* break_))
+int httpsd_socket(int port=443, bool reuse=false, void* parent, void (*block)(void* parent, SSL* it, bool* break_))
 {
     int sock;
     SSL_CTX *ctx;
@@ -222,22 +222,22 @@ exception int httpsd_socket(int port=443, bool reuse=false, void* parent, void (
     ctx = SSL_CTX_new(method);
     if (!ctx) {
         //ERR_print_errors_fp(stdout);
-        return none(s"Unable to create SSL context");
+        die(s"Unable to create SSL context");
     }
 
     if (SSL_CTX_use_certificate_file(ctx, "cert.pem", SSL_FILETYPE_PEM) <= 0) {
         //ERR_print_errors_fp(stdout);
-        return none(s"SSL_CTX_use_certificate_file");
+        die(s"SSL_CTX_use_certificate_file");
     }
 
     if (SSL_CTX_use_PrivateKey_file(ctx, "key.pem", SSL_FILETYPE_PEM) <= 0 ) {
         //ERR_print_errors_fp(stdout);
-        return none(s"SSL_CTX_use_PrivateKey_file");
+        die(s"SSL_CTX_use_PrivateKey_file");
     }
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        return none(s"Unable to create socket");
+        die(s"Unable to create socket");
     }
 
     struct sockaddr_in addr;
@@ -246,11 +246,11 @@ exception int httpsd_socket(int port=443, bool reuse=false, void* parent, void (
     addr.sin_addr.s_addr = INADDR_ANY;
 
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
-        return none(s"Unable to bind");
+        die(s"Unable to bind");
     }
 
     if (listen(sock, 1) < 0) {
-        return none(s"Unable to listen");
+        die(s"Unable to listen");
     }
 
     while (1) {
@@ -259,7 +259,7 @@ exception int httpsd_socket(int port=443, bool reuse=false, void* parent, void (
         int client = accept(sock, (struct sockaddr*)&addr, &len);
 
         if (client < 0) {
-            return none(s"Unable to accept");
+            die(s"Unable to accept");
         }
 
         SSL *ssl = SSL_new(ctx);
@@ -290,13 +290,13 @@ exception int httpsd_socket(int port=443, bool reuse=false, void* parent, void (
 
 MYSQL* gComeMySQL = NULL;
 
-exception int come_mysql_init()
+int come_mysql_init()
 {
     if(gComeMySQL == NULL) {
         gComeMySQL = mysql_init(NULL);
         
         if(gComeMySQL == NULL) {
-            return none(s"mysql_init failed");
+            die(s"mysql_init failed");
         }
     }
     
@@ -311,13 +311,13 @@ void come_mysql_final()
     }
 }
 
-exception int finish_with_error()
+int finish_with_error()
 {
     mysql_close(gComeMySQL);
-    return none(s"\{mysql_error(gComeMySQL)}");
+    die(s"\{mysql_error(gComeMySQL)}");
 }
 
-exception int create_user_if_not_exists(char* user, char* password, char* root_password="", char* host_name="localhost")
+int create_user_if_not_exists(char* user, char* password, char* root_password="", char* host_name="localhost")
 {
     come_mysql_init();
 
@@ -359,7 +359,7 @@ exception int create_user_if_not_exists(char* user, char* password, char* root_p
     return 0;
 }
 
-exception int create_database_if_not_exists(char* database_name, char* user_name, char* password, char* host_name="localhost")
+int create_database_if_not_exists(char* database_name, char* user_name, char* password, char* host_name="localhost")
 {
     come_mysql_init();
     
@@ -374,7 +374,7 @@ exception int create_database_if_not_exists(char* database_name, char* user_name
     return 0;
 }
 
-exception int xmysql_query(char* query, char* user="user", char* password="user", bool create_user=true, bool create_database=true, char* root_password="", char* database_name="testdb", char* host_name="localhost")
+int xmysql_query(char* query, char* user="user", char* password="user", bool create_user=true, bool create_database=true, char* root_password="", char* database_name="testdb", char* host_name="localhost")
 {
     if(create_user) {
         create_user_if_not_exists(user, password, root_password);
@@ -396,7 +396,7 @@ exception int xmysql_query(char* query, char* user="user", char* password="user"
     return 0;
 }
 
-exception list<list<string>*%>*% xmysql_query_and_fetch_row(char* query, char* user="user", char* password="user", bool create_user=false, bool create_database=false, char* root_password="", char* database_name="testdb", char* host_name="localhost")
+list<list<string>*%>*% xmysql_query_and_fetch_row(char* query, char* user="user", char* password="user", bool create_user=false, bool create_database=false, char* root_password="", char* database_name="testdb", char* host_name="localhost")
 {
     if(create_user) {
         create_user_if_not_exists(user, password, root_password);
