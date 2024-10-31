@@ -1,13 +1,15 @@
 #include <comelang.h>
 
+int fun(int x, int y)
+{
+    return x + y;
+}
+
 int main(int argc, char** argv)
 {
-    string a = s"AAAA".case {
-        (it === s"AAAA") { s"AAA" }
-        (it === s"BBBB") { s"BBB" }
-    }
+    int (*l)(int,int) = fun;
     
-    printf("%s\n", a);
+    printf("%d\n", l(1,2));
     
     return 0;
 }
