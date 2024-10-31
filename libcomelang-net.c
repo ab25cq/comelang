@@ -12,7 +12,8 @@ int socket_fd::write(socket_fd self, string str)
 
 exception int server_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_, bool* reconnection))
 {
-    socket_fd sock = socket(socket_family, socket_type, protocol) and die("socket failed");
+    socket_fd sock = socket(socket_family, socket_type, protocol);
+    if(sock <0) die("socket failed");
     
 #ifndef __ANDROID__
     if(reuse) {
@@ -148,7 +149,8 @@ exception string client_socket2(int port, char* data, char* address="127.0.0.1")
 
 exception int httpd_socket(int port=8080, int socket_family=AF_INET, int socket_type=SOCK_STREAM, int protocol=0, bool reuse=false, void* parent, void (*block)(void* parent, socket_fd it, bool* break_))
 {
-    socket_fd sock = socket(socket_family, socket_type, protocol) and die("socket failed");
+    socket_fd sock = socket(socket_family, socket_type, protocol);
+    if(sock < 0) die("socket failed");
     
 #ifndef __ANDROID__
     if(reuse) {
@@ -319,14 +321,19 @@ exception int create_user_if_not_exists(char* user, char* password, char* root_p
 {
     come_mysql_init();
 
-    mysql_real_connect(gComeMySQL, host_name, "root", root_password, NULL, 0, NULL, 0) and finish_with_error();
+    if(mysql_real_connect(gComeMySQL, host_name, "root", root_password, NULL, 0, NULL, 0) == NULL) {
+        finish_with_error();
+    }
     
     string check_user_query = 
         s"SELECT COUNT(*) FROM mysql.user WHERE user = '\{user}' AND host = '\{host_name}'";
 
-    mysql_query(gComeMySQL, check_user_query) or finish_with_error();
+    if(mysql_query(gComeMySQL, check_user_query) == NULL) {
+        finish_with_error();
+    }
 
-    MYSQL_RES *result = mysql_store_result(gComeMySQL) and finish_with_error();
+    MYSQL_RES *result = mysql_store_result(gComeMySQL);
+    if(result == null) finish_with_error();
 
     MYSQL_ROW row = mysql_fetch_row(result);
     int user_exists = atoi(row[0]);
@@ -334,11 +341,17 @@ exception int create_user_if_not_exists(char* user, char* password, char* root_p
     mysql_free_result(result);
 
     if (user_exists == 0) {
-        mysql_query(gComeMySQL, s"CREATE USER '\{user}'@'\{host_name}' IDENTIFIED BY '\{password}'") or finish_with_error();
+        if(mysql_query(gComeMySQL, s"CREATE USER '\{user}'@'\{host_name}' IDENTIFIED BY '\{password}'") == NULL) {
+            finish_with_error();
+        }
         
-        mysql_query(gComeMySQL, s"GRANT ALL PRIVILEGES ON *.* TO '\{user}'@'\{host_name}'") or finish_with_error();
+        if(mysql_query(gComeMySQL, s"GRANT ALL PRIVILEGES ON *.* TO '\{user}'@'\{host_name}'") == NULL) {
+            finish_with_error();
+        }
     
-        mysql_query(gComeMySQL, "FLUSH PRIVILEGES") or finish_with_error();
+        if(mysql_query(gComeMySQL, "FLUSH PRIVILEGES") == NULL) {
+            finish_with_error();
+        }
     }
 
     come_mysql_final();
@@ -350,11 +363,11 @@ exception int create_database_if_not_exists(char* database_name, char* user_name
 {
     come_mysql_init();
     
-    mysql_real_connect(gComeMySQL, host_name, user_name, password, NULL, 0, NULL, 0) and finish_with_error();
+    if(mysql_real_connect(gComeMySQL, host_name, user_name, password, NULL, 0, NULL, 0) == NULL) { finish_with_error(); }
 
     string create_db_query = s"CREATE DATABASE IF NOT EXISTS \{database_name}";
 
-    mysql_query(gComeMySQL, create_db_query) or finish_with_error();
+    if(mysql_query(gComeMySQL, create_db_query) == NULL) { finish_with_error(); }
 
     come_mysql_final();
     
@@ -372,11 +385,11 @@ exception int xmysql_query(char* query, char* user="user", char* password="user"
 
     come_mysql_init();
     
-    mysql_select_db(gComeMySQL, database_name) and finish_with_error();
+    if(mysql_select_db(gComeMySQL, database_name) == NULL) { finish_with_error(); }
     
-    mysql_real_connect(gComeMySQL, host_name, user, password, database_name, 0, NULL, 0) and finish_with_error();
+    if(mysql_real_connect(gComeMySQL, host_name, user, password, database_name, 0, NULL, 0) == NULL) { finish_with_error(); }
 
-    mysql_query(gComeMySQL, query) or finish_with_error();
+    if(mysql_query(gComeMySQL, query) == NULL) { finish_with_error(); }
     
     come_mysql_final();
     
@@ -394,13 +407,14 @@ exception list<list<string>*%>*% xmysql_query_and_fetch_row(char* query, char* u
 
     come_mysql_init();
     
-    mysql_select_db(gComeMySQL, database_name) and finish_with_error();
+    if(mysql_select_db(gComeMySQL, database_name) == NULL) { finish_with_error(); }
     
-    mysql_real_connect(gComeMySQL, host_name, user, password, database_name, 0, NULL, 0) and finish_with_error();
+    if(mysql_real_connect(gComeMySQL, host_name, user, password, database_name, 0, NULL, 0) == NULL) { finish_with_error(); }
 
-    mysql_query(gComeMySQL, query) or finish_with_error();
+    if(mysql_query(gComeMySQL, query) == NULL) { finish_with_error(); }
     
-    MYSQL_RES* res = mysql_store_result(gComeMySQL) and finish_with_error();
+    MYSQL_RES* res = mysql_store_result(gComeMySQL);
+    if(res) finish_with_error();
     
     int num_fields = mysql_num_fields(res);
 

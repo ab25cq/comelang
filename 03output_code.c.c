@@ -5861,7 +5861,6 @@ _Bool main_module_237;
 void* __right_value271 = (void*)0;
 char* output_file_name_241;
 struct __sFILE* f_242;
-_Bool _and_conditional1;
 _Bool __exception_result_var_b1;
 void* __right_value272 = (void*)0;
 struct map$2charphsFunph* o2_saved_243;
@@ -5891,8 +5890,9 @@ _Bool __result136__;
     main_module_237=map$2charphsFunphp_operator_load_element(info->funcs,((char*)(__right_value270=xsprintf("main"))))!=((void*)0);
     __right_value270 = come_decrement_ref_count2(__right_value270, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     output_file_name_241=(char*)come_increment_ref_count(xsprintf("%s.c",info->sname));
-    if((_and_conditional1=(f_242=fopen(output_file_name_241,"w"))),    _and_conditional1 == 0) {
-        (come_push_stackframe("03output_code.c", 908, 11),__exception_result_var_b1=die("fopen"), come_pop_stackframe(), __exception_result_var_b1);
+    f_242=fopen(output_file_name_241,"w");
+    if(    f_242==((void*)0)) {
+        (come_push_stackframe("03output_code.c", 909, 11),__exception_result_var_b1=die("fopen"), come_pop_stackframe(), __exception_result_var_b1);
     }
     fprintf(f_242,"// source head\n");
     fprintf(f_242,"%s\n",((char*)(__right_value272=buffer_to_string(info->module->mSourceHead))));

@@ -162,7 +162,7 @@ string, sType*%, bool parse_type(sInfo* info=info)
             
             array_num = n;
             
-            expected_next_charactor(')') and return (null, null, true);
+            expected_next_charactor(')') or return (null, null, true);
         }
         else if(strncmp(info->p, "AUTO_INCREMENT", strlen("AUTO_INCREMENT")) == 0) {
             info->p += strlen("AUTO_INCREMENT");
@@ -207,13 +207,13 @@ bool eval_create_table(sInfo* info)
     
     string table_name = parse_word();
     
-    expected_next_charactor('(') and return false;
+    expected_next_charactor('(') or return false;
     
     list<tuple2<string, sType*%>*%>*% types = new list<tuple2<string, sType*%>*%>();
     while(1) {
         var field_name, type, err = parse_type();
         
-        err or return false;
+        err and return false;
         
         types.add((field_name, type));
         
@@ -221,10 +221,10 @@ bool eval_create_table(sInfo* info)
             break;
         }
         
-        expected_next_charactor(',') and return false;
+        expected_next_charactor(',') or return false;
     }
     
-    expected_next_charactor(')') and return false;
+    expected_next_charactor(')') or return false;
     
     Database* current_db = gDatabases[info.current_db_name];
     
@@ -287,7 +287,7 @@ bool eval_insert_into(sInfo* info)
     
     skip_spaces();
     
-    expected_next_charactor('(') and return false;
+    expected_next_charactor('(') or return false;
     
     list<string>*% field_names = new list<string>();
     while(1) {
@@ -299,10 +299,10 @@ bool eval_insert_into(sInfo* info)
             break;
         }
         
-        expected_next_charactor(',') and return false;
+        expected_next_charactor(',') or return false;
     }
     
-    expected_next_charactor(')') and return false;
+    expected_next_charactor(')') or return false;
     
     if(strncmp(info->p, "VALUES", strlen("VALUES")) == 0) {
         info->p += strlen("VALUES");
@@ -310,7 +310,7 @@ bool eval_insert_into(sInfo* info)
     
     skip_spaces();
     
-    expected_next_charactor('(') and return false;
+    expected_next_charactor('(') or return false;
     
     list<string>*% values = new list<string>();
     while(1) {
@@ -322,10 +322,10 @@ bool eval_insert_into(sInfo* info)
             break;
         }
         
-        expected_next_charactor(',') and return false;
+        expected_next_charactor(',') or return false;
     }
     
-    expected_next_charactor(')') and return false;
+    expected_next_charactor(')') or return false;
     
     if(field_names.length() != values.length()) {
         return false;
@@ -732,7 +732,7 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
                 break;
             }
             
-            expected_next_charactor(',') and return false;
+            expected_next_charactor(',') or return false;
         }
     }
     

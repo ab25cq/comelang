@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv)
 {
-    0 or die("UHE");
+    -1 and die("UHE");
     
     return 0;
 }

@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 5.1.5
+version 5.1.6
 
 ``` C
 #include <comelang.h>
@@ -328,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+5.1.6 and or had been bug from long time ago.
 5.1.5 Improved pattern matching.
 5.1.4 Improved pattern matching.
 5.1.3 Improved pattern matching.
@@ -2611,42 +2612,7 @@ int main(int argc, char* argv)
 
 # System call errro handling like perl
 
-```
-#include <comelang.h>
-using c
-{
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <unistd.h>
-#include <fcntl.h>
-}
-
-int main(int argc, char** argv)
-{
-    int fd2 = open("SEX", 0) or die("NO SEX"); // system call error handling
-    int fd2 = open("LIVE", 0) or {
-        perror("NO LIVE");
-        return 1;
-    }
-    
-    puts("You got a your child");
-    
-    return 0;
-}
-
-```
-
-```
-#include <comelang.h>
-
-int main(int argc, char** argv)
-{
-    FILE* f2 = fopen("SEX", 0) and die("NO SEX"); // returned null function errror handling
-    
-    return 0;
-}
-```
+and or or is like perl
 
 # Here document
 

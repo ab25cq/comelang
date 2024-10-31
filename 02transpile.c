@@ -422,7 +422,8 @@ bool new_project(int argc, char** argv)
     string cflags = string(" -common-header -O2 ");
     string cflags_debug = string(" -common-header -gdwarf-4 -cg ");
     
-    system(s"mkdir \{project_name}") or die("mkdir error");
+    int r = system(s"mkdir \{project_name}");
+    if(r < 0 ) die("mkdir error");
     
     """
 \#########################################
@@ -526,20 +527,23 @@ bool run_project(int argc, char** argv)
     FILE* f = fopen("common.h", "r");
     
     if(f == NULL) {
-        system("make header") or die("system");
+        int r = system("make header");
+        if(r < 0) die("system");
     }
     else {
         fclose(f);
     }
     
-    system("make run") or die("system");
+    int r = system("make run") 
+    if(r < 0) die("system");
     
     return true;
 }
 
 bool make_header_project(int argc, char** argv)
 {
-    system("make header") or die("system");
+    int r = system("make header") 
+    if(r < 0) die("system");
     
     return true;
 }
@@ -549,12 +553,14 @@ bool compile_project(int argc, char** argv)
     FILE* f = fopen("common.h", "r");
     
     if(f == NULL) {
-        system("make header") or die("system");
+        int r = system("make header") 
+        if(r < 0) die("system");
     }
     else {
         fclose(f);
     }
-    system("make compile") or die("system");
+    int r = system("make compile");
+    if(r < 0) die("system");
     
     return true;
 }
@@ -564,26 +570,30 @@ bool debug_run_project(int argc, char** argv)
     FILE* f = fopen("common.h", "r");
     
     if(f == NULL) {
-        system("make header") or die("system");
+        int r = system("make header");
+        if(r < 0) die("system");
     }
     else {
         fclose(f);
     }
-    system("make debug") or die("system");
+    int r = system("make debug");
+    if(r < 0 ) die("system");
     
     return true;
 }
 
 bool clean_project(int argc, char** argv)
 {
-    system("make clean") or die("system");
+    int r = system("make clean") 
+    if(r < 0) die("system");
     
     return true;
 }
 
 bool install_project(int argc, char** argv, char* prefix="/usr/local")
 {
-    system(s"make install DESTDIR=\{prefix}") or die("system");
+    int r = system(s"make install DESTDIR=\{prefix}");
+    if(r < 0) die("system");
     
     return true;
 }
@@ -728,9 +738,13 @@ int come_main(int argc, char** argv) version 2
         gComeDebug = come_debug;
         gComeMalloc = come_malloc;
         
-        system(xsprintf("%s %s", RM, output_file_name)) or die("rm");
+        int r = system(xsprintf("%s %s", RM, output_file_name)) 
+        if(r < 0) die("rm");
         
-        FILE* f = fopen(output_file_name, "w") and die("fopen");
+        FILE* f = fopen(output_file_name, "w");
+        if(f == null) {
+            die("fopen");
+        }
         fclose(f);
         
         string tmp_file = string("tmp-common-header.c");

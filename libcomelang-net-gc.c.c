@@ -11615,7 +11615,6 @@ int socket_fd_write(int self, char* str){
 struct tuple2$2intcharph* server_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*,_Bool*)){
 void* __result_obj__=(void*)0;
 int sock_63;
-_Bool _and_conditional1;
 _Bool __exception_result_var_b1;
 int opt_64;
 int __null_value1;
@@ -11634,14 +11633,15 @@ memset(&__null_value1, 0, sizeof(int));
 memset(&address_65, 0, sizeof(struct sockaddr_in));
 memset(&__null_value2, 0, sizeof(int));
 memset(&__null_value3, 0, sizeof(int));
-    if((_and_conditional1=(sock_63=socket(socket_family,socket_type,protocol))),    _and_conditional1 == 0) {
-        (come_push_stackframe("libcomelang-net-gc.c", 15, 0),__exception_result_var_b1=die("socket failed"), come_pop_stackframe(), __exception_result_var_b1);
+    sock_63=socket(socket_family,socket_type,protocol);
+    if(    sock_63<0) {
+        (come_push_stackframe("libcomelang-net-gc.c", 16, 0),__exception_result_var_b1=die("socket failed"), come_pop_stackframe(), __exception_result_var_b1);
     }
     if(    reuse) {
         opt_64=1;
         if(        setsockopt(sock_63,65535,4,&opt_64,sizeof(opt_64))) {
             close(sock_63);
-            __result68__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 22, "struct tuple2$2intcharph"),__null_value1,xsprintf("setsockopt"));
+            __result68__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 23, "struct tuple2$2intcharph"),__null_value1,xsprintf("setsockopt"));
             gComeFunResultObject = (void*)0;
             return __result68__;
         }
@@ -11652,13 +11652,13 @@ memset(&__null_value3, 0, sizeof(int));
     addrlen_66=sizeof(address_65);
     if(    bind(sock_63,(struct sockaddr*)&address_65,sizeof(address_65))<0) {
         close(sock_63);
-        __result69__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 36, "struct tuple2$2intcharph"),__null_value2,xsprintf("Unable to bind"));
+        __result69__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 37, "struct tuple2$2intcharph"),__null_value2,xsprintf("Unable to bind"));
         gComeFunResultObject = (void*)0;
         return __result69__;
     }
     if(    listen(sock_63,3)<0) {
         close(sock_63);
-        __result70__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 41, "struct tuple2$2intcharph"),__null_value3,xsprintf("Unable to listen"));
+        __result70__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 42, "struct tuple2$2intcharph"),__null_value3,xsprintf("Unable to listen"));
         gComeFunResultObject = (void*)0;
         return __result70__;
     }
@@ -11677,7 +11677,7 @@ memset(&__null_value3, 0, sizeof(int));
     }
     close(new_socket_67);
     close(sock_63);
-    __result72__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 65, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result72__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 66, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result72__;
 }
@@ -11721,7 +11721,7 @@ memset(&__null_value5, 0, sizeof(int));
 memset(&__null_value6, 0, sizeof(int));
     sock_70=0;
     if(    (sock_70=socket(2,1,0))<0) {
-        __result73__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 74, "struct tuple2$2intcharph"),__null_value4,xsprintf("socket"));
+        __result73__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 75, "struct tuple2$2intcharph"),__null_value4,xsprintf("socket"));
         gComeFunResultObject = (void*)0;
         return __result73__;
     }
@@ -11729,13 +11729,13 @@ memset(&__null_value6, 0, sizeof(int));
     serv_addr_71.sin_port=_OSSwapInt16(port);
     if(    inet_pton(2,address,&serv_addr_71.sin_addr)<=0) {
         close(sock_70);
-        __result74__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 82, "struct tuple2$2intcharph"),__null_value5,xsprintf("Invalid address/ Address not supported"));
+        __result74__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 83, "struct tuple2$2intcharph"),__null_value5,xsprintf("Invalid address/ Address not supported"));
         gComeFunResultObject = (void*)0;
         return __result74__;
     }
     if(    connect(sock_70,(struct sockaddr*)&serv_addr_71,sizeof(serv_addr_71))<0) {
         close(sock_70);
-        __result75__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 86, "struct tuple2$2intcharph"),__null_value6,xsprintf("Connection Failed"));
+        __result75__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 87, "struct tuple2$2intcharph"),__null_value6,xsprintf("Connection Failed"));
         gComeFunResultObject = (void*)0;
         return __result75__;
     }
@@ -11748,7 +11748,7 @@ memset(&__null_value6, 0, sizeof(int));
         }
     }
     close(sock_70);
-    __result76__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 102, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result76__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 103, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result76__;
 }
@@ -11778,7 +11778,7 @@ memset(&__null_value10, 0, sizeof(char*));
 memset(&__null_value11, 0, sizeof(char*));
     sock_74=0;
     if(    (sock_74=socket(2,1,0))<0) {
-        __result78__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 111, "struct tuple2$2charphcharph"),__null_value7,xsprintf("Socket creation error"));
+        __result78__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 112, "struct tuple2$2charphcharph"),__null_value7,xsprintf("Socket creation error"));
         gComeFunResultObject = (void*)0;
         return __result78__;
     }
@@ -11786,34 +11786,34 @@ memset(&__null_value11, 0, sizeof(char*));
     serv_addr_75.sin_port=_OSSwapInt16(port);
     if(    inet_pton(2,address,&serv_addr_75.sin_addr)<=0) {
         close(sock_74);
-        __result79__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 119, "struct tuple2$2charphcharph"),__null_value8,xsprintf("Invalid address/ Address not supported"));
+        __result79__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 120, "struct tuple2$2charphcharph"),__null_value8,xsprintf("Invalid address/ Address not supported"));
         gComeFunResultObject = (void*)0;
         return __result79__;
     }
     if(    connect(sock_74,(struct sockaddr*)&serv_addr_75,sizeof(serv_addr_75))<0) {
         close(sock_74);
-        __result80__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 123, "struct tuple2$2charphcharph"),__null_value9,xsprintf("Connection Failed"));
+        __result80__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 124, "struct tuple2$2charphcharph"),__null_value9,xsprintf("Connection Failed"));
         gComeFunResultObject = (void*)0;
         return __result80__;
     }
     if(    write(sock_74,data,strlen(data))<0) {
         close(sock_74);
-        __result81__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 128, "struct tuple2$2charphcharph"),__null_value10,xsprintf("Write Failed"));
+        __result81__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 129, "struct tuple2$2charphcharph"),__null_value10,xsprintf("Write Failed"));
         gComeFunResultObject = (void*)0;
         return __result81__;
     }
-    buf_76=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net-gc.c", 131, "buffer"));
+    buf_76=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net-gc.c", 132, "buffer"));
     char buf2_77[1024]={0};
     size_78=read(sock_74,buf2_77,1024);
     if(    size_78<0) {
         close(sock_74);
-        __result82__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 139, "struct tuple2$2charphcharph"),__null_value11,xsprintf("Read Failed"));
+        __result82__ = gComeFunResultObject = __result_obj__ = tuple2$2charphcharph_initialize((struct tuple2$2charphcharph*)come_calloc(1, sizeof(struct tuple2$2charphcharph)*(1), "libcomelang-net-gc.c", 140, "struct tuple2$2charphcharph"),__null_value11,xsprintf("Read Failed"));
         gComeFunResultObject = (void*)0;
         return __result82__;
     }
     buffer_append(buf_76,buf2_77,size_78);
     close(sock_74);
-    __result84__ = gComeFunResultObject = __result_obj__ = tuple2$2charphvoidp_initialize((struct tuple2$2charphvoidp*)come_calloc(1, sizeof(struct tuple2$2charphvoidp)*(1), "libcomelang-net-gc.c", 146, "struct tuple2$2charphvoidp"),buffer_to_string(buf_76),((void*)0));
+    __result84__ = gComeFunResultObject = __result_obj__ = tuple2$2charphvoidp_initialize((struct tuple2$2charphvoidp*)come_calloc(1, sizeof(struct tuple2$2charphvoidp)*(1), "libcomelang-net-gc.c", 147, "struct tuple2$2charphvoidp"),buffer_to_string(buf_76),((void*)0));
     gComeFunResultObject = (void*)0;
     return __result84__;
 }
@@ -11841,7 +11841,6 @@ struct tuple2$2charphvoidp* __result83__;
 struct tuple2$2intcharph* httpd_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*)){
 void* __result_obj__=(void*)0;
 int sock_79;
-_Bool _and_conditional2;
 _Bool __exception_result_var_b2;
 int opt_80;
 int __null_value12;
@@ -11859,14 +11858,15 @@ memset(&__null_value12, 0, sizeof(int));
 memset(&address_81, 0, sizeof(struct sockaddr_in));
 memset(&__null_value13, 0, sizeof(int));
 memset(&__null_value14, 0, sizeof(int));
-    if((_and_conditional2=(sock_79=socket(socket_family,socket_type,protocol))),    _and_conditional2 == 0) {
-        (come_push_stackframe("libcomelang-net-gc.c", 151, 1),__exception_result_var_b2=die("socket failed"), come_pop_stackframe(), __exception_result_var_b2);
+    sock_79=socket(socket_family,socket_type,protocol);
+    if(    sock_79<0) {
+        (come_push_stackframe("libcomelang-net-gc.c", 153, 1),__exception_result_var_b2=die("socket failed"), come_pop_stackframe(), __exception_result_var_b2);
     }
     if(    reuse) {
         opt_80=1;
         if(        setsockopt(sock_79,65535,4,&opt_80,sizeof(opt_80))) {
             close(sock_79);
-            __result85__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 158, "struct tuple2$2intcharph"),__null_value12,xsprintf("setsockpt failed"));
+            __result85__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 160, "struct tuple2$2intcharph"),__null_value12,xsprintf("setsockpt failed"));
             gComeFunResultObject = (void*)0;
             return __result85__;
         }
@@ -11877,13 +11877,13 @@ memset(&__null_value14, 0, sizeof(int));
     addrlen_82=sizeof(address_81);
     if(    bind(sock_79,(struct sockaddr*)&address_81,sizeof(address_81))<0) {
         close(sock_79);
-        __result86__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 172, "struct tuple2$2intcharph"),__null_value13,xsprintf("Unable to bind"));
+        __result86__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 174, "struct tuple2$2intcharph"),__null_value13,xsprintf("Unable to bind"));
         gComeFunResultObject = (void*)0;
         return __result86__;
     }
     if(    listen(sock_79,3)<0) {
         close(sock_79);
-        __result87__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 177, "struct tuple2$2intcharph"),__null_value14,xsprintf("Unable to listen"));
+        __result87__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 179, "struct tuple2$2intcharph"),__null_value14,xsprintf("Unable to listen"));
         gComeFunResultObject = (void*)0;
         return __result87__;
     }
@@ -11897,7 +11897,7 @@ memset(&__null_value14, 0, sizeof(int));
         }
     }
     close(sock_79);
-    __result88__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 195, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result88__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 197, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result88__;
 }
@@ -11948,23 +11948,23 @@ memset(&__null_value21, 0, sizeof(int));
     method_87=TLS_server_method();
     ctx_86=SSL_CTX_new(method_87);
     if(    !ctx_86) {
-        __result89__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 223, "struct tuple2$2intcharph"),__null_value15,xsprintf("Unable to create SSL context"));
+        __result89__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 225, "struct tuple2$2intcharph"),__null_value15,xsprintf("Unable to create SSL context"));
         gComeFunResultObject = (void*)0;
         return __result89__;
     }
     if(    SSL_CTX_use_certificate_file(ctx_86,"cert.pem",1)<=0) {
-        __result90__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 228, "struct tuple2$2intcharph"),__null_value16,xsprintf("SSL_CTX_use_certificate_file"));
+        __result90__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 230, "struct tuple2$2intcharph"),__null_value16,xsprintf("SSL_CTX_use_certificate_file"));
         gComeFunResultObject = (void*)0;
         return __result90__;
     }
     if(    SSL_CTX_use_PrivateKey_file(ctx_86,"key.pem",1)<=0) {
-        __result91__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 233, "struct tuple2$2intcharph"),__null_value17,xsprintf("SSL_CTX_use_PrivateKey_file"));
+        __result91__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 235, "struct tuple2$2intcharph"),__null_value17,xsprintf("SSL_CTX_use_PrivateKey_file"));
         gComeFunResultObject = (void*)0;
         return __result91__;
     }
     sock_85=socket(2,1,0);
     if(    sock_85<0) {
-        __result92__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 238, "struct tuple2$2intcharph"),__null_value18,xsprintf("Unable to create socket"));
+        __result92__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 240, "struct tuple2$2intcharph"),__null_value18,xsprintf("Unable to create socket"));
         gComeFunResultObject = (void*)0;
         return __result92__;
     }
@@ -11972,12 +11972,12 @@ memset(&__null_value21, 0, sizeof(int));
     addr_88.sin_port=_OSSwapInt16(port);
     addr_88.sin_addr.s_addr=(unsigned int)0;
     if(    bind(sock_85,(struct sockaddr*)&addr_88,sizeof(addr_88))<0) {
-        __result93__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 247, "struct tuple2$2intcharph"),__null_value19,xsprintf("Unable to bind"));
+        __result93__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 249, "struct tuple2$2intcharph"),__null_value19,xsprintf("Unable to bind"));
         gComeFunResultObject = (void*)0;
         return __result93__;
     }
     if(    listen(sock_85,1)<0) {
-        __result94__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 251, "struct tuple2$2intcharph"),__null_value20,xsprintf("Unable to listen"));
+        __result94__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 253, "struct tuple2$2intcharph"),__null_value20,xsprintf("Unable to listen"));
         gComeFunResultObject = (void*)0;
         return __result94__;
     }
@@ -11985,7 +11985,7 @@ memset(&__null_value21, 0, sizeof(int));
         len_90=sizeof(addr_89);
         client_91=accept(sock_85,(struct sockaddr*)&addr_89,&len_90);
         if(        client_91<0) {
-            __result95__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 260, "struct tuple2$2intcharph"),__null_value21,xsprintf("Unable to accept"));
+            __result95__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 262, "struct tuple2$2intcharph"),__null_value21,xsprintf("Unable to accept"));
             gComeFunResultObject = (void*)0;
             return __result95__;
         }
@@ -12010,7 +12010,7 @@ memset(&__null_value21, 0, sizeof(int));
     while(0) {
         continue;
     }
-    __result96__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 286, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result96__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 288, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result96__;
 }
@@ -12024,12 +12024,12 @@ memset(&__null_value22, 0, sizeof(int));
     if(    gComeMySQL==((void*)0)) {
         gComeMySQL=mysql_init(((void*)0));
         if(        gComeMySQL==((void*)0)) {
-            __result97__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 297, "struct tuple2$2intcharph"),__null_value22,xsprintf("mysql_init failed"));
+            __result97__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 299, "struct tuple2$2intcharph"),__null_value22,xsprintf("mysql_init failed"));
             gComeFunResultObject = (void*)0;
             return __result97__;
         }
     }
-    __result98__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 301, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result98__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 303, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result98__;
 }
@@ -12047,7 +12047,7 @@ int __null_value23;
 struct tuple2$2intcharph* __result99__;
 memset(&__null_value23, 0, sizeof(int));
     mysql_close(gComeMySQL);
-    __result99__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 315, "struct tuple2$2intcharph"),__null_value23,xsprintf("\%s",charp_to_string(mysql_error(gComeMySQL))));
+    __result99__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 317, "struct tuple2$2intcharph"),__null_value23,xsprintf("\%s",charp_to_string(mysql_error(gComeMySQL))));
     gComeFunResultObject = (void*)0;
     return __result99__;
 }
@@ -12059,21 +12059,18 @@ int come_exception_var_b1_94;
 char* Err_95;
 int __null_value24;
 struct tuple2$2intcharph* __result100__;
-_Bool _and_conditional3;
 struct tuple2$2intcharph* multiple_assign_var2;
 int come_exception_var_b2_96;
 char* Err_97;
 int __null_value25;
 struct tuple2$2intcharph* __result101__;
 char* check_user_query_98;
-_Bool _or_conditional1;
 struct tuple2$2intcharph* multiple_assign_var3;
 int come_exception_var_b3_99;
 char* Err_100;
 int __null_value26;
 struct tuple2$2intcharph* __result102__;
 struct MYSQL_RES* result_101;
-_Bool _and_conditional4;
 struct tuple2$2intcharph* multiple_assign_var4;
 int come_exception_var_b4_102;
 char* Err_103;
@@ -12081,19 +12078,16 @@ int __null_value27;
 struct tuple2$2intcharph* __result103__;
 char** row_104;
 int user_exists_105;
-_Bool _or_conditional2;
 struct tuple2$2intcharph* multiple_assign_var5;
 int come_exception_var_b5_106;
 char* Err_107;
 int __null_value28;
 struct tuple2$2intcharph* __result104__;
-_Bool _or_conditional3;
 struct tuple2$2intcharph* multiple_assign_var6;
 int come_exception_var_b6_108;
 char* Err_109;
 int __null_value29;
 struct tuple2$2intcharph* __result105__;
-_Bool _or_conditional4;
 struct tuple2$2intcharph* multiple_assign_var7;
 int come_exception_var_b7_110;
 char* Err_111;
@@ -12111,37 +12105,38 @@ memset(&__null_value30, 0, sizeof(int));
     come_exception_var_b1_94=multiple_assign_var1->v1;
     Err_95=multiple_assign_var1->v2;
     if(    Err_95) {
-        __result100__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 320, "struct tuple2$2intcharph"),__null_value24,Err_95);
+        __result100__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 322, "struct tuple2$2intcharph"),__null_value24,Err_95);
         gComeFunResultObject = (void*)0;
         return __result100__;
     }
-    if((_and_conditional3=(mysql_real_connect(gComeMySQL,host_name,"root",root_password,((void*)0),0,((void*)0),0))),    _and_conditional3 == 0) {
+    if(    mysql_real_connect(gComeMySQL,host_name,"root",root_password,((void*)0),0,((void*)0),0)==((void*)0)) {
         multiple_assign_var2=finish_with_error();
         come_exception_var_b2_96=multiple_assign_var2->v1;
         Err_97=multiple_assign_var2->v2;
         if(        Err_97) {
-            __result101__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 322, "struct tuple2$2intcharph"),__null_value25,Err_97);
+            __result101__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 325, "struct tuple2$2intcharph"),__null_value25,Err_97);
             gComeFunResultObject = (void*)0;
             return __result101__;
         }
     }
     check_user_query_98=xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",charp_to_string(user),charp_to_string(host_name));
-    if((_or_conditional1=(mysql_query(gComeMySQL,check_user_query_98))),    _or_conditional1 != 0) {
+    if(    mysql_query(gComeMySQL,check_user_query_98)==((void*)0)) {
         multiple_assign_var3=finish_with_error();
         come_exception_var_b3_99=multiple_assign_var3->v1;
         Err_100=multiple_assign_var3->v2;
         if(        Err_100) {
-            __result102__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 327, "struct tuple2$2intcharph"),__null_value26,Err_100);
+            __result102__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 332, "struct tuple2$2intcharph"),__null_value26,Err_100);
             gComeFunResultObject = (void*)0;
             return __result102__;
         }
     }
-    if((_and_conditional4=(result_101=mysql_store_result(gComeMySQL))),    _and_conditional4 == 0) {
+    result_101=mysql_store_result(gComeMySQL);
+    if(    result_101==((void*)0)) {
         multiple_assign_var4=finish_with_error();
         come_exception_var_b4_102=multiple_assign_var4->v1;
         Err_103=multiple_assign_var4->v2;
         if(        Err_103) {
-            __result103__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 329, "struct tuple2$2intcharph"),__null_value27,Err_103);
+            __result103__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 336, "struct tuple2$2intcharph"),__null_value27,Err_103);
             gComeFunResultObject = (void*)0;
             return __result103__;
         }
@@ -12150,39 +12145,39 @@ memset(&__null_value30, 0, sizeof(int));
     user_exists_105=atoi(row_104[0]);
     mysql_free_result(result_101);
     if(    user_exists_105==0) {
-        if((_or_conditional2=(mysql_query(gComeMySQL,xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",charp_to_string(user),charp_to_string(host_name),charp_to_string(password))))),        _or_conditional2 != 0) {
+        if(        mysql_query(gComeMySQL,xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",charp_to_string(user),charp_to_string(host_name),charp_to_string(password)))==((void*)0)) {
             multiple_assign_var5=finish_with_error();
             come_exception_var_b5_106=multiple_assign_var5->v1;
             Err_107=multiple_assign_var5->v2;
             if(            Err_107) {
-                __result104__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 337, "struct tuple2$2intcharph"),__null_value28,Err_107);
+                __result104__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 345, "struct tuple2$2intcharph"),__null_value28,Err_107);
                 gComeFunResultObject = (void*)0;
                 return __result104__;
             }
         }
-        if((_or_conditional3=(mysql_query(gComeMySQL,xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",charp_to_string(user),charp_to_string(host_name))))),        _or_conditional3 != 0) {
+        if(        mysql_query(gComeMySQL,xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",charp_to_string(user),charp_to_string(host_name)))==((void*)0)) {
             multiple_assign_var6=finish_with_error();
             come_exception_var_b6_108=multiple_assign_var6->v1;
             Err_109=multiple_assign_var6->v2;
             if(            Err_109) {
-                __result105__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 339, "struct tuple2$2intcharph"),__null_value29,Err_109);
+                __result105__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 349, "struct tuple2$2intcharph"),__null_value29,Err_109);
                 gComeFunResultObject = (void*)0;
                 return __result105__;
             }
         }
-        if((_or_conditional4=(mysql_query(gComeMySQL,"FLUSH PRIVILEGES"))),        _or_conditional4 != 0) {
+        if(        mysql_query(gComeMySQL,"FLUSH PRIVILEGES")==((void*)0)) {
             multiple_assign_var7=finish_with_error();
             come_exception_var_b7_110=multiple_assign_var7->v1;
             Err_111=multiple_assign_var7->v2;
             if(            Err_111) {
-                __result106__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 341, "struct tuple2$2intcharph"),__null_value30,Err_111);
+                __result106__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 353, "struct tuple2$2intcharph"),__null_value30,Err_111);
                 gComeFunResultObject = (void*)0;
                 return __result106__;
             }
         }
     }
     come_mysql_final();
-    __result107__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 346, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result107__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 359, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result107__;
 }
@@ -12194,14 +12189,12 @@ int come_exception_var_b8_112;
 char* Err_113;
 int __null_value31;
 struct tuple2$2intcharph* __result108__;
-_Bool _and_conditional5;
 struct tuple2$2intcharph* multiple_assign_var9;
 int come_exception_var_b9_114;
 char* Err_115;
 int __null_value32;
 struct tuple2$2intcharph* __result109__;
 char* create_db_query_116;
-_Bool _or_conditional5;
 struct tuple2$2intcharph* multiple_assign_var10;
 int come_exception_var_b10_117;
 char* Err_118;
@@ -12215,33 +12208,33 @@ memset(&__null_value33, 0, sizeof(int));
     come_exception_var_b8_112=multiple_assign_var8->v1;
     Err_113=multiple_assign_var8->v2;
     if(    Err_113) {
-        __result108__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 351, "struct tuple2$2intcharph"),__null_value31,Err_113);
+        __result108__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 364, "struct tuple2$2intcharph"),__null_value31,Err_113);
         gComeFunResultObject = (void*)0;
         return __result108__;
     }
-    if((_and_conditional5=(mysql_real_connect(gComeMySQL,host_name,user_name,password,((void*)0),0,((void*)0),0))),    _and_conditional5 == 0) {
+    if(    mysql_real_connect(gComeMySQL,host_name,user_name,password,((void*)0),0,((void*)0),0)==((void*)0)) {
         multiple_assign_var9=finish_with_error();
         come_exception_var_b9_114=multiple_assign_var9->v1;
         Err_115=multiple_assign_var9->v2;
         if(        Err_115) {
-            __result109__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 353, "struct tuple2$2intcharph"),__null_value32,Err_115);
+            __result109__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 366, "struct tuple2$2intcharph"),__null_value32,Err_115);
             gComeFunResultObject = (void*)0;
             return __result109__;
         }
     }
     create_db_query_116=xsprintf("CREATE DATABASE IF NOT EXISTS \%s",charp_to_string(database_name));
-    if((_or_conditional5=(mysql_query(gComeMySQL,create_db_query_116))),    _or_conditional5 != 0) {
+    if(    mysql_query(gComeMySQL,create_db_query_116)==((void*)0)) {
         multiple_assign_var10=finish_with_error();
         come_exception_var_b10_117=multiple_assign_var10->v1;
         Err_118=multiple_assign_var10->v2;
         if(        Err_118) {
-            __result110__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 357, "struct tuple2$2intcharph"),__null_value33,Err_118);
+            __result110__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 370, "struct tuple2$2intcharph"),__null_value33,Err_118);
             gComeFunResultObject = (void*)0;
             return __result110__;
         }
     }
     come_mysql_final();
-    __result111__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 361, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result111__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 374, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result111__;
 }
@@ -12263,19 +12256,16 @@ int come_exception_var_b13_123;
 char* Err_124;
 int __null_value36;
 struct tuple2$2intcharph* __result114__;
-_Bool _and_conditional6;
 struct tuple2$2intcharph* multiple_assign_var14;
 int come_exception_var_b14_125;
 char* Err_126;
 int __null_value37;
 struct tuple2$2intcharph* __result115__;
-_Bool _and_conditional7;
 struct tuple2$2intcharph* multiple_assign_var15;
 int come_exception_var_b15_127;
 char* Err_128;
 int __null_value38;
 struct tuple2$2intcharph* __result116__;
-_Bool _or_conditional6;
 struct tuple2$2intcharph* multiple_assign_var16;
 int come_exception_var_b16_129;
 char* Err_130;
@@ -12293,7 +12283,7 @@ memset(&__null_value39, 0, sizeof(int));
         come_exception_var_b11_119=multiple_assign_var11->v1;
         Err_120=multiple_assign_var11->v2;
         if(        Err_120) {
-            __result112__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 367, "struct tuple2$2intcharph"),__null_value34,Err_120);
+            __result112__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 380, "struct tuple2$2intcharph"),__null_value34,Err_120);
             gComeFunResultObject = (void*)0;
             return __result112__;
         }
@@ -12303,7 +12293,7 @@ memset(&__null_value39, 0, sizeof(int));
         come_exception_var_b12_121=multiple_assign_var12->v1;
         Err_122=multiple_assign_var12->v2;
         if(        Err_122) {
-            __result113__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 370, "struct tuple2$2intcharph"),__null_value35,Err_122);
+            __result113__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 383, "struct tuple2$2intcharph"),__null_value35,Err_122);
             gComeFunResultObject = (void*)0;
             return __result113__;
         }
@@ -12312,42 +12302,42 @@ memset(&__null_value39, 0, sizeof(int));
     come_exception_var_b13_123=multiple_assign_var13->v1;
     Err_124=multiple_assign_var13->v2;
     if(    Err_124) {
-        __result114__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 373, "struct tuple2$2intcharph"),__null_value36,Err_124);
+        __result114__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 386, "struct tuple2$2intcharph"),__null_value36,Err_124);
         gComeFunResultObject = (void*)0;
         return __result114__;
     }
-    if((_and_conditional6=(mysql_select_db(gComeMySQL,database_name))),    _and_conditional6 == 0) {
+    if(    mysql_select_db(gComeMySQL,database_name)==((void*)0)) {
         multiple_assign_var14=finish_with_error();
         come_exception_var_b14_125=multiple_assign_var14->v1;
         Err_126=multiple_assign_var14->v2;
         if(        Err_126) {
-            __result115__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 375, "struct tuple2$2intcharph"),__null_value37,Err_126);
+            __result115__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 388, "struct tuple2$2intcharph"),__null_value37,Err_126);
             gComeFunResultObject = (void*)0;
             return __result115__;
         }
     }
-    if((_and_conditional7=(mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0))),    _and_conditional7 == 0) {
+    if(    mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0)==((void*)0)) {
         multiple_assign_var15=finish_with_error();
         come_exception_var_b15_127=multiple_assign_var15->v1;
         Err_128=multiple_assign_var15->v2;
         if(        Err_128) {
-            __result116__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 377, "struct tuple2$2intcharph"),__null_value38,Err_128);
+            __result116__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 390, "struct tuple2$2intcharph"),__null_value38,Err_128);
             gComeFunResultObject = (void*)0;
             return __result116__;
         }
     }
-    if((_or_conditional6=(mysql_query(gComeMySQL,query))),    _or_conditional6 != 0) {
+    if(    mysql_query(gComeMySQL,query)==((void*)0)) {
         multiple_assign_var16=finish_with_error();
         come_exception_var_b16_129=multiple_assign_var16->v1;
         Err_130=multiple_assign_var16->v2;
         if(        Err_130) {
-            __result117__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 379, "struct tuple2$2intcharph"),__null_value39,Err_130);
+            __result117__ = gComeFunResultObject = __result_obj__ = tuple2$2intcharph_initialize((struct tuple2$2intcharph*)come_calloc(1, sizeof(struct tuple2$2intcharph)*(1), "libcomelang-net-gc.c", 392, "struct tuple2$2intcharph"),__null_value39,Err_130);
             gComeFunResultObject = (void*)0;
             return __result117__;
         }
     }
     come_mysql_final();
-    __result118__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 383, "struct tuple2$2intvoidp"),0,((void*)0));
+    __result118__ = gComeFunResultObject = __result_obj__ = tuple2$2intvoidp_initialize((struct tuple2$2intvoidp*)come_calloc(1, sizeof(struct tuple2$2intvoidp)*(1), "libcomelang-net-gc.c", 396, "struct tuple2$2intvoidp"),0,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result118__;
 }
@@ -12369,26 +12359,22 @@ int come_exception_var_b19_135;
 char* Err_136;
 struct list$1list$1charphph* __null_value42;
 struct tuple2$2list$1list$1charphphphcharph* __result122__;
-_Bool _and_conditional8;
 struct tuple2$2intcharph* multiple_assign_var20;
 int come_exception_var_b20_137;
 char* Err_138;
 struct list$1list$1charphph* __null_value43;
 struct tuple2$2list$1list$1charphphphcharph* __result123__;
-_Bool _and_conditional9;
 struct tuple2$2intcharph* multiple_assign_var21;
 int come_exception_var_b21_139;
 char* Err_140;
 struct list$1list$1charphph* __null_value44;
 struct tuple2$2list$1list$1charphphphcharph* __result124__;
-_Bool _or_conditional7;
 struct tuple2$2intcharph* multiple_assign_var22;
 int come_exception_var_b22_141;
 char* Err_142;
 struct list$1list$1charphph* __null_value45;
 struct tuple2$2list$1list$1charphphphcharph* __result125__;
 struct MYSQL_RES* res_143;
-_Bool _and_conditional10;
 struct tuple2$2intcharph* multiple_assign_var23;
 int come_exception_var_b23_144;
 char* Err_145;
@@ -12413,7 +12399,7 @@ row_148 = (void*)0;
         come_exception_var_b17_131=multiple_assign_var17->v1;
         Err_132=multiple_assign_var17->v2;
         if(        Err_132) {
-            __result120__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 389, "struct tuple2$2list$1list$1charphphphcharph"),__null_value40,Err_132);
+            __result120__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 402, "struct tuple2$2list$1list$1charphphphcharph"),__null_value40,Err_132);
             gComeFunResultObject = (void*)0;
             return __result120__;
         }
@@ -12423,7 +12409,7 @@ row_148 = (void*)0;
         come_exception_var_b18_133=multiple_assign_var18->v1;
         Err_134=multiple_assign_var18->v2;
         if(        Err_134) {
-            __result121__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 392, "struct tuple2$2list$1list$1charphphphcharph"),__null_value41,Err_134);
+            __result121__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 405, "struct tuple2$2list$1list$1charphphphcharph"),__null_value41,Err_134);
             gComeFunResultObject = (void*)0;
             return __result121__;
         }
@@ -12432,54 +12418,55 @@ row_148 = (void*)0;
     come_exception_var_b19_135=multiple_assign_var19->v1;
     Err_136=multiple_assign_var19->v2;
     if(    Err_136) {
-        __result122__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 395, "struct tuple2$2list$1list$1charphphphcharph"),__null_value42,Err_136);
+        __result122__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 408, "struct tuple2$2list$1list$1charphphphcharph"),__null_value42,Err_136);
         gComeFunResultObject = (void*)0;
         return __result122__;
     }
-    if((_and_conditional8=(mysql_select_db(gComeMySQL,database_name))),    _and_conditional8 == 0) {
+    if(    mysql_select_db(gComeMySQL,database_name)==((void*)0)) {
         multiple_assign_var20=finish_with_error();
         come_exception_var_b20_137=multiple_assign_var20->v1;
         Err_138=multiple_assign_var20->v2;
         if(        Err_138) {
-            __result123__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 397, "struct tuple2$2list$1list$1charphphphcharph"),__null_value43,Err_138);
+            __result123__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 410, "struct tuple2$2list$1list$1charphphphcharph"),__null_value43,Err_138);
             gComeFunResultObject = (void*)0;
             return __result123__;
         }
     }
-    if((_and_conditional9=(mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0))),    _and_conditional9 == 0) {
+    if(    mysql_real_connect(gComeMySQL,host_name,user,password,database_name,0,((void*)0),0)==((void*)0)) {
         multiple_assign_var21=finish_with_error();
         come_exception_var_b21_139=multiple_assign_var21->v1;
         Err_140=multiple_assign_var21->v2;
         if(        Err_140) {
-            __result124__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 399, "struct tuple2$2list$1list$1charphphphcharph"),__null_value44,Err_140);
+            __result124__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 412, "struct tuple2$2list$1list$1charphphphcharph"),__null_value44,Err_140);
             gComeFunResultObject = (void*)0;
             return __result124__;
         }
     }
-    if((_or_conditional7=(mysql_query(gComeMySQL,query))),    _or_conditional7 != 0) {
+    if(    mysql_query(gComeMySQL,query)==((void*)0)) {
         multiple_assign_var22=finish_with_error();
         come_exception_var_b22_141=multiple_assign_var22->v1;
         Err_142=multiple_assign_var22->v2;
         if(        Err_142) {
-            __result125__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 401, "struct tuple2$2list$1list$1charphphphcharph"),__null_value45,Err_142);
+            __result125__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 414, "struct tuple2$2list$1list$1charphphphcharph"),__null_value45,Err_142);
             gComeFunResultObject = (void*)0;
             return __result125__;
         }
     }
-    if((_and_conditional10=(res_143=mysql_store_result(gComeMySQL))),    _and_conditional10 == 0) {
+    res_143=mysql_store_result(gComeMySQL);
+    if(    res_143) {
         multiple_assign_var23=finish_with_error();
         come_exception_var_b23_144=multiple_assign_var23->v1;
         Err_145=multiple_assign_var23->v2;
         if(        Err_145) {
-            __result126__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 403, "struct tuple2$2list$1list$1charphphphcharph"),__null_value46,Err_145);
+            __result126__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphcharph_initialize((struct tuple2$2list$1list$1charphphphcharph*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphcharph)*(1), "libcomelang-net-gc.c", 417, "struct tuple2$2list$1list$1charphphphcharph"),__null_value46,Err_145);
             gComeFunResultObject = (void*)0;
             return __result126__;
         }
     }
     num_fields_146=mysql_num_fields(res_143);
-    result_147=list$1list$1charphph_initialize((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net-gc.c", 407, "list$1list$1charphph"));
+    result_147=list$1list$1charphph_initialize((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net-gc.c", 421, "list$1list$1charphph"));
     while((row_148=mysql_fetch_row(res_143))!=((void*)0)) {
-        li_149=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net-gc.c", 411, "list$1charph"));
+        li_149=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net-gc.c", 425, "list$1charph"));
         for(        i_150=0;        i_150<num_fields_146;        i_150++        ){
             if(            row_148[i_150]) {
                 list$1charph_add(li_149,__builtin_string(row_148[i_150]));
@@ -12489,7 +12476,7 @@ row_148 = (void*)0;
     }
     mysql_free_result(res_143);
     come_mysql_final();
-    __result132__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphvoidp_initialize((struct tuple2$2list$1list$1charphphphvoidp*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphvoidp)*(1), "libcomelang-net-gc.c", 425, "struct tuple2$2list$1list$1charphphphvoidp"),result_147,((void*)0));
+    __result132__ = gComeFunResultObject = __result_obj__ = tuple2$2list$1list$1charphphphvoidp_initialize((struct tuple2$2list$1list$1charphphphvoidp*)come_calloc(1, sizeof(struct tuple2$2list$1list$1charphphphvoidp)*(1), "libcomelang-net-gc.c", 439, "struct tuple2$2list$1list$1charphphphvoidp"),result_147,((void*)0));
     gComeFunResultObject = (void*)0;
     return __result132__;
 }

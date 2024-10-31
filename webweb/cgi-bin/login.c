@@ -12,22 +12,42 @@ int main(int argc, char** argv)
     
     var password = result[2]??;
     if(username && password) {
-        (void)client_socket2(port:3336, "CREATE DATABASE testdb");
+        client_socket2(port:3336, "CREATE DATABASE testdb").rescue {
+            const char *not_found = "<html><body><h1>DATABASE ERROR</h1></body></html>";
+            puts(not_found);
+            exit(1);
+        }
         
-        client_socket2(port:3336, "use testdb");
+        client_socket2(port:3336, "use testdb").rescue {
+            const char *not_found = "<html><body><h1>DATABASE ERROR</h1></body></html>";
+            puts(not_found);
+            exit(1);
+        }
         const char *create_table_query = "CREATE TABLE IF NOT EXISTS users ("
                                          "id INT AUTO_INCREMENT PRIMARY KEY, "
                                          "username VARCHAR(100) NOT NULL, "
                                          "password VARCHAR(100) NOT NULL"
                                          ")";
-        client_socket2(port:3336, create_table_query);
+        client_socket2(port:3336, create_table_query).rescue {
+            const char *not_found = "<html><body><h1>DATABASE ERROR</h1></body></html>";
+            puts(not_found);
+            exit(1);
+        }
 
         string query = s"SELECT username, password FROM users WHERE username = '\{username}'";
-        string read_data = client_socket2(port:3336, query);
+        string read_data = client_socket2(port:3336, query).rescue {
+            const char *not_found = "<html><body><h1>DATABASE ERROR</h1></body></html>";
+            puts(not_found);
+            exit(1);
+        }
         list<string>*% li = read_data.scan(/\n/);
 
         if(li.length() == 1 && li[0]??.chomp() === "") {
-            (void)client_socket2(port:3336, s"INSERT INTO users(username, password) VALUES('\{username}', '\{password}')");
+            client_socket2(port:3336, s"INSERT INTO users(username, password) VALUES('\{username}', '\{password}')").rescue {
+                const char *not_found = "<html><body><h1>DATABASE ERROR</h1></body></html>";
+                puts(not_found);
+                exit(1);
+            }
     
             string redirect_response = """
 HTTP/1.1 302 Found\r
