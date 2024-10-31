@@ -6572,7 +6572,7 @@ memset(&i_279, 0, sizeof(int));
                             }
                             else {
                                 if(                                comma) {
-                                    add_come_code(info,"(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n",no_decrement,no_decrement,no_free,force_delete_);
+                                    add_come_code(info,"(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n",c_value_269,c_value_269,no_decrement,no_free,force_delete_);
                                 }
                                 else {
                                     add_come_code(info,"%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0);\n",c_value_269,c_value_269,no_decrement,no_free,force_delete_);

@@ -837,7 +837,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                             }
                             else {
                                 if(comma) {
-                                    add_come_code(info, "(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n", no_decrement, no_decrement, no_free, force_delete_);
+                                    add_come_code(info, "(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n", c_value, c_value, no_decrement, no_free, force_delete_);
                                 }
                                 else {
                                     add_come_code(info, "%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0);\n", c_value, c_value, no_decrement, no_free, force_delete_);
