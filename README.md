@@ -3457,6 +3457,10 @@ int main(int argc, char** argv)
 
 UNIX library and systemcall error handling
 
+Pattern matching block should return the value at the end of blocks.
+
+パターンマッチングのブロックではブロックの最後に値を返すべきです。
+
 # Object initializer
 
 ```C

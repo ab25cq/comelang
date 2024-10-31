@@ -2,7 +2,12 @@
 
 int main(int argc, char** argv)
 {
-    -1 and die("UHE");
+    string a = s"AAAA".case {
+        (it === s"AAAA") { s"AAA" }
+        (it === s"BBBB") { s"BBB" }
+    }
+    
+    printf("%s\n", a);
     
     return 0;
 }
