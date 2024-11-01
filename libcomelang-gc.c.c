@@ -1642,20 +1642,20 @@ int buffer_compare(struct buffer* left, struct buffer* right);
 struct buffer* string_to_buffer(char* self);
 struct buffer* charp_to_buffer(char* self);
 char* buffer_to_string(struct buffer* self);
-_Bool bool_equals(_Bool self, void* right);
-_Bool char_equals(char self, void* right);
-_Bool short_equals(short short self, void* right);
-_Bool int_equals(int self, void* right);
-_Bool long_equals(long self, void* right);
-_Bool size_t_equals(unsigned long unsigned  int self, void* right);
-_Bool float_equals(float self, void* right);
-_Bool double_equals(double self, void* right);
-_Bool string_equals(char* self, void* right);
-_Bool charp_equals(char* self, void* right);
-_Bool string_operator_equals(char* self, void* right);
-_Bool charp_operator_equals(char* self, void* right);
-_Bool string_operator_not_equals(char* self, void* right);
-_Bool charp_operator_not_equals(char* self, void* right);
+_Bool bool_equals(_Bool self, _Bool right);
+_Bool char_equals(char self, char right);
+_Bool short_equals(short short self, short short right);
+_Bool int_equals(int self, int right);
+_Bool long_equals(long self, long right);
+_Bool size_t_equals(unsigned long unsigned  int self, unsigned long unsigned  int right);
+_Bool float_equals(float self, float right);
+_Bool double_equals(double self, double right);
+_Bool string_equals(char* self, char* right);
+_Bool charp_equals(char* self, char* right);
+_Bool string_operator_equals(char* self, char* right);
+_Bool charp_operator_equals(char* self, char* right);
+_Bool string_operator_not_equals(char* self, char* right);
+_Bool charp_operator_not_equals(char* self, char* right);
 char* charp_operator_add(char* self, char* right);
 char* string_operator_add(char* self, char* right);
 char* charp_operator_mult(char* self, int right);
@@ -3795,39 +3795,39 @@ char* __result111__;
     return __result111__;
 }
 
-_Bool bool_equals(_Bool self, void* right){
-    return self==right||right==wildcard;
+_Bool bool_equals(_Bool self, _Bool right){
+    return self==right;
 }
 
-_Bool char_equals(char self, void* right){
-    return self==right||right==wildcard;
+_Bool char_equals(char self, char right){
+    return self==right;
 }
 
-_Bool short_equals(short short self, void* right){
-    return self==right||right==wildcard;
+_Bool short_equals(short short self, short short right){
+    return self==right;
 }
 
-_Bool int_equals(int self, void* right){
-    return self==right||right==wildcard;
+_Bool int_equals(int self, int right){
+    return self==right;
 }
 
-_Bool long_equals(long self, void* right){
-    return self==right||right==wildcard;
+_Bool long_equals(long self, long right){
+    return self==right;
 }
 
-_Bool size_t_equals(unsigned long unsigned  int self, void* right){
-    return self==right||right==wildcard;
+_Bool size_t_equals(unsigned long unsigned  int self, unsigned long unsigned  int right){
+    return self==right;
 }
 
-_Bool float_equals(float self, void* right){
-    return self==(float)(long)right||right==wildcard;
+_Bool float_equals(float self, float right){
+    return self==right;
 }
 
-_Bool double_equals(double self, void* right){
-    return self==(double)(long)right||right==wildcard;
+_Bool double_equals(double self, double right){
+    return self==right;
 }
 
-_Bool string_equals(char* self, void* right){
+_Bool string_equals(char* self, char* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3840,7 +3840,7 @@ _Bool string_equals(char* self, void* right){
     return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool charp_equals(char* self, void* right){
+_Bool charp_equals(char* self, char* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3853,7 +3853,7 @@ _Bool charp_equals(char* self, void* right){
     return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool string_operator_equals(char* self, void* right){
+_Bool string_operator_equals(char* self, char* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3866,7 +3866,7 @@ _Bool string_operator_equals(char* self, void* right){
     return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool charp_operator_equals(char* self, void* right){
+_Bool charp_operator_equals(char* self, char* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3879,7 +3879,7 @@ _Bool charp_operator_equals(char* self, void* right){
     return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool string_operator_not_equals(char* self, void* right){
+_Bool string_operator_not_equals(char* self, char* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)0;
     }
@@ -3892,7 +3892,7 @@ _Bool string_operator_not_equals(char* self, void* right){
     return strcmp(self,right)!=0&&right!=wildcard;
 }
 
-_Bool charp_operator_not_equals(char* self, void* right){
+_Bool charp_operator_not_equals(char* self, char* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)0;
     }

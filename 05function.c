@@ -2507,6 +2507,10 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
             source.append_str(source2);
         }
         else {
+            char source2[1024];
+            snprintf(source2, 1024, "if(right == wildcard) { return true; }\n");
+            source.append_str(source2);
+            
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
                 var name, field_type = it;
@@ -2655,6 +2659,9 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
             char source2[1024];
             snprintf(source2, 1024, "return !(");
             
+            source.append_str(source2);
+            
+            snprintf(source2, 1024, "!(right == wildcard) && ");
             source.append_str(source2);
             
             int i = 0;

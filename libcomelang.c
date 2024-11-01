@@ -1277,62 +1277,47 @@ string buffer*::to_string(buffer* self)
 //////////////////////////////
 /// base library(equals)
 //////////////////////////////
-bool bool::equals(bool self, any right) 
+bool bool::equals(bool self, bool right) 
 {
-    return self == right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool char::equals(char self, any right) 
+bool char::equals(char self, char right) 
 {
-    return self == right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool short::equals(short self, any right) 
+bool short::equals(short self, short right) 
 {
-    return self == right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool int::equals(int self, any right) 
+bool int::equals(int self, int right) 
 {
-    return self == right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool long::equals(long self, any right) 
+bool long::equals(long self, long right) 
 {
-    return self == right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool size_t::equals(size_t self, any right) 
+bool size_t::equals(size_t self, size_t right) 
 {
-    return self == right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool float::equals(float self, any right) 
+bool float::equals(float self, float right) 
 {
-    return self == (float)(long)right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool double::equals(double self, any right) 
+bool double::equals(double self, double right) 
 {
-    return self == (double)(long)right || right == wildcard;
+    return self == right; // || right == wildcard;
 }
 
-bool string::equals(char* self, any right) 
-{
-    if(self == null && right == null) {
-        return true;
-    }
-    else if(self == null) {
-        return false;
-    }
-    else if(right == null) {
-        return false;
-    }
-    
-    return strcmp(self, right) == 0 || right == wildcard;
-}
-
-bool char*::equals(char* self, any right) 
+bool string::equals(char* self, char* right) 
 {
     if(self == null && right == null) {
         return true;
@@ -1347,7 +1332,7 @@ bool char*::equals(char* self, any right)
     return strcmp(self, right) == 0 || right == wildcard;
 }
 
-bool string::operator_equals(char* self, any right) 
+bool char*::equals(char* self, char* right) 
 {
     if(self == null && right == null) {
         return true;
@@ -1362,7 +1347,7 @@ bool string::operator_equals(char* self, any right)
     return strcmp(self, right) == 0 || right == wildcard;
 }
 
-bool char*::operator_equals(char* self, any right) 
+bool string::operator_equals(char* self, char* right) 
 {
     if(self == null && right == null) {
         return true;
@@ -1377,7 +1362,22 @@ bool char*::operator_equals(char* self, any right)
     return strcmp(self, right) == 0 || right == wildcard;
 }
 
-bool string::operator_not_equals(char* self, any right) 
+bool char*::operator_equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return true;
+    }
+    else if(self == null) {
+        return false;
+    }
+    else if(right == null) {
+        return false;
+    }
+    
+    return strcmp(self, right) == 0 || right == wildcard;
+}
+
+bool string::operator_not_equals(char* self, char* right) 
 {
     if(self == null && right == null) {
         return false;
@@ -1392,7 +1392,7 @@ bool string::operator_not_equals(char* self, any right)
     return strcmp(self, right) != 0 && right != wildcard;
 }
 
-bool char*::operator_not_equals(char* self, any right) 
+bool char*::operator_not_equals(char* self, char* right) 
 {
     if(self == null && right == null) {
         return false;

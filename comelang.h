@@ -2856,21 +2856,21 @@ static inline vector<double>*% double[]::to_vector(double* self, size_t len)
 //////////////////////////////
 /// base library(equals)
 //////////////////////////////
-bool bool::equals(bool self, any right);
-bool char::equals(char self, any right);
-bool int::equals(int self, any right);
-bool short::equals(short self, any right);
-bool long::equals(long self, any right);
-bool size_t::equals(long self, any right);
-bool float::equals(float self, any right);
-bool double::equals(double self, any right);
-bool char*::equals(char* self, any right);
-bool string::equals(char* self, any right);
+bool bool::equals(bool self, bool right);
+bool char::equals(char self, char right);
+bool int::equals(int self, int right);
+bool short::equals(short self, short right);
+bool long::equals(long self, long right);
+bool size_t::equals(long self, size_t right);
+bool float::equals(float self, float right);
+bool double::equals(double self, double right);
+bool char*::equals(char* self, char* right);
+bool string::equals(char* self, char* right);
 
-bool string::operator_equals(char* self, any right);
-bool char*::operator_equals(char* self, any right);
-bool string::operator_not_equals(char* self, any right);
-bool char*::operator_not_equals(char* self, any right);
+bool string::operator_equals(char* self, char* right);
+bool char*::operator_equals(char* self, char* right);
+bool string::operator_not_equals(char* self, char* right);
+bool char*::operator_not_equals(char* self, char* right);
 
 string char*::operator_add(char* self, char* right);
 string string::operator_add(char* self, char* right);
