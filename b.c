@@ -1,14 +1,14 @@
-#include <stdio.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
-    int a = 1;
-    a && { goto X; }
+    int a = 123;
     
-X:
-    return 0;
+    string a = s"AAA";
     
-    printf("a %d\n", a);
+    var a = [s"AAA", s"BBBB"];
+    
+    int a = 234;
     
     return 0;
 }

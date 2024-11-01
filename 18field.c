@@ -1566,8 +1566,9 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 
                 node = new sStoreFieldNode(node, right_node, field_name, info) implements sNode;
             }
-            else if(!gComeC && (field_name === "exception_throw" || field_name === "exception_value" || *info->p == '(' || *info->p == '{' || parse_method_generics_type || (*info->p == '-' && *(info->p+1) == '>' && *(info->p+2) == '('))) {
-                if(field_name === "if") {
+            else if(!gComeC && (*info->p == '(' || *info->p == '{' || parse_method_generics_type || (*info->p == '-' && *(info->p+1) == '>' && *(info->p+2) == '('))) {
+                if(field_name === "if") 
+                {
                     node = parse_if_method_call(clone node, info);
                 }
                 else if(field_name === "elif") {
@@ -1582,12 +1583,14 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 else if(field_name === "rescue") {
                     node = parse_rescue_method_call(clone node, info);
                 }
+/*
                 else if(field_name === "exception_throw") {
                     node = create_exception_throw(clone node, info);
                 }
                 else if(field_name === "exception_value") {
                     node = create_exception_value(clone node, info);
                 }
+*/
                 else {
                     node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
                     node = parse_method_call(clone node, field_name, info);

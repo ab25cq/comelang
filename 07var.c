@@ -27,8 +27,11 @@ class sStoreNode extends sNodeBase
         if(self.multiple_declare) {
             sVar* var_ = info.lv_table.mVars[self.name]??;
             if(var_) {
-                err_msg(info, "Already appended this var name(%s)(1)", self.name);
-                return false;
+                if(var_->mType->mHeap) {
+                    free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                }
+                
+                info.lv_table.mVars.remove(self.name);
             }
             
             if(self.type == null) {
@@ -41,6 +44,14 @@ class sStoreNode extends sNodeBase
             
             foreach(it, self.multiple_declare) {
                 var type, var_name, right_value = it;
+                var_ = info.lv_table.mVars[var_name]??;
+                if(var_) {
+                    if(var_->mType->mHeap) {
+                        free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                    }
+                    
+                    info.lv_table.mVars.remove(var_name);
+                }
                 add_variable_to_table(var_name, clone type, info);
                 
                 var_ = get_variable_from_table(info.lv_table, var_name);
@@ -83,6 +94,15 @@ class sStoreNode extends sNodeBase
             int i = 0;
             foreach(it, self.multiple_assign) {
                 if(i < right_type.mGenericsTypes.length()) {
+                    sVar* var_ = info.lv_table.mVars[it]??;
+                    if(var_) {
+                        if(var_->mType->mHeap) {
+                            free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                        }
+                        
+                        info.lv_table.mVars.remove(it);
+                    }
+            
                     sType* right_type2 = right_type.mGenericsTypes[i];
                     right_type2->mFunctionParam = false;
                     add_variable_to_table(it, clone right_type2, info);
@@ -152,8 +172,11 @@ class sStoreNode extends sNodeBase
         else if(self.right_value == null) { // assert(self.alloc == true)
             sVar* var_ = info.lv_table.mVars[self.name]??;
             if(var_) {
-                err_msg(info, "Already appended this var name(%s)(1)", self.name);
-                return false;
+                if(var_->mType->mHeap) {
+                    free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                }
+                
+                info.lv_table.mVars.remove(self.name);
             }
             
             if(self.type == null) {
@@ -225,8 +248,11 @@ class sStoreNode extends sNodeBase
         else if(self.alloc) { // right_value != null
             sVar* var_ = info.lv_table.mVars[self.name]??;
             if(var_) {
-                err_msg(info, "Already appended this var name(%s)(2)", self.name);
-                return false;
+                if(var_->mType->mHeap) {
+                    free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                }
+                
+                info.lv_table.mVars.remove(self.name);
             }
             
             if(self.type == null) {

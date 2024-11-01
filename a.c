@@ -11,7 +11,8 @@ int main(int argc, char** argv)
         else {
             puts("UHO");
             
-            if(true) {
+            if(true) {{
+                puts("aaA");
             }
             else {
                 if(true) {
