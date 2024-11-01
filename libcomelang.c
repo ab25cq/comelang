@@ -11,6 +11,8 @@ using C
 }
 #endif
 
+any wildcard = (void*)"__WILD_CARD__";
+
 //////////////////////////////
 /// exception
 //////////////////////////////
@@ -1275,47 +1277,47 @@ string buffer*::to_string(buffer* self)
 //////////////////////////////
 /// base library(equals)
 //////////////////////////////
-bool bool::equals(bool self, bool right) 
+bool bool::equals(bool self, any right) 
 {
-    return self == right;
+    return self == right || right == wildcard;
 }
 
-bool int::equals(int self, int right) 
+bool char::equals(char self, any right) 
 {
-    return self == right;
+    return self == right || right == wildcard;
 }
 
-bool char::equals(char self, char right) 
+bool short::equals(short self, any right) 
 {
-    return self == right;
+    return self == right || right == wildcard;
 }
 
-bool short::equals(short self, short right) 
+bool int::equals(int self, any right) 
 {
-    return self == right;
+    return self == right || right == wildcard;
 }
 
-bool long::equals(long self, long right) 
+bool long::equals(long self, any right) 
 {
-    return self == right;
+    return self == right || right == wildcard;
 }
 
-bool size_t::equals(size_t self, size_t right) 
+bool size_t::equals(size_t self, any right) 
 {
-    return self == right;
+    return self == right || right == wildcard;
 }
 
-bool float::equals(float self, float right) 
+bool float::equals(float self, any right) 
 {
-    return self == right;
+    return self == (float)(long)right || right == wildcard;
 }
 
-bool double::equals(double self, double right) 
+bool double::equals(double self, any right) 
 {
-    return self == right;
+    return self == (double)(long)right || right == wildcard;
 }
 
-bool string::equals(char* self, char* right) 
+bool string::equals(char* self, any right) 
 {
     if(self == null && right == null) {
         return true;
@@ -1327,10 +1329,10 @@ bool string::equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0;
+    return strcmp(self, right) == 0 || right == wildcard;
 }
 
-bool char*::equals(char* self, char* right) 
+bool char*::equals(char* self, any right) 
 {
     if(self == null && right == null) {
         return true;
@@ -1342,10 +1344,10 @@ bool char*::equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0;
+    return strcmp(self, right) == 0 || right == wildcard;
 }
 
-bool string::operator_equals(char* self, char* right) 
+bool string::operator_equals(char* self, any right) 
 {
     if(self == null && right == null) {
         return true;
@@ -1357,10 +1359,10 @@ bool string::operator_equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0;
+    return strcmp(self, right) == 0 || right == wildcard;
 }
 
-bool char*::operator_equals(char* self, char* right) 
+bool char*::operator_equals(char* self, any right) 
 {
     if(self == null && right == null) {
         return true;
@@ -1372,10 +1374,10 @@ bool char*::operator_equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0;
+    return strcmp(self, right) == 0 || right == wildcard;
 }
 
-bool string::operator_not_equals(char* self, char* right) 
+bool string::operator_not_equals(char* self, any right) 
 {
     if(self == null && right == null) {
         return false;
@@ -1387,10 +1389,10 @@ bool string::operator_not_equals(char* self, char* right)
         return true;
     }
     
-    return strcmp(self, right) != 0;
+    return strcmp(self, right) != 0 && right != wildcard;
 }
 
-bool char*::operator_not_equals(char* self, char* right) 
+bool char*::operator_not_equals(char* self, any right) 
 {
     if(self == null && right == null) {
         return false;
@@ -1402,7 +1404,7 @@ bool char*::operator_not_equals(char* self, char* right)
         return true;
     }
     
-    return strcmp(self, right) != 0;
+    return strcmp(self, right) != 0 && right != wildcard;
 }
 
 
@@ -2665,6 +2667,43 @@ void int::times(int self, void* parent, void (*block)(void* parent, int it))
     }
 }
 
+record int assert(int exp) version 2
+{
+    if(exp) {
+    }
+    else {
+        puts("assert failure");
+        stackframe();
+        exit(2);
+    }
+}
+
+/*
+int __builtin_bswap32(int x) 
+{
+    return ((x >> 24) & 0x000000FF) |
+           ((x >> 8)  & 0x0000FF00) |
+           ((x << 8)  & 0x00FF0000) |
+           ((x << 24) & 0xFF000000);
+}
+
+long __builtin_bswap64(long x) 
+{
+    return ((x >> 56) & 0x00000000000000FFULL) |
+           ((x >> 40) & 0x000000000000FF00ULL) |
+           ((x >> 24) & 0x0000000000FF0000ULL) |
+           ((x >> 8)  & 0x00000000FF000000ULL) |
+           ((x << 8)  & 0x000000FF00000000ULL) |
+           ((x << 24) & 0x0000FF0000000000ULL) |
+           ((x << 40) & 0x00FF000000000000ULL) |
+           ((x << 56) & 0xFF00000000000000ULL);
+}
+
+short __builtin_bswap16(short x) 
+{
+    return (x >> 8) | (x << 8);
+}
+
 //////////////////////////////
 // integer
 //////////////////////////////
@@ -2717,17 +2756,17 @@ int integer::compare(integer* left, integer* right)
 
 bool integer::equals(integer* self, integer* right)
 {
-    return self.value == right.value;
+    return self.value == right.value || self == wildcard;
 }
 
 bool integer::operator_equals(integer* self, integer* right)
 {
-    return self.value == right.value;
+    return self.equals(right);
 }
 
 bool integer::operator_not_equals(integer* self, integer* right)
 {
-    return self.value != right.value;
+    return !self.equals(right);
 }
 
 integer*% integer::operator_add(integer* left, integer* right)
@@ -2808,43 +2847,6 @@ integer*% integer::operator_andand(integer* left, integer* right)
 integer*% integer::operator_oror(integer* left, integer* right)
 {
     return new integer(left.value || right.value);
-}
-
-record int assert(int exp) version 2
-{
-    if(exp) {
-    }
-    else {
-        puts("assert failure");
-        stackframe();
-        exit(2);
-    }
-}
-
-/*
-int __builtin_bswap32(int x) 
-{
-    return ((x >> 24) & 0x000000FF) |
-           ((x >> 8)  & 0x0000FF00) |
-           ((x << 8)  & 0x00FF0000) |
-           ((x << 24) & 0xFF000000);
-}
-
-long __builtin_bswap64(long x) 
-{
-    return ((x >> 56) & 0x00000000000000FFULL) |
-           ((x >> 40) & 0x000000000000FF00ULL) |
-           ((x >> 24) & 0x0000000000FF0000ULL) |
-           ((x >> 8)  & 0x00000000FF000000ULL) |
-           ((x << 8)  & 0x000000FF00000000ULL) |
-           ((x << 24) & 0x0000FF0000000000ULL) |
-           ((x << 40) & 0x00FF000000000000ULL) |
-           ((x << 56) & 0xFF00000000000000ULL);
-}
-
-short __builtin_bswap16(short x) 
-{
-    return (x >> 8) | (x << 8);
 }
 
 */

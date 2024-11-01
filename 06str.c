@@ -311,22 +311,22 @@ class sListNode extends sNodeBase
         
         buffer*% source = new buffer();
         
-        source.append_str("{");
+        source.append_str("(");
         
         int i = 0;
         foreach(it, params) {
             if(list_element_type->mHeap) {
-                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s);\n", var_->mCValueName, i, params[i].c_value));
+                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, params[i].c_value));
             }
             else {
-                source.append_str(xsprintf("%s[%d]=%s;\n", var_->mCValueName, i, params[i].c_value));
+                source.append_str(xsprintf("%s[%d]=%s,\n", var_->mCValueName, i, params[i].c_value));
             }
             i++;
         }
         
-        source.append_str("}");
+        //source.append_str(")");
         
-        add_come_code(info, "%s", source.to_string());
+        //add_come_code(info, "%s", source.to_string());
         
         sType*% list_type = new sType("list");
         list_type->mGenericsTypes.push_back(clone list_element_type);
@@ -399,26 +399,27 @@ class sListNode extends sNodeBase
         
         come_params.push_back(come_value3);
         
-        buffer*% buf = new buffer();
+        //buffer*% buf = new buffer();
         
-        buf.append_str(generics_fun_name);
-        buf.append_str("(");
+        source.append_str(generics_fun_name);
+        source.append_str("(");
         
         int j = 0;
         foreach(it, come_params) {
-            buf.append_str(it.c_value);
+            source.append_str(it.c_value);
             
             if(j != come_params.length()-1) {
-                buf.append_str(",");
+                source.append_str(",");
             }
             
             j++;
         }
-        buf.append_str(")");
+        source.append_str(")");
+        source.append_str(")");
         
         CVALUE*% come_value4 = new CVALUE();
         
-        come_value4.c_value = buf.to_string();
+        come_value4.c_value = source.to_string();
         
         come_value4.type = clone result_type;
         come_value4.type->mStatic = false;
@@ -1107,30 +1108,30 @@ class sMapNode extends sNodeBase
         
         buffer*% source = new buffer();
         
-        source.append_str("{");
+        source.append_str("(");
         
         for(int i = 0; i<key_params.length(); i++) {
             CVALUE* key_param = key_params[i];
             CVALUE* element_param = element_params[i];
             
             if(map_key_type->mHeap) {
-                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s);\n", var_->mCValueName, i, key_param.c_value));
+                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, key_param.c_value));
             }
             else {
-                source.append_str(xsprintf("%s[%d]=%s;\n", var_->mCValueName, i, key_param.c_value));
+                source.append_str(xsprintf("%s[%d]=%s,\n", var_->mCValueName, i, key_param.c_value));
             }
             
             if(map_element_type->mHeap) {
-                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s);\n", var2_->mCValueName, i, element_param.c_value));
+                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s),\n", var2_->mCValueName, i, element_param.c_value));
             }
             else {
-                source.append_str(xsprintf("%s[%d]=%s;\n", var2_->mCValueName, i, element_param.c_value));
+                source.append_str(xsprintf("%s[%d]=%s,\n", var2_->mCValueName, i, element_param.c_value));
             }
         }
         
-        source.append_str("}");
+        //source.append_str("}");
         
-        add_come_code(info, "%s", source.to_string());
+        //add_come_code(info, "%s", source.to_string());
         
         sType*% map_type = new sType("map");
         map_type->mGenericsTypes.push_back(clone map_key_type);
@@ -1212,26 +1213,27 @@ class sMapNode extends sNodeBase
         
         come_params.push_back(come_value4);
         
-        buffer*% buf = new buffer();
+        //buffer*% buf = new buffer();
         
-        buf.append_str(generics_fun_name);
-        buf.append_str("(");
+        source.append_str(generics_fun_name);
+        source.append_str("(");
         
         int j = 0;
         foreach(it, come_params) {
-            buf.append_str(it.c_value);
+            source.append_str(it.c_value);
             
             if(j != come_params.length()-1) {
-                buf.append_str(",");
+                source.append_str(",");
             }
             
             j++;
         }
-        buf.append_str(")");
+        source.append_str(")");
+        source.append_str(")");
         
         CVALUE*% come_value5 = new CVALUE();
         
-        come_value5.c_value = buf.to_string();
+        come_value5.c_value = source.to_string();
         come_value5.type = clone result_type;
         come_value5.type->mStatic = false;
         come_value5.var = null;

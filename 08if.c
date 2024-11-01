@@ -844,7 +844,7 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
     
     expected_next_character('{');
     
-    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
+    sNode*% it_node = store_var(s"Value", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
     
     expected_next_character('(');
     
@@ -896,7 +896,7 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
         else_block = new sBlock(info);
         else_block.mOmitSemicolon = true;
         
-        else_block.mNodes.push_back(create_load_var("it"));
+        else_block.mNodes.push_back(create_load_var("Value"));
     }
     
     return new sMatchNode(it_node, new sIfNode(conditional_value, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
@@ -907,9 +907,9 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
     string sname = clone info->sname;
     int sline = info->sline;
     
-    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
+    sNode*% it_node = store_var(s"Value", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
     
-    sNode*% conditional_node = create_load_var("it");
+    sNode*% conditional_node = create_load_var("Value");
     
     parse_sharp();
 
@@ -981,7 +981,7 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
         else_block = new sBlock(info);
         else_block.mOmitSemicolon = true;
         
-        else_block.mNodes.push_back(create_load_var("it"));
+        else_block.mNodes.push_back(create_load_var("Value"));
     }
 
     sNode*% result = new sIfMethodNode(it_node, new sIfNode(conditional_node, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
@@ -994,9 +994,9 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
     string sname = clone info->sname;
     int sline = info->sline;
     
-    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
+    sNode*% it_node = store_var(s"Value", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
     
-    sNode*% conditional_node = create_load_var("it");
+    sNode*% conditional_node = create_load_var("Value");
     sNode*% conditional_node2 = craete_logical_denial(conditional_node, info);
     
     parse_sharp();
@@ -1069,7 +1069,7 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
         else_block = new sBlock(info);
         else_block.mOmitSemicolon = true;
         
-        else_block.mNodes.push_back(create_load_var("it"));
+        else_block.mNodes.push_back(create_load_var("Value"));
     }
 
     sNode*% result = new sIfMethodNode(it_node, new sIfNode(conditional_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
@@ -1082,9 +1082,9 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
     string sname = clone info->sname;
     int sline = info->sline;
     
-    sNode*% it_node = store_var(s"it", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
+    sNode*% it_node = store_var(s"Value", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
     
-    sNode*% conditional_node = create_load_var("it");
+    sNode*% conditional_node = create_load_var("Value");
     sNode*% conditional_node2 = create_less(conditional_node, create_int_node(0, info), info);
     
     parse_sharp();
@@ -1157,7 +1157,7 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
         else_block = new sBlock(info);
         else_block.mOmitSemicolon = true;
         
-        else_block.mNodes.push_back(create_load_var("it"));
+        else_block.mNodes.push_back(create_load_var("Value"));
     }
 
     sNode*% result = new sIfMethodNode(it_node, new sIfNode(conditional_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;

@@ -79,6 +79,7 @@ extern char* program_invocation_short_name;
 extern char* program_invocation_name;
 typedef void* any;
 typedef char* string;
+extern void* wildcard;
 extern _Bool gComeGCLib;
 extern void* gComeFunResultObject;
 struct buffer
@@ -1181,6 +1182,32 @@ static struct vector$1int* vector$1int_initialize_with_values(struct vector$1int
 static struct vector$1long* vector$1long_initialize_with_values(struct vector$1long* self, int num_value, long* values);
 static struct vector$1float* vector$1float_initialize_with_values(struct vector$1float* self, int num_value, float* values);
 static struct vector$1double* vector$1double_initialize_with_values(struct vector$1double* self, int num_value, double* values);
+struct integer* integer_initialize(struct integer* self, long value);
+struct integer* char_to_integer(char self);
+struct integer* short_to_integer(short short self);
+struct integer* int_to_integer(int self);
+struct integer* long_to_integer(long self);
+int integer_to_int(struct integer* self);
+_Bool integer_equals(struct integer* self, struct integer* right);
+int integer_compare(struct integer* self, struct integer* right);
+_Bool integer_operator_equals(struct integer* self, struct integer* right);
+_Bool integer_operator_not_equals(struct integer* self, struct integer* right);
+struct integer* integer_operator_add(struct integer* left, struct integer* right);
+struct integer* integer_operator_sub(struct integer* left, struct integer* right);
+struct integer* integer_operator_mult(struct integer* left, struct integer* right);
+struct integer* integer_operator_div(struct integer* left, struct integer* right);
+struct integer* integer_operator_mod(struct integer* left, struct integer* right);
+struct integer* integer_operator_lshift(struct integer* left, struct integer* right);
+struct integer* integer_operator_rshift(struct integer* left, struct integer* right);
+struct integer* integer_operator_gteq(struct integer* left, struct integer* right);
+struct integer* integer_operator_lteq(struct integer* left, struct integer* right);
+struct integer* integer_operator_lt(struct integer* left, struct integer* right);
+struct integer* integer_operator_gt(struct integer* left, struct integer* right);
+struct integer* integer_operator_and(struct integer* left, struct integer* right);
+struct integer* integer_operator_xor(struct integer* left, struct integer* right);
+struct integer* integer_operator_or(struct integer* left, struct integer* right);
+struct integer* integer_operator_andand(struct integer* left, struct integer* right);
+struct integer* integer_operator_oror(struct integer* left, struct integer* right);
 int sNodeBase_sline(struct sNodeBase* self, struct sInfo* info);
 char* sNodeBase_sname(struct sNodeBase* self, struct sInfo* info);
 struct CVALUE* CVALUE_initialize(struct CVALUE* self);
@@ -1615,20 +1642,20 @@ int buffer_compare(struct buffer* left, struct buffer* right);
 struct buffer* string_to_buffer(char* self);
 struct buffer* charp_to_buffer(char* self);
 char* buffer_to_string(struct buffer* self);
-_Bool bool_equals(_Bool self, _Bool right);
-_Bool int_equals(int self, int right);
-_Bool char_equals(char self, char right);
-_Bool short_equals(short short self, short short right);
-_Bool long_equals(long self, long right);
-_Bool size_t_equals(unsigned long unsigned  int self, unsigned long unsigned  int right);
-_Bool float_equals(float self, float right);
-_Bool double_equals(double self, double right);
-_Bool string_equals(char* self, char* right);
-_Bool charp_equals(char* self, char* right);
-_Bool string_operator_equals(char* self, char* right);
-_Bool charp_operator_equals(char* self, char* right);
-_Bool string_operator_not_equals(char* self, char* right);
-_Bool charp_operator_not_equals(char* self, char* right);
+_Bool bool_equals(_Bool self, void* right);
+_Bool char_equals(char self, void* right);
+_Bool short_equals(short short self, void* right);
+_Bool int_equals(int self, void* right);
+_Bool long_equals(long self, void* right);
+_Bool size_t_equals(unsigned long unsigned  int self, void* right);
+_Bool float_equals(float self, void* right);
+_Bool double_equals(double self, void* right);
+_Bool string_equals(char* self, void* right);
+_Bool charp_equals(char* self, void* right);
+_Bool string_operator_equals(char* self, void* right);
+_Bool charp_operator_equals(char* self, void* right);
+_Bool string_operator_not_equals(char* self, void* right);
+_Bool charp_operator_not_equals(char* self, void* right);
 char* charp_operator_add(char* self, char* right);
 char* string_operator_add(char* self, char* right);
 char* charp_operator_mult(char* self, int right);
@@ -1718,35 +1745,10 @@ char* charp_printf(char* self, ...);
 int int_printf(int self, char* msg);
 char* string_puts(char* self);
 void int_times(int self, void* parent, void (*block)(void*,int));
-struct integer* integer_initialize(struct integer* self, long value);
-int integer_to_int(struct integer* self);
-struct integer* char_to_integer(char self);
-struct integer* short_to_integer(short short self);
-struct integer* int_to_integer(int self);
-struct integer* long_to_integer(long self);
-int integer_compare(struct integer* left, struct integer* right);
-_Bool integer_equals(struct integer* self, struct integer* right);
-_Bool integer_operator_equals(struct integer* self, struct integer* right);
-_Bool integer_operator_not_equals(struct integer* self, struct integer* right);
-struct integer* integer_operator_add(struct integer* left, struct integer* right);
-struct integer* integer_operator_sub(struct integer* left, struct integer* right);
-struct integer* integer_operator_mult(struct integer* left, struct integer* right);
-struct integer* integer_operator_div(struct integer* left, struct integer* right);
-struct integer* integer_operator_mod(struct integer* left, struct integer* right);
-struct integer* integer_operator_lshift(struct integer* left, struct integer* right);
-struct integer* integer_operator_rshift(struct integer* left, struct integer* right);
-struct integer* integer_operator_gteq(struct integer* left, struct integer* right);
-struct integer* integer_operator_lteq(struct integer* left, struct integer* right);
-struct integer* integer_operator_lt(struct integer* left, struct integer* right);
-struct integer* integer_operator_gt(struct integer* left, struct integer* right);
-struct integer* integer_operator_and(struct integer* left, struct integer* right);
-struct integer* integer_operator_xor(struct integer* left, struct integer* right);
-struct integer* integer_operator_or(struct integer* left, struct integer* right);
-struct integer* integer_operator_andand(struct integer* left, struct integer* right);
-struct integer* integer_operator_oror(struct integer* left, struct integer* right);
 int assert_v2(int exp);
 // uniq global variable
 // source head3
+void* wildcard=(void*)"__WILD_CARD__";
 char* gComeStackFrameSName[128];
 int gComeStackFrameSLine[128];
 int gComeStackFrameID[128];
@@ -1773,7 +1775,7 @@ static inline struct buffer* charpa_to_buffer(char* self, unsigned long unsigned
 void* __result_obj__=(void*)0;
 struct buffer* result_0;
 struct buffer* __result1__;
-    result_0=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2205, "buffer"));
+    result_0=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2342, "buffer"));
     buffer_append(result_0,self,sizeof(char)*len);
     __result1__ = gComeFunResultObject = __result_obj__ = result_0;
     gComeFunResultObject = (void*)0;
@@ -1784,7 +1786,7 @@ void* __result_obj__=(void*)0;
 struct buffer* result_1;
 int i_2;
 struct buffer* __result2__;
-    result_1=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2212, "buffer"));
+    result_1=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2349, "buffer"));
     for(    i_2=0;    i_2<len;    i_2++    ){
         buffer_append(result_1,self[i_2],strlen(self[i_2]));
     }
@@ -1796,7 +1798,7 @@ static inline struct buffer* shortpa_to_buffer(short short* self, unsigned long 
 void* __result_obj__=(void*)0;
 struct buffer* result_3;
 struct buffer* __result3__;
-    result_3=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2221, "buffer"));
+    result_3=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2358, "buffer"));
     buffer_append(result_3,(char*)self,sizeof(short short)*len);
     __result3__ = gComeFunResultObject = __result_obj__ = result_3;
     gComeFunResultObject = (void*)0;
@@ -1806,7 +1808,7 @@ static inline struct buffer* intpa_to_buffer(int* self, unsigned long unsigned  
 void* __result_obj__=(void*)0;
 struct buffer* result_4;
 struct buffer* __result4__;
-    result_4=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2228, "buffer"));
+    result_4=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2365, "buffer"));
     buffer_append(result_4,(char*)self,sizeof(int)*len);
     __result4__ = gComeFunResultObject = __result_obj__ = result_4;
     gComeFunResultObject = (void*)0;
@@ -1816,7 +1818,7 @@ static inline struct buffer* longpa_to_buffer(long* self, unsigned long unsigned
 void* __result_obj__=(void*)0;
 struct buffer* result_5;
 struct buffer* __result5__;
-    result_5=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2235, "buffer"));
+    result_5=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2372, "buffer"));
     buffer_append(result_5,(char*)self,sizeof(long)*len);
     __result5__ = gComeFunResultObject = __result_obj__ = result_5;
     gComeFunResultObject = (void*)0;
@@ -1826,7 +1828,7 @@ static inline struct buffer* floatpa_to_buffer(float* self, unsigned long unsign
 void* __result_obj__=(void*)0;
 struct buffer* result_6;
 struct buffer* __result6__;
-    result_6=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2242, "buffer"));
+    result_6=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2379, "buffer"));
     buffer_append(result_6,(char*)self,sizeof(float)*len);
     __result6__ = gComeFunResultObject = __result_obj__ = result_6;
     gComeFunResultObject = (void*)0;
@@ -1836,7 +1838,7 @@ static inline struct buffer* doublepa_to_buffer(double* self, unsigned long unsi
 void* __result_obj__=(void*)0;
 struct buffer* result_7;
 struct buffer* __result7__;
-    result_7=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2249, "buffer"));
+    result_7=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2386, "buffer"));
     buffer_append(result_7,(char*)self,sizeof(double)*len);
     __result7__ = gComeFunResultObject = __result_obj__ = result_7;
     gComeFunResultObject = (void*)0;
@@ -1845,35 +1847,35 @@ struct buffer* __result7__;
 static inline struct smart_pointer$1char* buffer_to_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1char* __result9__;
-    __result9__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2549, "smart_pointer$1char"),buffer_clone(self));
+    __result9__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2686, "smart_pointer$1char"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result9__;
 }
 static inline struct smart_pointer$1char* buffer_to_char_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1char* __result10__;
-    __result10__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2554, "smart_pointer$1char"),buffer_clone(self));
+    __result10__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2691, "smart_pointer$1char"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result10__;
 }
 static inline struct smart_pointer$1short* buffer_to_short_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1short* __result12__;
-    __result12__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "./comelang.h", 2559, "smart_pointer$1short"),buffer_clone(self));
+    __result12__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "./comelang.h", 2696, "smart_pointer$1short"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result12__;
 }
 static inline struct smart_pointer$1int* buffer_to_int_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1int* __result14__;
-    __result14__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "./comelang.h", 2564, "smart_pointer$1int"),buffer_clone(self));
+    __result14__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "./comelang.h", 2701, "smart_pointer$1int"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result14__;
 }
 static inline struct smart_pointer$1long* buffer_to_long_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1long* __result16__;
-    __result16__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "./comelang.h", 2569, "smart_pointer$1long"),buffer_clone(self));
+    __result16__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "./comelang.h", 2706, "smart_pointer$1long"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result16__;
 }
@@ -1881,9 +1883,9 @@ static inline struct smart_pointer$1char* charpa_to_pointer(char* self, unsigned
 void* __result_obj__=(void*)0;
 struct buffer* buf_8;
 struct smart_pointer$1char* __result17__;
-    buf_8=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2602, "buffer"));
+    buf_8=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2739, "buffer"));
     buffer_append(buf_8,(char*)self,sizeof(char)*len);
-    __result17__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2604, "smart_pointer$1char"),buf_8);
+    __result17__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2741, "smart_pointer$1char"),buf_8);
     gComeFunResultObject = (void*)0;
     return __result17__;
 }
@@ -1891,9 +1893,9 @@ static inline struct smart_pointer$1charp* charppa_to_pointer(char** self, unsig
 void* __result_obj__=(void*)0;
 struct buffer* buf_9;
 struct smart_pointer$1charp* __result19__;
-    buf_9=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2609, "buffer"));
+    buf_9=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2746, "buffer"));
     buffer_append(buf_9,(char*)self,sizeof(char*)*len);
-    __result19__ = gComeFunResultObject = __result_obj__ = smart_pointer$1charp_initialize_with_value((struct smart_pointer$1charp*)come_calloc(1, sizeof(struct smart_pointer$1charp)*(1), "./comelang.h", 2611, "smart_pointer$1charp"),buf_9);
+    __result19__ = gComeFunResultObject = __result_obj__ = smart_pointer$1charp_initialize_with_value((struct smart_pointer$1charp*)come_calloc(1, sizeof(struct smart_pointer$1charp)*(1), "./comelang.h", 2748, "smart_pointer$1charp"),buf_9);
     gComeFunResultObject = (void*)0;
     return __result19__;
 }
@@ -1901,9 +1903,9 @@ static inline struct smart_pointer$1short* shortpa_to_pointer(short short* self,
 void* __result_obj__=(void*)0;
 struct buffer* buf_10;
 struct smart_pointer$1short* __result20__;
-    buf_10=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2616, "buffer"));
+    buf_10=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2753, "buffer"));
     buffer_append(buf_10,(char*)self,sizeof(short short)*len);
-    __result20__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "./comelang.h", 2618, "smart_pointer$1short"),buf_10);
+    __result20__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "./comelang.h", 2755, "smart_pointer$1short"),buf_10);
     gComeFunResultObject = (void*)0;
     return __result20__;
 }
@@ -1911,9 +1913,9 @@ static inline struct smart_pointer$1int* intpa_to_pointer(int* self, unsigned lo
 void* __result_obj__=(void*)0;
 struct buffer* buf_11;
 struct smart_pointer$1int* __result21__;
-    buf_11=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2623, "buffer"));
+    buf_11=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2760, "buffer"));
     buffer_append(buf_11,(char*)self,sizeof(int)*len);
-    __result21__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "./comelang.h", 2625, "smart_pointer$1int"),buf_11);
+    __result21__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "./comelang.h", 2762, "smart_pointer$1int"),buf_11);
     gComeFunResultObject = (void*)0;
     return __result21__;
 }
@@ -1921,9 +1923,9 @@ static inline struct smart_pointer$1long* longpa_to_pointer(long* self, unsigned
 void* __result_obj__=(void*)0;
 struct buffer* buf_12;
 struct smart_pointer$1long* __result22__;
-    buf_12=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2630, "buffer"));
+    buf_12=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2767, "buffer"));
     buffer_append(buf_12,(char*)self,sizeof(long)*len);
-    __result22__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "./comelang.h", 2632, "smart_pointer$1long"),buf_12);
+    __result22__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "./comelang.h", 2769, "smart_pointer$1long"),buf_12);
     gComeFunResultObject = (void*)0;
     return __result22__;
 }
@@ -1931,9 +1933,9 @@ static inline struct smart_pointer$1float* floatpa_to_pointer(float* self, unsig
 void* __result_obj__=(void*)0;
 struct buffer* buf_13;
 struct smart_pointer$1float* __result24__;
-    buf_13=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2637, "buffer"));
+    buf_13=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2774, "buffer"));
     buffer_append(buf_13,(char*)self,sizeof(float)*len);
-    __result24__ = gComeFunResultObject = __result_obj__ = smart_pointer$1float_initialize_with_value((struct smart_pointer$1float*)come_calloc(1, sizeof(struct smart_pointer$1float)*(1), "./comelang.h", 2639, "smart_pointer$1float"),buf_13);
+    __result24__ = gComeFunResultObject = __result_obj__ = smart_pointer$1float_initialize_with_value((struct smart_pointer$1float*)come_calloc(1, sizeof(struct smart_pointer$1float)*(1), "./comelang.h", 2776, "smart_pointer$1float"),buf_13);
     gComeFunResultObject = (void*)0;
     return __result24__;
 }
@@ -1941,107 +1943,107 @@ static inline struct smart_pointer$1double* doublepa_to_pointer(double* self, un
 void* __result_obj__=(void*)0;
 struct buffer* buf_14;
 struct smart_pointer$1double* __result26__;
-    buf_14=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2644, "buffer"));
+    buf_14=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2781, "buffer"));
     buffer_append(buf_14,(char*)self,sizeof(double)*len);
-    __result26__ = gComeFunResultObject = __result_obj__ = smart_pointer$1double_initialize_with_value((struct smart_pointer$1double*)come_calloc(1, sizeof(struct smart_pointer$1double)*(1), "./comelang.h", 2646, "smart_pointer$1double"),buf_14);
+    __result26__ = gComeFunResultObject = __result_obj__ = smart_pointer$1double_initialize_with_value((struct smart_pointer$1double*)come_calloc(1, sizeof(struct smart_pointer$1double)*(1), "./comelang.h", 2783, "smart_pointer$1double"),buf_14);
     gComeFunResultObject = (void*)0;
     return __result26__;
 }
 static inline struct list$1char* charpa_to_list(char* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1char* __result29__;
-    __result29__ = gComeFunResultObject = __result_obj__ = list$1char_initialize_with_values((struct list$1char*)come_calloc(1, sizeof(struct list$1char)*(1), "./comelang.h", 2651, "list$1char"),len,self);
+    __result29__ = gComeFunResultObject = __result_obj__ = list$1char_initialize_with_values((struct list$1char*)come_calloc(1, sizeof(struct list$1char)*(1), "./comelang.h", 2788, "list$1char"),len,self);
     gComeFunResultObject = (void*)0;
     return __result29__;
 }
 static inline struct list$1charp* charppa_to_list(char** self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1charp* __result32__;
-    __result32__ = gComeFunResultObject = __result_obj__ = list$1charp_initialize_with_values((struct list$1charp*)come_calloc(1, sizeof(struct list$1charp)*(1), "./comelang.h", 2656, "list$1charp"),len,self);
+    __result32__ = gComeFunResultObject = __result_obj__ = list$1charp_initialize_with_values((struct list$1charp*)come_calloc(1, sizeof(struct list$1charp)*(1), "./comelang.h", 2793, "list$1charp"),len,self);
     gComeFunResultObject = (void*)0;
     return __result32__;
 }
 static inline struct list$1short* shortpa_to_list(short short* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1short* __result35__;
-    __result35__ = gComeFunResultObject = __result_obj__ = list$1short_initialize_with_values((struct list$1short*)come_calloc(1, sizeof(struct list$1short)*(1), "./comelang.h", 2661, "list$1short"),len,self);
+    __result35__ = gComeFunResultObject = __result_obj__ = list$1short_initialize_with_values((struct list$1short*)come_calloc(1, sizeof(struct list$1short)*(1), "./comelang.h", 2798, "list$1short"),len,self);
     gComeFunResultObject = (void*)0;
     return __result35__;
 }
 static inline struct list$1int* intpa_to_list(int* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1int* __result38__;
-    __result38__ = gComeFunResultObject = __result_obj__ = list$1int_initialize_with_values((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "./comelang.h", 2666, "list$1int"),len,self);
+    __result38__ = gComeFunResultObject = __result_obj__ = list$1int_initialize_with_values((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "./comelang.h", 2803, "list$1int"),len,self);
     gComeFunResultObject = (void*)0;
     return __result38__;
 }
 static inline struct list$1long* longpa_to_list(long* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1long* __result41__;
-    __result41__ = gComeFunResultObject = __result_obj__ = list$1long_initialize_with_values((struct list$1long*)come_calloc(1, sizeof(struct list$1long)*(1), "./comelang.h", 2671, "list$1long"),len,self);
+    __result41__ = gComeFunResultObject = __result_obj__ = list$1long_initialize_with_values((struct list$1long*)come_calloc(1, sizeof(struct list$1long)*(1), "./comelang.h", 2808, "list$1long"),len,self);
     gComeFunResultObject = (void*)0;
     return __result41__;
 }
 static inline struct list$1float* floatpa_to_list(float* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1float* __result44__;
-    __result44__ = gComeFunResultObject = __result_obj__ = list$1float_initialize_with_values((struct list$1float*)come_calloc(1, sizeof(struct list$1float)*(1), "./comelang.h", 2676, "list$1float"),len,self);
+    __result44__ = gComeFunResultObject = __result_obj__ = list$1float_initialize_with_values((struct list$1float*)come_calloc(1, sizeof(struct list$1float)*(1), "./comelang.h", 2813, "list$1float"),len,self);
     gComeFunResultObject = (void*)0;
     return __result44__;
 }
 static inline struct list$1double* doublepa_to_list(double* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1double* __result47__;
-    __result47__ = gComeFunResultObject = __result_obj__ = list$1double_initialize_with_values((struct list$1double*)come_calloc(1, sizeof(struct list$1double)*(1), "./comelang.h", 2681, "list$1double"),len,self);
+    __result47__ = gComeFunResultObject = __result_obj__ = list$1double_initialize_with_values((struct list$1double*)come_calloc(1, sizeof(struct list$1double)*(1), "./comelang.h", 2818, "list$1double"),len,self);
     gComeFunResultObject = (void*)0;
     return __result47__;
 }
 static inline struct vector$1char* charpa_to_vector(char* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1char* __result49__;
-    __result49__ = gComeFunResultObject = __result_obj__ = vector$1char_initialize_with_values((struct vector$1char*)come_calloc(1, sizeof(struct vector$1char)*(1), "./comelang.h", 2686, "vector$1char"),len,self);
+    __result49__ = gComeFunResultObject = __result_obj__ = vector$1char_initialize_with_values((struct vector$1char*)come_calloc(1, sizeof(struct vector$1char)*(1), "./comelang.h", 2823, "vector$1char"),len,self);
     gComeFunResultObject = (void*)0;
     return __result49__;
 }
 static inline struct vector$1charp* charppa_to_vector(char** self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1charp* __result51__;
-    __result51__ = gComeFunResultObject = __result_obj__ = vector$1charp_initialize_with_values((struct vector$1charp*)come_calloc(1, sizeof(struct vector$1charp)*(1), "./comelang.h", 2691, "vector$1charp"),len,self);
+    __result51__ = gComeFunResultObject = __result_obj__ = vector$1charp_initialize_with_values((struct vector$1charp*)come_calloc(1, sizeof(struct vector$1charp)*(1), "./comelang.h", 2828, "vector$1charp"),len,self);
     gComeFunResultObject = (void*)0;
     return __result51__;
 }
 static inline struct vector$1short* shortpa_to_vector(short short* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1short* __result53__;
-    __result53__ = gComeFunResultObject = __result_obj__ = vector$1short_initialize_with_values((struct vector$1short*)come_calloc(1, sizeof(struct vector$1short)*(1), "./comelang.h", 2696, "vector$1short"),len,self);
+    __result53__ = gComeFunResultObject = __result_obj__ = vector$1short_initialize_with_values((struct vector$1short*)come_calloc(1, sizeof(struct vector$1short)*(1), "./comelang.h", 2833, "vector$1short"),len,self);
     gComeFunResultObject = (void*)0;
     return __result53__;
 }
 static inline struct vector$1int* intpa_to_vector(int* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1int* __result55__;
-    __result55__ = gComeFunResultObject = __result_obj__ = vector$1int_initialize_with_values((struct vector$1int*)come_calloc(1, sizeof(struct vector$1int)*(1), "./comelang.h", 2701, "vector$1int"),len,self);
+    __result55__ = gComeFunResultObject = __result_obj__ = vector$1int_initialize_with_values((struct vector$1int*)come_calloc(1, sizeof(struct vector$1int)*(1), "./comelang.h", 2838, "vector$1int"),len,self);
     gComeFunResultObject = (void*)0;
     return __result55__;
 }
 static inline struct vector$1long* longpa_to_vector(long* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1long* __result57__;
-    __result57__ = gComeFunResultObject = __result_obj__ = vector$1long_initialize_with_values((struct vector$1long*)come_calloc(1, sizeof(struct vector$1long)*(1), "./comelang.h", 2706, "vector$1long"),len,self);
+    __result57__ = gComeFunResultObject = __result_obj__ = vector$1long_initialize_with_values((struct vector$1long*)come_calloc(1, sizeof(struct vector$1long)*(1), "./comelang.h", 2843, "vector$1long"),len,self);
     gComeFunResultObject = (void*)0;
     return __result57__;
 }
 static inline struct vector$1float* floatpa_to_vector(float* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1float* __result59__;
-    __result59__ = gComeFunResultObject = __result_obj__ = vector$1float_initialize_with_values((struct vector$1float*)come_calloc(1, sizeof(struct vector$1float)*(1), "./comelang.h", 2711, "vector$1float"),len,self);
+    __result59__ = gComeFunResultObject = __result_obj__ = vector$1float_initialize_with_values((struct vector$1float*)come_calloc(1, sizeof(struct vector$1float)*(1), "./comelang.h", 2848, "vector$1float"),len,self);
     gComeFunResultObject = (void*)0;
     return __result59__;
 }
 static inline struct vector$1double* doublepa_to_vector(double* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1double* __result61__;
-    __result61__ = gComeFunResultObject = __result_obj__ = vector$1double_initialize_with_values((struct vector$1double*)come_calloc(1, sizeof(struct vector$1double)*(1), "./comelang.h", 2716, "vector$1double"),len,self);
+    __result61__ = gComeFunResultObject = __result_obj__ = vector$1double_initialize_with_values((struct vector$1double*)come_calloc(1, sizeof(struct vector$1double)*(1), "./comelang.h", 2853, "vector$1double"),len,self);
     gComeFunResultObject = (void*)0;
     return __result61__;
 }
@@ -2199,7 +2201,7 @@ struct list_item$1char* litem_17;
 struct list_item$1char* litem_18;
 struct list$1char* __result27__;
     if(    self->len==0) {
-        litem_16=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 221, "list_item$1char");
+        litem_16=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 223, "list_item$1char");
         litem_16->prev=((void*)0);
         litem_16->next=((void*)0);
         litem_16->item=item;
@@ -2207,7 +2209,7 @@ struct list$1char* __result27__;
         self->head=litem_16;
     }
     else if(    self->len==1) {
-        litem_17=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 231, "list_item$1char");
+        litem_17=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 233, "list_item$1char");
         litem_17->prev=self->head;
         litem_17->next=((void*)0);
         litem_17->item=item;
@@ -2215,7 +2217,7 @@ struct list$1char* __result27__;
         self->head->next=litem_17;
     }
     else {
-        litem_18=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 241, "list_item$1char");
+        litem_18=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 243, "list_item$1char");
         litem_18->prev=self->tail;
         litem_18->next=((void*)0);
         litem_18->item=item;
@@ -2251,7 +2253,7 @@ struct list_item$1charp* litem_21;
 struct list_item$1charp* litem_22;
 struct list$1charp* __result30__;
     if(    self->len==0) {
-        litem_20=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 221, "list_item$1charp");
+        litem_20=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 223, "list_item$1charp");
         litem_20->prev=((void*)0);
         litem_20->next=((void*)0);
         litem_20->item=item;
@@ -2259,7 +2261,7 @@ struct list$1charp* __result30__;
         self->head=litem_20;
     }
     else if(    self->len==1) {
-        litem_21=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 231, "list_item$1charp");
+        litem_21=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 233, "list_item$1charp");
         litem_21->prev=self->head;
         litem_21->next=((void*)0);
         litem_21->item=item;
@@ -2267,7 +2269,7 @@ struct list$1charp* __result30__;
         self->head->next=litem_21;
     }
     else {
-        litem_22=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 241, "list_item$1charp");
+        litem_22=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 243, "list_item$1charp");
         litem_22->prev=self->tail;
         litem_22->next=((void*)0);
         litem_22->item=item;
@@ -2303,7 +2305,7 @@ struct list_item$1short* litem_25;
 struct list_item$1short* litem_26;
 struct list$1short* __result33__;
     if(    self->len==0) {
-        litem_24=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 221, "list_item$1short");
+        litem_24=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 223, "list_item$1short");
         litem_24->prev=((void*)0);
         litem_24->next=((void*)0);
         litem_24->item=item;
@@ -2311,7 +2313,7 @@ struct list$1short* __result33__;
         self->head=litem_24;
     }
     else if(    self->len==1) {
-        litem_25=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 231, "list_item$1short");
+        litem_25=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 233, "list_item$1short");
         litem_25->prev=self->head;
         litem_25->next=((void*)0);
         litem_25->item=item;
@@ -2319,7 +2321,7 @@ struct list$1short* __result33__;
         self->head->next=litem_25;
     }
     else {
-        litem_26=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 241, "list_item$1short");
+        litem_26=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 243, "list_item$1short");
         litem_26->prev=self->tail;
         litem_26->next=((void*)0);
         litem_26->item=item;
@@ -2355,7 +2357,7 @@ struct list_item$1int* litem_29;
 struct list_item$1int* litem_30;
 struct list$1int* __result36__;
     if(    self->len==0) {
-        litem_28=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 221, "list_item$1int");
+        litem_28=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 223, "list_item$1int");
         litem_28->prev=((void*)0);
         litem_28->next=((void*)0);
         litem_28->item=item;
@@ -2363,7 +2365,7 @@ struct list$1int* __result36__;
         self->head=litem_28;
     }
     else if(    self->len==1) {
-        litem_29=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 231, "list_item$1int");
+        litem_29=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 233, "list_item$1int");
         litem_29->prev=self->head;
         litem_29->next=((void*)0);
         litem_29->item=item;
@@ -2371,7 +2373,7 @@ struct list$1int* __result36__;
         self->head->next=litem_29;
     }
     else {
-        litem_30=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 241, "list_item$1int");
+        litem_30=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 243, "list_item$1int");
         litem_30->prev=self->tail;
         litem_30->next=((void*)0);
         litem_30->item=item;
@@ -2407,7 +2409,7 @@ struct list_item$1long* litem_33;
 struct list_item$1long* litem_34;
 struct list$1long* __result39__;
     if(    self->len==0) {
-        litem_32=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 221, "list_item$1long");
+        litem_32=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 223, "list_item$1long");
         litem_32->prev=((void*)0);
         litem_32->next=((void*)0);
         litem_32->item=item;
@@ -2415,7 +2417,7 @@ struct list$1long* __result39__;
         self->head=litem_32;
     }
     else if(    self->len==1) {
-        litem_33=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 231, "list_item$1long");
+        litem_33=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 233, "list_item$1long");
         litem_33->prev=self->head;
         litem_33->next=((void*)0);
         litem_33->item=item;
@@ -2423,7 +2425,7 @@ struct list$1long* __result39__;
         self->head->next=litem_33;
     }
     else {
-        litem_34=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 241, "list_item$1long");
+        litem_34=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 243, "list_item$1long");
         litem_34->prev=self->tail;
         litem_34->next=((void*)0);
         litem_34->item=item;
@@ -2459,7 +2461,7 @@ struct list_item$1float* litem_37;
 struct list_item$1float* litem_38;
 struct list$1float* __result42__;
     if(    self->len==0) {
-        litem_36=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 221, "list_item$1float");
+        litem_36=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 223, "list_item$1float");
         litem_36->prev=((void*)0);
         litem_36->next=((void*)0);
         litem_36->item=item;
@@ -2467,7 +2469,7 @@ struct list$1float* __result42__;
         self->head=litem_36;
     }
     else if(    self->len==1) {
-        litem_37=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 231, "list_item$1float");
+        litem_37=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 233, "list_item$1float");
         litem_37->prev=self->head;
         litem_37->next=((void*)0);
         litem_37->item=item;
@@ -2475,7 +2477,7 @@ struct list$1float* __result42__;
         self->head->next=litem_37;
     }
     else {
-        litem_38=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 241, "list_item$1float");
+        litem_38=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 243, "list_item$1float");
         litem_38->prev=self->tail;
         litem_38->next=((void*)0);
         litem_38->item=item;
@@ -2511,7 +2513,7 @@ struct list_item$1double* litem_41;
 struct list_item$1double* litem_42;
 struct list$1double* __result45__;
     if(    self->len==0) {
-        litem_40=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 221, "list_item$1double");
+        litem_40=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 223, "list_item$1double");
         litem_40->prev=((void*)0);
         litem_40->next=((void*)0);
         litem_40->item=item;
@@ -2519,7 +2521,7 @@ struct list$1double* __result45__;
         self->head=litem_40;
     }
     else if(    self->len==1) {
-        litem_41=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 231, "list_item$1double");
+        litem_41=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 233, "list_item$1double");
         litem_41->prev=self->head;
         litem_41->next=((void*)0);
         litem_41->item=item;
@@ -2527,7 +2529,7 @@ struct list$1double* __result45__;
         self->head->next=litem_41;
     }
     else {
-        litem_42=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 241, "list_item$1double");
+        litem_42=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 243, "list_item$1double");
         litem_42->prev=self->tail;
         litem_42->next=((void*)0);
         litem_42->item=item;
@@ -2546,7 +2548,7 @@ void* __result_obj__=(void*)0;
 struct vector$1char* __result48__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 999, "char");
+    self->items=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 1005, "char");
     memcpy(self->items,values,sizeof(char)*self->len);
     __result48__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -2559,7 +2561,7 @@ void* __result_obj__=(void*)0;
 struct vector$1charp* __result50__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(char**)come_calloc(1, sizeof(char*)*(1*(self->size)), "./comelang.h", 999, "char*");
+    self->items=(char**)come_calloc(1, sizeof(char*)*(1*(self->size)), "./comelang.h", 1005, "char*");
     memcpy(self->items,values,sizeof(char*)*self->len);
     __result50__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -2572,7 +2574,7 @@ void* __result_obj__=(void*)0;
 struct vector$1short* __result52__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(short short*)come_calloc(1, sizeof(short short)*(1*(self->size)), "./comelang.h", 999, "short");
+    self->items=(short short*)come_calloc(1, sizeof(short short)*(1*(self->size)), "./comelang.h", 1005, "short");
     memcpy(self->items,values,sizeof(short short)*self->len);
     __result52__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -2585,7 +2587,7 @@ void* __result_obj__=(void*)0;
 struct vector$1int* __result54__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(int*)come_calloc(1, sizeof(int)*(1*(self->size)), "./comelang.h", 999, "int");
+    self->items=(int*)come_calloc(1, sizeof(int)*(1*(self->size)), "./comelang.h", 1005, "int");
     memcpy(self->items,values,sizeof(int)*self->len);
     __result54__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -2598,7 +2600,7 @@ void* __result_obj__=(void*)0;
 struct vector$1long* __result56__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(long*)come_calloc(1, sizeof(long)*(1*(self->size)), "./comelang.h", 999, "long");
+    self->items=(long*)come_calloc(1, sizeof(long)*(1*(self->size)), "./comelang.h", 1005, "long");
     memcpy(self->items,values,sizeof(long)*self->len);
     __result56__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -2611,7 +2613,7 @@ void* __result_obj__=(void*)0;
 struct vector$1float* __result58__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(float*)come_calloc(1, sizeof(float)*(1*(self->size)), "./comelang.h", 999, "float");
+    self->items=(float*)come_calloc(1, sizeof(float)*(1*(self->size)), "./comelang.h", 1005, "float");
     memcpy(self->items,values,sizeof(float)*self->len);
     __result58__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -2624,7 +2626,7 @@ void* __result_obj__=(void*)0;
 struct vector$1double* __result60__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(double*)come_calloc(1, sizeof(double)*(1*(self->size)), "./comelang.h", 999, "double");
+    self->items=(double*)come_calloc(1, sizeof(double)*(1*(self->size)), "./comelang.h", 1005, "double");
     memcpy(self->items,values,sizeof(double)*self->len);
     __result60__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -2658,7 +2660,7 @@ void come_pop_stackframe(){
 void come_save_stackframe(char* sname, int sline){
 struct buffer* buf_43;
 int i_44;
-    buf_43=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 49, "buffer"));
+    buf_43=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 51, "buffer"));
     buffer_append_str(buf_43,xsprintf("%s %d\n",sname,sline));
     for(    i_44=gNumComeStackFrame-2;    i_44>=0;    i_44--    ){
         buffer_append_str(buf_43,xsprintf("%s %d #%d\n",gComeStackFrameSName[i_44],gComeStackFrameSLine[i_44],gComeStackFrameID[i_44]));
@@ -3399,7 +3401,7 @@ char* __result87__;
         return __result86__;
     }
     len_105=strlen(str)+1;
-    result_106=(char*)come_calloc(1, sizeof(char)*(1*(len_105)), "libcomelang-gc.c", 944, "char");
+    result_106=(char*)come_calloc(1, sizeof(char)*(1*(len_105)), "libcomelang-gc.c", 946, "char");
     strncpy(result_106,str,len_105);
     __result87__ = gComeFunResultObject = __result_obj__ = result_106;
     gComeFunResultObject = (void*)0;
@@ -3423,7 +3425,7 @@ struct buffer* buffer_initialize(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct buffer* __result88__;
     self->size=128;
-    self->buf=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 969, "char");
+    self->buf=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 971, "char");
     self->buf[0]=0;
     self->len=0;
     __result88__ = gComeFunResultObject = __result_obj__ = self;
@@ -3451,9 +3453,9 @@ struct buffer* __result90__;
         gComeFunResultObject = (void*)0;
         return __result89__;
     }
-    result_109=(struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 991, "buffer");
+    result_109=(struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 993, "buffer");
     result_109->size=self->size;
-    result_109->buf=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 994, "char");
+    result_109->buf=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 996, "char");
     result_109->len=self->len;
     memcpy(result_109->buf,self->buf,self->len);
     __result90__ = gComeFunResultObject = __result_obj__ = result_109;
@@ -3497,11 +3499,11 @@ struct buffer* __result92__;
         return __result91__;
     }
     if(    self->len+size+1+1>=self->size) {
-        old_buf_110=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1033, "char");
+        old_buf_110=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1035, "char");
         memcpy(old_buf_110,self->buf,self->size);
         old_len_111=self->len;
         new_size_112=(self->size+size+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_112)), "libcomelang-gc.c", 1037, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_112)), "libcomelang-gc.c", 1039, "char");
         memcpy(self->buf,old_buf_110,old_len_111);
         self->buf[old_len_111]=0;
         self->size=new_size_112;
@@ -3530,7 +3532,7 @@ struct buffer* __result94__;
         old_buf_113=charp_clone(self->buf);
         old_len_114=self->len;
         new_size_115=(self->size+10+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_115)), "libcomelang-gc.c", 1060, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_115)), "libcomelang-gc.c", 1062, "char");
         memcpy(self->buf,old_buf_113,old_len_114);
         self->buf[old_len_114]=0;
         self->size=new_size_115;
@@ -3558,11 +3560,11 @@ struct buffer* __result96__;
     }
     size_116=strlen(mem);
     if(    self->len+size_116+1+1>=self->size) {
-        old_buf_117=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1082, "char");
+        old_buf_117=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1084, "char");
         memcpy(old_buf_117,self->buf,self->size);
         old_len_118=self->len;
         new_size_119=(self->size+size_116+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_119)), "libcomelang-gc.c", 1086, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_119)), "libcomelang-gc.c", 1088, "char");
         memcpy(self->buf,old_buf_117,old_len_118);
         self->buf[old_len_118]=0;
         self->size=new_size_119;
@@ -3590,11 +3592,11 @@ struct buffer* __result98__;
     }
     size_120=strlen(mem)+1;
     if(    self->len+size_120+1+1+1>=self->size) {
-        old_buf_121=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1106, "char");
+        old_buf_121=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1108, "char");
         memcpy(old_buf_121,self->buf,self->size);
         old_len_122=self->len;
         new_size_123=(self->size+size_120+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_123)), "libcomelang-gc.c", 1110, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_123)), "libcomelang-gc.c", 1112, "char");
         memcpy(self->buf,old_buf_121,old_len_122);
         self->buf[old_len_122]=0;
         self->size=new_size_123;
@@ -3625,11 +3627,11 @@ struct buffer* __result100__;
     mem_124=&value;
     size_125=sizeof(int);
     if(    self->len+size_125+1+1>=self->size) {
-        old_buf_126=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1133, "char");
+        old_buf_126=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1135, "char");
         memcpy(old_buf_126,self->buf,self->size);
         old_len_127=self->len;
         new_size_128=(self->size+size_125+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_128)), "libcomelang-gc.c", 1137, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_128)), "libcomelang-gc.c", 1139, "char");
         memcpy(self->buf,old_buf_126,old_len_127);
         self->buf[old_len_127]=0;
         self->size=new_size_128;
@@ -3653,11 +3655,11 @@ struct buffer* __result101__;
     mem_129=&value;
     size_130=sizeof(long);
     if(    self->len+size_130+1+1>=self->size) {
-        old_buf_131=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1156, "char");
+        old_buf_131=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1158, "char");
         memcpy(old_buf_131,self->buf,self->size);
         old_len_132=self->len;
         new_size_133=(self->size+size_130+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_133)), "libcomelang-gc.c", 1160, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_133)), "libcomelang-gc.c", 1162, "char");
         memcpy(self->buf,old_buf_131,old_len_132);
         self->buf[old_len_132]=0;
         self->size=new_size_133;
@@ -3687,11 +3689,11 @@ struct buffer* __result103__;
     mem_134=&value;
     size_135=sizeof(short short);
     if(    self->len+size_135+1+1>=self->size) {
-        old_buf_136=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1183, "char");
+        old_buf_136=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "libcomelang-gc.c", 1185, "char");
         memcpy(old_buf_136,self->buf,self->size);
         old_len_137=self->len;
         new_size_138=(self->size+size_135+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_138)), "libcomelang-gc.c", 1187, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_138)), "libcomelang-gc.c", 1189, "char");
         memcpy(self->buf,old_buf_136,old_len_137);
         self->buf[old_len_137]=0;
         self->size=new_size_138;
@@ -3720,7 +3722,7 @@ struct buffer* __result105__;
     len_139=(len_139+3)&~3;
     if(    len_139>=self->size) {
         new_size_140=(self->size+1+1)*2;
-        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_140)), "libcomelang-gc.c", 1211, "char");
+        self->buf=(char*)come_calloc(1, sizeof(char)*(1*(new_size_140)), "libcomelang-gc.c", 1213, "char");
         self->size=new_size_140;
     }
     for(    i_141=self->len;    i_141<len_139;    i_141++    ){
@@ -3750,7 +3752,7 @@ void* __result_obj__=(void*)0;
 struct buffer* result_142;
 struct buffer* __result106__;
 struct buffer* __result107__;
-    result_142=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1241, "buffer"));
+    result_142=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1243, "buffer"));
     if(    self==((void*)0)) {
         __result106__ = gComeFunResultObject = __result_obj__ = result_142;
         gComeFunResultObject = (void*)0;
@@ -3767,7 +3769,7 @@ void* __result_obj__=(void*)0;
 struct buffer* result_143;
 struct buffer* __result108__;
 struct buffer* __result109__;
-    result_143=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1254, "buffer"));
+    result_143=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1256, "buffer"));
     if(    self==((void*)0)) {
         __result108__ = gComeFunResultObject = __result_obj__ = result_143;
         gComeFunResultObject = (void*)0;
@@ -3793,39 +3795,39 @@ char* __result111__;
     return __result111__;
 }
 
-_Bool bool_equals(_Bool self, _Bool right){
-    return self==right;
+_Bool bool_equals(_Bool self, void* right){
+    return self==right||right==wildcard;
 }
 
-_Bool int_equals(int self, int right){
-    return self==right;
+_Bool char_equals(char self, void* right){
+    return self==right||right==wildcard;
 }
 
-_Bool char_equals(char self, char right){
-    return self==right;
+_Bool short_equals(short short self, void* right){
+    return self==right||right==wildcard;
 }
 
-_Bool short_equals(short short self, short short right){
-    return self==right;
+_Bool int_equals(int self, void* right){
+    return self==right||right==wildcard;
 }
 
-_Bool long_equals(long self, long right){
-    return self==right;
+_Bool long_equals(long self, void* right){
+    return self==right||right==wildcard;
 }
 
-_Bool size_t_equals(unsigned long unsigned  int self, unsigned long unsigned  int right){
-    return self==right;
+_Bool size_t_equals(unsigned long unsigned  int self, void* right){
+    return self==right||right==wildcard;
 }
 
-_Bool float_equals(float self, float right){
-    return self==right;
+_Bool float_equals(float self, void* right){
+    return self==(float)(long)right||right==wildcard;
 }
 
-_Bool double_equals(double self, double right){
-    return self==right;
+_Bool double_equals(double self, void* right){
+    return self==(double)(long)right||right==wildcard;
 }
 
-_Bool string_equals(char* self, char* right){
+_Bool string_equals(char* self, void* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3835,10 +3837,10 @@ _Bool string_equals(char* self, char* right){
     else if(    right==((void*)0)) {
         return (_Bool)0;
     }
-    return strcmp(self,right)==0;
+    return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool charp_equals(char* self, char* right){
+_Bool charp_equals(char* self, void* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3848,10 +3850,10 @@ _Bool charp_equals(char* self, char* right){
     else if(    right==((void*)0)) {
         return (_Bool)0;
     }
-    return strcmp(self,right)==0;
+    return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool string_operator_equals(char* self, char* right){
+_Bool string_operator_equals(char* self, void* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3861,10 +3863,10 @@ _Bool string_operator_equals(char* self, char* right){
     else if(    right==((void*)0)) {
         return (_Bool)0;
     }
-    return strcmp(self,right)==0;
+    return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool charp_operator_equals(char* self, char* right){
+_Bool charp_operator_equals(char* self, void* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)1;
     }
@@ -3874,10 +3876,10 @@ _Bool charp_operator_equals(char* self, char* right){
     else if(    right==((void*)0)) {
         return (_Bool)0;
     }
-    return strcmp(self,right)==0;
+    return strcmp(self,right)==0||right==wildcard;
 }
 
-_Bool string_operator_not_equals(char* self, char* right){
+_Bool string_operator_not_equals(char* self, void* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)0;
     }
@@ -3887,10 +3889,10 @@ _Bool string_operator_not_equals(char* self, char* right){
     else if(    right==((void*)0)) {
         return (_Bool)1;
     }
-    return strcmp(self,right)!=0;
+    return strcmp(self,right)!=0&&right!=wildcard;
 }
 
-_Bool charp_operator_not_equals(char* self, char* right){
+_Bool charp_operator_not_equals(char* self, void* right){
     if(    self==((void*)0)&&right==((void*)0)) {
         return (_Bool)0;
     }
@@ -3900,7 +3902,7 @@ _Bool charp_operator_not_equals(char* self, char* right){
     else if(    right==((void*)0)) {
         return (_Bool)1;
     }
-    return strcmp(self,right)!=0;
+    return strcmp(self,right)!=0&&right!=wildcard;
 }
 
 char* charp_operator_add(char* self, char* right){
@@ -3915,7 +3917,7 @@ char* __result113__;
         return __result112__;
     }
     len_144=strlen(self)+strlen(right);
-    result_145=(char*)come_calloc(1, sizeof(char)*(1*(len_144+1)), "libcomelang-gc.c", 1416, "char");
+    result_145=(char*)come_calloc(1, sizeof(char)*(1*(len_144+1)), "libcomelang-gc.c", 1418, "char");
     strncpy(result_145,self,len_144+1);
     strncat(result_145,right,len_144+1);
     __result113__ = gComeFunResultObject = __result_obj__ = result_145;
@@ -3935,7 +3937,7 @@ char* __result115__;
         return __result114__;
     }
     len_146=strlen(self)+strlen(right);
-    result_147=(char*)come_calloc(1, sizeof(char)*(1*(len_146+1)), "libcomelang-gc.c", 1431, "char");
+    result_147=(char*)come_calloc(1, sizeof(char)*(1*(len_146+1)), "libcomelang-gc.c", 1433, "char");
     strncpy(result_147,self,len_146+1);
     strncat(result_147,right,len_146+1);
     __result115__ = gComeFunResultObject = __result_obj__ = result_147;
@@ -3954,7 +3956,7 @@ char* __result117__;
         gComeFunResultObject = (void*)0;
         return __result116__;
     }
-    buf_148=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1444, "buffer"));
+    buf_148=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1446, "buffer"));
     for(    i_149=0;    i_149<right;    i_149++    ){
         buffer_append_str(buf_148,self);
     }
@@ -3974,7 +3976,7 @@ char* __result119__;
         gComeFunResultObject = (void*)0;
         return __result118__;
     }
-    buf_150=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1458, "buffer"));
+    buf_150=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1460, "buffer"));
     for(    i_151=0;    i_151<right;    i_151++    ){
         buffer_append_str(buf_150,self);
     }
@@ -4180,7 +4182,7 @@ char* __result125__;
         return __result124__;
     }
     len_160=strlen(str);
-    result_161=(char*)come_calloc(1, sizeof(char)*(1*(len_160+1)), "libcomelang-gc.c", 1675, "char");
+    result_161=(char*)come_calloc(1, sizeof(char)*(1*(len_160+1)), "libcomelang-gc.c", 1677, "char");
     for(    i_162=0;    i_162<len_160;    i_162++    ){
         result_161[i_162]=str[len_160-i_162-1];
     }
@@ -4203,7 +4205,7 @@ char* __result127__;
         return __result126__;
     }
     len_163=strlen(str);
-    result_164=(char*)come_calloc(1, sizeof(char)*(1*(len_163+1)), "libcomelang-gc.c", 1692, "char");
+    result_164=(char*)come_calloc(1, sizeof(char)*(1*(len_163+1)), "libcomelang-gc.c", 1694, "char");
     for(    i_165=0;    i_165<len_163;    i_165++    ){
         result_164[i_165]=str[len_163-i_165-1];
     }
@@ -4255,7 +4257,7 @@ char* __result132__;
         gComeFunResultObject = (void*)0;
         return __result131__;
     }
-    result_167=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1737, "char");
+    result_167=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1739, "char");
     memcpy(result_167,str+head,tail-head);
     result_167[tail-head]=0;
     __result132__ = gComeFunResultObject = __result_obj__ = result_167;
@@ -4305,7 +4307,7 @@ char* __result137__;
         gComeFunResultObject = (void*)0;
         return __result136__;
     }
-    result_169=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1780, "char");
+    result_169=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1782, "char");
     memcpy(result_169,str+head,tail-head);
     result_169[tail-head]=0;
     __result137__ = gComeFunResultObject = __result_obj__ = result_169;
@@ -4355,7 +4357,7 @@ char* __result142__;
         gComeFunResultObject = (void*)0;
         return __result141__;
     }
-    result_171=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1823, "char");
+    result_171=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1825, "char");
     memcpy(result_171,str+head,tail-head);
     result_171[tail-head]=0;
     __result142__ = gComeFunResultObject = __result_obj__ = result_171;
@@ -4405,7 +4407,7 @@ char* __result147__;
         gComeFunResultObject = (void*)0;
         return __result146__;
     }
-    result_173=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1866, "char");
+    result_173=(char*)come_calloc(1, sizeof(char)*(1*(tail-head+1)), "libcomelang-gc.c", 1868, "char");
     memcpy(result_173,str+head,tail-head);
     result_173[tail-head]=0;
     __result147__ = gComeFunResultObject = __result_obj__ = result_173;
@@ -4538,12 +4540,12 @@ struct buffer* str_183;
 int i_184;
 struct list$1charph* __result162__;
     if(    self==((void*)0)) {
-        __result160__ = gComeFunResultObject = __result_obj__ = list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 1977, "list$1charph"));
+        __result160__ = gComeFunResultObject = __result_obj__ = list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 1979, "list$1charph"));
         gComeFunResultObject = (void*)0;
         return __result160__;
     }
-    result_182=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 1980, "list$1charph"));
-    str_183=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1982, "buffer"));
+    result_182=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 1982, "list$1charph"));
+    str_183=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 1984, "buffer"));
     for(    i_184=0;    i_184<charp_length(self);    i_184++    ){
         if(        self[i_184]==c) {
             list$1charph_push_back(result_182,__builtin_string(str_183->buf));
@@ -4579,7 +4581,7 @@ struct list_item$1charph* litem_186;
 struct list_item$1charph* litem_187;
 struct list$1charph* __result161__;
     if(    self->len==0) {
-        litem_185=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 221, "list_item$1charph");
+        litem_185=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 223, "list_item$1charph");
         litem_185->prev=((void*)0);
         litem_185->next=((void*)0);
         litem_185->item=item;
@@ -4587,7 +4589,7 @@ struct list$1charph* __result161__;
         self->head=litem_185;
     }
     else if(    self->len==1) {
-        litem_186=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 231, "list_item$1charph");
+        litem_186=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 233, "list_item$1charph");
         litem_186->prev=self->head;
         litem_186->next=((void*)0);
         litem_186->item=item;
@@ -4595,7 +4597,7 @@ struct list$1charph* __result161__;
         self->head->next=litem_186;
     }
     else {
-        litem_187=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 241, "list_item$1charph");
+        litem_187=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 243, "list_item$1charph");
         litem_187->prev=self->tail;
         litem_187->next=((void*)0);
         litem_187->item=item;
@@ -4616,12 +4618,12 @@ struct buffer* str_189;
 int i_190;
 struct list$1charph* __result164__;
     if(    self==((void*)0)) {
-        __result163__ = gComeFunResultObject = __result_obj__ = list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 2003, "list$1charph"));
+        __result163__ = gComeFunResultObject = __result_obj__ = list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 2005, "list$1charph"));
         gComeFunResultObject = (void*)0;
         return __result163__;
     }
-    result_188=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 2006, "list$1charph"));
-    str_189=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2008, "buffer"));
+    result_188=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 2008, "list$1charph"));
+    str_189=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2010, "buffer"));
     for(    i_190=0;    i_190<charp_length(self);    i_190++    ){
         if(        self[i_190]==c) {
             list$1charph_push_back(result_188,__builtin_string(str_189->buf));
@@ -4993,7 +4995,7 @@ char* __result191__;
         gComeFunResultObject = (void*)0;
         return __result190__;
     }
-    buf_195=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2338, "buffer"));
+    buf_195=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2340, "buffer"));
     while(1) {
         char buf2_196[1024];
         memset(&buf2_196, 0, sizeof(char)        *(1024)        );
@@ -5134,7 +5136,7 @@ char* __result198__;
         gComeFunResultObject = (void*)0;
         return __result196__;
     }
-    buf_209=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2478, "buffer"));
+    buf_209=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2480, "buffer"));
     while(1) {
         char buf2_210[1024];
         memset(&buf2_210, 0, sizeof(char)        *(1024)        );
@@ -5178,7 +5180,7 @@ char* __result202__;
         gComeFunResultObject = (void*)0;
         return __result200__;
     }
-    buf_215=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2515, "buffer"));
+    buf_215=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 2517, "buffer"));
     while(1) {
         char buf2_216[1024];
         memset(&buf2_216, 0, sizeof(char)        *(1024)        );
@@ -5205,7 +5207,7 @@ void* __result_obj__=(void*)0;
 struct list$1charph* result_220;
 struct list$1charph* __result203__;
 struct list$1charph* __result204__;
-    result_220=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 2542, "list$1charph"));
+    result_220=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-gc.c", 2544, "list$1charph"));
     if(    f==((void*)0)) {
         __result203__ = gComeFunResultObject = __result_obj__ = result_220;
         gComeFunResultObject = (void*)0;
@@ -5339,204 +5341,6 @@ int i_227;
     for(    i_227=0;    i_227<self;    i_227++    ){
         block(parent,i_227);
     }
-}
-
-struct integer* integer_initialize(struct integer* self, long value){
-void* __result_obj__=(void*)0;
-struct integer* __result215__;
-    self->value=value;
-    __result215__ = gComeFunResultObject = __result_obj__ = self;
-    gComeFunResultObject = (void*)0;
-    return __result215__;
-}
-
-int integer_to_int(struct integer* self){
-    return self->value;
-}
-
-struct integer* char_to_integer(char self){
-void* __result_obj__=(void*)0;
-struct integer* __result216__;
-    __result216__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2685, "integer"),self);
-    gComeFunResultObject = (void*)0;
-    return __result216__;
-}
-
-struct integer* short_to_integer(short short self){
-void* __result_obj__=(void*)0;
-struct integer* __result217__;
-    __result217__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2690, "integer"),self);
-    gComeFunResultObject = (void*)0;
-    return __result217__;
-}
-
-struct integer* int_to_integer(int self){
-void* __result_obj__=(void*)0;
-struct integer* __result218__;
-    __result218__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2695, "integer"),self);
-    gComeFunResultObject = (void*)0;
-    return __result218__;
-}
-
-struct integer* long_to_integer(long self){
-void* __result_obj__=(void*)0;
-struct integer* __result219__;
-    __result219__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2700, "integer"),self);
-    gComeFunResultObject = (void*)0;
-    return __result219__;
-}
-
-int integer_compare(struct integer* left, struct integer* right){
-    if(    left->value<right->value) {
-        return -1;
-    }
-    else if(    left->value>right->value) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
-    return 0;
-}
-
-_Bool integer_equals(struct integer* self, struct integer* right){
-    return self->value==right->value;
-}
-
-_Bool integer_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value;
-}
-
-_Bool integer_operator_not_equals(struct integer* self, struct integer* right){
-    return self->value!=right->value;
-}
-
-struct integer* integer_operator_add(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result220__;
-    __result220__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2735, "integer"),left->value+right->value);
-    gComeFunResultObject = (void*)0;
-    return __result220__;
-}
-
-struct integer* integer_operator_sub(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result221__;
-    __result221__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2740, "integer"),left->value-right->value);
-    gComeFunResultObject = (void*)0;
-    return __result221__;
-}
-
-struct integer* integer_operator_mult(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result222__;
-    __result222__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2745, "integer"),left->value*right->value);
-    gComeFunResultObject = (void*)0;
-    return __result222__;
-}
-
-struct integer* integer_operator_div(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result223__;
-    __result223__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2750, "integer"),left->value/right->value);
-    gComeFunResultObject = (void*)0;
-    return __result223__;
-}
-
-struct integer* integer_operator_mod(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result224__;
-    __result224__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2755, "integer"),left->value%right->value);
-    gComeFunResultObject = (void*)0;
-    return __result224__;
-}
-
-struct integer* integer_operator_lshift(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result225__;
-    __result225__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2760, "integer"),left->value<<right->value);
-    gComeFunResultObject = (void*)0;
-    return __result225__;
-}
-
-struct integer* integer_operator_rshift(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result226__;
-    __result226__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2765, "integer"),left->value>>right->value);
-    gComeFunResultObject = (void*)0;
-    return __result226__;
-}
-
-struct integer* integer_operator_gteq(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result227__;
-    __result227__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2770, "integer"),left->value>=right->value);
-    gComeFunResultObject = (void*)0;
-    return __result227__;
-}
-
-struct integer* integer_operator_lteq(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result228__;
-    __result228__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2775, "integer"),left->value<=right->value);
-    gComeFunResultObject = (void*)0;
-    return __result228__;
-}
-
-struct integer* integer_operator_lt(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result229__;
-    __result229__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2780, "integer"),left->value<right->value);
-    gComeFunResultObject = (void*)0;
-    return __result229__;
-}
-
-struct integer* integer_operator_gt(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result230__;
-    __result230__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2785, "integer"),left->value>right->value);
-    gComeFunResultObject = (void*)0;
-    return __result230__;
-}
-
-struct integer* integer_operator_and(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result231__;
-    __result231__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2790, "integer"),left->value&right->value);
-    gComeFunResultObject = (void*)0;
-    return __result231__;
-}
-
-struct integer* integer_operator_xor(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result232__;
-    __result232__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2795, "integer"),left->value^right->value);
-    gComeFunResultObject = (void*)0;
-    return __result232__;
-}
-
-struct integer* integer_operator_or(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result233__;
-    __result233__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2800, "integer"),left->value|right->value);
-    gComeFunResultObject = (void*)0;
-    return __result233__;
-}
-
-struct integer* integer_operator_andand(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result234__;
-    __result234__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2805, "integer"),left->value&&right->value);
-    gComeFunResultObject = (void*)0;
-    return __result234__;
-}
-
-struct integer* integer_operator_oror(struct integer* left, struct integer* right){
-void* __result_obj__=(void*)0;
-struct integer* __result235__;
-    __result235__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2810, "integer"),left->value||right->value);
-    gComeFunResultObject = (void*)0;
-    return __result235__;
 }
 
 int assert_v2(int exp){

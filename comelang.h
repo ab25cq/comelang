@@ -20,6 +20,8 @@ using C
 typedef void* any;
 typedef char*% string;
 
+extern any wildcard;
+
 //////////////////////////////
 /// exception
 //////////////////////////////
@@ -629,6 +631,10 @@ impl list <T>
     }
     bool equals(list<T>* left, list<T>* right)
     {
+        if(right == wildcard) {
+            return true;
+        }
+        
         if(left.len != right.len) {
             return false;
         }
@@ -1140,6 +1146,9 @@ impl vector<T>
 
     bool equals(vector<T>* left, vector<T>* right)
     {
+        if(right == wildcard) {
+            return true;
+        }
         if(left.len != right.len) {
             return false;
         }
@@ -1863,6 +1872,9 @@ impl map <T, T2>
     
     bool equals(map<T, T2>* left, map<T, T2>* right)
     {
+        if(right == wildcard) {
+            return true;
+        }
         if(left.len != right.len) {
             return false;
         }
@@ -1871,8 +1883,8 @@ impl map <T, T2>
         bool result = true;
         for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
         {
-            T2&` default_value;
-            memset(&default_value, 0, sizeof(T2));
+            T&` default_value;
+            memset(&default_value, 0, sizeof(T));
             T& it2 = right.key_list.item(n, default_value);
             
             if(it.equals(it2)) {
@@ -2026,6 +2038,25 @@ impl tuple1 <T>
             block(parent);
         }
     }
+    bool equals(tuple1<T>* left, tuple1<T>* right)
+    {
+        if(right == wildcard) {
+            return true;
+        }
+        
+        if(self.v1.equals(right.v1.equals)) {
+            return true;
+        }
+        
+        return false;
+    }
+    bool operator_equals(tuple1<T>* self, tuple1<T>* right) 
+    {
+        return self.equals(right);
+    }
+    bool operator_not_equals(tuple1<T>* left, tuple1<T>* right) {
+        return !left.equals(right);
+    }
     
     string to_string(tuple1<T>* self)
     {
@@ -2062,6 +2093,28 @@ impl tuple2 <T, T2>
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + ")";
     }
+    bool equals(tuple2<T,T2>* left, tuple2<T,T2>* right)
+    {
+        if(right == wildcard) {
+            return true;
+        }
+        
+        if(self.v1.equals(right.v1.equals)) {
+            return true;
+        }
+        if(self.v2.equals(right.v2.equals)) {
+            return true;
+        }
+        
+        return false;
+    }
+    bool operator_equals(tuple2<T,T2>* self, tuple2<T,T2>* right) 
+    {
+        return self.equals(right);
+    }
+    bool operator_not_equals(tuple2<T,T2>* left, tuple2<T,T2>* right) {
+        return !left.equals(right);
+    }
 }
 
 
@@ -2095,6 +2148,31 @@ impl tuple3 <T, T2, T3>
     string to_string(tuple3<T, T2, T3>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + ")";
+    }
+    bool equals(tuple3<T,T2,T3>* left, tuple3<T,T2,T3>* right)
+    {
+        if(right == wildcard) {
+            return true;
+        }
+        
+        if(self.v1.equals(right.v1.equals)) {
+            return true;
+        }
+        if(self.v2.equals(right.v2.equals)) {
+            return true;
+        }
+        if(self.v3.equals(right.v3.equals)) {
+            return true;
+        }
+        
+        return false;
+    }
+    bool operator_equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right) 
+    {
+        return self.equals(right);
+    }
+    bool operator_not_equals(tuple3<T,T2,T3>* left, tuple3<T,T2,T3>* right) {
+        return !left.equals(right);
     }
 }
 
@@ -2130,6 +2208,34 @@ impl tuple4 <T, T2, T3, T4>
     string to_string(tuple4<T, T2, T3, T4>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + ")";
+    }
+    bool equals(tuple4<T,T2,T3,T4>* left, tuple4<T,T2,T3,T4>* right)
+    {
+        if(right == wildcard) {
+            return true;
+        }
+        
+        if(self.v1.equals(right.v1.equals)) {
+            return true;
+        }
+        if(self.v2.equals(right.v2.equals)) {
+            return true;
+        }
+        if(self.v3.equals(right.v3.equals)) {
+            return true;
+        }
+        if(self.v4.equals(right.v4.equals)) {
+            return true;
+        }
+        
+        return false;
+    }
+    bool operator_equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right) 
+    {
+        return self.equals(right);
+    }
+    bool operator_not_equals(tuple4<T,T2,T3,T4>* left, tuple4<T,T2,T3,T4>* right) {
+        return !left.equals(right);
     }
 }
 
@@ -2167,6 +2273,37 @@ impl tuple5 <T, T2, T3, T4, T5>
     string to_string(tuple5<T, T2, T3, T4, T5>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + "," + self.v5.to_string() + ")";
+    }
+    bool equals(tuple5<T,T2,T3,T4,T5>* left, tuple5<T,T2,T3,T4,T5>* right)
+    {
+        if(right == wildcard) {
+            return true;
+        }
+        
+        if(self.v1.equals(right.v1.equals)) {
+            return true;
+        }
+        if(self.v2.equals(right.v2.equals)) {
+            return true;
+        }
+        if(self.v3.equals(right.v3.equals)) {
+            return true;
+        }
+        if(self.v4.equals(right.v4.equals)) {
+            return true;
+        }
+        if(self.v5.equals(right.v5.equals)) {
+            return true;
+        }
+        
+        return false;
+    }
+    bool operator_equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right) 
+    {
+        return self.equals(right);
+    }
+    bool operator_not_equals(tuple5<T,T2,T3,T4,T5>* left, tuple5<T,T2,T3,T4,T5>* right) {
+        return !left.equals(right);
     }
 }
 
@@ -2719,21 +2856,21 @@ static inline vector<double>*% double[]::to_vector(double* self, size_t len)
 //////////////////////////////
 /// base library(equals)
 //////////////////////////////
-bool bool::equals(bool self, bool right);
-bool char::equals(char self, char right);
-bool int::equals(int self, int right);
-bool short::equals(short self, short right);
-bool long::equals(long self, long right);
-bool size_t::equals(long self, long right);
-bool float::equals(float self, float right);
-bool double::equals(double self, double right);
-bool char*::equals(char* self, char* right);
-bool string::equals(char* self, char* right);
+bool bool::equals(bool self, any right);
+bool char::equals(char self, any right);
+bool int::equals(int self, any right);
+bool short::equals(short self, any right);
+bool long::equals(long self, any right);
+bool size_t::equals(long self, any right);
+bool float::equals(float self, any right);
+bool double::equals(double self, any right);
+bool char*::equals(char* self, any right);
+bool string::equals(char* self, any right);
 
-bool string::operator_equals(char* self, char* right);
-bool char*::operator_equals(char* self, char* right);
-bool string::operator_not_equals(char* self, char* right);
-bool char*::operator_not_equals(char* self, char* right);
+bool string::operator_equals(char* self, any right);
+bool char*::operator_equals(char* self, any right);
+bool string::operator_not_equals(char* self, any right);
+bool char*::operator_not_equals(char* self, any right);
 
 string char*::operator_add(char* self, char* right);
 string string::operator_add(char* self, char* right);

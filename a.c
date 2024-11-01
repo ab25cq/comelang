@@ -1,30 +1,11 @@
-//#include <comelang.h>
+#include <comelang.h>
 
-#include <stdio.h>
 
 int main(int argc, char** argv)
 {
-    if(true) {
-        if(true) {
-        printf("%d\n", 1);
-        }
-        else {
-            puts("UHO");
-            
-            if(true) {{
-                puts("aaA");
-            }
-            else {
-                if(true) {
-                }
-                else {
-                puts("AAAA");
-                }
-            }
-        }
-    }
-    
-    puts("AAAA");
+    printf("WILRD CARD %d\n", "AAA" === wildcard);
+    printf("WILRD CARD %d\n", s"AAA" === wildcard);
+    printf("WILRD CARD %d\n", [1,2] === [1,wildcard]);
     
     return 0;
 }

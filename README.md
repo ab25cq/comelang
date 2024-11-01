@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 7.0.1
+version 7.0.2
 
 ``` C
 #include <comelang.h>
@@ -324,6 +324,7 @@ sh all_build.sh
 # Histories
 
 ```
+7.0.2 Pattern maching more improved. more fixed bugs. wildcard supported.
 7.0.1 Pattern maching bug fixed.
 7.0.0 Exception removed. I can't debug....
 6.9.9 Exception removed. I can't debug....
@@ -3336,13 +3337,13 @@ Removed.
 int main(int argc, char** argv)
 {
     string x = strcmp("A", "B").case {
-        (it < 0) { puts("Lesser"); puts("UHO!"); s"AAA" }
-        (it == 0) { puts("Equal"); s"BBB" }
-        (it > 0) { puts("Greater"); s"CCC" }
+        (Value < 0) { puts("Lesser"); puts("UHO!"); s"AAA" }
+        (Value == 0) { puts("Equal"); s"BBB" }
+        (Value > 0) { puts("Greater"); s"CCC" }
     }
     puts(x);
     string y = stringstrcmp("A", "A").case {
-        (it == 0) s"Equal" }
+        (Value == 0) s"Equal" }
         else s"Not Equal"
     }
     
@@ -3368,8 +3369,8 @@ char*% fun(int a)
 int main(int argc, char** argv)
 {
     string a = fun(1).case {
-        (it == null) s"null"
-        else it + "X"
+        (Value == null) s"null"
+        else Value + "X"
     }
     
     puts(a);
@@ -3462,6 +3463,35 @@ UNIX library and systemcall error handling
 Pattern matching block should return the value at the end of blocks.
 
 パターンマッチングのブロックではブロックの最後に値を返すべきです。
+
+# Wild card
+
+```C
+    if([1,2,3] === [1,2,wildcard]) {
+        pust("OK");
+    }
+    
+    if([1,2,5] === [1,2,wildcard]) {
+        puts("OK");
+    }
+    
+    if([1,2,5] === wildcard) {
+        puts("OK");
+    }
+```
+
+パターンマッチングで便利だと思います。
+ただし、64bit以上の大きさを持つ整数はwildcardがとる値（"__WILRD_CARD__"という定数の文字列が入ったアドレスの値）
+と偶然同じ場合もマッチしてしまいます。ポインタの場合は同じであることはありえません。
+数値型はそのような数値が偶然マッチしてしまうことに留意してください。
+数値の厳密な比較は==演算子を使ってください。
+もしくは数値をinetegerクラスを使ってヒープに取ってください。
+
+This can be useful for pattern matching.
+However, if the integer is 64 bits or larger and it happens to be the same as the value taken by wildcard (the value of an address containing the constant string "__WILRD_CARD__"), it will match. In the case of pointers, the two will not be the same.
+Please keep in mind that numeric types will match such values ​​by chance.
+For exact comparison of numeric values, use the == operator.
+Or use the ineteger class to store the numeric value in the heap.
 
 # Object initializer
 

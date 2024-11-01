@@ -948,16 +948,30 @@ class sEqNode extends sNodeBase
         CVALUE*% right_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        CVALUE*% come_value = new CVALUE();
-        
-        come_value.c_value = xsprintf("%s==%s", left_value.c_value, right_value.c_value);
-        come_value.type = clone left_value.type;
-        come_value.type->mHeap = false;
-        come_value.var = null;
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
+        if(right_value.var && (right_value.var.mName === s"wildcard")) {
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = xsprintf("1");
+            come_value.type = clone left_value.type;
+            come_value.type->mHeap = false;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+        }
+        else {
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = xsprintf("%s==%s", left_value.c_value, right_value.c_value);
+            come_value.type = clone left_value.type;
+            come_value.type->mHeap = false;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+        }
     
         return true;
     }
@@ -1000,16 +1014,30 @@ class sNotEqNode extends sNodeBase
         CVALUE*% right_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        CVALUE*% come_value = new CVALUE();
-        
-        come_value.c_value = xsprintf("%s!=%s", left_value.c_value, right_value.c_value);
-        come_value.type = clone left_value.type;
-        come_value.type->mHeap = false;
-        come_value.var = null;
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
+        if(right_value.var && right_value.var.mName === s"wildcard") {
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = xsprintf("0");
+            come_value.type = clone left_value.type;
+            come_value.type->mHeap = false;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+        }
+        else {
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = xsprintf("%s!=%s", left_value.c_value, right_value.c_value);
+            come_value.type = clone left_value.type;
+            come_value.type->mHeap = false;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+        }
     
         return true;
     }
@@ -1052,21 +1080,10 @@ class sEq2Node extends sNodeBase
         CVALUE*% right_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        sType*% type = left_value.type;
-        
-        char* fun_name = "operator_equals";
-        bool calling_fun;
-        if(self.mQuote) {
-            calling_fun = false;
-        }
-        else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
-        }
-        
-        if(!calling_fun) {
+        if(right_value.var && right_value.var.mName === s"wildcard") {
             CVALUE*% come_value = new CVALUE();
             
-            come_value.c_value = xsprintf("%s==%s", left_value.c_value, right_value.c_value);
+            come_value.c_value = xsprintf("1");
             come_value.type = clone left_value.type;
             come_value.type->mHeap = false;
             come_value.var = null;
@@ -1074,6 +1091,31 @@ class sEq2Node extends sNodeBase
             add_come_last_code(info, "%s", come_value.c_value);
             
             info.stack.push_back(come_value);
+        }
+        else {
+            sType*% type = left_value.type;
+            
+            char* fun_name = "operator_equals";
+            bool calling_fun;
+            if(self.mQuote) {
+                calling_fun = false;
+            }
+            else {
+                calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            }
+            
+            if(!calling_fun) {
+                CVALUE*% come_value = new CVALUE();
+                
+                come_value.c_value = xsprintf("%s==%s", left_value.c_value, right_value.c_value);
+                come_value.type = clone left_value.type;
+                come_value.type->mHeap = false;
+                come_value.var = null;
+                
+                add_come_last_code(info, "%s", come_value.c_value);
+                
+                info.stack.push_back(come_value);
+            }
         }
     
         return true;
@@ -1117,21 +1159,10 @@ class sNotEq2Node extends sNodeBase
         CVALUE*% right_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        sType*% type = left_value.type;
-        
-        char* fun_name = "operator_not_equals";
-        bool calling_fun;
-        if(self.mQuote) {
-            calling_fun = false;
-        }
-        else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
-        }
-        
-        if(!calling_fun) {
+        if(right_value.var && right_value.var.mName === s"wildcard") {
             CVALUE*% come_value = new CVALUE();
             
-            come_value.c_value = xsprintf("%s!=%s", left_value.c_value, right_value.c_value);
+            come_value.c_value = xsprintf("0");
             come_value.type = clone left_value.type;
             come_value.type->mHeap = false;
             come_value.var = null;
@@ -1139,6 +1170,31 @@ class sNotEq2Node extends sNodeBase
             add_come_last_code(info, "%s", come_value.c_value);
             
             info.stack.push_back(come_value);
+        }
+        else {
+            sType*% type = left_value.type;
+            
+            char* fun_name = "operator_not_equals";
+            bool calling_fun;
+            if(self.mQuote) {
+                calling_fun = false;
+            }
+            else {
+                calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            }
+            
+            if(!calling_fun) {
+                CVALUE*% come_value = new CVALUE();
+                
+                come_value.c_value = xsprintf("%s!=%s", left_value.c_value, right_value.c_value);
+                come_value.type = clone left_value.type;
+                come_value.type->mHeap = false;
+                come_value.var = null;
+                
+                add_come_last_code(info, "%s", come_value.c_value);
+                
+                info.stack.push_back(come_value);
+            }
         }
     
         return true;
