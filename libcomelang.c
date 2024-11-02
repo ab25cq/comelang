@@ -1349,52 +1349,52 @@ bool double::equals(double self, double right)
 
 bool bool::operator_equals(integer* self, integer* right)
 {
-    return self.value == right.value || right == wildcard;
+    return self.value == right.value || right.value == wildcard;
 }
 
 bool char::operator_equals(integer* self, integer* right)
 {
-    return self.value == right.value || right == wildcard;
+    return self.value == right.value || right.value == wildcard;
 }
 
 bool short::operator_equals(integer* self, integer* right)
 {
-    return self.value == right.value || right == wildcard;
+    return self.value == right.value || right.value == wildcard;
 }
 
 bool int::operator_equals(integer* self, integer* right)
 {
-    return self.value == right.value || right == wildcard;
+    return self.value == right.value || right.value == wildcard;
 }
 
 bool long::operator_equals(integer* self, integer* right)
 {
-    return self.value == right.value || right == wildcard;
+    return self.value == right.value || right.value == wildcard;
 }
 
 bool bool::operator_not_equals(integer* self, integer* right)
 {
-    return !(self.value == right.value || right == wildcard);
+    return !(self.value == right.value || right.value == wildcard);
 }
 
 bool char::operator_not_equals(integer* self, integer* right)
 {
-    return !(self.value == right.value || right == wildcard);
+    return !(self.value == right.value || right.value == wildcard);
 }
 
 bool short::operator_not_equals(integer* self, integer* right)
 {
-    return !(self.value == right.value || right == wildcard);
+    return !(self.value == right.value || right.value == wildcard);
 }
 
 bool int::operator_not_equals(integer* self, integer* right)
 {
-    return !(self.value == right.value || right == wildcard);
+    return !(self.value == right.value || right.value == wildcard);
 }
 
 bool long::operator_not_equals(integer* self, integer* right)
 {
-    return !(self.value == right.value || right == wildcard);
+    return !(self.value == right.value || right.value == wildcard);
 }
 
 bool string::equals(char* self, char* right) 
@@ -2789,22 +2789,22 @@ int integer*::to_int(integer* self)
     return self.value;
 }
 
-integer*% bool::to_integer(bool self)
+integer*% bool::to_integer(long self)
 {
     return new integer(self);
 }
 
-integer*% char::to_integer(char self)
+integer*% char::to_integer(long self)
 {
     return new integer(self);
 }
 
-integer*% short::to_integer(short self)
+integer*% short::to_integer(long self)
 {
     return new integer(self);
 }
 
-integer*% int::to_integer(int self)
+integer*% int::to_integer(long self)
 {
     return new integer(self);
 }

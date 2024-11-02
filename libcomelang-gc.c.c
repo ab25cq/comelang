@@ -1741,10 +1741,10 @@ void int_times(int self, void* parent, void (*block)(void*,int));
 int assert_v2(int exp);
 struct integer* integer_initialize(struct integer* self, long value);
 int integer_to_int(struct integer* self);
-struct integer* bool_to_integer(_Bool self);
-struct integer* char_to_integer(char self);
-struct integer* short_to_integer(short short self);
-struct integer* int_to_integer(int self);
+struct integer* bool_to_integer(long self);
+struct integer* char_to_integer(long self);
+struct integer* short_to_integer(long self);
+struct integer* int_to_integer(long self);
 struct integer* long_to_integer(long self);
 int integer_compare(struct integer* left, struct integer* right);
 _Bool integer_equals(struct integer* self, struct integer* right);
@@ -3922,43 +3922,43 @@ _Bool double_equals(double self, double right){
 }
 
 _Bool bool_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool char_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool short_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool int_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool long_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool bool_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool char_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool short_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool int_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool long_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool string_equals(char* self, char* right){
@@ -5512,7 +5512,7 @@ int integer_to_int(struct integer* self){
     return self->value;
 }
 
-struct integer* bool_to_integer(_Bool self){
+struct integer* bool_to_integer(long self){
 void* __result_obj__=(void*)0;
 struct integer* __result221__;
     __result221__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2794, "integer"),self);
@@ -5520,7 +5520,7 @@ struct integer* __result221__;
     return __result221__;
 }
 
-struct integer* char_to_integer(char self){
+struct integer* char_to_integer(long self){
 void* __result_obj__=(void*)0;
 struct integer* __result222__;
     __result222__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2799, "integer"),self);
@@ -5528,7 +5528,7 @@ struct integer* __result222__;
     return __result222__;
 }
 
-struct integer* short_to_integer(short short self){
+struct integer* short_to_integer(long self){
 void* __result_obj__=(void*)0;
 struct integer* __result223__;
     __result223__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2804, "integer"),self);
@@ -5536,7 +5536,7 @@ struct integer* __result223__;
     return __result223__;
 }
 
-struct integer* int_to_integer(int self){
+struct integer* int_to_integer(long self){
 void* __result_obj__=(void*)0;
 struct integer* __result224__;
     __result224__ = gComeFunResultObject = __result_obj__ = integer_initialize((struct integer*)come_calloc(1, sizeof(struct integer)*(1), "libcomelang-gc.c", 2809, "integer"),self);

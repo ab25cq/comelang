@@ -2,22 +2,14 @@
 
 struct sData
 {
-    long a;
-    long b;
+    integer*% a;
+    integer*% b;
 };
 
 int main(int argc, char** argv)
 {
-    var data = sData{a:1, b:2};
-    var data2 = sData{a:1, b:2};
-    
-    data.case {
-        (Value === sData {a:wildcard, b:2}) {
-            puts("MATCH");
-        }
-        else {
-            puts("NO MATCH");
-        }
+    if(1 === wildcard) {
+        puts("AAA");
     }
     
     return 0;

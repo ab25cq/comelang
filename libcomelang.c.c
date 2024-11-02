@@ -1505,10 +1505,10 @@ int assert_v2(int exp);
 struct integer* integer_initialize(struct integer* self, long value);
 static void integer_finalize(struct integer* self);
 int integer_to_int(struct integer* self);
-struct integer* bool_to_integer(_Bool self);
-struct integer* char_to_integer(char self);
-struct integer* short_to_integer(short short self);
-struct integer* int_to_integer(int self);
+struct integer* bool_to_integer(long self);
+struct integer* char_to_integer(long self);
+struct integer* short_to_integer(long self);
+struct integer* int_to_integer(long self);
 struct integer* long_to_integer(long self);
 int integer_compare(struct integer* left, struct integer* right);
 _Bool integer_equals(struct integer* self, struct integer* right);
@@ -4239,43 +4239,43 @@ _Bool double_equals(double self, double right){
 }
 
 _Bool bool_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool char_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool short_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool int_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool long_operator_equals(struct integer* self, struct integer* right){
-    return self->value==right->value||right==wildcard;
+    return self->value==right->value||right->value==wildcard;
 }
 
 _Bool bool_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool char_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool short_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool int_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool long_operator_not_equals(struct integer* self, struct integer* right){
-    return !(self->value==right->value||right==wildcard);
+    return !(self->value==right->value||right->value==wildcard);
 }
 
 _Bool string_equals(char* self, char* right){
@@ -6122,7 +6122,7 @@ int integer_to_int(struct integer* self){
     return self->value;
 }
 
-struct integer* bool_to_integer(_Bool self){
+struct integer* bool_to_integer(long self){
 void* __result_obj__=(void*)0;
 void* __right_value276 = (void*)0;
 void* __right_value277 = (void*)0;
@@ -6133,7 +6133,7 @@ struct integer* __result221__;
     return __result221__;
 }
 
-struct integer* char_to_integer(char self){
+struct integer* char_to_integer(long self){
 void* __result_obj__=(void*)0;
 void* __right_value278 = (void*)0;
 void* __right_value279 = (void*)0;
@@ -6144,7 +6144,7 @@ struct integer* __result222__;
     return __result222__;
 }
 
-struct integer* short_to_integer(short short self){
+struct integer* short_to_integer(long self){
 void* __result_obj__=(void*)0;
 void* __right_value280 = (void*)0;
 void* __right_value281 = (void*)0;
@@ -6155,7 +6155,7 @@ struct integer* __result223__;
     return __result223__;
 }
 
-struct integer* int_to_integer(int self){
+struct integer* int_to_integer(long self){
 void* __result_obj__=(void*)0;
 void* __right_value282 = (void*)0;
 void* __right_value283 = (void*)0;

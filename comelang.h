@@ -3193,10 +3193,10 @@ void int::times(int self, void* parent, void (*block)(void* parent, int it));
 // integer
 //////////////////////////////
 integer*% integer*::initialize(integer*% self, long value);
-integer*% bool::to_integer(char self);
-integer*% char::to_integer(char self);
-integer*% short::to_integer(short self);
-integer*% int::to_integer(int self);
+integer*% bool::to_integer(long self);
+integer*% char::to_integer(long self);
+integer*% short::to_integer(long self);
+integer*% int::to_integer(long self);
 integer*% long::to_integer(long self);
 int integer*::to_int(integer* self);
 string integer::to_string(integer* self);
