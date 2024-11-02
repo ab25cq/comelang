@@ -3530,8 +3530,35 @@ struct sData
 
 int main(int argc, char** argv)
 {
-    var data = new sData { a:123, b:234 };
+    var data = sData { a:123, b:234 };
     
+    data.to_string().puts(); // sData {a:123,b:234}
+    
+    return 0;
+}
+```
+
+```C
+#include <comelang.h>
+
+struct sData<T>
+{
+    T a;
+    T b;
+};
+
+int main(int argc, char** argv)
+{
+    var data = sData<integer*%> { a:123, b:234 };
+    
+    data.case {
+        (Value === sData<integer*%>(a:wildcard, b:234) {
+            puts("MATCH");
+        }
+        else {
+            puts("NO MATCH");
+        }
+    }
     data.to_string().puts(); // sData {a:123,b:234}
     
     return 0;
