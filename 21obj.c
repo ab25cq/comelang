@@ -88,6 +88,8 @@ class sNewNode extends sNodeBase
             buf.append_str(obj);
             buf.append_str(",");
             
+            sClass* klass = type3->mClass;
+            
             int i = 0;
             foreach(it, initializer) {
                 var name, exp = it;
@@ -99,7 +101,34 @@ class sNewNode extends sNodeBase
                 CVALUE*% come_value2 = get_value_from_stack(-1, info);
                 dec_stack_ptr(1, info);
                 
-                buf.append_str(xsprintf("%s->%s = %s", var_name, name, come_value2.c_value));
+                sType*% left_type = null;
+                foreach(it2, klass->mFields) {
+                    var field_name, field_type = it2;
+                    
+                    if(name === field_name) {
+                        left_type = clone field_type;
+                        break;
+                    }
+                }
+                
+                if(left_type == null) {
+                    err_msg(info, "field %s is not defined", name);
+                    return false;
+                }
+                
+                sType*% right_type = come_value2.type;
+                
+                check_assign_type(s"\{name} is assining to", left_type, right_type, come_value2);
+                
+                right_type = come_value2.type;
+                
+                if(left_type->mHeap && right_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0) {
+                    string c_value = increment_ref_count_object(left_type, come_value2.c_value, info);
+                    buf.append_str(xsprintf("%s->%s = %s", var_name, name, c_value));
+                }
+                else {
+                    buf.append_str(xsprintf("%s->%s = %s", var_name, name, come_value2.c_value));
+                }
                 
                 buf.append_str(",");
                 
@@ -1299,7 +1328,12 @@ class sIsPointer extends sNodeBase
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 21
 {
-    if(!gComeC && buf === "new") {
+    if(!gComeC && (buf === "new" || info.new_)) {
+        if(info.new_) {
+            info.p = head;
+            info.sline = head_sline;
+        }
+        
         var type, name, err = parse_type();
         if(!err) {
             err_msg(info, "parse_type failed");

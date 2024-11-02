@@ -3353,26 +3353,25 @@ struct integer* short_to_integer(short short self);
 struct integer* int_to_integer(int self);
 struct integer* long_to_integer(long self);
 int integer_to_int(struct integer* self);
+char* integer_to_string(struct integer* self);
 _Bool integer_equals(struct integer* self, struct integer* right);
 int integer_compare(struct integer* self, struct integer* right);
 _Bool integer_operator_equals(struct integer* self, struct integer* right);
 _Bool integer_operator_not_equals(struct integer* self, struct integer* right);
-struct integer* integer_operator_add(struct integer* left, struct integer* right);
-struct integer* integer_operator_sub(struct integer* left, struct integer* right);
-struct integer* integer_operator_mult(struct integer* left, struct integer* right);
-struct integer* integer_operator_div(struct integer* left, struct integer* right);
-struct integer* integer_operator_mod(struct integer* left, struct integer* right);
-struct integer* integer_operator_lshift(struct integer* left, struct integer* right);
-struct integer* integer_operator_rshift(struct integer* left, struct integer* right);
-struct integer* integer_operator_gteq(struct integer* left, struct integer* right);
-struct integer* integer_operator_lteq(struct integer* left, struct integer* right);
-struct integer* integer_operator_lt(struct integer* left, struct integer* right);
-struct integer* integer_operator_gt(struct integer* left, struct integer* right);
-struct integer* integer_operator_and(struct integer* left, struct integer* right);
-struct integer* integer_operator_xor(struct integer* left, struct integer* right);
-struct integer* integer_operator_or(struct integer* left, struct integer* right);
-struct integer* integer_operator_andand(struct integer* left, struct integer* right);
-struct integer* integer_operator_oror(struct integer* left, struct integer* right);
+int integer_operator_add(struct integer* left, struct integer* right);
+int integer_operator_sub(struct integer* left, struct integer* right);
+int integer_operator_mult(struct integer* left, struct integer* right);
+int integer_operator_div(struct integer* left, struct integer* right);
+int integer_operator_mod(struct integer* left, struct integer* right);
+int integer_operator_lshift(struct integer* left, struct integer* right);
+int integer_operator_rshift(struct integer* left, struct integer* right);
+int integer_operator_gteq(struct integer* left, struct integer* right);
+int integer_operator_lteq(struct integer* left, struct integer* right);
+int integer_operator_lt(struct integer* left, struct integer* right);
+int integer_operator_gt(struct integer* left, struct integer* right);
+int integer_operator_and(struct integer* left, struct integer* right);
+int integer_operator_xor(struct integer* left, struct integer* right);
+int integer_operator_or(struct integer* left, struct integer* right);
 int assert_v2(int exp);
 int pipe(int anonymous_var_nameX513[2]);
 int pipe2(int anonymous_var_nameX514[2], int anonymous_var_nameX515);
@@ -8349,6 +8348,18 @@ struct vector$1double* __result61__;
 static inline unsigned long unsigned  int charpa_length(char* self, unsigned long unsigned  int len){
     return len;
 }
+static inline _Bool charppa_contained(char** self, unsigned long unsigned  int len, char* str){
+_Bool result_43;
+int i_44;
+    result_43=(_Bool)0;
+    for(    i_44=0;    i_44<len;    i_44++    ){
+        if(        strncmp(self[i_44],str,strlen(self[i_44]))==0) {
+            result_43=(_Bool)1;
+            break;
+        }
+    }
+    return result_43;
+}
 static inline unsigned long unsigned  int shortpa_length(short short* self, unsigned long unsigned  int len){
     return len;
 }
@@ -8467,24 +8478,24 @@ static inline void (*ossl_check_void_freefunc_type(void (*fr)(void*)))(void*){
     return (void (*)(void*))fr;
 }
 static inline void __CPU_AND_S(unsigned long unsigned  int __size, struct cpu_set_t* __dest, const struct cpu_set_t* __src1, const struct cpu_set_t* __src2){
-unsigned long unsigned  int __i_43;
-memset(&__i_43, 0, sizeof(unsigned long unsigned  int));
-    for(    __i_43=0;    __i_43<__size/sizeof(long);    __i_43++    ){
-        ((unsigned long unsigned  int*)__dest)[__i_43]=((unsigned long unsigned  int*)__src1)[__i_43]&((unsigned long unsigned  int*)__src2)[__i_43];
-    }
-}
-static inline void __CPU_OR_S(unsigned long unsigned  int __size, struct cpu_set_t* __dest, const struct cpu_set_t* __src1, const struct cpu_set_t* __src2){
-unsigned long unsigned  int __i_44;
-memset(&__i_44, 0, sizeof(unsigned long unsigned  int));
-    for(    __i_44=0;    __i_44<__size/sizeof(long);    __i_44++    ){
-        ((unsigned long unsigned  int*)__dest)[__i_44]=((unsigned long unsigned  int*)__src1)[__i_44]|((unsigned long unsigned  int*)__src2)[__i_44];
-    }
-}
-static inline void __CPU_XOR_S(unsigned long unsigned  int __size, struct cpu_set_t* __dest, const struct cpu_set_t* __src1, const struct cpu_set_t* __src2){
 unsigned long unsigned  int __i_45;
 memset(&__i_45, 0, sizeof(unsigned long unsigned  int));
     for(    __i_45=0;    __i_45<__size/sizeof(long);    __i_45++    ){
-        ((unsigned long unsigned  int*)__dest)[__i_45]=((unsigned long unsigned  int*)__src1)[__i_45]^((unsigned long unsigned  int*)__src2)[__i_45];
+        ((unsigned long unsigned  int*)__dest)[__i_45]=((unsigned long unsigned  int*)__src1)[__i_45]&((unsigned long unsigned  int*)__src2)[__i_45];
+    }
+}
+static inline void __CPU_OR_S(unsigned long unsigned  int __size, struct cpu_set_t* __dest, const struct cpu_set_t* __src1, const struct cpu_set_t* __src2){
+unsigned long unsigned  int __i_46;
+memset(&__i_46, 0, sizeof(unsigned long unsigned  int));
+    for(    __i_46=0;    __i_46<__size/sizeof(long);    __i_46++    ){
+        ((unsigned long unsigned  int*)__dest)[__i_46]=((unsigned long unsigned  int*)__src1)[__i_46]|((unsigned long unsigned  int*)__src2)[__i_46];
+    }
+}
+static inline void __CPU_XOR_S(unsigned long unsigned  int __size, struct cpu_set_t* __dest, const struct cpu_set_t* __src1, const struct cpu_set_t* __src2){
+unsigned long unsigned  int __i_47;
+memset(&__i_47, 0, sizeof(unsigned long unsigned  int));
+    for(    __i_47=0;    __i_47<__size/sizeof(long);    __i_47++    ){
+        ((unsigned long unsigned  int*)__dest)[__i_47]=((unsigned long unsigned  int*)__src1)[__i_47]^((unsigned long unsigned  int*)__src2)[__i_47];
     }
 }
 static inline struct bio_st* ossl_check_BIO_type(struct bio_st* ptr){
@@ -9502,28 +9513,28 @@ static inline void (*ossl_check_X509_INFO_freefunc_type(void (*fr)(struct X509_i
     return (void (*)(void*))fr;
 }
 static inline unsigned long unsigned  int lh_OPENSSL_STRING_hash_thunk(const void* data, unsigned long unsigned  int (*hfn)(const void*)){
-unsigned long unsigned  int (*hfn_conv_46)(const char**);
-memset(&hfn_conv_46, 0, sizeof(unsigned long unsigned  int (*)(const char**)));
-    hfn_conv_46=(unsigned long unsigned  int (*)(const char**))hfn;
-    return hfn_conv_46((const char**)data);
+unsigned long unsigned  int (*hfn_conv_48)(const char**);
+memset(&hfn_conv_48, 0, sizeof(unsigned long unsigned  int (*)(const char**)));
+    hfn_conv_48=(unsigned long unsigned  int (*)(const char**))hfn;
+    return hfn_conv_48((const char**)data);
 }
 static inline int lh_OPENSSL_STRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_47)(const char**,const char**);
-memset(&cfn_conv_47, 0, sizeof(int (*)(const char**,const char**)));
-    cfn_conv_47=(int (*)(const char**,const char**))cfn;
-    return cfn_conv_47((const char**)da,(const char**)db);
+int (*cfn_conv_49)(const char**,const char**);
+memset(&cfn_conv_49, 0, sizeof(int (*)(const char**,const char**)));
+    cfn_conv_49=(int (*)(const char**,const char**))cfn;
+    return cfn_conv_49((const char**)da,(const char**)db);
 }
 static inline void lh_OPENSSL_STRING_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_48)(char**);
-memset(&doall_conv_48, 0, sizeof(void (*)(char**)));
-    doall_conv_48=(void (*)(char**))doall;
-    doall_conv_48((char**)node);
+void (*doall_conv_50)(char**);
+memset(&doall_conv_50, 0, sizeof(void (*)(char**)));
+    doall_conv_50=(void (*)(char**))doall;
+    doall_conv_50((char**)node);
 }
 static inline void lh_OPENSSL_STRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_49)(char**,void*);
-memset(&doall_conv_49, 0, sizeof(void (*)(char**,void*)));
-    doall_conv_49=(void (*)(char**,void*))doall;
-    doall_conv_49((char**)node,arg);
+void (*doall_conv_51)(char**,void*);
+memset(&doall_conv_51, 0, sizeof(void (*)(char**,void*)));
+    doall_conv_51=(void (*)(char**,void*))doall;
+    doall_conv_51((char**)node,arg);
 }
 static inline char** ossl_check_OPENSSL_STRING_lh_plain_type(char** ptr){
     return ptr;
@@ -9547,28 +9558,28 @@ static inline void (*ossl_check_OPENSSL_STRING_lh_doallfunc_type(void (*dfn)(cha
     return (void (*)(void*))dfn;
 }
 static inline unsigned long unsigned  int lh_OPENSSL_CSTRING_hash_thunk(const void* data, unsigned long unsigned  int (*hfn)(const void*)){
-unsigned long unsigned  int (*hfn_conv_50)(const char**);
-memset(&hfn_conv_50, 0, sizeof(unsigned long unsigned  int (*)(const char**)));
-    hfn_conv_50=(unsigned long unsigned  int (*)(const char**))hfn;
-    return hfn_conv_50((const char**)data);
+unsigned long unsigned  int (*hfn_conv_52)(const char**);
+memset(&hfn_conv_52, 0, sizeof(unsigned long unsigned  int (*)(const char**)));
+    hfn_conv_52=(unsigned long unsigned  int (*)(const char**))hfn;
+    return hfn_conv_52((const char**)data);
 }
 static inline int lh_OPENSSL_CSTRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_51)(const char**,const char**);
-memset(&cfn_conv_51, 0, sizeof(int (*)(const char**,const char**)));
-    cfn_conv_51=(int (*)(const char**,const char**))cfn;
-    return cfn_conv_51((const char**)da,(const char**)db);
+int (*cfn_conv_53)(const char**,const char**);
+memset(&cfn_conv_53, 0, sizeof(int (*)(const char**,const char**)));
+    cfn_conv_53=(int (*)(const char**,const char**))cfn;
+    return cfn_conv_53((const char**)da,(const char**)db);
 }
 static inline void lh_OPENSSL_CSTRING_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_52)(const char**);
-memset(&doall_conv_52, 0, sizeof(void (*)(const char**)));
-    doall_conv_52=(void (*)(const char**))doall;
-    doall_conv_52((const char**)node);
+void (*doall_conv_54)(const char**);
+memset(&doall_conv_54, 0, sizeof(void (*)(const char**)));
+    doall_conv_54=(void (*)(const char**))doall;
+    doall_conv_54((const char**)node);
 }
 static inline void lh_OPENSSL_CSTRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_53)(const char**,void*);
-memset(&doall_conv_53, 0, sizeof(void (*)(const char**,void*)));
-    doall_conv_53=(void (*)(const char**,void*))doall;
-    doall_conv_53((const char**)node,arg);
+void (*doall_conv_55)(const char**,void*);
+memset(&doall_conv_55, 0, sizeof(void (*)(const char**,void*)));
+    doall_conv_55=(void (*)(const char**,void*))doall;
+    doall_conv_55((const char**)node,arg);
 }
 static inline const char** ossl_check_OPENSSL_CSTRING_lh_plain_type(const char** ptr){
     return ptr;
@@ -9736,28 +9747,28 @@ static inline void (*ossl_check_CONF_VALUE_freefunc_type(void (*fr)(struct anony
     return (void (*)(void*))fr;
 }
 static inline unsigned long unsigned  int lh_CONF_VALUE_hash_thunk(const void* data, unsigned long unsigned  int (*hfn)(const void*)){
-unsigned long unsigned  int (*hfn_conv_54)(const struct anonymous_typeX43*);
-memset(&hfn_conv_54, 0, sizeof(unsigned long unsigned  int (*)(const struct anonymous_typeX43*)));
-    hfn_conv_54=(unsigned long unsigned  int (*)(const struct anonymous_typeX43*))hfn;
-    return hfn_conv_54((const struct anonymous_typeX43*)data);
+unsigned long unsigned  int (*hfn_conv_56)(const struct anonymous_typeX43*);
+memset(&hfn_conv_56, 0, sizeof(unsigned long unsigned  int (*)(const struct anonymous_typeX43*)));
+    hfn_conv_56=(unsigned long unsigned  int (*)(const struct anonymous_typeX43*))hfn;
+    return hfn_conv_56((const struct anonymous_typeX43*)data);
 }
 static inline int lh_CONF_VALUE_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_55)(const struct anonymous_typeX43*,const struct anonymous_typeX43*);
-memset(&cfn_conv_55, 0, sizeof(int (*)(const struct anonymous_typeX43*,const struct anonymous_typeX43*)));
-    cfn_conv_55=(int (*)(const struct anonymous_typeX43*,const struct anonymous_typeX43*))cfn;
-    return cfn_conv_55((const struct anonymous_typeX43*)da,(const struct anonymous_typeX43*)db);
+int (*cfn_conv_57)(const struct anonymous_typeX43*,const struct anonymous_typeX43*);
+memset(&cfn_conv_57, 0, sizeof(int (*)(const struct anonymous_typeX43*,const struct anonymous_typeX43*)));
+    cfn_conv_57=(int (*)(const struct anonymous_typeX43*,const struct anonymous_typeX43*))cfn;
+    return cfn_conv_57((const struct anonymous_typeX43*)da,(const struct anonymous_typeX43*)db);
 }
 static inline void lh_CONF_VALUE_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_56)(struct anonymous_typeX43*);
-memset(&doall_conv_56, 0, sizeof(void (*)(struct anonymous_typeX43*)));
-    doall_conv_56=(void (*)(struct anonymous_typeX43*))doall;
-    doall_conv_56((struct anonymous_typeX43*)node);
+void (*doall_conv_58)(struct anonymous_typeX43*);
+memset(&doall_conv_58, 0, sizeof(void (*)(struct anonymous_typeX43*)));
+    doall_conv_58=(void (*)(struct anonymous_typeX43*))doall;
+    doall_conv_58((struct anonymous_typeX43*)node);
 }
 static inline void lh_CONF_VALUE_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_57)(struct anonymous_typeX43*,void*);
-memset(&doall_conv_57, 0, sizeof(void (*)(struct anonymous_typeX43*,void*)));
-    doall_conv_57=(void (*)(struct anonymous_typeX43*,void*))doall;
-    doall_conv_57((struct anonymous_typeX43*)node,arg);
+void (*doall_conv_59)(struct anonymous_typeX43*,void*);
+memset(&doall_conv_59, 0, sizeof(void (*)(struct anonymous_typeX43*,void*)));
+    doall_conv_59=(void (*)(struct anonymous_typeX43*,void*))doall;
+    doall_conv_59((struct anonymous_typeX43*)node,arg);
 }
 static inline struct anonymous_typeX43* ossl_check_CONF_VALUE_lh_plain_type(struct anonymous_typeX43* ptr){
     return ptr;
@@ -9871,11 +9882,11 @@ static inline void (*ossl_check_SSL_COMP_freefunc_type(void (*fr)(struct ssl_com
     return (void (*)(void*))fr;
 }
 static inline struct bio_poll_descriptor_st SSL_as_poll_descriptor(struct ssl_st* s){
-struct bio_poll_descriptor_st d_58;
-memset(&d_58, 0, sizeof(struct bio_poll_descriptor_st));
-    d_58.type=2;
-    d_58.value.ssl=s;
-    return d_58;
+struct bio_poll_descriptor_st d_60;
+memset(&d_60, 0, sizeof(struct bio_poll_descriptor_st));
+    d_60.type=2;
+    d_60.value.ssl=s;
+    return d_60;
 }
 static inline int ERR_GET_LIB(unsigned long unsigned  int errcode){
     if(    (((errcode)&((unsigned int)2147483647+1))!=0)) {
@@ -9902,28 +9913,28 @@ static inline int ERR_COMMON_ERROR(unsigned long unsigned  int errcode){
     return (ERR_GET_RFLAGS(errcode)&(2<<18))!=0;
 }
 static inline unsigned long unsigned  int lh_ERR_STRING_DATA_hash_thunk(const void* data, unsigned long unsigned  int (*hfn)(const void*)){
-unsigned long unsigned  int (*hfn_conv_59)(const struct ERR_string_data_st*);
-memset(&hfn_conv_59, 0, sizeof(unsigned long unsigned  int (*)(const struct ERR_string_data_st*)));
-    hfn_conv_59=(unsigned long unsigned  int (*)(const struct ERR_string_data_st*))hfn;
-    return hfn_conv_59((const struct ERR_string_data_st*)data);
+unsigned long unsigned  int (*hfn_conv_61)(const struct ERR_string_data_st*);
+memset(&hfn_conv_61, 0, sizeof(unsigned long unsigned  int (*)(const struct ERR_string_data_st*)));
+    hfn_conv_61=(unsigned long unsigned  int (*)(const struct ERR_string_data_st*))hfn;
+    return hfn_conv_61((const struct ERR_string_data_st*)data);
 }
 static inline int lh_ERR_STRING_DATA_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_60)(const struct ERR_string_data_st*,const struct ERR_string_data_st*);
-memset(&cfn_conv_60, 0, sizeof(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*)));
-    cfn_conv_60=(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*))cfn;
-    return cfn_conv_60((const struct ERR_string_data_st*)da,(const struct ERR_string_data_st*)db);
+int (*cfn_conv_62)(const struct ERR_string_data_st*,const struct ERR_string_data_st*);
+memset(&cfn_conv_62, 0, sizeof(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*)));
+    cfn_conv_62=(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*))cfn;
+    return cfn_conv_62((const struct ERR_string_data_st*)da,(const struct ERR_string_data_st*)db);
 }
 static inline void lh_ERR_STRING_DATA_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_61)(struct ERR_string_data_st*);
-memset(&doall_conv_61, 0, sizeof(void (*)(struct ERR_string_data_st*)));
-    doall_conv_61=(void (*)(struct ERR_string_data_st*))doall;
-    doall_conv_61((struct ERR_string_data_st*)node);
+void (*doall_conv_63)(struct ERR_string_data_st*);
+memset(&doall_conv_63, 0, sizeof(void (*)(struct ERR_string_data_st*)));
+    doall_conv_63=(void (*)(struct ERR_string_data_st*))doall;
+    doall_conv_63((struct ERR_string_data_st*)node);
 }
 static inline void lh_ERR_STRING_DATA_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_62)(struct ERR_string_data_st*,void*);
-memset(&doall_conv_62, 0, sizeof(void (*)(struct ERR_string_data_st*,void*)));
-    doall_conv_62=(void (*)(struct ERR_string_data_st*,void*))doall;
-    doall_conv_62((struct ERR_string_data_st*)node,arg);
+void (*doall_conv_64)(struct ERR_string_data_st*,void*);
+memset(&doall_conv_64, 0, sizeof(void (*)(struct ERR_string_data_st*,void*)));
+    doall_conv_64=(void (*)(struct ERR_string_data_st*,void*))doall;
+    doall_conv_64((struct ERR_string_data_st*)node,arg);
 }
 static inline struct ERR_string_data_st* ossl_check_ERR_STRING_DATA_lh_plain_type(struct ERR_string_data_st* ptr){
     return ptr;
@@ -11002,189 +11013,190 @@ struct vector$1double* __result60__;
 
 
 
+
 int socket_fd_write(int self, char* str){
     return write(self,str,string_length(str));
 }
 
 int server_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*,_Bool*)){
-int sock_63;
+int sock_65;
 _Bool __exception_result_var_b1;
-int opt_64;
+int opt_66;
 _Bool __exception_result_var_b2;
-struct sockaddr_in address_65;
-int addrlen_66;
+struct sockaddr_in address_67;
+int addrlen_68;
 _Bool __exception_result_var_b3;
 _Bool __exception_result_var_b4;
-int new_socket_67;
-_Bool reconnection_68;
-_Bool break__69;
-memset(&address_65, 0, sizeof(struct sockaddr_in));
-    sock_63=socket(socket_family,socket_type,protocol);
-    if(    sock_63<0) {
+int new_socket_69;
+_Bool reconnection_70;
+_Bool break__71;
+memset(&address_67, 0, sizeof(struct sockaddr_in));
+    sock_65=socket(socket_family,socket_type,protocol);
+    if(    sock_65<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 16, 0),__exception_result_var_b1=die("socket failed"), come_pop_stackframe(), __exception_result_var_b1);
     }
     if(    reuse) {
-        opt_64=1;
-        if(        setsockopt(sock_63,1,2,&opt_64,sizeof(opt_64))) {
-            close(sock_63);
+        opt_66=1;
+        if(        setsockopt(sock_65,1,2,&opt_66,sizeof(opt_66))) {
+            close(sock_65);
             (come_push_stackframe("libcomelang-net-gc.c", 23, 1),__exception_result_var_b2=die(xsprintf("setsockopt")), come_pop_stackframe(), __exception_result_var_b2);
         }
     }
-    address_65.sin_family=2;
-    address_65.sin_addr.s_addr=((unsigned int)0);
-    address_65.sin_port=htons(port);
-    addrlen_66=sizeof(address_65);
-    if(    bind(sock_63,(struct sockaddr*)&address_65,sizeof(address_65))<0) {
-        close(sock_63);
+    address_67.sin_family=2;
+    address_67.sin_addr.s_addr=((unsigned int)0);
+    address_67.sin_port=htons(port);
+    addrlen_68=sizeof(address_67);
+    if(    bind(sock_65,(struct sockaddr*)&address_67,sizeof(address_67))<0) {
+        close(sock_65);
         (come_push_stackframe("libcomelang-net-gc.c", 37, 2),__exception_result_var_b3=die(xsprintf("Unable to bind")), come_pop_stackframe(), __exception_result_var_b3);
     }
-    if(    listen(sock_63,3)<0) {
-        close(sock_63);
+    if(    listen(sock_65,3)<0) {
+        close(sock_65);
         (come_push_stackframe("libcomelang-net-gc.c", 42, 3),__exception_result_var_b4=die(xsprintf("Unable to listen")), come_pop_stackframe(), __exception_result_var_b4);
     }
-    new_socket_67=accept(sock_63,(struct sockaddr*)&address_65,(unsigned int*)&addrlen_66);
+    new_socket_69=accept(sock_65,(struct sockaddr*)&address_67,(unsigned int*)&addrlen_68);
     while(1) {
-        reconnection_68=(_Bool)0;
-        break__69=(_Bool)0;
-        block(parent,new_socket_67,&break__69,&reconnection_68);
-        if(        reconnection_68) {
-            close(new_socket_67);
-            new_socket_67=accept(sock_63,(struct sockaddr*)&address_65,(unsigned int*)&addrlen_66);
+        reconnection_70=(_Bool)0;
+        break__71=(_Bool)0;
+        block(parent,new_socket_69,&break__71,&reconnection_70);
+        if(        reconnection_70) {
+            close(new_socket_69);
+            new_socket_69=accept(sock_65,(struct sockaddr*)&address_67,(unsigned int*)&addrlen_68);
         }
-        if(        break__69) {
+        if(        break__71) {
             break;
         }
     }
-    close(new_socket_67);
-    close(sock_63);
+    close(new_socket_69);
+    close(sock_65);
     return 0;
 }
 
 int client_socket(int port, char* address, void* parent, void (*block)(void*,int,_Bool*)){
-int sock_70;
-struct sockaddr_in serv_addr_71;
+int sock_72;
+struct sockaddr_in serv_addr_73;
 _Bool __exception_result_var_b5;
 _Bool __exception_result_var_b6;
 _Bool __exception_result_var_b7;
-_Bool break__72;
-_Bool break__73;
-memset(&serv_addr_71, 0, sizeof(struct sockaddr_in));
-    sock_70=0;
-    if(    (sock_70=socket(2,1,0))<0) {
+_Bool break__74;
+_Bool break__75;
+memset(&serv_addr_73, 0, sizeof(struct sockaddr_in));
+    sock_72=0;
+    if(    (sock_72=socket(2,1,0))<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 75, 4),__exception_result_var_b5=die(xsprintf("socket")), come_pop_stackframe(), __exception_result_var_b5);
     }
-    serv_addr_71.sin_family=2;
-    serv_addr_71.sin_port=htons(port);
-    if(    inet_pton(2,address,&serv_addr_71.sin_addr)<=0) {
-        close(sock_70);
+    serv_addr_73.sin_family=2;
+    serv_addr_73.sin_port=htons(port);
+    if(    inet_pton(2,address,&serv_addr_73.sin_addr)<=0) {
+        close(sock_72);
         (come_push_stackframe("libcomelang-net-gc.c", 83, 5),__exception_result_var_b6=die(xsprintf("Invalid address/ Address not supported")), come_pop_stackframe(), __exception_result_var_b6);
     }
-    if(    connect(sock_70,(struct sockaddr*)&serv_addr_71,sizeof(serv_addr_71))<0) {
-        close(sock_70);
+    if(    connect(sock_72,(struct sockaddr*)&serv_addr_73,sizeof(serv_addr_73))<0) {
+        close(sock_72);
         (come_push_stackframe("libcomelang-net-gc.c", 87, 6),__exception_result_var_b7=die(xsprintf("Connection Failed")), come_pop_stackframe(), __exception_result_var_b7);
     }
-    break__72=(_Bool)0;
+    break__74=(_Bool)0;
     while(1) {
-        break__73=(_Bool)0;
-        block(parent,sock_70,&break__73);
-        if(        break__73) {
+        break__75=(_Bool)0;
+        block(parent,sock_72,&break__75);
+        if(        break__75) {
             break;
         }
     }
-    close(sock_70);
+    close(sock_72);
     return 0;
 }
 
 char* client_socket2(int port, char* data, char* address){
 void* __result_obj__=(void*)0;
-int sock_74;
-struct sockaddr_in serv_addr_75;
+int sock_76;
+struct sockaddr_in serv_addr_77;
 _Bool __exception_result_var_b8;
 _Bool __exception_result_var_b9;
 _Bool __exception_result_var_b10;
 _Bool __exception_result_var_b11;
-struct buffer* buf_76;
-int size_78;
+struct buffer* buf_78;
+int size_80;
 _Bool __exception_result_var_b12;
 char* __result65__;
-memset(&serv_addr_75, 0, sizeof(struct sockaddr_in));
-    sock_74=0;
-    if(    (sock_74=socket(2,1,0))<0) {
+memset(&serv_addr_77, 0, sizeof(struct sockaddr_in));
+    sock_76=0;
+    if(    (sock_76=socket(2,1,0))<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 112, 7),__exception_result_var_b8=die(xsprintf("Socket creation error")), come_pop_stackframe(), __exception_result_var_b8);
     }
-    serv_addr_75.sin_family=2;
-    serv_addr_75.sin_port=htons(port);
-    if(    inet_pton(2,address,&serv_addr_75.sin_addr)<=0) {
-        close(sock_74);
+    serv_addr_77.sin_family=2;
+    serv_addr_77.sin_port=htons(port);
+    if(    inet_pton(2,address,&serv_addr_77.sin_addr)<=0) {
+        close(sock_76);
         (come_push_stackframe("libcomelang-net-gc.c", 120, 8),__exception_result_var_b9=die(xsprintf("Invalid address/ Address not supported")), come_pop_stackframe(), __exception_result_var_b9);
     }
-    if(    connect(sock_74,(struct sockaddr*)&serv_addr_75,sizeof(serv_addr_75))<0) {
-        close(sock_74);
+    if(    connect(sock_76,(struct sockaddr*)&serv_addr_77,sizeof(serv_addr_77))<0) {
+        close(sock_76);
         (come_push_stackframe("libcomelang-net-gc.c", 124, 9),__exception_result_var_b10=die(xsprintf("Connection Failed")), come_pop_stackframe(), __exception_result_var_b10);
     }
-    if(    write(sock_74,data,strlen(data))<0) {
-        close(sock_74);
+    if(    write(sock_76,data,strlen(data))<0) {
+        close(sock_76);
         (come_push_stackframe("libcomelang-net-gc.c", 129, 10),__exception_result_var_b11=die(xsprintf("Write Failed")), come_pop_stackframe(), __exception_result_var_b11);
     }
-    buf_76=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net-gc.c", 132, "buffer"));
-    char buf2_77[1024]={0};
-    size_78=read(sock_74,buf2_77,1024);
-    if(    size_78<0) {
-        close(sock_74);
+    buf_78=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net-gc.c", 132, "buffer"));
+    char buf2_79[1024]={0};
+    size_80=read(sock_76,buf2_79,1024);
+    if(    size_80<0) {
+        close(sock_76);
         (come_push_stackframe("libcomelang-net-gc.c", 140, 11),__exception_result_var_b12=die(xsprintf("Read Failed")), come_pop_stackframe(), __exception_result_var_b12);
     }
-    buffer_append(buf_76,buf2_77,size_78);
-    close(sock_74);
-    __result65__ = gComeFunResultObject = __result_obj__ = buffer_to_string(buf_76);
+    buffer_append(buf_78,buf2_79,size_80);
+    close(sock_76);
+    __result65__ = gComeFunResultObject = __result_obj__ = buffer_to_string(buf_78);
     gComeFunResultObject = (void*)0;
     return __result65__;
 }
 
 int httpd_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*)){
-int sock_79;
+int sock_81;
 _Bool __exception_result_var_b13;
-int opt_80;
+int opt_82;
 _Bool __exception_result_var_b14;
-struct sockaddr_in address_81;
-int addrlen_82;
+struct sockaddr_in address_83;
+int addrlen_84;
 _Bool __exception_result_var_b15;
 _Bool __exception_result_var_b16;
-int new_socket_83;
-_Bool break__84;
-memset(&address_81, 0, sizeof(struct sockaddr_in));
-    sock_79=socket(socket_family,socket_type,protocol);
-    if(    sock_79<0) {
+int new_socket_85;
+_Bool break__86;
+memset(&address_83, 0, sizeof(struct sockaddr_in));
+    sock_81=socket(socket_family,socket_type,protocol);
+    if(    sock_81<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 153, 12),__exception_result_var_b13=die("socket failed"), come_pop_stackframe(), __exception_result_var_b13);
     }
     if(    reuse) {
-        opt_80=1;
-        if(        setsockopt(sock_79,1,2,&opt_80,sizeof(opt_80))) {
-            close(sock_79);
+        opt_82=1;
+        if(        setsockopt(sock_81,1,2,&opt_82,sizeof(opt_82))) {
+            close(sock_81);
             (come_push_stackframe("libcomelang-net-gc.c", 160, 13),__exception_result_var_b14=die(xsprintf("setsockpt failed")), come_pop_stackframe(), __exception_result_var_b14);
         }
     }
-    address_81.sin_family=2;
-    address_81.sin_addr.s_addr=((unsigned int)0);
-    address_81.sin_port=htons(port);
-    addrlen_82=sizeof(address_81);
-    if(    bind(sock_79,(struct sockaddr*)&address_81,sizeof(address_81))<0) {
-        close(sock_79);
+    address_83.sin_family=2;
+    address_83.sin_addr.s_addr=((unsigned int)0);
+    address_83.sin_port=htons(port);
+    addrlen_84=sizeof(address_83);
+    if(    bind(sock_81,(struct sockaddr*)&address_83,sizeof(address_83))<0) {
+        close(sock_81);
         (come_push_stackframe("libcomelang-net-gc.c", 174, 14),__exception_result_var_b15=die(xsprintf("Unable to bind")), come_pop_stackframe(), __exception_result_var_b15);
     }
-    if(    listen(sock_79,3)<0) {
-        close(sock_79);
+    if(    listen(sock_81,3)<0) {
+        close(sock_81);
         (come_push_stackframe("libcomelang-net-gc.c", 179, 15),__exception_result_var_b16=die(xsprintf("Unable to listen")), come_pop_stackframe(), __exception_result_var_b16);
     }
     while(1) {
-        new_socket_83=accept(sock_79,(struct sockaddr*)&address_81,(unsigned int*)&addrlen_82);
-        break__84=(_Bool)0;
-        block(parent,new_socket_83,&break__84);
-        close(new_socket_83);
-        if(        break__84) {
+        new_socket_85=accept(sock_81,(struct sockaddr*)&address_83,(unsigned int*)&addrlen_84);
+        break__86=(_Bool)0;
+        block(parent,new_socket_85,&break__86);
+        close(new_socket_85);
+        if(        break__86) {
             break;
         }
     }
-    close(sock_79);
+    close(sock_81);
     return 0;
 }
 
@@ -11192,77 +11204,77 @@ void ERR_print_errors_fp(struct _IO_FILE* f){
 }
 
 int httpsd_socket(int port, _Bool reuse, void* parent, void (*block)(void*,struct ssl_st*,_Bool*)){
-int sock_85;
-struct ssl_ctx_st* ctx_86;
-const struct ssl_method_st* method_87;
+int sock_87;
+struct ssl_ctx_st* ctx_88;
+const struct ssl_method_st* method_89;
 _Bool __exception_result_var_b17;
 _Bool __exception_result_var_b18;
 _Bool __exception_result_var_b19;
 _Bool __exception_result_var_b20;
-struct sockaddr_in addr_88;
+struct sockaddr_in addr_90;
 _Bool __exception_result_var_b21;
 _Bool __exception_result_var_b22;
-struct sockaddr_in addr_89;
-unsigned int len_90;
-int client_91;
+struct sockaddr_in addr_91;
+unsigned int len_92;
+int client_93;
 _Bool __exception_result_var_b23;
-struct ssl_st* ssl_92;
-_Bool break__93;
-memset(&sock_85, 0, sizeof(int));
-ctx_86 = (void*)0;
-method_87 = (void*)0;
-memset(&addr_88, 0, sizeof(struct sockaddr_in));
-memset(&addr_89, 0, sizeof(struct sockaddr_in));
+struct ssl_st* ssl_94;
+_Bool break__95;
+memset(&sock_87, 0, sizeof(int));
+ctx_88 = (void*)0;
+method_89 = (void*)0;
+memset(&addr_90, 0, sizeof(struct sockaddr_in));
+memset(&addr_91, 0, sizeof(struct sockaddr_in));
     OPENSSL_init_ssl(2097152|2,((void*)0));
     OPENSSL_init_ssl(0,((void*)0));
-    method_87=TLS_server_method();
-    ctx_86=SSL_CTX_new(method_87);
-    if(    !ctx_86) {
+    method_89=TLS_server_method();
+    ctx_88=SSL_CTX_new(method_89);
+    if(    !ctx_88) {
         (come_push_stackframe("libcomelang-net-gc.c", 225, 16),__exception_result_var_b17=die(xsprintf("Unable to create SSL context")), come_pop_stackframe(), __exception_result_var_b17);
     }
-    if(    SSL_CTX_use_certificate_file(ctx_86,"cert.pem",1)<=0) {
+    if(    SSL_CTX_use_certificate_file(ctx_88,"cert.pem",1)<=0) {
         (come_push_stackframe("libcomelang-net-gc.c", 230, 17),__exception_result_var_b18=die(xsprintf("SSL_CTX_use_certificate_file")), come_pop_stackframe(), __exception_result_var_b18);
     }
-    if(    SSL_CTX_use_PrivateKey_file(ctx_86,"key.pem",1)<=0) {
+    if(    SSL_CTX_use_PrivateKey_file(ctx_88,"key.pem",1)<=0) {
         (come_push_stackframe("libcomelang-net-gc.c", 235, 18),__exception_result_var_b19=die(xsprintf("SSL_CTX_use_PrivateKey_file")), come_pop_stackframe(), __exception_result_var_b19);
     }
-    sock_85=socket(2,1,0);
-    if(    sock_85<0) {
+    sock_87=socket(2,1,0);
+    if(    sock_87<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 240, 19),__exception_result_var_b20=die(xsprintf("Unable to create socket")), come_pop_stackframe(), __exception_result_var_b20);
     }
-    addr_88.sin_family=2;
-    addr_88.sin_port=htons(port);
-    addr_88.sin_addr.s_addr=((unsigned int)0);
-    if(    bind(sock_85,(struct sockaddr*)&addr_88,sizeof(addr_88))<0) {
+    addr_90.sin_family=2;
+    addr_90.sin_port=htons(port);
+    addr_90.sin_addr.s_addr=((unsigned int)0);
+    if(    bind(sock_87,(struct sockaddr*)&addr_90,sizeof(addr_90))<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 249, 20),__exception_result_var_b21=die(xsprintf("Unable to bind")), come_pop_stackframe(), __exception_result_var_b21);
     }
-    if(    listen(sock_85,1)<0) {
+    if(    listen(sock_87,1)<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 253, 21),__exception_result_var_b22=die(xsprintf("Unable to listen")), come_pop_stackframe(), __exception_result_var_b22);
     }
     while(1) {
-        len_90=sizeof(addr_89);
-        client_91=accept(sock_85,(struct sockaddr*)&addr_89,&len_90);
-        if(        client_91<0) {
+        len_92=sizeof(addr_91);
+        client_93=accept(sock_87,(struct sockaddr*)&addr_91,&len_92);
+        if(        client_93<0) {
             (come_push_stackframe("libcomelang-net-gc.c", 262, 22),__exception_result_var_b23=die(xsprintf("Unable to accept")), come_pop_stackframe(), __exception_result_var_b23);
         }
-        ssl_92=SSL_new(ctx_86);
-        SSL_set_fd(ssl_92,client_91);
-        if(        SSL_accept(ssl_92)<=0) {
+        ssl_94=SSL_new(ctx_88);
+        SSL_set_fd(ssl_94,client_93);
+        if(        SSL_accept(ssl_94)<=0) {
             ERR_print_errors_fp((stdout));
         }
         else {
-            break__93=(_Bool)0;
-            block(parent,ssl_92,&break__93);
-            if(            break__93) {
+            break__95=(_Bool)0;
+            block(parent,ssl_94,&break__95);
+            if(            break__95) {
                 break;
             }
         }
-        SSL_shutdown(ssl_92);
-        SSL_free(ssl_92);
-        close(client_91);
+        SSL_shutdown(ssl_94);
+        SSL_free(ssl_94);
+        close(client_93);
     }
-    close(sock_85);
-    SSL_CTX_free(ctx_86);
+    close(sock_87);
+    SSL_CTX_free(ctx_88);
     while(0) {
         continue;
     }
@@ -11294,26 +11306,26 @@ _Bool __exception_result_var_b25;
 }
 
 int create_user_if_not_exists(char* user, char* password, char* root_password, char* host_name){
-char* check_user_query_94;
-struct st_mysql_res* result_95;
-char** row_96;
-int user_exists_97;
+char* check_user_query_96;
+struct st_mysql_res* result_97;
+char** row_98;
+int user_exists_99;
     come_mysql_init();
     if(    mysql_real_connect(gComeMySQL,host_name,"root",root_password,((void*)0),0,((void*)0),0)==((void*)0)) {
         finish_with_error();
     }
-    check_user_query_94=xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",charp_to_string(user),charp_to_string(host_name));
-    if(    mysql_query(gComeMySQL,check_user_query_94)==((void*)0)) {
+    check_user_query_96=xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",charp_to_string(user),charp_to_string(host_name));
+    if(    mysql_query(gComeMySQL,check_user_query_96)==((void*)0)) {
         finish_with_error();
     }
-    result_95=mysql_store_result(gComeMySQL);
-    if(    result_95==((void*)0)) {
+    result_97=mysql_store_result(gComeMySQL);
+    if(    result_97==((void*)0)) {
         finish_with_error();
     }
-    row_96=mysql_fetch_row(result_95);
-    user_exists_97=atoi(row_96[0]);
-    mysql_free_result(result_95);
-    if(    user_exists_97==0) {
+    row_98=mysql_fetch_row(result_97);
+    user_exists_99=atoi(row_98[0]);
+    mysql_free_result(result_97);
+    if(    user_exists_99==0) {
         if(        mysql_query(gComeMySQL,xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",charp_to_string(user),charp_to_string(host_name),charp_to_string(password)))==((void*)0)) {
             finish_with_error();
         }
@@ -11329,13 +11341,13 @@ int user_exists_97;
 }
 
 int create_database_if_not_exists(char* database_name, char* user_name, char* password, char* host_name){
-char* create_db_query_98;
+char* create_db_query_100;
     come_mysql_init();
     if(    mysql_real_connect(gComeMySQL,host_name,user_name,password,((void*)0),0,((void*)0),0)==((void*)0)) {
         finish_with_error();
     }
-    create_db_query_98=xsprintf("CREATE DATABASE IF NOT EXISTS \%s",charp_to_string(database_name));
-    if(    mysql_query(gComeMySQL,create_db_query_98)==((void*)0)) {
+    create_db_query_100=xsprintf("CREATE DATABASE IF NOT EXISTS \%s",charp_to_string(database_name));
+    if(    mysql_query(gComeMySQL,create_db_query_100)==((void*)0)) {
         finish_with_error();
     }
     come_mysql_final();
@@ -11365,14 +11377,14 @@ int xmysql_query(char* query, char* user, char* password, _Bool create_user, _Bo
 
 struct list$1list$1charphph* xmysql_query_and_fetch_row(char* query, char* user, char* password, _Bool create_user, _Bool create_database, char* root_password, char* database_name, char* host_name){
 void* __result_obj__=(void*)0;
-struct st_mysql_res* res_99;
-int num_fields_100;
-struct list$1list$1charphph* result_101;
-char** row_102;
-struct list$1charph* li_103;
-int i_104;
+struct st_mysql_res* res_101;
+int num_fields_102;
+struct list$1list$1charphph* result_103;
+char** row_104;
+struct list$1charph* li_105;
+int i_106;
 struct list$1list$1charphph* __result70__;
-row_102 = (void*)0;
+row_104 = (void*)0;
     if(    create_user) {
         create_user_if_not_exists(user,password,root_password,"localhost");
     }
@@ -11389,24 +11401,24 @@ row_102 = (void*)0;
     if(    mysql_query(gComeMySQL,query)==((void*)0)) {
         finish_with_error();
     }
-    res_99=mysql_store_result(gComeMySQL);
-    if(    res_99) {
+    res_101=mysql_store_result(gComeMySQL);
+    if(    res_101) {
         finish_with_error();
     }
-    num_fields_100=mysql_num_fields(res_99);
-    result_101=list$1list$1charphph_initialize((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net-gc.c", 421, "list$1list$1charphph"));
-    while((row_102=mysql_fetch_row(res_99))!=((void*)0)) {
-        li_103=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net-gc.c", 425, "list$1charph"));
-        for(        i_104=0;        i_104<num_fields_100;        i_104++        ){
-            if(            row_102[i_104]) {
-                list$1charph_add(li_103,__builtin_string(row_102[i_104]));
+    num_fields_102=mysql_num_fields(res_101);
+    result_103=list$1list$1charphph_initialize((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net-gc.c", 421, "list$1list$1charphph"));
+    while((row_104=mysql_fetch_row(res_101))!=((void*)0)) {
+        li_105=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net-gc.c", 425, "list$1charph"));
+        for(        i_106=0;        i_106<num_fields_102;        i_106++        ){
+            if(            row_104[i_106]) {
+                list$1charph_add(li_105,__builtin_string(row_104[i_106]));
             }
         }
-        list$1list$1charphph_add(result_101,li_103);
+        list$1list$1charphph_add(result_103,li_105);
     }
-    mysql_free_result(res_99);
+    mysql_free_result(res_101);
     come_mysql_final();
-    __result70__ = gComeFunResultObject = __result_obj__ = result_101;
+    __result70__ = gComeFunResultObject = __result_obj__ = result_103;
     gComeFunResultObject = (void*)0;
     return __result70__;
 }
@@ -11435,33 +11447,33 @@ struct list$1charph* __result67__;
 
 static struct list$1charph* list$1charph_add(struct list$1charph* self, char* item){
 void* __result_obj__=(void*)0;
-struct list_item$1charph* litem_105;
-struct list_item$1charph* litem_106;
 struct list_item$1charph* litem_107;
+struct list_item$1charph* litem_108;
+struct list_item$1charph* litem_109;
 struct list$1charph* __result68__;
     if(    self->len==0) {
-        litem_105=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 153, "list_item$1charph");
-        litem_105->prev=((void*)0);
-        litem_105->next=((void*)0);
-        litem_105->item=item;
-        self->tail=litem_105;
-        self->head=litem_105;
-    }
-    else if(    self->len==1) {
-        litem_106=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 163, "list_item$1charph");
-        litem_106->prev=self->head;
-        litem_106->next=((void*)0);
-        litem_106->item=item;
-        self->tail=litem_106;
-        self->head->next=litem_106;
-    }
-    else {
-        litem_107=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 173, "list_item$1charph");
-        litem_107->prev=self->tail;
+        litem_107=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 153, "list_item$1charph");
+        litem_107->prev=((void*)0);
         litem_107->next=((void*)0);
         litem_107->item=item;
-        self->tail->next=litem_107;
         self->tail=litem_107;
+        self->head=litem_107;
+    }
+    else if(    self->len==1) {
+        litem_108=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 163, "list_item$1charph");
+        litem_108->prev=self->head;
+        litem_108->next=((void*)0);
+        litem_108->item=item;
+        self->tail=litem_108;
+        self->head->next=litem_108;
+    }
+    else {
+        litem_109=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 173, "list_item$1charph");
+        litem_109->prev=self->tail;
+        litem_109->next=((void*)0);
+        litem_109->item=item;
+        self->tail->next=litem_109;
+        self->tail=litem_109;
     }
     self->len++;
     __result68__ = gComeFunResultObject = __result_obj__ = self;
@@ -11471,33 +11483,33 @@ struct list$1charph* __result68__;
 
 static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item){
 void* __result_obj__=(void*)0;
-struct list_item$1list$1charphph* litem_108;
-struct list_item$1list$1charphph* litem_109;
 struct list_item$1list$1charphph* litem_110;
+struct list_item$1list$1charphph* litem_111;
+struct list_item$1list$1charphph* litem_112;
 struct list$1list$1charphph* __result69__;
     if(    self->len==0) {
-        litem_108=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 153, "list_item$1list$1charphph");
-        litem_108->prev=((void*)0);
-        litem_108->next=((void*)0);
-        litem_108->item=item;
-        self->tail=litem_108;
-        self->head=litem_108;
-    }
-    else if(    self->len==1) {
-        litem_109=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 163, "list_item$1list$1charphph");
-        litem_109->prev=self->head;
-        litem_109->next=((void*)0);
-        litem_109->item=item;
-        self->tail=litem_109;
-        self->head->next=litem_109;
-    }
-    else {
-        litem_110=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 173, "list_item$1list$1charphph");
-        litem_110->prev=self->tail;
+        litem_110=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 153, "list_item$1list$1charphph");
+        litem_110->prev=((void*)0);
         litem_110->next=((void*)0);
         litem_110->item=item;
-        self->tail->next=litem_110;
         self->tail=litem_110;
+        self->head=litem_110;
+    }
+    else if(    self->len==1) {
+        litem_111=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 163, "list_item$1list$1charphph");
+        litem_111->prev=self->head;
+        litem_111->next=((void*)0);
+        litem_111->item=item;
+        self->tail=litem_111;
+        self->head->next=litem_111;
+    }
+    else {
+        litem_112=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 173, "list_item$1list$1charphph");
+        litem_112->prev=self->tail;
+        litem_112->next=((void*)0);
+        litem_112->item=item;
+        self->tail->next=litem_112;
+        self->tail=litem_112;
     }
     self->len++;
     __result69__ = gComeFunResultObject = __result_obj__ = self;

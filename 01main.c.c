@@ -734,6 +734,7 @@ struct sInfo
     struct list$1sVarph* match_it_var;
     struct list$1int* sline_stack;
     int sline_top;
+    _Bool new_;
 };
 struct tuple2$2sTypephcharph
 {
@@ -1249,26 +1250,25 @@ struct integer* short_to_integer(short short self);
 struct integer* int_to_integer(int self);
 struct integer* long_to_integer(long self);
 int integer_to_int(struct integer* self);
+char* integer_to_string(struct integer* self);
 _Bool integer_equals(struct integer* self, struct integer* right);
 int integer_compare(struct integer* self, struct integer* right);
 _Bool integer_operator_equals(struct integer* self, struct integer* right);
 _Bool integer_operator_not_equals(struct integer* self, struct integer* right);
-struct integer* integer_operator_add(struct integer* left, struct integer* right);
-struct integer* integer_operator_sub(struct integer* left, struct integer* right);
-struct integer* integer_operator_mult(struct integer* left, struct integer* right);
-struct integer* integer_operator_div(struct integer* left, struct integer* right);
-struct integer* integer_operator_mod(struct integer* left, struct integer* right);
-struct integer* integer_operator_lshift(struct integer* left, struct integer* right);
-struct integer* integer_operator_rshift(struct integer* left, struct integer* right);
-struct integer* integer_operator_gteq(struct integer* left, struct integer* right);
-struct integer* integer_operator_lteq(struct integer* left, struct integer* right);
-struct integer* integer_operator_lt(struct integer* left, struct integer* right);
-struct integer* integer_operator_gt(struct integer* left, struct integer* right);
-struct integer* integer_operator_and(struct integer* left, struct integer* right);
-struct integer* integer_operator_xor(struct integer* left, struct integer* right);
-struct integer* integer_operator_or(struct integer* left, struct integer* right);
-struct integer* integer_operator_andand(struct integer* left, struct integer* right);
-struct integer* integer_operator_oror(struct integer* left, struct integer* right);
+int integer_operator_add(struct integer* left, struct integer* right);
+int integer_operator_sub(struct integer* left, struct integer* right);
+int integer_operator_mult(struct integer* left, struct integer* right);
+int integer_operator_div(struct integer* left, struct integer* right);
+int integer_operator_mod(struct integer* left, struct integer* right);
+int integer_operator_lshift(struct integer* left, struct integer* right);
+int integer_operator_rshift(struct integer* left, struct integer* right);
+int integer_operator_gteq(struct integer* left, struct integer* right);
+int integer_operator_lteq(struct integer* left, struct integer* right);
+int integer_operator_lt(struct integer* left, struct integer* right);
+int integer_operator_gt(struct integer* left, struct integer* right);
+int integer_operator_and(struct integer* left, struct integer* right);
+int integer_operator_xor(struct integer* left, struct integer* right);
+int integer_operator_or(struct integer* left, struct integer* right);
 int assert_v2(int exp);
 int sNodeBase_sline(struct sNodeBase* self, struct sInfo* info);
 char* sNodeBase_sname(struct sNodeBase* self, struct sInfo* info);
@@ -1368,6 +1368,7 @@ struct tuple2$2sFunpcharph* create_cloner_automatically(struct sType* type, char
 struct tuple2$2sFunpcharph* create_equals_automatically(struct sType* type, char* fun_name, struct sInfo* info);
 struct tuple2$2sFunpcharph* create_operator_equals_automatically(struct sType* type, char* fun_name, struct sInfo* info);
 struct tuple2$2sFunpcharph* create_operator_not_equals_automatically(struct sType* type, char* fun_name, struct sInfo* info);
+struct tuple2$2sFunpcharph* create_not_equals_automatically(struct sType* type, char* fun_name, struct sInfo* info);
 char* skip_block(struct sInfo* info);
 _Bool is_contained_generics_class(struct sType* type, struct sInfo* info);
 _Bool is_type_name(char* buf, struct sInfo* info);
@@ -1900,6 +1901,18 @@ struct vector$1double* __result61__;
 }
 static inline unsigned long unsigned  int charpa_length(char* self, unsigned long unsigned  int len){
     return len;
+}
+static inline _Bool charppa_contained(char** self, unsigned long unsigned  int len, char* str){
+_Bool result_64;
+int i_65;
+    result_64=(_Bool)0;
+    for(    i_65=0;    i_65<len;    i_65++    ){
+        if(        strncmp(self[i_65],str,strlen(self[i_65]))==0) {
+            result_64=(_Bool)1;
+            break;
+        }
+    }
+    return result_64;
 }
 static inline unsigned long unsigned  int shortpa_length(short short* self, unsigned long unsigned  int len){
     return len;
@@ -2843,6 +2856,7 @@ int i_63;
 
 
 
+
 int come_main_v1(int argc, char** argv){
     puts("HELLO COMELANG");
     return 0;
@@ -2859,13 +2873,13 @@ int __result65__;
 }
 
 static void list$1sRightValueObjectphp_finalize(struct list$1sRightValueObjectph* self){
-struct list_item$1sRightValueObjectph* it_64;
-struct list_item$1sRightValueObjectph* prev_it_65;
-    it_64=self->head;
-    while(it_64!=((void*)0)) {
-        prev_it_65=it_64;
-        it_64=it_64->next;
-        /*i*/come_call_finalizer3(prev_it_65,list_item$1sRightValueObjectphp_finalize, 0, 0, 0, 0, (void*)0);
+struct list_item$1sRightValueObjectph* it_66;
+struct list_item$1sRightValueObjectph* prev_it_67;
+    it_66=self->head;
+    while(it_66!=((void*)0)) {
+        prev_it_67=it_66;
+        it_66=it_66->next;
+        /*i*/come_call_finalizer3(prev_it_67,list_item$1sRightValueObjectphp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 
@@ -3049,13 +3063,13 @@ char* __dec_obj36;
 }
 
 static void list$1sTypeph_finalize(struct list$1sTypeph* self){
-struct list_item$1sTypeph* it_66;
-struct list_item$1sTypeph* prev_it_67;
-    it_66=self->head;
-    while(it_66!=((void*)0)) {
-        prev_it_67=it_66;
-        it_66=it_66->next;
-        /*i*/come_call_finalizer3(prev_it_67,list_item$1sTypephp_finalize, 0, 0, 0, 0, (void*)0);
+struct list_item$1sTypeph* it_68;
+struct list_item$1sTypeph* prev_it_69;
+    it_68=self->head;
+    while(it_68!=((void*)0)) {
+        prev_it_69=it_68;
+        it_68=it_68->next;
+        /*i*/come_call_finalizer3(prev_it_69,list_item$1sTypephp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 
@@ -3073,24 +3087,24 @@ struct sType* __dec_obj25;
 }
 
 static void list$1sTypephp_finalize(struct list$1sTypeph* self){
-struct list_item$1sTypeph* it_68;
-struct list_item$1sTypeph* prev_it_69;
-    it_68=self->head;
-    while(it_68!=((void*)0)) {
-        prev_it_69=it_68;
-        it_68=it_68->next;
-        /*i*/come_call_finalizer3(prev_it_69,list_item$1sTypephp_finalize, 0, 0, 0, 0, (void*)0);
-    }
-}
-
-static void list$1sNodeph_finalize(struct list$1sNodeph* self){
-struct list_item$1sNodeph* it_70;
-struct list_item$1sNodeph* prev_it_71;
+struct list_item$1sTypeph* it_70;
+struct list_item$1sTypeph* prev_it_71;
     it_70=self->head;
     while(it_70!=((void*)0)) {
         prev_it_71=it_70;
         it_70=it_70->next;
-        /*i*/come_call_finalizer3(prev_it_71,list_item$1sNodephp_finalize, 0, 0, 0, 0, (void*)0);
+        /*i*/come_call_finalizer3(prev_it_71,list_item$1sTypephp_finalize, 0, 0, 0, 0, (void*)0);
+    }
+}
+
+static void list$1sNodeph_finalize(struct list$1sNodeph* self){
+struct list_item$1sNodeph* it_72;
+struct list_item$1sNodeph* prev_it_73;
+    it_72=self->head;
+    while(it_72!=((void*)0)) {
+        prev_it_73=it_72;
+        it_72=it_72->next;
+        /*i*/come_call_finalizer3(prev_it_73,list_item$1sNodephp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 
@@ -3108,24 +3122,24 @@ struct sNode* __dec_obj27;
 }
 
 static void list$1sNodephp_finalize(struct list$1sNodeph* self){
-struct list_item$1sNodeph* it_72;
-struct list_item$1sNodeph* prev_it_73;
-    it_72=self->head;
-    while(it_72!=((void*)0)) {
-        prev_it_73=it_72;
-        it_72=it_72->next;
-        /*i*/come_call_finalizer3(prev_it_73,list_item$1sNodephp_finalize, 0, 0, 0, 0, (void*)0);
-    }
-}
-
-static void list$1charph_finalize(struct list$1charph* self){
-struct list_item$1charph* it_74;
-struct list_item$1charph* prev_it_75;
+struct list_item$1sNodeph* it_74;
+struct list_item$1sNodeph* prev_it_75;
     it_74=self->head;
     while(it_74!=((void*)0)) {
         prev_it_75=it_74;
         it_74=it_74->next;
-        /*i*/come_call_finalizer3(prev_it_75,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
+        /*i*/come_call_finalizer3(prev_it_75,list_item$1sNodephp_finalize, 0, 0, 0, 0, (void*)0);
+    }
+}
+
+static void list$1charph_finalize(struct list$1charph* self){
+struct list_item$1charph* it_76;
+struct list_item$1charph* prev_it_77;
+    it_76=self->head;
+    while(it_76!=((void*)0)) {
+        prev_it_77=it_76;
+        it_76=it_76->next;
+        /*i*/come_call_finalizer3(prev_it_77,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 
@@ -3143,13 +3157,13 @@ char* __dec_obj30;
 }
 
 static void list$1charphp_finalize(struct list$1charph* self){
-struct list_item$1charph* it_76;
-struct list_item$1charph* prev_it_77;
-    it_76=self->head;
-    while(it_76!=((void*)0)) {
-        prev_it_77=it_76;
-        it_76=it_76->next;
-        /*i*/come_call_finalizer3(prev_it_77,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
+struct list_item$1charph* it_78;
+struct list_item$1charph* prev_it_79;
+    it_78=self->head;
+    while(it_78!=((void*)0)) {
+        prev_it_79=it_78;
+        it_78=it_78->next;
+        /*i*/come_call_finalizer3(prev_it_79,list_item$1charphp_finalize, 0, 0, 0, 0, (void*)0);
     }
 }
 

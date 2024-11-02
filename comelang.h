@@ -2038,17 +2038,17 @@ impl tuple1 <T>
             block(parent);
         }
     }
-    bool equals(tuple1<T>* left, tuple1<T>* right)
+    bool equals(tuple1<T>* self, tuple1<T>* right)
     {
         if(right == wildcard) {
             return true;
         }
         
-        if(self.v1.equals(right.v1.equals)) {
-            return true;
+        if(!self.v1.equals(right.v1)) {
+            return false;
         }
         
-        return false;
+        return true;
     }
     bool operator_equals(tuple1<T>* self, tuple1<T>* right) 
     {
@@ -2093,20 +2093,20 @@ impl tuple2 <T, T2>
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + ")";
     }
-    bool equals(tuple2<T,T2>* left, tuple2<T,T2>* right)
+    bool equals(tuple2<T,T2>* self, tuple2<T,T2>* right)
     {
         if(right == wildcard) {
             return true;
         }
         
-        if(self.v1.equals(right.v1.equals)) {
-            return true;
+        if(!self.v1.equals(right.v1)) {
+            return false;
         }
-        if(self.v2.equals(right.v2.equals)) {
-            return true;
+        if(!self.v2.equals(right.v2)) {
+            return false;
         }
         
-        return false;
+        return true;
     }
     bool operator_equals(tuple2<T,T2>* self, tuple2<T,T2>* right) 
     {
@@ -2149,23 +2149,23 @@ impl tuple3 <T, T2, T3>
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + ")";
     }
-    bool equals(tuple3<T,T2,T3>* left, tuple3<T,T2,T3>* right)
+    bool equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right)
     {
         if(right == wildcard) {
             return true;
         }
         
-        if(self.v1.equals(right.v1.equals)) {
-            return true;
+        if(!self.v1.equals(right.v1)) {
+            return false;
         }
-        if(self.v2.equals(right.v2.equals)) {
-            return true;
+        if(!self.v2.equals(right.v2)) {
+            return false;
         }
-        if(self.v3.equals(right.v3.equals)) {
-            return true;
+        if(!self.v3.equals(right.v3)) {
+            return false;
         }
         
-        return false;
+        return true;
     }
     bool operator_equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right) 
     {
@@ -2209,26 +2209,26 @@ impl tuple4 <T, T2, T3, T4>
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + ")";
     }
-    bool equals(tuple4<T,T2,T3,T4>* left, tuple4<T,T2,T3,T4>* right)
+    bool equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right)
     {
         if(right == wildcard) {
             return true;
         }
         
-        if(self.v1.equals(right.v1.equals)) {
-            return true;
+        if(!self.v1.equals(right.v1)) {
+            return false;
         }
-        if(self.v2.equals(right.v2.equals)) {
-            return true;
+        if(!self.v2.equals(right.v2)) {
+            return false;
         }
-        if(self.v3.equals(right.v3.equals)) {
-            return true;
+        if(!self.v3.equals(right.v3)) {
+            return false;
         }
-        if(self.v4.equals(right.v4.equals)) {
-            return true;
+        if(!self.v4.equals(right.v4)) {
+            return false;
         }
         
-        return false;
+        return true;
     }
     bool operator_equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right) 
     {
@@ -2274,29 +2274,29 @@ impl tuple5 <T, T2, T3, T4, T5>
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + "," + self.v5.to_string() + ")";
     }
-    bool equals(tuple5<T,T2,T3,T4,T5>* left, tuple5<T,T2,T3,T4,T5>* right)
+    bool equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right)
     {
         if(right == wildcard) {
             return true;
         }
         
-        if(self.v1.equals(right.v1.equals)) {
-            return true;
+        if(!self.v1.equals(right.v1)) {
+            return false;
         }
-        if(self.v2.equals(right.v2.equals)) {
-            return true;
+        if(!self.v2.equals(right.v2)) {
+            return false;
         }
-        if(self.v3.equals(right.v3.equals)) {
-            return true;
+        if(!self.v3.equals(right.v3)) {
+            return false;
         }
-        if(self.v4.equals(right.v4.equals)) {
-            return true;
+        if(!self.v4.equals(right.v4)) {
+            return false;
         }
-        if(self.v5.equals(right.v5.equals)) {
-            return true;
+        if(!self.v5.equals(right.v5)) {
+            return false;
         }
         
-        return false;
+        return true;
     }
     bool operator_equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right) 
     {
@@ -2882,6 +2882,18 @@ static inline size_t char[]::length(char* self, size_t len)
     return len;
 }
 
+static inline bool char*[]::contained(char** self, size_t len, char* str) 
+{
+    bool result = false;
+    for(int i=0; i<len; i++) {
+        if(strncmp(self[i], str, strlen(self[i])) == 0) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
 static inline size_t short[]::length(short* self, size_t len) 
 {
     return len;
@@ -3062,26 +3074,25 @@ integer*% short::to_integer(short self);
 integer*% int::to_integer(int self);
 integer*% long::to_integer(long self);
 int integer*::to_int(integer* self);
+string integer::to_string(integer* self);
 bool integer::equals(integer* self, integer* right);
 int integer::compare(integer* self, integer* right);
 bool integer::operator_equals(integer* self, integer* right);
 bool integer::operator_not_equals(integer* self, integer* right);
-integer*% integer::operator_add(integer* left, integer* right);
-integer*% integer::operator_sub(integer* left, integer* right);
-integer*% integer::operator_mult(integer* left, integer* right);
-integer*% integer::operator_div(integer* left, integer* right);
-integer*% integer::operator_mod(integer* left, integer* right);
-integer*% integer::operator_lshift(integer* left, integer* right);
-integer*% integer::operator_rshift(integer* left, integer* right);
-integer*% integer::operator_gteq(integer* left, integer* right);
-integer*% integer::operator_lteq(integer* left, integer* right);
-integer*% integer::operator_lt(integer* left, integer* right);
-integer*% integer::operator_gt(integer* left, integer* right);
-integer*% integer::operator_and(integer* left, integer* right);
-integer*% integer::operator_xor(integer* left, integer* right);
-integer*% integer::operator_or(integer* left, integer* right);
-integer*% integer::operator_andand(integer* left, integer* right);
-integer*% integer::operator_oror(integer* left, integer* right);
+int integer::operator_add(integer* left, integer* right);
+int integer::operator_sub(integer* left, integer* right);
+int integer::operator_mult(integer* left, integer* right);
+int integer::operator_div(integer* left, integer* right);
+int integer::operator_mod(integer* left, integer* right);
+int integer::operator_lshift(integer* left, integer* right);
+int integer::operator_rshift(integer* left, integer* right);
+int integer::operator_gteq(integer* left, integer* right);
+int integer::operator_lteq(integer* left, integer* right);
+int integer::operator_lt(integer* left, integer* right);
+int integer::operator_gt(integer* left, integer* right);
+int integer::operator_and(integer* left, integer* right);
+int integer::operator_xor(integer* left, integer* right);
+int integer::operator_or(integer* left, integer* right);
 
 #undef assert
 

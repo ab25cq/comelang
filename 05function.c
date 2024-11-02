@@ -2522,7 +2522,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
                 }
                 
                 char source2[1024];
-                snprintf(source2, 1024, "if(!left.%s.equals(right.%s)) { return false; }\n", name, name);
+                snprintf(source2, 1024, "if(right.%s != wildcard && !left.%s.equals(right.%s)) { return false; }\n", name, name, name);
                 
                 source.append_str(source2);
             }
@@ -2657,11 +2657,11 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         }
         else {
             char source2[1024];
-            snprintf(source2, 1024, "return !(");
+            snprintf(source2, 1024, "return (");
             
             source.append_str(source2);
             
-            snprintf(source2, 1024, "!(right == wildcard) && ");
+            snprintf(source2, 1024, "(right != wildcard) &&( ");
             source.append_str(source2);
             
             int i = 0;
@@ -2676,17 +2676,182 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
                 }
                 
                 char source2[1024];
-                snprintf(source2, 1024, "left.%s.equals(right.%s)", name, name);
+                snprintf(source2, 1024, "(right.%s != wildcard && !left.%s.equals(right.%s))", name, name, name);
                 source.append_str(source2);
                 
                 if(i == klass->mFields.length()-1) {
                     char source2[1024];
-                    snprintf(source2, 1024, ");");
+                    snprintf(source2, 1024, "));");
                     source.append_str(source2);
                 }
                 else {
                     char source2[1024];
-                    snprintf(source2, 1024, " && ");
+                    snprintf(source2, 1024, " || ");
+                    source.append_str(source2);
+                }
+                
+                i++;
+            }
+        }
+        
+        source.append_char('}');
+        
+        char* p = info.p;
+        int sline = info.sline;
+        string sname = info.sname;
+        char* head = info.head;
+        buffer*% source3 = info.source;
+        
+        info.source = source;
+        info.p = source.buf;
+        info.head = source.buf;
+        
+        info.sname = string(real_fun_name);
+        info.sline = 0;
+        
+        sBlock*% block = parse_block();
+        
+        var result_type = new sType("bool");
+        var name = clone real_fun_name;
+        var left_type = clone type;
+        left_type->mHeap = false;
+        var right_type = clone type;
+        right_type->mHeap = false;
+        var param_types = [left_type, right_type];
+        var param_names = [string("left"), string("right")];
+        var param_default_parametors = new list<string>();
+        param_default_parametors.push_back(null);
+        param_default_parametors.push_back(null);
+        
+        buffer*% header_buf = new buffer();
+        
+        header_buf.append_str(make_come_type_name_string(result_type));
+        header_buf.append_str(" ");
+        header_buf.append_str(real_fun_name);
+        header_buf.append_str("(");
+        
+        for(int i=0; i<param_types.length(); i++) {
+            sType* param_type = param_types[i];
+            char* param_name = param_names[i];
+            
+            header_buf.append_str(make_come_type_name_string(param_type));
+            header_buf.append_str(" ");
+            header_buf.append_str(param_name);
+            
+            if(i != param_types.length() -1) {
+                header_buf.append_str(",");
+            }
+        }
+        header_buf.append_str(")");
+        
+        result_type->mStatic = false;
+        
+        var fun = new sFun(name, result_type, param_types, param_names
+                        , param_default_parametors
+                        , false@external, false@var_args, block
+                        , true@static_
+                        , header_buf.to_string()
+                        , string("")
+                        , info);
+        
+        var fun2 = info.funcs[string(fun_name)]??;
+        if(fun2 == null || fun2.mExternal) {
+    
+            info.funcs.insert(clone name, fun);
+        }
+        
+        equaler = fun;
+        
+        sNode*% node = new sFunNode(fun, info) implements sNode;
+        
+        if(!node_compile(node)) {
+            err_msg(info, "compiling error");
+            exit(2);
+        }
+        
+        info.source = source3;
+        info.p = p;
+        info.head = head;
+        info.sline = sline;
+        info.sname = sname;
+    }
+    
+    info->current_stack_frame_struct = current_stack_frame_struct;
+    
+    info.module.mLastCode = last_code;
+    info.module.mLastCode2 = last_code2;
+    info.module.mLastCode3 = last_code3;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
+    
+    return (equaler, real_fun_name);
+}
+
+sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo* info)
+{
+    string last_code = info.module.mLastCode;
+    info.module.mLastCode = null;
+    string last_code2 = info.module.mLastCode2;
+    info.module.mLastCode2 = null;
+    string last_code3 = info.module.mLastCode3;
+    info.module.mLastCode3 = null;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
+    
+    sClass* current_stack_frame_struct = info->current_stack_frame_struct;
+    info->current_stack_frame_struct = null;
+    sFun* equaler = null;
+    
+    string real_fun_name = create_method_name(type, false@no_pointer_name, fun_name, info);
+    
+    sType*% type2 = solve_generics(type, type, info);
+    
+    type = borrow type2;
+    
+    sClass* klass = type->mClass;
+    
+    if(type->mPointerNum > 0 && !klass->mNumber) {
+        var source = new buffer();
+        
+        source.append_char('{');
+        
+        if(klass->mProtocol) {
+            char* name = "_protocol_obj";
+            char source2[1024];
+            snprintf(source2, 1024, "return !left.%s.equals(right.%s);\n", name, name);
+            source.append_str(source2);
+        }
+        else {
+            char source2[1024];
+            snprintf(source2, 1024, "return (");
+            
+            source.append_str(source2);
+            
+            snprintf(source2, 1024, "(right != wildcard) && ( ");
+            source.append_str(source2);
+            
+            int i = 0;
+            klass = info.classes[klass->mName]??;
+            foreach(it, klass->mFields) {
+                var name, field_type = it;
+                
+                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
+                {
+                    err_msg(info, "Define recusively the equals. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
+                    exit(2);
+                }
+                
+                char source2[1024];
+                snprintf(source2, 1024, "(right.%s != wildcard && !left.%s.equals(right.%s))", name, name, name);
+                source.append_str(source2);
+                
+                if(i == klass->mFields.length()-1) {
+                    char source2[1024];
+                    snprintf(source2, 1024, "));");
+                    source.append_str(source2);
+                }
+                else {
+                    char source2[1024];
+                    snprintf(source2, 1024, " || ");
                     source.append_str(source2);
                 }
                 
@@ -2821,6 +2986,10 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
             source.append_str(source2);
         }
         else {
+            char source2[1024];
+            snprintf(source2, 1024, "if(right == wildcard) { return true; }\n");
+            source.append_str(source2);
+            
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
                 var name, field_type = it;
@@ -2832,7 +3001,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
                 }
                 
                 char source2[1024];
-                snprintf(source2, 1024, "if(!left.%s.equals(right.%s)) { return false; }\n", name, name);
+                snprintf(source2, 1024, "if(right.%s != wildcard && !left.%s.equals(right.%s)) { return false; }\n", name, name, name);
                 
                 source.append_str(source2);
             }

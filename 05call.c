@@ -1470,9 +1470,11 @@ sNode*% expression_node(sInfo* info=info) version 97
         
         bool is_type_name_ = is_type_name(buf);
         
-        bool is_special_word = [ "if", "while", "for", "switch", "return", "sizeof", "isheap", "ispointer", "__typeof__"
+        static char* is_special_word_array[18] = { "if", "while", "for", "switch", "return", "sizeof", "isheap", "ispointer", "__typeof__"
                                     , "dynamic_typeof", "typeof", "gc_inc", "gc_dec", "gc_dec_nofree", "case", "_Alignof"
-                                    , "_Alignas", "__alignof__" ].contained(buf);
+                                    , "_Alignas", "__alignof__"}
+                                    
+        bool is_special_word = is_special_word_array.contained(18, buf);
         
         /// backtrace ///
         bool define_function_pointer_flag = false;
@@ -1585,6 +1587,52 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.p = head;
             info.sline = head_sline;
         }
+        /// backtrace ///
+        bool new_ = false;
+        if(!is_special_word)
+        {
+            info.p = head;
+            info.sline = head_sline;
+            
+            sClass* klass = info.classes[buf]??;
+            
+            if(klass && buf !== "string" && buf !== "wstring" && (*info->p == '(' || *info->p == '{')) {
+                new_ = true;
+            }
+            
+            sClass* generics_class = info.generics_classes[buf]??;
+            
+            if(generics_class && *info->p == '<') {
+                bool nest = 0;
+                while(true) {
+                    if(*info->p == '<') {
+                        info->p++;
+                        nest++;
+                    }
+                    else if(*info->p == '>') {
+                        info->p++;
+                        nest--;
+                        if(nest == 0) {
+                            skip_spaces_and_lf();
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+                
+                if(*info->p == '(') {
+                    new_ = true;
+                }
+            }
+            
+            info.p = head;
+            info.sline = head_sline;
+        }
         
         parse_sharp();
         
@@ -1630,8 +1678,10 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             return new sVarArgTypeName(type) implements sNode;
         }
-        else if((buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__") && *info->p == '(') {
+        else if(new_ || (buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__") && *info->p == '(') {
+            info->new_ = new_;
             sNode*% node = string_node(buf, head, head_sline, info)
+            info->new_ = false;
             
             return node;
         }
@@ -1706,7 +1756,9 @@ sNode*% expression_node(sInfo* info=info) version 97
             return node;
         }
         else {
+            info->new_ = new_;
             sNode*% node = string_node(buf, head, head_sline, info);
+            info->new_ = false;
             
             return node;
         }

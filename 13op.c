@@ -42,7 +42,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
                 operator_fun = fun2;
             }
             else if(fun_name === "operator_not_equals") {
-                var fun, fun_name = create_equals_automatically(obj_type, "not_equals", info);
+                var fun, fun_name = create_not_equals_automatically(obj_type, "not_equals", info);
                 var fun2, fun_name2 = create_operator_not_equals_automatically(obj_type, "operator_not_equals", info);
                 
                 operator_fun = fun2;
@@ -67,7 +67,22 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         }
         
         if(operator_fun == NULL) {
-            operator_fun = info->funcs[fun_name2]??;
+             operator_fun = info->funcs[fun_name2]??;
+            sType*% obj_type = solve_generics(type, info.generics_type, info);
+            if(operator_fun == NULL) {
+                if(fun_name === "operator_equals") {
+                    var fun, fun_name = create_equals_automatically(obj_type, "equals", info);
+                    var fun2, fun_name2 = create_operator_equals_automatically(obj_type, "operator_equals", info);
+                    
+                    operator_fun = fun2;
+                }
+                else if(fun_name === "operator_not_equals") {
+                    var fun, fun_name = create_not_equals_automatically(obj_type, "not_equals", info);
+                    var fun2, fun_name2 = create_operator_not_equals_automatically(obj_type, "operator_not_equals", info);
+                    
+                    operator_fun = fun2;
+                }
+            }
         }
     }
     
@@ -1060,6 +1075,7 @@ class sEq2Node extends sNodeBase
             calling_fun = false;
         }
         else {
+
             calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
         }
         

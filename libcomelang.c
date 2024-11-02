@@ -654,6 +654,9 @@ void come_free_object(void* mem)
     if(mem == NULL) {
         return;
     }
+    if(mem == wildcard) {
+        return;
+    }
 /*
     if(gComeMallocLib) {
         if(!is_valid_object(mem)) {
@@ -670,6 +673,9 @@ void come_free_object(void* mem)
 void come_free(void* mem)
 {
     if(mem == NULL) {
+        return;
+    }
+    if(mem == wildcard) {
         return;
     }
 /*
@@ -690,6 +696,9 @@ void* come_memdup(void* block, char* sname=null, int sline=0, char* class_name=n
 {
     if(!block) {
         return null;
+    }
+    if(block == wildcard) {
+        return wildcard;
     }
 /*
     if(gComeMallocLib) {
@@ -718,6 +727,9 @@ void* come_increment_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
+    if(mem == wildcard) {
+        return wildcard;
+    }
 /*
     if(gComeMallocLib) {
         if(!is_valid_object(mem)) {
@@ -738,6 +750,9 @@ void* come_print_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
+    if(mem == wildcard) {
+        return wildcard;
+    }
 /*
     if(gComeMallocLib) {
         if(!is_valid_object(mem)) {
@@ -757,6 +772,9 @@ void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj
 {
     if(mem == NULL) {
         return NULL;
+    }
+    if(mem == wildcard) {
+        return wildcard;
     }
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
@@ -790,6 +808,9 @@ void* come_decrement_ref_count2(void* mem, void* protocol_fun, void* protocol_ob
     if(mem == NULL) {
         return NULL;
     }
+    if(mem == wildcard) {
+        return wildcard;
+    }
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
     
@@ -815,6 +836,9 @@ void* come_decrement_ref_count2(void* mem, void* protocol_fun, void* protocol_ob
 void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, int force_delete_)
 {
     if(mem == NULL) {
+        return;
+    }
+    if(mem == wildcard) {
         return;
     }
     
@@ -863,6 +887,9 @@ void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protoc
     if(mem == NULL) {
         return;
     }
+    if(mem == wildcard) {
+        return;
+    }
     
     if(call_finalizer_only) {
         if(fun) {
@@ -907,6 +934,9 @@ void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, int no_
         }
     }
     if(mem == NULL) {
+        return;
+    }
+    if(mem == wildcard) {
         return;
     }
     
@@ -2678,31 +2708,6 @@ record int assert(int exp) version 2
     }
 }
 
-/*
-int __builtin_bswap32(int x) 
-{
-    return ((x >> 24) & 0x000000FF) |
-           ((x >> 8)  & 0x0000FF00) |
-           ((x << 8)  & 0x00FF0000) |
-           ((x << 24) & 0xFF000000);
-}
-
-long __builtin_bswap64(long x) 
-{
-    return ((x >> 56) & 0x00000000000000FFULL) |
-           ((x >> 40) & 0x000000000000FF00ULL) |
-           ((x >> 24) & 0x0000000000FF0000ULL) |
-           ((x >> 8)  & 0x00000000FF000000ULL) |
-           ((x << 8)  & 0x000000FF00000000ULL) |
-           ((x << 24) & 0x0000FF0000000000ULL) |
-           ((x << 40) & 0x00FF000000000000ULL) |
-           ((x << 56) & 0xFF00000000000000ULL);
-}
-
-short __builtin_bswap16(short x) 
-{
-    return (x >> 8) | (x << 8);
-}
 
 //////////////////////////////
 // integer
@@ -2769,84 +2774,77 @@ bool integer::operator_not_equals(integer* self, integer* right)
     return !self.equals(right);
 }
 
-integer*% integer::operator_add(integer* left, integer* right)
+int integer::operator_add(integer* left, integer* right)
 {
-    return new integer(left.value + right.value);
+    return left.value + right.value;
 }
 
-integer*% integer::operator_sub(integer* left, integer* right)
+int integer::operator_sub(integer* left, integer* right)
 {
-    return new integer(left.value - right.value);
+    return left.value - right.value;
 }
 
-integer*% integer::operator_mult(integer* left, integer* right)
+int integer::operator_mult(integer* left, integer* right)
 {
-    return new integer(left.value * right.value);
+    return left.value * right.value;
 }
 
-integer*% integer::operator_div(integer* left, integer* right)
+int integer::operator_div(integer* left, integer* right)
 {
-    return new integer(left.value / right.value);
+    return left.value / right.value;
 }
 
-integer*% integer::operator_mod(integer* left, integer* right)
+int integer::operator_mod(integer* left, integer* right)
 {
-    return new integer(left.value % right.value);
+    return left.value % right.value;
 }
 
-integer*% integer::operator_lshift(integer* left, integer* right)
+int integer::operator_lshift(integer* left, integer* right)
 {
-    return new integer(left.value << right.value);
+    return left.value << right.value;
 }
 
-integer*% integer::operator_rshift(integer* left, integer* right)
+int integer::operator_rshift(integer* left, integer* right)
 {
-    return new integer(left.value >> right.value);
+    return left.value >> right.value;
 }
 
-integer*% integer::operator_gteq(integer* left, integer* right)
+int integer::operator_gteq(integer* left, integer* right)
 {
-    return new integer(left.value >= right.value);
+    return left.value >= right.value;
 }
 
-integer*% integer::operator_lteq(integer* left, integer* right)
+int integer::operator_lteq(integer* left, integer* right)
 {
-    return new integer(left.value <= right.value);
+    return left.value <= right.value;
 }
 
-integer*% integer::operator_lt(integer* left, integer* right)
+int integer::operator_lt(integer* left, integer* right)
 {
-    return new integer(left.value < right.value);
+    return left.value < right.value;
 }
 
-integer*% integer::operator_gt(integer* left, integer* right)
+int integer::operator_gt(integer* left, integer* right)
 {
-    return new integer(left.value > right.value);
+    return left.value > right.value;
 }
 
-integer*% integer::operator_and(integer* left, integer* right)
+int integer::operator_and(integer* left, integer* right)
 {
-    return new integer(left.value & right.value);
+    return left.value & right.value;
 }
 
-integer*% integer::operator_xor(integer* left, integer* right)
+int integer::operator_xor(integer* left, integer* right)
 {
-    return new integer(left.value ^ right.value);
+    return left.value ^ right.value;
 }
 
-integer*% integer::operator_or(integer* left, integer* right)
+int integer::operator_or(integer* left, integer* right)
 {
-    return new integer(left.value | right.value);
+    return left.value | right.value;
 }
 
-integer*% integer::operator_andand(integer* left, integer* right)
+string integer::to_string(integer* self)
 {
-    return new integer(left.value && right.value);
+    return self.value.to_string();
 }
-
-integer*% integer::operator_oror(integer* left, integer* right)
-{
-    return new integer(left.value || right.value);
-}
-
-*/

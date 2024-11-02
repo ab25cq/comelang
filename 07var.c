@@ -368,6 +368,11 @@ class sStoreNode extends sNodeBase
             else {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
+                if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
+                {
+                    std_move(left_type, right_type, right_value);
+                }
+                
                 if(left_type->mHeap && !right_value.type->mHeap) {
                     err_msg(info, "require right value as heap object(%s)", self.name);
                     return false;
