@@ -1309,42 +1309,92 @@ string buffer*::to_string(buffer* self)
 //////////////////////////////
 bool bool::equals(bool self, bool right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
 }
 
 bool char::equals(char self, char right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
 }
 
 bool short::equals(short self, short right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
 }
 
 bool int::equals(int self, int right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
 }
 
 bool long::equals(long self, long right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
 }
 
 bool size_t::equals(size_t self, size_t right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
 }
 
 bool float::equals(float self, float right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
 }
 
 bool double::equals(double self, double right) 
 {
-    return self == right; // || right == wildcard;
+    return self == right;
+}
+
+bool bool::operator_equals(integer* self, integer* right)
+{
+    return self.value == right.value || right == wildcard;
+}
+
+bool char::operator_equals(integer* self, integer* right)
+{
+    return self.value == right.value || right == wildcard;
+}
+
+bool short::operator_equals(integer* self, integer* right)
+{
+    return self.value == right.value || right == wildcard;
+}
+
+bool int::operator_equals(integer* self, integer* right)
+{
+    return self.value == right.value || right == wildcard;
+}
+
+bool long::operator_equals(integer* self, integer* right)
+{
+    return self.value == right.value || right == wildcard;
+}
+
+bool bool::operator_not_equals(integer* self, integer* right)
+{
+    return !(self.value == right.value || right == wildcard);
+}
+
+bool char::operator_not_equals(integer* self, integer* right)
+{
+    return !(self.value == right.value || right == wildcard);
+}
+
+bool short::operator_not_equals(integer* self, integer* right)
+{
+    return !(self.value == right.value || right == wildcard);
+}
+
+bool int::operator_not_equals(integer* self, integer* right)
+{
+    return !(self.value == right.value || right == wildcard);
+}
+
+bool long::operator_not_equals(integer* self, integer* right)
+{
+    return !(self.value == right.value || right == wildcard);
 }
 
 bool string::equals(char* self, char* right) 
@@ -1359,7 +1409,7 @@ bool string::equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0 || right == wildcard;
+    return strcmp(self, right) == 0;
 }
 
 bool char*::equals(char* self, char* right) 
@@ -1374,7 +1424,12 @@ bool char*::equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0 || right == wildcard;
+    return strcmp(self, right) == 0;
+}
+
+bool void*::equals(void* self, void* right) 
+{
+    return self == right;
 }
 
 bool string::operator_equals(char* self, char* right) 
@@ -1405,6 +1460,16 @@ bool char*::operator_equals(char* self, char* right)
     }
     
     return strcmp(self, right) == 0 || right == wildcard;
+}
+
+bool void*::operator_equals(char* self, char* right) 
+{
+    return self == right || right == wildcard;
+}
+
+bool void*::operator_not_equals(char* self, char* right) 
+{
+    return !self.operator_equals(right);
 }
 
 bool string::operator_not_equals(char* self, char* right) 
@@ -2724,6 +2789,11 @@ int integer*::to_int(integer* self)
     return self.value;
 }
 
+integer*% bool::to_integer(bool self)
+{
+    return new integer(self);
+}
+
 integer*% char::to_integer(char self)
 {
     return new integer(self);
@@ -2761,17 +2831,17 @@ int integer::compare(integer* left, integer* right)
 
 bool integer::equals(integer* self, integer* right)
 {
-    return self.value == right.value || self == wildcard;
+    return self.value == right.value;
 }
 
 bool integer::operator_equals(integer* self, integer* right)
 {
-    return self.equals(right);
+    return self.value == right.value || right == wildcard;
 }
 
 bool integer::operator_not_equals(integer* self, integer* right)
 {
-    return !self.equals(right);
+    return !self.operator_equals(right);
 }
 
 int integer::operator_add(integer* left, integer* right)
@@ -2845,6 +2915,106 @@ int integer::operator_or(integer* left, integer* right)
 }
 
 string integer::to_string(integer* self)
+{
+    return self.value.to_string();
+}
+
+//////////////////////////////
+// floating
+//////////////////////////////
+floating*% floating*::initialize(floating*% self, double value)
+{
+    self.value = value;
+    
+    return self;
+}
+
+double floating*::to_double(floating* self)
+{
+    return self.value;
+}
+
+
+int floating::compare(floating* left, floating* right)
+{
+    if(left.value < right.value) {
+        return -1;
+    }
+    else if(left.value > right.value) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+floating*% float::to_floating(float self)
+{
+    return new floating(self);
+}
+
+floating*% double::to_floating(double self)
+{
+    return new floating(self);
+}
+
+bool floating::equals(floating* self, floating* right)
+{
+    return self.value == right.value;
+}
+
+bool floating::operator_equals(floating* self, floating* right)
+{
+    return self.value == right.value || right == wildcard;
+}
+
+bool floating::operator_not_equals(floating* self, floating* right)
+{
+    return !self.operator_equals(right);
+}
+
+int floating::operator_add(floating* left, floating* right)
+{
+    return left.value + right.value;
+}
+
+int floating::operator_sub(floating* left, floating* right)
+{
+    return left.value - right.value;
+}
+
+int floating::operator_mult(floating* left, floating* right)
+{
+    return left.value * right.value;
+}
+
+int floating::operator_div(floating* left, floating* right)
+{
+    return left.value / right.value;
+}
+
+int floating::operator_gteq(floating* left, floating* right)
+{
+    return left.value >= right.value;
+}
+
+int floating::operator_lteq(floating* left, floating* right)
+{
+    return left.value <= right.value;
+}
+
+int floating::operator_lt(floating* left, floating* right)
+{
+    return left.value < right.value;
+}
+
+int floating::operator_gt(floating* left, floating* right)
+{
+    return left.value > right.value;
+}
+
+string floating::to_string(floating* self)
 {
     return self.value.to_string();
 }

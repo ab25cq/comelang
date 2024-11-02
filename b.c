@@ -1,14 +1,24 @@
 #include <comelang.h>
 
+struct sData
+{
+    long a;
+    long b;
+};
+
 int main(int argc, char** argv)
 {
-    int a = 123;
+    var data = sData{a:1, b:2};
+    var data2 = sData{a:1, b:2};
     
-    string a = s"AAA";
-    
-    var a = [s"AAA", s"BBBB"];
-    
-    int a = 234;
+    data.case {
+        (Value === sData {a:wildcard, b:2}) {
+            puts("MATCH");
+        }
+        else {
+            puts("NO MATCH");
+        }
+    }
     
     return 0;
 }

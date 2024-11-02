@@ -703,7 +703,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 }
                 else {
                     if(print_err_msg) {
-                        err_msg(info, "require to_string implementation(%s)", right_type2.mClass.mName);
+                        err_msg(info, "require to_integer implementation(%s)", right_type2.mClass.mName);
                         exit(2);
                     }
                     return false;
@@ -718,6 +718,81 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             buf2.append_str(")");
             
             sType*% type = new sType("integer");
+            type->mHeap = true;
+            type->mPointerNum = 1;
+            come_value.c_value = buf2.to_string();
+            come_value.type = clone type;
+            come_value.var = null;
+            
+            append_object_to_right_values2(come_value, type, info);
+            
+            right_type2 = clone type;
+        }
+    }
+    else if(left_type->mClass.mName === "floating" && left_type->mPointerNum == 1) {
+        if(right_type2->mClass.mName === "floating" && right_type2->mPointerNum == 1) {
+        }
+        else if(left_type->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
+        }
+        else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+        }
+        else if(right_type2->mClass->mName === "lambda") {
+            if(print_err_msg) {
+                err_msg(info, "type error7");
+                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
+                exit(2);
+            }
+            return false;
+        }
+        else if(right_type2->mClass->mName === "void" && right_type2->mPointerNum > 0) {
+        }
+        else if(right_type2->mClass->mName === "void") {
+            if(print_err_msg) {
+                err_msg(info, "type error8");
+                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
+                exit(2);
+            }
+            return false;
+        }
+        else if(left_type->mClass->mName === "lambda" && right_type2->mClass->mName === "lambda") {
+        }
+        else if(right_type2->mPointerNum > 0) {
+            if(print_err_msg) {
+                err_msg(info, "type error9");
+                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
+                exit(2);
+            }
+            return false;
+        }
+        else {
+            string method_name = create_method_name(right_type2, false@no_pointer_name, "to_floating", info);
+            
+            if(info.funcs.at(method_name, null) == null) {
+                sType* obj_type = right_type2.mNoSolvedGenericsType.v1;
+                if(obj_type && obj_type.mGenericsTypes.length() > 0) {
+                    sType* obj_type2 = right_type2;
+                    method_name = make_generics_function(obj_type2, string("to_floating"), info);
+                }
+                else {
+                    if(print_err_msg) {
+                        err_msg(info, "require to_floating implementation(%s)", right_type2.mClass.mName);
+                        exit(2);
+                    }
+                    return false;
+                }
+            }
+            
+            var buf2 = new buffer();
+            
+            buf2.append_str(method_name);
+            buf2.append_str("(");
+            buf2.append_str(come_value.c_value);
+            buf2.append_str(")");
+            
+            sType*% type = new sType("floating");
             type->mHeap = true;
             type->mPointerNum = 1;
             come_value.c_value = buf2.to_string();
@@ -755,6 +830,39 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         buf2.append_str(")");
         
         sType*% type = new sType("int");
+        
+        come_value.c_value = buf2.to_string();
+        come_value.type = clone type;
+        come_value.var = null;
+        
+        right_type2 = clone type;
+    }
+    else if(left_type->mClass.mName === "double" && (right_type->mClass->mName === "floating" && right_type->mPointerNum == 1)) {
+        string method_name = create_method_name(right_type2, false@no_pointer_name, "to_double", info);
+        
+        if(info.funcs.at(method_name, null) == null) {
+            sType* obj_type = right_type2.mNoSolvedGenericsType.v1;
+            if(obj_type && obj_type.mGenericsTypes.length() > 0) {
+                sType* obj_type2 = right_type2;
+                method_name = make_generics_function(obj_type2, string("to_double"), info);
+            }
+            else {
+                if(print_err_msg) {
+                    err_msg(info, "require to_double implementation(%s)", right_type2.mClass.mName);
+                    exit(1);
+                }
+                return false;
+            }
+        }
+        
+        var buf2 = new buffer();
+        
+        buf2.append_str(method_name);
+        buf2.append_str("(");
+        buf2.append_str(come_value.c_value);
+        buf2.append_str(")");
+        
+        sType*% type = new sType("double");
         
         come_value.c_value = buf2.to_string();
         come_value.type = clone type;
@@ -991,6 +1099,87 @@ void cast_type(sType* left_type, sType* right_type, CVALUE* come_value, sInfo* i
         buf2.append_str(")");
         
         sType*% type = new sType("int");
+        
+        come_value.c_value = buf2.to_string();
+        come_value.type = clone type;
+        come_value.var = null;
+        
+        right_type2 = clone type;
+    }
+    else if(left_type->mClass.mName === "floating" && left_type->mPointerNum == 1) {
+        if(right_type2->mClass.mName === "floating" && right_type2->mPointerNum == 1) {
+        }
+        else if(left_type->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
+        }
+        else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+        }
+        else if(right_type2->mClass->mName === "lambda") {
+        }
+        else if(right_type2->mClass->mName === "void" && right_type2->mPointerNum > 0) {
+        }
+        else if(right_type2->mClass->mName === "void") {
+        }
+        else if(left_type->mPointerNum > 0 && right_type2->mPointerNum == 0 && right_type2->mClass->mName === "lambda" && left_type->mClass->mName === "lambda") {
+        }
+        else if(right_type->mPointerNum > 0) {
+        }
+        else {
+            string method_name = create_method_name(right_type2, false@no_pointer_name, "to_floating", info);
+            
+            if(info.funcs.at(method_name, null) == null) {
+                sType* obj_type = right_type2.mNoSolvedGenericsType.v1;
+                if(obj_type && obj_type.mGenericsTypes.length() > 0) {
+                    sType* obj_type2 = right_type2;
+                    method_name = make_generics_function(obj_type2, string("to_floating"), info);
+                }
+                else {
+                    err_msg(info, "require to_string implementation(%s)", right_type2.mClass.mName);
+                    exit(1);
+                }
+            }
+            
+            var buf2 = new buffer();
+            
+            buf2.append_str(method_name);
+            buf2.append_str("(");
+            buf2.append_str(come_value.c_value);
+            buf2.append_str(")");
+            
+            sType*% type = new sType("floating");
+            type->mHeap = true;
+            type->mPointerNum = 1;
+            come_value.c_value = buf2.to_string();
+            come_value.type = clone type;
+            come_value.var = null;
+            
+            append_object_to_right_values2(come_value, type, info);
+            
+            right_type2 = clone type;
+        }
+    }
+    else if(left_type->mClass.mName === "double" && (right_type->mClass->mName === "floating" && right_type->mPointerNum == 1)) {
+        string method_name = create_method_name(right_type2, false@no_pointer_name, "to_floating", info);
+        
+        if(info.funcs.at(method_name, null) == null) {
+            sType* obj_type = right_type2.mNoSolvedGenericsType.v1;
+            if(obj_type && obj_type.mGenericsTypes.length() > 0) {
+                sType* obj_type2 = right_type2;
+                method_name = make_generics_function(obj_type2, string("to_floating"), info);
+            }
+            else {
+                err_msg(info, "require to_string implementation(%s)", right_type2.mClass.mName);
+                exit(1);
+            }
+        }
+        
+        var buf2 = new buffer();
+        
+        buf2.append_str(method_name);
+        buf2.append_str("(");
+        buf2.append_str(come_value.c_value);
+        buf2.append_str(")");
+        
+        sType*% type = new sType("double");
         
         come_value.c_value = buf2.to_string();
         come_value.type = clone type;

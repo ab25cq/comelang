@@ -67,7 +67,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         }
         
         if(operator_fun == NULL) {
-             operator_fun = info->funcs[fun_name2]??;
+            operator_fun = info->funcs[fun_name2]??;
             sType*% obj_type = solve_generics(type, info.generics_type, info);
             if(operator_fun == NULL) {
                 if(fun_name === "operator_equals") {

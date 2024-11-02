@@ -2507,10 +2507,6 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
             source.append_str(source2);
         }
         else {
-            char source2[1024];
-            snprintf(source2, 1024, "if(right == wildcard) { return true; }\n");
-            source.append_str(source2);
-            
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
                 var name, field_type = it;
@@ -2522,7 +2518,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
                 }
                 
                 char source2[1024];
-                snprintf(source2, 1024, "if(right.%s != wildcard && !left.%s.equals(right.%s)) { return false; }\n", name, name, name);
+                snprintf(source2, 1024, "if(!left.%s.equals(right.%s)) { return false; }\n", name, name, name);
                 
                 source.append_str(source2);
             }
@@ -2652,16 +2648,16 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         if(klass->mProtocol) {
             char* name = "_protocol_obj";
             char source2[1024];
-            snprintf(source2, 1024, "return !left.%s.equals(right.%s);\n", name, name);
+            snprintf(source2, 1024, "return left.%s !== right.%s;\n", name, name);
             source.append_str(source2);
         }
         else {
             char source2[1024];
-            snprintf(source2, 1024, "return (");
+            snprintf(source2, 1024, "return !(");
             
             source.append_str(source2);
             
-            snprintf(source2, 1024, "(right != wildcard) &&( ");
+            snprintf(source2, 1024, "(right == wildcard) || ( ");
             source.append_str(source2);
             
             int i = 0;
@@ -2676,7 +2672,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
                 }
                 
                 char source2[1024];
-                snprintf(source2, 1024, "(right.%s != wildcard && !left.%s.equals(right.%s))", name, name, name);
+                snprintf(source2, 1024, "(left.%s === right.%s)", name, name, name);
                 source.append_str(source2);
                 
                 if(i == klass->mFields.length()-1) {
@@ -2686,7 +2682,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
                 }
                 else {
                     char source2[1024];
-                    snprintf(source2, 1024, " || ");
+                    snprintf(source2, 1024, " && ");
                     source.append_str(source2);
                 }
                 
@@ -2822,11 +2818,8 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         }
         else {
             char source2[1024];
-            snprintf(source2, 1024, "return (");
+            snprintf(source2, 1024, "return !(");
             
-            source.append_str(source2);
-            
-            snprintf(source2, 1024, "(right != wildcard) && ( ");
             source.append_str(source2);
             
             int i = 0;
@@ -2841,17 +2834,17 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
                 }
                 
                 char source2[1024];
-                snprintf(source2, 1024, "(right.%s != wildcard && !left.%s.equals(right.%s))", name, name, name);
+                snprintf(source2, 1024, "left.%s.equals(right.%s)", name, name);
                 source.append_str(source2);
                 
                 if(i == klass->mFields.length()-1) {
                     char source2[1024];
-                    snprintf(source2, 1024, "));");
+                    snprintf(source2, 1024, ");");
                     source.append_str(source2);
                 }
                 else {
                     char source2[1024];
-                    snprintf(source2, 1024, " || ");
+                    snprintf(source2, 1024, " && ");
                     source.append_str(source2);
                 }
                 
@@ -2982,7 +2975,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         if(klass->mProtocol) {
             char* name = "_protocol_obj";
             char source2[1024];
-            snprintf(source2, 1024, "return left.%s.equals(right.%s);\n", name, name);
+            snprintf(source2, 1024, "return left.%s === right.%s;\n", name, name);
             source.append_str(source2);
         }
         else {
@@ -3001,7 +2994,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
                 }
                 
                 char source2[1024];
-                snprintf(source2, 1024, "if(right.%s != wildcard && !left.%s.equals(right.%s)) { return false; }\n", name, name, name);
+                snprintf(source2, 1024, "if(left.%s !== right.%s) { return false; }\n", name, name, name);
                 
                 source.append_str(source2);
             }
