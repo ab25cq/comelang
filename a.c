@@ -1,9 +1,9 @@
 #include <comelang.h>
 
-struct sData
+struct sData<T>
 {
-    integer*% a;
-    integer*% b;
+    T a;
+    T b;
 };
 
 int fun(int c)
@@ -13,10 +13,10 @@ int fun(int c)
 
 int main(int argc, char** argv)
 {
-    var data = sData { a:123, b:234 };
+    var data = sData<integer*%> { a:123, b:234 };
     
     data.case {
-        (Value === sData { a:wildcard, b:234 }) {
+        (Value === sData<integer*%> { a:wildcard, b:234 }) {
             puts("MATCH");
         }
         else {

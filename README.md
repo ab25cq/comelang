@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 7.0.4
+version 7.0.5
 
 ``` C
 #include <comelang.h>
@@ -324,6 +324,7 @@ sh all_build.sh
 # Histories
 
 ```
+7.0.5 can omit new keyword for creating object.
 7.0.4 wildcard bug fixed.
 7.0.3 wildcard bug fixed.
 7.0.2 Pattern maching more improved. more fixed bugs. wildcard supported.
@@ -2133,22 +2134,20 @@ bool integer::equals(integer* self, integer* right);
 int integer::compare(integer* self, integer* right);
 bool integer::operator_equals(integer* self, integer* right);
 bool integer::operator_not_equals(integer* self, integer* right);
-integer*% integer::operator_add(integer* left, integer* right);
-integer*% integer::operator_sub(integer* left, integer* right);
-integer*% integer::operator_mult(integer* left, integer* right);
-integer*% integer::operator_div(integer* left, integer* right);
-integer*% integer::operator_mod(integer* left, integer* right);
-integer*% integer::operator_lshift(integer* left, integer* right);
-integer*% integer::operator_rshift(integer* left, integer* right);
-integer*% integer::operator_gteq(integer* left, integer* right);
-integer*% integer::operator_lteq(integer* left, integer* right);
-integer*% integer::operator_lt(integer* left, integer* right);
-integer*% integer::operator_gt(integer* left, integer* right);
-integer*% integer::operator_and(integer* left, integer* right);
-integer*% integer::operator_xor(integer* left, integer* right);
-integer*% integer::operator_or(integer* left, integer* right);
-integer*% integer::operator_andand(integer* left, integer* right);
-integer*% integer::operator_oror(integer* left, integer* right);
+int integer::operator_add(integer* left, integer* right);
+int integer::operator_sub(integer* left, integer* right);
+int integer::operator_mult(integer* left, integer* right);
+int integer::operator_div(integer* left, integer* right);
+int integer::operator_mod(integer* left, integer* right);
+int integer::operator_lshift(integer* left, integer* right);
+int integer::operator_rshift(integer* left, integer* right);
+int integer::operator_gteq(integer* left, integer* right);
+int integer::operator_lteq(integer* left, integer* right);
+int integer::operator_lt(integer* left, integer* right);
+int integer::operator_gt(integer* left, integer* right);
+int integer::operator_and(integer* left, integer* right);
+int integer::operator_xor(integer* left, integer* right);
+int integer::operator_or(integer* left, integer* right);
 ```
 
 Well, the heap version of the numeric type. I'm sure you could have written it like this.
@@ -2165,6 +2164,14 @@ Well, the heap version of the numeric type. I'm sure you could have written it l
 a,b are values taken on the heap
 
 a,bはヒープ上に取られた値
+
+どのように使うかというとint型は後述するwildcardとマッチしないため、wildcardとマッチさせたい場合はこちらを使ってください。
+C#でいうboxingやunboxingに近い機能があるため、あまりint型と変わらない処理が行えます。
+
+As for how to use it, since the int type does not match the wildcard described below, use this if you want to match the wildcard. Since it has functions similar to boxing and unboxing in C#, you can perform processing that is not much different from the int type.
+
+
+
 
 # Default parameters, parameter labels
 

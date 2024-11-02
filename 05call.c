@@ -1594,16 +1594,18 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.p = head;
             info.sline = head_sline;
             
+            buf = parse_word();
+            
             sClass* klass = info.classes[buf]??;
             
-            if(klass && buf !== "string" && buf !== "wstring" && (*info->p == '(' || *info->p == '{')) {
+            if(klass && *info->p == '{') {
                 new_ = true;
             }
             
             sClass* generics_class = info.generics_classes[buf]??;
             
             if(generics_class && *info->p == '<') {
-                bool nest = 0;
+                int nest = 0;
                 while(true) {
                     if(*info->p == '<') {
                         info->p++;
@@ -1625,7 +1627,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                     }
                 }
                 
-                if(*info->p == '(') {
+                if(*info->p == '{') {
                     new_ = true;
                 }
             }
