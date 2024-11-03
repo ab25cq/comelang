@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 7.0.5
+version 7.1.0
 
 ``` C
 #include <comelang.h>
@@ -324,6 +324,7 @@ sh all_build.sh
 # Histories
 
 ```
+7.1.0 Real wildcard coming. map equals bug fixed.
 7.0.5 can omit new keyword for creating object.
 7.0.4 wildcard bug fixed.
 7.0.3 wildcard bug fixed.
@@ -2154,25 +2155,6 @@ Well, the heap version of the numeric type. I'm sure you could have written it l
 
 まあ、数値型のヒープ版。確か、こう書けたはず。
 
-```
-    integer*% a = 1;
-    integer*% b = 2;
-    
-    int c = a + b;   // 3
-```
-
-a,b are values taken on the heap
-
-a,bはヒープ上に取られた値
-
-どのように使うかというとint型は後述するwildcardとマッチしないため、wildcardとマッチさせたい場合はこちらを使ってください。
-C#でいうboxingやunboxingに近い機能があるため、あまりint型と変わらない処理が行えます。
-
-As for how to use it, since the int type does not match the wildcard described below, use this if you want to match the wildcard. Since it has functions similar to boxing and unboxing in C#, you can perform processing that is not much different from the int type.
-
-
-
-
 # Default parameters, parameter labels
 
 ``` C
@@ -3473,23 +3455,36 @@ Pattern matching block should return the value at the end of blocks.
 
 パターンマッチングのブロックではブロックの最後に値を返すべきです。
 
-# Wildcard
+Pattern matchin can use wildcard.
 
 ```C
-    if([1,2,3] === wildcard) {
-        pust("OK");
+    [1,2,3].case {
+        (Value === [wildcard, 2, 3]) {
+            puts("MATCH");
+        }
+        else {
+            puts("NO MATCH");
+        }
     }
+    struct Data { int a; int b; };
     
-    if([s"AAA",s"BBB",s"CC"] === [s"AAA",s"BBB",wildcard]) {
-        puts("OK");
+    Data{a:123, b:234}.case {
+        (Value === Data {a:wildcard, b:234}) {
+            puts("MATCH");
+        }
+        else {
+            puts("NO MATCH");
+        }
+    }
+    ["AAA":1,"BBB":2,"CCC":3].case {
+        (Value === [wildcard:wildcard, "BBB":2, "CCC":3]) {
+            puts("MATCH");
+        }
+        else {
+            puts("NO MATCH");
+        }
     }
 ```
-
-パターンマッチングで便利だと思います。
-数値型にはマッチしません。ポインタのみマッチします。数値型でwildcardを使いたい場合はinteger型を使ってください。
-
-I think it's useful for pattern matching.
-It doesn't match numeric types. It only matches pointers. If you want to use wildcards with numeric types, use the integer type.
 
 ```C
 #include <comelang.h>

@@ -1909,7 +1909,7 @@ impl map <T, T2>
                 T2&` default_value2;
                 memset(&default_value2, 0, sizeof(T2));
                 T2& item = left.at(it, default_value2);
-                T2& item2 = left.at(it2, default_value2);
+                T2& item2 = right.at(it2, default_value2);
                 
                 if(!item.equals(item2)) {
                     result = false;
@@ -1942,7 +1942,7 @@ impl map <T, T2>
                 T2&` default_value2;
                 memset(&default_value2, 0, sizeof(T2));
                 T2& item = left.at(it, default_value2);
-                T2& item2 = left.at(it2, default_value2);
+                T2& item2 = right.at(it2, default_value2);
                 
                 if(!(item === item2)) {
                     result = false;

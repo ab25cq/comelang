@@ -524,6 +524,11 @@ class sNullableNode extends sNodeBase
     }
 };
 
+sNode*% create_nullable_node(sNode* left, sInfo* info=info)
+{
+    return new sNullableNode(left, info) implements sNode;
+}
+
 class sRangeCheckNode extends sNodeBase
 {
     new(sNode* left, sNode* begin, sNode* end, sInfo* info)

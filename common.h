@@ -790,6 +790,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 /// 18field.c
 /////////////////////////////////////////////////////////////////////
+sNode*% create_nullable_node(sNode* left, sInfo* info=info);
 sNode*% load_field(sNode*% left, string name, sInfo* info=info);
 bool compiletime_get_exception_value(sInfo* info);
 sNode*% store_field(sNode* left, sNode*% right, string name, sInfo* info);

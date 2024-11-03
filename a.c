@@ -8,9 +8,8 @@ struct sData
 
 int main(int argc, char** argv)
 {
-    sData { a:123, b:234 }.case
-    {
-        (Value === sData { a:wildcard, b:234 }) {
+    (1,2,3).case {
+        (Value === (wildcard,3,3)) {
             puts("MATCH");
         }
         else {

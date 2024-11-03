@@ -251,6 +251,11 @@ class sWildCard extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        sNode*% value_node = create_load_var(s"Value");
+        
+        if(!node_compile(value_node, info)) {
+            return false;
+        }
         return true;
     }
 };

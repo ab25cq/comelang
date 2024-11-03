@@ -279,9 +279,25 @@ class sListNode extends sNodeBase
         list<CVALUE*%>*% params = new list<CVALUE*%>();
         sType*% list_element_type = null;
         
+        int n = 0;
         foreach(it, list_elements) {
-            if(!node_compile(it)) {
-                return false;
+            if(it->kind() === "sWildCard") {
+                sNode*% value_node = create_load_var(s"Value");
+                
+                list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                params.add((s"self", value_node));
+                params.add((s"position", create_int_node(n, info)));
+                sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                exp = create_nullable_node(exp);
+                
+                if(!node_compile(exp)) {
+                    return false;
+                }
+            }
+            else {
+                if(!node_compile(it)) {
+                    return false;
+                }
             }
             
             CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -294,6 +310,8 @@ class sListNode extends sNodeBase
             params.push_back(come_value);
             
             list_element_type = clone come_value.type;
+            
+            n++;
         }
         
         sType*% type_values = clone list_element_type;
@@ -457,9 +475,19 @@ class sTupleNode extends sNodeBase
         list<sType*%>*% tuple_types = new list<sType*%>();
         list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
         
+        int n = 0;
         foreach(it, tuple_elements) {
-            if(!node_compile(it)) {
-                return false;
+            if(it->kind() === "sWildCard") {
+                sNode*% value_node = create_load_var(s"Value");
+                sNode*% exp = load_field(value_node, xsprintf("v%d", n+1));
+                if(!node_compile(exp)) {
+                    return false;
+                }
+            }
+            else {
+                if(!node_compile(it)) {
+                    return false;
+                }
             }
             
             CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -467,6 +495,8 @@ class sTupleNode extends sNodeBase
             
             tuple_values.push_back(clone come_value);
             tuple_types.push_back(clone come_value.type);
+            
+            n++;
         }
         
         sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
@@ -1050,34 +1080,96 @@ class sMapNode extends sNodeBase
             sNode* key_elements = map_key_elements[i];
             sNode* elements = map_elements[i];
             
-            if(!node_compile(key_elements)) {
-                return false;
+            if(key_elements->kind() === "sWildCard") {
+                sNode*% value_node = create_load_var(s"Value");
+                
+                sNode*% exp;
+                {
+                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    params.add((s"self", value_node));
+                    exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                }
+                
+                {
+                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    params.add((s"self", exp));
+                    params.add((s"position", create_int_node(i, info)));
+                    exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                    exp = create_nullable_node(exp);
+                }
+                
+                if(!node_compile(exp)) {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                key_params.push_back(come_value);
+                map_key_type = clone come_value.type;
+            }
+            else {
+                if(!node_compile(key_elements)) {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                if(map_key_type) {
+                    check_assign_type(s"invalid map key type", map_key_type, come_value.type, come_value);
+                }
+                
+                key_params.push_back(come_value);
+                map_key_type = clone come_value.type;
             }
             
-            CVALUE*% come_value = get_value_from_stack(-1, info);
-            dec_stack_ptr(1, info);
-            
-            if(map_key_type) {
-                check_assign_type(s"invalid map key type", map_key_type, come_value.type, come_value);
+            if(elements->kind() === "sWildCard") {
+                sNode*% value_node = create_load_var(s"Value");
+                
+                sNode*% exp2;
+                {
+                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    params.add((s"self", value_node));
+                    exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                }
+                
+                {
+                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    params.add((s"self", exp2));
+                    params.add((s"position", create_int_node(i, info)));
+                    exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                    exp2 = create_nullable_node(exp2);
+                }
+                if(!node_compile(exp2)) {
+                    return false;
+                }
+                
+                CVALUE*% come_value2 = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                if(map_element_type) {
+                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
+                }
+                
+                element_params.push_back(come_value2);
+                map_element_type = clone come_value2.type;
             }
-            
-            key_params.push_back(come_value);
-            
-            if(!node_compile(elements)) {
-                return false;
+            else {
+                if(!node_compile(elements)) {
+                    return false;
+                }
+                
+                CVALUE*% come_value2 = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                if(map_element_type) {
+                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
+                }
+                
+                element_params.push_back(come_value2);
+                map_element_type = clone come_value2.type;
             }
-            
-            CVALUE*% come_value2 = get_value_from_stack(-1, info);
-            dec_stack_ptr(1, info);
-            
-            if(map_element_type) {
-                check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
-            }
-            
-            element_params.push_back(come_value2);
-            
-            map_key_type = clone come_value.type;
-            map_element_type = clone come_value2.type;
         }
         
         static int map_value_num = 0;
@@ -2132,6 +2224,7 @@ sNode*% expression_node(sInfo* info) version 96
             bool no_comma = info.no_comma;
             info.no_comma = true;
             
+        
             sNode*% node2 = expression();
             
             info.no_comma = no_comma;

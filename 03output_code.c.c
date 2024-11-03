@@ -1461,6 +1461,7 @@ struct sNode* parse_enum(char* type_name, struct sInfo* info);
 struct sNode* top_level_v96(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v95(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v17(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_nullable_node(struct sNode* left, struct sInfo* info);
 struct sNode* load_field(struct sNode* left, char* name, struct sInfo* info);
 _Bool compiletime_get_exception_value(struct sInfo* info);
 struct sNode* store_field(struct sNode* left, struct sNode* right, char* name, struct sInfo* info);
