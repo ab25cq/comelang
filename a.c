@@ -1,21 +1,27 @@
 #include <comelang.h>
 
-struct sData
+exception string fun(int a, int b)
 {
-    int a;
-    int b;
-};
+    return none(s"AAA");
+}
+
+exception string fun2(int a)
+{
+    return fun(0, 2).throw;
+}
+
+int fun3(string a)
+{
+    printf("fun3 a %s\n", a);
+    
+    return 1;
+}
 
 int main(int argc, char** argv)
 {
-    (1,2,3).case {
-        (Value === (wildcard,3,3)) {
-            puts("MATCH");
-        }
-        else {
-            puts("NO MATCH");
-        }
-    }
+    int a = fun3(fun2(1).rescue { puts("RECUE"); return 1});
+    
+    printf("a %d\n", a);
     
     return 0;
 }

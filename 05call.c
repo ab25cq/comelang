@@ -1677,6 +1677,16 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             return node;
         }
+        else if(buf === "none" && *info->p == '(') {
+            sNode*% node = parse_none(info);
+            
+            return node;
+        }
+        else if(buf === "some" && *info->p == '(') {
+            sNode*% node = parse_some(info);
+            
+            return node;
+        }
         else if(buf === "__func__" || buf === "__FUNCTION__") {
             return new sFuncNode(info) implements sNode;
         }

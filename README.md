@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 7.1.0
+version 7.5.0
 
 ``` C
 #include <comelang.h>
@@ -252,6 +252,8 @@ int main()
 
 14. Type inferrence of template.
 
+15. Exception. 
+
 16. Pattern matching.
 
 17. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
@@ -283,6 +285,8 @@ int main()
 13. クラスと継承システムをサポートします。
 
 14. テンプレートの型推論があります。
+
+15. Exception.
 
 16. Pattern matching.
 
@@ -324,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+7.5.0 Exception coming.
 7.1.0 Real wildcard coming. map equals bug fixed.
 7.0.5 can omit new keyword for creating object.
 7.0.4 wildcard bug fixed.
@@ -3555,6 +3560,38 @@ int main(int argc, char** argv)
         }
     }
     data.to_string().puts(); // sData {a:123,b:234}
+    
+    return 0;
+}
+```
+
+# Exception
+
+```C
+#include <comelang.h>
+
+exception string fun(int a, int b)
+{
+    return none(s"AAA");
+}
+
+exception string fun2(int a)
+{
+    return fun(0, 2).throw;
+}
+
+int fun3(string a)
+{
+    printf("fun3 a %s\n", a);
+    
+    return 1;
+}
+
+int main(int argc, char** argv)
+{
+    int a = fun3(fun2(1).rescue { puts("RECUE"); return 1});
+    
+    printf("a %d\n", a);
     
     return 0;
 }

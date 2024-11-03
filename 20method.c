@@ -1132,7 +1132,7 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     parse_sharp();
     
     bool throw_or_rescue = false;
-    if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0) {
+    if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".value", strlen(".value")) == 0 || strncmp(info->p, ".throw", strlen(".throw")) == 0) {
         throw_or_rescue = true;
     }
     
