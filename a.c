@@ -1,22 +1,16 @@
 #include <comelang.h>
 
-struct sData<T>
+struct sData
 {
-    T a;
-    T b;
+    int a;
+    int b;
 };
-
-int fun(int c)
-{
-    printf("%d\n", c);
-}
 
 int main(int argc, char** argv)
 {
-    var data = sData<integer*%> { a:123, b:234 };
-    
-    data.case {
-        (Value === sData<integer*%> { a:wildcard, b:234 }) {
+    sData { a:123, b:234 }.case
+    {
+        (Value === sData { a:wildcard, b:234 }) {
             puts("MATCH");
         }
         else {

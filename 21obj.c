@@ -1378,6 +1378,11 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                     sNode*% exp = expression();
                     info->no_comma = no_comma;
                     
+                    if(exp->kind() === "sWildCard") {
+                        sNode*% value_node = create_load_var(s"Value");
+                        exp = load_field(value_node, word);
+                    }
+                    
                     initializer.add((word, exp));
                 }
                 else if(*info->p == ',') {

@@ -2657,7 +2657,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
             
             source.append_str(source2);
             
-            snprintf(source2, 1024, "(right == wildcard) || ( ");
+            snprintf(source2, 1024, "( ");
             source.append_str(source2);
             
             int i = 0;
@@ -2980,8 +2980,6 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         }
         else {
             char source2[1024];
-            snprintf(source2, 1024, "if(right == wildcard) { return true; }\n");
-            source.append_str(source2);
             
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {

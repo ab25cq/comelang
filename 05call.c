@@ -237,6 +237,24 @@ class sFuncNode extends sNodeBase
     }
 };
 
+class sWildCard extends sNodeBase
+{
+    new(sInfo* info)
+    {
+        self.super();
+    }
+    
+    string kind()
+    {
+        return string("sWildCard");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        return true;
+    }
+};
+
 class sCallerFuncNode extends sNodeBase
 {
     new(sInfo* info)
@@ -1656,6 +1674,9 @@ sNode*% expression_node(sInfo* info=info) version 97
         }
         else if(buf === "__func__" || buf === "__FUNCTION__") {
             return new sFuncNode(info) implements sNode;
+        }
+        else if(buf === "wildcard") {
+            return new sWildCard(info) implements sNode;
         }
         else if(buf === "__line__" || buf === "__LINE__") {
             return new sLineNode(info) implements sNode;

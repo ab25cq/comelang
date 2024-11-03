@@ -737,9 +737,6 @@ impl list <T>
     }
     bool operator_equals(list<T>* left, list<T>* right) 
     {
-        if(right == wildcard) {
-            return true;
-        }
         if(left.len != right.len) {
             return false;
         }
@@ -1082,10 +1079,6 @@ impl vector<T>
         return result;
     }
     bool operator_equals(vector<T>* left, vector<T>* right) {
-        if(right == wildcard) {
-            return true;
-        }
-        
         if(left.len != right.len) {
             return false;
         }
@@ -1933,9 +1926,6 @@ impl map <T, T2>
     }
     
     bool operator_equals(map<T, T2>* left, map<T,T2>* right) {
-        if(right == wildcard) {
-            return true;
-        }
         if(left.len != right.len) {
             return false;
         }
@@ -2105,9 +2095,6 @@ impl tuple1 <T>
     }
     bool operator_equals(tuple1<T>* self, tuple1<T>* right) 
     {
-        if(right == wildcard) {
-            return true;
-        }
         if(!(self.v1 === right.v1)) {
             return false;
         }
@@ -2166,10 +2153,6 @@ impl tuple2 <T, T2>
     }
     bool operator_equals(tuple2<T,T2>* self, tuple2<T,T2>* right) 
     {
-        if(right == wildcard) {
-            return true;
-        }
-        
         if(!(self.v1 === right.v1)) {
             return false;
         }
@@ -2232,9 +2215,6 @@ impl tuple3 <T, T2, T3>
     }
     bool operator_equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right) 
     {
-        if(right == wildcard) {
-            return true;
-        }
         if(!(self.v1 === right.v1)) {
             return false;
         }
@@ -2304,9 +2284,6 @@ impl tuple4 <T, T2, T3, T4>
     }
     bool operator_equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right) 
     {
-        if(right == wildcard) {
-            return true;
-        }
         if(!(self.v1 === right.v1)) {
             return false;
         }
@@ -2384,9 +2361,6 @@ impl tuple5 <T, T2, T3, T4, T5>
     }
     bool operator_equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right) 
     {
-        if(right == wildcard) {
-            return true;
-        }
         if(!(self.v1 === right.v1)) {
             return false;
         }
@@ -2981,17 +2955,17 @@ bool char*::equals(char* self, char* right);
 bool string::equals(char* self, char* right);
 bool void*::equals(void* self, void* right);
 
-bool bool::operator_equals(integer* self, integer* right);
-bool char::operator_equals(integer* self, integer* right);
-bool short::operator_equals(integer* self, integer* right);
-bool int::operator_equals(integer* self, integer* right);
-bool long::operator_equals(integer* self, integer* right);
+bool bool::operator_equals(bool self, bool right);
+bool char::operator_equals(char self, char right);
+bool short::operator_equals(short self, short right);
+bool int::operator_equals(int self, int right);
+bool long::operator_equals(long self, long right);
 
-bool bool::operator_not_equals(integer* self, integer* right);
-bool char::operator_not_equals(integer* self, integer* right);
-bool short::operator_not_equals(integer* self, integer* right);
-bool int::operator_not_equals(integer* self, integer* right);
-bool long::operator_not_equals(integer* self, integer* right);
+bool bool::operator_not_equals(bool self, bool right);
+bool char::operator_not_equals(char self, char right);
+bool short::operator_not_equals(short self, short right);
+bool int::operator_not_equals(int self, int right);
+bool long::operator_not_equals(long self, long right);
 
 bool string::operator_equals(char* self, char* right);
 bool char*::operator_equals(char* self, char* right);

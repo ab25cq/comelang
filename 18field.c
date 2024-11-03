@@ -750,6 +750,11 @@ class sLoadFieldNode extends sNodeBase
     }
 };
 
+sNode*% load_field(sNode*% left, string name, sInfo* info=info)
+{
+    return new sLoadFieldNode(left, name, info) implements sNode;
+}
+
 class sStoreArrayNode extends sNodeBase
 {
     new(sNode* left, sNode*% right, list<sNode*%>*% array_num, bool quote, sInfo* info)

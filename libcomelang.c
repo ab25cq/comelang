@@ -11,8 +11,6 @@ using C
 }
 #endif
 
-any wildcard = (void*)"__WILD_CARD__";
-
 //////////////////////////////
 /// exception
 //////////////////////////////
@@ -654,9 +652,6 @@ void come_free_object(void* mem)
     if(mem == NULL) {
         return;
     }
-    if(mem == wildcard) {
-        return;
-    }
 /*
     if(gComeMallocLib) {
         if(!is_valid_object(mem)) {
@@ -673,9 +668,6 @@ void come_free_object(void* mem)
 void come_free(void* mem)
 {
     if(mem == NULL) {
-        return;
-    }
-    if(mem == wildcard) {
         return;
     }
 /*
@@ -696,9 +688,6 @@ void* come_memdup(void* block, char* sname=null, int sline=0, char* class_name=n
 {
     if(!block) {
         return null;
-    }
-    if(block == wildcard) {
-        return wildcard;
     }
 /*
     if(gComeMallocLib) {
@@ -727,9 +716,6 @@ void* come_increment_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
-    if(mem == wildcard) {
-        return wildcard;
-    }
 /*
     if(gComeMallocLib) {
         if(!is_valid_object(mem)) {
@@ -750,9 +736,6 @@ void* come_print_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
-    if(mem == wildcard) {
-        return wildcard;
-    }
 /*
     if(gComeMallocLib) {
         if(!is_valid_object(mem)) {
@@ -772,9 +755,6 @@ void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj
 {
     if(mem == NULL) {
         return NULL;
-    }
-    if(mem == wildcard) {
-        return wildcard;
     }
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
@@ -808,9 +788,6 @@ void* come_decrement_ref_count2(void* mem, void* protocol_fun, void* protocol_ob
     if(mem == NULL) {
         return NULL;
     }
-    if(mem == wildcard) {
-        return wildcard;
-    }
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
     
@@ -836,9 +813,6 @@ void* come_decrement_ref_count2(void* mem, void* protocol_fun, void* protocol_ob
 void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, int force_delete_)
 {
     if(mem == NULL) {
-        return;
-    }
-    if(mem == wildcard) {
         return;
     }
     
@@ -887,9 +861,6 @@ void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protoc
     if(mem == NULL) {
         return;
     }
-    if(mem == wildcard) {
-        return;
-    }
     
     if(call_finalizer_only) {
         if(fun) {
@@ -934,9 +905,6 @@ void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, int no_
         }
     }
     if(mem == NULL) {
-        return;
-    }
-    if(mem == wildcard) {
         return;
     }
     
@@ -1347,54 +1315,54 @@ bool double::equals(double self, double right)
     return self == right;
 }
 
-bool bool::operator_equals(integer* self, integer* right)
+bool bool::operator_equals(bool self, bool right)
 {
-    return self.value == right.value || right.value == wildcard;
+    return self == right;
 }
 
-bool char::operator_equals(integer* self, integer* right)
+bool char::operator_equals(char self, char right)
 {
-    return self.value == right.value || right.value == wildcard;
+    return self == right;
 }
 
-bool short::operator_equals(integer* self, integer* right)
+bool short::operator_equals(short self, short right)
 {
-    return self.value == right.value || right.value == wildcard;
+    return self == right;
 }
 
-bool int::operator_equals(integer* self, integer* right)
+bool int::operator_equals(int self, int right)
 {
-    return self.value == right.value || right.value == wildcard;
+    return self == right;
 }
 
-bool long::operator_equals(integer* self, integer* right)
+bool long::operator_equals(long self, long right)
 {
-    return self.value == right.value || right.value == wildcard;
+    return self == right;
 }
 
-bool bool::operator_not_equals(integer* self, integer* right)
+bool bool::operator_not_equals(bool self, bool right)
 {
-    return !(self.value == right.value || right.value == wildcard);
+    return !(self == right);
 }
 
-bool char::operator_not_equals(integer* self, integer* right)
+bool char::operator_not_equals(char self, char right)
 {
-    return !(self.value == right.value || right.value == wildcard);
+    return !(self == right);
 }
 
-bool short::operator_not_equals(integer* self, integer* right)
+bool short::operator_not_equals(short self, short right)
 {
-    return !(self.value == right.value || right.value == wildcard);
+    return !(self == right);
 }
 
-bool int::operator_not_equals(integer* self, integer* right)
+bool int::operator_not_equals(int self, int right)
 {
-    return !(self.value == right.value || right.value == wildcard);
+    return !(self == right);
 }
 
-bool long::operator_not_equals(integer* self, integer* right)
+bool long::operator_not_equals(long self, long right)
 {
-    return !(self.value == right.value || right.value == wildcard);
+    return !(self == right);
 }
 
 bool string::equals(char* self, char* right) 
@@ -1444,7 +1412,7 @@ bool string::operator_equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0 || right == wildcard;
+    return strcmp(self, right) == 0;
 }
 
 bool char*::operator_equals(char* self, char* right) 
@@ -1459,12 +1427,12 @@ bool char*::operator_equals(char* self, char* right)
         return false;
     }
     
-    return strcmp(self, right) == 0 || right == wildcard;
+    return strcmp(self, right) == 0;
 }
 
 bool void*::operator_equals(char* self, char* right) 
 {
-    return self == right || right == wildcard;
+    return self == right;
 }
 
 bool void*::operator_not_equals(char* self, char* right) 
@@ -1484,7 +1452,7 @@ bool string::operator_not_equals(char* self, char* right)
         return true;
     }
     
-    return strcmp(self, right) != 0 && right != wildcard;
+    return strcmp(self, right) != 0;
 }
 
 bool char*::operator_not_equals(char* self, char* right) 
@@ -1499,7 +1467,7 @@ bool char*::operator_not_equals(char* self, char* right)
         return true;
     }
     
-    return strcmp(self, right) != 0 && right != wildcard;
+    return strcmp(self, right) != 0;
 }
 
 
@@ -2836,7 +2804,7 @@ bool integer::equals(integer* self, integer* right)
 
 bool integer::operator_equals(integer* self, integer* right)
 {
-    return self.value == right.value || right == wildcard;
+    return self.value == right.value;
 }
 
 bool integer::operator_not_equals(integer* self, integer* right)
@@ -2966,7 +2934,7 @@ bool floating::equals(floating* self, floating* right)
 
 bool floating::operator_equals(floating* self, floating* right)
 {
-    return self.value == right.value || right == wildcard;
+    return self.value == right.value;
 }
 
 bool floating::operator_not_equals(floating* self, floating* right)
