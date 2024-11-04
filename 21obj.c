@@ -223,8 +223,9 @@ class sImplementsNode extends sNodeBase
         string type_name2 = make_type_name_string(type, array_cast_pointer:true);
         
         static int inf_num = 0;
+        ++inf_num;
         
-        string buf = xsprintf("%s* _inf_value%d;\n", type_name, ++inf_num);
+        string buf = xsprintf("%s* _inf_value%d;\n", type_name, inf_num);
         add_come_code_at_function_head(info, buf);
         string buf2 = xsprintf("%s* _inf_obj_value%d;\n", type_name2, inf_num);
         add_come_code_at_function_head(info, buf2);

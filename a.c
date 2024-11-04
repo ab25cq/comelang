@@ -1,27 +1,9 @@
 #include <comelang.h>
-
-exception string fun(int a, int b)
-{
-    return none(s"AAA");
-}
-
-exception string fun2(int a)
-{
-    return fun(0, 2);
-}
-
-int fun3(string a)
-{
-    printf("fun3 a %s\n", a);
-    
-    return 1;
-}
+#include <comelang-str.h>
 
 int main(int argc, char** argv)
 {
-    int a = fun3(fun2(1));
-    
-    printf("a %d\n", a);
+    s"AAA".scan(/((((((((((/);
     
     return 0;
 }

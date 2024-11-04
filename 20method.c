@@ -980,9 +980,12 @@ class sExceptionNode extends sNodeBase
     {
         sNode*% node = self.node;
         
+        bool no_output_come_code = info.no_output_come_code;
+        info->no_output_come_code = true;
         if(!node_compile(node)) {
             return false;
         }
+        info->no_output_come_code = no_output_come_code;
         
         sFun* fun = info.calling_fun;
         
@@ -993,7 +996,7 @@ class sExceptionNode extends sNodeBase
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
             
             if(result_type2.mException) {
-		    dec_stack_ptr(1, info);
+                dec_stack_ptr(1, info);
             
                 sType*% come_fun_result_type = clone info.come_fun.mResultType;
                 
@@ -1015,6 +1018,11 @@ class sExceptionNode extends sNodeBase
                 }
             }
         }
+        else {
+            if(!node_compile(node)) {
+                return false;
+            }
+        }
         
         return true;
     }
@@ -1022,7 +1030,15 @@ class sExceptionNode extends sNodeBase
 
 sNode*% create_method_call(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool throw_or_rescue, sInfo* info)
 {
-    return new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, no_infference_method_generics:false, true@recursive, info) implements sNode;
+    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, no_infference_method_generics:true, false@recursive, info) implements sNode;
+    
+    if(!throw_or_rescue) {
+        node = new sExceptionNode(node, method_block, info) implements sNode;
+    }
+    
+    node = post_position_operator(node, info);
+    
+    return node;
 }
 
 sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
@@ -1172,7 +1188,7 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     parse_sharp();
     
     bool throw_or_rescue = false;
-    if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".value", strlen(".value")) == 0 || strncmp(info->p, ".throw", strlen(".throw")) == 0) {
+    if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0) {
         throw_or_rescue = true;
     }
     
@@ -1180,7 +1196,11 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     
     sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, no_infference_method_generics:false, recursive:true, info) implements sNode;
     
-    node = new sExceptionNode(node, method_block, info) implements sNode;
+/*
+    if(!throw_or_rescue) {
+        node = new sExceptionNode(node, method_block, info) implements sNode;
+    }
+*/
     
     node = post_position_operator(node, info);
     

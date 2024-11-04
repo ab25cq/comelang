@@ -3323,7 +3323,7 @@ Omitting semicolon at the function block end means return statment.
 
 # Exception
 
-Removed.
+Exception is coming soon.
 
 # Pattern Matching
 

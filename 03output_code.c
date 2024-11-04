@@ -964,7 +964,13 @@ bool output_source_file(sInfo* info) version 3
     fprintf(f, "// body function\n");
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[it]??;
+        int n = it2->mSourceHead.to_string().length() + it2->mSourceHead2.to_string().length() + it2->mSource.to_string().length();
         
+        /*
+        if(n == 0) {
+        }
+        else 
+        */
         if(!it2->mExternal) {
             string output = output_function(it2, info);
             

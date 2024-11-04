@@ -241,18 +241,27 @@ class sRegexNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        CVALUE*% come_value = new CVALUE();
+        sNode*% obj_node = new sStrNode(self.str, info.sline, info) implements sNode;
         
-        come_value.c_value = xsprintf("charp_to_regex(\"%s\", %s, 0, %s, 0, 0, 0, 0, 0)", self.str, self.ignore_case ? string("1"):string("0"), self.global ? string("1"):string("0"));
-        come_value.type = new sType("come_regex");
-        come_value.type->mPointerNum = 1;
-        come_value.type.mHeap = true;
-        come_value.var = null;
+        list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string,sNode*%>*%>();
         
-        append_object_to_right_values2(come_value, come_value.type, info);
+        params.add((s"self", obj_node));
+        params.add((s"ignore_case", create_false_object(info)));
+        params.add((s"multiline", create_false_object(info)));
+        params.add((s"global", create_false_object(info)));
+        params.add((s"extended", create_false_object(info)));
+        params.add((s"dotall", create_false_object(info)));
+        params.add((s"anchored", create_false_object(info)));
+        params.add((s"dollar_endonly", create_false_object(info)));
+        params.add((s"ungreedy", create_false_object(info)));
         
-        info.stack.push_back(come_value);
-        add_come_last_code(info, "%s", come_value.c_value);
+        sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+        
+        if(!node_compile(node, info)) {
+            return false;
+        }
+        
+        //add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -1608,7 +1617,7 @@ sNode*% expression_node(sInfo* info) version 96
         skip_spaces_and_lf();
         
         bool throw_or_rescue = false;
-        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0) {
+        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0) {
             throw_or_rescue = true;
         }
         
@@ -1632,7 +1641,9 @@ sNode*% expression_node(sInfo* info) version 96
         
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
-        return create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, info);
+        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, info);
+        
+        return node;
         
        // return new sRegexNode(buf.to_string(), global, ignore_case, sline, info) implements sNode;
     }

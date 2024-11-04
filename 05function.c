@@ -2062,7 +2062,9 @@ sNode*% parse_function(sInfo* info)
         }
         
         if(!result_type->mStatic) {
-            add_come_code_at_come_header(info, "%s", header.to_string());
+            if(!info->no_output_come_code) {
+                add_come_code_at_come_header(info, "%s", header.to_string());
+            }
         }
         
         sBlock*% block = parse_block(in_function:true, info, false, constructor_);
@@ -2131,7 +2133,9 @@ sNode*% parse_function(sInfo* info)
             header.append(source_head, source_tail - source_head);
             
             if(!result_type_static) {
-                add_come_code_at_come_header(info, "%s", header.to_string());
+                if(!info->no_output_come_code) {
+                    add_come_code_at_come_header(info, "%s", header.to_string());
+                }
             }
             
             return new sFunNode(fun, info) implements sNode;
@@ -2166,7 +2170,9 @@ sNode*% parse_function(sInfo* info)
             header.append(source_head, source_tail - source_head);
             
             if(!result_type_static) {
-                add_come_code_at_come_header(info, "%s", header.to_string());
+                if(!info->no_output_come_code) {
+                    add_come_code_at_come_header(info, "%s", header.to_string());
+                }
             }
             
             return new sFunNode(fun, info) implements sNode;

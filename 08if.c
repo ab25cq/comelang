@@ -586,7 +586,9 @@ sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
     static int var_num = 0;
     var_num++;
     
-    var multiple_assign = [s"come_exception_var_\{var_num}", s"Err" ];
+    int var_num_stack = var_num;
+    
+    var multiple_assign = [s"come_exception_var_\{var_num_stack}", s"Err" ];
     
     sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
                                         , null@type, true@alloc, expression_node, info);
@@ -604,7 +606,7 @@ sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
 
     sNode*% if_node = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
     sNode*% free_it_node = new sFreeITNode(info) implements sNode;
-    sNode*% load_var = create_load_var(s"come_exception_var_\{var_num}");
+    sNode*% load_var = create_load_var(s"come_exception_var_\{var_num_stack}");
     
     sNode*% save_right_value_objects = new sSaveRightValueObjects() implements sNode;
     sNode*% restore_right_value_objects = new sRestoreRightValueObjects() implements sNode;
