@@ -1,0 +1,574 @@
+.c:2:23: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+    2 | typedef unsigned long unsigned  int size_t;
+      |                       ^~~~~~~~
+.c:18:66: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+   18 | typedef long (*cookie_read_function_t)(void*,char*,unsigned long unsigned  int);
+      |                                                                  ^~~~~~~~
+.c:19:73: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+   19 | typedef long (*cookie_write_function_t)(void*,const char*,unsigned long unsigned  int);
+      |                                                                         ^~~~~~~~
+.c:24:44: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+   24 |     long (*read)(void*,char*,unsigned long unsigned  int);
+      |                                            ^~~~~~~~
+.c:25:51: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+   25 |     long (*write)(void*,const char*,unsigned long unsigned  int);
+      |                                                   ^~~~~~~~
+.c:99:11: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+   99 |     short short* p;
+      |           ^~~~~
+.c:154:11: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+  154 |     short short item;
+      |           ^~~~~
+.c:233:11: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+  233 |     short short* items;
+      |           ^~~~~
+.c:883:11: error: duplicate member 'method_block'
+  883 |     _Bool method_block;
+      |           ^
+.c:882:11: note: previous declaration is here
+  882 |     _Bool method_block;
+      |           ^
+.c:903:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  903 | unsigned long unsigned  int fread(void* anonymous_var_nameX23, unsigned long unsigned  int anonymous_var_nameX24, unsigned long unsigned  int anonymous_var_nameX25, struct _IO_FILE* anonymous_var_nameX26);
+      |               ^~~~~~~~
+.c:903:78: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  903 | unsigned long unsigned  int fread(void* anonymous_var_nameX23, unsigned long unsigned  int anonymous_var_nameX24, unsigned long unsigned  int anonymous_var_nameX25, struct _IO_FILE* anonymous_var_nameX26);
+      |                                                                              ^~~~~~~~
+.c:903:129: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  903 | unsigned long unsigned  int fread(void* anonymous_var_nameX23, unsigned long unsigned  int anonymous_var_nameX24, unsigned long unsigned  int anonymous_var_nameX25, struct _IO_FILE* anonymous_var_nameX26);
+      |                                                                                                                                 ^~~~~~~~
+.c:904:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  904 | unsigned long unsigned  int fwrite(const void* anonymous_var_nameX27, unsigned long unsigned  int anonymous_var_nameX28, unsigned long unsigned  int anonymous_var_nameX29, struct _IO_FILE* anonymous_var_nameX30);
+      |               ^~~~~~~~
+.c:904:85: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  904 | unsigned long unsigned  int fwrite(const void* anonymous_var_nameX27, unsigned long unsigned  int anonymous_var_nameX28, unsigned long unsigned  int anonymous_var_nameX29, struct _IO_FILE* anonymous_var_nameX30);
+      |                                                                                     ^~~~~~~~
+.c:904:136: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  904 | unsigned long unsigned  int fwrite(const void* anonymous_var_nameX27, unsigned long unsigned  int anonymous_var_nameX28, unsigned long unsigned  int anonymous_var_nameX29, struct _IO_FILE* anonymous_var_nameX30);
+      |                                                                                                                                        ^~~~~~~~
+.c:918:57: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  918 | int snprintf(char* anonymous_var_nameX51, unsigned long unsigned  int anonymous_var_nameX52, const char* anonymous_var_nameX53, ...);
+      |                                                         ^~~~~~~~
+.c:922:58: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  922 | int vsnprintf(char* anonymous_var_nameX62, unsigned long unsigned  int anonymous_var_nameX63, const char* anonymous_var_nameX64, va_list anonymous_var_nameX65);
+      |                                                          ^~~~~~~~
+.c:930:123: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  930 | int setvbuf(struct _IO_FILE* anonymous_var_nameX80, char* anonymous_var_nameX81, int anonymous_var_nameX82, unsigned long unsigned  int anonymous_var_nameX83);
+      |                                                                                                                           ^~~~~~~~
+.c:934:70: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  934 | struct _IO_FILE* fmemopen(void* anonymous_var_nameX87, unsigned long unsigned  int anonymous_var_nameX88, const char* anonymous_var_nameX89);
+      |                                                                      ^~~~~~~~
+.c:935:77: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  935 | struct _IO_FILE* open_memstream(char** anonymous_var_nameX90, unsigned long unsigned  int* anonymous_var_nameX91);
+      |                                                                             ^~~~~~~~
+.c:951:60: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  951 | long getdelim(char** anonymous_var_nameX114, unsigned long unsigned  int* anonymous_var_nameX115, int anonymous_var_nameX116, struct _IO_FILE* anonymous_var_nameX117);
+      |                                                            ^~~~~~~~
+.c:952:59: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  952 | long getline(char** anonymous_var_nameX118, unsigned long unsigned  int* anonymous_var_nameX119, struct _IO_FILE* anonymous_var_nameX120);
+      |                                                           ^~~~~~~~
+.c:958:101: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  958 | void setbuffer(struct _IO_FILE* anonymous_var_nameX130, char* anonymous_var_nameX131, unsigned long unsigned  int anonymous_var_nameX132);
+      |                                                                                                     ^~~~~~~~
+.c:962:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  962 | unsigned long unsigned  int fread_unlocked(void* anonymous_var_nameX137, unsigned long unsigned  int anonymous_var_nameX138, unsigned long unsigned  int anonymous_var_nameX139, struct _IO_FILE* anonymous_var_nameX140);
+      |               ^~~~~~~~
+.c:962:88: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  962 | unsigned long unsigned  int fread_unlocked(void* anonymous_var_nameX137, unsigned long unsigned  int anonymous_var_nameX138, unsigned long unsigned  int anonymous_var_nameX139, struct _IO_FILE* anonymous_var_nameX140);
+      |                                                                                        ^~~~~~~~
+.c:962:140: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  962 | unsigned long unsigned  int fread_unlocked(void* anonymous_var_nameX137, unsigned long unsigned  int anonymous_var_nameX138, unsigned long unsigned  int anonymous_var_nameX139, struct _IO_FILE* anonymous_var_nameX140);
+      |                                                                                                                                            ^~~~~~~~
+.c:963:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  963 | unsigned long unsigned  int fwrite_unlocked(const void* anonymous_var_nameX141, unsigned long unsigned  int anonymous_var_nameX142, unsigned long unsigned  int anonymous_var_nameX143, struct _IO_FILE* anonymous_var_nameX144);
+      |               ^~~~~~~~
+.c:963:95: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  963 | unsigned long unsigned  int fwrite_unlocked(const void* anonymous_var_nameX141, unsigned long unsigned  int anonymous_var_nameX142, unsigned long unsigned  int anonymous_var_nameX143, struct _IO_FILE* anonymous_var_nameX144);
+      |                                                                                               ^~~~~~~~
+.c:963:147: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  963 | unsigned long unsigned  int fwrite_unlocked(const void* anonymous_var_nameX141, unsigned long unsigned  int anonymous_var_nameX142, unsigned long unsigned  int anonymous_var_nameX143, struct _IO_FILE* anonymous_var_nameX144);
+      |                                                                                                                                                   ^~~~~~~~
+.c:970:69: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  970 | char* fgetln(struct _IO_FILE* anonymous_var_nameX152, unsigned long unsigned  int* anonymous_var_nameX153);
+      |                                                                     ^~~~~~~~
+.c:984:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  984 | unsigned long unsigned  int strtoul(const char* anonymous_var_nameX190, char** anonymous_var_nameX191, int anonymous_var_nameX192);
+      |               ^~~~~~~~
+.c:986:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  986 | unsigned long unsigned  long strtoull(const char* anonymous_var_nameX196, char** anonymous_var_nameX197, int anonymous_var_nameX198);
+      |               ^~~~~~~~
+.c:989:28: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  989 | void* malloc(unsigned long unsigned  int anonymous_var_nameX200);
+      |                            ^~~~~~~~
+.c:990:28: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  990 | void* calloc(unsigned long unsigned  int anonymous_var_nameX201, unsigned long unsigned  int anonymous_var_nameX202);
+      |                            ^~~~~~~~
+.c:990:80: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  990 | void* calloc(unsigned long unsigned  int anonymous_var_nameX201, unsigned long unsigned  int anonymous_var_nameX202);
+      |                                                                                ^~~~~~~~
+.c:991:59: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  991 | void* realloc(void* anonymous_var_nameX203, unsigned long unsigned  int anonymous_var_nameX204);
+      |                                                           ^~~~~~~~
+.c:993:35: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  993 | void* aligned_alloc(unsigned long unsigned  int anonymous_var_nameX206, unsigned long unsigned  int anonymous_var_nameX207);
+      |                                   ^~~~~~~~
+.c:993:87: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+  993 | void* aligned_alloc(unsigned long unsigned  int anonymous_var_nameX206, unsigned long unsigned  int anonymous_var_nameX207);
+      |                                                                                       ^~~~~~~~
+.c:1002:101: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1002 | void* bsearch(const void* anonymous_var_nameX213, const void* anonymous_var_nameX214, unsigned long unsigned  int anonymous_var_nameX215, unsigned long unsigned  int anonymous_var_nameX216, int (*anonymous_lambda_var_nameZ3)(const void*,const void*));
+      |                                                                                                     ^~~~~~~~
+.c:1002:153: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1002 | void* bsearch(const void* anonymous_var_nameX213, const void* anonymous_var_nameX214, unsigned long unsigned  int anonymous_var_nameX215, unsigned long unsigned  int anonymous_var_nameX216, int (*anonymous_lambda_var_nameZ3)(const void*,const void*));
+      |                                                                                                                                                         ^~~~~~~~
+.c:1003:56: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1003 | void qsort(void* anonymous_var_nameX219, unsigned long unsigned  int anonymous_var_nameX220, unsigned long unsigned  int anonymous_var_nameX221, int (*anonymous_lambda_var_nameZ4)(const void*,const void*));
+      |                                                        ^~~~~~~~
+.c:1003:108: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1003 | void qsort(void* anonymous_var_nameX219, unsigned long unsigned  int anonymous_var_nameX220, unsigned long unsigned  int anonymous_var_nameX221, int (*anonymous_lambda_var_nameZ4)(const void*,const void*));
+      |                                                                                                            ^~~~~~~~
+.c:1010:61: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1010 | int mblen(const char* anonymous_var_nameX233, unsigned long unsigned  int anonymous_var_nameX234);
+      |                                                             ^~~~~~~~
+.c:1011:100: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1011 | int mbtowc(unsigned int* anonymous_var_nameX235, const char* anonymous_var_nameX236, unsigned long unsigned  int anonymous_var_nameX237);
+      |                                                                                                    ^~~~~~~~
+.c:1013:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1013 | unsigned long unsigned  int mbstowcs(unsigned int* anonymous_var_nameX240, const char* anonymous_var_nameX241, unsigned long unsigned  int anonymous_var_nameX242);
+      |               ^~~~~~~~
+.c:1013:126: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1013 | unsigned long unsigned  int mbstowcs(unsigned int* anonymous_var_nameX240, const char* anonymous_var_nameX241, unsigned long unsigned  int anonymous_var_nameX242);
+      |                                                                                                                              ^~~~~~~~
+.c:1014:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1014 | unsigned long unsigned  int wcstombs(char* anonymous_var_nameX243, const unsigned int* anonymous_var_nameX244, unsigned long unsigned  int anonymous_var_nameX245);
+      |               ^~~~~~~~
+.c:1014:126: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1014 | unsigned long unsigned  int wcstombs(char* anonymous_var_nameX243, const unsigned int* anonymous_var_nameX244, unsigned long unsigned  int anonymous_var_nameX245);
+      |                                                                                                                              ^~~~~~~~
+.c:1015:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1015 | unsigned long unsigned  int __ctype_get_mb_cur_max();
+      |               ^~~~~~~~
+.c:1016:65: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1016 | int posix_memalign(void** anonymous_var_nameX246, unsigned long unsigned  int anonymous_var_nameX247, unsigned long unsigned  int anonymous_var_nameX248);
+      |                                                                 ^~~~~~~~
+.c:1016:117: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1016 | int posix_memalign(void** anonymous_var_nameX246, unsigned long unsigned  int anonymous_var_nameX247, unsigned long unsigned  int anonymous_var_nameX248);
+      |                                                                                                                     ^~~~~~~~
+.c:1027:98: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1027 | char* initstate(unsigned int anonymous_var_nameX264, char* anonymous_var_nameX265, unsigned long unsigned  int anonymous_var_nameX266);
+      |                                                                                                  ^~~~~~~~
+.c:1046:28: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1046 | void* alloca(unsigned long unsigned  int anonymous_var_nameX282);
+      |                            ^~~~~~~~
+.c:1050:28: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1050 | void* valloc(unsigned long unsigned  int anonymous_var_nameX289);
+      |                            ^~~~~~~~
+.c:1051:30: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1051 | void* memalign(unsigned long unsigned  int anonymous_var_nameX290, unsigned long unsigned  int anonymous_var_nameX291);
+      |                              ^~~~~~~~
+.c:1051:82: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1051 | void* memalign(unsigned long unsigned  int anonymous_var_nameX290, unsigned long unsigned  int anonymous_var_nameX291);
+      |                                                                                  ^~~~~~~~
+.c:1054:64: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1054 | void* reallocarray(void* anonymous_var_nameX294, unsigned long unsigned  int anonymous_var_nameX295, unsigned long unsigned  int anonymous_var_nameX296);
+      |                                                                ^~~~~~~~
+.c:1054:116: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1054 | void* reallocarray(void* anonymous_var_nameX294, unsigned long unsigned  int anonymous_var_nameX295, unsigned long unsigned  int anonymous_var_nameX296);
+      |                                                                                                                    ^~~~~~~~
+.c:1055:58: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1055 | void qsort_r(void* anonymous_var_nameX297, unsigned long unsigned  int anonymous_var_nameX298, unsigned long unsigned  int anonymous_var_nameX299, int (*anonymous_lambda_var_nameZ5)(const void*,const void*,void*), void* anonymous_var_nameX303);
+      |                                                          ^~~~~~~~
+.c:1055:110: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1055 | void qsort_r(void* anonymous_var_nameX297, unsigned long unsigned  int anonymous_var_nameX298, unsigned long unsigned  int anonymous_var_nameX299, int (*anonymous_lambda_var_nameZ5)(const void*,const void*,void*), void* anonymous_var_nameX303);
+      |                                                                                                              ^~~~~~~~
+.c:1056:87: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1056 | int ptsname_r(int anonymous_var_nameX304, char* anonymous_var_nameX305, unsigned long unsigned  int anonymous_var_nameX306);
+      |                                                                                       ^~~~~~~~
+.c:1064:94: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1064 | void* memcpy(void* anonymous_var_nameX328, const void* anonymous_var_nameX329, unsigned long unsigned  int anonymous_var_nameX330);
+      |                                                                                              ^~~~~~~~
+.c:1065:95: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1065 | void* memmove(void* anonymous_var_nameX331, const void* anonymous_var_nameX332, unsigned long unsigned  int anonymous_var_nameX333);
+      |                                                                                               ^~~~~~~~
+.c:1066:86: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1066 | void* memset(void* anonymous_var_nameX334, int anonymous_var_nameX335, unsigned long unsigned  int anonymous_var_nameX336);
+      |                                                                                      ^~~~~~~~
+.c:1067:98: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1067 | int memcmp(const void* anonymous_var_nameX337, const void* anonymous_var_nameX338, unsigned long unsigned  int anonymous_var_nameX339);
+      |                                                                                                  ^~~~~~~~
+.c:1068:92: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1068 | void* memchr(const void* anonymous_var_nameX340, int anonymous_var_nameX341, unsigned long unsigned  int anonymous_var_nameX342);
+      |                                                                                            ^~~~~~~~
+.c:1070:95: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1070 | char* strncpy(char* anonymous_var_nameX345, const char* anonymous_var_nameX346, unsigned long unsigned  int anonymous_var_nameX347);
+      |                                                                                               ^~~~~~~~
+.c:1072:95: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1072 | char* strncat(char* anonymous_var_nameX350, const char* anonymous_var_nameX351, unsigned long unsigned  int anonymous_var_nameX352);
+      |                                                                                               ^~~~~~~~
+.c:1074:99: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1074 | int strncmp(const char* anonymous_var_nameX355, const char* anonymous_var_nameX356, unsigned long unsigned  int anonymous_var_nameX357);
+      |                                                                                                   ^~~~~~~~
+.c:1076:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1076 | unsigned long unsigned  int strxfrm(char* anonymous_var_nameX360, const char* anonymous_var_nameX361, unsigned long unsigned  int anonymous_var_nameX362);
+      |               ^~~~~~~~
+.c:1076:117: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1076 | unsigned long unsigned  int strxfrm(char* anonymous_var_nameX360, const char* anonymous_var_nameX361, unsigned long unsigned  int anonymous_var_nameX362);
+      |                                                                                                                     ^~~~~~~~
+.c:1079:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1079 | unsigned long unsigned  int strcspn(const char* anonymous_var_nameX367, const char* anonymous_var_nameX368);
+      |               ^~~~~~~~
+.c:1080:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1080 | unsigned long unsigned  int strspn(const char* anonymous_var_nameX369, const char* anonymous_var_nameX370);
+      |               ^~~~~~~~
+.c:1084:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1084 | unsigned long unsigned  int strlen(const char* anonymous_var_nameX377);
+      |               ^~~~~~~~
+.c:1086:96: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1086 | int bcmp(const void* anonymous_var_nameX379, const void* anonymous_var_nameX380, unsigned long unsigned  int anonymous_var_nameX381);
+      |                                                                                                ^~~~~~~~
+.c:1087:92: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1087 | void bcopy(const void* anonymous_var_nameX382, void* anonymous_var_nameX383, unsigned long unsigned  int anonymous_var_nameX384);
+      |                                                                                            ^~~~~~~~
+.c:1088:56: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1088 | void bzero(void* anonymous_var_nameX385, unsigned long unsigned  int anonymous_var_nameX386);
+      |                                                        ^~~~~~~~
+.c:1095:103: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1095 | int strncasecmp(const char* anonymous_var_nameX396, const char* anonymous_var_nameX397, unsigned long unsigned  int anonymous_var_nameX398);
+      |                                                                                                       ^~~~~~~~
+.c:1097:105: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1097 | int strncasecmp_l(const char* anonymous_var_nameX402, const char* anonymous_var_nameX403, unsigned long unsigned  int anonymous_var_nameX404, struct __locale_struct* anonymous_var_nameX405);
+      |                                                                                                         ^~~~~~~~
+.c:1099:88: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1099 | int strerror_r(int anonymous_var_nameX409, char* anonymous_var_nameX410, unsigned long unsigned  int anonymous_var_nameX411);
+      |                                                                                        ^~~~~~~~
+.c:1101:95: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1101 | char* stpncpy(char* anonymous_var_nameX414, const char* anonymous_var_nameX415, unsigned long unsigned  int anonymous_var_nameX416);
+      |                                                                                               ^~~~~~~~
+.c:1102:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1102 | unsigned long unsigned  int strnlen(const char* anonymous_var_nameX417, unsigned long unsigned  int anonymous_var_nameX418);
+      |               ^~~~~~~~
+.c:1102:87: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1102 | unsigned long unsigned  int strnlen(const char* anonymous_var_nameX417, unsigned long unsigned  int anonymous_var_nameX418);
+      |                                                                                       ^~~~~~~~
+.c:1104:65: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1104 | char* strndup(const char* anonymous_var_nameX420, unsigned long unsigned  int anonymous_var_nameX421);
+      |                                                                 ^~~~~~~~
+.c:1108:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1108 | unsigned long unsigned  int strxfrm_l(char* anonymous_var_nameX428, const char* anonymous_var_nameX429, unsigned long unsigned  int anonymous_var_nameX430, struct __locale_struct* anonymous_var_nameX431);
+      |               ^~~~~~~~
+.c:1108:119: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1108 | unsigned long unsigned  int strxfrm_l(char* anonymous_var_nameX428, const char* anonymous_var_nameX429, unsigned long unsigned  int anonymous_var_nameX430, struct __locale_struct* anonymous_var_nameX431);
+      |                                                                                                                       ^~~~~~~~
+.c:1109:64: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1109 | void* memmem(const void* anonymous_var_nameX432, unsigned long unsigned  int anonymous_var_nameX433, const void* anonymous_var_nameX434, unsigned long unsigned  int anonymous_var_nameX435);
+      |                                                                ^~~~~~~~
+.c:1109:152: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1109 | void* memmem(const void* anonymous_var_nameX432, unsigned long unsigned  int anonymous_var_nameX433, const void* anonymous_var_nameX434, unsigned long unsigned  int anonymous_var_nameX435);
+      |                                                                                                                                                        ^~~~~~~~
+.c:1110:123: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1110 | void* memccpy(void* anonymous_var_nameX436, const void* anonymous_var_nameX437, int anonymous_var_nameX438, unsigned long unsigned  int anonymous_var_nameX439);
+      |                                                                                                                           ^~~~~~~~
+.c:1112:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1112 | unsigned long unsigned  int strlcat(char* anonymous_var_nameX442, const char* anonymous_var_nameX443, unsigned long unsigned  int anonymous_var_nameX444);
+      |               ^~~~~~~~
+.c:1112:117: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1112 | unsigned long unsigned  int strlcat(char* anonymous_var_nameX442, const char* anonymous_var_nameX443, unsigned long unsigned  int anonymous_var_nameX444);
+      |                                                                                                                     ^~~~~~~~
+.c:1113:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1113 | unsigned long unsigned  int strlcpy(char* anonymous_var_nameX445, const char* anonymous_var_nameX446, unsigned long unsigned  int anonymous_var_nameX447);
+      |               ^~~~~~~~
+.c:1113:117: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1113 | unsigned long unsigned  int strlcpy(char* anonymous_var_nameX445, const char* anonymous_var_nameX446, unsigned long unsigned  int anonymous_var_nameX447);
+      |                                                                                                                     ^~~~~~~~
+.c:1114:65: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1114 | void explicit_bzero(void* anonymous_var_nameX448, unsigned long unsigned  int anonymous_var_nameX449);
+      |                                                                 ^~~~~~~~
+.c:1118:93: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1118 | void* memrchr(const void* anonymous_var_nameX456, int anonymous_var_nameX457, unsigned long unsigned  int anonymous_var_nameX458);
+      |                                                                                             ^~~~~~~~
+.c:1119:95: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1119 | void* mempcpy(void* anonymous_var_nameX459, const void* anonymous_var_nameX460, unsigned long unsigned  int anonymous_var_nameX461);
+      |                                                                                               ^~~~~~~~
+.c:1143:33: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1143 | void* come_calloc(unsigned long unsigned  int count, unsigned long unsigned  int size, char* sname, int sline, char* class_name);
+      |                                 ^~~~~~~~
+.c:1143:68: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1143 | void* come_calloc(unsigned long unsigned  int count, unsigned long unsigned  int size, char* sname, int sline, char* class_name);
+      |                                                                    ^~~~~~~~
+.c:1163:76: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1163 | struct buffer* buffer_append(struct buffer* self, char* mem, unsigned long unsigned  int size);
+      |                                                                            ^~~~~~~~
+.c:1169:63: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1169 | struct buffer* buffer_append_short(struct buffer* self, short short value);
+      |                                                               ^~~~~
+.c:1197:110: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1197 | static struct list$1short* list$1short_initialize_with_values(struct list$1short* self, int num_value, short short* values);
+      |                                                                                                              ^~~~~
+.c:1198:82: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1198 | static struct list$1short* list$1short_push_back(struct list$1short* self, short short item);
+      |                                                                                  ^~~~~
+.c:1221:116: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1221 | static struct vector$1short* vector$1short_initialize_with_values(struct vector$1short* self, int num_value, short short* values);
+      |                                                                                                                    ^~~~~
+.c:1234:26: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1234 | _Bool short_equals(short short self, short short right);
+      |                          ^~~~~
+.c:1234:44: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1234 | _Bool short_equals(short short self, short short right);
+      |                                            ^~~~~
+.c:1236:46: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1236 | _Bool size_t_equals(long self, unsigned long unsigned  int right);
+      |                                              ^~~~~~~~
+.c:1244:35: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1244 | _Bool short_operator_equals(short short self, short short right);
+      |                                   ^~~~~
+.c:1244:53: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1244 | _Bool short_operator_equals(short short self, short short right);
+      |                                                     ^~~~~
+.c:1249:39: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1249 | _Bool short_operator_not_equals(short short self, short short right);
+      |                                       ^~~~~
+.c:1249:57: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1249 | _Bool short_operator_not_equals(short short self, short short right);
+      |                                                         ^~~~~
+.c:1264:39: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1264 | unsigned int short_get_hash_key(short short value);
+      |                                       ^~~~~
+.c:1274:29: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1274 | short int short_clone(short short self);
+      |                             ^~~~~
+.c:1277:15: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1277 | unsigned long unsigned  int size_t_clone(long self);
+      |               ^~~~~~~~
+.c:1310:29: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1310 | char* short_to_string(short short self);
+      |                             ^~~~~
+.c:1313:38: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1313 | char* size_t_to_string(unsigned long unsigned  int self);
+      |                                      ^~~~~~~~
+.c:1320:25: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1320 | int short_compare(short short left, short short right);
+      |                         ^~~~~
+.c:1320:43: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1320 | int short_compare(short short left, short short right);
+      |                                           ^~~~~
+.c:1783:73: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1783 | static inline struct buffer* charpa_to_buffer(char* self, unsigned long unsigned  int len){
+      |                                                                         ^~~~~~~~
+.c:1796:75: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1796 | static inline struct buffer* charppa_to_buffer(char** self, unsigned long unsigned  int len){
+      |                                                                           ^~~~~~~~
+.c:1812:54: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1812 | static inline struct buffer* shortpa_to_buffer(short short* self, unsigned long unsigned  int len){
+      |                                                      ^~~~~
+.c:1812:81: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1812 | static inline struct buffer* shortpa_to_buffer(short short* self, unsigned long unsigned  int len){
+      |                                                                                 ^~~~~~~~
+.c:1819:53: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1819 |     buffer_append(result_3,(char*)self,sizeof(short short)*len);
+      |                                                     ^~~~~
+.c:1825:71: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1825 | static inline struct buffer* intpa_to_buffer(int* self, unsigned long unsigned  int len){
+      |                                                                       ^~~~~~~~
+.c:1838:73: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1838 | static inline struct buffer* longpa_to_buffer(long* self, unsigned long unsigned  int len){
+      |                                                                         ^~~~~~~~
+.c:1851:75: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1851 | static inline struct buffer* floatpa_to_buffer(float* self, unsigned long unsigned  int len){
+      |                                                                           ^~~~~~~~
+.c:1864:77: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1864 | static inline struct buffer* doublepa_to_buffer(double* self, unsigned long unsigned  int len){
+      |                                                                             ^~~~~~~~
+.c:1932:87: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1932 | static inline struct smart_pointer$1char* charpa_to_pointer(char* self, unsigned long unsigned  int len){
+      |                                                                                       ^~~~~~~~
+.c:1948:90: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1948 | static inline struct smart_pointer$1charp* charppa_to_pointer(char** self, unsigned long unsigned  int len){
+      |                                                                                          ^~~~~~~~
+.c:1964:69: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1964 | static inline struct smart_pointer$1short* shortpa_to_pointer(short short* self, unsigned long unsigned  int len){
+      |                                                                     ^~~~~
+.c:1964:96: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1964 | static inline struct smart_pointer$1short* shortpa_to_pointer(short short* self, unsigned long unsigned  int len){
+      |                                                                                                ^~~~~~~~
+.c:1973:51: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 1973 |     buffer_append(buf_10,(char*)self,sizeof(short short)*len);
+      |                                                   ^~~~~
+.c:1980:84: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1980 | static inline struct smart_pointer$1int* intpa_to_pointer(int* self, unsigned long unsigned  int len){
+      |                                                                                    ^~~~~~~~
+.c:1996:87: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 1996 | static inline struct smart_pointer$1long* longpa_to_pointer(long* self, unsigned long unsigned  int len){
+      |                                                                                       ^~~~~~~~
+.c:2012:90: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2012 | static inline struct smart_pointer$1float* floatpa_to_pointer(float* self, unsigned long unsigned  int len){
+      |                                                                                          ^~~~~~~~
+.c:2028:93: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2028 | static inline struct smart_pointer$1double* doublepa_to_pointer(double* self, unsigned long unsigned  int len){
+      |                                                                                             ^~~~~~~~
+.c:2044:75: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2044 | static inline struct list$1char* charpa_to_list(char* self, unsigned long unsigned  int len){
+      |                                                                           ^~~~~~~~
+.c:2054:78: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2054 | static inline struct list$1charp* charppa_to_list(char** self, unsigned long unsigned  int len){
+      |                                                                              ^~~~~~~~
+.c:2064:57: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 2064 | static inline struct list$1short* shortpa_to_list(short short* self, unsigned long unsigned  int len){
+      |                                                         ^~~~~
+.c:2064:84: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2064 | static inline struct list$1short* shortpa_to_list(short short* self, unsigned long unsigned  int len){
+      |                                                                                    ^~~~~~~~
+.c:2074:72: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2074 | static inline struct list$1int* intpa_to_list(int* self, unsigned long unsigned  int len){
+      |                                                                        ^~~~~~~~
+.c:2084:75: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2084 | static inline struct list$1long* longpa_to_list(long* self, unsigned long unsigned  int len){
+      |                                                                           ^~~~~~~~
+.c:2094:78: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2094 | static inline struct list$1float* floatpa_to_list(float* self, unsigned long unsigned  int len){
+      |                                                                              ^~~~~~~~
+.c:2104:81: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2104 | static inline struct list$1double* doublepa_to_list(double* self, unsigned long unsigned  int len){
+      |                                                                                 ^~~~~~~~
+.c:2114:79: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2114 | static inline struct vector$1char* charpa_to_vector(char* self, unsigned long unsigned  int len){
+      |                                                                               ^~~~~~~~
+.c:2124:82: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2124 | static inline struct vector$1charp* charppa_to_vector(char** self, unsigned long unsigned  int len){
+      |                                                                                  ^~~~~~~~
+.c:2134:61: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 2134 | static inline struct vector$1short* shortpa_to_vector(short short* self, unsigned long unsigned  int len){
+      |                                                             ^~~~~
+.c:2134:88: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2134 | static inline struct vector$1short* shortpa_to_vector(short short* self, unsigned long unsigned  int len){
+      |                                                                                        ^~~~~~~~
+.c:2144:76: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2144 | static inline struct vector$1int* intpa_to_vector(int* self, unsigned long unsigned  int len){
+      |                                                                            ^~~~~~~~
+.c:2154:79: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2154 | static inline struct vector$1long* longpa_to_vector(long* self, unsigned long unsigned  int len){
+      |                                                                               ^~~~~~~~
+.c:2164:82: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2164 | static inline struct vector$1float* floatpa_to_vector(float* self, unsigned long unsigned  int len){
+      |                                                                                  ^~~~~~~~
+.c:2174:85: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2174 | static inline struct vector$1double* doublepa_to_vector(double* self, unsigned long unsigned  int len){
+      |                                                                                     ^~~~~~~~
+.c:2184:29: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2184 | static inline unsigned long unsigned  int charpa_length(char* self, unsigned long unsigned  int len){
+      |                             ^~~~~~~~
+.c:2184:83: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2184 | static inline unsigned long unsigned  int charpa_length(char* self, unsigned long unsigned  int len){
+      |                                                                                   ^~~~~~~~
+.c:2187:66: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2187 | static inline _Bool charppa_contained(char** self, unsigned long unsigned  int len, char* str){
+      |                                                                  ^~~~~~~~
+.c:2199:29: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2199 | static inline unsigned long unsigned  int shortpa_length(short short* self, unsigned long unsigned  int len){
+      |                             ^~~~~~~~
+.c:2199:64: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 2199 | static inline unsigned long unsigned  int shortpa_length(short short* self, unsigned long unsigned  int len){
+      |                                                                ^~~~~
+.c:2199:91: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2199 | static inline unsigned long unsigned  int shortpa_length(short short* self, unsigned long unsigned  int len){
+      |                                                                                           ^~~~~~~~
+.c:2202:29: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2202 | static inline unsigned long unsigned  int intpa_length(int* self, unsigned long unsigned  int len){
+      |                             ^~~~~~~~
+.c:2202:81: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2202 | static inline unsigned long unsigned  int intpa_length(int* self, unsigned long unsigned  int len){
+      |                                                                                 ^~~~~~~~
+.c:2205:29: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2205 | static inline unsigned long unsigned  int longpa_length(long* self, unsigned long unsigned  int len){
+      |                             ^~~~~~~~
+.c:2205:83: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2205 | static inline unsigned long unsigned  int longpa_length(long* self, unsigned long unsigned  int len){
+      |                                                                                   ^~~~~~~~
+.c:2208:29: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2208 | static inline unsigned long unsigned  int floatpa_length(float* self, unsigned long unsigned  int len){
+      |                             ^~~~~~~~
+.c:2208:85: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2208 | static inline unsigned long unsigned  int floatpa_length(float* self, unsigned long unsigned  int len){
+      |                                                                                     ^~~~~~~~
+.c:2211:29: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2211 | static inline unsigned long unsigned  int doublepa_length(double* self, unsigned long unsigned  int len){
+      |                             ^~~~~~~~
+.c:2211:87: warning: duplicate 'unsigned' declaration specifier [-Wduplicate-decl-specifier]
+ 2211 | static inline unsigned long unsigned  int doublepa_length(double* self, unsigned long unsigned  int len){
+      |                                                                                       ^~~~~~~~
+.c:2289:20: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 2289 |     self->p=(short short*)value->buf;
+      |                    ^~~~~
+.c:2600:110: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 2600 | static struct list$1short* list$1short_initialize_with_values(struct list$1short* self, int num_value, short short* values){
+      |                                                                                                              ^~~~~
+.c:2616:82: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 2616 | static struct list$1short* list$1short_push_back(struct list$1short* self, short short item){
+      |                                                                                  ^~~~~
+.c:3003:116: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 3003 | static struct vector$1short* vector$1short_initialize_with_values(struct vector$1short* self, int num_value, short short* values){
+      |                                                                                                                    ^~~~~
+.c:3009:25: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 3009 |     self->items=((short short*)(__right_value99=(short short*)come_calloc(1, sizeof(short short)*(1*(self->size)), "./comelang.h", 1017, "short")));
+      |                         ^~~~~
+.c:3009:56: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 3009 |     self->items=((short short*)(__right_value99=(short short*)come_calloc(1, sizeof(short short)*(1*(self->size)), "./comelang.h", 1017, "short")));
+      |                                                        ^~~~~
+.c:3009:91: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 3009 |     self->items=((short short*)(__right_value99=(short short*)come_calloc(1, sizeof(short short)*(1*(self->size)), "./comelang.h", 1017, "short")));
+      |                                                                                           ^~~~~
+.c:3010:44: warning: duplicate 'short' declaration specifier [-Wduplicate-decl-specifier]
+ 3010 |     memcpy(self->items,values,sizeof(short short)*self->len);
+      |                                            ^~~~~
+.c:3149:6: warning: expression result unused [-Wunused-value]
+ 3149 |     ((struct sNodeBase*)(__right_value116=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:4359:6: warning: expression result unused [-Wunused-value]
+ 4359 |     ((struct sNodeBase*)(__right_value166=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5408:6: warning: expression result unused [-Wunused-value]
+ 5408 |     ((struct sNodeBase*)(__right_value202=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5455:6: warning: expression result unused [-Wunused-value]
+ 5455 |     ((struct sNodeBase*)(__right_value209=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5502:6: warning: expression result unused [-Wunused-value]
+ 5502 |     ((struct sNodeBase*)(__right_value216=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5549:6: warning: expression result unused [-Wunused-value]
+ 5549 |     ((struct sNodeBase*)(__right_value223=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5589:6: warning: expression result unused [-Wunused-value]
+ 5589 |     ((struct sNodeBase*)(__right_value227=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5645:6: warning: expression result unused [-Wunused-value]
+ 5645 |     ((struct sNodeBase*)(__right_value235=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5692:6: warning: expression result unused [-Wunused-value]
+ 5692 |     ((struct sNodeBase*)(__right_value242=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:5935:6: warning: expression result unused [-Wunused-value]
+ 5935 |     ((struct sNodeBase*)(__right_value252=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:8379:6: warning: expression result unused [-Wunused-value]
+ 8379 |     ((struct sNodeBase*)(__right_value417=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:8549:6: warning: expression result unused [-Wunused-value]
+ 8549 |     ((struct sNodeBase*)(__right_value433=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:8608:66: error: assignment to cast is illegal, lvalue casts are not supported
+ 8608 |     __result256__ = gComeFunResultObject = __result_obj__ = /*b*/(void*)self->method_block=method_block;
+      |                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:8603:6: warning: expression result unused [-Wunused-value]
+ 8603 |     ((struct sNodeBase*)(__right_value438=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
+      |      ^                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:8885:10: warning: expression result unused [-Wunused-value]
+ 8885 |         ((char*)(__right_value463=skip_block(info)));
+      |          ^      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:9474:14: warning: expression result unused [-Wunused-value]
+ 9474 |             ((struct tuple3$3sTypephcharphbool*)(__right_value509=backtrace_parse_type((_Bool)0,info)));
+      |              ^                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.c:9492:14: warning: expression result unused [-Wunused-value]
+ 9492 |             ((struct tuple3$3sTypephcharphbool*)(__right_value510=backtrace_parse_type((_Bool)0,info)));
+      |              ^                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+188 warnings and 2 errors generated.

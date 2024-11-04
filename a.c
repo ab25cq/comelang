@@ -7,7 +7,7 @@ exception string fun(int a, int b)
 
 exception string fun2(int a)
 {
-    return fun(0, 2).throw;
+    return fun(0, 2);
 }
 
 int fun3(string a)
@@ -19,7 +19,7 @@ int fun3(string a)
 
 int main(int argc, char** argv)
 {
-    int a = fun3(fun2(1).rescue { puts("RECUE"); return 1});
+    int a = fun3(fun2(1));
     
     printf("a %d\n", a);
     

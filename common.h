@@ -402,6 +402,7 @@ struct sInfo
     list<int>*% sline_stack;
     int sline_top;
     bool new_;
+    sFun* calling_fun;
 };
 
 module sCurrentNodeModule

@@ -739,6 +739,7 @@ struct sInfo
     struct list$1int* sline_stack;
     int sline_top;
     _Bool new_;
+    struct sFun* calling_fun;
 };
 struct tuple2$2sTypephcharph
 {
@@ -7746,7 +7747,7 @@ struct sNode* __result207__;
                 /*g*/come_call_finalizer3(__right_value493,sStoreFieldNode_finalize, 0, 1, 0, 0, __result_obj__);
                 if(right_node_377) { right_node_377 = come_decrement_ref_count2(right_node_377, ((struct sNode*)right_node_377)->finalize, ((struct sNode*)right_node_377)->_protocol_obj, 0, 0, 0, (void*)0); } 
             }
-            else if(            !gComeC&&(*info->p==40||*info->p==123||string_operator_equals(field_name_372,"throw")||string_operator_equals(field_name_372,"value")||parse_method_generics_type_373||(*info->p==45&&*(info->p+1)==62&&*(info->p+2)==40))) {
+            else if(            !gComeC&&(*info->p==40||*info->p==123||string_operator_equals(field_name_372,"exception_throw")||string_operator_equals(field_name_372,"exception_value")||parse_method_generics_type_373||(*info->p==45&&*(info->p+1)==62&&*(info->p+2)==40))) {
                 if(                string_operator_equals(field_name_372,"if")) {
                     __dec_obj312=node;
                     node=(struct sNode*)come_increment_ref_count(parse_if_method_call((struct sNode*)come_increment_ref_count(sNode_clone(node)),info));
@@ -7772,12 +7773,12 @@ struct sNode* __result207__;
                     node=(struct sNode*)come_increment_ref_count(parse_rescue_method_call((struct sNode*)come_increment_ref_count(sNode_clone(node)),info));
                     if(__dec_obj316) { __dec_obj316 = come_decrement_ref_count2(__dec_obj316, ((struct sNode*)__dec_obj316)->finalize, ((struct sNode*)__dec_obj316)->_protocol_obj, 0,0,0, (void*)0); };
                 }
-                else if(                string_operator_equals(field_name_372,"throw")) {
+                else if(                string_operator_equals(field_name_372,"exception_throw")) {
                     __dec_obj317=node;
                     node=(struct sNode*)come_increment_ref_count(create_exception_throw((struct sNode*)come_increment_ref_count(sNode_clone(node)),info));
                     if(__dec_obj317) { __dec_obj317 = come_decrement_ref_count2(__dec_obj317, ((struct sNode*)__dec_obj317)->finalize, ((struct sNode*)__dec_obj317)->_protocol_obj, 0,0,0, (void*)0); };
                 }
-                else if(                string_operator_equals(field_name_372,"value")) {
+                else if(                string_operator_equals(field_name_372,"exception_value")) {
                     __dec_obj318=node;
                     node=(struct sNode*)come_increment_ref_count(create_exception_value((struct sNode*)come_increment_ref_count(sNode_clone(node)),info));
                     if(__dec_obj318) { __dec_obj318 = come_decrement_ref_count2(__dec_obj318, ((struct sNode*)__dec_obj318)->finalize, ((struct sNode*)__dec_obj318)->_protocol_obj, 0,0,0, (void*)0); };

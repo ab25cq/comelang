@@ -489,6 +489,8 @@ class sFunCallNode extends sNodeBase
             add_come_last_code(info, "%s", come_value.c_value);
             
             info.stack.push_back(come_value);
+            
+            info.calling_fun = null;
         }
         else {
             sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
@@ -1144,6 +1146,8 @@ class sFunCallNode extends sNodeBase
                 info.stack.push_back(come_value);
                 
             }
+            
+            info.calling_fun = fun;
         }
         
         return true;
@@ -1286,6 +1290,75 @@ class sVarArgTypeName extends sNodeBase
         come_value.var = null;
         
         info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
+class sExceptionNode2 extends sNodeBase
+{
+    new(sNode*% node, bool method_block, sInfo* info)
+    {
+        self.super();
+        
+        sNode*% self.node = clone node;
+        bool self.method_block = method_block;
+    }
+    
+    bool terminated()
+    {
+        if(self.method_block) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    string kind()
+    {
+        return string("sExceptionNode2");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% node = self.node;
+        
+        if(!node_compile(node)) {
+            return false;
+        }
+        
+        sFun* fun = info.calling_fun;
+        
+        if(fun) {
+            sType*% result_type = clone fun->mResultType;
+            result_type->mStatic = false;
+            
+            sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
+            
+            if(result_type2.mException) {
+		dec_stack_ptr(1, info);
+            
+                sType*% come_fun_result_type = clone info.come_fun.mResultType;
+                
+                sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
+                
+                if(come_fun_result_type2.mException) {
+                    node = create_exception_throw(node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                }
+                else {
+                    node = create_exception_value(node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                }
+            }
+        }
         
         return true;
     }
@@ -1437,6 +1510,8 @@ sNode*% parse_function_call(char* fun_name, sInfo* info)
     parse_sharp();
     
     sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, throw_or_rescue, info) implements sNode;
+    
+    node = new sExceptionNode2(node, method_block, info) implements sNode;
     
     node = post_position_operator(node, info);
     

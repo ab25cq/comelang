@@ -739,6 +739,7 @@ struct sInfo
     struct list$1int* sline_stack;
     int sline_top;
     _Bool new_;
+    struct sFun* calling_fun;
 };
 struct tuple2$2sTypephcharph
 {

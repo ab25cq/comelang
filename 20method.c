@@ -183,6 +183,7 @@ class sMethodCallNode extends sNodeBase
         bool self.throw_or_rescue = throw_or_rescue;
         bool self.no_infference_method_generics = no_infference_method_generics;
         bool self.recursive = recursive;
+        sFun* self.fun = null;
     }
     
     bool terminated()
@@ -199,7 +200,6 @@ class sMethodCallNode extends sNodeBase
     {
         return string("sMethodCallNode");
     }
-    
     
     bool compile(sInfo* info)
     {
@@ -457,6 +457,8 @@ class sMethodCallNode extends sNodeBase
             
             delete info->method_generics_types;
             info->method_generics_types = method_generics_types_before;
+            
+            info.calling_fun = null;
         }
         else {
             string generics_fun_name = null;
@@ -573,39 +575,6 @@ class sMethodCallNode extends sNodeBase
                 return true;
             }
             
-            /*
-            {
-                sType*% result_type = clone fun->mResultType;
-                result_type->mStatic = false;
-                
-                sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
-                
-                if(result_type2.mException && !throw_or_rescue && recursive) {
-                    sType*% come_fun_result_type = clone info.come_fun.mResultType;
-                    
-                    sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
-                    
-                    if(come_fun_result_type2.mException) {
-                        sNode*% expression_node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, false@no_infference_method_generics, false@recursive, info) implements sNode;
-                        sNode*% node = create_exception_throw(expression_node, info);
-                        
-                        if(!node_compile(node)) {
-                            return false;
-                        }
-                    }
-                    else {
-                        sNode*% expression_node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, false@no_infference_method_generics, false@recursive, info) implements sNode;
-                        sNode*% node = create_exception_value(expression_node, info);
-                        
-                        if(!node_compile(node)) {
-                            return false;
-                        }
-                    }
-                    
-                    return true;
-                }
-            }
-            */
             
             if(fun.mParamTypes.length() == 0) {
                 err_msg(info, "Method require function parametor");
@@ -974,6 +943,77 @@ class sMethodCallNode extends sNodeBase
             
             delete info->method_generics_types;
             info->method_generics_types = method_generics_types_before;
+            
+            info.calling_fun = fun;
+        }
+        
+        return true;
+    }
+};
+
+class sExceptionNode extends sNodeBase
+{
+    new(sNode*% node, bool method_block, sInfo* info)
+    {
+        self.super();
+        
+        sNode*% self.node = clone node;
+        bool self.method_block = method_block;
+    }
+    
+    bool terminated()
+    {
+        if(self.method_block) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    string kind()
+    {
+        return string("sExceptionNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% node = self.node;
+        
+        if(!node_compile(node)) {
+            return false;
+        }
+        
+        sFun* fun = info.calling_fun;
+        
+        if(fun) {
+            sType*% result_type = clone fun->mResultType;
+            result_type->mStatic = false;
+            
+            sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
+            
+            if(result_type2.mException) {
+		    dec_stack_ptr(1, info);
+            
+                sType*% come_fun_result_type = clone info.come_fun.mResultType;
+                
+                sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
+                
+                if(come_fun_result_type2.mException) {
+                    node = create_exception_throw(node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                }
+                else {
+                    node = create_exception_value(node, info);
+                    
+                    if(!node_compile(node)) {
+                        return false;
+                    }
+                }
+            }
         }
         
         return true;
@@ -1139,6 +1179,8 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     parse_sharp();
     
     sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, no_infference_method_generics:false, recursive:true, info) implements sNode;
+    
+    node = new sExceptionNode(node, method_block, info) implements sNode;
     
     node = post_position_operator(node, info);
     
