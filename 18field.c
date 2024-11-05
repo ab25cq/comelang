@@ -1512,7 +1512,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
             
             node = new sRangeCheckNode(node, begin ,end, info) implements sNode;
         }
-        else if(*info->p == '!' && *(info->p+1) != '=') {
+        else if(*info->p == '!' && *(info->p+1) != '=' && *(info->p+1) != '!') {
             info->p++;
             skip_spaces_and_lf();
             
@@ -1527,6 +1527,14 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
             parse_sharp();
             
             node = new sNullableNode(node, info) implements sNode;
+        }
+        else if(*info->p == '!' && *(info->p+1) == '!') {
+            info->p+=2;
+            skip_spaces_and_lf();
+            
+            parse_sharp();
+            
+            node = create_exception_value(clone node, info);
         }
         else if((*info->p == '.' && *(info->p+1) != '.') || (*info->p == '-' && *(info->p+1) == '>')) {
             if(*info->p == '.') {

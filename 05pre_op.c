@@ -661,7 +661,7 @@ sNode*% pre_position_operator(sInfo* info=info)
             return parse_normal_block();
         }
     }
-    else if(*info->p == '!') {
+    else if(*info->p == '!' && *(info->p+1) != '!' && *(info->p+1) != '{') {
         info->p++;
         skip_spaces_and_lf();
 
@@ -729,7 +729,7 @@ sNode*% pre_position_operator(sInfo* info=info)
         
         return new sRefferenceNode(value, info) implements sNode;
     }
-    else if(*info->p == '!') {
+    else if(*info->p == '!' && *(info->p+1) != '!' && *(info->p+1) != '{') {
         info->p ++;
         skip_spaces_and_lf();
         

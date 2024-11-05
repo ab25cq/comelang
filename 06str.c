@@ -255,7 +255,7 @@ class sRegexNode extends sNodeBase
         params.add((s"dollar_endonly", create_false_object(info)));
         params.add((s"ungreedy", create_false_object(info)));
         
-        sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+        sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, info);
         
         if(!node_compile(node, info)) {
             return false;
@@ -296,7 +296,7 @@ class sListNode extends sNodeBase
                 list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
                 params.add((s"self", value_node));
                 params.add((s"position", create_int_node(n, info)));
-                sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 exp = create_nullable_node(exp);
                 
                 if(!node_compile(exp)) {
@@ -1096,14 +1096,14 @@ class sMapNode extends sNodeBase
                 {
                     list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
                     params.add((s"self", value_node));
-                    exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                    exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
                 {
                     list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
                     params.add((s"self", exp));
                     params.add((s"position", create_int_node(i, info)));
-                    exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                    exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                     exp = create_nullable_node(exp);
                 }
                 
@@ -1140,14 +1140,14 @@ class sMapNode extends sNodeBase
                 {
                     list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
                     params.add((s"self", value_node));
-                    exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                    exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
                 {
                     list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
                     params.add((s"self", exp2));
                     params.add((s"position", create_int_node(i, info)));
-                    exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, false@throw_or_rescue, info);
+                    exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                     exp2 = create_nullable_node(exp2);
                 }
                 if(!node_compile(exp2)) {
@@ -1616,11 +1616,6 @@ sNode*% expression_node(sInfo* info) version 96
         
         skip_spaces_and_lf();
         
-        bool throw_or_rescue = false;
-        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0) {
-            throw_or_rescue = true;
-        }
-        
         sNode*% obj = new sStrNode(buf.to_string(), sline, info) implements sNode;
         
         list<tuple2<string, sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
@@ -1641,7 +1636,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
-        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, info);
+        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
         
         return node;
         

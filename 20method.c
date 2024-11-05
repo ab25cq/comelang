@@ -170,7 +170,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
 
 class sMethodCallNode extends sNodeBase
 {
-    new(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool throw_or_rescue, bool no_infference_method_generics, bool recursive, sInfo* info)
+    new(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, sInfo* info)
     {
         self.super();
         
@@ -180,7 +180,6 @@ class sMethodCallNode extends sNodeBase
         buffer*% self.method_block = clone method_block;
         int self.method_block_sline = method_block_sline;
         list<sType*%>*% self.method_generics_types = clone method_generics_types;
-        bool self.throw_or_rescue = throw_or_rescue;
         bool self.no_infference_method_generics = no_infference_method_generics;
         bool self.recursive = recursive;
         sFun* self.fun = null;
@@ -208,7 +207,6 @@ class sMethodCallNode extends sNodeBase
         sNode*% obj = self.obj;
         buffer*% method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
-        bool throw_or_rescue = self.throw_or_rescue;
         bool no_infference_method_generics = self.no_infference_method_generics;
         list<sType*%>*% method_generics_types = self.method_generics_types;
         bool recursive = self.recursive;
@@ -951,90 +949,9 @@ class sMethodCallNode extends sNodeBase
     }
 };
 
-class sExceptionNode extends sNodeBase
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info)
 {
-    new(sNode*% node, bool method_block, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.node = clone node;
-        bool self.method_block = method_block;
-    }
-    
-    bool terminated()
-    {
-        if(self.method_block) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    
-    string kind()
-    {
-        return string("sExceptionNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode*% node = self.node;
-        
-        bool no_output_come_code = info.no_output_come_code;
-        info->no_output_come_code = true;
-        if(!node_compile(node)) {
-            return false;
-        }
-        info->no_output_come_code = no_output_come_code;
-        
-        sFun* fun = info.calling_fun;
-        
-        if(fun) {
-            sType*% result_type = clone fun->mResultType;
-            result_type->mStatic = false;
-            
-            sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
-            
-            if(result_type2.mException) {
-                dec_stack_ptr(1, info);
-            
-                sType*% come_fun_result_type = clone info.come_fun.mResultType;
-                
-                sType*% come_fun_result_type2 = solve_generics(come_fun_result_type, info.generics_type, info);
-                
-                if(come_fun_result_type2.mException) {
-                    node = create_exception_throw(node, info);
-                    
-                    if(!node_compile(node)) {
-                        return false;
-                    }
-                }
-                else {
-                    node = create_exception_value(node, info);
-                    
-                    if(!node_compile(node)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        else {
-            if(!node_compile(node)) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-};
-
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool throw_or_rescue, sInfo* info)
-{
-    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, no_infference_method_generics:true, false@recursive, info) implements sNode;
-    
-    if(!throw_or_rescue) {
-        node = new sExceptionNode(node, method_block, info) implements sNode;
-    }
+    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, info) implements sNode;
     
     node = post_position_operator(node, info);
     
@@ -1187,20 +1104,9 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     
     parse_sharp();
     
-    bool throw_or_rescue = false;
-    if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0) {
-        throw_or_rescue = true;
-    }
-    
     parse_sharp();
     
-    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, throw_or_rescue, no_infference_method_generics:false, recursive:true, info) implements sNode;
-    
-/*
-    if(!throw_or_rescue) {
-        node = new sExceptionNode(node, method_block, info) implements sNode;
-    }
-*/
+    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, info) implements sNode;
     
     node = post_position_operator(node, info);
     

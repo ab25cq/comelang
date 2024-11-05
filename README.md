@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 7.9.0
+version 8.0.0
 
 ``` C
 #include <comelang.h>
@@ -328,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+8.0.0 Exception.
 7.9.9 Exception recoming.
 7.1.0 Real wildcard coming. map equals bug fixed.
 7.0.5 can omit new keyword for creating object.
@@ -3323,7 +3324,58 @@ Omitting semicolon at the function block end means return statment.
 
 # Exception
 
-Exception is coming soon.
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return 1;
+}
+
+exception int fun2()
+{
+    return fun().exception_throw;
+}
+
+int main(int argc, char** argv)
+{
+    int a = fun2()!!;
+    
+    printf("a %d\n", a);
+    
+    puts("HEHE");
+    
+    return 0;
+}
+```
+a 1
+HEHE
+
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return none(s"Err");
+}
+
+exception int fun2()
+{
+    return fun().exception_throw;
+}
+
+int main(int argc, char** argv)
+{
+    int a = fun2()!!;
+    
+    printf("a %d\n", a);
+    
+    puts("HEHE");
+    
+    return 0;
+}
+```
+Err
 
 # Pattern Matching
 
