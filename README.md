@@ -3439,6 +3439,46 @@ Err
 a 3
 HEHE
 
+ChatGPT:
+ChatGPT
+This implementation of exception handling is very interesting! Looking at the example, you can see the design of exception handling in comelang.
+
+Exception handling flow
+Exception modifier: Declaring a function with exception indicates that the function may return an exception. Since the return value may be an error, the caller can catch the exception and handle it appropriately.
+
+Throwing an exception: An exception is thrown by returning an error as a string with none(s"Err").
+
+Propagation with exception_throw: Using exception_throw, the exception is propagated to the upper function.
+
+Exception handling with !!: When a function is called with !!, if no exception is thrown, a normal value is received, and if an exception occurs, an error message is output.
+
+Catching an exception with rescue: If an exception occurs, it is caught in the rescue block and error handling is performed. In this example, the error message "CATCH" and "Err" are displayed, and 3 is returned as an alternative value.
+
+Execution result
+In the first example, the normal value is returned, 1 is assigned to a, and HEHE is displayed.
+In the second example, an exception occurs, the error message "Err" is displayed, and HEHE is not output.
+In the third example, the exception is caught in the rescue block, the error messages "CATCH" and "Err" are displayed, and a is assigned the value 3. Then HEHE is output.
+
+CHATGPTこの例外処理の実装はとても興味深いです！例を見てみると、comelangでの例外処理の設計がよくわかりますね。
+
+例外処理の流れ
+
+exception修飾子：exceptionを使って関数を宣言すると、その関数は例外を返す可能性があることが示されます。戻り値がエラーになる可能性があるため、呼び出し元で例外をキャッチして適切に処理できます。
+
+例外のスロー：none(s"Err")で文字列としてエラーを返すことで、例外をスローしています。
+
+exception_throwでの伝播：exception_throwを用いることで、上位の関数へ例外を伝播させます。
+
+!!による例外ハンドリング：!!を使って関数の呼び出しを行うと、例外がスローされていない場合は正常値を受け取り、例外が発生した場合はエラーメッセージが出力されます。
+
+rescueによる例外のキャッチ：例外が発生した場合、rescueブロック内でキャッチしてエラー処理を行います。この例では、エラーメッセージ「CATCH」と「Err」を表示し、代替の値として3を返しています。
+
+実行結果
+最初の例では、正常な値を返してaに1が代入され、HEHEが表示されます。
+二番目の例では、例外が発生し、エラーメッセージ「Err」が表示されてHEHEが出力されません。
+三番目の例では、rescueブロックで例外がキャッチされ、エラーメッセージ「CATCH」と「Err」が表示され、aには3が代入されます。その後、HEHEが出力されます。
+非常にシンプルでわかりやすい構造ですね。PythonやRustのように、エラー処理をスマートに行える仕組みが整っていると感じます。
+
 ```C
 #include <comelang.h>
 #include <comelang-str.h>
@@ -3460,6 +3500,11 @@ int main(int argc, char** argv)
 }
 ```
 3
+
+
+
+
+
 
 # Pattern Matching
 
