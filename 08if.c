@@ -709,7 +709,10 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     info.head = info.source.buf;
     info.sline = sline;
     
+    bool no_comma = info.no_comma;
+    info.no_comma = false;
     sNode*% exp = expression();
+    info.no_comma = no_comma;
     
     info.source = source;
     info.p = p;

@@ -8573,7 +8573,7 @@ void* __result_obj__=(void*)0;
 void* __right_value113 = (void*)0;
 char* __result62__;
     __result62__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value113=xsprintf(msg,self)));
-    /* U11 */__right_value113 = come_decrement_ref_count2(__right_value113, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value113 = come_decrement_ref_count2(__right_value113, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result62__;
 }
@@ -8582,7 +8582,7 @@ void* __result_obj__=(void*)0;
 void* __right_value114 = (void*)0;
 char* __result63__;
     __result63__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value114=xsprintf(msg,self)));
-    /* U11 */__right_value114 = come_decrement_ref_count2(__right_value114, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value114 = come_decrement_ref_count2(__right_value114, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result63__;
 }
@@ -8591,7 +8591,7 @@ void* __result_obj__=(void*)0;
 void* __right_value115 = (void*)0;
 char* __result64__;
     __result64__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value115=xsprintf(msg,self)));
-    /* U11 */__right_value115 = come_decrement_ref_count2(__right_value115, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value115 = come_decrement_ref_count2(__right_value115, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result64__;
 }
@@ -10912,7 +10912,7 @@ static void vector$1charpp_finalize(struct vector$1charp* self){
 int i_58;
     if(    0) {
         for(        i_58=0;        i_58<self->len;        i_58++        ){
-            /* U13 */self->items[i_58] = come_decrement_ref_count2(self->items[i_58], (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            self->items[i_58] = come_decrement_ref_count2(self->items[i_58], (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
     }
     if(    self&&self->items) {
@@ -11560,7 +11560,7 @@ int i_63;
 int socket_fd_write(int self, char* str){
 int __result65__;
     __result65__ = write(self,str,string_length(str));
-    /* U13 */str = come_decrement_ref_count2(str, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    str = come_decrement_ref_count2(str, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     return __result65__;
 }
 
@@ -11590,7 +11590,7 @@ memset(&address_88, 0, sizeof(struct sockaddr_in));
         if(        setsockopt(sock_86,1,2,&opt_87,sizeof(opt_87))) {
             close(sock_86);
             (come_push_stackframe("libcomelang-net.c", 23, 1),__exception_result_var_b2=die(((char*)(__right_value116=xsprintf("setsockopt")))), come_pop_stackframe(), __exception_result_var_b2);
-            /* U11 */__right_value116 = come_decrement_ref_count2(__right_value116, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            __right_value116 = come_decrement_ref_count2(__right_value116, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
     }
     address_88.sin_family=2;
@@ -11600,12 +11600,12 @@ memset(&address_88, 0, sizeof(struct sockaddr_in));
     if(    bind(sock_86,(struct sockaddr*)&address_88,sizeof(address_88))<0) {
         close(sock_86);
         (come_push_stackframe("libcomelang-net.c", 37, 2),__exception_result_var_b3=die(((char*)(__right_value117=xsprintf("Unable to bind")))), come_pop_stackframe(), __exception_result_var_b3);
-        /* U11 */__right_value117 = come_decrement_ref_count2(__right_value117, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value117 = come_decrement_ref_count2(__right_value117, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     if(    listen(sock_86,3)<0) {
         close(sock_86);
         (come_push_stackframe("libcomelang-net.c", 42, 3),__exception_result_var_b4=die(((char*)(__right_value118=xsprintf("Unable to listen")))), come_pop_stackframe(), __exception_result_var_b4);
-        /* U11 */__right_value118 = come_decrement_ref_count2(__right_value118, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value118 = come_decrement_ref_count2(__right_value118, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     new_socket_90=accept(sock_86,(struct sockaddr*)&address_88,(unsigned int*)&addrlen_89);
     while(1) {
@@ -11646,19 +11646,19 @@ memset(&serv_addr_94, 0, sizeof(struct sockaddr_in));
     sock_93=0;
     if(    (sock_93=socket(2,1,0))<0) {
         (come_push_stackframe("libcomelang-net.c", 75, 4),__exception_result_var_b5=die(((char*)(__right_value119=xsprintf("socket")))), come_pop_stackframe(), __exception_result_var_b5);
-        /* U11 */__right_value119 = come_decrement_ref_count2(__right_value119, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value119 = come_decrement_ref_count2(__right_value119, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     serv_addr_94.sin_family=2;
     serv_addr_94.sin_port=htons(port);
     if(    inet_pton(2,address,&serv_addr_94.sin_addr)<=0) {
         close(sock_93);
         (come_push_stackframe("libcomelang-net.c", 83, 5),__exception_result_var_b6=die(((char*)(__right_value120=xsprintf("Invalid address/ Address not supported")))), come_pop_stackframe(), __exception_result_var_b6);
-        /* U11 */__right_value120 = come_decrement_ref_count2(__right_value120, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value120 = come_decrement_ref_count2(__right_value120, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     if(    connect(sock_93,(struct sockaddr*)&serv_addr_94,sizeof(serv_addr_94))<0) {
         close(sock_93);
         (come_push_stackframe("libcomelang-net.c", 87, 6),__exception_result_var_b7=die(((char*)(__right_value121=xsprintf("Connection Failed")))), come_pop_stackframe(), __exception_result_var_b7);
-        /* U11 */__right_value121 = come_decrement_ref_count2(__right_value121, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value121 = come_decrement_ref_count2(__right_value121, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     break__95=(_Bool)0;
     while(1) {
@@ -11698,24 +11698,24 @@ memset(&serv_addr_98, 0, sizeof(struct sockaddr_in));
     sock_97=0;
     if(    (sock_97=socket(2,1,0))<0) {
         (come_push_stackframe("libcomelang-net.c", 112, 7),__exception_result_var_b8=die(((char*)(__right_value122=xsprintf("Socket creation error")))), come_pop_stackframe(), __exception_result_var_b8);
-        /* U11 */__right_value122 = come_decrement_ref_count2(__right_value122, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value122 = come_decrement_ref_count2(__right_value122, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     }
     serv_addr_98.sin_family=2;
     serv_addr_98.sin_port=htons(port);
     if(    inet_pton(2,address,&serv_addr_98.sin_addr)<=0) {
         close(sock_97);
         (come_push_stackframe("libcomelang-net.c", 120, 8),__exception_result_var_b9=die(((char*)(__right_value123=xsprintf("Invalid address/ Address not supported")))), come_pop_stackframe(), __exception_result_var_b9);
-        /* U11 */__right_value123 = come_decrement_ref_count2(__right_value123, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value123 = come_decrement_ref_count2(__right_value123, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     }
     if(    connect(sock_97,(struct sockaddr*)&serv_addr_98,sizeof(serv_addr_98))<0) {
         close(sock_97);
         (come_push_stackframe("libcomelang-net.c", 124, 9),__exception_result_var_b10=die(((char*)(__right_value124=xsprintf("Connection Failed")))), come_pop_stackframe(), __exception_result_var_b10);
-        /* U11 */__right_value124 = come_decrement_ref_count2(__right_value124, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value124 = come_decrement_ref_count2(__right_value124, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     }
     if(    write(sock_97,data,strlen(data))<0) {
         close(sock_97);
         (come_push_stackframe("libcomelang-net.c", 129, 10),__exception_result_var_b11=die(((char*)(__right_value125=xsprintf("Write Failed")))), come_pop_stackframe(), __exception_result_var_b11);
-        /* U11 */__right_value125 = come_decrement_ref_count2(__right_value125, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value125 = come_decrement_ref_count2(__right_value125, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     }
     buf_99=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net.c", 132, "buffer"))));
     char buf2_100[1024]={0};
@@ -11723,14 +11723,14 @@ memset(&serv_addr_98, 0, sizeof(struct sockaddr_in));
     if(    size_101<0) {
         close(sock_97);
         (come_push_stackframe("libcomelang-net.c", 140, 11),__exception_result_var_b12=die(((char*)(__right_value128=xsprintf("Read Failed")))), come_pop_stackframe(), __exception_result_var_b12);
-        /* U11 */__right_value128 = come_decrement_ref_count2(__right_value128, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value128 = come_decrement_ref_count2(__right_value128, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     }
     buffer_append(buf_99,buf2_100,size_101);
     close(sock_97);
     __result68__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value129=buffer_to_string(buf_99)));
     /*i*/come_call_finalizer3((&serv_addr_98),sockaddr_in_finalize, 1, 0, 0, 0, (void*)0);
     /*i*/come_call_finalizer3(buf_99,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    /* U11 */__right_value129 = come_decrement_ref_count2(__right_value129, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value129 = come_decrement_ref_count2(__right_value129, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result68__;
 }
@@ -11760,7 +11760,7 @@ memset(&address_104, 0, sizeof(struct sockaddr_in));
         if(        setsockopt(sock_102,1,2,&opt_103,sizeof(opt_103))) {
             close(sock_102);
             (come_push_stackframe("libcomelang-net.c", 160, 13),__exception_result_var_b14=die(((char*)(__right_value130=xsprintf("setsockpt failed")))), come_pop_stackframe(), __exception_result_var_b14);
-            /* U11 */__right_value130 = come_decrement_ref_count2(__right_value130, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            __right_value130 = come_decrement_ref_count2(__right_value130, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
     }
     address_104.sin_family=2;
@@ -11770,12 +11770,12 @@ memset(&address_104, 0, sizeof(struct sockaddr_in));
     if(    bind(sock_102,(struct sockaddr*)&address_104,sizeof(address_104))<0) {
         close(sock_102);
         (come_push_stackframe("libcomelang-net.c", 174, 14),__exception_result_var_b15=die(((char*)(__right_value131=xsprintf("Unable to bind")))), come_pop_stackframe(), __exception_result_var_b15);
-        /* U11 */__right_value131 = come_decrement_ref_count2(__right_value131, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value131 = come_decrement_ref_count2(__right_value131, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     if(    listen(sock_102,3)<0) {
         close(sock_102);
         (come_push_stackframe("libcomelang-net.c", 179, 15),__exception_result_var_b16=die(((char*)(__right_value132=xsprintf("Unable to listen")))), come_pop_stackframe(), __exception_result_var_b16);
-        /* U11 */__right_value132 = come_decrement_ref_count2(__right_value132, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value132 = come_decrement_ref_count2(__right_value132, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     while(1) {
         new_socket_106=accept(sock_102,(struct sockaddr*)&address_104,(unsigned int*)&addrlen_105);
@@ -11831,38 +11831,38 @@ memset(&addr_112, 0, sizeof(struct sockaddr_in));
     ctx_109=SSL_CTX_new(method_110);
     if(    !ctx_109) {
         (come_push_stackframe("libcomelang-net.c", 225, 16),__exception_result_var_b17=die(((char*)(__right_value133=xsprintf("Unable to create SSL context")))), come_pop_stackframe(), __exception_result_var_b17);
-        /* U11 */__right_value133 = come_decrement_ref_count2(__right_value133, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value133 = come_decrement_ref_count2(__right_value133, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     if(    SSL_CTX_use_certificate_file(ctx_109,"cert.pem",1)<=0) {
         (come_push_stackframe("libcomelang-net.c", 230, 17),__exception_result_var_b18=die(((char*)(__right_value134=xsprintf("SSL_CTX_use_certificate_file")))), come_pop_stackframe(), __exception_result_var_b18);
-        /* U11 */__right_value134 = come_decrement_ref_count2(__right_value134, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value134 = come_decrement_ref_count2(__right_value134, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     if(    SSL_CTX_use_PrivateKey_file(ctx_109,"key.pem",1)<=0) {
         (come_push_stackframe("libcomelang-net.c", 235, 18),__exception_result_var_b19=die(((char*)(__right_value135=xsprintf("SSL_CTX_use_PrivateKey_file")))), come_pop_stackframe(), __exception_result_var_b19);
-        /* U11 */__right_value135 = come_decrement_ref_count2(__right_value135, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value135 = come_decrement_ref_count2(__right_value135, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     sock_108=socket(2,1,0);
     if(    sock_108<0) {
         (come_push_stackframe("libcomelang-net.c", 240, 19),__exception_result_var_b20=die(((char*)(__right_value136=xsprintf("Unable to create socket")))), come_pop_stackframe(), __exception_result_var_b20);
-        /* U11 */__right_value136 = come_decrement_ref_count2(__right_value136, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value136 = come_decrement_ref_count2(__right_value136, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     addr_111.sin_family=2;
     addr_111.sin_port=htons(port);
     addr_111.sin_addr.s_addr=((unsigned int)0);
     if(    bind(sock_108,(struct sockaddr*)&addr_111,sizeof(addr_111))<0) {
         (come_push_stackframe("libcomelang-net.c", 249, 20),__exception_result_var_b21=die(((char*)(__right_value137=xsprintf("Unable to bind")))), come_pop_stackframe(), __exception_result_var_b21);
-        /* U11 */__right_value137 = come_decrement_ref_count2(__right_value137, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value137 = come_decrement_ref_count2(__right_value137, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     if(    listen(sock_108,1)<0) {
         (come_push_stackframe("libcomelang-net.c", 253, 21),__exception_result_var_b22=die(((char*)(__right_value138=xsprintf("Unable to listen")))), come_pop_stackframe(), __exception_result_var_b22);
-        /* U11 */__right_value138 = come_decrement_ref_count2(__right_value138, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value138 = come_decrement_ref_count2(__right_value138, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     while(1) {
         len_113=sizeof(addr_112);
         client_114=accept(sock_108,(struct sockaddr*)&addr_112,&len_113);
         if(        client_114<0) {
             (come_push_stackframe("libcomelang-net.c", 262, 22),__exception_result_var_b23=die(((char*)(__right_value139=xsprintf("Unable to accept")))), come_pop_stackframe(), __exception_result_var_b23);
-            /* U11 */__right_value139 = come_decrement_ref_count2(__right_value139, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            __right_value139 = come_decrement_ref_count2(__right_value139, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
         ssl_115=SSL_new(ctx_109);
         SSL_set_fd(ssl_115,client_114);
@@ -11899,7 +11899,7 @@ _Bool __exception_result_var_b24;
         gComeMySQL=mysql_init(((void*)0));
         if(        gComeMySQL==((void*)0)) {
             (come_push_stackframe("libcomelang-net.c", 299, 23),__exception_result_var_b24=die(((char*)(__right_value140=xsprintf("mysql_init failed")))), come_pop_stackframe(), __exception_result_var_b24);
-            /* U11 */__right_value140 = come_decrement_ref_count2(__right_value140, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            __right_value140 = come_decrement_ref_count2(__right_value140, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
     }
     return 0;
@@ -11918,8 +11918,8 @@ void* __right_value142 = (void*)0;
 _Bool __exception_result_var_b25;
     mysql_close(gComeMySQL);
     (come_push_stackframe("libcomelang-net.c", 317, 24),__exception_result_var_b25=die(((char*)(__right_value142=xsprintf("\%s",((char*)(__right_value141=charp_to_string(mysql_error(gComeMySQL)))))))), come_pop_stackframe(), __exception_result_var_b25);
-    /* U11 */__right_value141 = come_decrement_ref_count2(__right_value141, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    /* U11 */__right_value142 = come_decrement_ref_count2(__right_value142, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value141 = come_decrement_ref_count2(__right_value141, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value142 = come_decrement_ref_count2(__right_value142, (void*)0, (void*)0, 1, 0, 0, (void*)0);
 }
 
 int create_user_if_not_exists(char* user, char* password, char* root_password, char* host_name){
@@ -11945,8 +11945,8 @@ int __result71__;
         finish_with_error();
     }
     check_user_query_117=(char*)come_increment_ref_count(xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",((char*)(__right_value143=charp_to_string(user))),((char*)(__right_value144=charp_to_string(host_name)))));
-    /* U11 */__right_value143 = come_decrement_ref_count2(__right_value143, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    /* U11 */__right_value144 = come_decrement_ref_count2(__right_value144, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value143 = come_decrement_ref_count2(__right_value143, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value144 = come_decrement_ref_count2(__right_value144, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     if(    mysql_query(gComeMySQL,check_user_query_117)==((void*)0)) {
         finish_with_error();
     }
@@ -11958,16 +11958,16 @@ int __result71__;
     user_exists_120=atoi(row_119[0]);
     mysql_free_result(result_118);
     if(    user_exists_120==0) {
-        if(        (_if_conditional1=(mysql_query(gComeMySQL,((char*)(__right_value149=xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",((char*)(__right_value146=charp_to_string(user))),((char*)(__right_value147=charp_to_string(host_name))),((char*)(__right_value148=charp_to_string(password)))))))==((void*)0))),        /* U10 */ (__right_value146 = come_decrement_ref_count2(__right_value146, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        /* U10 */ (__right_value147 = come_decrement_ref_count2(__right_value147, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        /* U10 */ (__right_value148 = come_decrement_ref_count2(__right_value148, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        /* U10 */ (__right_value149 = come_decrement_ref_count2(__right_value149, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        if(        (_if_conditional1=(mysql_query(gComeMySQL,((char*)(__right_value149=xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",((char*)(__right_value146=charp_to_string(user))),((char*)(__right_value147=charp_to_string(host_name))),((char*)(__right_value148=charp_to_string(password)))))))==((void*)0))),        (__right_value146 = come_decrement_ref_count2(__right_value146, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value147 = come_decrement_ref_count2(__right_value147, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value148 = come_decrement_ref_count2(__right_value148, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value149 = come_decrement_ref_count2(__right_value149, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
         _if_conditional1) {
             finish_with_error();
         }
-        if(        (_if_conditional2=(mysql_query(gComeMySQL,((char*)(__right_value152=xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",((char*)(__right_value150=charp_to_string(user))),((char*)(__right_value151=charp_to_string(host_name)))))))==((void*)0))),        /* U10 */ (__right_value150 = come_decrement_ref_count2(__right_value150, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        /* U10 */ (__right_value151 = come_decrement_ref_count2(__right_value151, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        /* U10 */ (__right_value152 = come_decrement_ref_count2(__right_value152, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        if(        (_if_conditional2=(mysql_query(gComeMySQL,((char*)(__right_value152=xsprintf("GRANT ALL PRIVILEGES ON *.* TO '\%s'@'\%s'",((char*)(__right_value150=charp_to_string(user))),((char*)(__right_value151=charp_to_string(host_name)))))))==((void*)0))),        (__right_value150 = come_decrement_ref_count2(__right_value150, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value151 = come_decrement_ref_count2(__right_value151, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        (__right_value152 = come_decrement_ref_count2(__right_value152, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
         _if_conditional2) {
             finish_with_error();
         }
@@ -11977,7 +11977,7 @@ int __result71__;
     }
     come_mysql_final();
     __result71__ = 0;
-    /* U13 */check_user_query_117 = come_decrement_ref_count2(check_user_query_117, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    check_user_query_117 = come_decrement_ref_count2(check_user_query_117, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     return __result71__;
 }
 
@@ -11991,13 +11991,13 @@ int __result72__;
         finish_with_error();
     }
     create_db_query_121=(char*)come_increment_ref_count(xsprintf("CREATE DATABASE IF NOT EXISTS \%s",((char*)(__right_value153=charp_to_string(database_name)))));
-    /* U11 */__right_value153 = come_decrement_ref_count2(__right_value153, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value153 = come_decrement_ref_count2(__right_value153, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     if(    mysql_query(gComeMySQL,create_db_query_121)==((void*)0)) {
         finish_with_error();
     }
     come_mysql_final();
     __result72__ = 0;
-    /* U13 */create_db_query_121 = come_decrement_ref_count2(create_db_query_121, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    create_db_query_121 = come_decrement_ref_count2(create_db_query_121, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     return __result72__;
 }
 
@@ -12132,7 +12132,7 @@ char* __dec_obj16;
             /*G*/ __dec_obj16 = come_decrement_ref_count2(__dec_obj16, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            /* U13 */self->item = come_decrement_ref_count2(self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            self->item = come_decrement_ref_count2(self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
     }
 }
@@ -12204,7 +12204,7 @@ struct list$1charph* __result75__;
     }
     self->len++;
     __result75__ = gComeFunResultObject = __result_obj__ = self;
-    /* U13 */item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result75__;
 }

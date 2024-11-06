@@ -2010,7 +2010,7 @@ void* __result_obj__=(void*)0;
 void* __right_value113 = (void*)0;
 char* __result62__;
     __result62__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value113=xsprintf(msg,self)));
-    /* U11 */__right_value113 = come_decrement_ref_count2(__right_value113, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value113 = come_decrement_ref_count2(__right_value113, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result62__;
 }
@@ -2019,7 +2019,7 @@ void* __result_obj__=(void*)0;
 void* __right_value114 = (void*)0;
 char* __result63__;
     __result63__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value114=xsprintf(msg,self)));
-    /* U11 */__right_value114 = come_decrement_ref_count2(__right_value114, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value114 = come_decrement_ref_count2(__right_value114, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result63__;
 }
@@ -2028,7 +2028,7 @@ void* __result_obj__=(void*)0;
 void* __right_value115 = (void*)0;
 char* __result64__;
     __result64__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value115=xsprintf(msg,self)));
-    /* U11 */__right_value115 = come_decrement_ref_count2(__right_value115, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value115 = come_decrement_ref_count2(__right_value115, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result64__;
 }
@@ -2785,7 +2785,7 @@ static void vector$1charpp_finalize(struct vector$1charp* self){
 int i_58;
     if(    0) {
         for(        i_58=0;        i_58<self->len;        i_58++        ){
-            /* U13 */self->items[i_58] = come_decrement_ref_count2(self->items[i_58], (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            self->items[i_58] = come_decrement_ref_count2(self->items[i_58], (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
     }
     if(    self&&self->items) {
@@ -2958,16 +2958,16 @@ void* __right_value119 = (void*)0;
 void* __right_value120 = (void*)0;
     buf_66=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang.c", 49, "buffer"))));
     buffer_append_str(buf_66,((char*)(__right_value118=xsprintf("%s %d\n",sname,sline))));
-    /* U11 */__right_value118 = come_decrement_ref_count2(__right_value118, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value118 = come_decrement_ref_count2(__right_value118, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     for(    i_67=gNumComeStackFrame-2;    i_67>=0;    i_67--    ){
         buffer_append_str(buf_66,((char*)(__right_value119=xsprintf("%s %d #%d\n",gComeStackFrameSName[i_67],gComeStackFrameSLine[i_67],gComeStackFrameID[i_67]))));
-        /* U11 */__right_value119 = come_decrement_ref_count2(__right_value119, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value119 = come_decrement_ref_count2(__right_value119, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     if(    gComeStackFrameBuffer) {
         free(gComeStackFrameBuffer);
     }
     gComeStackFrameBuffer=strdup(((char*)(__right_value120=buffer_to_string(buf_66))));
-    /* U11 */__right_value120 = come_decrement_ref_count2(__right_value120, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    __right_value120 = come_decrement_ref_count2(__right_value120, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     /*i*/come_call_finalizer3(buf_66,buffer_finalize, 0, 0, 0, 0, (void*)0);
 }
 
@@ -2983,7 +2983,7 @@ void* __result_obj__=(void*)0;
 void* __right_value121 = (void*)0;
 char* __result65__;
     __result65__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value121=__builtin_string(gComeStackFrameBuffer)));
-    /* U11 */__right_value121 = come_decrement_ref_count2(__right_value121, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value121 = come_decrement_ref_count2(__right_value121, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result65__;
 }
@@ -3700,7 +3700,7 @@ char* __result87__;
     result_129=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_128)), "libcomelang.c", 944, "char"));
     strncpy(result_129,str,len_128);
     __result87__ = gComeFunResultObject = __result_obj__ = result_129;
-    /* U13 */result_129 = come_decrement_ref_count2(result_129, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_129 = come_decrement_ref_count2(result_129, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result87__;
 }
@@ -3737,13 +3737,13 @@ struct buffer* __result88__;
 
 void buffer_finalize(struct buffer* self){
     if(    self&&self->buf) {
-        /* U13 */self->buf = come_decrement_ref_count2(self->buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        self->buf = come_decrement_ref_count2(self->buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
 void buffer_force_finalize(struct buffer* self){
     if(    self&&self->buf) {
-        /* U13 */self->buf = come_decrement_ref_count2(self->buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        self->buf = come_decrement_ref_count2(self->buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
 }
 
@@ -3822,7 +3822,7 @@ struct buffer* __result92__;
         memcpy(self->buf,old_buf_133,old_len_134);
         self->buf[old_len_134]=0;
         self->size=new_size_135;
-        /* U13 */old_buf_133 = come_decrement_ref_count2(old_buf_133, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        old_buf_133 = come_decrement_ref_count2(old_buf_133, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     memcpy(self->buf+self->len,mem,size);
     self->len+=size;
@@ -3857,7 +3857,7 @@ struct buffer* __result94__;
         memcpy(self->buf,old_buf_136,old_len_137);
         self->buf[old_len_137]=0;
         self->size=new_size_138;
-        /* U13 */old_buf_136 = come_decrement_ref_count2(old_buf_136, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        old_buf_136 = come_decrement_ref_count2(old_buf_136, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     self->buf[self->len]=c;
     self->len++;
@@ -3895,7 +3895,7 @@ struct buffer* __result96__;
         memcpy(self->buf,old_buf_140,old_len_141);
         self->buf[old_len_141]=0;
         self->size=new_size_142;
-        /* U13 */old_buf_140 = come_decrement_ref_count2(old_buf_140, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        old_buf_140 = come_decrement_ref_count2(old_buf_140, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     memcpy(self->buf+self->len,mem,size_139);
     self->len+=size_139;
@@ -3933,7 +3933,7 @@ struct buffer* __result98__;
         memcpy(self->buf,old_buf_144,old_len_145);
         self->buf[old_len_145]=0;
         self->size=new_size_146;
-        /* U13 */old_buf_144 = come_decrement_ref_count2(old_buf_144, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        old_buf_144 = come_decrement_ref_count2(old_buf_144, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     memcpy(self->buf+self->len,mem,size_143);
     self->len+=size_143;
@@ -3974,7 +3974,7 @@ struct buffer* __result100__;
         memcpy(self->buf,old_buf_149,old_len_150);
         self->buf[old_len_150]=0;
         self->size=new_size_151;
-        /* U13 */old_buf_149 = come_decrement_ref_count2(old_buf_149, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        old_buf_149 = come_decrement_ref_count2(old_buf_149, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     memcpy(self->buf+self->len,mem_147,size_148);
     self->len+=size_148;
@@ -4008,7 +4008,7 @@ struct buffer* __result101__;
         memcpy(self->buf,old_buf_154,old_len_155);
         self->buf[old_len_155]=0;
         self->size=new_size_156;
-        /* U13 */old_buf_154 = come_decrement_ref_count2(old_buf_154, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        old_buf_154 = come_decrement_ref_count2(old_buf_154, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     memcpy(self->buf+self->len,mem_152,size_153);
     self->len+=size_153;
@@ -4048,7 +4048,7 @@ struct buffer* __result103__;
         memcpy(self->buf,old_buf_159,old_len_160);
         self->buf[old_len_160]=0;
         self->size=new_size_161;
-        /* U13 */old_buf_159 = come_decrement_ref_count2(old_buf_159, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        old_buf_159 = come_decrement_ref_count2(old_buf_159, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     memcpy(self->buf+self->len,mem_157,size_158);
     self->len+=size_158;
@@ -4153,12 +4153,12 @@ void* __right_value146 = (void*)0;
 char* __result111__;
     if(    self==((void*)0)) {
         __result110__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value145=__builtin_string("")));
-        /* U11 */__right_value145 = come_decrement_ref_count2(__right_value145, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value145 = come_decrement_ref_count2(__right_value145, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result110__;
     }
     __result111__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value146=__builtin_string(self->buf)));
-    /* U11 */__right_value146 = come_decrement_ref_count2(__right_value146, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value146 = come_decrement_ref_count2(__right_value146, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result111__;
 }
@@ -4335,7 +4335,7 @@ char* result_168;
 char* __result113__;
     if(    self==((void*)0)||right==((void*)0)) {
         __result112__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value147=__builtin_string("")));
-        /* U11 */__right_value147 = come_decrement_ref_count2(__right_value147, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value147 = come_decrement_ref_count2(__right_value147, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result112__;
     }
@@ -4344,7 +4344,7 @@ char* __result113__;
     strncpy(result_168,self,len_167+1);
     strncat(result_168,right,len_167+1);
     __result113__ = gComeFunResultObject = __result_obj__ = result_168;
-    /* U13 */result_168 = come_decrement_ref_count2(result_168, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_168 = come_decrement_ref_count2(result_168, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result113__;
 }
@@ -4359,7 +4359,7 @@ char* result_170;
 char* __result115__;
     if(    self==((void*)0)||right==((void*)0)) {
         __result114__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value149=__builtin_string("")));
-        /* U11 */__right_value149 = come_decrement_ref_count2(__right_value149, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value149 = come_decrement_ref_count2(__right_value149, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result114__;
     }
@@ -4368,7 +4368,7 @@ char* __result115__;
     strncpy(result_170,self,len_169+1);
     strncat(result_170,right,len_169+1);
     __result115__ = gComeFunResultObject = __result_obj__ = result_170;
-    /* U13 */result_170 = come_decrement_ref_count2(result_170, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_170 = come_decrement_ref_count2(result_170, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result115__;
 }
@@ -4385,7 +4385,7 @@ void* __right_value154 = (void*)0;
 char* __result117__;
     if(    self==((void*)0)) {
         __result116__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value151=__builtin_string("")));
-        /* U11 */__right_value151 = come_decrement_ref_count2(__right_value151, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value151 = come_decrement_ref_count2(__right_value151, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result116__;
     }
@@ -4395,7 +4395,7 @@ char* __result117__;
     }
     __result117__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value154=buffer_to_string(buf_171)));
     /*i*/come_call_finalizer3(buf_171,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    /* U11 */__right_value154 = come_decrement_ref_count2(__right_value154, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value154 = come_decrement_ref_count2(__right_value154, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result117__;
 }
@@ -4412,7 +4412,7 @@ void* __right_value158 = (void*)0;
 char* __result119__;
     if(    self==((void*)0)) {
         __result118__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value155=__builtin_string("")));
-        /* U11 */__right_value155 = come_decrement_ref_count2(__right_value155, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value155 = come_decrement_ref_count2(__right_value155, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result118__;
     }
@@ -4422,7 +4422,7 @@ char* __result119__;
     }
     __result119__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value158=buffer_to_string(buf_173)));
     /*i*/come_call_finalizer3(buf_173,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    /* U11 */__right_value158 = come_decrement_ref_count2(__right_value158, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value158 = come_decrement_ref_count2(__right_value158, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result119__;
 }
@@ -4532,7 +4532,7 @@ char* __result121__;
         return __result120__;
     }
     __result121__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value159=__builtin_string(self)));
-    /* U11 */__right_value159 = come_decrement_ref_count2(__right_value159, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value159 = come_decrement_ref_count2(__right_value159, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result121__;
 }
@@ -4548,7 +4548,7 @@ char* __result123__;
         return __result122__;
     }
     __result123__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value160=__builtin_string(self)));
-    /* U11 */__right_value160 = come_decrement_ref_count2(__right_value160, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value160 = come_decrement_ref_count2(__right_value160, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result123__;
 }
@@ -4626,7 +4626,7 @@ int i_185;
 char* __result125__;
     if(    str==((void*)0)) {
         __result124__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value161=__builtin_string("")));
-        /* U11 */__right_value161 = come_decrement_ref_count2(__right_value161, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value161 = come_decrement_ref_count2(__right_value161, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result124__;
     }
@@ -4637,7 +4637,7 @@ char* __result125__;
     }
     result_184[len_183]=0;
     __result125__ = gComeFunResultObject = __result_obj__ = result_184;
-    /* U13 */result_184 = come_decrement_ref_count2(result_184, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_184 = come_decrement_ref_count2(result_184, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result125__;
 }
@@ -4653,7 +4653,7 @@ int i_188;
 char* __result127__;
     if(    str==((void*)0)) {
         __result126__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value163=__builtin_string("")));
-        /* U11 */__right_value163 = come_decrement_ref_count2(__right_value163, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value163 = come_decrement_ref_count2(__right_value163, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result126__;
     }
@@ -4664,7 +4664,7 @@ char* __result127__;
     }
     result_187[len_186]=0;
     __result127__ = gComeFunResultObject = __result_obj__ = result_187;
-    /* U13 */result_187 = come_decrement_ref_count2(result_187, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_187 = come_decrement_ref_count2(result_187, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result127__;
 }
@@ -4686,7 +4686,7 @@ char* result_190;
 char* __result132__;
     if(    str==((void*)0)) {
         __result128__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value165=__builtin_string("")));
-        /* U11 */__right_value165 = come_decrement_ref_count2(__right_value165, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value165 = come_decrement_ref_count2(__right_value165, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result128__;
     }
@@ -4699,8 +4699,8 @@ char* __result132__;
     }
     if(    head>tail) {
         __result129__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value167=string_reverse(((char*)(__right_value166=charp_substring(str,tail,head))))));
-        /* U11 */__right_value166 = come_decrement_ref_count2(__right_value166, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-        /* U11 */__right_value167 = come_decrement_ref_count2(__right_value167, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value166 = come_decrement_ref_count2(__right_value166, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value167 = come_decrement_ref_count2(__right_value167, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result129__;
     }
@@ -4712,13 +4712,13 @@ char* __result132__;
     }
     if(    head==tail) {
         __result130__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value168=__builtin_string("")));
-        /* U11 */__right_value168 = come_decrement_ref_count2(__right_value168, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value168 = come_decrement_ref_count2(__right_value168, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result130__;
     }
     if(    tail-head+1<1) {
         __result131__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value169=__builtin_string("")));
-        /* U11 */__right_value169 = come_decrement_ref_count2(__right_value169, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value169 = come_decrement_ref_count2(__right_value169, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result131__;
     }
@@ -4726,7 +4726,7 @@ char* __result132__;
     memcpy(result_190,str+head,tail-head);
     result_190[tail-head]=0;
     __result132__ = gComeFunResultObject = __result_obj__ = result_190;
-    /* U13 */result_190 = come_decrement_ref_count2(result_190, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_190 = come_decrement_ref_count2(result_190, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result132__;
 }
@@ -4748,7 +4748,7 @@ char* result_192;
 char* __result137__;
     if(    str==((void*)0)) {
         __result133__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value171=__builtin_string("")));
-        /* U11 */__right_value171 = come_decrement_ref_count2(__right_value171, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value171 = come_decrement_ref_count2(__right_value171, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result133__;
     }
@@ -4761,8 +4761,8 @@ char* __result137__;
     }
     if(    head>tail) {
         __result134__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value173=string_reverse(((char*)(__right_value172=charp_substring(str,tail,head))))));
-        /* U11 */__right_value172 = come_decrement_ref_count2(__right_value172, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-        /* U11 */__right_value173 = come_decrement_ref_count2(__right_value173, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value172 = come_decrement_ref_count2(__right_value172, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value173 = come_decrement_ref_count2(__right_value173, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result134__;
     }
@@ -4774,13 +4774,13 @@ char* __result137__;
     }
     if(    head==tail) {
         __result135__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value174=__builtin_string("")));
-        /* U11 */__right_value174 = come_decrement_ref_count2(__right_value174, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value174 = come_decrement_ref_count2(__right_value174, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result135__;
     }
     if(    tail-head+1<1) {
         __result136__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value175=__builtin_string("")));
-        /* U11 */__right_value175 = come_decrement_ref_count2(__right_value175, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value175 = come_decrement_ref_count2(__right_value175, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result136__;
     }
@@ -4788,7 +4788,7 @@ char* __result137__;
     memcpy(result_192,str+head,tail-head);
     result_192[tail-head]=0;
     __result137__ = gComeFunResultObject = __result_obj__ = result_192;
-    /* U13 */result_192 = come_decrement_ref_count2(result_192, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_192 = come_decrement_ref_count2(result_192, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result137__;
 }
@@ -4810,7 +4810,7 @@ char* result_194;
 char* __result142__;
     if(    str==((void*)0)) {
         __result138__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value177=__builtin_string("")));
-        /* U11 */__right_value177 = come_decrement_ref_count2(__right_value177, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value177 = come_decrement_ref_count2(__right_value177, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result138__;
     }
@@ -4823,8 +4823,8 @@ char* __result142__;
     }
     if(    head>tail) {
         __result139__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value179=string_reverse(((char*)(__right_value178=charp_substring(str,tail,head))))));
-        /* U11 */__right_value178 = come_decrement_ref_count2(__right_value178, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-        /* U11 */__right_value179 = come_decrement_ref_count2(__right_value179, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value178 = come_decrement_ref_count2(__right_value178, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value179 = come_decrement_ref_count2(__right_value179, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result139__;
     }
@@ -4836,13 +4836,13 @@ char* __result142__;
     }
     if(    head==tail) {
         __result140__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value180=__builtin_string("")));
-        /* U11 */__right_value180 = come_decrement_ref_count2(__right_value180, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value180 = come_decrement_ref_count2(__right_value180, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result140__;
     }
     if(    tail-head+1<1) {
         __result141__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value181=__builtin_string("")));
-        /* U11 */__right_value181 = come_decrement_ref_count2(__right_value181, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value181 = come_decrement_ref_count2(__right_value181, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result141__;
     }
@@ -4850,7 +4850,7 @@ char* __result142__;
     memcpy(result_194,str+head,tail-head);
     result_194[tail-head]=0;
     __result142__ = gComeFunResultObject = __result_obj__ = result_194;
-    /* U13 */result_194 = come_decrement_ref_count2(result_194, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_194 = come_decrement_ref_count2(result_194, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result142__;
 }
@@ -4872,7 +4872,7 @@ char* result_196;
 char* __result147__;
     if(    str==((void*)0)) {
         __result143__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value183=__builtin_string("")));
-        /* U11 */__right_value183 = come_decrement_ref_count2(__right_value183, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value183 = come_decrement_ref_count2(__right_value183, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result143__;
     }
@@ -4885,8 +4885,8 @@ char* __result147__;
     }
     if(    head>tail) {
         __result144__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value185=string_reverse(((char*)(__right_value184=charp_substring(str,tail,head))))));
-        /* U11 */__right_value184 = come_decrement_ref_count2(__right_value184, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-        /* U11 */__right_value185 = come_decrement_ref_count2(__right_value185, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value184 = come_decrement_ref_count2(__right_value184, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value185 = come_decrement_ref_count2(__right_value185, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result144__;
     }
@@ -4898,13 +4898,13 @@ char* __result147__;
     }
     if(    head==tail) {
         __result145__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value186=__builtin_string("")));
-        /* U11 */__right_value186 = come_decrement_ref_count2(__right_value186, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value186 = come_decrement_ref_count2(__right_value186, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result145__;
     }
     if(    tail-head+1<1) {
         __result146__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value187=__builtin_string("")));
-        /* U11 */__right_value187 = come_decrement_ref_count2(__right_value187, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value187 = come_decrement_ref_count2(__right_value187, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result146__;
     }
@@ -4912,7 +4912,7 @@ char* __result147__;
     memcpy(result_196,str+head,tail-head);
     result_196[tail-head]=0;
     __result147__ = gComeFunResultObject = __result_obj__ = result_196;
-    /* U13 */result_196 = come_decrement_ref_count2(result_196, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_196 = come_decrement_ref_count2(result_196, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result147__;
 }
@@ -4933,7 +4933,7 @@ memset(&args_197, 0, sizeof(va_list));
 result_198 = (void*)0;
     if(    msg==((void*)0)) {
         __result148__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value189=__builtin_string("")));
-        /* U11 */__right_value189 = come_decrement_ref_count2(__right_value189, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value189 = come_decrement_ref_count2(__right_value189, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result148__;
     }
@@ -4943,7 +4943,7 @@ result_198 = (void*)0;
     if(    len_199<0) {
         __result149__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value190=__builtin_string("")));
         /*i*/come_call_finalizer3((&args_197),va_list_finalize, 1, 0, 0, 0, (void*)0);
-        /* U11 */__right_value190 = come_decrement_ref_count2(__right_value190, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value190 = come_decrement_ref_count2(__right_value190, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result149__;
     }
@@ -4951,7 +4951,7 @@ result_198 = (void*)0;
     free(result_198);
     __result150__ = gComeFunResultObject = __result_obj__ = result2_200;
     /*i*/come_call_finalizer3((&args_197),va_list_finalize, 1, 0, 0, 0, (void*)0);
-    /* U13 */result2_200 = come_decrement_ref_count2(result2_200, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result2_200 = come_decrement_ref_count2(result2_200, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result150__;
 }
@@ -4974,14 +4974,14 @@ void* __right_value196 = (void*)0;
 char* __result154__;
     if(    str==((void*)0)) {
         __result151__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value192=__builtin_string("")));
-        /* U11 */__right_value192 = come_decrement_ref_count2(__right_value192, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value192 = come_decrement_ref_count2(__right_value192, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result151__;
     }
     len_201=strlen(str);
     if(    strcmp(str,"")==0) {
         __result152__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value193=__builtin_string(str)));
-        /* U11 */__right_value193 = come_decrement_ref_count2(__right_value193, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value193 = come_decrement_ref_count2(__right_value193, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result152__;
     }
@@ -4996,7 +4996,7 @@ char* __result154__;
     }
     if(    tail<0) {
         __result153__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value194=__builtin_string(str)));
-        /* U11 */__right_value194 = come_decrement_ref_count2(__right_value194, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value194 = come_decrement_ref_count2(__right_value194, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result153__;
     }
@@ -5006,8 +5006,8 @@ char* __result154__;
     sub_str_202=(char*)come_increment_ref_count(charp_substring(str,tail,-1));
     memcpy(str+head,sub_str_202,string_length(sub_str_202)+1);
     __result154__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value196=__builtin_string(str)));
-    /* U13 */sub_str_202 = come_decrement_ref_count2(sub_str_202, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    /* U11 */__right_value196 = come_decrement_ref_count2(__right_value196, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    sub_str_202 = come_decrement_ref_count2(sub_str_202, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    __right_value196 = come_decrement_ref_count2(__right_value196, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result154__;
 }
@@ -5027,14 +5027,14 @@ void* __right_value201 = (void*)0;
 char* __result158__;
     if(    str==((void*)0)) {
         __result155__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value197=__builtin_string("")));
-        /* U11 */__right_value197 = come_decrement_ref_count2(__right_value197, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value197 = come_decrement_ref_count2(__right_value197, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result155__;
     }
     len_203=strlen(str);
     if(    strcmp(str,"")==0) {
         __result156__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value198=__builtin_string(str)));
-        /* U11 */__right_value198 = come_decrement_ref_count2(__right_value198, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value198 = come_decrement_ref_count2(__right_value198, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result156__;
     }
@@ -5049,7 +5049,7 @@ char* __result158__;
     }
     if(    tail<0) {
         __result157__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value199=__builtin_string(str)));
-        /* U11 */__right_value199 = come_decrement_ref_count2(__right_value199, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value199 = come_decrement_ref_count2(__right_value199, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result157__;
     }
@@ -5059,8 +5059,8 @@ char* __result158__;
     sub_str_204=(char*)come_increment_ref_count(charp_substring(str,tail,-1));
     memcpy(str+head,sub_str_204,string_length(sub_str_204)+1);
     __result158__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value201=__builtin_string(str)));
-    /* U13 */sub_str_204 = come_decrement_ref_count2(sub_str_204, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    /* U11 */__right_value201 = come_decrement_ref_count2(__right_value201, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    sub_str_204 = come_decrement_ref_count2(sub_str_204, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    __right_value201 = come_decrement_ref_count2(__right_value201, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result158__;
 }
@@ -5138,7 +5138,7 @@ char* __dec_obj25;
             /*G*/ __dec_obj25 = come_decrement_ref_count2(__dec_obj25, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            /* U13 */self->item = come_decrement_ref_count2(self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            self->item = come_decrement_ref_count2(self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
     }
 }
@@ -5187,7 +5187,7 @@ struct list$1charph* __result161__;
     }
     self->len++;
     __result161__ = gComeFunResultObject = __result_obj__ = self;
-    /* U13 */item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result161__;
 }
@@ -5247,7 +5247,7 @@ void* __right_value224 = (void*)0;
 char* __result168__;
     if(    path==((void*)0)) {
         __result165__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value221=__builtin_string("")));
-        /* U11 */__right_value221 = come_decrement_ref_count2(__right_value221, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value221 = come_decrement_ref_count2(__right_value221, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result165__;
     }
@@ -5262,18 +5262,18 @@ char* __result168__;
     }
     if(    p_216<path) {
         __result166__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value222=__builtin_string(path)));
-        /* U11 */__right_value222 = come_decrement_ref_count2(__right_value222, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value222 = come_decrement_ref_count2(__right_value222, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result166__;
     }
     else {
         __result167__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value223=__builtin_string(p_216+1)));
-        /* U11 */__right_value223 = come_decrement_ref_count2(__right_value223, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value223 = come_decrement_ref_count2(__right_value223, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result167__;
     }
     __result168__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value224=__builtin_string("")));
-    /* U11 */__right_value224 = come_decrement_ref_count2(__right_value224, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value224 = come_decrement_ref_count2(__right_value224, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result168__;
 }
@@ -5293,7 +5293,7 @@ void* __right_value229 = (void*)0;
 char* __result172__;
     if(    path==((void*)0)) {
         __result169__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value225=__builtin_string("")));
-        /* U11 */__right_value225 = come_decrement_ref_count2(__right_value225, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value225 = come_decrement_ref_count2(__right_value225, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result169__;
     }
@@ -5309,21 +5309,21 @@ char* __result172__;
     }
     if(    p_218<path2_217) {
         __result170__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value227=__builtin_string(path2_217)));
-        /* U13 */path2_217 = come_decrement_ref_count2(path2_217, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        /* U11 */__right_value227 = come_decrement_ref_count2(__right_value227, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        path2_217 = come_decrement_ref_count2(path2_217, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        __right_value227 = come_decrement_ref_count2(__right_value227, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result170__;
     }
     else {
         __result171__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value228=string_substring(path2_217,0,p_218-path2_217)));
-        /* U13 */path2_217 = come_decrement_ref_count2(path2_217, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        /* U11 */__right_value228 = come_decrement_ref_count2(__right_value228, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        path2_217 = come_decrement_ref_count2(path2_217, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        __right_value228 = come_decrement_ref_count2(__right_value228, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result171__;
     }
     __result172__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value229=__builtin_string("")));
-    /* U13 */path2_217 = come_decrement_ref_count2(path2_217, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    /* U11 */__right_value229 = come_decrement_ref_count2(__right_value229, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    path2_217 = come_decrement_ref_count2(path2_217, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    __right_value229 = come_decrement_ref_count2(__right_value229, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result172__;
 }
@@ -5341,7 +5341,7 @@ void* __right_value233 = (void*)0;
 char* __result176__;
     if(    path==((void*)0)) {
         __result173__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value230=__builtin_string("")));
-        /* U11 */__right_value230 = come_decrement_ref_count2(__right_value230, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value230 = come_decrement_ref_count2(__right_value230, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result173__;
     }
@@ -5356,18 +5356,18 @@ char* __result176__;
     }
     if(    p_219<path) {
         __result174__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value231=__builtin_string(path)));
-        /* U11 */__right_value231 = come_decrement_ref_count2(__right_value231, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value231 = come_decrement_ref_count2(__right_value231, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result174__;
     }
     else {
         __result175__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value232=__builtin_string(p_219+1)));
-        /* U11 */__right_value232 = come_decrement_ref_count2(__right_value232, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value232 = come_decrement_ref_count2(__right_value232, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result175__;
     }
     __result176__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value233=__builtin_string("")));
-    /* U11 */__right_value233 = come_decrement_ref_count2(__right_value233, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value233 = come_decrement_ref_count2(__right_value233, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result176__;
 }
@@ -5380,13 +5380,13 @@ void* __right_value235 = (void*)0;
 char* __result178__;
     if(    self) {
         __result177__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value234=__builtin_string("true")));
-        /* U11 */__right_value234 = come_decrement_ref_count2(__right_value234, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value234 = come_decrement_ref_count2(__right_value234, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result177__;
     }
     else {
         __result178__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value235=__builtin_string("false")));
-        /* U11 */__right_value235 = come_decrement_ref_count2(__right_value235, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value235 = come_decrement_ref_count2(__right_value235, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result178__;
     }
@@ -5397,7 +5397,7 @@ void* __result_obj__=(void*)0;
 void* __right_value236 = (void*)0;
 char* __result179__;
     __result179__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value236=xsprintf("%c",self)));
-    /* U11 */__right_value236 = come_decrement_ref_count2(__right_value236, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value236 = come_decrement_ref_count2(__right_value236, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result179__;
 }
@@ -5407,7 +5407,7 @@ void* __result_obj__=(void*)0;
 void* __right_value237 = (void*)0;
 char* __result180__;
     __result180__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value237=xsprintf("%d",self)));
-    /* U11 */__right_value237 = come_decrement_ref_count2(__right_value237, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value237 = come_decrement_ref_count2(__right_value237, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result180__;
 }
@@ -5417,7 +5417,7 @@ void* __result_obj__=(void*)0;
 void* __right_value238 = (void*)0;
 char* __result181__;
     __result181__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value238=xsprintf("%d",self)));
-    /* U11 */__right_value238 = come_decrement_ref_count2(__right_value238, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value238 = come_decrement_ref_count2(__right_value238, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result181__;
 }
@@ -5427,7 +5427,7 @@ void* __result_obj__=(void*)0;
 void* __right_value239 = (void*)0;
 char* __result182__;
     __result182__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value239=xsprintf("%ld",self)));
-    /* U11 */__right_value239 = come_decrement_ref_count2(__right_value239, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value239 = come_decrement_ref_count2(__right_value239, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result182__;
 }
@@ -5437,7 +5437,7 @@ void* __result_obj__=(void*)0;
 void* __right_value240 = (void*)0;
 char* __result183__;
     __result183__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value240=xsprintf("%ld",self)));
-    /* U11 */__right_value240 = come_decrement_ref_count2(__right_value240, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value240 = come_decrement_ref_count2(__right_value240, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result183__;
 }
@@ -5447,7 +5447,7 @@ void* __result_obj__=(void*)0;
 void* __right_value241 = (void*)0;
 char* __result184__;
     __result184__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value241=xsprintf("%f",self)));
-    /* U11 */__right_value241 = come_decrement_ref_count2(__right_value241, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value241 = come_decrement_ref_count2(__right_value241, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result184__;
 }
@@ -5457,7 +5457,7 @@ void* __result_obj__=(void*)0;
 void* __right_value242 = (void*)0;
 char* __result185__;
     __result185__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value242=xsprintf("%lf",self)));
-    /* U11 */__right_value242 = come_decrement_ref_count2(__right_value242, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value242 = come_decrement_ref_count2(__right_value242, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result185__;
 }
@@ -5470,12 +5470,12 @@ void* __right_value244 = (void*)0;
 char* __result187__;
     if(    self==((void*)0)) {
         __result186__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value243=__builtin_string("")));
-        /* U11 */__right_value243 = come_decrement_ref_count2(__right_value243, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value243 = come_decrement_ref_count2(__right_value243, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result186__;
     }
     __result187__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value244=__builtin_string(self)));
-    /* U11 */__right_value244 = come_decrement_ref_count2(__right_value244, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value244 = come_decrement_ref_count2(__right_value244, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result187__;
 }
@@ -5488,12 +5488,12 @@ void* __right_value246 = (void*)0;
 char* __result189__;
     if(    self==((void*)0)) {
         __result188__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value245=__builtin_string("")));
-        /* U11 */__right_value245 = come_decrement_ref_count2(__right_value245, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value245 = come_decrement_ref_count2(__right_value245, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result188__;
     }
     __result189__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value246=__builtin_string(self)));
-    /* U11 */__right_value246 = come_decrement_ref_count2(__right_value246, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value246 = come_decrement_ref_count2(__right_value246, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result189__;
 }
@@ -5643,7 +5643,7 @@ void* __right_value250 = (void*)0;
 char* __result191__;
     if(    f==((void*)0)) {
         __result190__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value247=__builtin_string("")));
-        /* U11 */__right_value247 = come_decrement_ref_count2(__right_value247, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value247 = come_decrement_ref_count2(__right_value247, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result190__;
     }
@@ -5659,7 +5659,7 @@ char* __result191__;
     }
     __result191__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value250=buffer_to_string(buf_220)));
     /*i*/come_call_finalizer3(buf_220,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    /* U11 */__right_value250 = come_decrement_ref_count2(__right_value250, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value250 = come_decrement_ref_count2(__right_value250, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result191__;
 }
@@ -5789,14 +5789,14 @@ char* __result197__;
 char* __result198__;
     if(    file_name==((void*)0)) {
         __result195__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value251=__builtin_string("")));
-        /* U11 */__right_value251 = come_decrement_ref_count2(__right_value251, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value251 = come_decrement_ref_count2(__right_value251, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result195__;
     }
     f_233=fopen(file_name,"r");
     if(    f_233==((void*)0)) {
         __result196__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value252=__builtin_string("")));
-        /* U11 */__right_value252 = come_decrement_ref_count2(__right_value252, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value252 = come_decrement_ref_count2(__right_value252, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result196__;
     }
@@ -5815,14 +5815,14 @@ char* __result198__;
     if(    result2_238<0) {
         __result197__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value256=__builtin_string("")));
         /*i*/come_call_finalizer3(buf_234,buffer_finalize, 0, 0, 0, 0, (void*)0);
-        /* U13 */result_237 = come_decrement_ref_count2(result_237, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        /* U11 */__right_value256 = come_decrement_ref_count2(__right_value256, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        result_237 = come_decrement_ref_count2(result_237, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        __right_value256 = come_decrement_ref_count2(__right_value256, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result197__;
     }
     __result198__ = gComeFunResultObject = __result_obj__ = result_237;
     /*i*/come_call_finalizer3(buf_234,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    /* U13 */result_237 = come_decrement_ref_count2(result_237, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_237 = come_decrement_ref_count2(result_237, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result198__;
 }
@@ -5846,14 +5846,14 @@ char* __result201__;
 char* __result202__;
     if(    file_name==((void*)0)) {
         __result199__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value257=__builtin_string("")));
-        /* U11 */__right_value257 = come_decrement_ref_count2(__right_value257, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value257 = come_decrement_ref_count2(__right_value257, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result199__;
     }
     f_239=fopen(file_name,"r");
     if(    f_239==((void*)0)) {
         __result200__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value258=__builtin_string("")));
-        /* U11 */__right_value258 = come_decrement_ref_count2(__right_value258, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value258 = come_decrement_ref_count2(__right_value258, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result200__;
     }
@@ -5872,14 +5872,14 @@ char* __result202__;
     if(    result2_244<0) {
         __result201__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value262=__builtin_string("")));
         /*i*/come_call_finalizer3(buf_240,buffer_finalize, 0, 0, 0, 0, (void*)0);
-        /* U13 */result_243 = come_decrement_ref_count2(result_243, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        /* U11 */__right_value262 = come_decrement_ref_count2(__right_value262, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        result_243 = come_decrement_ref_count2(result_243, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        __right_value262 = come_decrement_ref_count2(__right_value262, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result201__;
     }
     __result202__ = gComeFunResultObject = __result_obj__ = result_243;
     /*i*/come_call_finalizer3(buf_240,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    /* U13 */result_243 = come_decrement_ref_count2(result_243, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    result_243 = come_decrement_ref_count2(result_243, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result202__;
 }
@@ -5935,13 +5935,13 @@ void* __right_value267 = (void*)0;
 char* __result206__;
     if(    self==((void*)0)) {
         __result205__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value266=__builtin_string("")));
-        /* U11 */__right_value266 = come_decrement_ref_count2(__right_value266, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value266 = come_decrement_ref_count2(__right_value266, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result205__;
     }
     puts(self);
     __result206__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value267=__builtin_string(self)));
-    /* U11 */__right_value267 = come_decrement_ref_count2(__right_value267, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value267 = come_decrement_ref_count2(__right_value267, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result206__;
 }
@@ -5954,13 +5954,13 @@ void* __right_value269 = (void*)0;
 char* __result208__;
     if(    self==((void*)0)) {
         __result207__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value268=__builtin_string("")));
-        /* U11 */__right_value268 = come_decrement_ref_count2(__right_value268, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value268 = come_decrement_ref_count2(__right_value268, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result207__;
     }
     printf("%s",self);
     __result208__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value269=__builtin_string(self)));
-    /* U11 */__right_value269 = come_decrement_ref_count2(__right_value269, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value269 = come_decrement_ref_count2(__right_value269, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result208__;
 }
@@ -5977,7 +5977,7 @@ msg2_248 = (void*)0;
 memset(&args_249, 0, sizeof(va_list));
     if(    self==((void*)0)) {
         __result209__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value270=__builtin_string("")));
-        /* U11 */__right_value270 = come_decrement_ref_count2(__right_value270, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value270 = come_decrement_ref_count2(__right_value270, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result209__;
     }
@@ -5988,7 +5988,7 @@ memset(&args_249, 0, sizeof(va_list));
     free(msg2_248);
     __result210__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value271=__builtin_string(self)));
     /*i*/come_call_finalizer3((&args_249),va_list_finalize, 1, 0, 0, 0, (void*)0);
-    /* U11 */__right_value271 = come_decrement_ref_count2(__right_value271, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value271 = come_decrement_ref_count2(__right_value271, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result210__;
 }
@@ -6005,7 +6005,7 @@ msg2_250 = (void*)0;
 memset(&args_251, 0, sizeof(va_list));
     if(    self==((void*)0)) {
         __result211__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value272=__builtin_string("")));
-        /* U11 */__right_value272 = come_decrement_ref_count2(__right_value272, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value272 = come_decrement_ref_count2(__right_value272, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result211__;
     }
@@ -6016,7 +6016,7 @@ memset(&args_251, 0, sizeof(va_list));
     free(msg2_250);
     __result212__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value273=__builtin_string(self)));
     /*i*/come_call_finalizer3((&args_251),va_list_finalize, 1, 0, 0, 0, (void*)0);
-    /* U11 */__right_value273 = come_decrement_ref_count2(__right_value273, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value273 = come_decrement_ref_count2(__right_value273, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result212__;
 }
@@ -6034,13 +6034,13 @@ void* __right_value275 = (void*)0;
 char* __result214__;
     if(    self==((void*)0)) {
         __result213__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value274=__builtin_string("")));
-        /* U11 */__right_value274 = come_decrement_ref_count2(__right_value274, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+        __right_value274 = come_decrement_ref_count2(__right_value274, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result213__;
     }
     puts(self);
     __result214__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value275=__builtin_string(self)));
-    /* U11 */__right_value275 = come_decrement_ref_count2(__right_value275, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value275 = come_decrement_ref_count2(__right_value275, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result214__;
 }
@@ -6220,7 +6220,7 @@ void* __result_obj__=(void*)0;
 void* __right_value286 = (void*)0;
 char* __result221__;
     __result221__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value286=long_to_string(self->value)));
-    /* U11 */__right_value286 = come_decrement_ref_count2(__right_value286, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value286 = come_decrement_ref_count2(__right_value286, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result221__;
 }
@@ -6326,7 +6326,7 @@ void* __result_obj__=(void*)0;
 void* __right_value291 = (void*)0;
 char* __result225__;
     __result225__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value291=double_to_string(self->value)));
-    /* U11 */__right_value291 = come_decrement_ref_count2(__right_value291, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value291 = come_decrement_ref_count2(__right_value291, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result225__;
 }

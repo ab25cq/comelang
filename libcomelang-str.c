@@ -112,9 +112,13 @@ come_regex*% come_regex*::clone(come_regex* reg)
     return result;
 }
 
-string come_regex*::to_string(come_regex* regex)
+string come_regex*::to_string(come_regex* reg)
 {
-    return string(regex.str);
+    if(reg == null || reg.re == null) {
+        return string("");
+    }
+    
+    return string(reg.str);
 }
 
 string string::lower_case(char* str)
@@ -232,6 +236,10 @@ int char*::index_count(char* str, char* search_str, int count, int default_value
 
 int char*::index_regex_count(char* self, come_regex* reg, int count, int default_value)
 {
+    if(reg == null || reg.re == null) {
+        return default_value;
+    }
+    
     int ovec_max = 16;
     int start[ovec_max];
     int end[ovec_max];
@@ -308,6 +316,10 @@ int char*::rindex(char* str, char* search_str, int default_value)
 
 int char*::rindex_regex(char* self, come_regex* reg, int default_value)
 {
+    if(reg == null || reg.re == null) {
+        return default_value;
+    }
+    
     const char* err;
     int erro_ofs;
 
@@ -379,6 +391,10 @@ int char*::rindex_count(char* str, char* search_str, int count, int default_valu
 
 list<string>*% char*::scan_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
+    
     auto result = new list<string>.initialize();
 
     int offset = 0;
@@ -460,6 +476,10 @@ list<string>*% char*::scan_block(char* self, come_regex* reg, void* parent, stri
 
 list<string>*% char*::scan_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
+    
     auto result = new list<string>.initialize();
 
     int offset = 0;
@@ -552,6 +572,9 @@ list<string>*% char*::scan_block_count(char* self, come_regex* reg, int count, v
 
 list<string>*% char*::split_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
     const char* err;
     int erro_ofs;
 
@@ -639,6 +662,9 @@ list<string>*% char*::split_block(char* self, come_regex* reg, void* parent, str
 
 list<string>*% char*::split_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
     const char* err;
     int erro_ofs;
 
@@ -726,7 +752,10 @@ list<string>*% char*::split_block_count(char* self, come_regex* reg, int count, 
 
 bool come_regex*::equals(come_regex* left, come_regex* right)
 {
-    if(strcmp(left.str, right.str) != 0) {
+    if(left == null || left.re == null) {
+        return false;
+    }
+    if(right == null || right.re == null) {
         return false;
     }
 
@@ -763,6 +792,10 @@ bool come_regex*::equals(come_regex* left, come_regex* right)
 
 list<string>*% char*::scan_group_strings(char* self, come_regex* reg, list<string>* group_strings, int* num_group_string_in_regex)
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
+
     auto result = new list<string>.initialize();
 
     int offset = 0;
@@ -1036,6 +1069,10 @@ wstring wchar_t*::printable(wchar_t* str)
 
 bool char*::match_group_strings(char* self, come_regex* reg, int count, list<string>* group_strings)
 {
+    if(reg == null || reg.re == null) {
+        return false;
+    }
+
     int offset = 0;
 
     int ovec_max = 16;
@@ -1125,6 +1162,9 @@ int wstring::compare(wchar_t* left, wchar_t* right)
 
 unsigned int come_regex*::get_hash_key(come_regex* reg)
 {
+    if(reg == null || reg.re == null) {
+        return 0;
+    }
     return reg->str.get_hash_key();
 }
 
@@ -1210,6 +1250,9 @@ int char*::index(char* str, char* search_str, int default_value)
 
 int char*::index_regex(char* self, come_regex* reg, int default_value)
 {
+    if(reg == null || reg.re == null) {
+        return default_value;
+    }
     int ovec_max = 16;
     int start[ovec_max];
     int end[ovec_max];
@@ -1297,6 +1340,9 @@ string char*::multiply(char* str, int n)
 
 string char*::sub(char* self, come_regex* reg, char* replace)
 {
+    if(reg == null || reg.re == null) {
+        return string(self);
+    }
     int offset = 0;
 
     int ovec_max = 16;
@@ -1360,6 +1406,9 @@ string char*::sub(char* self, come_regex* reg, char* replace)
 
 string char*::sub_count(char* self, come_regex* reg, char* replace, int count)
 {
+    if(reg == null || reg.re == null) {
+        return string(self);
+    }
     int offset = 0;
 
     int ovec_max = 16;
@@ -1457,6 +1506,9 @@ list<string>*% char*::split_str(char* self, char* str)
 
 list<string>*% char*::scan(char* self, come_regex* reg)
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
     auto result = new list<string>.initialize();
     
     int offset = 0;
@@ -1530,6 +1582,9 @@ list<string>*% char*::scan(char* self, come_regex* reg)
 
 list<string>*% char*::split(char* self, come_regex* reg)
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
     const char* err;
     int erro_ofs;
 
@@ -1607,6 +1662,9 @@ list<string>*% char*::split(char* self, come_regex* reg)
 
 bool char*::match(char* self, come_regex* reg)
 {
+    if(reg == null || reg.re == null) {
+        return false;
+    }
     int offset = 0;
 
     int ovec_max = 16;
@@ -1652,6 +1710,9 @@ bool char*::match(char* self, come_regex* reg)
 
 list<string>*% char*::split_maxsplit(char* self, come_regex* reg, int maxsplit)
 {
+    if(reg == null || reg.re == null) {
+        return new list<string>();
+    }
     const char* err;
     int erro_ofs;
 
@@ -1737,6 +1798,9 @@ list<string>*% char*::split_maxsplit(char* self, come_regex* reg, int maxsplit)
 
 int char*::rindex_regex_count(char* self, come_regex* reg, int count, int default_value)
 {
+    if(reg == null || reg.re == null) {
+        return default_value;
+    }
     const char* err;
     int erro_ofs;
 
@@ -1799,6 +1863,9 @@ int char*::rindex_regex_count(char* self, come_regex* reg, int count, int defaul
 
 bool char*::match_count(char* self, come_regex* reg, int count)
 {
+    if(reg == null || reg.re == null) {
+        return false;
+    }
     int offset = 0;
 
     int ovec_max = 16;
@@ -1857,6 +1924,9 @@ bool char*::match_count(char* self, come_regex* reg, int count)
 
 string char*::sub_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
+    if(reg == null || reg.re == null) {
+        return string("");
+    }
     int offset = 0;
 
     int ovec_max = 16;
@@ -1958,6 +2028,9 @@ string char*::sub_block(char* self, come_regex* reg, void* parent, string (*bloc
 
 string char*::sub_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
+    if(reg == null || reg.re == null) {
+        return string("");
+    }
     int offset = 0;
 
     int ovec_max = 16;
@@ -2101,6 +2174,9 @@ bool wstring::equals(wchar_t* left, wchar_t* right)
 
 unsigned int come_regex*::get_hash_key(come_regex* self)
 {
+    if(self == null || self.re == null) {
+        return 0;
+    }
     return self.str.get_hash_key();
 }
 
