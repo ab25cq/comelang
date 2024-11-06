@@ -2676,9 +2676,9 @@ void come_regex_finalize(struct come_regex* reg){
 
 struct tuple2$2come_regexphcharph* charp_to_regex(char* self, _Bool ignore_case, _Bool multiline, _Bool global, _Bool extended, _Bool dotall, _Bool anchored, _Bool dollar_endonly, _Bool ungreedy){
 void* __result_obj__=(void*)0;
-struct tuple2$2come_regexphcharph* multiple_assign_var1;
-struct come_regex* come_exception_var_b1_49;
-char* Err_50;
+struct tuple2$2come_regexphcharph* multiple_assign_var1 = (void*)0;
+struct come_regex* come_exception_var_b1_49=0;
+char* Err_50=0;
 struct come_regex* __null_value2;
 struct tuple2$2come_regexphcharph* __result96__;
 struct tuple2$2come_regexphcharph* __result97__;
@@ -2698,9 +2698,9 @@ memset(&__null_value2, 0, sizeof(struct come_regex*));
 
 struct tuple2$2come_regexphcharph* string_to_regex(char* self, _Bool ignore_case, _Bool multiline, _Bool global, _Bool extended, _Bool dotall, _Bool anchored, _Bool dollar_endonly, _Bool ungreedy){
 void* __result_obj__=(void*)0;
-struct tuple2$2come_regexphcharph* multiple_assign_var2;
-struct come_regex* come_exception_var_b2_51;
-char* Err_52;
+struct tuple2$2come_regexphcharph* multiple_assign_var2 = (void*)0;
+struct come_regex* come_exception_var_b2_51=0;
+char* Err_52=0;
 struct come_regex* __null_value3;
 struct tuple2$2come_regexphcharph* __result98__;
 struct tuple2$2come_regexphcharph* __result99__;

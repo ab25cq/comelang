@@ -3051,9 +3051,9 @@ struct tuple2$2come_regexphcharph* charp_to_regex(char* self, _Bool ignore_case,
 void* __result_obj__=(void*)0;
 void* __right_value151 = (void*)0;
 void* __right_value152 = (void*)0;
-struct tuple2$2come_regexphcharph* multiple_assign_var1;
-struct come_regex* come_exception_var_b1_71;
-char* Err_72;
+struct tuple2$2come_regexphcharph* multiple_assign_var1 = (void*)0;
+struct come_regex* come_exception_var_b1_71=0;
+char* Err_72=0;
 _Bool _if_conditional1;
 struct come_regex* __null_value2;
 void* __right_value153 = (void*)0;
@@ -3087,9 +3087,9 @@ struct tuple2$2come_regexphcharph* string_to_regex(char* self, _Bool ignore_case
 void* __result_obj__=(void*)0;
 void* __right_value157 = (void*)0;
 void* __right_value158 = (void*)0;
-struct tuple2$2come_regexphcharph* multiple_assign_var2;
-struct come_regex* come_exception_var_b2_73;
-char* Err_74;
+struct tuple2$2come_regexphcharph* multiple_assign_var2 = (void*)0;
+struct come_regex* come_exception_var_b2_73=0;
+char* Err_74=0;
 _Bool _if_conditional2;
 struct come_regex* __null_value3;
 void* __right_value159 = (void*)0;

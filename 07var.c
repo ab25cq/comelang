@@ -113,7 +113,7 @@ class sStoreNode extends sNodeBase
             
             static int num_multiple_var = 0;
             string multiple_var_name = xsprintf("multiple_assign_var%d", ++num_multiple_var);
-            add_come_code_at_function_head(info, "%s;\n", make_define_var(right_value.type, multiple_var_name));
+            add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(right_value.type, multiple_var_name));
             
             if(info->comma_instead_of_semicolon) {
                 add_come_code(info, "%s=%s,\n", multiple_var_name, right_value.c_value);
@@ -157,7 +157,7 @@ class sStoreNode extends sNodeBase
                     come_value.type = clone left_type;
                     come_value.var = var_;
                     
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                    add_come_code_at_function_head(info, "%s=0;\n", make_define_var(left_type, var_->mCValueName));
                     if(info->comma_instead_of_semicolon) {
                         add_come_code(info, "%s,\n", come_value.c_value);
                     }

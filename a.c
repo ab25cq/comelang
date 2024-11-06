@@ -1,22 +1,17 @@
 #include <comelang.h>
-
-exception int fun()
-{
-    return none(s"Err");
-}
-
-exception int fun2()
-{
-    return fun().exception_throw;
-}
+#include <comelang-str.h>
 
 int main(int argc, char** argv)
 {
-    int a = fun2()!!;
-    
-    printf("a %d\n", a);
-    
-    puts("HEHE");
+    if(s"AAA".match(/./) && s"BBB".match(/B/)) {
+        puts("1");
+    }
+    else if(s"CCC".match(/C/) && "DDD".match(/D/)) {
+        puts("2");
+    }
+    else {
+        puts("3");
+    }
     
     return 0;
 }
