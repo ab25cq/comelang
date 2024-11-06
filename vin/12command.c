@@ -347,25 +347,33 @@ void ViWin*::input(ViWin* self, Vi* nvi) version 12
 void ViWin*::subAllTextsFromCommandMode(ViWin* self, Vi* nvi) 
 {
     /// parse command ///
-    come_regex*% reg = new come_regex("%s\/\(.+\)\/\(.*\)\/*?");
+    come_regex*% reg = new come_regex("%s\/\(.+\)\/\(.*\)\/*?").rescue {
+        null
+    }
 
-    auto command = string(nvi.commandString).scan(reg);
-
-    auto str = command.item(1, null);
-    auto replace = command.item(2, null);
+    if(reg) {
+        auto command = string(nvi.commandString).scan(reg);
     
-    if(str != null && replace != null) {
-        self.pushUndo();
-        int it2 = 0;
-        foreach(it, self.texts) {
-            come_regex*% reg = new come_regex(str);
-
-            auto new_line = it.to_string().sub(reg, replace).to_wstring();
-            
-            self.texts.replace(it2, new_line);
-            self.texts_length.replace(it2, wcslen(new_line));
-
-            it2++;
+        auto str = command.item(1, null);
+        auto replace = command.item(2, null);
+        
+        if(str != null && replace != null) {
+            self.pushUndo();
+            int it2 = 0;
+            foreach(it, self.texts) {
+                come_regex*% reg = new come_regex(str).rescue {
+                    null
+                }
+    
+                if(reg) {
+                    auto new_line = it.to_string().sub(reg, replace).to_wstring();
+                    
+                    self.texts.replace(it2, new_line);
+                    self.texts_length.replace(it2, wcslen(new_line));
+                }
+    
+                it2++;
+            }
         }
     }
 }
@@ -379,9 +387,7 @@ void Vi*::enterComandMode(Vi* self)
 void Vi*::exitFromComandMode(Vi* self) 
 {
     if(string(self.commandString).index("sp", -1) == 0) {
-        come_regex*% reg = new come_regex("sp \(.+\)");
-
-        string file_name = string(self.commandString).scan(reg).item(1, null).to_string();
+        string file_name = string(self.commandString).scan(/sp \(.+\)/).item(1, null).to_string();
 
         if(file_name != null) {
             self.openNewFile(file_name);

@@ -469,7 +469,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         else {
             if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
-                string str = xsprintf("if(%s) { %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, 0,0,0, (void*)0); }", name, name, name, type_name, name, type_name, name);
+                string str = xsprintf("/* U1 */ if(%s) { %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, 0,0,0, (void*)0); }", name, name, name, type_name, name, type_name, name);
                 add_come_last_code2(info, str);
             }
             else {
@@ -496,6 +496,9 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
 
     sType* type_before = type;
 
+    if(info.comma_instead_of_semicolon) {
+        comma = true;
+    }
     
     if(type->mNoSolvedGenericsType.v1) {
         type = type->mNoSolvedGenericsType.v1;
@@ -636,15 +639,15 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                             string type_name = make_type_name_string(type);
                             if(no_decrement) {
                                 if(comma) {
-                                    add_come_code(info, "((%s) ? %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d,%d, %s):0),\n", c_value, c_value, c_value, type_name, c_value, type_name, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
+                                    add_come_code(info, "/* U3 */ ((%s) ? %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d,%d, %s):0),\n", c_value, c_value, c_value, type_name, c_value, type_name, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
                                 }
                                 else {
-                                    add_come_code(info, "if(%s) { %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d, %d, %s); } \n", c_value, c_value, c_value, type_name, c_value, type_name, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
+                                    add_come_code(info, "/* U4 */ if(%s) { %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d, %d, %s); } \n", c_value, c_value, c_value, type_name, c_value, type_name, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
                                 }
                             }
                             else {
                                 if(comma) {
-                                    add_come_code(info, "((%s) ? %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d, %d, (void*)0):0),\n", c_value, c_value, c_value, type_name, c_value, type_name, c_value, no_decrement, no_free, force_delete_);
+                                    add_come_code(info, "/* U5 */((%s) ? %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d, %d, (void*)0):0),\n", c_value, c_value, c_value, type_name, c_value, type_name, c_value, no_decrement, no_free, force_delete_);
                                 }
                                 else {
                                     add_come_code(info, "if(%s) { %s = come_decrement_ref_count2(%s, ((%s)%s)->finalize, ((%s)%s)->_protocol_obj, %d, %d, %d, (void*)0); } \n", c_value, c_value, c_value, type_name, c_value, type_name, c_value, no_decrement, no_free, force_delete_);
@@ -656,18 +659,18 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                         if(c_value) {
                             if(no_decrement) {
                                 if(comma) {
-                                    add_come_code(info, "(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s)),\n",  c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
+                                    add_come_code(info, "/* U6 */ (%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s)),\n",  c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
                                 }
                                 else {
-                                    add_come_code(info, "%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s);\n", c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0" : "__result_obj__");
+                                    add_come_code(info, "/* U7 */ %s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s);\n", c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0" : "__result_obj__");
                                 }
                             }
                             else {
                                 if(comma) {
-                                    add_come_code(info, "(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n", c_value, c_value, no_decrement, no_free, force_delete_);
+                                    add_come_code(info, "/* U8 */(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n", c_value, c_value, no_decrement, no_free, force_delete_);
                                 }
                                 else {
-                                    add_come_code(info, "%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0);\n", c_value, c_value, no_decrement, no_free, force_delete_);
+                                    add_come_code(info, "/* U9 */ %s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0);\n", c_value, c_value, no_decrement, no_free, force_delete_);
                                 }
                             }
                         }
@@ -829,18 +832,18 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                         if(c_value) {
                             if(no_decrement) {
                                 if(comma) {
-                                    add_come_code(info, "(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s)),\n",  c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
+                                    add_come_code(info, "/* U10 */ (%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s)),\n",  c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
                                 }
                                 else {
-                                    add_come_code(info, "%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s);\n", c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
+                                    add_come_code(info, "/* U11 */%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, %s);\n", c_value, c_value, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
                                 }
                             }
                             else {
                                 if(comma) {
-                                    add_come_code(info, "(%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n", c_value, c_value, no_decrement, no_free, force_delete_);
+                                    add_come_code(info, "/* U12 */ (%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0)),\n", c_value, c_value, no_decrement, no_free, force_delete_);
                                 }
                                 else {
-                                    add_come_code(info, "%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0);\n", c_value, c_value, no_decrement, no_free, force_delete_);
+                                    add_come_code(info, "/* U13 */%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, %d, %d, %d, (void*)0);\n", c_value, c_value, no_decrement, no_free, force_delete_);
                                 }
                             }
                         }

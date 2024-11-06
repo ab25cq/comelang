@@ -45,7 +45,15 @@ bool vm(sInfo* info) version 6
             int ignore_case = *info->op;
             info->op++;
             
-            info->stack.push_back(new ZVALUE(kind: kRegexValue, regex_value:value.to_string().to_regex(global:global, ignore_case:ignore_case)));
+            come_regex*% reg = value.to_string().to_regex(global:global, ignore_case:ignore_case).rescue { null };
+            
+            if(reg) {
+                info->stack.push_back(new ZVALUE(kind: kRegexValue, regex_value:reg));
+            }
+            else {
+                ZVALUE*% null_value = new ZVALUE(kind: kNullValue);
+                info->stack.push_back(null_value);
+            }
             }
             break;
     }

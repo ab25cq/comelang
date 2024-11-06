@@ -1616,6 +1616,11 @@ sNode*% expression_node(sInfo* info) version 96
         
         skip_spaces_and_lf();
         
+        bool catch_exception = false;
+        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, "!!", strlen("!!")) == 0) {
+            catch_exception = true;
+        }
+        
         sNode*% obj = new sStrNode(buf.to_string(), sline, info) implements sNode;
         
         list<tuple2<string, sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
@@ -1637,6 +1642,10 @@ sNode*% expression_node(sInfo* info) version 96
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
         sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
+        
+        if(!catch_exception) {
+            node = create_exception_value(clone node, info);
+        }
         
         return node;
         
