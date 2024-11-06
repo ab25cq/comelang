@@ -3378,6 +3378,65 @@ int main(int argc, char** argv)
 ```
 Err
 
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return none(s"Err");
+}
+
+exception int fun2()
+{
+    return fun().exception_throw;
+}
+
+int main(int argc, char** argv)
+{
+    int a = fun2()!!;
+    
+    printf("a %d\n", a);
+    
+    puts("HEHE");
+    
+    return 0;
+}
+```
+Err
+
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return none(s"Err");
+}
+
+exception int fun2()
+{
+    return fun().exception_throw;
+}
+
+int main(int argc, char** argv)
+{
+    int a = fun2().rescue {
+        puts("CATCH");
+        puts(Err);
+        3
+    }
+    
+    printf("a %d\n", a);
+    
+    puts("HEHE");
+    
+    return 0;
+}
+```
+CATCH
+Err
+a 3
+HEHE
+
 # Pattern Matching
 
 ```C
@@ -3617,8 +3676,6 @@ int main(int argc, char** argv)
     return 0;
 }
 ```
-
-# Exception
 
 Implementaion is cominng.
 
