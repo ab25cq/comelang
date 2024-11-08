@@ -12,6 +12,8 @@ bool gComeDebug = false;
 bool gComeOriginalSourcePosition = true;
 int gComeDebugStackFrameID = 0;
 
+char* CC="clang"
+
 #ifdef __LINUX__
 static char* RM = "rm -rf";
 #elif __MAC__
@@ -197,8 +199,8 @@ static bool cpp(sInfo* info)
     }
     int rc2 = system("uname -a | grep Android 1> /dev/null 2>/dev/null");
     
-    /// Mac ///
     int rc = system(cmd);
+    /// Android ///
     if(rc2 == 0) {
         string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
@@ -215,8 +217,16 @@ static bool cpp(sInfo* info)
             exit(2);
         }
     }
+    /// Mac ///
     else if(rc == 0) {
-        string cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include -U__GNUC__ %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        string cmd2;
+        if(strcmp(CC, "arm-none-eabi-gcc") == 0) {
+            cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        }
+        else {
+            cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include -U__GNUC__ %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        }
+        
         if(info.verbose) puts(cmd2);
         
         int rc = system(cmd2);
@@ -258,7 +268,7 @@ static bool cpp(sInfo* info)
 		if(rc_debian == 0) {
 		    cmd4 = xsprintf("cpp -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
 		}
-    var command = xsprintf("clang -o %s -c %s %s >> %s.out 2>&1", output_file_name, input_file_name, info.clang_option, input_file_name);
+    var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
     
             if(info.verbose) puts(cmd4);
             rc = system(cmd4);
@@ -290,7 +300,7 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
         output_file_name = info.sname + ".o";
     }
     
-    var command = xsprintf("clang -o %s -c %s %s >> %s.out 2>&1", output_file_name, input_file_name, info.clang_option, input_file_name);
+    var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
     
     if(info.verbose) puts(command);
     int rc = system(command);
@@ -301,7 +311,7 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     (void)system(command2);
     
     if(rc != 0) {
-        printf("%s %d: clang is faild\n", info->sname, info->sline);
+        printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
         return false;
     }
     
@@ -324,7 +334,7 @@ static bool linker(sInfo* info, list<string>* object_files)
     
     var command = new buffer();
     
-    command.append_str(xsprintf("clang -o %s ", output_file_name));
+    command.append_str(xsprintf("%s -o %s ", CC, output_file_name));
     
     foreach(it, object_files) {
         command.append_str(xsprintf("%s ", it));
@@ -411,7 +421,7 @@ static bool linker(sInfo* info, list<string>* object_files)
     rc = system(command.to_string());
     
     if(rc != 0) {
-        printf("%s %d: clang is faild\n", info->sname, info->sline);
+        printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
         return false;
     }
     
@@ -682,6 +692,12 @@ int come_main(int argc, char** argv) version 2
             else if(argv[i] === "-str") {
                 gComeStr = true;
             }
+            else if(argv[i] === "-pico") {
+                CC = "arm-none-eabi-gcc";
+                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -nostdlib -Wl,--gc-section ");
+                char* env = getenv("PICO_SDK_PATH");
+                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
+            }
             else if(argv[i] === "-net") {
                 gComeNet = true;
             }
@@ -882,6 +898,20 @@ int come_main(int argc, char** argv) version 2
             else if(argv[i] === "-str") {
                 gComeStr = true;
             }
+            else if(argv[i] === "-pico") {
+                CC = "arm-none-eabi-gcc";
+                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -nostdlib -Wl,--gc-section ");
+                char* env = getenv("PICO_SDK_PATH");
+                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
+            }
+            else if(i + 1 < argc && argv[i] === "-target") {
+                clang_option.append_str(s"-target \{argv[i+1]}");
+                i++;
+            }
+            else if(i + 1 < argc && argv[i] === "-T") {
+                clang_option.append_str(s" -T \{argv[i+1]} ");
+                i++;
+            }
             else if(argv[i] === "-net") {
                 gComeNet = true;
             }
@@ -891,6 +921,14 @@ int come_main(int argc, char** argv) version 2
             else if(argv[i] === "-cg") {
                 come_debug = true;
                 clang_option.append_str("-g ");
+            }
+            else if(i + 1 < argc && argv[i] === "-target") {
+                clang_option.append_str(s"-target \{argv[i+1]}");
+                i++;
+            }
+            else if(i + 1 < argc && argv[i] === "-T") {
+                clang_option.append_str(s" -T \{argv[i+1]} ");
+                i++;
             }
             else if(argv[i] === "-common-header") {
                 gCommonHeader = true;

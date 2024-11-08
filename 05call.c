@@ -147,6 +147,38 @@ class sReturnNode extends sNodeBase
     }
 };
 
+class sInlineAssembler extends sNodeBase
+{
+    new(string source, sInfo* info)
+    {
+        self.super();
+        
+        string self.source = source;
+    }
+    
+    string kind()
+    {
+        return string("sInlineAssembler");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        string source = self.source;
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = "__asm " + source;
+        come_value.type = new sType("void");
+        come_value.var = null;
+        
+        info.stack.push_back(come_value);
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        return true;
+    }
+};
+
 class sCurrentNode2 extends sNodeBase
 {
     include sCurrentNodeModule;
@@ -1612,6 +1644,32 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.sline = head_sline;
         }
         
+        bool inline_asm = false;
+        {
+            info.p = head;
+            info.sline = head_sline;
+            
+            buf = parse_word();
+            
+            if(buf === "asm" || buf === "__asm") {
+                if(*info->p == '(') {
+                    inline_asm = true;
+                }
+                else {
+                    if(xisalpha(*info->p)) {
+                        buf = parse_word();
+                        
+                        if(*info->p == '(') {
+                            inline_asm = true;
+                        }
+                    }
+                }
+            }
+            
+            info.p = head;
+            info.sline = head_sline;
+        }
+        
         parse_sharp();
         
         buf = parse_word();
@@ -1675,6 +1733,45 @@ sNode*% expression_node(sInfo* info=info) version 97
             info->new_ = false;
             
             return node;
+        }
+        else if(inline_asm) {
+            var buf2 = new buffer();
+            
+            if(*info->p != '(') {
+                string word = parse_word(); // volatile
+                
+                buf2.append_str(word);
+            }
+            
+            int nest = 0;
+            while(true) {
+                if(*info->p == '(') {
+                    buf2.append_char('(');
+                    info->p++;
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    buf2.append_char(')');
+                    info->p++;
+                    nest--;
+                    
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    err_msg(info, "invalid source end at inline assembler");
+                    exit(2);
+                }
+                else {
+                    buf2.append_char(*info->p);
+                    info->p++;
+                }
+            }
+            skip_spaces_and_lf();
+            parse_sharp();
+            
+            return new sInlineAssembler(buf2.to_string(), info) implements sNode;
         }
         else if(fun_name_with_type_name) {
             buffer*% fun_name = new buffer();
