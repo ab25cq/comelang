@@ -150,6 +150,59 @@ class sRefferenceNode extends sNodeBase
     }
 };
 
+class sParenBlockNode extends sNodeBase
+{
+    new(list<sNode*%>*% paren_block, sInfo* info)
+    {
+        self.super();
+        
+        list<sNode*%>*% self.paren_block = paren_block;
+    }
+    
+    string kind()
+    {
+        return string("sParenBlockNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        list<sNode*%>*% paren_block = self.paren_block;
+        
+        var buf = new buffer();
+        buf.append_str("({");
+        
+        sType*% come_type = null;
+        foreach(it, paren_block) {
+            if(!node_compile(it)) {
+                return false;
+            }
+            
+            CVALUE*% come_value = get_value_from_stack(-1, info);
+            dec_stack_ptr(1, info);
+            
+            buf.append_str(come_value.c_value + "; ");
+            
+            come_type = clone come_value.type;
+            
+            transpiler_clear_last_code(info);
+        }
+        
+        buf.append_str("})");
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = buf.to_string();
+        come_value.type = come_type;
+        come_value.var = null;
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
 class sDerefferenceNode extends sNodeBase
 {
     new(sNode*% value, bool quote, sInfo* info)
@@ -801,7 +854,46 @@ sNode*% pre_position_operator(sInfo* info=info)
             info.sline = sline;
         }
         
-        if(!gComeC && tuple_expression_flag) {
+        if(*info->p == '{') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            list<sNode*%>*% paren_block = new list<sNode*%>();
+            
+            while(true) {
+                parse_sharp();
+                
+                sNode*% node2 = expression();
+                
+                parse_sharp();
+                
+                paren_block.add(node2);
+                
+                while(*info->p == ';') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                }
+                
+                if(*info->p == '}') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
+                }
+                else if(*info->p == '\0') {
+                    err_msg(info, "invalid source end in paren block");
+                    exit(0);
+                }
+            }
+            
+            expected_next_character(')');
+            
+            sNode*% node = new sParenBlockNode(paren_block, info) implements sNode;
+            
+            parse_sharp();
+            
+            return node;
+        }
+        else if(!gComeC && tuple_expression_flag) {
             parse_sharp();
             
             sNode*% node = parse_tuple(info);

@@ -1,7 +1,7 @@
 
 int main(int argc, char** argv)
 {
-    __asm ("AAA":"BBB":"CCC");
+    ({1;2});
     
     return 0;
 }
