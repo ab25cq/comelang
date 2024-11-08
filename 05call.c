@@ -612,7 +612,7 @@ class sFunCallNode extends sNodeBase
                 }
             }
             
-            if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" || fun_name === "__builtin_constant_p") 
+            if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" || fun_name === "__builtin_constant_p" || fun_name === "__builtin_expect") 
             {
                 list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                 foreach(it, params) {
@@ -670,6 +670,9 @@ class sFunCallNode extends sNodeBase
                     come_value.type = new sType("long");
                 }
                 else if(fun_name === "__builtin_constant_p") {
+                    come_value.type = new sType("int");
+                }
+                else if(fun_name === "__builtin_expect") {
                     come_value.type = new sType("int");
                 }
                 

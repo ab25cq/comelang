@@ -168,36 +168,66 @@ class sParenBlockNode extends sNodeBase
     {
         list<sNode*%>*% paren_block = self.paren_block;
         
-        var buf = new buffer();
+        buffer*% buf = new buffer();
+        
         buf.append_str("({");
         
         sType*% come_type = null;
         foreach(it, paren_block) {
+            if(it.kind() === "sIfNode" || it.kind() === "sWhileNode" || it.kind() === "sDoWhileNode" || it.kind() === "sForNode" || it.kind() == "sSwitchNode") {
+                add_come_code(info, buf.to_string());
+                buf = null;
+            }
+            
             if(!node_compile(it)) {
                 return false;
             }
             
-            CVALUE*% come_value = get_value_from_stack(-1, info);
-            dec_stack_ptr(1, info);
-            
-            buf.append_str(come_value.c_value + "; ");
-            
-            come_type = clone come_value.type;
-            
-            transpiler_clear_last_code(info);
+            if(info.stack.length() > 0) {
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                if(buf) {
+                    buf.append_str(come_value.c_value + "; ");
+                }
+                else {
+                    add_come_code(info, come_value.c_value + "; ");
+                }
+                
+                come_type = clone come_value.type;
+                
+                transpiler_clear_last_code(info);
+            }
+            else {
+                if(buf) {
+                    buf.append_str(info.module.mLastCode + "; ");
+                    buf.append_str(info.module.mLastCode2 + "; ");
+                    buf.append_str(info.module.mLastCode3 + "; ");
+                    
+                    transpiler_clear_last_code(info);
+                }
+                else {
+                    add_last_code_to_source(info);
+                }
+            }
         }
         
-        buf.append_str("})");
-        
-        CVALUE*% come_value = new CVALUE();
-        
-        come_value.c_value = buf.to_string();
-        come_value.type = come_type;
-        come_value.var = null;
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
+        if(buf) {
+            buf.append_str("})");
+            
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = buf.to_string();
+            come_value.type = come_type;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+        }
+        else {
+            add_come_code(info, "});");
+        }
         
         return true;
     }
