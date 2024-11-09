@@ -8,11 +8,12 @@ pico_sdk_init()
 add_executable(led led2.c)
 
 # 必要なライブラリをリンク
-target_link_libraries(led pico_stdlib hardware_gpio)
+target_link_libraries(led pico_stdlib hardware_gpio pico_malloc)
 
 # フラッシュ設定
 pico_enable_stdio_usb(led 1)
-pico_enable_stdio_uart(led 1)
+pico_enable_stdio_uart(led 0)
+
 pico_add_extra_outputs(led)
 
 

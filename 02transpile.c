@@ -695,7 +695,7 @@ int come_main(int argc, char** argv) version 2
                 gComeOriginalSourcePosition = false;
                 char* env = getenv("PICO_SDK_PATH");
                 cpp_option = new buffer();
-                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
+                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__ -D__PICO__");
             }
             else if(argv[i] === "-net") {
                 gComeNet = true;
@@ -908,7 +908,7 @@ int come_main(int argc, char** argv) version 2
                 gComeOriginalSourcePosition = false;
                 char* env = getenv("PICO_SDK_PATH");
                 cpp_option = new buffer();
-                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
+                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__ -D__PICO__");
             }
             else if(i + 1 < argc && argv[i] === "-target") {
                 clang_option.append_str(s"-target \{argv[i+1]}");

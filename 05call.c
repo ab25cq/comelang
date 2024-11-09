@@ -653,7 +653,7 @@ class sFunCallNode extends sNodeBase
                 }
             }
             
-            if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" || fun_name === "__builtin_constant_p" || fun_name === "__builtin_expect") 
+            if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" || fun_name === "__builtin_constant_p" || fun_name === "__builtin_expect" || fun_name === "__builtin___memset_chk" || fun_name === "__builtin_object_size" || fun_name === "__builtin___memcpy_chk" || fun_name === "__builtin___strncpy_chk" || fun_name === "__builtin___strncat_chk" || fun_name === "__builtin___vsnprintf_chk") 
             {
                 list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                 foreach(it, params) {
@@ -714,6 +714,28 @@ class sFunCallNode extends sNodeBase
                     come_value.type = new sType("int");
                 }
                 else if(fun_name === "__builtin_expect") {
+                    come_value.type = new sType("int");
+                }
+                else if(fun_name === "__builtin___memset_chk") {
+                    come_value.type = new sType("void");
+                    come_value.type.mPointerNum = 1;
+                }
+                else if(fun_name === "__builtin_object_size") {
+                    come_value.type = new sType("long");
+                }
+                else if(fun_name === "__builtin___memcpy_chk") {
+                    come_value.type = new sType("void");
+                    come_value.type.mPointerNum = 1;
+                }
+                else if(fun_name === "__builtin___strncpy_chk") {
+                    come_value.type = new sType("char");
+                    come_value.type.mPointerNum = 1;
+                }
+                else if(fun_name === "__builtin___strncat_chk") {
+                    come_value.type = new sType("char");
+                    come_value.type.mPointerNum = 1;
+                }
+                else if(fun_name === "__builtin___vsnprintf_chk") {
                     come_value.type = new sType("int");
                 }
                 

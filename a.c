@@ -1,11 +1,8 @@
-output {#include <stdio.h>}
-no_output {
-#include <stdio.h>
-}
+#include "a.h"
 
 int main(int argc, char** argv)
 {
-    puts("HELLO WORLD");
+    int a = fun();
     
     return 0;
 }

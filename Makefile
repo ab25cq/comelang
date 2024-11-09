@@ -256,6 +256,7 @@ install:
 	$(INSTALL) -m 755 ./comelang "$(DESTDIR)/bin"
 	mkdir -p "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang.h "$(DESTDIR)/include"
+	$(INSTALL) -m 644 ./comelang-pico.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-str.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-net.h "$(DESTDIR)/include"
 	mkdir -p "$(DESTDIR)/lib"
@@ -283,8 +284,11 @@ distclean: clean
 uninstall:
 	rm -f "$(DESTDIR)"/bin/comelang
 	rm -f "$(DESTDIR)"/include/comelang.h
+	rm -f "$(DESTDIR)"/include/comelang-pico.h
 	rm -f "$(DESTDIR)"/include/comelang-str.h
+	rm -f "$(DESTDIR)"/include/comelang-net.h
 	rm -f "$(DESTDIR)"/lib/libcomelang.a
 	rm -f "$(DESTDIR)"/lib/libcomelang-str.a
+	rm -f "$(DESTDIR)"/lib/libcomelang-net.a
 	rm -f "$(DESTDIR)/share/doc/comelang/README.md"
 

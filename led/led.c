@@ -1,7 +1,4 @@
-output {#include "pico/stdlib.h"}
-no_output {
-#include "pico/stdlib.h"
-}
+#include <comelang-pico.h>
 
 int fun()
 {
@@ -9,6 +6,7 @@ int fun()
 }
 
 int main() {
+//    stdio_usb_init();  // USB出力の初期化
     const uint LED_PIN = 25;  // PicoのオンボードLEDピン
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);

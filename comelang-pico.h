@@ -1,9 +1,5 @@
-#ifndef COMELANG_H
-#define COMELANG_H
-
-#ifdef __PICO__
-#include <comelang-pico.h>
-#else
+#ifndef COMELANG_PICO_H
+#define COMELANG_PICO_H
 
 using comelang;
 
@@ -11,78 +7,51 @@ using comelang;
 
 using C
 {
-#include <stdio.h>
+output {#include <stdlib.h>}
+no_output {
 #include <stdlib.h>
+}
+output {#include <string.h>}
+no_output {
 #include <string.h>
+}
+output {#include <stdio.h>}
+no_output {
+#include <stdio.h>
+}
+output {#include <stdarg.h>}
+no_output {
 #include <stdarg.h>
-#include <limits.h>
-#include <locale.h>
-#include <errno.h>
-#include <assert.h>
+}
+output {#include "pico/stdlib.h"}
+no_output {
+#include "pico/stdlib.h"
+}
 }
 
 typedef void* any;
 typedef char*% string;
-
-extern any wildcard;
+uniq void* gComeFunResultObject = NULL;
 
 //////////////////////////////
 /// exception
 //////////////////////////////
-#define COME_STACKFRAME_MAX 16
-
-void come_push_stackframe(char* sname, int sline, int id);
-void come_pop_stackframe();
-void stackframe();
-void come_save_stackframe(char* sname, int sline);
-
-void* come_null_check(void* mem, char* sname, int sline, int id);
-void* come_range_check(void* mem, void* begin, void* end, char* sname, int sline);
-
-bool bool::expect(bool self, void* parent, void (*block)(void* parent)) ;
-bool bool::catch(bool self, void* parent, void (*block)(void* parent));
-bool bool::value(bool self, void* parent, void (*block)(void* parent));
-int int::expect(int self, void* parent, void (*block)(void* parent)) ;
-int int::catch(int self, void* parent, void (*block)(void* parent));
-int int::value(int self, void* parent, void (*block)(void* parent));
-
-int int::except(int self, void* parent, void (*block)(void* parent));
-bool bool::except(bool self, void* parent, void (*block)(void* parent));
-
-record static inline bool die(char* msg)
+struct buffer 
 {
-    perror(msg);
-    stackframe();
-    exit(4);
-    
-    return false;
-}
+    char*% buf;
+    int len;
+    int size;
+};
 
-void xassert(char* msg, bool test);
+buffer*% buffer*::initialize(buffer*% self);
+buffer* buffer*::append_str(buffer* self, char* mem);
+buffer* buffer*::append(buffer* self, char* mem, size_t size);
+string xsprintf(char* msg, ...);
+string char*::to_string(char* self);
+string int::to_string(int self);
+unsigned int int::get_hash_key(int value);
+string char*::substring(char* str, int head, int tail);
 
-//////////////////////////////
-/// heap
-//////////////////////////////
-extern bool gComeGCLib;
-extern void* gComeFunResultObject;
-
-void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name=null);
-void* come_increment_ref_count(void* mem);
-void* come_print_ref_count(void* mem);
-void* come_dynamic_typeof(void* mem);
-void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, int force_delete_);
-void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, int force_delete_, void* result_obj);
-void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, int no_decrement, int no_free, int force_delete_, void* result_obj);
-void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, bool force_delete_);
-void* come_decrement_ref_count2(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, bool force_delete_, void* result_obj);
-void come_free_object(void* mem);
-void come_free(void* mem);
-void* come_memdup(void* block, char* sname=null, int sline=0, char* class_name=null);
-string __builtin_string(char* str);
-
-//////////////////////////////
-// list
-//////////////////////////////
 struct list_item<T>
 {
     T item;
@@ -98,7 +67,6 @@ struct list<T>
 
     list_item<T>* it;
 };
-
 impl list <T>
 {
     list<T>*% initialize(list<T>*% self) {
@@ -2391,41 +2359,14 @@ impl tuple5 <T, T2, T3, T4, T5>
 //////////////////////////////
 // buffer
 //////////////////////////////
-struct buffer 
-{
-    char*% buf;
-    int len;
-    int size;
-};
-
-buffer*% buffer*::initialize(buffer*% self);
-void buffer*::finalize(buffer* self);
-void buffer*::force_finalize(buffer* self);
-buffer*% buffer*::clone(buffer* self);
-int buffer*::length(buffer* self);
-void buffer*::reset(buffer* self);
-void buffer*::trim(buffer* self, int len);
-buffer* buffer*::append(buffer* self, char* mem, size_t size);
-buffer* buffer*::append_char(buffer* self, char c);
-buffer* buffer*::append_str(buffer* self, char* str);
-buffer* buffer*::append_nullterminated_str(buffer* self, char* str);
-buffer* buffer*::append_int(buffer* self, int value);
-buffer* buffer*::append_long(buffer* self, long value);
-buffer* buffer*::append_short(buffer* self, short value);
-buffer* buffer*::alignment(buffer* self);
-int buffer*::compare(buffer* left, buffer* right);
-buffer*% string::to_buffer(char* self);
-buffer*% char*::to_buffer(char* self);
-string buffer*::to_string(buffer* self);
-
-static inline buffer*% char[]::to_buffer(char* self, size_t len) 
+uniq buffer*% char[]::to_buffer(char* self, size_t len) 
 {
     var result = new buffer();
     result.append(self, sizeof(char)*len);
     return result;
 }
 
-static inline buffer*% char*[]::to_buffer(char** self, size_t len) 
+uniq buffer*% char*[]::to_buffer(char** self, size_t len) 
 {
     var result = new buffer();
     for(int i=0; i<len; i++) {
@@ -2434,35 +2375,35 @@ static inline buffer*% char*[]::to_buffer(char** self, size_t len)
     return result;
 }
 
-static inline buffer*% short[]::to_buffer(short* self, size_t len) 
+uniq buffer*% short[]::to_buffer(short* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(short)*len);
     return result;
 }
 
-static inline buffer*% int[]::to_buffer(int* self, size_t len) 
+uniq buffer*% int[]::to_buffer(int* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(int)*len);
     return result;
 }
 
-static inline buffer*% long[]::to_buffer(long* self, size_t len) 
+uniq buffer*% long[]::to_buffer(long* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(long)*len);
     return result;
 }
 
-static inline buffer*% float[]::to_buffer(float* self, size_t len) 
+uniq buffer*% float[]::to_buffer(float* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(float)*len);
     return result;
 }
 
-static inline buffer*% double[]::to_buffer(double* self, size_t len) 
+uniq buffer*% double[]::to_buffer(double* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(double)*len);
@@ -2762,27 +2703,27 @@ impl smart_pointer<T>
     }
 }
 
-static inline smart_pointer<char>*% buffer*::to_pointer(buffer* self)
+uniq smart_pointer<char>*% buffer*::to_pointer(buffer* self)
 {
     return new smart_pointer<char>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<char>*% buffer*::to_char_pointer(buffer* self)
+uniq smart_pointer<char>*% buffer*::to_char_pointer(buffer* self)
 {
     return new smart_pointer<char>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<short>*% buffer*::to_short_pointer(buffer* self)
+uniq smart_pointer<short>*% buffer*::to_short_pointer(buffer* self)
 {
     return new smart_pointer<short>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<int>*% buffer*::to_int_pointer(buffer* self)
+uniq smart_pointer<int>*% buffer*::to_int_pointer(buffer* self)
 {
     return new smart_pointer<int>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
+uniq smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
 {
     return new smart_pointer<long>.initialize_with_value(clone self);
 }
@@ -2812,130 +2753,2700 @@ impl list <T>
     
 }
 
+
+
+#define COME_STACKFRAME_MAX 16
+#define COME_STACKFRAME_MAX_GLOBAL 128
+
+uniq char* gComeStackFrameSName[COME_STACKFRAME_MAX_GLOBAL];
+uniq int gComeStackFrameSLine[COME_STACKFRAME_MAX_GLOBAL];
+uniq int gComeStackFrameID[COME_STACKFRAME_MAX_GLOBAL];
+uniq int gNumComeStackFrame = 0;
+
+
+uniq char* gComeStackFrameBuffer = NULL;
+
+uniq void come_push_stackframe(char* sname, int sline, int id)
+{
+    if(gNumComeStackFrame < COME_STACKFRAME_MAX_GLOBAL) {
+        gComeStackFrameSName[gNumComeStackFrame] = sname;  // const string
+        gComeStackFrameSLine[gNumComeStackFrame] = sline;
+        gComeStackFrameID[gNumComeStackFrame] = id;
+    
+        gNumComeStackFrame++;
+    }
+}
+
+uniq void come_pop_stackframe()
+{
+    if(gNumComeStackFrame > 0) {
+        gNumComeStackFrame--;
+    }
+}
+
+uniq void come_save_stackframe(char* sname, int sline)
+{
+    buffer*% buf = new buffer();
+    buf.append_str(xsprintf("%s %d\n", sname, sline));
+    for(int i=gNumComeStackFrame-2; i>=0; i--) {
+        buf.append_str(xsprintf("%s %d #%d\n", gComeStackFrameSName[i], gComeStackFrameSLine[i], gComeStackFrameID[i]));
+    }
+    
+    if(gComeStackFrameBuffer) {
+        free(gComeStackFrameBuffer);
+    }
+    gComeStackFrameBuffer = strdup(buf.to_string());
+}
+
+uniq void stackframe()
+{
+    for(int i=gNumComeStackFrame-1; i>=0; i--) {
+        printf("%s %d #%d\n", gComeStackFrameSName[i], gComeStackFrameSLine[i], gComeStackFrameID[i]);
+    }
+}
+
+/*
+uniq string come_get_stackframe()
+{
+    return string(gComeStackFrameBuffer);
+}
+*/
+
+uniq void* come_null_check(void* mem, char* sname, int sline, int id)
+{
+    if(mem == null) {
+        printf("%s %d #%d: null check error\n", sname, sline, id);
+        stackframe();
+        exit(2);
+    }
+    
+    return mem;
+}
+
+uniq void* come_range_check(void* mem, void* begin, void* end, char* sname, int sline)
+{
+    if(mem == null) {
+        printf("%s %d: null check error\n", sname, sline);
+        stackframe();
+        exit(2);
+    }
+    
+    if(mem < begin) {
+        printf("%s %d: range check error\n", sname, sline);
+        stackframe();
+        exit(2);
+    }
+    
+    if(mem >= end) {
+        printf("%s %d: range check error\n", sname, sline);
+        stackframe();
+        exit(2);
+    }
+    
+    return mem;
+}
+
+uniq bool bool::expect(bool self, void* parent, void (*block)(void* parent)) 
+{
+    if(!self) {
+        block(parent);
+        stackframe();
+        exit(1);
+    }
+    
+    return self;
+}
+
+uniq bool bool::value(bool self)
+{
+    return self;
+}
+
+uniq int int::catch(int self, void* parent, void (*block)(void* parent))
+{
+    if(self < 0) {
+        block(parent);
+    }
+    
+    return self;
+}
+
+uniq int int::expect(int self, void* parent, void (*block)(void* parent)) 
+{
+    if(self < 0) {
+        block(parent);
+        stackframe();
+        exit(1);
+    }
+    
+    return self;
+}
+
+uniq int int::value(int self)
+{
+    return self;
+}
+
+uniq int int::except(int self, void* parent, void (*block)(void* parent))
+{
+    if(self < 0) {
+        block(parent);
+    }
+
+    return self;
+}
+
+uniq bool bool::except(bool self, void* parent, void (*block)(void* parent))
+{
+    if(!self) {
+        block(parent);
+    }
+
+    return self;
+}
+
+uniq bool bool::catch(bool self, void* parent, void (*block)(void* parent))
+{
+    if(!self) {
+        block(parent);
+    }
+   
+    return self;
+}
+
+uniq void xassert(char* msg, bool test)
+{
+    printf("%s...", msg);
+    if(!test) {
+        puts("false");
+        exit(2);
+    }
+    puts("ok");
+}
+
 //////////////////////////////
-/// base library(primitive array)
+/// heap
 //////////////////////////////
-static inline smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
+uniq any gComeResultObject = NULL;
+
+
+uniq bool gComeMallocLib = false;
+uniq bool gComeDebugLib = false;
+uniq bool gComeGCLib = false;
+
+uniq int gNumAlloc = 0;
+uniq int gNumFree = 0;
+
+#define ALLOCATED_MAGIC_NUM 177783
+
+struct sMemHeaderTiny
 {
-    var buf = new buffer();
-    buf.append((char*)self, sizeof(char)*len);
-    return new smart_pointer<char>.initialize_with_value(buf);
+    size_t size;
+    int allocated;   //AALLOCATED_MAGIC_NUM
+    struct sMemHeaderTiny* next;
+    struct sMemHeaderTiny* prev;
+    struct sMemHeaderTiny* free_next;
+//    char* class_name;
+};
+
+struct sMemHeader
+{
+    size_t size;
+    int allocated;            /// ALLOCATED_MAGIC_NUM 
+    struct sMemHeader* next;
+    struct sMemHeader* prev;
+    struct sMemHeader* free_next;
+    char* class_name;
+    
+    char* sname[COME_STACKFRAME_MAX];
+    int sline[COME_STACKFRAME_MAX];
+    int id[COME_STACKFRAME_MAX];
+};
+
+uniq sMemHeader* gAllocMem;
+
+#define HEAP_POOL_PAGE_SIZE 2048*2
+#define INIT_PAGE_PAGE_SIZE 4
+#define NEW_ALLOC_SIZE 2
+
+struct sHeapPage
+{
+    char** mPages;
+    int mSizePages;
+    
+    char* mTop;
+    int mCurrentPages;
+    
+    sMemHeaderTiny* mFreeMem[HEAP_POOL_PAGE_SIZE];
+};
+
+uniq struct sHeapPage gHeapPages;
+
+uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
+{
+    gComeMallocLib = come_malloc;
+    gComeDebugLib = come_debug
+    gComeGCLib = come_gc;
+    
+#ifdef ENABLE_GC
+    if(gComeGCLib) {
+        GC_init();
+        GC_set_warn_proc(GC_ignore_warn_proc);
+        GC_enable_incremental();
+    }
+#endif
+    
+    gComeStackFrameBuffer = NULL;
+    memset(gComeStackFrameSName, 0, sizeof(char*)*COME_STACKFRAME_MAX_GLOBAL);
+    memset(gComeStackFrameSLine, 0, sizeof(int)*COME_STACKFRAME_MAX_GLOBAL);
+    memset(gComeStackFrameID, 0, sizeof(int)*COME_STACKFRAME_MAX_GLOBAL);
+    
+    gHeapPages.mSizePages = INIT_PAGE_PAGE_SIZE;
+    
+    gHeapPages.mPages = calloc(1, sizeof(char**)*gHeapPages.mSizePages);
+    for(int i=0; i<gHeapPages.mSizePages; i++) {
+        gHeapPages.mPages[i] = calloc(1, sizeof(char)*HEAP_POOL_PAGE_SIZE);
+    }
+    
+    gHeapPages.mTop = gHeapPages.mPages[0];
+    gHeapPages.mCurrentPages = 0;
+    
+    memset(gHeapPages.mFreeMem, 0, sizeof(sMemHeaderTiny*)*HEAP_POOL_PAGE_SIZE);
+    
+    gAllocMem = NULL;
 }
 
-static inline smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
+uniq void come_heap_final()
 {
-    var buf = new buffer();
-    buf.append((char*)self, sizeof(char*)*len);
-    return new smart_pointer<char*>.initialize_with_value(buf);
+    if(gComeStackFrameBuffer) {
+        free(gComeStackFrameBuffer);
+    }
+    
+    if(gComeGCLib) {
+#ifdef ENABLE_GC
+        //GC_gcollect();
+#endif
+    }
+    else if(gComeDebugLib) {
+        sMemHeader* it = gAllocMem;
+        int n = 0;
+        while(it) {
+            n++;
+            
+            bool flag = false;
+            printf("#%d ", n);
+            if(it->class_name) {
+                printf("%p (%s): ", (char*)it + sizeof(sMemHeader) + sizeof(size_t) + sizeof(size_t), it->class_name);
+            }
+            for(int i=0; i<COME_STACKFRAME_MAX; i++) {
+                if(it->sname[i]) {
+                    printf("%s %d #%d, ", it->sname[i], it->sline[i], it->id[i]);
+                    flag = true;
+                }
+            }
+            if(flag) {
+                puts("");
+            }
+            it = it->next;
+        }
+        printf("%d memory leaks. %d alloc, %d free.\n", n, gNumAlloc, gNumFree);
+    }
+    else {
+        sMemHeaderTiny* it = (sMemHeaderTiny*)gAllocMem;
+        int n = 0;
+        while(it) {
+            n++;
+            it = it->next;
+        }
+        if(n > 0) {
+            printf("%d memory leaks. %d alloc, %d free.If you require debugging, copmpile with -cg option\n", n, gNumAlloc, gNumFree);
+        }
+    }
+    for(int i=0; i<gHeapPages.mSizePages; i++) {
+        free(gHeapPages.mPages[i]);
+    }
+    free(gHeapPages.mPages);
 }
 
-static inline smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
+uniq void* alloc_from_pages(size_t size)
 {
-    var buf = new buffer();
-    buf.append((char*)self, sizeof(short)*len);
-    return new smart_pointer<short>.initialize_with_value(buf);
+    void* result = null;
+    if(size < HEAP_POOL_PAGE_SIZE) {
+        if(gHeapPages.mFreeMem[size]) {
+            result = gHeapPages.mFreeMem[size];
+            
+            gHeapPages.mFreeMem[size] = gHeapPages.mFreeMem[size]->free_next;
+            memset(result, 0, size);
+        }
+
+        if(result == null) {
+            size_t free_area = gHeapPages.mPages[gHeapPages.mCurrentPages] + HEAP_POOL_PAGE_SIZE - gHeapPages.mTop;
+            
+            if(size >= free_area) {
+                gHeapPages.mCurrentPages++;
+                
+                if(gHeapPages.mCurrentPages == gHeapPages.mSizePages) {
+                    int new_size_pages = gHeapPages.mSizePages * NEW_ALLOC_SIZE;
+                    void** new_pages = calloc(1, sizeof(char*)*new_size_pages);
+                    
+                    int i=0;
+                    for(; i<gHeapPages.mSizePages; i++) {
+                        new_pages[i] = gHeapPages.mPages[i];
+                    }
+                    
+                    for(; i<new_size_pages; i++) {
+                        new_pages[i] = calloc(1, sizeof(char)*HEAP_POOL_PAGE_SIZE);
+                    }
+                    
+                    free(gHeapPages.mPages);
+                    
+                    gHeapPages.mPages = new_pages;
+                    gHeapPages.mSizePages = new_size_pages;
+                }
+                
+                gHeapPages.mTop = gHeapPages.mPages[gHeapPages.mCurrentPages];
+            }
+            
+            result = gHeapPages.mTop;
+            gHeapPages.mTop += size;
+        }
+    }
+    else {
+        result = calloc(1, size);
+    }
+    
+    return result;
 }
 
-static inline smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
+uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name=null)
 {
-    var buf = new buffer();
-    buf.append((char*)self, sizeof(int)*len);
-    return new smart_pointer<int>.initialize_with_value(buf);
+    if(gComeDebugLib) {
+#ifdef ENABLE_GC
+        void* result = GC_malloc(size + sizeof(sMemHeader));
+        memset(result, 0, size + sizeof(sMemHeader));
+#else
+        void* result = alloc_from_pages(size + sizeof(sMemHeader));
+#endif
+        
+        sMemHeader* it = result;
+        
+        it->allocated = ALLOCATED_MAGIC_NUM;
+        
+        it->size = size + sizeof(sMemHeader);
+        it->free_next = NULL;
+        
+        come_push_stackframe(sname, sline, 0);
+
+        
+        if(gNumComeStackFrame < COME_STACKFRAME_MAX) {
+            memcpy(it.sname, gComeStackFrameSName, sizeof(char*)*gNumComeStackFrame);
+            memcpy(it.sline, gComeStackFrameSLine, sizeof(int)*gNumComeStackFrame);
+            memcpy(it.id, gComeStackFrameID, sizeof(int)*gNumComeStackFrame);
+        }
+        else {
+            memcpy(it.sname, gComeStackFrameSName + gNumComeStackFrame - COME_STACKFRAME_MAX -1, sizeof(char*)*COME_STACKFRAME_MAX);
+            memcpy(it.sline, gComeStackFrameSLine + gNumComeStackFrame - COME_STACKFRAME_MAX -1, sizeof(int)*COME_STACKFRAME_MAX);
+            memcpy(it.id, gComeStackFrameID + gNumComeStackFrame - COME_STACKFRAME_MAX -1, sizeof(int)*COME_STACKFRAME_MAX);
+        }
+        
+        come_pop_stackframe();
+        
+        it->next = gAllocMem;
+        it->prev = null;
+        
+        if(class_name) { 
+            it->class_name = strdup(class_name); 
+        }
+        else {
+            it->class_name = null;
+        }
+        
+        if(gAllocMem) {
+            gAllocMem->prev = it;
+        }
+        
+        gAllocMem = it;
+        
+        gNumAlloc++;
+        
+        return (char*)result + sizeof(sMemHeader);
+    }
+    else {
+#ifdef ENABLE_GC
+        void* result = GC_malloc(size + sizeof(sMemHeaderTiny));
+        memset(result, 0, size + sizeof(sMemHeaderTiny));
+#else
+        void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
+#endif
+        
+        sMemHeaderTiny* it = result;
+        
+        it->allocated = ALLOCATED_MAGIC_NUM;
+        
+/*
+        if(class_name) { 
+            it->class_name = strdup(class_name); 
+        }
+        else {
+            it->class_name = null;
+        }
+*/
+        
+        it->size = size + sizeof(sMemHeaderTiny);
+        it->free_next = NULL;
+        
+        it->next = (sMemHeaderTiny*)gAllocMem;
+        it->prev = null;
+        
+        if(gAllocMem) {
+            ((sMemHeaderTiny*)gAllocMem)->prev = it;
+        }
+        
+        gAllocMem = (sMemHeader*)it;
+        
+        gNumAlloc++;
+        
+        return (char*)result + sizeof(sMemHeaderTiny);
+    }
 }
 
-static inline smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
+uniq void come_free_mem_of_heap_pool(void* mem)
 {
-    var buf = new buffer();
-    buf.append((char*)self, sizeof(long)*len);
-    return new smart_pointer<long>.initialize_with_value(buf);
+    if(mem) {
+        if(gComeGCLib) {
+        }
+        else if(gComeDebugLib) {
+            sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(sMemHeader));
+            
+            if(it->allocated != ALLOCATED_MAGIC_NUM) {
+                return;
+            }
+            
+            it->allocated = 0;
+            
+            sMemHeader* prev_it = it->prev;
+            sMemHeader* next_it = it->next;
+            
+            if(it->class_name) {
+                free(it->class_name);
+            }
+            
+            if(gAllocMem == it) {
+                gAllocMem = next_it;
+                
+                if(gAllocMem) {
+                    gAllocMem->prev = null;
+                }
+            }
+            else {
+                if(prev_it) {
+                    prev_it->next = next_it;
+                }
+                if(next_it) {
+                    next_it->prev = prev_it;
+                }
+            }
+            
+            size_t size = it->size;
+            
+            if(size < HEAP_POOL_PAGE_SIZE) {
+                if(gHeapPages.mFreeMem[size] == NULL) {
+                    it->free_next = NULL;
+                    gHeapPages.mFreeMem[size] = (sMemHeaderTiny*)it;
+                }
+                else {
+                    it->free_next = (sMemHeader*)gHeapPages.mFreeMem[size];
+                    gHeapPages.mFreeMem[size] = (sMemHeaderTiny*)it;
+                }
+            }
+            else {
+                free(it);
+            }
+            
+            gNumFree++;
+        }
+        else {
+            sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(sMemHeaderTiny));
+            
+            if(it->allocated != ALLOCATED_MAGIC_NUM) {
+                return;
+            }
+            
+            it->allocated = 0;
+            
+/*
+            if(it->class_name) {
+                free(it->class_name);
+            }
+*/
+            
+            sMemHeaderTiny* prev_it = it->prev;
+            sMemHeaderTiny* next_it = it->next;
+            
+            if(gAllocMem == it) {
+                gAllocMem = (sMemHeader*)next_it;
+                
+                if(gAllocMem) {
+                    gAllocMem->prev = null;
+                }
+            }
+            else {
+                if(prev_it) {
+                    prev_it->next = next_it;
+                }
+                if(next_it) {
+                    next_it->prev = prev_it;
+                }
+            }
+            
+            size_t size = it->size;
+            
+            if(size < HEAP_POOL_PAGE_SIZE) {
+                if(gHeapPages.mFreeMem[size] == NULL) {
+                    it->free_next = NULL;
+                    gHeapPages.mFreeMem[size] = it;
+                }
+                else {
+                    it->free_next = gHeapPages.mFreeMem[size];
+                    gHeapPages.mFreeMem[size] = it;
+                }
+            }
+            else {
+                free(it);
+            }
+            
+            gNumFree++;
+        }
+    }
 }
 
-static inline smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
+uniq char* come_dynamic_typeof(void* mem)
 {
-    var buf = new buffer();
-    buf.append((char*)self, sizeof(float)*len);
-    return new smart_pointer<float>.initialize_with_value(buf);
+    sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+    
+    if(it->allocated != ALLOCATED_MAGIC_NUM) {
+        printf("invalid heap object(%p)\n", it);
+        exit(2);
+    }
+    
+    return it->class_name;
 }
 
-static inline smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
+uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name=null)
 {
-    var buf = new buffer();
-    buf.append((char*)self, sizeof(double)*len);
-    return new smart_pointer<double>.initialize_with_value(buf);
+    //char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, null);
+    char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name);
+    
+    size_t* ref_count = (size_t*)mem;
+
+    *ref_count = 0;
+    
+    size_t* size2 = (size_t*)(mem + sizeof(size_t));
+    
+    *size2 = size*count + sizeof(size_t) + sizeof(size_t);
+
+    return mem + sizeof(size_t) + sizeof(size_t);
 }
 
-static inline list<char>*% char[]::to_list(char* self, size_t len) 
+uniq void come_free_object(void* mem)
 {
-    return new list<char>.initialize_with_values(len, self);
+    if(mem == NULL) {
+        return;
+    }
+/*
+    if(gComeMallocLib) {
+        if(!is_valid_object(mem)) {
+            return ;
+        }
+    }
+*/
+    
+    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+    
+    come_free_mem_of_heap_pool((char*)ref_count);
 }
 
-static inline list<char*>*% char*[]::to_list(char** self, size_t len) 
+uniq void come_free(void* mem)
 {
-    return new list<char*>.initialize_with_values(len, self);
+    if(mem == NULL) {
+        return;
+    }
+/*
+    if(gComeMallocLib) {
+        if(!is_valid_object(mem)) {
+            return ;
+        }
+    }
+*/
+    
+    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+    
+    come_free_mem_of_heap_pool((char*)ref_count);
 }
 
-static inline list<short>*% short[]::to_list(short* self, size_t len) 
+uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_name=null)
 {
-    return new list<short>.initialize_with_values(len, self);
+    if(!block) {
+        return null;
+    }
+/*
+    if(gComeMallocLib) {
+        if(!is_valid_object(block)) {
+            return null;
+        }
+    }
+*/
+
+    char* mem = (char*)block - sizeof(size_t) - sizeof(size_t);
+    
+    size_t* size_p = (size_t*)(mem + sizeof(size_t));
+
+    size_t size = *size_p - sizeof(size_t) - sizeof(size_t);
+
+    //void* result = come_calloc(1, size, sname, sline);
+    void* result = come_calloc(1, size, sname, sline, class_name);
+
+    memcpy(result, block, size);
+    
+    return result;
 }
 
-static inline list<int>*% int[]::to_list(int* self, size_t len) 
+uniq void* come_increment_ref_count(void* mem)
 {
-    return new list<int>.initialize_with_values(len, self);
+    if(mem == NULL) {
+        return mem;
+    }
+/*
+    if(gComeMallocLib) {
+        if(!is_valid_object(mem)) {
+            return mem;
+        }
+    }
+*/
+    
+    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+    
+    (*ref_count)++;
+    
+    return mem;
 }
 
-static inline list<long>*% long[]::to_list(long* self, size_t len) 
+uniq void* come_print_ref_count(void* mem)
 {
-    return new list<long>.initialize_with_values(len, self);
+    if(mem == NULL) {
+        return mem;
+    }
+/*
+    if(gComeMallocLib) {
+        if(!is_valid_object(mem)) {
+            return mem;
+        }
+    }
+*/
+    
+    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+    
+    printf("ref_count %ld\n", *ref_count);
+    
+    return mem;
 }
 
-static inline list<float>*% float[]::to_list(float* self, size_t len) 
+uniq void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, bool force_delete_)
 {
-    return new list<float>.initialize_with_values(len, self);
+    if(mem == NULL) {
+        return NULL;
+    }
+    
+    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+    
+    if(!no_decrement) {
+        (*ref_count)--;
+    }
+    
+    size_t count = *ref_count;
+    if(!no_free && (count <= 0 || force_delete_)) {
+        if(protocol_obj && protocol_fun) {
+            void (*finalizer)(void*) = protocol_fun;
+            finalizer(protocol_obj);
+            
+            come_free_object(protocol_obj);
+        }
+        come_free_object(mem);
+        return NULL;
+    }
+    
+    return mem;
 }
 
-static inline list<double>*% double[]::to_list(double* self, size_t len) 
+uniq void* come_decrement_ref_count2(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, bool force_delete_, void* result_obj)
 {
-    return new list<double>.initialize_with_values(len, self);
+    if(result_obj) {
+        if(mem == result_obj) {
+            return mem;
+        }
+    }
+    if(mem == NULL) {
+        return NULL;
+    }
+    
+    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+    
+    if(!no_decrement) {
+        (*ref_count)--;
+    }
+    
+    size_t count = *ref_count;
+    if(!no_free && (count <= 0 || force_delete_)) {
+        if(protocol_obj && protocol_fun) {
+            void (*finalizer)(void*) = protocol_fun;
+            finalizer(protocol_obj);
+            
+            come_free_object(protocol_obj);
+        }
+        come_free_object(mem);
+        return NULL;
+    }
+    
+    return mem;
 }
 
-static inline vector<char>*% char[]::to_vector(char* self, size_t len) 
+uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, int force_delete_)
 {
-    return new vector<char>.initialize_with_values(len, self);
+    if(mem == NULL) {
+        return;
+    }
+    
+    if(call_finalizer_only) {
+        if(fun) {
+            if(protocol_obj && protocol_fun) {
+                void (*finalizer)(void*) = protocol_fun;
+                finalizer(protocol_obj);
+            }
+            void (*finalizer)(void*) = fun;
+            finalizer(mem);
+        }
+    }
+    else {
+        size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+        
+        if(!no_decrement) {
+            (*ref_count)--;
+        }
+        
+        size_t count = *ref_count;
+        if(!no_free && (count <= 0 || force_delete_)) {
+            if(mem) {
+                if(protocol_obj && protocol_fun) {
+                    void (*finalizer)(void*) = protocol_fun;
+                    finalizer(protocol_obj);
+                    come_free_object(protocol_obj);
+                }
+                if(fun) {
+                    void (*finalizer)(void*) = fun;
+                    finalizer(mem);
+                }
+                come_free_object(mem);
+            }
+        }
+    }
 }
 
-static inline vector<char*>*% char*[]::to_vector(char** self, size_t len) 
+uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, int force_delete_, void* result_obj)
 {
-    return new vector<char*>.initialize_with_values(len, self);
+    if(result_obj) {
+        if(mem == result_obj) {
+            return;
+        }
+    }
+    if(mem == NULL) {
+        return;
+    }
+    
+    if(call_finalizer_only) {
+        if(fun) {
+            if(protocol_obj && protocol_fun) {
+                void (*finalizer)(void*) = protocol_fun;
+                finalizer(protocol_obj);
+            }
+            void (*finalizer)(void*) = fun;
+            finalizer(mem);
+        }
+    }
+    else {
+        size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+        
+        if(!no_decrement) {
+            (*ref_count)--;
+        }
+        
+        size_t count = *ref_count;
+        if(!no_free && (count <= 0 || force_delete_)) {
+            if(mem) {
+                if(protocol_obj && protocol_fun) {
+                    void (*finalizer)(void*) = protocol_fun;
+                    finalizer(protocol_obj);
+                    come_free_object(protocol_obj);
+                }
+                if(fun) {
+                    void (*finalizer)(void*) = fun;
+                    finalizer(mem);
+                }
+                come_free_object(mem);
+            }
+        }
+    }
 }
 
-static inline vector<short>*% short[]::to_vector(short* self, size_t len) 
+uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, int no_decrement, int no_free, int force_delete_, void* result_obj)
 {
-    return new vector<short>.initialize_with_values(len, self);
+    if(result_obj) {
+        if(mem == result_obj) {
+            return;
+        }
+    }
+    if(mem == NULL) {
+        return;
+    }
+    
+    if(call_finalizer_only) {
+        if(fun) {
+            void (*finalizer)(void*) = fun;
+            finalizer(mem);
+        }
+    }
+    else {
+        size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+        
+        if(!no_decrement) {
+            (*ref_count)--;
+        }
+        
+        size_t count = *ref_count;
+        if(!no_free && (count <= 0 || force_delete_)) {
+            if(mem) {
+                if(fun) {
+                    void (*finalizer)(void*) = fun;
+                    finalizer(mem);
+                }
+                come_free_object(mem);
+            }
+        }
+    }
 }
 
-static inline vector<int>*% int[]::to_vector(int* self, size_t len) 
+uniq string __builtin_string(char* str)
 {
-    return new vector<int>.initialize_with_values(len, self);
+    if(str == null) {
+        return null;
+    }
+    int len = strlen(str) + 1;
+    
+    char*% result = new char[len];
+
+    strncpy(result, str, len);
+
+    return result;
 }
 
-static inline vector<long>*% long[]::to_vector(long* self, size_t len) 
+uniq bool come_is_contained_element(void** array, int len, void* element)
 {
-    return new vector<long>.initialize_with_values(len, self);
+    bool found = false;
+    for(int i=0; i<len; i++) {
+        if(array[i] == element) {
+            found = true;
+            break;
+        }
+    }
+    return found;
 }
 
-static inline vector<float>*% float[]::to_vector(float* self, size_t len) 
+//////////////////////////////
+/// base library(to_string)
+//////////////////////////////
+uniq string bool::to_string(bool self)
 {
-    return new vector<float>.initialize_with_values(len, self);
+    if(self) {
+        return string("true");
+    }
+    else {
+        return string("false");
+    }
 }
 
-static inline vector<double>*% double[]::to_vector(double* self, size_t len) 
+uniq string char::to_string(char self)
 {
-    return new vector<double>.initialize_with_values(len, self);
+    return xsprintf("%c", self);
 }
+
+uniq string short::to_string(short self)
+{
+    return xsprintf("%d", self);
+}
+
+uniq string int::to_string(int self)
+{
+    return xsprintf("%d", self);
+}
+
+uniq string long::to_string(long self)
+{
+    return xsprintf("%ld", self);
+}
+
+uniq string size_t::to_string(size_t self)
+{
+    return xsprintf("%ld", self);
+}
+
+uniq string float::to_string(float self)
+{
+    return xsprintf("%f", self);
+}
+
+uniq string double::to_string(double self)
+{
+    return xsprintf("%lf", self);
+}
+
+uniq string string::to_string(char* self)
+{
+    if(self == null) {
+        return string("");
+    }
+    return string(self);
+}
+
+uniq string char*::to_string(char* self)
+{
+    if(self == null) {
+        return string("");
+    }
+    return string(self);
+}
+
+//////////////////////////////
+// buffer
+//////////////////////////////
+uniq buffer*% buffer*::initialize(buffer*% self) 
+{
+    self.size = 128;
+    self.buf = new char[self.size];
+    self.buf[0] = '\0';
+    self.len = 0;
+
+    return self;
+}
+
+uniq void buffer*::finalize(buffer* self)
+{
+    if(self && self.buf) delete borrow self.buf;
+}
+uniq void buffer*::force_finalize(buffer* self)
+{
+    if(self && self.buf) delete borrow self.buf;
+}
+
+uniq buffer*% buffer*::clone(buffer* self)
+{
+    if(self == null) {
+        return null;
+    }
+    
+    var result = new buffer;
+    
+    result.size = self.size;
+    result.buf = new char[self.size];
+    result.len = self.len;
+    memcpy(result.buf, self.buf, self.len);
+    
+    return result;
+}
+
+uniq int buffer*::length(buffer* self) 
+{
+    if(self == null) {
+        return 0;
+    }
+    return self.len;
+}
+
+uniq void buffer*::reset(buffer* self)
+{
+    if(self == null) {
+        return;
+    }
+    self.buf[0] = '\0';
+    self.len = 0;
+}
+
+uniq void buffer*::trim(buffer* self, int len)
+{
+    if(self == null) {
+        return;
+    }
+    self.len -= len;
+    self.buf[self.len] = '\0';
+}
+
+uniq buffer* buffer*::append(buffer* self, char* mem, size_t size)
+{
+    if(self == null || mem == null) {
+        return self;
+    }
+    if(self.len + size + 1 + 1 >= self.size) {
+        char*% old_buf = new char[self.size];
+        memcpy(old_buf, self.buf, self.size);
+        int old_len = self.len;
+        int new_size = (self.size + size + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    memcpy(self.buf + self.len, mem, size);
+    self.len += size;
+    self.buf[self.len] = '\0';
+    
+    return self;
+}
+
+uniq buffer* buffer*::append_char(buffer* self, char c)
+{
+    if(self == null) {
+        return null;
+    }
+    if(self.len + 1 + 1 + 1 >= self.size) {
+        char*% old_buf = clone self.buf;
+        int old_len = self.len;
+        
+        int new_size = (self.size + 10 + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    self.buf[self.len] = c;
+    self.len++;
+
+    self.buf[self.len] = '\0';
+    
+    return self;
+}
+
+uniq buffer* buffer*::append_str(buffer* self, char* mem)
+{
+    if(self == null || mem == null) {
+        return self;
+    }
+    
+    int size = strlen(mem);
+    if(self.len + size + 1 + 1 >= self.size) {
+        char*% old_buf = new char[self.size];
+        memcpy(old_buf, self.buf, self.size);
+        int old_len = self.len;
+        int new_size = (self.size + size + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    memcpy(self.buf + self.len, mem, size);
+    self.len += size;
+    self.buf[self.len] = '\0';
+    
+    return self;
+}
+
+uniq buffer* buffer*::append_nullterminated_str(buffer* self, char* mem)
+{
+    if(self == null || mem == null) {
+        return self;
+    }
+    int size = strlen(mem) + 1;
+    if(self.len + size + 1 + 1 + 1 >= self.size) {
+        char*% old_buf = new char[self.size];
+        memcpy(old_buf, self.buf, self.size);
+        int old_len = self.len;
+        int new_size = (self.size + size + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    memcpy(self.buf + self.len, mem, size);
+    self.len += size;
+    self.buf[self.len] = '\0';
+    self.len++;
+    
+    return self;
+}
+
+uniq buffer* buffer*::append_int(buffer* self, int value) 
+{
+    if(self == null) {
+        return null;
+    }
+    int* mem = &value;
+    int size = sizeof(int);
+    
+    if(self.len + size + 1 + 1 >= self.size) {
+        char*% old_buf = new char[self.size];
+        memcpy(old_buf, self.buf, self.size);
+        int old_len = self.len;
+        int new_size = (self.size + size + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    memcpy(self.buf + self.len, mem, size);
+    self.len += size;
+    self.buf[self.len] = '\0';
+    
+    return self;
+}
+
+uniq buffer* buffer*::append_long(buffer* self, long value) 
+{
+    long* mem = &value;
+    int size = sizeof(long);
+    
+    if(self.len + size + 1 + 1 >= self.size) {
+        char*% old_buf = new char[self.size];
+        memcpy(old_buf, self.buf, self.size);
+        int old_len = self.len;
+        int new_size = (self.size + size + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    memcpy(self.buf + self.len, mem, size);
+    self.len += size;
+    self.buf[self.len] = '\0';
+    
+    return self;
+}
+
+uniq buffer* buffer*::append_short(buffer* self, short value) 
+{
+    if(self == null) {
+        return null;
+    }
+    
+    short* mem = &value;
+    int size = sizeof(short);
+    
+    if(self.len + size + 1 + 1 >= self.size) {
+        char*% old_buf = new char[self.size];
+        memcpy(old_buf, self.buf, self.size);
+        int old_len = self.len;
+        int new_size = (self.size + size + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    memcpy(self.buf + self.len, mem, size);
+    self.len += size;
+    self.buf[self.len] = '\0';
+    
+    return self;
+}
+
+uniq buffer* buffer*::alignment(buffer* self) 
+{
+    if(self == null) {
+        return null;
+    }
+    
+    int len = self.len;
+    len = (len + 3) & ~3;
+    
+    if(len >= self.size) {
+        int new_size = (self.size + 1 + 1) * 2;
+        self.buf = new char[new_size];
+        self.size = new_size;
+    }
+
+    for(int i=self.len; i<len; i++) {
+        self.buf[i] = '\0';
+    }
+    
+    self.len = len;
+    
+    return self;
+}
+
+uniq int buffer*::compare(buffer* left, buffer* right) 
+{
+    if(left == null && right == null) {
+        return 0;
+    }
+    else if(left == null) {
+        return -1;
+    }
+    else if(right == null) {
+        return 1;
+    }
+    
+    return strcmp(left.buf, right.buf);
+}
+
+uniq buffer*% string::to_buffer(char* self) 
+{
+    var result = new buffer.initialize();
+    
+    if(self == null) {
+        return result;
+    }
+
+    result.append_str(self);
+
+    return result;
+}
+
+uniq buffer*% char*::to_buffer(char* self) 
+{
+    var result = new buffer.initialize();
+    
+    if(self == null) {
+        return result;
+    }
+
+    result.append_str(self);
+
+    return result;
+}
+
+uniq string buffer*::to_string(buffer* self)
+{
+    if(self == null) {
+        return string("");
+    }
+    
+    return string(self.buf);
+}
+
 
 //////////////////////////////
 /// base library(equals)
+//////////////////////////////
+uniq bool bool::equals(bool self, bool right) 
+{
+    return self == right;
+}
+
+uniq bool char::equals(char self, char right) 
+{
+    return self == right;
+}
+
+uniq bool short::equals(short self, short right) 
+{
+    return self == right;
+}
+
+uniq bool int::equals(int self, int right) 
+{
+    return self == right;
+}
+
+uniq bool long::equals(long self, long right) 
+{
+    return self == right;
+}
+
+uniq bool size_t::equals(size_t self, size_t right) 
+{
+    return self == right;
+}
+
+uniq bool float::equals(float self, float right) 
+{
+    return self == right;
+}
+
+uniq bool double::equals(double self, double right) 
+{
+    return self == right;
+}
+
+uniq bool bool::operator_equals(bool self, bool right)
+{
+    return self == right;
+}
+
+uniq bool char::operator_equals(char self, char right)
+{
+    return self == right;
+}
+
+uniq bool short::operator_equals(short self, short right)
+{
+    return self == right;
+}
+
+uniq bool int::operator_equals(int self, int right)
+{
+    return self == right;
+}
+
+uniq bool long::operator_equals(long self, long right)
+{
+    return self == right;
+}
+
+uniq bool bool::operator_not_equals(bool self, bool right)
+{
+    return !(self == right);
+}
+
+uniq bool char::operator_not_equals(char self, char right)
+{
+    return !(self == right);
+}
+
+uniq bool short::operator_not_equals(short self, short right)
+{
+    return !(self == right);
+}
+
+uniq bool int::operator_not_equals(int self, int right)
+{
+    return !(self == right);
+}
+
+uniq bool long::operator_not_equals(long self, long right)
+{
+    return !(self == right);
+}
+
+uniq bool string::equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return true;
+    }
+    else if(self == null) {
+        return false;
+    }
+    else if(right == null) {
+        return false;
+    }
+    
+    return strcmp(self, right) == 0;
+}
+
+uniq bool char*::equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return true;
+    }
+    else if(self == null) {
+        return false;
+    }
+    else if(right == null) {
+        return false;
+    }
+    
+    return strcmp(self, right) == 0;
+}
+
+uniq bool void*::equals(void* self, void* right) 
+{
+    return self == right;
+}
+
+uniq bool string::operator_equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return true;
+    }
+    else if(self == null) {
+        return false;
+    }
+    else if(right == null) {
+        return false;
+    }
+    
+    return strcmp(self, right) == 0;
+}
+
+uniq bool char*::operator_equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return true;
+    }
+    else if(self == null) {
+        return false;
+    }
+    else if(right == null) {
+        return false;
+    }
+    
+    return strcmp(self, right) == 0;
+}
+
+uniq bool void*::operator_equals(char* self, char* right) 
+{
+    return self == right;
+}
+
+uniq bool void*::operator_not_equals(char* self, char* right) 
+{
+    return !self.operator_equals(right);
+}
+
+uniq bool string::operator_not_equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return false;
+    }
+    else if(self == null) {
+        return true;
+    }
+    else if(right == null) {
+        return true;
+    }
+    
+    return strcmp(self, right) != 0;
+}
+
+uniq bool char*::operator_not_equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return false;
+    }
+    else if(self == null) {
+        return true;
+    }
+    else if(right == null) {
+        return true;
+    }
+    
+    return strcmp(self, right) != 0;
+}
+
+
+uniq string char*::operator_add(char* self, char* right) 
+{
+    if(self == null || right == null) {
+        return string("");
+    }
+    int len = strlen(self) + strlen(right);
+   
+    char*% result = new char[len+1];
+    
+    strncpy(result, self, len+1);
+    strncat(result, right, len+1);
+    
+    return result;
+}
+
+uniq string string::operator_add(char* self, char* right) 
+{
+    if(self == null || right == null) {
+        return string("");
+    }
+    int len = strlen(self) + strlen(right);
+   
+    char*% result = new char[len+1];
+    
+    strncpy(result, self, len+1);
+    strncat(result, right, len+1);
+    
+    return result;
+}
+
+uniq string char*::operator_mult(char* self, int right) 
+{
+    if(self == null) {
+        return string("");
+    }
+    var buf = new buffer();
+    
+    for(int i=0; i<right; i++) {
+        buf.append_str(self);
+    }
+    
+    return buf.to_string();
+}
+
+uniq string string::operator_mult(char* self, int right) 
+{
+    if(self == null) {
+        return string("");
+    }
+    var buf = new buffer();
+    
+    for(int i=0; i<right; i++) {
+        buf.append_str(self);
+    }
+    
+    return buf.to_string();
+}
+
+//////////////////////////////
+/// base library(get_hash key)
+//////////////////////////////
+uniq unsigned int bool::get_hash_key(bool value)
+{
+    return (((int)value).get_hash_key());
+}
+
+uniq unsigned int char::get_hash_key(char value)
+{
+    return value;
+}
+
+uniq unsigned int short::get_hash_key(short int value)
+{
+    return value;
+}
+
+uniq unsigned int int::get_hash_key(int value)
+{
+    return value;
+}
+
+uniq unsigned int long::get_hash_key(long value)
+{
+    return value;
+}
+
+uniq unsigned int size_t::get_hash_key(size_t value)
+{
+    return value;
+}
+
+uniq unsigned int float::get_hash_key(float value)
+{
+    return (unsigned int)value;
+}
+
+uniq unsigned int double::get_hash_key(double value)
+{
+    return (unsigned int)value;
+}
+
+uniq unsigned int string::get_hash_key(char* value)
+{
+    if(value == null) {
+        return 0;
+    }
+    int result = 0;
+    char* p = value;
+    while(*p) {
+        result += (*p);
+        p++;
+    }
+    return result;
+}
+
+uniq unsigned int char*::get_hash_key(char* value)
+{
+    if(value == null) {
+        return 0;
+    }
+    int result = 0;
+    char* p = value;
+    while(*p) {
+        result += (*p);
+        p++;
+    }
+    return result;
+}
+
+//////////////////////////////
+/// base library(clone)
+//////////////////////////////
+uniq bool bool::clone(bool self)
+{
+    return self;
+}
+
+uniq char char::clone(char self)
+{
+    return self;
+}
+
+uniq short int short::clone(short self)
+{
+    return self;
+}
+
+uniq int int::clone(int self)
+{
+    return self;
+}
+
+uniq long int long::clone(long self)
+{
+    return self;
+}
+
+uniq size_t size_t::clone(size_t self)
+{
+    return self;
+}
+
+uniq double double::clone(double self)
+{
+    return self;
+}
+
+uniq float float::clone(float self)
+{
+    return self;
+}
+
+uniq string char*::clone(char* self)
+{
+    if(self == null) { return null; }
+    return string(self);
+}
+
+uniq string string::clone(char* self)
+{
+    if(self == null) { return null; }
+    
+    return string(self);
+}
+
+//////////////////////////////
+/// base library(character code)
+//////////////////////////////
+uniq bool xiswalpha(wchar_t c)
+{
+    bool result = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    return result;
+}
+
+uniq bool xiswblank(wchar_t c)
+{
+    return c == ' ' || c == '\t';
+}
+
+uniq bool xiswdigit(wchar_t c)
+{
+    return (c >= '0' && c <= '9');
+}
+
+uniq bool xiswalnum(wchar_t c)
+{
+    return xiswalpha(c) || xiswdigit(c);
+}
+
+uniq bool xisalpha(char c)
+{
+    bool result = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    return result;
+}
+
+uniq bool xisblank(char c)
+{
+    return c == ' ' || c == '\t';
+}
+
+uniq bool xisdigit(char c)
+{
+    return (c >= '0' && c <= '9');
+}
+
+uniq bool xisalnum(char c)
+{
+    return xisalpha(c) || xisdigit(c);
+}
+
+uniq bool xisascii(char c)
+{
+    bool result = (c >= ' ' && c <= '~');
+    return result;
+}
+
+uniq bool xiswascii(wchar_t c)
+{
+    bool result = (c >= ' ' && c <= '~');
+    return result;
+}
+
+//////////////////////////////
+/// base library(simple string library)
+//////////////////////////////
+uniq int string::length(char* str)
+{
+    if(str == null) {
+        return 0;
+    }
+    return strlen(str);
+}
+
+uniq int char*::length(char* str) {
+    if(str == null) {
+        return 0;
+    }
+    return strlen(str);
+}
+
+uniq string string::reverse(char* str) 
+{
+    if(str == null) {
+        return string("");
+    }
+    int len = strlen(str);
+    char*% result = new char[len + 1];
+
+    for(int i=0; i<len; i++) {
+        result[i] = str[len-i-1];
+    }
+
+    result[len] = '\0';
+
+    return result;
+}
+
+uniq string char*::reverse(char* str) 
+{
+    if(str == null) {
+        return string("");
+    }
+    int len = strlen(str);
+    char*% result = new char[len + 1];
+
+    for(int i=0; i<len; i++) {
+        result[i] = str[len-i-1];
+    }
+
+    result[len] = '\0';
+
+    return result;
+}
+uniq string string::operator_load_range_element(char* str, int head, int tail)
+{
+    if(str == null) {
+        return string("");
+    }
+
+    int len = strlen(str);
+
+    if(head < 0) {
+        head += len;
+    }
+    if(tail < 0) {
+        tail += len + 1;
+    }
+
+    if(head > tail) {
+        return str.substring(tail, head).reverse();
+    }
+
+    if(head < 0) {
+        head = 0;
+    }
+
+    if(tail >= len) {
+        tail = len;
+    }
+
+    if(head == tail) {
+        return string("");
+    }
+
+    if(tail-head+1 < 1) {
+        return string("");
+    }
+
+    string result = new char[tail-head+1];
+
+    memcpy(result, str + head, tail-head);
+    result[tail-head] = '\0';
+
+    return result;
+}
+
+uniq string char*::operator_load_range_element(char* str, int head, int tail)
+{
+    if(str == null) {
+        return string("");
+    }
+
+    int len = strlen(str);
+
+    if(head < 0) {
+        head += len;
+    }
+    if(tail < 0) {
+        tail += len + 1;
+    }
+
+    if(head > tail) {
+        return str.substring(tail, head).reverse();
+    }
+
+    if(head < 0) {
+        head = 0;
+    }
+
+    if(tail >= len) {
+        tail = len;
+    }
+
+    if(head == tail) {
+        return string("");
+    }
+
+    if(tail-head+1 < 1) {
+        return string("");
+    }
+
+    string result = new char[tail-head+1];
+
+    memcpy(result, str + head, tail-head);
+    result[tail-head] = '\0';
+
+    return result;
+}
+
+uniq string char*::substring(char* str, int head, int tail)
+{
+    if(str == null) {
+        return string("");
+    }
+
+    int len = strlen(str);
+
+    if(head < 0) {
+        head += len;
+    }
+    if(tail < 0) {
+        tail += len + 1;
+    }
+
+    if(head > tail) {
+        return str.substring(tail, head).reverse();
+    }
+
+    if(head < 0) {
+        head = 0;
+    }
+
+    if(tail >= len) {
+        tail = len;
+    }
+
+    if(head == tail) {
+        return string("");
+    }
+
+    if(tail-head+1 < 1) {
+        return string("");
+    }
+
+    string result = new char[tail-head+1];
+
+    memcpy(result, str + head, tail-head);
+    result[tail-head] = '\0';
+
+    return result;
+}
+
+uniq string string::substring(char* str, int head, int tail)
+{
+    if(str == null) {
+        return string("");
+    }
+
+    int len = strlen(str);
+
+    if(head < 0) {
+        head += len;
+    }
+    if(tail < 0) {
+        tail += len + 1;
+    }
+
+    if(head > tail) {
+        return str.substring(tail, head).reverse();
+    }
+
+    if(head < 0) {
+        head = 0;
+    }
+
+    if(tail >= len) {
+        tail = len;
+    }
+
+    if(head == tail) {
+        return string("");
+    }
+
+    if(tail-head+1 < 1) {
+        return string("");
+    }
+
+    string result = new char[tail-head+1];
+
+    memcpy(result, str + head, tail-head);
+    result[tail-head] = '\0';
+
+    return result;
+}
+
+uniq string xsprintf(char* msg, ...)
+{
+    if(msg == null) {
+        return string("");
+    }
+    va_list args;
+    va_start(args, msg);
+    char* result;
+    int len = vasprintf(&result, msg, args);
+    va_end(args);
+    
+    if(len < 0) {
+        return string("");
+    }
+    
+    string result2 = string(result);
+    
+    free(result);
+    
+    return result2;
+}
+
+uniq string char*::delete(char* str, int head, int tail) 
+{
+    if(str == null) {
+        return string("");
+    }
+    
+    int len = strlen(str);
+
+    if(strcmp(str, "") == 0) {
+        return string(str);
+    }
+    
+    if(head < 0) {
+       head += len;
+    }
+    
+    if(tail < 0) {
+       tail += len + 1;
+    }
+
+    if(head < 0) {
+        head = 0;
+    }
+
+    if(tail < 0) {
+        return string(str);
+    }
+
+    if(tail >= len) {
+        tail = len;
+    }
+    
+    string sub_str = str.substring(tail, -1);
+
+    memcpy(str + head, sub_str, sub_str.length()+1);
+
+    return string(str);
+}
+
+uniq string string::delete(char* str, int head, int tail) 
+{
+    if(str == null) {
+        return string("");
+    }
+    
+    int len = strlen(str);
+
+    if(strcmp(str, "") == 0) {
+        return string(str);
+    }
+    
+    if(head < 0) {
+       head += len;
+    }
+    
+    if(tail < 0) {
+       tail += len + 1;
+    }
+
+    if(head < 0) {
+        head = 0;
+    }
+
+    if(tail < 0) {
+        return string(str);
+    }
+
+    if(tail >= len) {
+        tail = len;
+    }
+    
+    string sub_str = str.substring(tail, -1);
+
+    memcpy(str + head, sub_str, sub_str.length()+1);
+
+    return string(str);
+}
+
+uniq list<string>*% char*::split_char(char* self, char c) 
+{
+    if(self == null) {
+        return new list<string>();
+    }
+    
+    auto result = new list<string>.initialize();
+
+    auto str = new buffer.initialize();
+
+    for(int i=0; i<self.length(); i++) {
+        if(self[i] == c) {
+            result.push_back(string(str.buf));
+            str.reset();
+        }
+        else {
+            str.append_char(self[i]);
+        }
+    }
+    if(str.length() != 0) {
+        result.push_back(string(str.buf));
+    }
+
+    return result;
+}
+
+uniq list<string>*% string::split_char(char* self, char c) 
+{
+    if(self == null) {
+        return new list<string>();
+    }
+    
+    auto result = new list<string>.initialize();
+
+    auto str = new buffer.initialize();
+
+    for(int i=0; i<self.length(); i++) {
+        if(self[i] == c) {
+            result.push_back(string(str.buf));
+            str.reset();
+        }
+        else {
+            str.append_char(self[i]);
+        }
+    }
+    if(str.length() != 0) {
+        result.push_back(string(str.buf));
+    }
+
+    return result;
+}
+
+//////////////////////////////
+/// base library(path library)
+//////////////////////////////
+uniq string xbasename(char* path)
+{
+    if(path == null) {
+        return string("");
+    }
+    char* p = path + strlen(path);
+    
+    while(p >= path) {
+        if(*p == '/') {
+            break;
+        }
+        else {
+            p--;
+        }
+    }
+    
+    if(p < path) {
+        return string(path);
+    }
+    else {
+        return string(p+1);  
+    }
+    
+    return string("");
+}
+
+uniq string xnoextname(char* path)
+{
+    if(path == null) {
+        return string("");
+    }
+    string path2 = xbasename(path);
+    
+    char* p = path2 + strlen(path2);
+    
+    while(p >= path2) {
+        if(*p == '.') {
+            break;
+        }
+        else {
+            p--;
+        }
+    }
+    
+    if(p < path2) {
+        return string(path2);
+    }
+    else {
+        return path2.substring(0, p - path2);
+    }
+    
+    return string("");
+}
+
+uniq string xextname(char* path)
+{
+    if(path == null) {
+        return string("");
+    }
+    char* p = path + strlen(path);
+    
+    while(p >= path) {
+        if(*p == '.') {
+            break;
+        }
+        else {
+            p--;
+        }
+    }
+    
+    if(p < path) {
+        return string(path);
+    }
+    else {
+        return string(p+1);  
+    }
+    
+    return string("");
+}
+
+
+
+//////////////////////////////
+/// base library(compare)
+//////////////////////////////
+uniq int bool::compare(bool left, bool right)
+{
+    if(!left && right) {
+        return -1;
+    }
+    else if(left && right) {
+        return 0;
+    }
+    else if(!left && !right) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+    
+    return 0;
+}
+
+uniq int char::compare(char left, char right) 
+{
+    if(left < right) {
+        return -1;
+    }
+    else if(left > right) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq int short::compare(short left, short right) 
+{
+    if(left < right) {
+        return -1;
+    }
+    else if(left > right) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq int int::compare(int left, int right) 
+{
+    if(left < right) {
+        return -1;
+    }
+    else if(left > right) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq int long::compare(long left, long right) 
+{
+    if(left < right) {
+        return -1;
+    }
+    else if(left > right) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq int size_t::compare(size_t left, size_t right) 
+{
+    if(left < right) {
+        return -1;
+    }
+    else if(left > right) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq int float::compare(float left, float right) 
+{
+    if(left < right) {
+        return -1;
+    }
+    else if(left > right) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq int double::compare(double left, double right) 
+{
+    if(left < right) {
+        return -1;
+    }
+    else if(left > right) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq int string::compare(char* left, char* right) 
+{
+    if(left == null && right == null) {
+        return 0;
+    }
+    else if(left == null) {
+        return -1;
+    }
+    else if(right == null) {
+        return 1;
+    }
+    
+    return strcmp(left,right);
+}
+
+uniq int char*::compare(char* left, char* right) 
+{
+    if(left == null && right == null) {
+        return 0;
+    }
+    else if(left == null) {
+        return -1;
+    }
+    else if(right == null) {
+        return 1;
+    }
+    
+    return strcmp(left,right);
+}
+
+//////////////////////////////
+// base library(IO-FILE)
+//////////////////////////////
+uniq string FILE*::read(FILE* f)
+{
+    if(f == null) {
+        return string("");
+    }
+    buffer*% buf = new buffer.initialize();
+    
+    while(1) {
+        char buf2[BUFSIZ];
+        
+        int size = fread(buf2, 1, BUFSIZ, f);
+        
+        buf.append(buf2, size);
+
+        if(size < BUFSIZ) {
+            break;
+        }
+    }
+    
+    return buf.to_string();
+}
+
+uniq int FILE*::write(FILE* f, char* str)
+{
+    if(f == null || str == null) {
+        return -1;
+    }
+    
+    return fwrite(str, strlen(str), 1, f);
+}
+
+uniq int FILE*::fclose(FILE* f) 
+{
+    if(f == null) {
+        return -1;
+    }
+    
+    int result = fclose(f);
+    
+    if(result < 0) {
+        return result;
+    }
+    
+    return result;
+}
+
+uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
+{
+    if(f == null || msg == null) {
+        return f;
+    }
+    char msg2[1024*2*2*2];
+
+    va_list args;
+    va_start(args, msg);
+    vsnprintf(msg2, 1024*2*2*2, msg, args);
+    va_end(args);
+
+    int result = fprintf(f, "%s", msg2);
+    
+    if(result < 0) {
+        return f;
+    }
+    
+    return f;
+}
+
+uniq int string::write(char* self, char* file_name, bool append=false) 
+{
+    if(self == null || file_name == null) {
+        return -1;
+    }
+    
+    FILE* f;
+    if(append) {
+       f = fopen(file_name, "a");
+    }
+    else {
+       f = fopen(file_name, "w");
+    }
+    
+    if(f == NULL) {
+        return -1;
+    }
+    
+    int result = fwrite(self, strlen(self), 1, f);
+    
+    if(result < 0) {
+        return result;
+    }
+    
+    int result2 = fclose(f)
+    
+    if(result2 < 0) {
+        return result2;
+    }
+    
+    return result;
+}
+
+uniq int char*::write(char* self, char* file_name, bool append=false) 
+{
+    if(self == null || file_name == null) {
+        return -1;
+    }
+    
+    FILE* f;
+    if(append) {
+       f = fopen(file_name, "a");
+    }
+    else {
+       f = fopen(file_name, "w");
+    }
+    
+    if(f == NULL) {
+        return -1;
+    }
+    
+    int result = fwrite(self, strlen(self), 1, f);
+    
+    if(result < 0) {
+        return result;
+    }
+    
+    int result2 = fclose(f)
+    
+    if(result2 < 0) {
+        return result2;
+    }
+    
+    return result;
+}
+
+uniq string string::read(char* file_name) 
+{
+    if(file_name == null) {
+        return string("");
+    }
+    
+    FILE* f = fopen(file_name, "r");
+    
+    if(f == NULL) {
+        return string("");
+    }
+    
+    buffer*% buf = new buffer.initialize();
+    
+    while(1) {
+        char buf2[BUFSIZ];
+        
+        int size = fread(buf2, 1, BUFSIZ, f);
+        
+        buf.append(buf2, size);
+
+        if(size < BUFSIZ) {
+            break;
+        }
+    }
+    
+    string result = buf.to_string();
+    
+    int result2 = fclose(f)
+    
+    if(result2 < 0) {
+        return string("");
+    }
+    
+    return result;
+}
+
+uniq string char*::read(char* file_name) 
+{
+    if(file_name == null) {
+        return string("");
+    }
+    
+    FILE* f = fopen(file_name, "r");
+    
+    if(f == NULL) {
+        return string("");
+    }
+    
+    buffer*% buf = new buffer.initialize();
+    
+    while(1) {
+        char buf2[BUFSIZ];
+        
+        int size = fread(buf2, 1, BUFSIZ, f);
+        
+        buf.append(buf2, size);
+
+        if(size < BUFSIZ) {
+            break;
+        }
+    }
+    
+    string result = buf.to_string();
+    
+    int result2 = fclose(f)
+    
+    if(result2 < 0) {
+        return string("");
+    }
+    
+    return result;
+}
+
+uniq list<string>*% FILE*::readlines(FILE* f)
+{
+    list<string>*% result = new list<string>.initialize();
+    
+    if(f == null) {
+        return result;
+    }
+    
+    while(1) {
+        char buf[BUFSIZ];
+        
+        if(fgets(buf, BUFSIZ, f) == NULL) {
+            break;
+        }
+        
+        result.push_back(string(buf));
+    }
+    
+    return result;
+}
+
+uniq int fopen_block(const char* path, const char* mode, void* parent, void (*block)(void* parent, FILE* f))
+{
+    if(path == null || mode == null) {
+        return -1;
+    }
+    FILE* f = fopen(path, mode);
+    
+    if(f) {
+        block(parent, f);
+        
+        fclose(f);
+        
+        return 0;
+    }
+    
+    return -1;
+}
+
+//////////////////////////////
+// base library(STDOUT, STDIN)
+//////////////////////////////
+uniq string char*::puts(char* self)
+{
+    if(self == null) {
+        return string("");
+    }
+    puts(self);
+    
+    return string(self);
+}
+
+uniq string char*::print(char* self)
+{
+    if(self == null) {
+        return string("");
+    }
+    printf("%s", self);
+    
+    return string(self);
+}
+
+
+uniq string string::printf(char* self, ...)
+{
+    if(self == null) {
+        return string("");
+    }
+    char* msg2;
+
+    va_list args;
+    va_start(args, self);
+    vasprintf(&msg2,self,args);
+    va_end(args);
+    
+    printf("%s", msg2);
+
+    free(msg2);
+    
+    return string(self);
+}
+
+uniq string char*::printf(char* self, ...)
+{
+    if(self == null) {
+        return string("");
+    }
+    char* msg2;
+
+    va_list args;
+    va_start(args, self);
+    vasprintf(&msg2,self,args);
+    va_end(args);
+    
+    printf("%s", msg2);
+
+    free(msg2);
+    
+    return string(self);
+}
+
+uniq int int::printf(int self, char* msg)
+{
+    printf(msg, self);
+    
+    return self;
+}
+
+uniq string string::puts(char* self) 
+{
+    if(self == null) {
+        return string("");
+    }
+    puts(self);
+    
+    return string(self);
+}
+
+//////////////////////////////
+/// loop
+//////////////////////////////
+uniq void int::times(int self, void* parent, void (*block)(void* parent, int it))
+{
+    for(int i = 0; i < self; i++) {
+        block(parent, i);
+    }
+}
+
+#undef assert
+
+uniq record int assert(int exp) version 2
+{
+    if(exp) {
+    }
+    else {
+        puts("assert failure");
+        stackframe();
+        exit(2);
+    }
+}
+
+
+//////////////////////////////
+// integer
 //////////////////////////////
 struct integer
 {
@@ -2947,49 +5458,398 @@ struct floating
     double value;
 };
 
-bool bool::equals(bool self, bool right);
-bool char::equals(char self, char right);
-bool int::equals(int self, int right);
-bool short::equals(short self, short right);
-bool long::equals(long self, long right);
-bool size_t::equals(long self, size_t right);
-bool float::equals(float self, float right);
-bool double::equals(double self, double right);
-bool char*::equals(char* self, char* right);
-bool string::equals(char* self, char* right);
-bool void*::equals(void* self, void* right);
+uniq integer*% integer*::initialize(integer*% self, long value)
+{
+    self.value = value;
+    
+    return self;
+}
 
-bool bool::operator_equals(bool self, bool right);
-bool char::operator_equals(char self, char right);
-bool short::operator_equals(short self, short right);
-bool int::operator_equals(int self, int right);
-bool long::operator_equals(long self, long right);
+uniq int integer*::to_int(integer* self)
+{
+    return self.value;
+}
 
-bool bool::operator_not_equals(bool self, bool right);
-bool char::operator_not_equals(char self, char right);
-bool short::operator_not_equals(short self, short right);
-bool int::operator_not_equals(int self, int right);
-bool long::operator_not_equals(long self, long right);
+uniq integer*% bool::to_integer(long self)
+{
+    return new integer(self);
+}
 
-bool string::operator_equals(char* self, char* right);
-bool char*::operator_equals(char* self, char* right);
-bool void*::operator_equals(void* self, void* right);
+uniq integer*% char::to_integer(long self)
+{
+    return new integer(self);
+}
 
-bool string::operator_not_equals(char* self, char* right);
-bool char*::operator_not_equals(char* self, char* right);
-bool void*::operator_not_equals(void* self, void* right);
+uniq integer*% short::to_integer(long self)
+{
+    return new integer(self);
+}
 
-string char*::operator_add(char* self, char* right);
-string string::operator_add(char* self, char* right);
-string char*::operator_mult(char* self, int right);
-string string::operator_mult(char* self, int right);
+uniq integer*% int::to_integer(long self)
+{
+    return new integer(self);
+}
 
-static inline size_t char[]::length(char* self, size_t len) 
+uniq integer*% long::to_integer(long self)
+{
+    return new integer(self);
+}
+
+uniq int integer::compare(integer* left, integer* right)
+{
+    if(left.value < right.value) {
+        return -1;
+    }
+    else if(left.value > right.value) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+
+uniq bool integer::equals(integer* self, integer* right)
+{
+    return self.value == right.value;
+}
+
+uniq bool integer::operator_equals(integer* self, integer* right)
+{
+    return self.value == right.value;
+}
+
+uniq bool integer::operator_not_equals(integer* self, integer* right)
+{
+    return !self.operator_equals(right);
+}
+
+uniq int integer::operator_add(integer* left, integer* right)
+{
+    return left.value + right.value;
+}
+
+uniq int integer::operator_sub(integer* left, integer* right)
+{
+    return left.value - right.value;
+}
+
+uniq int integer::operator_mult(integer* left, integer* right)
+{
+    return left.value * right.value;
+}
+
+uniq int integer::operator_div(integer* left, integer* right)
+{
+    return left.value / right.value;
+}
+
+uniq int integer::operator_mod(integer* left, integer* right)
+{
+    return left.value % right.value;
+}
+
+uniq int integer::operator_lshift(integer* left, integer* right)
+{
+    return left.value << right.value;
+}
+
+uniq int integer::operator_rshift(integer* left, integer* right)
+{
+    return left.value >> right.value;
+}
+
+uniq int integer::operator_gteq(integer* left, integer* right)
+{
+    return left.value >= right.value;
+}
+
+uniq int integer::operator_lteq(integer* left, integer* right)
+{
+    return left.value <= right.value;
+}
+
+uniq int integer::operator_lt(integer* left, integer* right)
+{
+    return left.value < right.value;
+}
+
+uniq int integer::operator_gt(integer* left, integer* right)
+{
+    return left.value > right.value;
+}
+
+uniq int integer::operator_and(integer* left, integer* right)
+{
+    return left.value & right.value;
+}
+
+uniq int integer::operator_xor(integer* left, integer* right)
+{
+    return left.value ^ right.value;
+}
+
+uniq int integer::operator_or(integer* left, integer* right)
+{
+    return left.value | right.value;
+}
+
+uniq string integer::to_string(integer* self)
+{
+    return self.value.to_string();
+}
+
+//////////////////////////////
+// floating
+//////////////////////////////
+uniq floating*% floating*::initialize(floating*% self, double value)
+{
+    self.value = value;
+    
+    return self;
+}
+
+uniq double floating*::to_double(floating* self)
+{
+    return self.value;
+}
+
+
+uniq int floating::compare(floating* left, floating* right)
+{
+    if(left.value < right.value) {
+        return -1;
+    }
+    else if(left.value > right.value) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+    
+    return 0;
+}
+uniq floating*% float::to_floating(float self)
+{
+    return new floating(self);
+}
+
+uniq floating*% double::to_floating(double self)
+{
+    return new floating(self);
+}
+
+uniq bool floating::equals(floating* self, floating* right)
+{
+    return self.value == right.value;
+}
+
+uniq bool floating::operator_equals(floating* self, floating* right)
+{
+    return self.value == right.value;
+}
+
+uniq bool floating::operator_not_equals(floating* self, floating* right)
+{
+    return !self.operator_equals(right);
+}
+
+uniq int floating::operator_add(floating* left, floating* right)
+{
+    return left.value + right.value;
+}
+
+uniq int floating::operator_sub(floating* left, floating* right)
+{
+    return left.value - right.value;
+}
+
+uniq int floating::operator_mult(floating* left, floating* right)
+{
+    return left.value * right.value;
+}
+
+uniq int floating::operator_div(floating* left, floating* right)
+{
+    return left.value / right.value;
+}
+
+uniq int floating::operator_gteq(floating* left, floating* right)
+{
+    return left.value >= right.value;
+}
+
+uniq int floating::operator_lteq(floating* left, floating* right)
+{
+    return left.value <= right.value;
+}
+
+uniq int floating::operator_lt(floating* left, floating* right)
+{
+    return left.value < right.value;
+}
+
+uniq int floating::operator_gt(floating* left, floating* right)
+{
+    return left.value > right.value;
+}
+
+uniq string floating::to_string(floating* self)
+{
+    return self.value.to_string();
+}
+
+
+record uniq bool die(char* msg)
+{
+    perror(msg);
+    stackframe();
+    exit(4);
+    
+    return false;
+}
+
+//////////////////////////////
+/// heap
+//////////////////////////////
+
+
+//////////////////////////////
+// list
+//////////////////////////////
+
+//////////////////////////////
+/// base library(primitive array)
+//////////////////////////////
+uniq smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
+{
+    var buf = new buffer();
+    buf.append((char*)self, sizeof(char)*len);
+    return new smart_pointer<char>.initialize_with_value(buf);
+}
+
+uniq smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
+{
+    var buf = new buffer();
+    buf.append((char*)self, sizeof(char*)*len);
+    return new smart_pointer<char*>.initialize_with_value(buf);
+}
+
+uniq smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
+{
+    var buf = new buffer();
+    buf.append((char*)self, sizeof(short)*len);
+    return new smart_pointer<short>.initialize_with_value(buf);
+}
+
+uniq smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
+{
+    var buf = new buffer();
+    buf.append((char*)self, sizeof(int)*len);
+    return new smart_pointer<int>.initialize_with_value(buf);
+}
+
+uniq smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
+{
+    var buf = new buffer();
+    buf.append((char*)self, sizeof(long)*len);
+    return new smart_pointer<long>.initialize_with_value(buf);
+}
+
+uniq smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
+{
+    var buf = new buffer();
+    buf.append((char*)self, sizeof(float)*len);
+    return new smart_pointer<float>.initialize_with_value(buf);
+}
+
+uniq smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
+{
+    var buf = new buffer();
+    buf.append((char*)self, sizeof(double)*len);
+    return new smart_pointer<double>.initialize_with_value(buf);
+}
+
+uniq list<char>*% char[]::to_list(char* self, size_t len) 
+{
+    return new list<char>.initialize_with_values(len, self);
+}
+
+uniq list<char*>*% char*[]::to_list(char** self, size_t len) 
+{
+    return new list<char*>.initialize_with_values(len, self);
+}
+
+uniq list<short>*% short[]::to_list(short* self, size_t len) 
+{
+    return new list<short>.initialize_with_values(len, self);
+}
+
+uniq list<int>*% int[]::to_list(int* self, size_t len) 
+{
+    return new list<int>.initialize_with_values(len, self);
+}
+
+uniq list<long>*% long[]::to_list(long* self, size_t len) 
+{
+    return new list<long>.initialize_with_values(len, self);
+}
+
+uniq list<float>*% float[]::to_list(float* self, size_t len) 
+{
+    return new list<float>.initialize_with_values(len, self);
+}
+
+uniq list<double>*% double[]::to_list(double* self, size_t len) 
+{
+    return new list<double>.initialize_with_values(len, self);
+}
+
+uniq vector<char>*% char[]::to_vector(char* self, size_t len) 
+{
+    return new vector<char>.initialize_with_values(len, self);
+}
+
+uniq vector<char*>*% char*[]::to_vector(char** self, size_t len) 
+{
+    return new vector<char*>.initialize_with_values(len, self);
+}
+
+uniq vector<short>*% short[]::to_vector(short* self, size_t len) 
+{
+    return new vector<short>.initialize_with_values(len, self);
+}
+
+uniq vector<int>*% int[]::to_vector(int* self, size_t len) 
+{
+    return new vector<int>.initialize_with_values(len, self);
+}
+
+uniq vector<long>*% long[]::to_vector(long* self, size_t len) 
+{
+    return new vector<long>.initialize_with_values(len, self);
+}
+
+uniq vector<float>*% float[]::to_vector(float* self, size_t len) 
+{
+    return new vector<float>.initialize_with_values(len, self);
+}
+
+uniq vector<double>*% double[]::to_vector(double* self, size_t len) 
+{
+    return new vector<double>.initialize_with_values(len, self);
+}
+
+//////////////////////////////
+/// base library(equals)
+//////////////////////////////
+uniq size_t char[]::length(char* self, size_t len) 
 {
     return len;
 }
 
-static inline bool char*[]::contained(char** self, size_t len, char* str) 
+uniq bool char*[]::contained(char** self, size_t len, char* str) 
 {
     bool result = false;
     for(int i=0; i<len; i++) {
@@ -3001,232 +5861,44 @@ static inline bool char*[]::contained(char** self, size_t len, char* str)
     return result;
 }
 
-static inline size_t short[]::length(short* self, size_t len) 
+uniq size_t short[]::length(short* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t int[]::length(int* self, size_t len) 
+uniq size_t int[]::length(int* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t long[]::length(long* self, size_t len) 
+uniq size_t long[]::length(long* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t float[]::length(float* self, size_t len) 
+uniq size_t float[]::length(float* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t double[]::length(double* self, size_t len) 
+uniq size_t double[]::length(double* self, size_t len) 
 {
     return len;
 }
 
-//////////////////////////////
-/// base library(get_hash key)
-//////////////////////////////
-unsigned int bool::get_hash_key(bool value);
-unsigned int char::get_hash_key(char value);
-unsigned int short::get_hash_key(short value);
-unsigned int int::get_hash_key(int value);
-unsigned int long::get_hash_key(long value);
-unsigned int size_t::get_hash_key(long value);
-unsigned int float::get_hash_key(float value);
-unsigned int double::get_hash_key(double value);
-unsigned int string::get_hash_key(char* value);
-unsigned int char*::get_hash_key(char* value);
-
-//////////////////////////////
-/// base library(clone)
-//////////////////////////////
-bool bool::clone(char self);
-char char::clone(char self);
-short int short::clone(short self);
-int int::clone(int self);
-long int long::clone(long self);
-size_t size_t::clone(long self);
-double double::clone(double self);
-float float::clone(float self);
-string char*::clone(char* self);
-string string::clone(char* self);
-
-//////////////////////////////
-/// base library(character code)
-//////////////////////////////
-bool xiswascii(wchar_t c);
-bool xiswalpha(wchar_t c);
-bool xiswblank(wchar_t c);
-bool xiswdigit(wchar_t c);
-bool xiswalnum(wchar_t c);
-bool xisalpha(char c);
-bool xisblank(char c);
-bool xisdigit(char c);
-bool xisalnum(char c);
-bool xisascii(char c);
-bool xisalpha(char c);
-
-//////////////////////////////
-/// base library(simple string library)
-//////////////////////////////
-int string::length(char* str);
-int char*::length(char* str);
-string char*::substring(char* str, int head, int tail);
-string string::substring(char* str, int head, int tail);
-string string::operator_load_range_element(char* str, int head, int tail);
-string char*::operator_load_range_element(char* str, int head, int tail);
-string char*::reverse(char* str) ;
-string string::reverse(char* str) ;
-string xsprintf(char* msg, ...);
-
-static inline string string::xsprintf(char* self, char* msg, ...)
+uniq string string::xsprintf(char* self, char* msg, ...)
 {
     return xsprintf(msg, self);
 }
 
-static inline string char*::xsprintf(char* self, char* msg, ...)
+uniq string char*::xsprintf(char* self, char* msg, ...)
 {
     return xsprintf(msg, self);
 }
 
-static inline string int::xsprintf(int self, char* msg, ...)
+uniq string int::xsprintf(int self, char* msg, ...)
 {
     return xsprintf(msg, self);
 }
 
-string char*::delete(char* str, int head, int tail) ;
-string string::delete(char* str, int head, int tail);
-list<string>*% string::split_char(char* self, char c) ;
-list<string>*% char*::split_char(char* self, char c);
-
-//////////////////////////////
-/// base library(path library)
-//////////////////////////////
-string xbasename(char* path);
-string xextname(char* path);
-string xnoextname(char* path);
-
-//////////////////////////////
-/// base library(to_string)
-//////////////////////////////
-string bool::to_string(bool self);
-string char::to_string(char self);
-string short::to_string(short self);
-string int::to_string(int self);
-string long::to_string(long self);
-string size_t::to_string(size_t self);
-string float::to_string(float self);
-string double::to_string(double self);
-string string::to_string(char* self);
-string char*::to_string(char* self);
-
-//////////////////////////////
-/// base library(compare)
-//////////////////////////////
-int bool::compare(bool left, bool right);
-int char::compare(char left, char right);
-int short::compare(short left, short right);
-int int::compare(int left, int right);
-int long::compare(long left, long right);
-int float::compare(float left, float right);
-int double::compare(float left, float right);
-int size_t::compare(long left, long right);
-int string::compare(char* left, char* right);
-int char*::compare(char* left, char* right);
-
-//////////////////////////////
-/// base library(IO-FILE)
-//////////////////////////////
-int FILE*::write(FILE* f, char* str);
-string FILE*::read(FILE* f);
-int FILE*::fclose(FILE* f) ;
-int* FILE*::fprintf(FILE* f, const char* msg, ...);
-list<string>*% FILE*::readlines(FILE* f);
-int fopen_block(const char* path, const char* mode, void* parent, void (*block)(void* parent, FILE* f));
-int string::write(char* self, char* file_name, bool append=false);
-int char*::write(char* self, char* file_name, bool append=false) ;
-string char*::read(char* file_name) ;
-string string::read(char* file_name) ;
-
-//////////////////////////////
-/// base library(STDOUT, STDIN)
-//////////////////////////////
-string char*::puts(char* self);
-string string::puts(char* self);
-int int::printf(int self, char* msg);
-string string::printf(char* self, ...);
-string char*::printf(char* self, ...);
-
-string char*::print(char* self);
-
-//////////////////////////////
-/// loop
-//////////////////////////////
-void int::times(int self, void* parent, void (*block)(void* parent, int it));
-
-//////////////////////////////
-// integer
-//////////////////////////////
-integer*% integer*::initialize(integer*% self, long value);
-integer*% bool::to_integer(long self);
-integer*% char::to_integer(long self);
-integer*% short::to_integer(long self);
-integer*% int::to_integer(long self);
-integer*% long::to_integer(long self);
-int integer*::to_int(integer* self);
-string integer::to_string(integer* self);
-bool integer::equals(integer* self, integer* right);
-int integer::compare(integer* self, integer* right);
-bool integer::operator_equals(integer* self, integer* right);
-bool integer::operator_not_equals(integer* self, integer* right);
-int integer::operator_add(integer* left, integer* right);
-int integer::operator_sub(integer* left, integer* right);
-int integer::operator_mult(integer* left, integer* right);
-int integer::operator_div(integer* left, integer* right);
-int integer::operator_mod(integer* left, integer* right);
-int integer::operator_lshift(integer* left, integer* right);
-int integer::operator_rshift(integer* left, integer* right);
-int integer::operator_gteq(integer* left, integer* right);
-int integer::operator_lteq(integer* left, integer* right);
-int integer::operator_lt(integer* left, integer* right);
-int integer::operator_gt(integer* left, integer* right);
-int integer::operator_and(integer* left, integer* right);
-int integer::operator_xor(integer* left, integer* right);
-int integer::operator_or(integer* left, integer* right);
-
-//////////////////////////////
-// floating
-//////////////////////////////
-floating*% floating*::initialize(floating*% self, double value);
-floating*% float::to_floating(float self);
-floating*% double::to_floating(double self);
-double floating*::to_double(floating* self);
-string floating::to_string(floating* self);
-bool floating::equals(floating* self, floating* right);
-int integer::compare(floating* self, floating* right);
-bool floating::operator_equals(floating* self, floating* right);
-bool floating::operator_not_equals(floating* self, floating* right);
-double floating::operator_add(floating* left, floating* right);
-double floating::operator_sub(floating* left, floating* right);
-double floating::operator_mult(floating* left, floating* right);
-double floating::operator_div(floating* left, floating* right);
-double floating::operator_gteq(floating* left, floating* right);
-double floating::operator_lteq(floating* left, floating* right);
-double floating::operator_lt(floating* left, floating* right);
-double floating::operator_gt(floating* left, floating* right);
-
-#undef assert
-
-record int assert(int exp) version 2;
-
-/*
-int __builtin_bswap32(int x) ;
-long __builtin_bswap64(long x) ;
-short __builtin_bswap16(short x) ;
-*/
-
-#endif
 #endif
