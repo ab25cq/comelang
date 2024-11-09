@@ -1,7 +1,7 @@
+output {#include "pico/stdlib.h"}
 no_output {
 #include "pico/stdlib.h"
 }
-output {#include "pico/stdlib.h"}
 
 int fun()
 {
