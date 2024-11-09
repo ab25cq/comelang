@@ -1879,7 +1879,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type_name = parse_word();
         }
         else if(type_name === "short") {
-            short_ = true;
+            short_ = false;
             
             if(*info->p == ':') {
                 break;
@@ -1890,10 +1890,11 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
                 type_name = parse_word();
                 
                 if(type_name === "int") {
+                    short_ = true;
                     break;
                 }
                 else if(type_name === "short") {
-                    short_ = false;
+                    short_ = true;
                     break;
                 }
                 else if(is_type_name(type_name)) {

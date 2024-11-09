@@ -1,7 +1,7 @@
 // source head
 typedef char __int8_t;
 typedef unsigned char __uint8_t;
-typedef short short __int16_t;
+typedef short __int16_t;
 typedef unsigned short int __uint16_t;
 typedef int __int32_t;
 typedef unsigned int __uint32_t;
@@ -113,7 +113,7 @@ typedef int __darwin_nl_item;
 typedef int __darwin_wctrans_t;
 typedef unsigned int __darwin_wctype_t;
 typedef char int8_t;
-typedef short short int16_t;
+typedef short int16_t;
 typedef int int32_t;
 typedef long long int64_t;
 typedef unsigned char u_int8_t;
@@ -145,8 +145,8 @@ struct __sFILE
     unsigned char* _p;
     int _r;
     int _w;
-    short short _flags;
-    short short _file;
+    short _flags;
+    short _file;
     struct __sbuf _bf;
     int _lbfsize;
     void* _cookie;
@@ -357,7 +357,7 @@ typedef unsigned short int uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long unsigned  long uint64_t;
 typedef char int_least8_t;
-typedef short short int_least16_t;
+typedef short int_least16_t;
 typedef int int_least32_t;
 typedef long long int_least64_t;
 typedef unsigned char uint_least8_t;
@@ -365,7 +365,7 @@ typedef unsigned short int uint_least16_t;
 typedef unsigned int uint_least32_t;
 typedef unsigned long unsigned  long uint_least64_t;
 typedef char int_fast8_t;
-typedef short short int_fast16_t;
+typedef short int_fast16_t;
 typedef int int_fast32_t;
 typedef long long int_fast64_t;
 typedef unsigned char uint_fast8_t;
@@ -725,7 +725,7 @@ struct smart_pointer$1char
 struct smart_pointer$1short
 {
     struct buffer* memory;
-    short short* p;
+    short* p;
 };
 struct smart_pointer$1int
 {
@@ -780,7 +780,7 @@ struct list$1charp
 };
 struct list_item$1short
 {
-    short short item;
+    short item;
     struct list_item$1short* prev;
     struct list_item$1short* next;
 };
@@ -859,7 +859,7 @@ struct vector$1charp
 };
 struct vector$1short
 {
-    short short* items;
+    short* items;
     int len;
     int size;
     int it;
@@ -1554,7 +1554,7 @@ struct buffer* buffer_append_str(struct buffer* self, char* str);
 struct buffer* buffer_append_nullterminated_str(struct buffer* self, char* str);
 struct buffer* buffer_append_int(struct buffer* self, int value);
 struct buffer* buffer_append_long(struct buffer* self, long value);
-struct buffer* buffer_append_short(struct buffer* self, short short value);
+struct buffer* buffer_append_short(struct buffer* self, short value);
 struct buffer* buffer_alignment(struct buffer* self);
 int buffer_compare(struct buffer* left, struct buffer* right);
 struct buffer* string_to_buffer(char* self);
@@ -1571,8 +1571,8 @@ static struct list$1char* list$1char_initialize_with_values(struct list$1char* s
 static struct list$1char* list$1char_push_back(struct list$1char* self, char item);
 static struct list$1charp* list$1charp_initialize_with_values(struct list$1charp* self, int num_value, char** values);
 static struct list$1charp* list$1charp_push_back(struct list$1charp* self, char* item);
-static struct list$1short* list$1short_initialize_with_values(struct list$1short* self, int num_value, short short* values);
-static struct list$1short* list$1short_push_back(struct list$1short* self, short short item);
+static struct list$1short* list$1short_initialize_with_values(struct list$1short* self, int num_value, short* values);
+static struct list$1short* list$1short_push_back(struct list$1short* self, short item);
 static struct list$1int* list$1int_initialize_with_values(struct list$1int* self, int num_value, int* values);
 static struct list$1int* list$1int_push_back(struct list$1int* self, int item);
 static struct list$1long* list$1long_initialize_with_values(struct list$1long* self, int num_value, long* values);
@@ -1583,7 +1583,7 @@ static struct list$1double* list$1double_initialize_with_values(struct list$1dou
 static struct list$1double* list$1double_push_back(struct list$1double* self, double item);
 static struct vector$1char* vector$1char_initialize_with_values(struct vector$1char* self, int num_value, char* values);
 static struct vector$1charp* vector$1charp_initialize_with_values(struct vector$1charp* self, int num_value, char** values);
-static struct vector$1short* vector$1short_initialize_with_values(struct vector$1short* self, int num_value, short short* values);
+static struct vector$1short* vector$1short_initialize_with_values(struct vector$1short* self, int num_value, short* values);
 static struct vector$1int* vector$1int_initialize_with_values(struct vector$1int* self, int num_value, int* values);
 static struct vector$1long* vector$1long_initialize_with_values(struct vector$1long* self, int num_value, long* values);
 static struct vector$1float* vector$1float_initialize_with_values(struct vector$1float* self, int num_value, float* values);
@@ -1591,7 +1591,7 @@ static struct vector$1double* vector$1double_initialize_with_values(struct vecto
 _Bool bool_equals(_Bool self, _Bool right);
 _Bool char_equals(char self, char right);
 _Bool int_equals(int self, int right);
-_Bool short_equals(short short self, short short right);
+_Bool short_equals(short self, short right);
 _Bool long_equals(long self, long right);
 _Bool size_t_equals(long self, unsigned long unsigned  int right);
 _Bool float_equals(float self, float right);
@@ -1601,12 +1601,12 @@ _Bool string_equals(char* self, char* right);
 _Bool voidp_equals(void* self, void* right);
 _Bool bool_operator_equals(_Bool self, _Bool right);
 _Bool char_operator_equals(char self, char right);
-_Bool short_operator_equals(short short self, short short right);
+_Bool short_operator_equals(short self, short right);
 _Bool int_operator_equals(int self, int right);
 _Bool long_operator_equals(long self, long right);
 _Bool bool_operator_not_equals(_Bool self, _Bool right);
 _Bool char_operator_not_equals(char self, char right);
-_Bool short_operator_not_equals(short short self, short short right);
+_Bool short_operator_not_equals(short self, short right);
 _Bool int_operator_not_equals(int self, int right);
 _Bool long_operator_not_equals(long self, long right);
 _Bool string_operator_equals(char* self, char* right);
@@ -1621,7 +1621,7 @@ char* charp_operator_mult(char* self, int right);
 char* string_operator_mult(char* self, int right);
 unsigned int bool_get_hash_key(_Bool value);
 unsigned int char_get_hash_key(char value);
-unsigned int short_get_hash_key(short short value);
+unsigned int short_get_hash_key(short value);
 unsigned int int_get_hash_key(int value);
 unsigned int long_get_hash_key(long value);
 unsigned int size_t_get_hash_key(long value);
@@ -1631,7 +1631,7 @@ unsigned int string_get_hash_key(char* value);
 unsigned int charp_get_hash_key(char* value);
 _Bool bool_clone(char self);
 char char_clone(char self);
-short int short_clone(short short self);
+short int short_clone(short self);
 int int_clone(int self);
 long  int long_clone(long self);
 unsigned long unsigned  int size_t_clone(long self);
@@ -1667,7 +1667,7 @@ char* xextname(char* path);
 char* xnoextname(char* path);
 char* bool_to_string(_Bool self);
 char* char_to_string(char self);
-char* short_to_string(short short self);
+char* short_to_string(short self);
 char* int_to_string(int self);
 char* long_to_string(long self);
 char* size_t_to_string(unsigned long unsigned  int self);
@@ -1677,7 +1677,7 @@ char* string_to_string(char* self);
 char* charp_to_string(char* self);
 int bool_compare(_Bool left, _Bool right);
 int char_compare(char left, char right);
-int short_compare(short short left, short short right);
+int short_compare(short left, short right);
 int int_compare(int left, int right);
 int long_compare(long left, long right);
 int float_compare(float left, float right);
@@ -2260,12 +2260,12 @@ struct buffer* __result2__;
     gComeFunResultObject = (void*)0;
     return __result2__;
 }
-static inline struct buffer* shortpa_to_buffer(short short* self, unsigned long unsigned  int len){
+static inline struct buffer* shortpa_to_buffer(short* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct buffer* result_3;
 struct buffer* __result3__;
     result_3=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2435, "buffer"));
-    buffer_append(result_3,(char*)self,sizeof(short short)*len);
+    buffer_append(result_3,(char*)self,sizeof(short)*len);
     __result3__ = gComeFunResultObject = __result_obj__ = result_3;
     gComeFunResultObject = (void*)0;
     return __result3__;
@@ -2365,12 +2365,12 @@ struct smart_pointer$1charp* __result19__;
     gComeFunResultObject = (void*)0;
     return __result19__;
 }
-static inline struct smart_pointer$1short* shortpa_to_pointer(short short* self, unsigned long unsigned  int len){
+static inline struct smart_pointer$1short* shortpa_to_pointer(short* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct buffer* buf_10;
 struct smart_pointer$1short* __result20__;
     buf_10=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2830, "buffer"));
-    buffer_append(buf_10,(char*)self,sizeof(short short)*len);
+    buffer_append(buf_10,(char*)self,sizeof(short)*len);
     __result20__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "./comelang.h", 2832, "smart_pointer$1short"),buf_10);
     gComeFunResultObject = (void*)0;
     return __result20__;
@@ -2429,7 +2429,7 @@ struct list$1charp* __result32__;
     gComeFunResultObject = (void*)0;
     return __result32__;
 }
-static inline struct list$1short* shortpa_to_list(short short* self, unsigned long unsigned  int len){
+static inline struct list$1short* shortpa_to_list(short* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct list$1short* __result35__;
     __result35__ = gComeFunResultObject = __result_obj__ = list$1short_initialize_with_values((struct list$1short*)come_calloc(1, sizeof(struct list$1short)*(1), "./comelang.h", 2875, "list$1short"),len,self);
@@ -2478,7 +2478,7 @@ struct vector$1charp* __result51__;
     gComeFunResultObject = (void*)0;
     return __result51__;
 }
-static inline struct vector$1short* shortpa_to_vector(short short* self, unsigned long unsigned  int len){
+static inline struct vector$1short* shortpa_to_vector(short* self, unsigned long unsigned  int len){
 void* __result_obj__=(void*)0;
 struct vector$1short* __result53__;
     __result53__ = gComeFunResultObject = __result_obj__ = vector$1short_initialize_with_values((struct vector$1short*)come_calloc(1, sizeof(struct vector$1short)*(1), "./comelang.h", 2910, "vector$1short"),len,self);
@@ -2528,7 +2528,7 @@ int i_44;
     }
     return result_43;
 }
-static inline unsigned long unsigned  int shortpa_length(short short* self, unsigned long unsigned  int len){
+static inline unsigned long unsigned  int shortpa_length(short* self, unsigned long unsigned  int len){
     return len;
 }
 static inline unsigned long unsigned  int intpa_length(int* self, unsigned long unsigned  int len){
@@ -2818,7 +2818,7 @@ static struct smart_pointer$1short* smart_pointer$1short_initialize_with_value(s
 void* __result_obj__=(void*)0;
 struct smart_pointer$1short* __result11__;
     self->memory=value;
-    self->p=(short short*)value->buf;
+    self->p=(short*)value->buf;
     __result11__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
     return __result11__;
@@ -2988,7 +2988,7 @@ struct list$1charp* __result30__;
 }
 
 
-static struct list$1short* list$1short_initialize_with_values(struct list$1short* self, int num_value, short short* values){
+static struct list$1short* list$1short_initialize_with_values(struct list$1short* self, int num_value, short* values){
 void* __result_obj__=(void*)0;
 int i_23;
 struct list$1short* __result34__;
@@ -3003,7 +3003,7 @@ struct list$1short* __result34__;
     return __result34__;
 }
 
-static struct list$1short* list$1short_push_back(struct list$1short* self, short short item){
+static struct list$1short* list$1short_push_back(struct list$1short* self, short item){
 void* __result_obj__=(void*)0;
 struct list_item$1short* litem_24;
 struct list_item$1short* litem_25;
@@ -3274,13 +3274,13 @@ struct vector$1charp* __result50__;
 }
 
 
-static struct vector$1short* vector$1short_initialize_with_values(struct vector$1short* self, int num_value, short short* values){
+static struct vector$1short* vector$1short_initialize_with_values(struct vector$1short* self, int num_value, short* values){
 void* __result_obj__=(void*)0;
 struct vector$1short* __result52__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(short short*)come_calloc(1, sizeof(short short)*(1*(self->size)), "./comelang.h", 1017, "short");
-    memcpy(self->items,values,sizeof(short short)*self->len);
+    self->items=(short*)come_calloc(1, sizeof(short)*(1*(self->size)), "./comelang.h", 1017, "short");
+    memcpy(self->items,values,sizeof(short)*self->len);
     __result52__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
     return __result52__;
