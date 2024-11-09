@@ -221,7 +221,7 @@ static bool cpp(sInfo* info)
     else if(rc == 0) {
         string cmd2;
         if(strcmp(CC, "arm-none-eabi-gcc") == 0) {
-            cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         }
         else {
             cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include -U__GNUC__ %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
@@ -335,6 +335,10 @@ static bool linker(sInfo* info, list<string>* object_files)
     var command = new buffer();
     
     command.append_str(xsprintf("%s -o %s ", CC, output_file_name));
+    
+    if(strcmp(CC, "arm-none-eabi-gcc") == 0) {
+        command.append_str("startup.s ");
+    }
     
     foreach(it, object_files) {
         command.append_str(xsprintf("%s ", it));
@@ -694,7 +698,7 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-pico") {
                 CC = "arm-none-eabi-gcc";
-                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -nostdlib -Wl,--gc-section ");
+                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -Wl,-e,_start -nostdlib -Wl,--gc-section ");
                 char* env = getenv("PICO_SDK_PATH");
                 cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
             }
@@ -900,7 +904,7 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-pico") {
                 CC = "arm-none-eabi-gcc";
-                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -nostdlib -Wl,--gc-section ");
+                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -Wl,-e,_start -nostdlib -Wl,--gc-section ");
                 char* env = getenv("PICO_SDK_PATH");
                 cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
             }
