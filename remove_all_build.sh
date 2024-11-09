@@ -18,6 +18,8 @@ then
     (cd webweb; sh clean_build.sh)
 fi
 
+(cd led; rm -rf build)
+
 if [ -e webweb2/Makefile ]
 then
     (cd webweb2; comelang clean)
