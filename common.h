@@ -305,6 +305,7 @@ struct sInfo
     string err_line;
     string clang_option;
     string cpp_option;
+    string linker_option;
     bool no_output_err;
     bool no_output_come_code;
     

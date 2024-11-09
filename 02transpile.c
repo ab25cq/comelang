@@ -202,7 +202,7 @@ static bool cpp(sInfo* info)
     int rc = system(cmd);
     /// Android ///
     if(rc2 == 0) {
-        string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
         if(info.verbose) puts(cmd3);
         int rc = system(cmd3);
@@ -219,13 +219,7 @@ static bool cpp(sInfo* info)
     }
     /// Mac ///
     else if(rc == 0) {
-        string cmd2;
-        if(strcmp(CC, "arm-none-eabi-gcc") == 0) {
-            cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        }
-        else {
-            cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include -U__GNUC__ %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        }
+        string cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
         if(info.verbose) puts(cmd2);
         
@@ -243,16 +237,14 @@ static bool cpp(sInfo* info)
     }
     /// Other ///
     else {
-        string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
-	string cmd_debian = xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null")
-	int rc_debian = system(cmd_debian);
+        string cmd_debian = xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null")
+        int rc_debian = system(cmd_debian);
 
-	if(rc_debian == 0) {
-		cmd3 = xsprintf("cpp -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -U__GNUC__ -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-	}
-
-
+        if(rc_debian == 0) {
+            cmd3 = xsprintf("cpp -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        }
 
         if(info.verbose) puts(cmd3);
         int rc = system(cmd3);
@@ -265,10 +257,10 @@ static bool cpp(sInfo* info)
         if(rc != 0) {
             string cmd4 = xsprintf("cpp -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
 
-		if(rc_debian == 0) {
-		    cmd4 = xsprintf("cpp -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-		}
-    var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
+            if(rc_debian == 0) {
+                cmd4 = xsprintf("cpp -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            }
+            var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
     
             if(info.verbose) puts(cmd4);
             rc = system(cmd4);
@@ -336,9 +328,7 @@ static bool linker(sInfo* info, list<string>* object_files)
     
     command.append_str(xsprintf("%s -o %s ", CC, output_file_name));
     
-    if(strcmp(CC, "arm-none-eabi-gcc") == 0) {
-        command.append_str("startup.s ");
-    }
+    command.append_str(" " + info.linker_option +" ");
     
     foreach(it, object_files) {
         command.append_str(xsprintf("%s ", it));
@@ -678,6 +668,8 @@ int come_main(int argc, char** argv) version 2
         
         var clang_option = new buffer();
         var cpp_option = new buffer();
+        cpp_option.append_str("-U__GNUC__");
+        var linker_option = new buffer();
         var files = new list<string>();
         var object_files = new list<string>();
         bool output_object_file = false;
@@ -697,9 +689,10 @@ int come_main(int argc, char** argv) version 2
                 gComeStr = true;
             }
             else if(argv[i] === "-pico") {
-                CC = "arm-none-eabi-gcc";
-                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -Wl,-e,_start -nostdlib -Wl,--gc-section ");
+                output_source_file_flag = true;
+                gComeOriginalSourcePosition = false;
                 char* env = getenv("PICO_SDK_PATH");
+                cpp_option = new buffer();
                 cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
             }
             else if(argv[i] === "-net") {
@@ -789,6 +782,7 @@ int come_main(int argc, char** argv) version 2
         info.err_num = 0;
         info.clang_option = clang_option.to_string();
         info.cpp_option = cpp_option.to_string();
+        info.linker_option = linker_option.to_string();
         info.no_output_err = false;
         info.funcs = new map<string, sFun*%>();
         info.generics_funcs = new map<string, sGenericsFun*%>();
@@ -884,7 +878,9 @@ int come_main(int argc, char** argv) version 2
         gProgramName = argv[0];
         
         var clang_option = new buffer();
+        var linker_option = new buffer();
         var cpp_option = new buffer();
+        cpp_option.append_str("-U__GNUC__");
         var files = new list<string>();
         var object_files = new list<string>();
         bool output_object_file = false;
@@ -903,9 +899,10 @@ int come_main(int argc, char** argv) version 2
                 gComeStr = true;
             }
             else if(argv[i] === "-pico") {
-                CC = "arm-none-eabi-gcc";
-                clang_option.append_str(s" -mcpu=cortex-m0plus -nostartfiles  -T memmap.ld -Wl,-e,_start -nostdlib -Wl,--gc-section ");
+                output_source_file_flag = true;
+                gComeOriginalSourcePosition = false;
                 char* env = getenv("PICO_SDK_PATH");
+                cpp_option = new buffer();
                 cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__");
             }
             else if(i + 1 < argc && argv[i] === "-target") {
@@ -1006,6 +1003,7 @@ int come_main(int argc, char** argv) version 2
             info.err_num = 0;
             info.clang_option = clang_option.to_string();
             info.cpp_option = cpp_option.to_string();
+            info.linker_option = linker_option.to_string();
             info.no_output_err = false;
             info.funcs = new map<string, sFun*%>();
             info.generics_funcs = new map<string, sGenericsFun*%>();
@@ -1058,11 +1056,12 @@ int come_main(int argc, char** argv) version 2
                     exit(2);
                 }
                 else {
-                    if(!compile(&info, output_object_file, object_files)) {
-                        printf("%s %d: compile faield\n", info.sname, info.sline);
-                        exit(27);
+                    if(!output_source_file_flag) {
+                        if(!compile(&info, output_object_file, object_files)) {
+                            printf("%s %d: compile faield\n", info.sname, info.sline);
+                            exit(27);
+                        }
                     }
-                    
                 }
     
             }
@@ -1086,6 +1085,7 @@ int come_main(int argc, char** argv) version 2
             
             info.sname = clone files[0]??;
             info.clang_option = clang_option.to_string();
+            info.linker_option = linker_option.to_string();
             info.verbose = verbose;
             
             if(output_file_name) {
@@ -1095,9 +1095,11 @@ int come_main(int argc, char** argv) version 2
                 info.output_file_name = null;
             }
             
-            linker(&info, object_files).expect {
-                printf("%s %d: linker faield\n", info.sname, info.sline);
-                exit(13);
+            if(!output_source_file_flag) {
+                linker(&info, object_files).expect {
+                    printf("%s %d: linker faield\n", info.sname, info.sline);
+                    exit(13);
+                }
             }
             
             if(!output_cpp_file && !output_source_file_flag) {

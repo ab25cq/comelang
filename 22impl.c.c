@@ -1300,6 +1300,7 @@ struct sInfo
     char* err_line;
     char* clang_option;
     char* cpp_option;
+    char* linker_option;
     _Bool no_output_err;
     _Bool no_output_come_code;
     struct sFun* come_fun;

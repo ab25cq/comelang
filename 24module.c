@@ -174,9 +174,30 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
     else if(buf === "header" && *info->p == '{') {
         string block_text = skip_block();
         
-        string contents = block_text.substring(1, -3);
+        char* p = block_text + strlen(block_text);
+        
+        while(p >= block_text && *p != '}') {
+            p--;
+        }
+        
+        string contents = block_text.substring(1, p - (block_text + strlen(block_text))-1);
         
         add_come_code_at_come_header(info, "%s\n", contents);
+        
+        return new sHeaderNode(contents, info) implements sNode;
+    }
+    else if(buf === "output" && *info->p == '{') {
+        string block_text = skip_block();
+        
+        char* p = block_text + strlen(block_text);
+        
+        while(p >= block_text && *p != '}') {
+            p--;
+        }
+        
+        string contents = block_text.substring(1, p - (block_text + strlen(block_text))-1);
+        
+        add_come_code(info, "%s\n", contents);
         
         return new sHeaderNode(contents, info) implements sNode;
     }
