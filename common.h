@@ -217,6 +217,8 @@ struct sFun
     string mDeclareSName;
     bool mNoResultType;
     bool mDeclaredResultObject;
+    
+    bool no_output_come_code2;
 };
 
 struct sGenericsFun
@@ -308,6 +310,7 @@ struct sInfo
     string linker_option;
     bool no_output_err;
     bool no_output_come_code;
+    bool no_output_come_code2;
     
     sFun* come_fun;
     
@@ -404,6 +407,8 @@ struct sInfo
     int sline_top;
     bool new_;
     sFun* calling_fun;
+    
+    map<string, int>*% outputed_class;
 };
 
 module sCurrentNodeModule

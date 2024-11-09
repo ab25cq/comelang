@@ -919,7 +919,9 @@ bool output_source_file(sInfo* info) version 3
         
         string header = header_function(it2, info);
         
-        if(it2->mResultType->mUniq) {
+        if(it2->no_output_come_code2) {
+        }
+        else if(it2->mResultType->mUniq) {
             fprintf(f, "%s", header);
         }
         else if(it2->mStatic && it2->mResultType->mInline) {
@@ -947,7 +949,9 @@ bool output_source_file(sInfo* info) version 3
 
         string header = header_function(it2, info);
         
-        if(it2->mStatic && it2->mResultType->mInline) {
+        if(it2->no_output_come_code2) {
+        }
+        else if(it2->mStatic && it2->mResultType->mInline) {
             string output = output_function(it2, info);
             fprintf(f, "static inline %s", output);
         }
@@ -973,7 +977,9 @@ bool output_source_file(sInfo* info) version 3
         }
         else 
         */
-        if(!it2->mExternal) {
+        if(it2->no_output_come_code2) {
+        }
+        else if(!it2->mExternal) {
             string output = output_function(it2, info);
             
             if(it2->mStatic && it2->mResultType->mInline) {

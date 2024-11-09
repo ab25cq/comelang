@@ -1117,6 +1117,7 @@ struct sFun
     char* mDeclareSName;
     _Bool mNoResultType;
     _Bool mDeclaredResultObject;
+    _Bool no_output_come_code2;
 };
 struct sGenericsFun
 {
@@ -1287,6 +1288,16 @@ struct list$1sVarph
     int len;
     struct list_item$1sVarph* it;
 };
+struct map$2charphint
+{
+    char** keys;
+    _Bool* item_existance;
+    int* items;
+    int size;
+    int len;
+    struct list$1charp* key_list;
+    int it;
+};
 struct sInfo
 {
     char* p;
@@ -1303,6 +1314,7 @@ struct sInfo
     char* linker_option;
     _Bool no_output_err;
     _Bool no_output_come_code;
+    _Bool no_output_come_code2;
     struct sFun* come_fun;
     char* come_fun_name;
     struct sFun* caller_fun;
@@ -1370,6 +1382,7 @@ struct sInfo
     int sline_top;
     _Bool new_;
     struct sFun* calling_fun;
+    struct map$2charphint* outputed_class;
 };
 struct tuple2$2sTypephcharph
 {
@@ -5958,7 +5971,9 @@ _Bool __result136__;
         it2_251=map$2charphsFunphp_operator_load_element(info->funcs,((char*)(__right_value273=__builtin_string(it_248))));
         /* U11 */__right_value273 = come_decrement_ref_count2(__right_value273, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         header_252=(char*)come_increment_ref_count(header_function(it2_251,info));
-        if(        it2_251->mResultType->mUniq) {
+        if(        it2_251->no_output_come_code2) {
+        }
+        else if(        it2_251->mResultType->mUniq) {
             fprintf(f_244,"%s",header_252);
         }
         else if(        it2_251->mStatic&&it2_251->mResultType->mInline) {
@@ -5987,7 +6002,9 @@ _Bool __result136__;
         it2_257=map$2charphsFunphp_operator_load_element(info->funcs,((char*)(__right_value277=__builtin_string(it_256))));
         /* U11 */__right_value277 = come_decrement_ref_count2(__right_value277, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         header_258=(char*)come_increment_ref_count(header_function(it2_257,info));
-        if(        it2_257->mStatic&&it2_257->mResultType->mInline) {
+        if(        it2_257->no_output_come_code2) {
+        }
+        else if(        it2_257->mStatic&&it2_257->mResultType->mInline) {
             output_259=(char*)come_increment_ref_count(output_function(it2_257,info));
             fprintf(f_244,"static inline %s",output_259);
             /* U13 */output_259 = come_decrement_ref_count2(output_259, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -6012,7 +6029,9 @@ _Bool __result136__;
         /* U11 */__right_value281 = come_decrement_ref_count2(__right_value281, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         /* U11 */__right_value282 = come_decrement_ref_count2(__right_value282, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         /* U11 */__right_value283 = come_decrement_ref_count2(__right_value283, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        if(        !it2_263->mExternal) {
+        if(        it2_263->no_output_come_code2) {
+        }
+        else if(        !it2_263->mExternal) {
             output_265=(char*)come_increment_ref_count(output_function(it2_263,info));
             if(            it2_263->mStatic&&it2_263->mResultType->mInline) {
             }

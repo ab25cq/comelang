@@ -79,7 +79,11 @@ void output_struct(sClass* klass, sInfo* info)
             if(info.output_header_file && klass.mDeclareSName !== info->base_sname) {
             }
             else {
-                add_come_code_at_source_head(info, "%s", buf.to_string());
+                if(info.outputed_class.at(string(klass->mName), -1) == -1) {
+                    info.outputed_class.insert(string(klass->mName), 1);
+                    
+                    add_come_code_at_source_head(info, "%s", buf.to_string());
+                }
             }
 //        }
     }
@@ -566,7 +570,19 @@ sNode*% parse_struct(string type_name, sInfo* info)
         info.classes.insert(klass->mName, clone klass);
     }
     
-    return new sStructNode(string(type_name), klass, output, info) implements sNode;
+    if(info.no_output_come_code2) {
+        output = true;
+    }
+    
+    sNode*% node = new sStructNode(string(type_name), klass, output, info) implements sNode;
+    
+    if(info.no_output_come_code2) {
+        if(!node_compile(node, info)) {
+            return null;
+        }
+    }
+    
+    return node;
 }
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98

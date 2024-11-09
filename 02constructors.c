@@ -182,6 +182,8 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
     
     self.mDeclareSName = string(declare_sname);
     
+    self.no_output_come_code2 = info.no_output_come_code2;
+    
     sType* result
     
     if((result_type->mClass->mName === "void" || result_type->mClass->mNumber || result_type->mClass->mName === "double" || result_type->mClass->mName === "float" || result_type->mStruct) && result_type->mPointerNum == 0) {

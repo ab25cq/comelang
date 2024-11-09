@@ -675,6 +675,7 @@ int come_main(int argc, char** argv) version 2
         bool output_object_file = false;
         bool output_cpp_file = false;
         bool output_source_file_flag = false;
+        bool output_object_file_flag = true;
         string output_file_name = string("common.h");
         bool verbose = false;
         bool prohibit_common_header = false;
@@ -690,6 +691,7 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-pico") {
                 output_source_file_flag = true;
+                output_object_file_flag = false;
                 gComeOriginalSourcePosition = false;
                 char* env = getenv("PICO_SDK_PATH");
                 cpp_option = new buffer();
@@ -734,6 +736,9 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-s" || argv[i] === "-S") {
                 output_source_file_flag = true;
+                if(argv[i] === "-s") {
+                    output_object_file_flag = false;
+                }
                 gComeOriginalSourcePosition = false;
             }
             else if(argv[i] === "-c") {
@@ -800,6 +805,7 @@ int come_main(int argc, char** argv) version 2
         info.generics_classes = new map<string, sClass*%>();
         info.verbose = verbose;
         info.output_header_file = true;
+        info.outputed_class = new map<string, int>();
         
         static int n = 0;
         info.num_source_files = n++;
@@ -886,6 +892,7 @@ int come_main(int argc, char** argv) version 2
         bool output_object_file = false;
         bool output_cpp_file = false;
         bool output_source_file_flag = false;
+        bool output_object_file_flag = true;
         string output_file_name = null;
         bool verbose = false;
         bool come_debug = false;
@@ -900,6 +907,7 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-pico") {
                 output_source_file_flag = true;
+                output_object_file_flag = false;
                 gComeOriginalSourcePosition = false;
                 char* env = getenv("PICO_SDK_PATH");
                 cpp_option = new buffer();
@@ -960,6 +968,9 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-s" || argv[i] === "-S") {
                 output_source_file_flag = true;
+                if(argv[i] === "-s") {
+                    output_object_file_flag = false;
+                }
                 gComeOriginalSourcePosition = false;
             }
             else if(argv[i] === "-c") {
@@ -1020,6 +1031,7 @@ int come_main(int argc, char** argv) version 2
             info.method_generics_type_names = new list<string>();
             info.generics_classes = new map<string, sClass*%>();
             info.verbose = verbose;
+            info.outputed_class = new map<string, int>();
             
             init_classes(&info);
             
@@ -1056,7 +1068,7 @@ int come_main(int argc, char** argv) version 2
                     exit(2);
                 }
                 else {
-                    if(!output_source_file_flag) {
+                    if(output_object_file_flag) {
                         if(!compile(&info, output_object_file, object_files)) {
                             printf("%s %d: compile faield\n", info.sname, info.sline);
                             exit(27);
@@ -1095,7 +1107,7 @@ int come_main(int argc, char** argv) version 2
                 info.output_file_name = null;
             }
             
-            if(!output_source_file_flag) {
+            if(output_object_file_flag) {
                 linker(&info, object_files).expect {
                     printf("%s %d: linker faield\n", info.sname, info.sline);
                     exit(13);

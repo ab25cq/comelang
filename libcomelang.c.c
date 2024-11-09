@@ -1117,6 +1117,7 @@ struct sFun
     char* mDeclareSName;
     _Bool mNoResultType;
     _Bool mDeclaredResultObject;
+    _Bool no_output_come_code2;
 };
 struct sGenericsFun
 {
@@ -1287,6 +1288,16 @@ struct list$1sVarph
     int len;
     struct list_item$1sVarph* it;
 };
+struct map$2charphint
+{
+    char** keys;
+    _Bool* item_existance;
+    int* items;
+    int size;
+    int len;
+    struct list$1charp* key_list;
+    int it;
+};
 struct sInfo
 {
     char* p;
@@ -1303,6 +1314,7 @@ struct sInfo
     char* linker_option;
     _Bool no_output_err;
     _Bool no_output_come_code;
+    _Bool no_output_come_code2;
     struct sFun* come_fun;
     char* come_fun_name;
     struct sFun* caller_fun;
@@ -1370,6 +1382,7 @@ struct sInfo
     int sline_top;
     _Bool new_;
     struct sFun* calling_fun;
+    struct map$2charphint* outputed_class;
 };
 struct tuple2$2sTypephcharph
 {

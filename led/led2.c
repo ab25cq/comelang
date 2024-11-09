@@ -214,6 +214,7 @@ enum anonymous_typeY2 { UART_PARITY_NONE
 ,UART_PARITY_ODD
 };
 typedef enum anonymous_typeY2 uart_parity_t;
+#include "pico/stdlib.h"
 
 // header function
 void* come_calloc(int count, int size, char* sname, int sline, char* class_name);

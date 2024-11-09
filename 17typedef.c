@@ -152,7 +152,15 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             add_come_code_at_come_header(info, "%s", header.to_string());
             
-            return new sTypedefNode(type_name, type, multiple_declare, info) implements sNode;
+            sNode*% node = new sTypedefNode(type_name, type, multiple_declare, info) implements sNode;
+            
+            if(info.no_output_come_code2) {
+                if(!node_compile(node, info)) {
+                    return null;
+                }
+            }
+            
+            return node;
         }
         else {
             char* source_tail = info.p;
@@ -163,7 +171,15 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             add_come_code_at_come_header(info, "%s;\n", header.to_string());
             
-            return new sTypedefNode(type_name, type, null@multiple_declare, info) implements sNode;
+            sNode*% node = new sTypedefNode(type_name, type, null@multiple_declare, info) implements sNode;
+            
+            if(info.no_output_come_code2) {
+                if(!node_compile(node, info)) {
+                    return null;
+                }
+            }
+            
+            return node;
         }
     }
     
