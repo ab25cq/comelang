@@ -167,7 +167,48 @@ class sInlineAssembler extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = "__asm " + source;
+        var buf = new buffer();
+        char* p = source;
+        bool dquort = false;
+        while(*p) {
+            if(*p == '"'){ 
+                buf.append_char(*p);
+                p++;
+                
+                dquort = !dquort;
+            }
+            else if(dquort) {
+                buf.append_char(*p);
+                p++;
+            }
+            else if(*p == '(') {
+                buf.append_char(*p);
+                p++;
+                
+                var var_name = new buffer();
+                while(xisalnum(*p) || *p =='_') {
+                    var_name.append_char(*p);
+                    p++;
+                }
+                
+                sVar* var_ = info.lv_table.mVars.at(var_name.to_string(), null);
+                
+                if(var_) {
+                    buf.append_str(var_->mCValueName);
+                }
+                
+                if(*p == ')') {
+                    buf.append_char(*p);
+                    p++;
+                }
+            }
+            else {
+                buf.append_char(*p);
+                p++;
+            }
+        }
+        
+        come_value.c_value = "__asm " + buf.to_string();
         come_value.type = new sType("void");
         come_value.var = null;
         

@@ -71,9 +71,11 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
     else if(type->mLong) {
         buf.append_str("long ");
         
+/*
         if(type->mUnsigned) {
             buf.append_str("unsigned ");
         }
+*/
         
         if(class_name === "int") {
             buf.append_str(" int");
