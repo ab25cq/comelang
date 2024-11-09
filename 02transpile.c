@@ -736,9 +736,6 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-s" || argv[i] === "-S") {
                 output_source_file_flag = true;
-                if(argv[i] === "-s") {
-                    output_object_file_flag = false;
-                }
                 gComeOriginalSourcePosition = false;
             }
             else if(argv[i] === "-c") {
@@ -968,9 +965,6 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-s" || argv[i] === "-S") {
                 output_source_file_flag = true;
-                if(argv[i] === "-s") {
-                    output_object_file_flag = false;
-                }
                 gComeOriginalSourcePosition = false;
             }
             else if(argv[i] === "-c") {
