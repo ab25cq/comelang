@@ -571,6 +571,9 @@ char* charp_xsprintf(char* self, char* msg, ...);
 char* int_xsprintf(int self, char* msg, ...);
 int fun();
 int main();
+static int list$1int_begin(struct list$1int* self);
+static _Bool list$1int_end(struct list$1int* self);
+static int list$1int_next(struct list$1int* self);
 // uniq global variable
 
 // source head3
@@ -5364,19 +5367,82 @@ int fun(){
 }
 
 int main(){
+int __list_values1___256[10];
+void* __right_value299 = (void*)0;
+void* __right_value300 = (void*)0;
+struct list$1int* li_257;
+struct list$1int* o2_saved_258;
+int it_261;
+int i_264;
 int __result228__;
     come_heap_init(0, 0, 0);
     const unsigned int LED_PIN_255=25;
     gpio_init(LED_PIN_255);
     gpio_set_dir(LED_PIN_255,1);
+    li_257=(struct list$1int*)come_increment_ref_count((__list_values1___256[0]=1,
+__list_values1___256[1]=2,
+__list_values1___256[2]=3,
+__list_values1___256[3]=4,
+__list_values1___256[4]=5,
+__list_values1___256[5]=6,
+__list_values1___256[6]=7,
+__list_values1___256[7]=8,
+__list_values1___256[8]=9,
+__list_values1___256[9]=10,
+list$1int_initialize_with_values((struct list$1int*)come_increment_ref_count((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "led.c", 15, "struct list$1int")),10,__list_values1___256)));
+    for(    o2_saved_258=(struct list$1int*)come_increment_ref_count((li_257)),it_261=list$1int_begin((o2_saved_258));    !list$1int_end((o2_saved_258));    it_261=list$1int_next((o2_saved_258))    ){
+        for(        i_264=0;        i_264<5;        i_264++        ){
+            gpio_put(LED_PIN_255,1);
+            sleep_ms(50*it_261);
+            gpio_put(LED_PIN_255,0);
+            sleep_ms(50*it_261);
+        }
+    }
+    /*i*/come_call_finalizer3(o2_saved_258,list$1intp_finalize, 0, 0, 0, 0, (void*)0);
     while(1) {
-        gpio_put(LED_PIN_255,1);
-        sleep_ms(500);
         gpio_put(LED_PIN_255,0);
-        sleep_ms(500);
     }
     __result228__ = 0;
+    /*i*/come_call_finalizer3(li_257,list$1intp_finalize, 0, 0, 0, 0, (void*)0);
     come_heap_final();
     return __result228__;
+}
+
+static int list$1int_begin(struct list$1int* self){
+int result_259;
+int result_260;
+memset(&result_259, 0, sizeof(int));
+memset(&result_260, 0, sizeof(int));
+    if(    self==((void*)0)) {
+        __builtin___memset_chk(&result_259,0,sizeof(int),__builtin_object_size(&result_259,0));
+        return result_259;
+    }
+    self->it=self->head;
+    if(    self->it) {
+        return self->it->item;
+    }
+    __builtin___memset_chk(&result_260,0,sizeof(int),__builtin_object_size(&result_260,0));
+    return result_260;
+}
+
+static _Bool list$1int_end(struct list$1int* self){
+    return self==((void*)0)||self->it==((void*)0);
+}
+
+static int list$1int_next(struct list$1int* self){
+int result_262;
+int result_263;
+memset(&result_262, 0, sizeof(int));
+memset(&result_263, 0, sizeof(int));
+    if(    self==((void*)0)||self->it==((void*)0)) {
+        __builtin___memset_chk(&result_262,0,sizeof(int),__builtin_object_size(&result_262,0));
+        return result_262;
+    }
+    self->it=self->it->next;
+    if(    self->it) {
+        return self->it->item;
+    }
+    __builtin___memset_chk(&result_263,0,sizeof(int),__builtin_object_size(&result_263,0));
+    return result_263;
 }
 
