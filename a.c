@@ -56,7 +56,6 @@ typedef struct {
     Context ctx;      // タスクのコンテキスト
     void (*entry)();  // タスクのエントリポイント
     int active;       // タスクがアクティブかどうか
-    int first;        // 一度呼ばれたかどうか
 } Task;
 
 Task tasks[MAX_TASKS];
@@ -73,18 +72,31 @@ void schedule() {
     if (current_task != -1 && tasks[current_task].active) {
         save_context(&tasks[current_task].ctx);
     }
-
+    
     current_task = next_task;
     load_context(&tasks[current_task].ctx);
 }
 
+bool all_task_done()
+{
+    for(int i= 0; i<num_task; i++) {
+        if(tasks[i].active) {
+            return false;
+        }
+    }
+    
+    return true;
+}
 
 void task_wrapper() {
     int id = current_task;
     tasks[id].entry();  // 実際のタスク関数を呼び出す
 
     // タスクが終了したら非アクティブにし、スケジューラを呼び出す
-    schedule();  // 次のタスクに切り替え
+    tasks[id].active = false;
+    if(!all_task_done()) {
+        schedule();  // 次のタスクに切り替え
+    }
 }
 
 void create_task(void (*entry)()) {
@@ -92,7 +104,6 @@ void create_task(void (*entry)()) {
         if (!tasks[i].active) {
             tasks[i].entry = entry;
             tasks[i].active = 1;
-            tasks[i].first = 0;
 
             // 初期コンテキスト設定
             tasks[i].ctx.sp = (uint64_t)malloc(1024) + 1024;  // スタックの割り当て
@@ -115,13 +126,11 @@ void task2() {
     printf("Task 2 running\n");
 }
 
-#include <time.h>
-
 int main() {
     create_task(task1);
     create_task(task2);
 
-    while(1) {
+    if(!all_task_done()) {
         schedule();
     }
 

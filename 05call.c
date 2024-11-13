@@ -1825,6 +1825,11 @@ sNode*% expression_node(sInfo* info=info) version 97
                         break;
                     }
                 }
+                else if(*info->p == '\n') {
+                    info->sline++;
+                    buf2.append_char(*info->p);
+                    info->p++;
+                }
                 else if(*info->p == '\0') {
                     err_msg(info, "invalid source end at inline assembler");
                     exit(2);
