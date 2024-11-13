@@ -73,7 +73,7 @@ void ViWin*::textsView(ViWin* self, Vi* nvi)
                         wattroff(self.win, A_REVERSE);
                     }
                     else {
-                        wprintw(self.win, "$");
+                        //wprintw(self.win, "$");
                     }
                 }
                 else {
@@ -113,7 +113,7 @@ void ViWin*::textsView(ViWin* self, Vi* nvi)
                         wattroff(self.win, A_REVERSE);
                     }
                     else {
-                        wprintw(self.win, "$");
+                        //wprintw(self.win, "$");
                     }
                 }
             }
@@ -132,7 +132,8 @@ void ViWin*::textsView(ViWin* self, Vi* nvi)
                     wprintw(self.win, "~");
                 }
                 else {
-                    mvwprintw(self.win, it2, 0, "%ls$", printable_line);
+                    mvwprintw(self.win, it2, 0, "%ls", printable_line);
+                    //mvwprintw(self.win, it2, 0, "%ls$", printable_line);
                 }
             }
 

@@ -20,6 +20,23 @@ typedef struct {
 
 void save_context(Context *ctx) {
     __asm__ __volatile__ (
+        "stp x19, x20, [%0, #0]\n"   // Save x19 and x20
+        "stp x21, x22, [%0, #16]\n"  // Save x21 and x22
+        "stp x23, x24, [%0, #32]\n"  // Save x23 and x24
+        "stp x25, x26, [%0, #48]\n"  // Save x25 and x26
+        "stp x27, x28, [%0, #64]\n"  // Save x27 and x28
+        "stp x29, x30, [%0, #80]\n"  // Save x29 (FP) and x30 (LR)
+        "mov x1, sp\n"               // Get current stack pointer
+        "str x1, [%0, #96]\n"        // Save SP to context
+        :
+        : "r"(ctx)                   // Input operand
+        : "memory"                   // Clobbered list
+    );
+}
+
+/*
+void save_context(Context *ctx) {
+    __asm__ __volatile__ (
         "stp x19, x20, [%0, #0]\n"  // Save x19 and x20
         "stp x21, x22, [%0, #16]\n" // Save x21 and x22
         "stp x23, x24, [%0, #32]\n" // Save x23 and x24
@@ -33,7 +50,9 @@ void save_context(Context *ctx) {
         : "memory"                  // Clobbered list
     );
 }
+*/
 
+/*
 void load_context(Context *ctx) {
     __asm__ __volatile__ (
         "ldp x19, x20, [%0, #0]\n"  // Restore x19 and x20
@@ -47,6 +66,23 @@ void load_context(Context *ctx) {
         :
         : "r"(ctx)                  // Input operands
         : "memory"                  // Clobbered list
+    );
+}
+*/
+void load_context(Context *ctx) {
+    __asm__ __volatile__ (
+        "ldp x19, x20, [%0, #0]\n"   // Restore x19 and x20
+        "ldp x21, x22, [%0, #16]\n"  // Restore x21 and x22
+        "ldp x23, x24, [%0, #32]\n"  // Restore x23 and x24
+        "ldp x25, x26, [%0, #48]\n"  // Restore x25 and x26
+        "ldp x27, x28, [%0, #64]\n"  // Restore x27 and x28
+        "ldp x29, x30, [%0, #80]\n"  // Restore x29 (FP) and x30 (LR)
+        "ldr x1, [%0, #96]\n"        // Load saved SP
+        "mov sp, x1\n"               // Restore SP
+        "ret\n"                      // Return to the next instruction
+        :
+        : "r"(ctx)                   // Input operand
+        : "memory"                   // Clobbered list
     );
 }
 
