@@ -60,8 +60,32 @@ typedef struct {
 } Task;
 
 Task tasks[MAX_TASKS];
-int current_task = 0;
+int current_task = -1;
 int num_task = 0;
+
+void schedule() {
+    int next_task = (current_task + 1) % num_task;
+
+    while (!tasks[next_task].active) {
+        next_task = (next_task + 1) % num_task;
+    }
+    
+    if (current_task != -1 && tasks[current_task].active) {
+        save_context(&tasks[current_task].ctx);
+    }
+
+    current_task = next_task;
+    load_context(&tasks[current_task].ctx);
+}
+
+
+void task_wrapper() {
+    int id = current_task;
+    tasks[id].entry();  // 実際のタスク関数を呼び出す
+
+    // タスクが終了したら非アクティブにし、スケジューラを呼び出す
+    schedule();  // 次のタスクに切り替え
+}
 
 void create_task(void (*entry)()) {
     for (int i = 0; i < MAX_TASKS; i++) {
@@ -72,7 +96,7 @@ void create_task(void (*entry)()) {
 
             // 初期コンテキスト設定
             tasks[i].ctx.sp = (uint64_t)malloc(1024) + 1024;  // スタックの割り当て
-            tasks[i].ctx.x30 = (uint64_t)entry;               // エントリポイントをリンクレジスタに設定
+            tasks[i].ctx.x30 = (uint64_t)task_wrapper;               // エントリポイントをリンクレジスタに設定
             
             num_task++;
             return;
@@ -82,36 +106,13 @@ void create_task(void (*entry)()) {
     printf("Failed to create task: no available slots\n");
 }
 
-void schedule() {
-    int next_task = (current_task + 1) % num_task;
-
-    while (!tasks[next_task].active) {
-        next_task = (next_task + 1) % num_task;
-    }
-    
-printf("save %d\n", current_task);
-
-    if (tasks[current_task].active && tasks[current_task].first) {
-        save_context(&tasks[current_task].ctx);
-    }
-    
-printf("load %d\n", next_task);
-
-    current_task = next_task;
-    tasks[current_task].first = 1;
-    load_context(&tasks[current_task].ctx);
-}
-
-#include <unistd.h>
 
 void task1() {
     printf("Task 1 running\n");
-    sleep(1);
 }
 
 void task2() {
     printf("Task 2 running\n");
-    sleep(1);
 }
 
 #include <time.h>
