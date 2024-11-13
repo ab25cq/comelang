@@ -1717,12 +1717,12 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             buf = parse_word();
             
-            if(buf === "asm" || buf === "__asm") {
+            if(buf === "asm" || buf === "__asm" || buf === "__asm__") {
                 if(*info->p == '(') {
                     inline_asm = true;
                 }
                 else {
-                    if(xisalpha(*info->p)) {
+                    if(xisalpha(*info->p) || *info->p == '_') {
                         buf = parse_word();
                         
                         if(*info->p == '(') {

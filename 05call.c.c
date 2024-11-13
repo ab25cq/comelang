@@ -10309,12 +10309,12 @@ struct sNode* __result320__;
             __dec_obj298=buf_487;
             buf_487=(char*)come_increment_ref_count(parse_word(info));
             /*G*/ __dec_obj298 = come_decrement_ref_count2(__dec_obj298, (void*)0, (void*)0, 0,0,0, (void*)0);
-            if(            string_operator_equals(buf_487,"asm")||string_operator_equals(buf_487,"__asm")) {
+            if(            string_operator_equals(buf_487,"asm")||string_operator_equals(buf_487,"__asm")||string_operator_equals(buf_487,"__asm__")) {
                 if(                *info->p==40) {
                     inline_asm_502=(_Bool)1;
                 }
                 else {
-                    if(                    xisalpha(*info->p)) {
+                    if(                    xisalpha(*info->p)||*info->p==95) {
                         __dec_obj299=buf_487;
                         buf_487=(char*)come_increment_ref_count(parse_word(info));
                         /*G*/ __dec_obj299 = come_decrement_ref_count2(__dec_obj299, (void*)0, (void*)0, 0,0,0, (void*)0);
