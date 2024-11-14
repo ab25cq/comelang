@@ -138,7 +138,7 @@ libcomelang-net-gc.a: libcomelang-net-gc.c
 	comelang -net -gc -DENABLE_GC -S -c libcomelang-net-gc.c $(CFLAGS) 
 	ar rcs libcomelang-net-gc.a libcomelang-net-gc.c.o
 
-comelang-sh: 01main.c.o.tmp 02constructors.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05pre_op.c.o.tmp 05call.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp libcomelang.c.o.tmp libcomelang-str.c.o.tmp libcomelang-net.c.o.tmp libcomelang-gc.c.o.tmp libcomelang-str-gc.c.o.tmp libcomelang-net-gc.c.o.tmp
+comelang-sh: 01main.c.o.tmp 02constructors.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05pre_op.c.o.tmp 05call.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp libcomelang.c.o.tmp libcomelang-str.c.o.tmp libcomelang-net.c.o.tmp libcomelang-pthread.c.o.tmp libcomelang-pthread-gc.c.o.tmp libcomelang-gc.c.o.tmp libcomelang-str-gc.c.o.tmp libcomelang-net-gc.c.o.tmp
 	clang -o comelang-sh  01main.c.o.tmp 02transpile.c.o.tmp 02constructors.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05call.c.o.tmp 05pre_op.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp libcomelang.c.o.tmp 
 	cp -p comelang-sh comelang
 
@@ -243,6 +243,14 @@ libcomelang-str.c.o.tmp: libcomelang-str.c.c
 libcomelang-net.c.o.tmp: libcomelang-net.c.c
 	clang -o libcomelang-net.c.o.tmp -c libcomelang-net.c.c $(CFLAGS) 2> /dev/null
 	ar rcs libcomelang-net.a libcomelang-net.c.o.tmp
+
+libcomelang-pthread.c.o.tmp: libcomelang-pthread.c.c
+	clang -o libcomelang-pthread.c.o.tmp -c libcomelang-pthread.c.c $(CFLAGS) 2> /dev/null
+	ar rcs libcomelang-pthread.a libcomelang-pthread.c.o.tmp
+
+libcomelang-pthread-gc.c.o.tmp: libcomelang-pthread-gc.c.c
+	clang -o libcomelang-pthread-gc.c.o.tmp -c libcomelang-pthread-gc.c.c $(CFLAGS) 2> /dev/null
+	ar rcs libcomelang-pthread-gc.a libcomelang-pthread-gc.c.o.tmp
 
 libcomelang-gc.c.o.tmp: libcomelang-gc.c.c
 	clang -o libcomelang-gc.c.o.tmp -c libcomelang-gc.c.c $(CFLAGS) 2> /dev/null
