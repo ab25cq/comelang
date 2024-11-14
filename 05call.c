@@ -1204,6 +1204,215 @@ class sFunCallNode extends sNodeBase
     }
 };
 
+class sComeCallNode extends sNodeBase
+{
+    new(buffer*% come_block, int come_block_sline, sInfo* info) {
+        self.super();
+        
+        buffer*% self.come_block = come_block;
+        int self.come_block_sline = come_block_sline;
+    }
+    
+    string kind()
+    {
+        return string("sComeCallNode");
+    }
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    bool compile(sInfo* info)
+    {
+        int come_block_sline = self.come_block_sline;
+        buffer*% come_block = self.come_block;
+        
+        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+        
+        static int thread_num = 0;
+        thread_num++;
+        
+        string var_name = xsprintf("__thread_info%d", thread_num);
+        
+        sType*% type_ = clone info.types.at("pthread_t", null);
+        
+        if(type_ == null) {
+            err_msg(info, "pthread_t is not defined");
+            return false;
+        }
+        
+        sNode*% var_node = store_var(var_name, null@multiple_assign, null@multiple_declare, type_@type, true@alloc, null@right_value, info);
+        
+        if(!node_compile(var_node)) {
+            return false;
+        }
+        
+        CVALUE*% thread_var_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        CVALUE*% come_value = new CVALUE();
+        come_value.c_value = xsprintf("&%s", thread_var_value.c_value);
+        come_value.type = thread_var_value.type;
+        come_value.var = null;
+        
+        come_params.push_back(come_value);
+        
+        sNode*% null_node = create_null_node();
+        
+        if(!node_compile(null_node)) {
+            return false;
+        }
+        
+        come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        come_params.push_back(come_value);
+        
+        sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
+        
+        if(!node_compile(current_stack_frame_node)) {
+            return false;
+        }
+        
+        CVALUE*% current_stack_frame_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        string fun_name = xsprintf("__thread_fun%d", thread_num);
+        
+        buffer*% come_block2 = new buffer();
+        
+        string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
+        
+        come_block2.append_str(xsprintf("void* %s(%s* parent)\n", fun_name, class_name));
+        
+        come_block2.append_str(come_block.to_string());
+                        
+        sClass* current_stack_frame_struct = info.current_stack_frame_struct;
+        info->current_stack_frame_struct = info.classes[class_name]??;
+        
+        buffer*% source3 = info.source;
+        char* p = info.p;
+        char* head = info.head;
+        int sline = info.sline;
+        
+        info.source = come_block2;
+        info.p = info.source.buf;
+        info.head = info.source.buf;
+        info.sline = come_block_sline;
+       
+        sNode*% node = parse_function(info);
+        
+        if(!node_compile(node)) {
+            return false;
+        }
+        
+        info.source = source3;
+        info.p = p;
+        info.head = head;
+        info.sline = sline;
+        
+        info->current_stack_frame_struct = current_stack_frame_struct;
+        
+        come_params.add(current_stack_frame_value);
+        
+        CVALUE*% fun_value = new CVALUE();
+        
+        fun_value.c_value = fun_name;
+        come_value.type = null;
+        come_value.var = null;
+        
+        come_params.add(fun_value);
+        
+        buffer*% buf = new buffer();
+        
+        string fun_name = s"pthread_create";
+        
+        buf.append_str("(");
+        buf.append_str(fun_name);
+        buf.append_str("(");
+        
+        int j = 0;
+        foreach(it, come_params) {
+            buf.append_str(it.c_value);
+            
+            if(j != come_params.length()-1) {
+                buf.append_str(",");
+            }
+            
+            j++;
+        }
+        buf.append_str(")");
+        buf.append_str(", ");
+        buf.append_str(thread_var_value.c_value);
+        buf.append_str(")");
+        
+        CVALUE*% come_value = new CVALUE();
+        come_value.c_value = buf.to_string();
+        
+        sType*% type = clone info.types.at("pthread_t", null);
+        if(type == null) {
+            err_msg(info, "pthread_t is not defined");
+            return false;
+        }
+        come_value.type = type;
+        come_value.var = null;
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
+class sComeJoinNode extends sNodeBase
+{
+    new(sNode*% node, sInfo* info) {
+        self.super();
+        
+        sNode*% self.node = node;
+    }
+    
+    string kind()
+    {
+        return string("sComeJoinNode");
+    }
+    
+    bool terminated()
+    {
+        return false;
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% node = self.node;
+        
+        if(!node_compile(node)) {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        var buf = new buffer();
+        buf.append_str("pthread_join(");
+        buf.append_str(come_value.c_value);
+        buf.append_str(", 0)");
+        
+        CVALUE*% come_value = new CVALUE();
+        come_value.c_value = buf.to_string();
+        come_value.type = new sType("void", info);
+        come_value.var = null;
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
 sNode*% craete_fun_call(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
 {
     sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
@@ -1349,7 +1558,7 @@ class sVarArgTypeName extends sNodeBase
     }
 };
 
-sNode*% parse_function_call(char* fun_name, sInfo* info)
+sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
 {
     list<sType*%>*% method_generics_types = new list<sType*%>();
     
@@ -1753,6 +1962,67 @@ sNode*% expression_node(sInfo* info=info) version 97
             sNode*% node = parse_function_call(buf, info);
             
             return node;
+        }
+        else if(gComePthread && buf === "come") {
+            buffer*% come_block = null;
+            int come_block_sline = 0;
+            
+            if(*info->p == '{') {
+                char* head = info.p;
+                come_block_sline = info.sline;
+                
+                skip_block(info);
+                
+                char* tail = info.p;
+                
+                come_block = new buffer();
+                
+                int len = tail - head;
+                char*% mem = new char[len+1];
+                memcpy(mem, head, len);
+                mem[len] = '\0';
+                
+                come_block.append_str(mem);
+                come_block.append_str("\n");
+            }
+            else {
+                char* head = info.p;
+                come_block_sline = info.sline;
+                
+                bool no_output_come_code = info.no_output_come_code;
+                info.no_output_come_code = true;
+                expression(info);
+                info.no_output_come_code = no_output_come_code;
+                
+                char* tail = info.p;
+                
+                come_block = new buffer();
+                
+                int len = tail - head;
+                char*% mem = new char[len+1];
+                memcpy(mem, head, len);
+                mem[len] = '\0';
+                
+                come_block.append_str("{");
+                come_block.append_str(mem);
+                come_block.append_str("; }");
+                come_block.append_str("}");
+                come_block.append_str("\n");
+            }
+            
+            sNode*% node = new sComeCallNode(come_block, come_block_sline, info) implements sNode;
+            
+            return node;
+        }
+        else if(gComePthread && buf === "come_join" && *info->p == '(') {
+            buffer*% come_block = null;
+            int come_block_sline = 0;
+            
+            expected_next_character('(', info);
+            sNode*% node = expression();
+            expected_next_character(')', info);
+            
+            return new sComeJoinNode(node, info) implements sNode;
         }
         else if(buf === "none" && *info->p == '(') {
             sNode*% node = parse_none(info);

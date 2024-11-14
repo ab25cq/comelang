@@ -695,6 +695,11 @@ sNode*% cast_node(sType*% type, sNode*% node, sInfo* info=info)
     return new sCastNode(type, node, info) implements sNode;
 }
 
+sNode*% reffence_node(sNode*% value, sInfo* info)
+{
+    return new sRefferenceNode(value, info) implements sNode;
+}
+
 sNode*% pre_position_operator(sInfo* info=info)
 {
     skip_spaces_and_lf();

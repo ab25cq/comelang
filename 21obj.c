@@ -1542,6 +1542,14 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         
             return new sNothingNode(info) implements sNode;
         }
+        else if(parsecmp("comelang-pthread")) {
+            info->p += strlen("comelang-pthread");
+            skip_spaces_and_lf();
+            
+            gComePthread = true;
+        
+            return new sNothingNode(info) implements sNode;
+        }
         else if(parsecmp("comelang-net")) {
             info->p += strlen("comelang-net");
             skip_spaces_and_lf();
@@ -1860,6 +1868,14 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
             skip_spaces_and_lf();
             
             gComeStr = true;
+        
+            return new sNothingNode(info) implements sNode;
+        }
+        else if(parsecmp("comelang-pthread")) {
+            info->p += strlen("comelang-pthread");
+            skip_spaces_and_lf();
+            
+            gComePthread = true;
         
             return new sNothingNode(info) implements sNode;
         }

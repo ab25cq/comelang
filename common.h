@@ -17,6 +17,7 @@ extern bool gComeDebug;
 extern bool gComeGC;
 extern bool gComeC;
 extern bool gComeStr;
+extern bool gComePthread;
 extern bool gComeNet;
 extern bool gComeMalloc;
 extern bool gCommonHeader;
@@ -627,6 +628,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
 /// 05function.c ///
 /////////////////////////////////////////////////////////////////////
 sNode*% cast_node(sType*% type, sNode*% node, sInfo* info=info);
+sNode*% reffence_node(sNode*% value, sInfo* info);
 sNode*% craete_fun_call(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info);
 string make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info);
 sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info);
@@ -650,6 +652,7 @@ sNode*% get_oct_number(sInfo* info);
 sNode*% get_hex_number(bool minus, sInfo* info);
 sNode*% create_int_node(int value, sInfo* info);
 list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false);
+sFun*,string create_pthread_fun(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, sInfo* info);

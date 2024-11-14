@@ -5,6 +5,7 @@ bool gComeLink = true;
 bool gComeC = true;
 bool gComeStr = false;
 bool gComeNet = false;
+bool gComePthread = false;
 char* gProgramName = NULL;
 bool gCommonHeader = false;
 bool gComeMalloc = false;
@@ -375,6 +376,9 @@ static bool linker(sInfo* info, list<string>* object_files)
     if(gComeGC) {
         command.append_str(" -lcomelang-gc -lgc ");
     }
+    if(gComePthread) {
+        command.append_str(" -lcomelang-pthread -lpthread ");
+    }
     if(gComeNet) {
         cmd = xsprintf("which apk 1> /dev/null 2>/dev/null");
         string cmd2 = xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null");
@@ -689,6 +693,9 @@ int come_main(int argc, char** argv) version 2
             else if(argv[i] === "-str") {
                 gComeStr = true;
             }
+            else if(argv[i] === "-pthread") {
+                gComePthread = true;
+            }
             else if(argv[i] === "-pico") {
                 output_source_file_flag = true;
                 output_object_file_flag = false;
@@ -901,6 +908,9 @@ int come_main(int argc, char** argv) version 2
             }
             else if(argv[i] === "-str") {
                 gComeStr = true;
+            }
+            else if(argv[i] === "-pthread") {
+                gComePthread = true;
             }
             else if(argv[i] === "-pico") {
                 output_source_file_flag = true;

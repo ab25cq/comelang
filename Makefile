@@ -13,7 +13,7 @@ LIBS= -lutil -ldl -lm -lrt
 #########################################
 all: comelang-sh
 
-comelang: 01main.c.o 02transpile.c.o 02constructors.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o libcomelang.a libcomelang-str.a libcomelang-net.a libcomelang-gc.a libcomelang-str-gc.a libcomelang-net-gc.a
+comelang: 01main.c.o 02transpile.c.o 02constructors.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o libcomelang.a libcomelang-str.a libcomelang-net.a libcomelang-pthread.a libcomelang-pthread-gc.a libcomelang-gc.a libcomelang-str-gc.a libcomelang-net-gc.a
 	comelang -o comelang 01main.c.o 02transpile.c.o 02constructors.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o $(CFLAGS) -L.
 
 01main.c.o: 01main.c
@@ -118,9 +118,17 @@ libcomelang-net.a: libcomelang-net.c
 	comelang -net -S -c libcomelang-net.c $(CFLAGS) 
 	ar rcs libcomelang-net.a libcomelang-net.c.o
 
+libcomelang-pthread.a: libcomelang-pthread.c
+	comelang -pthread -S -c libcomelang-pthread.c $(CFLAGS) 
+	ar rcs libcomelang-pthread.a libcomelang-pthread.c.o
+
 libcomelang-gc.a: libcomelang-gc.c
 	comelang -gc -S -c libcomelang-gc.c -DENABLE_GC $(CFLAGS) 
 	ar rcs libcomelang-gc.a libcomelang-gc.c.o
+
+libcomelang-pthread-gc.a: libcomelang-pthread-gc.c
+	comelang -gc -S -c libcomelang-pthread-gc.c -DENABLE_GC $(CFLAGS) 
+	ar rcs libcomelang-pthread-gc.a libcomelang-pthread-gc.c.o
 
 libcomelang-str-gc.a: libcomelang-str-gc.c
 	comelang -str -gc -g -S -c libcomelang-str-gc.c -DENABLE_GC $(CFLAGS) 
@@ -259,13 +267,16 @@ install:
 	$(INSTALL) -m 644 ./comelang-pico.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-str.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-net.h "$(DESTDIR)/include"
+	$(INSTALL) -m 644 ./comelang-pthread.h "$(DESTDIR)/include"
 	mkdir -p "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-str.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-net.a "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-pthread.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-gc.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-str-gc.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-net-gc.a "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-pthread-gc.a "$(DESTDIR)/lib"
 	mkdir -p "$(DESTDIR)/share/doc/comelang"
 	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/comelang/README.md"
 
@@ -273,7 +284,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang libcomelang.a libcomelang-str.a libcomelang-net.a libcomelang-gc.a libcomelang-str-gc.a libcomelang-net-gc.a *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c
+	rm -fR *.log *.c.o comelang libcomelang.a libcomelang-str.a libcomelang-net.a libcomelang-gc.a libcomelang-str-gc.a libcomelang-net-gc.a libcomelang-pthread.a libcomelang-pthread-gc.a *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 
@@ -287,8 +298,14 @@ uninstall:
 	rm -f "$(DESTDIR)"/include/comelang-pico.h
 	rm -f "$(DESTDIR)"/include/comelang-str.h
 	rm -f "$(DESTDIR)"/include/comelang-net.h
+	rm -f "$(DESTDIR)"/include/comelang-pthread.h
 	rm -f "$(DESTDIR)"/lib/libcomelang.a
 	rm -f "$(DESTDIR)"/lib/libcomelang-str.a
 	rm -f "$(DESTDIR)"/lib/libcomelang-net.a
+	rm -f "$(DESTDIR)"/lib/libcomelang-pthread.a
+	rm -f "$(DESTDIR)"/lib/libcomelang-gc.a
+	rm -f "$(DESTDIR)"/lib/libcomelang-str-gc.a
+	rm -f "$(DESTDIR)"/lib/libcomelang-net-gc.a
+	rm -f "$(DESTDIR)"/lib/libcomelang-pthread-gc.a
 	rm -f "$(DESTDIR)/share/doc/comelang/README.md"
 
