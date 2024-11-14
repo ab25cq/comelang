@@ -11,7 +11,7 @@ int fun(int a, int b)
 int main(int argc, char** argv)
 {
     int a = 0;
-    var thread = come fun(3, 4);
+    var thread = come a = fun(3, 4);
     
     come_join(thread);
     

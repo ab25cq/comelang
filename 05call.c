@@ -1314,15 +1314,15 @@ class sComeCallNode extends sNodeBase
         
         info->current_stack_frame_struct = current_stack_frame_struct;
         
-        come_params.add(current_stack_frame_value);
-        
         CVALUE*% fun_value = new CVALUE();
         
-        fun_value.c_value = fun_name;
+        fun_value.c_value = xsprintf("(((void* (*)(void*))(%s)))", fun_name);
         come_value.type = null;
         come_value.var = null;
         
         come_params.add(fun_value);
+        
+        come_params.add(current_stack_frame_value);
         
         buffer*% buf = new buffer();
         
