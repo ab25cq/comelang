@@ -95,6 +95,7 @@ struct sType
     bool mVarArgs;
     
     sNode*% mAlignas;
+    tuple1<sType*%>*% mChannelType;
     
     bool mUnsigned;
     bool mShort;
@@ -110,6 +111,7 @@ struct sType
     bool mRestrict;
     bool mImmutable;
     bool mHeap;
+    bool mChannel;
     bool mDummyHeap;
     bool mDelegate;
     bool mShare;
@@ -469,7 +471,7 @@ module sCurrentNodeModule
                     else if(type2->mArrayNum.length() == 1) {
                         sType*% type3 = clone type2;
                         type3->mArrayNum.reset();
-                        type3->mPointerNum++;
+                        type3->mPointerNum = 1;
                         type3->mOriginIsArray = true;
                         tuple2<string, sType*%>*% item2 = (string(value.mCValueName), type3);
                         current_stack.mFields.push_back(clone item2);
@@ -708,6 +710,7 @@ sNode*% parse_none(sInfo* info);
 /////////////////////////////////////////////////////////////////////
 /// 07var.c
 /////////////////////////////////////////////////////////////////////
+sNode*% expression_node(sInfo* info=info) version 95;
 sNode*% store_var(string name, list<string>*% multiple_assign, list<tuple3<sType*%, string, sNode*%>*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info);
 sNode*% create_load_var(char* var_name, sInfo* info=info);
 sNode*% parse_array_initializer(sInfo* info=info);

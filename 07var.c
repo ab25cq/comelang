@@ -206,21 +206,19 @@ class sStoreNode extends sNodeBase
             if(left_type->mArrayNum.length() > 0) {
                 add_come_code(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
                 
-                //if(!left_type->mStatic) {
-                    add_come_code(info, "memset(&%s, 0, sizeof(%s)", var_->mCValueName, make_type_name_string(left_type, no_static:true));
-                    
-                    foreach(it, left_type->mArrayNum) {
-                        if(!node_compile(it)) {
-                            err_msg(info, "invalid array num");
-                            exit(1);
-                        }
-                        
-                        CVALUE*% come_value = get_value_from_stack(-1, info);
-                        dec_stack_ptr(1, info);
-                        add_come_code(info, "*(%s)", come_value.c_value);
+                add_come_code(info, "memset(&%s, 0, sizeof(%s)", var_->mCValueName, make_type_name_string(left_type, no_static:true));
+                
+                foreach(it, left_type->mArrayNum) {
+                    if(!node_compile(it)) {
+                        err_msg(info, "invalid array num");
+                        exit(1);
                     }
-                    add_come_code(info, ");\n");
-                //}
+                    
+                    CVALUE*% come_value = get_value_from_stack(-1, info);
+                    dec_stack_ptr(1, info);
+                    add_come_code(info, "*(%s)", come_value.c_value);
+                }
+                add_come_code(info, ");\n");
             }
             else {
                 add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
@@ -270,6 +268,7 @@ class sStoreNode extends sNodeBase
             
             bool array_initializer = self.right_value.kind() === "sArrayInitializer";
             bool struct_initializer = self.right_value.kind() === "sStructInitializer";
+            bool new_channel = self.right_value.kind() === "sNewChannel";
             
             CVALUE*% right_value = get_value_from_stack(-1, info);
             sType* right_type = right_value.type;
@@ -347,6 +346,19 @@ class sStoreNode extends sNodeBase
                 
                 add_come_last_code(info, "%s", come_value.c_value);
             }
+            else if(left_type->mChannel && new_channel) {
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                
+                CVALUE*% come_value = new CVALUE();
+                come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
+                come_value.type = new sType("void");
+                come_value.mPointerNum = 1;
+                come_value.var = var_;
+                
+                info.stack.push_back(come_value);
+                
+                add_come_last_code(info, "%s", come_value.c_value);
+            }
             else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
             {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
@@ -395,6 +407,8 @@ class sStoreNode extends sNodeBase
             if(!node_compile(self.right_value)) {
                 return false;
             }
+            
+            bool new_channel = self.right_value.kind() === "sNewChannel";
             
             CVALUE*% right_value = get_value_from_stack(-1, info);
             sType* right_type = right_value.type;
@@ -550,6 +564,17 @@ class sStoreNode extends sNodeBase
                 
                 add_come_last_code(info, "%s", come_value.c_value);
             }
+            else if(left_type->mChannel && new_channel) {
+                CVALUE*% come_value = new CVALUE();
+                come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
+                come_value.type = new sType("void");
+                come_value.mPointerNum = 1;
+                come_value.var = var_;
+                
+                info.stack.push_back(come_value);
+                
+                add_come_last_code(info, "%s", come_value.c_value);
+            }
             else {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
@@ -572,6 +597,212 @@ class sStoreNode extends sNodeBase
         
         return true;
     }
+};
+
+class sNewChannel extends sNodeBase
+{
+    new(sInfo* info)
+    {
+        self.super();
+    }
+    
+    string kind()
+    {
+        return string("sNewChannel");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% node = create_null_node(info);
+        
+        if(!node_compile(node)) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+};
+
+class sWriteChannelNode extends sNodeBase
+{
+    new(string name, sNode*% right_value, sInfo* info)
+    {
+        self.super();
+        
+        string self.name = string(name);
+        sNode*% self.right_value = right_value;
+    }
+    
+    string kind()
+    {
+        return string("sWriteChannelNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        if(!node_compile(self.right_value)) {
+            return false;
+        }
+        
+        CVALUE*% right_value = get_value_from_stack(-1, info);
+        sType* right_type = right_value.type;
+        dec_stack_ptr(1, info);
+        
+        sClass* current_stack_frame_struct = info->current_stack_frame_struct;
+        
+        string c_value_name = null;
+        if(current_stack_frame_struct && info.lv_table.mVars[self.name]?? == null) {
+            sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
+            
+            if(parent_var != null) {
+                if(parent_var->mFunName !== info.come_fun.mName) {
+                    CVALUE*% come_value = new CVALUE();
+                    
+                    sType* type = parent_var->mType;
+                    
+                    if(parent_var->mType->mOriginIsArray) {
+                        c_value_name = xsprintf("(parent->%s)", parent_var->mCValueName);
+                    }
+                    else {
+                        c_value_name = xsprintf("(*(parent->%s))", parent_var->mCValueName);
+                    }
+                }
+            }
+        }
+        
+        sVar* var_ = get_variable_from_table(info.lv_table, self.name);
+        
+        if(var_ == null) {
+            var_ = get_variable_from_table(info.gv_table, self.name);
+            
+            if(var_ == null) {
+                err_msg(info, "var not found(%s)(X) at storing variable\n", self.name);
+                return true;
+            }
+        }
+        
+        if(c_value_name == null) {
+            c_value_name = var_->mCValueName;
+        }
+        
+        sType*% left_type = clone var_->mType;
+        
+        sType*% channel_type = left_type->mChannelType.v1;
+        
+        static int var_num = 0;
+        var_num++;
+        
+        if(right_value.type->mHeap) {
+            err_msg(info, "channel can't get heap type");
+            return false;
+        }
+    
+        buffer*% buf = new buffer();
+        
+        buf.append_str(xsprintf("char __channel_buf%d[sizeof(%s)+1];\n", var_num, make_type_name_string(channel_type)));
+        buf.append_str(xsprintf("%s* __channel_p%d = __channel_buf%d;\n", make_type_name_string(channel_type), var_num, var_num));
+        buf.append_str(xsprintf("*__channel_p%d = %s;\n", var_num, right_value.c_value));
+        
+        add_come_code(info, buf.to_string());
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = xsprintf("if(write(%s[1], __channel_buf%d, sizeof(%s)) < 0) { puts(\"channel write error\"); exit(2); }", c_value_name, var_num, make_type_name_string(channel_type));
+        
+        come_value.type = new sType("void");
+        come_value.type->mPointerNum = 1;
+        come_value.var = null;
+        
+        info.stack.push_back(come_value);
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        return true;
+    }
+    
+};
+
+class sReadChannelNode extends sNodeBase
+{
+    new(string name, sInfo* info)
+    {
+        self.super();
+        
+        string self.name = string(name);
+    }
+    
+    string kind()
+    {
+        return string("sReadChannelNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sVar* var_ = get_variable_from_table(info.lv_table, self.name);
+        
+        if(var_ == null) {
+            var_ = get_variable_from_table(info.gv_table, self.name);
+            
+            if(var_ == null) {
+                err_msg(info, "var not found(%s)(X) at storing variable\n", self.name);
+                return true;
+            }
+        }
+        
+        sClass* current_stack_frame_struct = info->current_stack_frame_struct;
+        
+        string c_value_name = null;
+        if(current_stack_frame_struct && info.lv_table.mVars[self.name]?? == null) {
+            sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
+            
+            if(parent_var != null) {
+                if(parent_var->mFunName !== info.come_fun.mName) {
+                    CVALUE*% come_value = new CVALUE();
+                    
+                    sType* type = parent_var->mType;
+                    
+                    if(parent_var->mType->mOriginIsArray) {
+                        c_value_name = xsprintf("(parent->%s)", parent_var->mCValueName);
+                    }
+                    else {
+                        c_value_name = xsprintf("(*(parent->%s))", parent_var->mCValueName);
+                    }
+                }
+            }
+        }
+        
+        if(c_value_name == null) {
+            c_value_name = var_->mCValueName;
+        }
+        
+        sType*% var_type = clone var_->mType;
+        
+        if(!var_type->mChannel) {
+            err_msg(info, "require right type is channel");
+            return false;
+        }
+        
+        sType*% channel_type = var_type->mChannelType.v1;
+            
+        static int var_num = 0;
+        var_num++;
+            
+        add_come_code_at_function_head(info, "char __channel_bufl%d[sizeof(%s)+1];\n", var_num, make_type_name_string(channel_type));
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = xsprintf("((read(%s[0], __channel_bufl%d, sizeof(%s)) < 0 ? puts(\"read channel error\"), exit(2):0), *(%s*)__channel_bufl%d)", c_value_name, var_num, make_type_name_string(channel_type), make_type_name_string(channel_type), var_num);
+        come_value.type = clone channel_type;
+        come_value.var = null;
+        
+        info.stack.push_back(come_value);
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        return true;
+    }
+    
 };
 
 sNode*% store_var(string name, list<string>*% multiple_assign, list<tuple3<sType*%, string, sNode*%>*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info)
@@ -1176,6 +1407,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             exit(1);
         }
     }
+    else if(gComePthread && buf === "__channel__") {
+        return new sNewChannel(info) implements sNode;
+    }
     else if(multiple_declare) {
         info.p = head;
         info.sline = head_sline;
@@ -1318,6 +1552,20 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         
         return new sStoreNode(string(buf)@name, null@multiple_assign, null@multiple_declare, null@type, false@alloc, right_value, info) implements sNode;
     }
+    else if(!is_type_name_flag && *info->p == '<' && *(info->p+1) == '-') {
+        info.p+=2;
+        skip_spaces_and_lf();
+        
+        parse_sharp();
+        sNode*% right_value = expression();
+        parse_sharp();
+        
+        right_value = post_position_operator(right_value, info);
+        
+        parse_sharp();
+        
+        return new sWriteChannelNode(string(buf)@name, right_value, info) implements sNode;
+    }
     else if(!is_type_name_flag || info.funcs[buf]??) {
         sNode*% node = new sLoadNode(string(buf)@name, info) implements sNode;
         
@@ -1400,3 +1648,26 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     exit(2);
 }
 
+sNode*% expression_node(sInfo* info=info) version 95
+{
+    skip_spaces_and_lf();
+    parse_sharp();
+    
+    sNode*% node;
+    
+    if(strncmp(info->p, "<-", strlen("<-")) == 0) {
+        info->p += strlen("<-");
+        skip_spaces_and_lf();
+        
+        parse_sharp();
+        string name = parse_word();
+        parse_sharp();
+        
+        return new sReadChannelNode(name, info) implements sNode;
+    }
+    else {
+        node = inherit(info);
+    }
+    
+    return node;
+}

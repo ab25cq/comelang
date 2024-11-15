@@ -1811,7 +1811,7 @@ sNode*% comparison_exp(sInfo* info)
             
             return new sGtNode(node, right, false@quote, info) implements sNode;
         }
-        else if(*info->p == '<' && *(info->p+1) != '<') {
+        else if(*info->p == '<' && *(info->p+1) != '<' && *(info->p+1) != '-') {
             info->p++;
             skip_spaces_and_lf();
 
@@ -1843,7 +1843,7 @@ sNode*% comparison_exp(sInfo* info)
             
             return new sGtNode(node, right, true@quote, info) implements sNode;
         }
-        else if(*info->p == '\\' && *(info->p+1) == '<' && *(info->p+2) != '<') {
+        else if(*info->p == '\\' && *(info->p+1) == '<' && *(info->p+2) != '<' && *(info->p+2) != '-') {
             info->p+=2;
             skip_spaces_and_lf();
 

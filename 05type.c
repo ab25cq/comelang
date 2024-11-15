@@ -1936,6 +1936,13 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         
         heap = true;
     }
+    bool channel = false;
+    if(gComePthread && *info->p == '@') {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        channel = true;
+    }
     
     bool lambda_flag = false;
     {
@@ -2195,6 +2202,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         result_type->mShort = result_type->mShort || short_;
         result_type->mPointerNum = pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
+        result_type->mChannel = result_type->mChannel || channel;
         
         var_name = parse_word();
         
@@ -2265,6 +2273,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
         result_type->mShort = result_type->mShort || short_;
         result_type->mPointerNum += pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
+        result_type->mChannel = result_type->mChannel || channel;
         
         if(xisalnum(*info.p) || *info->p == '_') {
             var_name = parse_word();
@@ -2392,6 +2401,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
+            type->mChannel = type->mChannel || channel;
         }
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
@@ -2418,6 +2428,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
+            type->mChannel = type->mChannel || channel;
         }
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
@@ -2444,6 +2455,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
+            type->mChannel = type->mChannel || channel;
         }
         else if(*info->p == '<') {
             info->p++;
@@ -2511,6 +2523,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
+            type->mChannel = type->mChannel || channel;
         }
         else {
             if(struct_) {
@@ -2548,6 +2561,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
+            type->mChannel = type->mChannel || channel;
         }
         
         skip_pointer_attribute();
@@ -2627,6 +2641,16 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type->mHeap = true;
             if(type->mNoSolvedGenericsType.v1) {
                 type->mNoSolvedGenericsType.v1.mHeap = true;
+            }
+        }
+        
+        if(gComePthread && *info->p == '@') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            type->mChannel = true;
+            if(type->mNoSolvedGenericsType.v1) {
+                type->mNoSolvedGenericsType.v1.mChannel = true;
             }
         }
         
@@ -2746,7 +2770,15 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
     
     parse_sharp();
     
-    if(type->mException) {
+    if(type->mChannel) {
+        sType*% type_before = clone type;
+        type = new sType("int");
+        type->mArrayNum = [ create_int_node(2@value, info) ];
+        type->mChannelType = new tuple1<sType*%>;
+        type->mChannelType.v1 = type_before;
+        type->mChannel = true;
+    }
+    else if(type->mException) {
         sType*% type2 = new sType("tuple2");
         type2->mGenericsTypes[0] = new sType("generics_type0");
         type2->mGenericsTypes[1] = new sType("generics_type1");

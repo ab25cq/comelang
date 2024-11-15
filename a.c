@@ -10,12 +10,19 @@ int fun(int a, int b)
 
 int main(int argc, char** argv)
 {
-    int a = 0;
-    var thread = come a = fun(3, 4);
+    int@ a = __channel__;
+    
+    var thread = come {
+        fun(1, 2);
+        printf("thread %p\n", "ABC");
+        a <- 111;
+        a <- 222;
+    }
+    
+    
+    printf("%d %d\n", <-a, <-a);
     
     come_join(thread);
-    
-    printf("a %d\n", a);
     
     return 0;
 }

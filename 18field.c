@@ -153,6 +153,8 @@ class sStoreFieldNode extends sNodeBase
             return false;
         }
         
+        bool new_channel = right.kind() === "sNewChannel";
+        
         CVALUE*% right_value = get_value_from_stack(-1, info);
         sType* right_type = right_value.type;
         
@@ -353,6 +355,23 @@ class sStoreFieldNode extends sNodeBase
                 err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum);
                 return false;
             }
+        }
+        else if(field_type->mChannel && new_channel) {
+            if(child_field_is_pointer) {
+                come_value.c_value = xsprintf("(pipe(%s->%s), %s);\n", left_value.c_value, name, right_value.c_value);
+            }
+            else {
+                come_value.c_value = xsprintf("(pipe(%s.%s), %s);\n", left_value.c_value, name, right_value.c_value);
+            }
+            
+            come_value.type = clone right_value.type;
+            come_value.var = null;
+            
+            info.stack.push_back(come_value);
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+        
+            return true;
         }
         else {
             if(left_value.type->mPointerNum == 1) {

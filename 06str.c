@@ -2352,7 +2352,8 @@ sNode*% expression_node(sInfo* info) version 96
         }
     }
     else {
-        inherit(info);
+        sNode*% node = inherit(info);
+        return node;
     }
     
     return (sNode*%)null;

@@ -1261,12 +1261,18 @@ void free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         sType* type = p->mType;
         sClass* klass = type->mClass;
         
+        /*
+        if(type->mChannel) {
+            type = type->mChannelType.v1;
+        }
+        else 
+        */
         if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
         {
-            free_object(p->mType, p->mCValueName, false@no_decrement, true@no_free, info, false, true);
+            free_object(type, p->mCValueName, false@no_decrement, true@no_free, info, false, true);
         }
         else if(type->mHeap && p->mCValueName) {
-            free_object(p->mType, p->mCValueName, false@no_decrement, false@no_free, info);
+            free_object(type, p->mCValueName, false@no_decrement, false@no_free, info);
         }
         else if(klass->mStruct && p->mCValueName && type->mAllocaValue && !type->mNoCallingDestructor) {
             string c_value = xsprintf("(&%s)", p->mCValueName);
@@ -1345,6 +1351,12 @@ bool existance_free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         sVar* p = table->mVars[it]??;
         sType* type = p->mType;
         sClass* klass = type->mClass;
+        
+        /*
+        if(type->mChannel) {
+            type = type->mChannelType.v1;
+        }
+        */
         
         if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
         {
