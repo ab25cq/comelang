@@ -1261,13 +1261,11 @@ void free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         sType* type = p->mType;
         sClass* klass = type->mClass;
         
-        /*
         if(type->mChannel) {
-            type = type->mChannelType.v1;
+            add_come_code(info, "(%s[0]) ? close(%s[0]):0;\n", p->mCValueName, p->mCValueName);
+            add_come_code(info, "(%s[1]) ? close(%s[1]):0;\n", p->mCValueName, p->mCValueName);
         }
-        else 
-        */
-        if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
+        else if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
         {
             free_object(type, p->mCValueName, false@no_decrement, true@no_free, info, false, true);
         }
@@ -1352,13 +1350,10 @@ bool existance_free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         sType* type = p->mType;
         sClass* klass = type->mClass;
         
-        /*
         if(type->mChannel) {
-            type = type->mChannelType.v1;
+            return true;
         }
-        */
-        
-        if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
+        else if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
         {
             return true;
         }

@@ -8,13 +8,18 @@ int fun(int a, int b)
     return 3;
 }
 
+struct sData
+{
+    int@ a;
+};
+
 int main(int argc, char** argv)
 {
+    sData data;
     int@ a = __channel__;
     
     var thread = come {
         fun(1, 2);
-        printf("thread %p\n", "ABC");
         a <- 111;
         a <- 222;
     }

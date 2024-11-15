@@ -710,6 +710,7 @@ sNode*% parse_none(sInfo* info);
 /////////////////////////////////////////////////////////////////////
 /// 07var.c
 /////////////////////////////////////////////////////////////////////
+sNode*% post_position_operator(sNode*% node, sInfo* info) version 07;
 sNode*% expression_node(sInfo* info=info) version 95;
 sNode*% store_var(string name, list<string>*% multiple_assign, list<tuple3<sType*%, string, sNode*%>*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info);
 sNode*% create_load_var(char* var_name, sInfo* info=info);

@@ -1438,6 +1438,7 @@ struct sNode* expression_node_v96(struct sInfo* info);
 struct sNode* parse_tuple(struct sInfo* info);
 struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
+struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
 struct sNode* expression_node_v95(struct sInfo* info);
 struct sNode* store_var(char* name, struct list$1charph* multiple_assign, struct list$1tuple3$3sTypephcharphsNodephph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info);
 struct sNode* create_load_var(char* var_name, struct sInfo* info);
@@ -6963,7 +6964,11 @@ struct sType* type2_398;
         p_394=map$2charphsVarphp_operator_load_element(table->mVars,it_391);
         type_395=p_394->mType;
         klass_396=type_395->mClass;
-        if(        ret_value!=((void*)0)&&p_394->mCValueName!=((void*)0)&&string_operator_equals(p_394->mCValueName,ret_value->mCValueName)&&type_395->mHeap) {
+        if(        type_395->mChannel) {
+            add_come_code(info,"(%s[0]) ? close(%s[0]):0;\n",p_394->mCValueName,p_394->mCValueName);
+            add_come_code(info,"(%s[1]) ? close(%s[1]):0;\n",p_394->mCValueName,p_394->mCValueName);
+        }
+        else if(        ret_value!=((void*)0)&&p_394->mCValueName!=((void*)0)&&string_operator_equals(p_394->mCValueName,ret_value->mCValueName)&&type_395->mHeap) {
             free_object(type_395,p_394->mCValueName,(_Bool)0,(_Bool)1,info,(_Bool)0,(_Bool)1,(_Bool)0);
         }
         else if(        type_395->mHeap&&p_394->mCValueName) {
@@ -7167,6 +7172,7 @@ _Bool __result160__;
 _Bool __result161__;
 _Bool __result162__;
 _Bool __result163__;
+_Bool __result164__;
     if(    gComeGC||gComeC) {
         return (_Bool)1;
     }
@@ -7174,27 +7180,32 @@ _Bool __result163__;
         p_409=map$2charphsVarphp_operator_load_element(table->mVars,it_408);
         type_410=p_409->mType;
         klass_411=type_410->mClass;
-        if(        ret_value!=((void*)0)&&p_409->mCValueName!=((void*)0)&&string_operator_equals(p_409->mCValueName,ret_value->mCValueName)&&type_410->mHeap) {
+        if(        type_410->mChannel) {
             __result160__ = (_Bool)1;
             /*i*/come_call_finalizer3(o2_saved_407,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);
             return __result160__;
         }
+        else if(        ret_value!=((void*)0)&&p_409->mCValueName!=((void*)0)&&string_operator_equals(p_409->mCValueName,ret_value->mCValueName)&&type_410->mHeap) {
+            __result161__ = (_Bool)1;
+            /*i*/come_call_finalizer3(o2_saved_407,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);
+            return __result161__;
+        }
         else if(        type_410->mHeap&&p_409->mCValueName) {
             if(            type_410->mFunctionParam) {
-                __result161__ = (_Bool)1;
-                /*i*/come_call_finalizer3(o2_saved_407,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);
-                return __result161__;
-            }
-            else {
                 __result162__ = (_Bool)1;
                 /*i*/come_call_finalizer3(o2_saved_407,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);
                 return __result162__;
             }
+            else {
+                __result163__ = (_Bool)1;
+                /*i*/come_call_finalizer3(o2_saved_407,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);
+                return __result163__;
+            }
         }
         else if(        klass_411->mStruct&&p_409->mCValueName&&type_410->mAllocaValue&&!type_410->mNoCallingDestructor) {
-            __result163__ = (_Bool)1;
+            __result164__ = (_Bool)1;
             /*i*/come_call_finalizer3(o2_saved_407,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);
-            return __result163__;
+            return __result164__;
         }
     }
     /*i*/come_call_finalizer3(o2_saved_407,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);

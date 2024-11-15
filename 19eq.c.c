@@ -1562,6 +1562,7 @@ struct sNode* expression_node_v96(struct sInfo* info);
 struct sNode* parse_tuple(struct sInfo* info);
 struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
+struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
 struct sNode* expression_node_v95(struct sInfo* info);
 struct sNode* store_var(char* name, struct list$1charph* multiple_assign, struct list$1tuple3$3sTypephcharphsNodephph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info);
 struct sNode* create_load_var(char* var_name, struct sInfo* info);
@@ -5802,7 +5803,7 @@ memset(&quote_233, 0, sizeof(_Bool));
         return __result172__;
         if(right_node_234) { right_node_234 = come_decrement_ref_count2(right_node_234, ((struct sNode*)right_node_234)->finalize, ((struct sNode*)right_node_234)->_protocol_obj, 0, 0, 0, (void*)0); } 
     }
-    __result173__ = gComeFunResultObject = __result_obj__ = ((struct sNode*)(__right_value381=post_position_operator((struct sNode*)come_increment_ref_count(node),info)));
+    __result173__ = gComeFunResultObject = __result_obj__ = ((struct sNode*)(__right_value381=post_position_operator_v7((struct sNode*)come_increment_ref_count(node),info)));
     if(node) { node = come_decrement_ref_count2(node, ((struct sNode*)node)->finalize, ((struct sNode*)node)->_protocol_obj, 0, 0, 0, (void*)0); } 
     if(__right_value381) { __right_value381 = come_decrement_ref_count2(__right_value381, ((struct sNode*)__right_value381)->finalize, ((struct sNode*)__right_value381)->_protocol_obj, 1, 0, 0, __result_obj__); } 
     gComeFunResultObject = (void*)0;

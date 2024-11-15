@@ -2244,6 +2244,15 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
                 
                 source.append_str(source2);
             }
+            else if(field_type->mChannel) {
+                char source2[1024];
+                snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[0] != ((void*)0)) { close(self.%s[0]); }", name, name);
+                source.append_str(source2);
+                
+                snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[1] != ((void*)0)) { close(self.%s[1]); }", name, name);
+                
+                source.append_str(source2);
+            }
         }
         
         source.append_char('}');

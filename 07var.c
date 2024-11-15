@@ -203,7 +203,10 @@ class sStoreNode extends sNodeBase
             
             sType*% left_type = clone var_->mType;
             
-            if(left_type->mArrayNum.length() > 0) {
+            if(left_type->mChannel) {
+                add_come_code_at_function_head2(info, "memset(%s, 0, sizeof(int)*2);\n", var_->mCValueName);
+            }
+            else if(left_type->mArrayNum.length() > 0) {
                 add_come_code(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
                 
                 add_come_code(info, "memset(&%s, 0, sizeof(%s)", var_->mCValueName, make_type_name_string(left_type, no_static:true));
@@ -348,6 +351,8 @@ class sStoreNode extends sNodeBase
             }
             else if(left_type->mChannel && new_channel) {
                 add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                
+                add_come_code_at_function_head2(info, "memset(%s, 0, sizeof(int)*2);\n", var_->mCValueName);
                 
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
@@ -626,11 +631,11 @@ class sNewChannel extends sNodeBase
 
 class sWriteChannelNode extends sNodeBase
 {
-    new(string name, sNode*% right_value, sInfo* info)
+    new(sNode*% exp, sNode*% right_value, sInfo* info)
     {
         self.super();
         
-        string self.name = string(name);
+        sNode*% self.exp = exp;
         sNode*% self.right_value = right_value;
     }
     
@@ -641,6 +646,13 @@ class sWriteChannelNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        if(!node_compile(self.exp)) {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
         if(!node_compile(self.right_value)) {
             return false;
         }
@@ -649,44 +661,7 @@ class sWriteChannelNode extends sNodeBase
         sType* right_type = right_value.type;
         dec_stack_ptr(1, info);
         
-        sClass* current_stack_frame_struct = info->current_stack_frame_struct;
-        
-        string c_value_name = null;
-        if(current_stack_frame_struct && info.lv_table.mVars[self.name]?? == null) {
-            sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
-            
-            if(parent_var != null) {
-                if(parent_var->mFunName !== info.come_fun.mName) {
-                    CVALUE*% come_value = new CVALUE();
-                    
-                    sType* type = parent_var->mType;
-                    
-                    if(parent_var->mType->mOriginIsArray) {
-                        c_value_name = xsprintf("(parent->%s)", parent_var->mCValueName);
-                    }
-                    else {
-                        c_value_name = xsprintf("(*(parent->%s))", parent_var->mCValueName);
-                    }
-                }
-            }
-        }
-        
-        sVar* var_ = get_variable_from_table(info.lv_table, self.name);
-        
-        if(var_ == null) {
-            var_ = get_variable_from_table(info.gv_table, self.name);
-            
-            if(var_ == null) {
-                err_msg(info, "var not found(%s)(X) at storing variable\n", self.name);
-                return true;
-            }
-        }
-        
-        if(c_value_name == null) {
-            c_value_name = var_->mCValueName;
-        }
-        
-        sType*% left_type = clone var_->mType;
+        sType*% left_type = clone come_value.type;
         
         sType*% channel_type = left_type->mChannelType.v1;
         
@@ -706,17 +681,17 @@ class sWriteChannelNode extends sNodeBase
         
         add_come_code(info, buf.to_string());
         
-        CVALUE*% come_value = new CVALUE();
+        CVALUE*% come_value2 = new CVALUE();
         
-        come_value.c_value = xsprintf("if(write(%s[1], __channel_buf%d, sizeof(%s)) < 0) { puts(\"channel write error\"); exit(2); }", c_value_name, var_num, make_type_name_string(channel_type));
+        come_value2.c_value = xsprintf("if(write(%s[1], __channel_buf%d, sizeof(%s)) < 0) { puts(\"channel write error\"); exit(2); }", come_value.c_value, var_num, make_type_name_string(channel_type));
         
-        come_value.type = new sType("void");
-        come_value.type->mPointerNum = 1;
-        come_value.var = null;
+        come_value2.type = new sType("void");
+        come_value2.type->mPointerNum = 1;
+        come_value2.var = null;
         
-        info.stack.push_back(come_value);
+        info.stack.push_back(come_value2);
         
-        add_come_last_code(info, "%s", come_value.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         return true;
     }
@@ -725,11 +700,11 @@ class sWriteChannelNode extends sNodeBase
 
 class sReadChannelNode extends sNodeBase
 {
-    new(string name, sInfo* info)
+    new(sNode*% exp, sInfo* info)
     {
         self.super();
         
-        string self.name = string(name);
+        sNode*% self.exp = exp;
     }
     
     string kind()
@@ -739,44 +714,16 @@ class sReadChannelNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sVar* var_ = get_variable_from_table(info.lv_table, self.name);
+        sNode*% exp = self.exp;
         
-        if(var_ == null) {
-            var_ = get_variable_from_table(info.gv_table, self.name);
-            
-            if(var_ == null) {
-                err_msg(info, "var not found(%s)(X) at storing variable\n", self.name);
-                return true;
-            }
+        if(!node_compile(exp)) {
+            return false;
         }
         
-        sClass* current_stack_frame_struct = info->current_stack_frame_struct;
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
         
-        string c_value_name = null;
-        if(current_stack_frame_struct && info.lv_table.mVars[self.name]?? == null) {
-            sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
-            
-            if(parent_var != null) {
-                if(parent_var->mFunName !== info.come_fun.mName) {
-                    CVALUE*% come_value = new CVALUE();
-                    
-                    sType* type = parent_var->mType;
-                    
-                    if(parent_var->mType->mOriginIsArray) {
-                        c_value_name = xsprintf("(parent->%s)", parent_var->mCValueName);
-                    }
-                    else {
-                        c_value_name = xsprintf("(*(parent->%s))", parent_var->mCValueName);
-                    }
-                }
-            }
-        }
-        
-        if(c_value_name == null) {
-            c_value_name = var_->mCValueName;
-        }
-        
-        sType*% var_type = clone var_->mType;
+        sType*% var_type = clone come_value.type;
         
         if(!var_type->mChannel) {
             err_msg(info, "require right type is channel");
@@ -790,15 +737,15 @@ class sReadChannelNode extends sNodeBase
             
         add_come_code_at_function_head(info, "char __channel_bufl%d[sizeof(%s)+1];\n", var_num, make_type_name_string(channel_type));
         
-        CVALUE*% come_value = new CVALUE();
+        CVALUE*% come_value2 = new CVALUE();
         
-        come_value.c_value = xsprintf("((read(%s[0], __channel_bufl%d, sizeof(%s)) < 0 ? puts(\"read channel error\"), exit(2):0), *(%s*)__channel_bufl%d)", c_value_name, var_num, make_type_name_string(channel_type), make_type_name_string(channel_type), var_num);
-        come_value.type = clone channel_type;
-        come_value.var = null;
+        come_value2.c_value = xsprintf("((read(%s[0], __channel_bufl%d, sizeof(%s)) < 0 ? puts(\"read channel error\"), exit(2):0), *(%s*)__channel_bufl%d)", come_value.c_value, var_num, make_type_name_string(channel_type), make_type_name_string(channel_type), var_num);
+        come_value2.type = clone channel_type;
+        come_value2.var = null;
         
-        info.stack.push_back(come_value);
+        info.stack.push_back(come_value2);
         
-        add_come_last_code(info, "%s", come_value.c_value);
+        add_come_last_code(info, "%s", come_value2.c_value);
         
         return true;
     }
@@ -1552,20 +1499,6 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         
         return new sStoreNode(string(buf)@name, null@multiple_assign, null@multiple_declare, null@type, false@alloc, right_value, info) implements sNode;
     }
-    else if(!is_type_name_flag && *info->p == '<' && *(info->p+1) == '-') {
-        info.p+=2;
-        skip_spaces_and_lf();
-        
-        parse_sharp();
-        sNode*% right_value = expression();
-        parse_sharp();
-        
-        right_value = post_position_operator(right_value, info);
-        
-        parse_sharp();
-        
-        return new sWriteChannelNode(string(buf)@name, right_value, info) implements sNode;
-    }
     else if(!is_type_name_flag || info.funcs[buf]??) {
         sNode*% node = new sLoadNode(string(buf)@name, info) implements sNode;
         
@@ -1660,14 +1593,34 @@ sNode*% expression_node(sInfo* info=info) version 95
         skip_spaces_and_lf();
         
         parse_sharp();
-        string name = parse_word();
+        sNode*% exp = expression();
         parse_sharp();
         
-        return new sReadChannelNode(name, info) implements sNode;
+        return new sReadChannelNode(exp, info) implements sNode;
     }
     else {
         node = inherit(info);
     }
     
     return node;
+}
+
+sNode*% post_position_operator(sNode*% node, sInfo* info) version 07
+{
+    if(!node->terminated() && strncmp(info->p, "<-", strlen("<-")) == 0) {
+        info.p+=2;
+        skip_spaces_and_lf();
+        
+        parse_sharp();
+        sNode*% right_value = expression();
+        parse_sharp();
+        
+        right_value = post_position_operator(right_value, info);
+        
+        parse_sharp();
+        
+        return new sWriteChannelNode(node, right_value, info) implements sNode;
+    }
+    
+    return inherit(node, info);
 }
