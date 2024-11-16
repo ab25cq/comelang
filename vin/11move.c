@@ -282,17 +282,10 @@ void ViWin*::gotoBraceEnd(ViWin* self, Vi* nvi) version 11
 
 void ViWin*::gotoFunctionTop(ViWin* self, Vi* nvi) 
 {
-    come_regex*% reg = new come_regex("^{").rescue {
-        null
-    }
-    come_regex*% reg2 = new come_regex("^[a-zA-Z].+{$").rescue {
-        null
-    }
-
     int it2 = 0;
     foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
-        if((reg && it.to_string().match(reg))
-            || (reg2 && it.to_string().match(reg2)))
+        if((it.to_string().match(/^{/))
+            || (it.to_string().match(/^[a-zA-Z].*{$/)))
         {
             self.saveReturnPoint();
 

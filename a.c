@@ -17,6 +17,7 @@ int main(int argc, char** argv)
 {
     sData data;
     int@ a = __channel__;
+    int@ b = __channel__;
     
     var thread = come {
         fun(1, 2);
@@ -24,10 +25,19 @@ int main(int argc, char** argv)
         a <- 222;
     }
     
-    
-    printf("%d %d\n", <-a, <-a);
+    b <- 222;
     
     come_join(thread);
+    
+    come_poll(1) {
+        a {
+            printf("a %d\n", <-a);
+        }
+        
+        b {
+            printf("b %d\n", <-b);
+        }
+    }
     
     return 0;
 }

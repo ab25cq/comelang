@@ -1,4 +1,5 @@
 #include "common.h"
+#include <poll.h>
 
 class sReturnNode extends sNodeBase
 {
@@ -1413,6 +1414,69 @@ class sComeJoinNode extends sNodeBase
     }
 };
 
+class sComePollNode extends sNodeBase
+{
+    new(list<sNode*%>*% vars, list<sBlock*%>*% blocks, int time_out, sInfo* info) {
+        self.super();
+        
+        list<sNode*%>*% self.vars = vars;
+        list<sBlock*%>*% self.blocks = blocks;
+        int self.time_out = time_out;
+    }
+    
+    string kind()
+    {
+        return string("sComePollNode");
+    }
+    
+    bool terminated()
+    {
+        return true;
+    }
+    
+    bool compile(sInfo* info)
+    {
+        list<sNode*%>*% vars = self.vars;
+        list<sBlock*%>*% blocks = self.blocks;
+        int time_out = self.time_out;
+        
+        static int var_num = 0;
+        var_num++;
+        
+        add_come_code(info, "struct pollfd fds%d[%d];\n", var_num, vars.length());
+        
+        int n = 0;
+        foreach(it, self.vars) {
+            if(!node_compile(it)) {
+                return false;
+            }
+            
+            CVALUE*% come_value = get_value_from_stack(-1, info);
+            dec_stack_ptr(1, info);
+            
+            add_come_code(info, "fds%d[%d].fd = %s[0];\n", var_num, n, come_value.c_value);
+            add_come_code(info, "fds%d[%d].events = %d;\n",var_num, n, POLLIN);
+            n++;
+        }
+        
+        add_come_code(info, "int poll_ret%d = poll(fds%d, %d, %d);\n", var_num, var_num, vars.length(), time_out);
+        
+        add_come_code(info, "if(poll_ret%d > 0) {\n", var_num);
+        int n = 0;
+        foreach(it, self.vars) {
+            add_come_code(info, "if(fds%d[%d].revents & %d) {\n", var_num, n, POLLIN);
+            transpile_block(blocks[n], null@param_types, null@param_names, info);
+            add_come_code(info, "}\n");
+            
+            n++;
+        }
+        
+        add_come_code(info, "}\n");
+        
+        return true;
+    }
+};
+
 sNode*% craete_fun_call(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
 {
     sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
@@ -2023,6 +2087,41 @@ sNode*% expression_node(sInfo* info=info) version 97
             expected_next_character(')', info);
             
             return new sComeJoinNode(node, info) implements sNode;
+        }
+        else if(gComePthread && buf === "come_poll" && (*info->p == '(' || *info->p == '{')) {
+            int time_out = 0;
+            if(*info->p == '(') {
+                info->p++;
+                
+                while(xisdigit(*info->p)) {
+                    time_out = time_out * 10 + (*info->p - '0');
+                    info->p++;
+                    skip_spaces_and_lf();
+                }
+                
+                expected_next_character(')');
+            }
+            expected_next_character('{');
+            
+            list<sNode*%>*% vars = new list<sNode*%>();
+            list<sBlock*%>*% blocks = new list<sBlock*%>();
+            while(1) {
+                sNode*% var_name = expression();
+                
+                sBlock*% block = parse_block();
+                
+                vars.add(var_name);
+                
+                blocks.add(block);
+                
+                if(*info->p == '}') {
+                    break;
+                }
+            }
+            
+            expected_next_character('}');
+            
+            return new sComePollNode(vars, blocks, time_out, info) implements sNode;
         }
         else if(buf === "none" && *info->p == '(') {
             sNode*% node = parse_none(info);
