@@ -1077,7 +1077,7 @@ class sFunCallNode extends sNodeBase
                         }
                     }
                     
-                    method_block2.append_str(xsprintf("%s fun_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string()));
+                    method_block2.append_format("%s fun_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string());
                     
                     i = 0;
                     foreach(it, param_types) {
@@ -1086,17 +1086,17 @@ class sFunCallNode extends sNodeBase
                         if(i == 0) {
                             string param_name = xsprintf("parent");
                             
-                            method_block2.append_str(xsprintf("%s", make_define_var(param_type, param_name)));
+                            method_block2.append_format("%s", make_define_var(param_type, param_name));
                         }
                         else if(i == 1) {
                             string param_name = xsprintf("it");
                             
-                            method_block2.append_str(xsprintf("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true)));
+                            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
                         }
                         else {
                             string param_name = xsprintf("it%d", i);
                             
-                            method_block2.append_str(xsprintf("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true)));
+                            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
                         }
                         
                         if(i != param_types.length() - 1) {
@@ -1285,7 +1285,7 @@ class sComeCallNode extends sNodeBase
         
         string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
         
-        come_block2.append_str(xsprintf("void* %s(%s* parent)\n", fun_name, class_name));
+        come_block2.append_format("void* %s(%s* parent)\n", fun_name, class_name);
         
         come_block2.append_str(come_block.to_string());
                         

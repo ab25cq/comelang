@@ -2469,7 +2469,7 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             type = new sType(type_name);
             
             while(true) {
-                var generics_type, var_name, err = parse_type(parse_multiple_type:false)
+                var generics_type, var_name, err = parse_type(parse_multiple_type:false);
                 
                 if(!err) {
                     return ((sType*%)null, (string)null, false);

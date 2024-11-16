@@ -256,7 +256,9 @@ int main()
 
 16. Pattern matching.
 
-17. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
+17. Thread, Channel
+
+18. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
 
 1. C言語と互換性があります。Cプリプロセッサーも動きます。
 
@@ -290,7 +292,9 @@ int main()
 
 16. Pattern matching.
 
-17. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
+17. Thread, channel
+
+18. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
 
 # インストール
 
@@ -3750,7 +3754,49 @@ int main(int argc, char** argv)
 }
 ```
 
-Implementaion is cominng.
+# Thread, Channel
+
+```C
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+int fun(int a, int b)
+{
+    printf("%d %d\n", a, b);
+    
+    return 3;
+}
+
+int main(int argc, char** argv)
+{
+    int@ a = __channel__;
+    int@ b = __channel__;
+    
+    var thread = come {
+        fun(1, 2);
+        a <- 111;
+        a <- 222;
+    }
+    
+    b <- 222;
+    
+    come_join(thread);
+    
+    come_poll {
+        a {
+            printf("a %d\n", <-a);
+        }
+        
+        b {
+            printf("b %d\n", <-b);
+        }
+    }
+    
+    return 0;
+}
+```
+
+
 
 # afterword
 

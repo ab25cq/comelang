@@ -902,12 +902,12 @@ class sStoreArrayNode extends sNodeBase
                 sType*% result_type2 = clone result_type;
                 result_type2->mPointerNum++;
                 
-                buf.append_str(xsprintf("come_range_check(&%s", left_value.c_value));
+                buf.append_format("come_range_check(&%s", left_value.c_value);
                 
                 foreach(it, array_num) {
-                    buf.append_str(xsprintf("[%s]", it.c_value));
+                    buf.append_format("[%s]", it.c_value);
                 }
-                buf.append_str(xsprintf(",%s,%s+(", left_value.c_value, left_value.c_value));
+                buf.append_format(",%s,%s+(", left_value.c_value, left_value.c_value);
                 int i=0;
                 foreach(it, var_type.mArrayNum) {
                     if(!node_compile(it)) {
@@ -918,13 +918,13 @@ class sStoreArrayNode extends sNodeBase
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     dec_stack_ptr(1, info);
                 
-                    buf.append_str(xsprintf("%s", come_value.c_value));
+                    buf.append_format("%s", come_value.c_value);
                     if(i != var_type.mArrayNum.length()-1) {
                         buf.append_str("*");
                     }
                     i++;
                 }
-                buf.append_str(xsprintf("), \"%s\", %d)", info->sname, info->sline));
+                buf.append_format("), \"%s\", %d)", info->sname, info->sline);
                 
                 check_code = buf.to_string();
             }
@@ -955,7 +955,7 @@ class sStoreArrayNode extends sNodeBase
             buf.append_str(left_value.c_value);
             
             foreach(it, array_num) {
-                buf.append_str(xsprintf("[%s]", it.c_value));
+                buf.append_format("[%s]", it.c_value);
             }
             
             string left_value_code = buf.to_string();
@@ -1120,14 +1120,12 @@ class sLoadArrayNode extends sNodeBase
                 sType*% result_type2 = clone result_type;
                 result_type2->mPointerNum++;
                 
-                buf.append_str(xsprintf("*(%s)come_range_check(&%s"
-                    , make_type_name_string(result_type2)
-                    , left_value.c_value));
+                buf.append_format("*(%s)come_range_check(&%s", make_type_name_string(result_type2), left_value.c_value);
                 
                 foreach(it, array_num) {
-                    buf.append_str(xsprintf("[%s]", it.c_value));
+                    buf.append_format("[%s]", it.c_value);
                 }
-                buf.append_str(xsprintf(",%s,%s+(", left_value.c_value, left_value.c_value));
+                buf.append_format(",%s,%s+(", left_value.c_value, left_value.c_value);
                 int i=0;
                 foreach(it, var_type.mArrayNum) {
                     if(!node_compile(it)) {
@@ -1138,13 +1136,13 @@ class sLoadArrayNode extends sNodeBase
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     dec_stack_ptr(1, info);
                 
-                    buf.append_str(xsprintf("%s", come_value.c_value));
+                    buf.append_format("%s", come_value.c_value);
                     if(i != var_type.mArrayNum.length()-1) {
                         buf.append_str("*");
                     }
                     i++;
                 }
-                buf.append_str(xsprintf("), \"%s\", %d)", info->sname, info->sline));
+                buf.append_format("), \"%s\", %d)", info->sname, info->sline);
                 
                 string left_value_code = buf.to_string();
                 
@@ -1165,7 +1163,7 @@ class sLoadArrayNode extends sNodeBase
                 buf.append_str(left_value.c_value);
                 
                 foreach(it, array_num) {
-                    buf.append_str(xsprintf("[%s]", it.c_value));
+                    buf.append_format("[%s]", it.c_value);
                 }
                 
                 string left_value_code = buf.to_string();
@@ -1288,7 +1286,7 @@ class sLoadRangeArrayNode extends sNodeBase
             buf.append_str(left_value.c_value);
             
             foreach(it, array_num) {
-                buf.append_str(xsprintf("[%s]", it.c_value));
+                buf.append_format("[%s]", it.c_value);
             }
             
             string left_value_code = buf.to_string();

@@ -643,7 +643,7 @@ sNode*% create_exception_throw(sNode*% expression_node, sInfo* info)
     
     var buf = new buffer();
     
-    buf.append_str(xsprintf("{ return none(Err); }"));
+    buf.append_format("{ return none(Err); }");
     
     info.source = buf;
     info.p = info.source.buf;
@@ -702,7 +702,7 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     
     var buf = new buffer();
     
-    buf.append_str(xsprintf("puts(Err), exit(0)"));
+    buf.append_str("puts(Err), exit(0)");
     
     info.source = buf;
     info.p = info.source.buf;

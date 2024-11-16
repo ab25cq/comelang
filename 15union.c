@@ -40,7 +40,7 @@ class sUnionNode extends sNodeBase
             if(klass.mFields.length() > 0) {
                 buffer*% buf = new buffer();
                 
-                buf.append_str(xsprintf("union %s\n{\n", type.mClass.mName));
+                buf.append_format("union %s\n{\n", type.mClass.mName);
                 
                 foreach(it, klass.mFields) {
                     var name, type = it;
@@ -49,7 +49,7 @@ class sUnionNode extends sNodeBase
                     buf.append_str(";\n");
                 }
                 
-                buf.append_str(xsprintf("};\n"));
+                buf.append_format("};\n");
                 
                 if(info.output_header_file && klass.mDeclareSName !== info->base_sname) {
                 }

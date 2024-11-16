@@ -73,7 +73,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         }
     }
     
-    method_block2.append_str(xsprintf("%s method_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string()));
+    method_block2.append_format("%s method_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string());
     
     int i = 0;
     foreach(it, param_types) {
@@ -82,17 +82,17 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         if(i == 0) {
             string param_name = xsprintf("parent");
             
-            method_block2.append_str(xsprintf("%s", make_define_var(param_type, param_name)));
+            method_block2.append_format("%s", make_define_var(param_type, param_name));
         }
         else if(i == 1) {
             string param_name = xsprintf("it");
             
-            method_block2.append_str(xsprintf("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false)));
+            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
         }
         else {
             string param_name = xsprintf("it%d", i);
             
-            method_block2.append_str(xsprintf("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false)));
+            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
         }
         
         if(i != param_types.length() - 1) {
@@ -417,7 +417,7 @@ class sMethodCallNode extends sNodeBase
             
             buffer*% buf = new buffer();
             
-            buf.append_str(xsprintf("%s->%s", obj_value.c_value, fun_name));
+            buf.append_format("%s->%s", obj_value.c_value, fun_name);
             buf.append_str("(");
             
             int j = 0;
@@ -711,7 +711,7 @@ class sMethodCallNode extends sNodeBase
                             CVALUE*% come_value = get_value_from_stack(-1, info);
                             dec_stack_ptr(1, info);
                         
-                            buf.append_str(xsprintf("%s", come_value.c_value));
+                            buf.append_format("%s", come_value.c_value);
                             if(i != obj_array_type.mArrayNum.length()-1) {
                                 buf.append_str("*");
                             }
@@ -741,7 +741,7 @@ class sMethodCallNode extends sNodeBase
                             CVALUE*% come_value = get_value_from_stack(-1, info);
                             dec_stack_ptr(1, info);
                         
-                            buf.append_str(xsprintf("%s", come_value.c_value));
+                            buf.append_format("%s", come_value.c_value);
                             if(i != obj_array_type.mArrayNum.length()-1) {
                                 buf.append_str("*");
                             }
@@ -770,7 +770,7 @@ class sMethodCallNode extends sNodeBase
                             CVALUE*% come_value = get_value_from_stack(-1, info);
                             dec_stack_ptr(1, info);
                         
-                            buf.append_str(xsprintf("%s", come_value.c_value));
+                            buf.append_format("%s", come_value.c_value);
                             if(i != obj_array_type.mArrayNum.length()-1) {
                                 buf.append_str("*");
                             }
@@ -799,7 +799,7 @@ class sMethodCallNode extends sNodeBase
                             CVALUE*% come_value = get_value_from_stack(-1, info);
                             dec_stack_ptr(1, info);
                         
-                            buf.append_str(xsprintf("%s", come_value.c_value));
+                            buf.append_format("%s", come_value.c_value);
                             if(i != obj_array_type.mArrayNum.length()-1) {
                                 buf.append_str("*");
                             }
@@ -828,7 +828,7 @@ class sMethodCallNode extends sNodeBase
                             CVALUE*% come_value = get_value_from_stack(-1, info);
                             dec_stack_ptr(1, info);
                         
-                            buf.append_str(xsprintf("%s", come_value.c_value));
+                            buf.append_format("%s", come_value.c_value);
                             if(i != obj_array_type.mArrayNum.length()-1) {
                                 buf.append_str("*");
                             }

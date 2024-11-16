@@ -327,12 +327,12 @@ static bool linker(sInfo* info, list<string>* object_files)
     
     var command = new buffer();
     
-    command.append_str(xsprintf("%s -o %s ", CC, output_file_name));
+    command.append_format("%s -o %s ", CC, output_file_name);
     
     command.append_str(" " + info.linker_option +" ");
     
     foreach(it, object_files) {
-        command.append_str(xsprintf("%s ", it));
+        command.append_format("%s ", it);
     }
     
     string cmd = xsprintf("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
@@ -353,17 +353,17 @@ static bool linker(sInfo* info, list<string>* object_files)
     
     rc = system(cmd);
     if(rc == 0) {
-        command.append_str(xsprintf(" -L%s/lib ", getenv("HOME")));
+        command.append_format(" -L%s/lib ", getenv("HOME"));
     }
     
     cmd = xsprintf("ls %s/lib 1> /dev/null 2>/dev/null", PREFIX); // PREFIX/lib?
     
     rc = system(cmd);
     if(rc == 0) {
-        command.append_str(xsprintf(" -L%s/lib ", PREFIX));
+        command.append_format(" -L%s/lib ", PREFIX);
     }
     
-    command.append_str(xsprintf(" %s ", info.clang_option));
+    command.append_format(" %s ", info.clang_option);
     
     if(gComeStr) {
         if(gComeGC) {

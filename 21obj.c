@@ -52,7 +52,7 @@ class sNewNode extends sNodeBase
             CVALUE*% cvalue = get_value_from_stack(-1, info);
             dec_stack_ptr(1, info);
             
-            num_string.append_str(xsprintf("*(%s)", cvalue.c_value));
+            num_string.append_format("*(%s)", cvalue.c_value);
         }
         
         sType*% type2 = solve_generics(type, info->generics_type, info);
@@ -124,10 +124,10 @@ class sNewNode extends sNodeBase
                 
                 if(left_type->mHeap && right_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0) {
                     string c_value = increment_ref_count_object(left_type, come_value2.c_value, info);
-                    buf.append_str(xsprintf("%s->%s = %s", var_name, name, c_value));
+                    buf.append_format("%s->%s = %s", var_name, name, c_value);
                 }
                 else {
-                    buf.append_str(xsprintf("%s->%s = %s", var_name, name, come_value2.c_value));
+                    buf.append_format("%s->%s = %s", var_name, name, come_value2.c_value);
                 }
                 
                 buf.append_str(",");

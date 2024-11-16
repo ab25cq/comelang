@@ -675,9 +675,9 @@ class sWriteChannelNode extends sNodeBase
     
         buffer*% buf = new buffer();
         
-        buf.append_str(xsprintf("char __channel_buf%d[sizeof(%s)+1];\n", var_num, make_type_name_string(channel_type)));
-        buf.append_str(xsprintf("%s* __channel_p%d = __channel_buf%d;\n", make_type_name_string(channel_type), var_num, var_num));
-        buf.append_str(xsprintf("*__channel_p%d = %s;\n", var_num, right_value.c_value));
+        buf.append_format("char __channel_buf%d[sizeof(%s)+1];\n", var_num, make_type_name_string(channel_type));
+        buf.append_format("%s* __channel_p%d = __channel_buf%d;\n", make_type_name_string(channel_type), var_num, var_num);
+        buf.append_format("*__channel_p%d = %s;\n", var_num, right_value.c_value);
         
         add_come_code(info, buf.to_string());
         
@@ -936,7 +936,7 @@ class sArrayInitializer extends sNodeBase
             element_type = clone come_value2.type;
             
             if(come_value) {
-                buf.append_str(xsprintf("[%s] = %s", come_value.c_value, come_value2.c_value));
+                buf.append_format("[%s] = %s", come_value.c_value, come_value2.c_value);
             }
             else {
                 buf.append_str(come_value2.c_value);
@@ -1067,10 +1067,10 @@ class sStructInitializer extends sNodeBase
             dec_stack_ptr(1, info);
             
             if(name) {
-                buf.append_str(xsprintf(".%s = %s", name, come_value2.c_value));
+                buf.append_format(".%s = %s", name, come_value2.c_value);
             }
             else {
-                buf.append_str(xsprintf("%s", come_value2.c_value));
+                buf.append_format("%s", come_value2.c_value);
             }
             
             i++;

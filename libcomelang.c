@@ -47,9 +47,9 @@ void come_pop_stackframe()
 void come_save_stackframe(char* sname, int sline)
 {
     buffer*% buf = new buffer();
-    buf.append_str(xsprintf("%s %d\n", sname, sline));
+    buf.append_format("%s %d\n", sname, sline);
     for(int i=gNumComeStackFrame-2; i>=0; i--) {
-        buf.append_str(xsprintf("%s %d #%d\n", gComeStackFrameSName[i], gComeStackFrameSLine[i], gComeStackFrameID[i]));
+        buf.append_format("%s %d #%d\n", gComeStackFrameSName[i], gComeStackFrameSLine[i], gComeStackFrameID[i]);
     }
     
     if(gComeStackFrameBuffer) {

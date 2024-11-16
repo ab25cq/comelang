@@ -3406,9 +3406,9 @@ void come_save_stackframe(char* sname, int sline){
 struct buffer* buf_45;
 int i_46;
     buf_45=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-gc.c", 49, "buffer"));
-    buffer_append_str(buf_45,xsprintf("%s %d\n",sname,sline));
+    buffer_append_format(buf_45,"%s %d\n",sname,sline);
     for(    i_46=gNumComeStackFrame-2;    i_46>=0;    i_46--    ){
-        buffer_append_str(buf_45,xsprintf("%s %d #%d\n",gComeStackFrameSName[i_46],gComeStackFrameSLine[i_46],gComeStackFrameID[i_46]));
+        buffer_append_format(buf_45,"%s %d #%d\n",gComeStackFrameSName[i_46],gComeStackFrameSLine[i_46],gComeStackFrameID[i_46]);
     }
     if(    gComeStackFrameBuffer) {
         free(gComeStackFrameBuffer);

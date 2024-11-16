@@ -1999,11 +1999,11 @@ sNode*% parse_function(sInfo* info)
         if(constructor_) {
             if(param_types.length() == 1) {
                 string name = clone info.impl_type->mClass->mName;
-                header.append_str(xsprintf("extern %s*%% %s*::initialize(%s*%% self);\n", name, name, name));
+                header.append_format("extern %s*%% %s*::initialize(%s*%% self);\n", name, name, name);
             }
             else {
                 string name = clone info.impl_type->mClass->mName;
-                header.append_str(xsprintf("extern %s*%% %s*::initialize(%s*%% self, ", name, name, name));
+                header.append_format("extern %s*%% %s*::initialize(%s*%% self, ", name, name, name);
                 
                 for(int i=1; i<param_types.length(); i++) {
                     var param_type = param_types[i];
@@ -2011,10 +2011,10 @@ sNode*% parse_function(sInfo* info)
                     var default_parametor = param_default_parametors[i]??;
                     
                     if(default_parametor) {
-                        header.append_str(xsprintf("extern %s %s=%s", make_come_type_name_string_no_solved(param_type), param_name, default_parametor));
+                        header.append_format("extern %s %s=%s", make_come_type_name_string_no_solved(param_type), param_name, default_parametor);
                     }
                     else {
-                        header.append_str(xsprintf("extern %s %s", make_come_type_name_string_no_solved(param_type), param_name));
+                        header.append_format("extern %s %s", make_come_type_name_string_no_solved(param_type), param_name);
                     }
                     
                     if(i != param_types.length()-1) {
@@ -2029,12 +2029,12 @@ sNode*% parse_function(sInfo* info)
             if(param_types.length() == 1) {
                 string impl_name = clone info.impl_type->mClass->mName;
                 string result_type_name = make_come_type_name_string_no_solved(result_type);
-                header.append_str(xsprintf("extern %s %s*::%s(%s* self);\n", result_type_name, impl_name, base_fun_name, impl_name));
+                header.append_format("extern %s %s*::%s(%s* self);\n", result_type_name, impl_name, base_fun_name, impl_name);
             }
             else {
                 string impl_name = clone info.impl_type->mClass->mName;
                 string result_type_name = make_come_type_name_string_no_solved(result_type);
-                header.append_str(xsprintf("extern %s %s*::%s(%s* self, ", result_type_name, impl_name, base_fun_name, impl_name));
+                header.append_format("extern %s %s*::%s(%s* self, ", result_type_name, impl_name, base_fun_name, impl_name);
                 
                 for(int i=1; i<param_types.length(); i++) {
                     var param_type = param_types[i];
@@ -2042,10 +2042,10 @@ sNode*% parse_function(sInfo* info)
                     var default_parametor = param_default_parametors[i]??;
                     
                     if(default_parametor) {
-                        header.append_str(xsprintf("extern %s %s=%s", make_come_type_name_string_no_solved(param_type), param_name, default_parametor));
+                        header.append_format("extern %s %s=%s", make_come_type_name_string_no_solved(param_type), param_name, default_parametor);
                     }
                     else {
-                        header.append_str(xsprintf("extern %s %s", make_come_type_name_string_no_solved(param_type), param_name));
+                        header.append_format("extern %s %s", make_come_type_name_string_no_solved(param_type), param_name);
                     }
                     
                     if(i != param_types.length()-1) {
@@ -3134,7 +3134,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         
         source.append_str("{\n");
         source.append_str("if(self == (void*)0) { return (void*)0; }\n");
-        source.append_str(xsprintf("var result = new %s;\n", make_type_name_string(type, no_pointer:true)));
+        source.append_format("var result = new %s;\n", make_type_name_string(type, no_pointer:true));
         
         
         if(klass->mProtocol) {
@@ -3202,7 +3202,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
             }
         }
         
-        source.append_str(xsprintf("return result;"));
+        source.append_format("return result;");
         source.append_char('}');
         
         char* p = info.p;
@@ -3324,7 +3324,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         source.append_str("{\n");
         source.append_str("var result = new buffer();\n");
         
-        source.append_str(xsprintf("result.append_str(\"%s {\");\n", klass->mName));
+        source.append_format("result.append_str(\"%s {\");\n", klass->mName);
         
         int i = 0;
         klass = info.classes[klass->mName]??;
@@ -3368,7 +3368,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         }
         source.append_str("result.append_str(\"}\");\n");
         
-        source.append_str(xsprintf("return result.to_string();\n"));
+        source.append_format("return result.to_string();\n");
         source.append_char('}');
         
         char* p = info.p;

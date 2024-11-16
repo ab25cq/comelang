@@ -343,10 +343,10 @@ class sListNode extends sNodeBase
         int i = 0;
         foreach(it, params) {
             if(list_element_type->mHeap) {
-                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, params[i].c_value));
+                source.append_format("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, params[i].c_value);
             }
             else {
-                source.append_str(xsprintf("%s[%d]=%s,\n", var_->mCValueName, i, params[i].c_value));
+                source.append_format("%s[%d]=%s,\n", var_->mCValueName, i, params[i].c_value);
             }
             i++;
         }
@@ -1216,17 +1216,17 @@ class sMapNode extends sNodeBase
             CVALUE* element_param = element_params[i];
             
             if(map_key_type->mHeap) {
-                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, key_param.c_value));
+                source.append_format("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, key_param.c_value);
             }
             else {
-                source.append_str(xsprintf("%s[%d]=%s,\n", var_->mCValueName, i, key_param.c_value));
+                source.append_format("%s[%d]=%s,\n", var_->mCValueName, i, key_param.c_value);
             }
             
             if(map_element_type->mHeap) {
-                source.append_str(xsprintf("%s[%d]=come_increment_ref_count(%s),\n", var2_->mCValueName, i, element_param.c_value));
+                source.append_format("%s[%d]=come_increment_ref_count(%s),\n", var2_->mCValueName, i, element_param.c_value);
             }
             else {
-                source.append_str(xsprintf("%s[%d]=%s,\n", var2_->mCValueName, i, element_param.c_value));
+                source.append_format("%s[%d]=%s,\n", var2_->mCValueName, i, element_param.c_value);
             }
         }
         

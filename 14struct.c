@@ -61,7 +61,7 @@ void output_struct(sClass* klass, sInfo* info)
         buffer*% buf = new buffer();
         
 //        if(klass.mFields.length() > 0) {
-            buf.append_str(xsprintf("struct %s\n{\n", klass.mName));
+            buf.append_format("struct %s\n{\n", klass.mName);
             
             //klass = info.classes[klass->mName]??;
             foreach(it, klass.mFields) {
@@ -103,10 +103,10 @@ void output_struct_header(sClass* klass, sInfo* info)
         
 //        if(klass.mFields.length() > 0) {
             if(klass.mParentClassName) {
-                buf.append_str(xsprintf("struct %s extends %s\n{\n", klass.mName, klass.mParentClassName));
+                buf.append_format("struct %s extends %s\n{\n", klass.mName, klass.mParentClassName);
             }
             else {
-                buf.append_str(xsprintf("struct %s\n{\n", klass.mName));
+                buf.append_format("struct %s\n{\n", klass.mName);
             }
             foreach(it, klass.mFields) {
                 var name, type = it;

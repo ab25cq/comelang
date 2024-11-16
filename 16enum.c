@@ -36,17 +36,17 @@ class sEnumNode extends sNodeBase
         
         if(type_name === "") {
             if(self.mTypeElements) {
-                buf.append_str(xsprintf("enum :%s { ", make_type_name_string(self.mTypeElements)));
+                buf.append_format("enum :%s { ", make_type_name_string(self.mTypeElements));
             }
             else {
                 buf.append_str("enum { ");
             }
         }
         else if(self.mTypeElements) {
-            buf.append_str(xsprintf("enum %s:%s { ", type_name, make_type_name_string(self.mTypeElements)));
+            buf.append_format("enum %s:%s { ", type_name, make_type_name_string(self.mTypeElements));
         }
         else {
-            buf.append_str(xsprintf("enum %s { ", type_name));
+            buf.append_format("enum %s { ", type_name);
         }
         
         int i = 0;
@@ -89,7 +89,7 @@ class sEnumNode extends sNodeBase
                 
                 add_variable_to_global_table_with_int_value(name, new sType("int"), c_value, info);
                 
-                buf.append_str(xsprintf("%s=(%s)", name, right_value.c_value));
+                buf.append_format("%s=(%s)", name, right_value.c_value);
                 
                 if(i != elements.length()-1) {
                     buf.append_str(",");
@@ -104,7 +104,7 @@ class sEnumNode extends sNodeBase
             i++;
             n++;
         }
-        buf.append_str(xsprintf("};\n", type_name));
+        buf.append_format("};\n");
         
         if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
         }

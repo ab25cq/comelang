@@ -15,7 +15,7 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        buf.append_str(xsprintf("_Alignas(%s) ", come_value.c_value));
+        buf.append_format("_Alignas(%s) ", come_value.c_value);
     }
     
     if(type->mStatic && !no_static) {// && !type->mClass->mStruct && !type->mClass->mUnion) {
@@ -196,7 +196,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
     
     if(type->mResultType.v1 && type->mResultType.v1.mClass->mName === "lambda") 
     {
-        buf.append_str(xsprintf("(*%s)(", var_name));
+        buf.append_format("(*%s)(", var_name);
         
         int i = 0;
         foreach(it, type->mParamTypes) {
@@ -214,19 +214,19 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
     }
     else {
         if(type->mLambdaArray) {
-            buf.append_str(xsprintf("%s (*%s[])(", make_type_name_string(type->mResultType.v1), var_name));
+            buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType.v1), var_name);
         }
         else {
-            buf.append_str(xsprintf("%s ", make_type_name_string(type->mResultType.v1)));
+            buf.append_format("%s ", make_type_name_string(type->mResultType.v1));
             if(type->mFunctionPointerNum > 1) {
                 buf.append_str("(");
                 for(int i=0; i<type->mFunctionPointerNum; i++) {
                     buf.append_str("*");
                 }
-                buf.append_str(xsprintf("%s)(", var_name));
+                buf.append_format("%s)(", var_name);
             }
             else {
-                buf.append_str(xsprintf("(*%s)(", var_name));
+                buf.append_format("(*%s)(", var_name);
             }
         }
         
@@ -279,15 +279,15 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
         dec_stack_ptr(1, info);
     
         var type_str = make_type_name_string(type2, in_header);
-        buf.append_str(xsprintf("%s ", type_str));
-        buf.append_str(xsprintf("%s:%s", name, come_value.c_value));
+        buf.append_format("%s ", type_str);
+        buf.append_format("%s:%s", name, come_value.c_value);
         
         if(type2->mAsmName != null && type2->mAsmName !== "") {
-            buf.append_str(xsprintf(" __asm__(\"%s\")", type2->mAsmName));
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
         
         if(type2->mAsmName != null && type2->mAsmName !== "") {
-            buf.append_str(xsprintf(" __asm__(\"%s\")", type2->mAsmName));
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
     }
     else if(type2->mOmitArrayNum) {
@@ -301,7 +301,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
         buf.append_str("[]");
         
         if(type2->mAsmName != null && type2->mAsmName !== "") {
-            buf.append_str(xsprintf(" __asm__(\"%s\")", type2->mAsmName));
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
     }
     else if(type2->mArrayNum.length() > 0) {
@@ -326,7 +326,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
             CVALUE*% cvalue = get_value_from_stack(-1, info);
             dec_stack_ptr(1, info);
         
-            buf.append_str(xsprintf("[%s]", cvalue.c_value));
+            buf.append_format("[%s]", cvalue.c_value);
         }
         
         if(type2->mArrayPointerType) {
@@ -334,7 +334,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
         }
         
         if(type2->mAsmName != null && type2->mAsmName !== "") {
-            buf.append_str(xsprintf(" __asm__(\"%s\")", type2->mAsmName));
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
     }
     else {
@@ -360,7 +360,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
         }
         
         if(type2->mAsmName != null && type2->mAsmName !== "") {
-            buf.append_str(xsprintf(" __asm__(\"%s\")", type2->mAsmName));
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
     }
     
@@ -586,7 +586,7 @@ string output_function(sFun* fun, sInfo* info)
         CVALUE*% cvalue = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        output.append_str(xsprintf("))[%s]", cvalue.c_value));
+        output.append_format("))[%s]", cvalue.c_value);
         
         info.module.mSourceHead.append_str(output.to_string());
         info.module.mSourceHead.append_str(";\n");
@@ -702,7 +702,7 @@ string header_function(sFun* fun, sInfo* info)
         CVALUE*% cvalue = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        output.append_str(xsprintf("))[%s];\n", cvalue.c_value));
+        output.append_format("))[%s];\n", cvalue.c_value);
     }
     else {
         string result_type_str = make_type_name_string(fun->mResultType, in_header:true);

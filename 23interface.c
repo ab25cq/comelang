@@ -25,7 +25,7 @@ class sInterfaceNode extends sNodeBase
         
         buffer*% buf = new buffer();
         
-        buf.append_str(xsprintf("struct %s\n{\n", klass.mName));
+        buf.append_format("struct %s\n{\n", klass.mName);
         
     //    klass= info.classes[klass->mName];
         foreach(it, klass.mFields) {
