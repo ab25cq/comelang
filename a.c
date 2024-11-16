@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     
     come_join(thread);
     
-    come_poll(1) {
+    come_poll {
         a {
             printf("a %d\n", <-a);
         }
