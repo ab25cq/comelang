@@ -3860,6 +3860,45 @@ uniq buffer* buffer*::append_str(buffer* self, char* mem)
     return self;
 }
 
+uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
+{
+    if(self == null || msg == null) {
+        return self;
+    }
+    
+    va_list args;
+    va_start(args, msg);
+    char* result;
+    int len = vasprintf(&result, msg, args);
+    va_end(args);
+    
+    if(len < 0) {
+        return self;
+    }
+    
+    string mem = string(result);
+    
+    int size = strlen(mem);
+    if(self.len + size + 1 + 1 >= self.size) {
+        char*% old_buf = new char[self.size];
+        memcpy(old_buf, self.buf, self.size);
+        int old_len = self.len;
+        int new_size = (self.size + size + 1) * 2;
+        self.buf = new char[new_size];
+        memcpy(self.buf, old_buf, old_len);
+        self.buf[old_len] = '\0';
+        self.size = new_size;
+    }
+
+    memcpy(self.buf + self.len, mem, size);
+    self.len += size;
+    self.buf[self.len] = '\0';
+    
+    free(result);
+    
+    return self;
+}
+
 uniq buffer* buffer*::append_nullterminated_str(buffer* self, char* mem)
 {
     if(self == null || mem == null) {

@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 8.1.1
+version 8.1.2
 
 ``` C
 #include <comelang.h>
@@ -328,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+8.1.2 buffer*::apppend_format.
 8.1.1 comelang pralell coding and channel.
 8.1.0 raspi pico.
 8.0.5 raspi pico.

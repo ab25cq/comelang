@@ -2408,6 +2408,7 @@ void buffer*::trim(buffer* self, int len);
 buffer* buffer*::append(buffer* self, char* mem, size_t size);
 buffer* buffer*::append_char(buffer* self, char c);
 buffer* buffer*::append_str(buffer* self, char* str);
+buffer* buffer*::append_format(buffer* self, char* str, ...);
 buffer* buffer*::append_nullterminated_str(buffer* self, char* str);
 buffer* buffer*::append_int(buffer* self, int value);
 buffer* buffer*::append_long(buffer* self, long value);
