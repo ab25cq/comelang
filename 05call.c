@@ -2089,7 +2089,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             return new sComeJoinNode(node, info) implements sNode;
         }
         else if(gComePthread && buf === "come_poll" && (*info->p == '(' || *info->p == '{')) {
-            int time_out = 0;
+            int time_out = 1;
             if(*info->p == '(') {
                 info->p++;
                 
