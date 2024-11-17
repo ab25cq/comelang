@@ -1422,7 +1422,6 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
     
     bool anonymous_type = false;
     bool anonymous_name = false;
-    
     while(true) {
         if(type_name === "struct") {
             struct_ = true;
@@ -1877,6 +1876,13 @@ tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_n
             restrict_ = true;
             
             type_name = parse_word();
+        }
+        else if(type_name === "tup") {
+            expected_next_character(':');
+            
+            type_name = parse_word();
+            
+            parse_multiple_type = true;
         }
         else if(type_name === "short") {
             short_ = false;

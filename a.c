@@ -2,11 +2,11 @@
 
 int main(int argc, char** argv)
 {
-    list<int, int>*% a; // = new list<int, int>();
+    list<tup: int, int>*% a = new list<tup: int, int>();
     
-    //a.add((1,2));
+    a.add((1,2));
     
-    //puts(a[0].to_string());
+    puts(a[0].to_string());
     
     return 0;
 }
