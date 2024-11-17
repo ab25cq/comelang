@@ -2,12 +2,12 @@
 
 class sEnumNode extends sNodeBase
 {
-    new(string type_name, list<tuple2<string,sNode*%>*%>* elements, bool output, sType*% type_elements = null, sInfo* info)
+    new(string type_name, list<tup: string,sNode*%>* elements, bool output, sType*% type_elements = null, sInfo* info)
     {
         self.super();
     
         string self.mTypeName = string(type_name);
-        list<tuple2<string, sNode*%>*%>*% self.mElements = clone elements;
+        list<tup: string, sNode*%>*% self.mElements = clone elements;
         
         bool self.mOutput = output;
         
@@ -30,7 +30,7 @@ class sEnumNode extends sNodeBase
     bool compile(sInfo* info)
     {
         string type_name = self.mTypeName;
-        list<tuple2<string, sNode*%>*%>* elements = self.mElements;
+        list<tup: string, sNode*%>* elements = self.mElements;
         
         buffer*% buf = new buffer();
         
@@ -144,7 +144,7 @@ sNode*% parse_enum(string type_name, sInfo* info)
     
     expected_next_character('{');
     
-    list<tuple2<string,sNode*%>*%>*% elements = new list<tuple2<string,sNode*%>*%>();
+    list<tup: string,sNode*%>*% elements = new list<tup: string,sNode*%>();
     
     while(true) {
         parse_sharp();
@@ -243,7 +243,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
         expected_next_character('{');
         parse_sharp();
         
-        list<tuple2<string,sNode*%>*%>*% elements = new list<tuple2<string,sNode*%>*%>();
+        list<tup: string,sNode*%>*% elements = new list<tup: string,sNode*%>();
         
         while(true) {
             parse_sharp();

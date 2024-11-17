@@ -2,7 +2,7 @@
 
 class sGlobalVariable extends sNodeBase
 {
-    new(list<tuple3<sType*%,string,string>*%>*% multiple_declare, sType* type, string name, sNode*% right_node, string array_initializer, sInfo* info)
+    new(list<tup: sType*%,string,string>*% multiple_declare, sType* type, string name, sNode*% right_node, string array_initializer, sInfo* info)
     {
         self.super();
         
@@ -11,7 +11,7 @@ class sGlobalVariable extends sNodeBase
         sNode*% self.right_node = right_node;
         string self.array_initializer = array_initializer;
         
-        list<tuple3<sType*%,string,string>*%>*% self.multiple_declare = clone multiple_declare;
+        list<tup: sType*%,string,string>*% self.multiple_declare = clone multiple_declare;
         string self.mDeclareSName = string(info->sname);
     }
     
@@ -110,14 +110,14 @@ class sGlobalVariable extends sNodeBase
 
 class sExternalGlobalVariable extends sNodeBase
 {
-    new(list<tuple3<sType*%, string,string>*%>*% multiple_declare, sType* type, string name, sInfo* info)
+    new(list<tup: sType*%, string,string>*% multiple_declare, sType* type, string name, sInfo* info)
     {
         self.super();
         
         sType*% self.type = clone type;
         string self.name = string(name);
         
-        list<tuple3<sType*%,string,string>*%>*% self.multiple_declare = clone multiple_declare;
+        list<tup: sType*%,string,string>*% self.multiple_declare = clone multiple_declare;
         
         string self.mDeclareSName = string(info->sname);
     }
@@ -212,7 +212,7 @@ sNode*% parse_global_variable(sInfo* info)
     }
     
     if(multiple_declare) {
-        list<tuple3<sType*%,string,string>*%>*% multiple_declare = new list<tuple3<sType*%,string,string>*%>();
+        list<tup: sType*%,string,string>*% multiple_declare = new list<tup: sType*%,string,string>();
         
         var base_type, name, err = parse_type();
         

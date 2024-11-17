@@ -243,7 +243,7 @@ class sRegexNode extends sNodeBase
     {
         sNode*% obj_node = new sStrNode(self.str, info.sline, info) implements sNode;
         
-        list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string,sNode*%>*%>();
+        list<tup: string,sNode*%>*% params = new list<tup: string,sNode*%>();
         
         params.add((s"self", obj_node));
         params.add((s"ignore_case", create_false_object(info)));
@@ -293,7 +293,7 @@ class sListNode extends sNodeBase
             if(it->kind() === "sWildCard") {
                 sNode*% value_node = create_load_var(s"Value");
                 
-                list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                list<tup:string,sNode*%>*% params = new list<tup: string, sNode*%>();
                 params.add((s"self", value_node));
                 params.add((s"position", create_int_node(n, info)));
                 sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
@@ -1094,13 +1094,13 @@ class sMapNode extends sNodeBase
                 
                 sNode*% exp;
                 {
-                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", value_node));
                     exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
                 {
-                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp));
                     params.add((s"position", create_int_node(i, info)));
                     exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
@@ -1138,13 +1138,13 @@ class sMapNode extends sNodeBase
                 
                 sNode*% exp2;
                 {
-                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", value_node));
                     exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
                 {
-                    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+                    list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp2));
                     params.add((s"position", create_int_node(i, info)));
                     exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
@@ -1623,7 +1623,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         sNode*% obj = new sStrNode(buf.to_string(), sline, info) implements sNode;
         
-        list<tuple2<string, sNode*%>*%>*% params = new list<tuple2<string, sNode*%>*%>();
+        list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
         
         params.add((s"self", obj));
         params.add((s"ignore_case", ignore_case ? create_int_node(1, info) : create_int_node(0, info)));

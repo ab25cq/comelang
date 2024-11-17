@@ -2,7 +2,7 @@
 
 class sStoreNode extends sNodeBase
 {
-    new(string name, list<string>*% multiple_assign, list<tuple3<sType*%, string, sNode*%>*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info)
+    new(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info)
     {
         self.super();
         
@@ -13,7 +13,7 @@ class sStoreNode extends sNodeBase
         sNode*% self.right_value = right_value;
         list<string>*% self.multiple_assign;
         self.multiple_assign = dupe multiple_assign;
-        list<tuple3<sType*%,string,sNode*%>*%>*% self.multiple_declare;
+        list<tup: sType*%,string,sNode*%>*% self.multiple_declare;
         self.multiple_declare = dupe multiple_declare;
     }
     
@@ -752,7 +752,7 @@ class sReadChannelNode extends sNodeBase
     
 };
 
-sNode*% store_var(string name, list<string>*% multiple_assign, list<tuple3<sType*%, string, sNode*%>*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info)
+sNode*% store_var(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info)
 {
     return new sStoreNode(name, multiple_assign, multiple_declare, type, alloc, right_value, info) implements sNode;
 }
@@ -895,11 +895,11 @@ class sFunLoadNode extends sNodeBase
 
 class sArrayInitializer extends sNodeBase
 {
-    new(list<tuple2<sNode*%, sNode*%>*%>*% initializer, sInfo* info)
+    new(list<tup: sNode*%, sNode*%>*% initializer, sInfo* info)
     {
         self.super();
        
-        list<tuple2<sNode*%, sNode*%>*%>*% self.initializer = clone initializer;
+        list<tup: sNode*%, sNode*%>*% self.initializer = clone initializer;
     }
     
     string kind()
@@ -968,7 +968,7 @@ sNode*% parse_array_initializer(sInfo* info=info)
 {
     expected_next_character('{');
     
-    list<tuple2<sNode*%,sNode*%>*%>*% initializer = new list<tuple2<sNode*%,sNode*%>*%>();
+    list<tup: sNode*%,sNode*%>*% initializer = new list<tup: sNode*%,sNode*%>();
     
     if(*info->p == '[') {
         info->p++;
@@ -1038,11 +1038,11 @@ sNode*% parse_array_initializer(sInfo* info=info)
 
 class sStructInitializer extends sNodeBase
 {
-    new(list<tuple2<string, sNode*%>*%>*% initializer, sInfo* info)
+    new(list<tup: string, sNode*%>*% initializer, sInfo* info)
     {
         self.super();
        
-        list<tuple2<string, sNode*%>*%>*% self.initializer = clone initializer;
+        list<tup: string, sNode*%>*% self.initializer = clone initializer;
     }
     
     string kind()
@@ -1097,7 +1097,7 @@ sNode*% parse_struct_initializer(sInfo* info=info)
 {
     expected_next_character('{');
     
-    list<tuple2<string,sNode*%>*%>*% initializer = new list<tuple2<string,sNode*%>*%>();
+    list<tup: string,sNode*%>*% initializer = new list<tup:string,sNode*%>();
     
     if(*info->p == '.') {
         info->p++;
@@ -1361,7 +1361,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         info.p = head;
         info.sline = head_sline;
 
-        list<tuple3<sType*%, string,sNode*%>*%>*% multiple_declare = new list<tuple3<sType*%, string, sNode*%>*%>();
+        list<tup: sType*%, string,sNode*%>*% multiple_declare = new list<tup: sType*%, string, sNode*%>();
         
         var base_type, name, err = parse_type();
         

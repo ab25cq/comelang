@@ -129,7 +129,7 @@ sClass*% sClass*::initialize(sClass*% self, char* name, bool number=false, bool 
     self.mGenericsNum = generics_num;
     self.mMethodGenericsNum = method_generics_num;
     
-    self.mFields = new list<tuple2<string, sType*%>*%>();
+    self.mFields = new list<tup:string, sType*%>();
     
     self.mDeclareSName = string(info->sname);
     

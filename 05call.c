@@ -448,12 +448,12 @@ string make_method_generics_function(string fun_name, list<sType*%>*% method_gen
 
 class sFunCallNode extends sNodeBase
 {
-    new(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+    new(char* fun_name, list<tup:string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
     {
         self.super();
         
         string self.fun_name = string(fun_name);
-        list<tuple2<string,sNode*%>*%>*% self.params = clone params;
+        list<tup: string,sNode*%>*% self.params = clone params;
         bool self.guard_break = guard_break;
         list<sType*%>*% self.method_generics_types = method_generics_types;
         buffer*% self.method_block = method_block;
@@ -478,7 +478,7 @@ class sFunCallNode extends sNodeBase
     bool compile(sInfo* info)
     {
         string fun_name = self.fun_name;
-        list<tuple2<string,sNode*%>*%>* params = self.params;
+        list<tup: string,sNode*%>* params = self.params;
         buffer* method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
         
@@ -1477,7 +1477,7 @@ class sComePollNode extends sNodeBase
     }
 };
 
-sNode*% craete_fun_call(char* fun_name, list<tuple2<string,sNode*%>*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
 {
     sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
     
@@ -1488,12 +1488,12 @@ sNode*% craete_fun_call(char* fun_name, list<tuple2<string,sNode*%>*%>* params, 
 
 class sLambdaCall extends sNodeBase
 {
-    new(sNode*% node, list<tuple2<string,sNode*%>*%>* params, sInfo* info)
+    new(sNode*% node, list<tup: string,sNode*%>* params, sInfo* info)
     {
         self.super();
         
         sNode*% self.node = node;
-        list<tuple2<string,sNode*%>*%>*% self.params = clone params;
+        list<tup: string,sNode*%>*% self.params = clone params;
     }
     
     string kind()
@@ -1504,7 +1504,7 @@ class sLambdaCall extends sNodeBase
     bool compile(sInfo* info)
     {
         sNode*% node = self.node;
-        list<tuple2<string,sNode*%>*%>* params = self.params;
+        list<tup: string,sNode*%>* params = self.params;
         
         if(!node_compile(node, info)) {
             return false;
@@ -1662,7 +1662,7 @@ sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
     
     parse_sharp();
     
-    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string,sNode*%>*%>();
+    list<tup: string,sNode*%>*% params = new list<tup: string,sNode*%>();
     
     bool _va_arg = info->va_arg;
     if(fun_name === "__builtin_va_arg") {
@@ -2441,7 +2441,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info)
         
         parse_sharp();
         
-        list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string,sNode*%>*%>();
+        list<tup: string,sNode*%>*% params = new list<tup: string,sNode*%>();
         
         while(true) {
             if(*info->p == ')') {

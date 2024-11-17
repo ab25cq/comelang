@@ -170,13 +170,13 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
 
 class sMethodCallNode extends sNodeBase
 {
-    new(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, sInfo* info)
+    new(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, sInfo* info)
     {
         self.super();
         
         sNode*% self.obj = clone obj;
         string self.fun_name = string(fun_name);
-        list<tuple2<string,sNode*%>*%>*% self.params = clone params;
+        list<tup: string,sNode*%>*% self.params = clone params;
         buffer*% self.method_block = clone method_block;
         int self.method_block_sline = method_block_sline;
         list<sType*%>*% self.method_generics_types = clone method_generics_types;
@@ -203,7 +203,7 @@ class sMethodCallNode extends sNodeBase
     bool compile(sInfo* info)
     {
         string fun_name = self.fun_name;
-        list<tuple2<string,sNode*%>*%>*% params = self.params;
+        list<tup: string,sNode*%>*% params = self.params;
         sNode*% obj = self.obj;
         buffer*% method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
@@ -949,7 +949,7 @@ class sMethodCallNode extends sNodeBase
     }
 };
 
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tuple2<string,sNode*%>*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info)
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info)
 {
     sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, info) implements sNode;
     
@@ -960,7 +960,7 @@ sNode*% create_method_call(char* fun_name,sNode*% obj, list<tuple2<string,sNode*
 
 sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
 {
-    list<tuple2<string,sNode*%>*%>*% params = new list<tuple2<string,sNode*%>*%>();
+    list<tup: string,sNode*%>*% params = new list<tup: string,sNode*%>();
     params.push_back(((string)null,clone obj));
     
     if(*info->p == '-' && *(info->p+1) == '>') {

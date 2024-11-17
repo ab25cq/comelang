@@ -20,12 +20,12 @@ class sNothingNode extends sNodeBase
 
 class sNewNode extends sNodeBase
 {
-    new(sType*% type, list<tuple2<string, sNode*%>*%>*% initializer, sInfo* info)
+    new(sType*% type, list<tup: string, sNode*%>*% initializer, sInfo* info)
     {
         self.super();
         
         sType*% self.type = clone type;
-        list<tuple2<string, sNode*%>*%>*% self.initializer = initializer;
+        list<tup:string, sNode*%>*% self.initializer = initializer;
     }
     
     string kind()
@@ -36,7 +36,7 @@ class sNewNode extends sNodeBase
     bool compile(sInfo* info)
     {
         sType* type = self.type;
-        list<tuple2<string, sNode*%>*%>*% initializer = self.initializer;
+        list<tup:string, sNode*%>*% initializer = self.initializer;
         
         CVALUE*% come_value = new CVALUE();
         
@@ -1365,7 +1365,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             info->p++;
             skip_spaces_and_lf();
             
-            list<tuple2<string, sNode*%>*%>*% initializer = new list<tuple2<string, sNode*%>*%>();
+            list<tup: string, sNode*%>*% initializer = new list<tup: string, sNode*%>();
             
             while(true) {
                 string word = parse_word();

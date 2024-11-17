@@ -1189,7 +1189,7 @@ void cast_type(sType* left_type, sType* right_type, CVALUE* come_value, sInfo* i
     }
 }
 
-tuple2<sType*%, string>*% parse_variable_name(sType*% base_type_name, bool first, sInfo* info)
+sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* info)
 {
     sType*% result_type = clone base_type_name;
     if(!first) {
@@ -1376,7 +1376,7 @@ void skip_pointer_attribute(sInfo* info=info)
     }
 }
 
-tuple3<sType*%,string,bool>*% backtrace_parse_type(bool parse_variable_name=false,sInfo* info=info)
+sType*%,string,bool backtrace_parse_type(bool parse_variable_name=false,sInfo* info=info)
 {
     bool no_output_err = info.no_output_err;
     info.no_output_err = true;
@@ -1387,7 +1387,7 @@ tuple3<sType*%,string,bool>*% backtrace_parse_type(bool parse_variable_name=fals
     return (type, name, err);
 }
 
-tuple3<sType*%,string,bool>*% parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false)
+sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false)
 {
     char* head = info.p;
     int head_sline = info.sline;

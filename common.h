@@ -453,7 +453,7 @@ module sCurrentNodeModule
                 
                 type2.mPointerNum++;
                 
-                tuple2<string, sType*%>*% item = (string(value.mCValueName), type2);
+                tup: string, sType*% item = (string(value.mCValueName), type2);
                 
                 if(value.mCValueName != null) {
                     if(strcmp(value.mCValueName, "__list_values") == 0)
@@ -473,7 +473,7 @@ module sCurrentNodeModule
                         type3->mArrayNum.reset();
                         type3->mPointerNum = 1;
                         type3->mOriginIsArray = true;
-                        tuple2<string, sType*%>*% item2 = (string(value.mCValueName), type3);
+                        tup: string, sType*% item2 = (string(value.mCValueName), type3);
                         current_stack.mFields.push_back(clone item2);
                         value->mType->mOriginIsArray = true;
                     }
@@ -502,7 +502,7 @@ module sCurrentNodeModule
                 
                 sType*% type2 = clone value.mType;
                 
-                tuple2<string, sType*%>*% item = (value.mCValueName, type2);
+                tup: string, sType*% item = (value.mCValueName, type2);
                 
                 if(value.mCValueName != null) {
                     if(strcmp(value.mCValueName, "__list_values") == 0)
