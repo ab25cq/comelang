@@ -1818,8 +1818,8 @@ void buffer_trim(struct buffer* self, int len);
 struct buffer* buffer_append(struct buffer* self, char* mem, unsigned long  int size);
 struct buffer* buffer_append_char(struct buffer* self, char c);
 struct buffer* buffer_append_str(struct buffer* self, char* str);
-struct buffer* buffer_append_nullterminated_str(struct buffer* self, char* str);
 struct buffer* buffer_append_format(struct buffer* self, char* str, ...);
+struct buffer* buffer_append_nullterminated_str(struct buffer* self, char* str);
 struct buffer* buffer_append_int(struct buffer* self, int value);
 struct buffer* buffer_append_long(struct buffer* self, long value);
 struct buffer* buffer_append_short(struct buffer* self, short value);
@@ -5272,7 +5272,7 @@ struct sNode* __result140__;
         gComeFunResultObject = (void*)0;
         return __result127__;
     }
-    else if(    !info->no_label&&*info->p==58) {
+    else if(    !info->no_label&&*info->p==58&&charp_operator_not_equals(buf,"tup")) {
         info->p++;
         skip_spaces_and_lf(info);
         if(        *info->p==59) {
