@@ -346,34 +346,23 @@ void ViWin*::input(ViWin* self, Vi* nvi) version 12
 
 void ViWin*::subAllTextsFromCommandMode(ViWin* self, Vi* nvi) 
 {
-    /// parse command ///
-    come_regex*% reg = new come_regex("%s\/\(.+\)\/\(.*\)\/*?").rescue {
-        null
-    }
+    auto command = string(nvi.commandString).scan(r"%s/\(.+\)/\(.*\)/");
 
-    if(reg) {
-        auto command = string(nvi.commandString).scan(reg);
+    auto str = command.item(1, null);
+    auto replace = command.item(2, null);
     
-        auto str = command.item(1, null);
-        auto replace = command.item(2, null);
-        
-        if(str != null && replace != null) {
-            self.pushUndo();
-            int it2 = 0;
-            foreach(it, self.texts) {
-                come_regex*% reg = new come_regex(str).rescue {
-                    null
-                }
-    
-                if(reg) {
-                    auto new_line = it.to_string().sub(reg, replace).to_wstring();
-                    
-                    self.texts.replace(it2, new_line);
-                    self.texts_length.replace(it2, wcslen(new_line));
-                }
-    
-                it2++;
+    if(str != null && replace != null) {
+        self.pushUndo();
+        int it2 = 0;
+        foreach(it, self.texts) {
+            nvi.searchString.to_string().to_regex().rescue {null}.if {
+                auto new_line = it.to_string().sub(Value, replace).to_wstring();
+                
+                self.texts.replace(it2, new_line);
+                self.texts_length.replace(it2, wcslen(new_line));
             }
+
+            it2++;
         }
     }
 }

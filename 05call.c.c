@@ -10975,7 +10975,7 @@ struct sNode* __result375__;
             if(value_539) { value_539 = come_decrement_ref_count2(value_539, ((struct sNode*)value_539)->finalize, ((struct sNode*)value_539)->_protocol_obj, 0, 0, 0, (void*)0); } 
         }
     }
-    else if(    (xisalpha(*info->p)||*info->p==95)&&!(*info->p==76&&*(info->p+1)==34||(*info->p==115||*info->p==83)&&*(info->p+1)==34||(*info->p==76&&*(info->p+1)==39))) {
+    else if(    (xisalpha(*info->p)||*info->p==95)&&!((*info->p==76||*info->p==108||*info->p==115||*info->p==83||*info->p==114||*info->p==82)&&*(info->p+1)==34||(*info->p==76&&*(info->p+1)==39))) {
         head_543=info->p;
         head_sline_544=info->sline;
         buf_545=(char*)come_increment_ref_count(backtrace_parse_word(info));

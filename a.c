@@ -1,12 +1,9 @@
 #include <comelang.h>
+#include <comelang-str.h>
 
 int main(int argc, char** argv)
 {
-    list<tup: int, int>*% a = new list<tup: int, int>();
-    
-    a.add((1,2));
-    
-    puts(a[0].to_string());
+    r"((((((".rescue { null }.if { "aaa".scan(Value).to_string().puts(); }
     
     return 0;
 }

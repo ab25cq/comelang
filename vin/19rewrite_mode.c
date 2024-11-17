@@ -60,15 +60,13 @@ void ViWin*::inputRewritetMode(ViWin* self, Vi* nvi)
     else if(key == 9) {
         auto str = self.texts.item(self.scroll+self.cursorY, null).substring(0, self.cursorX);
 
-        come_regex*% reg = new come_regex("^$|^[ ]+$").rescue {
-            null
-        }
-        
-        if(reg && str.to_string().match(reg)) {
-            self.insertText2(wstring("    "));
-        }
-        else {
-            self.completion(nvi);
+        new come_regex("^$|^[ ]+$").rescue { null }.if {
+            if(str.to_string().match(Value)) {
+                self.insertText2(wstring("    "));
+            }
+            else {
+                self.completion(nvi);
+            }
         }
     }
     else if(key > 127) {

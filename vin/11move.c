@@ -304,13 +304,9 @@ void ViWin*::gotoFunctionBottom(ViWin* self, Vi* nvi)
 {
     int cursor_y = self.scroll+self.cursorY + 1;
 
-    come_regex*% reg = new come_regex("^}").rescue {
-        null
-    }
-
     int it2 = 0;
     foreach(it, self.texts.sublist(self.scroll+self.cursorY+1, -1)) {
-        if(reg && it.to_string().match(reg)) 
+        if(it.to_string().match(r"^}")) 
         {
             self.saveReturnPoint();
 

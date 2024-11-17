@@ -600,7 +600,9 @@ sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
 
     list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
 
-    sBlock*% else_block = null;
+    sBlock*% else_block = new sBlock(info);
+    else_block.mOmitSemicolon = true;
+    else_block.mNodes.push_back(create_load_var(s"come_exception_var_\{var_num_stack}"));
     
     sNode*% expression_node2 = create_load_var(s"Err");
 

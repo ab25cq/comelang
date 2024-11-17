@@ -1648,8 +1648,170 @@ sNode*% expression_node(sInfo* info) version 96
         }
         
         return node;
+    }
+    else if((*info->p == 'R' || *info->p == 'r') && *(info->p+1) == '"') {
+        info->p+=2;
         
-       // return new sRegexNode(buf.to_string(), global, ignore_case, sline, info) implements sNode;
+        int sline = info->sline;
+        
+        buffer*% value = new buffer();
+        while(1) {
+            if(*info->p == '"') {
+                info->p++;
+                
+                char* p = info->p;
+                int sline = info->sline;
+                
+                skip_spaces_and_lf();
+                
+                if(*info->p == '"') {
+                    info->p++;
+                }
+                else {
+                    info->p = p;
+                    info->sline = sline;
+                    break;
+                }
+            }
+            else if(*info->p == '\\') {
+                value.append_char('\\');
+                info->p++;
+                
+                if(xisdigit(*info->p)) {
+                    int len = 0;
+                    while(xisdigit(*info->p) && len < 3) {
+                        value.append_char(*info->p);
+                        info->p++;
+                        len++;
+                    }
+                }
+                else if(*info->p == 'x' || *info->p == 'X') {
+                    value.append_char(*info->p);
+                    info->p++;
+                    
+                    while(*info->p >= '0' && *info->p <= '9' || *info->p >= 'a' && *info->p <= 'f' || *info->p >= 'A' && *info->p <= 'F') {
+                        value.append_char(*info->p);
+                        info->p++;
+                    }
+                }
+                else {
+                    switch(*info->p) {
+                        case '0':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case 'n':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case 't':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case 'r':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case 'v':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case 'f':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case 'a':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case 'b':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        case '\\':
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+    
+                        default:
+                            value.append_char(*info->p);
+                            info->p++;
+                            break;
+                    }
+                }
+            }
+            else if(*info->p == '\0') {
+                int sline2 = info->sline;
+                info->sline = sline;
+                err_msg(info, "close \" to make embbeded string value");
+                exit(2);
+            }
+            else {
+                if(*info->p == '\n') info->sline++;
+
+                value.append_char(*info->p);
+                info->p++;
+            }
+        }
+        
+        bool global = false;
+        bool ignore_case = false;
+        while(*info->p == 'g' || *info->p == 'i') {
+            if(*info->p == 'g') {
+                info->p++;
+                global = true;
+            }
+            else if(*info->p == 'i') {
+                info->p++;
+                ignore_case = true;
+            }
+            else {
+                break;
+            }
+        }
+        
+        skip_spaces_and_lf();
+        
+        bool catch_exception = false;
+        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, "!!", strlen("!!")) == 0) {
+            catch_exception = true;
+        }
+        
+        sNode*% obj = new sStrNode(value.to_string(), sline, info) implements sNode;
+        
+        list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
+        
+        params.add((s"self", obj));
+        params.add((s"ignore_case", ignore_case ? create_int_node(1, info) : create_int_node(0, info)));
+        params.add((s"multiline", create_int_node(0, info)));
+        params.add((s"global", global ? create_int_node(1, info) : create_int_node(0, info)));
+        params.add((s"extended", create_int_node(0, info)));
+        params.add((s"dotall", create_int_node(0, info)));
+        params.add((s"anchored", create_int_node(0, info)));
+        params.add((s"dollar_endonly", create_int_node(0, info)));
+        params.add((s"ungreedy", create_int_node(0, info)));
+        
+        buffer* method_block = null;
+        
+        int method_block_sline = info.sline;
+        
+        list<sType*%>*% method_generics_types = new list<sType*%>();
+        
+        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
+        
+        if(!catch_exception) {
+            node = create_exception_value(clone node, info);
+        }
+        
+        return node;
     }
     else if(*info->p == '\'') {
         info->p++;
