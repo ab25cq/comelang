@@ -4,5 +4,5 @@ mkdir build
 comelang -pico led.c && cp led.c.c led2.c 
 rm -rf build
 mkdir build
-(cd build; cmake .. && make)
+(cd build; cmake .. && make VERBOSE=1)
 cd build
