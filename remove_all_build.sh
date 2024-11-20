@@ -18,7 +18,7 @@ then
     (cd webweb; sh clean_build.sh)
 fi
 
-(cd led; rm -rf build)
+(cd pico; rm -rf build)
 
 if [ -e webweb2/Makefile ]
 then
