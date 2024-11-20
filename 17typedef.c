@@ -154,13 +154,11 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             sNode*% node = new sTypedefNode(type_name, type, multiple_declare, info) implements sNode;
             
-            if(info.no_output_come_code2) {
-                if(!node_compile(node, info)) {
-                    return null;
-                }
+            if(!node_compile(node, info)) {
+                return null;
             }
             
-            return node;
+            return new sTypedefNullNode() implements sNode;
         }
         else {
             char* source_tail = info.p;
@@ -173,70 +171,17 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             sNode*% node = new sTypedefNode(type_name, type, null@multiple_declare, info) implements sNode;
             
-            if(info.no_output_come_code2) {
-                if(!node_compile(node, info)) {
-                    return null;
-                }
+            if(!node_compile(node, info)) {
+                return null;
             }
             
-            return node;
+            return new sTypedefNullNode() implements sNode;
         }
     }
     
     return inherit(buf, head, head_sline, info);
 }
 
-void innser_typedef(string type_name, sType*% type, list<tup: sType*%, string>*% multiple_declare, sInfo* info)
-{
-    if(type_name === "__darwin_va_list") {
-        info.classes.insert(string("__darwin_va_list"), new sClass("__darwin_va_list", number:true));
-        
-        sType*% type = new sType("__darwin_va_list");
-        type->mOriginalTypeName = string("__darwin_va_list");
-        
-        type->mTypedef = true;
-        info.types.insert(string(type_name), clone type);
-        
-        if(info.output_header_file && info->sname !== info->base_sname) {
-        }
-        else {
-            add_come_code_at_source_head(info, "typedef __builtin_va_list __darwin_va_list;\n");
-        }
-    }
-    else if(multiple_declare) {
-        foreach(it, multiple_declare) {
-            var type, type_name = it;
-        
-            if(type_name !== "va_list") {
-                type->mOriginalTypeName = string(type_name);
-            }
-            
-            type->mTypedef = true;
-            info.types.insert(string(type_name), clone type);
-            
-        
-            if(info.output_header_file && info->sname !== info->base_sname) {
-            }
-            else {
-                add_come_code_at_source_head(info, "typedef %s;\n", make_define_var(type, type_name, in_header:true));
-            }
-        }
-    }
-    else {
-        if(type_name !== "va_list") {
-            type->mOriginalTypeName = string(type_name);
-        }
-        
-        type->mTypedef = true;
-        info.types.insert(string(type_name), clone type);
-        
-        if(info.output_header_file && info->sname !== info->base_sname) {
-        }
-        else {
-            add_come_code_at_source_head(info, "typedef %s;\n", make_define_var(type, type_name, in_header:true));
-        }
-    }
-}
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 17
 {
@@ -282,7 +227,12 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             add_come_code_at_come_header(info, "%s", header.to_string());
             
-            innser_typedef(type_name, type, multiple_declare info);
+            sNode*% node = new sTypedefNode(type_name, type, multiple_declare, info) implements sNode;
+            
+            if(!node_compile(node, info)) {
+                return null;
+            }
+            
             return new sTypedefNullNode() implements sNode;
         }
         else {
@@ -294,7 +244,12 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             add_come_code_at_come_header(info, "%s;\n", header.to_string());
             
-            innser_typedef(type_name, type, null@multiple_declare info);
+            sNode*% node = new sTypedefNode(type_name, type, null@multiple_declare, info) implements sNode;
+            
+            if(!node_compile(node, info)) {
+                return null;
+            }
+            
             return new sTypedefNullNode() implements sNode;
         }
     }
