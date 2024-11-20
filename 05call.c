@@ -1,5 +1,7 @@
 #include "common.h"
+#if defined(__LINUX__) || defined(__MAC__) || defined(__ANDROID__)
 #include <poll.h>
+#endif
 
 class sReturnNode extends sNodeBase
 {
@@ -1414,6 +1416,7 @@ class sComeJoinNode extends sNodeBase
     }
 };
 
+#if defined(__LINUX__) || defined(__MAC__) || defined(__ANDROID__)
 class sComePollNode extends sNodeBase
 {
     new(list<sNode*%>*% vars, list<sBlock*%>*% blocks, int time_out, sInfo* info) {
@@ -1476,6 +1479,7 @@ class sComePollNode extends sNodeBase
         return true;
     }
 };
+#endif
 
 sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
 {
@@ -2088,6 +2092,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             return new sComeJoinNode(node, info) implements sNode;
         }
+#if defined(__LINUX__) || defined(__MAC__) || defined(__ANDROID__)
         else if(gComePthread && buf === "come_poll" && (*info->p == '(' || *info->p == '{')) {
             int time_out = 1;
             if(*info->p == '(') {
@@ -2123,6 +2128,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             return new sComePollNode(vars, blocks, time_out, info) implements sNode;
         }
+#endif
         else if(buf === "none" && *info->p == '(') {
             sNode*% node = parse_none(info);
             
