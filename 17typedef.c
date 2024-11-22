@@ -68,8 +68,8 @@ class sTypedefNode extends sNodeBase
                     else {
                         static int var_num = 0;
                         var_num++;
-                        type_name = type_name + var_num.to_string() + "COMELANG";
-                        info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                        string type_name2 = type_name + var_num.to_string() + "COMELANG";
+                        info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                     }
                 }
             }
@@ -93,8 +93,8 @@ class sTypedefNode extends sNodeBase
                 else {
                     static int var_num = 0;
                     var_num++;
-                    type_name = type_name + var_num.to_string() + "COMELANG";
-                    info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                    string type_name2 = type_name + var_num.to_string() + "COMELANG";
+                    info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                 }
             }
         }

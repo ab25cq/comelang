@@ -234,8 +234,6 @@ typedef long long user_off_t;
 
 typedef unsigned long  long syscall_arg_t;
 
-typedef __darwin_va_list va_list;
-
 typedef unsigned long  int size_t;
 
 typedef long  long fpos_t;
@@ -873,6 +871,8 @@ typedef unsigned long  int rsize_t;
 typedef int errno_t;
 
 typedef __builtin_va_list __gnuc_va_list;
+
+typedef __builtin_va_list va_list;
 
 struct lconv
 {

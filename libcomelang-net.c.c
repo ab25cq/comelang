@@ -336,8 +336,6 @@ typedef long long user_off_t;
 
 typedef unsigned long  long syscall_arg_t;
 
-typedef __darwin_va_list va_list;
-
 typedef unsigned long  int size_t;
 
 typedef long  long fpos_t;
@@ -976,6 +974,8 @@ typedef int errno_t;
 
 typedef __builtin_va_list __gnuc_va_list;
 
+typedef __builtin_va_list va_list;
+
 struct lconv
 {
     char* decimal_point;
@@ -1258,6 +1258,8 @@ struct fd_set
 {
     int fds_bits[((((((1024)%((sizeof(int)*8)))==0))?(((1024)/((sizeof(int)*8)))):((((1024)/((sizeof(int)*8)))+1))))];
 };
+
+typedef struct fd_set fd_set1COMELANG;
 
 struct timespec
 {
@@ -1993,6 +1995,14 @@ struct sched_param
 {
     int sched_priority;
     char __opaque[4];
+};
+
+enum { QOS_CLASS_USER_INTERACTIVE=(33),
+QOS_CLASS_USER_INITIATED=(25),
+QOS_CLASS_DEFAULT=(21),
+QOS_CLASS_UTILITY=(17),
+QOS_CLASS_BACKGROUND=(9),
+QOS_CLASS_UNSPECIFIED=(0)
 };
 
 typedef unsigned int qos_class_t;
@@ -3673,6 +3683,10 @@ typedef struct ssl_poll_item_st SSL_POLL_ITEM;
 
 typedef int (*ssl_ct_validation_cb)(const struct ct_policy_eval_ctx_st*,const struct stack_st_SCT*,void*);
 
+enum { SSL_CT_VALIDATION_PERMISSIVE=(0),
+SSL_CT_VALIDATION_STRICT
+};
+
 typedef int SSL_TICKET_STATUS;
 
 typedef int SSL_TICKET_RETURN;
@@ -3784,12 +3798,16 @@ MYSQL_TYPE_STRING=(254),
 MYSQL_TYPE_GEOMETRY=(255)
 };
 
+typedef enum enum_field_types enum_field_types2COMELANG;
+
 struct LIST
 {
     struct LIST* prev;
     struct LIST* next;
     void* data;
 };
+
+typedef struct LIST LIST3COMELANG;
 
 typedef int (*list_walk_action)(void*,void*);
 
@@ -3841,6 +3859,8 @@ struct mysql_zlib_compress_context
     unsigned int compression_level;
 };
 
+typedef struct mysql_zlib_compress_context mysql_zlib_compress_context4COMELANG;
+
 typedef struct ZSTD_CCtx_s ZSTD_CCtx;
 
 typedef struct ZSTD_DCtx_s ZSTD_DCtx;
@@ -3851,6 +3871,8 @@ struct mysql_zstd_compress_context
     struct ZSTD_DCtx_s* dctx;
     unsigned int compression_level;
 };
+
+typedef struct mysql_zstd_compress_context mysql_zstd_compress_context5COMELANG;
 
 union anonymous_typeZ32
 {
@@ -3869,6 +3891,8 @@ struct mysql_compress_context
     enum enum_compression_algorithm algorithm;
     union anonymous_typeZ33 u;
 };
+
+typedef struct mysql_compress_context mysql_compress_context6COMELANG;
 
 enum SERVER_STATUS_flags_enum { SERVER_STATUS_IN_TRANS=(1),
 SERVER_STATUS_AUTOCOMMIT=(2),
@@ -3916,6 +3940,8 @@ struct NET
     char sqlstate[5+1];
     void* extension;
 };
+
+typedef struct NET NET7COMELANG;
 
 enum mysql_enum_shutdown_level { SHUTDOWN_DEFAULT=(0),
 SHUTDOWN_WAIT_CONNECTIONS=((unsigned char)(1<<0)),
@@ -3978,6 +4004,8 @@ struct UDF_ARGS
     void* extension;
 };
 
+typedef struct UDF_ARGS UDF_ARGS8COMELANG;
+
 struct UDF_INIT
 {
     _Bool maybe_null;
@@ -3987,6 +4015,8 @@ struct UDF_INIT
     _Bool const_item;
     void* extension;
 };
+
+typedef struct UDF_INIT UDF_INIT9COMELANG;
 
 enum Item_udftype { UDFTYPE_FUNCTION=(1),
 UDFTYPE_AGGREGATE
@@ -4078,6 +4108,8 @@ struct MYSQL_PLUGIN_VIO
     enum net_async_status (*write_packet_nonblocking)(struct MYSQL_PLUGIN_VIO*,const unsigned char*,int,int*);
 };
 
+typedef struct MYSQL_PLUGIN_VIO MYSQL_PLUGIN_VIO10COMELANG;
+
 struct auth_plugin_t
 {
     int type;
@@ -4120,6 +4152,8 @@ struct MYSQL_TIME
     int time_zone_displacement;
 };
 
+typedef struct MYSQL_TIME MYSQL_TIME11COMELANG;
+
 struct MYSQL_FIELD
 {
     char* name;
@@ -4145,6 +4179,8 @@ struct MYSQL_FIELD
     void* extension;
 };
 
+typedef struct MYSQL_FIELD MYSQL_FIELD12COMELANG;
+
 typedef char** MYSQL_ROW;
 
 typedef unsigned int MYSQL_FIELD_OFFSET;
@@ -4156,6 +4192,8 @@ struct MYSQL_ROWS
     unsigned long  int length;
 };
 
+typedef struct MYSQL_ROWS MYSQL_ROWS13COMELANG;
+
 typedef struct MYSQL_ROWS* MYSQL_ROW_OFFSET;
 
 struct MYSQL_DATA
@@ -4165,6 +4203,8 @@ struct MYSQL_DATA
     unsigned long  long rows;
     unsigned int fields;
 };
+
+typedef struct MYSQL_DATA MYSQL_DATA14COMELANG;
 
 enum mysql_option { MYSQL_OPT_CONNECT_TIMEOUT
 ,MYSQL_OPT_COMPRESS
@@ -4332,6 +4372,8 @@ struct MYSQL
     void* extension;
 };
 
+typedef struct MYSQL MYSQL15COMELANG;
+
 struct MYSQL_RES
 {
     unsigned long  long row_count;
@@ -4352,6 +4394,8 @@ struct MYSQL_RES
     void* extension;
 };
 
+typedef struct MYSQL_RES MYSQL_RES16COMELANG;
+
 struct MYSQL_RPL
 {
     unsigned long  int file_name_length;
@@ -4365,6 +4409,8 @@ struct MYSQL_RPL
     unsigned long  int size;
     const unsigned char* buffer;
 };
+
+typedef struct MYSQL_RPL MYSQL_RPL17COMELANG;
 
 enum enum_mysql_stmt_state { MYSQL_STMT_INIT_DONE=(1),
 MYSQL_STMT_PREPARE_DONE
@@ -4394,6 +4440,8 @@ struct MYSQL_BIND
     _Bool is_null_value;
     void* extension;
 };
+
+typedef struct MYSQL_BIND MYSQL_BIND18COMELANG;
 
 struct MYSQL_STMT
 {
@@ -4425,6 +4473,8 @@ struct MYSQL_STMT
     _Bool update_max_length;
     struct MYSQL_STMT_EXT* extension;
 };
+
+typedef struct MYSQL_STMT MYSQL_STMT19COMELANG;
 
 enum enum_stmt_attr_type { STMT_ATTR_UPDATE_MAX_LENGTH
 ,STMT_ATTR_CURSOR_TYPE

@@ -230,8 +230,6 @@ typedef long long user_off_t;
 
 typedef unsigned long  long syscall_arg_t;
 
-typedef __darwin_va_list va_list;
-
 typedef unsigned long  int size_t;
 
 typedef long  long fpos_t;
@@ -870,6 +868,8 @@ typedef int errno_t;
 
 typedef __builtin_va_list __gnuc_va_list;
 
+typedef __builtin_va_list va_list;
+
 struct lconv
 {
     char* decimal_point;
@@ -1161,6 +1161,8 @@ struct pcre_extra
     void* executable_jit;
 };
 
+typedef struct pcre_extra pcre_extra1COMELANG;
+
 struct pcre16_extra
 {
     unsigned long  int flags;
@@ -1173,6 +1175,8 @@ struct pcre16_extra
     void* executable_jit;
 };
 
+typedef struct pcre16_extra pcre16_extra2COMELANG;
+
 struct pcre32_extra
 {
     unsigned long  int flags;
@@ -1184,6 +1188,8 @@ struct pcre32_extra
     unsigned int** mark;
     void* executable_jit;
 };
+
+typedef struct pcre32_extra pcre32_extra3COMELANG;
 
 struct pcre_callout_block
 {
@@ -1202,6 +1208,8 @@ struct pcre_callout_block
     const unsigned char* mark;
 };
 
+typedef struct pcre_callout_block pcre_callout_block4COMELANG;
+
 struct pcre16_callout_block
 {
     int version;
@@ -1219,6 +1227,8 @@ struct pcre16_callout_block
     const unsigned short int* mark;
 };
 
+typedef struct pcre16_callout_block pcre16_callout_block5COMELANG;
+
 struct pcre32_callout_block
 {
     int version;
@@ -1235,6 +1245,8 @@ struct pcre32_callout_block
     int next_item_length;
     const unsigned int* mark;
 };
+
+typedef struct pcre32_callout_block pcre32_callout_block6COMELANG;
 
 typedef struct real_pcre_jit_stack* (*pcre_jit_callback)(void*);
 
