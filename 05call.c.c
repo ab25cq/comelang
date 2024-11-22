@@ -10449,14 +10449,14 @@ _Bool __result290__;
             return __result289__;
         }
         come_value_503=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
-        if(        lambda_type_495->mVarArgs&&((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498), "05call.c", 1546, 22))==((void*)0)) {
+        if(        lambda_type_495->mVarArgs&&list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498)==((void*)0)) {
         }
         else {
-            check_assign_type(((char*)(__right_value499=xsprintf("calling param #\%s",((char*)(__right_value498=int_to_string(i_498)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498), "05call.c", 1549, 23)),come_value_503->type,come_value_503,(_Bool)0,(_Bool)1,(_Bool)0,info);
+            check_assign_type(((char*)(__right_value499=xsprintf("calling param #\%s",((char*)(__right_value498=int_to_string(i_498)))))),((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498), "05call.c", 1549, 22)),come_value_503->type,come_value_503,(_Bool)0,(_Bool)1,(_Bool)0,info);
             /* U11 */__right_value498 = come_decrement_ref_count2(__right_value498, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             /* U11 */__right_value499 = come_decrement_ref_count2(__right_value499, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            if(            ((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498), "05call.c", 1550, 24))->mHeap&&come_value_503->type->mHeap) {
-                std_move(((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498), "05call.c", 1551, 25)),come_value_503->type,come_value_503,info,(_Bool)1);
+            if(            ((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498), "05call.c", 1550, 23))->mHeap&&come_value_503->type->mHeap) {
+                std_move(((struct sType*)come_null_check(list$1sTypephp_operator_load_element(lambda_type_495->mParamTypes,i_498), "05call.c", 1551, 24)),come_value_503->type,come_value_503,info,(_Bool)1);
             }
         }
         list$1CVALUEph_push_back(come_params_497,(struct CVALUE*)come_increment_ref_count(come_value_503));

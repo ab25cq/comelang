@@ -1543,7 +1543,7 @@ class sLambdaCall extends sNodeBase
             }
             
             CVALUE*% come_value = get_value_from_stack(-1, info);
-            if(lambda_type.mVarArgs && lambda_type.mParamTypes[i] == null) {
+            if(lambda_type.mVarArgs && lambda_type.mParamTypes[i]?? == null) {
             }
             else {
                 check_assign_type(s"calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value);
