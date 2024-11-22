@@ -1,12 +1,10 @@
 #include <comelang.h>
 
-struct sData
-{
-    int a;
-    int b;
+enum {
+    kA = 123,
+    kB,
+    kC
 };
-
-typedef struct sData sData;
 
 int main(int argc, char** argv)
 {

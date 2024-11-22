@@ -109,8 +109,16 @@ class sEnumNode extends sNodeBase
         }
         else {
             if(output) {
-                if(info.struct_definition[type_name]?? == null) {
-                    info.struct_definition.insert(type_name, buf);
+                if(info.struct_definition[type_name]?? == null || type_name === "") {
+                    if(type_name === "") {
+                        static int type_name_num = 0;
+                        type_name_num++;
+                        type_name = xsprintf("__enum_type_name_X%d", type_name_num);
+                        info.struct_definition.insert(type_name, buf);
+                    }
+                    else {
+                        info.struct_definition.insert(type_name, buf);
+                    }
                 }
             }
         }

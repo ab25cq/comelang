@@ -1410,6 +1410,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
             return node;
         }
     }
+    else if(buf === "enum" && *info->p == '{') {
+    }
     else if(define_struct_nobody) {
     }
     else if(define_variable_between_brace) {
