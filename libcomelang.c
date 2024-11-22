@@ -977,10 +977,6 @@ void buffer*::finalize(buffer* self)
 {
     if(self && self.buf) delete borrow self.buf;
 }
-void buffer*::force_finalize(buffer* self)
-{
-    if(self && self.buf) delete borrow self.buf;
-}
 
 buffer*% buffer*::clone(buffer* self)
 {

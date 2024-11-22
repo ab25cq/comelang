@@ -1,23 +1,5 @@
 #include "common.h"
 
-class sNothingNode extends sNodeBase
-{
-    new(sInfo* info)
-    {
-        self.super();
-    }
-    
-    string kind()
-    {
-        return string("sNothingNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        return true;
-    }
-};
-
 class sNewNode extends sNodeBase
 {
     new(sType*% type, list<tup: string, sNode*%>*% initializer, sInfo* info)
@@ -834,37 +816,6 @@ class sDeleteNode extends sNodeBase
     }
 };
 
-class sForceDeleteNode extends sNodeBase
-{
-    new(sNode*% node, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.node = clone node;
-    }
-    
-    string kind()
-    {
-        return string("sForceDeleteNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode* node = self.node;
-        
-        if(!node_compile(node)) {
-            return false;
-        }
-        
-        CVALUE*% come_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        free_object(come_value.type, come_value.c_value, false@no_decrement, false@no_free, info, false@comma, false@ret_value, true@force_delete);
-        
-        return true;
-    }
-};
-
 class sDelegateNode extends sNodeBase
 {
     new(sNode*% node, sInfo* info)
@@ -1427,12 +1378,6 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
          
          return new sDeleteNode(node, info) implements sNode;
     }
-    else if(buf === "force_delete") {
-         sNode*% node = expression();
-         
-         return new sForceDeleteNode(node, info) implements sNode;
-        
-    }
     else if(buf === "borrow") {
          sNode*% node = expression();
          
@@ -1532,7 +1477,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             gComeC = false;
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("comelang-str")) {
             info->p += strlen("comelang-str");
@@ -1540,7 +1485,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             gComeStr = true;
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("comelang-pthread")) {
             info->p += strlen("comelang-pthread");
@@ -1548,7 +1493,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             gComePthread = true;
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("comelang-net")) {
             info->p += strlen("comelang-net");
@@ -1556,7 +1501,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             gComeNet = true;
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("c") || parsecmp("C")) {
             info->p += strlen("c");
@@ -1573,33 +1518,33 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 return node;
             }
             else {
-                return new sNothingNode(info) implements sNode;
+                return create_nothing_node();
             }
         }
         else if(parsecmp("gc")) {
             info->p += strlen("gc");
             skip_spaces_and_lf();
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("no-gc")) {
             info->p += strlen("no-gc");
             skip_spaces_and_lf();
             
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("unsafe")) {
             info->p += strlen("unsafe");
             skip_spaces_and_lf();
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("no-null-check")) {
             info->p += strlen("no-null-check");
             skip_spaces_and_lf();
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else {
             err_msg(info, "invalid using");
@@ -1869,7 +1814,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
             
             gComeStr = true;
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("comelang-pthread")) {
             info->p += strlen("comelang-pthread");
@@ -1877,7 +1822,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
             
             gComePthread = true;
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("comelang-net")) {
             info->p += strlen("comelang-net");
@@ -1885,7 +1830,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
             
             gComeNet = true;
         
-            return new sNothingNode(info) implements sNode;
+            return create_nothing_node();
         }
         else if(parsecmp("c") || parsecmp("C")) {
             info->p += strlen("c");
@@ -1923,7 +1868,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
             exit(2);
         }
         
-        return new sNothingNode(info) implements sNode;
+        return create_nothing_node();
     }
     
     return inherit(buf, head, head_sline, info);

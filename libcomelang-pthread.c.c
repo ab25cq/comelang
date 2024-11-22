@@ -1,3 +1,5 @@
+/// previous struct definition ///
+/// struct definition ///
 // source head
 
 // header function

@@ -794,6 +794,8 @@ int come_main(int argc, char** argv) version 2
         info.linker_option = linker_option.to_string();
         info.no_output_err = false;
         info.funcs = new map<string, sFun*%>();
+        info.struct_definition = new map<string, buffer*%>();
+        info.previous_struct_definition = new map<string, buffer*%>();
         info.generics_funcs = new map<string, sGenericsFun*%>();
         info.classes = new map<string, sClass*%>();
         info.modules = new map<string, sClassModule*%>();
@@ -1021,6 +1023,8 @@ int come_main(int argc, char** argv) version 2
             info.linker_option = linker_option.to_string();
             info.no_output_err = false;
             info.funcs = new map<string, sFun*%>();
+            info.struct_definition = new map<string, buffer*%>();
+            info.previous_struct_definition = new map<string, buffer*%>();
             info.generics_funcs = new map<string, sGenericsFun*%>();
             info.classes = new map<string, sClass*%>();
             info.modules = new map<string, sClassModule*%>();

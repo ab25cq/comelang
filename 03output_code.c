@@ -910,6 +910,18 @@ bool output_source_file(sInfo* info) version 3
     FILE* f = fopen(output_file_name, "w");
     if(f == null) { die("fopen"); }
     
+    fprintf(f, "/// previous struct definition ///\n");
+    foreach(it, info.previous_struct_definition) {
+        buffer* buf = info.previous_struct_definition[it];
+        fprintf(f, "%s\n", buf.to_string());
+    }
+    
+    fprintf(f, "/// struct definition ///\n");
+    foreach(it, info.struct_definition) {
+        buffer* buf = info.struct_definition[it];
+        fprintf(f, "%s\n", buf.to_string());
+    }
+    
     fprintf(f, "// source head\n");
     fprintf(f, "%s\n", info.module.mSourceHead.to_string());
     

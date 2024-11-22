@@ -3,7 +3,10 @@
 
 int main(int argc, char** argv)
 {
-    r".".rescue { null }.if { "aaa".scan(Value).to_string().puts(); }
+    wstring a = wstring("AAA");
+    
+    int key = a.get_hash_key();
+    
     
     return 0;
 }

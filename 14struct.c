@@ -50,109 +50,72 @@ string create_generics_name(sType* generics_type, sInfo* info)
 
 void output_struct(sClass* klass, sInfo* info)
 {
-/*
     if(info->no_output_come_code) {
         return;
     }
-*/
-    if(!klass->mOutputed) {
-        klass->mOutputed = true;
+    if(klass->mFields.length() == 0) {
+        return;
+    }
+    
+    string name = klass.mName;
+    
+    buffer*% buf = new buffer();
         
-        buffer*% buf = new buffer();
+    buf.append_format("struct %s\n{\n", klass.mName);
+            
+    bool existance_generics = false;
+    foreach(it, klass.mFields) {
+        var name, type = it;
+            
+        if(is_contained_method_generics_types(type, info) || is_contained_generics_types(type, info)) {
+            existance_generics = true;
+        }
         
-//        if(klass.mFields.length() > 0) {
-            buf.append_format("struct %s\n{\n", klass.mName);
+        type->mStatic = false;
+        
+        buf.append_str("    ");
+        buf.append_str(make_define_var(type, name));
+        buf.append_str(";\n");
+    }
             
-            //klass = info.classes[klass->mName]??;
-            foreach(it, klass.mFields) {
-                var name, type = it;
-                
-                type->mStatic = false;
-                
-                buf.append_str("    ");
-                buf.append_str(make_define_var(type, name));
-                buf.append_str(";\n");
-            }
+    buf.append_str("};\n");
             
-            buf.append_str("};\n");
-            
-            if(info.output_header_file && klass.mDeclareSName !== info->base_sname) {
-            }
-            else {
-                if(info.outputed_class.at(string(klass->mName), -1) == -1) {
-                    info.outputed_class.insert(string(klass->mName), 1);
-                    
-                    add_come_code_at_source_head(info, "%s", buf.to_string());
-                }
-            }
-//        }
+    if(info.struct_definition[name]?? == null && !existance_generics) {
+        info.struct_definition.insert(name, buf);
     }
 }
 
-void output_struct_header(sClass* klass, sInfo* info)
+void output_struct_come_header(sClass* klass, sInfo* info)
 {
-/*
     if(info->no_output_come_code) {
         return;
     }
-*/
     if(!klass->mOutputed2) {
         klass->mOutputed2 = true;
         
         buffer*% buf = new buffer();
         
-//        if(klass.mFields.length() > 0) {
-            if(klass.mParentClassName) {
-                buf.append_format("struct %s extends %s\n{\n", klass.mName, klass.mParentClassName);
-            }
-            else {
-                buf.append_format("struct %s\n{\n", klass.mName);
-            }
-            foreach(it, klass.mFields) {
-                var name, type = it;
-                
-                type->mStatic = false;
-                
-                buf.append_str("    ");
-                buf.append_str(make_define_var_no_solved(type, name));
-                buf.append_str(";\n");
-            }
-            buf.append_str("};\n");
+        if(klass.mParentClassName) {
+            buf.append_format("struct %s extends %s\n{\n", klass.mName, klass.mParentClassName);
+        }
+        else {
+            buf.append_format("struct %s\n{\n", klass.mName);
+        }
+        foreach(it, klass.mFields) {
+            var name, type = it;
             
-            if(info.output_header_file && klass.mDeclareSName !== info->base_sname) {
-            }
-            else {
-                add_come_code_at_come_header(info, "%s", buf.to_string());
-            }
-//        }
-    }
-}
-
-bool is_no_contained_generics_types(sType* type, sInfo* info)
-{
-    sType* type2 = type->mNoSolvedGenericsType.v1;
-    
-    if(type2 && is_no_contained_generics_types(type2, info)) {
-        return false;
-    }
-    
-    sClass* klass = type->mClass;
-    
-    if(klass->mGenerics) {
-        return false;
-    }
-    if(klass->mMethodGenerics) {
-        return false;
-    }
-    for(int i=0; i<type->mGenericsTypes.length(); i++) {
-        bool result = is_no_contained_generics_types(type->mGenericsTypes[i], info);
+            type->mStatic = false;
+            
+            buf.append_str("    ");
+            buf.append_str(make_define_var_no_solved(type, name,original_type_name:true));
+            buf.append_str(";\n");
+        }
+        buf.append_str("};\n");
         
-        if(!result) {
-            return false;
+        if(klass.mDeclareSName === info->base_sname) {
+            add_come_code_at_come_header(info, "%s", buf.to_string());
         }
     }
-    
-    return true;
 }
 
 bool is_contained_generics_types(sType* type, sInfo* info)
@@ -207,9 +170,8 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
 {
     string new_name = create_generics_name(type, info);
     
-    if(is_no_contained_generics_types(type, info) && !info.classes.find(new_name)) {
-        sType*% type2 = clone type;
-        
+    if(!info.classes.find(new_name)) 
+    {
         sClass* generics_class = info.generics_classes[type.mClass.mName]??;
         
         if(generics_class == null) {
@@ -217,15 +179,15 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
             return false;
         }
         
-        sClass*% new_class = new sClass(name:new_name, struct_:true);
+        info.classes.insert(string(new_name), new sClass(name:new_name, struct_:true));
         
-        info.classes.insert(string(new_name), new_class);
+        sClass* new_class = info.classes.at(string(new_name), null);
         
         int i = 0;
         foreach(it, generics_class.mFields) {
             var name, type = it;
             
-            sType*% new_type = solve_generics(type, type2, info);
+            sType*% new_type = solve_generics(type, generics_type, info);
             
             new_class.mFields.push_back((clone name, clone new_type));
         }
@@ -237,42 +199,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
         
         output_struct(new_class, info);
     }
-    else if(!info.classes.find(new_name)) {
-        sClass* generics_class = info.generics_classes[type.mClass.mName]??;
-        
-        if(generics_class == null) {
-            err_msg(info, "generics_class(%s) is null", type.mClass.mName);
-            return false;
-        }
-        
-        sClass*% new_class = new sClass(name:new_name, struct_:true);
-        
-        info.classes.insert(string(new_name), new_class);
-        
-        bool existance_method_generics = false;
-        int i = 0;
-        foreach(it, generics_class.mFields) {
-            var name, type = it;
-            
-            sType*% new_type = solve_generics(type, generics_type, info);
-            
-            if(is_contained_method_generics_types(new_type, info)) {
-                existance_method_generics = true;
-            }
-            
-            new_class.mFields.push_back((clone name, clone new_type));
-        }
-        
-        type->mNoSolvedGenericsType.v1 = clone type;
-        type->mNoSolvedGenericsType.v1.mPointerNum = type->mPointerNum;
-        type->mClass = new_class;
-        type->mGenericsTypes.reset();
-        
-        if(!existance_method_generics) {
-            output_struct(new_class, info);
-        }
-    }
-    else {
+    else { 
         if(type->mNoSolvedGenericsType.v1 == null) {
             type->mNoSolvedGenericsType.v1 = clone type;
             type->mNoSolvedGenericsType.v1.mPointerNum = type->mPointerNum;
@@ -286,14 +213,12 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
 
 class sStructNode extends sNodeBase
 {
-    new(string name, sClass*% klass, bool output, sInfo* info)
+    new(string name, sClass* klass, sInfo* info)
     {
         self.super();
     
         string self.mName = string(name);
         sClass*% self.mClass = clone klass;
-        
-        bool self.mOutput = output;
     }
     
     bool terminated()
@@ -308,27 +233,11 @@ class sStructNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sClass*% klass = clone self.mClass;
+        sClass*% klass = self.mClass;
         string name = string(self.mName);
         
-        if(info.classes.at(name, null) == null) {
-            info.classes.insert(name, clone klass);
-        }
-        else if(info.classes.at(name, null).mFields.length() == 0 && klass->mFields.length() > 0) {
-            sClass* klass2 = info.classes.at(name, null);
-            klass2.mFields = clone klass.mFields;
-        }
-        
-        if(info.types[name]?? != null && info.types[name].mTypedef) {
-        }
-        else {
-            sType*% type = new sType(name);
-            info.types.insert(name, clone type);
-        }
-        
-        if(self.mOutput) {
-            output_struct(klass, info);
-        }
+        output_struct(klass, info);
+//        output_struct_come_header(klass, info);
     
         return true;
     }
@@ -336,7 +245,7 @@ class sStructNode extends sNodeBase
 
 class sStructNobodyNode extends sNodeBase
 {
-    new(string name, sClass*% klass, sInfo* info)
+    new(string name, sClass* klass, sInfo* info)
     {
         self.super();
     
@@ -359,29 +268,13 @@ class sStructNobodyNode extends sNodeBase
         string name = string(self.mName);
         sClass* klass = self.mClass;
         
-        if(info.classes.at(name, null) == null) {
-            info.classes.insert(name, clone klass);
-        }
-        
-        sType*% type = new sType(name);
-        
-        if(info.types[name]?? != null && info.types[name].mTypedef) {
-        }
-        else {
-            info.types.insert(name, clone type);
-        }
-        
-        if(info.output_header_file && klass.mDeclareSName !== info->base_sname) {
-        }
-        else {
-            add_come_code_at_source_head(info, "struct %s;\n", name);
-        }
+        info.previous_struct_definition.insert(name, xsprintf("struct %s;\n", name).to_buffer());
     
         return true;
     }
 };
 
-class sGenericsStructNode extends sNodeBase
+class sNothingNode extends sNodeBase
 {
     new(sInfo* info)
     {
@@ -395,7 +288,7 @@ class sGenericsStructNode extends sNodeBase
     
     string kind()
     {
-        return string("sGenericsStructNode");
+        return string("sNothingNode");
     }
     
     bool compile(sInfo* info)
@@ -405,9 +298,14 @@ class sGenericsStructNode extends sNodeBase
     }
 };
 
+sNode*% create_nothing_node(sInfo* info=info)
+{
+    return new sNothingNode(info) implements sNode;
+}
+
 class sClassNode extends sNodeBase
 {
-    new(string name, sClass*% klass, list<sNode*%>*% methods, bool output, sInfo* info)
+    new(string name, sClass*% klass, list<sNode*%>*% methods, sInfo* info)
     {
         self.super();
     
@@ -415,8 +313,6 @@ class sClassNode extends sNodeBase
         sClass*% self.mClass = clone klass;
         
         list<sNode*%>*% self.mMethods = methods;
-        
-        bool self.mOutput = output;
     }
     
     bool terminated()
@@ -449,9 +345,7 @@ class sClassNode extends sNodeBase
             info.types.insert(name, clone type);
         }
         
-        if(self.mOutput) {
-            output_struct(klass, info);
-        }
+        output_struct(klass, info);
         
         foreach(it, self.mMethods) {
             if(!node_compile(it)) {
@@ -459,10 +353,7 @@ class sClassNode extends sNodeBase
             }
         }
         
-        if(self.mOutput) {
-            output_struct_header(klass, info);
-        }
-        
+        output_struct_come_header(klass, info);
     
         return true;
     }
@@ -470,21 +361,18 @@ class sClassNode extends sNodeBase
 
 sNode*% parse_struct(string type_name, sInfo* info)
 {
-    sClass*% klass;
+    sClass* klass;
     if(info.classes.at(type_name, null) == null) {
-        klass = new sClass(name:string(type_name), struct_:true);
-        info.classes.insert(string(type_name), klass);
+        info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
+        sType*% type = new sType(type_name);
+        info.types.insert(type_name, clone type);
+        
+        klass = info.classes.at(type_name, null);
     }
     else {
-        klass = clone info.classes.at(type_name, null);
-    }
-    
-    bool output;
-    if(klass->mFields.length() > 0) {
-        output = false;
-    }
-    else {
-        output = true;
+        klass = info.classes.at(type_name, null);
+        sType*% type = new sType(type_name);
+        info.types.insert(type_name, clone type);
     }
     
     sClass* parent_class = null;
@@ -524,9 +412,7 @@ sNode*% parse_struct(string type_name, sInfo* info)
             
             var type2, name2 = parse_variable_name(base_type, true@first, info);
             
-            if(output) {
-                klass.mFields.push_back((name2, type2));
-            }
+            klass.mFields.push_back((name2, type2));
             
             while(*info->p == ',') {
                 info->p++;
@@ -534,9 +420,7 @@ sNode*% parse_struct(string type_name, sInfo* info)
                 
                 var type2, name2 = parse_variable_name(base_type, false@first, info);
                 
-                if(output) {
-                    klass.mFields.push_back((name2, type2));
-                }
+                klass.mFields.push_back((name2, type2));
             }
         }
         else {
@@ -547,9 +431,7 @@ sNode*% parse_struct(string type_name, sInfo* info)
                 exit(2);
             }
             
-            if(output) {
-                klass.mFields.push_back((name, type2));
-            }
+            klass.mFields.push_back((name, type2));
         }
         if(*info->p == ';') {
             info->p++;
@@ -570,19 +452,13 @@ sNode*% parse_struct(string type_name, sInfo* info)
         info.classes.insert(klass->mName, clone klass);
     }
     
-    if(info.no_output_come_code2) {
-        output = true;
+    sNode*% node = new sStructNode(string(type_name), klass, info) implements sNode;
+    
+    if(!node_compile(node, info)) {
+        return null;
     }
     
-    sNode*% node = new sStructNode(string(type_name), klass, output, info) implements sNode;
-    
-    if(info.no_output_come_code2) {
-        if(!node_compile(node, info)) {
-            return null;
-        }
-    }
-    
-    return node;
+    return new sNothingNode(info) implements sNode;
 }
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
@@ -596,14 +472,17 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             info->p++;
             skip_spaces_and_lf();
             
-            sClass*% struct_class;
+            sClass* struct_class;
             if(info.classes.at(type_name, null) == null) {
-                struct_class = new sClass(name:type_name, struct_:true);
-                struct_class->mNobodyStruct = true;
+                info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
+                struct_class = info.classes.at(type_name, null);
+                sType*% type = new sType(type_name);
+                info.types.insert(type_name, type);
             }
             else {
-                struct_class = dummy_heap info.classes.at(type_name, null);
-                struct_class->mNobodyStruct = true;
+                struct_class = info.classes.at(type_name, null);
+                sType*% type = new sType(type_name);
+                info.types.insert(type_name, type);
             }
             
             char* source_tail = info.p;
@@ -615,230 +494,228 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             return new sStructNobodyNode(string(type_name), struct_class, info) implements sNode;
         }
-        else {
-            if(*info->p == '<') {
-                info.generics_type_names.reset();
+        else if(*info->p == '<') {
+            info.generics_type_names.reset();
+            
+            info->p++;
+            skip_spaces_and_lf();
+            
+            while(true) {
+                var T = parse_word() ;
+                info.generics_type_names.push_back(clone T);
                 
-                info->p++;
-                skip_spaces_and_lf();
-                
-                while(true) {
-                    var T = parse_word() ;
-                    info.generics_type_names.push_back(clone T);
-                    
-                    if(*info->p == '>') {
-                        info->p++;
-                        skip_spaces_and_lf();
-                        break;
-                    }
-                    else if(*info->p == ',') {
-                        info->p++;
-                        skip_spaces_and_lf();
-                    }
-                    else {
-                        err_msg(info, "invalid generics struct definition");
-                        exit(2);
-                    }
+                if(*info->p == '>') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
                 }
-                
-                sClass*% generics_class;
-                if(info.generics_classes.at(type_name, null) != null) {
-                    err_msg(info, "redifined generics struct(%s)", type_name);
-                    exit(2);
+                else if(*info->p == ',') {
+                    info->p++;
+                    skip_spaces_and_lf();
                 }
                 else {
-                    generics_class = new sClass(name:type_name, struct_:true);
+                    err_msg(info, "invalid generics struct definition");
+                    exit(2);
+                }
+            }
+            
+            sClass*% generics_class;
+            if(info.generics_classes.at(type_name, null) != null) {
+                err_msg(info, "redifined generics struct(%s)", type_name);
+                exit(2);
+            }
+            else {
+                generics_class = new sClass(name:type_name, struct_:true);
+            }
+            
+            if(info.generics_classes.at(type_name, null) == null) {
+                info.generics_classes.insert(type_name, generics_class);
+            }
+            
+            expected_next_character('{') ;
+            
+            while(true) {
+                parse_sharp();
+                
+                var type2, name, err = parse_type(parse_variable_name:true);
+                
+                if(!err) {
+                    printf("%s %d: parse_type failed\n", info->sname, info->sline);
+                    exit(2);
                 }
                 
-                if(info.generics_classes.at(type_name, null) == null) {
-                    info.generics_classes.insert(type_name, generics_class);
-                }
-                
-                expected_next_character('{') ;
-                
-                while(true) {
-                    parse_sharp();
+                if(*info->p == ',') {
+                    generics_class.mFields.push_back((name, type2));
                     
+                    while(*info->p == ',') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        
+                        string name2 = parse_word();
+                        
+                        var type3 = clone type2;
+                        
+                        if(*info->p == ':') {
+                            info->p++;
+                            skip_spaces_and_lf();
+                            
+                            bool no_comma = info->no_comma;
+                            info->no_comma = true;
+                            sNode*% node = expression();
+                            info->no_comma = no_comma;
+                            
+                            type3->mSizeNum = node;
+                        }
+                        
+                        generics_class.mFields.push_back((name2, type3));
+                    }
+                }
+                else {
+                    generics_class.mFields.push_back((name, type2));
+                }
+                
+                if(*info->p == ';') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                }
+                //expected_next_character(';') ;
+                
+                parse_sharp();
+                
+                if(*info->p == '}') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
+                }
+                parse_sharp();
+            }
+            
+            parse_attribute();
+            
+            info.generics_type_names.reset();
+            
+            char* source_tail = info.p;
+            
+            buffer*% header = new buffer();
+            header.append_str("struct ");
+            header.append(source_head, source_tail - source_head);
+            
+            add_come_code_at_come_header(info, "%s;\n", header.to_string());
+            
+            return new sNothingNode(info) implements sNode;
+        }
+        else {
+            sClass* struct_class;
+            if(info.classes.at(type_name, null) == null) {
+                info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
+                
+                sType*% type = new sType(type_name);
+                info.types.insert(type_name, type);
+                
+                struct_class = info.classes.at(type_name, null);
+            }
+            else {
+                sType*% type = new sType(type_name);
+                info.types.insert(type_name, type);
+                
+                struct_class = info.classes.at(type_name, null);
+            }
+            
+            sClass* parent_class = null;
+            if(parsecmp("extends")) {
+                parse_word();
+                
+                string parent_class_name = parse_word();
+                
+                parent_class = info.classes[parent_class_name]??;
+                
+                if(parent_class == null) {
+                    err_msg(info, "invalid class name(%s)", parent_class_name);
+                    return null;
+                }
+            }
+            
+            expected_next_character('{') ;
+           
+            while(true) {
+                parse_sharp();
+                    
+                bool multiple_declare = false;
+                {
+                    char* p = info.p;
+                    int sline = info.sline;
+                    
+                    var type, name, err = backtrace_parse_type(parse_variable_name:true);
+                    
+                    if(err && *info->p == ',') {
+                        multiple_declare = true;
+                    }
+                        
+                    info.p = p;
+                    info.sline = sline;
+                }
+                
+                if(multiple_declare) {
+                    var base_type, name, err = parse_type();
+                    
+                    var type2,name2 = parse_variable_name(base_type, true@first, info);
+                    
+                    struct_class.mFields.push_back((name2, type2));
+                    
+                    while(*info->p == ',') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        
+                        var type2, name2 = parse_variable_name(base_type, false@first, info);
+                        
+                        struct_class.mFields.push_back((name2, type2));
+                    }
+                }
+                else {
                     var type2, name, err = parse_type(parse_variable_name:true);
-                    
                     if(!err) {
                         printf("%s %d: parse_type failed\n", info->sname, info->sline);
                         exit(2);
                     }
                     
-                    if(*info->p == ',') {
-                        generics_class.mFields.push_back((name, type2));
-                        
-                        while(*info->p == ',') {
-                            info->p++;
-                            skip_spaces_and_lf();
-                            
-                            string name2 = parse_word();
-                            
-                            var type3 = clone type2;
-                            
-                            if(*info->p == ':') {
-                                info->p++;
-                                skip_spaces_and_lf();
-                                
-                                bool no_comma = info->no_comma;
-                                info->no_comma = true;
-                                sNode*% node = expression();
-                                info->no_comma = no_comma;
-                                
-                                type3->mSizeNum = node;
-                            }
-                            
-                            generics_class.mFields.push_back((name2, type3));
-                        }
-                    }
-                    else {
-                        generics_class.mFields.push_back((name, type2));
-                    }
-                    
-                    if(*info->p == ';') {
-                        info->p++;
-                        skip_spaces_and_lf();
-                    }
-                    //expected_next_character(';') ;
-                    
-                    parse_sharp();
-                    
-                    if(*info->p == '}') {
-                        info->p++;
-                        skip_spaces_and_lf();
-                        break;
-                    }
-                    parse_sharp();
+                    struct_class.mFields.push_back((name, type2));
                 }
                 
-                parse_attribute();
+                if(*info->p == ';') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                }
+                //expected_next_character(';') ;
                 
-                info.generics_type_names.reset();
+                parse_sharp();
                 
-                char* source_tail = info.p;
-                
-                buffer*% header = new buffer();
-                header.append_str("struct ");
-                header.append(source_head, source_tail - source_head);
-                
-                add_come_code_at_come_header(info, "%s;\n", header.to_string());
-                
-                return new sGenericsStructNode(info) implements sNode;
+                if(*info->p == '}') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
+                }
+                parse_sharp();
             }
-            else {
-                bool output = true;
-                
-                sClass*% struct_class;
-                if(info.classes.at(type_name, null) == null) {
-                    struct_class = new sClass(name:type_name, struct_:true);
-                }
-                else {
-                    struct_class = clone info.classes.at(type_name, null);
-                    if(struct_class->mFields.length() > 0) {
-                        output = false;
-                    }
-                }
-                
-                sClass* parent_class = null;
-                if(parsecmp("extends")) {
-                    parse_word();
-                    
-                    string parent_class_name = parse_word();
-                    
-                    parent_class = info.classes[parent_class_name]??;
-                    
-                    if(parent_class == null) {
-                        err_msg(info, "invalid class name(%s)", parent_class_name);
-                        return null;
-                    }
-                }
-                
-                expected_next_character('{') ;
-               
-                while(true) {
-                    parse_sharp();
-                        
-                    bool multiple_declare = false;
-                    {
-                        char* p = info.p;
-                        int sline = info.sline;
-                        
-                        var type, name, err = backtrace_parse_type(parse_variable_name:true);
-                        
-                        if(err && *info->p == ',') {
-                            multiple_declare = true;
-                        }
-                            
-                        info.p = p;
-                        info.sline = sline;
-                    }
-                    
-                    if(multiple_declare) {
-                        var base_type, name, err = parse_type();
-                        
-                        var type2,name2 = parse_variable_name(base_type, true@first, info);
-                        
-                        struct_class.mFields.push_back((name2, type2));
-                        
-                        while(*info->p == ',') {
-                            info->p++;
-                            skip_spaces_and_lf();
-                            
-                            var type2, name2 = parse_variable_name(base_type, false@first, info);
-                            
-                            struct_class.mFields.push_back((name2, type2));
-                        }
-                    }
-                    else {
-                        var type2, name, err = parse_type(parse_variable_name:true);
-                        if(!err) {
-                            printf("%s %d: parse_type failed\n", info->sname, info->sline);
-                            exit(2);
-                        }
-                        
-                        struct_class.mFields.push_back((name, type2));
-                    }
-                    
-                    if(*info->p == ';') {
-                        info->p++;
-                        skip_spaces_and_lf();
-                    }
-                    //expected_next_character(';') ;
-                    
-                    parse_sharp();
-                    
-                    if(*info->p == '}') {
-                        info->p++;
-                        skip_spaces_and_lf();
-                        break;
-                    }
-                    parse_sharp();
-                }
-                
-                parse_attribute();
-                
-                info.generics_type_names.reset();
-                
-                sClass* klass2 = info.classes.at(type_name, null);
-                
-                if(klass2 == null || klass2->mNobodyStruct) {
-                    if(klass2) klass2->mNobodyStruct = false;
-                    char* source_tail = info.p;
-                    
-                    buffer*% header = new buffer();
-                    header.append(source_head, source_tail - source_head);
-                    
-                    add_come_code_at_come_header(info, "%s;\n", header.to_string());
-                }
-                
-                if(parent_class) {
-                    struct_class->mParentClassName = clone parent_class->mName;
-                    info.classes.insert(struct_class->mName, clone struct_class);
-                }
-                
-                return new sStructNode(string(type_name), clone struct_class, output, info) implements sNode;
+            
+            parse_attribute();
+            
+            info.generics_type_names.reset();
+            
+            sClass* klass2 = info.classes.at(type_name, null);
+            
+            char* source_tail = info.p;
+            
+            buffer*% header = new buffer();
+            header.append(source_head, source_tail - source_head);
+            
+            add_come_code_at_come_header(info, "%s;\n", header.to_string());
+            
+            if(parent_class) {
+                struct_class->mParentClassName = clone parent_class->mName;
+                info.classes.insert(struct_class->mName, clone struct_class);
             }
+            
+            return new sStructNode(string(type_name), struct_class, info) implements sNode;
         }
     }
     else if(buf === "class") {
@@ -875,17 +752,12 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             }
         }
         
-        bool output = true;
-        
         sClass*% struct_class;
         if(info.classes.at(type_name, null) == null) {
             struct_class = new sClass(name:type_name, struct_:true);
         }
         else {
             struct_class = clone info.classes.at(type_name, null);
-            if(struct_class->mFields.length() > 0) {
-                output = false;
-            }
         }
         
         sClass* defining_class = info.defining_class;
@@ -1042,8 +914,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 info->impl_type = new sType(type_name);
                 info->impl_type->mPointerNum = pointer_num;
                 
-                //output_struct_header(struct_class, info);
-                
                 info->in_class = true;
                 
                 sNode*% method = parse_function(info);
@@ -1180,7 +1050,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         
         info.defining_class = defining_class;
         
-        return new sClassNode(string(type_name), clone struct_class, methods, output, info) implements sNode;
+        return new sClassNode(string(type_name), clone struct_class, methods, info) implements sNode;
     }
     
     return inherit(buf, head, head_sline, info) ;

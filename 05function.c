@@ -2216,7 +2216,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     
     sClass* klass = type->mClass;
     
-    if(type->mPointerNum > 0 && klass->mStruct) {
+    if(type->mPointerNum > 0 && klass->mStruct || type->mAllocaValue) {
         var source = new buffer();
         
         source.append_char('{');
@@ -2276,6 +2276,9 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         var name = clone real_fun_name;
         var self_type = clone type;
         self_type->mHeap = false;
+        if(self_type->mPointerNum == 0) {
+            self_type->mPointerNum = 1;
+        }
         if(self_type->mPointerNum > 1) {
             self_type->mPointerNum = 1;
         }

@@ -331,6 +331,8 @@ struct sInfo
     map<string, sClassModule*%>*% modules;
     map<string, sType*%>*% types;
     map<string, sClass*%>*% generics_classes;
+    map<string, buffer*%>*% struct_definition;
+    map<string, buffer*%>*% previous_struct_definition;
     
     sModule*% module;
     
@@ -773,6 +775,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 /// 14struct.c
 /////////////////////////////////////////////////////////////////////
+sNode*% create_nothing_node(sInfo* info=info);
 bool is_contained_method_generics_types(sType* type, sInfo* info);
 bool is_contained_generics_types(sType* type, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 14;

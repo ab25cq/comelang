@@ -40,7 +40,9 @@ class sTypedefNode extends sNodeBase
             if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
             }
             else {
-                add_come_code_at_source_head(info, "typedef __builtin_va_list __darwin_va_list;\n");
+                if(info.struct_definition[type_name]?? == null) {
+                    info.struct_definition.insert(type_name, "typedef __builtin_va_list __darwin_va_list;\n".to_buffer());
+                }
             }
         }
         else if(self.multiple_declare) {
@@ -58,7 +60,9 @@ class sTypedefNode extends sNodeBase
                 if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
                 }
                 else {
-                    add_come_code_at_source_head(info, "typedef %s;\n", make_define_var(type, type_name, in_header:true));
+                    if(info.struct_definition[type_name]?? == null) {
+                        info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                    }
                 }
             }
         }
@@ -75,33 +79,12 @@ class sTypedefNode extends sNodeBase
             if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
             }
             else {
-                add_come_code_at_source_head(info, "typedef %s;\n", make_define_var(type, type_name, in_header:true));
+                if(info.struct_definition[type_name]?? == null) {
+                    info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                }
             }
         }
     
-        return true;
-    }
-};
-
-class sTypedefNullNode extends sNodeBase
-{
-    new(sInfo* info=info)
-    {
-        self.super();
-    }
-    
-    bool terminated()
-    {
-        return true;
-    }
-    
-    string kind()
-    {
-        return string("sTypedefNullNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
         return true;
     }
 };
@@ -158,7 +141,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
                 return null;
             }
             
-            return new sTypedefNullNode() implements sNode;
+            return create_nothing_node();
         }
         else {
             char* source_tail = info.p;
@@ -175,7 +158,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
                 return null;
             }
             
-            return new sTypedefNullNode() implements sNode;
+            return create_nothing_node();
         }
     }
     
@@ -233,7 +216,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 return null;
             }
             
-            return new sTypedefNullNode() implements sNode;
+            return create_nothing_node();
         }
         else {
             char* source_tail = info.p;
@@ -250,7 +233,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 return null;
             }
             
-            return new sTypedefNullNode() implements sNode;
+            return create_nothing_node();
         }
     }
     

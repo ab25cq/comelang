@@ -96,14 +96,6 @@ impl list <T>
             delete prev_it;
         }
     }
-    void force_finalize(list<T>* self) {
-        list_item<T>* it = self.head;
-        while(it != null) {
-            var prev_it = it;
-            it = it.next;
-            force_delete prev_it;
-        }
-    }
     list<T>*% clone(list<T>* self) {
         if(self == null) {
             return null;
@@ -1433,29 +1425,6 @@ impl map <T, T2>
         delete borrow self.key_list;
 
         delete borrow self.item_existance;
-    }
-    void force_finalize(map<T,T2>* self) {
-        for(int i=0; i<self.size; i++) {
-            if(self.item_existance[i]) {
-                if(isheap(T2)) {
-                    force_delete self.items\[i];
-                }
-            }
-        }
-        come_free((char*)self.items);
-
-        for(int i=0; i<self.size; i++) {
-            if(self.item_existance[i]) {
-                if(isheap(T)) {
-                    force_delete self.keys\[i];
-                }
-            }
-        }
-        come_free((char*)self.keys);
-        
-        force_delete borrow self.key_list;
-
-        force_delete borrow self.item_existance;
     }
     map<T, T2>*% clone(map<T, T2>* self)
     {
@@ -3738,10 +3707,6 @@ uniq buffer*% buffer*::initialize(buffer*% self)
 }
 
 uniq void buffer*::finalize(buffer* self)
-{
-    if(self && self.buf) delete borrow self.buf;
-}
-uniq void buffer*::force_finalize(buffer* self)
 {
     if(self && self.buf) delete borrow self.buf;
 }

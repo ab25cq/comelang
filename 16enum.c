@@ -2,14 +2,12 @@
 
 class sEnumNode extends sNodeBase
 {
-    new(string type_name, list<tup: string,sNode*%>* elements, bool output, sType*% type_elements = null, sInfo* info)
+    new(string type_name, list<tup: string,sNode*%>* elements, sType*% type_elements = null, sInfo* info)
     {
         self.super();
     
         string self.mTypeName = string(type_name);
         list<tup: string, sNode*%>*% self.mElements = clone elements;
-        
-        bool self.mOutput = output;
         
         string self.mDeclareSName = string(info->sname);
         sType*% self.mTypeElements = type_elements;
@@ -52,11 +50,12 @@ class sEnumNode extends sNodeBase
         int i = 0;
         int n = 0;
         string right_c_value = null;
+        bool output = true;
         foreach(it, elements) {
             var name, value = it;
             
             if(info.gv_table.mVars.at(string(name), null) != null) {
-                self.mOutput = false;
+                output = false;
             }
             
             if(value == null) {
@@ -109,8 +108,10 @@ class sEnumNode extends sNodeBase
         if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
         }
         else {
-            if(self.mOutput) {
-                add_come_code_at_source_head(info, "%s", buf.to_string());
+            if(output) {
+                if(info.struct_definition[type_name]?? == null) {
+                    info.struct_definition.insert(type_name, buf);
+                }
             }
         }
     
@@ -121,14 +122,11 @@ class sEnumNode extends sNodeBase
 sNode*% parse_enum(string type_name, sInfo* info)
 {
     sClass*% klass;
-    bool output;
     if(info.classes.at(type_name, null) == null) {
-        output = true;
         klass = new sClass(name:type_name, enum_:true);
         info.classes.insert(type_name, klass);
     }
     else {
-        output = false;
         klass = clone info.classes.at(type_name, null);
     }
     
@@ -189,15 +187,13 @@ sNode*% parse_enum(string type_name, sInfo* info)
         }
     }
     
-    return new sEnumNode(type_name, elements, output, type_elements, info) implements sNode;
+    return new sEnumNode(type_name, elements, type_elements, info) implements sNode;
 }
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
 {
     if(buf === "enum") {
         char* source_head = info.p;
-        
-        bool output = true;
         
         string type_name = null;
         sType*% type_elements = null;
@@ -220,7 +216,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             if(type_name == null || info.classes.at(type_name, null) == null) {
             }
             else {
-                output = false;
             }
             parse_sharp();
             
@@ -288,7 +283,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
         
         add_come_code_at_come_header(info, "%s;\n", header.to_string());
         
-        return new sEnumNode(type_name, elements, output, type_elements, info) implements sNode;
+        return new sEnumNode(type_name, elements, type_elements, info) implements sNode;
     }
     
     return inherit(buf, head, head_sline, info);

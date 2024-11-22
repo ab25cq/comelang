@@ -518,20 +518,6 @@ gc_inc increments the heap reference count by 1. borrow removes the heap from be
 gc_incはヒープのリファレンスカウントを+1します。borrowはヒープの自動解放対象から外し、%をつけない変数に代入できるようにします。この場合ヒープは手動で管理されて、deleteしないとメモリリークが発生します。 メモリリークが発生した場合プログラムを実行するとメモリリークの回数が表示されます。-cgオプションをつけてコンパイルするとヒープが生成されたソースファイルの位置のスタックフレームが表示されます。デバッグも容易だと思います。
 
 ```C
-void force_finalize(list<T>* self) 
-```
-
-```C
-list<int>* li = borrow gc_inc(gc_inc(new list<int>()));
-li.add(1).add(2).add(3);
-force_delete li;  // force_finalize is called. force_finalizeが呼ばれる
-```
-
-Frees the heap regardless of the reference count.
-
-リファレンスカウントの数に関わらずヒープを解放します。
-
-```C
 list<T>*% clone(list<T>* self)
 ```
 
@@ -1032,7 +1018,6 @@ map<T,T2>*% initialize_with_values(map<T,T2>*% self, int num_keys, T&* keys, T2&
 
 ```C
 void finalize(map<T,T2>* self)
-void force_finalize(map<T,T2>* self) 
 ```
 
 ```C
@@ -1536,7 +1521,6 @@ buffer*% buffer*::initialize(buffer*% self);
 
 ```C
 void buffer*::finalize(buffer* self);
-void buffer*::force_finalize(buffer* self);
 
 buffer*% buffer*::clone(buffer* self);
 ```
