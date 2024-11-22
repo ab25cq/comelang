@@ -1,12 +1,15 @@
 #include <comelang.h>
-#include <comelang-str.h>
+
+struct sData
+{
+    int a;
+    int b;
+};
+
+typedef struct sData sData;
 
 int main(int argc, char** argv)
 {
-    wstring a = wstring("AAA");
-    
-    int key = a.get_hash_key();
-    
     
     return 0;
 }

@@ -40,9 +40,10 @@ class sTypedefNode extends sNodeBase
             if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
             }
             else {
-                if(info.struct_definition[type_name]?? == null) {
+                //if(info.struct_definition[type_name]?? == null) {
+                //if(type->mClass->mName !== type_name) {
                     info.struct_definition.insert(type_name, "typedef __builtin_va_list __darwin_va_list;\n".to_buffer());
-                }
+                //}
             }
         }
         else if(self.multiple_declare) {
@@ -60,7 +61,8 @@ class sTypedefNode extends sNodeBase
                 if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
                 }
                 else {
-                    if(info.struct_definition[type_name]?? == null) {
+                    //if(info.struct_definition[type_name]?? == null) {
+                    if(type->mClass->mName !== type_name) {
                         info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                     }
                 }
@@ -79,7 +81,8 @@ class sTypedefNode extends sNodeBase
             if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
             }
             else {
-                if(info.struct_definition[type_name]?? == null) {
+                //if(info.struct_definition[type_name]?? == null) {
+                if(type->mClass->mName !== type_name) {
                     info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                 }
             }
