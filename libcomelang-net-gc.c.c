@@ -1259,7 +1259,7 @@ struct fd_set
     int fds_bits[((((((1024)%((sizeof(int)*8)))==0))?(((1024)/((sizeof(int)*8)))):((((1024)/((sizeof(int)*8)))+1))))];
 };
 
-typedef struct fd_set fd_set1COMELANG;
+typedef struct fd_set fd_set;
 
 struct timespec
 {
@@ -3798,7 +3798,7 @@ MYSQL_TYPE_STRING=(254),
 MYSQL_TYPE_GEOMETRY=(255)
 };
 
-typedef enum enum_field_types enum_field_types2COMELANG;
+typedef enum enum_field_types enum_field_types;
 
 struct LIST
 {
@@ -3807,7 +3807,7 @@ struct LIST
     void* data;
 };
 
-typedef struct LIST LIST3COMELANG;
+typedef struct LIST LIST;
 
 typedef int (*list_walk_action)(void*,void*);
 
@@ -3859,7 +3859,7 @@ struct mysql_zlib_compress_context
     unsigned int compression_level;
 };
 
-typedef struct mysql_zlib_compress_context mysql_zlib_compress_context4COMELANG;
+typedef struct mysql_zlib_compress_context mysql_zlib_compress_context;
 
 typedef struct ZSTD_CCtx_s ZSTD_CCtx;
 
@@ -3872,7 +3872,7 @@ struct mysql_zstd_compress_context
     unsigned int compression_level;
 };
 
-typedef struct mysql_zstd_compress_context mysql_zstd_compress_context5COMELANG;
+typedef struct mysql_zstd_compress_context mysql_zstd_compress_context;
 
 union anonymous_typeZ32
 {
@@ -3892,7 +3892,7 @@ struct mysql_compress_context
     union anonymous_typeZ33 u;
 };
 
-typedef struct mysql_compress_context mysql_compress_context6COMELANG;
+typedef struct mysql_compress_context mysql_compress_context;
 
 enum SERVER_STATUS_flags_enum { SERVER_STATUS_IN_TRANS=(1),
 SERVER_STATUS_AUTOCOMMIT=(2),
@@ -3941,7 +3941,7 @@ struct NET
     void* extension;
 };
 
-typedef struct NET NET7COMELANG;
+typedef struct NET NET;
 
 enum mysql_enum_shutdown_level { SHUTDOWN_DEFAULT=(0),
 SHUTDOWN_WAIT_CONNECTIONS=((unsigned char)(1<<0)),
@@ -4004,7 +4004,7 @@ struct UDF_ARGS
     void* extension;
 };
 
-typedef struct UDF_ARGS UDF_ARGS8COMELANG;
+typedef struct UDF_ARGS UDF_ARGS;
 
 struct UDF_INIT
 {
@@ -4016,7 +4016,7 @@ struct UDF_INIT
     void* extension;
 };
 
-typedef struct UDF_INIT UDF_INIT9COMELANG;
+typedef struct UDF_INIT UDF_INIT;
 
 enum Item_udftype { UDFTYPE_FUNCTION=(1),
 UDFTYPE_AGGREGATE
@@ -4108,7 +4108,7 @@ struct MYSQL_PLUGIN_VIO
     enum net_async_status (*write_packet_nonblocking)(struct MYSQL_PLUGIN_VIO*,const unsigned char*,int,int*);
 };
 
-typedef struct MYSQL_PLUGIN_VIO MYSQL_PLUGIN_VIO10COMELANG;
+typedef struct MYSQL_PLUGIN_VIO MYSQL_PLUGIN_VIO;
 
 struct auth_plugin_t
 {
@@ -4152,7 +4152,7 @@ struct MYSQL_TIME
     int time_zone_displacement;
 };
 
-typedef struct MYSQL_TIME MYSQL_TIME11COMELANG;
+typedef struct MYSQL_TIME MYSQL_TIME;
 
 struct MYSQL_FIELD
 {
@@ -4179,7 +4179,7 @@ struct MYSQL_FIELD
     void* extension;
 };
 
-typedef struct MYSQL_FIELD MYSQL_FIELD12COMELANG;
+typedef struct MYSQL_FIELD MYSQL_FIELD;
 
 typedef char** MYSQL_ROW;
 
@@ -4192,7 +4192,7 @@ struct MYSQL_ROWS
     unsigned long  int length;
 };
 
-typedef struct MYSQL_ROWS MYSQL_ROWS13COMELANG;
+typedef struct MYSQL_ROWS MYSQL_ROWS;
 
 typedef struct MYSQL_ROWS* MYSQL_ROW_OFFSET;
 
@@ -4204,7 +4204,7 @@ struct MYSQL_DATA
     unsigned int fields;
 };
 
-typedef struct MYSQL_DATA MYSQL_DATA14COMELANG;
+typedef struct MYSQL_DATA MYSQL_DATA;
 
 enum mysql_option { MYSQL_OPT_CONNECT_TIMEOUT
 ,MYSQL_OPT_COMPRESS
@@ -4372,7 +4372,7 @@ struct MYSQL
     void* extension;
 };
 
-typedef struct MYSQL MYSQL15COMELANG;
+typedef struct MYSQL MYSQL;
 
 struct MYSQL_RES
 {
@@ -4394,7 +4394,7 @@ struct MYSQL_RES
     void* extension;
 };
 
-typedef struct MYSQL_RES MYSQL_RES16COMELANG;
+typedef struct MYSQL_RES MYSQL_RES;
 
 struct MYSQL_RPL
 {
@@ -4410,7 +4410,7 @@ struct MYSQL_RPL
     const unsigned char* buffer;
 };
 
-typedef struct MYSQL_RPL MYSQL_RPL17COMELANG;
+typedef struct MYSQL_RPL MYSQL_RPL;
 
 enum enum_mysql_stmt_state { MYSQL_STMT_INIT_DONE=(1),
 MYSQL_STMT_PREPARE_DONE
@@ -4441,7 +4441,7 @@ struct MYSQL_BIND
     void* extension;
 };
 
-typedef struct MYSQL_BIND MYSQL_BIND18COMELANG;
+typedef struct MYSQL_BIND MYSQL_BIND;
 
 struct MYSQL_STMT
 {
@@ -4474,7 +4474,7 @@ struct MYSQL_STMT
     struct MYSQL_STMT_EXT* extension;
 };
 
-typedef struct MYSQL_STMT MYSQL_STMT19COMELANG;
+typedef struct MYSQL_STMT MYSQL_STMT;
 
 enum enum_stmt_attr_type { STMT_ATTR_UPDATE_MAX_LENGTH
 ,STMT_ATTR_CURSOR_TYPE

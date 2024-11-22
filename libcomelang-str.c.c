@@ -1161,7 +1161,7 @@ struct pcre_extra
     void* executable_jit;
 };
 
-typedef struct pcre_extra pcre_extra1COMELANG;
+typedef struct pcre_extra pcre_extra;
 
 struct pcre16_extra
 {
@@ -1175,7 +1175,7 @@ struct pcre16_extra
     void* executable_jit;
 };
 
-typedef struct pcre16_extra pcre16_extra2COMELANG;
+typedef struct pcre16_extra pcre16_extra;
 
 struct pcre32_extra
 {
@@ -1189,7 +1189,7 @@ struct pcre32_extra
     void* executable_jit;
 };
 
-typedef struct pcre32_extra pcre32_extra3COMELANG;
+typedef struct pcre32_extra pcre32_extra;
 
 struct pcre_callout_block
 {
@@ -1208,7 +1208,7 @@ struct pcre_callout_block
     const unsigned char* mark;
 };
 
-typedef struct pcre_callout_block pcre_callout_block4COMELANG;
+typedef struct pcre_callout_block pcre_callout_block;
 
 struct pcre16_callout_block
 {
@@ -1227,7 +1227,7 @@ struct pcre16_callout_block
     const unsigned short int* mark;
 };
 
-typedef struct pcre16_callout_block pcre16_callout_block5COMELANG;
+typedef struct pcre16_callout_block pcre16_callout_block;
 
 struct pcre32_callout_block
 {
@@ -1246,7 +1246,7 @@ struct pcre32_callout_block
     const unsigned int* mark;
 };
 
-typedef struct pcre32_callout_block pcre32_callout_block6COMELANG;
+typedef struct pcre32_callout_block pcre32_callout_block;
 
 typedef struct real_pcre_jit_stack* (*pcre_jit_callback)(void*);
 
