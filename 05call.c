@@ -2168,7 +2168,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             return new sVarArgTypeName(type) implements sNode;
         }
-        else if(new_ || (buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__") && *info->p == '(') {
+        else if(new_ || buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__") {
             info->new_ = new_;
             sNode*% node = string_node(buf, head, head_sline, info)
             info->new_ = false;

@@ -11785,7 +11785,7 @@ struct sNode* __result375__;
             /*i*/come_call_finalizer3(type_626,sType_finalize, 0, 0, 0, 0, (void*)0);
             /* U13 */name_627 = come_decrement_ref_count2(name_627, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
-        else if(        new__556||(string_operator_equals(buf_545,"sizeof")||string_operator_equals(buf_545,"_Alignof")||string_operator_equals(buf_545,"_Alignas")||string_operator_equals(buf_545,"__alignof__"))&&*info->p==40) {
+        else if(        new__556||string_operator_equals(buf_545,"sizeof")||string_operator_equals(buf_545,"_Alignof")||string_operator_equals(buf_545,"_Alignas")||string_operator_equals(buf_545,"__alignof__")) {
             info->new_=new__556;
             node_630=(struct sNode*)come_increment_ref_count(string_node_v21(buf_545,head_543,head_sline_544,info));
             info->new_=(_Bool)0;

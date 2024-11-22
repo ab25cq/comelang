@@ -339,11 +339,13 @@ class sClassNode extends sNodeBase
         }
         
         sType*% type = new sType(name);
-        if(info.types[name]?? != null && info.types[name].mTypedef) {
+        sType* override_ = info.types.at(name, null);
+        if(override_) {
+            if(override_->mTypedef) {
+                type->mTypedef = true;
+            }
         }
-        else {
-            info.types.insert(name, clone type);
-        }
+        info.types.insert(name, clone type);
         
         output_struct(klass, info);
         
@@ -365,6 +367,12 @@ sNode*% parse_struct(string type_name, sInfo* info)
     if(info.classes.at(type_name, null) == null) {
         info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
         sType*% type = new sType(type_name);
+        sType* override_ = info.types.at(type_name, null);
+        if(override_) {
+            if(override_->mTypedef) {
+                type->mTypedef = true;
+            }
+        }
         info.types.insert(type_name, clone type);
         
         klass = info.classes.at(type_name, null);
@@ -372,6 +380,12 @@ sNode*% parse_struct(string type_name, sInfo* info)
     else {
         klass = info.classes.at(type_name, null);
         sType*% type = new sType(type_name);
+        sType* override_ = info.types.at(type_name, null);
+        if(override_) {
+            if(override_->mTypedef) {
+                type->mTypedef = true;
+            }
+        }
         info.types.insert(type_name, clone type);
     }
     
@@ -477,11 +491,23 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
                 struct_class = info.classes.at(type_name, null);
                 sType*% type = new sType(type_name);
+                sType* override_ = info.types.at(type_name, null);
+                if(override_) {
+                    if(override_->mTypedef) {
+                        type->mTypedef = true;
+                    }
+                }
                 info.types.insert(type_name, type);
             }
             else {
                 struct_class = info.classes.at(type_name, null);
                 sType*% type = new sType(type_name);
+                sType* override_ = info.types.at(type_name, null);
+                if(override_) {
+                    if(override_->mTypedef) {
+                        type->mTypedef = true;
+                    }
+                }
                 info.types.insert(type_name, type);
             }
             
@@ -610,12 +636,24 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
                 
                 sType*% type = new sType(type_name);
+                sType* override_ = info.types.at(type_name, null);
+                if(override_) {
+                    if(override_->mTypedef) {
+                        type->mTypedef = true;
+                    }
+                }
                 info.types.insert(type_name, type);
                 
                 struct_class = info.classes.at(type_name, null);
             }
             else {
                 sType*% type = new sType(type_name);
+                sType* override_ = info.types.at(type_name, null);
+                if(override_) {
+                    if(override_->mTypedef) {
+                        type->mTypedef = true;
+                    }
+                }
                 info.types.insert(type_name, type);
                 
                 struct_class = info.classes.at(type_name, null);

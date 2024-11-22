@@ -65,14 +65,24 @@ sNode*% parse_union(string type_name, sInfo* info)
     sClass* klass;
     if(info.classes.at(type_name, null) == null) {
         info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
+        
         sType*% type = new sType(type_name);
+        
         info.types.insert(type_name, clone type);
         
         klass = info.classes.at(type_name, null);
     }
     else {
         klass = info.classes.at(type_name, null);
+        sType* override_ = info.types.at(type_name, null);
+        bool typedef_ = false;
+        if(override_) {
+            typedef_ = override_->mTypedef;
+        }
         sType*% type = new sType(type_name);
+        if(typedef_) {
+            type->mTypedef = true;
+        }
         info.types.insert(type_name, clone type);
     }
     
@@ -122,7 +132,15 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
         }
         else {
             klass = info.classes.at(type_name, null);
+            sType* override_ = info.types.at(type_name, null);
+            bool typedef_ = false;
+            if(override_) {
+                typedef_ = override_->mTypedef;
+            }
             sType*% type = new sType(type_name);
+            if(typedef_) {
+                type->mTypedef = typedef_;
+            }
             info.types.insert(type_name, clone type);
         }
         

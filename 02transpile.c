@@ -625,6 +625,7 @@ static void init_classes(sInfo* info)
     info.classes.insert(string("void"), new sClass("void"));
     info.classes.insert(string("float"), new sClass("float", float_:true));
     info.classes.insert(string("double"), new sClass("double", float_:true));
+    info.classes.insert(string("_Float16"), new sClass("_Float16", float_:true));
     info.classes.insert(string("lambda"), new sClass("lambda"));
     info.classes.insert(string("__uint128_t"), new sClass("__uint128_t", number:true));
     info.classes.insert(string("__int128"), new sClass("__int128", number:true));

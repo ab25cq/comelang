@@ -1595,7 +1595,16 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             return new sSizeOfNode(type, info) implements sNode;
         }
         else {
-            var exp = expression();
+            sNode*% exp;
+            if(!paren) {
+                bool no_comma = info.no_comma;
+                info.no_comma = true;
+                exp = expression_node();
+                info.no_comma = no_comma;
+            }
+            else {
+                exp = expression();
+            }
             
             if(paren && *info->p == ')') {
                 info->p++;
@@ -1652,7 +1661,16 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             return new sTypeOfNode(type, info) implements sNode;
         }
         else {
-            var exp = expression();
+            sNode*% exp;
+            if(!paren) {
+                bool no_comma = info.no_comma;
+                info.no_comma = true;
+                exp = expression_node();
+                info.no_comma = no_comma;
+            }
+            else {
+                exp = expression();
+            }
             
             //expected_next_character(')');
             
@@ -1676,7 +1694,12 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     }
 */
     else if(buf === "_Alignof") {
-        expected_next_character('(');
+        bool paren = false;
+        if(*info->p == '(') {
+            paren = true;
+            info->p++;
+            skip_spaces_and_lf();
+        }
         
         /// backtrace ///
         bool is_type_name_flag = false;
@@ -1704,19 +1727,35 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             }
             
             expected_next_character(')');
+            if(paren && *info->p == ')') {
+                info->p++;
+                skip_spaces_and_lf();
+            }
             
             return new sAlignOfNode(type, info) implements sNode;
         }
         else {
-            var exp = expression();
-            
-            expected_next_character(')');
+            sNode*% exp;
+            if(!paren) {
+                bool no_comma = info.no_comma;
+                info.no_comma = true;
+                exp = expression_node();
+                info.no_comma = no_comma;
+            }
+            else {
+                exp = expression();
+            }
             
             return new sAlignOfExpNode(exp, info) implements sNode;
         }
     }
     else if(buf === "__alignof__") {
-        expected_next_character('(');
+        bool paren = false;
+        if(*info->p == '(') {
+            paren = true;
+            info->p++;
+            skip_spaces_and_lf();
+        }
         
         /// backtrace ///
         bool is_type_name_flag = false;
@@ -1743,14 +1782,24 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 exit(2);
             }
             
-            expected_next_character(')');
+            if(paren && *info->p == ')') {
+                info->p++;
+                skip_spaces_and_lf();
+            }
             
             return new sAlignOfNode2(type, info) implements sNode;
         }
         else {
-            var exp = expression();
-            
-            expected_next_character(')');
+            sNode*% exp;
+            if(!paren) {
+                bool no_comma = info.no_comma;
+                info.no_comma = true;
+                exp = expression_node();
+                info.no_comma = no_comma;
+            }
+            else {
+                exp = expression();
+            }
             
             return new sAlignOfExpNode2(exp, info) implements sNode;
         }
