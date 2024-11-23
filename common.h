@@ -408,7 +408,6 @@ struct sInfo
     
     list<sVar*%>*% match_it_var;
     
-    list<int>*% sline_stack;
     int sline_top;
     bool new_;
     sFun* calling_fun;

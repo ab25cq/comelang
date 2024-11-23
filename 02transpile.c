@@ -51,27 +51,6 @@ bool node_compile(sNode* node, sInfo* info=info)
     return result;
 }
 
-bool node_condional_compile(sNode* node, sInfo* info=info)
-{
-    string sname = string(info->sname);
-    int sline = info->sline;
-    bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-    info.comma_instead_of_semicolon = true;
-    
-    info->sname = string(node->sname());
-    info->sline = node->sline();
-    
-    write_source_file_position_to_source();
-    
-    bool result = node->compile(info);
-    
-    info->sname = string(sname);
-    info->sline = sline;
-    info.comma_instead_of_semicolon = comma_instead_of_semicolon;
-    
-    return result;
-}
-
 void err_msg(sInfo* info, char* msg, ...)
 {
     if(!info.no_output_err) {
@@ -104,20 +83,12 @@ void err_msg(sInfo* info, char* msg, ...)
             printf("%s %d(top %d) %d: %s\n", info.sname, info.sline, info.sline_top, col, msg2);
         }
         
-        if(info.sline_stack && info.sline_stack.length() > 0) {
-            printf("sline_stack ");
-            foreach(it, info.sline_stack) {
-                printf("%d ", it);
-            }
-            puts("");
-        }
-        
         info.err_num++;
         stackframe();
         
         if(info.come_fun) {
             int n = info->sline-5;
-            info.original_source.to_string().split_char('\n').sublist(n, n+10).map2 { return xsprintf("%d %s", ++n, it); }.join("\n").puts();
+            info.original_source.to_string().split_char('\n').sublist(n, n+10).map { xsprintf("%d %s", ++n, it) }.join("\n").puts();
         }
 
         free(msg2);

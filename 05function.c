@@ -158,10 +158,6 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
 {
     var result = new sBlock(info);
     
-    if(info.sline_stack == null) {
-        info.sline_stack = new list<int>();
-    }
-    info.sline_stack.add(info.sline);
     int sline_top = info.sline_top;
     info.sline_top = info.sline;
     
@@ -330,8 +326,6 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
     }
     
     info->block_level = block_level;
-    
-    info.sline_stack.pop_front();
     
     return result;
 }
