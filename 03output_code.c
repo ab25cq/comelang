@@ -248,7 +248,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
     return buf.to_string();
 }
 
-string header_lambda(sType* lambda_type, string name, sInfo* info);
+static string header_lambda(sType* lambda_type, string name, sInfo* info);
 
 string make_define_var(sType* type, char* name, bool in_header=false, sInfo* info=info)
 {
@@ -444,62 +444,6 @@ string make_come_type_name_string_no_solved(sType* type, bool original_type_name
         return buf.to_string();
     }
 }
-
-/*
-string make_come_type_name_string_no_solved(sType* type, bool original_type_name=false, sInfo* info=info)
-{
-    sType*% no_solved_type = get_no_solved_type(type);
-    var buf = new buffer();
-    
-    if(original_type_name && no_solved_type->mOriginalTypeName && no_solved_type->mOriginalTypeName != "") {
-        buf.append_str(type->mOriginalTypeName);
-        for(int i=0; i<type->mOriginalTypeNamePointerNum; i++) {
-            buf.append_str("*");
-        }
-        if(type->mOriginalTypeNameHeap) {
-            buf.append_str("%");
-        }
-    }
-    else {
-        char* class_name = no_solved_type->mClass->mName;
-        
-        buf.append_str(class_name);
-        
-        if(no_solved_type->mGenericsTypes.length() > 0) {
-            buf.append_str("<");
-            for(int i=0; i<no_solved_type->mGenericsTypes.length(); i++) {
-                sType* gtype = no_solved_type->mGenericsTypes[i];
-                
-                buf.append_str(make_come_type_name_string_no_solved(gtype, original_type_name:true));
-                
-                if(i != no_solved_type->mGenericsTypes.length() -1) {
-                    buf.append_str(",");
-                }
-            }
-            
-            buf.append_str(">");
-        }
-        
-        if(no_solved_type->mNoArrayPointerNum == 0 && class_name !== "lambda") {
-            for(int i=0; i<no_solved_type->mPointerNum; i++) {
-                buf.append_str("*");
-            }
-        }
-        
-        if(no_solved_type->mArrayNum.length() > 0) {
-            for(int i=0; i<no_solved_type->mArrayNum.length(); i++) {
-                buf.append_str("[]");
-            }
-        }
-        
-        if(no_solved_type->mHeap) {
-            buf.append_str("%");
-        }
-    }
-    
-    return buf.to_string();
-}
-*/
 
 string make_define_var_no_solved(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info)
 {
@@ -737,7 +681,7 @@ string header_function(sFun* fun, sInfo* info)
     return output.to_string();
 }
 
-string header_lambda(sType* lambda_type, string name, sInfo* info)
+static string header_lambda(sType* lambda_type, string name, sInfo* info)
 {
     var output = new buffer();
     

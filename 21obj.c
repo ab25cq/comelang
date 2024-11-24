@@ -816,88 +816,6 @@ class sDeleteNode extends sNodeBase
     }
 };
 
-class sDelegateNode extends sNodeBase
-{
-    new(sNode*% node, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.node = clone node;
-        
-        return self;
-    }
-    
-    string kind()
-    {
-        return string("sDelegateNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode* node = self.node;
-        
-        if(!node_compile(node)) {
-            return false;
-        }
-        
-        CVALUE*% come_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        come_value.type.mDelegate = true;
-        
-        if(come_value.var) {
-            come_value.var.mType.mDelegate = true;
-        }
-    /*
-        else {
-            err_msg(info, "require local variable for delegate");
-            return false;
-        }
-    */
-        
-        info.stack.push_back(come_value);
-        
-        return true;
-    }
-};
-
-class sShareNode extends sNodeBase
-{
-    new(sNode*% node, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.node = clone node;
-    }
-    
-    string kind()
-    {
-        return string("sShareNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode* node = self.node;
-        
-        if(!node_compile(node)) {
-            return false;
-        }
-        
-        CVALUE*% come_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        come_value.type.mShare = true;
-        
-        if(come_value.var) {
-            come_value.var.mType.mShare = true;
-        }
-        
-        info.stack.push_back(come_value);
-        
-        return true;
-    }
-};
-
 class sBorrowNode extends sNodeBase
 {
     new(sNode*% node, sInfo* info)
@@ -1382,16 +1300,6 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
          sNode*% node = expression();
          
          return new sBorrowNode(node, info) implements sNode;
-    }
-    else if(buf === "delegate") {
-         sNode*% node = expression();
-         
-         return new sDelegateNode(node, info) implements sNode;
-    }
-    else if(buf === "share") {
-         sNode*% node = expression();
-         
-         return new sShareNode(node, info) implements sNode;
     }
     else if(buf === "clone") {
          sNode*% node = expression();

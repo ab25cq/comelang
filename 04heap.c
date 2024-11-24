@@ -262,17 +262,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
     return result;
 }
 
-sType*% solve_type(sType* type, sType* generics_type, list<sType*%>* method_generics_types, sInfo* info)
-{
-    sType*% result = clone type;
-
-    if(generics_type) {
-        result = solve_generics(result, generics_type, info);
-    }
-    
-    return result;
-}
-
 int gRightValueNum = 0;
 
 string append_object_to_right_values(char* obj, sType*% type, sInfo* info)
@@ -1015,8 +1004,11 @@ void free_right_value_objects(sInfo* info, bool comma=false)
             if(it->mFunName === info->come_fun->mName && it->mBlockLevel == info->block_level && !it->mStored) {
                 sType*% type = it->mType;
                 
-                type = solve_type(type, info->generics_type, info->method_generics_types, info);
+                sType*% type2 = clone type;
                 
+                if(info->generics_type) {
+                    type = solve_generics(type2, info->generics_type, info);
+                }
 
                 free_object(type, it->mVarName, !it->mDecrementRefCount@no_decrement, false@no_free, info, comma:comma, force_delete_:false);
                 
@@ -1027,37 +1019,6 @@ void free_right_value_objects(sInfo* info, bool comma=false)
         }
         
         n++;
-    }
-}
-
-void free_exception_right_value_objects(sInfo* info, bool comma=false)
-{
-    if(gComeGC || gComeC) {
-        return;
-    }
-    bool free_right_value = false;
-    list<sRightValueObject*%>* right_value_objects = gExceptionRightValueObjects;
-    
-    if(right_value_objects) {
-        int n = 0;
-        foreach(it, right_value_objects) {
-            if(it && !it->mFreed) {
-                if(it->mFunName === info->come_fun->mName && it->mBlockLevel == info->block_level && !it->mStored) {
-                    sType*% type = it->mType;
-                    
-                    type = solve_type(type, info->generics_type, info->method_generics_types, info);
-                    
-    
-                    free_object(type, it->mVarName, !it->mDecrementRefCount@no_decrement, false@no_free, info, comma:comma, force_delete_:false);
-                    
-                    
-                    it->mFreed = true;
-                    free_right_value = true;
-                }
-            }
-            
-            n++;
-        }
     }
 }
 

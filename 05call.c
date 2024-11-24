@@ -92,7 +92,6 @@ class sReturnNode extends sNodeBase
         
                 free_objects_on_return(come_fun.mBlock, info, come_value.var, false@top_block);
                 free_right_value_objects(info);
-                //free_exception_right_value_objects(info);
 
                 if(info->block_level == 1) {
                     info->inhibits_output_code = true;
@@ -123,7 +122,6 @@ class sReturnNode extends sNodeBase
             add_last_code_to_source(info);
             free_objects_on_return(come_fun.mBlock, info, null, false@top_block);
             free_right_value_objects(info);
-            //free_exception_right_value_objects(info);
             
             if(info->block_level == 1) {
                 info->inhibits_output_code = true;
