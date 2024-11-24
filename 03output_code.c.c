@@ -1632,6 +1632,7 @@ struct sInfo
     _Bool new_;
     struct sFun* calling_fun;
     struct map$2charphint* outputed_class;
+    _Bool in_header;
 };
 
 struct tuple2$2sTypephcharph
@@ -3982,7 +3983,7 @@ char* __result73__;
         buffer_append_str(buf_66,"__builtin_va_list");
     }
     else if(    charp_operator_equals(class_name_67,"__builtin_va_list")) {
-        if(        in_header) {
+        if(        info->in_header) {
             buffer_append_str(buf_66,class_name_67);
         }
         else {
@@ -5980,14 +5981,16 @@ char* __result124__;
         __dec_obj72=base_result_type_201->mArrayNum;
         base_result_type_201->mArrayNum=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodeph_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "03output_code.c", 669, "list$1sNodeph"))));
         come_call_finalizer3(__dec_obj72,list$1sNodeph_finalize, 0, 0, 0, 0, (void*)0);
-        result_type_str_202=(char*)come_increment_ref_count(make_type_name_string(base_result_type_201,(_Bool)1,(_Bool)0,(_Bool)0,info,(_Bool)0));
+        info->in_header=(_Bool)1;
+        result_type_str_202=(char*)come_increment_ref_count(make_type_name_string(base_result_type_201,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0));
+        info->in_header=(_Bool)0;
         buffer_append_str(output_193,result_type_str_202);
         buffer_append_str(output_193," (*");
         buffer_append_str(output_193,fun->mName);
         buffer_append_str(output_193,"(");
         i_203=0;
         for(        o2_saved_204=(struct list$1sTypeph*)come_increment_ref_count((fun->mParamTypes)),it_205=list$1sTypeph_begin((o2_saved_204));        !list$1sTypeph_end((o2_saved_204));        it_205=list$1sTypeph_next((o2_saved_204))        ){
-            name_206=((char*)come_null_check(list$1charphp_operator_load_element(fun->mParamNames,i_203), "03output_code.c", 681, 7));
+            name_206=((char*)come_null_check(list$1charphp_operator_load_element(fun->mParamNames,i_203), "03output_code.c", 683, 7));
             str_207=(char*)come_increment_ref_count(make_define_var(it_205,name_206,(_Bool)0,info));
             buffer_append_str(output_193,str_207);
             if(            i_203==list$1sTypeph_length(fun->mParamTypes)-1) {
@@ -6002,7 +6005,7 @@ char* __result124__;
             /* U13 */str_207 = come_decrement_ref_count2(str_207, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
         /*i*/come_call_finalizer3(o2_saved_204,list$1sTypephp_finalize, 0, 0, 0, 0, (void*)0);
-        node_208=((struct sNode*)come_null_check(list$1sNodephp_operator_load_element(fun->mResultType->mArrayNum,0), "03output_code.c", 697, 8));
+        node_208=((struct sNode*)come_null_check(list$1sNodephp_operator_load_element(fun->mResultType->mArrayNum,0), "03output_code.c", 699, 8));
         if(        !node_compile(node_208,info)) {
             err_msg(info,"invalid array number");
             __result123__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value239=__builtin_string("")));
@@ -6021,14 +6024,16 @@ char* __result124__;
         /*i*/come_call_finalizer3(cvalue_209,CVALUE_finalize, 0, 0, 0, 0, (void*)0);
     }
     else {
-        result_type_str_210=(char*)come_increment_ref_count(make_type_name_string(fun->mResultType,(_Bool)1,(_Bool)0,(_Bool)0,info,(_Bool)0));
+        info->in_header=(_Bool)1;
+        result_type_str_210=(char*)come_increment_ref_count(make_type_name_string(fun->mResultType,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0));
+        info->in_header=(_Bool)0;
         buffer_append_str(output_193,result_type_str_210);
         buffer_append_str(output_193," ");
         buffer_append_str(output_193,fun->mName);
         buffer_append_str(output_193,"(");
         i_211=0;
         for(        o2_saved_212=(struct list$1sTypeph*)come_increment_ref_count((fun->mParamTypes)),it_213=list$1sTypeph_begin((o2_saved_212));        !list$1sTypeph_end((o2_saved_212));        it_213=list$1sTypeph_next((o2_saved_212))        ){
-            name_214=((char*)come_null_check(list$1charphp_operator_load_element(fun->mParamNames,i_211), "03output_code.c", 718, 9));
+            name_214=((char*)come_null_check(list$1charphp_operator_load_element(fun->mParamNames,i_211), "03output_code.c", 722, 9));
             str_215=(char*)come_increment_ref_count(make_define_var(it_213,name_214,(_Bool)0,info));
             buffer_append_str(output_193,str_215);
             if(            i_211==list$1sTypeph_length(fun->mParamTypes)-1) {
@@ -6068,15 +6073,17 @@ void* __right_value247 = (void*)0;
 char* str_222;
 void* __right_value248 = (void*)0;
 char* __result125__;
-    output_216=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "03output_code.c", 742, "buffer"))));
-    result_type_str_217=(char*)come_increment_ref_count(make_type_name_string(lambda_type->mResultType->v1,(_Bool)1,(_Bool)0,(_Bool)0,info,(_Bool)0));
+    output_216=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "03output_code.c", 746, "buffer"))));
+    info->in_header=(_Bool)1;
+    result_type_str_217=(char*)come_increment_ref_count(make_type_name_string(lambda_type->mResultType->v1,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0));
+    info->in_header=(_Bool)0;
     buffer_append_str(output_216,result_type_str_217);
     buffer_append_str(output_216," ");
     buffer_append_str(output_216,name);
     buffer_append_str(output_216,"(");
     i_218=0;
     for(    o2_saved_219=(struct list$1sTypeph*)come_increment_ref_count((lambda_type->mParamTypes)),it_220=list$1sTypeph_begin((o2_saved_219));    !list$1sTypeph_end((o2_saved_219));    it_220=list$1sTypeph_next((o2_saved_219))    ){
-        name_221=((char*)come_null_check(list$1charphp_operator_load_element(lambda_type->mParamNames,i_218), "03output_code.c", 754, 10));
+        name_221=((char*)come_null_check(list$1charphp_operator_load_element(lambda_type->mParamNames,i_218), "03output_code.c", 760, 10));
         str_222=(char*)come_increment_ref_count(make_define_var(it_220,name_221,(_Bool)0,info));
         buffer_append_str(output_216,str_222);
         if(        i_218==list$1sTypeph_length(lambda_type->mParamTypes)-1) {
@@ -6258,18 +6265,18 @@ _Bool __result146__;
     output_file_name_243=(char*)come_increment_ref_count(xsprintf("%s.c",info->sname));
     f_244=fopen(output_file_name_243,"w");
     if(    f_244==((void*)0)) {
-        (come_push_stackframe("03output_code.c", 911, 11),__exception_result_var_b1=die("fopen"), come_pop_stackframe(), __exception_result_var_b1);
+        (come_push_stackframe("03output_code.c", 917, 11),__exception_result_var_b1=die("fopen"), come_pop_stackframe(), __exception_result_var_b1);
     }
     fprintf(f_244,"/// previous struct definition ///\n");
     for(    o2_saved_245=(struct map$2charphbufferph*)come_increment_ref_count((info->previous_struct_definition)),it_248=map$2charphbufferph_begin((o2_saved_245));    !map$2charphbufferph_end((o2_saved_245));    it_248=map$2charphbufferph_next((o2_saved_245))    ){
-        buf_251=((struct buffer*)come_null_check(map$2charphbufferphp_operator_load_element(info->previous_struct_definition,it_248), "03output_code.c", 915, 12));
+        buf_251=((struct buffer*)come_null_check(map$2charphbufferphp_operator_load_element(info->previous_struct_definition,it_248), "03output_code.c", 921, 12));
         fprintf(f_244,"%s\n",((char*)(__right_value257=buffer_to_string(buf_251))));
         /* U11 */__right_value257 = come_decrement_ref_count2(__right_value257, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     /*i*/come_call_finalizer3(o2_saved_245,map$2charphbufferphp_finalize, 0, 0, 0, 0, (void*)0);
     fprintf(f_244,"/// struct definition ///\n");
     for(    o2_saved_257=(struct map$2charphbufferph*)come_increment_ref_count((info->struct_definition)),it_258=map$2charphbufferph_begin((o2_saved_257));    !map$2charphbufferph_end((o2_saved_257));    it_258=map$2charphbufferph_next((o2_saved_257))    ){
-        buf_259=((struct buffer*)come_null_check(map$2charphbufferphp_operator_load_element(info->struct_definition,it_258), "03output_code.c", 921, 13));
+        buf_259=((struct buffer*)come_null_check(map$2charphbufferphp_operator_load_element(info->struct_definition,it_258), "03output_code.c", 927, 13));
         fprintf(f_244,"%s\n",((char*)(__right_value258=buffer_to_string(buf_259))));
         /* U11 */__right_value258 = come_decrement_ref_count2(__right_value258, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }

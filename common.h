@@ -413,6 +413,7 @@ struct sInfo
     sFun* calling_fun;
     
     map<string, int>*% outputed_class;
+    bool in_header;
 };
 
 module sCurrentNodeModule

@@ -1632,6 +1632,7 @@ struct sInfo
     _Bool new_;
     struct sFun* calling_fun;
     struct map$2charphint* outputed_class;
+    _Bool in_header;
 };
 
 struct tuple2$2sTypephcharph
