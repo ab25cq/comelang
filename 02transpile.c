@@ -622,108 +622,129 @@ static void init_classes(sInfo* info)
     }
 }
 
+module MEvalOptions<T>
+{
+    var clang_option = new buffer();
+    var linker_option = new buffer();
+    var cpp_option = new buffer();
+    cpp_option.append_str("-U__GNUC__");
+    var files = new list<string>();
+    var object_files = new list<string>();
+    bool output_object_file = false;
+    bool output_cpp_file = false;
+    bool output_source_file_flag = false;
+    bool output_object_file_flag = true;
+    string output_file_name = null;
+    bool verbose = false;
+    bool come_debug = false;
+    bool come_malloc = false;
+    for(int i=T; i<argc; i++) {
+        if(argv[i] === "-o" && i+1 < argc) {
+            output_file_name = string(argv[i+1]);
+            i++;
+        }
+        else if(argv[i] === "-str") {
+            gComeStr = true;
+        }
+        else if(argv[i] === "-pthread") {
+            gComePthread = true;
+        }
+        else if(argv[i] === "-pico") {
+            output_source_file_flag = true;
+            output_object_file_flag = false;
+            gComeOriginalSourcePosition = false;
+            char* env = getenv("PICO_SDK_PATH");
+            cpp_option = new buffer();
+            cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__ -D__PICO__");
+        }
+        else if(i + 1 < argc && argv[i] === "-target") {
+            clang_option.append_str(s"-target \{argv[i+1]}");
+            i++;
+        }
+        else if(i + 1 < argc && argv[i] === "-T") {
+            clang_option.append_str(s" -T \{argv[i+1]} ");
+            i++;
+        }
+        else if(argv[i] === "-net") {
+            gComeNet = true;
+        }
+        else if(argv[i] === "-gc") {
+            gComeGC = true;
+        }
+        else if(argv[i] === "-cg") {
+            come_debug = true;
+            clang_option.append_str("-g ");
+        }
+        else if(i + 1 < argc && argv[i] === "-target") {
+            clang_option.append_str(s"-target \{argv[i+1]}");
+            i++;
+        }
+        else if(i + 1 < argc && argv[i] === "-T") {
+            clang_option.append_str(s" -T \{argv[i+1]} ");
+            i++;
+        }
+        else if(argv[i] === "-common-header") {
+            gCommonHeader = true;
+        }
+        else if(argv[i] === "-original-position") {
+            gComeOriginalSourcePosition = false;
+        }
+        else if(argv[i][0..2] === "-O") {
+            clang_option.append_str(s" \{argv[i]} ");
+            come_debug = false;
+        }
+        else if(argv[i][0..2] === "-D") {
+            cpp_option.append_str(s" \{argv[i]} ");
+            clang_option.append_str(s" \{argv[i]} ");
+        }
+        else if(argv[i] === "-g") {
+            clang_option.append_str("-g ");
+        }
+        else if(argv[i] === "-v") {
+            clang_option.append_str("-v ");
+            verbose = true;
+        }
+        else if(strlen(argv[i]) >= 2 && memcmp(argv[i], "-I", strlen("-I")) == 0) {
+            cpp_option.append_str(" " + argv[i] + " ");
+        }
+        else if(argv[i] === "-gdwarf-4") {
+            clang_option.append_str("-gdwarf-4 ");
+        }
+        else if(argv[i] === "-s" || argv[i] === "-S") {
+            output_source_file_flag = true;
+            gComeOriginalSourcePosition = false;
+        }
+        else if(argv[i] === "-c") {
+            output_object_file = true;
+        }
+        else if(argv[i] === "-E") {
+            output_cpp_file = true;
+        }
+        else if(argv[i][0] == '-') {
+            clang_option.append_str(argv[i] + " ");
+        }
+        else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".o", 2) == 0) {
+            object_files.push_back(string(argv[i]));
+        }
+        else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".a", 2) == 0) {
+            object_files.push_back(string(argv[i]));
+        }
+        else {
+            files.push_back(string(argv[i]));
+        }
+    }
+        
+    gComeDebug = come_debug;
+    gComeMalloc = come_malloc;
+}
+
 int come_main(int argc, char** argv) version 2
 {
     if(argv[1] === "header" && argc >= 3) {
         gProgramName = argv[0];
         
-        var clang_option = new buffer();
-        var cpp_option = new buffer();
-        cpp_option.append_str("-U__GNUC__");
-        var linker_option = new buffer();
-        var files = new list<string>();
-        var object_files = new list<string>();
-        bool output_object_file = false;
-        bool output_cpp_file = false;
-        bool output_source_file_flag = false;
-        bool output_object_file_flag = true;
-        string output_file_name = string("common.h");
-        bool verbose = false;
-        bool prohibit_common_header = false;
-        bool come_debug = false;
-        bool come_malloc = false;
-        for(int i=2; i<argc; i++) {
-            if(argv[i] === "-o" && i+1 < argc) {
-                output_file_name = string(argv[i+1]);
-                i++;
-            }
-            else if(argv[i] === "-str") {
-                gComeStr = true;
-            }
-            else if(argv[i] === "-pthread") {
-                gComePthread = true;
-            }
-            else if(argv[i] === "-pico") {
-                output_source_file_flag = true;
-                output_object_file_flag = false;
-                gComeOriginalSourcePosition = false;
-                char* env = getenv("PICO_SDK_PATH");
-                cpp_option = new buffer();
-                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__ -D__PICO__");
-            }
-            else if(argv[i] === "-net") {
-                gComeNet = true;
-            }
-            else if(argv[i] === "-gc") {
-                gComeGC = true;
-            }
-            else if(argv[i] === "-g") {
-                clang_option.append_str("-g ");
-            }
-            else if(argv[i] === "-cg") {
-                clang_option.append_str("-g ");
-                come_debug = true;
-            }
-            else if(argv[i] === "-common-header") {
-                gCommonHeader = true;
-            }
-            else if(argv[i] === "-original-position") {
-                gComeOriginalSourcePosition = false;
-            }
-            else if(argv[i][0..2] === "-O") {
-                clang_option.append_str(s" \{argv[i]} ");
-                come_debug = false;
-            }
-            else if(argv[i][0..2] === "-D") {
-                cpp_option.append_str(s" \{argv[i]} ");
-                clang_option.append_str(s" \{argv[i]} ");
-            }
-            else if(argv[i] === "-v") {
-                clang_option.append_str("-v ");
-                verbose = true;
-            }
-            else if(strlen(argv[i]) >= 2 && memcmp(argv[i], "-I", strlen("-I")) == 0) {
-                cpp_option.append_str(" " + argv[i] + " ");
-            }
-            else if(argv[i] === "-gdwarf-4") {
-                clang_option.append_str("-gdwarf-4 ");
-            }
-            else if(argv[i] === "-s" || argv[i] === "-S") {
-                output_source_file_flag = true;
-                gComeOriginalSourcePosition = false;
-            }
-            else if(argv[i] === "-c") {
-                output_object_file = true;
-            }
-            else if(argv[i] === "-E") {
-                output_cpp_file = true;
-            }
-            else if(argv[i][0] == '-') {
-                clang_option.append_str(argv[i] + " ");
-            }
-            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".o", 2) == 0) {
-                object_files.push_back(string(argv[i]));
-            }
-            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".a", 2) == 0) {
-                object_files.push_back(string(argv[i]));
-            }
-            else {
-                files.push_back(string(argv[i]));
-            }
-        }
-        
-        gComeDebug = come_debug;
-        gComeMalloc = come_malloc;
+        int start_num = 2;
+        include MEvalOptions<start_num>;
         
         int r = system(xsprintf("%s %s", RM, output_file_name)) 
         if(r < 0) die("rm");
@@ -846,118 +867,8 @@ int come_main(int argc, char** argv) version 2
     else {
         gProgramName = argv[0];
         
-        var clang_option = new buffer();
-        var linker_option = new buffer();
-        var cpp_option = new buffer();
-        cpp_option.append_str("-U__GNUC__");
-        var files = new list<string>();
-        var object_files = new list<string>();
-        bool output_object_file = false;
-        bool output_cpp_file = false;
-        bool output_source_file_flag = false;
-        bool output_object_file_flag = true;
-        string output_file_name = null;
-        bool verbose = false;
-        bool come_debug = false;
-        bool come_malloc = false;
-        for(int i=1; i<argc; i++) {
-            if(argv[i] === "-o" && i+1 < argc) {
-                output_file_name = string(argv[i+1]);
-                i++;
-            }
-            else if(argv[i] === "-str") {
-                gComeStr = true;
-            }
-            else if(argv[i] === "-pthread") {
-                gComePthread = true;
-            }
-            else if(argv[i] === "-pico") {
-                output_source_file_flag = true;
-                output_object_file_flag = false;
-                gComeOriginalSourcePosition = false;
-                char* env = getenv("PICO_SDK_PATH");
-                cpp_option = new buffer();
-                cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__ -D__PICO__");
-            }
-            else if(i + 1 < argc && argv[i] === "-target") {
-                clang_option.append_str(s"-target \{argv[i+1]}");
-                i++;
-            }
-            else if(i + 1 < argc && argv[i] === "-T") {
-                clang_option.append_str(s" -T \{argv[i+1]} ");
-                i++;
-            }
-            else if(argv[i] === "-net") {
-                gComeNet = true;
-            }
-            else if(argv[i] === "-gc") {
-                gComeGC = true;
-            }
-            else if(argv[i] === "-cg") {
-                come_debug = true;
-                clang_option.append_str("-g ");
-            }
-            else if(i + 1 < argc && argv[i] === "-target") {
-                clang_option.append_str(s"-target \{argv[i+1]}");
-                i++;
-            }
-            else if(i + 1 < argc && argv[i] === "-T") {
-                clang_option.append_str(s" -T \{argv[i+1]} ");
-                i++;
-            }
-            else if(argv[i] === "-common-header") {
-                gCommonHeader = true;
-            }
-            else if(argv[i] === "-original-position") {
-                gComeOriginalSourcePosition = false;
-            }
-            else if(argv[i][0..2] === "-O") {
-                clang_option.append_str(s" \{argv[i]} ");
-                come_debug = false;
-            }
-            else if(argv[i][0..2] === "-D") {
-                cpp_option.append_str(s" \{argv[i]} ");
-                clang_option.append_str(s" \{argv[i]} ");
-            }
-            else if(argv[i] === "-g") {
-                clang_option.append_str("-g ");
-            }
-            else if(argv[i] === "-v") {
-                clang_option.append_str("-v ");
-                verbose = true;
-            }
-            else if(strlen(argv[i]) >= 2 && memcmp(argv[i], "-I", strlen("-I")) == 0) {
-                cpp_option.append_str(" " + argv[i] + " ");
-            }
-            else if(argv[i] === "-gdwarf-4") {
-                clang_option.append_str("-gdwarf-4 ");
-            }
-            else if(argv[i] === "-s" || argv[i] === "-S") {
-                output_source_file_flag = true;
-                gComeOriginalSourcePosition = false;
-            }
-            else if(argv[i] === "-c") {
-                output_object_file = true;
-            }
-            else if(argv[i] === "-E") {
-                output_cpp_file = true;
-            }
-            else if(argv[i][0] == '-') {
-                clang_option.append_str(argv[i] + " ");
-            }
-            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".o", 2) == 0) {
-                object_files.push_back(string(argv[i]));
-            }
-            else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".a", 2) == 0) {
-                object_files.push_back(string(argv[i]));
-            }
-            else {
-                files.push_back(string(argv[i]));
-            }
-        }
-        
-        gComeDebug = come_debug;
-        gComeMalloc = come_malloc;
+        int start_num = 1;
+        include MEvalOptions<start_num>;
         
         foreach(it, files) {
             sInfo info;
