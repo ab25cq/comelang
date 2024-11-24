@@ -150,8 +150,6 @@ static bool cpp(sInfo* info)
         output_file_name = info.sname + ".i";
     }
     
-    string cmd = xsprintf("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
-    
     bool exist_common_h = false;
     {
         FILE* f = fopen("common.h", "r");
@@ -164,22 +162,23 @@ static bool cpp(sInfo* info)
         if(f) {
             fclose(f);
         }
+        if(!gCommonHeader) {
+            exist_common_h = false;
+        }
     }
     
-    if(!gCommonHeader) {
-        exist_common_h = false;
-    }
-    int rc2 = system("uname -a | grep Android 1> /dev/null 2>/dev/null");
+    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac ?
+    int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null"); // Android?
+    int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null"); // Debian?
     
-    int rc = system(cmd);
     /// Android ///
-    if(rc2 == 0) {
+    if(is_android == 0) {
         string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
         if(info.verbose) puts(cmd3);
         int rc = system(cmd3);
         
-        var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        string command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
         
         if(info.verbose) puts(command2);
         (void)system(command2);
@@ -190,7 +189,7 @@ static bool cpp(sInfo* info)
         }
     }
     /// Mac ///
-    else if(rc == 0) {
+    else if(is_mac == 0) {
         string cmd2 = xsprintf("gcc -E -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
         if(info.verbose) puts(cmd2);
@@ -210,11 +209,8 @@ static bool cpp(sInfo* info)
     /// Other ///
     else {
         string cmd3 = xsprintf("cpp -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        
-        string cmd_debian = xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null")
-        int rc_debian = system(cmd_debian);
 
-        if(rc_debian == 0) {
+        if(is_debian == 0) {
             cmd3 = xsprintf("cpp -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         }
 
@@ -229,9 +225,10 @@ static bool cpp(sInfo* info)
         if(rc != 0) {
             string cmd4 = xsprintf("cpp -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
 
-            if(rc_debian == 0) {
+            if(is_debian == 0) {
                 cmd4 = xsprintf("cpp -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ -C %s %s > %s 2> %s.cpp.out", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
             }
+            
             var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
     
             if(info.verbose) puts(cmd4);
@@ -256,7 +253,7 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
 {
     string input_file_name = info.sname + ".c";
     
-    string output_file_name = null;
+    string output_file_name;
     if(info.output_file_name && output_object_file) {
         output_file_name = string(info.output_file_name);
     }
@@ -306,30 +303,25 @@ static bool linker(sInfo* info, list<string>* object_files)
         command.append_format("%s ", it);
     }
     
-    string cmd = xsprintf("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
-    
-    int rc = system(cmd);
-    if(rc == 0) {
+    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
+    if(is_mac == 0) {
         command.append_str(" -L/opt/homebrew/opt/pcre/lib -L/opt/homebrew/opt/openssl/lib -L/opt/homebrew/opt/boehmgc/lib -L/opt/homebrew/opt/mysql/lib -L/opt/homebrew/opt/zstd/lib ");
     }
     
-    cmd = xsprintf("ls /usr/local/lib 1> /dev/null 2>/dev/null"); // /usr/local/lib?
-    
-    rc = system(cmd);
+    string cmd = xsprintf("ls /usr/local/lib 1> /dev/null 2>/dev/null"); // /usr/local/lib?
+    int rc = system(cmd);
     if(rc == 0) {
         command.append_str(" -L/usr/local/lib ");
     }
     
-    cmd = xsprintf("ls %s/lib 1> /dev/null 2>/dev/null", getenv("HOME")); // usr/lib?
-    
-    rc = system(cmd);
+    string cmd = xsprintf("ls %s/lib 1> /dev/null 2>/dev/null", getenv("HOME")); // $HOME/lib?
+    int rc = system(cmd);
     if(rc == 0) {
         command.append_format(" -L%s/lib ", getenv("HOME"));
     }
     
-    cmd = xsprintf("ls %s/lib 1> /dev/null 2>/dev/null", PREFIX); // PREFIX/lib?
-    
-    rc = system(cmd);
+    string cmd = xsprintf("ls %s/lib 1> /dev/null 2>/dev/null", PREFIX); // PREFIX/lib?
+    int rc = system(cmd);
     if(rc == 0) {
         command.append_format(" -L%s/lib ", PREFIX);
     }
@@ -351,14 +343,11 @@ static bool linker(sInfo* info, list<string>* object_files)
         command.append_str(" -lcomelang-pthread -lpthread ");
     }
     if(gComeNet) {
-        cmd = xsprintf("which apk 1> /dev/null 2>/dev/null");
-        string cmd2 = xsprintf("uname -a | grep Debian 1> /dev/null 2>/dev/null");
-        string cmd3 = xsprintf("uname -a | grep Android 1>/dev/null 2>/dev/null");
+        int is_apline = system("which apk 1> /dev/null 2>/dev/null");
+        int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null");
+        int is_android = system("uname -a | grep Android 1>/dev/null 2>/dev/null");
         
-        rc = system(cmd);
-        int rc2 = system(cmd2);
-        int rc3 = system(cmd3);
-        if(rc3 == 0) {
+        if(is_android == 0) { // is Android
             if(gComeGC) {
                 command.append_str(" -lcomelang-net-gc -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
             }
@@ -366,7 +355,7 @@ static bool linker(sInfo* info, list<string>* object_files)
                 command.append_str(" -lcomelang-net -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
             }
         }
-        else if(rc == 0 || rc2 == 0) {
+        else if(is_apline == 0 || is_debian == 0) { // Alpine | Debian
             if(gComeGC) {
                 command.append_str(" -lcomelang-net-gc -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
             }
@@ -374,7 +363,7 @@ static bool linker(sInfo* info, list<string>* object_files)
                 command.append_str(" -lcomelang-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
             }
         }
-        else {
+        else { // Ohter
             if(gComeGC) {
                 command.append_str(" -lcomelang-net-gc -lssl `mysql_config --cflags --libs`");
             }
@@ -387,7 +376,7 @@ static bool linker(sInfo* info, list<string>* object_files)
     command.append_str(" -lcomelang ");
     
     if(info.verbose) puts(command.to_string());
-    rc = system(command.to_string());
+    int rc = system(command.to_string());
     
     if(rc != 0) {
         printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
@@ -609,10 +598,8 @@ static void init_classes(sInfo* info)
         info.classes.insert(generics_type, new sClass(generics_type, method_generics:true, method_generics_num:i));
     }
     
-    string cmd = xsprintf("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
-
-    int rc = system(cmd);
-    if(rc == 0) {
+    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
+    if(is_mac == 0) { // Mac
         info.classes.insert(string("__builtin_va_list"), new sClass("__builtin_va_list", number:true));
         
         string type_name = string("__builtin_va_list");
@@ -621,10 +608,8 @@ static void init_classes(sInfo* info)
         type->mOriginalTypeName = string("__builtin_va_list");
         
         info.types.insert(string(type_name), type);
-        
-//        add_come_code_at_source_head(info, "typedef %s;\n", make_define_var(type, type_name, in_header:true));
     }
-    else {
+    else { // Other
         sClass*% klass = new sClass("__builtin_va_list", struct_:true);
         
         klass.mFields.push_back((string("v1"), new sType("char*")));
