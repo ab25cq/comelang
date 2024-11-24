@@ -41,7 +41,7 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str("__builtin_va_list");
     }
     else if(class_name === "__builtin_va_list") {
-        if(info.in_header) {
+        if(in_header) {
             buf.append_str(class_name);
         }
         else {
@@ -668,9 +668,7 @@ string header_function(sFun* fun, sInfo* info)
         sType*% base_result_type = fun->mResultType;
         base_result_type->mArrayNum = new list<sNode*%>();
         
-        info.in_header = true;
         string result_type_str = make_type_name_string(base_result_type);
-        info.in_header = false;
         
         output.append_str(result_type_str);
         output.append_str(" (*");
@@ -707,9 +705,7 @@ string header_function(sFun* fun, sInfo* info)
         output.append_format("))[%s];\n", cvalue.c_value);
     }
     else {
-        info.in_header = true;
         string result_type_str = make_type_name_string(fun->mResultType);
-        info.in_header = false;
         
         output.append_str(result_type_str);
         output.append_str(" ");
@@ -745,9 +741,7 @@ string header_lambda(sType* lambda_type, string name, sInfo* info)
 {
     var output = new buffer();
     
-    info.in_header = true;
     string result_type_str = make_type_name_string(lambda_type->mResultType.v1);
-    info.in_header = false;
     
     output.append_str(result_type_str);
     output.append_str(" ");

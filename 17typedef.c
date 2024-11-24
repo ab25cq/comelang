@@ -63,17 +63,13 @@ class sTypedefNode extends sNodeBase
                 else {
                     //if(info.struct_definition[type_name]?? == null) {
                     if(type->mClass->mName !== type_name) {
-                        info.in_header = true;
-                        info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name)).to_buffer());
-                        info.in_header = false;
+                        info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name,in_header:true)).to_buffer());
                     }
                     else {
                         static int var_num = 0;
                         var_num++;
                         string type_name2 = type_name + var_num.to_string() + "COMELANG";
-                        info.in_header = true;
-                        info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name)).to_buffer());
-                        info.in_header = false;
+                        info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                     }
                 }
             }
@@ -92,17 +88,13 @@ class sTypedefNode extends sNodeBase
             }
             else {
                 if(type->mClass->mName !== type_name) {
-                    info.in_header = true;
-                    info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name)).to_buffer());
-                    info.in_header = false;
+                    info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                 }
                 else {
                     static int var_num = 0;
                     var_num++;
                     string type_name2 = type_name + var_num.to_string() + "COMELANG";
-                    info.in_header = true;
-                    info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name)).to_buffer());
-                    info.in_header = false;
+                    info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                 }
             }
         }
