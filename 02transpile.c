@@ -232,7 +232,7 @@ static bool cpp(sInfo* info)
             var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
     
             if(info.verbose) puts(cmd4);
-            rc = system(cmd4);
+            int rc = system(cmd4);
             
             var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
             
@@ -376,9 +376,7 @@ static bool linker(sInfo* info, list<string>* object_files)
     command.append_str(" -lcomelang ");
     
     if(info.verbose) puts(command.to_string());
-    int rc = system(command.to_string());
-    
-    if(rc != 0) {
+    system(command.to_string()).if {
         printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
         return false;
     }
@@ -398,8 +396,9 @@ bool new_project(int argc, char** argv)
     string cflags = string(" -common-header -O2 ");
     string cflags_debug = string(" -common-header -gdwarf-4 -cg ");
     
-    int r = system(s"mkdir \{project_name}");
-    if(r < 0 ) die("mkdir error");
+    system(s"mkdir \{project_name}").less {
+        die("mkdir error");
+    }
     
     """
 \#########################################
@@ -500,76 +499,85 @@ debug: \{project_name_debug}
 
 bool run_project(int argc, char** argv)
 {
-    FILE* f = fopen("common.h", "r");
-    
-    if(f == NULL) {
-        int r = system("make header");
-        if(r < 0) die("system");
+    fopen("common.h", "r").case {
+        (Value == NULL) {
+            system("make header").less {
+                die("system");
+            }
+        }
+        else {
+            fclose(Value);
+        }
     }
-    else {
-        fclose(f);
-    }
     
-    int r = system("make run") 
-    if(r < 0) die("system");
+    system("make run").less {
+        die("system");
+    }
     
     return true;
 }
 
 bool make_header_project(int argc, char** argv)
 {
-    int r = system("make header") 
-    if(r < 0) die("system");
+    system("make header").less {
+        die("system");
+    }
     
     return true;
 }
 
 bool compile_project(int argc, char** argv)
 {
-    FILE* f = fopen("common.h", "r");
-    
-    if(f == NULL) {
-        int r = system("make header") 
-        if(r < 0) die("system");
+    fopen("common.h", "r").case {
+        (Value == NULL) {
+            system("make header").less {
+                die("system");
+            }
+        }
+        else {
+            fclose(Value);
+        }
     }
-    else {
-        fclose(f);
+    system("make compile").less {
+        die("system");
     }
-    int r = system("make compile");
-    if(r < 0) die("system");
     
     return true;
 }
 
 bool debug_run_project(int argc, char** argv)
 {
-    FILE* f = fopen("common.h", "r");
-    
-    if(f == NULL) {
-        int r = system("make header");
-        if(r < 0) die("system");
+    fopen("common.h", "r").case {
+        (Value == NULL) {
+            system("make header").less {
+                die("system");
+            }
+        }
+        else {
+            fclose(Value);
+        }
     }
-    else {
-        fclose(f);
+    system("make debug").less {
+        die("system");
     }
-    int r = system("make debug");
-    if(r < 0 ) die("system");
     
     return true;
 }
 
 bool clean_project(int argc, char** argv)
 {
-    int r = system("make clean") 
-    if(r < 0) die("system");
+    system("make clean").less {
+        die("system");
+    }
     
     return true;
 }
 
 bool install_project(int argc, char** argv, char* prefix="/usr/local")
 {
-    int r = system(s"make install DESTDIR=\{prefix}");
-    if(r < 0) die("system");
+    system(s"make install DESTDIR=\{prefix}").less {
+        die("system");
+    }
     
     return true;
 }
@@ -745,21 +753,24 @@ int come_main(int argc, char** argv) version 2
         
         int start_num = 2;
         string output_file_name_str = s"common.h";
-        
         include MEvalOptions<start_num, output_file_name_str>;
         
-        int r = system(xsprintf("%s %s", RM, output_file_name)) 
-        if(r < 0) die("rm");
+        system(xsprintf("%s %s", RM, output_file_name)).less {
+            die("rm");
+        }
         
-        FILE* f = fopen(output_file_name, "w");
-        if(f == null) {
+        fopen(output_file_name, "w").elif {
             die("fopen");
         }
-        fclose(f);
+        else {
+            fclose(Value);
+        }
         
         string tmp_file = string("tmp-common-header.c");
         
-        system(s"cat \{files.join(" ")} > \{tmp_file}");
+        system(s"cat \{files.join(" ")} > \{tmp_file}").less {
+            die("cat");
+        }
         
         sInfo info;
         
@@ -803,7 +814,7 @@ int come_main(int argc, char** argv) version 2
         
         clear_tmp_file(&info);
         
-        if(!cpp(&info)) {
+        cpp(&info).elif {
             printf("%s %d: transpile failed\n", info.sname, info.sline);
             exit(2);
         }
@@ -813,10 +824,10 @@ int come_main(int argc, char** argv) version 2
         info.p = info.source.buf;
         info.head = info.source.buf;
         
-        if(!output_cpp_file) {
+        output_cpp_file.elif {
             transpile(&info)
             
-            if(!output_header_file(&info)) {
+            output_header_file(&info).elif {
                 printf("%s %d: output source file faield\n", info->sname, info->sline);
                 exit(2);
             }
@@ -825,43 +836,43 @@ int come_main(int argc, char** argv) version 2
         system(xsprintf("%s %s*", RM, tmp_file));
     }
     else if(argv[1] === "new" && argc == 3) {
-        if(!new_project(argc, argv)) {
+        new_project(argc, argv).elif {
             return false;
         }
     }
     else if(argv[1] === "run" && argc == 2) {
-        if(!run_project(argc, argv)) {
+        run_project(argc, argv).elif {
             return false;
         }
     }
     else if(argv[1] === "header" && argc == 2) {
-        if(!make_header_project(argc, argv)) {
+        make_header_project(argc, argv).elif {
             return false;
         }
     }
     else if(argv[1] === "compile" && argc == 2) {
-        if(!compile_project(argc, argv)) {
+        compile_project(argc, argv).elif {
             return false;
         }
     }
     else if(argv[1] === "debug" && argc == 2) {
-        if(!debug_run_project(argc, argv)) {
+        debug_run_project(argc, argv).elif {
             return false;
         }
     }
     else if(argv[1] === "clean" && argc == 2) {
-        if(!clean_project(argc, argv)) {
+        clean_project(argc, argv).elif {
             return false;
         }
     }
     else if(argv[1] === "install" && argc >= 2) {
         if(argc == 2) {
-            if(!install_project(argc, argv)) {
+            install_project(argc, argv).elif {
                 return false;
             }
         }
         else if(argc >= 3) {
-            if(!install_project(argc, argv, argv[2])) {
+            install_project(argc, argv, argv[2]).elif {
                 return false;
             }
         }
@@ -878,12 +889,13 @@ int come_main(int argc, char** argv) version 2
             
             memset(&info, 0, sizeof(sInfo));
             
-            FILE* tmp_file = fopen(it, "r");
-            if(tmp_file == NULL) {
-                continue;
-            }
-            else {
-                fclose(tmp_file);
+            fopen(it, "r").case {
+                (Value == NULL) {
+                    continue;
+                }
+                else {
+                    fclose(Value);
+                }
             }
             
             info.sname = string(it);
@@ -916,7 +928,7 @@ int come_main(int argc, char** argv) version 2
             
             clear_tmp_file(&info);
             
-            if(!cpp(&info)) {
+            cpp(&info).elif {
                 printf("%s %d: transpile failed\n", info.sname, info.sline);
                 exit(2);
             }
@@ -933,10 +945,10 @@ int come_main(int argc, char** argv) version 2
                 info.output_file_name = null;
             }
             
-            if(!output_cpp_file) {
+            output_cpp_file.elif {
                 transpile(&info);
                 
-                if(!output_source_file(&info)) {
+                output_source_file(&info).elif {
                     printf("%s %d: output source file faield\n", info->sname, info->sline);
                     exit(2);
                 }
@@ -947,8 +959,8 @@ int come_main(int argc, char** argv) version 2
                     exit(2);
                 }
                 else {
-                    if(output_object_file_flag) {
-                        if(!compile(&info, output_object_file, object_files)) {
+                    output_object_file_flag.if {
+                        compile(&info, output_object_file, object_files).elif {
                             printf("%s %d: compile faield\n", info.sname, info.sline);
                             exit(27);
                         }
@@ -987,7 +999,7 @@ int come_main(int argc, char** argv) version 2
             }
             
             if(output_object_file_flag) {
-                linker(&info, object_files).expect {
+                linker(&info, object_files).elif {
                     printf("%s %d: linker faield\n", info.sname, info.sline);
                     exit(13);
                 }
@@ -998,7 +1010,6 @@ int come_main(int argc, char** argv) version 2
             }
         }
     }
-
     
     return 0;
 }
