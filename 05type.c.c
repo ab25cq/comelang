@@ -9628,7 +9628,7 @@ result_type_343 = (void*)0;
         type_312=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "05type.c", 2769, "sType")),"int",(_Bool)0,info));
         come_call_finalizer3(__dec_obj283,sType_finalize, 0, 0, 0, 0, (void*)0);
         __dec_obj284=type_312->mArrayNum;
-        type_312->mArrayNum=(struct list$1sNodeph*)come_increment_ref_count((__list_values1___422[0]=come_increment_ref_count(((struct sNode*)(__right_value529=create_int_node(2,info)))),
+        type_312->mArrayNum=(struct list$1sNodeph*)come_increment_ref_count((__list_values1___422[0]=(struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value529=create_int_node(2,info)))),
 list$1sNodeph_initialize_with_values((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "05type.c", 2770, "struct list$1sNodeph")),1,__list_values1___422)));
         come_call_finalizer3(__dec_obj284,list$1sNodeph_finalize, 0, 0, 0, 0, (void*)0);
         if(__right_value529) { __right_value529 = come_decrement_ref_count2(__right_value529, ((struct sNode*)__right_value529)->finalize, ((struct sNode*)__right_value529)->_protocol_obj, 1, 0, 0, __result_obj__); } 

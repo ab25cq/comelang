@@ -1,10 +1,14 @@
 #include <comelang.h>
 
+module MData
+{
+    bool output = false;
+}
+
 int main(int argc, char** argv)
 {
-    char%* str = string("AAA");
-    
-    puts(str);
+    include MData;
+    output.to_string().puts();
     
     return 0;
 }

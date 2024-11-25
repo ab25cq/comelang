@@ -343,7 +343,8 @@ class sListNode extends sNodeBase
         int i = 0;
         foreach(it, params) {
             if(list_element_type->mHeap) {
-                source.append_format("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, params[i].c_value);
+                string c_value = increment_ref_count_object(params[i].type, params[i].c_value, info);
+                source.append_format("%s[%d]=%s,\n", var_->mCValueName, i, c_value);
             }
             else {
                 source.append_format("%s[%d]=%s,\n", var_->mCValueName, i, params[i].c_value);
@@ -1216,23 +1217,21 @@ class sMapNode extends sNodeBase
             CVALUE* element_param = element_params[i];
             
             if(map_key_type->mHeap) {
-                source.append_format("%s[%d]=come_increment_ref_count(%s),\n", var_->mCValueName, i, key_param.c_value);
+                string c_value = increment_ref_count_object(key_param.type, key_param.c_value, info);
+                source.append_format("%s[%d]=%s,\n", var_->mCValueName, i, c_value);
             }
             else {
                 source.append_format("%s[%d]=%s,\n", var_->mCValueName, i, key_param.c_value);
             }
             
             if(map_element_type->mHeap) {
-                source.append_format("%s[%d]=come_increment_ref_count(%s),\n", var2_->mCValueName, i, element_param.c_value);
+                string c_value = increment_ref_count_object(element_param.type, element_param.c_value, info);
+                source.append_format("%s[%d]=%s,\n", var2_->mCValueName, i, c_value);
             }
             else {
                 source.append_format("%s[%d]=%s,\n", var2_->mCValueName, i, element_param.c_value);
             }
         }
-        
-        //source.append_str("}");
-        
-        //add_come_code(info, "%s", source.to_string());
         
         sType*% map_type = new sType("map");
         map_type->mGenericsTypes.push_back(clone map_key_type);

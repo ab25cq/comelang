@@ -294,7 +294,6 @@ class sStoreFieldNode extends sNodeBase
                     string c_value = xsprintf("%s.%s", left_value.c_value, name);
                     decrement_ref_count_object(field_type, c_value, info);
                     std_move(field_type, right_value.type, right_value);
-                    //right_value.c_value = increment_ref_count_object(right_value.type, right_value.c_value, info);
                     come_value.c_value = xsprintf("%s.%s=%s", left_value.c_value, name, right_value.c_value);
                 }
             }

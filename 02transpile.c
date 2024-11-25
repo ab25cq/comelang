@@ -746,6 +746,8 @@ int come_main(int argc, char** argv) version 2
         int start_num = 2;
         include MEvalOptions<start_num>;
         
+        output_file_name = s"common.h";
+        
         int r = system(xsprintf("%s %s", RM, output_file_name)) 
         if(r < 0) die("rm");
         

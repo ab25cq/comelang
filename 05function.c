@@ -521,7 +521,8 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
                             
                             var_->mType = clone come_value.type;
                             if(come_value.type.mHeap) {
-                                come_value2.c_value = xsprintf("%s=(void*)(come_increment_ref_count(%s))", var_->mCValueName, come_value.c_value);
+                                string c_value = increment_ref_count_object(come_value.type, come_value.c_value, info);
+                                come_value2.c_value = xsprintf("%s=(void*)(%s)", var_->mCValueName, c_value);
                             }
                             else {
                                 come_value2.c_value = xsprintf("%s=(void*)(%s)", var_->mCValueName, come_value.c_value);

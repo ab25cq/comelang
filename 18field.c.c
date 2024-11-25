@@ -6490,7 +6490,7 @@ _Bool __result126__;
             return __result125__;
         }
         type_180=(struct sType*)come_increment_ref_count(solve_generics(fun_179->mResultType,left_value_173->type,info));
-        come_value_181=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 472, "CVALUE"))));
+        come_value_181=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 471, "CVALUE"))));
         __dec_obj161=come_value_181->c_value;
         come_value_181->c_value=(char*)come_increment_ref_count(xsprintf("%s(%s)",method_name_174,left_value_173->c_value));
         /*G*/ __dec_obj161 = come_decrement_ref_count2(__dec_obj161, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -6508,7 +6508,7 @@ _Bool __result126__;
         list$1CVALUEph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(left_value_173));
     }
     else if(    left_value_173->type->mPointerNum>0) {
-        come_value_182=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 486, "CVALUE"))));
+        come_value_182=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 485, "CVALUE"))));
         __dec_obj163=come_value_182->c_value;
         come_value_182->c_value=(char*)come_increment_ref_count(xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))",((char*)(__right_value258=make_type_name_string(left_value_173->type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0))),left_value_173->c_value,info->sname,info->sline,gComeDebugStackFrameID++));
         /*G*/ __dec_obj163 = come_decrement_ref_count2(__dec_obj163, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -6679,8 +6679,8 @@ struct sNode* _inf_value1;
 struct sNullableNode* _inf_obj_value1;
 void* __right_value275 = (void*)0;
 struct sNode* __result134__;
-    _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 548, "struct sNode");
-    _inf_obj_value1=come_increment_ref_count(((struct sNullableNode*)(__right_value271=sNullableNode_initialize((struct sNullableNode*)come_increment_ref_count((struct sNullableNode*)come_calloc(1, sizeof(struct sNullableNode)*(1), "18field.c", 548, "sNullableNode")),left,info))));
+    _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 547, "struct sNode");
+    _inf_obj_value1=(struct sNullableNode*)come_increment_ref_count(((struct sNullableNode*)(__right_value271=sNullableNode_initialize((struct sNullableNode*)come_increment_ref_count((struct sNullableNode*)come_calloc(1, sizeof(struct sNullableNode)*(1), "18field.c", 547, "sNullableNode")),left,info))));
     _inf_value1->_protocol_obj=_inf_obj_value1;
     _inf_value1->finalize=(void*)sNullableNode_finalize;
     _inf_value1->clone=(void*)sNullableNode_clone;
@@ -6787,7 +6787,7 @@ _Bool __result139__;
     dec_stack_ptr(1,info);
     if(    left_value_189->type->mPointerNum>0) {
         if(        !gComeDebug) {
-            come_value_194=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 598, "CVALUE"))));
+            come_value_194=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 597, "CVALUE"))));
             __dec_obj182=come_value_194->c_value;
             come_value_194->c_value=(char*)come_increment_ref_count(xsprintf("(*((%s)%s))",((char*)(__right_value286=make_type_name_string(left_value_189->type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0))),left_value_189->c_value));
             /*G*/ __dec_obj182 = come_decrement_ref_count2(__dec_obj182, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -6802,7 +6802,7 @@ _Bool __result139__;
             /*i*/come_call_finalizer3(come_value_194,CVALUE_finalize, 0, 0, 0, 0, (void*)0);
         }
         else {
-            come_value_195=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 611, "CVALUE"))));
+            come_value_195=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 610, "CVALUE"))));
             __dec_obj184=come_value_195->c_value;
             come_value_195->c_value=(char*)come_increment_ref_count(xsprintf("(*((%s)come_range_check(%s, %s, %s, \"%s\", %d)))",((char*)(__right_value291=make_type_name_string(left_value_189->type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0))),left_value_189->c_value,begin_value_191->c_value,end_value_193->c_value,info->sname,info->sline));
             /*G*/ __dec_obj184 = come_decrement_ref_count2(__dec_obj184, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -7034,7 +7034,7 @@ _Bool __result147__;
             return __result144__;
         }
     }
-    come_value_219=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 727, "CVALUE"))));
+    come_value_219=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 726, "CVALUE"))));
     if(    left_value_198->type->mPointerNum>0) {
         if(        child_field_name_205) {
             if(            child_field_is_pointer_204) {
@@ -7141,8 +7141,8 @@ struct sNode* _inf_value2;
 struct sLoadFieldNode* _inf_obj_value2;
 void* __right_value323 = (void*)0;
 struct sNode* __result150__;
-    _inf_value2=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 779, "struct sNode");
-    _inf_obj_value2=come_increment_ref_count(((struct sLoadFieldNode*)(__right_value318=sLoadFieldNode_initialize((struct sLoadFieldNode*)come_increment_ref_count((struct sLoadFieldNode*)come_calloc(1, sizeof(struct sLoadFieldNode)*(1), "18field.c", 779, "sLoadFieldNode")),left,(char*)come_increment_ref_count(name),info))));
+    _inf_value2=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 778, "struct sNode");
+    _inf_obj_value2=(struct sLoadFieldNode*)come_increment_ref_count(((struct sLoadFieldNode*)(__right_value318=sLoadFieldNode_initialize((struct sLoadFieldNode*)come_increment_ref_count((struct sLoadFieldNode*)come_calloc(1, sizeof(struct sLoadFieldNode)*(1), "18field.c", 778, "sLoadFieldNode")),left,(char*)come_increment_ref_count(name),info))));
     _inf_value2->_protocol_obj=_inf_obj_value2;
     _inf_value2->finalize=(void*)sLoadFieldNode_finalize;
     _inf_value2->clone=(void*)sLoadFieldNode_clone;
@@ -7302,7 +7302,7 @@ memset(&calling_fun_243, 0, sizeof(_Bool));
         /* U11 */__right_value330 = come_decrement_ref_count2(__right_value330, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     left_type_227=left_value_226->type;
-    array_num_228=(struct list$1CVALUEph*)come_increment_ref_count(list$1CVALUEph_initialize((struct list$1CVALUEph*)come_increment_ref_count((struct list$1CVALUEph*)come_calloc(1, sizeof(struct list$1CVALUEph)*(1), "18field.c", 818, "list$1CVALUEph"))));
+    array_num_228=(struct list$1CVALUEph*)come_increment_ref_count(list$1CVALUEph_initialize((struct list$1CVALUEph*)come_increment_ref_count((struct list$1CVALUEph*)come_calloc(1, sizeof(struct list$1CVALUEph)*(1), "18field.c", 817, "list$1CVALUEph"))));
     for(    o2_saved_231=(array_num_nodes_225),it_234=list$1sNodeph_begin((o2_saved_231));    !list$1sNodeph_end((o2_saved_231));    it_234=list$1sNodeph_next((o2_saved_231))    ){
         if(        !node_compile(it_234,info)) {
             __result160__ = (_Bool)0;
@@ -7331,7 +7331,7 @@ memset(&calling_fun_243, 0, sizeof(_Bool));
         calling_fun_243=(_Bool)0;
     }
     else {
-        calling_fun_243=operator_overload_fun2(type_241,fun_name_242,left_value_226,((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_228,0), "18field.c", 850, 9)),right_value_238,info);
+        calling_fun_243=operator_overload_fun2(type_241,fun_name_242,left_value_226,((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_228,0), "18field.c", 849, 9)),right_value_238,info);
     }
     if(    !calling_fun_243) {
         check_code_247=((void*)0);
@@ -7377,8 +7377,8 @@ memset(&calling_fun_243, 0, sizeof(_Bool));
                     }
                 }
             }
-            come_value_264=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 898, "CVALUE"))));
-            buf_265=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 900, "buffer"))));
+            come_value_264=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 897, "CVALUE"))));
+            buf_265=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 899, "buffer"))));
             result_type2_266=(struct sType*)come_increment_ref_count(sType_clone(result_type_249));
             result_type2_266->mPointerNum++;
             buffer_append_format(buf_265,"come_range_check(&%s",left_value_226->c_value);
@@ -7412,7 +7412,7 @@ memset(&calling_fun_243, 0, sizeof(_Bool));
             /*i*/come_call_finalizer3(buf_265,buffer_finalize, 0, 0, 0, 0, (void*)0);
             /*i*/come_call_finalizer3(result_type2_266,sType_finalize, 0, 0, 0, 0, (void*)0);
         }
-        come_value_277=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 932, "CVALUE"))));
+        come_value_277=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 931, "CVALUE"))));
         if(        list$1sNodeph_length(left_type_227->mArrayNum)>0) {
             for(            i_278=0;            i_278<list$1CVALUEph_length(array_num_228);            i_278++            ){
                 list$1sNodeph_delete(left_type_227->mArrayNum,-1,-1);
@@ -7424,7 +7424,7 @@ memset(&calling_fun_243, 0, sizeof(_Bool));
                 left_type_227->mPointerNum=0;
             }
         }
-        buf_279=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 953, "buffer"))));
+        buf_279=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 952, "buffer"))));
         buffer_append_str(buf_279,left_value_226->c_value);
         for(        o2_saved_280=(struct list$1CVALUEph*)come_increment_ref_count((array_num_228)),it_281=list$1CVALUEph_begin((o2_saved_280));        !list$1CVALUEph_end((o2_saved_280));        it_281=list$1CVALUEph_next((o2_saved_280))        ){
             buffer_append_format(buf_279,"[%s]",it_281->c_value);
@@ -7489,7 +7489,7 @@ memset(&calling_fun_243, 0, sizeof(_Bool));
         }
         result_type_283=(struct sType*)come_increment_ref_count(sType_clone(left_type_227));
         __dec_obj227=result_type_283->mArrayNum;
-        result_type_283->mArrayNum=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodeph_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "18field.c", 994, "list$1sNodeph"))));
+        result_type_283->mArrayNum=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodeph_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "18field.c", 993, "list$1sNodeph"))));
         come_call_finalizer3(__dec_obj227,list$1sNodeph_finalize, 0, 0, 0, 0, (void*)0);
         __dec_obj228=come_value_277->type;
         come_value_277->type=(struct sType*)come_increment_ref_count(result_type_283);
@@ -7952,7 +7952,7 @@ memset(&calling_fun_294, 0, sizeof(_Bool));
         /* U11 */__right_value366 = come_decrement_ref_count2(__right_value366, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     left_type_287=(struct sType*)come_increment_ref_count(sType_clone(left_value_286->type));
-    array_num_288=(struct list$1CVALUEph*)come_increment_ref_count(list$1CVALUEph_initialize((struct list$1CVALUEph*)come_increment_ref_count((struct list$1CVALUEph*)come_calloc(1, sizeof(struct list$1CVALUEph)*(1), "18field.c", 1047, "list$1CVALUEph"))));
+    array_num_288=(struct list$1CVALUEph*)come_increment_ref_count(list$1CVALUEph_initialize((struct list$1CVALUEph*)come_increment_ref_count((struct list$1CVALUEph*)come_calloc(1, sizeof(struct list$1CVALUEph)*(1), "18field.c", 1046, "list$1CVALUEph"))));
     for(    o2_saved_289=(array_num_nodes_285),it_290=list$1sNodeph_begin((o2_saved_289));    !list$1sNodeph_end((o2_saved_289));    it_290=list$1sNodeph_next((o2_saved_289))    ){
         if(        !node_compile(it_290,info)) {
             __result177__ = (_Bool)0;
@@ -7972,7 +7972,7 @@ memset(&calling_fun_294, 0, sizeof(_Bool));
         calling_fun_294=(_Bool)0;
     }
     else {
-        calling_fun_294=operator_overload_fun(type_292,fun_name_293,left_value_286,((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_288,0), "18field.c", 1068, 10)),self->mBreakGuard,info);
+        calling_fun_294=operator_overload_fun(type_292,fun_name_293,left_value_286,((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_288,0), "18field.c", 1067, 10)),self->mBreakGuard,info);
     }
     if(    !calling_fun_294) {
         if(        gComeDebug&&left_value_286->var&&left_value_286->var->mType&&list$1sNodeph_length(left_value_286->var->mType->mArrayNum)>0) {
@@ -8017,8 +8017,8 @@ memset(&calling_fun_294, 0, sizeof(_Bool));
                     }
                 }
             }
-            come_value_299=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 1115, "CVALUE"))));
-            buf_300=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 1117, "buffer"))));
+            come_value_299=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 1114, "CVALUE"))));
+            buf_300=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 1116, "buffer"))));
             result_type2_301=(struct sType*)come_increment_ref_count(sType_clone(result_type_296));
             result_type2_301->mPointerNum++;
             buffer_append_format(buf_300,"*(%s)come_range_check(&%s",((char*)(__right_value381=make_type_name_string(result_type2_301,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0))),left_value_286->c_value);
@@ -8062,8 +8062,8 @@ memset(&calling_fun_294, 0, sizeof(_Bool));
             /* U13 */left_value_code_308 = come_decrement_ref_count2(left_value_code_308, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
         else {
-            come_value_309=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 1159, "CVALUE"))));
-            buf_310=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 1161, "buffer"))));
+            come_value_309=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 1158, "CVALUE"))));
+            buf_310=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 1160, "buffer"))));
             buffer_append_str(buf_310,left_value_286->c_value);
             for(            o2_saved_311=(struct list$1CVALUEph*)come_increment_ref_count((array_num_288)),it_312=list$1CVALUEph_begin((o2_saved_311));            !list$1CVALUEph_end((o2_saved_311));            it_312=list$1CVALUEph_next((o2_saved_311))            ){
                 buffer_append_format(buf_310,"[%s]",it_312->c_value);
@@ -8219,7 +8219,7 @@ memset(&calling_fun_327, 0, sizeof(_Bool));
     left_value_319=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     dec_stack_ptr(1,info);
     left_type_320=(struct sType*)come_increment_ref_count(sType_clone(left_value_319->type));
-    array_num_321=(struct list$1CVALUEph*)come_increment_ref_count(list$1CVALUEph_initialize((struct list$1CVALUEph*)come_increment_ref_count((struct list$1CVALUEph*)come_calloc(1, sizeof(struct list$1CVALUEph)*(1), "18field.c", 1257, "list$1CVALUEph"))));
+    array_num_321=(struct list$1CVALUEph*)come_increment_ref_count(list$1CVALUEph_initialize((struct list$1CVALUEph*)come_increment_ref_count((struct list$1CVALUEph*)come_calloc(1, sizeof(struct list$1CVALUEph)*(1), "18field.c", 1256, "list$1CVALUEph"))));
     for(    o2_saved_322=(array_num_nodes_318),it_323=list$1sNodeph_begin((o2_saved_322));    !list$1sNodeph_end((o2_saved_322));    it_323=list$1sNodeph_next((o2_saved_322))    ){
         if(        !node_compile(it_323,info)) {
             __result181__ = (_Bool)0;
@@ -8239,11 +8239,11 @@ memset(&calling_fun_327, 0, sizeof(_Bool));
         calling_fun_327=(_Bool)0;
     }
     else {
-        calling_fun_327=operator_overload_fun2(type_325,fun_name_326,left_value_319,((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_321,0), "18field.c", 1278, 11)),((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_321,1), "18field.c", 1278, 12)),info);
+        calling_fun_327=operator_overload_fun2(type_325,fun_name_326,left_value_319,((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_321,0), "18field.c", 1277, 11)),((struct CVALUE*)come_null_check(list$1CVALUEphp_operator_load_element(array_num_321,1), "18field.c", 1277, 12)),info);
     }
     if(    !calling_fun_327) {
-        come_value_328=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 1282, "CVALUE"))));
-        buf_329=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 1284, "buffer"))));
+        come_value_328=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 1281, "CVALUE"))));
+        buf_329=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "18field.c", 1283, "buffer"))));
         buffer_append_str(buf_329,left_value_319->c_value);
         for(        o2_saved_330=(struct list$1CVALUEph*)come_increment_ref_count((array_num_321)),it_331=list$1CVALUEph_begin((o2_saved_330));        !list$1CVALUEph_end((o2_saved_330));        it_331=list$1CVALUEph_next((o2_saved_330))        ){
             buffer_append_format(buf_329,"[%s]",it_331->c_value);
@@ -8332,8 +8332,8 @@ struct sNode* _inf_value3;
 struct sStoreFieldNode* _inf_obj_value3;
 void* __right_value423 = (void*)0;
 struct sNode* __result186__;
-    _inf_value3=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1358, "struct sNode");
-    _inf_obj_value3=come_increment_ref_count(((struct sStoreFieldNode*)(__right_value417=sStoreFieldNode_initialize((struct sStoreFieldNode*)come_increment_ref_count((struct sStoreFieldNode*)come_calloc(1, sizeof(struct sStoreFieldNode)*(1), "18field.c", 1358, "sStoreFieldNode")),left,(struct sNode*)come_increment_ref_count(right),(char*)come_increment_ref_count(name),info))));
+    _inf_value3=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1357, "struct sNode");
+    _inf_obj_value3=(struct sStoreFieldNode*)come_increment_ref_count(((struct sStoreFieldNode*)(__right_value417=sStoreFieldNode_initialize((struct sStoreFieldNode*)come_increment_ref_count((struct sStoreFieldNode*)come_calloc(1, sizeof(struct sStoreFieldNode)*(1), "18field.c", 1357, "sStoreFieldNode")),left,(struct sNode*)come_increment_ref_count(right),(char*)come_increment_ref_count(name),info))));
     _inf_value3->_protocol_obj=_inf_obj_value3;
     _inf_value3->finalize=(void*)sStoreFieldNode_finalize;
     _inf_value3->clone=(void*)sStoreFieldNode_clone;
@@ -8527,7 +8527,7 @@ struct sNode* __result208__;
             }
             info->p++;
             skip_spaces_and_lf(info);
-            array_num_345=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodeph_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "18field.c", 1402, "list$1sNodeph"))));
+            array_num_345=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodeph_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "18field.c", 1401, "list$1sNodeph"))));
             skip_pointer_attribute(info);
             node2_346=(struct sNode*)come_increment_ref_count(expression_v13(info));
             list$1sNodeph_push_back(array_num_345,(struct sNode*)come_increment_ref_count(node2_346));
@@ -8540,8 +8540,8 @@ struct sNode* __result208__;
                 expected_next_character(93,info);
                 if(node3_350) { node3_350 = come_decrement_ref_count2(node3_350, ((struct sNode*)node3_350)->finalize, ((struct sNode*)node3_350)->_protocol_obj, 0, 0, 0, (void*)0); } 
             }
-            _inf_value4=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1423, "struct sNode");
-            _inf_obj_value4=come_increment_ref_count(((struct sLoadRangeArrayNode*)(__right_value433=sLoadRangeArrayNode_initialize((struct sLoadRangeArrayNode*)come_increment_ref_count((struct sLoadRangeArrayNode*)come_calloc(1, sizeof(struct sLoadRangeArrayNode)*(1), "18field.c", 1423, "sLoadRangeArrayNode")),node,(struct list$1sNodeph*)come_increment_ref_count(array_num_345),quote_344,info))));
+            _inf_value4=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1422, "struct sNode");
+            _inf_obj_value4=(struct sLoadRangeArrayNode*)come_increment_ref_count(((struct sLoadRangeArrayNode*)(__right_value433=sLoadRangeArrayNode_initialize((struct sLoadRangeArrayNode*)come_increment_ref_count((struct sLoadRangeArrayNode*)come_calloc(1, sizeof(struct sLoadRangeArrayNode)*(1), "18field.c", 1422, "sLoadRangeArrayNode")),node,(struct list$1sNodeph*)come_increment_ref_count(array_num_345),quote_344,info))));
             _inf_value4->_protocol_obj=_inf_obj_value4;
             _inf_value4->finalize=(void*)sLoadRangeArrayNode_finalize;
             _inf_value4->clone=(void*)sLoadRangeArrayNode_clone;
@@ -8563,7 +8563,7 @@ struct sNode* __result208__;
                 info->p++;
             }
             range_353=(_Bool)0;
-            array_num_354=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodeph_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "18field.c", 1432, "list$1sNodeph"))));
+            array_num_354=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodeph_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "18field.c", 1431, "list$1sNodeph"))));
             while(1) {
                 range_array2_355=(_Bool)0;
                 {
@@ -8625,8 +8625,8 @@ struct sNode* __result208__;
                 parse_sharp_v5(info);
                 right_node_364=(struct sNode*)come_increment_ref_count(expression_v13(info));
                 parse_sharp_v5(info);
-                _inf_value5=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1507, "struct sNode");
-                _inf_obj_value5=come_increment_ref_count(((struct sStoreArrayNode*)(__right_value445=sStoreArrayNode_initialize((struct sStoreArrayNode*)come_increment_ref_count((struct sStoreArrayNode*)come_calloc(1, sizeof(struct sStoreArrayNode)*(1), "18field.c", 1507, "sStoreArrayNode")),node,(struct sNode*)come_increment_ref_count(right_node_364),(struct list$1sNodeph*)come_increment_ref_count(array_num_354),quote_352,info))));
+                _inf_value5=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1506, "struct sNode");
+                _inf_obj_value5=(struct sStoreArrayNode*)come_increment_ref_count(((struct sStoreArrayNode*)(__right_value445=sStoreArrayNode_initialize((struct sStoreArrayNode*)come_increment_ref_count((struct sStoreArrayNode*)come_calloc(1, sizeof(struct sStoreArrayNode)*(1), "18field.c", 1506, "sStoreArrayNode")),node,(struct sNode*)come_increment_ref_count(right_node_364),(struct list$1sNodeph*)come_increment_ref_count(array_num_354),quote_352,info))));
                 _inf_value5->_protocol_obj=_inf_obj_value5;
                 _inf_value5->finalize=(void*)sStoreArrayNode_finalize;
                 _inf_value5->clone=(void*)sStoreArrayNode_clone;
@@ -8642,8 +8642,8 @@ struct sNode* __result208__;
                 if(right_node_364) { right_node_364 = come_decrement_ref_count2(right_node_364, ((struct sNode*)right_node_364)->finalize, ((struct sNode*)right_node_364)->_protocol_obj, 0, 0, 0, (void*)0); } 
             }
             else {
-                _inf_value6=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1510, "struct sNode");
-                _inf_obj_value6=come_increment_ref_count(((struct sLoadArrayNode*)(__right_value453=sLoadArrayNode_initialize((struct sLoadArrayNode*)come_increment_ref_count((struct sLoadArrayNode*)come_calloc(1, sizeof(struct sLoadArrayNode)*(1), "18field.c", 1510, "sLoadArrayNode")),node,(struct list$1sNodeph*)come_increment_ref_count(array_num_354),quote_352,break_guard_363,info))));
+                _inf_value6=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1509, "struct sNode");
+                _inf_obj_value6=(struct sLoadArrayNode*)come_increment_ref_count(((struct sLoadArrayNode*)(__right_value453=sLoadArrayNode_initialize((struct sLoadArrayNode*)come_increment_ref_count((struct sLoadArrayNode*)come_calloc(1, sizeof(struct sLoadArrayNode)*(1), "18field.c", 1509, "sLoadArrayNode")),node,(struct list$1sNodeph*)come_increment_ref_count(array_num_354),quote_352,break_guard_363,info))));
                 _inf_value6->_protocol_obj=_inf_obj_value6;
                 _inf_value6->finalize=(void*)sLoadArrayNode_finalize;
                 _inf_value6->clone=(void*)sLoadArrayNode_clone;
@@ -8670,8 +8670,8 @@ struct sNode* __result208__;
             end_369=(struct sNode*)come_increment_ref_count(expression_v13(info));
             expected_next_character(125,info);
             parse_sharp_v5(info);
-            _inf_value7=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1530, "struct sNode");
-            _inf_obj_value7=come_increment_ref_count(((struct sRangeCheckNode*)(__right_value462=sRangeCheckNode_initialize((struct sRangeCheckNode*)come_increment_ref_count((struct sRangeCheckNode*)come_calloc(1, sizeof(struct sRangeCheckNode)*(1), "18field.c", 1530, "sRangeCheckNode")),node,begin_368,end_369,info))));
+            _inf_value7=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1529, "struct sNode");
+            _inf_obj_value7=(struct sRangeCheckNode*)come_increment_ref_count(((struct sRangeCheckNode*)(__right_value462=sRangeCheckNode_initialize((struct sRangeCheckNode*)come_increment_ref_count((struct sRangeCheckNode*)come_calloc(1, sizeof(struct sRangeCheckNode)*(1), "18field.c", 1529, "sRangeCheckNode")),node,begin_368,end_369,info))));
             _inf_value7->_protocol_obj=_inf_obj_value7;
             _inf_value7->finalize=(void*)sRangeCheckNode_finalize;
             _inf_value7->clone=(void*)sRangeCheckNode_clone;
@@ -8691,8 +8691,8 @@ struct sNode* __result208__;
             info->p++;
             skip_spaces_and_lf(info);
             parse_sharp_v5(info);
-            _inf_value8=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1538, "struct sNode");
-            _inf_obj_value8=come_increment_ref_count(((struct sNullCheckNode*)(__right_value470=sNullCheckNode_initialize((struct sNullCheckNode*)come_increment_ref_count((struct sNullCheckNode*)come_calloc(1, sizeof(struct sNullCheckNode)*(1), "18field.c", 1538, "sNullCheckNode")),node,(_Bool)0,info))));
+            _inf_value8=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1537, "struct sNode");
+            _inf_obj_value8=(struct sNullCheckNode*)come_increment_ref_count(((struct sNullCheckNode*)(__right_value470=sNullCheckNode_initialize((struct sNullCheckNode*)come_increment_ref_count((struct sNullCheckNode*)come_calloc(1, sizeof(struct sNullCheckNode)*(1), "18field.c", 1537, "sNullCheckNode")),node,(_Bool)0,info))));
             _inf_value8->_protocol_obj=_inf_obj_value8;
             _inf_value8->finalize=(void*)sNullCheckNode_finalize;
             _inf_value8->clone=(void*)sNullCheckNode_clone;
@@ -8710,8 +8710,8 @@ struct sNode* __result208__;
             info->p+=2;
             skip_spaces_and_lf(info);
             parse_sharp_v5(info);
-            _inf_value9=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1546, "struct sNode");
-            _inf_obj_value9=come_increment_ref_count(((struct sNullableNode*)(__right_value476=sNullableNode_initialize((struct sNullableNode*)come_increment_ref_count((struct sNullableNode*)come_calloc(1, sizeof(struct sNullableNode)*(1), "18field.c", 1546, "sNullableNode")),node,info))));
+            _inf_value9=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1545, "struct sNode");
+            _inf_obj_value9=(struct sNullableNode*)come_increment_ref_count(((struct sNullableNode*)(__right_value476=sNullableNode_initialize((struct sNullableNode*)come_increment_ref_count((struct sNullableNode*)come_calloc(1, sizeof(struct sNullableNode)*(1), "18field.c", 1545, "sNullableNode")),node,info))));
             _inf_value9->_protocol_obj=_inf_obj_value9;
             _inf_value9->finalize=(void*)sNullableNode_finalize;
             _inf_value9->clone=(void*)sNullableNode_clone;
@@ -8768,8 +8768,8 @@ struct sNode* __result208__;
                 skip_spaces_and_lf(info);
                 parse_sharp_v5(info);
                 right_node_378=(struct sNode*)come_increment_ref_count(expression_v13(info));
-                _inf_value10=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1602, "struct sNode");
-                _inf_obj_value10=come_increment_ref_count(((struct sStoreFieldNode*)(__right_value487=sStoreFieldNode_initialize((struct sStoreFieldNode*)come_increment_ref_count((struct sStoreFieldNode*)come_calloc(1, sizeof(struct sStoreFieldNode)*(1), "18field.c", 1602, "sStoreFieldNode")),node,(struct sNode*)come_increment_ref_count(right_node_378),(char*)come_increment_ref_count(field_name_373),info))));
+                _inf_value10=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1601, "struct sNode");
+                _inf_obj_value10=(struct sStoreFieldNode*)come_increment_ref_count(((struct sStoreFieldNode*)(__right_value487=sStoreFieldNode_initialize((struct sStoreFieldNode*)come_increment_ref_count((struct sStoreFieldNode*)come_calloc(1, sizeof(struct sStoreFieldNode)*(1), "18field.c", 1601, "sStoreFieldNode")),node,(struct sNode*)come_increment_ref_count(right_node_378),(char*)come_increment_ref_count(field_name_373),info))));
                 _inf_value10->_protocol_obj=_inf_obj_value10;
                 _inf_value10->finalize=(void*)sStoreFieldNode_finalize;
                 _inf_value10->clone=(void*)sStoreFieldNode_clone;
@@ -8821,8 +8821,8 @@ struct sNode* __result208__;
                     /* U1 */ if(__dec_obj325) { __dec_obj325 = come_decrement_ref_count2(__dec_obj325, ((struct sNode*)__dec_obj325)->finalize, ((struct sNode*)__dec_obj325)->_protocol_obj, 0,0,0, (void*)0); };
                 }
                 else {
-                    _inf_value11=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1628, "struct sNode");
-                    _inf_obj_value11=come_increment_ref_count(((struct sNullCheckNode*)(__right_value510=sNullCheckNode_initialize((struct sNullCheckNode*)come_increment_ref_count((struct sNullCheckNode*)come_calloc(1, sizeof(struct sNullCheckNode)*(1), "18field.c", 1628, "sNullCheckNode")),((struct sNode*)(__right_value509=sNode_clone(node))),(_Bool)1,info))));
+                    _inf_value11=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1627, "struct sNode");
+                    _inf_obj_value11=(struct sNullCheckNode*)come_increment_ref_count(((struct sNullCheckNode*)(__right_value510=sNullCheckNode_initialize((struct sNullCheckNode*)come_increment_ref_count((struct sNullCheckNode*)come_calloc(1, sizeof(struct sNullCheckNode)*(1), "18field.c", 1627, "sNullCheckNode")),((struct sNode*)(__right_value509=sNode_clone(node))),(_Bool)1,info))));
                     _inf_value11->_protocol_obj=_inf_obj_value11;
                     _inf_value11->finalize=(void*)sNullCheckNode_finalize;
                     _inf_value11->clone=(void*)sNullCheckNode_clone;
@@ -8842,8 +8842,8 @@ struct sNode* __result208__;
                 }
             }
             else {
-                _inf_value12=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1633, "struct sNode");
-                _inf_obj_value12=come_increment_ref_count(((struct sNullCheckNode*)(__right_value519=sNullCheckNode_initialize((struct sNullCheckNode*)come_increment_ref_count((struct sNullCheckNode*)come_calloc(1, sizeof(struct sNullCheckNode)*(1), "18field.c", 1633, "sNullCheckNode")),((struct sNode*)(__right_value518=sNode_clone(node))),(_Bool)1,info))));
+                _inf_value12=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1632, "struct sNode");
+                _inf_obj_value12=(struct sNullCheckNode*)come_increment_ref_count(((struct sNullCheckNode*)(__right_value519=sNullCheckNode_initialize((struct sNullCheckNode*)come_increment_ref_count((struct sNullCheckNode*)come_calloc(1, sizeof(struct sNullCheckNode)*(1), "18field.c", 1632, "sNullCheckNode")),((struct sNode*)(__right_value518=sNode_clone(node))),(_Bool)1,info))));
                 _inf_value12->_protocol_obj=_inf_obj_value12;
                 _inf_value12->finalize=(void*)sNullCheckNode_finalize;
                 _inf_value12->clone=(void*)sNullCheckNode_clone;
@@ -8857,8 +8857,8 @@ struct sNode* __result208__;
                 /* U1 */ if(__dec_obj336) { __dec_obj336 = come_decrement_ref_count2(__dec_obj336, ((struct sNode*)__dec_obj336)->finalize, ((struct sNode*)__dec_obj336)->_protocol_obj, 0,0,0, (void*)0); };
                 if(__right_value518) { __right_value518 = come_decrement_ref_count2(__right_value518, ((struct sNode*)__right_value518)->finalize, ((struct sNode*)__right_value518)->_protocol_obj, 1, 0, 0, __result_obj__); } 
                 /*g*/come_call_finalizer3(__right_value519,sNullCheckNode_finalize, 0, 1, 0, 0, __result_obj__);
-                _inf_value13=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1634, "struct sNode");
-                _inf_obj_value13=come_increment_ref_count(((struct sLoadFieldNode*)(__right_value525=sLoadFieldNode_initialize((struct sLoadFieldNode*)come_increment_ref_count((struct sLoadFieldNode*)come_calloc(1, sizeof(struct sLoadFieldNode)*(1), "18field.c", 1634, "sLoadFieldNode")),node,(char*)come_increment_ref_count(field_name_373),info))));
+                _inf_value13=(struct sNode*)come_calloc(1, sizeof(struct sNode), "18field.c", 1633, "struct sNode");
+                _inf_obj_value13=(struct sLoadFieldNode*)come_increment_ref_count(((struct sLoadFieldNode*)(__right_value525=sLoadFieldNode_initialize((struct sLoadFieldNode*)come_increment_ref_count((struct sLoadFieldNode*)come_calloc(1, sizeof(struct sLoadFieldNode)*(1), "18field.c", 1633, "sLoadFieldNode")),node,(char*)come_increment_ref_count(field_name_373),info))));
                 _inf_value13->_protocol_obj=_inf_obj_value13;
                 _inf_value13->finalize=(void*)sLoadFieldNode_finalize;
                 _inf_value13->clone=(void*)sLoadFieldNode_clone;

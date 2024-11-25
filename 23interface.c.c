@@ -6352,12 +6352,12 @@ klass_201 = (void*)0;
         list$1tuple2$2charphsTypephph_push_back(klass_201->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "23interface.c", 101, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(__builtin_string("_protocol_obj")),(struct sType*)come_increment_ref_count(voidp_202))));
         finalizer_206=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "23interface.c", 103, "sType")),"lambda",(_Bool)0,info));
         __dec_obj128=finalizer_206->mParamTypes;
-        finalizer_206->mParamTypes=(struct list$1sTypeph*)come_increment_ref_count((__list_values1___207[0]=come_increment_ref_count(((struct sType*)(__right_value235=sType_clone(voidp_202)))),
+        finalizer_206->mParamTypes=(struct list$1sTypeph*)come_increment_ref_count((__list_values1___207[0]=(struct sType*)come_increment_ref_count(((struct sType*)(__right_value235=sType_clone(voidp_202)))),
 list$1sTypeph_initialize_with_values((struct list$1sTypeph*)come_increment_ref_count((struct list$1sTypeph*)come_calloc(1, sizeof(struct list$1sTypeph)*(1), "23interface.c", 105, "struct list$1sTypeph")),1,__list_values1___207)));
         come_call_finalizer3(__dec_obj128,list$1sTypeph_finalize, 0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value235,sType_finalize, 0, 1, 0, 0, __result_obj__);
         __dec_obj129=finalizer_206->mParamNames;
-        finalizer_206->mParamNames=(struct list$1charph*)come_increment_ref_count((__list_values2___209[0]=come_increment_ref_count(((char*)(__right_value238=__builtin_string("self")))),
+        finalizer_206->mParamNames=(struct list$1charph*)come_increment_ref_count((__list_values2___209[0]=(char*)come_increment_ref_count(((char*)(__right_value238=__builtin_string("self")))),
 list$1charph_initialize_with_values((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "23interface.c", 106, "struct list$1charph")),1,__list_values2___209)));
         come_call_finalizer3(__dec_obj129,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
         /* U11 */__right_value238 = come_decrement_ref_count2(__right_value238, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
@@ -6368,12 +6368,12 @@ list$1charph_initialize_with_values((struct list$1charph*)come_increment_ref_cou
         list$1tuple2$2charphsTypephph_push_back(klass_201->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "23interface.c", 110, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(__builtin_string("finalize")),(struct sType*)come_increment_ref_count(finalizer_206))));
         cloner_211=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "23interface.c", 112, "sType")),"lambda",(_Bool)0,info));
         __dec_obj131=cloner_211->mParamTypes;
-        cloner_211->mParamTypes=(struct list$1sTypeph*)come_increment_ref_count((__list_values3___212[0]=come_increment_ref_count(((struct sType*)(__right_value250=sType_clone(voidp_202)))),
+        cloner_211->mParamTypes=(struct list$1sTypeph*)come_increment_ref_count((__list_values3___212[0]=(struct sType*)come_increment_ref_count(((struct sType*)(__right_value250=sType_clone(voidp_202)))),
 list$1sTypeph_initialize_with_values((struct list$1sTypeph*)come_increment_ref_count((struct list$1sTypeph*)come_calloc(1, sizeof(struct list$1sTypeph)*(1), "23interface.c", 114, "struct list$1sTypeph")),1,__list_values3___212)));
         come_call_finalizer3(__dec_obj131,list$1sTypeph_finalize, 0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value250,sType_finalize, 0, 1, 0, 0, __result_obj__);
         __dec_obj132=cloner_211->mParamNames;
-        cloner_211->mParamNames=(struct list$1charph*)come_increment_ref_count((__list_values4___213[0]=come_increment_ref_count(((char*)(__right_value253=__builtin_string("self")))),
+        cloner_211->mParamNames=(struct list$1charph*)come_increment_ref_count((__list_values4___213[0]=(char*)come_increment_ref_count(((char*)(__right_value253=__builtin_string("self")))),
 list$1charph_initialize_with_values((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "23interface.c", 115, "struct list$1charph")),1,__list_values4___213)));
         come_call_finalizer3(__dec_obj132,list$1charph_finalize, 0, 0, 0, 0, (void*)0);
         /* U11 */__right_value253 = come_decrement_ref_count2(__right_value253, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
@@ -6409,7 +6409,7 @@ list$1charph_initialize_with_values((struct list$1charph*)come_increment_ref_cou
         add_come_code_at_come_header(info,"%s\n",((char*)(__right_value267=buffer_to_string(header_217))));
         /* U11 */__right_value267 = come_decrement_ref_count2(__right_value267, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "23interface.c", 146, "struct sNode");
-        _inf_obj_value1=come_increment_ref_count(((struct sInterfaceNode*)(__right_value270=sInterfaceNode_initialize((struct sInterfaceNode*)come_increment_ref_count((struct sInterfaceNode*)come_calloc(1, sizeof(struct sInterfaceNode)*(1), "23interface.c", 146, "sInterfaceNode")),(char*)come_increment_ref_count(__builtin_string(type_name_200)),(struct sClass*)come_increment_ref_count(klass_201),output_199,info))));
+        _inf_obj_value1=(struct sInterfaceNode*)come_increment_ref_count(((struct sInterfaceNode*)(__right_value270=sInterfaceNode_initialize((struct sInterfaceNode*)come_increment_ref_count((struct sInterfaceNode*)come_calloc(1, sizeof(struct sInterfaceNode)*(1), "23interface.c", 146, "sInterfaceNode")),(char*)come_increment_ref_count(__builtin_string(type_name_200)),(struct sClass*)come_increment_ref_count(klass_201),output_199,info))));
         _inf_value1->_protocol_obj=_inf_obj_value1;
         _inf_value1->finalize=(void*)sInterfaceNode_finalize;
         _inf_value1->clone=(void*)sInterfaceNode_clone;

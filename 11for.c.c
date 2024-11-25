@@ -5386,7 +5386,7 @@ expression_node3_158 = (void*)0;
         parse_sharp_v5(info);
         block_159=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
         _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "11for.c", 239, "struct sNode");
-        _inf_obj_value1=come_increment_ref_count(((struct sForNode*)(__right_value159=sForNode_initialize((struct sForNode*)come_increment_ref_count((struct sForNode*)come_calloc(1, sizeof(struct sForNode)*(1), "11for.c", 239, "sForNode")),(struct sNode*)come_increment_ref_count(expression_node_156),(struct sNode*)come_increment_ref_count(expression_node2_157),(struct sNode*)come_increment_ref_count(expression_node3_158),block_159,info))));
+        _inf_obj_value1=(struct sForNode*)come_increment_ref_count(((struct sForNode*)(__right_value159=sForNode_initialize((struct sForNode*)come_increment_ref_count((struct sForNode*)come_calloc(1, sizeof(struct sForNode)*(1), "11for.c", 239, "sForNode")),(struct sNode*)come_increment_ref_count(expression_node_156),(struct sNode*)come_increment_ref_count(expression_node2_157),(struct sNode*)come_increment_ref_count(expression_node3_158),block_159,info))));
         _inf_value1->_protocol_obj=_inf_obj_value1;
         _inf_value1->finalize=(void*)sForNode_finalize;
         _inf_value1->clone=(void*)sForNode_clone;

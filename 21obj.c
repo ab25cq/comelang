@@ -213,7 +213,9 @@ class sImplementsNode extends sNodeBase
         add_come_code_at_function_head(info, buf2);
         
         add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num, type_name, type_name, info.sname, info.sline, type_name);
-        add_come_code(info, "_inf_obj_value%d=come_increment_ref_count(%s);\n", inf_num, come_value.c_value);
+        
+        string c_value = increment_ref_count_object(come_value.type, come_value.c_value, info);
+        add_come_code(info, "_inf_obj_value%d=%s;\n", inf_num, c_value);
         add_come_code(info, "_inf_value%d->_protocol_obj=_inf_obj_value%d;\n", inf_num, inf_num);
         
         sType*% typeX = clone type;

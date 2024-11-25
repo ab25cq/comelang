@@ -5457,7 +5457,7 @@ klass_154 = (void*)0;
         /* U13 */element_name_213 = come_decrement_ref_count2(element_name_213, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "16enum.c", 198, "struct sNode");
-    _inf_obj_value1=come_increment_ref_count(((struct sEnumNode*)(__right_value225=sEnumNode_initialize((struct sEnumNode*)come_increment_ref_count((struct sEnumNode*)come_calloc(1, sizeof(struct sEnumNode)*(1), "16enum.c", 198, "sEnumNode")),(char*)come_increment_ref_count(type_name),elements_212,(struct sType*)come_increment_ref_count(type_elements_208),info))));
+    _inf_obj_value1=(struct sEnumNode*)come_increment_ref_count(((struct sEnumNode*)(__right_value225=sEnumNode_initialize((struct sEnumNode*)come_increment_ref_count((struct sEnumNode*)come_calloc(1, sizeof(struct sEnumNode)*(1), "16enum.c", 198, "sEnumNode")),(char*)come_increment_ref_count(type_name),elements_212,(struct sType*)come_increment_ref_count(type_elements_208),info))));
     _inf_value1->_protocol_obj=_inf_obj_value1;
     _inf_value1->finalize=(void*)sEnumNode_finalize;
     _inf_value1->clone=(void*)sEnumNode_clone;
@@ -6862,7 +6862,7 @@ struct sNode* __result165__;
         add_come_code_at_come_header(info,"%s;\n",((char*)(__right_value249=buffer_to_string(header_234))));
         /* U11 */__right_value249 = come_decrement_ref_count2(__right_value249, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         _inf_value2=(struct sNode*)come_calloc(1, sizeof(struct sNode), "16enum.c", 294, "struct sNode");
-        _inf_obj_value2=come_increment_ref_count(((struct sEnumNode*)(__right_value251=sEnumNode_initialize((struct sEnumNode*)come_increment_ref_count((struct sEnumNode*)come_calloc(1, sizeof(struct sEnumNode)*(1), "16enum.c", 294, "sEnumNode")),(char*)come_increment_ref_count(type_name_221),elements_229,(struct sType*)come_increment_ref_count(type_elements_222),info))));
+        _inf_obj_value2=(struct sEnumNode*)come_increment_ref_count(((struct sEnumNode*)(__right_value251=sEnumNode_initialize((struct sEnumNode*)come_increment_ref_count((struct sEnumNode*)come_calloc(1, sizeof(struct sEnumNode)*(1), "16enum.c", 294, "sEnumNode")),(char*)come_increment_ref_count(type_name_221),elements_229,(struct sType*)come_increment_ref_count(type_elements_222),info))));
         _inf_value2->_protocol_obj=_inf_obj_value2;
         _inf_value2->finalize=(void*)sEnumNode_finalize;
         _inf_value2->clone=(void*)sEnumNode_clone;
