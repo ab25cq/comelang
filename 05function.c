@@ -267,6 +267,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
                 int i = 0;
                 foreach(it, module->mParams) {
                     info->module_params[string(it)] = string(params[i]);
+                    i++;
                 }
                 
                 info.p = module.mText;

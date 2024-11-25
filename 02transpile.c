@@ -622,7 +622,7 @@ static void init_classes(sInfo* info)
     }
 }
 
-module MEvalOptions<T>
+module MEvalOptions<T, T2>
 {
     var clang_option = new buffer();
     var linker_option = new buffer();
@@ -634,7 +634,7 @@ module MEvalOptions<T>
     bool output_cpp_file = false;
     bool output_source_file_flag = false;
     bool output_object_file_flag = true;
-    string output_file_name = null;
+    string output_file_name = T2;
     bool verbose = false;
     bool come_debug = false;
     bool come_malloc = false;
@@ -744,9 +744,9 @@ int come_main(int argc, char** argv) version 2
         gProgramName = argv[0];
         
         int start_num = 2;
-        include MEvalOptions<start_num>;
+        string output_file_name_str = s"common.h";
         
-        output_file_name = s"common.h";
+        include MEvalOptions<start_num, output_file_name_str>;
         
         int r = system(xsprintf("%s %s", RM, output_file_name)) 
         if(r < 0) die("rm");
@@ -870,7 +870,8 @@ int come_main(int argc, char** argv) version 2
         gProgramName = argv[0];
         
         int start_num = 1;
-        include MEvalOptions<start_num>;
+        string output_file_name_str = null;
+        include MEvalOptions<start_num, output_file_name_str>;
         
         foreach(it, files) {
             sInfo info;

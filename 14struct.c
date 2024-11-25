@@ -1042,6 +1042,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 int i = 0;
                 foreach(it, module->mParams) {
                     info->module_params[string(it)] = string(params[i]);
+                    i++;
                 }
                 
                 info.p = module.mText;
