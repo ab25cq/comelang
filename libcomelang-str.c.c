@@ -2267,6 +2267,8 @@ char* xrealpath(char* path);
 char* xdirname(char* path);
 unsigned long  int xwcslen(int* wstr);
 // uniq global variable
+// source head3
+
 // inline function
 static inline _Bool die(char* msg){
     perror(msg);

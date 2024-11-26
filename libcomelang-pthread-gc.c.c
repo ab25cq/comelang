@@ -15,6 +15,8 @@ void come_heap_init(int come_malloc, int come_debug, int come_gc);
 void come_heap_final();
 void* come_null_check(void* mem, char* sname, int sline, int id);
 // uniq global variable
+// source head3
+
 // inline function
 
 // body function

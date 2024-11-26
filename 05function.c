@@ -478,7 +478,6 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             
             info.module.mLastCode = null;
             info.module.mLastCode2 = null;
-            info.module.mLastCode3 = null;
             
             int stack_num_before = info->stack.length();
             
@@ -1693,8 +1692,6 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     
     string sname_top = string(info->sname);
     int sline_top = info->sline;
@@ -1784,7 +1781,6 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     
     info->caller_fun = caller_fun;
     info->caller_line = caller_line;
@@ -1809,8 +1805,6 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     
     string sname_top = string(info->sname);
     int sline_top = info->sline;
@@ -1890,7 +1884,6 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     
     info->caller_fun = caller_fun;
     info->caller_line = caller_line;
@@ -2287,11 +2280,8 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
-    
-    info.module.mLastCode3 = null;
     
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
@@ -2437,7 +2427,6 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (finalizer, real_fun_name);
@@ -2449,11 +2438,8 @@ sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, s
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
-    
-    info.module.mLastCode3 = null;
     
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
@@ -2577,7 +2563,6 @@ sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, s
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (finalizer, real_fun_name);
@@ -2589,8 +2574,6 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
     
@@ -2722,7 +2705,6 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (equaler, real_fun_name);
@@ -2734,8 +2716,6 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
     
@@ -2887,7 +2867,6 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (equaler, real_fun_name);
@@ -2899,8 +2878,6 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
     
@@ -3049,7 +3026,6 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (equaler, real_fun_name);
@@ -3061,8 +3037,6 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
     
@@ -3196,7 +3170,6 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (equaler, real_fun_name);
@@ -3208,8 +3181,6 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
     
@@ -3385,7 +3356,6 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (cloner, real_fun_name);
@@ -3397,8 +3367,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
     info.module.mLastCode2 = null;
-    string last_code3 = info.module.mLastCode3;
-    info.module.mLastCode3 = null;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
     
@@ -3552,7 +3520,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
-    info.module.mLastCode3 = last_code3;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     return (cloner, real_fun_name);

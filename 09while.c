@@ -46,7 +46,7 @@ class sWhileNode extends sNodeBase
         
         bool normal_if = true;
 /*
-        if(info.module.mLastCode || info.module.mLastCode2 || info.module.mLastCode3) {
+        if(info.module.mLastCode || info.module.mLastCode2) {
             normal_if = false;
         }
 */

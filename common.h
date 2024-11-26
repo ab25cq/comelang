@@ -77,10 +77,8 @@ struct sType
 {
     sClass* mClass;
     
-    
     tuple1<sType*%>*% mNoSolvedGenericsType;
     tuple1<sType*%>*% mOriginalLoadVarType;
-    tuple1<sType*%>*% mNoExceptionType;
     
     string mGenericsName;
 
@@ -112,13 +110,8 @@ struct sType
     bool mImmutable;
     bool mHeap;
     bool mChannel;
-    bool mDummyHeap;
-    bool mDelegate;
-    bool mShare;
-    bool mClone;
     bool mNoHeap;
     bool mNoCallingDestructor;
-    bool mRefference;
     bool mException;
     
     int mPointerNum;
@@ -139,7 +132,6 @@ struct sType
     bool mAllocaValue;
     bool mGenericsStruct;
     bool mSolvedGenericsName;
-    bool mComeMemCore;
     
     bool mInline;
     bool mNullValue;
@@ -252,7 +244,6 @@ struct sModule
     buffer*% mSource;
     string mLastCode;
     string mLastCode2;
-    string mLastCode3;
     
     buffer*% mHeader;
 };
@@ -589,7 +580,6 @@ void add_come_code_at_function_head2(sInfo* info, char* code, ...);
 void add_come_code(sInfo* info, const char* msg, ...);
 void add_come_last_code(sInfo* info, const char* msg, ...);
 void add_come_last_code2(sInfo* info, const char* msg, ...);
-void add_come_last_code3(sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(sInfo* info);
 void dec_stack_ptr(int value, sInfo* info);
 CVALUE*% get_value_from_stack(int offset, sInfo* info);

@@ -238,7 +238,7 @@ class sStoreFieldNode extends sNodeBase
             {
             }
             else {
-                if(!right_value.type->mDelegate && !right_value.type->mShare && !gComeGC) {
+                if(!gComeGC) {
                     err_msg(info, "require right value as heap object(%s)(1)", name);
                     printf("right type is %s pointer num %d heap %d\n", right_value.type->mClass->mName, right_value.type->mPointerNum, right_value.type->mHeap);
                     return false;

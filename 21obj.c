@@ -887,8 +887,6 @@ class sCloneNode extends sNodeBase
         CVALUE*% left_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        left_value.type->mClone = true;
-        
         sType*% left_type = clone left_value.type;
         
         if(left_type->mPointerNum == 1 && left_type->mClass->mName === "void" && left_type->mHeap == false) { // null
@@ -904,7 +902,6 @@ class sCloneNode extends sNodeBase
             come_value.c_value = c_value;
             come_value.type = clone left_type;
             come_value.type->mHeap = true;
-            come_value.type->mClone = true;
             come_value.var = null;
             
             append_object_to_right_values2(come_value, left_type,info);

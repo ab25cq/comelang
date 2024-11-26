@@ -732,6 +732,10 @@ module MEvalOptions<T, T2>
             files.push_back(string(argv[i]));
         }
     }
+#ifdef __MAC__ // for lldb
+    output_source_file_flag = true;
+    gComeOriginalSourcePosition = false;
+#endif
         
     gComeDebug = come_debug;
     gComeMalloc = come_malloc;

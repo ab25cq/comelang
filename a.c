@@ -12,5 +12,9 @@ int main(int argc, char** argv)
     fun();
     printf("gVar %d\n", gVar);
     
+    char* p = (void*)0;
+    
+    *p = 1;
+    
     return 0;
 }

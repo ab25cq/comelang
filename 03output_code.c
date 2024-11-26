@@ -989,10 +989,6 @@ void add_last_code_to_source(sInfo* info)
            add_come_code(info, "%s;\n", info.module.mLastCode2);
            info.module.mLastCode2 = null;
         }
-        if(info.module.mLastCode3) {
-           add_come_code(info, "%s;\n", info.module.mLastCode3);
-           info.module.mLastCode3 = null;
-        }
     }
 }
 
@@ -1008,10 +1004,6 @@ void add_last_code_to_source_with_comma(sInfo* info)
     if(info.module.mLastCode2) {
        add_come_code(info, "%s ,", info.module.mLastCode2);
        info.module.mLastCode2 = null;
-    }
-    if(info.module.mLastCode3) {
-       add_come_code(info, "%s ,", info.module.mLastCode3);
-       info.module.mLastCode3 = null;
     }
 }
 
@@ -1049,23 +1041,6 @@ void add_come_last_code2(sInfo* info, const char* msg, ...)
     free(msg2);
 }
 
-void add_come_last_code3(sInfo* info, const char* msg, ...)
-{
-    if(info->no_output_come_code) {
-        return;
-    }
-    char* msg2;
-
-    va_list args;
-    va_start(args, msg);
-    int len = vasprintf(&msg2, msg, args);
-    va_end(args);
-    
-    info.module.mLastCode3 = string(msg2);
-    
-    free(msg2);
-}
-
 void dec_stack_ptr(int value, sInfo* info)
 {
     info.stack.delete(-value, -1);
@@ -1075,7 +1050,6 @@ CVALUE*% get_value_from_stack(int offset, sInfo* info)
 {
     info.module.mLastCode = null;
 //    info.module.mLastCode2 = null;
-//    info.module.mLastCode3 = null;
     CVALUE*% result = clone info.stack[offset]??;
     
     if(result == null) {
@@ -1090,5 +1064,4 @@ void transpiler_clear_last_code(sInfo* info)
 {
     info.module.mLastCode = null;
     info.module.mLastCode2 = null;
-    info.module.mLastCode3 = null;
 }

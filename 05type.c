@@ -2196,7 +2196,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         result_type->mConstant = result_type->mConstant || constant;
         result_type->mAlignas = alignas_;
-        result_type->mComeMemCore = result_type->mComeMemCore || come_mem_core_;
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
@@ -2267,7 +2266,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         result_type->mConstant = result_type->mConstant || constant;
         result_type->mAlignas = alignas_;
-        result_type->mComeMemCore = result_type->mComeMemCore || come_mem_core_;
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
@@ -2395,7 +2393,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mAlignas = alignas_;
-            type->mComeMemCore = type->mComeMemCore || come_mem_core_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
@@ -2422,7 +2419,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mAlignas = alignas_;
-            type->mComeMemCore = type->mComeMemCore || come_mem_core_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
@@ -2449,7 +2445,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mAlignas = alignas_;
-            type->mComeMemCore = type->mComeMemCore || come_mem_core_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
@@ -2517,7 +2512,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mAlignas = alignas_;
-            type->mComeMemCore = type->mComeMemCore || come_mem_core_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
@@ -2555,7 +2549,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mAlignas = alignas_;
-            type->mComeMemCore = type->mComeMemCore || come_mem_core_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
@@ -2808,7 +2801,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         sType*% type4 = solve_generics(type2,  type3, info);
         
         type4->mException = true;
-        type4->mNoExceptionType.v1 = clone type;
         
         return (type4, var_name, true);
     }

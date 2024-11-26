@@ -202,7 +202,6 @@ class sParenBlockNode extends sNodeBase
                 if(buf) {
                     buf.append_str(info.module.mLastCode + "; ");
                     buf.append_str(info.module.mLastCode2 + "; ");
-                    buf.append_str(info.module.mLastCode3 + "; ");
                     
                     transpiler_clear_last_code(info);
                 }
