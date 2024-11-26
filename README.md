@@ -3665,6 +3665,39 @@ int main(int argc, char** argv)
 }
 ```
 
+Example for fopen
+
+```C
+fopen("AAA", "r").if { 
+    fprintf(Value, "UHO!");
+    fclose(Value);
+}
+else {
+     die("fopen"); 
+}
+```
+
+```C
+fopen("AAA", "r").case {
+    (Value) {
+        fprintf(Value, "UHO!");
+        fclose(Value);
+    }
+    (Value == NULL) {
+        die("fopen");
+    }
+}
+```
+
+```C
+FILE* f = fopen("AAA", "r").elif {
+     die("fopen");
+     null
+}
+fprintf(f, "UHO!");
+fclose(f);
+```
+
 # Object initializer
 
 ```C
