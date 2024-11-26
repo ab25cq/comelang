@@ -300,6 +300,28 @@ void ViWin*::gotoFunctionTop(ViWin* self, Vi* nvi)
     }
 }
 
+void ViWin*::gotoMethodTop(ViWin* self, Vi* nvi) 
+{
+    int it2 = 0;
+    foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
+        if((it.to_string().match(/^ +{/))
+            || (it.to_string().match(/^ +[a-zA-Z].*{$/))
+            || (it.to_string().match(/^{/))
+            || (it.to_string().match(/^[a-zA-Z].*{$/)))
+        {
+            self.saveReturnPoint();
+
+            self.cursorX = 0;
+            self.cursorY = self.cursorY - it2 -1;
+            self.modifyUnderCursorYValue();
+            self.modifyOverCursorYValue();
+            break;
+        }
+
+        it2++;
+    }
+}
+
 void ViWin*::gotoFunctionBottom(ViWin* self, Vi* nvi)  
 {
     int cursor_y = self.scroll+self.cursorY + 1;
@@ -337,6 +359,13 @@ Vi*% Vi*::initialize(Vi*% self) version 11
             case '[':
                 self.activeWin.gotoFunctionTop(self);
                 self.activeWin.centeringCursor();
+                self.activeWin.saveInputedKeyOnTheMovingCursor();
+                break;
+                
+            case 'm':
+            case 'M':
+                self.activeWin.gotoMethodTop(self);
+                //self.activeWin.centeringCursor();
                 self.activeWin.saveInputedKeyOnTheMovingCursor();
                 break;
         }

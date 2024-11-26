@@ -15,7 +15,7 @@ void ViWin*::statusBarView(ViWin* self, Vi* nvi) version 6
     int maxx = getmaxx(self.win);
 
     wattron(self.win, A_REVERSE);
-    mvwprintw(self.win, self.height-1, 0, "x %d y %d scroll %d file %s writed %d", self.cursorX, self.cursorY, self.scroll, self.fileName, (self.writed ? 1:0));
+    mvwprintw(self.win, self.height-1, 0, "x %d line %d (y %d scroll %d) file %s writed %d", self.cursorX, self.cursorY + self.scroll + 1, self.cursorY, self.scroll, self.fileName, (self.writed ? 1:0));
     wattroff(self.win, A_REVERSE);
 
     wrefresh(self.win);
