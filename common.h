@@ -249,8 +249,6 @@ struct sGenericsFun
 struct sModule
 {
     buffer*% mSourceHead;
-    buffer*% mSourceHead2;
-    buffer*% mSourceHead3;
     buffer*% mSource;
     string mLastCode;
     string mLastCode2;
@@ -588,9 +586,6 @@ void add_last_code_to_source(sInfo* info);
 void add_come_code_at_function_head(sInfo* info, char* code, ...);
 void add_come_code_at_come_header(sInfo* info, const char* msg, ...);
 void add_come_code_at_function_head2(sInfo* info, char* code, ...);
-void add_come_code_at_source_head(sInfo* info, const char* msg, ...);
-void add_come_code_at_source_head3(sInfo* info, const char* msg, ...);
-void add_come_code_at_source_head2(sInfo* info, const char* msg, ...);
 void add_come_code(sInfo* info, const char* msg, ...);
 void add_come_last_code(sInfo* info, const char* msg, ...);
 void add_come_last_code2(sInfo* info, const char* msg, ...);

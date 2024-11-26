@@ -487,8 +487,8 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             
             info->last_statment_is_return = false;
             
-            info.sline = node.sline->();
-            info.sname = node.sname->();
+            info.sline = node.sline();
+            info.sname = node.sname();
             
             if(i == block->mNodes.length()-1 && if_result && block->mOmitSemicolon) {
                 node_compile(node).elif {

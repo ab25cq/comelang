@@ -485,8 +485,6 @@ string output_function(sFun* fun, sInfo* info)
         
         output.append_str(str);
         
-//        output.append_str(")");
-        
         info.module.mSourceHead.append_str(output.to_string());
         info.module.mSourceHead.append_str(";\n");
     }
@@ -744,57 +742,6 @@ void add_come_code(sInfo* info, const char* msg, ...)
     free(msg2);
 }
 
-void add_come_code_at_source_head(sInfo* info, const char* msg, ...)
-{
-    if(info->no_output_come_code) {
-        return;
-    }
-    char* msg2;
-
-    va_list args;
-    va_start(args, msg);
-    int len = vasprintf(&msg2, msg, args);
-    va_end(args);
-    
-    info.module.mSourceHead.append_str(xsprintf("%s", msg2));
-    
-    free(msg2);
-}
-    
-void add_come_code_at_source_head2(sInfo* info, const char* msg, ...)
-{
-    if(info->no_output_come_code) {
-        return;
-    }
-    char* msg2;
-
-    va_list args;
-    va_start(args, msg);
-    int len = vasprintf(&msg2, msg, args);
-    va_end(args);
-    
-    info.module.mSourceHead2.append_str(xsprintf("%s", msg2));
-    
-    free(msg2);
-}
-    
-void add_come_code_at_source_head3(sInfo* info, const char* msg, ...)
-{
-    if(info->no_output_come_code) {
-        return;
-    }
-    char* msg2;
-
-    va_list args;
-    va_start(args, msg);
-    int len = vasprintf(&msg2, msg, args);
-    va_end(args);
-    
-    info.module.mSourceHead3.append_str(xsprintf("%s", msg2));
-    
-    free(msg2);
-}
-
 void add_come_code_at_come_header(sInfo* info, const char* msg, ...)
 {
     if(info->no_output_come_code) {
@@ -899,8 +846,6 @@ bool output_source_file(sInfo* info) version 3
             fprintf(f, "%s\n", str);
         }
     }
-    fprintf(f, "// source head3\n");
-    fprintf(f, "%s\n", info.module.mSourceHead3.to_string());
     
     fprintf(f, "// inline function\n");
     foreach(it, info.funcs) {

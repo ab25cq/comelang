@@ -1388,8 +1388,6 @@ struct sGenericsFun
 struct sModule
 {
     struct buffer* mSourceHead;
-    struct buffer* mSourceHead2;
-    struct buffer* mSourceHead3;
     struct buffer* mSource;
     char* mLastCode;
     char* mLastCode2;
@@ -2336,9 +2334,6 @@ void add_last_code_to_source(struct sInfo* info);
 void add_come_code_at_function_head(struct sInfo* info, char* code, ...);
 void add_come_code_at_come_header(struct sInfo* info, const char* msg, ...);
 void add_come_code_at_function_head2(struct sInfo* info, char* code, ...);
-void add_come_code_at_source_head(struct sInfo* info, const char* msg, ...);
-void add_come_code_at_source_head3(struct sInfo* info, const char* msg, ...);
-void add_come_code_at_source_head2(struct sInfo* info, const char* msg, ...);
 void add_come_code(struct sInfo* info, const char* msg, ...);
 void add_come_last_code(struct sInfo* info, const char* msg, ...);
 void add_come_last_code2(struct sInfo* info, const char* msg, ...);
@@ -2591,8 +2586,6 @@ static struct list$1sNodeph* list$1sNodeph_initialize_with_values(struct list$1s
 static struct sType* list$1sTypephp_operator_store_element(struct list$1sTypeph* self, int position, struct sType* item);
 static struct list$1sTypeph* list$1sTypeph_replace(struct list$1sTypeph* self, int position, struct sType* item);
 // uniq global variable
-// source head3
-
 // inline function
 static inline _Bool die(char* msg){
     perror(msg);
