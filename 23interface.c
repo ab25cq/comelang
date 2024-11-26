@@ -39,7 +39,7 @@ class sInterfaceNode extends sNodeBase
         buf.append_str("};\n");
         
         if(self.mOutput) {
-            add_come_code_at_source_head(info, "%s", buf.to_string());
+            info.struct_definition.insert(string(name), buf);
             info.classes.insert(string(name), clone klass);
         }
         

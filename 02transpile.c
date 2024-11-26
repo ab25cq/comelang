@@ -152,15 +152,12 @@ static bool cpp(sInfo* info)
     
     bool exist_common_h = false;
     {
-        FILE* f = fopen("common.h", "r");
-        if(f) {
+        fopen("common.h", "r").if {
             exist_common_h = true;
+            fclose(Value);
         }
         if(info.output_file_name === "common.h") {
             exist_common_h = false;
-        }
-        if(f) {
-            fclose(f);
         }
         if(!gCommonHeader) {
             exist_common_h = false;
@@ -499,14 +496,12 @@ debug: \{project_name_debug}
 
 bool run_project(int argc, char** argv)
 {
-    fopen("common.h", "r").case {
-        (Value == NULL) {
-            system("make header").less {
-                die("system");
-            }
-        }
-        else {
-            fclose(Value);
+    fopen("common.h", "r").if {
+        fclose(Value);
+    }
+    else {
+        system("make header").less {
+            die("system");
         }
     }
     
@@ -528,14 +523,12 @@ bool make_header_project(int argc, char** argv)
 
 bool compile_project(int argc, char** argv)
 {
-    fopen("common.h", "r").case {
-        (Value == NULL) {
-            system("make header").less {
-                die("system");
-            }
-        }
-        else {
-            fclose(Value);
+    fopen("common.h", "r").if {
+        fclose(Value);
+    }
+    else {
+        system("make header").less {
+            die("system");
         }
     }
     system("make compile").less {
@@ -547,14 +540,12 @@ bool compile_project(int argc, char** argv)
 
 bool debug_run_project(int argc, char** argv)
 {
-    fopen("common.h", "r").case {
-        (Value == NULL) {
-            system("make header").less {
-                die("system");
-            }
-        }
-        else {
-            fclose(Value);
+    fopen("common.h", "r").if {
+        fclose(Value);
+    }
+    else {
+        system("make header").less {
+            die("system");
         }
     }
     system("make debug").less {
@@ -759,11 +750,11 @@ int come_main(int argc, char** argv) version 2
             die("rm");
         }
         
-        fopen(output_file_name, "w").elif {
-            die("fopen");
+        fopen(output_file_name, "w").if {
+            fclose(Value);
         }
         else {
-            fclose(Value);
+            die("fopen");
         }
         
         string tmp_file = string("tmp-common-header.c");
@@ -889,13 +880,11 @@ int come_main(int argc, char** argv) version 2
             
             memset(&info, 0, sizeof(sInfo));
             
-            fopen(it, "r").case {
-                (Value == NULL) {
-                    continue;
-                }
-                else {
-                    fclose(Value);
-                }
+            fopen(it, "r").if {
+                fclose(Value);
+            }
+            else {
+                continue;
             }
             
             info.sname = string(it);
