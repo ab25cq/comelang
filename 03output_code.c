@@ -894,7 +894,10 @@ bool output_source_file(sInfo* info) version 3
     
     fprintf(f, "// uniq global variable\n");
     if(main_module) {
-        fprintf(f, "%s\n", info.module.mSourceHead2.to_string());
+        foreach(it, info.uniq_definition) {
+            char* str = info.uniq_definition[it];
+            fprintf(f, "%s\n", str);
+        }
     }
     fprintf(f, "// source head3\n");
     fprintf(f, "%s\n", info.module.mSourceHead3.to_string());

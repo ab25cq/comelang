@@ -266,10 +266,15 @@ struct __sFILE
 
 typedef struct __sFILE FILE;
 
+extern struct __sFILE* __stdinp;
+extern struct __sFILE* __stdoutp;
+extern struct __sFILE* __stderrp;
 typedef long  long off_t;
 
 typedef long ssize_t;
 
+extern const int sys_nerr;
+extern const char* sys_errlist[];
 enum anonymous_typeY2 { P_ALL
 ,P_PID
 ,P_PGID
@@ -854,6 +859,7 @@ struct anonymous_typeX7
 
 typedef struct anonymous_typeX7 lldiv_t;
 
+extern int __mb_cur_max;
 typedef unsigned long  long malloc_type_id_t;
 
 typedef struct _malloc_zone_t malloc_zone_t;
@@ -862,6 +868,7 @@ typedef int dev_t;
 
 typedef unsigned short int mode_t;
 
+extern char* suboptarg;
 typedef unsigned long  int rsize_t;
 
 typedef int errno_t;
@@ -902,6 +909,9 @@ typedef void* any;
 
 typedef char* string;
 
+extern void* wildcard;
+extern _Bool gComeGCLib;
+extern void* gComeFunResultObject;
 struct buffer
 {
     char* buf;
@@ -1248,6 +1258,24 @@ struct pcre32_callout_block
 
 typedef struct pcre32_callout_block pcre32_callout_block;
 
+extern void* (*pcre_malloc)(unsigned long  int);
+extern void (*pcre_free)(void*);
+extern void* (*pcre_stack_malloc)(unsigned long  int);
+extern void (*pcre_stack_free)(void*);
+extern int (*pcre_callout)(struct pcre_callout_block*);
+extern int (*pcre_stack_guard)();
+extern void* (*pcre16_malloc)(unsigned long  int);
+extern void (*pcre16_free)(void*);
+extern void* (*pcre16_stack_malloc)(unsigned long  int);
+extern void (*pcre16_stack_free)(void*);
+extern int (*pcre16_callout)(struct pcre16_callout_block*);
+extern int (*pcre16_stack_guard)();
+extern void* (*pcre32_malloc)(unsigned long  int);
+extern void (*pcre32_free)(void*);
+extern void* (*pcre32_stack_malloc)(unsigned long  int);
+extern void (*pcre32_stack_free)(void*);
+extern int (*pcre32_callout)(struct pcre32_callout_block*);
+extern int (*pcre32_stack_guard)();
 typedef struct real_pcre_jit_stack* (*pcre_jit_callback)(void*);
 
 typedef struct real_pcre16_jit_stack* (*pcre16_jit_callback)(void*);
@@ -1281,6 +1309,10 @@ struct tm
     char* tm_zone;
 };
 
+extern char* tzname[];
+extern int getdate_err;
+extern long timezone;
+extern int daylight;
 enum anonymous_typeY8 { _CLOCK_REALTIME=(0),
 _CLOCK_MONOTONIC=(6),
 _CLOCK_MONOTONIC_RAW=(4),
@@ -1344,6 +1376,8 @@ struct anonymous_typeX12
 
 typedef struct anonymous_typeX12 _RuneLocale;
 
+extern struct anonymous_typeX12 _DefaultRuneLocale;
+extern struct anonymous_typeX12* _CurrentRuneLocale;
 typedef int* wstring;
 
 struct come_regex
@@ -1375,40 +1409,6 @@ struct tuple2$2come_regexphvoidp
 };
 
 // source head
-extern struct __sFILE* __stdinp;
-extern struct __sFILE* __stdoutp;
-extern struct __sFILE* __stderrp;
-extern const int sys_nerr;
-extern const char* sys_errlist[];
-extern int __mb_cur_max;
-extern char* suboptarg;
-extern void* wildcard;
-extern _Bool gComeGCLib;
-extern void* gComeFunResultObject;
-extern void* (*pcre_malloc)(unsigned long  int);
-extern void (*pcre_free)(void*);
-extern void* (*pcre_stack_malloc)(unsigned long  int);
-extern void (*pcre_stack_free)(void*);
-extern int (*pcre_callout)(struct pcre_callout_block*);
-extern int (*pcre_stack_guard)();
-extern void* (*pcre16_malloc)(unsigned long  int);
-extern void (*pcre16_free)(void*);
-extern void* (*pcre16_stack_malloc)(unsigned long  int);
-extern void (*pcre16_stack_free)(void*);
-extern int (*pcre16_callout)(struct pcre16_callout_block*);
-extern int (*pcre16_stack_guard)();
-extern void* (*pcre32_malloc)(unsigned long  int);
-extern void (*pcre32_free)(void*);
-extern void* (*pcre32_stack_malloc)(unsigned long  int);
-extern void (*pcre32_stack_free)(void*);
-extern int (*pcre32_callout)(struct pcre32_callout_block*);
-extern int (*pcre32_stack_guard)();
-extern char* tzname[];
-extern int getdate_err;
-extern long timezone;
-extern int daylight;
-extern struct anonymous_typeX12 _DefaultRuneLocale;
-extern struct anonymous_typeX12* _CurrentRuneLocale;
 
 // header function
 void come_heap_init(int come_malloc, int come_debug, int come_gc);

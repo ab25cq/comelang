@@ -372,10 +372,15 @@ struct __sFILE
 
 typedef struct __sFILE FILE;
 
+extern struct __sFILE* __stdinp;
+extern struct __sFILE* __stdoutp;
+extern struct __sFILE* __stderrp;
 typedef long  long off_t;
 
 typedef long ssize_t;
 
+extern const int sys_nerr;
+extern const char* sys_errlist[];
 enum anonymous_typeY2 { P_ALL
 ,P_PID
 ,P_PGID
@@ -960,6 +965,7 @@ struct anonymous_typeX7
 
 typedef struct anonymous_typeX7 lldiv_t;
 
+extern int __mb_cur_max;
 typedef unsigned long  long malloc_type_id_t;
 
 typedef struct _malloc_zone_t malloc_zone_t;
@@ -1008,6 +1014,9 @@ typedef void* any;
 
 typedef char* string;
 
+extern void* wildcard;
+extern _Bool gComeGCLib;
+extern void* gComeFunResultObject;
 struct buffer
 {
     char* buf;
@@ -1254,6 +1263,10 @@ typedef unsigned int gid_t;
 
 typedef unsigned int useconds_t;
 
+extern char* optarg;
+extern int optind;
+extern int opterr;
+extern int optopt;
 struct fd_set
 {
     int fds_bits[((((((1024)%((sizeof(int)*8)))==0))?(((1024)/((sizeof(int)*8)))):((((1024)/((sizeof(int)*8)))+1))))];
@@ -1273,6 +1286,8 @@ typedef int suseconds_t;
 
 typedef unsigned char uuid_t[16];
 
+extern char* suboptarg;
+extern int optreset;
 typedef unsigned int in_addr_t;
 
 typedef unsigned short int in_port_t;
@@ -1535,6 +1550,12 @@ struct sockaddr_in6
     unsigned int sin6_scope_id;
 };
 
+extern const struct in6_addr in6addr_any;
+extern const struct in6_addr in6addr_loopback;
+extern const struct in6_addr in6addr_nodelocal_allnodes;
+extern const struct in6_addr in6addr_linklocal_allnodes;
+extern const struct in6_addr in6addr_linklocal_allrouters;
+extern const struct in6_addr in6addr_linklocal_allv2routers;
 struct ipv6_mreq
 {
     struct in6_addr ipv6mr_multiaddr;
@@ -1582,12 +1603,6 @@ struct itimerval
     struct timeval it_value;
 };
 
-struct timezone
-{
-    int tz_minuteswest;
-    int tz_dsttime;
-};
-
 struct clockinfo
 {
     int hz;
@@ -1612,6 +1627,10 @@ struct tm
     char* tm_zone;
 };
 
+extern char* tzname[];
+extern int getdate_err;
+extern long timezone;
+extern int daylight;
 enum anonymous_typeY11 { _CLOCK_REALTIME=(0),
 _CLOCK_MONOTONIC=(6),
 _CLOCK_MONOTONIC_RAW=(4),
@@ -1945,6 +1964,7 @@ typedef void (*OSSL_thread_stop_handler_fn)(void*);
 
 typedef int (*OSSL_provider_init_fn)(const struct ossl_core_handle_st*,const struct ossl_dispatch_st*,const struct ossl_dispatch_st**,void**);
 
+extern int (*OSSL_provider_init)(const struct ossl_core_handle_st*,const struct ossl_dispatch_st*,const struct ossl_dispatch_st**,void**);
 typedef int (*OSSL_CALLBACK)(const struct ossl_param_st*,void*);
 
 typedef int (*OSSL_INOUT_CALLBACK)(const struct ossl_param_st*,struct ossl_param_st*,void*);
@@ -4154,6 +4174,9 @@ struct MYSQL_TIME
 
 typedef struct MYSQL_TIME MYSQL_TIME;
 
+extern const char* client_errors[];
+extern unsigned int mysql_port;
+extern char* mysql_unix_port;
 struct MYSQL_FIELD
 {
     char* name;
@@ -4481,37 +4504,8 @@ enum enum_stmt_attr_type { STMT_ATTR_UPDATE_MAX_LENGTH
 ,STMT_ATTR_PREFETCH_ROWS
 };
 
+struct MYSQL* gComeMySQL=((void*)0);
 // source head
-extern struct __sFILE* __stdinp;
-extern struct __sFILE* __stdoutp;
-extern struct __sFILE* __stderrp;
-extern const int sys_nerr;
-extern const char* sys_errlist[];
-extern int __mb_cur_max;
-extern char* suboptarg;
-extern void* wildcard;
-extern _Bool gComeGCLib;
-extern void* gComeFunResultObject;
-extern char* optarg;
-extern int optind;
-extern int opterr;
-extern int optopt;
-extern char* suboptarg;
-extern int optreset;
-extern const struct in6_addr in6addr_any;
-extern const struct in6_addr in6addr_loopback;
-extern const struct in6_addr in6addr_nodelocal_allnodes;
-extern const struct in6_addr in6addr_linklocal_allnodes;
-extern const struct in6_addr in6addr_linklocal_allrouters;
-extern const struct in6_addr in6addr_linklocal_allv2routers;
-extern char* tzname[];
-extern int getdate_err;
-extern long timezone;
-extern int daylight;
-extern int (*OSSL_provider_init)(const struct ossl_core_handle_st*,const struct ossl_dispatch_st*,const struct ossl_dispatch_st**,void**);
-extern const char* client_errors[];
-extern unsigned int mysql_port;
-extern char* mysql_unix_port;
 
 // header function
 void come_heap_init(int come_malloc, int come_debug, int come_gc);
@@ -9782,7 +9776,6 @@ static struct list$1charph* list$1charph_add(struct list$1charph* self, char* it
 static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item);
 // uniq global variable
 // source head3
-struct MYSQL* gComeMySQL=((void*)0);
 
 // inline function
 static inline _Bool die(char* msg){

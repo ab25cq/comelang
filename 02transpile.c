@@ -777,6 +777,7 @@ int come_main(int argc, char** argv) version 2
         info.no_output_err = false;
         info.funcs = new map<string, sFun*%>();
         info.struct_definition = new map<string, buffer*%>();
+        info.uniq_definition = new map<string, string>();
         info.previous_struct_definition = new map<string, buffer*%>();
         info.generics_funcs = new map<string, sGenericsFun*%>();
         info.classes = new map<string, sClass*%>();
@@ -896,6 +897,7 @@ int come_main(int argc, char** argv) version 2
             info.no_output_err = false;
             info.funcs = new map<string, sFun*%>();
             info.struct_definition = new map<string, buffer*%>();
+            info.uniq_definition = new map<string, string>();
             info.previous_struct_definition = new map<string, buffer*%>();
             info.generics_funcs = new map<string, sGenericsFun*%>();
             info.classes = new map<string, sClass*%>();

@@ -266,10 +266,15 @@ struct __sFILE
 
 typedef struct __sFILE FILE;
 
+extern struct __sFILE* __stdinp;
+extern struct __sFILE* __stdoutp;
+extern struct __sFILE* __stderrp;
 typedef long  long off_t;
 
 typedef long ssize_t;
 
+extern const int sys_nerr;
+extern const char* sys_errlist[];
 enum anonymous_typeY2 { P_ALL
 ,P_PID
 ,P_PGID
@@ -854,6 +859,7 @@ struct anonymous_typeX7
 
 typedef struct anonymous_typeX7 lldiv_t;
 
+extern int __mb_cur_max;
 typedef unsigned long  long malloc_type_id_t;
 
 typedef struct _malloc_zone_t malloc_zone_t;
@@ -862,6 +868,7 @@ typedef int dev_t;
 
 typedef unsigned short int mode_t;
 
+extern char* suboptarg;
 typedef unsigned long  int rsize_t;
 
 typedef int errno_t;
@@ -902,6 +909,9 @@ typedef void* any;
 
 typedef char* string;
 
+extern void* wildcard;
+extern _Bool gComeGCLib;
+extern void* gComeFunResultObject;
 struct buffer
 {
     char* buf;
@@ -1248,6 +1258,24 @@ struct pcre32_callout_block
 
 typedef struct pcre32_callout_block pcre32_callout_block;
 
+extern void* (*pcre_malloc)(unsigned long  int);
+extern void (*pcre_free)(void*);
+extern void* (*pcre_stack_malloc)(unsigned long  int);
+extern void (*pcre_stack_free)(void*);
+extern int (*pcre_callout)(struct pcre_callout_block*);
+extern int (*pcre_stack_guard)();
+extern void* (*pcre16_malloc)(unsigned long  int);
+extern void (*pcre16_free)(void*);
+extern void* (*pcre16_stack_malloc)(unsigned long  int);
+extern void (*pcre16_stack_free)(void*);
+extern int (*pcre16_callout)(struct pcre16_callout_block*);
+extern int (*pcre16_stack_guard)();
+extern void* (*pcre32_malloc)(unsigned long  int);
+extern void (*pcre32_free)(void*);
+extern void* (*pcre32_stack_malloc)(unsigned long  int);
+extern void (*pcre32_stack_free)(void*);
+extern int (*pcre32_callout)(struct pcre32_callout_block*);
+extern int (*pcre32_stack_guard)();
 typedef struct real_pcre_jit_stack* (*pcre_jit_callback)(void*);
 
 typedef struct real_pcre16_jit_stack* (*pcre16_jit_callback)(void*);
@@ -1281,6 +1309,10 @@ struct tm
     char* tm_zone;
 };
 
+extern char* tzname[];
+extern int getdate_err;
+extern long timezone;
+extern int daylight;
 enum anonymous_typeY8 { _CLOCK_REALTIME=(0),
 _CLOCK_MONOTONIC=(6),
 _CLOCK_MONOTONIC_RAW=(4),
@@ -1344,6 +1376,8 @@ struct anonymous_typeX12
 
 typedef struct anonymous_typeX12 _RuneLocale;
 
+extern struct anonymous_typeX12 _DefaultRuneLocale;
+extern struct anonymous_typeX12* _CurrentRuneLocale;
 typedef int* wstring;
 
 struct come_regex
@@ -1378,10 +1412,13 @@ typedef unsigned long  int GC_word;
 
 typedef long GC_signed_word;
 
+extern unsigned long  int GC_gc_no;
 typedef void* (*GC_oom_func)(unsigned long  int);
 
+extern void* (*GC_oom_fn)(unsigned long  int);
 typedef void (*GC_on_heap_resize_proc)(unsigned long  int);
 
+extern void (*GC_on_heap_resize)(unsigned long  int);
 enum anonymous_typeY13 { GC_EVENT_START
 ,GC_EVENT_MARK_START
 ,GC_EVENT_MARK_END
@@ -1400,8 +1437,24 @@ typedef enum anonymous_typeY13 GC_EventType;
 
 typedef void (*GC_on_collection_event_proc)(enum anonymous_typeY13);
 
+extern int GC_find_leak;
+extern int GC_all_interior_pointers;
+extern int GC_finalize_on_demand;
+extern int GC_java_finalization;
 typedef void (*GC_finalizer_notifier_proc)();
 
+extern void (*GC_finalizer_notifier)();
+extern int GC_dont_gc;
+extern int GC_dont_expand;
+extern int GC_use_entire_heap;
+extern int GC_full_freq;
+extern unsigned long  int GC_non_gc_bytes;
+extern int GC_no_dls;
+extern unsigned long  int GC_free_space_divisor;
+extern unsigned long  int GC_max_retries;
+extern char* GC_stackbottom;
+extern int GC_dont_precollect;
+extern unsigned long  int GC_time_limit;
 struct GC_timeval_s
 {
     unsigned long  int tv_ms;
@@ -1454,6 +1507,9 @@ struct GC_stack_base
 
 typedef void* (*GC_stack_base_func)(struct GC_stack_base*,void*);
 
+extern void (*GC_same_obj_print_proc)(void*,void*);
+extern void (*GC_is_valid_displacement_print_proc)(void*);
+extern void (*GC_is_visible_print_proc)(void*);
 typedef int (*GC_has_static_roots_func)(const char*,void*,unsigned long  int);
 
 struct tuple2$2come_regexphvoidp
@@ -1463,62 +1519,6 @@ struct tuple2$2come_regexphvoidp
 };
 
 // source head
-extern struct __sFILE* __stdinp;
-extern struct __sFILE* __stdoutp;
-extern struct __sFILE* __stderrp;
-extern const int sys_nerr;
-extern const char* sys_errlist[];
-extern int __mb_cur_max;
-extern char* suboptarg;
-extern void* wildcard;
-extern _Bool gComeGCLib;
-extern void* gComeFunResultObject;
-extern void* (*pcre_malloc)(unsigned long  int);
-extern void (*pcre_free)(void*);
-extern void* (*pcre_stack_malloc)(unsigned long  int);
-extern void (*pcre_stack_free)(void*);
-extern int (*pcre_callout)(struct pcre_callout_block*);
-extern int (*pcre_stack_guard)();
-extern void* (*pcre16_malloc)(unsigned long  int);
-extern void (*pcre16_free)(void*);
-extern void* (*pcre16_stack_malloc)(unsigned long  int);
-extern void (*pcre16_stack_free)(void*);
-extern int (*pcre16_callout)(struct pcre16_callout_block*);
-extern int (*pcre16_stack_guard)();
-extern void* (*pcre32_malloc)(unsigned long  int);
-extern void (*pcre32_free)(void*);
-extern void* (*pcre32_stack_malloc)(unsigned long  int);
-extern void (*pcre32_stack_free)(void*);
-extern int (*pcre32_callout)(struct pcre32_callout_block*);
-extern int (*pcre32_stack_guard)();
-extern char* tzname[];
-extern int getdate_err;
-extern long timezone;
-extern int daylight;
-extern struct anonymous_typeX12 _DefaultRuneLocale;
-extern struct anonymous_typeX12* _CurrentRuneLocale;
-extern unsigned long  int GC_gc_no;
-extern void* (*GC_oom_fn)(unsigned long  int);
-extern void (*GC_on_heap_resize)(unsigned long  int);
-extern int GC_find_leak;
-extern int GC_all_interior_pointers;
-extern int GC_finalize_on_demand;
-extern int GC_java_finalization;
-extern void (*GC_finalizer_notifier)();
-extern int GC_dont_gc;
-extern int GC_dont_expand;
-extern int GC_use_entire_heap;
-extern int GC_full_freq;
-extern unsigned long  int GC_non_gc_bytes;
-extern int GC_no_dls;
-extern unsigned long  int GC_free_space_divisor;
-extern unsigned long  int GC_max_retries;
-extern char* GC_stackbottom;
-extern int GC_dont_precollect;
-extern unsigned long  int GC_time_limit;
-extern void (*GC_same_obj_print_proc)(void*,void*);
-extern void (*GC_is_valid_displacement_print_proc)(void*);
-extern void (*GC_is_visible_print_proc)(void*);
 
 // header function
 void come_heap_init(int come_malloc, int come_debug, int come_gc);

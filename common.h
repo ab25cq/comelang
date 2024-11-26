@@ -413,6 +413,8 @@ struct sInfo
     sFun* calling_fun;
     
     map<string, int>*% outputed_class;
+    
+    map<string, string>*% uniq_definition;
 };
 
 module sCurrentNodeModule

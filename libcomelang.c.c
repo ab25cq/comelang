@@ -270,10 +270,15 @@ struct __sFILE
 
 typedef struct __sFILE FILE;
 
+extern struct __sFILE* __stdinp;
+extern struct __sFILE* __stdoutp;
+extern struct __sFILE* __stderrp;
 typedef long  long off_t;
 
 typedef long ssize_t;
 
+extern const int sys_nerr;
+extern const char* sys_errlist[];
 enum anonymous_typeY2 { P_ALL
 ,P_PID
 ,P_PGID
@@ -858,6 +863,7 @@ struct anonymous_typeX7
 
 typedef struct anonymous_typeX7 lldiv_t;
 
+extern int __mb_cur_max;
 typedef unsigned long  long malloc_type_id_t;
 
 typedef struct _malloc_zone_t malloc_zone_t;
@@ -866,6 +872,7 @@ typedef int dev_t;
 
 typedef unsigned short int mode_t;
 
+extern char* suboptarg;
 typedef unsigned long  int rsize_t;
 
 typedef int errno_t;
@@ -906,6 +913,7 @@ typedef void* any;
 
 typedef char* string;
 
+extern void* wildcard;
 struct buffer
 {
     char* buf;
@@ -1141,6 +1149,15 @@ struct list$1charph
     struct list_item$1charph* it;
 };
 
+extern _Bool gComeDebug;
+extern _Bool gComeGC;
+extern _Bool gComeC;
+extern _Bool gComeStr;
+extern _Bool gComePthread;
+extern _Bool gComeNet;
+extern _Bool gComeMalloc;
+extern _Bool gCommonHeader;
+extern int gComeDebugStackFrameID;
 struct tuple2$2charphsTypeph
 {
     char* v1;
@@ -1644,6 +1661,7 @@ struct sInfo
     _Bool new_;
     struct sFun* calling_fun;
     struct map$2charphint* outputed_class;
+    struct map$2charphcharph* uniq_definition;
 };
 
 struct tuple2$2sTypephcharph
@@ -1716,6 +1734,19 @@ struct list$1tuple3$3sTypephcharphsNodephph
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
 
+extern struct list$1sRightValueObjectph* gExceptionRightValueObjects;
+char* gComeStackFrameSName[128];
+int gComeStackFrameSLine[128];
+int gComeStackFrameID[128];
+int gNumComeStackFrame=0;
+void* gComeFunResultObject=((void*)0);
+char* gComeStackFrameBuffer=((void*)0);
+void* gComeResultObject=((void*)0);
+static _Bool gComeMallocLib=(_Bool)0;
+static _Bool gComeDebugLib=(_Bool)0;
+_Bool gComeGCLib=(_Bool)0;
+static int gNumAlloc=0;
+static int gNumFree=0;
 struct sMemHeaderTiny
 {
     unsigned long  int size;
@@ -1738,6 +1769,7 @@ struct sMemHeader
     int id[16];
 };
 
+struct sMemHeader* gAllocMem;
 struct sHeapPage
 {
     char** mPages;
@@ -1747,27 +1779,8 @@ struct sHeapPage
     struct sMemHeaderTiny* mFreeMem[2048*2];
 };
 
+struct sHeapPage gHeapPages;
 // source head
-extern struct __sFILE* __stdinp;
-extern struct __sFILE* __stdoutp;
-extern struct __sFILE* __stderrp;
-extern const int sys_nerr;
-extern const char* sys_errlist[];
-extern int __mb_cur_max;
-extern char* suboptarg;
-extern void* wildcard;
-extern _Bool gComeGCLib;
-extern void* gComeFunResultObject;
-extern _Bool gComeDebug;
-extern _Bool gComeGC;
-extern _Bool gComeC;
-extern _Bool gComeStr;
-extern _Bool gComePthread;
-extern _Bool gComeNet;
-extern _Bool gComeMalloc;
-extern _Bool gCommonHeader;
-extern int gComeDebugStackFrameID;
-extern struct list$1sRightValueObjectph* gExceptionRightValueObjects;
 
 // header function
 int renameat(int anonymous_var_nameX3, const char* anonymous_var_nameX4, int anonymous_var_nameX5, const char* anonymous_var_nameX6);
@@ -2541,20 +2554,6 @@ int floating_operator_gt(struct floating* left, struct floating* right);
 char* floating_to_string(struct floating* self);
 // uniq global variable
 // source head3
-char* gComeStackFrameSName[128];
-int gComeStackFrameSLine[128];
-int gComeStackFrameID[128];
-int gNumComeStackFrame=0;
-void* gComeFunResultObject=((void*)0);
-char* gComeStackFrameBuffer=((void*)0);
-void* gComeResultObject=((void*)0);
-static _Bool gComeMallocLib=(_Bool)0;
-static _Bool gComeDebugLib=(_Bool)0;
-_Bool gComeGCLib=(_Bool)0;
-static int gNumAlloc=0;
-static int gNumFree=0;
-struct sMemHeader* gAllocMem;
-struct sHeapPage gHeapPages;
 
 // inline function
 static inline _Bool die(char* msg){

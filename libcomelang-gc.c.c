@@ -270,10 +270,15 @@ struct __sFILE
 
 typedef struct __sFILE FILE;
 
+extern struct __sFILE* __stdinp;
+extern struct __sFILE* __stdoutp;
+extern struct __sFILE* __stderrp;
 typedef long  long off_t;
 
 typedef long ssize_t;
 
+extern const int sys_nerr;
+extern const char* sys_errlist[];
 enum anonymous_typeY2 { P_ALL
 ,P_PID
 ,P_PGID
@@ -858,6 +863,7 @@ struct anonymous_typeX7
 
 typedef struct anonymous_typeX7 lldiv_t;
 
+extern int __mb_cur_max;
 typedef unsigned long  long malloc_type_id_t;
 
 typedef struct _malloc_zone_t malloc_zone_t;
@@ -866,6 +872,7 @@ typedef int dev_t;
 
 typedef unsigned short int mode_t;
 
+extern char* suboptarg;
 typedef unsigned long  int rsize_t;
 
 typedef int errno_t;
@@ -906,6 +913,7 @@ typedef void* any;
 
 typedef char* string;
 
+extern void* wildcard;
 struct buffer
 {
     char* buf;
@@ -1141,6 +1149,15 @@ struct list$1charph
     struct list_item$1charph* it;
 };
 
+extern _Bool gComeDebug;
+extern _Bool gComeGC;
+extern _Bool gComeC;
+extern _Bool gComeStr;
+extern _Bool gComePthread;
+extern _Bool gComeNet;
+extern _Bool gComeMalloc;
+extern _Bool gCommonHeader;
+extern int gComeDebugStackFrameID;
 struct tuple2$2charphsTypeph
 {
     char* v1;
@@ -1644,6 +1661,7 @@ struct sInfo
     _Bool new_;
     struct sFun* calling_fun;
     struct map$2charphint* outputed_class;
+    struct map$2charphcharph* uniq_definition;
 };
 
 struct tuple2$2sTypephcharph
@@ -1716,6 +1734,7 @@ struct list$1tuple3$3sTypephcharphsNodephph
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
 
+extern struct list$1sRightValueObjectph* gExceptionRightValueObjects;
 typedef long  int ptrdiff_t;
 
 typedef long  double max_align_t;
@@ -1726,10 +1745,13 @@ typedef unsigned long  int GC_word;
 
 typedef long GC_signed_word;
 
+extern unsigned long  int GC_gc_no;
 typedef void* (*GC_oom_func)(unsigned long  int);
 
+extern void* (*GC_oom_fn)(unsigned long  int);
 typedef void (*GC_on_heap_resize_proc)(unsigned long  int);
 
+extern void (*GC_on_heap_resize)(unsigned long  int);
 enum anonymous_typeY8 { GC_EVENT_START
 ,GC_EVENT_MARK_START
 ,GC_EVENT_MARK_END
@@ -1748,8 +1770,24 @@ typedef enum anonymous_typeY8 GC_EventType;
 
 typedef void (*GC_on_collection_event_proc)(enum anonymous_typeY8);
 
+extern int GC_find_leak;
+extern int GC_all_interior_pointers;
+extern int GC_finalize_on_demand;
+extern int GC_java_finalization;
 typedef void (*GC_finalizer_notifier_proc)();
 
+extern void (*GC_finalizer_notifier)();
+extern int GC_dont_gc;
+extern int GC_dont_expand;
+extern int GC_use_entire_heap;
+extern int GC_full_freq;
+extern unsigned long  int GC_non_gc_bytes;
+extern int GC_no_dls;
+extern unsigned long  int GC_free_space_divisor;
+extern unsigned long  int GC_max_retries;
+extern char* GC_stackbottom;
+extern int GC_dont_precollect;
+extern unsigned long  int GC_time_limit;
 struct GC_timeval_s
 {
     unsigned long  int tv_ms;
@@ -1802,8 +1840,23 @@ struct GC_stack_base
 
 typedef void* (*GC_stack_base_func)(struct GC_stack_base*,void*);
 
+extern void (*GC_same_obj_print_proc)(void*,void*);
+extern void (*GC_is_valid_displacement_print_proc)(void*);
+extern void (*GC_is_visible_print_proc)(void*);
 typedef int (*GC_has_static_roots_func)(const char*,void*,unsigned long  int);
 
+char* gComeStackFrameSName[128];
+int gComeStackFrameSLine[128];
+int gComeStackFrameID[128];
+int gNumComeStackFrame=0;
+void* gComeFunResultObject=((void*)0);
+char* gComeStackFrameBuffer=((void*)0);
+void* gComeResultObject=((void*)0);
+static _Bool gComeMallocLib=(_Bool)0;
+static _Bool gComeDebugLib=(_Bool)0;
+_Bool gComeGCLib=(_Bool)0;
+static int gNumAlloc=0;
+static int gNumFree=0;
 struct sMemHeaderTiny
 {
     unsigned long  int size;
@@ -1826,6 +1879,7 @@ struct sMemHeader
     int id[16];
 };
 
+struct sMemHeader* gAllocMem;
 struct sHeapPage
 {
     char** mPages;
@@ -1835,49 +1889,8 @@ struct sHeapPage
     struct sMemHeaderTiny* mFreeMem[2048*2];
 };
 
+struct sHeapPage gHeapPages;
 // source head
-extern struct __sFILE* __stdinp;
-extern struct __sFILE* __stdoutp;
-extern struct __sFILE* __stderrp;
-extern const int sys_nerr;
-extern const char* sys_errlist[];
-extern int __mb_cur_max;
-extern char* suboptarg;
-extern void* wildcard;
-extern _Bool gComeGCLib;
-extern void* gComeFunResultObject;
-extern _Bool gComeDebug;
-extern _Bool gComeGC;
-extern _Bool gComeC;
-extern _Bool gComeStr;
-extern _Bool gComePthread;
-extern _Bool gComeNet;
-extern _Bool gComeMalloc;
-extern _Bool gCommonHeader;
-extern int gComeDebugStackFrameID;
-extern struct list$1sRightValueObjectph* gExceptionRightValueObjects;
-extern unsigned long  int GC_gc_no;
-extern void* (*GC_oom_fn)(unsigned long  int);
-extern void (*GC_on_heap_resize)(unsigned long  int);
-extern int GC_find_leak;
-extern int GC_all_interior_pointers;
-extern int GC_finalize_on_demand;
-extern int GC_java_finalization;
-extern void (*GC_finalizer_notifier)();
-extern int GC_dont_gc;
-extern int GC_dont_expand;
-extern int GC_use_entire_heap;
-extern int GC_full_freq;
-extern unsigned long  int GC_non_gc_bytes;
-extern int GC_no_dls;
-extern unsigned long  int GC_free_space_divisor;
-extern unsigned long  int GC_max_retries;
-extern char* GC_stackbottom;
-extern int GC_dont_precollect;
-extern unsigned long  int GC_time_limit;
-extern void (*GC_same_obj_print_proc)(void*,void*);
-extern void (*GC_is_valid_displacement_print_proc)(void*);
-extern void (*GC_is_visible_print_proc)(void*);
 
 // header function
 int renameat(int anonymous_var_nameX3, const char* anonymous_var_nameX4, int anonymous_var_nameX5, const char* anonymous_var_nameX6);
@@ -2798,20 +2811,6 @@ int floating_operator_gt(struct floating* left, struct floating* right);
 char* floating_to_string(struct floating* self);
 // uniq global variable
 // source head3
-char* gComeStackFrameSName[128];
-int gComeStackFrameSLine[128];
-int gComeStackFrameID[128];
-int gNumComeStackFrame=0;
-void* gComeFunResultObject=((void*)0);
-char* gComeStackFrameBuffer=((void*)0);
-void* gComeResultObject=((void*)0);
-static _Bool gComeMallocLib=(_Bool)0;
-static _Bool gComeDebugLib=(_Bool)0;
-_Bool gComeGCLib=(_Bool)0;
-static int gNumAlloc=0;
-static int gNumFree=0;
-struct sMemHeader* gAllocMem;
-struct sHeapPage gHeapPages;
 
 // inline function
 static inline _Bool die(char* msg){

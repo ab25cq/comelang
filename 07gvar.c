@@ -39,14 +39,14 @@ class sGlobalVariable extends sNodeBase
                     }
                 }
                 else if(type.mUniq) {
-                    add_come_code_at_source_head(info, "extern %s;\n", make_define_var(type, name));
-                    add_come_code_at_source_head3(info, "%s;\n", make_define_var(type, name));
+                    info.struct_definition.insert(name, xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                    info.uniq_definition.insert(name, xsprintf("%s;\n", make_define_var(type, name)));
                 }
                 else if(initializer) {
-                    add_come_code_at_source_head3(info, "%s=%s;\n", make_define_var(type, name), initializer);
+                    info.struct_definition.insert(name, xsprintf("%s=%s;", make_define_var(type, name), initializer).to_buffer());
                 }
                 else {
-                    add_come_code_at_source_head3(info, "%s;\n", make_define_var(type, name));
+                    info.struct_definition.insert(name, xsprintf("%s;", make_define_var(type, name)).to_buffer());
                 }
             }
         }
@@ -60,11 +60,11 @@ class sGlobalVariable extends sNodeBase
                     }
                 }
                 else if(type.mUniq) {
-                    add_come_code_at_source_head(info, "extern %s;\n", make_define_var(type, name));
-                    add_come_code_at_source_head3(info, "%s=%s;\n", make_define_var(type, name), array_initializer);
+                    info.struct_definition.insert(name, xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                    info.uniq_definition.insert(name, xsprintf("%s=%s;\n", make_define_var(type, name), array_initializer));
                 }
                 else {
-                    add_come_code_at_source_head3(info, "%s=%s;\n", make_define_var(type, name), array_initializer);
+                    info.struct_definition.insert(name, xsprintf("%s=%s;", make_define_var(type, name), array_initializer).to_buffer());
                 }
             }
             else if(right_node) {
@@ -81,11 +81,11 @@ class sGlobalVariable extends sNodeBase
                     }
                 }
                 else if(type.mUniq) {
-                    add_come_code_at_source_head(info, "extern %s;\n", make_define_var(type, name));
-                    add_come_code_at_source_head3(info, "%s=%s;\n", make_define_var(type, name), come_value.c_value);
+                    info.struct_definition.insert(name, xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                    info.uniq_definition.insert(name, xsprintf("%s=%s;\n", make_define_var(type, name), come_value.c_value));
                 }
                 else {
-                    add_come_code_at_source_head3(info, "%s=%s;\n", make_define_var(type, name), come_value.c_value);
+                    info.struct_definition.insert(name, xsprintf("%s=%s;", make_define_var(type, name), come_value.c_value).to_buffer());
                 }
             }
             else {
@@ -95,11 +95,11 @@ class sGlobalVariable extends sNodeBase
                     }
                 }
                 else if(type.mUniq) {
-                    add_come_code_at_source_head(info, "extern %s;\n", make_define_var(type, name));
-                    add_come_code_at_source_head3(info, "%s;\n", make_define_var(type, name));
+                    info.struct_definition.insert(name, xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                    info.uniq_definition.insert(name, xsprintf("%s;\n", make_define_var(type, name)));
                 }
                 else {
-                    add_come_code_at_source_head3(info, "%s;\n", make_define_var(type, name));
+                    info.struct_definition.insert(name, xsprintf("%s;", make_define_var(type, name)).to_buffer());
                 }
             }
         }
@@ -142,7 +142,7 @@ class sExternalGlobalVariable extends sNodeBase
                     }
                 }
                 else {
-                    add_come_code_at_source_head(info, "extern %s;\n", make_define_var(type, name));
+                    info.struct_definition.insert(name, xsprintf("extern %s;", make_define_var(type, name)).to_buffer());
                 }
             }
         }
@@ -154,7 +154,7 @@ class sExternalGlobalVariable extends sNodeBase
                 }
             }
             else {
-                add_come_code_at_source_head(info, "extern %s;\n", make_define_var(type, name));
+                info.struct_definition.insert(name, xsprintf("extern %s;", make_define_var(type, name)).to_buffer());
             }
         }
         

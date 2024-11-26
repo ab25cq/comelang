@@ -1,19 +1,16 @@
-#include <comelang.h>
+#include <stdio.h>
 
-module MData<T,T2>
+uniq int gVar = 123;
+
+uniq void fun()
 {
-    int output = T;
-    string output2 = T2;
+    printf("%d\n", gVar);
 }
 
 int main(int argc, char** argv)
 {
-    int v = 123;
-    string v2 = s"ABC";
-    
-    include MData<v, v2>;
-    output.to_string().puts();
-    output2.to_string().puts();
+    fun();
+    printf("gVar %d\n", gVar);
     
     return 0;
 }
