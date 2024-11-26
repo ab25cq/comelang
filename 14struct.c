@@ -350,7 +350,7 @@ class sClassNode extends sNodeBase
         output_struct(klass, info);
         
         foreach(it, self.mMethods) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
         }
@@ -468,7 +468,7 @@ sNode*% parse_struct(string type_name, sInfo* info)
     
     sNode*% node = new sStructNode(string(type_name), klass, info) implements sNode;
     
-    if(!node_compile(node, info)) {
+    node_compile(node, info).elif {
         return null;
     }
     

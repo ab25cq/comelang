@@ -108,7 +108,7 @@ sNode*% parse_union(string type_name, sInfo* info)
     
     sNode*% node = new sUnionNode(type_name, klass, info) implements sNode;
     
-    if(!node_compile(node, info)) {
+    node_compile(node, info).elif {
         return null;
     }
     
@@ -173,7 +173,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
         
         sNode*% node = new sUnionNode(type_name, klass, info) implements sNode;
         
-        if(!node_compile(node, info)) {
+        node_compile(node, info).elif {
             return null;
         }
         

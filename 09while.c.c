@@ -3959,13 +3959,14 @@ _Bool sWhileNode_compile(struct sWhileNode* self, struct sInfo* info){
 _Bool in_loop_136;
 struct sNode* expression_node_137;
 _Bool comma_instead_of_semicolon_138;
-struct sBlock* block_139;
-_Bool normal_if_140;
+_Bool Value_139;
+struct sBlock* block_140;
+_Bool normal_if_141;
 void* __right_value144 = (void*)0;
-struct CVALUE* conditional_value_141;
-void* __right_value145 = (void*)0;
 struct CVALUE* conditional_value_142;
-int num_while_conditional_stack_144;
+void* __right_value145 = (void*)0;
+struct CVALUE* conditional_value_143;
+int num_while_conditional_stack_145;
     if(    info->comma_instead_of_semicolon) {
         err_msg(info,"In conditional operator comelang can't use while statment");
         return (_Bool)0;
@@ -3976,35 +3977,38 @@ int num_while_conditional_stack_144;
     comma_instead_of_semicolon_138=info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon=(_Bool)1;
     info->without_semicolon=(_Bool)1;
-    if(    !node_compile(expression_node_137,info)) {
+    Value_139=node_compile(expression_node_137,info);
+    if(    !Value_139) {
         return (_Bool)0;
+    }
+    else {
     }
     info->without_semicolon=(_Bool)0;
     info->comma_instead_of_semicolon=comma_instead_of_semicolon_138;
-    block_139=self->mBlock;
-    normal_if_140=(_Bool)1;
+    block_140=self->mBlock;
+    normal_if_141=(_Bool)1;
     if(    existance_free_right_value_objects(info)) {
-        normal_if_140=(_Bool)0;
+        normal_if_141=(_Bool)0;
     }
-    if(    normal_if_140) {
-        conditional_value_141=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
-        dec_stack_ptr(1,info);
-        add_come_code(info,"while(%s) {\n",conditional_value_141->c_value);
-        /*i*/come_call_finalizer3(conditional_value_141,CVALUE_finalize, 0, 0, 0, 0, (void*)0);
-    }
-    else {
+    if(    normal_if_141) {
         conditional_value_142=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
         dec_stack_ptr(1,info);
-        static int num_while_condtional_143=0;
-        add_come_code_at_function_head(info,"_Bool _while_condtional%d;\n",++num_while_condtional_143);
-        num_while_conditional_stack_144=num_while_condtional_143;
-        add_come_code(info,"while((_while_condtional%d=(%s)),",num_while_condtional_143,conditional_value_142->c_value);
-        add_last_code_to_source_with_comma(info);
-        free_right_value_objects(info,(_Bool)1);
-        add_come_code(info,"_while_condtional%d) {\n",num_while_conditional_stack_144);
+        add_come_code(info,"while(%s) {\n",conditional_value_142->c_value);
         /*i*/come_call_finalizer3(conditional_value_142,CVALUE_finalize, 0, 0, 0, 0, (void*)0);
     }
-    transpile_block(block_139,((void*)0),((void*)0),info,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0);
+    else {
+        conditional_value_143=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
+        dec_stack_ptr(1,info);
+        static int num_while_condtional_144=0;
+        add_come_code_at_function_head(info,"_Bool _while_condtional%d;\n",++num_while_condtional_144);
+        num_while_conditional_stack_145=num_while_condtional_144;
+        add_come_code(info,"while((_while_condtional%d=(%s)),",num_while_condtional_144,conditional_value_143->c_value);
+        add_last_code_to_source_with_comma(info);
+        free_right_value_objects(info,(_Bool)1);
+        add_come_code(info,"_while_condtional%d) {\n",num_while_conditional_stack_145);
+        /*i*/come_call_finalizer3(conditional_value_143,CVALUE_finalize, 0, 0, 0, 0, (void*)0);
+    }
+    transpile_block(block_140,((void*)0),((void*)0),info,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0);
     add_come_code(info,"}\n");
     transpiler_clear_last_code(info);
     info->in_loop=in_loop_136;
@@ -5157,12 +5161,12 @@ char* __dec_obj59;
 struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo* info){
 void* __result_obj__=(void*)0;
 void* __right_value146 = (void*)0;
-char* sname_145;
-int sline_146;
+char* sname_146;
+int sline_147;
 void* __right_value147 = (void*)0;
-struct sNode* expression_node_147;
+struct sNode* expression_node_148;
 void* __right_value148 = (void*)0;
-struct sBlock* block_148;
+struct sBlock* block_149;
 void* __right_value149 = (void*)0;
 void* __right_value150 = (void*)0;
 struct sNode* _inf_value1;
@@ -5172,14 +5176,14 @@ struct sNode* __result104__;
 void* __right_value156 = (void*)0;
 struct sNode* __result105__;
     if(    charp_operator_equals(buf,"while")) {
-        sname_145=(char*)come_increment_ref_count(string_clone(info->sname));
-        sline_146=info->sline;
+        sname_146=(char*)come_increment_ref_count(string_clone(info->sname));
+        sline_147=info->sline;
         expected_next_character(40,info);
-        expression_node_147=(struct sNode*)come_increment_ref_count(expression_v13(info));
+        expression_node_148=(struct sNode*)come_increment_ref_count(expression_v13(info));
         expected_next_character(41,info);
-        block_148=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
+        block_149=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
         _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "09while.c", 103, "struct sNode");
-        _inf_obj_value1=(struct sWhileNode*)come_increment_ref_count(((struct sWhileNode*)(__right_value150=sWhileNode_initialize((struct sWhileNode*)come_increment_ref_count((struct sWhileNode*)come_calloc(1, sizeof(struct sWhileNode)*(1), "09while.c", 103, "sWhileNode")),(struct sNode*)come_increment_ref_count(expression_node_147),block_148,info))));
+        _inf_obj_value1=(struct sWhileNode*)come_increment_ref_count(((struct sWhileNode*)(__right_value150=sWhileNode_initialize((struct sWhileNode*)come_increment_ref_count((struct sWhileNode*)come_calloc(1, sizeof(struct sWhileNode)*(1), "09while.c", 103, "sWhileNode")),(struct sNode*)come_increment_ref_count(expression_node_148),block_149,info))));
         _inf_value1->_protocol_obj=_inf_obj_value1;
         _inf_value1->finalize=(void*)sWhileNode_finalize;
         _inf_value1->clone=(void*)sWhileNode_clone;
@@ -5189,16 +5193,16 @@ struct sNode* __result105__;
         _inf_value1->terminated=(void*)sWhileNode_terminated;
         _inf_value1->kind=(void*)sWhileNode_kind;
         __result104__ = gComeFunResultObject = __result_obj__ = ((struct sNode*)(__right_value155=_inf_value1));
-        /* U13 */sname_145 = come_decrement_ref_count2(sname_145, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        if(expression_node_147) { expression_node_147 = come_decrement_ref_count2(expression_node_147, ((struct sNode*)expression_node_147)->finalize, ((struct sNode*)expression_node_147)->_protocol_obj, 0, 0, 0, (void*)0); } 
-        /*i*/come_call_finalizer3(block_148,sBlock_finalize, 0, 0, 0, 0, (void*)0);
+        /* U13 */sname_146 = come_decrement_ref_count2(sname_146, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        if(expression_node_148) { expression_node_148 = come_decrement_ref_count2(expression_node_148, ((struct sNode*)expression_node_148)->finalize, ((struct sNode*)expression_node_148)->_protocol_obj, 0, 0, 0, (void*)0); } 
+        /*i*/come_call_finalizer3(block_149,sBlock_finalize, 0, 0, 0, 0, (void*)0);
         /*g*/come_call_finalizer3(__right_value150,sWhileNode_finalize, 0, 1, 0, 0, __result_obj__);
         if(__right_value155) { __right_value155 = come_decrement_ref_count2(__right_value155, ((struct sNode*)__right_value155)->finalize, ((struct sNode*)__right_value155)->_protocol_obj, 1, 0, 0, __result_obj__); } 
         gComeFunResultObject = (void*)0;
         return __result104__;
-        /* U13 */sname_145 = come_decrement_ref_count2(sname_145, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        if(expression_node_147) { expression_node_147 = come_decrement_ref_count2(expression_node_147, ((struct sNode*)expression_node_147)->finalize, ((struct sNode*)expression_node_147)->_protocol_obj, 0, 0, 0, (void*)0); } 
-        /*i*/come_call_finalizer3(block_148,sBlock_finalize, 0, 0, 0, 0, (void*)0);
+        /* U13 */sname_146 = come_decrement_ref_count2(sname_146, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        if(expression_node_148) { expression_node_148 = come_decrement_ref_count2(expression_node_148, ((struct sNode*)expression_node_148)->finalize, ((struct sNode*)expression_node_148)->_protocol_obj, 0, 0, 0, (void*)0); } 
+        /*i*/come_call_finalizer3(block_149,sBlock_finalize, 0, 0, 0, 0, (void*)0);
     }
     __result105__ = gComeFunResultObject = __result_obj__ = ((struct sNode*)(__right_value156=string_node_v8(buf,head,head_sline,info)));
     if(__right_value156) { __right_value156 = come_decrement_ref_count2(__right_value156, ((struct sNode*)__right_value156)->finalize, ((struct sNode*)__right_value156)->_protocol_obj, 1, 0, 0, __result_obj__); } 
@@ -5243,7 +5247,7 @@ static struct sWhileNode* sWhileNode_clone(struct sWhileNode* self){
 void* __result_obj__=(void*)0;
 struct sWhileNode* __result102__;
 void* __right_value151 = (void*)0;
-struct sWhileNode* result_149;
+struct sWhileNode* result_150;
 void* __right_value152 = (void*)0;
 char* __dec_obj63;
 void* __right_value153 = (void*)0;
@@ -5256,27 +5260,27 @@ struct sWhileNode* __result103__;
         gComeFunResultObject = (void*)0;
         return __result102__;
     }
-    result_149=(struct sWhileNode*)come_increment_ref_count((struct sWhileNode*)come_calloc(1, sizeof(struct sWhileNode)*(1), "sWhileNode_clone", 3, "sWhileNode"));
+    result_150=(struct sWhileNode*)come_increment_ref_count((struct sWhileNode*)come_calloc(1, sizeof(struct sWhileNode)*(1), "sWhileNode_clone", 3, "sWhileNode"));
     if(    self!=((void*)0)) {
-        result_149->sline=self->sline;
+        result_150->sline=self->sline;
     }
     if(    self!=((void*)0)&&self->sname!=((void*)0)) {
-        __dec_obj63=result_149->sname;
-        result_149->sname=(char*)come_increment_ref_count(string_clone(self->sname));
+        __dec_obj63=result_150->sname;
+        result_150->sname=(char*)come_increment_ref_count(string_clone(self->sname));
         /*G*/ __dec_obj63 = come_decrement_ref_count2(__dec_obj63, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
     if(    self!=((void*)0)&&self->mExpressionNode!=((void*)0)) {
-        __dec_obj64=result_149->mExpressionNode;
-        result_149->mExpressionNode=(struct sNode*)come_increment_ref_count(sNode_clone(self->mExpressionNode));
+        __dec_obj64=result_150->mExpressionNode;
+        result_150->mExpressionNode=(struct sNode*)come_increment_ref_count(sNode_clone(self->mExpressionNode));
         /* U1 */ if(__dec_obj64) { __dec_obj64 = come_decrement_ref_count2(__dec_obj64, ((struct sNode*)__dec_obj64)->finalize, ((struct sNode*)__dec_obj64)->_protocol_obj, 0,0,0, (void*)0); };
     }
     if(    self!=((void*)0)&&self->mBlock!=((void*)0)) {
-        __dec_obj65=result_149->mBlock;
-        result_149->mBlock=(struct sBlock*)come_increment_ref_count(sBlock_clone(self->mBlock));
+        __dec_obj65=result_150->mBlock;
+        result_150->mBlock=(struct sBlock*)come_increment_ref_count(sBlock_clone(self->mBlock));
         come_call_finalizer3(__dec_obj65,sBlock_finalize, 0, 0, 0, 0, (void*)0);
     }
-    __result103__ = gComeFunResultObject = __result_obj__ = result_149;
-    /*i*/come_call_finalizer3(result_149,sWhileNode_finalize, 0, 0, 1, 0, (void*)0);
+    __result103__ = gComeFunResultObject = __result_obj__ = result_150;
+    /*i*/come_call_finalizer3(result_150,sWhileNode_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result103__;
 }

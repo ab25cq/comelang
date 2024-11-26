@@ -34,7 +34,7 @@ class sSwitchNode extends sNodeBase
         bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
     
-        if(!node_compile(expression_node)) {
+        node_compile(expression_node).elif {
             return false;
         }
         
@@ -78,7 +78,7 @@ class sCaseNode extends sNodeBase
     {
         sNode* node = self.mNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         

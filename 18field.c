@@ -138,7 +138,7 @@ class sStoreFieldNode extends sNodeBase
         sNode* right = self.mRight;
         string name = string(self.mName);
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -149,7 +149,7 @@ class sStoreFieldNode extends sNodeBase
             left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -437,7 +437,7 @@ class sNullCheckNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -518,7 +518,7 @@ class sNullableNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -567,7 +567,7 @@ class sRangeCheckNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -576,7 +576,7 @@ class sRangeCheckNode extends sNodeBase
         
         sNode* begin = self.mBegin;
         
-        if(!node_compile(begin)) {
+        node_compile(begin).elif {
             return false;
         }
         
@@ -585,7 +585,7 @@ class sRangeCheckNode extends sNodeBase
         
         sNode* end = self.mEnd;
         
-        if(!node_compile(end)) {
+        node_compile(end).elif {
             return false;
         }
         
@@ -647,7 +647,7 @@ class sLoadFieldNode extends sNodeBase
         sNode* left = self.mLeft;
         string name = string(self.mName);
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -801,7 +801,7 @@ class sStoreArrayNode extends sNodeBase
         sNode* right = self.mRight;
         list<sNode*%>* array_num_nodes = self.mArrayNum;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -817,7 +817,7 @@ class sStoreArrayNode extends sNodeBase
         list<CVALUE*%>*% array_num = new list<CVALUE*%>();
         
         foreach(it, array_num_nodes) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             
@@ -827,7 +827,7 @@ class sStoreArrayNode extends sNodeBase
             array_num.push_back(c_value);
         }
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -909,7 +909,7 @@ class sStoreArrayNode extends sNodeBase
                 buf.append_format(",%s,%s+(", left_value.c_value, left_value.c_value);
                 int i=0;
                 foreach(it, var_type.mArrayNum) {
-                    if(!node_compile(it)) {
+                    node_compile(it).elif {
                         err_msg(info, "invalid array num");
                         exit(1);
                     }
@@ -1030,7 +1030,7 @@ class sLoadArrayNode extends sNodeBase
         sNode* left = self.mLeft;
         list<sNode*%>* array_num_nodes = self.mArrayNum;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -1046,7 +1046,7 @@ class sLoadArrayNode extends sNodeBase
         list<CVALUE*%>*% array_num = new list<CVALUE*%>();
         
         foreach(it, array_num_nodes) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             
@@ -1127,7 +1127,7 @@ class sLoadArrayNode extends sNodeBase
                 buf.append_format(",%s,%s+(", left_value.c_value, left_value.c_value);
                 int i=0;
                 foreach(it, var_type.mArrayNum) {
-                    if(!node_compile(it)) {
+                    node_compile(it).elif {
                         err_msg(info, "invalid array num");
                         exit(1);
                     }
@@ -1244,7 +1244,7 @@ class sLoadRangeArrayNode extends sNodeBase
         sNode* left = self.mLeft;
         list<sNode*%>* array_num_nodes = self.mArrayNum;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -1256,7 +1256,7 @@ class sLoadRangeArrayNode extends sNodeBase
         list<CVALUE*%>*% array_num = new list<CVALUE*%>();
         
         foreach(it, array_num_nodes) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             

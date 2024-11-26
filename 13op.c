@@ -221,7 +221,7 @@ class sAddNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -230,7 +230,7 @@ class sAddNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -291,7 +291,7 @@ class sSubNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -300,7 +300,7 @@ class sSubNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -361,7 +361,7 @@ class sMultNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -370,7 +370,7 @@ class sMultNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -426,7 +426,7 @@ class sDivNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -435,7 +435,7 @@ class sDivNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -491,7 +491,7 @@ class sModNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -500,7 +500,7 @@ class sModNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -557,7 +557,7 @@ class sLShiftNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -566,7 +566,7 @@ class sLShiftNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -622,7 +622,7 @@ class sRShiftNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -631,7 +631,7 @@ class sRShiftNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -687,7 +687,7 @@ class sGtEqNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -696,7 +696,7 @@ class sGtEqNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -752,7 +752,7 @@ class sLtEqNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -761,7 +761,7 @@ class sLtEqNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -817,7 +817,7 @@ class sLtNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -826,7 +826,7 @@ class sLtNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -882,7 +882,7 @@ class sGtNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -891,7 +891,7 @@ class sGtNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -947,7 +947,7 @@ class sEqNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -956,7 +956,7 @@ class sEqNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -999,7 +999,7 @@ class sNotEqNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1008,7 +1008,7 @@ class sNotEqNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1051,7 +1051,7 @@ class sEq2Node extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1060,7 +1060,7 @@ class sEq2Node extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1117,7 +1117,7 @@ class sNotEq2Node extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1126,7 +1126,7 @@ class sNotEq2Node extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1182,7 +1182,7 @@ class sAndNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1191,7 +1191,7 @@ class sAndNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1248,7 +1248,7 @@ class sXOrNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1257,7 +1257,7 @@ class sXOrNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1313,7 +1313,7 @@ class sOrNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1322,7 +1322,7 @@ class sOrNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1379,7 +1379,7 @@ class sAndAndNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1388,7 +1388,7 @@ class sAndAndNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1445,7 +1445,7 @@ class sOrOrNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1454,7 +1454,7 @@ class sOrOrNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1509,7 +1509,7 @@ class sCommaNode extends sNodeBase
         /// compile expression ///
         sNode* left_node = self.mLeft;
     
-        if(!node_compile(left_node)) {
+        node_compile(left_node).elif {
             return false;
         }
         
@@ -1518,7 +1518,7 @@ class sCommaNode extends sNodeBase
         
         sNode* right_node = self.mRight;
     
-        if(!node_compile(right_node)) {
+        node_compile(right_node).elif {
             return false;
         }
         
@@ -1563,7 +1563,7 @@ class sConditionalNode extends sNodeBase
         /// compile expression ///
         sNode* value1 = self.mValue1;
     
-        if(!node_compile(value1)) {
+        node_compile(value1).elif {
             return false;
         }
         
@@ -1572,7 +1572,7 @@ class sConditionalNode extends sNodeBase
         
         sNode* value2 = self.mValue2;
     
-        if(!node_compile(value2)) {
+        node_compile(value2).elif {
             return false;
         }
         
@@ -1581,7 +1581,7 @@ class sConditionalNode extends sNodeBase
         
         sNode* value3 = self.mValue3;
     
-        if(!node_compile(value3)) {
+        node_compile(value3).elif {
             return false;
         }
         

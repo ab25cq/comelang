@@ -151,7 +151,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             sNode*% node = new sTypedefNode(type_name, type, multiple_declare, info) implements sNode;
             
-            if(!node_compile(node, info)) {
+            node_compile(node, info).elif {
                 return null;
             }
             
@@ -168,7 +168,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             sNode*% node = new sTypedefNode(type_name, type, null@multiple_declare, info) implements sNode;
             
-            if(!node_compile(node, info)) {
+            node_compile(node, info).elif {
                 return null;
             }
             
@@ -226,7 +226,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             sNode*% node = new sTypedefNode(type_name, type, multiple_declare, info) implements sNode;
             
-            if(!node_compile(node, info)) {
+            node_compile(node, info).elif {
                 return null;
             }
             
@@ -243,7 +243,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             sNode*% node = new sTypedefNode(type_name, type, null@multiple_declare, info) implements sNode;
             
-            if(!node_compile(node, info)) {
+            node_compile(node, info).elif {
                 return null;
             }
             

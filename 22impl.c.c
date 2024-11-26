@@ -3896,11 +3896,12 @@ void* __right_value124 = (void*)0;
 char* buf_88;
 void* __right_value125 = (void*)0;
 struct sNode* node_89;
+_Bool Value_90;
 struct sType* __dec_obj41;
-char* source_tail_90;
+char* source_tail_91;
 void* __right_value126 = (void*)0;
 void* __right_value127 = (void*)0;
-struct buffer* header_91;
+struct buffer* header_92;
 void* __right_value128 = (void*)0;
 struct sNode* __result67__;
 void* __right_value129 = (void*)0;
@@ -3956,9 +3957,12 @@ struct sNode* __result68__;
             }
             parse_sharp_v5(info);
             if(            node_89!=((void*)0)) {
-                if(                !node_compile(node_89,info)) {
+                Value_90=node_compile(node_89,info);
+                if(                !Value_90) {
                     err_msg(info,"compiling is faield(Y)");
                     exit(2);
+                }
+                else {
                 }
             }
             parse_sharp_v5(info);
@@ -3971,18 +3975,18 @@ struct sNode* __result68__;
         __dec_obj41=info->impl_type;
         info->impl_type=((void*)0);
         come_call_finalizer3(__dec_obj41,sType_finalize, 0, 0, 0, 0, (void*)0);
-        source_tail_90=info->p;
-        header_91=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "22impl.c", 82, "buffer"))));
-        buffer_append(header_91,source_head_66,source_tail_90-source_head_66);
-        add_come_code_at_come_header(info,"impl %s\n",((char*)(__right_value128=buffer_to_string(header_91))));
+        source_tail_91=info->p;
+        header_92=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "22impl.c", 82, "buffer"))));
+        buffer_append(header_92,source_head_66,source_tail_91-source_head_66);
+        add_come_code_at_come_header(info,"impl %s\n",((char*)(__right_value128=buffer_to_string(header_92))));
         /* U11 */__right_value128 = come_decrement_ref_count2(__right_value128, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         __result67__ = gComeFunResultObject = __result_obj__ = (struct sNode*)((void*)0);
         /* U13 */word_67 = come_decrement_ref_count2(word_67, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        /*i*/come_call_finalizer3(header_91,buffer_finalize, 0, 0, 0, 0, (void*)0);
+        /*i*/come_call_finalizer3(header_92,buffer_finalize, 0, 0, 0, 0, (void*)0);
         gComeFunResultObject = (void*)0;
         return __result67__;
         /* U13 */word_67 = come_decrement_ref_count2(word_67, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        /*i*/come_call_finalizer3(header_91,buffer_finalize, 0, 0, 0, 0, (void*)0);
+        /*i*/come_call_finalizer3(header_92,buffer_finalize, 0, 0, 0, 0, (void*)0);
     }
     __result68__ = gComeFunResultObject = __result_obj__ = ((struct sNode*)(__right_value129=top_level_v92(buf,head,head_sline,info)));
     if(__right_value129) { __right_value129 = come_decrement_ref_count2(__right_value129, ((struct sNode*)__right_value129)->finalize, ((struct sNode*)__right_value129)->_protocol_obj, 1, 0, 0, __result_obj__); } 

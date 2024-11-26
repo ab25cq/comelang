@@ -64,7 +64,7 @@ class sStoreNode extends sNodeBase
                 sType*% left_type = clone var_->mType;
                 
                 if(right_value) {
-                    if(!node_compile(right_value)) {
+                    node_compile(right_value).elif {
                         return false;
                     }
                     CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -79,7 +79,7 @@ class sStoreNode extends sNodeBase
             }
         }
         else if(self.multiple_assign) {
-            if(!node_compile(self.right_value)) {
+            node_compile(self.right_value).elif {
                 return false;
             }
             
@@ -212,7 +212,7 @@ class sStoreNode extends sNodeBase
                 add_come_code(info, "memset(&%s, 0, sizeof(%s)", var_->mCValueName, make_type_name_string(left_type, no_static:true));
                 
                 foreach(it, left_type->mArrayNum) {
-                    if(!node_compile(it)) {
+                    node_compile(it).elif {
                         err_msg(info, "invalid array num");
                         exit(1);
                     }
@@ -265,7 +265,7 @@ class sStoreNode extends sNodeBase
                 add_variable_to_table(self.name, clone type, info);
             }
             
-            if(!node_compile(self.right_value)) {
+            node_compile(self.right_value).elif {
                 return false;
             }
             
@@ -409,7 +409,7 @@ class sStoreNode extends sNodeBase
             }
         }
         else {
-            if(!node_compile(self.right_value)) {
+            node_compile(self.right_value).elif {
                 return false;
             }
             
@@ -620,7 +620,7 @@ class sNewChannel extends sNodeBase
     {
         sNode*% node = create_null_node(info);
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -646,14 +646,14 @@ class sWriteChannelNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        if(!node_compile(self.exp)) {
+        node_compile(self.exp).elif {
             return false;
         }
         
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        if(!node_compile(self.right_value)) {
+        node_compile(self.right_value).elif {
             return false;
         }
         
@@ -716,7 +716,7 @@ class sReadChannelNode extends sNodeBase
     {
         sNode*% exp = self.exp;
         
-        if(!node_compile(exp)) {
+        node_compile(exp).elif {
             return false;
         }
         
@@ -920,14 +920,14 @@ class sArrayInitializer extends sNodeBase
             
             CVALUE*% come_value = null;
             if(index) {
-                if(!node_compile(index)) {
+                node_compile(index).elif {
                     return false;
                 }
                 come_value = get_value_from_stack(-1, info);
                 dec_stack_ptr(1, info);
             }
             
-            if(!node_compile(value)) {
+            node_compile(value).elif {
                 return false;
             }
             CVALUE*% come_value2 = get_value_from_stack(-1, info);
@@ -1060,7 +1060,7 @@ class sStructInitializer extends sNodeBase
         foreach(it, initializer) {
             var name, value = it;
             
-            if(!node_compile(value)) {
+            node_compile(value).elif {
                 return false;
             }
             CVALUE*% come_value2 = get_value_from_stack(-1, info);

@@ -88,7 +88,7 @@ class sIfNode extends sNodeBase
         bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
         info.without_semicolon = true;
-        if(!node_compile(expression_node)) {
+        node_compile(expression_node).elif {
             return false;
         }
         info.without_semicolon = false;
@@ -151,7 +151,7 @@ class sIfNode extends sNodeBase
                 bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
                 info.comma_instead_of_semicolon = true;
                 info.without_semicolon = true;
-                if(!node_compile(expression_node2)) {
+                node_compile(expression_node2).elif {
                     return false;
                 }
                 info.without_semicolon = false;
@@ -209,7 +209,7 @@ class sIfNode extends sNodeBase
             sNode*% result_node = create_load_var(info->if_result_var_name);
             result_node = cast_node(clone var_->mType, result_node);
             
-            if(!node_compile(result_node, info)) {
+            node_compile(result_node, info).elif {
                 return false;
             }
             CVALUE*% come_value2 = get_value_from_stack(-1, info);
@@ -250,7 +250,7 @@ class sMatchNode extends sNodeBase
         sNode*% it_node = self.it_node;
         sNode*% match_node = self.match_node;
         
-        if(!node_compile(it_node, info)) {
+        node_compile(it_node, info).elif {
             return false;
         }
         
@@ -258,7 +258,7 @@ class sMatchNode extends sNodeBase
         add_come_code(info, "%s;\n", come_value.c_value);
         dec_stack_ptr(1, info);
         
-        if(!node_compile(match_node, info)) {
+        node_compile(match_node, info).elif {
             return false;
         }
         
@@ -302,7 +302,7 @@ class sIfMethodNode extends sNodeBase
         sNode*% it_node = self.it_node;
         sNode*% match_node = self.match_node;
         
-        if(!node_compile(it_node, info)) {
+        node_compile(it_node, info).elif {
             return false;
         }
         
@@ -310,7 +310,7 @@ class sIfMethodNode extends sNodeBase
         add_come_code(info, "%s;\n", come_value.c_value);
         dec_stack_ptr(1, info);
         
-        if(!node_compile(match_node, info)) {
+        node_compile(match_node, info).elif {
             return false;
         }
         
@@ -355,7 +355,7 @@ class sOrStatmentNode extends sNodeBase
         sNode* expression_node = self.mExpressionNode;
     
         info.without_semicolon = true;
-        if(!node_compile(expression_node)) {
+        node_compile(expression_node).elif {
             return false;
         }
         info.without_semicolon = false;
@@ -411,7 +411,7 @@ class sAndStatmentNode extends sNodeBase
         sNode* expression_node = self.mExpressionNode;
     
         info.without_semicolon = true;
-        if(!node_compile(expression_node)) {
+        node_compile(expression_node).elif {
             return false;
         }
         info.without_semicolon = false;
@@ -467,7 +467,7 @@ class sMultipleNode extends sNodeBase
         
         CVALUE*% come_value = null
         foreach(it, multiple_node) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             

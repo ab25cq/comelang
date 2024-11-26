@@ -27,7 +27,7 @@ class sNewNode extends sNodeBase
         num_string.append_str("1");
         
         foreach(it, type->mArrayNum) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             
@@ -76,7 +76,7 @@ class sNewNode extends sNodeBase
             foreach(it, initializer) {
                 var name, exp = it;
                 
-                if(!node_compile(exp)) {
+                node_compile(exp).elif {
                     return false;
                 }
                 
@@ -184,7 +184,7 @@ class sImplementsNode extends sNodeBase
         sNode*% obj_exp = clone self.obj_exp;
         sType*% inf_type = clone self.inf_type;
         
-        if(!node_compile(obj_exp)) {
+        node_compile(obj_exp).elif {
             return false;
         }
         
@@ -395,7 +395,7 @@ class sSizeOfExpNode extends sNodeBase
     {
         sNode*% exp = self.exp;
         
-        if(!node_compile(exp)) {
+        node_compile(exp).elif {
             return false;
         }
         
@@ -471,7 +471,7 @@ class sTypeOfExpNode extends sNodeBase
     {
         sNode*% exp = self.exp;
         
-        if(!node_compile(exp)) {
+        node_compile(exp).elif {
             return false;
         }
         
@@ -514,7 +514,7 @@ class sDynamicTypeOfNode extends sNodeBase
     {
         sNode*% exp = self.exp;
         
-        if(!node_compile(exp)) {
+        node_compile(exp).elif {
             return false;
         }
         
@@ -611,7 +611,7 @@ class sAlignOfExpNode extends sNodeBase
     {
         sNode*% exp = self.exp;
         
-        if(!node_compile(exp)) {
+        node_compile(exp).elif {
             return false;
         }
         
@@ -688,7 +688,7 @@ class sAlignOfExpNode2 extends sNodeBase
     {
         sNode*% exp = self.exp;
         
-        if(!node_compile(exp)) {
+        node_compile(exp).elif {
             return false;
         }
         
@@ -765,7 +765,7 @@ class sAlignAsExpNode extends sNodeBase
     {
         sNode*% exp = self.exp;
         
-        if(!node_compile(exp)) {
+        node_compile(exp).elif {
             return false;
         }
         
@@ -805,7 +805,7 @@ class sDeleteNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -838,7 +838,7 @@ class sBorrowNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -880,7 +880,7 @@ class sCloneNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -934,7 +934,7 @@ class sDupeNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -985,7 +985,7 @@ class sDummyHeapNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -1018,7 +1018,7 @@ class sGCIncNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -1056,7 +1056,7 @@ class sGCDecNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -1091,7 +1091,7 @@ class sGCDecNoFreeNode extends sNodeBase
     {
         sNode* node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         

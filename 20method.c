@@ -31,7 +31,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
 {
     sNode*% current_stack_frame_node = new sCurrentNode(info) implements sNode;
     
-    if(!node_compile(current_stack_frame_node)) {
+    node_compile(current_stack_frame_node).elif {
         return false;
     }
     
@@ -119,7 +119,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
    
     sNode*% node = parse_function(info);
     
-    if(!node_compile(node)) {
+    node_compile(node).elif {
         return false;
     }
     
@@ -216,7 +216,7 @@ class sMethodCallNode extends sNodeBase
         method_generics_types_before = info->method_generics_types;
         info->method_generics_types = clone self.method_generics_types;
         
-        if(!node_compile(obj)) {
+        node_compile(obj).elif {
             return false;
         }
         
@@ -294,7 +294,7 @@ class sMethodCallNode extends sNodeBase
                                 i++;
                             }
                             else {
-                                if(!node_compile(node)) {
+                                node_compile(node).elif {
                                     return false;
                                 }
                                 
@@ -333,7 +333,7 @@ class sMethodCallNode extends sNodeBase
                                 i++;
                             }
                             else {
-                                if(!node_compile(node)) {
+                                node_compile(node).elif {
                                     return false;
                                 }
                                 
@@ -396,7 +396,7 @@ class sMethodCallNode extends sNodeBase
                     i++;
                 }
                 else {
-                    if(!node_compile(node)) {
+                    node_compile(node).elif {
                         return false;
                     }
                     
@@ -610,7 +610,7 @@ class sMethodCallNode extends sNodeBase
                     first_param = false;
                 }
                 else if(label) {
-                    if(!node_compile(node)) {
+                    node_compile(node).elif {
                         return false;
                     }
                     
@@ -657,7 +657,7 @@ class sMethodCallNode extends sNodeBase
                 else if(label) {
                 }
                 else {
-                    if(!node_compile(node)) {
+                    node_compile(node).elif {
                         return false;
                     }
                     
@@ -703,7 +703,7 @@ class sMethodCallNode extends sNodeBase
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
-                            if(!node_compile(it)) {
+                            node_compile(it).elif {
                                 err_msg(info, "invalid array num");
                                 exit(1);
                             }
@@ -733,7 +733,7 @@ class sMethodCallNode extends sNodeBase
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
-                            if(!node_compile(it)) {
+                            node_compile(it).elif {
                                 err_msg(info, "invalid array num");
                                 exit(1);
                             }
@@ -762,7 +762,7 @@ class sMethodCallNode extends sNodeBase
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
-                            if(!node_compile(it)) {
+                            node_compile(it).elif {
                                 err_msg(info, "invalid array num");
                                 exit(1);
                             }
@@ -791,7 +791,7 @@ class sMethodCallNode extends sNodeBase
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
-                            if(!node_compile(it)) {
+                            node_compile(it).elif {
                                 err_msg(info, "invalid array num");
                                 exit(1);
                             }
@@ -820,7 +820,7 @@ class sMethodCallNode extends sNodeBase
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
-                            if(!node_compile(it)) {
+                            node_compile(it).elif {
                                 err_msg(info, "invalid array num");
                                 exit(1);
                             }
@@ -865,7 +865,7 @@ class sMethodCallNode extends sNodeBase
                         
                         sNode*% node = expression();
                         
-                        if(!node_compile(node)) {
+                        node_compile(node).elif {
                             return false;
                         }
                         

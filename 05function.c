@@ -491,7 +491,7 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             info.sname = node.sname->();
             
             if(i == block->mNodes.length()-1 && if_result && block->mOmitSemicolon) {
-                if(!node_compile(node)) {
+                node_compile(node).elif {
                     printf("%s %d: compiling is failed(5)\n", info->sname, info->sline);
                     exit(2);
                 }
@@ -536,7 +536,7 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
                 }
             }
             else {
-                if(!node_compile(node)) {
+                node_compile(node).elif {
                     printf("%s %d: compiling is failed(5)\n", info->sname, info->sline);
                     exit(2);
                 }
@@ -911,7 +911,7 @@ void transpile_toplevel(bool block=false, sInfo* info=info)
         parse_sharp();
         
         if(node != null) {
-            if(!node_compile(node)) {
+            node_compile(node).elif {
                 printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
                 exit(2);
             }
@@ -1769,7 +1769,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     
     bool in_generics_fun = info.in_generics_fun;
     info.in_generics_fun = true;
-    if(!node_compile(node)) {
+    node_compile(node).elif {
         return false
     }
     info.in_generics_fun = in_generics_fun;
@@ -1877,7 +1877,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     
     sNode*% node = new sFunNode(fun, info) implements sNode;
     
-    if(!node_compile(node)) {
+    node_compile(node).elif {
         return false
     }
     
@@ -2421,7 +2421,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
             exit(2);
         }
@@ -2561,7 +2561,7 @@ sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, s
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
             exit(2);
         }
@@ -2706,7 +2706,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             err_msg(info, "compiling error");
             exit(2);
         }
@@ -2871,7 +2871,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             err_msg(info, "compiling error");
             exit(2);
         }
@@ -3033,7 +3033,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             err_msg(info, "compiling error");
             exit(2);
         }
@@ -3180,7 +3180,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             err_msg(info, "compiling error(X)");
             exit(2);
         }
@@ -3367,7 +3367,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             err_msg(info, "compiling error(Y)");
             exit(2);
         }
@@ -3534,7 +3534,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         
         sNode*% node = new sFunNode(fun, info) implements sNode;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             err_msg(info, "compiling error(Y)");
             exit(2);
         }

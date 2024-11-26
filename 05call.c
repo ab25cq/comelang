@@ -43,7 +43,7 @@ class sReturnNode extends sNodeBase
                 }
             }
             
-            if(!node_compile(self.value)) {
+            node_compile(self.value).elif {
                 return false;
             }
             
@@ -327,7 +327,7 @@ class sWildCard extends sNodeBase
     {
         sNode*% value_node = create_load_var(s"Value");
         
-        if(!node_compile(value_node, info)) {
+        node_compile(value_node, info).elif {
             return false;
         }
         return true;
@@ -510,7 +510,7 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
-                if(!node_compile(node)) {
+                node_compile(node).elif {
                     return false;
                 }
                 
@@ -617,7 +617,7 @@ class sFunCallNode extends sNodeBase
                     foreach(it, params) {
                         var label, node = it;
                         
-                        if(!node_compile(node)) {
+                        node_compile(node).elif {
                             return false;
                         }
                         
@@ -660,7 +660,7 @@ class sFunCallNode extends sNodeBase
                 foreach(it, params) {
                     var label, node = it;
                     
-                    if(!node_compile(node)) {
+                    node_compile(node).elif {
                         return false;
                     }
                     
@@ -822,7 +822,7 @@ class sFunCallNode extends sNodeBase
                 foreach(it, params) {
                     var label, node = it;
                     
-                    if(!node_compile(node)) {
+                    node_compile(node).elif {
                         return false;
                     }
                     
@@ -889,7 +889,7 @@ class sFunCallNode extends sNodeBase
                     if(fun.mVarArgs || fun_name === "__builtin_va_start") {
                     }
                     else if(label) {
-                        if(!node_compile(node)) {
+                        node_compile(node).elif {
                             return false;
                         }
                         
@@ -921,7 +921,7 @@ class sFunCallNode extends sNodeBase
                     var label, node = it;
                     
                     if(fun.mVarArgs || fun_name === "__builtin_va_start") {
-                        if(!node_compile(node)) {
+                        node_compile(node).elif {
                             return false;
                         }
                         
@@ -943,7 +943,7 @@ class sFunCallNode extends sNodeBase
                     else if(label) {
                     }
                     else {
-                        if(!node_compile(node)) {
+                        node_compile(node).elif {
                             return false;
                         }
                         
@@ -998,7 +998,7 @@ class sFunCallNode extends sNodeBase
                             
                             sNode*% node = expression();
                             
-                            if(!node_compile(node)) {
+                            node_compile(node).elif {
                                 return false;
                             }
                             
@@ -1035,7 +1035,7 @@ class sFunCallNode extends sNodeBase
                 if(method_block) {
                     sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
                     
-                    if(!node_compile(current_stack_frame_node)) {
+                    node_compile(current_stack_frame_node).elif {
                         return false;
                     }
                     
@@ -1123,7 +1123,7 @@ class sFunCallNode extends sNodeBase
                    
                     sNode*% node = parse_function(info);
                     
-                    if(!node_compile(node)) {
+                    node_compile(node).elif {
                         return false;
                     }
                     
@@ -1245,7 +1245,7 @@ class sComeCallNode extends sNodeBase
         
         sNode*% var_node = store_var(var_name, null@multiple_assign, null@multiple_declare, type_@type, true@alloc, null@right_value, info);
         
-        if(!node_compile(var_node)) {
+        node_compile(var_node).elif {
             return false;
         }
         
@@ -1261,7 +1261,7 @@ class sComeCallNode extends sNodeBase
         
         sNode*% null_node = create_null_node();
         
-        if(!node_compile(null_node)) {
+        node_compile(null_node).elif {
             return false;
         }
         
@@ -1272,7 +1272,7 @@ class sComeCallNode extends sNodeBase
         
         sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
         
-        if(!node_compile(current_stack_frame_node)) {
+        node_compile(current_stack_frame_node).elif {
             return false;
         }
         
@@ -1304,7 +1304,7 @@ class sComeCallNode extends sNodeBase
        
         sNode*% node = parse_function(info);
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -1389,7 +1389,7 @@ class sComeJoinNode extends sNodeBase
     {
         sNode*% node = self.node;
         
-        if(!node_compile(node)) {
+        node_compile(node).elif {
             return false;
         }
         
@@ -1448,7 +1448,7 @@ class sComePollNode extends sNodeBase
         
         int n = 0;
         foreach(it, self.vars) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             
@@ -1508,7 +1508,7 @@ class sLambdaCall extends sNodeBase
         sNode*% node = self.node;
         list<tup: string,sNode*%>* params = self.params;
         
-        if(!node_compile(node, info)) {
+        node_compile(node, info).elif {
             return false;
         }
         
@@ -1536,7 +1536,7 @@ class sLambdaCall extends sNodeBase
         foreach(it, params) {
             var label, node = it;
             
-            if(!node_compile(node)) {
+            node_compile(node).elif {
                 return false;
             }
             

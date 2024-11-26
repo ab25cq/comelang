@@ -67,7 +67,7 @@ class sForNode extends sNodeBase
             info.without_semicolon = true;
             bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
             info.comma_instead_of_semicolon = true;
-            if(!node_compile(expression_node)) {
+            node_compile(expression_node).elif {
                 return false;
             }
             info.comma_instead_of_semicolon = comma_instead_of_semicolon;
@@ -106,7 +106,7 @@ class sForNode extends sNodeBase
             info.without_semicolon = true;
             bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
             info.comma_instead_of_semicolon = true;
-            if(!node_compile(expression_node2)) {
+            node_compile(expression_node2).elif {
                 return false;
             }
             info.without_semicolon = false;
@@ -151,7 +151,7 @@ class sForNode extends sNodeBase
             bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
             info.comma_instead_of_semicolon = true;
             info.without_semicolon = true;
-            if(!node_compile(expression_node3)) {
+            node_compile(expression_node3).elif {
                 return false;
             }
             info.without_semicolon = false;

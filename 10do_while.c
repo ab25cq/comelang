@@ -42,7 +42,7 @@ class sDoWhileNode extends sNodeBase
         bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
         info.without_semicolon = true;
-        if(!node_compile(expression_node)) {
+        node_compile(expression_node).elif {
             return false;
         }
         info.without_semicolon = false;

@@ -68,7 +68,7 @@ class sGlobalVariable extends sNodeBase
                 }
             }
             else if(right_node) {
-                if(!node_compile(right_node)) {
+                node_compile(right_node).elif {
                     return false;
                 }
                 

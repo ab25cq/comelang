@@ -77,7 +77,7 @@ class sEnumNode extends sNodeBase
                 add_variable_to_global_table_with_int_value(name, new sType("int"), c_value, info);
             }
             else {
-                if(!node_compile(value)) {
+                node_compile(value).elif {
                     return false;
                 }
                 

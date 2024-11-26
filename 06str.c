@@ -58,7 +58,7 @@ class sSStringNode extends sNodeBase
         
         if(self.exps.length() > 0) {
             foreach(it, self.exps) {
-                if(!node_compile(it)) {
+                node_compile(it).elif {
                     return false;
                 }
                 
@@ -257,7 +257,7 @@ class sRegexNode extends sNodeBase
         
         sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, info);
         
-        if(!node_compile(node, info)) {
+        node_compile(node, info).elif {
             return false;
         }
         
@@ -299,12 +299,12 @@ class sListNode extends sNodeBase
                 sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 exp = create_nullable_node(exp);
                 
-                if(!node_compile(exp)) {
+                node_compile(exp).elif {
                     return false;
                 }
             }
             else {
-                if(!node_compile(it)) {
+                node_compile(it).elif {
                     return false;
                 }
             }
@@ -490,12 +490,12 @@ class sTupleNode extends sNodeBase
             if(it->kind() === "sWildCard") {
                 sNode*% value_node = create_load_var(s"Value");
                 sNode*% exp = load_field(value_node, xsprintf("v%d", n+1));
-                if(!node_compile(exp)) {
+                node_compile(exp).elif {
                     return false;
                 }
             }
             else {
-                if(!node_compile(it)) {
+                node_compile(it).elif {
                     return false;
                 }
             }
@@ -635,7 +635,7 @@ class sSomeNode extends sNodeBase
         list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
         
         foreach(it, tuple_elements) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             
@@ -937,7 +937,7 @@ class sNoneNode extends sNodeBase
         
         int i = 0;
         foreach(it, tuple_elements) {
-            if(!node_compile(it)) {
+            node_compile(it).elif {
                 return false;
             }
             
@@ -1108,7 +1108,7 @@ class sMapNode extends sNodeBase
                     exp = create_nullable_node(exp);
                 }
                 
-                if(!node_compile(exp)) {
+                node_compile(exp).elif {
                     return false;
                 }
                 
@@ -1119,7 +1119,7 @@ class sMapNode extends sNodeBase
                 map_key_type = clone come_value.type;
             }
             else {
-                if(!node_compile(key_elements)) {
+                node_compile(key_elements).elif {
                     return false;
                 }
                 
@@ -1151,7 +1151,7 @@ class sMapNode extends sNodeBase
                     exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                     exp2 = create_nullable_node(exp2);
                 }
-                if(!node_compile(exp2)) {
+                node_compile(exp2).elif {
                     return false;
                 }
                 
@@ -1166,7 +1166,7 @@ class sMapNode extends sNodeBase
                 map_element_type = clone come_value2.type;
             }
             else {
-                if(!node_compile(elements)) {
+                node_compile(elements).elif {
                     return false;
                 }
                 

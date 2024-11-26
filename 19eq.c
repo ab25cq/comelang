@@ -19,7 +19,7 @@ class sPlusPlusNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -73,7 +73,7 @@ class sMinusMinusNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -128,7 +128,7 @@ class sPlusEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -137,7 +137,7 @@ class sPlusEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -192,7 +192,7 @@ class sMinusEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -201,7 +201,7 @@ class sMinusEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -256,7 +256,7 @@ class sMultEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -265,7 +265,7 @@ class sMultEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -320,7 +320,7 @@ class sDivEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -329,7 +329,7 @@ class sDivEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -384,7 +384,7 @@ class sModEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -393,7 +393,7 @@ class sModEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -448,7 +448,7 @@ class sLShifEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -457,7 +457,7 @@ class sLShifEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -512,7 +512,7 @@ class sRShiftEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -521,7 +521,7 @@ class sRShiftEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -576,7 +576,7 @@ class sXorEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -585,7 +585,7 @@ class sXorEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -640,7 +640,7 @@ class sOrEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -649,7 +649,7 @@ class sOrEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -704,7 +704,7 @@ class sAndEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -713,7 +713,7 @@ class sAndEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         
@@ -768,7 +768,7 @@ class sExpEqualNode extends sNodeBase
     {
         sNode* left = self.mLeft;
         
-        if(!node_compile(left)) {
+        node_compile(left).elif {
             return false;
         }
         
@@ -777,7 +777,7 @@ class sExpEqualNode extends sNodeBase
         
         sNode* right = self.mRight;
         
-        if(!node_compile(right)) {
+        node_compile(right).elif {
             return false;
         }
         

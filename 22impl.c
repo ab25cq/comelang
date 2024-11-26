@@ -63,7 +63,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93
             parse_sharp(info);
             
             if(node != null) {
-                if(!node_compile(node)) {
+                node_compile(node).elif {
                     err_msg(info, "compiling is faield(Y)");
                     exit(2);
                 }
