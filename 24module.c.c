@@ -1295,22 +1295,18 @@ struct sType
     int mTypedefOriginalPointerNum;
     struct sNode* mSizeNum;
     int mFunctionPointerNum;
-    unsigned int mDynamicArrayNum;
-    unsigned int mTypeOfExpression;
     char* mOriginalTypeName;
     int mOriginalPointerNum;
     _Bool mFunctionParam;
     _Bool mAllocaValue;
     _Bool mGenericsStruct;
     _Bool mSolvedGenericsName;
-    _Bool mComeMemCore;
     _Bool mInline;
     _Bool mNullValue;
     _Bool mGuardValue;
     char* mAsmName;
     _Bool mArrayPointerType;
     _Bool mLambdaArray;
-    _Bool mNoNumberArray;
     _Bool mTypedef;
     _Bool mMultipleTypes;
     _Bool mOriginIsArray;
@@ -2532,8 +2528,6 @@ static struct sModuleNode* sModuleNode_clone(struct sModuleNode* self);
 static void sHeaderNode_finalize(struct sHeaderNode* self);
 static struct sHeaderNode* sHeaderNode_clone(struct sHeaderNode* self);
 // uniq global variable
-// source head3
-
 // inline function
 static inline _Bool die(char* msg){
     perror(msg);

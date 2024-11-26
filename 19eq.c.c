@@ -1295,22 +1295,18 @@ struct sType
     int mTypedefOriginalPointerNum;
     struct sNode* mSizeNum;
     int mFunctionPointerNum;
-    unsigned int mDynamicArrayNum;
-    unsigned int mTypeOfExpression;
     char* mOriginalTypeName;
     int mOriginalPointerNum;
     _Bool mFunctionParam;
     _Bool mAllocaValue;
     _Bool mGenericsStruct;
     _Bool mSolvedGenericsName;
-    _Bool mComeMemCore;
     _Bool mInline;
     _Bool mNullValue;
     _Bool mGuardValue;
     char* mAsmName;
     _Bool mArrayPointerType;
     _Bool mLambdaArray;
-    _Bool mNoNumberArray;
     _Bool mTypedef;
     _Bool mMultipleTypes;
     _Bool mOriginIsArray;
@@ -2692,8 +2688,6 @@ static struct sOrEqualNode* sOrEqualNode_clone(struct sOrEqualNode* self);
 static void sExpEqualNode_finalize(struct sExpEqualNode* self);
 static struct sExpEqualNode* sExpEqualNode_clone(struct sExpEqualNode* self);
 // uniq global variable
-// source head3
-
 // inline function
 static inline _Bool die(char* msg){
     perror(msg);
@@ -4371,12 +4365,6 @@ struct sType* __result84__;
     if(    self!=((void*)0)) {
         result_74->mFunctionPointerNum=self->mFunctionPointerNum;
     }
-    if(    self!=((void*)0)) {
-        result_74->mDynamicArrayNum=self->mDynamicArrayNum;
-    }
-    if(    self!=((void*)0)) {
-        result_74->mTypeOfExpression=self->mTypeOfExpression;
-    }
     if(    self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)) {
         __dec_obj62=result_74->mOriginalTypeName;
         result_74->mOriginalTypeName=(char*)come_increment_ref_count(string_clone(self->mOriginalTypeName));
@@ -4398,9 +4386,6 @@ struct sType* __result84__;
         result_74->mSolvedGenericsName=self->mSolvedGenericsName;
     }
     if(    self!=((void*)0)) {
-        result_74->mComeMemCore=self->mComeMemCore;
-    }
-    if(    self!=((void*)0)) {
         result_74->mInline=self->mInline;
     }
     if(    self!=((void*)0)) {
@@ -4419,9 +4404,6 @@ struct sType* __result84__;
     }
     if(    self!=((void*)0)) {
         result_74->mLambdaArray=self->mLambdaArray;
-    }
-    if(    self!=((void*)0)) {
-        result_74->mNoNumberArray=self->mNoNumberArray;
     }
     if(    self!=((void*)0)) {
         result_74->mTypedef=self->mTypedef;

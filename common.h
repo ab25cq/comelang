@@ -122,9 +122,6 @@ struct sType
     sNode*% mSizeNum;
     int mFunctionPointerNum;
     
-    unsigned int mDynamicArrayNum;
-    unsigned int mTypeOfExpression;
-
     string mOriginalTypeName;
     int mOriginalPointerNum;
     
@@ -140,7 +137,6 @@ struct sType
     string mAsmName;
     bool mArrayPointerType;
     bool mLambdaArray;
-    bool mNoNumberArray;
     
     bool mTypedef;
     

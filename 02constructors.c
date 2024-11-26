@@ -93,12 +93,8 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
     self.mNoHeap = false;
     
     self.mPointerNum = pointer_num;
-    self.mNoArrayPointerNum = 0;
     self.mSizeNum = null;
     
-    self.mDynamicArrayNum = 0;
-    self.mTypeOfExpression = 0;
-
     self.mOriginalTypeName = string("");
     self.mOriginalPointerNum = 0;
     

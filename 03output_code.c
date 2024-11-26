@@ -122,7 +122,7 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str(class_name);
     }
     
-    if(type->mNoArrayPointerNum == 0 && class_name !== "lambda" && !no_pointer && type->mOriginalTypeName !== "va_list" && type->mOriginalTypeName !== "__builtin_va_list") {
+    if(class_name !== "lambda" && !no_pointer && type->mOriginalTypeName !== "va_list" && type->mOriginalTypeName !== "__builtin_va_list") {
         for(int i=0; i<type->mPointerNum; i++) {
             buf.append_str("*");
         }
@@ -162,7 +162,7 @@ string make_come_type_name_string(sType* type, sInfo* info=info)
         buf.append_str(">");
     }
     
-    if(type->mNoArrayPointerNum == 0 && class_name !== "lambda") {
+    if(class_name !== "lambda") {
         for(int i=0; i<type->mPointerNum; i++) {
             buf.append_str("*");
         }
@@ -310,13 +310,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
         buf.append_str(type_str);
         
         buf.append_str(" ");
-        if(type2->mNoArrayPointerNum > 0) {
-            buf.append_str("(*");
-        }
         buf.append_str(name);
-        if(type2->mNoArrayPointerNum > 0) {
-            buf.append_str(")");
-        }
         
         foreach(it, type2->mArrayNum) {
             if(!node_compile(it)) {
@@ -347,13 +341,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
         buf.append_str(type_str);
         
         buf.append_str(" ");
-        if(type2->mNoArrayPointerNum > 0) {
-            buf.append_str("(*");
-        }
         buf.append_str(name);
-        if(type2->mNoArrayPointerNum > 0) {
-            buf.append_str(")");
-        }
         
         if(type2->mArrayPointerType) {
             buf.append_str("[]");
@@ -425,7 +413,7 @@ string make_come_type_name_string_no_solved(sType* type, bool original_type_name
             buf.append_str(">");
         }
         
-        if(no_solved_type->mNoArrayPointerNum == 0 && class_name !== "lambda") {
+        if(class_name !== "lambda") {
             for(int i=0; i<no_solved_type->mPointerNum; i++) {
                 buf.append_str("*");
             }

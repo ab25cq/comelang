@@ -1295,22 +1295,18 @@ struct sType
     int mTypedefOriginalPointerNum;
     struct sNode* mSizeNum;
     int mFunctionPointerNum;
-    unsigned int mDynamicArrayNum;
-    unsigned int mTypeOfExpression;
     char* mOriginalTypeName;
     int mOriginalPointerNum;
     _Bool mFunctionParam;
     _Bool mAllocaValue;
     _Bool mGenericsStruct;
     _Bool mSolvedGenericsName;
-    _Bool mComeMemCore;
     _Bool mInline;
     _Bool mNullValue;
     _Bool mGuardValue;
     char* mAsmName;
     _Bool mArrayPointerType;
     _Bool mLambdaArray;
-    _Bool mNoNumberArray;
     _Bool mTypedef;
     _Bool mMultipleTypes;
     _Bool mOriginIsArray;
@@ -2675,8 +2671,6 @@ struct tuple2$2sFunpcharph* create_to_string_automatically(struct sType* type, c
 static void sFunNode_finalize(struct sFunNode* self);
 static struct sFunNode* sFunNode_clone(struct sFunNode* self);
 // uniq global variable
-// source head3
-
 // inline function
 static inline _Bool die(char* msg){
     perror(msg);
@@ -4325,12 +4319,6 @@ struct sType* __result86__;
     if(    self!=((void*)0)) {
         result_70->mFunctionPointerNum=self->mFunctionPointerNum;
     }
-    if(    self!=((void*)0)) {
-        result_70->mDynamicArrayNum=self->mDynamicArrayNum;
-    }
-    if(    self!=((void*)0)) {
-        result_70->mTypeOfExpression=self->mTypeOfExpression;
-    }
     if(    self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)) {
         __dec_obj61=result_70->mOriginalTypeName;
         result_70->mOriginalTypeName=(char*)come_increment_ref_count(string_clone(self->mOriginalTypeName));
@@ -4352,9 +4340,6 @@ struct sType* __result86__;
         result_70->mSolvedGenericsName=self->mSolvedGenericsName;
     }
     if(    self!=((void*)0)) {
-        result_70->mComeMemCore=self->mComeMemCore;
-    }
-    if(    self!=((void*)0)) {
         result_70->mInline=self->mInline;
     }
     if(    self!=((void*)0)) {
@@ -4373,9 +4358,6 @@ struct sType* __result86__;
     }
     if(    self!=((void*)0)) {
         result_70->mLambdaArray=self->mLambdaArray;
-    }
-    if(    self!=((void*)0)) {
-        result_70->mNoNumberArray=self->mNoNumberArray;
     }
     if(    self!=((void*)0)) {
         result_70->mTypedef=self->mTypedef;
@@ -7599,12 +7581,6 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !int_equals(left->mFunctionPointerNum,right->mFunctionPointerNum)) {
         return (_Bool)0;
     }
-    if(    !int_equals(left->mDynamicArrayNum,right->mDynamicArrayNum)) {
-        return (_Bool)0;
-    }
-    if(    !int_equals(left->mTypeOfExpression,right->mTypeOfExpression)) {
-        return (_Bool)0;
-    }
     if(    !string_equals(left->mOriginalTypeName,right->mOriginalTypeName)) {
         return (_Bool)0;
     }
@@ -7623,9 +7599,6 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !bool_equals(left->mSolvedGenericsName,right->mSolvedGenericsName)) {
         return (_Bool)0;
     }
-    if(    !bool_equals(left->mComeMemCore,right->mComeMemCore)) {
-        return (_Bool)0;
-    }
     if(    !bool_equals(left->mInline,right->mInline)) {
         return (_Bool)0;
     }
@@ -7642,9 +7615,6 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mLambdaArray,right->mLambdaArray)) {
-        return (_Bool)0;
-    }
-    if(    !bool_equals(left->mNoNumberArray,right->mNoNumberArray)) {
         return (_Bool)0;
     }
     if(    !bool_equals(left->mTypedef,right->mTypedef)) {
@@ -7774,12 +7744,6 @@ static _Bool sType_operator_equals(struct sType* left, struct sType* right){
     if(    int_operator_not_equals(left->mFunctionPointerNum,right->mFunctionPointerNum)) {
         return (_Bool)0;
     }
-    if(    int_operator_not_equals(left->mDynamicArrayNum,right->mDynamicArrayNum)) {
-        return (_Bool)0;
-    }
-    if(    int_operator_not_equals(left->mTypeOfExpression,right->mTypeOfExpression)) {
-        return (_Bool)0;
-    }
     if(    string_operator_not_equals(left->mOriginalTypeName,right->mOriginalTypeName)) {
         return (_Bool)0;
     }
@@ -7798,9 +7762,6 @@ static _Bool sType_operator_equals(struct sType* left, struct sType* right){
     if(    bool_operator_not_equals(left->mSolvedGenericsName,right->mSolvedGenericsName)) {
         return (_Bool)0;
     }
-    if(    bool_operator_not_equals(left->mComeMemCore,right->mComeMemCore)) {
-        return (_Bool)0;
-    }
     if(    bool_operator_not_equals(left->mInline,right->mInline)) {
         return (_Bool)0;
     }
@@ -7817,9 +7778,6 @@ static _Bool sType_operator_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    bool_operator_not_equals(left->mLambdaArray,right->mLambdaArray)) {
-        return (_Bool)0;
-    }
-    if(    bool_operator_not_equals(left->mNoNumberArray,right->mNoNumberArray)) {
         return (_Bool)0;
     }
     if(    bool_operator_not_equals(left->mTypedef,right->mTypedef)) {
