@@ -1,20 +1,9 @@
-#include <stdio.h>
-
-uniq int gVar = 123;
-
-uniq void fun()
-{
-    printf("%d\n", gVar);
-}
+#include <comelang.h>
+#include <comelang-str.h>
 
 int main(int argc, char** argv)
 {
-    fun();
-    printf("gVar %d\n", gVar);
-    
-    char* p = (void*)0;
-    
-    *p = 1;
+    "ABCDEFG".sub_block(/(.+)/) { "?" + it2[0] + "?" }.puts();
     
     return 0;
 }

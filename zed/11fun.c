@@ -511,6 +511,7 @@ bool vm(sInfo* info) version 10
                         }
                     }
                     else if(fun_name === "sub_block") {
+puts("LLL");
                         if(params.length() == 1 && params[0].kind == kRegexValue) {
                             come_regex* param0 = params[0].regexValue;
                             
