@@ -855,12 +855,31 @@ sNode*% pre_position_operator(sInfo* info=info)
         
         /// backtrace ///
         bool tuple_expression_flag = false;
+        bool named_tuple_expression_flag = false;
         if(!gComeC)
         {
             char* p = info.p;
             int sline = info.sline;
             
             parse_sharp();
+            
+            {
+                char* p = info.p;
+                int sline = info.sline;
+                if(*info->p == '_' || xisalpha(*info->p)) {
+                    parse_word();
+                }
+                
+                if(*info->p == ':') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    named_tuple_expression_flag = true;
+                }
+                else {
+                    info->p = p;
+                    info->sline = sline;
+                }
+            }
             
             bool no_comma = info.no_comma;
             info.no_comma = true;
@@ -930,7 +949,7 @@ sNode*% pre_position_operator(sInfo* info=info)
         else if(!gComeC && tuple_expression_flag) {
             parse_sharp();
             
-            sNode*% node = parse_tuple(info);
+            sNode*% node = parse_tuple(info, named_tuple_expression_flag);
             
             parse_sharp();
             

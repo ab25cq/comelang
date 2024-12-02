@@ -1310,6 +1310,7 @@ struct sType
     _Bool mTypedef;
     _Bool mMultipleTypes;
     _Bool mOriginIsArray;
+    char* mTupleName;
 };
 
 struct CVALUE
@@ -2406,7 +2407,7 @@ struct sNode* create_null_value(struct sType* type, struct sInfo* info);
 struct sNode* create_null_return_value(struct sInfo* info);
 struct sNode* create_some(struct sNode* exp, struct sInfo* info);
 struct sNode* expression_node_v96(struct sInfo* info);
-struct sNode* parse_tuple(struct sInfo* info);
+struct sNode* parse_tuple(struct sInfo* info, _Bool named_tuple);
 struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
 struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
@@ -3878,7 +3879,7 @@ char* buf_88;
 void* __right_value125 = (void*)0;
 struct sNode* node_89;
 _Bool Value_90;
-struct sType* __dec_obj39;
+struct sType* __dec_obj40;
 char* source_tail_91;
 void* __right_value126 = (void*)0;
 void* __right_value127 = (void*)0;
@@ -3953,9 +3954,9 @@ struct sNode* __result68__;
         }
         expected_next_character(125,info);
         list$1charph_reset(info->generics_type_names);
-        __dec_obj39=info->impl_type;
+        __dec_obj40=info->impl_type;
         info->impl_type=((void*)0);
-        come_call_finalizer3(__dec_obj39,sType_finalize, 0, 0, 0, 0, (void*)0);
+        come_call_finalizer3(__dec_obj40,sType_finalize, 0, 0, 0, 0, (void*)0);
         source_tail_91=info->p;
         header_92=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "22impl.c", 82, "buffer"))));
         buffer_append(header_92,source_head_66,source_tail_91-source_head_66);
@@ -4070,6 +4071,7 @@ struct tuple1$1sTypeph* __dec_obj34;
 struct sNode* __dec_obj36;
 char* __dec_obj37;
 char* __dec_obj38;
+char* __dec_obj39;
     if(    self!=((void*)0)&&self->mNoSolvedGenericsType!=((void*)0)) {
         if(        self->mNoSolvedGenericsType==gComeFunResultObject) {
             __dec_obj20=self->mNoSolvedGenericsType;
@@ -4185,6 +4187,15 @@ char* __dec_obj38;
         }
         else {
             /* U13 */self->mAsmName = come_decrement_ref_count2(self->mAsmName, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        }
+    }
+    if(    self!=((void*)0)&&self->mTupleName!=((void*)0)) {
+        if(        self->mTupleName==gComeFunResultObject) {
+            __dec_obj39=self->mTupleName;
+            /*G*/ __dec_obj39 = come_decrement_ref_count2(__dec_obj39, (void*)0, (void*)0, 0,0,0, (void*)0);
+        }
+        else {
+            /* U13 */self->mTupleName = come_decrement_ref_count2(self->mTupleName, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
     }
 }

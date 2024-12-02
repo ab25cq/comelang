@@ -467,11 +467,11 @@ class sListNode extends sNodeBase
 
 class sTupleNode extends sNodeBase
 {
-    new(list<sNode*%>*% tuple_elements, sInfo* info)
+    new(list<tup: string, sNode*%>*% tuple_elements, sInfo* info)
     {
         self.super();
         
-        list<sNode*%>*% self.tuple_elements = tuple_elements;
+        list<tup: string, sNode*%>*% self.tuple_elements = tuple_elements;
     }
     
     string kind()
@@ -481,13 +481,15 @@ class sTupleNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        list<sNode*%>* tuple_elements = self.tuple_elements;
+        list<tup: string, sNode*%>* tuple_elements = self.tuple_elements;
         list<sType*%>*% tuple_types = new list<sType*%>();
         list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
         
         int n = 0;
         foreach(it, tuple_elements) {
-            if(it->kind() === "sWildCard") {
+            var name, node = it;
+            
+            if(node->kind() === "sWildCard") {
                 sNode*% value_node = create_load_var(s"Value");
                 sNode*% exp = load_field(value_node, xsprintf("v%d", n+1));
                 node_compile(exp).elif {
@@ -495,7 +497,7 @@ class sTupleNode extends sNodeBase
                 }
             }
             else {
-                node_compile(it).elif {
+                node_compile(node).elif {
                     return false;
                 }
             }
@@ -504,7 +506,9 @@ class sTupleNode extends sNodeBase
             dec_stack_ptr(1, info);
             
             tuple_values.push_back(clone come_value);
-            tuple_types.push_back(clone come_value.type);
+            sType*% type = clone come_value.type;
+            type->mTupleName = name;
+            tuple_types.push_back(type);
             
             n++;
         }
@@ -2520,11 +2524,18 @@ sNode*% expression_node(sInfo* info) version 96
     return (sNode*%)null;
 }
 
-sNode*% parse_tuple(sInfo* info)
+sNode*% parse_tuple(sInfo* info, bool named_tuple=false)
 {
-    list<sNode*%>*% tuple_elements = new list<sNode*%>();
+    list<tup: string, sNode*%>*% tuple_elements = new list<tup: string, sNode*%>();
     while(true) {
         char* p = info.p;
+        
+        string name;
+        if(named_tuple) {
+            name = parse_word();
+            
+            expected_next_character(':', info);
+        }
         
         bool no_comma = info.no_comma;
         info.no_comma = true;
@@ -2534,7 +2545,7 @@ sNode*% parse_tuple(sInfo* info)
         
         info.no_comma = no_comma;
         
-        tuple_elements.push_back(node);
+        tuple_elements.push_back((clone name, node));
         
         if(*info->p == ',') {
             info->p++;

@@ -1,9 +1,20 @@
 #include <comelang.h>
-#include <comelang-str.h>
 
-int main(int argc, char** argv)
+int fun(tup: int:xx, int:yy tup)
 {
-    "ABCDEFG".sub_block(/(.+)/) { "?" + it2[0] + "?" }.puts();
+    puts(s"xx \{tup.xx} yy \{tup.yy}");
+}
+
+int main(int argc, char** argv) 
+{
+    var tup = (x:1, y:2);    
     
+    fun(tup);
+    
+    tup = (y:3,z:4);
+    
+    puts(s"x \{tup.x} y \{tup.y}");
+
     return 0;
 }
+

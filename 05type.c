@@ -1954,6 +1954,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
     }
     
+    string tuple_name = null;
+    if(*info->p == ':' && *(info->p+1) != ':') {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        tuple_name = parse_word();
+    }
+    
     bool lambda_flag = false;
     {
         char* pX = info.p;
@@ -2409,6 +2417,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mTupleName = tuple_name;
         }
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
@@ -2435,6 +2444,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mTupleName = tuple_name;
         }
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
@@ -2461,6 +2471,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mTupleName = tuple_name;
         }
         else if(*info->p == '<') {
             info->p++;
@@ -2528,6 +2539,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mTupleName = tuple_name;
         }
         else {
             if(struct_) {
@@ -2565,6 +2577,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mTupleName = tuple_name;
         }
         
         skip_pointer_attribute();

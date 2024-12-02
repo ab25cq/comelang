@@ -142,6 +142,8 @@ struct sType
     
     bool mMultipleTypes;
     bool mOriginIsArray;
+    
+    string mTupleName;
 };
 
 struct sVar;
@@ -657,7 +659,7 @@ int expected_next_character(char c, sInfo* info=info);
 sBlock*% sBlock*::initialize(sBlock*% self, sInfo* info);
 bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info);
 
-tup: sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);
+sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);
 tup: sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* info);
 sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_self_at_last=false, bool in_function=false);
 int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* param_names, sInfo* info, bool no_var_table=false, bool loop_block=false, bool comma=false, bool if_result=false);
@@ -686,7 +688,7 @@ sNode*% create_null_value(sType*% type, sInfo* info=info);
 sNode*% create_null_return_value(sInfo* info=info);
 sNode*% create_some(sNode*% exp, sInfo* info);
 sNode*% expression_node(sInfo* info=info) version 96;
-sNode*% parse_tuple(sInfo* info);
+sNode*% parse_tuple(sInfo* info, bool named_tuple=false);
 sNode*% parse_some(sInfo* info);
 sNode*% parse_none(sInfo* info);
 
