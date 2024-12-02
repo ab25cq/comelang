@@ -1,20 +1,25 @@
 #include <comelang.h>
 
-int fun(tup: int:xx, int:yy tup)
+char* gGender[2] = { "Male", "Female" };
+enum eGender { kMale, kFemale };
+
+void show(tup:(string:name, int:age, int:gender) t)
 {
-    puts(s"xx \{tup.xx} yy \{tup.yy}");
+     puts(s"name \{t.name} age \{t.age} gender \{gGender[t.gender]}");
 }
 
 int main(int argc, char** argv) 
 {
-    var tup = (x:1, y:2);    
-    
-    fun(tup);
-    
-    tup = (y:3,z:4);
-    
-    puts(s"x \{tup.x} y \{tup.y}");
+     var ken = (name: s"Ken", age:32, gender:kMale );
+     var ryu = (name: s"Ryu", age:32, gender:kMale );
 
-    return 0;
+     var clone_ryu = clone ryu;
+     clone_ryu.name = s"CloneRyu";
+
+     show(ken);
+     show(ryu);
+     show(clone_ryu);
+
+     return 0;
 }
 

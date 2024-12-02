@@ -12,7 +12,8 @@ bool is_type_name(char* buf, sInfo* info=info)
         return (type && type->mTypedef) || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || (klass && klass->mNumber) || (klass && klass->mFloat) || buf === "void" || buf === "_Nullable" || generics_class || generics_type_name || mgenerics_type_name;
     }
     else {
-        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable" || buf === "exception" || (buf === "tup" && *info->p == ':');
+        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable" || buf === "exception" 
+        || (buf === "tup" && (*info->p == ':' || *info->p == '('))
     }
 }
 
@@ -1878,7 +1879,13 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type_name = parse_word();
         }
         else if(type_name === "tup") {
-            expected_next_character(':');
+            if(*info->p == '(') {
+                info->p++;
+                skip_spaces_and_lf();
+            }
+            else {
+                expected_next_character(':');
+            }
             
             type_name = parse_word();
             
@@ -2691,6 +2698,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
                     
                 types.push_back(clone type2);
+            }
+            
+            if(*info->p == ')') {
+                info->p++;
+                skip_spaces_and_lf();
             }
             
             int num_tuples = types.length();
