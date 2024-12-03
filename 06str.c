@@ -31,6 +31,49 @@ class sStrNode extends sNodeBase
     }
 }
 
+class sBufferNode extends sNodeBase
+{
+    new(buffer*% value, size_t size, sInfo* info)
+    {
+        self.super();
+        
+        buffer*% self.value = value;
+        size_t self.size = size;
+    }
+    
+    string kind()
+    {
+        return string("sBufferNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        buffer*% value = self.value;
+        size_t size = self.size;
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        buffer*% buf = new buffer();
+        
+        buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\")), \"%s, %ld)", info->sname, info->sline, value.to_string(), size);
+        
+        sType*% type2 = new sType("buffer*");
+        type2->mHeap = true;
+        
+        come_value.c_value = buf.to_string();
+        come_value.type = clone type2;
+        come_value.var = null;
+        
+        append_object_to_right_values2(come_value, type2,info);
+        
+        info.stack.push_back(come_value);
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        return true;
+    }
+}
+
 class sSStringNode extends sNodeBase
 {
     new(string value, list<sNode*%>*% exps, int sline, sInfo* info)
@@ -1574,6 +1617,140 @@ sNode*% expression_node(sInfo* info) version 96
         skip_spaces_and_lf();
         
         return new sStrNode(value.to_string(), sline, info) implements sNode;
+    }
+    else if((*info->p == 'b' || *info->p == 'B') && *(info->p+1) == '"') 
+    {
+        info->p+=2;
+
+        int sline = info->sline;
+
+        buffer*% value = new buffer();
+
+        size_t size = 0;
+        while(1) {
+            if(*info->p == '"') {
+                value.append_char(*info->p);
+                info->p++;
+                
+                char* p = info->p;
+                int sline = info->sline;
+                
+                skip_spaces_and_lf();
+                
+                if(*info->p == '"') {
+                    info->p++;
+                }
+                else {
+                    info->p = p;
+                    info->sline = sline;
+                    break;
+                }
+            }
+            else if(*info->p == '\\') {
+                value.append_char('\\');
+                info->p++;
+                
+                if(xisdigit(*info->p)) {
+                    int len = 0;
+                    while(xisdigit(*info->p) && len < 3) {
+                        value.append_char(*info->p);
+                        info->p++;
+                        len++;
+                    }
+                    size++;
+                }
+                else if(*info->p == 'x' || *info->p == 'X') {
+                    value.append_char(*info->p);
+                    info->p++;
+                    
+                    while(*info->p >= '0' && *info->p <= '9' || *info->p >= 'a' && *info->p <= 'f' || *info->p >= 'A' && *info->p <= 'F') {
+                        value.append_char(*info->p);
+                        info->p++;
+                    }
+                    size++;
+                }
+                else {
+                    switch(*info->p) {
+                        case '0':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case 'n':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case 't':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case 'r':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case 'v':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case 'f':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case 'a':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case 'b':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        case '\\':
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+    
+                        default:
+                            value.append_char(*info->p);
+                            info->p++;
+                            size++;
+                            break;
+                    }
+                }
+            }
+            else if(*info->p == '\0') {
+                int sline2 = info->sline;
+                info->sline = sline;
+                err_msg(info, "close \" to make embbeded string value");
+                exit(2);
+            }
+            else {
+                if(*info->p == '\n') info->sline++;
+
+                value.append_char(*info->p);
+                info->p++;
+                size++;
+            }
+        }
+
+        skip_spaces_and_lf();
+        
+        return new sBufferNode(value, size, info) implements sNode;
     }
     else if(*info->p == '/') {
         info->p++;

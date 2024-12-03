@@ -887,31 +887,6 @@ string char*::strip(char* self)
     return result;
 }
 
-string char*::printable(char* str)
-{
-    int len = str.length();
-    string result = new char[len*2+1];
-
-    int n = 0;
-    for(int i=0; i<len; i++) {
-        char c = str[i];
-
-        if((c >= 0 && c < ' ') 
-            || c == 127)
-        {
-            result[n++] = '^';
-            result[n++] = c + 'A' - 1;
-        }
-        else {
-            result[n++] = c;
-        }
-    }
-
-    result[n] = '\0'
-
-    return result;
-}
-
 string wchar_t*::to_string(wchar_t* wstr)
 {
     int len = MB_LEN_MAX*(wcslen(wstr)+1);

@@ -117,11 +117,6 @@ static inline string string::strip(char* self)
     return char*::strip(self);
 }
 
-string char*::printable(char* str);
-static inline string string::printable(char* str)
-{
-    return string::printable(str);
-}
 
 wstring char*::to_wstring(char* str);
 static inline wstring string::to_wstring(char* str)

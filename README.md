@@ -22,13 +22,10 @@ int, string fun2()
 
 class sData
 {
-    int a;
-    int b;
-    
     new(int a, int b)
     {
-        self.a = b;
-        self.b = b;
+        int self.a = b;
+        int self.b = b;
     }
     
     void show()
@@ -39,13 +36,11 @@ class sData
 
 class sData2 extends sData
 {
-    int c;
-   
     new(int a, int b, int c)
     {
         self.a = a;
         self.b = b;
-        self.c = c;
+        int self.c = c;
     }
 };
 
@@ -95,12 +90,7 @@ int main()
         printf("%s %d\n", key, item); // AAA 1\nBBB 2\nCCC 3\n
     }
 
-    puts("ABC".substring(0,1));   // A\n
-
-    int fd = open("ABC", O_RDONLY).except {
-        fprintf(stderr, "can't open ABC");
-        exit(1);
-    }
+    puts("ABC"[0..1]);   // A\n
 
     3.times {
         puts("HELLO METHOD BLOCK");
@@ -108,13 +98,13 @@ int main()
 
     var li2 = [1,2,3]
 
-    li.filter { return it > 1; }.each {
+    li.filter { it > 1 }.each {
         printf("%d\n", it);       // 2\n3\n
     }
     
     var li2 = ["1", "2", "3", "4", "5"]
 
-    [3,1,2,7].filter { return it > 2; }.each { printf("%d\n", it); }   // 3\n7\n
+    [3,1,2,7].filter { it > 2 }.each { it.printf("%d\n"); }   // 3\n7\n
     
     var ma1 = ["AAA":1, "BBB":2, "CCC":3];
     
@@ -124,8 +114,9 @@ int main()
     
     fopen("AAA", "w").fprintf("ABC\n").fclose();
     
-    fopen_block("AAA", "r") {
-        it.read().print();   // ABC\n
+    fopen("AAA", "r").if {
+        Value.read().print();   // ABC\n
+        fclose(Value);
     }
     
     puts("AAA".read());   // ABC\n\n
@@ -1506,9 +1497,11 @@ vector<T>*% sort(vector<T>* self) ;
 
 # buffer
 
-Buffer is memory that can be appended.
+Buffer is memory that can be appended. Expression of buffer is b"".
 
 bufferは追記できるメモリーです。
+
+bufferの値の表現はb""です。
 
 ```
 #include <comelang.h>

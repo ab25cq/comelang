@@ -2368,6 +2368,7 @@ struct buffer
 };
 
 buffer*% buffer*::initialize(buffer*% self);
+buffer*% buffer*::initialize_with_value(buffer*% self, char* mem, size_t size);
 void buffer*::finalize(buffer* self);
 buffer*% buffer*::clone(buffer* self);
 int buffer*::length(buffer* self);
@@ -2386,6 +2387,7 @@ int buffer*::compare(buffer* left, buffer* right);
 buffer*% string::to_buffer(char* self);
 buffer*% char*::to_buffer(char* self);
 string buffer*::to_string(buffer* self);
+string buffer*::printable(buffer* self);
 
 static inline buffer*% char[]::to_buffer(char* self, size_t len) 
 {
@@ -3196,6 +3198,12 @@ int __builtin_bswap32(int x) ;
 long __builtin_bswap64(long x) ;
 short __builtin_bswap16(short x) ;
 */
+
+string char*::printable(char* str);
+static inline string string::printable(char* str)
+{
+    return string::printable(str);
+}
 
 #endif
 #endif

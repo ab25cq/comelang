@@ -973,6 +973,18 @@ buffer*% buffer*::initialize(buffer*% self)
     return self;
 }
 
+buffer*% buffer*::initialize_with_value(buffer*% self, char* mem, size_t size) 
+{
+    self.size = 128;
+    self.buf = new char[self.size];
+    self.buf[0] = '\0';
+    self.len = 0;
+    
+    self.append(mem, size);
+
+    return self;
+}
+
 void buffer*::finalize(buffer* self)
 {
     if(self && self.buf) delete borrow self.buf;
@@ -3020,4 +3032,54 @@ int floating::operator_gt(floating* left, floating* right)
 string floating::to_string(floating* self)
 {
     return self.value.to_string();
+}
+
+string buffer*::printable(buffer* self)
+{
+    int len = self.len;
+    string result = new char[len*2+1];
+
+    int n = 0;
+    for(int i=0; i<len; i++) {
+        char c = self.buf[i];
+
+        if((c >= 0 && c < ' ') 
+            || c == 127)
+        {
+            result[n++] = '^';
+            result[n++] = c + 'A' - 1;
+        }
+        else {
+            result[n++] = c;
+        }
+    }
+
+    result[n] = '\0'
+
+    return result;
+}
+
+string char*::printable(char* str)
+{
+    int len = str.length();
+    string result = new char[len*2+1];
+
+    int n = 0;
+    for(int i=0; i<len; i++) {
+        char c = str[i];
+
+        if((c >= 0 && c < ' ') 
+            || c == 127)
+        {
+            result[n++] = '^';
+            result[n++] = c + 'A' - 1;
+        }
+        else {
+            result[n++] = c;
+        }
+    }
+
+    result[n] = '\0'
+
+    return result;
 }

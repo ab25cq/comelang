@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-uniq int gVar = 123;
-
 uniq void fun()
 {
-    printf("%d\n", gVar);
+    printf("%s", "\0x01\0x02");
+    
+    return 0
 }
