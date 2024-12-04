@@ -2,7 +2,8 @@
 
 int main(int argc, char** argv)
 {
-    puts(b"\00abc\00".printable());
+    b"\0\03\04\xff".printable().puts();
 
     return 0;
 }
+

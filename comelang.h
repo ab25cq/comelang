@@ -2362,7 +2362,7 @@ impl tuple5 <T, T2, T3, T4, T5>
 //////////////////////////////
 struct buffer 
 {
-    char*% buf;
+    unsigned char*% buf;
     int len;
     int size;
 };
@@ -2388,6 +2388,11 @@ buffer*% string::to_buffer(char* self);
 buffer*% char*::to_buffer(char* self);
 string buffer*::to_string(buffer* self);
 string buffer*::printable(buffer* self);
+
+static inline unsigned char* buffer*::head_pointer(buffer* self)
+{
+    return self.buf;
+}
 
 static inline buffer*% char[]::to_buffer(char* self, size_t len) 
 {
@@ -3073,6 +3078,12 @@ string string::delete(char* str, int head, int tail);
 list<string>*% string::split_char(char* self, char c) ;
 list<string>*% char*::split_char(char* self, char c);
 
+string char*::printable(char* str);
+static inline string string::printable(char* str)
+{
+    return string::printable(str);
+}
+
 //////////////////////////////
 /// base library(path library)
 //////////////////////////////
@@ -3198,12 +3209,6 @@ int __builtin_bswap32(int x) ;
 long __builtin_bswap64(long x) ;
 short __builtin_bswap16(short x) ;
 */
-
-string char*::printable(char* str);
-static inline string string::printable(char* str)
-{
-    return string::printable(str);
-}
 
 #endif
 #endif

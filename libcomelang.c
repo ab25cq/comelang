@@ -2037,11 +2037,14 @@ string char*::delete(char* str, int head, int tail)
         tail = len;
     }
     
-    string sub_str = str.substring(tail, -1);
+    char*% result = new char[len-(tail-head)+1];
+    
+    memcpy(result, str, head);
+    memcpy(result + head, str + tail, len-tail);
+    
+    result[len -(tail-head)] = '\0';
 
-    memcpy(str + head, sub_str, sub_str.length()+1);
-
-    return string(str);
+    return result;
 }
 
 string string::delete(char* str, int head, int tail) 
@@ -3041,13 +3044,16 @@ string buffer*::printable(buffer* self)
 
     int n = 0;
     for(int i=0; i<len; i++) {
-        char c = self.buf[i];
+        unsigned char c = self.buf[i];
 
         if((c >= 0 && c < ' ') 
             || c == 127)
         {
             result[n++] = '^';
             result[n++] = c + 'A' - 1;
+        }
+        else if(c > 127) {
+            result[n++] = '?';
         }
         else {
             result[n++] = c;

@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 8.2.1
+version 8.2.2
 
 ``` C
 #include <comelang.h>
@@ -319,6 +319,7 @@ sh all_build.sh
 # Histories
 
 ```
+8.2.2 char*::delete bug is fiexed.
 8.2.1 buffer expression.
 8.2.0 named tuple.
 8.1.8 named tuple.

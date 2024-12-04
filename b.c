@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-uniq void fun()
+int main(int argc, char** argv)
 {
-    printf("%s", "\0x01\0x02");
+    printf("%c\n", 0xff);
     
-    return 0
+    return 0;
 }
