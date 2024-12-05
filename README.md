@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 8.2.2
+version 8.2.3
 
 ``` C
 #include <comelang.h>
@@ -185,8 +185,6 @@ int main()
     int zzz = 123;
     puts(s"zzz == \{zzz}");    // zzz == 123
     
-    puts(s"zzz == $zzz");      // zzz == 123
-    
     puts(s"1+1 == \{1+1}");    // 1+1 == 2
     
     var str2 = string("ABCDEF");
@@ -319,6 +317,7 @@ sh all_build.sh
 # Histories
 
 ```
+8.2.3 Remove $ function with emebbed string.
 8.2.2 char*::delete bug is fiexed.
 8.2.1 buffer expression.
 8.2.0 named tuple.
@@ -2621,7 +2620,6 @@ int main(int argc, char* argv)
     int c = 123;
     
     puts(s"c == \{c}");   // c == 123;
-    puts(s"c == $c");     // c == 123;
     
     puts(s"1 + 1 == \{1+1}");   // 1+1 == 2;
     
