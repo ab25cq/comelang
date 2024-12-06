@@ -1,23 +1,18 @@
-#include <comelang.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+struct sData
+{
+    int a;
+    int b;
+    float c;
+};
 
 int main(int argc, char** argv)
 {
-    int fd = open("XXX"@file_name, O_WRONLY|O_CREAT@open_flag, 0644@permission).less {
-        perror("open");
-        exit(2);
-        -1
-    }
-    write(fd, "ABC\n", 4@size).less {
-        perror("write");
-        exit(2);
-    }
-
-    close(fd).less {
-        perror("close");
-        exit(2);
-    }
-
+    printf("%d\n", sizeof(struct sData));
+    
     return 0;
 }
+
