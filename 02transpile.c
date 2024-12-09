@@ -642,6 +642,10 @@ module MEvalOptions<T, T2>
             output_file_name = string(argv[i+1]);
             i++;
         }
+        else if(argv[i] === "-e" && i+1 < argc) {
+            linker_option.append_str(s"-e \{argv[i+1]");
+            i++;
+        }
         else if(argv[i] === "-str") {
             gComeStr = true;
         }
