@@ -285,14 +285,14 @@ install:
 	$(INSTALL) -m 644 ./libcomelang-str-gc.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-net-gc.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-pthread-gc.a "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang.c.o "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-str.c.o "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-net.c.o "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-pthread.c.o "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-gc.c.o "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-str-gc.c.o "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-net-gc.c.o "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-pthread-gc.c.o "$(DESTDIR)/lib"
+	if test -e ./libcomelang.c.o; then $(INSTALL) -m 644 ./libcomelang.c.o "$(DESTDIR)/lib"; fi
+	if test -e ./libcomelang-str.c.o; then $(INSTALL) -m 644 ./libcomelang-str.c.o "$(DESTDIR)/lib"; fi
+	if test -e ./libcomelang-net.c.o; then $(INSTALL) -m 644 ./libcomelang-net.c.o "$(DESTDIR)/lib"; fi
+	if test -e ./libcomelang-pthtread.c.o; then $(INSTALL) -m 644 ./libcomelang-pthread.c.o "$(DESTDIR)/lib"; fi
+	if test -e ./libcomelang-gc.c.o; then $(INSTALL) -m 644 ./libcomelang-gc.c.o "$(DESTDIR)/lib"; fi
+	if test -e ./libcomelang-str-gc.c.o; then $(INSTALL) -m 644 ./libcomelang-str-gc.c.o "$(DESTDIR)/lib"; fi
+	if test -e ./libcomelang-net-gc.c.o; then $(INSTALL) -m 644 ./libcomelang-net-gc.c.o "$(DESTDIR)/lib"; fi
+	if test -e ./libcomelang-pthtread-gc.c.o; then $(INSTALL) -m 644 ./libcomelang-pthread-gc.c.o "$(DESTDIR)/lib"; fi
 	mkdir -p "$(DESTDIR)/share/doc/comelang"
 	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/comelang/README.md"
 
