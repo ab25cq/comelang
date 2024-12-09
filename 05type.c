@@ -1962,7 +1962,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     }
     
     string tuple_name = null;
-    if(*info->p == ':' && *(info->p+1) != ':') {
+    if(*info->p == ':' && *(info->p+1) != ':' && type_name !== "int") {
         info->p++;
         skip_spaces_and_lf();
         

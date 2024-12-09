@@ -8692,7 +8692,7 @@ result_type_348 = (void*)0;
         }
     }
     tuple_name_310=((void*)0);
-    if(    *info->p==58&&*(info->p+1)!=58) {
+    if(    *info->p==58&&*(info->p+1)!=58&&string_operator_not_equals(type_name_251,"int")) {
         info->p++;
         skip_spaces_and_lf(info);
         __dec_obj218=tuple_name_310;
