@@ -327,17 +327,37 @@ static bool linker(sInfo* info, list<string>* object_files)
     
     if(gComeStr) {
         if(gComeGC) {
-            command.append_str(" -lcomelang-str-gc -lpcre ");
+            if(is_mac == 0) {
+                command.append_format(" %s/lib/libcomelang-str-gc.c.o -lpcre ", PREFIX);
+            }
+            else {
+                command.append_str(" -lcomelang-str-gc -lpcre ");
+            }
         }
         else {
-            command.append_str(" -lcomelang-str -lpcre ");
+            if(is_mac == 0) {
+                command.append_format(" %s/lib/libcomelang-str.c.o -lpcre ", PREFIX);
+            }
+            else {
+                command.append_str(" -lcomelang-str -lpcre ");
+            }
         }
     }
     if(gComeGC) {
-        command.append_str(" -lcomelang-gc -lgc ");
+        if(is_mac == 0) {
+            command.append_format(" %s/lib/libcomelang-gc.c.o -lgc ", PREFIX);
+        }
+        else {
+            command.append_str(" -lcomelang-gc -lgc ");
+        }
     }
     if(gComePthread) {
-        command.append_str(" -lcomelang-pthread -lpthread ");
+        if(is_mac == 0) {
+            command.append_format(" %s/lib/libcomelang-pthread.c.o -lpthread ", PREFIX);
+        }
+        else {
+            command.append_str(" -lcomelang-pthread -lpthread ");
+        }
     }
     if(gComeNet) {
         int is_apline = system("which apk 1> /dev/null 2>/dev/null");
@@ -360,6 +380,14 @@ static bool linker(sInfo* info, list<string>* object_files)
                 command.append_str(" -lcomelang-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
             }
         }
+        else if(is_mac == 0) {
+            if(gComeGC) {
+                command.append_format(" %s/lib/libcomelang-net-gc.c.o -lssl `mysql_config --cflags --libs`", PREFIX);
+            }
+            else {
+                command.append_format(" %s/lib/libcomelang-net.c.o -lssl `mysql_config --cflags --libs`", PREFIX);
+            }
+        }
         else { // Ohter
             if(gComeGC) {
                 command.append_str(" -lcomelang-net-gc -lssl `mysql_config --cflags --libs`");
@@ -371,7 +399,12 @@ static bool linker(sInfo* info, list<string>* object_files)
     }
     
     if(!info.nocomelib) {
-        command.append_str(" -lcomelang ");
+        if(is_mac == 0) {
+            command.append_format(" %s/lib/libcomelang.c.o ", PREFIX);
+        }
+        else {
+            command.append_str(" -lcomelang ");
+        }
     }
     
     if(info.verbose) puts(command.to_string());

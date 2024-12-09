@@ -285,6 +285,14 @@ install:
 	$(INSTALL) -m 644 ./libcomelang-str-gc.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-net-gc.a "$(DESTDIR)/lib"
 	$(INSTALL) -m 644 ./libcomelang-pthread-gc.a "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang.c.o "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-str.c.o "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-net.c.o "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-pthread.c.o "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-gc.c.o "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-str-gc.c.o "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-net-gc.c.o "$(DESTDIR)/lib"
+	$(INSTALL) -m 644 ./libcomelang-pthread-gc.c.o "$(DESTDIR)/lib"
 	mkdir -p "$(DESTDIR)/share/doc/comelang"
 	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/comelang/README.md"
 
@@ -315,5 +323,13 @@ uninstall:
 	rm -f "$(DESTDIR)"/lib/libcomelang-str-gc.a
 	rm -f "$(DESTDIR)"/lib/libcomelang-net-gc.a
 	rm -f "$(DESTDIR)"/lib/libcomelang-pthread-gc.a
+	rm -f "$(DESTDIR)"/lib/libcomelang.c.o
+	rm -f "$(DESTDIR)"/lib/libcomelang-str.c.o
+	rm -f "$(DESTDIR)"/lib/libcomelang-net.c.o
+	rm -f "$(DESTDIR)"/lib/libcomelang-pthread.c.o
+	rm -f "$(DESTDIR)"/lib/libcomelang-gc.c.o
+	rm -f "$(DESTDIR)"/lib/libcomelang-str-gc.c.o
+	rm -f "$(DESTDIR)"/lib/libcomelang-net-gc.c.o
+	rm -f "$(DESTDIR)"/lib/libcomelang-pthread-gc.c.o
 	rm -f "$(DESTDIR)/share/doc/comelang/README.md"
 

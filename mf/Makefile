@@ -36,7 +36,7 @@ TARGET_DEBUG=mf-debug
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ -lncurses -lreadline -str
+	$(CC) $(CFLAGS) $^ -o $@ -v -lncurses -lreadline -str
 
 $(TARGET_DEBUG): $(DEBUG_OBJS)
 	$(CC) $(CFLAGS_DEBUG) $^ -o $@ -lncurses -lreadline -str
