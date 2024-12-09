@@ -2277,88 +2277,16 @@ sNode*% expression_node(sInfo* info) version 96
                 }
             }
             else if(*info->p == '\\') {
+                value.append_char('\\');
                 info->p++;
                 
-                if(xisdigit(*info->p)) {
-                    int len = 0;
-                    int n = 0;
-                    while(xisdigit(*info->p) && len < 3) {
-                        n = n * 8 + *info->p - '0';
-                        info->p++;
-                        len++;
-                    }
-                    
-                    value.append_char(n);
-                }
-                else if(*info->p == 'x' || *info->p == 'X') {
+                if(*info->p == '"') {
+                    value.append_char('"');
                     info->p++;
-                    
-                    char buf[128];
-                    strncpy(buf, "0x", 128);
-                    while(*info->p >= '0' && *info->p <= '9' || *info->p >= 'a' && *info->p <= 'f' || *info->p >= 'A' && *info->p <= 'F') {
-                        char buf2[2];
-                        buf2[0] = *info->p;
-                        buf2[1] = '\0';
-                        info->p++;
-                        strncat(buf, buf2, 128);
-                    }
-                    
-                    unsigned long lont int n = strtoll(buf, NULL, 0);
-                    
-                    value.append_char((char)n);
                 }
                 else {
-                    switch(*info->p) {
-                        case '0':
-                            value.append_char('\0');
-                            info->p++;
-                            break;
-    
-                        case 'n':
-                            value.append_char('\n');
-                            info->p++;
-                            break;
-    
-                        case 't':
-                            value.append_char('\t');
-                            info->p++;
-                            break;
-    
-                        case 'r':
-                            value.append_char('\r');
-                            info->p++;
-                            break;
-    
-                        case 'v':
-                            value.append_char('\v');
-                            info->p++;
-                            break;
-    
-                        case 'f':
-                            value.append_char('\f');
-                            info->p++;
-                            break;
-    
-                        case 'a':
-                            value.append_char('\a');
-                            info->p++;
-                            break;
-    
-                        case 'b':
-                            value.append_char('\b');
-                            info->p++;
-                            break;
-    
-                        case '\\':
-                            value.append_char('\\');
-                            info->p++;
-                            break;
-    
-                        default:
-                            value.append_char(*info->p);
-                            info->p++;
-                            break;
-                    }
+                    value.append_char(*info->p);
+                    info->p++;
                 }
             }
             else if(*info->p == '\0') {
