@@ -1,13 +1,17 @@
 /// previous struct definition ///
-struct __sFILEX;
+struct _IO_FILE;
 
-struct fssearchblock;
+struct _IO_marker;
 
-struct searchstate;
+struct _IO_codecvt;
+
+struct _IO_wide_data;
+
+struct obstack;
 
 struct cmsghdr;
 
-struct sockaddr;
+struct sigevent;
 
 struct stack_st_OPENSSL_STRING;
 
@@ -20,8 +24,6 @@ struct stack_st_BIGNUM;
 struct stack_st_BIGNUM_const;
 
 struct stack_st_void;
-
-struct stack_st_SSL_COMP;
 
 struct stack_st_BIO;
 
@@ -101,28 +103,32 @@ struct stack_st_SRTP_PROTECTION_PROFILE;
 
 struct stack_st_SSL_CIPHER;
 
+struct stack_st_SSL_COMP;
+
 struct lhash_st_ERR_STRING_DATA;
 
-struct Vio;
+struct st_ma_pvio;
 
-struct MYSQL;
-
-struct MEM_ROOT;
-
-struct st_mysql_options_extention;
-
-struct MYSQL_METHODS;
-
-struct MYSQL_STMT;
-
-struct MYSQL_STMT_EXT;
+struct st_ma_connection_plugin;
 
 /// struct definition ///
+typedef unsigned long  int size_t;
+
+typedef __builtin_va_list __gnuc_va_list;
+
+typedef unsigned char __u_char;
+
+typedef unsigned short int __u_short;
+
+typedef unsigned int __u_int;
+
+typedef unsigned long  int __u_long;
+
 typedef char __int8_t;
 
 typedef unsigned char __uint8_t;
 
-typedef short __int16_t;
+typedef short int __int16_t;
 
 typedef unsigned short int __uint16_t;
 
@@ -130,814 +136,232 @@ typedef int __int32_t;
 
 typedef unsigned int __uint32_t;
 
-typedef long  long __int64_t;
+typedef long  int __int64_t;
 
-typedef unsigned long  long __uint64_t;
+typedef unsigned long  int __uint64_t;
 
-typedef long __darwin_intptr_t;
+typedef char __int_least8_t;
 
-typedef unsigned int __darwin_natural_t;
+typedef unsigned char __uint_least8_t;
 
-typedef int __darwin_ct_rune_t;
+typedef short int __int_least16_t;
 
-union anonymous_typeZ1
+typedef unsigned short int __uint_least16_t;
+
+typedef int __int_least32_t;
+
+typedef unsigned int __uint_least32_t;
+
+typedef long  int __int_least64_t;
+
+typedef unsigned long  int __uint_least64_t;
+
+typedef long  int __quad_t;
+
+typedef unsigned long  int __u_quad_t;
+
+typedef long  int __intmax_t;
+
+typedef unsigned long  int __uintmax_t;
+
+typedef unsigned long  int __dev_t;
+
+typedef unsigned int __uid_t;
+
+typedef unsigned int __gid_t;
+
+typedef unsigned long  int __ino_t;
+
+typedef unsigned long  int __ino64_t;
+
+typedef unsigned int __mode_t;
+
+typedef unsigned long  int __nlink_t;
+
+typedef long  int __off_t;
+
+typedef long  int __off64_t;
+
+typedef int __pid_t;
+
+struct anonymous_typeX1
 {
-char __mbstate8[128];
-long  long _mbstateL;
+    int __val[2];
 };
 
-typedef union anonymous_typeZ1 __mbstate_t;
+typedef struct anonymous_typeX1 __fsid_t;
 
-typedef union anonymous_typeZ1 __darwin_mbstate_t;
+typedef long  int __clock_t;
 
-typedef long  int __darwin_ptrdiff_t;
+typedef unsigned long  int __rlim_t;
 
-typedef unsigned long  int __darwin_size_t;
+typedef unsigned long  int __rlim64_t;
 
-typedef __builtin_va_list __darwin_va_list;
+typedef unsigned int __id_t;
 
-typedef int __darwin_wchar_t;
+typedef long  int __time_t;
 
-typedef int __darwin_rune_t;
+typedef unsigned int __useconds_t;
 
-typedef int __darwin_wint_t;
+typedef long  int __suseconds_t;
 
-typedef unsigned long  int __darwin_clock_t;
+typedef long  int __suseconds64_t;
 
-typedef unsigned int __darwin_socklen_t;
+typedef int __daddr_t;
 
-typedef long __darwin_ssize_t;
+typedef int __key_t;
 
-typedef long __darwin_time_t;
+typedef int __clockid_t;
 
-typedef long  long __darwin_blkcnt_t;
+typedef void* __timer_t;
 
-typedef int __darwin_blksize_t;
+typedef long  int __blksize_t;
 
-typedef int __darwin_dev_t;
+typedef long  int __blkcnt_t;
 
-typedef unsigned int __darwin_fsblkcnt_t;
+typedef long  int __blkcnt64_t;
 
-typedef unsigned int __darwin_fsfilcnt_t;
+typedef unsigned long  int __fsblkcnt_t;
 
-typedef unsigned int __darwin_gid_t;
+typedef unsigned long  int __fsblkcnt64_t;
 
-typedef unsigned int __darwin_id_t;
+typedef unsigned long  int __fsfilcnt_t;
 
-typedef unsigned long  long __darwin_ino64_t;
+typedef unsigned long  int __fsfilcnt64_t;
 
-typedef unsigned long  long __darwin_ino_t;
+typedef long  int __fsword_t;
 
-typedef unsigned int __darwin_mach_port_name_t;
+typedef long  int __ssize_t;
 
-typedef unsigned int __darwin_mach_port_t;
+typedef long  int __syscall_slong_t;
 
-typedef unsigned short int __darwin_mode_t;
+typedef unsigned long  int __syscall_ulong_t;
 
-typedef long  long __darwin_off_t;
+typedef long  int __loff_t;
 
-typedef int __darwin_pid_t;
+typedef char* __caddr_t;
 
-typedef unsigned int __darwin_sigset_t;
+typedef long  int __intptr_t;
 
-typedef int __darwin_suseconds_t;
+typedef unsigned int __socklen_t;
 
-typedef unsigned int __darwin_uid_t;
+typedef int __sig_atomic_t;
 
-typedef unsigned int __darwin_useconds_t;
-
-typedef unsigned char __darwin_uuid_t[16];
-
-typedef char __darwin_uuid_string_t[37];
-
-struct __darwin_pthread_handler_rec
+union anonymous_typeZ3
 {
-    void (*__routine)(void*);
-    void* __arg;
-    struct __darwin_pthread_handler_rec* __next;
+unsigned int __wch;
+char __wchb[4];
 };
 
-struct _opaque_pthread_attr_t
+union anonymous_typeZ4
 {
-    long __sig;
-    char __opaque[56];
+unsigned int __wch;
+char __wchb[4];
 };
 
-struct _opaque_pthread_cond_t
+struct anonymous_typeX2
 {
-    long __sig;
-    char __opaque[40];
+    int __count;
+    union anonymous_typeZ4 __value;
 };
 
-struct _opaque_pthread_condattr_t
+typedef struct anonymous_typeX2 __mbstate_t;
+
+struct _G_fpos_t
 {
-    long __sig;
-    char __opaque[8];
+    long  int __pos;
+    struct anonymous_typeX2 __state;
 };
 
-struct _opaque_pthread_mutex_t
+typedef struct _G_fpos_t __fpos_t;
+
+struct _G_fpos64_t
 {
-    long __sig;
-    char __opaque[56];
+    long  int __pos;
+    struct anonymous_typeX2 __state;
 };
 
-struct _opaque_pthread_mutexattr_t
+typedef struct _G_fpos64_t __fpos64_t;
+
+typedef struct _IO_FILE __FILE;
+
+typedef struct _IO_FILE FILE;
+
+typedef void _IO_lock_t;
+
+struct _IO_FILE
 {
-    long __sig;
-    char __opaque[8];
+    int _flags;
+    char* _IO_read_ptr;
+    char* _IO_read_end;
+    char* _IO_read_base;
+    char* _IO_write_base;
+    char* _IO_write_ptr;
+    char* _IO_write_end;
+    char* _IO_buf_base;
+    char* _IO_buf_end;
+    char* _IO_save_base;
+    char* _IO_backup_base;
+    char* _IO_save_end;
+    struct _IO_marker* _markers;
+    struct _IO_FILE* _chain;
+    int _fileno;
+    int _flags2;
+    long  int _old_offset;
+    unsigned short int _cur_column;
+    char _vtable_offset;
+    char _shortbuf[1];
+    void* _lock;
+    long  int _offset;
+    struct _IO_codecvt* _codecvt;
+    struct _IO_wide_data* _wide_data;
+    struct _IO_FILE* _freeres_list;
+    void* _freeres_buf;
+    unsigned long  int __pad5;
+    int _mode;
+    char _unused2[15*sizeof(int)-4*sizeof(void*)-sizeof(unsigned long  int)];
 };
 
-struct _opaque_pthread_once_t
+typedef long  int (*cookie_read_function_t)(void*,char*,unsigned long  int);
+
+typedef long  int (*cookie_write_function_t)(void*,const char*,unsigned long  int);
+
+typedef int (*cookie_seek_function_t)(void*,long  int*,int);
+
+typedef int (*cookie_close_function_t)(void*);
+
+struct _IO_cookie_io_functions_t
 {
-    long __sig;
-    char __opaque[8];
+    long  int (*read)(void*,char*,unsigned long  int);
+    long  int (*write)(void*,const char*,unsigned long  int);
+    int (*seek)(void*,long  int*,int);
+    int (*close)(void*);
 };
 
-struct _opaque_pthread_rwlock_t
-{
-    long __sig;
-    char __opaque[192];
-};
+typedef struct _IO_cookie_io_functions_t cookie_io_functions_t;
 
-struct _opaque_pthread_rwlockattr_t
-{
-    long __sig;
-    char __opaque[16];
-};
+typedef __builtin_va_list va_list;
 
-struct _opaque_pthread_t
-{
-    long __sig;
-    struct __darwin_pthread_handler_rec* __cleanup_stack;
-    char __opaque[8176];
-};
+typedef long  int off_t;
 
-typedef struct _opaque_pthread_attr_t __darwin_pthread_attr_t;
+typedef long  int off64_t;
 
-typedef struct _opaque_pthread_cond_t __darwin_pthread_cond_t;
+typedef long  int ssize_t;
 
-typedef struct _opaque_pthread_condattr_t __darwin_pthread_condattr_t;
+typedef struct _G_fpos_t fpos_t;
 
-typedef unsigned long  int __darwin_pthread_key_t;
+typedef struct _G_fpos64_t fpos64_t;
 
-typedef struct _opaque_pthread_mutex_t __darwin_pthread_mutex_t;
+extern struct _IO_FILE* stdin;
+extern struct _IO_FILE* stdout;
+extern struct _IO_FILE* stderr;
+typedef float _Float32;
 
-typedef struct _opaque_pthread_mutexattr_t __darwin_pthread_mutexattr_t;
+typedef double _Float64;
 
-typedef struct _opaque_pthread_once_t __darwin_pthread_once_t;
+typedef double _Float32x;
 
-typedef struct _opaque_pthread_rwlock_t __darwin_pthread_rwlock_t;
-
-typedef struct _opaque_pthread_rwlockattr_t __darwin_pthread_rwlockattr_t;
-
-typedef struct _opaque_pthread_t* __darwin_pthread_t;
-
-typedef int __darwin_nl_item;
-
-typedef int __darwin_wctrans_t;
-
-typedef unsigned int __darwin_wctype_t;
-
-typedef char int8_t;
-
-typedef short int16_t;
-
-typedef int int32_t;
-
-typedef long long int64_t;
-
-typedef unsigned char u_int8_t;
-
-typedef unsigned short int u_int16_t;
-
-typedef unsigned int u_int32_t;
-
-typedef unsigned long  long u_int64_t;
-
-typedef long long register_t;
-
-typedef long intptr_t;
-
-typedef unsigned long  int uintptr_t;
-
-typedef unsigned long  long user_addr_t;
-
-typedef unsigned long  long user_size_t;
-
-typedef long long user_ssize_t;
-
-typedef long long user_long_t;
-
-typedef unsigned long  long user_ulong_t;
-
-typedef long long user_time_t;
-
-typedef long long user_off_t;
-
-typedef unsigned long  long syscall_arg_t;
-
-typedef unsigned long  int size_t;
-
-typedef long  long fpos_t;
-
-struct __sbuf
-{
-    unsigned char* _base;
-    int _size;
-};
-
-struct __sFILE
-{
-    unsigned char* _p;
-    int _r;
-    int _w;
-    short _flags;
-    short _file;
-    struct __sbuf _bf;
-    int _lbfsize;
-    void* _cookie;
-    int (*_close)(void*);
-    int (*_read)(void*,char*,int);
-    long  long (*_seek)(void*,long  long,int);
-    int (*_write)(void*,const char*,int);
-    struct __sbuf _ub;
-    struct __sFILEX* _extra;
-    int _ur;
-    unsigned char _ubuf[3];
-    unsigned char _nbuf[1];
-    struct __sbuf _lb;
-    int _blksize;
-    long  long _offset;
-};
-
-typedef struct __sFILE FILE;
-
-extern struct __sFILE* __stdinp;
-extern struct __sFILE* __stdoutp;
-extern struct __sFILE* __stderrp;
-typedef long  long off_t;
-
-typedef long ssize_t;
-
-extern const int sys_nerr;
-extern const char* sys_errlist[];
-enum anonymous_typeY2 { P_ALL
-,P_PID
-,P_PGID
-};
-
-typedef enum anonymous_typeY2 idtype_t;
-
-typedef int pid_t;
-
-typedef unsigned int id_t;
-
-typedef int sig_atomic_t;
-
-struct __darwin_arm_exception_state
-{
-    unsigned int __exception;
-    unsigned int __fsr;
-    unsigned int __far;
-};
-
-struct __darwin_arm_exception_state64
-{
-    unsigned long  long __far;
-    unsigned int __esr;
-    unsigned int __exception;
-};
-
-struct __darwin_arm_exception_state64_v2
-{
-    unsigned long  long __far;
-    unsigned long  long __esr;
-};
-
-struct __darwin_arm_thread_state
-{
-    unsigned int __r[13];
-    unsigned int __sp;
-    unsigned int __lr;
-    unsigned int __pc;
-    unsigned int __cpsr;
-};
-
-struct __darwin_arm_thread_state64
-{
-    unsigned long  long __x[29];
-    unsigned long  long __fp;
-    unsigned long  long __lr;
-    unsigned long  long __sp;
-    unsigned long  long __pc;
-    unsigned int __cpsr;
-    unsigned int __pad;
-};
-
-struct __darwin_arm_vfp_state
-{
-    unsigned int __r[64];
-    unsigned int __fpscr;
-};
-
-struct __darwin_arm_neon_state64
-{
-    __uint128_t __v[32];
-    unsigned int __fpsr;
-    unsigned int __fpcr;
-};
-
-struct __darwin_arm_neon_state
-{
-    __uint128_t __v[16];
-    unsigned int __fpsr;
-    unsigned int __fpcr;
-};
-
-struct __arm_pagein_state
-{
-    int __pagein_error;
-};
-
-struct __arm_legacy_debug_state
-{
-    unsigned int __bvr[16];
-    unsigned int __bcr[16];
-    unsigned int __wvr[16];
-    unsigned int __wcr[16];
-};
-
-struct __darwin_arm_debug_state32
-{
-    unsigned int __bvr[16];
-    unsigned int __bcr[16];
-    unsigned int __wvr[16];
-    unsigned int __wcr[16];
-    unsigned long  long __mdscr_el1;
-};
-
-struct __darwin_arm_debug_state64
-{
-    unsigned long  long __bvr[16];
-    unsigned long  long __bcr[16];
-    unsigned long  long __wvr[16];
-    unsigned long  long __wcr[16];
-    unsigned long  long __mdscr_el1;
-};
-
-struct __darwin_arm_cpmu_state64
-{
-    unsigned long  long __ctrs[16];
-};
-
-struct __darwin_mcontext32
-{
-    struct __darwin_arm_exception_state __es;
-    struct __darwin_arm_thread_state __ss;
-    struct __darwin_arm_vfp_state __fs;
-};
-
-struct __darwin_mcontext64
-{
-    struct __darwin_arm_exception_state64 __es;
-    struct __darwin_arm_thread_state64 __ss;
-    struct __darwin_arm_neon_state64 __ns;
-};
-
-typedef struct __darwin_mcontext64* mcontext_t;
-
-typedef struct _opaque_pthread_attr_t pthread_attr_t;
-
-struct __darwin_sigaltstack
-{
-    void* ss_sp;
-    unsigned long  int ss_size;
-    int ss_flags;
-};
-
-typedef struct __darwin_sigaltstack stack_t;
-
-struct __darwin_ucontext
-{
-    int uc_onstack;
-    unsigned int uc_sigmask;
-    struct __darwin_sigaltstack uc_stack;
-    struct __darwin_ucontext* uc_link;
-    unsigned long  int uc_mcsize;
-    struct __darwin_mcontext64* uc_mcontext;
-};
-
-typedef struct __darwin_ucontext ucontext_t;
-
-typedef unsigned int sigset_t;
-
-typedef unsigned int uid_t;
-
-union sigval
-{
-int sival_int;
-void* sival_ptr;
-};
-
-struct sigevent
-{
-    int sigev_notify;
-    int sigev_signo;
-    union sigval sigev_value;
-    void (*sigev_notify_function)(union sigval);
-    struct _opaque_pthread_attr_t* sigev_notify_attributes;
-};
-
-struct __siginfo
-{
-    int si_signo;
-    int si_errno;
-    int si_code;
-    int si_pid;
-    unsigned int si_uid;
-    int si_status;
-    void* si_addr;
-    union sigval si_value;
-    long si_band;
-    unsigned long  int __pad[7];
-};
-
-typedef struct __siginfo siginfo_t;
-
-union __sigaction_u
-{
-void (*__sa_handler)(int);
-void (*__sa_sigaction)(int,struct __siginfo*,void*);
-};
-
-struct __sigaction
-{
-    union __sigaction_u __sigaction_u;
-    void (*sa_tramp)(void*,int,int,struct __siginfo*,void*);
-    unsigned int sa_mask;
-    int sa_flags;
-};
-
-struct sigaction
-{
-    union __sigaction_u __sigaction_u;
-    unsigned int sa_mask;
-    int sa_flags;
-};
-
-typedef void (*sig_t)(int);
-
-struct sigvec
-{
-    void (*sv_handler)(int);
-    int sv_mask;
-    int sv_flags;
-};
-
-struct sigstack
-{
-    char* ss_sp;
-    int ss_onstack;
-};
-
-typedef unsigned char uint8_t;
-
-typedef unsigned short int uint16_t;
-
-typedef unsigned int uint32_t;
-
-typedef unsigned long  long uint64_t;
-
-typedef char int_least8_t;
-
-typedef short int_least16_t;
-
-typedef int int_least32_t;
-
-typedef long long int_least64_t;
-
-typedef unsigned char uint_least8_t;
-
-typedef unsigned short int uint_least16_t;
-
-typedef unsigned int uint_least32_t;
-
-typedef unsigned long  long uint_least64_t;
-
-typedef char int_fast8_t;
-
-typedef short int_fast16_t;
-
-typedef int int_fast32_t;
-
-typedef long long int_fast64_t;
-
-typedef unsigned char uint_fast8_t;
-
-typedef unsigned short int uint_fast16_t;
-
-typedef unsigned int uint_fast32_t;
-
-typedef unsigned long  long uint_fast64_t;
-
-typedef long  int intmax_t;
-
-typedef unsigned long  int uintmax_t;
-
-struct timeval
-{
-    long tv_sec;
-    int tv_usec;
-};
-
-typedef unsigned long  long rlim_t;
-
-struct rusage
-{
-    struct timeval ru_utime;
-    struct timeval ru_stime;
-    long ru_maxrss;
-    long ru_ixrss;
-    long ru_idrss;
-    long ru_isrss;
-    long ru_minflt;
-    long ru_majflt;
-    long ru_nswap;
-    long ru_inblock;
-    long ru_oublock;
-    long ru_msgsnd;
-    long ru_msgrcv;
-    long ru_nsignals;
-    long ru_nvcsw;
-    long ru_nivcsw;
-};
-
-typedef void* rusage_info_t;
-
-struct rusage_info_v0
-{
-    unsigned char ri_uuid[16];
-    unsigned long  long ri_user_time;
-    unsigned long  long ri_system_time;
-    unsigned long  long ri_pkg_idle_wkups;
-    unsigned long  long ri_interrupt_wkups;
-    unsigned long  long ri_pageins;
-    unsigned long  long ri_wired_size;
-    unsigned long  long ri_resident_size;
-    unsigned long  long ri_phys_footprint;
-    unsigned long  long ri_proc_start_abstime;
-    unsigned long  long ri_proc_exit_abstime;
-};
-
-struct rusage_info_v1
-{
-    unsigned char ri_uuid[16];
-    unsigned long  long ri_user_time;
-    unsigned long  long ri_system_time;
-    unsigned long  long ri_pkg_idle_wkups;
-    unsigned long  long ri_interrupt_wkups;
-    unsigned long  long ri_pageins;
-    unsigned long  long ri_wired_size;
-    unsigned long  long ri_resident_size;
-    unsigned long  long ri_phys_footprint;
-    unsigned long  long ri_proc_start_abstime;
-    unsigned long  long ri_proc_exit_abstime;
-    unsigned long  long ri_child_user_time;
-    unsigned long  long ri_child_system_time;
-    unsigned long  long ri_child_pkg_idle_wkups;
-    unsigned long  long ri_child_interrupt_wkups;
-    unsigned long  long ri_child_pageins;
-    unsigned long  long ri_child_elapsed_abstime;
-};
-
-struct rusage_info_v2
-{
-    unsigned char ri_uuid[16];
-    unsigned long  long ri_user_time;
-    unsigned long  long ri_system_time;
-    unsigned long  long ri_pkg_idle_wkups;
-    unsigned long  long ri_interrupt_wkups;
-    unsigned long  long ri_pageins;
-    unsigned long  long ri_wired_size;
-    unsigned long  long ri_resident_size;
-    unsigned long  long ri_phys_footprint;
-    unsigned long  long ri_proc_start_abstime;
-    unsigned long  long ri_proc_exit_abstime;
-    unsigned long  long ri_child_user_time;
-    unsigned long  long ri_child_system_time;
-    unsigned long  long ri_child_pkg_idle_wkups;
-    unsigned long  long ri_child_interrupt_wkups;
-    unsigned long  long ri_child_pageins;
-    unsigned long  long ri_child_elapsed_abstime;
-    unsigned long  long ri_diskio_bytesread;
-    unsigned long  long ri_diskio_byteswritten;
-};
-
-struct rusage_info_v3
-{
-    unsigned char ri_uuid[16];
-    unsigned long  long ri_user_time;
-    unsigned long  long ri_system_time;
-    unsigned long  long ri_pkg_idle_wkups;
-    unsigned long  long ri_interrupt_wkups;
-    unsigned long  long ri_pageins;
-    unsigned long  long ri_wired_size;
-    unsigned long  long ri_resident_size;
-    unsigned long  long ri_phys_footprint;
-    unsigned long  long ri_proc_start_abstime;
-    unsigned long  long ri_proc_exit_abstime;
-    unsigned long  long ri_child_user_time;
-    unsigned long  long ri_child_system_time;
-    unsigned long  long ri_child_pkg_idle_wkups;
-    unsigned long  long ri_child_interrupt_wkups;
-    unsigned long  long ri_child_pageins;
-    unsigned long  long ri_child_elapsed_abstime;
-    unsigned long  long ri_diskio_bytesread;
-    unsigned long  long ri_diskio_byteswritten;
-    unsigned long  long ri_cpu_time_qos_default;
-    unsigned long  long ri_cpu_time_qos_maintenance;
-    unsigned long  long ri_cpu_time_qos_background;
-    unsigned long  long ri_cpu_time_qos_utility;
-    unsigned long  long ri_cpu_time_qos_legacy;
-    unsigned long  long ri_cpu_time_qos_user_initiated;
-    unsigned long  long ri_cpu_time_qos_user_interactive;
-    unsigned long  long ri_billed_system_time;
-    unsigned long  long ri_serviced_system_time;
-};
-
-struct rusage_info_v4
-{
-    unsigned char ri_uuid[16];
-    unsigned long  long ri_user_time;
-    unsigned long  long ri_system_time;
-    unsigned long  long ri_pkg_idle_wkups;
-    unsigned long  long ri_interrupt_wkups;
-    unsigned long  long ri_pageins;
-    unsigned long  long ri_wired_size;
-    unsigned long  long ri_resident_size;
-    unsigned long  long ri_phys_footprint;
-    unsigned long  long ri_proc_start_abstime;
-    unsigned long  long ri_proc_exit_abstime;
-    unsigned long  long ri_child_user_time;
-    unsigned long  long ri_child_system_time;
-    unsigned long  long ri_child_pkg_idle_wkups;
-    unsigned long  long ri_child_interrupt_wkups;
-    unsigned long  long ri_child_pageins;
-    unsigned long  long ri_child_elapsed_abstime;
-    unsigned long  long ri_diskio_bytesread;
-    unsigned long  long ri_diskio_byteswritten;
-    unsigned long  long ri_cpu_time_qos_default;
-    unsigned long  long ri_cpu_time_qos_maintenance;
-    unsigned long  long ri_cpu_time_qos_background;
-    unsigned long  long ri_cpu_time_qos_utility;
-    unsigned long  long ri_cpu_time_qos_legacy;
-    unsigned long  long ri_cpu_time_qos_user_initiated;
-    unsigned long  long ri_cpu_time_qos_user_interactive;
-    unsigned long  long ri_billed_system_time;
-    unsigned long  long ri_serviced_system_time;
-    unsigned long  long ri_logical_writes;
-    unsigned long  long ri_lifetime_max_phys_footprint;
-    unsigned long  long ri_instructions;
-    unsigned long  long ri_cycles;
-    unsigned long  long ri_billed_energy;
-    unsigned long  long ri_serviced_energy;
-    unsigned long  long ri_interval_max_phys_footprint;
-    unsigned long  long ri_runnable_time;
-};
-
-struct rusage_info_v5
-{
-    unsigned char ri_uuid[16];
-    unsigned long  long ri_user_time;
-    unsigned long  long ri_system_time;
-    unsigned long  long ri_pkg_idle_wkups;
-    unsigned long  long ri_interrupt_wkups;
-    unsigned long  long ri_pageins;
-    unsigned long  long ri_wired_size;
-    unsigned long  long ri_resident_size;
-    unsigned long  long ri_phys_footprint;
-    unsigned long  long ri_proc_start_abstime;
-    unsigned long  long ri_proc_exit_abstime;
-    unsigned long  long ri_child_user_time;
-    unsigned long  long ri_child_system_time;
-    unsigned long  long ri_child_pkg_idle_wkups;
-    unsigned long  long ri_child_interrupt_wkups;
-    unsigned long  long ri_child_pageins;
-    unsigned long  long ri_child_elapsed_abstime;
-    unsigned long  long ri_diskio_bytesread;
-    unsigned long  long ri_diskio_byteswritten;
-    unsigned long  long ri_cpu_time_qos_default;
-    unsigned long  long ri_cpu_time_qos_maintenance;
-    unsigned long  long ri_cpu_time_qos_background;
-    unsigned long  long ri_cpu_time_qos_utility;
-    unsigned long  long ri_cpu_time_qos_legacy;
-    unsigned long  long ri_cpu_time_qos_user_initiated;
-    unsigned long  long ri_cpu_time_qos_user_interactive;
-    unsigned long  long ri_billed_system_time;
-    unsigned long  long ri_serviced_system_time;
-    unsigned long  long ri_logical_writes;
-    unsigned long  long ri_lifetime_max_phys_footprint;
-    unsigned long  long ri_instructions;
-    unsigned long  long ri_cycles;
-    unsigned long  long ri_billed_energy;
-    unsigned long  long ri_serviced_energy;
-    unsigned long  long ri_interval_max_phys_footprint;
-    unsigned long  long ri_runnable_time;
-    unsigned long  long ri_flags;
-};
-
-struct rusage_info_v6
-{
-    unsigned char ri_uuid[16];
-    unsigned long  long ri_user_time;
-    unsigned long  long ri_system_time;
-    unsigned long  long ri_pkg_idle_wkups;
-    unsigned long  long ri_interrupt_wkups;
-    unsigned long  long ri_pageins;
-    unsigned long  long ri_wired_size;
-    unsigned long  long ri_resident_size;
-    unsigned long  long ri_phys_footprint;
-    unsigned long  long ri_proc_start_abstime;
-    unsigned long  long ri_proc_exit_abstime;
-    unsigned long  long ri_child_user_time;
-    unsigned long  long ri_child_system_time;
-    unsigned long  long ri_child_pkg_idle_wkups;
-    unsigned long  long ri_child_interrupt_wkups;
-    unsigned long  long ri_child_pageins;
-    unsigned long  long ri_child_elapsed_abstime;
-    unsigned long  long ri_diskio_bytesread;
-    unsigned long  long ri_diskio_byteswritten;
-    unsigned long  long ri_cpu_time_qos_default;
-    unsigned long  long ri_cpu_time_qos_maintenance;
-    unsigned long  long ri_cpu_time_qos_background;
-    unsigned long  long ri_cpu_time_qos_utility;
-    unsigned long  long ri_cpu_time_qos_legacy;
-    unsigned long  long ri_cpu_time_qos_user_initiated;
-    unsigned long  long ri_cpu_time_qos_user_interactive;
-    unsigned long  long ri_billed_system_time;
-    unsigned long  long ri_serviced_system_time;
-    unsigned long  long ri_logical_writes;
-    unsigned long  long ri_lifetime_max_phys_footprint;
-    unsigned long  long ri_instructions;
-    unsigned long  long ri_cycles;
-    unsigned long  long ri_billed_energy;
-    unsigned long  long ri_serviced_energy;
-    unsigned long  long ri_interval_max_phys_footprint;
-    unsigned long  long ri_runnable_time;
-    unsigned long  long ri_flags;
-    unsigned long  long ri_user_ptime;
-    unsigned long  long ri_system_ptime;
-    unsigned long  long ri_pinstructions;
-    unsigned long  long ri_pcycles;
-    unsigned long  long ri_energy_nj;
-    unsigned long  long ri_penergy_nj;
-    unsigned long  long ri_secure_time_in_system;
-    unsigned long  long ri_secure_ptime_in_system;
-    unsigned long  long ri_neural_footprint;
-    unsigned long  long ri_lifetime_max_neural_footprint;
-    unsigned long  long ri_interval_max_neural_footprint;
-    unsigned long  long ri_reserved[9];
-};
-
-typedef struct rusage_info_v6 rusage_info_current;
-
-struct rlimit
-{
-    unsigned long  long rlim_cur;
-    unsigned long  long rlim_max;
-};
-
-struct proc_rlimit_control_wakeupmon
-{
-    unsigned int wm_flags;
-    int wm_rate;
-};
-
-struct anonymous_typeX3
-{
-    unsigned int w_Termsig:7;
-    unsigned int w_Coredump:1;
-    unsigned int w_Retcode:8;
-    unsigned int w_Filler:16;
-};
-
-struct anonymous_typeX4
-{
-    unsigned int w_Stopval:8;
-    unsigned int w_Stopsig:8;
-    unsigned int w_Filler:16;
-};
-
-union wait
-{
-int w_status;
-struct anonymous_typeX3 w_T;
-struct anonymous_typeX4 w_S;
-};
-
-typedef int ct_rune_t;
-
-typedef int rune_t;
+typedef long  double _Float64x;
 
 typedef int wchar_t;
 
@@ -951,36 +375,342 @@ typedef struct anonymous_typeX5 div_t;
 
 struct anonymous_typeX6
 {
-    long quot;
-    long rem;
+    long  int quot;
+    long  int rem;
 };
 
 typedef struct anonymous_typeX6 ldiv_t;
 
 struct anonymous_typeX7
 {
-    long long quot;
-    long long rem;
+    long long int quot;
+    long long int rem;
 };
 
 typedef struct anonymous_typeX7 lldiv_t;
 
-extern int __mb_cur_max;
-typedef unsigned long  long malloc_type_id_t;
+struct __locale_struct
+{
+    struct __locale_data* __locales[13];
+    const unsigned short int* __ctype_b;
+    const int* __ctype_tolower;
+    const int* __ctype_toupper;
+    const char* __names[13];
+};
 
-typedef struct _malloc_zone_t malloc_zone_t;
+typedef struct __locale_struct* __locale_t;
 
-typedef int dev_t;
+typedef struct __locale_struct* locale_t;
 
-typedef unsigned short int mode_t;
+typedef unsigned char u_char;
 
-typedef unsigned long  int rsize_t;
+typedef unsigned short int u_short;
 
-typedef int errno_t;
+typedef unsigned int u_int;
 
-typedef __builtin_va_list __gnuc_va_list;
+typedef unsigned long  int u_long;
 
-typedef __builtin_va_list va_list;
+typedef long  int quad_t;
+
+typedef unsigned long  int u_quad_t;
+
+typedef struct anonymous_typeX1 fsid_t;
+
+typedef long  int loff_t;
+
+typedef unsigned long  int ino_t;
+
+typedef unsigned long  int ino64_t;
+
+typedef unsigned long  int dev_t;
+
+typedef unsigned int gid_t;
+
+typedef unsigned int mode_t;
+
+typedef unsigned long  int nlink_t;
+
+typedef unsigned int uid_t;
+
+typedef int pid_t;
+
+typedef unsigned int id_t;
+
+typedef int daddr_t;
+
+typedef char* caddr_t;
+
+typedef int key_t;
+
+typedef long  int clock_t;
+
+typedef int clockid_t;
+
+typedef long  int time_t;
+
+typedef void* timer_t;
+
+typedef unsigned int useconds_t;
+
+typedef long  int suseconds_t;
+
+typedef unsigned long  int ulong;
+
+typedef unsigned short int ushort;
+
+typedef unsigned int uint;
+
+typedef char int8_t;
+
+typedef short int int16_t;
+
+typedef int int32_t;
+
+typedef long  int int64_t;
+
+typedef unsigned char u_int8_t;
+
+typedef unsigned short int u_int16_t;
+
+typedef unsigned int u_int32_t;
+
+typedef unsigned long  int u_int64_t;
+
+typedef int register_t;
+
+struct anonymous_typeX8
+{
+    unsigned long  int __val[(1024/(8*sizeof(unsigned long  int)))];
+};
+
+typedef struct anonymous_typeX8 __sigset_t;
+
+typedef struct anonymous_typeX8 sigset_t;
+
+struct timeval
+{
+    long  int tv_sec;
+    long  int tv_usec;
+};
+
+struct timespec
+{
+    long  int tv_sec;
+    long  int tv_nsec;
+};
+
+typedef long  int __fd_mask;
+
+struct anonymous_typeX9
+{
+    long  int fds_bits[1024/(8*(int)sizeof(long  int))];
+};
+
+typedef struct anonymous_typeX9 fd_set;
+
+typedef long  int fd_mask;
+
+typedef long  int blksize_t;
+
+typedef long  int blkcnt_t;
+
+typedef unsigned long  int fsblkcnt_t;
+
+typedef unsigned long  int fsfilcnt_t;
+
+typedef long  int blkcnt64_t;
+
+typedef unsigned long  int fsblkcnt64_t;
+
+typedef unsigned long  int fsfilcnt64_t;
+
+struct anonymous_typeX11
+{
+    unsigned int __low;
+    unsigned int __high;
+};
+
+union anonymous_typeZ10
+{
+unsigned long long int __value64;
+struct anonymous_typeX11 __value32;
+};
+
+typedef union anonymous_typeZ10 __atomic_wide_counter;
+
+struct __pthread_internal_list
+{
+    struct __pthread_internal_list* __prev;
+    struct __pthread_internal_list* __next;
+};
+
+typedef struct __pthread_internal_list __pthread_list_t;
+
+struct __pthread_internal_slist
+{
+    struct __pthread_internal_slist* __next;
+};
+
+typedef struct __pthread_internal_slist __pthread_slist_t;
+
+struct __pthread_mutex_s
+{
+    int __lock;
+    unsigned int __count;
+    int __owner;
+    unsigned int __nusers;
+    int __kind;
+    short __spins;
+    short __elision;
+    struct __pthread_internal_list __list;
+};
+
+struct __pthread_rwlock_arch_t
+{
+    unsigned int __readers;
+    unsigned int __writers;
+    unsigned int __wrphase_futex;
+    unsigned int __writers_futex;
+    unsigned int __pad3;
+    unsigned int __pad4;
+    int __cur_writer;
+    int __shared;
+    char __rwelision;
+    unsigned char __pad1[7];
+    unsigned long  int __pad2;
+    unsigned int __flags;
+};
+
+struct __pthread_cond_s
+{
+    union anonymous_typeZ10 __wseq;
+    union anonymous_typeZ10 __g1_start;
+    unsigned int __g_refs[2];
+    unsigned int __g_size[2];
+    unsigned int __g1_orig_size;
+    unsigned int __wrefs;
+    unsigned int __g_signals[2];
+};
+
+typedef unsigned int __tss_t;
+
+typedef unsigned long  int __thrd_t;
+
+struct anonymous_typeX12
+{
+    int __data;
+};
+
+typedef struct anonymous_typeX12 __once_flag;
+
+typedef unsigned long  int pthread_t;
+
+union anonymous_typeZ13
+{
+char __size[4];
+int __align;
+};
+
+typedef union anonymous_typeZ13 pthread_mutexattr_t;
+
+union anonymous_typeZ14
+{
+char __size[4];
+int __align;
+};
+
+typedef union anonymous_typeZ14 pthread_condattr_t;
+
+typedef unsigned int pthread_key_t;
+
+typedef int pthread_once_t;
+
+union pthread_attr_t
+{
+char __size[56];
+long  int __align;
+};
+
+typedef union pthread_attr_t pthread_attr_t;
+
+union anonymous_typeZ15
+{
+struct __pthread_mutex_s __data;
+char __size[40];
+long  int __align;
+};
+
+typedef union anonymous_typeZ15 pthread_mutex_t;
+
+union anonymous_typeZ16
+{
+struct __pthread_cond_s __data;
+char __size[48];
+long long int __align;
+};
+
+typedef union anonymous_typeZ16 pthread_cond_t;
+
+union anonymous_typeZ17
+{
+struct __pthread_rwlock_arch_t __data;
+char __size[56];
+long  int __align;
+};
+
+typedef union anonymous_typeZ17 pthread_rwlock_t;
+
+union anonymous_typeZ18
+{
+char __size[8];
+long  int __align;
+};
+
+typedef union anonymous_typeZ18 pthread_rwlockattr_t;
+
+typedef int pthread_spinlock_t;
+
+union anonymous_typeZ19
+{
+char __size[32];
+long  int __align;
+};
+
+typedef union anonymous_typeZ19 pthread_barrier_t;
+
+union anonymous_typeZ20
+{
+char __size[4];
+int __align;
+};
+
+typedef union anonymous_typeZ20 pthread_barrierattr_t;
+
+struct random_data
+{
+    int* fptr;
+    int* rptr;
+    int* state;
+    int rand_type;
+    int rand_deg;
+    int rand_sep;
+    int* end_ptr;
+};
+
+struct drand48_data
+{
+    unsigned short int __x[3];
+    unsigned short int __old_x[3];
+    unsigned short int __c;
+    unsigned short int __init;
+    unsigned long long int __a;
+};
+
+typedef int (*__compar_fn_t)(const void*,const void*);
+
+typedef int (*comparison_fn_t)(const void*,const void*);
+
+typedef int (*__compar_d_fn_t)(const void*,const void*,void*);
 
 struct lconv
 {
@@ -1003,12 +733,16 @@ struct lconv
     char p_sign_posn;
     char n_sign_posn;
     char int_p_cs_precedes;
-    char int_n_cs_precedes;
     char int_p_sep_by_space;
+    char int_n_cs_precedes;
     char int_n_sep_by_space;
     char int_p_sign_posn;
     char int_n_sign_posn;
 };
+
+extern char* program_invocation_name;
+extern char* program_invocation_short_name;
+typedef int error_t;
 
 typedef void* any;
 
@@ -1252,115 +986,331 @@ struct list$1charph
     struct list_item$1charph* it;
 };
 
-struct accessx_descriptor
-{
-    unsigned int ad_name_offset;
-    int ad_flags;
-    int ad_pad[2];
+typedef long  int intptr_t;
+
+typedef unsigned int socklen_t;
+
+extern char** __environ;
+extern char** environ;
+enum { _PC_LINK_MAX
+,_PC_MAX_CANON
+,_PC_MAX_INPUT
+,_PC_NAME_MAX
+,_PC_PATH_MAX
+,_PC_PIPE_BUF
+,_PC_CHOWN_RESTRICTED
+,_PC_NO_TRUNC
+,_PC_VDISABLE
+,_PC_SYNC_IO
+,_PC_ASYNC_IO
+,_PC_PRIO_IO
+,_PC_SOCK_MAXBUF
+,_PC_FILESIZEBITS
+,_PC_REC_INCR_XFER_SIZE
+,_PC_REC_MAX_XFER_SIZE
+,_PC_REC_MIN_XFER_SIZE
+,_PC_REC_XFER_ALIGN
+,_PC_ALLOC_SIZE_MIN
+,_PC_SYMLINK_MAX
+,_PC_2_SYMLINKS
 };
 
-typedef unsigned int gid_t;
+enum { _SC_ARG_MAX
+,_SC_CHILD_MAX
+,_SC_CLK_TCK
+,_SC_NGROUPS_MAX
+,_SC_OPEN_MAX
+,_SC_STREAM_MAX
+,_SC_TZNAME_MAX
+,_SC_JOB_CONTROL
+,_SC_SAVED_IDS
+,_SC_REALTIME_SIGNALS
+,_SC_PRIORITY_SCHEDULING
+,_SC_TIMERS
+,_SC_ASYNCHRONOUS_IO
+,_SC_PRIORITIZED_IO
+,_SC_SYNCHRONIZED_IO
+,_SC_FSYNC
+,_SC_MAPPED_FILES
+,_SC_MEMLOCK
+,_SC_MEMLOCK_RANGE
+,_SC_MEMORY_PROTECTION
+,_SC_MESSAGE_PASSING
+,_SC_SEMAPHORES
+,_SC_SHARED_MEMORY_OBJECTS
+,_SC_AIO_LISTIO_MAX
+,_SC_AIO_MAX
+,_SC_AIO_PRIO_DELTA_MAX
+,_SC_DELAYTIMER_MAX
+,_SC_MQ_OPEN_MAX
+,_SC_MQ_PRIO_MAX
+,_SC_VERSION
+,_SC_PAGESIZE
+,_SC_RTSIG_MAX
+,_SC_SEM_NSEMS_MAX
+,_SC_SEM_VALUE_MAX
+,_SC_SIGQUEUE_MAX
+,_SC_TIMER_MAX
+,_SC_BC_BASE_MAX
+,_SC_BC_DIM_MAX
+,_SC_BC_SCALE_MAX
+,_SC_BC_STRING_MAX
+,_SC_COLL_WEIGHTS_MAX
+,_SC_EQUIV_CLASS_MAX
+,_SC_EXPR_NEST_MAX
+,_SC_LINE_MAX
+,_SC_RE_DUP_MAX
+,_SC_CHARCLASS_NAME_MAX
+,_SC_2_VERSION
+,_SC_2_C_BIND
+,_SC_2_C_DEV
+,_SC_2_FORT_DEV
+,_SC_2_FORT_RUN
+,_SC_2_SW_DEV
+,_SC_2_LOCALEDEF
+,_SC_PII
+,_SC_PII_XTI
+,_SC_PII_SOCKET
+,_SC_PII_INTERNET
+,_SC_PII_OSI
+,_SC_POLL
+,_SC_SELECT
+,_SC_UIO_MAXIOV
+,_SC_IOV_MAX=((60)),
+_SC_PII_INTERNET_STREAM
+,_SC_PII_INTERNET_DGRAM
+,_SC_PII_OSI_COTS
+,_SC_PII_OSI_CLTS
+,_SC_PII_OSI_M
+,_SC_T_IOV_MAX
+,_SC_THREADS
+,_SC_THREAD_SAFE_FUNCTIONS
+,_SC_GETGR_R_SIZE_MAX
+,_SC_GETPW_R_SIZE_MAX
+,_SC_LOGIN_NAME_MAX
+,_SC_TTY_NAME_MAX
+,_SC_THREAD_DESTRUCTOR_ITERATIONS
+,_SC_THREAD_KEYS_MAX
+,_SC_THREAD_STACK_MIN
+,_SC_THREAD_THREADS_MAX
+,_SC_THREAD_ATTR_STACKADDR
+,_SC_THREAD_ATTR_STACKSIZE
+,_SC_THREAD_PRIORITY_SCHEDULING
+,_SC_THREAD_PRIO_INHERIT
+,_SC_THREAD_PRIO_PROTECT
+,_SC_THREAD_PROCESS_SHARED
+,_SC_NPROCESSORS_CONF
+,_SC_NPROCESSORS_ONLN
+,_SC_PHYS_PAGES
+,_SC_AVPHYS_PAGES
+,_SC_ATEXIT_MAX
+,_SC_PASS_MAX
+,_SC_XOPEN_VERSION
+,_SC_XOPEN_XCU_VERSION
+,_SC_XOPEN_UNIX
+,_SC_XOPEN_CRYPT
+,_SC_XOPEN_ENH_I18N
+,_SC_XOPEN_SHM
+,_SC_2_CHAR_TERM
+,_SC_2_C_VERSION
+,_SC_2_UPE
+,_SC_XOPEN_XPG2
+,_SC_XOPEN_XPG3
+,_SC_XOPEN_XPG4
+,_SC_CHAR_BIT
+,_SC_CHAR_MAX
+,_SC_CHAR_MIN
+,_SC_INT_MAX
+,_SC_INT_MIN
+,_SC_LONG_BIT
+,_SC_WORD_BIT
+,_SC_MB_LEN_MAX
+,_SC_NZERO
+,_SC_SSIZE_MAX
+,_SC_SCHAR_MAX
+,_SC_SCHAR_MIN
+,_SC_SHRT_MAX
+,_SC_SHRT_MIN
+,_SC_UCHAR_MAX
+,_SC_UINT_MAX
+,_SC_ULONG_MAX
+,_SC_USHRT_MAX
+,_SC_NL_ARGMAX
+,_SC_NL_LANGMAX
+,_SC_NL_MSGMAX
+,_SC_NL_NMAX
+,_SC_NL_SETMAX
+,_SC_NL_TEXTMAX
+,_SC_XBS5_ILP32_OFF32
+,_SC_XBS5_ILP32_OFFBIG
+,_SC_XBS5_LP64_OFF64
+,_SC_XBS5_LPBIG_OFFBIG
+,_SC_XOPEN_LEGACY
+,_SC_XOPEN_REALTIME
+,_SC_XOPEN_REALTIME_THREADS
+,_SC_ADVISORY_INFO
+,_SC_BARRIERS
+,_SC_BASE
+,_SC_C_LANG_SUPPORT
+,_SC_C_LANG_SUPPORT_R
+,_SC_CLOCK_SELECTION
+,_SC_CPUTIME
+,_SC_THREAD_CPUTIME
+,_SC_DEVICE_IO
+,_SC_DEVICE_SPECIFIC
+,_SC_DEVICE_SPECIFIC_R
+,_SC_FD_MGMT
+,_SC_FIFO
+,_SC_PIPE
+,_SC_FILE_ATTRIBUTES
+,_SC_FILE_LOCKING
+,_SC_FILE_SYSTEM
+,_SC_MONOTONIC_CLOCK
+,_SC_MULTI_PROCESS
+,_SC_SINGLE_PROCESS
+,_SC_NETWORKING
+,_SC_READER_WRITER_LOCKS
+,_SC_SPIN_LOCKS
+,_SC_REGEXP
+,_SC_REGEX_VERSION
+,_SC_SHELL
+,_SC_SIGNALS
+,_SC_SPAWN
+,_SC_SPORADIC_SERVER
+,_SC_THREAD_SPORADIC_SERVER
+,_SC_SYSTEM_DATABASE
+,_SC_SYSTEM_DATABASE_R
+,_SC_TIMEOUTS
+,_SC_TYPED_MEMORY_OBJECTS
+,_SC_USER_GROUPS
+,_SC_USER_GROUPS_R
+,_SC_2_PBS
+,_SC_2_PBS_ACCOUNTING
+,_SC_2_PBS_LOCATE
+,_SC_2_PBS_MESSAGE
+,_SC_2_PBS_TRACK
+,_SC_SYMLOOP_MAX
+,_SC_STREAMS
+,_SC_2_PBS_CHECKPOINT
+,_SC_V6_ILP32_OFF32
+,_SC_V6_ILP32_OFFBIG
+,_SC_V6_LP64_OFF64
+,_SC_V6_LPBIG_OFFBIG
+,_SC_HOST_NAME_MAX
+,_SC_TRACE
+,_SC_TRACE_EVENT_FILTER
+,_SC_TRACE_INHERIT
+,_SC_TRACE_LOG
+,_SC_LEVEL1_ICACHE_SIZE
+,_SC_LEVEL1_ICACHE_ASSOC
+,_SC_LEVEL1_ICACHE_LINESIZE
+,_SC_LEVEL1_DCACHE_SIZE
+,_SC_LEVEL1_DCACHE_ASSOC
+,_SC_LEVEL1_DCACHE_LINESIZE
+,_SC_LEVEL2_CACHE_SIZE
+,_SC_LEVEL2_CACHE_ASSOC
+,_SC_LEVEL2_CACHE_LINESIZE
+,_SC_LEVEL3_CACHE_SIZE
+,_SC_LEVEL3_CACHE_ASSOC
+,_SC_LEVEL3_CACHE_LINESIZE
+,_SC_LEVEL4_CACHE_SIZE
+,_SC_LEVEL4_CACHE_ASSOC
+,_SC_LEVEL4_CACHE_LINESIZE
+,_SC_IPV6=(((60)+125)+50),
+_SC_RAW_SOCKETS
+,_SC_V7_ILP32_OFF32
+,_SC_V7_ILP32_OFFBIG
+,_SC_V7_LP64_OFF64
+,_SC_V7_LPBIG_OFFBIG
+,_SC_SS_REPL_MAX
+,_SC_TRACE_EVENT_NAME_MAX
+,_SC_TRACE_NAME_MAX
+,_SC_TRACE_SYS_MAX
+,_SC_TRACE_USER_EVENT_MAX
+,_SC_XOPEN_STREAMS
+,_SC_THREAD_ROBUST_PRIO_INHERIT
+,_SC_THREAD_ROBUST_PRIO_PROTECT
+,_SC_MINSIGSTKSZ
+,_SC_SIGSTKSZ
+};
 
-typedef unsigned int useconds_t;
+enum { _CS_PATH
+,_CS_V6_WIDTH_RESTRICTED_ENVS
+,_CS_GNU_LIBC_VERSION
+,_CS_GNU_LIBPTHREAD_VERSION
+,_CS_V5_WIDTH_RESTRICTED_ENVS
+,_CS_V7_WIDTH_RESTRICTED_ENVS
+,_CS_LFS_CFLAGS=(1000),
+_CS_LFS_LDFLAGS
+,_CS_LFS_LIBS
+,_CS_LFS_LINTFLAGS
+,_CS_LFS64_CFLAGS
+,_CS_LFS64_LDFLAGS
+,_CS_LFS64_LIBS
+,_CS_LFS64_LINTFLAGS
+,_CS_XBS5_ILP32_OFF32_CFLAGS=(1100),
+_CS_XBS5_ILP32_OFF32_LDFLAGS
+,_CS_XBS5_ILP32_OFF32_LIBS
+,_CS_XBS5_ILP32_OFF32_LINTFLAGS
+,_CS_XBS5_ILP32_OFFBIG_CFLAGS
+,_CS_XBS5_ILP32_OFFBIG_LDFLAGS
+,_CS_XBS5_ILP32_OFFBIG_LIBS
+,_CS_XBS5_ILP32_OFFBIG_LINTFLAGS
+,_CS_XBS5_LP64_OFF64_CFLAGS
+,_CS_XBS5_LP64_OFF64_LDFLAGS
+,_CS_XBS5_LP64_OFF64_LIBS
+,_CS_XBS5_LP64_OFF64_LINTFLAGS
+,_CS_XBS5_LPBIG_OFFBIG_CFLAGS
+,_CS_XBS5_LPBIG_OFFBIG_LDFLAGS
+,_CS_XBS5_LPBIG_OFFBIG_LIBS
+,_CS_XBS5_LPBIG_OFFBIG_LINTFLAGS
+,_CS_POSIX_V6_ILP32_OFF32_CFLAGS
+,_CS_POSIX_V6_ILP32_OFF32_LDFLAGS
+,_CS_POSIX_V6_ILP32_OFF32_LIBS
+,_CS_POSIX_V6_ILP32_OFF32_LINTFLAGS
+,_CS_POSIX_V6_ILP32_OFFBIG_CFLAGS
+,_CS_POSIX_V6_ILP32_OFFBIG_LDFLAGS
+,_CS_POSIX_V6_ILP32_OFFBIG_LIBS
+,_CS_POSIX_V6_ILP32_OFFBIG_LINTFLAGS
+,_CS_POSIX_V6_LP64_OFF64_CFLAGS
+,_CS_POSIX_V6_LP64_OFF64_LDFLAGS
+,_CS_POSIX_V6_LP64_OFF64_LIBS
+,_CS_POSIX_V6_LP64_OFF64_LINTFLAGS
+,_CS_POSIX_V6_LPBIG_OFFBIG_CFLAGS
+,_CS_POSIX_V6_LPBIG_OFFBIG_LDFLAGS
+,_CS_POSIX_V6_LPBIG_OFFBIG_LIBS
+,_CS_POSIX_V6_LPBIG_OFFBIG_LINTFLAGS
+,_CS_POSIX_V7_ILP32_OFF32_CFLAGS
+,_CS_POSIX_V7_ILP32_OFF32_LDFLAGS
+,_CS_POSIX_V7_ILP32_OFF32_LIBS
+,_CS_POSIX_V7_ILP32_OFF32_LINTFLAGS
+,_CS_POSIX_V7_ILP32_OFFBIG_CFLAGS
+,_CS_POSIX_V7_ILP32_OFFBIG_LDFLAGS
+,_CS_POSIX_V7_ILP32_OFFBIG_LIBS
+,_CS_POSIX_V7_ILP32_OFFBIG_LINTFLAGS
+,_CS_POSIX_V7_LP64_OFF64_CFLAGS
+,_CS_POSIX_V7_LP64_OFF64_LDFLAGS
+,_CS_POSIX_V7_LP64_OFF64_LIBS
+,_CS_POSIX_V7_LP64_OFF64_LINTFLAGS
+,_CS_POSIX_V7_LPBIG_OFFBIG_CFLAGS
+,_CS_POSIX_V7_LPBIG_OFFBIG_LDFLAGS
+,_CS_POSIX_V7_LPBIG_OFFBIG_LIBS
+,_CS_POSIX_V7_LPBIG_OFFBIG_LINTFLAGS
+,_CS_V6_ENV
+,_CS_V7_ENV
+};
 
 extern char* optarg;
 extern int optind;
 extern int opterr;
 extern int optopt;
-struct fd_set
-{
-    int fds_bits[((((((1024)%((sizeof(int)*8)))==0))?(((1024)/((sizeof(int)*8)))):((((1024)/((sizeof(int)*8)))+1))))];
-};
+typedef unsigned char uint8_t;
 
-typedef struct fd_set fd_set;
+typedef unsigned short int uint16_t;
 
-struct timespec
-{
-    long tv_sec;
-    long tv_nsec;
-};
+typedef unsigned int uint32_t;
 
-typedef long time_t;
-
-typedef int suseconds_t;
-
-typedef unsigned char uuid_t[16];
-
-extern char* suboptarg;
-extern int optreset;
-typedef unsigned int in_addr_t;
-
-typedef unsigned short int in_port_t;
-
-typedef unsigned char u_char;
-
-typedef unsigned short int u_short;
-
-typedef unsigned int u_int;
-
-typedef unsigned long  int u_long;
-
-typedef unsigned short int ushort;
-
-typedef unsigned int uint;
-
-typedef unsigned long  long u_quad_t;
-
-typedef long long quad_t;
-
-typedef long long* qaddr_t;
-
-typedef char* caddr_t;
-
-typedef int daddr_t;
-
-typedef unsigned int fixpt_t;
-
-typedef long  long blkcnt_t;
-
-typedef int blksize_t;
-
-typedef unsigned long  long ino_t;
-
-typedef unsigned long  long ino64_t;
-
-typedef int key_t;
-
-typedef unsigned short int nlink_t;
-
-typedef int segsz_t;
-
-typedef int swblk_t;
-
-typedef unsigned long  int clock_t;
-
-typedef int fd_mask;
-
-typedef struct _opaque_pthread_cond_t pthread_cond_t;
-
-typedef struct _opaque_pthread_condattr_t pthread_condattr_t;
-
-typedef struct _opaque_pthread_mutex_t pthread_mutex_t;
-
-typedef struct _opaque_pthread_mutexattr_t pthread_mutexattr_t;
-
-typedef struct _opaque_pthread_once_t pthread_once_t;
-
-typedef struct _opaque_pthread_rwlock_t pthread_rwlock_t;
-
-typedef struct _opaque_pthread_rwlockattr_t pthread_rwlockattr_t;
-
-typedef struct _opaque_pthread_t* pthread_t;
-
-typedef unsigned long  int pthread_key_t;
-
-typedef unsigned int fsblkcnt_t;
-
-typedef unsigned int fsfilcnt_t;
-
-typedef unsigned char sa_family_t;
-
-typedef unsigned int socklen_t;
+typedef unsigned long  int uint64_t;
 
 struct iovec
 {
@@ -1368,59 +1318,54 @@ struct iovec
     unsigned long  int iov_len;
 };
 
-typedef unsigned int sae_associd_t;
-
-typedef unsigned int sae_connid_t;
-
-struct sa_endpoints
-{
-    unsigned int sae_srcif;
-    const struct sockaddr* sae_srcaddr;
-    unsigned int sae_srcaddrlen;
-    const struct sockaddr* sae_dstaddr;
-    unsigned int sae_dstaddrlen;
+enum __socket_type { SOCK_STREAM=(1),
+SOCK_DGRAM=(2),
+SOCK_RAW=(3),
+SOCK_RDM=(4),
+SOCK_SEQPACKET=(5),
+SOCK_DCCP=(6),
+SOCK_PACKET=(10),
+SOCK_CLOEXEC=(524288),
+SOCK_NONBLOCK=(2048)
 };
 
-typedef struct sa_endpoints sa_endpoints_t;
-
-struct linger
-{
-    int l_onoff;
-    int l_linger;
-};
-
-struct so_np_extensions
-{
-    unsigned int npx_flags;
-    unsigned int npx_mask;
-};
+typedef unsigned short int sa_family_t;
 
 struct sockaddr
 {
-    unsigned char sa_len;
-    unsigned char sa_family;
+    unsigned short int sa_family;
     char sa_data[14];
-};
-
-struct __sockaddr_header
-{
-    unsigned char sa_len;
-    unsigned char sa_family;
-};
-
-struct sockproto
-{
-    unsigned short int sp_family;
-    unsigned short int sp_protocol;
 };
 
 struct sockaddr_storage
 {
-    unsigned char ss_len;
-    unsigned char ss_family;
-    char __ss_pad1[((sizeof(long  long))-sizeof(unsigned char)-sizeof(unsigned char))];
-    long  long __ss_align;
-    char __ss_pad2[(128-sizeof(unsigned char)-sizeof(unsigned char)-((sizeof(long  long))-sizeof(unsigned char)-sizeof(unsigned char))-(sizeof(long  long)))];
+    unsigned short int ss_family;
+    char __ss_padding[(128-(sizeof(unsigned short int))-sizeof(unsigned long  int))];
+    unsigned long  int __ss_align;
+};
+
+enum { MSG_OOB=(1),
+MSG_PEEK=(2),
+MSG_DONTROUTE=(4),
+MSG_TRYHARD=((4)),
+MSG_CTRUNC=(8),
+MSG_PROXY=(16),
+MSG_TRUNC=(32),
+MSG_DONTWAIT=(64),
+MSG_EOR=(128),
+MSG_WAITALL=(256),
+MSG_FIN=(512),
+MSG_SYN=(1024),
+MSG_CONFIRM=(2048),
+MSG_RST=(4096),
+MSG_ERRQUEUE=(8192),
+MSG_NOSIGNAL=(16384),
+MSG_MORE=(32768),
+MSG_WAITFORONE=(65536),
+MSG_BATCH=(262144),
+MSG_ZEROCOPY=(67108864),
+MSG_FASTOPEN=(536870912),
+MSG_CMSG_CLOEXEC=(1073741824)
 };
 
 struct msghdr
@@ -1428,45 +1373,257 @@ struct msghdr
     void* msg_name;
     unsigned int msg_namelen;
     struct iovec* msg_iov;
-    int msg_iovlen;
+    unsigned long  int msg_iovlen;
     void* msg_control;
-    unsigned int msg_controllen;
+    unsigned long  int msg_controllen;
     int msg_flags;
 };
 
 struct cmsghdr
 {
-    unsigned int cmsg_len;
+    unsigned long  int cmsg_len;
     int cmsg_level;
     int cmsg_type;
+    unsigned char __cmsg_data[];
 };
 
-struct sf_hdtr
-{
-    struct iovec* headers;
-    int hdr_cnt;
-    struct iovec* trailers;
-    int trl_cnt;
+enum { SCM_RIGHTS=(1),
+SCM_CREDENTIALS=(2)
 };
+
+struct ucred
+{
+    int pid;
+    unsigned int uid;
+    unsigned int gid;
+};
+
+struct anonymous_typeX21
+{
+    unsigned long  int fds_bits[1024/(8*sizeof(long))];
+};
+
+typedef struct anonymous_typeX21 __kernel_fd_set;
+
+typedef void (*__kernel_sighandler_t)(int);
+
+typedef int __kernel_key_t;
+
+typedef int __kernel_mqd_t;
+
+typedef unsigned short int __kernel_old_uid_t;
+
+typedef unsigned short int __kernel_old_gid_t;
+
+typedef unsigned long  int __kernel_old_dev_t;
+
+typedef long __kernel_long_t;
+
+typedef unsigned long  int __kernel_ulong_t;
+
+typedef unsigned long  int __kernel_ino_t;
+
+typedef unsigned int __kernel_mode_t;
+
+typedef int __kernel_pid_t;
+
+typedef int __kernel_ipc_pid_t;
+
+typedef unsigned int __kernel_uid_t;
+
+typedef unsigned int __kernel_gid_t;
+
+typedef long __kernel_suseconds_t;
+
+typedef int __kernel_daddr_t;
+
+typedef unsigned int __kernel_uid32_t;
+
+typedef unsigned int __kernel_gid32_t;
+
+typedef unsigned long  int __kernel_size_t;
+
+typedef long __kernel_ssize_t;
+
+typedef long __kernel_ptrdiff_t;
+
+struct anonymous_typeX22
+{
+    int val[2];
+};
+
+typedef struct anonymous_typeX22 __kernel_fsid_t;
+
+typedef long __kernel_off_t;
+
+typedef long  long __kernel_loff_t;
+
+typedef long __kernel_old_time_t;
+
+typedef long __kernel_time_t;
+
+typedef long  long __kernel_time64_t;
+
+typedef long __kernel_clock_t;
+
+typedef int __kernel_timer_t;
+
+typedef int __kernel_clockid_t;
+
+typedef char* __kernel_caddr_t;
+
+typedef unsigned short int __kernel_uid16_t;
+
+typedef unsigned short int __kernel_gid16_t;
+
+struct linger
+{
+    int l_onoff;
+    int l_linger;
+};
+
+struct osockaddr
+{
+    unsigned short int sa_family;
+    unsigned char sa_data[14];
+};
+
+enum { SHUT_RD=(0),
+SHUT_WR
+,SHUT_RDWR
+};
+
+struct mmsghdr
+{
+    struct msghdr msg_hdr;
+    unsigned int msg_len;
+};
+
+typedef unsigned int in_addr_t;
 
 struct in_addr
 {
     unsigned int s_addr;
 };
 
-struct sockaddr_in
-{
-    unsigned char sin_len;
-    unsigned char sin_family;
-    unsigned short int sin_port;
-    struct in_addr sin_addr;
-    char sin_zero[8];
-};
-
 struct ip_opts
 {
     struct in_addr ip_dst;
     char ip_opts[40];
+};
+
+struct in_pktinfo
+{
+    int ipi_ifindex;
+    struct in_addr ipi_spec_dst;
+    struct in_addr ipi_addr;
+};
+
+enum { IPPROTO_IP=(0),
+IPPROTO_ICMP=(1),
+IPPROTO_IGMP=(2),
+IPPROTO_IPIP=(4),
+IPPROTO_TCP=(6),
+IPPROTO_EGP=(8),
+IPPROTO_PUP=(12),
+IPPROTO_UDP=(17),
+IPPROTO_IDP=(22),
+IPPROTO_TP=(29),
+IPPROTO_DCCP=(33),
+IPPROTO_IPV6=(41),
+IPPROTO_RSVP=(46),
+IPPROTO_GRE=(47),
+IPPROTO_ESP=(50),
+IPPROTO_AH=(51),
+IPPROTO_MTP=(92),
+IPPROTO_BEETPH=(94),
+IPPROTO_ENCAP=(98),
+IPPROTO_PIM=(103),
+IPPROTO_COMP=(108),
+IPPROTO_SCTP=(132),
+IPPROTO_UDPLITE=(136),
+IPPROTO_MPLS=(137),
+IPPROTO_ETHERNET=(143),
+IPPROTO_RAW=(255),
+IPPROTO_MPTCP=(262),
+IPPROTO_MAX
+};
+
+enum { IPPROTO_HOPOPTS=(0),
+IPPROTO_ROUTING=(43),
+IPPROTO_FRAGMENT=(44),
+IPPROTO_ICMPV6=(58),
+IPPROTO_NONE=(59),
+IPPROTO_DSTOPTS=(60),
+IPPROTO_MH=(135)
+};
+
+typedef unsigned short int in_port_t;
+
+enum { IPPORT_ECHO=(7),
+IPPORT_DISCARD=(9),
+IPPORT_SYSTAT=(11),
+IPPORT_DAYTIME=(13),
+IPPORT_NETSTAT=(15),
+IPPORT_FTP=(21),
+IPPORT_TELNET=(23),
+IPPORT_SMTP=(25),
+IPPORT_TIMESERVER=(37),
+IPPORT_NAMESERVER=(42),
+IPPORT_WHOIS=(43),
+IPPORT_MTP=(57),
+IPPORT_TFTP=(69),
+IPPORT_RJE=(77),
+IPPORT_FINGER=(79),
+IPPORT_TTYLINK=(87),
+IPPORT_SUPDUP=(95),
+IPPORT_EXECSERVER=(512),
+IPPORT_LOGINSERVER=(513),
+IPPORT_CMDSERVER=(514),
+IPPORT_EFSSERVER=(520),
+IPPORT_BIFFUDP=(512),
+IPPORT_WHOSERVER=(513),
+IPPORT_ROUTESERVER=(520),
+IPPORT_RESERVED=(1024),
+IPPORT_USERRESERVED=(5000)
+};
+
+union anonymous_typeZ23
+{
+unsigned char __u6_addr8[16];
+unsigned short int __u6_addr16[8];
+unsigned int __u6_addr32[4];
+};
+
+union anonymous_typeZ24
+{
+unsigned char __u6_addr8[16];
+unsigned short int __u6_addr16[8];
+unsigned int __u6_addr32[4];
+};
+
+struct in6_addr
+{
+    union anonymous_typeZ24 __in6_u;
+};
+
+extern const struct in6_addr in6addr_any;
+extern const struct in6_addr in6addr_loopback;
+struct sockaddr_in
+{
+    unsigned short int sin_family;
+    unsigned short int sin_port;
+    struct in_addr sin_addr;
+    unsigned char sin_zero[sizeof(struct sockaddr)-(sizeof(unsigned short int))-sizeof(unsigned short int)-sizeof(struct in_addr)];
+};
+
+struct sockaddr_in6
+{
+    unsigned short int sin6_family;
+    unsigned short int sin6_port;
+    unsigned int sin6_flowinfo;
+    struct in6_addr sin6_addr;
+    unsigned int sin6_scope_id;
 };
 
 struct ip_mreq
@@ -1485,8 +1642,14 @@ struct ip_mreqn
 struct ip_mreq_source
 {
     struct in_addr imr_multiaddr;
-    struct in_addr imr_sourceaddr;
     struct in_addr imr_interface;
+    struct in_addr imr_sourceaddr;
+};
+
+struct ipv6_mreq
+{
+    struct in6_addr ipv6mr_multiaddr;
+    unsigned int ipv6mr_interface;
 };
 
 struct group_req
@@ -1502,64 +1665,22 @@ struct group_source_req
     struct sockaddr_storage gsr_source;
 };
 
-struct __msfilterreq
+struct ip_msfilter
 {
-    unsigned int msfr_ifindex;
-    unsigned int msfr_fmode;
-    unsigned int msfr_nsrcs;
-    unsigned int __msfr_align;
-    struct sockaddr_storage msfr_group;
-    struct sockaddr_storage* msfr_srcs;
+    struct in_addr imsf_multiaddr;
+    struct in_addr imsf_interface;
+    unsigned int imsf_fmode;
+    unsigned int imsf_numsrc;
+    struct in_addr imsf_slist[1];
 };
 
-struct in_pktinfo
+struct group_filter
 {
-    unsigned int ipi_ifindex;
-    struct in_addr ipi_spec_dst;
-    struct in_addr ipi_addr;
-};
-
-union anonymous_typeZ8
-{
-unsigned char __u6_addr8[16];
-unsigned short int __u6_addr16[8];
-unsigned int __u6_addr32[4];
-};
-
-union anonymous_typeZ9
-{
-unsigned char __u6_addr8[16];
-unsigned short int __u6_addr16[8];
-unsigned int __u6_addr32[4];
-};
-
-struct in6_addr
-{
-    union anonymous_typeZ9 __u6_addr;
-};
-
-typedef struct in6_addr in6_addr_t;
-
-struct sockaddr_in6
-{
-    unsigned char sin6_len;
-    unsigned char sin6_family;
-    unsigned short int sin6_port;
-    unsigned int sin6_flowinfo;
-    struct in6_addr sin6_addr;
-    unsigned int sin6_scope_id;
-};
-
-extern const struct in6_addr in6addr_any;
-extern const struct in6_addr in6addr_loopback;
-extern const struct in6_addr in6addr_nodelocal_allnodes;
-extern const struct in6_addr in6addr_linklocal_allnodes;
-extern const struct in6_addr in6addr_linklocal_allrouters;
-extern const struct in6_addr in6addr_linklocal_allv2routers;
-struct ipv6_mreq
-{
-    struct in6_addr ipv6mr_multiaddr;
-    unsigned int ipv6mr_interface;
+    unsigned int gf_interface;
+    struct sockaddr_storage gf_group;
+    unsigned int gf_fmode;
+    unsigned int gf_numsrc;
+    struct sockaddr_storage gf_slist[1];
 };
 
 struct in6_pktinfo
@@ -1574,42 +1695,91 @@ struct ip6_mtuinfo
     unsigned int ip6m_mtu;
 };
 
-enum { OSUnknownByteOrder
-,OSLittleEndian
-,OSBigEndian
-};
+typedef char int_least8_t;
 
-struct anonymous_typeX10
+typedef short int int_least16_t;
+
+typedef int int_least32_t;
+
+typedef long  int int_least64_t;
+
+typedef unsigned char uint_least8_t;
+
+typedef unsigned short int uint_least16_t;
+
+typedef unsigned int uint_least32_t;
+
+typedef unsigned long  int uint_least64_t;
+
+typedef char int_fast8_t;
+
+typedef long  int int_fast16_t;
+
+typedef long  int int_fast32_t;
+
+typedef long  int int_fast64_t;
+
+typedef unsigned char uint_fast8_t;
+
+typedef unsigned long  int uint_fast16_t;
+
+typedef unsigned long  int uint_fast32_t;
+
+typedef unsigned long  int uint_fast64_t;
+
+typedef unsigned long  int uintptr_t;
+
+typedef long  int intmax_t;
+
+typedef unsigned long  int uintmax_t;
+
+typedef int __gwchar_t;
+
+struct anonymous_typeX25
 {
     long  int quot;
     long  int rem;
 };
 
-typedef struct anonymous_typeX10 imaxdiv_t;
+typedef struct anonymous_typeX25 imaxdiv_t;
 
 typedef long  int ossl_intmax_t;
 
 typedef unsigned long  int ossl_uintmax_t;
 
-struct timeval64
+struct timex
 {
-    long  long tv_sec;
-    long  long tv_usec;
-};
-
-struct itimerval
-{
-    struct timeval it_interval;
-    struct timeval it_value;
-};
-
-struct clockinfo
-{
-    int hz;
-    int tick;
-    int tickadj;
-    int stathz;
-    int profhz;
+    unsigned int modes;
+    long  int offset;
+    long  int freq;
+    long  int maxerror;
+    long  int esterror;
+    int status;
+    long  int constant;
+    long  int precision;
+    long  int tolerance;
+    struct timeval time;
+    long  int tick;
+    long  int ppsfreq;
+    long  int jitter;
+    int shift;
+    long  int stabil;
+    long  int jitcnt;
+    long  int calcnt;
+    long  int errcnt;
+    long  int stbcnt;
+    int tai;
+    int anonymous_var_nameX51;
+    int anonymous_var_nameX53;
+    int anonymous_var_nameX55;
+    int anonymous_var_nameX57;
+    int anonymous_var_nameX59;
+    int anonymous_var_nameX61;
+    int anonymous_var_nameX63;
+    int anonymous_var_nameX65;
+    int anonymous_var_nameX67;
+    int anonymous_var_nameX69;
+    int anonymous_var_nameX71;
 };
 
 struct tm
@@ -1623,26 +1793,23 @@ struct tm
     int tm_wday;
     int tm_yday;
     int tm_isdst;
-    long tm_gmtoff;
-    char* tm_zone;
+    long  int tm_gmtoff;
+    const char* tm_zone;
 };
 
-extern char* tzname[];
-extern int getdate_err;
-extern long timezone;
+struct itimerspec
+{
+    struct timespec it_interval;
+    struct timespec it_value;
+};
+
+extern char* __tzname[2];
+extern int __daylight;
+extern long  int __timezone;
+extern char* tzname[2];
 extern int daylight;
-enum anonymous_typeY11 { _CLOCK_REALTIME=(0),
-_CLOCK_MONOTONIC=(6),
-_CLOCK_MONOTONIC_RAW=(4),
-_CLOCK_MONOTONIC_RAW_APPROX=(5),
-_CLOCK_UPTIME_RAW=(8),
-_CLOCK_UPTIME_RAW_APPROX=(9),
-_CLOCK_PROCESS_CPUTIME_ID=(12),
-_CLOCK_THREAD_CPUTIME_ID=(16)
-};
-
-typedef enum anonymous_typeY11 clockid_t;
-
+extern long  int timezone;
+extern int getdate_err;
 typedef struct stack_st OPENSSL_STACK;
 
 typedef int (*OPENSSL_sk_compfunc)(const void*,const void*);
@@ -1923,7 +2090,13 @@ typedef struct ossl_self_test_st OSSL_SELF_TEST;
 
 typedef long  int ptrdiff_t;
 
-typedef long  double max_align_t;
+struct anonymous_typeX26
+{
+    long  long __max_align_ll;
+    long  double __max_align_ld;
+};
+
+typedef struct anonymous_typeX26 max_align_t;
 
 typedef struct ossl_core_handle_st OSSL_CORE_HANDLE;
 
@@ -1971,12 +2144,12 @@ typedef int (*OSSL_INOUT_CALLBACK)(const struct ossl_param_st*,struct ossl_param
 
 typedef int (*OSSL_PASSPHRASE_CALLBACK)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*);
 
-struct anonymous_typeX12
+struct anonymous_typeX27
 {
     int dummy;
 };
 
-typedef struct anonymous_typeX12 CRYPTO_dynlock;
+typedef struct anonymous_typeX27 CRYPTO_dynlock;
 
 typedef void CRYPTO_RWLOCK;
 
@@ -2014,38 +2187,113 @@ typedef void (*CRYPTO_free_fn)(void*,const char*,int);
 struct sched_param
 {
     int sched_priority;
-    char __opaque[4];
 };
 
-enum { QOS_CLASS_USER_INTERACTIVE=(33),
-QOS_CLASS_USER_INITIATED=(25),
-QOS_CLASS_DEFAULT=(21),
-QOS_CLASS_UTILITY=(17),
-QOS_CLASS_BACKGROUND=(9),
-QOS_CLASS_UNSPECIFIED=(0)
+typedef unsigned long  int __cpu_mask;
+
+struct anonymous_typeX28
+{
+    unsigned long  int __bits[1024/(8*sizeof(unsigned long  int))];
 };
 
-typedef unsigned int qos_class_t;
+typedef struct anonymous_typeX28 cpu_set_t;
 
-typedef struct pthread_override_s* pthread_override_t;
+typedef long  int __jmp_buf[8];
 
-typedef unsigned int mach_port_t;
+struct __jmp_buf_tag
+{
+    long  int __jmpbuf[8];
+    int __mask_was_saved;
+    struct anonymous_typeX8 __saved_mask;
+};
 
-typedef int (*pthread_jit_write_callback_t)(void*);
+enum { PTHREAD_CREATE_JOINABLE
+,PTHREAD_CREATE_DETACHED
+};
 
-typedef struct _opaque_pthread_once_t CRYPTO_ONCE;
+enum { PTHREAD_MUTEX_TIMED_NP
+,PTHREAD_MUTEX_RECURSIVE_NP
+,PTHREAD_MUTEX_ERRORCHECK_NP
+,PTHREAD_MUTEX_ADAPTIVE_NP
+,PTHREAD_MUTEX_NORMAL=((0)),
+PTHREAD_MUTEX_RECURSIVE=((1)),
+PTHREAD_MUTEX_ERRORCHECK=((2)),
+PTHREAD_MUTEX_DEFAULT=(((0))),
+PTHREAD_MUTEX_FAST_NP=((0))
+};
 
-typedef unsigned long  int CRYPTO_THREAD_LOCAL;
+enum { PTHREAD_MUTEX_STALLED
+,PTHREAD_MUTEX_STALLED_NP=((0)),
+PTHREAD_MUTEX_ROBUST
+,PTHREAD_MUTEX_ROBUST_NP=(((0)+1))
+};
 
-typedef struct _opaque_pthread_t* CRYPTO_THREAD_ID;
+enum { PTHREAD_PRIO_NONE
+,PTHREAD_PRIO_INHERIT
+,PTHREAD_PRIO_PROTECT
+};
 
-typedef struct ssl_comp_st SSL_COMP;
+enum { PTHREAD_RWLOCK_PREFER_READER_NP
+,PTHREAD_RWLOCK_PREFER_WRITER_NP
+,PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE_NP
+,PTHREAD_RWLOCK_DEFAULT_NP=((0))
+};
 
-typedef int (*sk_SSL_COMP_compfunc)(const struct ssl_comp_st**,const struct ssl_comp_st**);
+enum { PTHREAD_INHERIT_SCHED
+,PTHREAD_EXPLICIT_SCHED
+};
 
-typedef void (*sk_SSL_COMP_freefunc)(struct ssl_comp_st*);
+enum { PTHREAD_SCOPE_SYSTEM
+,PTHREAD_SCOPE_PROCESS
+};
 
-typedef struct ssl_comp_st* (*sk_SSL_COMP_copyfunc)(const struct ssl_comp_st*);
+enum { PTHREAD_PROCESS_PRIVATE
+,PTHREAD_PROCESS_SHARED
+};
+
+struct _pthread_cleanup_buffer
+{
+    void (*__routine)(void*);
+    void* __arg;
+    int __canceltype;
+    struct _pthread_cleanup_buffer* __prev;
+};
+
+enum { PTHREAD_CANCEL_ENABLE
+,PTHREAD_CANCEL_DISABLE
+};
+
+enum { PTHREAD_CANCEL_DEFERRED
+,PTHREAD_CANCEL_ASYNCHRONOUS
+};
+
+struct __cancel_jmp_buf_tag
+{
+    long  int __cancel_jmp_buf[8];
+    int __mask_was_saved;
+};
+
+struct anonymous_typeX29
+{
+    struct __cancel_jmp_buf_tag __cancel_jmp_buf[1];
+    void* __pad[4];
+};
+
+typedef struct anonymous_typeX29 __pthread_unwind_buf_t;
+
+struct __pthread_cleanup_frame
+{
+    void (*__cancel_routine)(void*);
+    void* __cancel_arg;
+    int __do_it;
+    int __cancel_type;
+};
+
+typedef int CRYPTO_ONCE;
+
+typedef unsigned int CRYPTO_THREAD_LOCAL;
+
+typedef unsigned long  int CRYPTO_THREAD_ID;
 
 typedef union bio_addr_st BIO_ADDR;
 
@@ -2071,52 +2319,6 @@ typedef int (*asn1_ps_func)(struct bio_st*,unsigned char**,int*,void*);
 
 typedef void (*BIO_dgram_sctp_notification_handler_fn)(struct bio_st*,void*,void*);
 
-struct bio_msg_st
-{
-    void* data;
-    unsigned long  int data_len;
-    union bio_addr_st* peer;
-    union bio_addr_st* local;
-    unsigned long  long flags;
-};
-
-typedef struct bio_msg_st BIO_MSG;
-
-struct bio_mmsg_cb_args_st
-{
-    struct bio_msg_st* msg;
-    unsigned long  int stride;
-    unsigned long  int num_msg;
-    unsigned long  long flags;
-    unsigned long  int* msgs_processed;
-};
-
-typedef struct bio_mmsg_cb_args_st BIO_MMSG_CB_ARGS;
-
-union anonymous_typeZ13
-{
-int fd;
-void* custom;
-unsigned long  int custom_ui;
-struct ssl_st* ssl;
-};
-
-union anonymous_typeZ14
-{
-int fd;
-void* custom;
-unsigned long  int custom_ui;
-struct ssl_st* ssl;
-};
-
-struct bio_poll_descriptor_st
-{
-    unsigned int type;
-    union anonymous_typeZ14 value;
-};
-
-typedef struct bio_poll_descriptor_st BIO_POLL_DESCRIPTOR;
-
 enum BIO_hostserv_priorities { BIO_PARSE_PRIO_HOST
 ,BIO_PARSE_PRIO_SERV
 };
@@ -2140,8 +2342,6 @@ struct buf_mem_st
     unsigned long  int max;
     unsigned long  int flags;
 };
-
-typedef int (*OSSL_INDICATOR_CALLBACK)(const char*,const char*,const struct ossl_param_st*);
 
 typedef const struct ossl_param_st* (*OSSL_FUNC_core_gettable_params_fn)(const struct ossl_core_handle_st*);
 
@@ -2213,25 +2413,15 @@ typedef int (*OSSL_FUNC_BIO_vsnprintf_fn)(char*,unsigned long  int,const char*,v
 
 typedef int (*OSSL_FUNC_BIO_ctrl_fn)(struct ossl_core_bio_st*,int,long,void*);
 
-typedef void (*OSSL_FUNC_indicator_cb_fn)(struct openssl_core_ctx_st*,int (*)(const char*,const char*,const struct ossl_param_st*));
-
 typedef void (*OSSL_FUNC_self_test_cb_fn)(struct openssl_core_ctx_st*,int (*)(const struct ossl_param_st*,void*),void**);
 
 typedef unsigned long  int (*OSSL_FUNC_get_entropy_fn)(const struct ossl_core_handle_st*,unsigned char**,int,unsigned long  int,unsigned long  int);
 
-typedef unsigned long  int (*OSSL_FUNC_get_user_entropy_fn)(const struct ossl_core_handle_st*,unsigned char**,int,unsigned long  int,unsigned long  int);
-
 typedef void (*OSSL_FUNC_cleanup_entropy_fn)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int);
-
-typedef void (*OSSL_FUNC_cleanup_user_entropy_fn)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int);
 
 typedef unsigned long  int (*OSSL_FUNC_get_nonce_fn)(const struct ossl_core_handle_st*,unsigned char**,unsigned long  int,unsigned long  int,const void*,unsigned long  int);
 
-typedef unsigned long  int (*OSSL_FUNC_get_user_nonce_fn)(const struct ossl_core_handle_st*,unsigned char**,unsigned long  int,unsigned long  int,const void*,unsigned long  int);
-
 typedef void (*OSSL_FUNC_cleanup_nonce_fn)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int);
-
-typedef void (*OSSL_FUNC_cleanup_user_nonce_fn)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int);
 
 typedef int (*OSSL_FUNC_provider_register_child_cb_fn)(const struct ossl_core_handle_st*,int (*)(const struct ossl_core_handle_st*,void*),int (*)(const struct ossl_core_handle_st*,void*),int (*)(const char*,void*),void*);
 
@@ -2270,8 +2460,6 @@ typedef int (*OSSL_FUNC_digest_init_fn)(void*,const struct ossl_param_st*);
 typedef int (*OSSL_FUNC_digest_update_fn)(void*,const unsigned char*,unsigned long  int);
 
 typedef int (*OSSL_FUNC_digest_final_fn)(void*,unsigned char*,unsigned long  int*,unsigned long  int);
-
-typedef int (*OSSL_FUNC_digest_squeeze_fn)(void*,unsigned char*,unsigned long  int*,unsigned long  int);
 
 typedef int (*OSSL_FUNC_digest_digest_fn)(void*,const unsigned char*,unsigned long  int,unsigned char*,unsigned long  int*,unsigned long  int);
 
@@ -2415,10 +2603,6 @@ typedef int (*OSSL_FUNC_keymgmt_gen_set_params_fn)(void*,const struct ossl_param
 
 typedef const struct ossl_param_st* (*OSSL_FUNC_keymgmt_gen_settable_params_fn)(void*,void*);
 
-typedef int (*OSSL_FUNC_keymgmt_gen_get_params_fn)(void*,struct ossl_param_st*);
-
-typedef const struct ossl_param_st* (*OSSL_FUNC_keymgmt_gen_gettable_params_fn)(void*,void*);
-
 typedef void* (*OSSL_FUNC_keymgmt_gen_fn)(void*,int (*)(const struct ossl_param_st*,void*),void*);
 
 typedef void (*OSSL_FUNC_keymgmt_gen_cleanup_fn)(void*);
@@ -2453,10 +2637,6 @@ typedef const struct ossl_param_st* (*OSSL_FUNC_keymgmt_export_types_fn)(int);
 
 typedef void* (*OSSL_FUNC_keymgmt_dup_fn)(const void*,int);
 
-typedef const struct ossl_param_st* (*OSSL_FUNC_keymgmt_import_types_ex_fn)(void*,int);
-
-typedef const struct ossl_param_st* (*OSSL_FUNC_keymgmt_export_types_ex_fn)(void*,int);
-
 typedef void* (*OSSL_FUNC_keyexch_newctx_fn)(void*);
 
 typedef int (*OSSL_FUNC_keyexch_init_fn)(void*,void*,const struct ossl_param_st*);
@@ -2483,21 +2663,9 @@ typedef int (*OSSL_FUNC_signature_sign_init_fn)(void*,void*,const struct ossl_pa
 
 typedef int (*OSSL_FUNC_signature_sign_fn)(void*,unsigned char*,unsigned long  int*,unsigned long  int,const unsigned char*,unsigned long  int);
 
-typedef int (*OSSL_FUNC_signature_sign_message_init_fn)(void*,void*,const struct ossl_param_st*);
-
-typedef int (*OSSL_FUNC_signature_sign_message_update_fn)(void*,const unsigned char*,unsigned long  int);
-
-typedef int (*OSSL_FUNC_signature_sign_message_final_fn)(void*,unsigned char*,unsigned long  int*,unsigned long  int);
-
 typedef int (*OSSL_FUNC_signature_verify_init_fn)(void*,void*,const struct ossl_param_st*);
 
 typedef int (*OSSL_FUNC_signature_verify_fn)(void*,const unsigned char*,unsigned long  int,const unsigned char*,unsigned long  int);
-
-typedef int (*OSSL_FUNC_signature_verify_message_init_fn)(void*,void*,const struct ossl_param_st*);
-
-typedef int (*OSSL_FUNC_signature_verify_message_update_fn)(void*,const unsigned char*,unsigned long  int);
-
-typedef int (*OSSL_FUNC_signature_verify_message_final_fn)(void*);
 
 typedef int (*OSSL_FUNC_signature_verify_recover_init_fn)(void*,void*,const struct ossl_param_st*);
 
@@ -2539,8 +2707,6 @@ typedef int (*OSSL_FUNC_signature_set_ctx_md_params_fn)(void*,const struct ossl_
 
 typedef const struct ossl_param_st* (*OSSL_FUNC_signature_settable_ctx_md_params_fn)(void*);
 
-typedef const char** (*OSSL_FUNC_signature_query_key_types_fn)();
-
 typedef void* (*OSSL_FUNC_asym_cipher_newctx_fn)(void*);
 
 typedef int (*OSSL_FUNC_asym_cipher_encrypt_init_fn)(void*,void*,const struct ossl_param_st*);
@@ -2567,13 +2733,9 @@ typedef void* (*OSSL_FUNC_kem_newctx_fn)(void*);
 
 typedef int (*OSSL_FUNC_kem_encapsulate_init_fn)(void*,void*,const struct ossl_param_st*);
 
-typedef int (*OSSL_FUNC_kem_auth_encapsulate_init_fn)(void*,void*,void*,const struct ossl_param_st*);
-
 typedef int (*OSSL_FUNC_kem_encapsulate_fn)(void*,unsigned char*,unsigned long  int*,unsigned char*,unsigned long  int*);
 
 typedef int (*OSSL_FUNC_kem_decapsulate_init_fn)(void*,void*,const struct ossl_param_st*);
-
-typedef int (*OSSL_FUNC_kem_auth_decapsulate_init_fn)(void*,void*,void*,const struct ossl_param_st*);
 
 typedef int (*OSSL_FUNC_kem_decapsulate_fn)(void*,unsigned char*,unsigned long  int*,const unsigned char*,unsigned long  int);
 
@@ -2643,10 +2805,6 @@ typedef int (*OSSL_FUNC_store_close_fn)(void*);
 
 typedef int (*OSSL_FUNC_store_export_object_fn)(void*,const void*,unsigned long  int,int (*)(const struct ossl_param_st*,void*),void*);
 
-typedef int (*OSSL_FUNC_store_delete_fn)(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*);
-
-typedef void* (*OSSL_FUNC_store_open_ex_fn)(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*);
-
 typedef int (*sk_X509_ALGOR_compfunc)(const struct X509_algor_st**,const struct X509_algor_st**);
 
 typedef void (*sk_X509_ALGOR_freefunc)(struct X509_algor_st*);
@@ -2697,7 +2855,7 @@ typedef int (*i2d_of_void)(const void*,unsigned char**);
 
 typedef const struct ASN1_ITEM_st* (*ASN1_ITEM_EXP)();
 
-union anonymous_typeZ15
+union anonymous_typeZ30
 {
 char* ptr;
 int boolean;
@@ -2722,7 +2880,7 @@ struct asn1_string_st* sequence;
 struct ASN1_VALUE_st* asn1_value;
 };
 
-union anonymous_typeZ16
+union anonymous_typeZ31
 {
 char* ptr;
 int boolean;
@@ -2750,7 +2908,7 @@ struct ASN1_VALUE_st* asn1_value;
 struct asn1_type_st
 {
     int type;
-    union anonymous_typeZ16 value;
+    union anonymous_typeZ31 value;
 };
 
 typedef int (*sk_ASN1_TYPE_compfunc)(const struct asn1_type_st**,const struct asn1_type_st**);
@@ -2804,7 +2962,7 @@ struct obj_name_st
 
 typedef struct obj_name_st OBJ_NAME;
 
-struct anonymous_typeX17
+struct anonymous_typeX32
 {
     unsigned char* out;
     const unsigned char* inp;
@@ -2812,7 +2970,7 @@ struct anonymous_typeX17
     unsigned int interleave;
 };
 
-typedef struct anonymous_typeX17 EVP_CTRL_TLS1_1_MULTIBLOCK_PARAM;
+typedef struct anonymous_typeX32 EVP_CTRL_TLS1_1_MULTIBLOCK_PARAM;
 
 struct evp_cipher_info_st
 {
@@ -2828,12 +2986,12 @@ typedef int (*EVP_PBE_KEYGEN_EX)(struct evp_cipher_ctx_st*,const char*,int,struc
 
 typedef int (*EVP_PKEY_gen_cb)(struct evp_pkey_ctx_st*);
 
-enum anonymous_typeY18 { POINT_CONVERSION_COMPRESSED=(2),
+enum anonymous_typeY33 { POINT_CONVERSION_COMPRESSED=(2),
 POINT_CONVERSION_UNCOMPRESSED=(4),
 POINT_CONVERSION_HYBRID=(6)
 };
 
-typedef enum anonymous_typeY18 point_conversion_form_t;
+typedef enum anonymous_typeY33 point_conversion_form_t;
 
 typedef struct ec_method_st EC_METHOD;
 
@@ -2845,13 +3003,13 @@ typedef struct ecpk_parameters_st ECPKPARAMETERS;
 
 typedef struct ec_parameters_st ECPARAMETERS;
 
-struct anonymous_typeX19
+struct anonymous_typeX34
 {
     int nid;
     const char* comment;
 };
 
-typedef struct anonymous_typeX19 EC_builtin_curve;
+typedef struct anonymous_typeX34 EC_builtin_curve;
 
 typedef struct ECDSA_SIG_st ECDSA_SIG;
 
@@ -2903,13 +3061,13 @@ struct SHA256state_st
 
 typedef struct SHA256state_st SHA256_CTX;
 
-union anonymous_typeZ20
+union anonymous_typeZ35
 {
 unsigned long  long d[16];
 unsigned char p[(16*8)];
 };
 
-union anonymous_typeZ21
+union anonymous_typeZ36
 {
 unsigned long  long d[16];
 unsigned char p[(16*8)];
@@ -2920,7 +3078,7 @@ struct SHA512state_st
     unsigned long  long h[8];
     unsigned long  long Nl;
     unsigned long  long Nh;
-    union anonymous_typeZ21 u;
+    union anonymous_typeZ36 u;
     unsigned int num;
     unsigned int md_len;
 };
@@ -3088,14 +3246,6 @@ struct PBKDF2PARAM_st
 
 typedef struct PBKDF2PARAM_st PBKDF2PARAM;
 
-struct anonymous_typeX22
-{
-    struct X509_algor_st* keyDerivationFunc;
-    struct X509_algor_st* messageAuthScheme;
-};
-
-typedef struct anonymous_typeX22 PBMAC1PARAM;
-
 struct SCRYPT_PARAMS_st
 {
     struct asn1_string_st* salt;
@@ -3111,19 +3261,11 @@ typedef struct lhash_node_st OPENSSL_LH_NODE;
 
 typedef int (*OPENSSL_LH_COMPFUNC)(const void*,const void*);
 
-typedef int (*OPENSSL_LH_COMPFUNCTHUNK)(const void*,const void*,int (*)(const void*,const void*));
-
 typedef unsigned long  int (*OPENSSL_LH_HASHFUNC)(const void*);
-
-typedef unsigned long  int (*OPENSSL_LH_HASHFUNCTHUNK)(const void*,unsigned long  int (*)(const void*));
 
 typedef void (*OPENSSL_LH_DOALL_FUNC)(void*);
 
-typedef void (*OPENSSL_LH_DOALL_FUNC_THUNK)(void*,void (*)(void*));
-
 typedef void (*OPENSSL_LH_DOALL_FUNCARG)(void*,void*);
-
-typedef void (*OPENSSL_LH_DOALL_FUNCARG_THUNK)(void*,void*,void (*)(void*,void*));
 
 typedef struct lhash_st OPENSSL_LHASH;
 
@@ -3163,12 +3305,12 @@ typedef unsigned long  int (*lh_OPENSSL_CSTRING_hashfunc)(const char**);
 
 typedef void (*lh_OPENSSL_CSTRING_doallfunc)(const char**);
 
-enum anonymous_typeY23 { X509_LU_NONE=(0),
+enum anonymous_typeY37 { X509_LU_NONE=(0),
 X509_LU_X509
 ,X509_LU_CRL
 };
 
-typedef enum anonymous_typeY23 X509_LOOKUP_TYPE;
+typedef enum anonymous_typeY37 X509_LOOKUP_TYPE;
 
 typedef int (*sk_X509_LOOKUP_compfunc)(const struct x509_lookup_st**,const struct x509_lookup_st**);
 
@@ -3234,15 +3376,15 @@ typedef int (*X509_LOOKUP_ctrl_fn)(struct x509_lookup_st*,int,const char*,long,c
 
 typedef int (*X509_LOOKUP_ctrl_ex_fn)(struct x509_lookup_st*,int,const char*,long,char**,struct ossl_lib_ctx_st*,const char*);
 
-typedef int (*X509_LOOKUP_get_by_subject_fn)(struct x509_lookup_st*,enum anonymous_typeY23,const struct X509_name_st*,struct x509_object_st*);
+typedef int (*X509_LOOKUP_get_by_subject_fn)(struct x509_lookup_st*,enum anonymous_typeY37,const struct X509_name_st*,struct x509_object_st*);
 
-typedef int (*X509_LOOKUP_get_by_subject_ex_fn)(struct x509_lookup_st*,enum anonymous_typeY23,const struct X509_name_st*,struct x509_object_st*,struct ossl_lib_ctx_st*,const char*);
+typedef int (*X509_LOOKUP_get_by_subject_ex_fn)(struct x509_lookup_st*,enum anonymous_typeY37,const struct X509_name_st*,struct x509_object_st*,struct ossl_lib_ctx_st*,const char*);
 
-typedef int (*X509_LOOKUP_get_by_issuer_serial_fn)(struct x509_lookup_st*,enum anonymous_typeY23,const struct X509_name_st*,const struct asn1_string_st*,struct x509_object_st*);
+typedef int (*X509_LOOKUP_get_by_issuer_serial_fn)(struct x509_lookup_st*,enum anonymous_typeY37,const struct X509_name_st*,const struct asn1_string_st*,struct x509_object_st*);
 
-typedef int (*X509_LOOKUP_get_by_fingerprint_fn)(struct x509_lookup_st*,enum anonymous_typeY23,const unsigned char*,int,struct x509_object_st*);
+typedef int (*X509_LOOKUP_get_by_fingerprint_fn)(struct x509_lookup_st*,enum anonymous_typeY37,const unsigned char*,int,struct x509_object_st*);
 
-typedef int (*X509_LOOKUP_get_by_alias_fn)(struct x509_lookup_st*,enum anonymous_typeY23,const char*,int,struct x509_object_st*);
+typedef int (*X509_LOOKUP_get_by_alias_fn)(struct x509_lookup_st*,enum anonymous_typeY37,const char*,int,struct x509_object_st*);
 
 struct PKCS7_CTX_st
 {
@@ -3362,7 +3504,7 @@ struct pkcs7_encrypted_st
 
 typedef struct pkcs7_encrypted_st PKCS7_ENCRYPT;
 
-union anonymous_typeZ24
+union anonymous_typeZ38
 {
 char* ptr;
 struct asn1_string_st* data;
@@ -3374,7 +3516,7 @@ struct pkcs7_encrypted_st* encrypted;
 struct asn1_type_st* other;
 };
 
-union anonymous_typeZ25
+union anonymous_typeZ39
 {
 char* ptr;
 struct asn1_string_st* data;
@@ -3393,7 +3535,7 @@ struct pkcs7_st
     int state;
     int detached;
     struct asn1_object_st* type;
-    union anonymous_typeZ25 d;
+    union anonymous_typeZ39 d;
     struct PKCS7_CTX_st ctx;
 };
 
@@ -3405,20 +3547,20 @@ typedef void (*sk_PKCS7_freefunc)(struct pkcs7_st*);
 
 typedef struct pkcs7_st* (*sk_PKCS7_copyfunc)(const struct pkcs7_st*);
 
-struct anonymous_typeX26
+struct anonymous_typeX40
 {
     char* section;
     char* name;
     char* value;
 };
 
-typedef struct anonymous_typeX26 CONF_VALUE;
+typedef struct anonymous_typeX40 CONF_VALUE;
 
-typedef int (*sk_CONF_VALUE_compfunc)(const struct anonymous_typeX26**,const struct anonymous_typeX26**);
+typedef int (*sk_CONF_VALUE_compfunc)(const struct anonymous_typeX40**,const struct anonymous_typeX40**);
 
-typedef void (*sk_CONF_VALUE_freefunc)(struct anonymous_typeX26*);
+typedef void (*sk_CONF_VALUE_freefunc)(struct anonymous_typeX40*);
 
-typedef struct anonymous_typeX26* (*sk_CONF_VALUE_copyfunc)(const struct anonymous_typeX26*);
+typedef struct anonymous_typeX40* (*sk_CONF_VALUE_copyfunc)(const struct anonymous_typeX40*);
 
 union lh_CONF_VALUE_dummy
 {
@@ -3432,11 +3574,11 @@ struct lhash_st_CONF_VALUE
     union lh_CONF_VALUE_dummy dummy;
 };
 
-typedef int (*lh_CONF_VALUE_compfunc)(const struct anonymous_typeX26*,const struct anonymous_typeX26*);
+typedef int (*lh_CONF_VALUE_compfunc)(const struct anonymous_typeX40*,const struct anonymous_typeX40*);
 
-typedef unsigned long  int (*lh_CONF_VALUE_hashfunc)(const struct anonymous_typeX26*);
+typedef unsigned long  int (*lh_CONF_VALUE_hashfunc)(const struct anonymous_typeX40*);
 
-typedef void (*lh_CONF_VALUE_doallfunc)(struct anonymous_typeX26*);
+typedef void (*lh_CONF_VALUE_doallfunc)(struct anonymous_typeX40*);
 
 typedef struct conf_method_st CONF_METHOD;
 
@@ -3481,10 +3623,6 @@ typedef struct async_wait_ctx_st ASYNC_WAIT_CTX;
 
 typedef int (*ASYNC_callback_fn)(void*);
 
-typedef void* (*ASYNC_stack_alloc_fn)(unsigned long  int*);
-
-typedef void (*ASYNC_stack_free_fn)(void*);
-
 typedef int (*sk_SCT_compfunc)(const struct sct_st**,const struct sct_st**);
 
 typedef void (*sk_SCT_freefunc)(struct sct_st*);
@@ -3497,28 +3635,28 @@ typedef void (*sk_CTLOG_freefunc)(struct ctlog_st*);
 
 typedef struct ctlog_st* (*sk_CTLOG_copyfunc)(const struct ctlog_st*);
 
-enum anonymous_typeY27 { CT_LOG_ENTRY_TYPE_NOT_SET=(-1),
+enum anonymous_typeY41 { CT_LOG_ENTRY_TYPE_NOT_SET=(-1),
 CT_LOG_ENTRY_TYPE_X509=(0),
 CT_LOG_ENTRY_TYPE_PRECERT=(1)
 };
 
-typedef enum anonymous_typeY27 ct_log_entry_type_t;
+typedef enum anonymous_typeY41 ct_log_entry_type_t;
 
-enum anonymous_typeY28 { SCT_VERSION_NOT_SET=(-1),
+enum anonymous_typeY42 { SCT_VERSION_NOT_SET=(-1),
 SCT_VERSION_V1=(0)
 };
 
-typedef enum anonymous_typeY28 sct_version_t;
+typedef enum anonymous_typeY42 sct_version_t;
 
-enum anonymous_typeY29 { SCT_SOURCE_UNKNOWN
+enum anonymous_typeY43 { SCT_SOURCE_UNKNOWN
 ,SCT_SOURCE_TLS_EXTENSION
 ,SCT_SOURCE_X509V3_EXTENSION
 ,SCT_SOURCE_OCSP_STAPLED_RESPONSE
 };
 
-typedef enum anonymous_typeY29 sct_source_t;
+typedef enum anonymous_typeY43 sct_source_t;
 
-enum anonymous_typeY30 { SCT_VALIDATION_STATUS_NOT_SET
+enum anonymous_typeY44 { SCT_VALIDATION_STATUS_NOT_SET
 ,SCT_VALIDATION_STATUS_UNKNOWN_LOG
 ,SCT_VALIDATION_STATUS_VALID
 ,SCT_VALIDATION_STATUS_INVALID
@@ -3526,7 +3664,7 @@ enum anonymous_typeY30 { SCT_VALIDATION_STATUS_NOT_SET
 ,SCT_VALIDATION_STATUS_UNKNOWN_VERSION
 };
 
-typedef enum anonymous_typeY30 sct_validation_status_t;
+typedef enum anonymous_typeY44 sct_validation_status_t;
 
 typedef struct ssl_st* ssl_crock_st;
 
@@ -3541,6 +3679,8 @@ typedef struct ssl_session_st SSL_SESSION;
 typedef struct tls_sigalgs_st TLS_SIGALGS;
 
 typedef struct ssl_conf_ctx_st SSL_CONF_CTX;
+
+typedef struct ssl_comp_st SSL_COMP;
 
 struct srtp_protection_profile_st
 {
@@ -3606,12 +3746,17 @@ typedef void (*sk_SSL_CIPHER_freefunc)(struct ssl_cipher_st*);
 
 typedef struct ssl_cipher_st* (*sk_SSL_CIPHER_copyfunc)(const struct ssl_cipher_st*);
 
-enum anonymous_typeY31 { TLS_ST_BEFORE
+typedef int (*sk_SSL_COMP_compfunc)(const struct ssl_comp_st**,const struct ssl_comp_st**);
+
+typedef void (*sk_SSL_COMP_freefunc)(struct ssl_comp_st*);
+
+typedef struct ssl_comp_st* (*sk_SSL_COMP_copyfunc)(const struct ssl_comp_st*);
+
+enum anonymous_typeY45 { TLS_ST_BEFORE
 ,TLS_ST_OK
 ,DTLS_ST_CR_HELLO_VERIFY_REQUEST
 ,TLS_ST_CR_SRVR_HELLO
 ,TLS_ST_CR_CERT
-,TLS_ST_CR_COMP_CERT
 ,TLS_ST_CR_CERT_STATUS
 ,TLS_ST_CR_KEY_EXCH
 ,TLS_ST_CR_CERT_REQ
@@ -3621,7 +3766,6 @@ enum anonymous_typeY31 { TLS_ST_BEFORE
 ,TLS_ST_CR_FINISHED
 ,TLS_ST_CW_CLNT_HELLO
 ,TLS_ST_CW_CERT
-,TLS_ST_CW_COMP_CERT
 ,TLS_ST_CW_KEY_EXCH
 ,TLS_ST_CW_CERT_VRFY
 ,TLS_ST_CW_CHANGE
@@ -3632,12 +3776,10 @@ enum anonymous_typeY31 { TLS_ST_BEFORE
 ,DTLS_ST_SW_HELLO_VERIFY_REQUEST
 ,TLS_ST_SW_SRVR_HELLO
 ,TLS_ST_SW_CERT
-,TLS_ST_SW_COMP_CERT
 ,TLS_ST_SW_KEY_EXCH
 ,TLS_ST_SW_CERT_REQ
 ,TLS_ST_SW_SRVR_DONE
 ,TLS_ST_SR_CERT
-,TLS_ST_SR_COMP_CERT
 ,TLS_ST_SR_KEY_EXCH
 ,TLS_ST_SR_CERT_VRFY
 ,TLS_ST_SR_NEXT_PROTO
@@ -3662,44 +3804,9 @@ enum anonymous_typeY31 { TLS_ST_BEFORE
 ,TLS_ST_SR_END_OF_EARLY_DATA
 };
 
-typedef enum anonymous_typeY31 OSSL_HANDSHAKE_STATE;
+typedef enum anonymous_typeY45 OSSL_HANDSHAKE_STATE;
 
 typedef int (*SSL_client_hello_cb_fn)(struct ssl_st*,int*,void*);
-
-struct ssl_shutdown_ex_args_st
-{
-    unsigned long  long quic_error_code;
-    const char* quic_reason;
-};
-
-typedef struct ssl_shutdown_ex_args_st SSL_SHUTDOWN_EX_ARGS;
-
-struct ssl_stream_reset_args_st
-{
-    unsigned long  long quic_error_code;
-};
-
-typedef struct ssl_stream_reset_args_st SSL_STREAM_RESET_ARGS;
-
-struct ssl_conn_close_info_st
-{
-    unsigned long  long error_code;
-    unsigned long  long frame_type;
-    const char* reason;
-    unsigned long  int reason_len;
-    unsigned int flags;
-};
-
-typedef struct ssl_conn_close_info_st SSL_CONN_CLOSE_INFO;
-
-struct ssl_poll_item_st
-{
-    struct bio_poll_descriptor_st desc;
-    unsigned long  long events;
-    unsigned long  long revents;
-};
-
-typedef struct ssl_poll_item_st SSL_POLL_ITEM;
 
 typedef int (*ssl_ct_validation_cb)(const struct ct_policy_eval_ctx_st*,const struct stack_st_SCT*,void*);
 
@@ -3777,9 +3884,110 @@ struct list$1list$1charphph
     struct list_item$1list$1charphph* it;
 };
 
+typedef char my_bool;
+
 typedef unsigned long  long my_ulonglong;
 
 typedef int my_socket;
+
+enum mysql_enum_shutdown_level { SHUTDOWN_DEFAULT=(0),
+KILL_QUERY=(254),
+KILL_CONNECTION=(255)
+};
+
+enum enum_server_command { COM_SLEEP=(0),
+COM_QUIT
+,COM_INIT_DB
+,COM_QUERY
+,COM_FIELD_LIST
+,COM_CREATE_DB
+,COM_DROP_DB
+,COM_REFRESH
+,COM_SHUTDOWN
+,COM_STATISTICS
+,COM_PROCESS_INFO
+,COM_CONNECT
+,COM_PROCESS_KILL
+,COM_DEBUG
+,COM_PING
+,COM_TIME=(15),
+COM_DELAYED_INSERT
+,COM_CHANGE_USER
+,COM_BINLOG_DUMP
+,COM_TABLE_DUMP
+,COM_CONNECT_OUT=(20),
+COM_REGISTER_SLAVE
+,COM_STMT_PREPARE=(22),
+COM_STMT_EXECUTE=(23),
+COM_STMT_SEND_LONG_DATA=(24),
+COM_STMT_CLOSE=(25),
+COM_STMT_RESET=(26),
+COM_SET_OPTION=(27),
+COM_STMT_FETCH=(28),
+COM_DAEMON=(29),
+COM_UNSUPPORTED=(30),
+COM_RESET_CONNECTION=(31),
+COM_STMT_BULK_EXECUTE=(250),
+COM_RESERVED_1=(254),
+COM_END
+};
+
+typedef struct st_ma_pvio MARIADB_PVIO;
+
+struct st_net
+{
+    struct st_ma_pvio* pvio;
+    unsigned char* buff;
+    unsigned char* buff_end;
+    unsigned char* write_pos;
+    unsigned char* read_pos;
+    int fd;
+    unsigned long  int remain_in_buf;
+    unsigned long  int length;
+    unsigned long  int buf_length;
+    unsigned long  int where_b;
+    unsigned long  int max_packet;
+    unsigned long  int max_packet_size;
+    unsigned int pkt_nr;
+    unsigned int compress_pkt_nr;
+    unsigned int write_timeout;
+    unsigned int read_timeout;
+    unsigned int retry_count;
+    int fcntl;
+    unsigned int* return_status;
+    unsigned char reading_or_writing;
+    char save_char;
+    char unused_1;
+    char unused_2;
+    char compress;
+    char unused_3;
+    void* unused_4;
+    unsigned int last_errno;
+    unsigned char error;
+    char unused_5;
+    char unused_6;
+    char last_error[512];
+    char sqlstate[5+1];
+    struct st_mariadb_net_extension* extension;
+};
+
+typedef struct st_net NET;
+
+enum enum_mysql_set_option { MYSQL_OPTION_MULTI_STATEMENTS_ON
+,MYSQL_OPTION_MULTI_STATEMENTS_OFF
+};
+
+enum enum_mariadb_status_info { STATUS_TYPE=(0),
+SESSION_TRACK_TYPE
+};
+
+enum enum_session_state_type { SESSION_TRACK_SYSTEM_VARIABLES=(0),
+SESSION_TRACK_SCHEMA
+,SESSION_TRACK_STATE_CHANGE
+,SESSION_TRACK_GTIDS
+,SESSION_TRACK_TRANSACTION_CHARACTERISTICS
+,SESSION_TRACK_TRANSACTION_STATE
+};
 
 enum enum_field_types { MYSQL_TYPE_DECIMAL
 ,MYSQL_TYPE_TINY
@@ -3801,11 +4009,7 @@ enum enum_field_types { MYSQL_TYPE_DECIMAL
 ,MYSQL_TYPE_TIMESTAMP2
 ,MYSQL_TYPE_DATETIME2
 ,MYSQL_TYPE_TIME2
-,MYSQL_TYPE_TYPED_ARRAY
-,MYSQL_TYPE_VECTOR=(242),
-MYSQL_TYPE_INVALID=(243),
-MYSQL_TYPE_BOOL=(244),
-MYSQL_TYPE_JSON=(245),
+,MYSQL_TYPE_JSON=(245),
 MYSQL_TYPE_NEWDECIMAL=(246),
 MYSQL_TYPE_ENUM=(247),
 MYSQL_TYPE_SET=(248),
@@ -3815,187 +4019,12 @@ MYSQL_TYPE_LONG_BLOB=(251),
 MYSQL_TYPE_BLOB=(252),
 MYSQL_TYPE_VAR_STRING=(253),
 MYSQL_TYPE_STRING=(254),
-MYSQL_TYPE_GEOMETRY=(255)
+MYSQL_TYPE_GEOMETRY=(255),
+MAX_NO_FIELD_TYPES
 };
 
-typedef enum enum_field_types enum_field_types;
-
-struct LIST
-{
-    struct LIST* prev;
-    struct LIST* next;
-    void* data;
-};
-
-typedef struct LIST LIST;
-
-typedef int (*list_walk_action)(void*,void*);
-
-enum enum_server_command { COM_SLEEP
-,COM_QUIT
-,COM_INIT_DB
-,COM_QUERY
-,COM_FIELD_LIST
-,COM_CREATE_DB
-,COM_DROP_DB
-,COM_UNUSED_2
-,COM_UNUSED_1
-,COM_STATISTICS
-,COM_UNUSED_4
-,COM_CONNECT
-,COM_UNUSED_5
-,COM_DEBUG
-,COM_PING
-,COM_TIME
-,COM_DELAYED_INSERT
-,COM_CHANGE_USER
-,COM_BINLOG_DUMP
-,COM_TABLE_DUMP
-,COM_CONNECT_OUT
-,COM_REGISTER_SLAVE
-,COM_STMT_PREPARE
-,COM_STMT_EXECUTE
-,COM_STMT_SEND_LONG_DATA
-,COM_STMT_CLOSE
-,COM_STMT_RESET
-,COM_SET_OPTION
-,COM_STMT_FETCH
-,COM_DAEMON
-,COM_BINLOG_DUMP_GTID
-,COM_RESET_CONNECTION
-,COM_CLONE
-,COM_SUBSCRIBE_GROUP_REPLICATION_STREAM
-,COM_END
-};
-
-enum enum_compression_algorithm { MYSQL_UNCOMPRESSED=(1),
-MYSQL_ZLIB
-,MYSQL_ZSTD
-,MYSQL_INVALID
-};
-
-struct mysql_zlib_compress_context
-{
-    unsigned int compression_level;
-};
-
-typedef struct mysql_zlib_compress_context mysql_zlib_compress_context;
-
-typedef struct ZSTD_CCtx_s ZSTD_CCtx;
-
-typedef struct ZSTD_DCtx_s ZSTD_DCtx;
-
-struct mysql_zstd_compress_context
-{
-    struct ZSTD_CCtx_s* cctx;
-    struct ZSTD_DCtx_s* dctx;
-    unsigned int compression_level;
-};
-
-typedef struct mysql_zstd_compress_context mysql_zstd_compress_context;
-
-union anonymous_typeZ32
-{
-struct mysql_zlib_compress_context zlib_ctx;
-struct mysql_zstd_compress_context zstd_ctx;
-};
-
-union anonymous_typeZ33
-{
-struct mysql_zlib_compress_context zlib_ctx;
-struct mysql_zstd_compress_context zstd_ctx;
-};
-
-struct mysql_compress_context
-{
-    enum enum_compression_algorithm algorithm;
-    union anonymous_typeZ33 u;
-};
-
-typedef struct mysql_compress_context mysql_compress_context;
-
-enum SERVER_STATUS_flags_enum { SERVER_STATUS_IN_TRANS=(1),
-SERVER_STATUS_AUTOCOMMIT=(2),
-SERVER_MORE_RESULTS_EXISTS=(8),
-SERVER_QUERY_NO_GOOD_INDEX_USED=(16),
-SERVER_QUERY_NO_INDEX_USED=(32),
-SERVER_STATUS_CURSOR_EXISTS=(64),
-SERVER_STATUS_LAST_ROW_SENT=(128),
-SERVER_STATUS_DB_DROPPED=(256),
-SERVER_STATUS_NO_BACKSLASH_ESCAPES=(512),
-SERVER_STATUS_METADATA_CHANGED=(1024),
-SERVER_QUERY_WAS_SLOW=(2048),
-SERVER_PS_OUT_PARAMS=(4096),
-SERVER_STATUS_IN_TRANS_READONLY=(8192),
-SERVER_SESSION_STATE_CHANGED=((1<<14))
-};
-
-struct NET
-{
-    struct Vio* vio;
-    unsigned char* buff;
-    unsigned char* buff_end;
-    unsigned char* write_pos;
-    unsigned char* read_pos;
-    int fd;
-    unsigned long  int remain_in_buf;
-    unsigned long  int length;
-    unsigned long  int buf_length;
-    unsigned long  int where_b;
-    unsigned long  int max_packet;
-    unsigned long  int max_packet_size;
-    unsigned int pkt_nr;
-    unsigned int compress_pkt_nr;
-    unsigned int write_timeout;
-    unsigned int read_timeout;
-    unsigned int retry_count;
-    int fcntl;
-    unsigned int* return_status;
-    unsigned char reading_or_writing;
-    unsigned char save_char;
-    _Bool compress;
-    unsigned int last_errno;
-    unsigned char error;
-    char last_error[512];
-    char sqlstate[5+1];
-    void* extension;
-};
-
-typedef struct NET NET;
-
-enum mysql_enum_shutdown_level { SHUTDOWN_DEFAULT=(0),
-SHUTDOWN_WAIT_CONNECTIONS=((unsigned char)(1<<0)),
-SHUTDOWN_WAIT_TRANSACTIONS=((unsigned char)(1<<1)),
-SHUTDOWN_WAIT_UPDATES=((unsigned char)(1<<3)),
-SHUTDOWN_WAIT_ALL_BUFFERS=(((unsigned char)(1<<3)<<1)),
-SHUTDOWN_WAIT_CRITICAL_BUFFERS=(((unsigned char)(1<<3)<<1)+1),
-KILL_QUERY=(254),
-KILL_CONNECTION=(255)
-};
-
-enum enum_resultset_metadata { RESULTSET_METADATA_NONE=(0),
-RESULTSET_METADATA_FULL=(1)
-};
-
-enum enum_cursor_type { CURSOR_TYPE_NO_CURSOR=(0),
-CURSOR_TYPE_READ_ONLY=(1),
-CURSOR_TYPE_FOR_UPDATE=(2),
-CURSOR_TYPE_SCROLLABLE=(4),
-PARAMETER_COUNT_AVAILABLE=(8)
-};
-
-enum enum_mysql_set_option { MYSQL_OPTION_MULTI_STATEMENTS_ON
-,MYSQL_OPTION_MULTI_STATEMENTS_OFF
-};
-
-enum enum_session_state_type { SESSION_TRACK_SYSTEM_VARIABLES
-,SESSION_TRACK_SCHEMA
-,SESSION_TRACK_STATE_CHANGE
-,SESSION_TRACK_GTIDS
-,SESSION_TRACK_TRANSACTION_CHARACTERISTICS
-,SESSION_TRACK_TRANSACTION_STATE
-};
-
+extern unsigned long  int max_allowed_packet;
+extern unsigned long  int net_buffer_length;
 struct rand_struct
 {
     unsigned long  int seed1;
@@ -4004,180 +4033,126 @@ struct rand_struct
     double max_value_dbl;
 };
 
-enum Item_result { INVALID_RESULT=(-1),
-STRING_RESULT=(0),
-REAL_RESULT
+enum Item_result { STRING_RESULT
+,REAL_RESULT
 ,INT_RESULT
 ,ROW_RESULT
 ,DECIMAL_RESULT
 };
 
-struct UDF_ARGS
+struct st_udf_args
 {
     unsigned int arg_count;
     enum Item_result* arg_type;
     char** args;
     unsigned long  int* lengths;
     char* maybe_null;
-    char** attributes;
-    unsigned long  int* attribute_lengths;
-    void* extension;
 };
 
-typedef struct UDF_ARGS UDF_ARGS;
+typedef struct st_udf_args UDF_ARGS;
 
-struct UDF_INIT
+struct st_udf_init
 {
-    _Bool maybe_null;
+    char maybe_null;
     unsigned int decimals;
-    unsigned long  int max_length;
+    unsigned int max_length;
     char* ptr;
-    _Bool const_item;
-    void* extension;
+    char const_item;
 };
 
-typedef struct UDF_INIT UDF_INIT;
+typedef struct st_udf_init UDF_INIT;
 
-enum Item_udftype { UDFTYPE_FUNCTION=(1),
-UDFTYPE_AGGREGATE
-};
-
-typedef void (*Udf_func_clear)(struct UDF_INIT*,unsigned char*,unsigned char*);
-
-typedef void (*Udf_func_add)(struct UDF_INIT*,struct UDF_ARGS*,unsigned char*,unsigned char*);
-
-typedef void (*Udf_func_deinit)(struct UDF_INIT*);
-
-typedef _Bool (*Udf_func_init)(struct UDF_INIT*,struct UDF_ARGS*,char*);
-
-typedef void (*Udf_func_any)();
-
-typedef double (*Udf_func_double)(struct UDF_INIT*,struct UDF_ARGS*,unsigned char*,unsigned char*);
-
-typedef long  long (*Udf_func_longlong)(struct UDF_INIT*,struct UDF_ARGS*,unsigned char*,unsigned char*);
-
-typedef char* (*Udf_func_string)(struct UDF_INIT*,struct UDF_ARGS*,char*,unsigned long  int*,unsigned char*,unsigned char*);
-
-enum connect_stage { CONNECT_STAGE_INVALID=(0),
-CONNECT_STAGE_NOT_STARTED
-,CONNECT_STAGE_NET_BEGIN_CONNECT
-,CONNECT_STAGE_NET_WAIT_CONNECT
-,CONNECT_STAGE_NET_COMPLETE_CONNECT
-,CONNECT_STAGE_READ_GREETING
-,CONNECT_STAGE_PARSE_HANDSHAKE
-,CONNECT_STAGE_ESTABLISH_SSL
-,CONNECT_STAGE_AUTHENTICATE
-,CONNECT_STAGE_AUTH_BEGIN
-,CONNECT_STAGE_AUTH_RUN_FIRST_AUTHENTICATE_USER
-,CONNECT_STAGE_AUTH_HANDLE_FIRST_AUTHENTICATE_USER
-,CONNECT_STAGE_AUTH_READ_CHANGE_USER_RESULT
-,CONNECT_STAGE_AUTH_HANDLE_CHANGE_USER_REQUEST
-,CONNECT_STAGE_AUTH_RUN_SECOND_AUTHENTICATE_USER
-,CONNECT_STAGE_AUTH_INIT_MULTI_AUTH
-,CONNECT_STAGE_AUTH_FINISH_AUTH
-,CONNECT_STAGE_AUTH_HANDLE_SECOND_AUTHENTICATE_USER
-,CONNECT_STAGE_AUTH_DO_MULTI_PLUGIN_AUTH
-,CONNECT_STAGE_AUTH_HANDLE_MULTI_AUTH_RESPONSE
-,CONNECT_STAGE_PREP_SELECT_DATABASE
-,CONNECT_STAGE_PREP_INIT_COMMANDS
-,CONNECT_STAGE_SEND_ONE_INIT_COMMAND
-,CONNECT_STAGE_COMPLETE
-};
-
-struct st_mysql_client_plugin
+struct st_list
 {
-    int type;
-    unsigned int interface_version;
+    struct st_list* prev;
+    struct st_list* next;
+    void* data;
+};
+
+typedef struct st_list LIST;
+
+typedef int (*list_walk_action)(void*,void*);
+
+enum { _ISupper=(((((0)<8)?(((1<<(0))<<8)):(((1<<(0))>>8))))),
+_ISlower=(((((1)<8)?(((1<<(1))<<8)):(((1<<(1))>>8))))),
+_ISalpha=(((((2)<8)?(((1<<(2))<<8)):(((1<<(2))>>8))))),
+_ISdigit=(((((3)<8)?(((1<<(3))<<8)):(((1<<(3))>>8))))),
+_ISxdigit=(((((4)<8)?(((1<<(4))<<8)):(((1<<(4))>>8))))),
+_ISspace=(((((5)<8)?(((1<<(5))<<8)):(((1<<(5))>>8))))),
+_ISprint=(((((6)<8)?(((1<<(6))<<8)):(((1<<(6))>>8))))),
+_ISgraph=(((((7)<8)?(((1<<(7))<<8)):(((1<<(7))>>8))))),
+_ISblank=(((((8)<8)?(((1<<(8))<<8)):(((1<<(8))>>8))))),
+_IScntrl=(((((9)<8)?(((1<<(9))<<8)):(((1<<(9))>>8))))),
+_ISpunct=(((((10)<8)?(((1<<(10))<<8)):(((1<<(10))>>8))))),
+_ISalnum=(((((11)<8)?(((1<<(11))<<8)):(((1<<(11))>>8)))))
+};
+
+struct ma_charset_info_st
+{
+    unsigned int nr;
+    unsigned int state;
+    const char* csname;
     const char* name;
-    const char* author;
-    const char* desc;
-    unsigned int version[3];
-    const char* license;
-    void* mysql_api;
-    int (*init)(char*,unsigned long  int,int,va_list);
-    int (*deinit)();
-    int (*options)(const char*,const void*);
-    int (*get_options)(const char*,void*);
+    const char* dir;
+    unsigned int codepage;
+    const char* encoding;
+    unsigned int char_minlen;
+    unsigned int char_maxlen;
+    unsigned int (*mb_charlen)(unsigned int);
+    unsigned int (*mb_valid)(const char*,const char*);
 };
 
-enum anonymous_typeY35 { MYSQL_VIO_INVALID
-,MYSQL_VIO_TCP
-,MYSQL_VIO_SOCKET
-,MYSQL_VIO_PIPE
-,MYSQL_VIO_MEMORY
-};
+typedef struct ma_charset_info_st MARIADB_CHARSET_INFO;
 
-struct MYSQL_PLUGIN_VIO_INFO
+extern const struct ma_charset_info_st mariadb_compiled_charsets[];
+extern struct ma_charset_info_st* ma_default_charset_info;
+extern struct ma_charset_info_st* ma_charset_bin;
+extern struct ma_charset_info_st* ma_charset_latin1;
+extern struct ma_charset_info_st* ma_charset_utf8_general_ci;
+extern struct ma_charset_info_st* ma_charset_utf16le_general_ci;
+struct st_ma_const_string
 {
-    enum anonymous_typeY35 protocol;
-    int socket;
+    const char* str;
+    unsigned long  int length;
 };
 
-enum net_async_status { NET_ASYNC_COMPLETE=(0),
-NET_ASYNC_NOT_READY
-,NET_ASYNC_ERROR
-,NET_ASYNC_COMPLETE_NO_MORE_RESULTS
-};
+typedef struct st_ma_const_string MARIADB_CONST_STRING;
 
-struct MYSQL_PLUGIN_VIO
+struct st_ma_const_data
 {
-    int (*read_packet)(struct MYSQL_PLUGIN_VIO*,unsigned char**);
-    int (*write_packet)(struct MYSQL_PLUGIN_VIO*,const unsigned char*,int);
-    void (*info)(struct MYSQL_PLUGIN_VIO*,struct MYSQL_PLUGIN_VIO_INFO*);
-    enum net_async_status (*read_packet_nonblocking)(struct MYSQL_PLUGIN_VIO*,unsigned char**,int*);
-    enum net_async_status (*write_packet_nonblocking)(struct MYSQL_PLUGIN_VIO*,const unsigned char*,int,int*);
+    const unsigned char* data;
+    unsigned long  int length;
 };
 
-typedef struct MYSQL_PLUGIN_VIO MYSQL_PLUGIN_VIO;
+typedef struct st_ma_const_data MARIADB_CONST_DATA;
 
-struct auth_plugin_t
+struct st_ma_used_mem
 {
-    int type;
-    unsigned int interface_version;
-    const char* name;
-    const char* author;
-    const char* desc;
-    unsigned int version[3];
-    const char* license;
-    void* mysql_api;
-    int (*init)(char*,unsigned long  int,int,va_list);
-    int (*deinit)();
-    int (*options)(const char*,const void*);
-    int (*get_options)(const char*,void*);
-    int (*authenticate_user)(struct MYSQL_PLUGIN_VIO*,struct MYSQL*);
-    enum net_async_status (*authenticate_user_nonblocking)(struct MYSQL_PLUGIN_VIO*,struct MYSQL*,int*);
+    struct st_ma_used_mem* next;
+    unsigned long  int left;
+    unsigned long  int size;
 };
 
-typedef struct auth_plugin_t st_mysql_client_plugin_AUTHENTICATION;
+typedef struct st_ma_used_mem MA_USED_MEM;
 
-enum enum_mysql_timestamp_type { MYSQL_TIMESTAMP_NONE=(-2),
-MYSQL_TIMESTAMP_ERROR=(-1),
-MYSQL_TIMESTAMP_DATE=(0),
-MYSQL_TIMESTAMP_DATETIME=(1),
-MYSQL_TIMESTAMP_TIME=(2),
-MYSQL_TIMESTAMP_DATETIME_TZ=(3)
-};
-
-struct MYSQL_TIME
+struct st_ma_mem_root
 {
-    unsigned int year;
-    unsigned int month;
-    unsigned int day;
-    unsigned int hour;
-    unsigned int minute;
-    unsigned int second;
-    unsigned long  int second_part;
-    _Bool neg;
-    enum enum_mysql_timestamp_type time_type;
-    int time_zone_displacement;
+    struct st_ma_used_mem* free;
+    struct st_ma_used_mem* used;
+    struct st_ma_used_mem* pre_alloc;
+    unsigned long  int min_malloc;
+    unsigned long  int block_size;
+    unsigned int block_num;
+    unsigned int first_block_usage;
+    void (*error_handler)();
 };
 
-typedef struct MYSQL_TIME MYSQL_TIME;
+typedef struct st_ma_mem_root MA_MEM_ROOT;
 
-extern const char* client_errors[];
 extern unsigned int mysql_port;
 extern char* mysql_unix_port;
-struct MYSQL_FIELD
+extern unsigned int mariadb_deinitialize_ssl;
+struct st_mysql_field
 {
     char* name;
     char* org_name;
@@ -4202,32 +4177,35 @@ struct MYSQL_FIELD
     void* extension;
 };
 
-typedef struct MYSQL_FIELD MYSQL_FIELD;
+typedef struct st_mysql_field MYSQL_FIELD;
 
 typedef char** MYSQL_ROW;
 
 typedef unsigned int MYSQL_FIELD_OFFSET;
 
-struct MYSQL_ROWS
+extern const char* SQLSTATE_UNKNOWN;
+struct st_mysql_rows
 {
-    struct MYSQL_ROWS* next;
+    struct st_mysql_rows* next;
     char** data;
     unsigned long  int length;
 };
 
-typedef struct MYSQL_ROWS MYSQL_ROWS;
+typedef struct st_mysql_rows MYSQL_ROWS;
 
-typedef struct MYSQL_ROWS* MYSQL_ROW_OFFSET;
+typedef struct st_mysql_rows* MYSQL_ROW_OFFSET;
 
-struct MYSQL_DATA
+struct st_mysql_data
 {
-    struct MYSQL_ROWS* data;
-    struct MEM_ROOT* alloc;
+    struct st_mysql_rows* data;
+    void* embedded_info;
+    struct st_ma_mem_root alloc;
     unsigned long  long rows;
     unsigned int fields;
+    void* extension;
 };
 
-typedef struct MYSQL_DATA MYSQL_DATA;
+typedef struct st_mysql_data MYSQL_DATA;
 
 enum mysql_option { MYSQL_OPT_CONNECT_TIMEOUT
 ,MYSQL_OPT_COMPRESS
@@ -4243,8 +4221,14 @@ enum mysql_option { MYSQL_OPT_CONNECT_TIMEOUT
 ,MYSQL_OPT_READ_TIMEOUT
 ,MYSQL_OPT_WRITE_TIMEOUT
 ,MYSQL_OPT_USE_RESULT
+,MYSQL_OPT_USE_REMOTE_CONNECTION
+,MYSQL_OPT_USE_EMBEDDED_CONNECTION
+,MYSQL_OPT_GUESS_CONNECTION
+,MYSQL_SET_CLIENT_IP
+,MYSQL_SECURE_AUTH
 ,MYSQL_REPORT_DATA_TRUNCATION
 ,MYSQL_OPT_RECONNECT
+,MYSQL_OPT_SSL_VERIFY_SERVER_CERT
 ,MYSQL_PLUGIN_DIR
 ,MYSQL_DEFAULT_AUTH
 ,MYSQL_OPT_BIND
@@ -4261,21 +4245,98 @@ enum mysql_option { MYSQL_OPT_CONNECT_TIMEOUT
 ,MYSQL_SERVER_PUBLIC_KEY
 ,MYSQL_ENABLE_CLEARTEXT_PLUGIN
 ,MYSQL_OPT_CAN_HANDLE_EXPIRED_PASSWORDS
+,MYSQL_OPT_SSL_ENFORCE
 ,MYSQL_OPT_MAX_ALLOWED_PACKET
 ,MYSQL_OPT_NET_BUFFER_LENGTH
 ,MYSQL_OPT_TLS_VERSION
-,MYSQL_OPT_SSL_MODE
-,MYSQL_OPT_GET_SERVER_PUBLIC_KEY
-,MYSQL_OPT_RETRY_COUNT
-,MYSQL_OPT_OPTIONAL_RESULTSET_METADATA
-,MYSQL_OPT_SSL_FIPS_MODE
-,MYSQL_OPT_TLS_CIPHERSUITES
-,MYSQL_OPT_COMPRESSION_ALGORITHMS
-,MYSQL_OPT_ZSTD_COMPRESSION_LEVEL
-,MYSQL_OPT_LOAD_DATA_LOCAL_DIR
-,MYSQL_OPT_USER_PASSWORD
-,MYSQL_OPT_SSL_SESSION_DATA
-,MYSQL_OPT_TLS_SNI_SERVERNAME
+,MYSQL_PROGRESS_CALLBACK=(5999),
+MYSQL_OPT_NONBLOCK
+,MYSQL_DATABASE_DRIVER=(7000),
+MARIADB_OPT_SSL_FP
+,MARIADB_OPT_SSL_FP_LIST
+,MARIADB_OPT_TLS_PASSPHRASE
+,MARIADB_OPT_TLS_CIPHER_STRENGTH
+,MARIADB_OPT_TLS_VERSION
+,MARIADB_OPT_TLS_PEER_FP
+,MARIADB_OPT_TLS_PEER_FP_LIST
+,MARIADB_OPT_CONNECTION_READ_ONLY
+,MYSQL_OPT_CONNECT_ATTRS
+,MARIADB_OPT_USERDATA
+,MARIADB_OPT_CONNECTION_HANDLER
+,MARIADB_OPT_PORT
+,MARIADB_OPT_UNIXSOCKET
+,MARIADB_OPT_PASSWORD
+,MARIADB_OPT_HOST
+,MARIADB_OPT_USER
+,MARIADB_OPT_SCHEMA
+,MARIADB_OPT_DEBUG
+,MARIADB_OPT_FOUND_ROWS
+,MARIADB_OPT_MULTI_RESULTS
+,MARIADB_OPT_MULTI_STATEMENTS
+,MARIADB_OPT_INTERACTIVE
+,MARIADB_OPT_PROXY_HEADER
+,MARIADB_OPT_IO_WAIT
+,MARIADB_OPT_SKIP_READ_RESPONSE
+,MARIADB_OPT_RESTRICTED_AUTH
+,MARIADB_OPT_RPL_REGISTER_REPLICA
+,MARIADB_OPT_STATUS_CALLBACK
+,MARIADB_OPT_SERVER_PLUGINS
+};
+
+enum mariadb_value { MARIADB_CHARSET_ID
+,MARIADB_CHARSET_NAME
+,MARIADB_CLIENT_ERRORS
+,MARIADB_CLIENT_VERSION
+,MARIADB_CLIENT_VERSION_ID
+,MARIADB_CONNECTION_ASYNC_TIMEOUT
+,MARIADB_CONNECTION_ASYNC_TIMEOUT_MS
+,MARIADB_CONNECTION_MARIADB_CHARSET_INFO
+,MARIADB_CONNECTION_ERROR
+,MARIADB_CONNECTION_ERROR_ID
+,MARIADB_CONNECTION_HOST
+,MARIADB_CONNECTION_INFO
+,MARIADB_CONNECTION_PORT
+,MARIADB_CONNECTION_PROTOCOL_VERSION_ID
+,MARIADB_CONNECTION_PVIO_TYPE
+,MARIADB_CONNECTION_SCHEMA
+,MARIADB_CONNECTION_SERVER_TYPE
+,MARIADB_CONNECTION_SERVER_VERSION
+,MARIADB_CONNECTION_SERVER_VERSION_ID
+,MARIADB_CONNECTION_SOCKET
+,MARIADB_CONNECTION_SQLSTATE
+,MARIADB_CONNECTION_SSL_CIPHER
+,MARIADB_TLS_LIBRARY
+,MARIADB_CONNECTION_TLS_VERSION
+,MARIADB_CONNECTION_TLS_VERSION_ID
+,MARIADB_CONNECTION_TYPE
+,MARIADB_CONNECTION_UNIX_SOCKET
+,MARIADB_CONNECTION_USER
+,MARIADB_MAX_ALLOWED_PACKET
+,MARIADB_NET_BUFFER_LENGTH
+,MARIADB_CONNECTION_SERVER_STATUS
+,MARIADB_CONNECTION_SERVER_CAPABILITIES
+,MARIADB_CONNECTION_EXTENDED_SERVER_CAPABILITIES
+,MARIADB_CONNECTION_CLIENT_CAPABILITIES
+,MARIADB_CONNECTION_BYTES_READ
+,MARIADB_CONNECTION_BYTES_SENT
+};
+
+enum mysql_status { MYSQL_STATUS_READY
+,MYSQL_STATUS_GET_RESULT
+,MYSQL_STATUS_USE_RESULT
+,MYSQL_STATUS_QUERY_SENT
+,MYSQL_STATUS_SENDING_LOAD_DATA
+,MYSQL_STATUS_FETCHING_DATA
+,MYSQL_STATUS_NEXT_RESULT_PENDING
+,MYSQL_STATUS_QUIT_SENT
+,MYSQL_STATUS_STMT_RESULT
+};
+
+enum mysql_protocol_type { MYSQL_PROTOCOL_DEFAULT
+,MYSQL_PROTOCOL_TCP
+,MYSQL_PROTOCOL_SOCKET
+,MYSQL_PROTOCOL_PIPE
+,MYSQL_PROTOCOL_MEMORY
 };
 
 struct st_mysql_options
@@ -4291,7 +4352,7 @@ struct st_mysql_options
     char* password;
     char* unix_socket;
     char* db;
-    struct Init_commands_array* init_commands;
+    struct st_dynamic_array* init_command;
     char* my_cnf_file;
     char* my_cnf_group;
     char* charset_dir;
@@ -4303,61 +4364,29 @@ struct st_mysql_options
     char* ssl_cipher;
     char* shared_memory_base_name;
     unsigned long  int max_allowed_packet;
-    _Bool compress;
-    _Bool named_pipe;
+    char use_ssl;
+    char compress;
+    char named_pipe;
+    char reconnect;
+    char unused_1;
+    char unused_2;
+    char unused_3;
+    enum mysql_option methods_to_use;
     char* bind_address;
-    _Bool report_data_truncation;
+    char secure_auth;
+    char report_data_truncation;
     int (*local_infile_init)(void**,const char*,void*);
     int (*local_infile_read)(void*,char*,unsigned int);
     void (*local_infile_end)(void*);
     int (*local_infile_error)(void*,char*,unsigned int);
     void* local_infile_userdata;
-    struct st_mysql_options_extention* extension;
+    struct st_mysql_options_extension* extension;
 };
 
-enum mysql_status { MYSQL_STATUS_READY
-,MYSQL_STATUS_GET_RESULT
-,MYSQL_STATUS_USE_RESULT
-,MYSQL_STATUS_STATEMENT_GET_RESULT
-};
-
-enum mysql_protocol_type { MYSQL_PROTOCOL_DEFAULT
-,MYSQL_PROTOCOL_TCP
-,MYSQL_PROTOCOL_SOCKET
-,MYSQL_PROTOCOL_PIPE
-,MYSQL_PROTOCOL_MEMORY
-};
-
-enum mysql_ssl_mode { SSL_MODE_DISABLED=(1),
-SSL_MODE_PREFERRED
-,SSL_MODE_REQUIRED
-,SSL_MODE_VERIFY_CA
-,SSL_MODE_VERIFY_IDENTITY
-};
-
-enum mysql_ssl_fips_mode { SSL_FIPS_MODE_OFF=(0),
-SSL_FIPS_MODE_ON=(1),
-SSL_FIPS_MODE_STRICT
-};
-
-struct character_set
+struct st_mysql
 {
-    unsigned int number;
-    unsigned int state;
-    const char* csname;
-    const char* name;
-    const char* comment;
-    const char* dir;
-    unsigned int mbminlen;
-    unsigned int mbmaxlen;
-};
-
-typedef struct character_set MY_CHARSET_INFO;
-
-struct MYSQL
-{
-    struct NET net;
-    unsigned char* connector_fd;
+    struct st_net net;
+    void* unused_0;
     char* host;
     char* user;
     char* passwd;
@@ -4366,9 +4395,9 @@ struct MYSQL
     char* host_info;
     char* info;
     char* db;
-    struct CHARSET_INFO* charset;
-    struct MYSQL_FIELD* fields;
-    struct MEM_ROOT* field_alloc;
+    const struct ma_charset_info_st* charset;
+    struct st_mysql_field* fields;
+    struct st_ma_mem_root field_alloc;
     unsigned long  long affected_rows;
     unsigned long  long insert_id;
     unsigned long  long extra_info;
@@ -4384,412 +4413,745 @@ struct MYSQL
     unsigned int warning_count;
     struct st_mysql_options options;
     enum mysql_status status;
-    enum enum_resultset_metadata resultset_metadata;
-    _Bool free_me;
-    _Bool reconnect;
-    char scramble[20+1];
-    struct LIST* stmts;
-    const struct MYSQL_METHODS* methods;
+    char free_me;
+    char unused_1;
+    char scramble_buff[20+1];
+    char unused_2;
+    void* unused_3;
+    void* unused_4;
+    void* unused_5;
+    void* unused_6;
+    struct st_list* stmts;
+    const struct st_mariadb_methods* methods;
     void* thd;
-    _Bool* unbuffered_fetch_owner;
-    void* extension;
+    char* unbuffered_fetch_owner;
+    char* info_buffer;
+    struct st_mariadb_extension* extension;
 };
 
-typedef struct MYSQL MYSQL;
+typedef struct st_mysql MYSQL;
 
-struct MYSQL_RES
+struct st_mysql_res
 {
     unsigned long  long row_count;
-    struct MYSQL_FIELD* fields;
-    struct MYSQL_DATA* data;
-    struct MYSQL_ROWS* data_cursor;
-    unsigned long  int* lengths;
-    struct MYSQL* handle;
-    const struct MYSQL_METHODS* methods;
-    char** row;
-    char** current_row;
-    struct MEM_ROOT* field_alloc;
     unsigned int field_count;
     unsigned int current_field;
-    _Bool eof;
-    _Bool unbuffered_fetch_cancelled;
-    enum enum_resultset_metadata metadata;
+    struct st_mysql_field* fields;
+    struct st_mysql_data* data;
+    struct st_mysql_rows* data_cursor;
+    struct st_ma_mem_root field_alloc;
+    char** row;
+    char** current_row;
+    unsigned long  int* lengths;
+    struct st_mysql* handle;
+    char eof;
+    char is_ps;
+};
+
+typedef struct st_mysql_res MYSQL_RES;
+
+struct anonymous_typeX46
+{
+    unsigned long  int* p_max_allowed_packet;
+    unsigned long  int* p_net_buffer_length;
     void* extension;
 };
 
-typedef struct MYSQL_RES MYSQL_RES;
+typedef struct anonymous_typeX46 MYSQL_PARAMETERS;
 
-struct MYSQL_RPL
+enum mariadb_field_attr_t { MARIADB_FIELD_ATTR_DATA_TYPE_NAME=(0),
+MARIADB_FIELD_ATTR_FORMAT_NAME=(1)
+};
+
+enum enum_mysql_timestamp_type { MYSQL_TIMESTAMP_NONE=(-2),
+MYSQL_TIMESTAMP_ERROR=(-1),
+MYSQL_TIMESTAMP_DATE=(0),
+MYSQL_TIMESTAMP_DATETIME=(1),
+MYSQL_TIMESTAMP_TIME=(2)
+};
+
+struct st_mysql_time
 {
-    unsigned long  int file_name_length;
-    const char* file_name;
-    unsigned long  long start_position;
-    unsigned int server_id;
-    unsigned int flags;
-    unsigned long  int gtid_set_encoded_size;
-    void (*fix_gtid_set)(struct MYSQL_RPL*,unsigned char*);
-    void* gtid_set_arg;
-    unsigned long  int size;
-    const unsigned char* buffer;
+    unsigned int year;
+    unsigned int month;
+    unsigned int day;
+    unsigned int hour;
+    unsigned int minute;
+    unsigned int second;
+    unsigned long  int second_part;
+    char neg;
+    enum enum_mysql_timestamp_type time_type;
 };
 
-typedef struct MYSQL_RPL MYSQL_RPL;
+typedef struct st_mysql_time MYSQL_TIME;
 
-enum enum_mysql_stmt_state { MYSQL_STMT_INIT_DONE=(1),
-MYSQL_STMT_PREPARE_DONE
-,MYSQL_STMT_EXECUTE_DONE
-,MYSQL_STMT_FETCH_DONE
-};
-
-struct MYSQL_BIND
+struct character_set
 {
-    unsigned long  int* length;
-    _Bool* is_null;
-    void* buffer;
-    _Bool* error;
-    unsigned char* row_ptr;
-    void (*store_param_func)(struct NET*,struct MYSQL_BIND*);
-    void (*fetch_result)(struct MYSQL_BIND*,struct MYSQL_FIELD*,unsigned char**);
-    void (*skip_result)(struct MYSQL_BIND*,struct MYSQL_FIELD*,unsigned char**);
-    unsigned long  int buffer_length;
-    unsigned long  int offset;
-    unsigned long  int length_value;
-    unsigned int param_number;
-    unsigned int pack_length;
-    enum enum_field_types buffer_type;
-    _Bool error_value;
-    _Bool is_unsigned;
-    _Bool long_data_used;
-    _Bool is_null_value;
-    void* extension;
+    unsigned int number;
+    unsigned int state;
+    const char* csname;
+    const char* name;
+    const char* comment;
+    const char* dir;
+    unsigned int mbminlen;
+    unsigned int mbmaxlen;
 };
 
-typedef struct MYSQL_BIND MYSQL_BIND;
+typedef struct character_set MY_CHARSET_INFO;
 
-struct MYSQL_STMT
-{
-    struct MEM_ROOT* mem_root;
-    struct LIST list;
-    struct MYSQL* mysql;
-    struct MYSQL_BIND* params;
-    struct MYSQL_BIND* bind;
-    struct MYSQL_FIELD* fields;
-    struct MYSQL_DATA result;
-    struct MYSQL_ROWS* data_cursor;
-    int (*read_row_func)(struct MYSQL_STMT*,unsigned char**);
-    unsigned long  long affected_rows;
-    unsigned long  long insert_id;
-    unsigned long  int stmt_id;
-    unsigned long  int flags;
-    unsigned long  int prefetch_rows;
-    unsigned int server_status;
-    unsigned int last_errno;
-    unsigned int param_count;
-    unsigned int field_count;
-    enum enum_mysql_stmt_state state;
-    char last_error[512];
-    char sqlstate[5+1];
-    _Bool send_types_to_server;
-    _Bool bind_param_done;
-    unsigned char bind_result_done;
-    _Bool unbuffered_fetch_cancelled;
-    _Bool update_max_length;
-    struct MYSQL_STMT_EXT* extension;
-};
+typedef struct st_mysql_stmt MYSQL_STMT;
 
-typedef struct MYSQL_STMT MYSQL_STMT;
+typedef struct st_mysql_res* (*mysql_stmt_use_or_store_func)(struct st_mysql_stmt*);
 
 enum enum_stmt_attr_type { STMT_ATTR_UPDATE_MAX_LENGTH
 ,STMT_ATTR_CURSOR_TYPE
 ,STMT_ATTR_PREFETCH_ROWS
+,STMT_ATTR_PREBIND_PARAMS=(200),
+STMT_ATTR_ARRAY_SIZE
+,STMT_ATTR_ROW_SIZE
+,STMT_ATTR_STATE
+,STMT_ATTR_CB_USER_DATA
+,STMT_ATTR_CB_PARAM
+,STMT_ATTR_CB_RESULT
 };
 
-struct MYSQL* gComeMySQL=((void*)0);
+enum enum_cursor_type { CURSOR_TYPE_NO_CURSOR=(0),
+CURSOR_TYPE_READ_ONLY=(1),
+CURSOR_TYPE_FOR_UPDATE=(2),
+CURSOR_TYPE_SCROLLABLE=(4)
+};
+
+enum enum_indicator_type { STMT_INDICATOR_NTS=(-1),
+STMT_INDICATOR_NONE=(0),
+STMT_INDICATOR_NULL=(1),
+STMT_INDICATOR_DEFAULT=(2),
+STMT_INDICATOR_IGNORE=(3),
+STMT_INDICATOR_IGNORE_ROW=(4)
+};
+
+enum mysql_stmt_state { MYSQL_STMT_INITTED=(0),
+MYSQL_STMT_PREPARED
+,MYSQL_STMT_EXECUTED
+,MYSQL_STMT_WAITING_USE_OR_STORE
+,MYSQL_STMT_USE_OR_STORE_CALLED
+,MYSQL_STMT_USER_FETCHING
+,MYSQL_STMT_FETCH_DONE
+};
+
+typedef enum mysql_stmt_state enum_mysqlnd_stmt_state;
+
+union anonymous_typeZ47
+{
+unsigned char* row_ptr;
+char* indicator;
+};
+
+union anonymous_typeZ48
+{
+unsigned char* row_ptr;
+char* indicator;
+};
+
+struct st_mysql_bind
+{
+    unsigned long  int* length;
+    char* is_null;
+    void* buffer;
+    char* error;
+    union anonymous_typeZ48 u;
+    void (*store_param_func)(struct st_net*,struct st_mysql_bind*);
+    void (*fetch_result)(struct st_mysql_bind*,struct st_mysql_field*,unsigned char**);
+    void (*skip_result)(struct st_mysql_bind*,struct st_mysql_field*,unsigned char**);
+    unsigned long  int buffer_length;
+    unsigned long  int offset;
+    unsigned long  int length_value;
+    unsigned int flags;
+    unsigned int pack_length;
+    enum enum_field_types buffer_type;
+    char error_value;
+    char is_unsigned;
+    char long_data_used;
+    char is_null_value;
+    void* extension;
+};
+
+typedef struct st_mysql_bind MYSQL_BIND;
+
+struct st_mysqlnd_upsert_result
+{
+    unsigned int warning_count;
+    unsigned int server_status;
+    unsigned long  long affected_rows;
+    unsigned long  long last_insert_id;
+};
+
+typedef struct st_mysqlnd_upsert_result mysql_upsert_status;
+
+struct st_mysql_cmd_buffer
+{
+    unsigned char* buffer;
+    unsigned long  int length;
+};
+
+typedef struct st_mysql_cmd_buffer MYSQL_CMD_BUFFER;
+
+struct st_mysql_error_info
+{
+    unsigned int error_no;
+    char error[512+1];
+    char sqlstate[5+1];
+};
+
+typedef struct st_mysql_error_info mysql_error_info;
+
+typedef int (*mysql_stmt_fetch_row_func)(struct st_mysql_stmt*,unsigned char**);
+
+typedef void (*ps_result_callback)(void*,unsigned int,unsigned char**);
+
+typedef char* (*ps_param_callback)(void*,struct st_mysql_bind*,unsigned int);
+
+struct st_mysql_stmt
+{
+    struct st_ma_mem_root mem_root;
+    struct st_mysql* mysql;
+    unsigned long  int stmt_id;
+    unsigned long  int flags;
+    enum mysql_stmt_state state;
+    struct st_mysql_field* fields;
+    unsigned int field_count;
+    unsigned int param_count;
+    unsigned char send_types_to_server;
+    struct st_mysql_bind* params;
+    struct st_mysql_bind* bind;
+    struct st_mysql_data result;
+    struct st_mysql_rows* result_cursor;
+    char bind_result_done;
+    char bind_param_done;
+    struct st_mysqlnd_upsert_result upsert_status;
+    unsigned int last_errno;
+    char last_error[512+1];
+    char sqlstate[5+1];
+    char update_max_length;
+    unsigned long  int prefetch_rows;
+    struct st_list list;
+    char cursor_exists;
+    void* extension;
+    int (*fetch_row_func)(struct st_mysql_stmt*,unsigned char**);
+    unsigned int execute_count;
+    struct st_mysql_res* (*default_rset_handler)(struct st_mysql_stmt*);
+    unsigned char* request_buffer;
+    unsigned int array_size;
+    unsigned long  int row_size;
+    unsigned int prebind_params;
+    void* user_data;
+    void (*result_callback)(void*,unsigned int,unsigned char**);
+    char* (*param_callback)(void*,struct st_mysql_bind*,unsigned int);
+    unsigned long  int request_length;
+};
+
+typedef void (*ps_field_fetch_func)(struct st_mysql_bind*,const struct st_mysql_field*,unsigned char**);
+
+struct st_mysql_perm_bind
+{
+    void (*func)(struct st_mysql_bind*,const struct st_mysql_field*,unsigned char**);
+    int pack_len;
+    unsigned long  int max_len;
+};
+
+typedef struct st_mysql_perm_bind MYSQL_PS_CONVERSION;
+
+extern struct st_mysql_perm_bind mysql_ps_fetch_functions[(255)+1];
+struct st_mysql_client_plugin
+{
+    int type;
+    unsigned int interface_version;
+    const char* name;
+    const char* author;
+    const char* desc;
+    unsigned int version[3];
+    const char* license;
+    void* mysql_api;
+    int (*init)(char*,unsigned long  int,int,va_list);
+    int (*deinit)();
+    int (*options)(const char*,const void*);
+};
+
+struct st_mariadb_api
+{
+    unsigned long  long (*mysql_num_rows)(struct st_mysql_res*);
+    unsigned int (*mysql_num_fields)(struct st_mysql_res*);
+    char (*mysql_eof)(struct st_mysql_res*);
+    struct st_mysql_field* (*mysql_fetch_field_direct)(struct st_mysql_res*,unsigned int);
+    struct st_mysql_field* (*mysql_fetch_fields)(struct st_mysql_res*);
+    struct st_mysql_rows* (*mysql_row_tell)(struct st_mysql_res*);
+    unsigned int (*mysql_field_tell)(struct st_mysql_res*);
+    unsigned int (*mysql_field_count)(struct st_mysql*);
+    char (*mysql_more_results)(struct st_mysql*);
+    int (*mysql_next_result)(struct st_mysql*);
+    unsigned long  long (*mysql_affected_rows)(struct st_mysql*);
+    char (*mysql_autocommit)(struct st_mysql*,char);
+    char (*mysql_commit)(struct st_mysql*);
+    char (*mysql_rollback)(struct st_mysql*);
+    unsigned long  long (*mysql_insert_id)(struct st_mysql*);
+    unsigned int (*mysql_errno)(struct st_mysql*);
+    const char* (*mysql_error)(struct st_mysql*);
+    const char* (*mysql_info)(struct st_mysql*);
+    unsigned long  int (*mysql_thread_id)(struct st_mysql*);
+    const char* (*mysql_character_set_name)(struct st_mysql*);
+    void (*mysql_get_character_set_info)(struct st_mysql*,struct character_set*);
+    int (*mysql_set_character_set)(struct st_mysql*,const char*);
+    char (*mariadb_get_infov)(struct st_mysql*,enum mariadb_value,void*);
+    char (*mariadb_get_info)(struct st_mysql*,enum mariadb_value,void*);
+    struct st_mysql* (*mysql_init)(struct st_mysql*);
+    int (*mysql_ssl_set)(struct st_mysql*,const char*,const char*,const char*,const char*,const char*);
+    const char* (*mysql_get_ssl_cipher)(struct st_mysql*);
+    char (*mysql_change_user)(struct st_mysql*,const char*,const char*,const char*);
+    struct st_mysql* (*mysql_real_connect)(struct st_mysql*,const char*,const char*,const char*,const char*,unsigned int,const char*,unsigned long  int);
+    void (*mysql_close)(struct st_mysql*);
+    int (*mysql_select_db)(struct st_mysql*,const char*);
+    int (*mysql_query)(struct st_mysql*,const char*);
+    int (*mysql_send_query)(struct st_mysql*,const char*,unsigned long  int);
+    char (*mysql_read_query_result)(struct st_mysql*);
+    int (*mysql_real_query)(struct st_mysql*,const char*,unsigned long  int);
+    int (*mysql_shutdown)(struct st_mysql*,enum mysql_enum_shutdown_level);
+    int (*mysql_dump_debug_info)(struct st_mysql*);
+    int (*mysql_refresh)(struct st_mysql*,unsigned int);
+    int (*mysql_kill)(struct st_mysql*,unsigned long  int);
+    int (*mysql_ping)(struct st_mysql*);
+    char* (*mysql_stat)(struct st_mysql*);
+    char* (*mysql_get_server_info)(struct st_mysql*);
+    unsigned long  int (*mysql_get_server_version)(struct st_mysql*);
+    char* (*mysql_get_host_info)(struct st_mysql*);
+    unsigned int (*mysql_get_proto_info)(struct st_mysql*);
+    struct st_mysql_res* (*mysql_list_dbs)(struct st_mysql*,const char*);
+    struct st_mysql_res* (*mysql_list_tables)(struct st_mysql*,const char*);
+    struct st_mysql_res* (*mysql_list_fields)(struct st_mysql*,const char*,const char*);
+    struct st_mysql_res* (*mysql_list_processes)(struct st_mysql*);
+    struct st_mysql_res* (*mysql_store_result)(struct st_mysql*);
+    struct st_mysql_res* (*mysql_use_result)(struct st_mysql*);
+    int (*mysql_options)(struct st_mysql*,enum mysql_option,const void*);
+    void (*mysql_free_result)(struct st_mysql_res*);
+    void (*mysql_data_seek)(struct st_mysql_res*,unsigned long  long);
+    struct st_mysql_rows* (*mysql_row_seek)(struct st_mysql_res*,struct st_mysql_rows*);
+    unsigned int (*mysql_field_seek)(struct st_mysql_res*,unsigned int);
+    char** (*mysql_fetch_row)(struct st_mysql_res*);
+    unsigned long  int* (*mysql_fetch_lengths)(struct st_mysql_res*);
+    struct st_mysql_field* (*mysql_fetch_field)(struct st_mysql_res*);
+    unsigned long  int (*mysql_escape_string)(char*,const char*,unsigned long  int);
+    unsigned long  int (*mysql_real_escape_string)(struct st_mysql*,char*,const char*,unsigned long  int);
+    unsigned int (*mysql_thread_safe)();
+    unsigned int (*mysql_warning_count)(struct st_mysql*);
+    const char* (*mysql_sqlstate)(struct st_mysql*);
+    int (*mysql_server_init)(int,char**,char**);
+    void (*mysql_server_end)();
+    void (*mysql_thread_end)();
+    char (*mysql_thread_init)();
+    int (*mysql_set_server_option)(struct st_mysql*,enum enum_mysql_set_option);
+    const char* (*mysql_get_client_info)();
+    unsigned long  int (*mysql_get_client_version)();
+    char (*mariadb_connection)(struct st_mysql*);
+    const char* (*mysql_get_server_name)(struct st_mysql*);
+    struct ma_charset_info_st* (*mariadb_get_charset_by_name)(const char*);
+    struct ma_charset_info_st* (*mariadb_get_charset_by_nr)(unsigned int);
+    unsigned long  int (*mariadb_convert_string)(const char*,unsigned long  int*,struct ma_charset_info_st*,char*,unsigned long  int*,struct ma_charset_info_st*,int*);
+    int (*mysql_optionsv)(struct st_mysql*,enum mysql_option);
+    int (*mysql_get_optionv)(struct st_mysql*,enum mysql_option,void*);
+    int (*mysql_get_option)(struct st_mysql*,enum mysql_option,void*);
+    unsigned long  int (*mysql_hex_string)(char*,const char*,unsigned long  int);
+    int (*mysql_get_socket)(struct st_mysql*);
+    unsigned int (*mysql_get_timeout_value)(const struct st_mysql*);
+    unsigned int (*mysql_get_timeout_value_ms)(const struct st_mysql*);
+    char (*mariadb_reconnect)(struct st_mysql*);
+    struct st_mysql_stmt* (*mysql_stmt_init)(struct st_mysql*);
+    int (*mysql_stmt_prepare)(struct st_mysql_stmt*,const char*,unsigned long  int);
+    int (*mysql_stmt_execute)(struct st_mysql_stmt*);
+    int (*mysql_stmt_fetch)(struct st_mysql_stmt*);
+    int (*mysql_stmt_fetch_column)(struct st_mysql_stmt*,struct st_mysql_bind*,unsigned int,unsigned long  int);
+    int (*mysql_stmt_store_result)(struct st_mysql_stmt*);
+    unsigned long  int (*mysql_stmt_param_count)(struct st_mysql_stmt*);
+    char (*mysql_stmt_attr_set)(struct st_mysql_stmt*,enum enum_stmt_attr_type,const void*);
+    char (*mysql_stmt_attr_get)(struct st_mysql_stmt*,enum enum_stmt_attr_type,void*);
+    char (*mysql_stmt_bind_param)(struct st_mysql_stmt*,struct st_mysql_bind*);
+    char (*mysql_stmt_bind_result)(struct st_mysql_stmt*,struct st_mysql_bind*);
+    char (*mysql_stmt_close)(struct st_mysql_stmt*);
+    char (*mysql_stmt_reset)(struct st_mysql_stmt*);
+    char (*mysql_stmt_free_result)(struct st_mysql_stmt*);
+    char (*mysql_stmt_send_long_data)(struct st_mysql_stmt*,unsigned int,const char*,unsigned long  int);
+    struct st_mysql_res* (*mysql_stmt_result_metadata)(struct st_mysql_stmt*);
+    struct st_mysql_res* (*mysql_stmt_param_metadata)(struct st_mysql_stmt*);
+    unsigned int (*mysql_stmt_errno)(struct st_mysql_stmt*);
+    const char* (*mysql_stmt_error)(struct st_mysql_stmt*);
+    const char* (*mysql_stmt_sqlstate)(struct st_mysql_stmt*);
+    struct st_mysql_rows* (*mysql_stmt_row_seek)(struct st_mysql_stmt*,struct st_mysql_rows*);
+    struct st_mysql_rows* (*mysql_stmt_row_tell)(struct st_mysql_stmt*);
+    void (*mysql_stmt_data_seek)(struct st_mysql_stmt*,unsigned long  long);
+    unsigned long  long (*mysql_stmt_num_rows)(struct st_mysql_stmt*);
+    unsigned long  long (*mysql_stmt_affected_rows)(struct st_mysql_stmt*);
+    unsigned long  long (*mysql_stmt_insert_id)(struct st_mysql_stmt*);
+    unsigned int (*mysql_stmt_field_count)(struct st_mysql_stmt*);
+    int (*mysql_stmt_next_result)(struct st_mysql_stmt*);
+    char (*mysql_stmt_more_results)(struct st_mysql_stmt*);
+    int (*mariadb_stmt_execute_direct)(struct st_mysql_stmt*,const char*,unsigned long  int);
+    int (*mysql_reset_connection)(struct st_mysql*);
+};
+
+struct st_mariadb_methods
+{
+    struct st_mysql* (*db_connect)(struct st_mysql*,const char*,const char*,const char*,const char*,unsigned int,const char*,unsigned long  int);
+    void (*db_close)(struct st_mysql*);
+    int (*db_command)(struct st_mysql*,enum enum_server_command,const char*,unsigned long  int,char,void*);
+    void (*db_skip_result)(struct st_mysql*);
+    int (*db_read_query_result)(struct st_mysql*);
+    struct st_mysql_data* (*db_read_rows)(struct st_mysql*,struct st_mysql_field*,unsigned int);
+    int (*db_read_one_row)(struct st_mysql*,unsigned int,char**,unsigned long  int*);
+    char (*db_supported_buffer_type)(enum enum_field_types);
+    char (*db_read_prepare_response)(struct st_mysql_stmt*);
+    int (*db_read_stmt_result)(struct st_mysql*);
+    char (*db_stmt_get_result_metadata)(struct st_mysql_stmt*);
+    char (*db_stmt_get_param_metadata)(struct st_mysql_stmt*);
+    int (*db_stmt_read_all_rows)(struct st_mysql_stmt*);
+    int (*db_stmt_fetch)(struct st_mysql_stmt*,unsigned char**);
+    int (*db_stmt_fetch_to_bind)(struct st_mysql_stmt*,unsigned char*);
+    void (*db_stmt_flush_unbuffered)(struct st_mysql_stmt*);
+    void (*set_error)(struct st_mysql*,unsigned int,const char*,const char*);
+    void (*invalidate_stmts)(struct st_mysql*,const char*);
+    struct st_mariadb_api* api;
+    int (*db_read_execute_response)(struct st_mysql_stmt*);
+    unsigned char* (*db_execute_generate_request)(struct st_mysql_stmt*,unsigned long  int*,char);
+};
+
+struct st_mysql* gComeMySQL=((void*)0);
 // source head
 
 // header function
 void come_heap_init(int come_malloc, int come_debug, int come_gc);
 void come_heap_final();
-int renameat(int anonymous_var_nameX3, const char* anonymous_var_nameX4, int anonymous_var_nameX5, const char* anonymous_var_nameX6);
-int renamex_np(const char* anonymous_var_nameX7, const char* anonymous_var_nameX8, unsigned int anonymous_var_nameX9);
-int renameatx_np(int anonymous_var_nameX10, const char* anonymous_var_nameX11, int anonymous_var_nameX12, const char* anonymous_var_nameX13, unsigned int anonymous_var_nameX14);
-int printf(const char* anonymous_var_nameX15, ...);
-void clearerr(struct __sFILE* anonymous_var_nameX36);
-int fclose(struct __sFILE* anonymous_var_nameX37);
-int feof(struct __sFILE* anonymous_var_nameX38);
-int ferror(struct __sFILE* anonymous_var_nameX39);
-int fflush(struct __sFILE* anonymous_var_nameX40);
-int fgetc(struct __sFILE* anonymous_var_nameX41);
-int fgetpos(struct __sFILE* anonymous_var_nameX42, long  long* anonymous_var_nameX43);
-char* fgets(char* anonymous_var_nameX44, int anonymous_var_nameX45, struct __sFILE* anonymous_var_nameX46);
-struct __sFILE* fopen(const char* __filename, const char* __mode);
-int fprintf(struct __sFILE* anonymous_var_nameX47, const char* anonymous_var_nameX48, ...);
-int fputc(int anonymous_var_nameX49, struct __sFILE* anonymous_var_nameX50);
-int fputs(const char* anonymous_var_nameX51, struct __sFILE* anonymous_var_nameX52);
-unsigned long  int fread(void* __ptr, unsigned long  int __size, unsigned long  int __nitems, struct __sFILE* __stream);
-struct __sFILE* freopen(const char* anonymous_var_nameX53, const char* anonymous_var_nameX54, struct __sFILE* anonymous_var_nameX55);
-int fscanf(struct __sFILE* anonymous_var_nameX56, const char* anonymous_var_nameX57, ...);
-int fseek(struct __sFILE* anonymous_var_nameX58, long anonymous_var_nameX59, int anonymous_var_nameX60);
-int fsetpos(struct __sFILE* anonymous_var_nameX61, const long  long* anonymous_var_nameX62);
-long ftell(struct __sFILE* anonymous_var_nameX63);
-unsigned long  int fwrite(const void* __ptr, unsigned long  int __size, unsigned long  int __nitems, struct __sFILE* __stream);
-int getc(struct __sFILE* anonymous_var_nameX64);
-int getchar();
-char* gets(char* anonymous_var_nameX65);
-void perror(const char* anonymous_var_nameX66);
-int putc(int anonymous_var_nameX67, struct __sFILE* anonymous_var_nameX68);
-int putchar(int anonymous_var_nameX69);
-int puts(const char* anonymous_var_nameX70);
-int remove(const char* anonymous_var_nameX71);
+int remove(const char* __filename);
 int rename(const char* __old, const char* __new);
-void rewind(struct __sFILE* anonymous_var_nameX72);
-int scanf(const char* anonymous_var_nameX73, ...);
-void setbuf(struct __sFILE* anonymous_var_nameX74, char* anonymous_var_nameX75);
-int setvbuf(struct __sFILE* anonymous_var_nameX76, char* anonymous_var_nameX77, int anonymous_var_nameX78, unsigned long  int anonymous_var_nameX79);
-int sprintf(char* anonymous_var_nameX80, const char* anonymous_var_nameX81, ...);
-int sscanf(const char* anonymous_var_nameX82, const char* anonymous_var_nameX83, ...);
-struct __sFILE* tmpfile();
-char* tmpnam(char* anonymous_var_nameX84);
-int ungetc(int anonymous_var_nameX85, struct __sFILE* anonymous_var_nameX86);
-int vfprintf(struct __sFILE* anonymous_var_nameX87, const char* anonymous_var_nameX88, va_list anonymous_var_nameX89);
-int vprintf(const char* anonymous_var_nameX90, va_list anonymous_var_nameX91);
-int vsprintf(char* anonymous_var_nameX92, const char* anonymous_var_nameX93, va_list anonymous_var_nameX94);
-char* ctermid(char* anonymous_var_nameX95);
-struct __sFILE* fdopen(int anonymous_var_nameX96, const char* anonymous_var_nameX97);
-int fileno(struct __sFILE* anonymous_var_nameX98);
-int pclose(struct __sFILE* anonymous_var_nameX99);
-struct __sFILE* popen(const char* anonymous_var_nameX100, const char* anonymous_var_nameX101);
-int __srget(struct __sFILE* anonymous_var_nameX102);
-int __svfscanf(struct __sFILE* anonymous_var_nameX103, const char* anonymous_var_nameX104, va_list anonymous_var_nameX105);
-int __swbuf(int anonymous_var_nameX106, struct __sFILE* anonymous_var_nameX107);
-void flockfile(struct __sFILE* anonymous_var_nameX108);
-int ftrylockfile(struct __sFILE* anonymous_var_nameX109);
-void funlockfile(struct __sFILE* anonymous_var_nameX110);
-int getc_unlocked(struct __sFILE* anonymous_var_nameX111);
+int renameat(int __oldfd, const char* __old, int __newfd, const char* __new);
+int renameat2(int __oldfd, const char* __old, int __newfd, const char* __new, unsigned int __flags);
+int fclose(struct _IO_FILE* __stream);
+struct _IO_FILE* tmpfile();
+struct _IO_FILE* tmpfile64();
+char* tmpnam(char anonymous_var_nameX1[20]);
+char* tmpnam_r(char __s[20]);
+char* tempnam(const char* __dir, const char* __pfx);
+int fflush(struct _IO_FILE* __stream);
+int fflush_unlocked(struct _IO_FILE* __stream);
+int fcloseall();
+struct _IO_FILE* fopen(const char* __filename, const char* __modes);
+struct _IO_FILE* freopen(const char* __filename, const char* __modes, struct _IO_FILE* __stream);
+struct _IO_FILE* fopen64(const char* __filename, const char* __modes);
+struct _IO_FILE* freopen64(const char* __filename, const char* __modes, struct _IO_FILE* __stream);
+struct _IO_FILE* fdopen(int __fd, const char* __modes);
+struct _IO_FILE* fopencookie(void* __magic_cookie, const char* __modes, struct _IO_cookie_io_functions_t __io_funcs);
+struct _IO_FILE* fmemopen(void* __s, unsigned long  int __len, const char* __modes);
+struct _IO_FILE* open_memstream(char** __bufloc, unsigned long  int* __sizeloc);
+void setbuf(struct _IO_FILE* __stream, char* __buf);
+int setvbuf(struct _IO_FILE* __stream, char* __buf, int __modes, unsigned long  int __n);
+void setbuffer(struct _IO_FILE* __stream, char* __buf, unsigned long  int __size);
+void setlinebuf(struct _IO_FILE* __stream);
+int fprintf(struct _IO_FILE* __stream, const char* __format, ...);
+int printf(const char* __format, ...);
+int sprintf(char* __s, const char* __format, ...);
+int vfprintf(struct _IO_FILE* __s, const char* __format, va_list __arg);
+int vprintf(const char* __format, va_list __arg);
+int vsprintf(char* __s, const char* __format, va_list __arg);
+int snprintf(char* __s, unsigned long  int __maxlen, const char* __format, ...);
+int vsnprintf(char* __s, unsigned long  int __maxlen, const char* __format, va_list __arg);
+int vasprintf(char** __ptr, const char* __f, va_list __arg);
+int __asprintf(char** __ptr, const char* __fmt, ...);
+int asprintf(char** __ptr, const char* __fmt, ...);
+int vdprintf(int __fd, const char* __fmt, va_list __arg);
+int dprintf(int __fd, const char* __fmt, ...);
+int fscanf(struct _IO_FILE* __stream, const char* __format, ...);
+int scanf(const char* __format, ...);
+int sscanf(const char* __s, const char* __format, ...);
+int __isoc99_fscanf(struct _IO_FILE* __stream, const char* __format, ...);
+int __isoc99_scanf(const char* __format, ...);
+int __isoc99_sscanf(const char* __s, const char* __format, ...);
+int vfscanf(struct _IO_FILE* __s, const char* __format, va_list __arg);
+int vscanf(const char* __format, va_list __arg);
+int vsscanf(const char* __s, const char* __format, va_list __arg);
+int __isoc99_vfscanf(struct _IO_FILE* __s, const char* __format, va_list __arg);
+int __isoc99_vscanf(const char* __format, va_list __arg);
+int __isoc99_vsscanf(const char* __s, const char* __format, va_list __arg);
+int fgetc(struct _IO_FILE* __stream);
+int getc(struct _IO_FILE* __stream);
+int getchar();
+int getc_unlocked(struct _IO_FILE* __stream);
 int getchar_unlocked();
-int putc_unlocked(int anonymous_var_nameX112, struct __sFILE* anonymous_var_nameX113);
-int putchar_unlocked(int anonymous_var_nameX114);
-int getw(struct __sFILE* anonymous_var_nameX115);
-int putw(int anonymous_var_nameX116, struct __sFILE* anonymous_var_nameX117);
-char* tempnam(const char* __dir, const char* __prefix);
-int fseeko(struct __sFILE* __stream, long  long __offset, int __whence);
-long  long ftello(struct __sFILE* __stream);
-int snprintf(char* __str, unsigned long  int __size, const char* __format, ...);
-int vfscanf(struct __sFILE* __stream, const char* __format, va_list anonymous_var_nameX118);
-int vscanf(const char* __format, va_list anonymous_var_nameX119);
-int vsnprintf(char* __str, unsigned long  int __size, const char* __format, va_list anonymous_var_nameX120);
-int vsscanf(const char* __str, const char* __format, va_list anonymous_var_nameX121);
-int dprintf(int anonymous_var_nameX122, const char* anonymous_var_nameX123, ...);
-int vdprintf(int anonymous_var_nameX124, const char* anonymous_var_nameX125, va_list anonymous_var_nameX126);
-long getdelim(char** __linep, unsigned long  int* __linecapp, int __delimiter, struct __sFILE* __stream);
-long getline(char** __linep, unsigned long  int* __linecapp, struct __sFILE* __stream);
-struct __sFILE* fmemopen(void* __buf, unsigned long  int __size, const char* __mode);
-struct __sFILE* open_memstream(char** __bufp, unsigned long  int* __sizep);
-int asprintf(char** anonymous_var_nameX127, const char* anonymous_var_nameX128, ...);
-char* ctermid_r(char* anonymous_var_nameX129);
-char* fgetln(struct __sFILE* anonymous_var_nameX130, unsigned long  int* anonymous_var_nameX131);
-const char* fmtcheck(const char* anonymous_var_nameX132, const char* anonymous_var_nameX133);
-int fpurge(struct __sFILE* anonymous_var_nameX134);
-void setbuffer(struct __sFILE* anonymous_var_nameX135, char* anonymous_var_nameX136, int anonymous_var_nameX137);
-int setlinebuf(struct __sFILE* anonymous_var_nameX138);
-int vasprintf(char** anonymous_var_nameX139, const char* anonymous_var_nameX140, va_list anonymous_var_nameX141);
-struct __sFILE* funopen(const void* anonymous_var_nameX142, int (*anonymous_lambda_var_nameZ1)(void*,char*,int), int (*anonymous_lambda_var_nameZ2)(void*,const char*,int), long  long (*anonymous_lambda_var_nameZ3)(void*,long  long,int), int (*anonymous_lambda_var_nameZ4)(void*));
-void (*signal(int _function_pointer_result_var_name_a1, void (*_function_pointer_result_var_name_a2)(int)))(int);
-int getpriority(int anonymous_var_nameX173, unsigned int anonymous_var_nameX174);
-int getiopolicy_np(int anonymous_var_nameX175, int anonymous_var_nameX176);
-int getrlimit(int anonymous_var_nameX177, struct rlimit* anonymous_var_nameX178);
-int getrusage(int anonymous_var_nameX179, struct rusage* anonymous_var_nameX180);
-int setpriority(int anonymous_var_nameX181, unsigned int anonymous_var_nameX182, int anonymous_var_nameX183);
-int setiopolicy_np(int anonymous_var_nameX184, int anonymous_var_nameX185, int anonymous_var_nameX186);
-int setrlimit(int anonymous_var_nameX187, const struct rlimit* anonymous_var_nameX188);
-int wait(int* anonymous_var_nameX189);
-int waitpid(int anonymous_var_nameX190, int* anonymous_var_nameX191, int anonymous_var_nameX192);
-int waitid(enum anonymous_typeY2 anonymous_var_nameX193, unsigned int anonymous_var_nameX194, struct __siginfo* anonymous_var_nameX195, int anonymous_var_nameX196);
-int wait3(int* anonymous_var_nameX197, int anonymous_var_nameX198, struct rusage* anonymous_var_nameX199);
-int wait4(int anonymous_var_nameX200, int* anonymous_var_nameX201, int anonymous_var_nameX202, struct rusage* anonymous_var_nameX203);
-void* alloca(unsigned long  int anonymous_var_nameX204);
-void* malloc_type_malloc(unsigned long  int size, unsigned long  long type_id);
-void* malloc_type_calloc(unsigned long  int count, unsigned long  int size, unsigned long  long type_id);
-void malloc_type_free(void* ptr, unsigned long  long type_id);
-void* malloc_type_realloc(void* ptr, unsigned long  int size, unsigned long  long type_id);
-void* malloc_type_valloc(unsigned long  int size, unsigned long  long type_id);
-void* malloc_type_aligned_alloc(unsigned long  int alignment, unsigned long  int size, unsigned long  long type_id);
-int malloc_type_posix_memalign(void** memptr, unsigned long  int alignment, unsigned long  int size, unsigned long  long type_id);
-void* malloc_type_zone_malloc(struct _malloc_zone_t* zone, unsigned long  int size, unsigned long  long type_id);
-void* malloc_type_zone_calloc(struct _malloc_zone_t* zone, unsigned long  int count, unsigned long  int size, unsigned long  long type_id);
-void malloc_type_zone_free(struct _malloc_zone_t* zone, void* ptr, unsigned long  long type_id);
-void* malloc_type_zone_realloc(struct _malloc_zone_t* zone, void* ptr, unsigned long  int size, unsigned long  long type_id);
-void* malloc_type_zone_valloc(struct _malloc_zone_t* zone, unsigned long  int size, unsigned long  long type_id);
-void* malloc_type_zone_memalign(struct _malloc_zone_t* zone, unsigned long  int alignment, unsigned long  int size, unsigned long  long type_id);
-void* malloc(unsigned long  int __size);
-void* calloc(unsigned long  int __count, unsigned long  int __size);
-void free(void* anonymous_var_nameX205);
-void* realloc(void* __ptr, unsigned long  int __size);
-void* reallocf(void* __ptr, unsigned long  int __size);
-void* aligned_alloc(unsigned long  int __alignment, unsigned long  int __size);
-int posix_memalign(void** __memptr, unsigned long  int __alignment, unsigned long  int __size);
-void abort();
-int abs(int anonymous_var_nameX206);
-int atexit(void (*anonymous_lambda_var_nameZ6)());
-int at_quick_exit(void (*anonymous_lambda_var_nameZ7)());
-double atof(const char* anonymous_var_nameX207);
-int atoi(const char* anonymous_var_nameX208);
-long atol(const char* anonymous_var_nameX209);
-long long atoll(const char* anonymous_var_nameX210);
-void* bsearch(const void* __key, const void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-struct anonymous_typeX5 div(int anonymous_var_nameX213, int anonymous_var_nameX214);
-void exit(int anonymous_var_nameX215);
-char* getenv(const char* anonymous_var_nameX216);
-long labs(long anonymous_var_nameX217);
-struct anonymous_typeX6 ldiv(long anonymous_var_nameX218, long anonymous_var_nameX219);
-long long llabs(long  long anonymous_var_nameX220);
-struct anonymous_typeX7 lldiv(long  long anonymous_var_nameX221, long  long anonymous_var_nameX222);
-int mblen(const char* __s, unsigned long  int __n);
-unsigned long  int mbstowcs(int* anonymous_var_nameX223, const char* anonymous_var_nameX224, unsigned long  int anonymous_var_nameX225);
-int mbtowc(int* anonymous_var_nameX226, const char* anonymous_var_nameX227, unsigned long  int anonymous_var_nameX228);
-void qsort(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-void quick_exit(int anonymous_var_nameX231);
+int fgetc_unlocked(struct _IO_FILE* __stream);
+int fputc(int __c, struct _IO_FILE* __stream);
+int putc(int __c, struct _IO_FILE* __stream);
+int putchar(int __c);
+int fputc_unlocked(int __c, struct _IO_FILE* __stream);
+int putc_unlocked(int __c, struct _IO_FILE* __stream);
+int putchar_unlocked(int __c);
+int getw(struct _IO_FILE* __stream);
+int putw(int __w, struct _IO_FILE* __stream);
+char* fgets(char* __s, int __n, struct _IO_FILE* __stream);
+char* fgets_unlocked(char* __s, int __n, struct _IO_FILE* __stream);
+long  int __getdelim(char** __lineptr, unsigned long  int* __n, int __delimiter, struct _IO_FILE* __stream);
+long  int getdelim(char** __lineptr, unsigned long  int* __n, int __delimiter, struct _IO_FILE* __stream);
+long  int getline(char** __lineptr, unsigned long  int* __n, struct _IO_FILE* __stream);
+int fputs(const char* __s, struct _IO_FILE* __stream);
+int puts(const char* __s);
+int ungetc(int __c, struct _IO_FILE* __stream);
+unsigned long  int fread(void* __ptr, unsigned long  int __size, unsigned long  int __n, struct _IO_FILE* __stream);
+unsigned long  int fwrite(const void* __ptr, unsigned long  int __size, unsigned long  int __n, struct _IO_FILE* __s);
+int fputs_unlocked(const char* __s, struct _IO_FILE* __stream);
+unsigned long  int fread_unlocked(void* __ptr, unsigned long  int __size, unsigned long  int __n, struct _IO_FILE* __stream);
+unsigned long  int fwrite_unlocked(const void* __ptr, unsigned long  int __size, unsigned long  int __n, struct _IO_FILE* __stream);
+int fseek(struct _IO_FILE* __stream, long  int __off, int __whence);
+long  int ftell(struct _IO_FILE* __stream);
+void rewind(struct _IO_FILE* __stream);
+int fseeko(struct _IO_FILE* __stream, long  int __off, int __whence);
+long  int ftello(struct _IO_FILE* __stream);
+int fgetpos(struct _IO_FILE* __stream, struct _G_fpos_t* __pos);
+int fsetpos(struct _IO_FILE* __stream, const struct _G_fpos_t* __pos);
+int fseeko64(struct _IO_FILE* __stream, long  int __off, int __whence);
+long  int ftello64(struct _IO_FILE* __stream);
+int fgetpos64(struct _IO_FILE* __stream, struct _G_fpos64_t* __pos);
+int fsetpos64(struct _IO_FILE* __stream, const struct _G_fpos64_t* __pos);
+void clearerr(struct _IO_FILE* __stream);
+int feof(struct _IO_FILE* __stream);
+int ferror(struct _IO_FILE* __stream);
+void clearerr_unlocked(struct _IO_FILE* __stream);
+int feof_unlocked(struct _IO_FILE* __stream);
+int ferror_unlocked(struct _IO_FILE* __stream);
+void perror(const char* __s);
+int fileno(struct _IO_FILE* __stream);
+int fileno_unlocked(struct _IO_FILE* __stream);
+int pclose(struct _IO_FILE* __stream);
+struct _IO_FILE* popen(const char* __command, const char* __modes);
+char* ctermid(char* __s);
+char* cuserid(char* __s);
+int obstack_printf(struct obstack* __obstack, const char* __format, ...);
+int obstack_vprintf(struct obstack* __obstack, const char* __format, va_list __args);
+void flockfile(struct _IO_FILE* __stream);
+int ftrylockfile(struct _IO_FILE* __stream);
+void funlockfile(struct _IO_FILE* __stream);
+int __uflow(struct _IO_FILE* anonymous_var_nameX2);
+int __overflow(struct _IO_FILE* anonymous_var_nameX3, int anonymous_var_nameX4);
+unsigned long  int __ctype_get_mb_cur_max();
+double atof(const char* __nptr);
+int atoi(const char* __nptr);
+long  int atol(const char* __nptr);
+long long int atoll(const char* __nptr);
+double strtod(const char* __nptr, char** __endptr);
+float strtof(const char* __nptr, char** __endptr);
+long  double strtold(const char* __nptr, char** __endptr);
+float strtof32(const char* __nptr, char** __endptr);
+double strtof64(const char* __nptr, char** __endptr);
+double strtof32x(const char* __nptr, char** __endptr);
+long  double strtof64x(const char* __nptr, char** __endptr);
+long  int strtol(const char* __nptr, char** __endptr, int __base);
+unsigned long  int strtoul(const char* __nptr, char** __endptr, int __base);
+long long int strtoq(const char* __nptr, char** __endptr, int __base);
+unsigned long long int strtouq(const char* __nptr, char** __endptr, int __base);
+long long int strtoll(const char* __nptr, char** __endptr, int __base);
+unsigned long long int strtoull(const char* __nptr, char** __endptr, int __base);
+int strfromd(char* __dest, unsigned long  int __size, const char* __format, double __f);
+int strfromf(char* __dest, unsigned long  int __size, const char* __format, float __f);
+int strfroml(char* __dest, unsigned long  int __size, const char* __format, long  double __f);
+int strfromf32(char* __dest, unsigned long  int __size, const char* __format, float __f);
+int strfromf64(char* __dest, unsigned long  int __size, const char* __format, double __f);
+int strfromf32x(char* __dest, unsigned long  int __size, const char* __format, double __f);
+int strfromf64x(char* __dest, unsigned long  int __size, const char* __format, long  double __f);
+long  int strtol_l(const char* __nptr, char** __endptr, int __base, struct __locale_struct* __loc);
+unsigned long  int strtoul_l(const char* __nptr, char** __endptr, int __base, struct __locale_struct* __loc);
+long long int strtoll_l(const char* __nptr, char** __endptr, int __base, struct __locale_struct* __loc);
+unsigned long long int strtoull_l(const char* __nptr, char** __endptr, int __base, struct __locale_struct* __loc);
+double strtod_l(const char* __nptr, char** __endptr, struct __locale_struct* __loc);
+float strtof_l(const char* __nptr, char** __endptr, struct __locale_struct* __loc);
+long  double strtold_l(const char* __nptr, char** __endptr, struct __locale_struct* __loc);
+float strtof32_l(const char* __nptr, char** __endptr, struct __locale_struct* __loc);
+double strtof64_l(const char* __nptr, char** __endptr, struct __locale_struct* __loc);
+double strtof32x_l(const char* __nptr, char** __endptr, struct __locale_struct* __loc);
+long  double strtof64x_l(const char* __nptr, char** __endptr, struct __locale_struct* __loc);
+char* l64a(long  int __n);
+long  int a64l(const char* __s);
+int select(int __nfds, struct anonymous_typeX9* __readfds, struct anonymous_typeX9* __writefds, struct anonymous_typeX9* __exceptfds, struct timeval* __timeout);
+int pselect(int __nfds, struct anonymous_typeX9* __readfds, struct anonymous_typeX9* __writefds, struct anonymous_typeX9* __exceptfds, const struct timespec* __timeout, const struct anonymous_typeX8* __sigmask);
+long  int random();
+void srandom(unsigned int __seed);
+char* initstate(unsigned int __seed, char* __statebuf, unsigned long  int __statelen);
+char* setstate(char* __statebuf);
+int random_r(struct random_data* __buf, int* __result);
+int srandom_r(unsigned int __seed, struct random_data* __buf);
+int initstate_r(unsigned int __seed, char* __statebuf, unsigned long  int __statelen, struct random_data* __buf);
+int setstate_r(char* __statebuf, struct random_data* __buf);
 int rand();
-void srand(unsigned int anonymous_var_nameX232);
-double strtod(const char* anonymous_var_nameX233, char** anonymous_var_nameX234);
-float strtof(const char* anonymous_var_nameX235, char** anonymous_var_nameX236);
-long strtol(const char* __str, char** __endptr, int __base);
-long  double strtold(const char* anonymous_var_nameX237, char** anonymous_var_nameX238);
-long long strtoll(const char* __str, char** __endptr, int __base);
-unsigned long  int strtoul(const char* __str, char** __endptr, int __base);
-unsigned long  long strtoull(const char* __str, char** __endptr, int __base);
-int system(const char* anonymous_var_nameX239);
-unsigned long  int wcstombs(char* anonymous_var_nameX240, const int* anonymous_var_nameX241, unsigned long  int anonymous_var_nameX242);
-int wctomb(char* anonymous_var_nameX243, int anonymous_var_nameX244);
-long a64l(const char* anonymous_var_nameX246);
+void srand(unsigned int __seed);
+int rand_r(unsigned int* __seed);
 double drand48();
-char* ecvt(double anonymous_var_nameX247, int anonymous_var_nameX248, int* anonymous_var_nameX249, int* anonymous_var_nameX250);
-double erand48(unsigned short int anonymous_var_nameX251[3]);
-char* fcvt(double anonymous_var_nameX252, int anonymous_var_nameX253, int* anonymous_var_nameX254, int* anonymous_var_nameX255);
-char* gcvt(double anonymous_var_nameX256, int anonymous_var_nameX257, char* anonymous_var_nameX258);
-int grantpt(int anonymous_var_nameX262);
-char* initstate(unsigned int anonymous_var_nameX263, char* anonymous_var_nameX264, unsigned long  int anonymous_var_nameX265);
-long jrand48(unsigned short int anonymous_var_nameX266[3]);
-char* l64a(long anonymous_var_nameX267);
-void lcong48(unsigned short int anonymous_var_nameX268[7]);
-long lrand48();
-long mrand48();
-long nrand48(unsigned short int anonymous_var_nameX271[3]);
-int posix_openpt(int anonymous_var_nameX272);
-char* ptsname(int anonymous_var_nameX273);
-int ptsname_r(int fildes, char* buffer, unsigned long  int buflen);
-int putenv(char* anonymous_var_nameX274);
-long random();
-int rand_r(unsigned int* anonymous_var_nameX275);
-char* realpath(const char* anonymous_var_nameX276, char* anonymous_var_nameX277);
-unsigned short int* seed48(unsigned short int anonymous_var_nameX278[3]);
-int setenv(const char* __name, const char* __value, int __overwrite);
-char* setstate(const char* anonymous_var_nameX280);
-void srand48(long anonymous_var_nameX281);
-void srandom(unsigned int anonymous_var_nameX282);
-int unlockpt(int anonymous_var_nameX283);
-int unsetenv(const char* anonymous_var_nameX284);
+double erand48(unsigned short int __xsubi[3]);
+long  int lrand48();
+long  int nrand48(unsigned short int __xsubi[3]);
+long  int mrand48();
+long  int jrand48(unsigned short int __xsubi[3]);
+void srand48(long  int __seedval);
+unsigned short int* seed48(unsigned short int __seed16v[3]);
+void lcong48(unsigned short int __param[7]);
+int drand48_r(struct drand48_data* __buffer, double* __result);
+int erand48_r(unsigned short int __xsubi[3], struct drand48_data* __buffer, double* __result);
+int lrand48_r(struct drand48_data* __buffer, long  int* __result);
+int nrand48_r(unsigned short int __xsubi[3], struct drand48_data* __buffer, long  int* __result);
+int mrand48_r(struct drand48_data* __buffer, long  int* __result);
+int jrand48_r(unsigned short int __xsubi[3], struct drand48_data* __buffer, long  int* __result);
+int srand48_r(long  int __seedval, struct drand48_data* __buffer);
+int seed48_r(unsigned short int __seed16v[3], struct drand48_data* __buffer);
+int lcong48_r(unsigned short int __param[7], struct drand48_data* __buffer);
 unsigned int arc4random();
-void arc4random_addrandom(unsigned char* anonymous_var_nameX285, int anonymous_var_nameX286);
-void arc4random_buf(void* __buf, unsigned long  int __nbytes);
-void arc4random_stir();
+void arc4random_buf(void* __buf, unsigned long  int __size);
 unsigned int arc4random_uniform(unsigned int __upper_bound);
-int atexit_b(void (*anonymous_lambda_var_nameZ8)());
-void* bsearch_b(const void* __key, const void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-char* cgetcap(char* anonymous_var_nameX289, const char* anonymous_var_nameX290, int anonymous_var_nameX291);
-int cgetclose();
-int cgetent(char** anonymous_var_nameX292, char** anonymous_var_nameX293, const char* anonymous_var_nameX294);
-int cgetfirst(char** anonymous_var_nameX295, char** anonymous_var_nameX296);
-int cgetmatch(const char* anonymous_var_nameX297, const char* anonymous_var_nameX298);
-int cgetnext(char** anonymous_var_nameX299, char** anonymous_var_nameX300);
-int cgetnum(char* anonymous_var_nameX301, const char* anonymous_var_nameX302, long* anonymous_var_nameX303);
-int cgetset(const char* anonymous_var_nameX304);
-int cgetstr(char* anonymous_var_nameX305, const char* anonymous_var_nameX306, char** anonymous_var_nameX307);
-int cgetustr(char* anonymous_var_nameX308, const char* anonymous_var_nameX309, char** anonymous_var_nameX310);
-int daemon(int anonymous_var_nameX311, int anonymous_var_nameX312);
-char* devname(int anonymous_var_nameX313, unsigned short int anonymous_var_nameX314);
-char* devname_r(int anonymous_var_nameX315, unsigned short int anonymous_var_nameX316, char* buf, int len);
-char* getbsize(int* anonymous_var_nameX317, long* anonymous_var_nameX318);
-int getloadavg(double anonymous_var_nameX319[], int anonymous_var_nameX320);
-const char* getprogname();
-void setprogname(const char* anonymous_var_nameX321);
-int heapsort(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-int heapsort_b(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-int mergesort(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-int mergesort_b(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-void psort(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-void psort_b(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-void psort_r(void* __base, unsigned long  int __nel, unsigned long  int __width, void* anonymous_var_nameX334, int (*__compar)(void*,const void*,const void*));
-void qsort_b(void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-void qsort_r(void* __base, unsigned long  int __nel, unsigned long  int __width, void* anonymous_var_nameX340, int (*__compar)(void*,const void*,const void*));
-int radixsort(const unsigned char** __base, int __nel, const unsigned char* __table, unsigned int __endbyte);
-int rpmatch(const char* anonymous_var_nameX344);
-int sradixsort(const unsigned char** __base, int __nel, const unsigned char* __table, unsigned int __endbyte);
-void sranddev();
-void srandomdev();
-long long strtonum(const char* __numstr, long  long __minval, long  long __maxval, const char** __errstrp);
-long long strtoq(const char* __str, char** __endptr, int __base);
-unsigned long  long strtouq(const char* __str, char** __endptr, int __base);
-void* memchr(const void* __s, int __c, unsigned long  int __n);
+void* malloc(unsigned long  int __size);
+void* calloc(unsigned long  int __nmemb, unsigned long  int __size);
+void* realloc(void* __ptr, unsigned long  int __size);
+void free(void* __ptr);
+void* reallocarray(void* __ptr, unsigned long  int __nmemb, unsigned long  int __size);
+void* alloca(unsigned long  int __size);
+void* valloc(unsigned long  int __size);
+int posix_memalign(void** __memptr, unsigned long  int __alignment, unsigned long  int __size);
+void* aligned_alloc(unsigned long  int __alignment, unsigned long  int __size);
+void abort();
+int atexit(void (*__func)());
+int at_quick_exit(void (*__func)());
+int on_exit(void (*__func)(int,void*), void* __arg);
+void exit(int __status);
+void quick_exit(int __status);
+void _Exit(int __status);
+char* getenv(const char* __name);
+char* secure_getenv(const char* __name);
+int putenv(char* __string);
+int setenv(const char* __name, const char* __value, int __replace);
+int unsetenv(const char* __name);
+int clearenv();
+char* mktemp(char* __template);
+int mkstemp(char* __template);
+int mkstemp64(char* __template);
+int mkstemps(char* __template, int __suffixlen);
+int mkstemps64(char* __template, int __suffixlen);
+char* mkdtemp(char* __template);
+int mkostemp(char* __template, int __flags);
+int mkostemp64(char* __template, int __flags);
+int mkostemps(char* __template, int __suffixlen, int __flags);
+int mkostemps64(char* __template, int __suffixlen, int __flags);
+int system(const char* __command);
+char* canonicalize_file_name(const char* __name);
+char* realpath(const char* __name, char* __resolved);
+void* bsearch(const void* __key, const void* __base, unsigned long  int __nmemb, unsigned long  int __size, int (*__compar)(const void*,const void*));
+void qsort(void* __base, unsigned long  int __nmemb, unsigned long  int __size, int (*__compar)(const void*,const void*));
+void qsort_r(void* __base, unsigned long  int __nmemb, unsigned long  int __size, int (*__compar)(const void*,const void*,void*), void* __arg);
+int abs(int __x);
+long  int labs(long  int __x);
+long long int llabs(long long int __x);
+struct anonymous_typeX5 div(int __numer, int __denom);
+struct anonymous_typeX6 ldiv(long  int __numer, long  int __denom);
+struct anonymous_typeX7 lldiv(long long int __numer, long long int __denom);
+char* ecvt(double __value, int __ndigit, int* __decpt, int* __sign);
+char* fcvt(double __value, int __ndigit, int* __decpt, int* __sign);
+char* gcvt(double __value, int __ndigit, char* __buf);
+char* qecvt(long  double __value, int __ndigit, int* __decpt, int* __sign);
+char* qfcvt(long  double __value, int __ndigit, int* __decpt, int* __sign);
+char* qgcvt(long  double __value, int __ndigit, char* __buf);
+int ecvt_r(double __value, int __ndigit, int* __decpt, int* __sign, char* __buf, unsigned long  int __len);
+int fcvt_r(double __value, int __ndigit, int* __decpt, int* __sign, char* __buf, unsigned long  int __len);
+int qecvt_r(long  double __value, int __ndigit, int* __decpt, int* __sign, char* __buf, unsigned long  int __len);
+int qfcvt_r(long  double __value, int __ndigit, int* __decpt, int* __sign, char* __buf, unsigned long  int __len);
+int mblen(const char* __s, unsigned long  int __n);
+int mbtowc(int* __pwc, const char* __s, unsigned long  int __n);
+int wctomb(char* __s, int __wchar);
+unsigned long  int mbstowcs(int* __pwcs, const char* __s, unsigned long  int __n);
+unsigned long  int wcstombs(char* __s, const int* __pwcs, unsigned long  int __n);
+int rpmatch(const char* __response);
+int getsubopt(char** __optionp, char** __tokens, char** __valuep);
+int posix_openpt(int __oflag);
+int grantpt(int __fd);
+int unlockpt(int __fd);
+char* ptsname(int __fd);
+int ptsname_r(int __fd, char* __buf, unsigned long  int __buflen);
+int getpt();
+int getloadavg(double __loadavg[], int __nelem);
+void* memcpy(void* __dest, const void* __src, unsigned long  int __n);
+void* memmove(void* __dest, const void* __src, unsigned long  int __n);
+void* memccpy(void* __dest, const void* __src, int __c, unsigned long  int __n);
+void* memset(void* __s, int __c, unsigned long  int __n);
 int memcmp(const void* __s1, const void* __s2, unsigned long  int __n);
-void* memcpy(void* __dst, const void* __src, unsigned long  int __n);
-void* memmove(void* __dst, const void* __src, unsigned long  int __len);
-void* memset(void* __b, int __c, unsigned long  int __len);
-char* strcat(char* __s1, const char* __s2);
-char* strchr(const char* __s, int __c);
+int __memcmpeq(const void* __s1, const void* __s2, unsigned long  int __n);
+void* memchr(const void* __s, int __c, unsigned long  int __n);
+void* rawmemchr(const void* __s, int __c);
+void* memrchr(const void* __s, int __c, unsigned long  int __n);
+char* strcpy(char* __dest, const char* __src);
+char* strncpy(char* __dest, const char* __src, unsigned long  int __n);
+char* strcat(char* __dest, const char* __src);
+char* strncat(char* __dest, const char* __src, unsigned long  int __n);
 int strcmp(const char* __s1, const char* __s2);
-int strcoll(const char* __s1, const char* __s2);
-char* strcpy(char* __dst, const char* __src);
-unsigned long  int strcspn(const char* __s, const char* __charset);
-char* strerror(int __errnum);
-unsigned long  int strlen(const char* __s);
-char* strncat(char* __s1, const char* __s2, unsigned long  int __n);
 int strncmp(const char* __s1, const char* __s2, unsigned long  int __n);
-char* strncpy(char* __dst, const char* __src, unsigned long  int __n);
-char* strpbrk(const char* __s, const char* __charset);
+int strcoll(const char* __s1, const char* __s2);
+unsigned long  int strxfrm(char* __dest, const char* __src, unsigned long  int __n);
+int strcoll_l(const char* __s1, const char* __s2, struct __locale_struct* __l);
+unsigned long  int strxfrm_l(char* __dest, const char* __src, unsigned long  int __n, struct __locale_struct* __l);
+char* strdup(const char* __s);
+char* strndup(const char* __string, unsigned long  int __n);
+char* strchr(const char* __s, int __c);
 char* strrchr(const char* __s, int __c);
-unsigned long  int strspn(const char* __s, const char* __charset);
-char* strstr(const char* __big, const char* __little);
-char* strtok(char* __str, const char* __sep);
-unsigned long  int strxfrm(char* __s1, const char* __s2, unsigned long  int __n);
-char* strtok_r(char* __str, const char* __sep, char** __lasts);
-int strerror_r(int __errnum, char* __strerrbuf, unsigned long  int __buflen);
-char* strdup(const char* __s1);
-void* memccpy(void* __dst, const void* __src, int __c, unsigned long  int __n);
-char* stpcpy(char* __dst, const char* __src);
-char* stpncpy(char* __dst, const char* __src, unsigned long  int __n);
-char* strndup(const char* __s1, unsigned long  int __n);
-unsigned long  int strnlen(const char* __s1, unsigned long  int __n);
-char* strsignal(int __sig);
-int memset_s(void* __s, unsigned long  int __smax, int __c, unsigned long  int __n);
-void* memmem(const void* __big, unsigned long  int __big_len, const void* __little, unsigned long  int __little_len);
-void memset_pattern4(void* __b, const void* __pattern4, unsigned long  int __len);
-void memset_pattern8(void* __b, const void* __pattern8, unsigned long  int __len);
-void memset_pattern16(void* __b, const void* __pattern16, unsigned long  int __len);
-char* strcasestr(const char* __big, const char* __little);
-char* strnstr(const char* __big, const char* __little, unsigned long  int __len);
-unsigned long  int strlcat(char* __dst, const char* __source, unsigned long  int __size);
-unsigned long  int strlcpy(char* __dst, const char* __source, unsigned long  int __size);
-void strmode(int __mode, char* __bp);
+char* strchrnul(const char* __s, int __c);
+unsigned long  int strcspn(const char* __s, const char* __reject);
+unsigned long  int strspn(const char* __s, const char* __accept);
+char* strpbrk(const char* __s, const char* __accept);
+char* strstr(const char* __haystack, const char* __needle);
+char* strtok(char* __s, const char* __delim);
+char* __strtok_r(char* __s, const char* __delim, char** __save_ptr);
+char* strtok_r(char* __s, const char* __delim, char** __save_ptr);
+char* strcasestr(const char* __haystack, const char* __needle);
+void* memmem(const void* __haystack, unsigned long  int __haystacklen, const void* __needle, unsigned long  int __needlelen);
+void* __mempcpy(void* __dest, const void* __src, unsigned long  int __n);
+void* mempcpy(void* __dest, const void* __src, unsigned long  int __n);
+unsigned long  int strlen(const char* __s);
+unsigned long  int strnlen(const char* __string, unsigned long  int __maxlen);
+char* strerror(int __errnum);
+char* strerror_r(int __errnum, char* __buf, unsigned long  int __buflen);
+const char* strerrordesc_np(int __err);
+const char* strerrorname_np(int __err);
+char* strerror_l(int __errnum, struct __locale_struct* __l);
+int bcmp(const void* __s1, const void* __s2, unsigned long  int __n);
+void bcopy(const void* __src, void* __dest, unsigned long  int __n);
+void bzero(void* __s, unsigned long  int __n);
+char* index(const char* __s, int __c);
+char* rindex(const char* __s, int __c);
+int ffs(int __i);
+int ffsl(long  int __l);
+int ffsll(long long int __ll);
+int strcasecmp(const char* __s1, const char* __s2);
+int strncasecmp(const char* __s1, const char* __s2, unsigned long  int __n);
+int strcasecmp_l(const char* __s1, const char* __s2, struct __locale_struct* __loc);
+int strncasecmp_l(const char* __s1, const char* __s2, unsigned long  int __n, struct __locale_struct* __loc);
+void explicit_bzero(void* __s, unsigned long  int __n);
 char* strsep(char** __stringp, const char* __delim);
-int timingsafe_bcmp(const void* __b1, const void* __b2, unsigned long  int __len);
-int strsignal_r(int __sig, char* __strsignalbuf, unsigned long  int __buflen);
-int bcmp(const void* anonymous_var_nameX348, const void* anonymous_var_nameX349, unsigned long  int anonymous_var_nameX350);
-void bcopy(const void* anonymous_var_nameX351, void* anonymous_var_nameX352, unsigned long  int anonymous_var_nameX353);
-void bzero(void* anonymous_var_nameX354, unsigned long  int anonymous_var_nameX355);
-char* index(const char* anonymous_var_nameX356, int anonymous_var_nameX357);
-char* rindex(const char* anonymous_var_nameX358, int anonymous_var_nameX359);
-int ffs(int anonymous_var_nameX360);
-int strcasecmp(const char* anonymous_var_nameX361, const char* anonymous_var_nameX362);
-int strncasecmp(const char* anonymous_var_nameX363, const char* anonymous_var_nameX364, unsigned long  int anonymous_var_nameX365);
-int ffsl(long anonymous_var_nameX366);
-int ffsll(long  long anonymous_var_nameX367);
-int fls(int anonymous_var_nameX368);
-int flsl(long anonymous_var_nameX369);
-int flsll(long  long anonymous_var_nameX370);
+char* strsignal(int __sig);
+const char* sigabbrev_np(int __sig);
+const char* sigdescr_np(int __sig);
+char* __stpcpy(char* __dest, const char* __src);
+char* stpcpy(char* __dest, const char* __src);
+char* __stpncpy(char* __dest, const char* __src, unsigned long  int __n);
+char* stpncpy(char* __dest, const char* __src, unsigned long  int __n);
+int strverscmp(const char* __s1, const char* __s2);
+char* strfry(char* __string);
+void* memfrob(void* __s, unsigned long  int __n);
+char* basename(const char* __filename);
+long  int __sysconf(int __name);
+char* setlocale(int __category, const char* __locale);
 struct lconv* localeconv();
-char* setlocale(int anonymous_var_nameX371, const char* anonymous_var_nameX372);
-int* __error();
+struct __locale_struct* newlocale(int __category_mask, const char* __locale, struct __locale_struct* __base);
+struct __locale_struct* duplocale(struct __locale_struct* __dataset);
+void freelocale(struct __locale_struct* __dataset);
+struct __locale_struct* uselocale(struct __locale_struct* __dataset);
+int* __errno_location();
+void __assert_fail(const char* __assertion, const char* __file, unsigned int __line, const char* __function);
+void __assert_perror_fail(int __errnum, const char* __file, unsigned int __line, const char* __function);
+void __assert(const char* __assertion, const char* __file, int __line);
 void come_push_stackframe(char* sname, int sline, int id);
 void come_pop_stackframe();
 void stackframe();
@@ -4965,12 +5327,12 @@ int double_compare(float left, float right);
 int size_t_compare(long left, long right);
 int string_compare(char* left, char* right);
 int charp_compare(char* left, char* right);
-int FILE_write(struct __sFILE* f, char* str);
-char* FILE_read(struct __sFILE* f);
-int FILE_fclose(struct __sFILE* f);
-int* FILE_fprintf(struct __sFILE* f, const char* msg, ...);
-struct list$1charph* FILE_readlines(struct __sFILE* f);
-int fopen_block(const char* path, const char* mode, void* parent, void (*block)(void*,struct __sFILE*));
+int FILE_write(struct _IO_FILE* f, char* str);
+char* FILE_read(struct _IO_FILE* f);
+int FILE_fclose(struct _IO_FILE* f);
+int* FILE_fprintf(struct _IO_FILE* f, const char* msg, ...);
+struct list$1charph* FILE_readlines(struct _IO_FILE* f);
+int fopen_block(const char* path, const char* mode, void* parent, void (*block)(void*,struct _IO_FILE*));
 int string_write(char* self, char* file_name, _Bool append);
 int charp_write(char* self, char* file_name, _Bool append);
 char* charp_read(char* file_name);
@@ -5025,298 +5387,256 @@ double floating_operator_lteq(struct floating* left, struct floating* right);
 double floating_operator_lt(struct floating* left, struct floating* right);
 double floating_operator_gt(struct floating* left, struct floating* right);
 int assert_v2(int exp);
-int getattrlistbulk(int anonymous_var_nameX412, void* anonymous_var_nameX413, void* anonymous_var_nameX414, unsigned long  int anonymous_var_nameX415, unsigned long  long anonymous_var_nameX416);
-int getattrlistat(int anonymous_var_nameX417, const char* anonymous_var_nameX418, void* anonymous_var_nameX419, void* anonymous_var_nameX420, unsigned long  int anonymous_var_nameX421, unsigned long  int anonymous_var_nameX422);
-int setattrlistat(int anonymous_var_nameX423, const char* anonymous_var_nameX424, void* anonymous_var_nameX425, void* anonymous_var_nameX426, unsigned long  int anonymous_var_nameX427, unsigned int anonymous_var_nameX428);
-long freadlink(int anonymous_var_nameX429, char* anonymous_var_nameX430, unsigned long  int anonymous_var_nameX431);
-int faccessat(int anonymous_var_nameX432, const char* anonymous_var_nameX433, int anonymous_var_nameX434, int anonymous_var_nameX435);
-int fchownat(int anonymous_var_nameX436, const char* anonymous_var_nameX437, unsigned int anonymous_var_nameX438, unsigned int anonymous_var_nameX439, int anonymous_var_nameX440);
-int linkat(int anonymous_var_nameX441, const char* anonymous_var_nameX442, int anonymous_var_nameX443, const char* anonymous_var_nameX444, int anonymous_var_nameX445);
-long readlinkat(int anonymous_var_nameX446, const char* anonymous_var_nameX447, char* anonymous_var_nameX448, unsigned long  int anonymous_var_nameX449);
-int symlinkat(const char* anonymous_var_nameX450, int anonymous_var_nameX451, const char* anonymous_var_nameX452);
-int unlinkat(int anonymous_var_nameX453, const char* anonymous_var_nameX454, int anonymous_var_nameX455);
-void _exit(int anonymous_var_nameX456);
-int access(const char* anonymous_var_nameX457, int anonymous_var_nameX458);
-unsigned int alarm(unsigned int anonymous_var_nameX459);
-int chdir(const char* anonymous_var_nameX460);
-int chown(const char* anonymous_var_nameX461, unsigned int anonymous_var_nameX462, unsigned int anonymous_var_nameX463);
-int close(int anonymous_var_nameX464);
-int dup(int anonymous_var_nameX465);
-int dup2(int anonymous_var_nameX466, int anonymous_var_nameX467);
-int execl(const char* __path, const char* __arg0, ...);
-int execle(const char* __path, const char* __arg0, ...);
-int execlp(const char* __file, const char* __arg0, ...);
-int execv(const char* __path, char** __argv);
-int execve(const char* __file, char** __argv, char** __envp);
-int execvp(const char* __file, char** __argv);
-int fork();
-long fpathconf(int anonymous_var_nameX468, int anonymous_var_nameX469);
-char* getcwd(char* anonymous_var_nameX470, unsigned long  int anonymous_var_nameX471);
-unsigned int getegid();
-unsigned int geteuid();
-unsigned int getgid();
-int getgroups(int anonymous_var_nameX472, unsigned int anonymous_var_nameX473[]);
-char* getlogin();
-int getpgrp();
+int access(const char* __name, int __type);
+int euidaccess(const char* __name, int __type);
+int eaccess(const char* __name, int __type);
+int execveat(int __fd, const char* __path, char* __argv[], char* __envp[], int __flags);
+int faccessat(int __fd, const char* __file, int __type, int __flag);
+long  int lseek(int __fd, long  int __offset, int __whence);
+long  int lseek64(int __fd, long  int __offset, int __whence);
+int close(int __fd);
+void closefrom(int __lowfd);
+long  int read(int __fd, void* __buf, unsigned long  int __nbytes);
+long  int write(int __fd, const void* __buf, unsigned long  int __n);
+long  int pread(int __fd, void* __buf, unsigned long  int __nbytes, long  int __offset);
+long  int pwrite(int __fd, const void* __buf, unsigned long  int __n, long  int __offset);
+long  int pread64(int __fd, void* __buf, unsigned long  int __nbytes, long  int __offset);
+long  int pwrite64(int __fd, const void* __buf, unsigned long  int __n, long  int __offset);
+int pipe(int __pipedes[2]);
+int pipe2(int __pipedes[2], int __flags);
+unsigned int alarm(unsigned int __seconds);
+unsigned int sleep(unsigned int __seconds);
+unsigned int ualarm(unsigned int __value, unsigned int __interval);
+int usleep(unsigned int __useconds);
+int pause();
+int chown(const char* __file, unsigned int __owner, unsigned int __group);
+int fchown(int __fd, unsigned int __owner, unsigned int __group);
+int lchown(const char* __file, unsigned int __owner, unsigned int __group);
+int fchownat(int __fd, const char* __file, unsigned int __owner, unsigned int __group, int __flag);
+int chdir(const char* __path);
+int fchdir(int __fd);
+char* getcwd(char* __buf, unsigned long  int __size);
+char* get_current_dir_name();
+char* getwd(char* __buf);
+int dup(int __fd);
+int dup2(int __fd, int __fd2);
+int dup3(int __fd, int __fd2, int __flags);
+int execve(const char* __path, char* __argv[], char* __envp[]);
+int fexecve(int __fd, char* __argv[], char* __envp[]);
+int execv(const char* __path, char* __argv[]);
+int execle(const char* __path, const char* __arg, ...);
+int execl(const char* __path, const char* __arg, ...);
+int execvp(const char* __file, char* __argv[]);
+int execlp(const char* __file, const char* __arg, ...);
+int execvpe(const char* __file, char* __argv[], char* __envp[]);
+int nice(int __inc);
+void _exit(int __status);
+long  int pathconf(const char* __path, int __name);
+long  int fpathconf(int __fd, int __name);
+long  int sysconf(int __name);
+unsigned long  int confstr(int __name, char* __buf, unsigned long  int __len);
 int getpid();
 int getppid();
-unsigned int getuid();
-int isatty(int anonymous_var_nameX474);
-int link(const char* anonymous_var_nameX475, const char* anonymous_var_nameX476);
-long  long lseek(int anonymous_var_nameX477, long  long anonymous_var_nameX478, int anonymous_var_nameX479);
-long pathconf(const char* anonymous_var_nameX480, int anonymous_var_nameX481);
-int pause();
-int pipe(int anonymous_var_nameX482[2]);
-long read(int anonymous_var_nameX483, void* anonymous_var_nameX484, unsigned long  int anonymous_var_nameX485);
-int rmdir(const char* anonymous_var_nameX486);
-int setgid(unsigned int anonymous_var_nameX487);
-int setpgid(int anonymous_var_nameX488, int anonymous_var_nameX489);
-int setsid();
-int setuid(unsigned int anonymous_var_nameX490);
-unsigned int sleep(unsigned int anonymous_var_nameX491);
-long sysconf(int anonymous_var_nameX492);
-int tcgetpgrp(int anonymous_var_nameX493);
-int tcsetpgrp(int anonymous_var_nameX494, int anonymous_var_nameX495);
-char* ttyname(int anonymous_var_nameX496);
-int ttyname_r(int anonymous_var_nameX497, char* anonymous_var_nameX498, unsigned long  int anonymous_var_nameX499);
-int unlink(const char* anonymous_var_nameX500);
-long write(int __fd, const void* __buf, unsigned long  int __nbyte);
-unsigned long  int confstr(int anonymous_var_nameX501, char* anonymous_var_nameX502, unsigned long  int anonymous_var_nameX503);
-int getopt(int anonymous_var_nameX504, char* anonymous_var_nameX505[], const char* anonymous_var_nameX506);
-void* brk(const void* anonymous_var_nameX507);
-int chroot(const char* anonymous_var_nameX508);
-char* crypt(const char* anonymous_var_nameX509, const char* anonymous_var_nameX510);
-void encrypt(char* anonymous_var_nameX511, int anonymous_var_nameX512);
-int fchdir(int anonymous_var_nameX513);
-long gethostid();
-int getpgid(int anonymous_var_nameX514);
-int getsid(int anonymous_var_nameX515);
-int getdtablesize();
-int getpagesize();
-char* getpass(const char* anonymous_var_nameX516);
-char* getwd(char* anonymous_var_nameX517);
-int lchown(const char* anonymous_var_nameX518, unsigned int anonymous_var_nameX519, unsigned int anonymous_var_nameX520);
-int lockf(int anonymous_var_nameX521, int anonymous_var_nameX522, long  long anonymous_var_nameX523);
-int nice(int anonymous_var_nameX524);
-long pread(int __fd, void* __buf, unsigned long  int __nbyte, long  long __offset);
-long pwrite(int __fd, const void* __buf, unsigned long  int __nbyte, long  long __offset);
-void* sbrk(int anonymous_var_nameX525);
+int getpgrp();
+int __getpgid(int __pid);
+int getpgid(int __pid);
+int setpgid(int __pid, int __pgid);
 int setpgrp();
-int setregid(unsigned int anonymous_var_nameX526, unsigned int anonymous_var_nameX527);
-int setreuid(unsigned int anonymous_var_nameX528, unsigned int anonymous_var_nameX529);
-void swab(const void* anonymous_var_nameX530, void* anonymous_var_nameX531, long anonymous_var_nameX532);
-void sync();
-int truncate(const char* anonymous_var_nameX533, long  long anonymous_var_nameX534);
-unsigned int ualarm(unsigned int anonymous_var_nameX535, unsigned int anonymous_var_nameX536);
-int usleep(unsigned int anonymous_var_nameX537);
+int setsid();
+int getsid(int __pid);
+unsigned int getuid();
+unsigned int geteuid();
+unsigned int getgid();
+unsigned int getegid();
+int getgroups(int __size, unsigned int __list[]);
+int group_member(unsigned int __gid);
+int setuid(unsigned int __uid);
+int setreuid(unsigned int __ruid, unsigned int __euid);
+int seteuid(unsigned int __uid);
+int setgid(unsigned int __gid);
+int setregid(unsigned int __rgid, unsigned int __egid);
+int setegid(unsigned int __gid);
+int getresuid(unsigned int* __ruid, unsigned int* __euid, unsigned int* __suid);
+int getresgid(unsigned int* __rgid, unsigned int* __egid, unsigned int* __sgid);
+int setresuid(unsigned int __ruid, unsigned int __euid, unsigned int __suid);
+int setresgid(unsigned int __rgid, unsigned int __egid, unsigned int __sgid);
+int fork();
 int vfork();
-int fsync(int anonymous_var_nameX538);
-int ftruncate(int anonymous_var_nameX539, long  long anonymous_var_nameX540);
-int getlogin_r(char* anonymous_var_nameX541, unsigned long  int anonymous_var_nameX542);
-int fchown(int anonymous_var_nameX543, unsigned int anonymous_var_nameX544, unsigned int anonymous_var_nameX545);
-int gethostname(char* anonymous_var_nameX546, unsigned long  int anonymous_var_nameX547);
-long readlink(const char* anonymous_var_nameX548, char* anonymous_var_nameX549, unsigned long  int anonymous_var_nameX550);
-int setegid(unsigned int anonymous_var_nameX551);
-int seteuid(unsigned int anonymous_var_nameX552);
-int symlink(const char* anonymous_var_nameX553, const char* anonymous_var_nameX554);
-int __darwin_check_fd_set_overflow(int anonymous_var_nameX555, const void* anonymous_var_nameX556, int anonymous_var_nameX557);
-int pselect(int anonymous_var_nameX558, struct fd_set* anonymous_var_nameX559, struct fd_set* anonymous_var_nameX560, struct fd_set* anonymous_var_nameX561, const struct timespec* anonymous_var_nameX562, const unsigned int* anonymous_var_nameX563);
-int select(int anonymous_var_nameX564, struct fd_set* anonymous_var_nameX565, struct fd_set* anonymous_var_nameX566, struct fd_set* anonymous_var_nameX567, struct timeval* anonymous_var_nameX568);
-void _Exit(int anonymous_var_nameX569);
-int accessx_np(const struct accessx_descriptor* anonymous_var_nameX570, unsigned long  int anonymous_var_nameX571, int* anonymous_var_nameX572, unsigned int anonymous_var_nameX573);
-int acct(const char* anonymous_var_nameX574);
-int add_profil(char* anonymous_var_nameX575, unsigned long  int anonymous_var_nameX576, unsigned long  int anonymous_var_nameX577, unsigned int anonymous_var_nameX578);
-void endusershell();
-int execvP(const char* __file, const char* __searchpath, char** __argv);
-char* fflagstostr(unsigned long  int anonymous_var_nameX579);
-int getdomainname(char* anonymous_var_nameX580, int anonymous_var_nameX581);
-int getgrouplist(const char* anonymous_var_nameX582, int anonymous_var_nameX583, int* anonymous_var_nameX584, int* anonymous_var_nameX585);
-int gethostuuid(unsigned char anonymous_var_nameX586[16], const struct timespec* anonymous_var_nameX587);
-unsigned short int getmode(const void* anonymous_var_nameX588, unsigned short int anonymous_var_nameX589);
-int getpeereid(int anonymous_var_nameX590, unsigned int* anonymous_var_nameX591, unsigned int* anonymous_var_nameX592);
-int getsgroups_np(int* anonymous_var_nameX593, unsigned char anonymous_var_nameX594[16]);
-char* getusershell();
-int getwgroups_np(int* anonymous_var_nameX595, unsigned char anonymous_var_nameX596[16]);
-int initgroups(const char* anonymous_var_nameX597, int anonymous_var_nameX598);
-int issetugid();
-char* mkdtemp(char* anonymous_var_nameX599);
-int mknod(const char* anonymous_var_nameX600, unsigned short int anonymous_var_nameX601, int anonymous_var_nameX602);
-int mkpath_np(const char* path, unsigned short int omode);
-int mkpathat_np(int dfd, const char* path, unsigned short int omode);
-int mkstemp(char* anonymous_var_nameX603);
-int mkstemps(char* anonymous_var_nameX604, int anonymous_var_nameX605);
-char* mktemp(char* anonymous_var_nameX606);
-int mkostemp(char* path, int oflags);
-int mkostemps(char* path, int slen, int oflags);
-int mkstemp_dprotected_np(char* path, int dpclass, int dpflags);
-char* mkdtempat_np(int dfd, char* path);
-int mkstempsat_np(int dfd, char* path, int slen);
-int mkostempsat_np(int dfd, char* path, int slen, int oflags);
-int nfssvc(int anonymous_var_nameX607, void* anonymous_var_nameX608);
-int profil(char* anonymous_var_nameX609, unsigned long  int anonymous_var_nameX610, unsigned long  int anonymous_var_nameX611, unsigned int anonymous_var_nameX612);
-int pthread_setugid_np(unsigned int anonymous_var_nameX613, unsigned int anonymous_var_nameX614);
-int pthread_getugid_np(unsigned int* anonymous_var_nameX615, unsigned int* anonymous_var_nameX616);
-int reboot(int anonymous_var_nameX617);
-int revoke(const char* anonymous_var_nameX618);
-int rcmd(char** anonymous_var_nameX619, int anonymous_var_nameX620, const char* anonymous_var_nameX621, const char* anonymous_var_nameX622, const char* anonymous_var_nameX623, int* anonymous_var_nameX624);
-int rcmd_af(char** anonymous_var_nameX625, int anonymous_var_nameX626, const char* anonymous_var_nameX627, const char* anonymous_var_nameX628, const char* anonymous_var_nameX629, int* anonymous_var_nameX630, int anonymous_var_nameX631);
-int rresvport(int* anonymous_var_nameX632);
-int rresvport_af(int* anonymous_var_nameX633, int anonymous_var_nameX634);
-int iruserok(unsigned long  int anonymous_var_nameX635, int anonymous_var_nameX636, const char* anonymous_var_nameX637, const char* anonymous_var_nameX638);
-int iruserok_sa(const void* anonymous_var_nameX639, int anonymous_var_nameX640, int anonymous_var_nameX641, const char* anonymous_var_nameX642, const char* anonymous_var_nameX643);
-int ruserok(const char* anonymous_var_nameX644, int anonymous_var_nameX645, const char* anonymous_var_nameX646, const char* anonymous_var_nameX647);
-int setdomainname(const char* anonymous_var_nameX648, int anonymous_var_nameX649);
-int setgroups(int anonymous_var_nameX650, const unsigned int* anonymous_var_nameX651);
-void sethostid(long anonymous_var_nameX652);
-int sethostname(const char* anonymous_var_nameX653, int anonymous_var_nameX654);
-void setkey(const char* anonymous_var_nameX655);
-int setlogin(const char* anonymous_var_nameX656);
-void* setmode(const char* anonymous_var_nameX657);
-int setrgid(unsigned int anonymous_var_nameX658);
-int setruid(unsigned int anonymous_var_nameX659);
-int setsgroups_np(int anonymous_var_nameX660, const unsigned char anonymous_var_nameX661[16]);
-void setusershell();
-int setwgroups_np(int anonymous_var_nameX662, const unsigned char anonymous_var_nameX663[16]);
-int strtofflags(char** anonymous_var_nameX664, unsigned long  int* anonymous_var_nameX665, unsigned long  int* anonymous_var_nameX666);
-int swapon(const char* anonymous_var_nameX667);
+int _Fork();
+char* ttyname(int __fd);
+int ttyname_r(int __fd, char* __buf, unsigned long  int __buflen);
+int isatty(int __fd);
 int ttyslot();
-int undelete(const char* anonymous_var_nameX668);
-int unwhiteout(const char* anonymous_var_nameX669);
-void* valloc(unsigned long  int anonymous_var_nameX670);
-int syscall(int anonymous_var_nameX671, ...);
-int getsubopt(char** anonymous_var_nameX672, char** anonymous_var_nameX673, char** anonymous_var_nameX674);
-int fgetattrlist(int anonymous_var_nameX675, void* anonymous_var_nameX676, void* anonymous_var_nameX677, unsigned long  int anonymous_var_nameX678, unsigned int anonymous_var_nameX679);
-int fsetattrlist(int anonymous_var_nameX680, void* anonymous_var_nameX681, void* anonymous_var_nameX682, unsigned long  int anonymous_var_nameX683, unsigned int anonymous_var_nameX684);
-int getattrlist(const char* anonymous_var_nameX685, void* anonymous_var_nameX686, void* anonymous_var_nameX687, unsigned long  int anonymous_var_nameX688, unsigned int anonymous_var_nameX689);
-int setattrlist(const char* anonymous_var_nameX690, void* anonymous_var_nameX691, void* anonymous_var_nameX692, unsigned long  int anonymous_var_nameX693, unsigned int anonymous_var_nameX694);
-int exchangedata(const char* anonymous_var_nameX695, const char* anonymous_var_nameX696, unsigned int anonymous_var_nameX697);
-int getdirentriesattr(int anonymous_var_nameX698, void* anonymous_var_nameX699, void* anonymous_var_nameX700, unsigned long  int anonymous_var_nameX701, unsigned int* anonymous_var_nameX702, unsigned int* anonymous_var_nameX703, unsigned int* anonymous_var_nameX704, unsigned int anonymous_var_nameX705);
-int searchfs(const char* anonymous_var_nameX706, struct fssearchblock* anonymous_var_nameX707, unsigned long  int* anonymous_var_nameX708, unsigned int anonymous_var_nameX709, unsigned int anonymous_var_nameX710, struct searchstate* anonymous_var_nameX711);
-int fsctl(const char* anonymous_var_nameX712, unsigned long  int anonymous_var_nameX713, void* anonymous_var_nameX714, unsigned int anonymous_var_nameX715);
-int ffsctl(int anonymous_var_nameX716, unsigned long  int anonymous_var_nameX717, void* anonymous_var_nameX718, unsigned int anonymous_var_nameX719);
-int fsync_volume_np(int anonymous_var_nameX720, int anonymous_var_nameX721);
-int sync_volume_np(const char* anonymous_var_nameX722, int anonymous_var_nameX723);
-int accept(int anonymous_var_nameX724, struct sockaddr* anonymous_var_nameX725, unsigned int* anonymous_var_nameX726);
-int bind(int anonymous_var_nameX727, const struct sockaddr* anonymous_var_nameX728, unsigned int anonymous_var_nameX729);
-int connect(int anonymous_var_nameX730, const struct sockaddr* anonymous_var_nameX731, unsigned int anonymous_var_nameX732);
-int getpeername(int anonymous_var_nameX733, struct sockaddr* anonymous_var_nameX734, unsigned int* anonymous_var_nameX735);
-int getsockname(int anonymous_var_nameX736, struct sockaddr* anonymous_var_nameX737, unsigned int* anonymous_var_nameX738);
-int getsockopt(int anonymous_var_nameX739, int anonymous_var_nameX740, int anonymous_var_nameX741, void* anonymous_var_nameX742, unsigned int* anonymous_var_nameX743);
-int listen(int anonymous_var_nameX744, int anonymous_var_nameX745);
-long recv(int anonymous_var_nameX746, void* anonymous_var_nameX747, unsigned long  int anonymous_var_nameX748, int anonymous_var_nameX749);
-long recvfrom(int anonymous_var_nameX750, void* anonymous_var_nameX751, unsigned long  int anonymous_var_nameX752, int anonymous_var_nameX753, struct sockaddr* anonymous_var_nameX754, unsigned int* anonymous_var_nameX755);
-long recvmsg(int anonymous_var_nameX756, struct msghdr* anonymous_var_nameX757, int anonymous_var_nameX758);
-long send(int anonymous_var_nameX759, const void* anonymous_var_nameX760, unsigned long  int anonymous_var_nameX761, int anonymous_var_nameX762);
-long sendmsg(int anonymous_var_nameX763, const struct msghdr* anonymous_var_nameX764, int anonymous_var_nameX765);
-long sendto(int anonymous_var_nameX766, const void* anonymous_var_nameX767, unsigned long  int anonymous_var_nameX768, int anonymous_var_nameX769, const struct sockaddr* anonymous_var_nameX770, unsigned int anonymous_var_nameX771);
-int setsockopt(int anonymous_var_nameX772, int anonymous_var_nameX773, int anonymous_var_nameX774, const void* anonymous_var_nameX775, unsigned int anonymous_var_nameX776);
-int shutdown(int anonymous_var_nameX777, int anonymous_var_nameX778);
-int sockatmark(int anonymous_var_nameX779);
-int socket(int anonymous_var_nameX780, int anonymous_var_nameX781, int anonymous_var_nameX782);
-int socketpair(int anonymous_var_nameX783, int anonymous_var_nameX784, int anonymous_var_nameX785, int* anonymous_var_nameX786);
-int sendfile(int anonymous_var_nameX787, int anonymous_var_nameX788, long  long anonymous_var_nameX789, long  long* anonymous_var_nameX790, struct sf_hdtr* anonymous_var_nameX791, int anonymous_var_nameX792);
-void pfctlinput(int anonymous_var_nameX793, struct sockaddr* anonymous_var_nameX794);
-int connectx(int anonymous_var_nameX795, const struct sa_endpoints* anonymous_var_nameX796, unsigned int anonymous_var_nameX797, unsigned int anonymous_var_nameX798, const struct iovec* anonymous_var_nameX799, unsigned int anonymous_var_nameX800, unsigned long  int* anonymous_var_nameX801, unsigned int* anonymous_var_nameX802);
-int disconnectx(int anonymous_var_nameX803, unsigned int anonymous_var_nameX804, unsigned int anonymous_var_nameX805);
-int setipv4sourcefilter(int anonymous_var_nameX806, struct in_addr anonymous_var_nameX807, struct in_addr anonymous_var_nameX808, unsigned int anonymous_var_nameX809, unsigned int anonymous_var_nameX810, struct in_addr* anonymous_var_nameX811);
-int getipv4sourcefilter(int anonymous_var_nameX812, struct in_addr anonymous_var_nameX813, struct in_addr anonymous_var_nameX814, unsigned int* anonymous_var_nameX815, unsigned int* anonymous_var_nameX816, struct in_addr* anonymous_var_nameX817);
-int setsourcefilter(int anonymous_var_nameX818, unsigned int anonymous_var_nameX819, struct sockaddr* anonymous_var_nameX820, unsigned int anonymous_var_nameX821, unsigned int anonymous_var_nameX822, unsigned int anonymous_var_nameX823, struct sockaddr_storage* anonymous_var_nameX824);
-int getsourcefilter(int anonymous_var_nameX825, unsigned int anonymous_var_nameX826, struct sockaddr* anonymous_var_nameX827, unsigned int anonymous_var_nameX828, unsigned int* anonymous_var_nameX829, unsigned int* anonymous_var_nameX830, struct sockaddr_storage* anonymous_var_nameX831);
-int inet6_option_space(int anonymous_var_nameX832);
-int inet6_option_init(void* anonymous_var_nameX833, struct cmsghdr** anonymous_var_nameX834, int anonymous_var_nameX835);
-int inet6_option_append(struct cmsghdr* anonymous_var_nameX836, const unsigned char* anonymous_var_nameX837, int anonymous_var_nameX838, int anonymous_var_nameX839);
-unsigned char* inet6_option_alloc(struct cmsghdr* anonymous_var_nameX840, int anonymous_var_nameX841, int anonymous_var_nameX842, int anonymous_var_nameX843);
-int inet6_option_next(const struct cmsghdr* anonymous_var_nameX844, unsigned char** anonymous_var_nameX845);
-int inet6_option_find(const struct cmsghdr* anonymous_var_nameX846, unsigned char** anonymous_var_nameX847, int anonymous_var_nameX848);
-unsigned long  int inet6_rthdr_space(int anonymous_var_nameX849, int anonymous_var_nameX850);
-struct cmsghdr* inet6_rthdr_init(void* anonymous_var_nameX851, int anonymous_var_nameX852);
-int inet6_rthdr_add(struct cmsghdr* anonymous_var_nameX853, const struct in6_addr* anonymous_var_nameX854, unsigned int anonymous_var_nameX855);
-int inet6_rthdr_lasthop(struct cmsghdr* anonymous_var_nameX856, unsigned int anonymous_var_nameX857);
-int inet6_rthdr_segments(const struct cmsghdr* anonymous_var_nameX858);
-struct in6_addr* inet6_rthdr_getaddr(struct cmsghdr* anonymous_var_nameX859, int anonymous_var_nameX860);
-int inet6_rthdr_getflags(const struct cmsghdr* anonymous_var_nameX861, int anonymous_var_nameX862);
-int inet6_opt_init(void* anonymous_var_nameX863, unsigned int anonymous_var_nameX864);
-int inet6_opt_append(void* anonymous_var_nameX865, unsigned int anonymous_var_nameX866, int anonymous_var_nameX867, unsigned char anonymous_var_nameX868, unsigned int anonymous_var_nameX869, unsigned char anonymous_var_nameX870, void** anonymous_var_nameX871);
-int inet6_opt_finish(void* anonymous_var_nameX872, unsigned int anonymous_var_nameX873, int anonymous_var_nameX874);
-int inet6_opt_set_val(void* anonymous_var_nameX875, int anonymous_var_nameX876, void* anonymous_var_nameX877, unsigned int anonymous_var_nameX878);
-int inet6_opt_next(void* anonymous_var_nameX879, unsigned int anonymous_var_nameX880, int anonymous_var_nameX881, unsigned char* anonymous_var_nameX882, unsigned int* anonymous_var_nameX883, void** anonymous_var_nameX884);
-int inet6_opt_find(void* anonymous_var_nameX885, unsigned int anonymous_var_nameX886, int anonymous_var_nameX887, unsigned char anonymous_var_nameX888, unsigned int* anonymous_var_nameX889, void** anonymous_var_nameX890);
-int inet6_opt_get_val(void* anonymous_var_nameX891, int anonymous_var_nameX892, void* anonymous_var_nameX893, unsigned int anonymous_var_nameX894);
-unsigned int inet6_rth_space(int anonymous_var_nameX895, int anonymous_var_nameX896);
-void* inet6_rth_init(void* anonymous_var_nameX897, unsigned int anonymous_var_nameX898, int anonymous_var_nameX899, int anonymous_var_nameX900);
-int inet6_rth_add(void* anonymous_var_nameX901, const struct in6_addr* anonymous_var_nameX902);
-int inet6_rth_reverse(const void* anonymous_var_nameX903, void* anonymous_var_nameX904);
-int inet6_rth_segments(const void* anonymous_var_nameX905);
-struct in6_addr* inet6_rth_getaddr(const void* anonymous_var_nameX906, int anonymous_var_nameX907);
-int bindresvport(int anonymous_var_nameX908, struct sockaddr_in* anonymous_var_nameX909);
-int bindresvport_sa(int anonymous_var_nameX910, struct sockaddr* anonymous_var_nameX911);
-unsigned int inet_addr(const char* anonymous_var_nameX912);
-char* inet_ntoa(struct in_addr anonymous_var_nameX913);
-const char* inet_ntop(int anonymous_var_nameX914, const void* anonymous_var_nameX915, char* anonymous_var_nameX916, unsigned int anonymous_var_nameX917);
-int inet_pton(int anonymous_var_nameX918, const char* anonymous_var_nameX919, void* anonymous_var_nameX920);
-int ascii2addr(int anonymous_var_nameX921, const char* anonymous_var_nameX922, void* anonymous_var_nameX923);
-char* addr2ascii(int anonymous_var_nameX924, const void* anonymous_var_nameX925, int anonymous_var_nameX926, char* anonymous_var_nameX927);
-int inet_aton(const char* anonymous_var_nameX928, struct in_addr* anonymous_var_nameX929);
-unsigned int inet_lnaof(struct in_addr anonymous_var_nameX930);
-struct in_addr inet_makeaddr(unsigned int anonymous_var_nameX931, unsigned int anonymous_var_nameX932);
-unsigned int inet_netof(struct in_addr anonymous_var_nameX933);
-unsigned int inet_network(const char* anonymous_var_nameX934);
-char* inet_net_ntop(int anonymous_var_nameX935, const void* anonymous_var_nameX936, int anonymous_var_nameX937, char* anonymous_var_nameX938, unsigned long  int anonymous_var_nameX939);
-int inet_net_pton(int anonymous_var_nameX940, const char* anonymous_var_nameX941, void* anonymous_var_nameX942, unsigned long  int anonymous_var_nameX943);
-char* inet_neta(unsigned int anonymous_var_nameX944, char* anonymous_var_nameX945, unsigned long  int anonymous_var_nameX946);
-unsigned int inet_nsap_addr(const char* anonymous_var_nameX947, unsigned char* anonymous_var_nameX948, int anonymous_var_nameX949);
-char* inet_nsap_ntoa(int anonymous_var_nameX950, const unsigned char* anonymous_var_nameX951, char* anonymous_var_nameX952);
-long  int imaxabs(long  int j);
-struct anonymous_typeX10 imaxdiv(long  int __numer, long  int __denom);
+int link(const char* __from, const char* __to);
+int linkat(int __fromfd, const char* __from, int __tofd, const char* __to, int __flags);
+int symlink(const char* __from, const char* __to);
+long  int readlink(const char* __path, char* __buf, unsigned long  int __len);
+int symlinkat(const char* __from, int __tofd, const char* __to);
+long  int readlinkat(int __fd, const char* __path, char* __buf, unsigned long  int __len);
+int unlink(const char* __name);
+int unlinkat(int __fd, const char* __name, int __flag);
+int rmdir(const char* __path);
+int tcgetpgrp(int __fd);
+int tcsetpgrp(int __fd, int __pgrp_id);
+char* getlogin();
+int getlogin_r(char* __name, unsigned long  int __name_len);
+int setlogin(const char* __name);
+int getopt(int ___argc, char** ___argv, const char* __shortopts);
+int gethostname(char* __name, unsigned long  int __len);
+int sethostname(const char* __name, unsigned long  int __len);
+int sethostid(long  int __id);
+int getdomainname(char* __name, unsigned long  int __len);
+int setdomainname(const char* __name, unsigned long  int __len);
+int vhangup();
+int revoke(const char* __file);
+int profil(unsigned short int* __sample_buffer, unsigned long  int __size, unsigned long  int __offset, unsigned int __scale);
+int acct(const char* __name);
+char* getusershell();
+void endusershell();
+void setusershell();
+int daemon(int __nochdir, int __noclose);
+int chroot(const char* __path);
+char* getpass(const char* __prompt);
+int fsync(int __fd);
+int syncfs(int __fd);
+long  int gethostid();
+void sync();
+int getpagesize();
+int getdtablesize();
+int truncate(const char* __file, long  int __length);
+int truncate64(const char* __file, long  int __length);
+int ftruncate(int __fd, long  int __length);
+int ftruncate64(int __fd, long  int __length);
+int brk(void* __addr);
+void* sbrk(long  int __delta);
+long  int syscall(long  int __sysno, ...);
+int lockf(int __fd, int __cmd, long  int __len);
+int lockf64(int __fd, int __cmd, long  int __len);
+long  int copy_file_range(int __infd, long  int* __pinoff, int __outfd, long  int* __poutoff, unsigned long  int __length, unsigned int __flags);
+int fdatasync(int __fildes);
+char* crypt(const char* __key, const char* __salt);
+void swab(const void* __from, void* __to, long  int __n);
+int getentropy(void* __buffer, unsigned long  int __length);
+int close_range(unsigned int __fd, unsigned int __max_fd, int __flags);
+int gettid();
+struct cmsghdr* __cmsg_nxthdr(struct msghdr* __mhdr, struct cmsghdr* __cmsg);
+int socket(int __domain, int __type, int __protocol);
+int socketpair(int __domain, int __type, int __protocol, int __fds[2]);
+int bind(int __fd, const struct sockaddr* __addr, unsigned int __len);
+int getsockname(int __fd, struct sockaddr* __addr, unsigned int* __len);
+int connect(int __fd, const struct sockaddr* __addr, unsigned int __len);
+int getpeername(int __fd, struct sockaddr* __addr, unsigned int* __len);
+long  int send(int __fd, const void* __buf, unsigned long  int __n, int __flags);
+long  int recv(int __fd, void* __buf, unsigned long  int __n, int __flags);
+long  int sendto(int __fd, const void* __buf, unsigned long  int __n, int __flags, const struct sockaddr* __addr, unsigned int __addr_len);
+long  int recvfrom(int __fd, void* __buf, unsigned long  int __n, int __flags, struct sockaddr* __addr, unsigned int* __addr_len);
+long  int sendmsg(int __fd, const struct msghdr* __message, int __flags);
+int sendmmsg(int __fd, struct mmsghdr* __vmessages, unsigned int __vlen, int __flags);
+long  int recvmsg(int __fd, struct msghdr* __message, int __flags);
+int recvmmsg(int __fd, struct mmsghdr* __vmessages, unsigned int __vlen, int __flags, struct timespec* __tmo);
+int getsockopt(int __fd, int __level, int __optname, void* __optval, unsigned int* __optlen);
+int setsockopt(int __fd, int __level, int __optname, const void* __optval, unsigned int __optlen);
+int listen(int __fd, int __n);
+int accept(int __fd, struct sockaddr* __addr, unsigned int* __addr_len);
+int accept4(int __fd, struct sockaddr* __addr, unsigned int* __addr_len, int __flags);
+int shutdown(int __fd, int __how);
+int sockatmark(int __fd);
+int isfdtype(int __fd, int __fdtype);
+unsigned int ntohl(unsigned int __netlong);
+unsigned short int ntohs(unsigned short int __netshort);
+unsigned int htonl(unsigned int __hostlong);
+unsigned short int htons(unsigned short int __hostshort);
+int bindresvport(int __sockfd, struct sockaddr_in* __sock_in);
+int bindresvport6(int __sockfd, struct sockaddr_in6* __sock_in);
+int inet6_option_space(int __nbytes);
+int inet6_option_init(void* __bp, struct cmsghdr** __cmsgp, int __type);
+int inet6_option_append(struct cmsghdr* __cmsg, const unsigned char* __typep, int __multx, int __plusy);
+unsigned char* inet6_option_alloc(struct cmsghdr* __cmsg, int __datalen, int __multx, int __plusy);
+int inet6_option_next(const struct cmsghdr* __cmsg, unsigned char** __tptrp);
+int inet6_option_find(const struct cmsghdr* __cmsg, unsigned char** __tptrp, int __type);
+int inet6_opt_init(void* __extbuf, unsigned int __extlen);
+int inet6_opt_append(void* __extbuf, unsigned int __extlen, int __offset, unsigned char __type, unsigned int __len, unsigned char __align, void** __databufp);
+int inet6_opt_finish(void* __extbuf, unsigned int __extlen, int __offset);
+int inet6_opt_set_val(void* __databuf, int __offset, void* __val, unsigned int __vallen);
+int inet6_opt_next(void* __extbuf, unsigned int __extlen, int __offset, unsigned char* __typep, unsigned int* __lenp, void** __databufp);
+int inet6_opt_find(void* __extbuf, unsigned int __extlen, int __offset, unsigned char __type, unsigned int* __lenp, void** __databufp);
+int inet6_opt_get_val(void* __databuf, int __offset, void* __val, unsigned int __vallen);
+unsigned int inet6_rth_space(int __type, int __segments);
+void* inet6_rth_init(void* __bp, unsigned int __bp_len, int __type, int __segments);
+int inet6_rth_add(void* __bp, const struct in6_addr* __addr);
+int inet6_rth_reverse(const void* __in, void* __out);
+int inet6_rth_segments(const void* __bp);
+struct in6_addr* inet6_rth_getaddr(const void* __bp, int __index);
+int getipv4sourcefilter(int __s, struct in_addr __interface_addr, struct in_addr __group, unsigned int* __fmode, unsigned int* __numsrc, struct in_addr* __slist);
+int setipv4sourcefilter(int __s, struct in_addr __interface_addr, struct in_addr __group, unsigned int __fmode, unsigned int __numsrc, const struct in_addr* __slist);
+int getsourcefilter(int __s, unsigned int __interface_addr, const struct sockaddr* __group, unsigned int __grouplen, unsigned int* __fmode, unsigned int* __numsrc, struct sockaddr_storage* __slist);
+int setsourcefilter(int __s, unsigned int __interface_addr, const struct sockaddr* __group, unsigned int __grouplen, unsigned int __fmode, unsigned int __numsrc, const struct sockaddr_storage* __slist);
+unsigned int inet_addr(const char* __cp);
+unsigned int inet_lnaof(struct in_addr __in);
+struct in_addr inet_makeaddr(unsigned int __net, unsigned int __host);
+unsigned int inet_netof(struct in_addr __in);
+unsigned int inet_network(const char* __cp);
+char* inet_ntoa(struct in_addr __in);
+int inet_pton(int __af, const char* __cp, void* __buf);
+const char* inet_ntop(int __af, const void* __cp, char* __buf, unsigned int __len);
+int inet_aton(const char* __cp, struct in_addr* __inp);
+char* inet_neta(unsigned int __net, char* __buf, unsigned long  int __len);
+char* inet_net_ntop(int __af, const void* __cp, int __bits, char* __buf, unsigned long  int __len);
+int inet_net_pton(int __af, const char* __cp, void* __buf, unsigned long  int __len);
+unsigned int inet_nsap_addr(const char* __cp, unsigned char* __buf, int __len);
+char* inet_nsap_ntoa(int __len, const unsigned char* __cp, char* __buf);
+long  int imaxabs(long  int __n);
+struct anonymous_typeX25 imaxdiv(long  int __numer, long  int __denom);
 long  int strtoimax(const char* __nptr, char** __endptr, int __base);
 unsigned long  int strtoumax(const char* __nptr, char** __endptr, int __base);
 long  int wcstoimax(const int* __nptr, int** __endptr, int __base);
 unsigned long  int wcstoumax(const int* __nptr, int** __endptr, int __base);
-char* asctime(const struct tm* anonymous_var_nameX953);
-unsigned long  int clock();
-char* ctime(const long* anonymous_var_nameX954);
-double difftime(long anonymous_var_nameX955, long anonymous_var_nameX956);
-struct tm* getdate(const char* anonymous_var_nameX957);
-struct tm* gmtime(const long* anonymous_var_nameX958);
-struct tm* localtime(const long* anonymous_var_nameX959);
-long mktime(struct tm* anonymous_var_nameX960);
-unsigned long  int strftime(char* anonymous_var_nameX961, unsigned long  int anonymous_var_nameX962, const char* anonymous_var_nameX963, const struct tm* anonymous_var_nameX964);
-char* strptime(const char* anonymous_var_nameX965, const char* anonymous_var_nameX966, struct tm* anonymous_var_nameX967);
-long time(long* anonymous_var_nameX968);
+int clock_adjtime(int __clock_id, struct timex* __utx);
+long  int clock();
+long  int time(long  int* __timer);
+double difftime(long  int __time1, long  int __time0);
+long  int mktime(struct tm* __tp);
+unsigned long  int strftime(char* __s, unsigned long  int __maxsize, const char* __format, const struct tm* __tp);
+char* strptime(const char* __s, const char* __fmt, struct tm* __tp);
+unsigned long  int strftime_l(char* __s, unsigned long  int __maxsize, const char* __format, const struct tm* __tp, struct __locale_struct* __loc);
+char* strptime_l(const char* __s, const char* __fmt, struct tm* __tp, struct __locale_struct* __loc);
+struct tm* gmtime(const long  int* __timer);
+struct tm* localtime(const long  int* __timer);
+struct tm* gmtime_r(const long  int* __timer, struct tm* __tp);
+struct tm* localtime_r(const long  int* __timer, struct tm* __tp);
+char* asctime(const struct tm* __tp);
+char* ctime(const long  int* __timer);
+char* asctime_r(const struct tm* __tp, char* __buf);
+char* ctime_r(const long  int* __timer, char* __buf);
 void tzset();
-char* asctime_r(const struct tm* anonymous_var_nameX969, char* anonymous_var_nameX970);
-char* ctime_r(const long* anonymous_var_nameX971, char* anonymous_var_nameX972);
-struct tm* gmtime_r(const long* anonymous_var_nameX973, struct tm* anonymous_var_nameX974);
-struct tm* localtime_r(const long* anonymous_var_nameX975, struct tm* anonymous_var_nameX976);
-long posix2time(long anonymous_var_nameX977);
-void tzsetwall();
-long time2posix(long anonymous_var_nameX978);
-long timelocal(struct tm* anonymous_var_nameX979);
-long timegm(struct tm* anonymous_var_nameX980);
-int nanosleep(const struct timespec* __rqtp, struct timespec* __rmtp);
-int clock_getres(enum anonymous_typeY11 __clock_id, struct timespec* __res);
-int clock_gettime(enum anonymous_typeY11 __clock_id, struct timespec* __tp);
-unsigned long  long clock_gettime_nsec_np(enum anonymous_typeY11 __clock_id);
-int clock_settime(enum anonymous_typeY11 __clock_id, const struct timespec* __tp);
-int timespec_get(struct timespec* ts, int base);
-int adjtime(const struct timeval* anonymous_var_nameX981, struct timeval* anonymous_var_nameX982);
-int futimes(int anonymous_var_nameX983, const struct timeval* anonymous_var_nameX984);
-int lutimes(const char* anonymous_var_nameX985, const struct timeval* anonymous_var_nameX986);
-int settimeofday(const struct timeval* anonymous_var_nameX987, const struct timezone* anonymous_var_nameX988);
-int getitimer(int anonymous_var_nameX989, struct itimerval* anonymous_var_nameX990);
-int gettimeofday(struct timeval* anonymous_var_nameX991, void* anonymous_var_nameX992);
-int setitimer(int anonymous_var_nameX993, const struct itimerval* anonymous_var_nameX994, struct itimerval* anonymous_var_nameX995);
-int utimes(const char* anonymous_var_nameX996, const struct timeval* anonymous_var_nameX997);
-int OPENSSL_sk_num(const struct stack_st* anonymous_var_nameX1002);
-void* OPENSSL_sk_value(const struct stack_st* anonymous_var_nameX1003, int anonymous_var_nameX1004);
+long  int timegm(struct tm* __tp);
+long  int timelocal(struct tm* __tp);
+int dysize(int __year);
+int nanosleep(const struct timespec* __requested_time, struct timespec* __remaining);
+int clock_getres(int __clock_id, struct timespec* __res);
+int clock_gettime(int __clock_id, struct timespec* __tp);
+int clock_settime(int __clock_id, const struct timespec* __tp);
+int clock_nanosleep(int __clock_id, int __flags, const struct timespec* __req, struct timespec* __rem);
+int clock_getcpuclockid(int __pid, int* __clock_id);
+int timer_create(int __clock_id, struct sigevent* __evp, void** __timerid);
+int timer_delete(void* __timerid);
+int timer_settime(void* __timerid, int __flags, const struct itimerspec* __value, struct itimerspec* __ovalue);
+int timer_gettime(void* __timerid, struct itimerspec* __value);
+int timer_getoverrun(void* __timerid);
+int timespec_get(struct timespec* __ts, int __base);
+int timespec_getres(struct timespec* __ts, int __base);
+struct tm* getdate(const char* __string);
+int getdate_r(const char* __string, struct tm* __resbufp);
+int OPENSSL_sk_num(const struct stack_st* anonymous_var_nameX76);
+void* OPENSSL_sk_value(const struct stack_st* anonymous_var_nameX77, int anonymous_var_nameX78);
 void* OPENSSL_sk_set(struct stack_st* st, int i, const void* data);
 struct stack_st* OPENSSL_sk_new(int (*cmp)(const void*,const void*));
 struct stack_st* OPENSSL_sk_new_null();
 struct stack_st* OPENSSL_sk_new_reserve(int (*c)(const void*,const void*), int n);
 int OPENSSL_sk_reserve(struct stack_st* st, int n);
-void OPENSSL_sk_free(struct stack_st* anonymous_var_nameX1005);
+void OPENSSL_sk_free(struct stack_st* anonymous_var_nameX79);
 void OPENSSL_sk_pop_free(struct stack_st* st, void (*func)(void*));
-struct stack_st* OPENSSL_sk_deep_copy(const struct stack_st* anonymous_var_nameX1007, void* (*c)(const void*), void (*f)(void*));
+struct stack_st* OPENSSL_sk_deep_copy(const struct stack_st* anonymous_var_nameX81, void* (*c)(const void*), void (*f)(void*));
 int OPENSSL_sk_insert(struct stack_st* sk, const void* data, int where);
 void* OPENSSL_sk_delete(struct stack_st* st, int loc);
 void* OPENSSL_sk_delete_ptr(struct stack_st* st, const void* p);
@@ -5367,16 +5687,11 @@ int CRYPTO_THREAD_write_lock(void* lock);
 int CRYPTO_THREAD_unlock(void* lock);
 void CRYPTO_THREAD_lock_free(void* lock);
 int CRYPTO_atomic_add(int* val, int amount, int* ret, void* lock);
-int CRYPTO_atomic_add64(unsigned long  long* val, unsigned long  long op, unsigned long  long* ret, void* lock);
-int CRYPTO_atomic_and(unsigned long  long* val, unsigned long  long op, unsigned long  long* ret, void* lock);
-int CRYPTO_atomic_or(unsigned long  long* val, unsigned long  long op, unsigned long  long* ret, void* lock);
-int CRYPTO_atomic_load(unsigned long  long* val, unsigned long  long* ret, void* lock);
-int CRYPTO_atomic_load_int(int* val, int* ret, void* lock);
-int CRYPTO_atomic_store(unsigned long  long* dst, unsigned long  long val, void* lock);
+int CRYPTO_atomic_or(unsigned long  int* val, unsigned long  int op, unsigned long  int* ret, void* lock);
+int CRYPTO_atomic_load(unsigned long  int* val, unsigned long  int* ret, void* lock);
 unsigned long  int OPENSSL_strlcpy(char* dst, const char* src, unsigned long  int siz);
 unsigned long  int OPENSSL_strlcat(char* dst, const char* src, unsigned long  int siz);
 unsigned long  int OPENSSL_strnlen(const char* str, unsigned long  int maxlen);
-int OPENSSL_strtoul(const char* str, char** endptr, int base, unsigned long  int* num);
 int OPENSSL_buf2hexstr_ex(char* str, unsigned long  int str_n, unsigned long  int* strlength, const unsigned char* buf, unsigned long  int buflen, const char sep);
 char* OPENSSL_buf2hexstr(const unsigned char* buf, long buflen);
 int OPENSSL_hexstr2buf_ex(unsigned char* buf, unsigned long  int buf_n, unsigned long  int* buflen, const char* str, const char sep);
@@ -5405,7 +5720,6 @@ int CRYPTO_set_mem_functions(void* (*malloc_fn)(unsigned long  int,const char*,i
 void CRYPTO_get_mem_functions(void* (*malloc_fn)(unsigned long  int,const char*,int), void* (*realloc_fn)(void*,unsigned long  int,const char*,int), void (*free_fn)(void*,const char*,int));
 void* CRYPTO_malloc(unsigned long  int num, const char* file, int line);
 void* CRYPTO_zalloc(unsigned long  int num, const char* file, int line);
-void* CRYPTO_aligned_alloc(unsigned long  int num, unsigned long  int align, void** freeptr, const char* file, int line);
 void* CRYPTO_memdup(const void* str, unsigned long  int siz, const char* file, int line);
 char* CRYPTO_strdup(const char* str, const char* file, int line);
 char* CRYPTO_strndup(const char* str, unsigned long  int s, const char* file, int line);
@@ -5430,12 +5744,12 @@ void OPENSSL_init();
 void OPENSSL_fork_prepare();
 void OPENSSL_fork_parent();
 void OPENSSL_fork_child();
-struct tm* OPENSSL_gmtime(const long* timer, struct tm* result);
+struct tm* OPENSSL_gmtime(const long  int* timer, struct tm* result);
 int OPENSSL_gmtime_adj(struct tm* tm, int offset_day, long offset_sec);
 int OPENSSL_gmtime_diff(int* pday, int* psec, const struct tm* from, const struct tm* to);
 int CRYPTO_memcmp(const void* in_a, const void* in_b, unsigned long  int len);
 void OPENSSL_cleanup();
-int OPENSSL_init_crypto(unsigned long  long opts, const struct ossl_init_settings_st* settings);
+int OPENSSL_init_crypto(unsigned long  int opts, const struct ossl_init_settings_st* settings);
 int OPENSSL_atexit(void (*handler)());
 void OPENSSL_thread_stop();
 void OPENSSL_thread_stop_ex(struct ossl_lib_ctx_st* ctx);
@@ -5444,135 +5758,165 @@ int OPENSSL_INIT_set_config_filename(struct ossl_init_settings_st* settings, con
 void OPENSSL_INIT_set_config_file_flags(struct ossl_init_settings_st* settings, unsigned long  int flags);
 int OPENSSL_INIT_set_config_appname(struct ossl_init_settings_st* settings, const char* config_appname);
 void OPENSSL_INIT_free(struct ossl_init_settings_st* settings);
+int clone(int (*__fn)(void*), void* __child_stack, int __flags, void* __arg, ...);
+int unshare(int __flags);
+int sched_getcpu();
+int getcpu(unsigned int* anonymous_var_nameX82, unsigned int* anonymous_var_nameX83);
+int setns(int __fd, int __nstype);
+int __sched_cpucount(unsigned long  int __setsize, const struct anonymous_typeX28* __setp);
+struct anonymous_typeX28* __sched_cpualloc(unsigned long  int __count);
+void __sched_cpufree(struct anonymous_typeX28* __set);
+int sched_setparam(int __pid, const struct sched_param* __param);
+int sched_getparam(int __pid, struct sched_param* __param);
+int sched_setscheduler(int __pid, int __policy, const struct sched_param* __param);
+int sched_getscheduler(int __pid);
 int sched_yield();
-int sched_get_priority_min(int anonymous_var_nameX1008);
-int sched_get_priority_max(int anonymous_var_nameX1009);
-unsigned int qos_class_self();
-unsigned int qos_class_main();
-int pthread_attr_set_qos_class_np(struct _opaque_pthread_attr_t* __attr, unsigned int __qos_class, int __relative_priority);
-int pthread_attr_get_qos_class_np(struct _opaque_pthread_attr_t* __attr, unsigned int* __qos_class, int* __relative_priority);
-int pthread_set_qos_class_self_np(unsigned int __qos_class, int __relative_priority);
-int pthread_get_qos_class_np(struct _opaque_pthread_t* __pthread, unsigned int* __qos_class, int* __relative_priority);
-struct pthread_override_s* pthread_override_qos_class_start_np(struct _opaque_pthread_t* __pthread, unsigned int __qos_class, int __relative_priority);
-int pthread_override_qos_class_end_np(struct pthread_override_s* __override);
-int pthread_atfork(void (*anonymous_lambda_var_nameZ9)(), void (*anonymous_lambda_var_nameZ10)(), void (*anonymous_lambda_var_nameZ11)());
-int pthread_attr_destroy(struct _opaque_pthread_attr_t* anonymous_var_nameX1010);
-int pthread_attr_getdetachstate(const struct _opaque_pthread_attr_t* anonymous_var_nameX1011, int* anonymous_var_nameX1012);
-int pthread_attr_getguardsize(const struct _opaque_pthread_attr_t* anonymous_var_nameX1013, unsigned long  int* anonymous_var_nameX1014);
-int pthread_attr_getinheritsched(const struct _opaque_pthread_attr_t* anonymous_var_nameX1015, int* anonymous_var_nameX1016);
-int pthread_attr_getschedparam(const struct _opaque_pthread_attr_t* anonymous_var_nameX1017, struct sched_param* anonymous_var_nameX1018);
-int pthread_attr_getschedpolicy(const struct _opaque_pthread_attr_t* anonymous_var_nameX1019, int* anonymous_var_nameX1020);
-int pthread_attr_getscope(const struct _opaque_pthread_attr_t* anonymous_var_nameX1021, int* anonymous_var_nameX1022);
-int pthread_attr_getstack(const struct _opaque_pthread_attr_t* anonymous_var_nameX1023, void** anonymous_var_nameX1024, unsigned long  int* anonymous_var_nameX1025);
-int pthread_attr_getstackaddr(const struct _opaque_pthread_attr_t* anonymous_var_nameX1026, void** anonymous_var_nameX1027);
-int pthread_attr_getstacksize(const struct _opaque_pthread_attr_t* anonymous_var_nameX1028, unsigned long  int* anonymous_var_nameX1029);
-int pthread_attr_init(struct _opaque_pthread_attr_t* anonymous_var_nameX1030);
-int pthread_attr_setdetachstate(struct _opaque_pthread_attr_t* anonymous_var_nameX1031, int anonymous_var_nameX1032);
-int pthread_attr_setguardsize(struct _opaque_pthread_attr_t* anonymous_var_nameX1033, unsigned long  int anonymous_var_nameX1034);
-int pthread_attr_setinheritsched(struct _opaque_pthread_attr_t* anonymous_var_nameX1035, int anonymous_var_nameX1036);
-int pthread_attr_setschedparam(struct _opaque_pthread_attr_t* anonymous_var_nameX1037, const struct sched_param* anonymous_var_nameX1038);
-int pthread_attr_setschedpolicy(struct _opaque_pthread_attr_t* anonymous_var_nameX1039, int anonymous_var_nameX1040);
-int pthread_attr_setscope(struct _opaque_pthread_attr_t* anonymous_var_nameX1041, int anonymous_var_nameX1042);
-int pthread_attr_setstack(struct _opaque_pthread_attr_t* anonymous_var_nameX1043, void* anonymous_var_nameX1044, unsigned long  int anonymous_var_nameX1045);
-int pthread_attr_setstackaddr(struct _opaque_pthread_attr_t* anonymous_var_nameX1046, void* anonymous_var_nameX1047);
-int pthread_attr_setstacksize(struct _opaque_pthread_attr_t* anonymous_var_nameX1048, unsigned long  int anonymous_var_nameX1049);
-int pthread_cancel(struct _opaque_pthread_t* anonymous_var_nameX1050);
-int pthread_cond_broadcast(struct _opaque_pthread_cond_t* anonymous_var_nameX1051);
-int pthread_cond_destroy(struct _opaque_pthread_cond_t* anonymous_var_nameX1052);
-int pthread_cond_init(struct _opaque_pthread_cond_t* anonymous_var_nameX1053, const struct _opaque_pthread_condattr_t* anonymous_var_nameX1054);
-int pthread_cond_signal(struct _opaque_pthread_cond_t* anonymous_var_nameX1055);
-int pthread_cond_timedwait(struct _opaque_pthread_cond_t* anonymous_var_nameX1056, struct _opaque_pthread_mutex_t* anonymous_var_nameX1057, const struct timespec* anonymous_var_nameX1058);
-int pthread_cond_wait(struct _opaque_pthread_cond_t* anonymous_var_nameX1059, struct _opaque_pthread_mutex_t* anonymous_var_nameX1060);
-int pthread_condattr_destroy(struct _opaque_pthread_condattr_t* anonymous_var_nameX1061);
-int pthread_condattr_init(struct _opaque_pthread_condattr_t* anonymous_var_nameX1062);
-int pthread_condattr_getpshared(const struct _opaque_pthread_condattr_t* anonymous_var_nameX1063, int* anonymous_var_nameX1064);
-int pthread_condattr_setpshared(struct _opaque_pthread_condattr_t* anonymous_var_nameX1065, int anonymous_var_nameX1066);
-int pthread_create(struct _opaque_pthread_t** anonymous_var_nameX1067, const struct _opaque_pthread_attr_t* anonymous_var_nameX1068, void* (*anonymous_lambda_var_nameZ12)(void*), void* anonymous_var_nameX1070);
-int pthread_detach(struct _opaque_pthread_t* anonymous_var_nameX1071);
-int pthread_equal(struct _opaque_pthread_t* anonymous_var_nameX1072, struct _opaque_pthread_t* anonymous_var_nameX1073);
-void pthread_exit(void* anonymous_var_nameX1074);
+int sched_get_priority_max(int __algorithm);
+int sched_get_priority_min(int __algorithm);
+int sched_rr_get_interval(int __pid, struct timespec* __t);
+int sched_setaffinity(int __pid, unsigned long  int __cpusetsize, const struct anonymous_typeX28* __cpuset);
+int sched_getaffinity(int __pid, unsigned long  int __cpusetsize, struct anonymous_typeX28* __cpuset);
+int pthread_create(unsigned long  int* __newthread, const union pthread_attr_t* __attr, void* (*__start_routine)(void*), void* __arg);
+void pthread_exit(void* __retval);
+int pthread_join(unsigned long  int __th, void** __thread_return);
+int pthread_tryjoin_np(unsigned long  int __th, void** __thread_return);
+int pthread_timedjoin_np(unsigned long  int __th, void** __thread_return, const struct timespec* __abstime);
+int pthread_clockjoin_np(unsigned long  int __th, void** __thread_return, int __clockid, const struct timespec* __abstime);
+int pthread_detach(unsigned long  int __th);
+unsigned long  int pthread_self();
+int pthread_equal(unsigned long  int __thread1, unsigned long  int __thread2);
+int pthread_attr_init(union pthread_attr_t* __attr);
+int pthread_attr_destroy(union pthread_attr_t* __attr);
+int pthread_attr_getdetachstate(const union pthread_attr_t* __attr, int* __detachstate);
+int pthread_attr_setdetachstate(union pthread_attr_t* __attr, int __detachstate);
+int pthread_attr_getguardsize(const union pthread_attr_t* __attr, unsigned long  int* __guardsize);
+int pthread_attr_setguardsize(union pthread_attr_t* __attr, unsigned long  int __guardsize);
+int pthread_attr_getschedparam(const union pthread_attr_t* __attr, struct sched_param* __param);
+int pthread_attr_setschedparam(union pthread_attr_t* __attr, const struct sched_param* __param);
+int pthread_attr_getschedpolicy(const union pthread_attr_t* __attr, int* __policy);
+int pthread_attr_setschedpolicy(union pthread_attr_t* __attr, int __policy);
+int pthread_attr_getinheritsched(const union pthread_attr_t* __attr, int* __inherit);
+int pthread_attr_setinheritsched(union pthread_attr_t* __attr, int __inherit);
+int pthread_attr_getscope(const union pthread_attr_t* __attr, int* __scope);
+int pthread_attr_setscope(union pthread_attr_t* __attr, int __scope);
+int pthread_attr_getstackaddr(const union pthread_attr_t* __attr, void** __stackaddr);
+int pthread_attr_setstackaddr(union pthread_attr_t* __attr, void* __stackaddr);
+int pthread_attr_getstacksize(const union pthread_attr_t* __attr, unsigned long  int* __stacksize);
+int pthread_attr_setstacksize(union pthread_attr_t* __attr, unsigned long  int __stacksize);
+int pthread_attr_getstack(const union pthread_attr_t* __attr, void** __stackaddr, unsigned long  int* __stacksize);
+int pthread_attr_setstack(union pthread_attr_t* __attr, void* __stackaddr, unsigned long  int __stacksize);
+int pthread_attr_setaffinity_np(union pthread_attr_t* __attr, unsigned long  int __cpusetsize, const struct anonymous_typeX28* __cpuset);
+int pthread_attr_getaffinity_np(const union pthread_attr_t* __attr, unsigned long  int __cpusetsize, struct anonymous_typeX28* __cpuset);
+int pthread_getattr_default_np(union pthread_attr_t* __attr);
+int pthread_attr_setsigmask_np(union pthread_attr_t* __attr, const struct anonymous_typeX8* sigmask);
+int pthread_attr_getsigmask_np(const union pthread_attr_t* __attr, struct anonymous_typeX8* sigmask);
+int pthread_setattr_default_np(const union pthread_attr_t* __attr);
+int pthread_getattr_np(unsigned long  int __th, union pthread_attr_t* __attr);
+int pthread_setschedparam(unsigned long  int __target_thread, int __policy, const struct sched_param* __param);
+int pthread_getschedparam(unsigned long  int __target_thread, int* __policy, struct sched_param* __param);
+int pthread_setschedprio(unsigned long  int __target_thread, int __prio);
+int pthread_getname_np(unsigned long  int __target_thread, char* __buf, unsigned long  int __buflen);
+int pthread_setname_np(unsigned long  int __target_thread, const char* __name);
 int pthread_getconcurrency();
-int pthread_getschedparam(struct _opaque_pthread_t* anonymous_var_nameX1075, int* anonymous_var_nameX1076, struct sched_param* anonymous_var_nameX1077);
-void* pthread_getspecific(unsigned long  int anonymous_var_nameX1078);
-int pthread_join(struct _opaque_pthread_t* anonymous_var_nameX1079, void** anonymous_var_nameX1080);
-int pthread_key_create(unsigned long  int* anonymous_var_nameX1081, void (*anonymous_lambda_var_nameZ13)(void*));
-int pthread_key_delete(unsigned long  int anonymous_var_nameX1083);
-int pthread_mutex_destroy(struct _opaque_pthread_mutex_t* anonymous_var_nameX1084);
-int pthread_mutex_getprioceiling(const struct _opaque_pthread_mutex_t* anonymous_var_nameX1085, int* anonymous_var_nameX1086);
-int pthread_mutex_init(struct _opaque_pthread_mutex_t* anonymous_var_nameX1087, const struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1088);
-int pthread_mutex_lock(struct _opaque_pthread_mutex_t* anonymous_var_nameX1089);
-int pthread_mutex_setprioceiling(struct _opaque_pthread_mutex_t* anonymous_var_nameX1090, int anonymous_var_nameX1091, int* anonymous_var_nameX1092);
-int pthread_mutex_trylock(struct _opaque_pthread_mutex_t* anonymous_var_nameX1093);
-int pthread_mutex_unlock(struct _opaque_pthread_mutex_t* anonymous_var_nameX1094);
-int pthread_mutexattr_destroy(struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1095);
-int pthread_mutexattr_getprioceiling(const struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1096, int* anonymous_var_nameX1097);
-int pthread_mutexattr_getprotocol(const struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1098, int* anonymous_var_nameX1099);
-int pthread_mutexattr_getpshared(const struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1100, int* anonymous_var_nameX1101);
-int pthread_mutexattr_gettype(const struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1102, int* anonymous_var_nameX1103);
-int pthread_mutexattr_getpolicy_np(const struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1104, int* anonymous_var_nameX1105);
-int pthread_mutexattr_init(struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1106);
-int pthread_mutexattr_setprioceiling(struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1107, int anonymous_var_nameX1108);
-int pthread_mutexattr_setprotocol(struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1109, int anonymous_var_nameX1110);
-int pthread_mutexattr_setpshared(struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1111, int anonymous_var_nameX1112);
-int pthread_mutexattr_settype(struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1113, int anonymous_var_nameX1114);
-int pthread_mutexattr_setpolicy_np(struct _opaque_pthread_mutexattr_t* anonymous_var_nameX1115, int anonymous_var_nameX1116);
-int pthread_once(struct _opaque_pthread_once_t* anonymous_var_nameX1117, void (*anonymous_lambda_var_nameZ14)());
-int pthread_rwlock_destroy(struct _opaque_pthread_rwlock_t* anonymous_var_nameX1118);
-int pthread_rwlock_init(struct _opaque_pthread_rwlock_t* anonymous_var_nameX1119, const struct _opaque_pthread_rwlockattr_t* anonymous_var_nameX1120);
-int pthread_rwlock_rdlock(struct _opaque_pthread_rwlock_t* anonymous_var_nameX1121);
-int pthread_rwlock_tryrdlock(struct _opaque_pthread_rwlock_t* anonymous_var_nameX1122);
-int pthread_rwlock_trywrlock(struct _opaque_pthread_rwlock_t* anonymous_var_nameX1123);
-int pthread_rwlock_wrlock(struct _opaque_pthread_rwlock_t* anonymous_var_nameX1124);
-int pthread_rwlock_unlock(struct _opaque_pthread_rwlock_t* anonymous_var_nameX1125);
-int pthread_rwlockattr_destroy(struct _opaque_pthread_rwlockattr_t* anonymous_var_nameX1126);
-int pthread_rwlockattr_getpshared(const struct _opaque_pthread_rwlockattr_t* anonymous_var_nameX1127, int* anonymous_var_nameX1128);
-int pthread_rwlockattr_init(struct _opaque_pthread_rwlockattr_t* anonymous_var_nameX1129);
-int pthread_rwlockattr_setpshared(struct _opaque_pthread_rwlockattr_t* anonymous_var_nameX1130, int anonymous_var_nameX1131);
-struct _opaque_pthread_t* pthread_self();
-int pthread_setcancelstate(int anonymous_var_nameX1132, int* anonymous_var_nameX1133);
-int pthread_setcanceltype(int anonymous_var_nameX1134, int* anonymous_var_nameX1135);
-int pthread_setconcurrency(int anonymous_var_nameX1136);
-int pthread_setschedparam(struct _opaque_pthread_t* anonymous_var_nameX1137, int anonymous_var_nameX1138, const struct sched_param* anonymous_var_nameX1139);
-int pthread_setspecific(unsigned long  int anonymous_var_nameX1140, const void* anonymous_var_nameX1141);
+int pthread_setconcurrency(int __level);
+int pthread_yield();
+int pthread_setaffinity_np(unsigned long  int __th, unsigned long  int __cpusetsize, const struct anonymous_typeX28* __cpuset);
+int pthread_getaffinity_np(unsigned long  int __th, unsigned long  int __cpusetsize, struct anonymous_typeX28* __cpuset);
+int pthread_once(int* __once_control, void (*__init_routine)());
+int pthread_setcancelstate(int __state, int* __oldstate);
+int pthread_setcanceltype(int __type, int* __oldtype);
+int pthread_cancel(unsigned long  int __th);
 void pthread_testcancel();
-int pthread_is_threaded_np();
-int pthread_threadid_np(struct _opaque_pthread_t* anonymous_var_nameX1142, unsigned long  long* anonymous_var_nameX1143);
-int pthread_getname_np(struct _opaque_pthread_t* anonymous_var_nameX1144, char* anonymous_var_nameX1145, unsigned long  int anonymous_var_nameX1146);
-int pthread_setname_np(const char* anonymous_var_nameX1147);
-int pthread_main_np();
-unsigned int pthread_mach_thread_np(struct _opaque_pthread_t* anonymous_var_nameX1148);
-unsigned long  int pthread_get_stacksize_np(struct _opaque_pthread_t* anonymous_var_nameX1149);
-void* pthread_get_stackaddr_np(struct _opaque_pthread_t* anonymous_var_nameX1150);
-int pthread_cond_signal_thread_np(struct _opaque_pthread_cond_t* anonymous_var_nameX1151, struct _opaque_pthread_t* anonymous_var_nameX1152);
-int pthread_cond_timedwait_relative_np(struct _opaque_pthread_cond_t* anonymous_var_nameX1153, struct _opaque_pthread_mutex_t* anonymous_var_nameX1154, const struct timespec* anonymous_var_nameX1155);
-int pthread_create_suspended_np(struct _opaque_pthread_t** anonymous_var_nameX1156, const struct _opaque_pthread_attr_t* anonymous_var_nameX1157, void* (*anonymous_lambda_var_nameZ15)(void*), void* anonymous_var_nameX1159);
-int pthread_kill(struct _opaque_pthread_t* anonymous_var_nameX1160, int anonymous_var_nameX1161);
-struct _opaque_pthread_t* pthread_from_mach_thread_np(unsigned int anonymous_var_nameX1162);
-int pthread_sigmask(int anonymous_var_nameX1163, const unsigned int* anonymous_var_nameX1164, unsigned int* anonymous_var_nameX1165);
-void pthread_yield_np();
-void pthread_jit_write_protect_np(int enabled);
-int pthread_jit_write_protect_supported_np();
-int pthread_jit_write_with_callback_np(int (*callback)(void*), void* ctx);
-void pthread_jit_write_freeze_callbacks_np();
-int pthread_cpu_number_np(unsigned long  int* cpu_number_out);
-int CRYPTO_THREAD_run_once(struct _opaque_pthread_once_t* once, void (*init)());
-int CRYPTO_THREAD_init_local(unsigned long  int* key, void (*cleanup)(void*));
-void* CRYPTO_THREAD_get_local(unsigned long  int* key);
-int CRYPTO_THREAD_set_local(unsigned long  int* key, void* val);
-int CRYPTO_THREAD_cleanup_local(unsigned long  int* key);
-struct _opaque_pthread_t* CRYPTO_THREAD_get_current_id();
-int CRYPTO_THREAD_compare_id(struct _opaque_pthread_t* a, struct _opaque_pthread_t* b);
+void __pthread_register_cancel(struct anonymous_typeX29* __buf);
+void __pthread_unregister_cancel(struct anonymous_typeX29* __buf);
+void __pthread_register_cancel_defer(struct anonymous_typeX29* __buf);
+void __pthread_unregister_cancel_restore(struct anonymous_typeX29* __buf);
+void __pthread_unwind_next(struct anonymous_typeX29* __buf);
+int __sigsetjmp(struct __jmp_buf_tag __env[1], int __savemask);
+int pthread_mutex_init(union anonymous_typeZ15* __mutex, const union anonymous_typeZ13* __mutexattr);
+int pthread_mutex_destroy(union anonymous_typeZ15* __mutex);
+int pthread_mutex_trylock(union anonymous_typeZ15* __mutex);
+int pthread_mutex_lock(union anonymous_typeZ15* __mutex);
+int pthread_mutex_timedlock(union anonymous_typeZ15* __mutex, const struct timespec* __abstime);
+int pthread_mutex_clocklock(union anonymous_typeZ15* __mutex, int __clockid, const struct timespec* __abstime);
+int pthread_mutex_unlock(union anonymous_typeZ15* __mutex);
+int pthread_mutex_getprioceiling(const union anonymous_typeZ15* __mutex, int* __prioceiling);
+int pthread_mutex_setprioceiling(union anonymous_typeZ15* __mutex, int __prioceiling, int* __old_ceiling);
+int pthread_mutex_consistent(union anonymous_typeZ15* __mutex);
+int pthread_mutexattr_init(union anonymous_typeZ13* __attr);
+int pthread_mutexattr_destroy(union anonymous_typeZ13* __attr);
+int pthread_mutexattr_getpshared(const union anonymous_typeZ13* __attr, int* __pshared);
+int pthread_mutexattr_setpshared(union anonymous_typeZ13* __attr, int __pshared);
+int pthread_mutexattr_gettype(const union anonymous_typeZ13* __attr, int* __kind);
+int pthread_mutexattr_settype(union anonymous_typeZ13* __attr, int __kind);
+int pthread_mutexattr_getprotocol(const union anonymous_typeZ13* __attr, int* __protocol);
+int pthread_mutexattr_setprotocol(union anonymous_typeZ13* __attr, int __protocol);
+int pthread_mutexattr_getprioceiling(const union anonymous_typeZ13* __attr, int* __prioceiling);
+int pthread_mutexattr_setprioceiling(union anonymous_typeZ13* __attr, int __prioceiling);
+int pthread_mutexattr_getrobust(const union anonymous_typeZ13* __attr, int* __robustness);
+int pthread_mutexattr_setrobust(union anonymous_typeZ13* __attr, int __robustness);
+int pthread_rwlock_init(union anonymous_typeZ17* __rwlock, const union anonymous_typeZ18* __attr);
+int pthread_rwlock_destroy(union anonymous_typeZ17* __rwlock);
+int pthread_rwlock_rdlock(union anonymous_typeZ17* __rwlock);
+int pthread_rwlock_tryrdlock(union anonymous_typeZ17* __rwlock);
+int pthread_rwlock_timedrdlock(union anonymous_typeZ17* __rwlock, const struct timespec* __abstime);
+int pthread_rwlock_clockrdlock(union anonymous_typeZ17* __rwlock, int __clockid, const struct timespec* __abstime);
+int pthread_rwlock_wrlock(union anonymous_typeZ17* __rwlock);
+int pthread_rwlock_trywrlock(union anonymous_typeZ17* __rwlock);
+int pthread_rwlock_timedwrlock(union anonymous_typeZ17* __rwlock, const struct timespec* __abstime);
+int pthread_rwlock_clockwrlock(union anonymous_typeZ17* __rwlock, int __clockid, const struct timespec* __abstime);
+int pthread_rwlock_unlock(union anonymous_typeZ17* __rwlock);
+int pthread_rwlockattr_init(union anonymous_typeZ18* __attr);
+int pthread_rwlockattr_destroy(union anonymous_typeZ18* __attr);
+int pthread_rwlockattr_getpshared(const union anonymous_typeZ18* __attr, int* __pshared);
+int pthread_rwlockattr_setpshared(union anonymous_typeZ18* __attr, int __pshared);
+int pthread_rwlockattr_getkind_np(const union anonymous_typeZ18* __attr, int* __pref);
+int pthread_rwlockattr_setkind_np(union anonymous_typeZ18* __attr, int __pref);
+int pthread_cond_init(union anonymous_typeZ16* __cond, const union anonymous_typeZ14* __cond_attr);
+int pthread_cond_destroy(union anonymous_typeZ16* __cond);
+int pthread_cond_signal(union anonymous_typeZ16* __cond);
+int pthread_cond_broadcast(union anonymous_typeZ16* __cond);
+int pthread_cond_wait(union anonymous_typeZ16* __cond, union anonymous_typeZ15* __mutex);
+int pthread_cond_timedwait(union anonymous_typeZ16* __cond, union anonymous_typeZ15* __mutex, const struct timespec* __abstime);
+int pthread_cond_clockwait(union anonymous_typeZ16* __cond, union anonymous_typeZ15* __mutex, int __clock_id, const struct timespec* __abstime);
+int pthread_condattr_init(union anonymous_typeZ14* __attr);
+int pthread_condattr_destroy(union anonymous_typeZ14* __attr);
+int pthread_condattr_getpshared(const union anonymous_typeZ14* __attr, int* __pshared);
+int pthread_condattr_setpshared(union anonymous_typeZ14* __attr, int __pshared);
+int pthread_condattr_getclock(const union anonymous_typeZ14* __attr, int* __clock_id);
+int pthread_condattr_setclock(union anonymous_typeZ14* __attr, int __clock_id);
+int pthread_spin_init(int* __lock, int __pshared);
+int pthread_spin_destroy(int* __lock);
+int pthread_spin_lock(int* __lock);
+int pthread_spin_trylock(int* __lock);
+int pthread_spin_unlock(int* __lock);
+int pthread_barrier_init(union anonymous_typeZ19* __barrier, const union anonymous_typeZ20* __attr, unsigned int __count);
+int pthread_barrier_destroy(union anonymous_typeZ19* __barrier);
+int pthread_barrier_wait(union anonymous_typeZ19* __barrier);
+int pthread_barrierattr_init(union anonymous_typeZ20* __attr);
+int pthread_barrierattr_destroy(union anonymous_typeZ20* __attr);
+int pthread_barrierattr_getpshared(const union anonymous_typeZ20* __attr, int* __pshared);
+int pthread_barrierattr_setpshared(union anonymous_typeZ20* __attr, int __pshared);
+int pthread_key_create(unsigned int* __key, void (*__destr_function)(void*));
+int pthread_key_delete(unsigned int __key);
+void* pthread_getspecific(unsigned int __key);
+int pthread_setspecific(unsigned int __key, const void* __pointer);
+int pthread_getcpuclockid(unsigned long  int __thread_id, int* __clock_id);
+int pthread_atfork(void (*__prepare)(), void (*__parent)(), void (*__child)());
+int CRYPTO_THREAD_run_once(int* once, void (*init)());
+int CRYPTO_THREAD_init_local(unsigned int* key, void (*cleanup)(void*));
+void* CRYPTO_THREAD_get_local(unsigned int* key);
+int CRYPTO_THREAD_set_local(unsigned int* key, void* val);
+int CRYPTO_THREAD_cleanup_local(unsigned int* key);
+unsigned long  int CRYPTO_THREAD_get_current_id();
+int CRYPTO_THREAD_compare_id(unsigned long  int a, unsigned long  int b);
 struct ossl_lib_ctx_st* OSSL_LIB_CTX_new();
 struct ossl_lib_ctx_st* OSSL_LIB_CTX_new_from_dispatch(const struct ossl_core_handle_st* handle, const struct ossl_dispatch_st* in);
 struct ossl_lib_ctx_st* OSSL_LIB_CTX_new_child(const struct ossl_core_handle_st* handle, const struct ossl_dispatch_st* in);
 int OSSL_LIB_CTX_load_config(struct ossl_lib_ctx_st* ctx, const char* config_file);
-void OSSL_LIB_CTX_free(struct ossl_lib_ctx_st* anonymous_var_nameX1167);
+void OSSL_LIB_CTX_free(struct ossl_lib_ctx_st* anonymous_var_nameX91);
 struct ossl_lib_ctx_st* OSSL_LIB_CTX_get0_global_default();
 struct ossl_lib_ctx_st* OSSL_LIB_CTX_set0_default(struct ossl_lib_ctx_st* libctx);
-int OSSL_LIB_CTX_get_conf_diagnostics(struct ossl_lib_ctx_st* ctx);
-void OSSL_LIB_CTX_set_conf_diagnostics(struct ossl_lib_ctx_st* ctx, int value);
-void OSSL_sleep(unsigned long  long millis);
-void* OSSL_LIB_CTX_get_data(struct ossl_lib_ctx_st* ctx, int index);
 struct comp_ctx_st* COMP_CTX_new(struct comp_method_st* meth);
 const struct comp_method_st* COMP_CTX_get_method(const struct comp_ctx_st* ctx);
 int COMP_CTX_get_type(const struct comp_ctx_st* comp);
@@ -5582,11 +5926,6 @@ void COMP_CTX_free(struct comp_ctx_st* ctx);
 int COMP_compress_block(struct comp_ctx_st* ctx, unsigned char* out, int olen, unsigned char* in, int ilen);
 int COMP_expand_block(struct comp_ctx_st* ctx, unsigned char* out, int olen, unsigned char* in, int ilen);
 struct comp_method_st* COMP_zlib();
-struct comp_method_st* COMP_zlib_oneshot();
-struct comp_method_st* COMP_brotli();
-struct comp_method_st* COMP_brotli_oneshot();
-struct comp_method_st* COMP_zstd();
-struct comp_method_st* COMP_zstd_oneshot();
 int BIO_get_new_index();
 void BIO_set_flags(struct bio_st* b, int flags);
 int BIO_test_flags(const struct bio_st* b, int flags);
@@ -5608,8 +5947,8 @@ unsigned long  int BIO_ctrl_get_read_request(struct bio_st* b);
 int BIO_ctrl_reset_read_request(struct bio_st* b);
 int BIO_set_ex_data(struct bio_st* bio, int idx, void* data);
 void* BIO_get_ex_data(const struct bio_st* bio, int idx);
-unsigned long  long BIO_number_read(struct bio_st* bio);
-unsigned long  long BIO_number_written(struct bio_st* bio);
+unsigned long  int BIO_number_read(struct bio_st* bio);
+unsigned long  int BIO_number_written(struct bio_st* bio);
 int BIO_asn1_set_prefix(struct bio_st* b, int (*prefix)(struct bio_st*,unsigned char**,int*,void*), int (*prefix_free)(struct bio_st*,unsigned char**,int*,void*));
 int BIO_asn1_get_prefix(struct bio_st* b, int (*pprefix)(struct bio_st*,unsigned char**,int*,void*), int (*pprefix_free)(struct bio_st*,unsigned char**,int*,void*));
 int BIO_asn1_set_suffix(struct bio_st* b, int (*suffix)(struct bio_st*,unsigned char**,int*,void*), int (*suffix_free)(struct bio_st*,unsigned char**,int*,void*));
@@ -5617,7 +5956,7 @@ int BIO_asn1_get_suffix(struct bio_st* b, int (*psuffix)(struct bio_st*,unsigned
 const struct bio_method_st* BIO_s_file();
 struct bio_st* BIO_new_file(const char* filename, const char* mode);
 struct bio_st* BIO_new_from_core_bio(struct ossl_lib_ctx_st* libctx, struct ossl_core_bio_st* corebio);
-struct bio_st* BIO_new_fp(struct __sFILE* stream, int close_flag);
+struct bio_st* BIO_new_fp(struct _IO_FILE* stream, int close_flag);
 struct bio_st* BIO_new_ex(struct ossl_lib_ctx_st* libctx, const struct bio_method_st* method);
 struct bio_st* BIO_new(const struct bio_method_st* type);
 int BIO_free(struct bio_st* a);
@@ -5631,14 +5970,10 @@ void BIO_vfree(struct bio_st* a);
 int BIO_up_ref(struct bio_st* a);
 int BIO_read(struct bio_st* b, void* data, int dlen);
 int BIO_read_ex(struct bio_st* b, void* data, unsigned long  int dlen, unsigned long  int* readbytes);
-int BIO_recvmmsg(struct bio_st* b, struct bio_msg_st* msg, unsigned long  int stride, unsigned long  int num_msg, unsigned long  long flags, unsigned long  int* msgs_processed);
 int BIO_gets(struct bio_st* bp, char* buf, int size);
 int BIO_get_line(struct bio_st* bio, char* buf, int size);
 int BIO_write(struct bio_st* b, const void* data, int dlen);
 int BIO_write_ex(struct bio_st* b, const void* data, unsigned long  int dlen, unsigned long  int* written);
-int BIO_sendmmsg(struct bio_st* b, struct bio_msg_st* msg, unsigned long  int stride, unsigned long  int num_msg, unsigned long  long flags, unsigned long  int* msgs_processed);
-int BIO_get_rpoll_descriptor(struct bio_st* b, struct bio_poll_descriptor_st* desc);
-int BIO_get_wpoll_descriptor(struct bio_st* b, struct bio_poll_descriptor_st* desc);
 int BIO_puts(struct bio_st* bp, const char* buf);
 int BIO_indent(struct bio_st* b, int indent, int max);
 long BIO_ctrl(struct bio_st* bp, int cmd, long larg, void* parg);
@@ -5660,7 +5995,6 @@ int BIO_nread(struct bio_st* bio, char** buf, int num);
 int BIO_nwrite0(struct bio_st* bio, char** buf);
 int BIO_nwrite(struct bio_st* bio, char** buf, int num);
 const struct bio_method_st* BIO_s_mem();
-const struct bio_method_st* BIO_s_dgram_mem();
 const struct bio_method_st* BIO_s_secmem();
 struct bio_st* BIO_new_mem_buf(const void* buf, int len);
 const struct bio_method_st* BIO_s_socket();
@@ -5677,15 +6011,13 @@ const struct bio_method_st* BIO_f_linebuffer();
 const struct bio_method_st* BIO_f_nbio_test();
 const struct bio_method_st* BIO_f_prefix();
 const struct bio_method_st* BIO_s_core();
-const struct bio_method_st* BIO_s_dgram_pair();
 const struct bio_method_st* BIO_s_datagram();
 int BIO_dgram_non_fatal_error(int error);
 struct bio_st* BIO_new_dgram(int fd, int close_flag);
 int BIO_sock_should_retry(int i);
 int BIO_sock_non_fatal_error(int error);
-int BIO_err_is_non_fatal(unsigned int errcode);
-int BIO_socket_wait(int fd, int for_read, long max_time);
-int BIO_wait(struct bio_st* bio, long max_time, unsigned int nap_milliseconds);
+int BIO_socket_wait(int fd, int for_read, long  int max_time);
+int BIO_wait(struct bio_st* bio, long  int max_time, unsigned int nap_milliseconds);
 int BIO_do_connect_retry(struct bio_st* bio, int timeout, int nap_milliseconds);
 int BIO_fd_should_retry(int i);
 int BIO_fd_non_fatal_error(int error);
@@ -5693,14 +6025,12 @@ int BIO_dump_cb(int (*cb)(const void*,unsigned long  int,void*), void* u, const 
 int BIO_dump_indent_cb(int (*cb)(const void*,unsigned long  int,void*), void* u, const void* s, int len, int indent);
 int BIO_dump(struct bio_st* b, const void* bytes, int len);
 int BIO_dump_indent(struct bio_st* b, const void* bytes, int len, int indent);
-int BIO_dump_fp(struct __sFILE* fp, const void* s, int len);
-int BIO_dump_indent_fp(struct __sFILE* fp, const void* s, int len, int indent);
+int BIO_dump_fp(struct _IO_FILE* fp, const void* s, int len);
+int BIO_dump_indent_fp(struct _IO_FILE* fp, const void* s, int len, int indent);
 int BIO_hex_string(struct bio_st* out, int indent, int width, const void* data, int datalen);
 union bio_addr_st* BIO_ADDR_new();
-int BIO_ADDR_copy(union bio_addr_st* dst, const union bio_addr_st* src);
-union bio_addr_st* BIO_ADDR_dup(const union bio_addr_st* ap);
 int BIO_ADDR_rawmake(union bio_addr_st* ap, int family, const void* where, unsigned long  int wherelen, unsigned short int port);
-void BIO_ADDR_free(union bio_addr_st* anonymous_var_nameX1171);
+void BIO_ADDR_free(union bio_addr_st* anonymous_var_nameX95);
 void BIO_ADDR_clear(union bio_addr_st* ap);
 int BIO_ADDR_family(const union bio_addr_st* ap);
 int BIO_ADDR_rawaddress(const union bio_addr_st* ap, void* p, unsigned long  int* l);
@@ -5739,7 +6069,6 @@ struct bio_st* BIO_new_connect(const char* host_port);
 struct bio_st* BIO_new_accept(const char* host_port);
 struct bio_st* BIO_new_fd(int fd, int close_flag);
 int BIO_new_bio_pair(struct bio_st** bio1, unsigned long  int writebuf1, struct bio_st** bio2, unsigned long  int writebuf2);
-int BIO_new_bio_dgram_pair(struct bio_st** bio1, unsigned long  int writebuf1, struct bio_st** bio2, unsigned long  int writebuf2);
 void BIO_copy_next_retry(struct bio_st* b);
 int BIO_printf(struct bio_st* bio, const char* format, ...);
 int BIO_vprintf(struct bio_st* bio, const char* format, va_list args);
@@ -5747,29 +6076,25 @@ int BIO_snprintf(char* buf, unsigned long  int n, const char* format, ...);
 int BIO_vsnprintf(char* buf, unsigned long  int n, const char* format, va_list args);
 struct bio_method_st* BIO_meth_new(int type, const char* name);
 void BIO_meth_free(struct bio_method_st* biom);
-int (*BIO_meth_get_write(const struct bio_method_st* _function_pointer_result_var_name_a3))(struct bio_st*,const char*,int);
-int (*BIO_meth_get_write_ex(const struct bio_method_st* _function_pointer_result_var_name_a4))(struct bio_st*,const char*,unsigned long  int,unsigned long  int*);
+int (*BIO_meth_get_write(const struct bio_method_st* _function_pointer_result_var_name_a1))(struct bio_st*,const char*,int);
+int (*BIO_meth_get_write_ex(const struct bio_method_st* _function_pointer_result_var_name_a2))(struct bio_st*,const char*,unsigned long  int,unsigned long  int*);
 int BIO_meth_set_write(struct bio_method_st* biom, int (*write)(struct bio_st*,const char*,int));
 int BIO_meth_set_write_ex(struct bio_method_st* biom, int (*bwrite)(struct bio_st*,const char*,unsigned long  int,unsigned long  int*));
-int BIO_meth_set_sendmmsg(struct bio_method_st* biom, int (*f)(struct bio_st*,struct bio_msg_st*,unsigned long  int,unsigned long  int,unsigned long  long,unsigned long  int*));
-int (*BIO_meth_get_sendmmsg(const struct bio_method_st* _function_pointer_result_var_name_a5))(struct bio_st*,struct bio_msg_st*,unsigned long  int,unsigned long  int,unsigned long  long,unsigned long  int*);
-int (*BIO_meth_get_read(const struct bio_method_st* _function_pointer_result_var_name_a6))(struct bio_st*,char*,int);
-int (*BIO_meth_get_read_ex(const struct bio_method_st* _function_pointer_result_var_name_a7))(struct bio_st*,char*,unsigned long  int,unsigned long  int*);
+int (*BIO_meth_get_read(const struct bio_method_st* _function_pointer_result_var_name_a3))(struct bio_st*,char*,int);
+int (*BIO_meth_get_read_ex(const struct bio_method_st* _function_pointer_result_var_name_a4))(struct bio_st*,char*,unsigned long  int,unsigned long  int*);
 int BIO_meth_set_read(struct bio_method_st* biom, int (*read)(struct bio_st*,char*,int));
 int BIO_meth_set_read_ex(struct bio_method_st* biom, int (*bread)(struct bio_st*,char*,unsigned long  int,unsigned long  int*));
-int BIO_meth_set_recvmmsg(struct bio_method_st* biom, int (*f)(struct bio_st*,struct bio_msg_st*,unsigned long  int,unsigned long  int,unsigned long  long,unsigned long  int*));
-int (*BIO_meth_get_recvmmsg(const struct bio_method_st* _function_pointer_result_var_name_a8))(struct bio_st*,struct bio_msg_st*,unsigned long  int,unsigned long  int,unsigned long  long,unsigned long  int*);
-int (*BIO_meth_get_puts(const struct bio_method_st* _function_pointer_result_var_name_a9))(struct bio_st*,const char*);
+int (*BIO_meth_get_puts(const struct bio_method_st* _function_pointer_result_var_name_a5))(struct bio_st*,const char*);
 int BIO_meth_set_puts(struct bio_method_st* biom, int (*puts)(struct bio_st*,const char*));
-int (*BIO_meth_get_gets(const struct bio_method_st* _function_pointer_result_var_name_a10))(struct bio_st*,char*,int);
+int (*BIO_meth_get_gets(const struct bio_method_st* _function_pointer_result_var_name_a6))(struct bio_st*,char*,int);
 int BIO_meth_set_gets(struct bio_method_st* biom, int (*ossl_gets)(struct bio_st*,char*,int));
-long (*BIO_meth_get_ctrl(const struct bio_method_st* _function_pointer_result_var_name_a11))(struct bio_st*,int,long,void*);
+long (*BIO_meth_get_ctrl(const struct bio_method_st* _function_pointer_result_var_name_a7))(struct bio_st*,int,long,void*);
 int BIO_meth_set_ctrl(struct bio_method_st* biom, long (*ctrl)(struct bio_st*,int,long,void*));
-int (*BIO_meth_get_create(const struct bio_method_st* _function_pointer_result_var_name_a12))(struct bio_st*);
+int (*BIO_meth_get_create(const struct bio_method_st* _function_pointer_result_var_name_a8))(struct bio_st*);
 int BIO_meth_set_create(struct bio_method_st* biom, int (*create)(struct bio_st*));
-int (*BIO_meth_get_destroy(const struct bio_method_st* _function_pointer_result_var_name_a13))(struct bio_st*);
+int (*BIO_meth_get_destroy(const struct bio_method_st* _function_pointer_result_var_name_a9))(struct bio_st*);
 int BIO_meth_set_destroy(struct bio_method_st* biom, int (*destroy)(struct bio_st*));
-long (*BIO_meth_get_callback_ctrl(const struct bio_method_st* _function_pointer_result_var_name_a14))(struct bio_st*,int,int (*)(struct bio_st*,int,int));
+long (*BIO_meth_get_callback_ctrl(const struct bio_method_st* _function_pointer_result_var_name_a10))(struct bio_st*,int,int (*)(struct bio_st*,int,int));
 int BIO_meth_set_callback_ctrl(struct bio_method_st* biom, long (*callback_ctrl)(struct bio_st*,int,int (*)(struct bio_st*,int,int)));
 struct buf_mem_st* BUF_MEM_new();
 struct buf_mem_st* BUF_MEM_new_ex(unsigned long  int flags);
@@ -5821,18 +6146,12 @@ void BN_clear_free(struct bignum_st* a);
 struct bignum_st* BN_copy(struct bignum_st* a, const struct bignum_st* b);
 void BN_swap(struct bignum_st* a, struct bignum_st* b);
 struct bignum_st* BN_bin2bn(const unsigned char* s, int len, struct bignum_st* ret);
-struct bignum_st* BN_signed_bin2bn(const unsigned char* s, int len, struct bignum_st* ret);
 int BN_bn2bin(const struct bignum_st* a, unsigned char* to);
 int BN_bn2binpad(const struct bignum_st* a, unsigned char* to, int tolen);
-int BN_signed_bn2bin(const struct bignum_st* a, unsigned char* to, int tolen);
 struct bignum_st* BN_lebin2bn(const unsigned char* s, int len, struct bignum_st* ret);
-struct bignum_st* BN_signed_lebin2bn(const unsigned char* s, int len, struct bignum_st* ret);
 int BN_bn2lebinpad(const struct bignum_st* a, unsigned char* to, int tolen);
-int BN_signed_bn2lebin(const struct bignum_st* a, unsigned char* to, int tolen);
 struct bignum_st* BN_native2bn(const unsigned char* s, int len, struct bignum_st* ret);
-struct bignum_st* BN_signed_native2bn(const unsigned char* s, int len, struct bignum_st* ret);
 int BN_bn2nativepad(const struct bignum_st* a, unsigned char* to, int tolen);
-int BN_signed_bn2native(const struct bignum_st* a, unsigned char* to, int tolen);
 struct bignum_st* BN_mpi2bn(const unsigned char* s, int len, struct bignum_st* ret);
 int BN_bn2mpi(const struct bignum_st* a, unsigned char* to);
 int BN_sub(struct bignum_st* r, const struct bignum_st* a, const struct bignum_st* b);
@@ -5876,7 +6195,7 @@ int BN_mod_exp2_mont(struct bignum_st* r, const struct bignum_st* a1, const stru
 int BN_mod_exp_simple(struct bignum_st* r, const struct bignum_st* a, const struct bignum_st* p, const struct bignum_st* m, struct bignum_ctx* ctx);
 int BN_mod_exp_mont_consttime_x2(struct bignum_st* rr1, const struct bignum_st* a1, const struct bignum_st* p1, const struct bignum_st* m1, struct bn_mont_ctx_st* in_mont1, struct bignum_st* rr2, const struct bignum_st* a2, const struct bignum_st* p2, const struct bignum_st* m2, struct bn_mont_ctx_st* in_mont2, struct bignum_ctx* ctx);
 int BN_mask_bits(struct bignum_st* a, int n);
-int BN_print_fp(struct __sFILE* fp, const struct bignum_st* a);
+int BN_print_fp(struct _IO_FILE* fp, const struct bignum_st* a);
 int BN_print(struct bio_st* bio, const struct bignum_st* a);
 int BN_reciprocal(struct bignum_st* r, const struct bignum_st* m, int len, struct bignum_ctx* ctx);
 int BN_rshift(struct bignum_st* r, const struct bignum_st* a, int n);
@@ -5893,7 +6212,6 @@ int BN_dec2bn(struct bignum_st** a, const char* str);
 int BN_asc2bn(struct bignum_st** a, const char* str);
 int BN_gcd(struct bignum_st* r, const struct bignum_st* a, const struct bignum_st* b, struct bignum_ctx* ctx);
 int BN_kronecker(const struct bignum_st* a, const struct bignum_st* b, struct bignum_ctx* ctx);
-int BN_are_coprime(struct bignum_st* a, const struct bignum_st* b, struct bignum_ctx* ctx);
 struct bignum_st* BN_mod_inverse(struct bignum_st* ret, const struct bignum_st* a, const struct bignum_st* n, struct bignum_ctx* ctx);
 struct bignum_st* BN_mod_sqrt(struct bignum_st* ret, const struct bignum_st* a, const struct bignum_st* n, struct bignum_ctx* ctx);
 void BN_consttime_swap(unsigned long  int swap, struct bignum_st* a, struct bignum_st* b, int nwords);
@@ -5921,14 +6239,14 @@ void BN_BLINDING_free(struct bn_blinding_st* b);
 int BN_BLINDING_update(struct bn_blinding_st* b, struct bignum_ctx* ctx);
 int BN_BLINDING_convert(struct bignum_st* n, struct bn_blinding_st* b, struct bignum_ctx* ctx);
 int BN_BLINDING_invert(struct bignum_st* n, struct bn_blinding_st* b, struct bignum_ctx* ctx);
-int BN_BLINDING_convert_ex(struct bignum_st* n, struct bignum_st* r, struct bn_blinding_st* b, struct bignum_ctx* anonymous_var_nameX1227);
-int BN_BLINDING_invert_ex(struct bignum_st* n, const struct bignum_st* r, struct bn_blinding_st* b, struct bignum_ctx* anonymous_var_nameX1228);
+int BN_BLINDING_convert_ex(struct bignum_st* n, struct bignum_st* r, struct bn_blinding_st* b, struct bignum_ctx* anonymous_var_nameX140);
+int BN_BLINDING_invert_ex(struct bignum_st* n, const struct bignum_st* r, struct bn_blinding_st* b, struct bignum_ctx* anonymous_var_nameX141);
 int BN_BLINDING_is_current_thread(struct bn_blinding_st* b);
 void BN_BLINDING_set_current_thread(struct bn_blinding_st* b);
 int BN_BLINDING_lock(struct bn_blinding_st* b);
 int BN_BLINDING_unlock(struct bn_blinding_st* b);
-unsigned long  int BN_BLINDING_get_flags(const struct bn_blinding_st* anonymous_var_nameX1229);
-void BN_BLINDING_set_flags(struct bn_blinding_st* anonymous_var_nameX1230, unsigned long  int anonymous_var_nameX1231);
+unsigned long  int BN_BLINDING_get_flags(const struct bn_blinding_st* anonymous_var_nameX142);
+void BN_BLINDING_set_flags(struct bn_blinding_st* anonymous_var_nameX143, unsigned long  int anonymous_var_nameX144);
 struct bn_blinding_st* BN_BLINDING_create_param(struct bn_blinding_st* b, const struct bignum_st* e, struct bignum_st* m, struct bignum_ctx* ctx, int (*bn_mod_exp)(struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*), struct bn_mont_ctx_st* m_ctx);
 void BN_set_params(int mul, int high, int low, int mont);
 int BN_get_params(int which);
@@ -5967,7 +6285,7 @@ const struct bignum_st* BN_get0_nist_prime_224();
 const struct bignum_st* BN_get0_nist_prime_256();
 const struct bignum_st* BN_get0_nist_prime_384();
 const struct bignum_st* BN_get0_nist_prime_521();
-int (*BN_nist_mod_func(const struct bignum_st* _function_pointer_result_var_name_a15))(struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*);
+int (*BN_nist_mod_func(const struct bignum_st* _function_pointer_result_var_name_a11))(struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*);
 int BN_generate_dsa_nonce(struct bignum_st* out, const struct bignum_st* range, const struct bignum_st* priv, const unsigned char* message, unsigned long  int message_len, struct bignum_ctx* ctx);
 struct bignum_st* BN_get_rfc2409_prime_768(struct bignum_st* bn);
 struct bignum_st* BN_get_rfc2409_prime_1024(struct bignum_st* bn);
@@ -5986,10 +6304,10 @@ struct ossl_param_st OSSL_PARAM_construct_long(const char* key, long  int* buf);
 struct ossl_param_st OSSL_PARAM_construct_ulong(const char* key, unsigned long  int* buf);
 struct ossl_param_st OSSL_PARAM_construct_int32(const char* key, int* buf);
 struct ossl_param_st OSSL_PARAM_construct_uint32(const char* key, unsigned int* buf);
-struct ossl_param_st OSSL_PARAM_construct_int64(const char* key, long long* buf);
-struct ossl_param_st OSSL_PARAM_construct_uint64(const char* key, unsigned long  long* buf);
+struct ossl_param_st OSSL_PARAM_construct_int64(const char* key, long  int* buf);
+struct ossl_param_st OSSL_PARAM_construct_uint64(const char* key, unsigned long  int* buf);
 struct ossl_param_st OSSL_PARAM_construct_size_t(const char* key, unsigned long  int* buf);
-struct ossl_param_st OSSL_PARAM_construct_time_t(const char* key, long* buf);
+struct ossl_param_st OSSL_PARAM_construct_time_t(const char* key, long  int* buf);
 struct ossl_param_st OSSL_PARAM_construct_BN(const char* key, unsigned char* buf, unsigned long  int bsize);
 struct ossl_param_st OSSL_PARAM_construct_double(const char* key, double* buf);
 struct ossl_param_st OSSL_PARAM_construct_utf8_string(const char* key, char* buf, unsigned long  int bsize);
@@ -6004,20 +6322,20 @@ int OSSL_PARAM_get_long(const struct ossl_param_st* p, long  int* val);
 int OSSL_PARAM_get_ulong(const struct ossl_param_st* p, unsigned long  int* val);
 int OSSL_PARAM_get_int32(const struct ossl_param_st* p, int* val);
 int OSSL_PARAM_get_uint32(const struct ossl_param_st* p, unsigned int* val);
-int OSSL_PARAM_get_int64(const struct ossl_param_st* p, long long* val);
-int OSSL_PARAM_get_uint64(const struct ossl_param_st* p, unsigned long  long* val);
+int OSSL_PARAM_get_int64(const struct ossl_param_st* p, long  int* val);
+int OSSL_PARAM_get_uint64(const struct ossl_param_st* p, unsigned long  int* val);
 int OSSL_PARAM_get_size_t(const struct ossl_param_st* p, unsigned long  int* val);
-int OSSL_PARAM_get_time_t(const struct ossl_param_st* p, long* val);
+int OSSL_PARAM_get_time_t(const struct ossl_param_st* p, long  int* val);
 int OSSL_PARAM_set_int(struct ossl_param_st* p, int val);
 int OSSL_PARAM_set_uint(struct ossl_param_st* p, unsigned int val);
 int OSSL_PARAM_set_long(struct ossl_param_st* p, long  int val);
 int OSSL_PARAM_set_ulong(struct ossl_param_st* p, unsigned long  int val);
 int OSSL_PARAM_set_int32(struct ossl_param_st* p, int val);
 int OSSL_PARAM_set_uint32(struct ossl_param_st* p, unsigned int val);
-int OSSL_PARAM_set_int64(struct ossl_param_st* p, long long val);
-int OSSL_PARAM_set_uint64(struct ossl_param_st* p, unsigned long  long val);
+int OSSL_PARAM_set_int64(struct ossl_param_st* p, long  int val);
+int OSSL_PARAM_set_uint64(struct ossl_param_st* p, unsigned long  int val);
 int OSSL_PARAM_set_size_t(struct ossl_param_st* p, unsigned long  int val);
-int OSSL_PARAM_set_time_t(struct ossl_param_st* p, long val);
+int OSSL_PARAM_set_time_t(struct ossl_param_st* p, long  int val);
 int OSSL_PARAM_get_double(const struct ossl_param_st* p, double* val);
 int OSSL_PARAM_set_double(struct ossl_param_st* p, double val);
 int OSSL_PARAM_get_BN(const struct ossl_param_st* p, struct bignum_st** val);
@@ -6037,8 +6355,6 @@ void OSSL_PARAM_set_all_unmodified(struct ossl_param_st* p);
 struct ossl_param_st* OSSL_PARAM_dup(const struct ossl_param_st* p);
 struct ossl_param_st* OSSL_PARAM_merge(const struct ossl_param_st* p1, const struct ossl_param_st* p2);
 void OSSL_PARAM_free(struct ossl_param_st* p);
-void OSSL_INDICATOR_set_callback(struct ossl_lib_ctx_st* libctx, int (*cb)(const char*,const char*,const struct ossl_param_st*));
-void OSSL_INDICATOR_get_callback(struct ossl_lib_ctx_st* libctx, int (*cb)(const char*,const char*,const struct ossl_param_st*));
 struct stack_st_ASN1_TYPE* d2i_ASN1_SEQUENCE_ANY(struct stack_st_ASN1_TYPE** a, const unsigned char** in, long len);
 int i2d_ASN1_SEQUENCE_ANY(const struct stack_st_ASN1_TYPE* a, unsigned char** out);
 const struct ASN1_ITEM_st* ASN1_SEQUENCE_ANY_it();
@@ -6101,13 +6417,13 @@ struct asn1_string_st* d2i_ASN1_ENUMERATED(struct asn1_string_st** a, const unsi
 int i2d_ASN1_ENUMERATED(const struct asn1_string_st* a, unsigned char** out);
 const struct ASN1_ITEM_st* ASN1_ENUMERATED_it();
 int ASN1_UTCTIME_check(const struct asn1_string_st* a);
-struct asn1_string_st* ASN1_UTCTIME_set(struct asn1_string_st* s, long t);
-struct asn1_string_st* ASN1_UTCTIME_adj(struct asn1_string_st* s, long t, int offset_day, long offset_sec);
+struct asn1_string_st* ASN1_UTCTIME_set(struct asn1_string_st* s, long  int t);
+struct asn1_string_st* ASN1_UTCTIME_adj(struct asn1_string_st* s, long  int t, int offset_day, long offset_sec);
 int ASN1_UTCTIME_set_string(struct asn1_string_st* s, const char* str);
-int ASN1_UTCTIME_cmp_time_t(const struct asn1_string_st* s, long t);
+int ASN1_UTCTIME_cmp_time_t(const struct asn1_string_st* s, long  int t);
 int ASN1_GENERALIZEDTIME_check(const struct asn1_string_st* a);
-struct asn1_string_st* ASN1_GENERALIZEDTIME_set(struct asn1_string_st* s, long t);
-struct asn1_string_st* ASN1_GENERALIZEDTIME_adj(struct asn1_string_st* s, long t, int offset_day, long offset_sec);
+struct asn1_string_st* ASN1_GENERALIZEDTIME_set(struct asn1_string_st* s, long  int t);
+struct asn1_string_st* ASN1_GENERALIZEDTIME_adj(struct asn1_string_st* s, long  int t, int offset_day, long offset_sec);
 int ASN1_GENERALIZEDTIME_set_string(struct asn1_string_st* s, const char* str);
 int ASN1_TIME_diff(int* pday, int* psec, const struct asn1_string_st* from, const struct asn1_string_st* to);
 struct asn1_string_st* ASN1_OCTET_STRING_new();
@@ -6199,15 +6515,15 @@ struct asn1_string_st* ASN1_TIME_dup(const struct asn1_string_st* a);
 struct asn1_string_st* ASN1_UTCTIME_dup(const struct asn1_string_st* a);
 struct asn1_string_st* ASN1_GENERALIZEDTIME_dup(const struct asn1_string_st* a);
 const struct ASN1_ITEM_st* ASN1_OCTET_STRING_NDEF_it();
-struct asn1_string_st* ASN1_TIME_set(struct asn1_string_st* s, long t);
-struct asn1_string_st* ASN1_TIME_adj(struct asn1_string_st* s, long t, int offset_day, long offset_sec);
+struct asn1_string_st* ASN1_TIME_set(struct asn1_string_st* s, long  int t);
+struct asn1_string_st* ASN1_TIME_adj(struct asn1_string_st* s, long  int t, int offset_day, long offset_sec);
 int ASN1_TIME_check(const struct asn1_string_st* t);
 struct asn1_string_st* ASN1_TIME_to_generalizedtime(const struct asn1_string_st* t, struct asn1_string_st** out);
 int ASN1_TIME_set_string(struct asn1_string_st* s, const char* str);
 int ASN1_TIME_set_string_X509(struct asn1_string_st* s, const char* str);
 int ASN1_TIME_to_tm(const struct asn1_string_st* s, struct tm* tm);
 int ASN1_TIME_normalize(struct asn1_string_st* s);
-int ASN1_TIME_cmp_time_t(const struct asn1_string_st* s, long t);
+int ASN1_TIME_cmp_time_t(const struct asn1_string_st* s, long  int t);
 int ASN1_TIME_compare(const struct asn1_string_st* a, const struct asn1_string_st* b);
 int i2a_ASN1_INTEGER(struct bio_st* bp, const struct asn1_string_st* a);
 int a2i_ASN1_INTEGER(struct bio_st* bp, struct asn1_string_st* bs, char* buf, int size);
@@ -6219,16 +6535,16 @@ int i2a_ASN1_STRING(struct bio_st* bp, const struct asn1_string_st* a, int type)
 int i2t_ASN1_OBJECT(char* buf, int buf_len, const struct asn1_object_st* a);
 int a2d_ASN1_OBJECT(unsigned char* out, int olen, const char* buf, int num);
 struct asn1_object_st* ASN1_OBJECT_create(int nid, unsigned char* data, int len, const char* sn, const char* ln);
-int ASN1_INTEGER_get_int64(long long* pr, const struct asn1_string_st* a);
-int ASN1_INTEGER_set_int64(struct asn1_string_st* a, long long r);
-int ASN1_INTEGER_get_uint64(unsigned long  long* pr, const struct asn1_string_st* a);
-int ASN1_INTEGER_set_uint64(struct asn1_string_st* a, unsigned long  long r);
+int ASN1_INTEGER_get_int64(long  int* pr, const struct asn1_string_st* a);
+int ASN1_INTEGER_set_int64(struct asn1_string_st* a, long  int r);
+int ASN1_INTEGER_get_uint64(unsigned long  int* pr, const struct asn1_string_st* a);
+int ASN1_INTEGER_set_uint64(struct asn1_string_st* a, unsigned long  int r);
 int ASN1_INTEGER_set(struct asn1_string_st* a, long v);
 long ASN1_INTEGER_get(const struct asn1_string_st* a);
 struct asn1_string_st* BN_to_ASN1_INTEGER(const struct bignum_st* bn, struct asn1_string_st* ai);
 struct bignum_st* ASN1_INTEGER_to_BN(const struct asn1_string_st* ai, struct bignum_st* bn);
-int ASN1_ENUMERATED_get_int64(long long* pr, const struct asn1_string_st* a);
-int ASN1_ENUMERATED_set_int64(struct asn1_string_st* a, long long r);
+int ASN1_ENUMERATED_get_int64(long  int* pr, const struct asn1_string_st* a);
+int ASN1_ENUMERATED_set_int64(struct asn1_string_st* a, long  int r);
 int ASN1_ENUMERATED_set(struct asn1_string_st* a, long v);
 long ASN1_ENUMERATED_get(const struct asn1_string_st* a);
 struct asn1_string_st* BN_to_ASN1_ENUMERATED(const struct bignum_st* bn, struct asn1_string_st* ai);
@@ -6245,12 +6561,12 @@ void* ASN1_dup(int (*i2d)(const void*,unsigned char**), void* (*d2i)(void**,cons
 void* ASN1_item_dup(const struct ASN1_ITEM_st* it, const void* x);
 int ASN1_item_sign_ex(const struct ASN1_ITEM_st* it, struct X509_algor_st* algor1, struct X509_algor_st* algor2, struct asn1_string_st* signature, const void* data, const struct asn1_string_st* id, struct evp_pkey_st* pkey, const struct evp_md_st* md, struct ossl_lib_ctx_st* libctx, const char* propq);
 int ASN1_item_verify_ex(const struct ASN1_ITEM_st* it, const struct X509_algor_st* alg, const struct asn1_string_st* signature, const void* data, const struct asn1_string_st* id, struct evp_pkey_st* pkey, struct ossl_lib_ctx_st* libctx, const char* propq);
-void* ASN1_d2i_fp(void* (*xnew)(), void* (*d2i)(void**,const unsigned char**,long), struct __sFILE* in, void** x);
-void* ASN1_item_d2i_fp_ex(const struct ASN1_ITEM_st* it, struct __sFILE* in, void* x, struct ossl_lib_ctx_st* libctx, const char* propq);
-void* ASN1_item_d2i_fp(const struct ASN1_ITEM_st* it, struct __sFILE* in, void* x);
-int ASN1_i2d_fp(int (*i2d)(const void*,unsigned char**), struct __sFILE* out, const void* x);
-int ASN1_item_i2d_fp(const struct ASN1_ITEM_st* it, struct __sFILE* out, const void* x);
-int ASN1_STRING_print_ex_fp(struct __sFILE* fp, const struct asn1_string_st* str, unsigned long  int flags);
+void* ASN1_d2i_fp(void* (*xnew)(), void* (*d2i)(void**,const unsigned char**,long), struct _IO_FILE* in, void** x);
+void* ASN1_item_d2i_fp_ex(const struct ASN1_ITEM_st* it, struct _IO_FILE* in, void* x, struct ossl_lib_ctx_st* libctx, const char* propq);
+void* ASN1_item_d2i_fp(const struct ASN1_ITEM_st* it, struct _IO_FILE* in, void* x);
+int ASN1_i2d_fp(int (*i2d)(const void*,unsigned char**), struct _IO_FILE* out, const void* x);
+int ASN1_item_i2d_fp(const struct ASN1_ITEM_st* it, struct _IO_FILE* out, const void* x);
+int ASN1_STRING_print_ex_fp(struct _IO_FILE* fp, const struct asn1_string_st* str, unsigned long  int flags);
 int ASN1_STRING_to_UTF8(unsigned char** out, const struct asn1_string_st* in);
 void* ASN1_d2i_bio(void* (*xnew)(), void* (*d2i)(void**,const unsigned char**,long), struct bio_st* in, void** x);
 void* ASN1_item_d2i_bio_ex(const struct ASN1_ITEM_st* it, struct bio_st* in, void* pval, struct ossl_lib_ctx_st* libctx, const char* propq);
@@ -6275,7 +6591,6 @@ int ASN1_TYPE_get_octetstring(const struct asn1_type_st* a, unsigned char* data,
 int ASN1_TYPE_set_int_octetstring(struct asn1_type_st* a, long num, unsigned char* data, int len);
 int ASN1_TYPE_get_int_octetstring(const struct asn1_type_st* a, long* num, unsigned char* data, int max_len);
 void* ASN1_item_unpack(const struct asn1_string_st* oct, const struct ASN1_ITEM_st* it);
-void* ASN1_item_unpack_ex(const struct asn1_string_st* oct, const struct ASN1_ITEM_st* it, struct ossl_lib_ctx_st* libctx, const char* propq);
 struct asn1_string_st* ASN1_item_pack(void* obj, const struct ASN1_ITEM_st* it, struct asn1_string_st** oct);
 void ASN1_STRING_set_default_mask(unsigned long  int mask);
 int ASN1_STRING_set_default_mask_asc(const char* p);
@@ -6284,7 +6599,7 @@ int ASN1_mbstring_copy(struct asn1_string_st** out, const unsigned char* in, int
 int ASN1_mbstring_ncopy(struct asn1_string_st** out, const unsigned char* in, int len, int inform, unsigned long  int mask, long minsize, long maxsize);
 struct asn1_string_st* ASN1_STRING_set_by_NID(struct asn1_string_st** out, const unsigned char* in, int inlen, int inform, int nid);
 struct asn1_string_table_st* ASN1_STRING_TABLE_get(int nid);
-int ASN1_STRING_TABLE_add(int anonymous_var_nameX1238, long anonymous_var_nameX1239, long anonymous_var_nameX1240, unsigned long  int anonymous_var_nameX1241, unsigned long  int anonymous_var_nameX1242);
+int ASN1_STRING_TABLE_add(int anonymous_var_nameX150, long anonymous_var_nameX151, long anonymous_var_nameX152, unsigned long  int anonymous_var_nameX153, unsigned long  int anonymous_var_nameX154);
 void ASN1_STRING_TABLE_cleanup();
 struct ASN1_VALUE_st* ASN1_item_new(const struct ASN1_ITEM_st* it);
 struct ASN1_VALUE_st* ASN1_item_new_ex(const struct ASN1_ITEM_st* it, struct ossl_lib_ctx_st* libctx, const char* propq);
@@ -6381,12 +6696,12 @@ int EVP_MD_meth_get_input_blocksize(const struct evp_md_st* md);
 int EVP_MD_meth_get_result_size(const struct evp_md_st* md);
 int EVP_MD_meth_get_app_datasize(const struct evp_md_st* md);
 unsigned long  int EVP_MD_meth_get_flags(const struct evp_md_st* md);
-int (*EVP_MD_meth_get_init(const struct evp_md_st* _function_pointer_result_var_name_a16))(struct evp_md_ctx_st*);
-int (*EVP_MD_meth_get_update(const struct evp_md_st* _function_pointer_result_var_name_a17))(struct evp_md_ctx_st*,const void*,unsigned long  int);
-int (*EVP_MD_meth_get_final(const struct evp_md_st* _function_pointer_result_var_name_a18))(struct evp_md_ctx_st*,unsigned char*);
-int (*EVP_MD_meth_get_copy(const struct evp_md_st* _function_pointer_result_var_name_a19))(struct evp_md_ctx_st*,const struct evp_md_ctx_st*);
-int (*EVP_MD_meth_get_cleanup(const struct evp_md_st* _function_pointer_result_var_name_a20))(struct evp_md_ctx_st*);
-int (*EVP_MD_meth_get_ctrl(const struct evp_md_st* _function_pointer_result_var_name_a21))(struct evp_md_ctx_st*,int,int,void*);
+int (*EVP_MD_meth_get_init(const struct evp_md_st* _function_pointer_result_var_name_a12))(struct evp_md_ctx_st*);
+int (*EVP_MD_meth_get_update(const struct evp_md_st* _function_pointer_result_var_name_a13))(struct evp_md_ctx_st*,const void*,unsigned long  int);
+int (*EVP_MD_meth_get_final(const struct evp_md_st* _function_pointer_result_var_name_a14))(struct evp_md_ctx_st*,unsigned char*);
+int (*EVP_MD_meth_get_copy(const struct evp_md_st* _function_pointer_result_var_name_a15))(struct evp_md_ctx_st*,const struct evp_md_ctx_st*);
+int (*EVP_MD_meth_get_cleanup(const struct evp_md_st* _function_pointer_result_var_name_a16))(struct evp_md_ctx_st*);
+int (*EVP_MD_meth_get_ctrl(const struct evp_md_st* _function_pointer_result_var_name_a17))(struct evp_md_ctx_st*,int,int,void*);
 struct evp_cipher_st* EVP_CIPHER_meth_new(int cipher_type, int block_size, int key_len);
 struct evp_cipher_st* EVP_CIPHER_meth_dup(const struct evp_cipher_st* cipher);
 void EVP_CIPHER_meth_free(struct evp_cipher_st* cipher);
@@ -6399,12 +6714,12 @@ int EVP_CIPHER_meth_set_cleanup(struct evp_cipher_st* cipher, int (*cleanup)(str
 int EVP_CIPHER_meth_set_set_asn1_params(struct evp_cipher_st* cipher, int (*set_asn1_parameters)(struct evp_cipher_ctx_st*,struct asn1_type_st*));
 int EVP_CIPHER_meth_set_get_asn1_params(struct evp_cipher_st* cipher, int (*get_asn1_parameters)(struct evp_cipher_ctx_st*,struct asn1_type_st*));
 int EVP_CIPHER_meth_set_ctrl(struct evp_cipher_st* cipher, int (*ctrl)(struct evp_cipher_ctx_st*,int,int,void*));
-int (*EVP_CIPHER_meth_get_init(const struct evp_cipher_st* _function_pointer_result_var_name_a22))(struct evp_cipher_ctx_st*,const unsigned char*,const unsigned char*,int);
-int (*EVP_CIPHER_meth_get_do_cipher(const struct evp_cipher_st* _function_pointer_result_var_name_a23))(struct evp_cipher_ctx_st*,unsigned char*,const unsigned char*,unsigned long  int);
-int (*EVP_CIPHER_meth_get_cleanup(const struct evp_cipher_st* _function_pointer_result_var_name_a24))(struct evp_cipher_ctx_st*);
-int (*EVP_CIPHER_meth_get_set_asn1_params(const struct evp_cipher_st* _function_pointer_result_var_name_a25))(struct evp_cipher_ctx_st*,struct asn1_type_st*);
-int (*EVP_CIPHER_meth_get_get_asn1_params(const struct evp_cipher_st* _function_pointer_result_var_name_a26))(struct evp_cipher_ctx_st*,struct asn1_type_st*);
-int (*EVP_CIPHER_meth_get_ctrl(const struct evp_cipher_st* _function_pointer_result_var_name_a27))(struct evp_cipher_ctx_st*,int,int,void*);
+int (*EVP_CIPHER_meth_get_init(const struct evp_cipher_st* _function_pointer_result_var_name_a18))(struct evp_cipher_ctx_st*,const unsigned char*,const unsigned char*,int);
+int (*EVP_CIPHER_meth_get_do_cipher(const struct evp_cipher_st* _function_pointer_result_var_name_a19))(struct evp_cipher_ctx_st*,unsigned char*,const unsigned char*,unsigned long  int);
+int (*EVP_CIPHER_meth_get_cleanup(const struct evp_cipher_st* _function_pointer_result_var_name_a20))(struct evp_cipher_ctx_st*);
+int (*EVP_CIPHER_meth_get_set_asn1_params(const struct evp_cipher_st* _function_pointer_result_var_name_a21))(struct evp_cipher_ctx_st*,struct asn1_type_st*);
+int (*EVP_CIPHER_meth_get_get_asn1_params(const struct evp_cipher_st* _function_pointer_result_var_name_a22))(struct evp_cipher_ctx_st*,struct asn1_type_st*);
+int (*EVP_CIPHER_meth_get_ctrl(const struct evp_cipher_st* _function_pointer_result_var_name_a23))(struct evp_cipher_ctx_st*,int,int,void*);
 int EVP_MD_get_type(const struct evp_md_st* md);
 const char* EVP_MD_get0_name(const struct evp_md_st* md);
 const char* EVP_MD_get0_description(const struct evp_md_st* md);
@@ -6415,13 +6730,11 @@ int EVP_MD_get_pkey_type(const struct evp_md_st* md);
 int EVP_MD_get_size(const struct evp_md_st* md);
 int EVP_MD_get_block_size(const struct evp_md_st* md);
 unsigned long  int EVP_MD_get_flags(const struct evp_md_st* md);
-int EVP_MD_xof(const struct evp_md_st* md);
 const struct evp_md_st* EVP_MD_CTX_get0_md(const struct evp_md_ctx_st* ctx);
 struct evp_md_st* EVP_MD_CTX_get1_md(struct evp_md_ctx_st* ctx);
 const struct evp_md_st* EVP_MD_CTX_md(const struct evp_md_ctx_st* ctx);
-int (*EVP_MD_CTX_update_fn(struct evp_md_ctx_st* _function_pointer_result_var_name_a28))(struct evp_md_ctx_st*,const void*,unsigned long  int);
+int (*EVP_MD_CTX_update_fn(struct evp_md_ctx_st* _function_pointer_result_var_name_a24))(struct evp_md_ctx_st*,const void*,unsigned long  int);
 void EVP_MD_CTX_set_update_fn(struct evp_md_ctx_st* ctx, int (*update)(struct evp_md_ctx_st*,const void*,unsigned long  int));
-int EVP_MD_CTX_get_size_ex(const struct evp_md_ctx_st* ctx);
 struct evp_pkey_ctx_st* EVP_MD_CTX_get_pkey_ctx(const struct evp_md_ctx_st* ctx);
 void EVP_MD_CTX_set_pkey_ctx(struct evp_md_ctx_st* ctx, struct evp_pkey_ctx_st* pctx);
 void* EVP_MD_CTX_get0_md_data(const struct evp_md_ctx_st* ctx);
@@ -6458,7 +6771,6 @@ int EVP_CIPHER_CTX_get_original_iv(struct evp_cipher_ctx_st* ctx, void* buf, uns
 unsigned char* EVP_CIPHER_CTX_buf_noconst(struct evp_cipher_ctx_st* ctx);
 int EVP_CIPHER_CTX_get_num(const struct evp_cipher_ctx_st* ctx);
 int EVP_CIPHER_CTX_set_num(struct evp_cipher_ctx_st* ctx, int num);
-struct evp_cipher_ctx_st* EVP_CIPHER_CTX_dup(const struct evp_cipher_ctx_st* in);
 int EVP_CIPHER_CTX_copy(struct evp_cipher_ctx_st* out, const struct evp_cipher_ctx_st* in);
 void* EVP_CIPHER_CTX_get_app_data(const struct evp_cipher_ctx_st* ctx);
 void EVP_CIPHER_CTX_set_app_data(struct evp_cipher_ctx_st* ctx, void* data);
@@ -6477,7 +6789,6 @@ int EVP_MD_CTX_ctrl(struct evp_md_ctx_st* ctx, int cmd, int p1, void* p2);
 struct evp_md_ctx_st* EVP_MD_CTX_new();
 int EVP_MD_CTX_reset(struct evp_md_ctx_st* ctx);
 void EVP_MD_CTX_free(struct evp_md_ctx_st* ctx);
-struct evp_md_ctx_st* EVP_MD_CTX_dup(const struct evp_md_ctx_st* in);
 int EVP_MD_CTX_copy_ex(struct evp_md_ctx_st* out, const struct evp_md_ctx_st* in);
 void EVP_MD_CTX_set_flags(struct evp_md_ctx_st* ctx, int flags);
 void EVP_MD_CTX_clear_flags(struct evp_md_ctx_st* ctx, int flags);
@@ -6491,8 +6802,7 @@ int EVP_Q_digest(struct ossl_lib_ctx_st* libctx, const char* name, const char* p
 int EVP_MD_CTX_copy(struct evp_md_ctx_st* out, const struct evp_md_ctx_st* in);
 int EVP_DigestInit(struct evp_md_ctx_st* ctx, const struct evp_md_st* type);
 int EVP_DigestFinal(struct evp_md_ctx_st* ctx, unsigned char* md, unsigned int* s);
-int EVP_DigestFinalXOF(struct evp_md_ctx_st* ctx, unsigned char* out, unsigned long  int outlen);
-int EVP_DigestSqueeze(struct evp_md_ctx_st* ctx, unsigned char* out, unsigned long  int outlen);
+int EVP_DigestFinalXOF(struct evp_md_ctx_st* ctx, unsigned char* md, unsigned long  int len);
 struct evp_md_st* EVP_MD_fetch(struct ossl_lib_ctx_st* ctx, const char* algorithm, const char* properties);
 int EVP_MD_up_ref(struct evp_md_st* md);
 void EVP_MD_free(struct evp_md_st* md);
@@ -6567,9 +6877,6 @@ const struct ossl_param_st* EVP_CIPHER_settable_ctx_params(const struct evp_ciph
 const struct ossl_param_st* EVP_CIPHER_gettable_ctx_params(const struct evp_cipher_st* cipher);
 const struct ossl_param_st* EVP_CIPHER_CTX_settable_params(struct evp_cipher_ctx_st* ctx);
 const struct ossl_param_st* EVP_CIPHER_CTX_gettable_params(struct evp_cipher_ctx_st* ctx);
-int EVP_CIPHER_CTX_set_algor_params(struct evp_cipher_ctx_st* ctx, const struct X509_algor_st* alg);
-int EVP_CIPHER_CTX_get_algor_params(struct evp_cipher_ctx_st* ctx, struct X509_algor_st* alg);
-int EVP_CIPHER_CTX_get_algor(struct evp_cipher_ctx_st* ctx, struct X509_algor_st** alg);
 const struct bio_method_st* BIO_f_md();
 const struct bio_method_st* BIO_f_base64();
 const struct bio_method_st* BIO_f_cipher();
@@ -6594,7 +6901,6 @@ const struct evp_md_st* EVP_sha3_384();
 const struct evp_md_st* EVP_sha3_512();
 const struct evp_md_st* EVP_shake128();
 const struct evp_md_st* EVP_shake256();
-const struct evp_md_st* EVP_mdc2();
 const struct evp_md_st* EVP_ripemd160();
 const struct evp_md_st* EVP_whirlpool();
 const struct evp_md_st* EVP_sm3();
@@ -6622,10 +6928,6 @@ const struct evp_cipher_st* EVP_des_ede3_wrap();
 const struct evp_cipher_st* EVP_rc4();
 const struct evp_cipher_st* EVP_rc4_40();
 const struct evp_cipher_st* EVP_rc4_hmac_md5();
-const struct evp_cipher_st* EVP_idea_ecb();
-const struct evp_cipher_st* EVP_idea_cfb64();
-const struct evp_cipher_st* EVP_idea_ofb();
-const struct evp_cipher_st* EVP_idea_cbc();
 const struct evp_cipher_st* EVP_rc2_ecb();
 const struct evp_cipher_st* EVP_rc2_cbc();
 const struct evp_cipher_st* EVP_rc2_40_cbc();
@@ -6788,7 +7090,6 @@ int EVP_RAND_is_a(const struct evp_rand_st* rand, const char* name);
 const struct ossl_provider_st* EVP_RAND_get0_provider(const struct evp_rand_st* rand);
 int EVP_RAND_get_params(struct evp_rand_st* rand, struct ossl_param_st params[]);
 struct evp_rand_ctx_st* EVP_RAND_CTX_new(struct evp_rand_st* rand, struct evp_rand_ctx_st* parent);
-int EVP_RAND_CTX_up_ref(struct evp_rand_ctx_st* ctx);
 void EVP_RAND_CTX_free(struct evp_rand_ctx_st* ctx);
 struct evp_rand_st* EVP_RAND_CTX_get0_rand(struct evp_rand_ctx_st* ctx);
 int EVP_RAND_CTX_get_params(struct evp_rand_ctx_st* ctx, struct ossl_param_st params[]);
@@ -6869,9 +7170,9 @@ int EVP_PKEY_cmp(const struct evp_pkey_st* a, const struct evp_pkey_st* b);
 int EVP_PKEY_print_public(struct bio_st* out, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
 int EVP_PKEY_print_private(struct bio_st* out, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
 int EVP_PKEY_print_params(struct bio_st* out, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
-int EVP_PKEY_print_public_fp(struct __sFILE* fp, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
-int EVP_PKEY_print_private_fp(struct __sFILE* fp, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
-int EVP_PKEY_print_params_fp(struct __sFILE* fp, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
+int EVP_PKEY_print_public_fp(struct _IO_FILE* fp, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
+int EVP_PKEY_print_private_fp(struct _IO_FILE* fp, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
+int EVP_PKEY_print_params_fp(struct _IO_FILE* fp, const struct evp_pkey_st* pkey, int indent, struct asn1_pctx_st* pctx);
 int EVP_PKEY_get_default_digest_nid(struct evp_pkey_st* pkey, int* pnid);
 int EVP_PKEY_get_default_digest_name(struct evp_pkey_st* pkey, char* mdname, unsigned long  int mdname_sz);
 int EVP_PKEY_digestsign_supports_digest(struct evp_pkey_st* pkey, struct ossl_lib_ctx_st* libctx, const char* name, const char* propq);
@@ -6887,8 +7188,8 @@ int PKCS5_PBKDF2_HMAC_SHA1(const char* pass, int passlen, const unsigned char* s
 int PKCS5_PBKDF2_HMAC(const char* pass, int passlen, const unsigned char* salt, int saltlen, int iter, const struct evp_md_st* digest, int keylen, unsigned char* out);
 int PKCS5_v2_PBE_keyivgen(struct evp_cipher_ctx_st* ctx, const char* pass, int passlen, struct asn1_type_st* param, const struct evp_cipher_st* cipher, const struct evp_md_st* md, int en_de);
 int PKCS5_v2_PBE_keyivgen_ex(struct evp_cipher_ctx_st* ctx, const char* pass, int passlen, struct asn1_type_st* param, const struct evp_cipher_st* cipher, const struct evp_md_st* md, int en_de, struct ossl_lib_ctx_st* libctx, const char* propq);
-int EVP_PBE_scrypt(const char* pass, unsigned long  int passlen, const unsigned char* salt, unsigned long  int saltlen, unsigned long  long N, unsigned long  long r, unsigned long  long p, unsigned long  long maxmem, unsigned char* key, unsigned long  int keylen);
-int EVP_PBE_scrypt_ex(const char* pass, unsigned long  int passlen, const unsigned char* salt, unsigned long  int saltlen, unsigned long  long N, unsigned long  long r, unsigned long  long p, unsigned long  long maxmem, unsigned char* key, unsigned long  int keylen, struct ossl_lib_ctx_st* ctx, const char* propq);
+int EVP_PBE_scrypt(const char* pass, unsigned long  int passlen, const unsigned char* salt, unsigned long  int saltlen, unsigned long  int N, unsigned long  int r, unsigned long  int p, unsigned long  int maxmem, unsigned char* key, unsigned long  int keylen);
+int EVP_PBE_scrypt_ex(const char* pass, unsigned long  int passlen, const unsigned char* salt, unsigned long  int saltlen, unsigned long  int N, unsigned long  int r, unsigned long  int p, unsigned long  int maxmem, unsigned char* key, unsigned long  int keylen, struct ossl_lib_ctx_st* ctx, const char* propq);
 int PKCS5_v2_scrypt_keyivgen(struct evp_cipher_ctx_st* ctx, const char* pass, int passlen, struct asn1_type_st* param, const struct evp_cipher_st* c, const struct evp_md_st* md, int en_de);
 int PKCS5_v2_scrypt_keyivgen_ex(struct evp_cipher_ctx_st* ctx, const char* pass, int passlen, struct asn1_type_st* param, const struct evp_cipher_st* c, const struct evp_md_st* md, int en_de, struct ossl_lib_ctx_st* libctx, const char* propq);
 void PKCS5_PBE_add();
@@ -6955,7 +7256,6 @@ int EVP_KEYMGMT_names_do_all(const struct evp_keymgmt_st* keymgmt, void (*fn)(co
 const struct ossl_param_st* EVP_KEYMGMT_gettable_params(const struct evp_keymgmt_st* keymgmt);
 const struct ossl_param_st* EVP_KEYMGMT_settable_params(const struct evp_keymgmt_st* keymgmt);
 const struct ossl_param_st* EVP_KEYMGMT_gen_settable_params(const struct evp_keymgmt_st* keymgmt);
-const struct ossl_param_st* EVP_KEYMGMT_gen_gettable_params(const struct evp_keymgmt_st* keymgmt);
 struct evp_pkey_ctx_st* EVP_PKEY_CTX_new(struct evp_pkey_st* pkey, struct engine_st* e);
 struct evp_pkey_ctx_st* EVP_PKEY_CTX_new_id(int id, struct engine_st* e);
 struct evp_pkey_ctx_st* EVP_PKEY_CTX_new_from_name(struct ossl_lib_ctx_st* libctx, const char* name, const char* propquery);
@@ -6967,12 +7267,9 @@ int EVP_PKEY_CTX_get_params(struct evp_pkey_ctx_st* ctx, struct ossl_param_st* p
 const struct ossl_param_st* EVP_PKEY_CTX_gettable_params(const struct evp_pkey_ctx_st* ctx);
 int EVP_PKEY_CTX_set_params(struct evp_pkey_ctx_st* ctx, const struct ossl_param_st* params);
 const struct ossl_param_st* EVP_PKEY_CTX_settable_params(const struct evp_pkey_ctx_st* ctx);
-int EVP_PKEY_CTX_set_algor_params(struct evp_pkey_ctx_st* ctx, const struct X509_algor_st* alg);
-int EVP_PKEY_CTX_get_algor_params(struct evp_pkey_ctx_st* ctx, struct X509_algor_st* alg);
-int EVP_PKEY_CTX_get_algor(struct evp_pkey_ctx_st* ctx, struct X509_algor_st** alg);
 int EVP_PKEY_CTX_ctrl(struct evp_pkey_ctx_st* ctx, int keytype, int optype, int cmd, int p1, void* p2);
 int EVP_PKEY_CTX_ctrl_str(struct evp_pkey_ctx_st* ctx, const char* type, const char* value);
-int EVP_PKEY_CTX_ctrl_uint64(struct evp_pkey_ctx_st* ctx, int keytype, int optype, int cmd, unsigned long  long value);
+int EVP_PKEY_CTX_ctrl_uint64(struct evp_pkey_ctx_st* ctx, int keytype, int optype, int cmd, unsigned long  int value);
 int EVP_PKEY_CTX_str2ctrl(struct evp_pkey_ctx_st* ctx, int cmd, const char* str);
 int EVP_PKEY_CTX_hex2ctrl(struct evp_pkey_ctx_st* ctx, int cmd, const char* hex);
 int EVP_PKEY_CTX_md(struct evp_pkey_ctx_st* ctx, int optype, int cmd, const char* md);
@@ -6992,7 +7289,6 @@ struct evp_pkey_st* EVP_PKEY_CTX_get0_pkey(struct evp_pkey_ctx_st* ctx);
 struct evp_pkey_st* EVP_PKEY_CTX_get0_peerkey(struct evp_pkey_ctx_st* ctx);
 void EVP_PKEY_CTX_set_app_data(struct evp_pkey_ctx_st* ctx, void* data);
 void* EVP_PKEY_CTX_get_app_data(struct evp_pkey_ctx_st* ctx);
-int EVP_PKEY_CTX_set_signature(struct evp_pkey_ctx_st* pctx, const unsigned char* sig, unsigned long  int siglen);
 void EVP_SIGNATURE_free(struct evp_signature_st* signature);
 int EVP_SIGNATURE_up_ref(struct evp_signature_st* signature);
 struct ossl_provider_st* EVP_SIGNATURE_get0_provider(const struct evp_signature_st* signature);
@@ -7028,21 +7324,12 @@ const struct ossl_param_st* EVP_KEM_gettable_ctx_params(const struct evp_kem_st*
 const struct ossl_param_st* EVP_KEM_settable_ctx_params(const struct evp_kem_st* kem);
 int EVP_PKEY_sign_init(struct evp_pkey_ctx_st* ctx);
 int EVP_PKEY_sign_init_ex(struct evp_pkey_ctx_st* ctx, const struct ossl_param_st params[]);
-int EVP_PKEY_sign_init_ex2(struct evp_pkey_ctx_st* ctx, struct evp_signature_st* algo, const struct ossl_param_st params[]);
 int EVP_PKEY_sign(struct evp_pkey_ctx_st* ctx, unsigned char* sig, unsigned long  int* siglen, const unsigned char* tbs, unsigned long  int tbslen);
-int EVP_PKEY_sign_message_init(struct evp_pkey_ctx_st* ctx, struct evp_signature_st* algo, const struct ossl_param_st params[]);
-int EVP_PKEY_sign_message_update(struct evp_pkey_ctx_st* ctx, const unsigned char* in, unsigned long  int inlen);
-int EVP_PKEY_sign_message_final(struct evp_pkey_ctx_st* ctx, unsigned char* sig, unsigned long  int* siglen);
 int EVP_PKEY_verify_init(struct evp_pkey_ctx_st* ctx);
 int EVP_PKEY_verify_init_ex(struct evp_pkey_ctx_st* ctx, const struct ossl_param_st params[]);
-int EVP_PKEY_verify_init_ex2(struct evp_pkey_ctx_st* ctx, struct evp_signature_st* algo, const struct ossl_param_st params[]);
 int EVP_PKEY_verify(struct evp_pkey_ctx_st* ctx, const unsigned char* sig, unsigned long  int siglen, const unsigned char* tbs, unsigned long  int tbslen);
-int EVP_PKEY_verify_message_init(struct evp_pkey_ctx_st* ctx, struct evp_signature_st* algo, const struct ossl_param_st params[]);
-int EVP_PKEY_verify_message_update(struct evp_pkey_ctx_st* ctx, const unsigned char* in, unsigned long  int inlen);
-int EVP_PKEY_verify_message_final(struct evp_pkey_ctx_st* ctx);
 int EVP_PKEY_verify_recover_init(struct evp_pkey_ctx_st* ctx);
 int EVP_PKEY_verify_recover_init_ex(struct evp_pkey_ctx_st* ctx, const struct ossl_param_st params[]);
-int EVP_PKEY_verify_recover_init_ex2(struct evp_pkey_ctx_st* ctx, struct evp_signature_st* algo, const struct ossl_param_st params[]);
 int EVP_PKEY_verify_recover(struct evp_pkey_ctx_st* ctx, unsigned char* rout, unsigned long  int* routlen, const unsigned char* sig, unsigned long  int siglen);
 int EVP_PKEY_encrypt_init(struct evp_pkey_ctx_st* ctx);
 int EVP_PKEY_encrypt_init_ex(struct evp_pkey_ctx_st* ctx, const struct ossl_param_st params[]);
@@ -7056,10 +7343,8 @@ int EVP_PKEY_derive_set_peer_ex(struct evp_pkey_ctx_st* ctx, struct evp_pkey_st*
 int EVP_PKEY_derive_set_peer(struct evp_pkey_ctx_st* ctx, struct evp_pkey_st* peer);
 int EVP_PKEY_derive(struct evp_pkey_ctx_st* ctx, unsigned char* key, unsigned long  int* keylen);
 int EVP_PKEY_encapsulate_init(struct evp_pkey_ctx_st* ctx, const struct ossl_param_st params[]);
-int EVP_PKEY_auth_encapsulate_init(struct evp_pkey_ctx_st* ctx, struct evp_pkey_st* authpriv, const struct ossl_param_st params[]);
 int EVP_PKEY_encapsulate(struct evp_pkey_ctx_st* ctx, unsigned char* wrappedkey, unsigned long  int* wrappedkeylen, unsigned char* genkey, unsigned long  int* genkeylen);
 int EVP_PKEY_decapsulate_init(struct evp_pkey_ctx_st* ctx, const struct ossl_param_st params[]);
-int EVP_PKEY_auth_decapsulate_init(struct evp_pkey_ctx_st* ctx, struct evp_pkey_st* authpub, const struct ossl_param_st params[]);
 int EVP_PKEY_decapsulate(struct evp_pkey_ctx_st* ctx, unsigned char* unwrapped, unsigned long  int* unwrappedlen, const unsigned char* wrapped, unsigned long  int wrappedlen);
 int EVP_PKEY_fromdata_init(struct evp_pkey_ctx_st* ctx);
 int EVP_PKEY_fromdata(struct evp_pkey_ctx_st* ctx, struct evp_pkey_st** ppkey, int selection, struct ossl_param_st param[]);
@@ -7199,11 +7484,11 @@ const struct bignum_st* EC_GROUP_get0_field(const struct ec_group_st* group);
 int EC_GROUP_get_field_type(const struct ec_group_st* group);
 void EC_GROUP_set_asn1_flag(struct ec_group_st* group, int flag);
 int EC_GROUP_get_asn1_flag(const struct ec_group_st* group);
-void EC_GROUP_set_point_conversion_form(struct ec_group_st* group, enum anonymous_typeY18 form);
-enum anonymous_typeY18 EC_GROUP_get_point_conversion_form(const struct ec_group_st* anonymous_var_nameX1261);
+void EC_GROUP_set_point_conversion_form(struct ec_group_st* group, enum anonymous_typeY33 form);
+enum anonymous_typeY33 EC_GROUP_get_point_conversion_form(const struct ec_group_st* anonymous_var_nameX173);
 unsigned char* EC_GROUP_get0_seed(const struct ec_group_st* x);
-unsigned long  int EC_GROUP_get_seed_len(const struct ec_group_st* anonymous_var_nameX1262);
-unsigned long  int EC_GROUP_set_seed(struct ec_group_st* anonymous_var_nameX1263, const unsigned char* anonymous_var_nameX1264, unsigned long  int len);
+unsigned long  int EC_GROUP_get_seed_len(const struct ec_group_st* anonymous_var_nameX174);
+unsigned long  int EC_GROUP_set_seed(struct ec_group_st* anonymous_var_nameX175, const unsigned char* anonymous_var_nameX176, unsigned long  int len);
 int EC_GROUP_set_curve(struct ec_group_st* group, const struct bignum_st* p, const struct bignum_st* a, const struct bignum_st* b, struct bignum_ctx* ctx);
 int EC_GROUP_get_curve(const struct ec_group_st* group, struct bignum_st* p, struct bignum_st* a, struct bignum_st* b, struct bignum_ctx* ctx);
 int EC_GROUP_set_curve_GFp(struct ec_group_st* group, const struct bignum_st* p, const struct bignum_st* a, const struct bignum_st* b, struct bignum_ctx* ctx);
@@ -7217,14 +7502,13 @@ int EC_GROUP_cmp(const struct ec_group_st* a, const struct ec_group_st* b, struc
 struct ec_group_st* EC_GROUP_new_curve_GFp(const struct bignum_st* p, const struct bignum_st* a, const struct bignum_st* b, struct bignum_ctx* ctx);
 struct ec_group_st* EC_GROUP_new_curve_GF2m(const struct bignum_st* p, const struct bignum_st* a, const struct bignum_st* b, struct bignum_ctx* ctx);
 struct ec_group_st* EC_GROUP_new_from_params(const struct ossl_param_st params[], struct ossl_lib_ctx_st* libctx, const char* propq);
-struct ossl_param_st* EC_GROUP_to_params(const struct ec_group_st* group, struct ossl_lib_ctx_st* libctx, const char* propq, struct bignum_ctx* bnctx);
 struct ec_group_st* EC_GROUP_new_by_curve_name_ex(struct ossl_lib_ctx_st* libctx, const char* propq, int nid);
 struct ec_group_st* EC_GROUP_new_by_curve_name(int nid);
 struct ec_group_st* EC_GROUP_new_from_ecparameters(const struct ec_parameters_st* params);
 struct ec_parameters_st* EC_GROUP_get_ecparameters(const struct ec_group_st* group, struct ec_parameters_st* params);
 struct ec_group_st* EC_GROUP_new_from_ecpkparameters(const struct ecpk_parameters_st* params);
 struct ecpk_parameters_st* EC_GROUP_get_ecpkparameters(const struct ec_group_st* group, struct ecpk_parameters_st* params);
-unsigned long  int EC_get_builtin_curves(struct anonymous_typeX19* r, unsigned long  int nitems);
+unsigned long  int EC_get_builtin_curves(struct anonymous_typeX34* r, unsigned long  int nitems);
 const char* EC_curve_nid2nist(int nid);
 int EC_curve_nist2nid(const char* name);
 int EC_GROUP_check_named_curve(const struct ec_group_st* group, int nist_only, struct bignum_ctx* ctx);
@@ -7246,13 +7530,13 @@ int EC_POINT_set_compressed_coordinates_GFp(const struct ec_group_st* group, str
 int EC_POINT_set_affine_coordinates_GF2m(const struct ec_group_st* group, struct ec_point_st* p, const struct bignum_st* x, const struct bignum_st* y, struct bignum_ctx* ctx);
 int EC_POINT_get_affine_coordinates_GF2m(const struct ec_group_st* group, const struct ec_point_st* p, struct bignum_st* x, struct bignum_st* y, struct bignum_ctx* ctx);
 int EC_POINT_set_compressed_coordinates_GF2m(const struct ec_group_st* group, struct ec_point_st* p, const struct bignum_st* x, int y_bit, struct bignum_ctx* ctx);
-unsigned long  int EC_POINT_point2oct(const struct ec_group_st* group, const struct ec_point_st* p, enum anonymous_typeY18 form, unsigned char* buf, unsigned long  int len, struct bignum_ctx* ctx);
+unsigned long  int EC_POINT_point2oct(const struct ec_group_st* group, const struct ec_point_st* p, enum anonymous_typeY33 form, unsigned char* buf, unsigned long  int len, struct bignum_ctx* ctx);
 int EC_POINT_oct2point(const struct ec_group_st* group, struct ec_point_st* p, const unsigned char* buf, unsigned long  int len, struct bignum_ctx* ctx);
-unsigned long  int EC_POINT_point2buf(const struct ec_group_st* group, const struct ec_point_st* point, enum anonymous_typeY18 form, unsigned char** pbuf, struct bignum_ctx* ctx);
-struct bignum_st* EC_POINT_point2bn(const struct ec_group_st* anonymous_var_nameX1265, const struct ec_point_st* anonymous_var_nameX1266, enum anonymous_typeY18 form, struct bignum_st* anonymous_var_nameX1267, struct bignum_ctx* anonymous_var_nameX1268);
-struct ec_point_st* EC_POINT_bn2point(const struct ec_group_st* anonymous_var_nameX1269, const struct bignum_st* anonymous_var_nameX1270, struct ec_point_st* anonymous_var_nameX1271, struct bignum_ctx* anonymous_var_nameX1272);
-char* EC_POINT_point2hex(const struct ec_group_st* anonymous_var_nameX1273, const struct ec_point_st* anonymous_var_nameX1274, enum anonymous_typeY18 form, struct bignum_ctx* anonymous_var_nameX1275);
-struct ec_point_st* EC_POINT_hex2point(const struct ec_group_st* anonymous_var_nameX1276, const char* anonymous_var_nameX1277, struct ec_point_st* anonymous_var_nameX1278, struct bignum_ctx* anonymous_var_nameX1279);
+unsigned long  int EC_POINT_point2buf(const struct ec_group_st* group, const struct ec_point_st* point, enum anonymous_typeY33 form, unsigned char** pbuf, struct bignum_ctx* ctx);
+struct bignum_st* EC_POINT_point2bn(const struct ec_group_st* anonymous_var_nameX177, const struct ec_point_st* anonymous_var_nameX178, enum anonymous_typeY33 form, struct bignum_st* anonymous_var_nameX179, struct bignum_ctx* anonymous_var_nameX180);
+struct ec_point_st* EC_POINT_bn2point(const struct ec_group_st* anonymous_var_nameX181, const struct bignum_st* anonymous_var_nameX182, struct ec_point_st* anonymous_var_nameX183, struct bignum_ctx* anonymous_var_nameX184);
+char* EC_POINT_point2hex(const struct ec_group_st* anonymous_var_nameX185, const struct ec_point_st* anonymous_var_nameX186, enum anonymous_typeY33 form, struct bignum_ctx* anonymous_var_nameX187);
+struct ec_point_st* EC_POINT_hex2point(const struct ec_group_st* anonymous_var_nameX188, const char* anonymous_var_nameX189, struct ec_point_st* anonymous_var_nameX190, struct bignum_ctx* anonymous_var_nameX191);
 int EC_POINT_add(const struct ec_group_st* group, struct ec_point_st* r, const struct ec_point_st* a, const struct ec_point_st* b, struct bignum_ctx* ctx);
 int EC_POINT_dbl(const struct ec_group_st* group, struct ec_point_st* r, const struct ec_point_st* a, struct bignum_ctx* ctx);
 int EC_POINT_invert(const struct ec_group_st* group, struct ec_point_st* a, struct bignum_ctx* ctx);
@@ -7271,13 +7555,13 @@ void ECPKPARAMETERS_free(struct ecpk_parameters_st* a);
 const struct ASN1_ITEM_st* ECPARAMETERS_it();
 struct ec_parameters_st* ECPARAMETERS_new();
 void ECPARAMETERS_free(struct ec_parameters_st* a);
-int EC_GROUP_get_basis_type(const struct ec_group_st* anonymous_var_nameX1280);
-int EC_GROUP_get_trinomial_basis(const struct ec_group_st* anonymous_var_nameX1281, unsigned int* k);
-int EC_GROUP_get_pentanomial_basis(const struct ec_group_st* anonymous_var_nameX1282, unsigned int* k1, unsigned int* k2, unsigned int* k3);
-struct ec_group_st* d2i_ECPKParameters(struct ec_group_st** anonymous_var_nameX1283, const unsigned char** in, long len);
-int i2d_ECPKParameters(const struct ec_group_st* anonymous_var_nameX1284, unsigned char** out);
+int EC_GROUP_get_basis_type(const struct ec_group_st* anonymous_var_nameX192);
+int EC_GROUP_get_trinomial_basis(const struct ec_group_st* anonymous_var_nameX193, unsigned int* k);
+int EC_GROUP_get_pentanomial_basis(const struct ec_group_st* anonymous_var_nameX194, unsigned int* k1, unsigned int* k2, unsigned int* k3);
+struct ec_group_st* d2i_ECPKParameters(struct ec_group_st** anonymous_var_nameX195, const unsigned char** in, long len);
+int i2d_ECPKParameters(const struct ec_group_st* anonymous_var_nameX196, unsigned char** out);
 int ECPKParameters_print(struct bio_st* bp, const struct ec_group_st* x, int off);
-int ECPKParameters_print_fp(struct __sFILE* fp, const struct ec_group_st* x, int off);
+int ECPKParameters_print_fp(struct _IO_FILE* fp, const struct ec_group_st* x, int off);
 struct ec_key_st* EC_KEY_new_ex(struct ossl_lib_ctx_st* ctx, const char* propq);
 struct ec_key_st* EC_KEY_new();
 int EC_KEY_get_flags(const struct ec_key_st* key);
@@ -7299,8 +7583,8 @@ const struct ec_point_st* EC_KEY_get0_public_key(const struct ec_key_st* key);
 int EC_KEY_set_public_key(struct ec_key_st* key, const struct ec_point_st* pub);
 unsigned int EC_KEY_get_enc_flags(const struct ec_key_st* key);
 void EC_KEY_set_enc_flags(struct ec_key_st* eckey, unsigned int flags);
-enum anonymous_typeY18 EC_KEY_get_conv_form(const struct ec_key_st* key);
-void EC_KEY_set_conv_form(struct ec_key_st* eckey, enum anonymous_typeY18 cform);
+enum anonymous_typeY33 EC_KEY_get_conv_form(const struct ec_key_st* key);
+void EC_KEY_set_conv_form(struct ec_key_st* eckey, enum anonymous_typeY33 cform);
 int EC_KEY_set_ex_data(struct ec_key_st* key, int idx, void* arg);
 void* EC_KEY_get_ex_data(const struct ec_key_st* key, int idx);
 void EC_KEY_set_asn1_flag(struct ec_key_st* eckey, int asn1_flag);
@@ -7309,7 +7593,7 @@ int EC_KEY_generate_key(struct ec_key_st* key);
 int EC_KEY_check_key(const struct ec_key_st* key);
 int EC_KEY_can_sign(const struct ec_key_st* eckey);
 int EC_KEY_set_public_key_affine_coordinates(struct ec_key_st* key, struct bignum_st* x, struct bignum_st* y);
-unsigned long  int EC_KEY_key2buf(const struct ec_key_st* key, enum anonymous_typeY18 form, unsigned char** pbuf, struct bignum_ctx* ctx);
+unsigned long  int EC_KEY_key2buf(const struct ec_key_st* key, enum anonymous_typeY33 form, unsigned char** pbuf, struct bignum_ctx* ctx);
 int EC_KEY_oct2key(struct ec_key_st* key, const unsigned char* buf, unsigned long  int len, struct bignum_ctx* ctx);
 int EC_KEY_oct2priv(struct ec_key_st* key, const unsigned char* buf, unsigned long  int len);
 unsigned long  int EC_KEY_priv2oct(const struct ec_key_st* key, unsigned char* buf, unsigned long  int len);
@@ -7322,8 +7606,8 @@ struct ec_key_st* o2i_ECPublicKey(struct ec_key_st** key, const unsigned char** 
 int i2o_ECPublicKey(const struct ec_key_st* key, unsigned char** out);
 int ECParameters_print(struct bio_st* bp, const struct ec_key_st* key);
 int EC_KEY_print(struct bio_st* bp, const struct ec_key_st* key, int off);
-int ECParameters_print_fp(struct __sFILE* fp, const struct ec_key_st* key);
-int EC_KEY_print_fp(struct __sFILE* fp, const struct ec_key_st* key, int off);
+int ECParameters_print_fp(struct _IO_FILE* fp, const struct ec_key_st* key);
+int EC_KEY_print_fp(struct _IO_FILE* fp, const struct ec_key_st* key, int off);
 const struct ec_key_method_st* EC_KEY_OpenSSL();
 const struct ec_key_method_st* EC_KEY_get_default_method();
 void EC_KEY_set_default_method(const struct ec_key_method_st* meth);
@@ -7417,8 +7701,8 @@ int RSA_generate_key_ex(struct rsa_st* rsa, int bits, struct bignum_st* e, struc
 int RSA_generate_multi_prime_key(struct rsa_st* rsa, int bits, int primes, struct bignum_st* e, struct bn_gencb_st* cb);
 int RSA_X931_derive_ex(struct rsa_st* rsa, struct bignum_st* p1, struct bignum_st* p2, struct bignum_st* q1, struct bignum_st* q2, const struct bignum_st* Xp1, const struct bignum_st* Xp2, const struct bignum_st* Xp, const struct bignum_st* Xq1, const struct bignum_st* Xq2, const struct bignum_st* Xq, const struct bignum_st* e, struct bn_gencb_st* cb);
 int RSA_X931_generate_key_ex(struct rsa_st* rsa, int bits, const struct bignum_st* e, struct bn_gencb_st* cb);
-int RSA_check_key(const struct rsa_st* anonymous_var_nameX1288);
-int RSA_check_key_ex(const struct rsa_st* anonymous_var_nameX1289, struct bn_gencb_st* cb);
+int RSA_check_key(const struct rsa_st* anonymous_var_nameX200);
+int RSA_check_key_ex(const struct rsa_st* anonymous_var_nameX201, struct bn_gencb_st* cb);
 int RSA_public_encrypt(int flen, const unsigned char* from, unsigned char* to, struct rsa_st* rsa, int padding);
 int RSA_private_encrypt(int flen, const unsigned char* from, unsigned char* to, struct rsa_st* rsa, int padding);
 int RSA_public_decrypt(int flen, const unsigned char* from, unsigned char* to, struct rsa_st* rsa, int padding);
@@ -7450,7 +7734,7 @@ void RSA_OAEP_PARAMS_free(struct rsa_oaep_params_st* a);
 struct rsa_oaep_params_st* d2i_RSA_OAEP_PARAMS(struct rsa_oaep_params_st** a, const unsigned char** in, long len);
 int i2d_RSA_OAEP_PARAMS(const struct rsa_oaep_params_st* a, unsigned char** out);
 const struct ASN1_ITEM_st* RSA_OAEP_PARAMS_it();
-int RSA_print_fp(struct __sFILE* fp, const struct rsa_st* r, int offset);
+int RSA_print_fp(struct _IO_FILE* fp, const struct rsa_st* r, int offset);
 int RSA_print(struct bio_st* bp, const struct rsa_st* r, int offset);
 int RSA_sign(int type, const unsigned char* m, unsigned int m_length, unsigned char* sigret, unsigned int* siglen, struct rsa_st* rsa);
 int RSA_verify(int type, const unsigned char* m, unsigned int m_length, const unsigned char* sigbuf, unsigned int siglen, struct rsa_st* rsa);
@@ -7490,30 +7774,37 @@ int RSA_meth_get_flags(const struct rsa_meth_st* meth);
 int RSA_meth_set_flags(struct rsa_meth_st* meth, int flags);
 void* RSA_meth_get0_app_data(const struct rsa_meth_st* meth);
 int RSA_meth_set0_app_data(struct rsa_meth_st* meth, void* app_data);
-int (*RSA_meth_get_pub_enc(const struct rsa_meth_st* _function_pointer_result_var_name_a29))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
+int (*RSA_meth_get_pub_enc(const struct rsa_meth_st* _function_pointer_result_var_name_a25))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
 int RSA_meth_set_pub_enc(struct rsa_meth_st* rsa, int (*pub_enc)(int,const unsigned char*,unsigned char*,struct rsa_st*,int));
-int (*RSA_meth_get_pub_dec(const struct rsa_meth_st* _function_pointer_result_var_name_a30))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
+int (*RSA_meth_get_pub_dec(const struct rsa_meth_st* _function_pointer_result_var_name_a26))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
 int RSA_meth_set_pub_dec(struct rsa_meth_st* rsa, int (*pub_dec)(int,const unsigned char*,unsigned char*,struct rsa_st*,int));
-int (*RSA_meth_get_priv_enc(const struct rsa_meth_st* _function_pointer_result_var_name_a31))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
+int (*RSA_meth_get_priv_enc(const struct rsa_meth_st* _function_pointer_result_var_name_a27))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
 int RSA_meth_set_priv_enc(struct rsa_meth_st* rsa, int (*priv_enc)(int,const unsigned char*,unsigned char*,struct rsa_st*,int));
-int (*RSA_meth_get_priv_dec(const struct rsa_meth_st* _function_pointer_result_var_name_a32))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
+int (*RSA_meth_get_priv_dec(const struct rsa_meth_st* _function_pointer_result_var_name_a28))(int,const unsigned char*,unsigned char*,struct rsa_st*,int);
 int RSA_meth_set_priv_dec(struct rsa_meth_st* rsa, int (*priv_dec)(int,const unsigned char*,unsigned char*,struct rsa_st*,int));
-int (*RSA_meth_get_mod_exp(const struct rsa_meth_st* _function_pointer_result_var_name_a33))(struct bignum_st*,const struct bignum_st*,struct rsa_st*,struct bignum_ctx*);
+int (*RSA_meth_get_mod_exp(const struct rsa_meth_st* _function_pointer_result_var_name_a29))(struct bignum_st*,const struct bignum_st*,struct rsa_st*,struct bignum_ctx*);
 int RSA_meth_set_mod_exp(struct rsa_meth_st* rsa, int (*mod_exp)(struct bignum_st*,const struct bignum_st*,struct rsa_st*,struct bignum_ctx*));
-int (*RSA_meth_get_bn_mod_exp(const struct rsa_meth_st* _function_pointer_result_var_name_a34))(struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
+int (*RSA_meth_get_bn_mod_exp(const struct rsa_meth_st* _function_pointer_result_var_name_a30))(struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
 int RSA_meth_set_bn_mod_exp(struct rsa_meth_st* rsa, int (*bn_mod_exp)(struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*));
-int (*RSA_meth_get_init(const struct rsa_meth_st* _function_pointer_result_var_name_a35))(struct rsa_st*);
+int (*RSA_meth_get_init(const struct rsa_meth_st* _function_pointer_result_var_name_a31))(struct rsa_st*);
 int RSA_meth_set_init(struct rsa_meth_st* rsa, int (*init)(struct rsa_st*));
-int (*RSA_meth_get_finish(const struct rsa_meth_st* _function_pointer_result_var_name_a36))(struct rsa_st*);
+int (*RSA_meth_get_finish(const struct rsa_meth_st* _function_pointer_result_var_name_a32))(struct rsa_st*);
 int RSA_meth_set_finish(struct rsa_meth_st* rsa, int (*finish)(struct rsa_st*));
-int (*RSA_meth_get_sign(const struct rsa_meth_st* _function_pointer_result_var_name_a37))(int,const unsigned char*,unsigned int,unsigned char*,unsigned int*,const struct rsa_st*);
+int (*RSA_meth_get_sign(const struct rsa_meth_st* _function_pointer_result_var_name_a33))(int,const unsigned char*,unsigned int,unsigned char*,unsigned int*,const struct rsa_st*);
 int RSA_meth_set_sign(struct rsa_meth_st* rsa, int (*sign)(int,const unsigned char*,unsigned int,unsigned char*,unsigned int*,const struct rsa_st*));
-int (*RSA_meth_get_verify(const struct rsa_meth_st* _function_pointer_result_var_name_a38))(int,const unsigned char*,unsigned int,const unsigned char*,unsigned int,const struct rsa_st*);
+int (*RSA_meth_get_verify(const struct rsa_meth_st* _function_pointer_result_var_name_a34))(int,const unsigned char*,unsigned int,const unsigned char*,unsigned int,const struct rsa_st*);
 int RSA_meth_set_verify(struct rsa_meth_st* rsa, int (*verify)(int,const unsigned char*,unsigned int,const unsigned char*,unsigned int,const struct rsa_st*));
-int (*RSA_meth_get_keygen(const struct rsa_meth_st* _function_pointer_result_var_name_a39))(struct rsa_st*,int,struct bignum_st*,struct bn_gencb_st*);
+int (*RSA_meth_get_keygen(const struct rsa_meth_st* _function_pointer_result_var_name_a35))(struct rsa_st*,int,struct bignum_st*,struct bn_gencb_st*);
 int RSA_meth_set_keygen(struct rsa_meth_st* rsa, int (*keygen)(struct rsa_st*,int,struct bignum_st*,struct bn_gencb_st*));
-int (*RSA_meth_get_multi_prime_keygen(const struct rsa_meth_st* _function_pointer_result_var_name_a40))(struct rsa_st*,int,int,struct bignum_st*,struct bn_gencb_st*);
+int (*RSA_meth_get_multi_prime_keygen(const struct rsa_meth_st* _function_pointer_result_var_name_a36))(struct rsa_st*,int,int,struct bignum_st*,struct bn_gencb_st*);
 int RSA_meth_set_multi_prime_keygen(struct rsa_meth_st* meth, int (*keygen)(struct rsa_st*,int,int,struct bignum_st*,struct bn_gencb_st*));
+int EVP_PKEY_CTX_set_dsa_paramgen_bits(struct evp_pkey_ctx_st* ctx, int nbits);
+int EVP_PKEY_CTX_set_dsa_paramgen_q_bits(struct evp_pkey_ctx_st* ctx, int qbits);
+int EVP_PKEY_CTX_set_dsa_paramgen_md_props(struct evp_pkey_ctx_st* ctx, const char* md_name, const char* md_properties);
+int EVP_PKEY_CTX_set_dsa_paramgen_gindex(struct evp_pkey_ctx_st* ctx, int gindex);
+int EVP_PKEY_CTX_set_dsa_paramgen_type(struct evp_pkey_ctx_st* ctx, const char* name);
+int EVP_PKEY_CTX_set_dsa_paramgen_seed(struct evp_pkey_ctx_st* ctx, const unsigned char* seed, unsigned long  int seedlen);
+int EVP_PKEY_CTX_set_dsa_paramgen_md(struct evp_pkey_ctx_st* ctx, const struct evp_md_st* md);
 int EVP_PKEY_CTX_set_dh_paramgen_type(struct evp_pkey_ctx_st* ctx, int typ);
 int EVP_PKEY_CTX_set_dh_paramgen_gindex(struct evp_pkey_ctx_st* ctx, int gindex);
 int EVP_PKEY_CTX_set_dh_paramgen_seed(struct evp_pkey_ctx_st* ctx, const unsigned char* seed, unsigned long  int seedlen);
@@ -7563,7 +7854,7 @@ struct dh_st* d2i_DHparams(struct dh_st** a, const unsigned char** in, long len)
 int i2d_DHparams(const struct dh_st* a, unsigned char** out);
 struct dh_st* d2i_DHxparams(struct dh_st** a, const unsigned char** in, long len);
 int i2d_DHxparams(const struct dh_st* a, unsigned char** out);
-int DHparams_print_fp(struct __sFILE* fp, const struct dh_st* x);
+int DHparams_print_fp(struct _IO_FILE* fp, const struct dh_st* x);
 int DHparams_print(struct bio_st* bp, const struct dh_st* x);
 struct dh_st* DH_get_1024_160();
 struct dh_st* DH_get_2048_224();
@@ -7595,26 +7886,19 @@ int DH_meth_get_flags(const struct dh_method* dhm);
 int DH_meth_set_flags(struct dh_method* dhm, int flags);
 void* DH_meth_get0_app_data(const struct dh_method* dhm);
 int DH_meth_set0_app_data(struct dh_method* dhm, void* app_data);
-int (*DH_meth_get_generate_key(const struct dh_method* _function_pointer_result_var_name_a41))(struct dh_st*);
+int (*DH_meth_get_generate_key(const struct dh_method* _function_pointer_result_var_name_a37))(struct dh_st*);
 int DH_meth_set_generate_key(struct dh_method* dhm, int (*generate_key)(struct dh_st*));
-int (*DH_meth_get_compute_key(const struct dh_method* _function_pointer_result_var_name_a42))(unsigned char*,const struct bignum_st*,struct dh_st*);
+int (*DH_meth_get_compute_key(const struct dh_method* _function_pointer_result_var_name_a38))(unsigned char*,const struct bignum_st*,struct dh_st*);
 int DH_meth_set_compute_key(struct dh_method* dhm, int (*compute_key)(unsigned char*,const struct bignum_st*,struct dh_st*));
-int (*DH_meth_get_bn_mod_exp(const struct dh_method* _function_pointer_result_var_name_a43))(const struct dh_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
+int (*DH_meth_get_bn_mod_exp(const struct dh_method* _function_pointer_result_var_name_a39))(const struct dh_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
 int DH_meth_set_bn_mod_exp(struct dh_method* dhm, int (*bn_mod_exp)(const struct dh_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*));
-int (*DH_meth_get_init(const struct dh_method* _function_pointer_result_var_name_a44))(struct dh_st*);
+int (*DH_meth_get_init(const struct dh_method* _function_pointer_result_var_name_a40))(struct dh_st*);
 int DH_meth_set_init(struct dh_method* dhm, int (*init)(struct dh_st*));
-int (*DH_meth_get_finish(const struct dh_method* _function_pointer_result_var_name_a45))(struct dh_st*);
+int (*DH_meth_get_finish(const struct dh_method* _function_pointer_result_var_name_a41))(struct dh_st*);
 int DH_meth_set_finish(struct dh_method* dhm, int (*finish)(struct dh_st*));
-int (*DH_meth_get_generate_params(const struct dh_method* _function_pointer_result_var_name_a46))(struct dh_st*,int,int,struct bn_gencb_st*);
+int (*DH_meth_get_generate_params(const struct dh_method* _function_pointer_result_var_name_a42))(struct dh_st*,int,int,struct bn_gencb_st*);
 int DH_meth_set_generate_params(struct dh_method* dhm, int (*generate_params)(struct dh_st*,int,int,struct bn_gencb_st*));
 struct dh_st* DH_generate_parameters(int prime_len, int generator, void (*callback)(int,int,void*), void* cb_arg);
-int EVP_PKEY_CTX_set_dsa_paramgen_bits(struct evp_pkey_ctx_st* ctx, int nbits);
-int EVP_PKEY_CTX_set_dsa_paramgen_q_bits(struct evp_pkey_ctx_st* ctx, int qbits);
-int EVP_PKEY_CTX_set_dsa_paramgen_md_props(struct evp_pkey_ctx_st* ctx, const char* md_name, const char* md_properties);
-int EVP_PKEY_CTX_set_dsa_paramgen_gindex(struct evp_pkey_ctx_st* ctx, int gindex);
-int EVP_PKEY_CTX_set_dsa_paramgen_type(struct evp_pkey_ctx_st* ctx, const char* name);
-int EVP_PKEY_CTX_set_dsa_paramgen_seed(struct evp_pkey_ctx_st* ctx, const unsigned char* seed, unsigned long  int seedlen);
-int EVP_PKEY_CTX_set_dsa_paramgen_md(struct evp_pkey_ctx_st* ctx, const struct evp_md_st* md);
 struct DSA_SIG_st* DSA_SIG_new();
 void DSA_SIG_free(struct DSA_SIG_st* a);
 struct DSA_SIG_st* d2i_DSA_SIG(struct DSA_SIG_st** a, const unsigned char** in, long len);
@@ -7625,15 +7909,15 @@ struct dsa_st* DSAparams_dup(const struct dsa_st* a);
 struct DSA_SIG_st* DSA_do_sign(const unsigned char* dgst, int dlen, struct dsa_st* dsa);
 int DSA_do_verify(const unsigned char* dgst, int dgst_len, struct DSA_SIG_st* sig, struct dsa_st* dsa);
 const struct dsa_method* DSA_OpenSSL();
-void DSA_set_default_method(const struct dsa_method* anonymous_var_nameX1307);
+void DSA_set_default_method(const struct dsa_method* anonymous_var_nameX219);
 const struct dsa_method* DSA_get_default_method();
-int DSA_set_method(struct dsa_st* dsa, const struct dsa_method* anonymous_var_nameX1308);
+int DSA_set_method(struct dsa_st* dsa, const struct dsa_method* anonymous_var_nameX220);
 const struct dsa_method* DSA_get_method(struct dsa_st* d);
 struct dsa_st* DSA_new();
 struct dsa_st* DSA_new_method(struct engine_st* engine);
 void DSA_free(struct dsa_st* r);
 int DSA_up_ref(struct dsa_st* r);
-int DSA_size(const struct dsa_st* anonymous_var_nameX1309);
+int DSA_size(const struct dsa_st* anonymous_var_nameX221);
 int DSA_bits(const struct dsa_st* d);
 int DSA_security_bits(const struct dsa_st* d);
 int DSA_sign_setup(struct dsa_st* dsa, struct bignum_ctx* ctx_in, struct bignum_st** kinvp, struct bignum_st** rp);
@@ -7652,8 +7936,8 @@ int DSA_generate_parameters_ex(struct dsa_st* dsa, int bits, const unsigned char
 int DSA_generate_key(struct dsa_st* a);
 int DSAparams_print(struct bio_st* bp, const struct dsa_st* x);
 int DSA_print(struct bio_st* bp, const struct dsa_st* x, int off);
-int DSAparams_print_fp(struct __sFILE* fp, const struct dsa_st* x);
-int DSA_print_fp(struct __sFILE* bp, const struct dsa_st* x, int off);
+int DSAparams_print_fp(struct _IO_FILE* fp, const struct dsa_st* x);
+int DSA_print_fp(struct _IO_FILE* bp, const struct dsa_st* x, int off);
 struct dh_st* DSA_dup_DH(const struct dsa_st* r);
 void DSA_get0_pqg(const struct dsa_st* d, const struct bignum_st** p, const struct bignum_st** q, const struct bignum_st** g);
 int DSA_set0_pqg(struct dsa_st* d, struct bignum_st* p, struct bignum_st* q, struct bignum_st* g);
@@ -7677,23 +7961,23 @@ int DSA_meth_get_flags(const struct dsa_method* dsam);
 int DSA_meth_set_flags(struct dsa_method* dsam, int flags);
 void* DSA_meth_get0_app_data(const struct dsa_method* dsam);
 int DSA_meth_set0_app_data(struct dsa_method* dsam, void* app_data);
-struct DSA_SIG_st* (*DSA_meth_get_sign(const struct dsa_method* _function_pointer_result_var_name_a47))(const unsigned char*,int,struct dsa_st*);
+struct DSA_SIG_st* (*DSA_meth_get_sign(const struct dsa_method* _function_pointer_result_var_name_a43))(const unsigned char*,int,struct dsa_st*);
 int DSA_meth_set_sign(struct dsa_method* dsam, struct DSA_SIG_st* (*sign)(const unsigned char*,int,struct dsa_st*));
-int (*DSA_meth_get_sign_setup(const struct dsa_method* _function_pointer_result_var_name_a48))(struct dsa_st*,struct bignum_ctx*,struct bignum_st**,struct bignum_st**);
+int (*DSA_meth_get_sign_setup(const struct dsa_method* _function_pointer_result_var_name_a44))(struct dsa_st*,struct bignum_ctx*,struct bignum_st**,struct bignum_st**);
 int DSA_meth_set_sign_setup(struct dsa_method* dsam, int (*sign_setup)(struct dsa_st*,struct bignum_ctx*,struct bignum_st**,struct bignum_st**));
-int (*DSA_meth_get_verify(const struct dsa_method* _function_pointer_result_var_name_a49))(const unsigned char*,int,struct DSA_SIG_st*,struct dsa_st*);
+int (*DSA_meth_get_verify(const struct dsa_method* _function_pointer_result_var_name_a45))(const unsigned char*,int,struct DSA_SIG_st*,struct dsa_st*);
 int DSA_meth_set_verify(struct dsa_method* dsam, int (*verify)(const unsigned char*,int,struct DSA_SIG_st*,struct dsa_st*));
-int (*DSA_meth_get_mod_exp(const struct dsa_method* _function_pointer_result_var_name_a50))(struct dsa_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
+int (*DSA_meth_get_mod_exp(const struct dsa_method* _function_pointer_result_var_name_a46))(struct dsa_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
 int DSA_meth_set_mod_exp(struct dsa_method* dsam, int (*mod_exp)(struct dsa_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*));
-int (*DSA_meth_get_bn_mod_exp(const struct dsa_method* _function_pointer_result_var_name_a51))(struct dsa_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
+int (*DSA_meth_get_bn_mod_exp(const struct dsa_method* _function_pointer_result_var_name_a47))(struct dsa_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*);
 int DSA_meth_set_bn_mod_exp(struct dsa_method* dsam, int (*bn_mod_exp)(struct dsa_st*,struct bignum_st*,const struct bignum_st*,const struct bignum_st*,const struct bignum_st*,struct bignum_ctx*,struct bn_mont_ctx_st*));
-int (*DSA_meth_get_init(const struct dsa_method* _function_pointer_result_var_name_a52))(struct dsa_st*);
+int (*DSA_meth_get_init(const struct dsa_method* _function_pointer_result_var_name_a48))(struct dsa_st*);
 int DSA_meth_set_init(struct dsa_method* dsam, int (*init)(struct dsa_st*));
-int (*DSA_meth_get_finish(const struct dsa_method* _function_pointer_result_var_name_a53))(struct dsa_st*);
+int (*DSA_meth_get_finish(const struct dsa_method* _function_pointer_result_var_name_a49))(struct dsa_st*);
 int DSA_meth_set_finish(struct dsa_method* dsam, int (*finish)(struct dsa_st*));
-int (*DSA_meth_get_paramgen(const struct dsa_method* _function_pointer_result_var_name_a54))(struct dsa_st*,int,const unsigned char*,int,int*,unsigned long  int*,struct bn_gencb_st*);
+int (*DSA_meth_get_paramgen(const struct dsa_method* _function_pointer_result_var_name_a50))(struct dsa_st*,int,const unsigned char*,int,int*,unsigned long  int*,struct bn_gencb_st*);
 int DSA_meth_set_paramgen(struct dsa_method* dsam, int (*paramgen)(struct dsa_st*,int,const unsigned char*,int,int*,unsigned long  int*,struct bn_gencb_st*));
-int (*DSA_meth_get_keygen(const struct dsa_method* _function_pointer_result_var_name_a55))(struct dsa_st*);
+int (*DSA_meth_get_keygen(const struct dsa_method* _function_pointer_result_var_name_a51))(struct dsa_st*);
 int DSA_meth_set_keygen(struct dsa_method* dsam, int (*keygen)(struct dsa_st*));
 int SHA1_Init(struct SHAstate_st* c);
 int SHA1_Update(struct SHAstate_st* c, const void* data, unsigned long  int len);
@@ -7720,7 +8004,6 @@ unsigned char* SHA384(const unsigned char* d, unsigned long  int n, unsigned cha
 unsigned char* SHA512(const unsigned char* d, unsigned long  int n, unsigned char* md);
 int OPENSSL_LH_error(struct lhash_st* lh);
 struct lhash_st* OPENSSL_LH_new(unsigned long  int (*h)(const void*), int (*c)(const void*,const void*));
-struct lhash_st* OPENSSL_LH_set_thunks(struct lhash_st* lh, unsigned long  int (*hw)(const void*,unsigned long  int (*)(const void*)), int (*cw)(const void*,const void*,int (*)(const void*,const void*)), void (*daw)(void*,void (*)(void*)), void (*daaw)(void*,void*,void (*)(void*,void*)));
 void OPENSSL_LH_free(struct lhash_st* lh);
 void OPENSSL_LH_flush(struct lhash_st* lh);
 void* OPENSSL_LH_insert(struct lhash_st* lh, void* data);
@@ -7728,14 +8011,13 @@ void* OPENSSL_LH_delete(struct lhash_st* lh, const void* data);
 void* OPENSSL_LH_retrieve(struct lhash_st* lh, const void* data);
 void OPENSSL_LH_doall(struct lhash_st* lh, void (*func)(void*));
 void OPENSSL_LH_doall_arg(struct lhash_st* lh, void (*func)(void*,void*), void* arg);
-void OPENSSL_LH_doall_arg_thunk(struct lhash_st* lh, void (*daaw)(void*,void*,void (*)(void*,void*)), void (*fn)(void*,void*), void* arg);
 unsigned long  int OPENSSL_LH_strhash(const char* c);
 unsigned long  int OPENSSL_LH_num_items(const struct lhash_st* lh);
 unsigned long  int OPENSSL_LH_get_down_load(const struct lhash_st* lh);
 void OPENSSL_LH_set_down_load(struct lhash_st* lh, unsigned long  int down_load);
-void OPENSSL_LH_stats(const struct lhash_st* lh, struct __sFILE* fp);
-void OPENSSL_LH_node_stats(const struct lhash_st* lh, struct __sFILE* fp);
-void OPENSSL_LH_node_usage_stats(const struct lhash_st* lh, struct __sFILE* fp);
+void OPENSSL_LH_stats(const struct lhash_st* lh, struct _IO_FILE* fp);
+void OPENSSL_LH_node_stats(const struct lhash_st* lh, struct _IO_FILE* fp);
+void OPENSSL_LH_node_usage_stats(const struct lhash_st* lh, struct _IO_FILE* fp);
 void OPENSSL_LH_stats_bio(const struct lhash_st* lh, struct bio_st* out);
 void OPENSSL_LH_node_stats_bio(const struct lhash_st* lh, struct bio_st* out);
 void OPENSSL_LH_node_usage_stats_bio(const struct lhash_st* lh, struct bio_st* out);
@@ -7755,7 +8037,7 @@ void X509_trust_clear(struct x509_st* x);
 void X509_reject_clear(struct x509_st* x);
 struct stack_st_ASN1_OBJECT* X509_get0_trust_objects(struct x509_st* x);
 struct stack_st_ASN1_OBJECT* X509_get0_reject_objects(struct x509_st* x);
-int (*X509_TRUST_set_default(int (*_function_pointer_result_var_name_a56)(int,struct x509_st*,int)))(int,struct x509_st*,int);
+int (*X509_TRUST_set_default(int (*_function_pointer_result_var_name_a52)(int,struct x509_st*,int)))(int,struct x509_st*,int);
 int X509_check_trust(struct x509_st* x, int id, int flags);
 int X509_verify_cert(struct x509_store_ctx_st* ctx);
 int X509_STORE_CTX_verify(struct x509_store_ctx_st* ctx);
@@ -7763,70 +8045,67 @@ struct stack_st_X509* X509_build_chain(struct x509_st* target, struct stack_st_X
 int X509_STORE_set_depth(struct x509_store_st* store, int depth);
 int X509_STORE_CTX_print_verify_cb(int ok, struct x509_store_ctx_st* ctx);
 void X509_STORE_CTX_set_depth(struct x509_store_ctx_st* ctx, int depth);
-int X509_OBJECT_idx_by_subject(struct stack_st_X509_OBJECT* h, enum anonymous_typeY23 type, const struct X509_name_st* name);
-struct x509_object_st* X509_OBJECT_retrieve_by_subject(struct stack_st_X509_OBJECT* h, enum anonymous_typeY23 type, const struct X509_name_st* name);
+int X509_OBJECT_idx_by_subject(struct stack_st_X509_OBJECT* h, enum anonymous_typeY37 type, const struct X509_name_st* name);
+struct x509_object_st* X509_OBJECT_retrieve_by_subject(struct stack_st_X509_OBJECT* h, enum anonymous_typeY37 type, const struct X509_name_st* name);
 struct x509_object_st* X509_OBJECT_retrieve_match(struct stack_st_X509_OBJECT* h, struct x509_object_st* x);
 int X509_OBJECT_up_ref_count(struct x509_object_st* a);
 struct x509_object_st* X509_OBJECT_new();
 void X509_OBJECT_free(struct x509_object_st* a);
-enum anonymous_typeY23 X509_OBJECT_get_type(const struct x509_object_st* a);
+enum anonymous_typeY37 X509_OBJECT_get_type(const struct x509_object_st* a);
 struct x509_st* X509_OBJECT_get0_X509(const struct x509_object_st* a);
 int X509_OBJECT_set1_X509(struct x509_object_st* a, struct x509_st* obj);
 struct X509_crl_st* X509_OBJECT_get0_X509_CRL(const struct x509_object_st* a);
 int X509_OBJECT_set1_X509_CRL(struct x509_object_st* a, struct X509_crl_st* obj);
 struct x509_store_st* X509_STORE_new();
-void X509_STORE_free(struct x509_store_st* xs);
-int X509_STORE_lock(struct x509_store_st* xs);
-int X509_STORE_unlock(struct x509_store_st* xs);
-int X509_STORE_up_ref(struct x509_store_st* xs);
-struct stack_st_X509_OBJECT* X509_STORE_get0_objects(const struct x509_store_st* xs);
-struct stack_st_X509_OBJECT* X509_STORE_get1_objects(struct x509_store_st* xs);
-struct stack_st_X509* X509_STORE_get1_all_certs(struct x509_store_st* xs);
-struct stack_st_X509* X509_STORE_CTX_get1_certs(struct x509_store_ctx_st* xs, const struct X509_name_st* nm);
+void X509_STORE_free(struct x509_store_st* v);
+int X509_STORE_lock(struct x509_store_st* ctx);
+int X509_STORE_unlock(struct x509_store_st* ctx);
+int X509_STORE_up_ref(struct x509_store_st* v);
+struct stack_st_X509_OBJECT* X509_STORE_get0_objects(const struct x509_store_st* v);
+struct stack_st_X509* X509_STORE_get1_all_certs(struct x509_store_st* st);
+struct stack_st_X509* X509_STORE_CTX_get1_certs(struct x509_store_ctx_st* st, const struct X509_name_st* nm);
 struct stack_st_X509_CRL* X509_STORE_CTX_get1_crls(const struct x509_store_ctx_st* st, const struct X509_name_st* nm);
-int X509_STORE_set_flags(struct x509_store_st* xs, unsigned long  int flags);
-int X509_STORE_set_purpose(struct x509_store_st* xs, int purpose);
-int X509_STORE_set_trust(struct x509_store_st* xs, int trust);
-int X509_STORE_set1_param(struct x509_store_st* xs, const struct X509_VERIFY_PARAM_st* pm);
-struct X509_VERIFY_PARAM_st* X509_STORE_get0_param(const struct x509_store_st* xs);
-void X509_STORE_set_verify(struct x509_store_st* xs, int (*verify)(struct x509_store_ctx_st*));
+int X509_STORE_set_flags(struct x509_store_st* ctx, unsigned long  int flags);
+int X509_STORE_set_purpose(struct x509_store_st* ctx, int purpose);
+int X509_STORE_set_trust(struct x509_store_st* ctx, int trust);
+int X509_STORE_set1_param(struct x509_store_st* ctx, const struct X509_VERIFY_PARAM_st* pm);
+struct X509_VERIFY_PARAM_st* X509_STORE_get0_param(const struct x509_store_st* ctx);
+void X509_STORE_set_verify(struct x509_store_st* ctx, int (*verify)(struct x509_store_ctx_st*));
 void X509_STORE_CTX_set_verify(struct x509_store_ctx_st* ctx, int (*verify)(struct x509_store_ctx_st*));
-int (*X509_STORE_get_verify(const struct x509_store_st* xs))(struct x509_store_ctx_st*);
-void X509_STORE_set_verify_cb(struct x509_store_st* xs, int (*verify_cb)(int,struct x509_store_ctx_st*));
-int (*X509_STORE_get_verify_cb(const struct x509_store_st* xs))(int,struct x509_store_ctx_st*);
-void X509_STORE_set_get_issuer(struct x509_store_st* xs, int (*get_issuer)(struct x509_st**,struct x509_store_ctx_st*,struct x509_st*));
-int (*X509_STORE_get_get_issuer(const struct x509_store_st* xs))(struct x509_st**,struct x509_store_ctx_st*,struct x509_st*);
-void X509_STORE_set_check_issued(struct x509_store_st* xs, int (*check_issued)(struct x509_store_ctx_st*,struct x509_st*,struct x509_st*));
-int (*X509_STORE_get_check_issued(const struct x509_store_st* s))(struct x509_store_ctx_st*,struct x509_st*,struct x509_st*);
-void X509_STORE_set_check_revocation(struct x509_store_st* xs, int (*check_revocation)(struct x509_store_ctx_st*));
-int (*X509_STORE_get_check_revocation(const struct x509_store_st* xs))(struct x509_store_ctx_st*);
-void X509_STORE_set_get_crl(struct x509_store_st* xs, int (*get_crl)(struct x509_store_ctx_st*,struct X509_crl_st**,struct x509_st*));
-int (*X509_STORE_get_get_crl(const struct x509_store_st* xs))(struct x509_store_ctx_st*,struct X509_crl_st**,struct x509_st*);
-void X509_STORE_set_check_crl(struct x509_store_st* xs, int (*check_crl)(struct x509_store_ctx_st*,struct X509_crl_st*));
-int (*X509_STORE_get_check_crl(const struct x509_store_st* xs))(struct x509_store_ctx_st*,struct X509_crl_st*);
-void X509_STORE_set_cert_crl(struct x509_store_st* xs, int (*cert_crl)(struct x509_store_ctx_st*,struct X509_crl_st*,struct x509_st*));
-int (*X509_STORE_get_cert_crl(const struct x509_store_st* xs))(struct x509_store_ctx_st*,struct X509_crl_st*,struct x509_st*);
-void X509_STORE_set_check_policy(struct x509_store_st* xs, int (*check_policy)(struct x509_store_ctx_st*));
-int (*X509_STORE_get_check_policy(const struct x509_store_st* s))(struct x509_store_ctx_st*);
-void X509_STORE_set_lookup_certs(struct x509_store_st* xs, struct stack_st_X509* (*lookup_certs)(struct x509_store_ctx_st*,const struct X509_name_st*));
-struct stack_st_X509* (*X509_STORE_get_lookup_certs(const struct x509_store_st* s))(struct x509_store_ctx_st*,const struct X509_name_st*);
-void X509_STORE_set_lookup_crls(struct x509_store_st* xs, struct stack_st_X509_CRL* (*lookup_crls)(const struct x509_store_ctx_st*,const struct X509_name_st*));
-struct stack_st_X509_CRL* (*X509_STORE_get_lookup_crls(const struct x509_store_st* xs))(const struct x509_store_ctx_st*,const struct X509_name_st*);
-void X509_STORE_set_cleanup(struct x509_store_st* xs, int (*cleanup)(struct x509_store_ctx_st*));
-int (*X509_STORE_get_cleanup(const struct x509_store_st* xs))(struct x509_store_ctx_st*);
-int X509_STORE_set_ex_data(struct x509_store_st* xs, int idx, void* data);
-void* X509_STORE_get_ex_data(const struct x509_store_st* xs, int idx);
+int (*X509_STORE_get_verify(const struct x509_store_st* ctx))(struct x509_store_ctx_st*);
+void X509_STORE_set_verify_cb(struct x509_store_st* ctx, int (*verify_cb)(int,struct x509_store_ctx_st*));
+int (*X509_STORE_get_verify_cb(const struct x509_store_st* ctx))(int,struct x509_store_ctx_st*);
+void X509_STORE_set_get_issuer(struct x509_store_st* ctx, int (*get_issuer)(struct x509_st**,struct x509_store_ctx_st*,struct x509_st*));
+int (*X509_STORE_get_get_issuer(const struct x509_store_st* ctx))(struct x509_st**,struct x509_store_ctx_st*,struct x509_st*);
+void X509_STORE_set_check_issued(struct x509_store_st* ctx, int (*check_issued)(struct x509_store_ctx_st*,struct x509_st*,struct x509_st*));
+int (*X509_STORE_get_check_issued(const struct x509_store_st* ctx))(struct x509_store_ctx_st*,struct x509_st*,struct x509_st*);
+void X509_STORE_set_check_revocation(struct x509_store_st* ctx, int (*check_revocation)(struct x509_store_ctx_st*));
+int (*X509_STORE_get_check_revocation(const struct x509_store_st* ctx))(struct x509_store_ctx_st*);
+void X509_STORE_set_get_crl(struct x509_store_st* ctx, int (*get_crl)(struct x509_store_ctx_st*,struct X509_crl_st**,struct x509_st*));
+int (*X509_STORE_get_get_crl(const struct x509_store_st* ctx))(struct x509_store_ctx_st*,struct X509_crl_st**,struct x509_st*);
+void X509_STORE_set_check_crl(struct x509_store_st* ctx, int (*check_crl)(struct x509_store_ctx_st*,struct X509_crl_st*));
+int (*X509_STORE_get_check_crl(const struct x509_store_st* ctx))(struct x509_store_ctx_st*,struct X509_crl_st*);
+void X509_STORE_set_cert_crl(struct x509_store_st* ctx, int (*cert_crl)(struct x509_store_ctx_st*,struct X509_crl_st*,struct x509_st*));
+int (*X509_STORE_get_cert_crl(const struct x509_store_st* ctx))(struct x509_store_ctx_st*,struct X509_crl_st*,struct x509_st*);
+void X509_STORE_set_check_policy(struct x509_store_st* ctx, int (*check_policy)(struct x509_store_ctx_st*));
+int (*X509_STORE_get_check_policy(const struct x509_store_st* ctx))(struct x509_store_ctx_st*);
+void X509_STORE_set_lookup_certs(struct x509_store_st* ctx, struct stack_st_X509* (*lookup_certs)(struct x509_store_ctx_st*,const struct X509_name_st*));
+struct stack_st_X509* (*X509_STORE_get_lookup_certs(const struct x509_store_st* ctx))(struct x509_store_ctx_st*,const struct X509_name_st*);
+void X509_STORE_set_lookup_crls(struct x509_store_st* ctx, struct stack_st_X509_CRL* (*lookup_crls)(const struct x509_store_ctx_st*,const struct X509_name_st*));
+struct stack_st_X509_CRL* (*X509_STORE_get_lookup_crls(const struct x509_store_st* ctx))(const struct x509_store_ctx_st*,const struct X509_name_st*);
+void X509_STORE_set_cleanup(struct x509_store_st* ctx, int (*cleanup)(struct x509_store_ctx_st*));
+int (*X509_STORE_get_cleanup(const struct x509_store_st* ctx))(struct x509_store_ctx_st*);
+int X509_STORE_set_ex_data(struct x509_store_st* ctx, int idx, void* data);
+void* X509_STORE_get_ex_data(const struct x509_store_st* ctx, int idx);
 struct x509_store_ctx_st* X509_STORE_CTX_new_ex(struct ossl_lib_ctx_st* libctx, const char* propq);
 struct x509_store_ctx_st* X509_STORE_CTX_new();
 int X509_STORE_CTX_get1_issuer(struct x509_st** issuer, struct x509_store_ctx_st* ctx, struct x509_st* x);
 void X509_STORE_CTX_free(struct x509_store_ctx_st* ctx);
 int X509_STORE_CTX_init(struct x509_store_ctx_st* ctx, struct x509_store_st* trust_store, struct x509_st* target, struct stack_st_X509* untrusted);
-int X509_STORE_CTX_init_rpk(struct x509_store_ctx_st* ctx, struct x509_store_st* trust_store, struct evp_pkey_st* rpk);
 void X509_STORE_CTX_set0_trusted_stack(struct x509_store_ctx_st* ctx, struct stack_st_X509* sk);
 void X509_STORE_CTX_cleanup(struct x509_store_ctx_st* ctx);
 struct x509_store_st* X509_STORE_CTX_get0_store(const struct x509_store_ctx_st* ctx);
 struct x509_st* X509_STORE_CTX_get0_cert(const struct x509_store_ctx_st* ctx);
-struct evp_pkey_st* X509_STORE_CTX_get0_rpk(const struct x509_store_ctx_st* ctx);
 struct stack_st_X509* X509_STORE_CTX_get0_untrusted(const struct x509_store_ctx_st* ctx);
 void X509_STORE_CTX_set0_untrusted(struct x509_store_ctx_st* ctx, struct stack_st_X509* sk);
 void X509_STORE_CTX_set_verify_cb(struct x509_store_ctx_st* ctx, int (*verify)(int,struct x509_store_ctx_st*));
@@ -7835,7 +8114,6 @@ int (*X509_STORE_CTX_get_verify(const struct x509_store_ctx_st* ctx))(struct x50
 int (*X509_STORE_CTX_get_get_issuer(const struct x509_store_ctx_st* ctx))(struct x509_st**,struct x509_store_ctx_st*,struct x509_st*);
 int (*X509_STORE_CTX_get_check_issued(const struct x509_store_ctx_st* ctx))(struct x509_store_ctx_st*,struct x509_st*,struct x509_st*);
 int (*X509_STORE_CTX_get_check_revocation(const struct x509_store_ctx_st* ctx))(struct x509_store_ctx_st*);
-void X509_STORE_CTX_set_get_crl(struct x509_store_ctx_st* ctx, int (*get_crl)(struct x509_store_ctx_st*,struct X509_crl_st**,struct x509_st*));
 int (*X509_STORE_CTX_get_get_crl(const struct x509_store_ctx_st* ctx))(struct x509_store_ctx_st*,struct X509_crl_st**,struct x509_st*);
 int (*X509_STORE_CTX_get_check_crl(const struct x509_store_ctx_st* ctx))(struct x509_store_ctx_st*,struct X509_crl_st*);
 int (*X509_STORE_CTX_get_cert_crl(const struct x509_store_ctx_st* ctx))(struct x509_store_ctx_st*,struct X509_crl_st*,struct x509_st*);
@@ -7843,34 +8121,34 @@ int (*X509_STORE_CTX_get_check_policy(const struct x509_store_ctx_st* ctx))(stru
 struct stack_st_X509* (*X509_STORE_CTX_get_lookup_certs(const struct x509_store_ctx_st* ctx))(struct x509_store_ctx_st*,const struct X509_name_st*);
 struct stack_st_X509_CRL* (*X509_STORE_CTX_get_lookup_crls(const struct x509_store_ctx_st* ctx))(const struct x509_store_ctx_st*,const struct X509_name_st*);
 int (*X509_STORE_CTX_get_cleanup(const struct x509_store_ctx_st* ctx))(struct x509_store_ctx_st*);
-struct x509_lookup_st* X509_STORE_add_lookup(struct x509_store_st* xs, struct x509_lookup_method_st* m);
+struct x509_lookup_st* X509_STORE_add_lookup(struct x509_store_st* v, struct x509_lookup_method_st* m);
 struct x509_lookup_method_st* X509_LOOKUP_hash_dir();
 struct x509_lookup_method_st* X509_LOOKUP_file();
 struct x509_lookup_method_st* X509_LOOKUP_store();
 struct x509_lookup_method_st* X509_LOOKUP_meth_new(const char* name);
 void X509_LOOKUP_meth_free(struct x509_lookup_method_st* method);
 int X509_LOOKUP_meth_set_new_item(struct x509_lookup_method_st* method, int (*new_item)(struct x509_lookup_st*));
-int (*X509_LOOKUP_meth_get_new_item(const struct x509_lookup_method_st* _function_pointer_result_var_name_a57))(struct x509_lookup_st*);
+int (*X509_LOOKUP_meth_get_new_item(const struct x509_lookup_method_st* _function_pointer_result_var_name_a53))(struct x509_lookup_st*);
 int X509_LOOKUP_meth_set_free(struct x509_lookup_method_st* method, void (*free_fn)(struct x509_lookup_st*));
-void (*X509_LOOKUP_meth_get_free(const struct x509_lookup_method_st* _function_pointer_result_var_name_a58))(struct x509_lookup_st*);
+void (*X509_LOOKUP_meth_get_free(const struct x509_lookup_method_st* _function_pointer_result_var_name_a54))(struct x509_lookup_st*);
 int X509_LOOKUP_meth_set_init(struct x509_lookup_method_st* method, int (*init)(struct x509_lookup_st*));
-int (*X509_LOOKUP_meth_get_init(const struct x509_lookup_method_st* _function_pointer_result_var_name_a59))(struct x509_lookup_st*);
+int (*X509_LOOKUP_meth_get_init(const struct x509_lookup_method_st* _function_pointer_result_var_name_a55))(struct x509_lookup_st*);
 int X509_LOOKUP_meth_set_shutdown(struct x509_lookup_method_st* method, int (*shutdown)(struct x509_lookup_st*));
-int (*X509_LOOKUP_meth_get_shutdown(const struct x509_lookup_method_st* _function_pointer_result_var_name_a60))(struct x509_lookup_st*);
+int (*X509_LOOKUP_meth_get_shutdown(const struct x509_lookup_method_st* _function_pointer_result_var_name_a56))(struct x509_lookup_st*);
 int X509_LOOKUP_meth_set_ctrl(struct x509_lookup_method_st* method, int (*ctrl_fn)(struct x509_lookup_st*,int,const char*,long,char**));
 int (*X509_LOOKUP_meth_get_ctrl(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,int,const char*,long,char**);
-int X509_LOOKUP_meth_set_get_by_subject(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY23,const struct X509_name_st*,struct x509_object_st*));
-int (*X509_LOOKUP_meth_get_get_by_subject(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY23,const struct X509_name_st*,struct x509_object_st*);
-int X509_LOOKUP_meth_set_get_by_issuer_serial(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY23,const struct X509_name_st*,const struct asn1_string_st*,struct x509_object_st*));
-int (*X509_LOOKUP_meth_get_get_by_issuer_serial(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY23,const struct X509_name_st*,const struct asn1_string_st*,struct x509_object_st*);
-int X509_LOOKUP_meth_set_get_by_fingerprint(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY23,const unsigned char*,int,struct x509_object_st*));
-int (*X509_LOOKUP_meth_get_get_by_fingerprint(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY23,const unsigned char*,int,struct x509_object_st*);
-int X509_LOOKUP_meth_set_get_by_alias(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY23,const char*,int,struct x509_object_st*));
-int (*X509_LOOKUP_meth_get_get_by_alias(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY23,const char*,int,struct x509_object_st*);
-int X509_STORE_add_cert(struct x509_store_st* xs, struct x509_st* x);
-int X509_STORE_add_crl(struct x509_store_st* xs, struct X509_crl_st* x);
-int X509_STORE_CTX_get_by_subject(const struct x509_store_ctx_st* vs, enum anonymous_typeY23 type, const struct X509_name_st* name, struct x509_object_st* ret);
-struct x509_object_st* X509_STORE_CTX_get_obj_by_subject(struct x509_store_ctx_st* vs, enum anonymous_typeY23 type, const struct X509_name_st* name);
+int X509_LOOKUP_meth_set_get_by_subject(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY37,const struct X509_name_st*,struct x509_object_st*));
+int (*X509_LOOKUP_meth_get_get_by_subject(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY37,const struct X509_name_st*,struct x509_object_st*);
+int X509_LOOKUP_meth_set_get_by_issuer_serial(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY37,const struct X509_name_st*,const struct asn1_string_st*,struct x509_object_st*));
+int (*X509_LOOKUP_meth_get_get_by_issuer_serial(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY37,const struct X509_name_st*,const struct asn1_string_st*,struct x509_object_st*);
+int X509_LOOKUP_meth_set_get_by_fingerprint(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY37,const unsigned char*,int,struct x509_object_st*));
+int (*X509_LOOKUP_meth_get_get_by_fingerprint(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY37,const unsigned char*,int,struct x509_object_st*);
+int X509_LOOKUP_meth_set_get_by_alias(struct x509_lookup_method_st* method, int (*fn)(struct x509_lookup_st*,enum anonymous_typeY37,const char*,int,struct x509_object_st*));
+int (*X509_LOOKUP_meth_get_get_by_alias(const struct x509_lookup_method_st* method))(struct x509_lookup_st*,enum anonymous_typeY37,const char*,int,struct x509_object_st*);
+int X509_STORE_add_cert(struct x509_store_st* ctx, struct x509_st* x);
+int X509_STORE_add_crl(struct x509_store_st* ctx, struct X509_crl_st* x);
+int X509_STORE_CTX_get_by_subject(const struct x509_store_ctx_st* vs, enum anonymous_typeY37 type, const struct X509_name_st* name, struct x509_object_st* ret);
+struct x509_object_st* X509_STORE_CTX_get_obj_by_subject(struct x509_store_ctx_st* vs, enum anonymous_typeY37 type, const struct X509_name_st* name);
 int X509_LOOKUP_ctrl(struct x509_lookup_st* ctx, int cmd, const char* argc, long argl, char** ret);
 int X509_LOOKUP_ctrl_ex(struct x509_lookup_st* ctx, int cmd, const char* argc, long argl, char** ret, struct ossl_lib_ctx_st* libctx, const char* propq);
 int X509_load_cert_file(struct x509_lookup_st* ctx, const char* file, int type);
@@ -7881,24 +8159,24 @@ int X509_load_cert_crl_file_ex(struct x509_lookup_st* ctx, const char* file, int
 struct x509_lookup_st* X509_LOOKUP_new(struct x509_lookup_method_st* method);
 void X509_LOOKUP_free(struct x509_lookup_st* ctx);
 int X509_LOOKUP_init(struct x509_lookup_st* ctx);
-int X509_LOOKUP_by_subject(struct x509_lookup_st* ctx, enum anonymous_typeY23 type, const struct X509_name_st* name, struct x509_object_st* ret);
-int X509_LOOKUP_by_subject_ex(struct x509_lookup_st* ctx, enum anonymous_typeY23 type, const struct X509_name_st* name, struct x509_object_st* ret, struct ossl_lib_ctx_st* libctx, const char* propq);
-int X509_LOOKUP_by_issuer_serial(struct x509_lookup_st* ctx, enum anonymous_typeY23 type, const struct X509_name_st* name, const struct asn1_string_st* serial, struct x509_object_st* ret);
-int X509_LOOKUP_by_fingerprint(struct x509_lookup_st* ctx, enum anonymous_typeY23 type, const unsigned char* bytes, int len, struct x509_object_st* ret);
-int X509_LOOKUP_by_alias(struct x509_lookup_st* ctx, enum anonymous_typeY23 type, const char* str, int len, struct x509_object_st* ret);
+int X509_LOOKUP_by_subject(struct x509_lookup_st* ctx, enum anonymous_typeY37 type, const struct X509_name_st* name, struct x509_object_st* ret);
+int X509_LOOKUP_by_subject_ex(struct x509_lookup_st* ctx, enum anonymous_typeY37 type, const struct X509_name_st* name, struct x509_object_st* ret, struct ossl_lib_ctx_st* libctx, const char* propq);
+int X509_LOOKUP_by_issuer_serial(struct x509_lookup_st* ctx, enum anonymous_typeY37 type, const struct X509_name_st* name, const struct asn1_string_st* serial, struct x509_object_st* ret);
+int X509_LOOKUP_by_fingerprint(struct x509_lookup_st* ctx, enum anonymous_typeY37 type, const unsigned char* bytes, int len, struct x509_object_st* ret);
+int X509_LOOKUP_by_alias(struct x509_lookup_st* ctx, enum anonymous_typeY37 type, const char* str, int len, struct x509_object_st* ret);
 int X509_LOOKUP_set_method_data(struct x509_lookup_st* ctx, void* data);
 void* X509_LOOKUP_get_method_data(const struct x509_lookup_st* ctx);
 struct x509_store_st* X509_LOOKUP_get_store(const struct x509_lookup_st* ctx);
 int X509_LOOKUP_shutdown(struct x509_lookup_st* ctx);
-int X509_STORE_load_file(struct x509_store_st* xs, const char* file);
-int X509_STORE_load_path(struct x509_store_st* xs, const char* path);
-int X509_STORE_load_store(struct x509_store_st* xs, const char* store);
-int X509_STORE_load_locations(struct x509_store_st* s, const char* file, const char* dir);
-int X509_STORE_set_default_paths(struct x509_store_st* xs);
-int X509_STORE_load_file_ex(struct x509_store_st* xs, const char* file, struct ossl_lib_ctx_st* libctx, const char* propq);
-int X509_STORE_load_store_ex(struct x509_store_st* xs, const char* store, struct ossl_lib_ctx_st* libctx, const char* propq);
-int X509_STORE_load_locations_ex(struct x509_store_st* xs, const char* file, const char* dir, struct ossl_lib_ctx_st* libctx, const char* propq);
-int X509_STORE_set_default_paths_ex(struct x509_store_st* xs, struct ossl_lib_ctx_st* libctx, const char* propq);
+int X509_STORE_load_file(struct x509_store_st* ctx, const char* file);
+int X509_STORE_load_path(struct x509_store_st* ctx, const char* path);
+int X509_STORE_load_store(struct x509_store_st* ctx, const char* store);
+int X509_STORE_load_locations(struct x509_store_st* ctx, const char* file, const char* dir);
+int X509_STORE_set_default_paths(struct x509_store_st* ctx);
+int X509_STORE_load_file_ex(struct x509_store_st* ctx, const char* file, struct ossl_lib_ctx_st* libctx, const char* propq);
+int X509_STORE_load_store_ex(struct x509_store_st* ctx, const char* store, struct ossl_lib_ctx_st* libctx, const char* propq);
+int X509_STORE_load_locations_ex(struct x509_store_st* ctx, const char* file, const char* dir, struct ossl_lib_ctx_st* libctx, const char* propq);
+int X509_STORE_set_default_paths_ex(struct x509_store_st* ctx, struct ossl_lib_ctx_st* libctx, const char* propq);
 int X509_STORE_CTX_set_ex_data(struct x509_store_ctx_st* ctx, int idx, void* data);
 void* X509_STORE_CTX_get_ex_data(const struct x509_store_ctx_st* ctx, int idx);
 int X509_STORE_CTX_get_error(const struct x509_store_ctx_st* ctx);
@@ -7913,15 +8191,13 @@ struct x509_store_ctx_st* X509_STORE_CTX_get0_parent_ctx(const struct x509_store
 struct stack_st_X509* X509_STORE_CTX_get0_chain(const struct x509_store_ctx_st* ctx);
 struct stack_st_X509* X509_STORE_CTX_get1_chain(const struct x509_store_ctx_st* ctx);
 void X509_STORE_CTX_set_cert(struct x509_store_ctx_st* ctx, struct x509_st* target);
-void X509_STORE_CTX_set0_rpk(struct x509_store_ctx_st* ctx, struct evp_pkey_st* target);
 void X509_STORE_CTX_set0_verified_chain(struct x509_store_ctx_st* c, struct stack_st_X509* sk);
 void X509_STORE_CTX_set0_crls(struct x509_store_ctx_st* ctx, struct stack_st_X509_CRL* sk);
 int X509_STORE_CTX_set_purpose(struct x509_store_ctx_st* ctx, int purpose);
 int X509_STORE_CTX_set_trust(struct x509_store_ctx_st* ctx, int trust);
 int X509_STORE_CTX_purpose_inherit(struct x509_store_ctx_st* ctx, int def_purpose, int purpose, int trust);
 void X509_STORE_CTX_set_flags(struct x509_store_ctx_st* ctx, unsigned long  int flags);
-void X509_STORE_CTX_set_time(struct x509_store_ctx_st* ctx, unsigned long  int flags, long t);
-void X509_STORE_CTX_set_current_reasons(struct x509_store_ctx_st* ctx, unsigned int current_reasons);
+void X509_STORE_CTX_set_time(struct x509_store_ctx_st* ctx, unsigned long  int flags, long  int t);
 struct X509_POLICY_TREE_st* X509_STORE_CTX_get0_policy_tree(const struct x509_store_ctx_st* ctx);
 int X509_STORE_CTX_get_explicit_policy(const struct x509_store_ctx_st* ctx);
 int X509_STORE_CTX_get_num_untrusted(const struct x509_store_ctx_st* ctx);
@@ -7941,8 +8217,8 @@ int X509_VERIFY_PARAM_set_purpose(struct X509_VERIFY_PARAM_st* param, int purpos
 int X509_VERIFY_PARAM_set_trust(struct X509_VERIFY_PARAM_st* param, int trust);
 void X509_VERIFY_PARAM_set_depth(struct X509_VERIFY_PARAM_st* param, int depth);
 void X509_VERIFY_PARAM_set_auth_level(struct X509_VERIFY_PARAM_st* param, int auth_level);
-long X509_VERIFY_PARAM_get_time(const struct X509_VERIFY_PARAM_st* param);
-void X509_VERIFY_PARAM_set_time(struct X509_VERIFY_PARAM_st* param, long t);
+long  int X509_VERIFY_PARAM_get_time(const struct X509_VERIFY_PARAM_st* param);
+void X509_VERIFY_PARAM_set_time(struct X509_VERIFY_PARAM_st* param, long  int t);
 int X509_VERIFY_PARAM_add0_policy(struct X509_VERIFY_PARAM_st* param, struct asn1_object_st* policy);
 int X509_VERIFY_PARAM_set1_policies(struct X509_VERIFY_PARAM_st* param, struct stack_st_ASN1_OBJECT* policies);
 int X509_VERIFY_PARAM_set_inh_flags(struct X509_VERIFY_PARAM_st* param, unsigned int flags);
@@ -7953,7 +8229,7 @@ int X509_VERIFY_PARAM_add1_host(struct X509_VERIFY_PARAM_st* param, const char* 
 void X509_VERIFY_PARAM_set_hostflags(struct X509_VERIFY_PARAM_st* param, unsigned int flags);
 unsigned int X509_VERIFY_PARAM_get_hostflags(const struct X509_VERIFY_PARAM_st* param);
 char* X509_VERIFY_PARAM_get0_peername(const struct X509_VERIFY_PARAM_st* param);
-void X509_VERIFY_PARAM_move_peername(struct X509_VERIFY_PARAM_st* anonymous_var_nameX1437, struct X509_VERIFY_PARAM_st* anonymous_var_nameX1438);
+void X509_VERIFY_PARAM_move_peername(struct X509_VERIFY_PARAM_st* anonymous_var_nameX283, struct X509_VERIFY_PARAM_st* anonymous_var_nameX284);
 char* X509_VERIFY_PARAM_get0_email(struct X509_VERIFY_PARAM_st* param);
 int X509_VERIFY_PARAM_set1_email(struct X509_VERIFY_PARAM_st* param, const char* email, unsigned long  int emaillen);
 char* X509_VERIFY_PARAM_get1_ip_asc(struct X509_VERIFY_PARAM_st* param);
@@ -7984,8 +8260,8 @@ struct pkcs7_issuer_and_serial_st* d2i_PKCS7_ISSUER_AND_SERIAL(struct pkcs7_issu
 int i2d_PKCS7_ISSUER_AND_SERIAL(const struct pkcs7_issuer_and_serial_st* a, unsigned char** out);
 const struct ASN1_ITEM_st* PKCS7_ISSUER_AND_SERIAL_it();
 int PKCS7_ISSUER_AND_SERIAL_digest(struct pkcs7_issuer_and_serial_st* data, const struct evp_md_st* type, unsigned char* md, unsigned int* len);
-struct pkcs7_st* d2i_PKCS7_fp(struct __sFILE* fp, struct pkcs7_st** p7);
-int i2d_PKCS7_fp(struct __sFILE* fp, const struct pkcs7_st* p7);
+struct pkcs7_st* d2i_PKCS7_fp(struct _IO_FILE* fp, struct pkcs7_st** p7);
+int i2d_PKCS7_fp(struct _IO_FILE* fp, const struct pkcs7_st* p7);
 struct pkcs7_st* PKCS7_dup(const struct pkcs7_st* a);
 struct pkcs7_st* d2i_PKCS7_bio(struct bio_st* bp, struct pkcs7_st** p7);
 int i2d_PKCS7_bio(struct bio_st* bp, const struct pkcs7_st* p7);
@@ -8049,11 +8325,11 @@ int PKCS7_set_content(struct pkcs7_st* p7, struct pkcs7_st* p7_data);
 int PKCS7_SIGNER_INFO_set(struct pkcs7_signer_info_st* p7i, struct x509_st* x509, struct evp_pkey_st* pkey, const struct evp_md_st* dgst);
 int PKCS7_SIGNER_INFO_sign(struct pkcs7_signer_info_st* si);
 int PKCS7_add_signer(struct pkcs7_st* p7, struct pkcs7_signer_info_st* p7i);
-int PKCS7_add_certificate(struct pkcs7_st* p7, struct x509_st* cert);
-int PKCS7_add_crl(struct pkcs7_st* p7, struct X509_crl_st* crl);
+int PKCS7_add_certificate(struct pkcs7_st* p7, struct x509_st* x509);
+int PKCS7_add_crl(struct pkcs7_st* p7, struct X509_crl_st* x509);
 int PKCS7_content_new(struct pkcs7_st* p7, int nid);
 int PKCS7_dataVerify(struct x509_store_st* cert_store, struct x509_store_ctx_st* ctx, struct bio_st* bio, struct pkcs7_st* p7, struct pkcs7_signer_info_st* si);
-int PKCS7_signatureVerify(struct bio_st* bio, struct pkcs7_st* p7, struct pkcs7_signer_info_st* si, struct x509_st* signer);
+int PKCS7_signatureVerify(struct bio_st* bio, struct pkcs7_st* p7, struct pkcs7_signer_info_st* si, struct x509_st* x509);
 struct bio_st* PKCS7_dataInit(struct pkcs7_st* p7, struct bio_st* bio);
 int PKCS7_dataFinal(struct pkcs7_st* p7, struct bio_st* bio);
 struct bio_st* PKCS7_dataDecode(struct pkcs7_st* p7, struct evp_pkey_st* pkey, struct bio_st* in_bio, struct x509_st* pcert);
@@ -8133,13 +8409,13 @@ struct X509_crl_st* X509_CRL_load_http(const char* url, struct bio_st* bio, stru
 int CONF_set_default_method(struct conf_method_st* meth);
 void CONF_set_nconf(struct conf_st* conf, struct lhash_st_CONF_VALUE* hash);
 struct lhash_st_CONF_VALUE* CONF_load(struct lhash_st_CONF_VALUE* conf, const char* file, long* eline);
-struct lhash_st_CONF_VALUE* CONF_load_fp(struct lhash_st_CONF_VALUE* conf, struct __sFILE* fp, long* eline);
+struct lhash_st_CONF_VALUE* CONF_load_fp(struct lhash_st_CONF_VALUE* conf, struct _IO_FILE* fp, long* eline);
 struct lhash_st_CONF_VALUE* CONF_load_bio(struct lhash_st_CONF_VALUE* conf, struct bio_st* bp, long* eline);
 struct stack_st_CONF_VALUE* CONF_get_section(struct lhash_st_CONF_VALUE* conf, const char* section);
 char* CONF_get_string(struct lhash_st_CONF_VALUE* conf, const char* group, const char* name);
 long CONF_get_number(struct lhash_st_CONF_VALUE* conf, const char* group, const char* name);
 void CONF_free(struct lhash_st_CONF_VALUE* conf);
-int CONF_dump_fp(struct lhash_st_CONF_VALUE* conf, struct __sFILE* out);
+int CONF_dump_fp(struct lhash_st_CONF_VALUE* conf, struct _IO_FILE* out);
 int CONF_dump_bio(struct lhash_st_CONF_VALUE* conf, struct bio_st* out);
 void OPENSSL_config(const char* config_name);
 struct conf_st* NCONF_new_ex(struct ossl_lib_ctx_st* libctx, struct conf_method_st* meth);
@@ -8150,13 +8426,13 @@ struct conf_method_st* NCONF_WIN32();
 void NCONF_free(struct conf_st* conf);
 void NCONF_free_data(struct conf_st* conf);
 int NCONF_load(struct conf_st* conf, const char* file, long* eline);
-int NCONF_load_fp(struct conf_st* conf, struct __sFILE* fp, long* eline);
+int NCONF_load_fp(struct conf_st* conf, struct _IO_FILE* fp, long* eline);
 int NCONF_load_bio(struct conf_st* conf, struct bio_st* bp, long* eline);
 struct stack_st_OPENSSL_CSTRING* NCONF_get_section_names(const struct conf_st* conf);
 struct stack_st_CONF_VALUE* NCONF_get_section(const struct conf_st* conf, const char* section);
 char* NCONF_get_string(const struct conf_st* conf, const char* group, const char* name);
 int NCONF_get_number_e(const struct conf_st* conf, const char* group, const char* name, long* result);
-int NCONF_dump_fp(const struct conf_st* conf, struct __sFILE* out);
+int NCONF_dump_fp(const struct conf_st* conf, struct _IO_FILE* out);
 int NCONF_dump_bio(const struct conf_st* conf, struct bio_st* out);
 int CONF_modules_load(const struct conf_st* cnf, const char* appname, unsigned long  int flags);
 int CONF_modules_load_file_ex(struct ossl_lib_ctx_st* libctx, const char* filename, const char* appname, unsigned long  int flags);
@@ -8199,40 +8475,38 @@ int OSSL_HTTP_close(struct ossl_http_req_ctx_st* rctx, int ok);
 int OSSL_parse_url(const char* url, char** pscheme, char** puser, char** phost, char** pport, int* pport_num, char** ppath, char** pquery, char** pfrag);
 int OSSL_HTTP_parse_url(const char* url, int* pssl, char** puser, char** phost, char** pport, int* pport_num, char** ppath, char** pquery, char** pfrag);
 const char* OSSL_HTTP_adapt_proxy(const char* proxy, const char* no_proxy, const char* server, int use_ssl);
-void OSSL_HTTP_REQ_CTX_set_max_response_hdr_lines(struct ossl_http_req_ctx_st* rctx, unsigned long  int count);
-struct x509_st* d2i_X509_fp(struct __sFILE* fp, struct x509_st** x509);
-int i2d_X509_fp(struct __sFILE* fp, const struct x509_st* x509);
-struct X509_crl_st* d2i_X509_CRL_fp(struct __sFILE* fp, struct X509_crl_st** crl);
-int i2d_X509_CRL_fp(struct __sFILE* fp, const struct X509_crl_st* crl);
-struct X509_req_st* d2i_X509_REQ_fp(struct __sFILE* fp, struct X509_req_st** req);
-int i2d_X509_REQ_fp(struct __sFILE* fp, const struct X509_req_st* req);
-struct rsa_st* d2i_RSAPrivateKey_fp(struct __sFILE* fp, struct rsa_st** rsa);
-int i2d_RSAPrivateKey_fp(struct __sFILE* fp, const struct rsa_st* rsa);
-struct rsa_st* d2i_RSAPublicKey_fp(struct __sFILE* fp, struct rsa_st** rsa);
-int i2d_RSAPublicKey_fp(struct __sFILE* fp, const struct rsa_st* rsa);
-struct rsa_st* d2i_RSA_PUBKEY_fp(struct __sFILE* fp, struct rsa_st** rsa);
-int i2d_RSA_PUBKEY_fp(struct __sFILE* fp, const struct rsa_st* rsa);
-struct dsa_st* d2i_DSA_PUBKEY_fp(struct __sFILE* fp, struct dsa_st** dsa);
-int i2d_DSA_PUBKEY_fp(struct __sFILE* fp, const struct dsa_st* dsa);
-struct dsa_st* d2i_DSAPrivateKey_fp(struct __sFILE* fp, struct dsa_st** dsa);
-int i2d_DSAPrivateKey_fp(struct __sFILE* fp, const struct dsa_st* dsa);
-struct ec_key_st* d2i_EC_PUBKEY_fp(struct __sFILE* fp, struct ec_key_st** eckey);
-int i2d_EC_PUBKEY_fp(struct __sFILE* fp, const struct ec_key_st* eckey);
-struct ec_key_st* d2i_ECPrivateKey_fp(struct __sFILE* fp, struct ec_key_st** eckey);
-int i2d_ECPrivateKey_fp(struct __sFILE* fp, const struct ec_key_st* eckey);
-struct X509_sig_st* d2i_PKCS8_fp(struct __sFILE* fp, struct X509_sig_st** p8);
-int i2d_PKCS8_fp(struct __sFILE* fp, const struct X509_sig_st* p8);
-struct X509_pubkey_st* d2i_X509_PUBKEY_fp(struct __sFILE* fp, struct X509_pubkey_st** xpk);
-int i2d_X509_PUBKEY_fp(struct __sFILE* fp, const struct X509_pubkey_st* xpk);
-struct pkcs8_priv_key_info_st* d2i_PKCS8_PRIV_KEY_INFO_fp(struct __sFILE* fp, struct pkcs8_priv_key_info_st** p8inf);
-int i2d_PKCS8_PRIV_KEY_INFO_fp(struct __sFILE* fp, const struct pkcs8_priv_key_info_st* p8inf);
-int i2d_PKCS8PrivateKeyInfo_fp(struct __sFILE* fp, const struct evp_pkey_st* key);
-int i2d_PrivateKey_fp(struct __sFILE* fp, const struct evp_pkey_st* pkey);
-struct evp_pkey_st* d2i_PrivateKey_ex_fp(struct __sFILE* fp, struct evp_pkey_st** a, struct ossl_lib_ctx_st* libctx, const char* propq);
-struct evp_pkey_st* d2i_PrivateKey_fp(struct __sFILE* fp, struct evp_pkey_st** a);
-int i2d_PUBKEY_fp(struct __sFILE* fp, const struct evp_pkey_st* pkey);
-struct evp_pkey_st* d2i_PUBKEY_ex_fp(struct __sFILE* fp, struct evp_pkey_st** a, struct ossl_lib_ctx_st* libctx, const char* propq);
-struct evp_pkey_st* d2i_PUBKEY_fp(struct __sFILE* fp, struct evp_pkey_st** a);
+struct x509_st* d2i_X509_fp(struct _IO_FILE* fp, struct x509_st** x509);
+int i2d_X509_fp(struct _IO_FILE* fp, const struct x509_st* x509);
+struct X509_crl_st* d2i_X509_CRL_fp(struct _IO_FILE* fp, struct X509_crl_st** crl);
+int i2d_X509_CRL_fp(struct _IO_FILE* fp, const struct X509_crl_st* crl);
+struct X509_req_st* d2i_X509_REQ_fp(struct _IO_FILE* fp, struct X509_req_st** req);
+int i2d_X509_REQ_fp(struct _IO_FILE* fp, const struct X509_req_st* req);
+struct rsa_st* d2i_RSAPrivateKey_fp(struct _IO_FILE* fp, struct rsa_st** rsa);
+int i2d_RSAPrivateKey_fp(struct _IO_FILE* fp, const struct rsa_st* rsa);
+struct rsa_st* d2i_RSAPublicKey_fp(struct _IO_FILE* fp, struct rsa_st** rsa);
+int i2d_RSAPublicKey_fp(struct _IO_FILE* fp, const struct rsa_st* rsa);
+struct rsa_st* d2i_RSA_PUBKEY_fp(struct _IO_FILE* fp, struct rsa_st** rsa);
+int i2d_RSA_PUBKEY_fp(struct _IO_FILE* fp, const struct rsa_st* rsa);
+struct dsa_st* d2i_DSA_PUBKEY_fp(struct _IO_FILE* fp, struct dsa_st** dsa);
+int i2d_DSA_PUBKEY_fp(struct _IO_FILE* fp, const struct dsa_st* dsa);
+struct dsa_st* d2i_DSAPrivateKey_fp(struct _IO_FILE* fp, struct dsa_st** dsa);
+int i2d_DSAPrivateKey_fp(struct _IO_FILE* fp, const struct dsa_st* dsa);
+struct ec_key_st* d2i_EC_PUBKEY_fp(struct _IO_FILE* fp, struct ec_key_st** eckey);
+int i2d_EC_PUBKEY_fp(struct _IO_FILE* fp, const struct ec_key_st* eckey);
+struct ec_key_st* d2i_ECPrivateKey_fp(struct _IO_FILE* fp, struct ec_key_st** eckey);
+int i2d_ECPrivateKey_fp(struct _IO_FILE* fp, const struct ec_key_st* eckey);
+struct X509_sig_st* d2i_PKCS8_fp(struct _IO_FILE* fp, struct X509_sig_st** p8);
+int i2d_PKCS8_fp(struct _IO_FILE* fp, const struct X509_sig_st* p8);
+struct X509_pubkey_st* d2i_X509_PUBKEY_fp(struct _IO_FILE* fp, struct X509_pubkey_st** xpk);
+int i2d_X509_PUBKEY_fp(struct _IO_FILE* fp, const struct X509_pubkey_st* xpk);
+struct pkcs8_priv_key_info_st* d2i_PKCS8_PRIV_KEY_INFO_fp(struct _IO_FILE* fp, struct pkcs8_priv_key_info_st** p8inf);
+int i2d_PKCS8_PRIV_KEY_INFO_fp(struct _IO_FILE* fp, const struct pkcs8_priv_key_info_st* p8inf);
+int i2d_PKCS8PrivateKeyInfo_fp(struct _IO_FILE* fp, const struct evp_pkey_st* key);
+int i2d_PrivateKey_fp(struct _IO_FILE* fp, const struct evp_pkey_st* pkey);
+struct evp_pkey_st* d2i_PrivateKey_ex_fp(struct _IO_FILE* fp, struct evp_pkey_st** a, struct ossl_lib_ctx_st* libctx, const char* propq);
+struct evp_pkey_st* d2i_PrivateKey_fp(struct _IO_FILE* fp, struct evp_pkey_st** a);
+int i2d_PUBKEY_fp(struct _IO_FILE* fp, const struct evp_pkey_st* pkey);
+struct evp_pkey_st* d2i_PUBKEY_fp(struct _IO_FILE* fp, struct evp_pkey_st** a);
 struct x509_st* d2i_X509_bio(struct bio_st* bp, struct x509_st** x509);
 int i2d_X509_bio(struct bio_st* bp, const struct x509_st* x509);
 struct X509_crl_st* d2i_X509_CRL_bio(struct bio_st* bp, struct X509_crl_st** crl);
@@ -8264,7 +8538,6 @@ int i2d_PrivateKey_bio(struct bio_st* bp, const struct evp_pkey_st* pkey);
 struct evp_pkey_st* d2i_PrivateKey_ex_bio(struct bio_st* bp, struct evp_pkey_st** a, struct ossl_lib_ctx_st* libctx, const char* propq);
 struct evp_pkey_st* d2i_PrivateKey_bio(struct bio_st* bp, struct evp_pkey_st** a);
 int i2d_PUBKEY_bio(struct bio_st* bp, const struct evp_pkey_st* pkey);
-struct evp_pkey_st* d2i_PUBKEY_ex_bio(struct bio_st* bp, struct evp_pkey_st** a, struct ossl_lib_ctx_st* libctx, const char* propq);
 struct evp_pkey_st* d2i_PUBKEY_bio(struct bio_st* bp, struct evp_pkey_st** a);
 struct x509_st* X509_dup(const struct x509_st* a);
 struct X509_algor_st* X509_ALGOR_dup(const struct X509_algor_st* a);
@@ -8281,11 +8554,11 @@ int X509_ALGOR_cmp(const struct X509_algor_st* a, const struct X509_algor_st* b)
 int X509_ALGOR_copy(struct X509_algor_st* dest, const struct X509_algor_st* src);
 struct X509_name_st* X509_NAME_dup(const struct X509_name_st* a);
 struct X509_name_entry_st* X509_NAME_ENTRY_dup(const struct X509_name_entry_st* a);
-int X509_cmp_time(const struct asn1_string_st* s, long* t);
+int X509_cmp_time(const struct asn1_string_st* s, long  int* t);
 int X509_cmp_current_time(const struct asn1_string_st* s);
 int X509_cmp_timeframe(const struct X509_VERIFY_PARAM_st* vpm, const struct asn1_string_st* start, const struct asn1_string_st* end);
-struct asn1_string_st* X509_time_adj(struct asn1_string_st* s, long adj, long* t);
-struct asn1_string_st* X509_time_adj_ex(struct asn1_string_st* s, int offset_day, long offset_sec, long* t);
+struct asn1_string_st* X509_time_adj(struct asn1_string_st* s, long adj, long  int* t);
+struct asn1_string_st* X509_time_adj_ex(struct asn1_string_st* s, int offset_day, long offset_sec, long  int* t);
 struct asn1_string_st* X509_gmtime_adj(struct asn1_string_st* s, long adj);
 const char* X509_get_default_cert_area();
 const char* X509_get_default_cert_dir();
@@ -8488,7 +8761,7 @@ int X509_REQ_get_signature_nid(const struct X509_req_st* req);
 int i2d_re_X509_REQ_tbs(struct X509_req_st* req, unsigned char** pp);
 int X509_REQ_set_pubkey(struct X509_req_st* x, struct evp_pkey_st* pkey);
 struct evp_pkey_st* X509_REQ_get_pubkey(struct X509_req_st* req);
-struct evp_pkey_st* X509_REQ_get0_pubkey(const struct X509_req_st* req);
+struct evp_pkey_st* X509_REQ_get0_pubkey(struct X509_req_st* req);
 struct X509_pubkey_st* X509_REQ_get_X509_PUBKEY(struct X509_req_st* req);
 int X509_REQ_extension_nid(int nid);
 int* X509_REQ_get_extension_nids();
@@ -8528,11 +8801,10 @@ const struct asn1_string_st* X509_REVOKED_get0_revocationDate(const struct x509_
 int X509_REVOKED_set_revocationDate(struct x509_revoked_st* r, struct asn1_string_st* tm);
 const struct stack_st_X509_EXTENSION* X509_REVOKED_get0_extensions(const struct x509_revoked_st* r);
 struct X509_crl_st* X509_CRL_diff(struct X509_crl_st* base, struct X509_crl_st* newer, struct evp_pkey_st* skey, const struct evp_md_st* md, unsigned int flags);
-int X509_REQ_check_private_key(const struct X509_req_st* req, struct evp_pkey_st* pkey);
-int X509_check_private_key(const struct x509_st* cert, const struct evp_pkey_st* pkey);
+int X509_REQ_check_private_key(struct X509_req_st* x509, struct evp_pkey_st* pkey);
+int X509_check_private_key(const struct x509_st* x509, const struct evp_pkey_st* pkey);
 int X509_chain_check_suiteb(int* perror_depth, struct x509_st* x, struct stack_st_X509* chain, unsigned long  int flags);
 int X509_CRL_check_suiteb(struct X509_crl_st* crl, struct evp_pkey_st* pk, unsigned long  int flags);
-void OSSL_STACK_OF_X509_free(struct stack_st_X509* certs);
 struct stack_st_X509* X509_chain_up_ref(struct stack_st_X509* chain);
 int X509_issuer_and_serial_cmp(const struct x509_st* a, const struct x509_st* b);
 unsigned long  int X509_issuer_and_serial_hash(struct x509_st* a);
@@ -8552,11 +8824,11 @@ unsigned long  int X509_NAME_hash_old(const struct X509_name_st* x);
 int X509_CRL_cmp(const struct X509_crl_st* a, const struct X509_crl_st* b);
 int X509_CRL_match(const struct X509_crl_st* a, const struct X509_crl_st* b);
 int X509_aux_print(struct bio_st* out, struct x509_st* x, int indent);
-int X509_print_ex_fp(struct __sFILE* bp, struct x509_st* x, unsigned long  int nmflag, unsigned long  int cflag);
-int X509_print_fp(struct __sFILE* bp, struct x509_st* x);
-int X509_CRL_print_fp(struct __sFILE* bp, struct X509_crl_st* x);
-int X509_REQ_print_fp(struct __sFILE* bp, struct X509_req_st* req);
-int X509_NAME_print_ex_fp(struct __sFILE* fp, const struct X509_name_st* nm, int indent, unsigned long  int flags);
+int X509_print_ex_fp(struct _IO_FILE* bp, struct x509_st* x, unsigned long  int nmflag, unsigned long  int cflag);
+int X509_print_fp(struct _IO_FILE* bp, struct x509_st* x);
+int X509_CRL_print_fp(struct _IO_FILE* bp, struct X509_crl_st* x);
+int X509_REQ_print_fp(struct _IO_FILE* bp, struct X509_req_st* req);
+int X509_NAME_print_ex_fp(struct _IO_FILE* fp, const struct X509_name_st* nm, int indent, unsigned long  int flags);
 int X509_NAME_print(struct bio_st* bp, const struct X509_name_st* name, int obase);
 int X509_NAME_print_ex(struct bio_st* out, const struct X509_name_st* nm, int indent, unsigned long  int flags);
 int X509_print_ex(struct bio_st* bp, struct x509_st* x, unsigned long  int nmflag, unsigned long  int cflag);
@@ -8593,7 +8865,6 @@ int X509v3_get_ext_by_critical(const struct stack_st_X509_EXTENSION* x, int crit
 struct X509_extension_st* X509v3_get_ext(const struct stack_st_X509_EXTENSION* x, int loc);
 struct X509_extension_st* X509v3_delete_ext(struct stack_st_X509_EXTENSION* x, int loc);
 struct stack_st_X509_EXTENSION* X509v3_add_ext(struct stack_st_X509_EXTENSION** x, struct X509_extension_st* ex, int loc);
-struct stack_st_X509_EXTENSION* X509v3_add_extensions(struct stack_st_X509_EXTENSION** target, const struct stack_st_X509_EXTENSION* exts);
 int X509_get_ext_count(const struct x509_st* x);
 int X509_get_ext_by_NID(const struct x509_st* x, int nid, int lastpos);
 int X509_get_ext_by_OBJ(const struct x509_st* x, const struct asn1_object_st* obj, int lastpos);
@@ -8674,11 +8945,6 @@ void PBKDF2PARAM_free(struct PBKDF2PARAM_st* a);
 struct PBKDF2PARAM_st* d2i_PBKDF2PARAM(struct PBKDF2PARAM_st** a, const unsigned char** in, long len);
 int i2d_PBKDF2PARAM(const struct PBKDF2PARAM_st* a, unsigned char** out);
 const struct ASN1_ITEM_st* PBKDF2PARAM_it();
-struct anonymous_typeX22* PBMAC1PARAM_new();
-void PBMAC1PARAM_free(struct anonymous_typeX22* a);
-struct anonymous_typeX22* d2i_PBMAC1PARAM(struct anonymous_typeX22** a, const unsigned char** in, long len);
-int i2d_PBMAC1PARAM(const struct anonymous_typeX22* a, unsigned char** out);
-const struct ASN1_ITEM_st* PBMAC1PARAM_it();
 struct SCRYPT_PARAMS_st* SCRYPT_PARAMS_new();
 void SCRYPT_PARAMS_free(struct SCRYPT_PARAMS_st* a);
 struct SCRYPT_PARAMS_st* d2i_SCRYPT_PARAMS(struct SCRYPT_PARAMS_st** a, const unsigned char** in, long len);
@@ -8691,10 +8957,9 @@ struct X509_algor_st* PKCS5_pbe_set_ex(int alg, int iter, const unsigned char* s
 struct X509_algor_st* PKCS5_pbe2_set(const struct evp_cipher_st* cipher, int iter, unsigned char* salt, int saltlen);
 struct X509_algor_st* PKCS5_pbe2_set_iv(const struct evp_cipher_st* cipher, int iter, unsigned char* salt, int saltlen, unsigned char* aiv, int prf_nid);
 struct X509_algor_st* PKCS5_pbe2_set_iv_ex(const struct evp_cipher_st* cipher, int iter, unsigned char* salt, int saltlen, unsigned char* aiv, int prf_nid, struct ossl_lib_ctx_st* libctx);
-struct X509_algor_st* PKCS5_pbe2_set_scrypt(const struct evp_cipher_st* cipher, const unsigned char* salt, int saltlen, unsigned char* aiv, unsigned long  long N, unsigned long  long r, unsigned long  long p);
+struct X509_algor_st* PKCS5_pbe2_set_scrypt(const struct evp_cipher_st* cipher, const unsigned char* salt, int saltlen, unsigned char* aiv, unsigned long  int N, unsigned long  int r, unsigned long  int p);
 struct X509_algor_st* PKCS5_pbkdf2_set(int iter, unsigned char* salt, int saltlen, int prf_nid, int keylen);
 struct X509_algor_st* PKCS5_pbkdf2_set_ex(int iter, unsigned char* salt, int saltlen, int prf_nid, int keylen, struct ossl_lib_ctx_st* libctx);
-struct PBKDF2PARAM_st* PBMAC1_get1_pbkdf2_param(const struct X509_algor_st* macalg);
 struct pkcs8_priv_key_info_st* PKCS8_PRIV_KEY_INFO_new();
 void PKCS8_PRIV_KEY_INFO_free(struct pkcs8_priv_key_info_st* a);
 struct pkcs8_priv_key_info_st* d2i_PKCS8_PRIV_KEY_INFO(struct pkcs8_priv_key_info_st** a, const unsigned char** in, long len);
@@ -8709,7 +8974,6 @@ const struct stack_st_X509_ATTRIBUTE* PKCS8_pkey_get0_attrs(const struct pkcs8_p
 int PKCS8_pkey_add1_attr(struct pkcs8_priv_key_info_st* p8, struct x509_attributes_st* attr);
 int PKCS8_pkey_add1_attr_by_NID(struct pkcs8_priv_key_info_st* p8, int nid, int type, const unsigned char* bytes, int len);
 int PKCS8_pkey_add1_attr_by_OBJ(struct pkcs8_priv_key_info_st* p8, const struct asn1_object_st* obj, int type, const unsigned char* bytes, int len);
-void X509_PUBKEY_set0_public_key(struct X509_pubkey_st* pub, unsigned char* penc, int penclen);
 int X509_PUBKEY_set0_param(struct X509_pubkey_st* pub, struct asn1_object_st* aobj, int ptype, void* pval, unsigned char* penc, int penclen);
 int X509_PUBKEY_get0_param(struct asn1_object_st** ppkalg, const unsigned char** pk, int* ppklen, struct X509_algor_st** pa, const struct X509_pubkey_st* pub);
 int X509_PUBKEY_eq(const struct X509_pubkey_st* a, const struct X509_pubkey_st* b);
@@ -8725,12 +8989,12 @@ int PEM_ASN1_write_bio(int (*i2d)(const void*,unsigned char**), const char* name
 struct stack_st_X509_INFO* PEM_X509_INFO_read_bio(struct bio_st* bp, struct stack_st_X509_INFO* sk, int (*cb)(char*,int,int,void*), void* u);
 struct stack_st_X509_INFO* PEM_X509_INFO_read_bio_ex(struct bio_st* bp, struct stack_st_X509_INFO* sk, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
 int PEM_X509_INFO_write_bio(struct bio_st* bp, const struct X509_info_st* xi, struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cd)(char*,int,int,void*), void* u);
-int PEM_read(struct __sFILE* fp, char** name, char** header, unsigned char** data, long* len);
-int PEM_write(struct __sFILE* fp, const char* name, const char* hdr, const unsigned char* data, long len);
-void* PEM_ASN1_read(void* (*d2i)(void**,const unsigned char**,long), const char* name, struct __sFILE* fp, void** x, int (*cb)(char*,int,int,void*), void* u);
-int PEM_ASN1_write(int (*i2d)(const void*,unsigned char**), const char* name, struct __sFILE* fp, const void* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*callback)(char*,int,int,void*), void* u);
-struct stack_st_X509_INFO* PEM_X509_INFO_read(struct __sFILE* fp, struct stack_st_X509_INFO* sk, int (*cb)(char*,int,int,void*), void* u);
-struct stack_st_X509_INFO* PEM_X509_INFO_read_ex(struct __sFILE* fp, struct stack_st_X509_INFO* sk, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
+int PEM_read(struct _IO_FILE* fp, char** name, char** header, unsigned char** data, long* len);
+int PEM_write(struct _IO_FILE* fp, const char* name, const char* hdr, const unsigned char* data, long len);
+void* PEM_ASN1_read(void* (*d2i)(void**,const unsigned char**,long), const char* name, struct _IO_FILE* fp, void** x, int (*cb)(char*,int,int,void*), void* u);
+int PEM_ASN1_write(int (*i2d)(const void*,unsigned char**), const char* name, struct _IO_FILE* fp, const void* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*callback)(char*,int,int,void*), void* u);
+struct stack_st_X509_INFO* PEM_X509_INFO_read(struct _IO_FILE* fp, struct stack_st_X509_INFO* sk, int (*cb)(char*,int,int,void*), void* u);
+struct stack_st_X509_INFO* PEM_X509_INFO_read_ex(struct _IO_FILE* fp, struct stack_st_X509_INFO* sk, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
 int PEM_SignInit(struct evp_md_ctx_st* ctx, struct evp_md_st* type);
 int PEM_SignUpdate(struct evp_md_ctx_st* ctx, const unsigned char* d, unsigned int cnt);
 int PEM_SignFinal(struct evp_md_ctx_st* ctx, unsigned char* sigret, unsigned int* siglen, struct evp_pkey_st* pkey);
@@ -8738,112 +9002,112 @@ int PEM_def_callback(char* buf, int num, int rwflag, void* userdata);
 void PEM_proc_type(char* buf, int type);
 void PEM_dek_info(char* buf, const char* type, int len, const char* str);
 struct x509_st* PEM_read_bio_X509(struct bio_st* out, struct x509_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct x509_st* PEM_read_X509(struct __sFILE* out, struct x509_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct x509_st* PEM_read_X509(struct _IO_FILE* out, struct x509_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_X509(struct bio_st* out, const struct x509_st* x);
-int PEM_write_X509(struct __sFILE* out, const struct x509_st* x);
+int PEM_write_X509(struct _IO_FILE* out, const struct x509_st* x);
 struct x509_st* PEM_read_bio_X509_AUX(struct bio_st* out, struct x509_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct x509_st* PEM_read_X509_AUX(struct __sFILE* out, struct x509_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct x509_st* PEM_read_X509_AUX(struct _IO_FILE* out, struct x509_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_X509_AUX(struct bio_st* out, const struct x509_st* x);
-int PEM_write_X509_AUX(struct __sFILE* out, const struct x509_st* x);
+int PEM_write_X509_AUX(struct _IO_FILE* out, const struct x509_st* x);
 struct X509_req_st* PEM_read_bio_X509_REQ(struct bio_st* out, struct X509_req_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct X509_req_st* PEM_read_X509_REQ(struct __sFILE* out, struct X509_req_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct X509_req_st* PEM_read_X509_REQ(struct _IO_FILE* out, struct X509_req_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_X509_REQ(struct bio_st* out, const struct X509_req_st* x);
-int PEM_write_X509_REQ(struct __sFILE* out, const struct X509_req_st* x);
+int PEM_write_X509_REQ(struct _IO_FILE* out, const struct X509_req_st* x);
 int PEM_write_bio_X509_REQ_NEW(struct bio_st* out, const struct X509_req_st* x);
-int PEM_write_X509_REQ_NEW(struct __sFILE* out, const struct X509_req_st* x);
+int PEM_write_X509_REQ_NEW(struct _IO_FILE* out, const struct X509_req_st* x);
 struct X509_crl_st* PEM_read_bio_X509_CRL(struct bio_st* out, struct X509_crl_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct X509_crl_st* PEM_read_X509_CRL(struct __sFILE* out, struct X509_crl_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct X509_crl_st* PEM_read_X509_CRL(struct _IO_FILE* out, struct X509_crl_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_X509_CRL(struct bio_st* out, const struct X509_crl_st* x);
-int PEM_write_X509_CRL(struct __sFILE* out, const struct X509_crl_st* x);
+int PEM_write_X509_CRL(struct _IO_FILE* out, const struct X509_crl_st* x);
 struct X509_pubkey_st* PEM_read_bio_X509_PUBKEY(struct bio_st* out, struct X509_pubkey_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct X509_pubkey_st* PEM_read_X509_PUBKEY(struct __sFILE* out, struct X509_pubkey_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct X509_pubkey_st* PEM_read_X509_PUBKEY(struct _IO_FILE* out, struct X509_pubkey_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_X509_PUBKEY(struct bio_st* out, const struct X509_pubkey_st* x);
-int PEM_write_X509_PUBKEY(struct __sFILE* out, const struct X509_pubkey_st* x);
+int PEM_write_X509_PUBKEY(struct _IO_FILE* out, const struct X509_pubkey_st* x);
 struct pkcs7_st* PEM_read_bio_PKCS7(struct bio_st* out, struct pkcs7_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct pkcs7_st* PEM_read_PKCS7(struct __sFILE* out, struct pkcs7_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct pkcs7_st* PEM_read_PKCS7(struct _IO_FILE* out, struct pkcs7_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_PKCS7(struct bio_st* out, const struct pkcs7_st* x);
-int PEM_write_PKCS7(struct __sFILE* out, const struct pkcs7_st* x);
+int PEM_write_PKCS7(struct _IO_FILE* out, const struct pkcs7_st* x);
 struct Netscape_certificate_sequence* PEM_read_bio_NETSCAPE_CERT_SEQUENCE(struct bio_st* out, struct Netscape_certificate_sequence** x, int (*cb)(char*,int,int,void*), void* u);
-struct Netscape_certificate_sequence* PEM_read_NETSCAPE_CERT_SEQUENCE(struct __sFILE* out, struct Netscape_certificate_sequence** x, int (*cb)(char*,int,int,void*), void* u);
+struct Netscape_certificate_sequence* PEM_read_NETSCAPE_CERT_SEQUENCE(struct _IO_FILE* out, struct Netscape_certificate_sequence** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_NETSCAPE_CERT_SEQUENCE(struct bio_st* out, const struct Netscape_certificate_sequence* x);
-int PEM_write_NETSCAPE_CERT_SEQUENCE(struct __sFILE* out, const struct Netscape_certificate_sequence* x);
+int PEM_write_NETSCAPE_CERT_SEQUENCE(struct _IO_FILE* out, const struct Netscape_certificate_sequence* x);
 struct X509_sig_st* PEM_read_bio_PKCS8(struct bio_st* out, struct X509_sig_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct X509_sig_st* PEM_read_PKCS8(struct __sFILE* out, struct X509_sig_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct X509_sig_st* PEM_read_PKCS8(struct _IO_FILE* out, struct X509_sig_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_PKCS8(struct bio_st* out, const struct X509_sig_st* x);
-int PEM_write_PKCS8(struct __sFILE* out, const struct X509_sig_st* x);
+int PEM_write_PKCS8(struct _IO_FILE* out, const struct X509_sig_st* x);
 struct pkcs8_priv_key_info_st* PEM_read_bio_PKCS8_PRIV_KEY_INFO(struct bio_st* out, struct pkcs8_priv_key_info_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct pkcs8_priv_key_info_st* PEM_read_PKCS8_PRIV_KEY_INFO(struct __sFILE* out, struct pkcs8_priv_key_info_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct pkcs8_priv_key_info_st* PEM_read_PKCS8_PRIV_KEY_INFO(struct _IO_FILE* out, struct pkcs8_priv_key_info_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_PKCS8_PRIV_KEY_INFO(struct bio_st* out, const struct pkcs8_priv_key_info_st* x);
-int PEM_write_PKCS8_PRIV_KEY_INFO(struct __sFILE* out, const struct pkcs8_priv_key_info_st* x);
+int PEM_write_PKCS8_PRIV_KEY_INFO(struct _IO_FILE* out, const struct pkcs8_priv_key_info_st* x);
 struct rsa_st* PEM_read_bio_RSAPrivateKey(struct bio_st* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct rsa_st* PEM_read_RSAPrivateKey(struct __sFILE* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct rsa_st* PEM_read_RSAPrivateKey(struct _IO_FILE* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_RSAPrivateKey(struct bio_st* out, const struct rsa_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-int PEM_write_RSAPrivateKey(struct __sFILE* out, const struct rsa_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+int PEM_write_RSAPrivateKey(struct _IO_FILE* out, const struct rsa_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 struct rsa_st* PEM_read_bio_RSAPublicKey(struct bio_st* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct rsa_st* PEM_read_RSAPublicKey(struct __sFILE* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct rsa_st* PEM_read_RSAPublicKey(struct _IO_FILE* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_RSAPublicKey(struct bio_st* out, const struct rsa_st* x);
-int PEM_write_RSAPublicKey(struct __sFILE* out, const struct rsa_st* x);
+int PEM_write_RSAPublicKey(struct _IO_FILE* out, const struct rsa_st* x);
 struct rsa_st* PEM_read_bio_RSA_PUBKEY(struct bio_st* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct rsa_st* PEM_read_RSA_PUBKEY(struct __sFILE* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct rsa_st* PEM_read_RSA_PUBKEY(struct _IO_FILE* out, struct rsa_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_RSA_PUBKEY(struct bio_st* out, const struct rsa_st* x);
-int PEM_write_RSA_PUBKEY(struct __sFILE* out, const struct rsa_st* x);
+int PEM_write_RSA_PUBKEY(struct _IO_FILE* out, const struct rsa_st* x);
 struct dsa_st* PEM_read_bio_DSAPrivateKey(struct bio_st* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct dsa_st* PEM_read_DSAPrivateKey(struct __sFILE* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct dsa_st* PEM_read_DSAPrivateKey(struct _IO_FILE* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_DSAPrivateKey(struct bio_st* out, const struct dsa_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-int PEM_write_DSAPrivateKey(struct __sFILE* out, const struct dsa_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+int PEM_write_DSAPrivateKey(struct _IO_FILE* out, const struct dsa_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 struct dsa_st* PEM_read_bio_DSA_PUBKEY(struct bio_st* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct dsa_st* PEM_read_DSA_PUBKEY(struct __sFILE* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct dsa_st* PEM_read_DSA_PUBKEY(struct _IO_FILE* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_DSA_PUBKEY(struct bio_st* out, const struct dsa_st* x);
-int PEM_write_DSA_PUBKEY(struct __sFILE* out, const struct dsa_st* x);
+int PEM_write_DSA_PUBKEY(struct _IO_FILE* out, const struct dsa_st* x);
 struct dsa_st* PEM_read_bio_DSAparams(struct bio_st* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct dsa_st* PEM_read_DSAparams(struct __sFILE* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct dsa_st* PEM_read_DSAparams(struct _IO_FILE* out, struct dsa_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_DSAparams(struct bio_st* out, const struct dsa_st* x);
-int PEM_write_DSAparams(struct __sFILE* out, const struct dsa_st* x);
+int PEM_write_DSAparams(struct _IO_FILE* out, const struct dsa_st* x);
 struct ec_group_st* PEM_read_bio_ECPKParameters(struct bio_st* out, struct ec_group_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct ec_group_st* PEM_read_ECPKParameters(struct __sFILE* out, struct ec_group_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct ec_group_st* PEM_read_ECPKParameters(struct _IO_FILE* out, struct ec_group_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_ECPKParameters(struct bio_st* out, const struct ec_group_st* x);
-int PEM_write_ECPKParameters(struct __sFILE* out, const struct ec_group_st* x);
+int PEM_write_ECPKParameters(struct _IO_FILE* out, const struct ec_group_st* x);
 struct ec_key_st* PEM_read_bio_ECPrivateKey(struct bio_st* out, struct ec_key_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct ec_key_st* PEM_read_ECPrivateKey(struct __sFILE* out, struct ec_key_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct ec_key_st* PEM_read_ECPrivateKey(struct _IO_FILE* out, struct ec_key_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_ECPrivateKey(struct bio_st* out, const struct ec_key_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-int PEM_write_ECPrivateKey(struct __sFILE* out, const struct ec_key_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+int PEM_write_ECPrivateKey(struct _IO_FILE* out, const struct ec_key_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 struct ec_key_st* PEM_read_bio_EC_PUBKEY(struct bio_st* out, struct ec_key_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct ec_key_st* PEM_read_EC_PUBKEY(struct __sFILE* out, struct ec_key_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct ec_key_st* PEM_read_EC_PUBKEY(struct _IO_FILE* out, struct ec_key_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_EC_PUBKEY(struct bio_st* out, const struct ec_key_st* x);
-int PEM_write_EC_PUBKEY(struct __sFILE* out, const struct ec_key_st* x);
+int PEM_write_EC_PUBKEY(struct _IO_FILE* out, const struct ec_key_st* x);
 struct dh_st* PEM_read_bio_DHparams(struct bio_st* out, struct dh_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct dh_st* PEM_read_DHparams(struct __sFILE* out, struct dh_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct dh_st* PEM_read_DHparams(struct _IO_FILE* out, struct dh_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_DHparams(struct bio_st* out, const struct dh_st* x);
-int PEM_write_DHparams(struct __sFILE* out, const struct dh_st* x);
+int PEM_write_DHparams(struct _IO_FILE* out, const struct dh_st* x);
 int PEM_write_bio_DHxparams(struct bio_st* out, const struct dh_st* x);
-int PEM_write_DHxparams(struct __sFILE* out, const struct dh_st* x);
+int PEM_write_DHxparams(struct _IO_FILE* out, const struct dh_st* x);
 struct evp_pkey_st* PEM_read_bio_PrivateKey(struct bio_st* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
 struct evp_pkey_st* PEM_read_bio_PrivateKey_ex(struct bio_st* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
-struct evp_pkey_st* PEM_read_PrivateKey(struct __sFILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct evp_pkey_st* PEM_read_PrivateKey_ex(struct __sFILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
+struct evp_pkey_st* PEM_read_PrivateKey(struct _IO_FILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct evp_pkey_st* PEM_read_PrivateKey_ex(struct _IO_FILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
 int PEM_write_bio_PrivateKey(struct bio_st* out, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_PrivateKey_ex(struct bio_st* out, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
-int PEM_write_PrivateKey(struct __sFILE* out, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-int PEM_write_PrivateKey_ex(struct __sFILE* out, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
+int PEM_write_PrivateKey(struct _IO_FILE* out, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+int PEM_write_PrivateKey_ex(struct _IO_FILE* out, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
 struct evp_pkey_st* PEM_read_bio_PUBKEY(struct bio_st* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
 struct evp_pkey_st* PEM_read_bio_PUBKEY_ex(struct bio_st* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
-struct evp_pkey_st* PEM_read_PUBKEY(struct __sFILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct evp_pkey_st* PEM_read_PUBKEY_ex(struct __sFILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
+struct evp_pkey_st* PEM_read_PUBKEY(struct _IO_FILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct evp_pkey_st* PEM_read_PUBKEY_ex(struct _IO_FILE* out, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u, struct ossl_lib_ctx_st* libctx, const char* propq);
 int PEM_write_bio_PUBKEY(struct bio_st* out, const struct evp_pkey_st* x);
 int PEM_write_bio_PUBKEY_ex(struct bio_st* out, const struct evp_pkey_st* x, struct ossl_lib_ctx_st* libctx, const char* propq);
-int PEM_write_PUBKEY(struct __sFILE* out, const struct evp_pkey_st* x);
-int PEM_write_PUBKEY_ex(struct __sFILE* out, const struct evp_pkey_st* x, struct ossl_lib_ctx_st* libctx, const char* propq);
+int PEM_write_PUBKEY(struct _IO_FILE* out, const struct evp_pkey_st* x);
+int PEM_write_PUBKEY_ex(struct _IO_FILE* out, const struct evp_pkey_st* x, struct ossl_lib_ctx_st* libctx, const char* propq);
 int PEM_write_bio_PrivateKey_traditional(struct bio_st* bp, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const unsigned char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_PKCS8PrivateKey_nid(struct bio_st* bp, const struct evp_pkey_st* x, int nid, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-int PEM_write_bio_PKCS8PrivateKey(struct bio_st* anonymous_var_nameX1469, const struct evp_pkey_st* anonymous_var_nameX1470, const struct evp_cipher_st* anonymous_var_nameX1471, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+int PEM_write_bio_PKCS8PrivateKey(struct bio_st* anonymous_var_nameX285, const struct evp_pkey_st* anonymous_var_nameX286, const struct evp_cipher_st* anonymous_var_nameX287, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 int i2d_PKCS8PrivateKey_bio(struct bio_st* bp, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 int i2d_PKCS8PrivateKey_nid_bio(struct bio_st* bp, const struct evp_pkey_st* x, int nid, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
 struct evp_pkey_st* d2i_PKCS8PrivateKey_bio(struct bio_st* bp, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
-int i2d_PKCS8PrivateKey_fp(struct __sFILE* fp, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-int i2d_PKCS8PrivateKey_nid_fp(struct __sFILE* fp, const struct evp_pkey_st* x, int nid, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-int PEM_write_PKCS8PrivateKey_nid(struct __sFILE* fp, const struct evp_pkey_st* x, int nid, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
-struct evp_pkey_st* d2i_PKCS8PrivateKey_fp(struct __sFILE* fp, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
-int PEM_write_PKCS8PrivateKey(struct __sFILE* fp, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const char* kstr, int klen, int (*cd)(char*,int,int,void*), void* u);
+int i2d_PKCS8PrivateKey_fp(struct _IO_FILE* fp, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+int i2d_PKCS8PrivateKey_nid_fp(struct _IO_FILE* fp, const struct evp_pkey_st* x, int nid, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+int PEM_write_PKCS8PrivateKey_nid(struct _IO_FILE* fp, const struct evp_pkey_st* x, int nid, const char* kstr, int klen, int (*cb)(char*,int,int,void*), void* u);
+struct evp_pkey_st* d2i_PKCS8PrivateKey_fp(struct _IO_FILE* fp, struct evp_pkey_st** x, int (*cb)(char*,int,int,void*), void* u);
+int PEM_write_PKCS8PrivateKey(struct _IO_FILE* fp, const struct evp_pkey_st* x, const struct evp_cipher_st* enc, const char* kstr, int klen, int (*cd)(char*,int,int,void*), void* u);
 struct evp_pkey_st* PEM_read_bio_Parameters_ex(struct bio_st* bp, struct evp_pkey_st** x, struct ossl_lib_ctx_st* libctx, const char* propq);
 struct evp_pkey_st* PEM_read_bio_Parameters(struct bio_st* bp, struct evp_pkey_st** x);
 int PEM_write_bio_Parameters(struct bio_st* bp, const struct evp_pkey_st* x);
@@ -8883,8 +9147,6 @@ int ASYNC_WAIT_CTX_get_status(struct async_wait_ctx_st* ctx);
 int ASYNC_WAIT_CTX_get_changed_fds(struct async_wait_ctx_st* ctx, int* addfd, unsigned long  int* numaddfds, int* delfd, unsigned long  int* numdelfds);
 int ASYNC_WAIT_CTX_clear_fd(struct async_wait_ctx_st* ctx, const void* key);
 int ASYNC_is_capable();
-int ASYNC_set_mem_functions(void* (*alloc_fn)(unsigned long  int*), void (*free_fn)(void*));
-void ASYNC_get_mem_functions(void* (*alloc_fn)(unsigned long  int*), void (*free_fn)(void*));
 int ASYNC_start_job(struct async_job_st** job, struct async_wait_ctx_st* ctx, int* ret, int (*func)(void*), void* args, unsigned long  int size);
 int ASYNC_pause_job();
 struct async_job_st* ASYNC_get_current_job();
@@ -8900,21 +9162,21 @@ struct x509_st* CT_POLICY_EVAL_CTX_get0_issuer(const struct ct_policy_eval_ctx_s
 int CT_POLICY_EVAL_CTX_set1_issuer(struct ct_policy_eval_ctx_st* ctx, struct x509_st* issuer);
 const struct ctlog_store_st* CT_POLICY_EVAL_CTX_get0_log_store(const struct ct_policy_eval_ctx_st* ctx);
 void CT_POLICY_EVAL_CTX_set_shared_CTLOG_STORE(struct ct_policy_eval_ctx_st* ctx, struct ctlog_store_st* log_store);
-unsigned long  long CT_POLICY_EVAL_CTX_get_time(const struct ct_policy_eval_ctx_st* ctx);
-void CT_POLICY_EVAL_CTX_set_time(struct ct_policy_eval_ctx_st* ctx, unsigned long  long time_in_ms);
+unsigned long  int CT_POLICY_EVAL_CTX_get_time(const struct ct_policy_eval_ctx_st* ctx);
+void CT_POLICY_EVAL_CTX_set_time(struct ct_policy_eval_ctx_st* ctx, unsigned long  int time_in_ms);
 struct sct_st* SCT_new();
-struct sct_st* SCT_new_from_base64(unsigned char version, const char* logid_base64, enum anonymous_typeY27 entry_type, unsigned long  long timestamp, const char* extensions_base64, const char* signature_base64);
+struct sct_st* SCT_new_from_base64(unsigned char version, const char* logid_base64, enum anonymous_typeY41 entry_type, unsigned long  int timestamp, const char* extensions_base64, const char* signature_base64);
 void SCT_free(struct sct_st* sct);
 void SCT_LIST_free(struct stack_st_SCT* a);
-enum anonymous_typeY28 SCT_get_version(const struct sct_st* sct);
-int SCT_set_version(struct sct_st* sct, enum anonymous_typeY28 version);
-enum anonymous_typeY27 SCT_get_log_entry_type(const struct sct_st* sct);
-int SCT_set_log_entry_type(struct sct_st* sct, enum anonymous_typeY27 entry_type);
+enum anonymous_typeY42 SCT_get_version(const struct sct_st* sct);
+int SCT_set_version(struct sct_st* sct, enum anonymous_typeY42 version);
+enum anonymous_typeY41 SCT_get_log_entry_type(const struct sct_st* sct);
+int SCT_set_log_entry_type(struct sct_st* sct, enum anonymous_typeY41 entry_type);
 unsigned long  int SCT_get0_log_id(const struct sct_st* sct, unsigned char** log_id);
 int SCT_set0_log_id(struct sct_st* sct, unsigned char* log_id, unsigned long  int log_id_len);
 int SCT_set1_log_id(struct sct_st* sct, const unsigned char* log_id, unsigned long  int log_id_len);
-unsigned long  long SCT_get_timestamp(const struct sct_st* sct);
-void SCT_set_timestamp(struct sct_st* sct, unsigned long  long timestamp);
+unsigned long  int SCT_get_timestamp(const struct sct_st* sct);
+void SCT_set_timestamp(struct sct_st* sct, unsigned long  int timestamp);
 int SCT_get_signature_nid(const struct sct_st* sct);
 int SCT_set_signature_nid(struct sct_st* sct, int nid);
 unsigned long  int SCT_get0_extensions(const struct sct_st* sct, unsigned char** ext);
@@ -8923,12 +9185,12 @@ int SCT_set1_extensions(struct sct_st* sct, const unsigned char* ext, unsigned l
 unsigned long  int SCT_get0_signature(const struct sct_st* sct, unsigned char** sig);
 void SCT_set0_signature(struct sct_st* sct, unsigned char* sig, unsigned long  int sig_len);
 int SCT_set1_signature(struct sct_st* sct, const unsigned char* sig, unsigned long  int sig_len);
-enum anonymous_typeY29 SCT_get_source(const struct sct_st* sct);
-int SCT_set_source(struct sct_st* sct, enum anonymous_typeY29 source);
+enum anonymous_typeY43 SCT_get_source(const struct sct_st* sct);
+int SCT_set_source(struct sct_st* sct, enum anonymous_typeY43 source);
 const char* SCT_validation_status_string(const struct sct_st* sct);
 void SCT_print(const struct sct_st* sct, struct bio_st* out, int indent, const struct ctlog_store_st* logs);
 void SCT_LIST_print(const struct stack_st_SCT* sct_list, struct bio_st* out, int indent, const char* separator, const struct ctlog_store_st* logs);
-enum anonymous_typeY30 SCT_get_validation_status(const struct sct_st* sct);
+enum anonymous_typeY44 SCT_get_validation_status(const struct sct_st* sct);
 int SCT_validate(struct sct_st* sct, const struct ct_policy_eval_ctx_st* ctx);
 int SCT_LIST_validate(const struct stack_st_SCT* scts, struct ct_policy_eval_ctx_st* ctx);
 int i2o_SCT_LIST(const struct stack_st_SCT* a, unsigned char** pp);
@@ -8952,12 +9214,12 @@ const struct ctlog_st* CTLOG_STORE_get0_log_by_id(const struct ctlog_store_st* s
 int CTLOG_STORE_load_file(struct ctlog_store_st* store, const char* file);
 int CTLOG_STORE_load_default_file(struct ctlog_store_st* store);
 int ERR_load_SSL_strings();
-unsigned long  long SSL_CTX_get_options(const struct ssl_ctx_st* ctx);
-unsigned long  long SSL_get_options(const struct ssl_st* s);
-unsigned long  long SSL_CTX_clear_options(struct ssl_ctx_st* ctx, unsigned long  long op);
-unsigned long  long SSL_clear_options(struct ssl_st* s, unsigned long  long op);
-unsigned long  long SSL_CTX_set_options(struct ssl_ctx_st* ctx, unsigned long  long op);
-unsigned long  long SSL_set_options(struct ssl_st* s, unsigned long  long op);
+unsigned long  int SSL_CTX_get_options(const struct ssl_ctx_st* ctx);
+unsigned long  int SSL_get_options(const struct ssl_st* s);
+unsigned long  int SSL_CTX_clear_options(struct ssl_ctx_st* ctx, unsigned long  int op);
+unsigned long  int SSL_clear_options(struct ssl_st* s, unsigned long  int op);
+unsigned long  int SSL_CTX_set_options(struct ssl_ctx_st* ctx, unsigned long  int op);
+unsigned long  int SSL_set_options(struct ssl_st* s, unsigned long  int op);
 void SSL_CTX_set_msg_callback(struct ssl_ctx_st* ctx, void (*cb)(int,int,int,const void*,unsigned long  int,struct ssl_st*,void*));
 void SSL_set_msg_callback(struct ssl_st* ssl, void (*cb)(int,int,int,const void*,unsigned long  int,struct ssl_st*,void*));
 int SSL_SRP_CTX_init(struct ssl_st* s);
@@ -8968,15 +9230,15 @@ int SSL_srp_server_param_with_username(struct ssl_st* s, int* ad);
 int SRP_Calc_A_param(struct ssl_st* s);
 struct lhash_st_SSL_SESSION* SSL_CTX_sessions(struct ssl_ctx_st* ctx);
 void SSL_CTX_sess_set_new_cb(struct ssl_ctx_st* ctx, int (*new_session_cb)(struct ssl_st*,struct ssl_session_st*));
-int (*SSL_CTX_sess_get_new_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a61))(struct ssl_st*,struct ssl_session_st*);
+int (*SSL_CTX_sess_get_new_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a57))(struct ssl_st*,struct ssl_session_st*);
 void SSL_CTX_sess_set_remove_cb(struct ssl_ctx_st* ctx, void (*remove_session_cb)(struct ssl_ctx_st*,struct ssl_session_st*));
-void (*SSL_CTX_sess_get_remove_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a62))(struct ssl_ctx_st*,struct ssl_session_st*);
+void (*SSL_CTX_sess_get_remove_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a58))(struct ssl_ctx_st*,struct ssl_session_st*);
 void SSL_CTX_sess_set_get_cb(struct ssl_ctx_st* ctx, struct ssl_session_st* (*get_session_cb)(struct ssl_st*,const unsigned char*,int,int*));
-struct ssl_session_st* (*SSL_CTX_sess_get_get_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a63))(struct ssl_st*,const unsigned char*,int,int*);
+struct ssl_session_st* (*SSL_CTX_sess_get_get_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a59))(struct ssl_st*,const unsigned char*,int,int*);
 void SSL_CTX_set_info_callback(struct ssl_ctx_st* ctx, void (*cb)(const struct ssl_st*,int,int));
-void (*SSL_CTX_get_info_callback(struct ssl_ctx_st* _function_pointer_result_var_name_a64))(const struct ssl_st*,int,int);
+void (*SSL_CTX_get_info_callback(struct ssl_ctx_st* _function_pointer_result_var_name_a60))(const struct ssl_st*,int,int);
 void SSL_CTX_set_client_cert_cb(struct ssl_ctx_st* ctx, int (*client_cert_cb)(struct ssl_st*,struct x509_st**,struct evp_pkey_st**));
-int (*SSL_CTX_get_client_cert_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a65))(struct ssl_st*,struct x509_st**,struct evp_pkey_st**);
+int (*SSL_CTX_get_client_cert_cb(struct ssl_ctx_st* _function_pointer_result_var_name_a61))(struct ssl_st*,struct x509_st**,struct evp_pkey_st**);
 int SSL_CTX_set_client_cert_engine(struct ssl_ctx_st* ctx, struct engine_st* e);
 void SSL_CTX_set_cookie_generate_cb(struct ssl_ctx_st* ctx, int (*app_gen_cookie_cb)(struct ssl_st*,unsigned char*,unsigned int*));
 void SSL_CTX_set_cookie_verify_cb(struct ssl_ctx_st* ctx, int (*app_verify_cookie_cb)(struct ssl_st*,const unsigned char*,unsigned int));
@@ -9026,7 +9288,6 @@ int SSL_export_keying_material_early(struct ssl_st* s, unsigned char* out, unsig
 int SSL_get_peer_signature_type_nid(const struct ssl_st* s, int* pnid);
 int SSL_get_signature_type_nid(const struct ssl_st* s, int* pnid);
 int SSL_get_sigalgs(struct ssl_st* s, int idx, int* psign, int* phash, int* psignandhash, unsigned char* rsig, unsigned char* rhash);
-char* SSL_get1_builtin_sigalgs(struct ossl_lib_ctx_st* libctx);
 int SSL_get_shared_sigalgs(struct ssl_st* s, int idx, int* psign, int* phash, int* psignandhash, unsigned char* rsig, unsigned char* rhash);
 int SSL_check_chain(struct ssl_st* s, struct x509_st* x, struct evp_pkey_st* pk, struct stack_st_X509* chain);
 int SSL_CTX_set_tlsext_ticket_key_evp_cb(struct ssl_ctx_st* ctx, int (*fp)(struct ssl_st*,unsigned char*,unsigned char*,struct evp_cipher_ctx_st*,struct evp_mac_ctx_st*,int));
@@ -9034,8 +9295,6 @@ int SSL_CTX_set_tlsext_use_srtp(struct ssl_ctx_st* ctx, const char* profiles);
 int SSL_set_tlsext_use_srtp(struct ssl_st* ssl, const char* profiles);
 struct stack_st_SRTP_PROTECTION_PROFILE* SSL_get_srtp_profiles(struct ssl_st* ssl);
 struct srtp_protection_profile_st* SSL_get_selected_srtp_profile(struct ssl_st* s);
-const struct ssl_method_st* OSSL_QUIC_client_method();
-const struct ssl_method_st* OSSL_QUIC_client_thread_method();
 void SSL_set_debug(struct ssl_st* s, int debug);
 int SSL_in_init(const struct ssl_st* s);
 int SSL_in_before(const struct ssl_st* s);
@@ -9043,10 +9302,9 @@ int SSL_is_init_finished(const struct ssl_st* s);
 unsigned long  int SSL_get_finished(const struct ssl_st* s, void* buf, unsigned long  int count);
 unsigned long  int SSL_get_peer_finished(const struct ssl_st* s, void* buf, unsigned long  int count);
 struct ssl_session_st* PEM_read_bio_SSL_SESSION(struct bio_st* out, struct ssl_session_st** x, int (*cb)(char*,int,int,void*), void* u);
-struct ssl_session_st* PEM_read_SSL_SESSION(struct __sFILE* out, struct ssl_session_st** x, int (*cb)(char*,int,int,void*), void* u);
+struct ssl_session_st* PEM_read_SSL_SESSION(struct _IO_FILE* out, struct ssl_session_st** x, int (*cb)(char*,int,int,void*), void* u);
 int PEM_write_bio_SSL_SESSION(struct bio_st* out, const struct ssl_session_st* x);
-int PEM_write_SSL_SESSION(struct __sFILE* out, const struct ssl_session_st* x);
-const char* SSL_get0_group_name(struct ssl_st* s);
+int PEM_write_SSL_SESSION(struct _IO_FILE* out, const struct ssl_session_st* x);
 const char* SSL_group_to_name(struct ssl_st* s, int id);
 int SSL_set0_tmp_dh_pkey(struct ssl_st* s, struct evp_pkey_st* dhpkey);
 int SSL_CTX_set0_tmp_dh_pkey(struct ssl_ctx_st* ctx, struct evp_pkey_st* dhpkey);
@@ -9056,20 +9314,19 @@ struct bio_st* BIO_new_ssl_connect(struct ssl_ctx_st* ctx);
 struct bio_st* BIO_new_buffer_ssl_connect(struct ssl_ctx_st* ctx);
 int BIO_ssl_copy_session_id(struct bio_st* to, struct bio_st* from);
 void BIO_ssl_shutdown(struct bio_st* ssl_bio);
-int SSL_CTX_set_cipher_list(struct ssl_ctx_st* anonymous_var_nameX1483, const char* str);
+int SSL_CTX_set_cipher_list(struct ssl_ctx_st* anonymous_var_nameX299, const char* str);
 struct ssl_ctx_st* SSL_CTX_new(const struct ssl_method_st* meth);
 struct ssl_ctx_st* SSL_CTX_new_ex(struct ossl_lib_ctx_st* libctx, const char* propq, const struct ssl_method_st* meth);
 int SSL_CTX_up_ref(struct ssl_ctx_st* ctx);
-void SSL_CTX_free(struct ssl_ctx_st* anonymous_var_nameX1484);
+void SSL_CTX_free(struct ssl_ctx_st* anonymous_var_nameX300);
 long SSL_CTX_set_timeout(struct ssl_ctx_st* ctx, long t);
 long SSL_CTX_get_timeout(const struct ssl_ctx_st* ctx);
-struct x509_store_st* SSL_CTX_get_cert_store(const struct ssl_ctx_st* anonymous_var_nameX1485);
-void SSL_CTX_set_cert_store(struct ssl_ctx_st* anonymous_var_nameX1486, struct x509_store_st* anonymous_var_nameX1487);
-void SSL_CTX_set1_cert_store(struct ssl_ctx_st* anonymous_var_nameX1488, struct x509_store_st* anonymous_var_nameX1489);
+struct x509_store_st* SSL_CTX_get_cert_store(const struct ssl_ctx_st* anonymous_var_nameX301);
+void SSL_CTX_set_cert_store(struct ssl_ctx_st* anonymous_var_nameX302, struct x509_store_st* anonymous_var_nameX303);
+void SSL_CTX_set1_cert_store(struct ssl_ctx_st* anonymous_var_nameX304, struct x509_store_st* anonymous_var_nameX305);
 int SSL_want(const struct ssl_st* s);
 int SSL_clear(struct ssl_st* s);
 void SSL_CTX_flush_sessions(struct ssl_ctx_st* ctx, long tm);
-void SSL_CTX_flush_sessions_ex(struct ssl_ctx_st* ctx, long tm);
 const struct ssl_cipher_st* SSL_get_current_cipher(const struct ssl_st* s);
 const struct ssl_cipher_st* SSL_get_pending_cipher(const struct ssl_st* s);
 int SSL_CIPHER_get_bits(const struct ssl_cipher_st* c, int* alg_bits);
@@ -9142,8 +9399,6 @@ long SSL_SESSION_get_timeout(const struct ssl_session_st* s);
 long SSL_SESSION_set_timeout(struct ssl_session_st* s, long t);
 int SSL_SESSION_get_protocol_version(const struct ssl_session_st* s);
 int SSL_SESSION_set_protocol_version(struct ssl_session_st* s, int version);
-long SSL_SESSION_get_time_ex(const struct ssl_session_st* s);
-long SSL_SESSION_set_time_ex(struct ssl_session_st* s, long t);
 const char* SSL_SESSION_get0_hostname(const struct ssl_session_st* s);
 int SSL_SESSION_set1_hostname(struct ssl_session_st* s, const char* hostname);
 void SSL_SESSION_get0_alpn_selected(const struct ssl_session_st* s, const unsigned char** alpn, unsigned long  int* len);
@@ -9165,7 +9420,7 @@ struct ssl_session_st* SSL_SESSION_dup(const struct ssl_session_st* src);
 const unsigned char* SSL_SESSION_get_id(const struct ssl_session_st* s, unsigned int* len);
 const unsigned char* SSL_SESSION_get0_id_context(const struct ssl_session_st* s, unsigned int* len);
 unsigned int SSL_SESSION_get_compress_id(const struct ssl_session_st* s);
-int SSL_SESSION_print_fp(struct __sFILE* fp, const struct ssl_session_st* ses);
+int SSL_SESSION_print_fp(struct _IO_FILE* fp, const struct ssl_session_st* ses);
 int SSL_SESSION_print(struct bio_st* fp, const struct ssl_session_st* ses);
 int SSL_SESSION_print_keylog(struct bio_st* bp, const struct ssl_session_st* x);
 int SSL_SESSION_up_ref(struct ssl_session_st* ses);
@@ -9178,7 +9433,6 @@ int SSL_CTX_set_generate_session_id(struct ssl_ctx_st* ctx, int (*cb)(struct ssl
 int SSL_set_generate_session_id(struct ssl_st* s, int (*cb)(struct ssl_st*,unsigned char*,unsigned int*));
 int SSL_has_matching_session_id(const struct ssl_st* s, const unsigned char* id, unsigned int id_len);
 struct ssl_session_st* d2i_SSL_SESSION(struct ssl_session_st** a, const unsigned char** pp, long length);
-struct ssl_session_st* d2i_SSL_SESSION_ex(struct ssl_session_st** a, const unsigned char** pp, long length, struct ossl_lib_ctx_st* libctx, const char* propq);
 struct x509_st* SSL_get0_peer_certificate(const struct ssl_st* s);
 struct x509_st* SSL_get1_peer_certificate(const struct ssl_st* s);
 struct stack_st_X509* SSL_get_peer_cert_chain(const struct ssl_st* s);
@@ -9210,8 +9464,6 @@ int SSL_CTX_set_session_id_context(struct ssl_ctx_st* ctx, const unsigned char* 
 struct ssl_st* SSL_new(struct ssl_ctx_st* ctx);
 int SSL_up_ref(struct ssl_st* s);
 int SSL_is_dtls(const struct ssl_st* s);
-int SSL_is_tls(const struct ssl_st* s);
-int SSL_is_quic(const struct ssl_st* s);
 int SSL_set_session_id_context(struct ssl_st* ssl, const unsigned char* sid_ctx, unsigned int sid_ctx_len);
 int SSL_CTX_set_purpose(struct ssl_ctx_st* ctx, int purpose);
 int SSL_set_purpose(struct ssl_st* ssl, int purpose);
@@ -9257,7 +9509,6 @@ unsigned long  int SSL_client_hello_get0_session_id(struct ssl_st* s, const unsi
 unsigned long  int SSL_client_hello_get0_ciphers(struct ssl_st* s, const unsigned char** out);
 unsigned long  int SSL_client_hello_get0_compression_methods(struct ssl_st* s, const unsigned char** out);
 int SSL_client_hello_get1_extensions_present(struct ssl_st* s, int** out, unsigned long  int* outlen);
-int SSL_client_hello_get_extension_order(struct ssl_st* s, unsigned short int* exts, unsigned long  int* num_exts);
 int SSL_client_hello_get0_ext(struct ssl_st* s, unsigned int type, const unsigned char** out, unsigned long  int* outlen);
 void SSL_certs_clear(struct ssl_st* s);
 void SSL_free(struct ssl_st* ssl);
@@ -9277,19 +9528,17 @@ int SSL_read_ex(struct ssl_st* ssl, void* buf, unsigned long  int num, unsigned 
 int SSL_read_early_data(struct ssl_st* s, void* buf, unsigned long  int num, unsigned long  int* readbytes);
 int SSL_peek(struct ssl_st* ssl, void* buf, int num);
 int SSL_peek_ex(struct ssl_st* ssl, void* buf, unsigned long  int num, unsigned long  int* readbytes);
-long SSL_sendfile(struct ssl_st* s, int fd, long  long offset, unsigned long  int size, int flags);
+long  int SSL_sendfile(struct ssl_st* s, int fd, long  int offset, unsigned long  int size, int flags);
 int SSL_write(struct ssl_st* ssl, const void* buf, int num);
 int SSL_write_ex(struct ssl_st* s, const void* buf, unsigned long  int num, unsigned long  int* written);
 int SSL_write_early_data(struct ssl_st* s, const void* buf, unsigned long  int num, unsigned long  int* written);
 long SSL_ctrl(struct ssl_st* ssl, int cmd, long larg, void* parg);
-long SSL_callback_ctrl(struct ssl_st* anonymous_var_nameX1499, int anonymous_var_nameX1500, void (*anonymous_lambda_var_nameZ40)());
+long SSL_callback_ctrl(struct ssl_st* anonymous_var_nameX315, int anonymous_var_nameX316, void (*anonymous_lambda_var_nameZ1)());
 long SSL_CTX_ctrl(struct ssl_ctx_st* ctx, int cmd, long larg, void* parg);
-long SSL_CTX_callback_ctrl(struct ssl_ctx_st* anonymous_var_nameX1501, int anonymous_var_nameX1502, void (*anonymous_lambda_var_nameZ41)());
-int SSL_write_ex2(struct ssl_st* s, const void* buf, unsigned long  int num, unsigned long  long flags, unsigned long  int* written);
+long SSL_CTX_callback_ctrl(struct ssl_ctx_st* anonymous_var_nameX317, int anonymous_var_nameX318, void (*anonymous_lambda_var_nameZ2)());
 int SSL_get_early_data_status(const struct ssl_st* s);
 int SSL_get_error(const struct ssl_st* s, int ret_code);
 const char* SSL_get_version(const struct ssl_st* s);
-int SSL_get_handshake_rtt(const struct ssl_st* s, unsigned long  long* rtt);
 int SSL_CTX_set_ssl_version(struct ssl_ctx_st* ctx, const struct ssl_method_st* meth);
 const struct ssl_method_st* TLS_method();
 const struct ssl_method_st* TLS_server_method();
@@ -9351,7 +9600,7 @@ int SSL_CTX_add_client_CA(struct ssl_ctx_st* ctx, struct x509_st* x);
 void SSL_set_connect_state(struct ssl_st* s);
 void SSL_set_accept_state(struct ssl_st* s);
 long SSL_get_default_timeout(const struct ssl_st* s);
-char* SSL_CIPHER_description(const struct ssl_cipher_st* anonymous_var_nameX1503, char* buf, int size);
+char* SSL_CIPHER_description(const struct ssl_cipher_st* anonymous_var_nameX319, char* buf, int size);
 struct stack_st_X509_NAME* SSL_dup_CA_list(const struct stack_st_X509_NAME* sk);
 struct ssl_st* SSL_dup(struct ssl_st* ssl);
 struct x509_st* SSL_get_certificate(const struct ssl_st* ssl);
@@ -9379,8 +9628,8 @@ struct ssl_session_st* SSL_get1_session(struct ssl_st* ssl);
 struct ssl_ctx_st* SSL_get_SSL_CTX(const struct ssl_st* ssl);
 struct ssl_ctx_st* SSL_set_SSL_CTX(struct ssl_st* ssl, struct ssl_ctx_st* ctx);
 void SSL_set_info_callback(struct ssl_st* ssl, void (*cb)(const struct ssl_st*,int,int));
-void (*SSL_get_info_callback(const struct ssl_st* _function_pointer_result_var_name_a66))(const struct ssl_st*,int,int);
-enum anonymous_typeY31 SSL_get_state(const struct ssl_st* ssl);
+void (*SSL_get_info_callback(const struct ssl_st* _function_pointer_result_var_name_a62))(const struct ssl_st*,int,int);
+enum anonymous_typeY45 SSL_get_state(const struct ssl_st* ssl);
 void SSL_set_verify_result(struct ssl_st* ssl, long v);
 long SSL_get_verify_result(const struct ssl_st* ssl);
 struct stack_st_X509* SSL_get0_verified_chain(const struct ssl_st* s);
@@ -9421,47 +9670,14 @@ void SSL_CTX_set_record_padding_callback(struct ssl_ctx_st* ctx, unsigned long  
 void SSL_CTX_set_record_padding_callback_arg(struct ssl_ctx_st* ctx, void* arg);
 void* SSL_CTX_get_record_padding_callback_arg(const struct ssl_ctx_st* ctx);
 int SSL_CTX_set_block_padding(struct ssl_ctx_st* ctx, unsigned long  int block_size);
-int SSL_CTX_set_block_padding_ex(struct ssl_ctx_st* ctx, unsigned long  int app_block_size, unsigned long  int hs_block_size);
 int SSL_set_record_padding_callback(struct ssl_st* ssl, unsigned long  int (*cb)(struct ssl_st*,int,unsigned long  int,void*));
 void SSL_set_record_padding_callback_arg(struct ssl_st* ssl, void* arg);
 void* SSL_get_record_padding_callback_arg(const struct ssl_st* ssl);
 int SSL_set_block_padding(struct ssl_st* ssl, unsigned long  int block_size);
-int SSL_set_block_padding_ex(struct ssl_st* ssl, unsigned long  int app_block_size, unsigned long  int hs_block_size);
 int SSL_set_num_tickets(struct ssl_st* s, unsigned long  int num_tickets);
 unsigned long  int SSL_get_num_tickets(const struct ssl_st* s);
 int SSL_CTX_set_num_tickets(struct ssl_ctx_st* ctx, unsigned long  int num_tickets);
 unsigned long  int SSL_CTX_get_num_tickets(const struct ssl_ctx_st* ctx);
-int SSL_handle_events(struct ssl_st* s);
-int SSL_get_event_timeout(struct ssl_st* s, struct timeval* tv, int* is_infinite);
-int SSL_get_rpoll_descriptor(struct ssl_st* s, struct bio_poll_descriptor_st* desc);
-int SSL_get_wpoll_descriptor(struct ssl_st* s, struct bio_poll_descriptor_st* desc);
-int SSL_net_read_desired(struct ssl_st* s);
-int SSL_net_write_desired(struct ssl_st* s);
-int SSL_set_blocking_mode(struct ssl_st* s, int blocking);
-int SSL_get_blocking_mode(struct ssl_st* s);
-int SSL_set1_initial_peer_addr(struct ssl_st* s, const union bio_addr_st* peer_addr);
-struct ssl_st* SSL_get0_connection(struct ssl_st* s);
-int SSL_is_connection(struct ssl_st* s);
-int SSL_get_stream_type(struct ssl_st* s);
-unsigned long  long SSL_get_stream_id(struct ssl_st* s);
-int SSL_is_stream_local(struct ssl_st* s);
-int SSL_set_default_stream_mode(struct ssl_st* s, unsigned int mode);
-struct ssl_st* SSL_new_stream(struct ssl_st* s, unsigned long  long flags);
-int SSL_set_incoming_stream_policy(struct ssl_st* s, int policy, unsigned long  long aec);
-struct ssl_st* SSL_accept_stream(struct ssl_st* s, unsigned long  long flags);
-unsigned long  int SSL_get_accept_stream_queue_len(struct ssl_st* s);
-int SSL_inject_net_dgram(struct ssl_st* s, const unsigned char* buf, unsigned long  int buf_len, const union bio_addr_st* peer, const union bio_addr_st* local);
-int SSL_shutdown_ex(struct ssl_st* ssl, unsigned long  long flags, const struct ssl_shutdown_ex_args_st* args, unsigned long  int args_len);
-int SSL_stream_conclude(struct ssl_st* ssl, unsigned long  long flags);
-int SSL_stream_reset(struct ssl_st* ssl, const struct ssl_stream_reset_args_st* args, unsigned long  int args_len);
-int SSL_get_stream_read_state(struct ssl_st* ssl);
-int SSL_get_stream_write_state(struct ssl_st* ssl);
-int SSL_get_stream_read_error_code(struct ssl_st* ssl, unsigned long  long* app_error_code);
-int SSL_get_stream_write_error_code(struct ssl_st* ssl, unsigned long  long* app_error_code);
-int SSL_get_conn_close_info(struct ssl_st* ssl, struct ssl_conn_close_info_st* info, unsigned long  int info_len);
-int SSL_get_value_uint(struct ssl_st* s, unsigned int class_, unsigned int id, unsigned long  long* v);
-int SSL_set_value_uint(struct ssl_st* s, unsigned int class_, unsigned int id, unsigned long  long v);
-int SSL_poll(struct ssl_poll_item_st* items, unsigned long  int num_items, unsigned long  int stride, const struct timeval* timeout, unsigned long  long flags, unsigned long  int* result_count);
 int SSL_session_reused(const struct ssl_st* s);
 int SSL_is_server(const struct ssl_st* s);
 struct ssl_conf_ctx_st* SSL_CONF_CTX_new();
@@ -9494,16 +9710,17 @@ const struct ctlog_store_st* SSL_CTX_get0_ctlog_store(const struct ssl_ctx_st* c
 void SSL_set_security_level(struct ssl_st* s, int level);
 int SSL_get_security_level(const struct ssl_st* s);
 void SSL_set_security_callback(struct ssl_st* s, int (*cb)(const struct ssl_st*,const struct ssl_ctx_st*,int,int,int,void*,void*));
-int (*SSL_get_security_callback(const struct ssl_st* _function_pointer_result_var_name_a67))(const struct ssl_st*,const struct ssl_ctx_st*,int,int,int,void*,void*);
+int (*SSL_get_security_callback(const struct ssl_st* _function_pointer_result_var_name_a63))(const struct ssl_st*,const struct ssl_ctx_st*,int,int,int,void*,void*);
 void SSL_set0_security_ex_data(struct ssl_st* s, void* ex);
 void* SSL_get0_security_ex_data(const struct ssl_st* s);
 void SSL_CTX_set_security_level(struct ssl_ctx_st* ctx, int level);
 int SSL_CTX_get_security_level(const struct ssl_ctx_st* ctx);
 void SSL_CTX_set_security_callback(struct ssl_ctx_st* ctx, int (*cb)(const struct ssl_st*,const struct ssl_ctx_st*,int,int,int,void*,void*));
-int (*SSL_CTX_get_security_callback(const struct ssl_ctx_st* _function_pointer_result_var_name_a68))(const struct ssl_st*,const struct ssl_ctx_st*,int,int,int,void*,void*);
+int (*SSL_CTX_get_security_callback(const struct ssl_ctx_st* _function_pointer_result_var_name_a64))(const struct ssl_st*,const struct ssl_ctx_st*,int,int,int,void*,void*);
 void SSL_CTX_set0_security_ex_data(struct ssl_ctx_st* ctx, void* ex);
 void* SSL_CTX_get0_security_ex_data(const struct ssl_ctx_st* ctx);
-int OPENSSL_init_ssl(unsigned long  long opts, const struct ossl_init_settings_st* settings);
+int OPENSSL_init_ssl(unsigned long  int opts, const struct ossl_init_settings_st* settings);
+const struct openssl_ssl_test_functions* SSL_test_functions();
 int SSL_free_buffers(struct ssl_st* ssl);
 int SSL_alloc_buffers(struct ssl_st* ssl);
 int SSL_CTX_set_session_ticket_cb(struct ssl_ctx_st* ctx, int (*gen_cb)(struct ssl_st*,void*), int (*dec_cb)(struct ssl_st*,struct ssl_session_st*,const unsigned char*,unsigned long  int,int,void*), void* arg);
@@ -9514,27 +9731,6 @@ void SSL_CTX_set_allow_early_data_cb(struct ssl_ctx_st* ctx, int (*cb)(struct ss
 void SSL_set_allow_early_data_cb(struct ssl_st* s, int (*cb)(struct ssl_st*,void*), void* arg);
 const char* OSSL_default_cipher_list();
 const char* OSSL_default_ciphersuites();
-int SSL_CTX_compress_certs(struct ssl_ctx_st* ctx, int alg);
-int SSL_compress_certs(struct ssl_st* ssl, int alg);
-int SSL_CTX_set1_cert_comp_preference(struct ssl_ctx_st* ctx, int* algs, unsigned long  int len);
-int SSL_set1_cert_comp_preference(struct ssl_st* ssl, int* algs, unsigned long  int len);
-int SSL_CTX_set1_compressed_cert(struct ssl_ctx_st* ctx, int algorithm, unsigned char* comp_data, unsigned long  int comp_length, unsigned long  int orig_length);
-int SSL_set1_compressed_cert(struct ssl_st* ssl, int algorithm, unsigned char* comp_data, unsigned long  int comp_length, unsigned long  int orig_length);
-unsigned long  int SSL_CTX_get1_compressed_cert(struct ssl_ctx_st* ctx, int alg, unsigned char** data, unsigned long  int* orig_len);
-unsigned long  int SSL_get1_compressed_cert(struct ssl_st* ssl, int alg, unsigned char** data, unsigned long  int* orig_len);
-int SSL_add_expected_rpk(struct ssl_st* s, struct evp_pkey_st* rpk);
-struct evp_pkey_st* SSL_get0_peer_rpk(const struct ssl_st* s);
-struct evp_pkey_st* SSL_SESSION_get0_peer_rpk(struct ssl_session_st* s);
-int SSL_get_negotiated_client_cert_type(const struct ssl_st* s);
-int SSL_get_negotiated_server_cert_type(const struct ssl_st* s);
-int SSL_set1_client_cert_type(struct ssl_st* s, const unsigned char* val, unsigned long  int len);
-int SSL_set1_server_cert_type(struct ssl_st* s, const unsigned char* val, unsigned long  int len);
-int SSL_CTX_set1_client_cert_type(struct ssl_ctx_st* ctx, const unsigned char* val, unsigned long  int len);
-int SSL_CTX_set1_server_cert_type(struct ssl_ctx_st* ctx, const unsigned char* val, unsigned long  int len);
-int SSL_get0_client_cert_type(const struct ssl_st* s, unsigned char** t, unsigned long  int* len);
-int SSL_get0_server_cert_type(const struct ssl_st* s, unsigned char** t, unsigned long  int* len);
-int SSL_CTX_get0_client_cert_type(const struct ssl_ctx_st* ctx, unsigned char** t, unsigned long  int* len);
-int SSL_CTX_get0_server_cert_type(const struct ssl_ctx_st* s, unsigned char** t, unsigned long  int* len);
 void ERR_new();
 void ERR_set_debug(const char* file, int line, const char* func);
 void ERR_set_error(int lib, int reason, const char* fmt, ...);
@@ -9571,200 +9767,291 @@ void ERR_add_error_mem_bio(const char* sep, struct bio_st* bio);
 int ERR_load_strings(int lib, struct ERR_string_data_st* str);
 int ERR_load_strings_const(const struct ERR_string_data_st* str);
 int ERR_unload_strings(int lib, struct ERR_string_data_st* str);
-void ERR_remove_thread_state(void* anonymous_var_nameX1534);
+void ERR_remove_thread_state(void* anonymous_var_nameX320);
 void ERR_remove_state(unsigned long  int pid);
 struct err_state_st* ERR_get_state();
 int ERR_get_next_error_library();
 int ERR_set_mark();
 int ERR_pop_to_mark();
 int ERR_clear_last_mark();
-int ERR_count_to_mark();
-int ERR_pop();
-struct err_state_st* OSSL_ERR_STATE_new();
-void OSSL_ERR_STATE_save(struct err_state_st* es);
-void OSSL_ERR_STATE_save_to_mark(struct err_state_st* es);
-void OSSL_ERR_STATE_restore(const struct err_state_st* es);
-void OSSL_ERR_STATE_free(struct err_state_st* es);
-struct LIST* list_add(struct LIST* root, struct LIST* element);
-struct LIST* list_delete(struct LIST* root, struct LIST* element);
-struct LIST* list_cons(void* data, struct LIST* root);
-struct LIST* list_reverse(struct LIST* root);
-void list_free(struct LIST* root, unsigned int free_data);
-unsigned int list_length(struct LIST* anonymous_var_nameX1537);
-int list_walk(struct LIST* anonymous_var_nameX1538, int (*action)(void*,void*), unsigned char* argument);
-unsigned int mysql_default_compression_level(enum enum_compression_algorithm algorithm);
-void mysql_compress_context_init(struct mysql_compress_context* cmp_ctx, enum enum_compression_algorithm algorithm, unsigned int compression_level);
-void mysql_compress_context_deinit(struct mysql_compress_context* mysql_compress_ctx);
-_Bool my_net_init(struct NET* net, struct Vio* vio);
-void my_net_local_init(struct NET* net);
-void net_end(struct NET* net);
-void net_clear(struct NET* net, _Bool check_buffer);
-void net_claim_memory_ownership(struct NET* net, _Bool claim);
-_Bool net_realloc(struct NET* net, unsigned long  int length);
-_Bool net_flush(struct NET* net);
-_Bool my_net_write(struct NET* net, const unsigned char* packet, unsigned long  int len);
-_Bool net_write_command(struct NET* net, unsigned char command, const unsigned char* header, unsigned long  int head_len, const unsigned char* packet, unsigned long  int len);
-_Bool net_write_packet(struct NET* net, const unsigned char* packet, unsigned long  int length);
-unsigned long  int my_net_read(struct NET* net);
-void my_net_set_write_timeout(struct NET* net, unsigned int timeout);
-void my_net_set_read_timeout(struct NET* net, unsigned int timeout);
-void my_net_set_retry_count(struct NET* net, unsigned int retry_count);
-char* octet2hex(char* to, const char* str, unsigned int len);
-_Bool generate_sha256_scramble(unsigned char* dst, unsigned long  int dst_size, const char* src, unsigned long  int src_size, const char* rnd, unsigned long  int rnd_size);
-char* get_tty_password(const char* opt_message);
-const char* mysql_errno_to_sqlstate(unsigned int mysql_errno);
-_Bool my_thread_init();
-void my_thread_end();
+int ma_net_init(struct st_net* net, struct st_ma_pvio* pvio);
+void ma_net_end(struct st_net* net);
+void ma_net_clear(struct st_net* net);
+int ma_net_flush(struct st_net* net);
+int ma_net_write(struct st_net* net, const unsigned char* packet, unsigned long  int len);
+int ma_net_write_command(struct st_net* net, unsigned char command, const char* packet, unsigned long  int len, char disable_flush);
+int ma_net_real_write(struct st_net* net, const char* packet, unsigned long  int len);
+unsigned long  int ma_net_read(struct st_net* net);
+char* ma_scramble_323(char* to, const char* message, const char* password);
+void ma_scramble_41(const unsigned char* buffer, const char* scramble, const char* password);
+void ma_hash_password(unsigned long  int* result, const char* password, unsigned long  int len);
+void ma_make_scrambled_password(char* to, const char* password);
+void mariadb_load_defaults(const char* conf_file, const char** groups, int* argc, char*** argv);
+char ma_thread_init();
+void ma_thread_end();
+struct st_list* list_add(struct st_list* root, struct st_list* element);
+struct st_list* list_delete(struct st_list* root, struct st_list* element);
+struct st_list* list_cons(void* data, struct st_list* root);
+struct st_list* list_reverse(struct st_list* root);
+void list_free(struct st_list* root, unsigned int free_data);
+unsigned int list_length(struct st_list* list);
+int list_walk(struct st_list* list, int (*action)(void*,void*), char* argument);
+const unsigned short int** __ctype_b_loc();
+const int** __ctype_tolower_loc();
+const int** __ctype_toupper_loc();
+int isalnum(int anonymous_var_nameX323);
+int isalpha(int anonymous_var_nameX324);
+int iscntrl(int anonymous_var_nameX325);
+int isdigit(int anonymous_var_nameX326);
+int islower(int anonymous_var_nameX327);
+int isgraph(int anonymous_var_nameX328);
+int isprint(int anonymous_var_nameX329);
+int ispunct(int anonymous_var_nameX330);
+int isspace(int anonymous_var_nameX331);
+int isupper(int anonymous_var_nameX332);
+int isxdigit(int anonymous_var_nameX333);
+int tolower(int __c);
+int toupper(int __c);
+int isblank(int anonymous_var_nameX334);
+int isctype(int __c, int __mask);
+int isascii(int __c);
+int toascii(int __c);
+int _toupper(int anonymous_var_nameX335);
+int _tolower(int anonymous_var_nameX336);
+int isalnum_l(int anonymous_var_nameX337, struct __locale_struct* anonymous_var_nameX338);
+int isalpha_l(int anonymous_var_nameX339, struct __locale_struct* anonymous_var_nameX340);
+int iscntrl_l(int anonymous_var_nameX341, struct __locale_struct* anonymous_var_nameX342);
+int isdigit_l(int anonymous_var_nameX343, struct __locale_struct* anonymous_var_nameX344);
+int islower_l(int anonymous_var_nameX345, struct __locale_struct* anonymous_var_nameX346);
+int isgraph_l(int anonymous_var_nameX347, struct __locale_struct* anonymous_var_nameX348);
+int isprint_l(int anonymous_var_nameX349, struct __locale_struct* anonymous_var_nameX350);
+int ispunct_l(int anonymous_var_nameX351, struct __locale_struct* anonymous_var_nameX352);
+int isspace_l(int anonymous_var_nameX353, struct __locale_struct* anonymous_var_nameX354);
+int isupper_l(int anonymous_var_nameX355, struct __locale_struct* anonymous_var_nameX356);
+int isxdigit_l(int anonymous_var_nameX357, struct __locale_struct* anonymous_var_nameX358);
+int isblank_l(int anonymous_var_nameX359, struct __locale_struct* anonymous_var_nameX360);
+int __tolower_l(int __c, struct __locale_struct* __l);
+int tolower_l(int __c, struct __locale_struct* __l);
+int __toupper_l(int __c, struct __locale_struct* __l);
+int toupper_l(int __c, struct __locale_struct* __l);
+struct ma_charset_info_st* find_compiled_charset(unsigned int cs_number);
+struct ma_charset_info_st* find_compiled_charset_by_name(const char* name);
+unsigned long  int mysql_cset_escape_quotes(const struct ma_charset_info_st* cset, char* newstr, const char* escapestr, unsigned long  int escapestr_len);
+unsigned long  int mysql_cset_escape_slashes(const struct ma_charset_info_st* cset, char* newstr, const char* escapestr, unsigned long  int escapestr_len);
+const char* madb_get_os_character_set();
+int mariadb_field_attr(struct st_ma_const_string* attr, const struct st_mysql_field* field, enum mariadb_field_attr_t type);
+unsigned long  int ma_net_safe_read(struct st_mysql* mysql);
+void mysql_init_ps_subsystem();
 unsigned long  int net_field_length(unsigned char** packet);
-unsigned long  int net_field_length_checked(unsigned char** packet, unsigned long  int max_length);
-unsigned long  long net_field_length_ll(unsigned char** packet);
-unsigned char* net_store_length(unsigned char* pkg, unsigned long  long length);
-unsigned int net_length_size(unsigned long  long num);
-unsigned int net_field_length_size(const unsigned char* pos);
-unsigned long  long net_length_size_including_self(unsigned long  long length_without_self);
-struct st_mysql_client_plugin* mysql_load_plugin(struct MYSQL* mysql, const char* name, int type, int argc, ...);
-struct st_mysql_client_plugin* mysql_load_plugin_v(struct MYSQL* mysql, const char* name, int type, int argc, va_list args);
-struct st_mysql_client_plugin* mysql_client_find_plugin(struct MYSQL* mysql, const char* name, int type);
-struct st_mysql_client_plugin* mysql_client_register_plugin(struct MYSQL* mysql, struct st_mysql_client_plugin* plugin);
-int mysql_plugin_options(struct st_mysql_client_plugin* plugin, const char* option, const void* value);
-int mysql_plugin_get_option(struct st_mysql_client_plugin* plugin, const char* option, void* value);
-void init_client_errs();
-void finish_client_errs();
+int ma_simple_command(struct st_mysql* mysql, enum enum_server_command command, const char* arg, unsigned long  int length, char skipp_check, void* opt_arg);
+void stmt_set_error(struct st_mysql_stmt* stmt, unsigned int error_nr, const char* sqlstate, const char* format, ...);
+struct st_mysql_stmt* mysql_stmt_init(struct st_mysql* mysql);
+int mysql_stmt_prepare(struct st_mysql_stmt* stmt, const char* query, unsigned long  int length);
+int mysql_stmt_execute(struct st_mysql_stmt* stmt);
+int mysql_stmt_fetch(struct st_mysql_stmt* stmt);
+int mysql_stmt_fetch_column(struct st_mysql_stmt* stmt, struct st_mysql_bind* bind_arg, unsigned int column, unsigned long  int offset);
+int mysql_stmt_store_result(struct st_mysql_stmt* stmt);
+unsigned long  int mysql_stmt_param_count(struct st_mysql_stmt* stmt);
+char mysql_stmt_attr_set(struct st_mysql_stmt* stmt, enum enum_stmt_attr_type attr_type, const void* attr);
+char mysql_stmt_attr_get(struct st_mysql_stmt* stmt, enum enum_stmt_attr_type attr_type, void* attr);
+char mysql_stmt_bind_param(struct st_mysql_stmt* stmt, struct st_mysql_bind* bnd);
+char mysql_stmt_bind_result(struct st_mysql_stmt* stmt, struct st_mysql_bind* bnd);
+char mysql_stmt_close(struct st_mysql_stmt* stmt);
+char mysql_stmt_reset(struct st_mysql_stmt* stmt);
+char mysql_stmt_free_result(struct st_mysql_stmt* stmt);
+char mysql_stmt_send_long_data(struct st_mysql_stmt* stmt, unsigned int param_number, const char* data, unsigned long  int length);
+struct st_mysql_res* mysql_stmt_result_metadata(struct st_mysql_stmt* stmt);
+struct st_mysql_res* mysql_stmt_param_metadata(struct st_mysql_stmt* stmt);
+unsigned int mysql_stmt_errno(struct st_mysql_stmt* stmt);
+const char* mysql_stmt_error(struct st_mysql_stmt* stmt);
+const char* mysql_stmt_sqlstate(struct st_mysql_stmt* stmt);
+struct st_mysql_rows* mysql_stmt_row_seek(struct st_mysql_stmt* stmt, struct st_mysql_rows* offset);
+struct st_mysql_rows* mysql_stmt_row_tell(struct st_mysql_stmt* stmt);
+void mysql_stmt_data_seek(struct st_mysql_stmt* stmt, unsigned long  long offset);
+unsigned long  long mysql_stmt_num_rows(struct st_mysql_stmt* stmt);
+unsigned long  long mysql_stmt_affected_rows(struct st_mysql_stmt* stmt);
+unsigned long  long mysql_stmt_insert_id(struct st_mysql_stmt* stmt);
+unsigned int mysql_stmt_field_count(struct st_mysql_stmt* stmt);
+int mysql_stmt_next_result(struct st_mysql_stmt* stmt);
+char mysql_stmt_more_results(struct st_mysql_stmt* stmt);
+int mariadb_stmt_execute_direct(struct st_mysql_stmt* stmt, const char* stmt_str, unsigned long  int length);
+struct st_mysql_field* mariadb_stmt_fetch_fields(struct st_mysql_stmt* stmt);
+struct st_mysql_client_plugin* mysql_load_plugin(struct st_mysql* mysql, const char* name, int type, int argc, ...);
+struct st_mysql_client_plugin* mysql_load_plugin_v(struct st_mysql* mysql, const char* name, int type, int argc, va_list args);
+struct st_mysql_client_plugin* mysql_client_find_plugin(struct st_mysql* mysql, const char* name, int type);
+struct st_mysql_client_plugin* mysql_client_register_plugin(struct st_mysql* mysql, struct st_mysql_client_plugin* plugin);
+void mysql_set_local_infile_handler(struct st_mysql* mysql, int (*local_infile_init)(void**,const char*,void*), int (*local_infile_read)(void*,char*,unsigned int), void (*local_infile_end)(void*), int (*local_infile_error)(void*,char*,unsigned int), void* anonymous_var_nameX410);
+void mysql_set_local_infile_default(struct st_mysql* mysql);
+void my_set_error(struct st_mysql* mysql, unsigned int error_nr, const char* sqlstate, const char* format, ...);
+unsigned long  long mysql_num_rows(struct st_mysql_res* res);
+unsigned int mysql_num_fields(struct st_mysql_res* res);
+char mysql_eof(struct st_mysql_res* res);
+struct st_mysql_field* mysql_fetch_field_direct(struct st_mysql_res* res, unsigned int fieldnr);
+struct st_mysql_field* mysql_fetch_fields(struct st_mysql_res* res);
+struct st_mysql_rows* mysql_row_tell(struct st_mysql_res* res);
+unsigned int mysql_field_tell(struct st_mysql_res* res);
+unsigned int mysql_field_count(struct st_mysql* mysql);
+char mysql_more_results(struct st_mysql* mysql);
+int mysql_next_result(struct st_mysql* mysql);
+unsigned long  long mysql_affected_rows(struct st_mysql* mysql);
+char mysql_autocommit(struct st_mysql* mysql, char mode);
+char mysql_commit(struct st_mysql* mysql);
+char mysql_rollback(struct st_mysql* mysql);
+unsigned long  long mysql_insert_id(struct st_mysql* mysql);
+unsigned int mysql_errno(struct st_mysql* mysql);
+const char* mysql_error(struct st_mysql* mysql);
+const char* mysql_info(struct st_mysql* mysql);
+unsigned long  int mysql_thread_id(struct st_mysql* mysql);
+const char* mysql_character_set_name(struct st_mysql* mysql);
+void mysql_get_character_set_info(struct st_mysql* mysql, struct character_set* cs);
+int mysql_set_character_set(struct st_mysql* mysql, const char* csname);
+char mariadb_get_infov(struct st_mysql* mysql, enum mariadb_value value, void* arg, ...);
+char mariadb_get_info(struct st_mysql* mysql, enum mariadb_value value, void* arg);
+struct st_mysql* mysql_init(struct st_mysql* mysql);
+int mysql_ssl_set(struct st_mysql* mysql, const char* key, const char* cert, const char* ca, const char* capath, const char* cipher);
+const char* mysql_get_ssl_cipher(struct st_mysql* mysql);
+char mysql_change_user(struct st_mysql* mysql, const char* user, const char* passwd, const char* db);
+struct st_mysql* mysql_real_connect(struct st_mysql* mysql, const char* host, const char* user, const char* passwd, const char* db, unsigned int port, const char* unix_socket, unsigned long  int clientflag);
+void mysql_close(struct st_mysql* sock);
+int mysql_select_db(struct st_mysql* mysql, const char* db);
+int mysql_query(struct st_mysql* mysql, const char* q);
+int mysql_send_query(struct st_mysql* mysql, const char* q, unsigned long  int length);
+char mysql_read_query_result(struct st_mysql* mysql);
+int mysql_real_query(struct st_mysql* mysql, const char* q, unsigned long  int length);
+int mysql_shutdown(struct st_mysql* mysql, enum mysql_enum_shutdown_level shutdown_level);
+int mysql_dump_debug_info(struct st_mysql* mysql);
+int mysql_refresh(struct st_mysql* mysql, unsigned int refresh_options);
+int mysql_kill(struct st_mysql* mysql, unsigned long  int pid);
+int mysql_ping(struct st_mysql* mysql);
+char* mysql_stat(struct st_mysql* mysql);
+char* mysql_get_server_info(struct st_mysql* mysql);
+unsigned long  int mysql_get_server_version(struct st_mysql* mysql);
+char* mysql_get_host_info(struct st_mysql* mysql);
+unsigned int mysql_get_proto_info(struct st_mysql* mysql);
+struct st_mysql_res* mysql_list_dbs(struct st_mysql* mysql, const char* wild);
+struct st_mysql_res* mysql_list_tables(struct st_mysql* mysql, const char* wild);
+struct st_mysql_res* mysql_list_fields(struct st_mysql* mysql, const char* table, const char* wild);
+struct st_mysql_res* mysql_list_processes(struct st_mysql* mysql);
+struct st_mysql_res* mysql_store_result(struct st_mysql* mysql);
+struct st_mysql_res* mysql_use_result(struct st_mysql* mysql);
+int mysql_options(struct st_mysql* mysql, enum mysql_option option, const void* arg);
+int mysql_options4(struct st_mysql* mysql, enum mysql_option option, const void* arg1, const void* arg2);
+void mysql_free_result(struct st_mysql_res* result);
+void mysql_data_seek(struct st_mysql_res* result, unsigned long  long offset);
+struct st_mysql_rows* mysql_row_seek(struct st_mysql_res* result, struct st_mysql_rows* anonymous_var_nameX411);
+unsigned int mysql_field_seek(struct st_mysql_res* result, unsigned int offset);
+char** mysql_fetch_row(struct st_mysql_res* result);
+unsigned long  int* mysql_fetch_lengths(struct st_mysql_res* result);
+struct st_mysql_field* mysql_fetch_field(struct st_mysql_res* result);
+unsigned long  int mysql_escape_string(char* to, const char* from, unsigned long  int from_length);
+unsigned long  int mysql_real_escape_string(struct st_mysql* mysql, char* to, const char* from, unsigned long  int length);
+unsigned int mysql_thread_safe();
+unsigned int mysql_warning_count(struct st_mysql* mysql);
+const char* mysql_sqlstate(struct st_mysql* mysql);
 int mysql_server_init(int argc, char** argv, char** groups);
 void mysql_server_end();
-_Bool mysql_thread_init();
 void mysql_thread_end();
-unsigned long  long mysql_num_rows(struct MYSQL_RES* res);
-unsigned int mysql_num_fields(struct MYSQL_RES* res);
-_Bool mysql_eof(struct MYSQL_RES* res);
-struct MYSQL_FIELD* mysql_fetch_field_direct(struct MYSQL_RES* res, unsigned int fieldnr);
-struct MYSQL_FIELD* mysql_fetch_fields(struct MYSQL_RES* res);
-struct MYSQL_ROWS* mysql_row_tell(struct MYSQL_RES* res);
-unsigned int mysql_field_tell(struct MYSQL_RES* res);
-enum enum_resultset_metadata mysql_result_metadata(struct MYSQL_RES* result);
-unsigned int mysql_field_count(struct MYSQL* mysql);
-unsigned long  long mysql_affected_rows(struct MYSQL* mysql);
-unsigned long  long mysql_insert_id(struct MYSQL* mysql);
-unsigned int mysql_errno(struct MYSQL* mysql);
-const char* mysql_error(struct MYSQL* mysql);
-const char* mysql_sqlstate(struct MYSQL* mysql);
-unsigned int mysql_warning_count(struct MYSQL* mysql);
-const char* mysql_info(struct MYSQL* mysql);
-unsigned long  int mysql_thread_id(struct MYSQL* mysql);
-const char* mysql_character_set_name(struct MYSQL* mysql);
-int mysql_set_character_set(struct MYSQL* mysql, const char* csname);
-struct MYSQL* mysql_init(struct MYSQL* mysql);
-_Bool mysql_ssl_set(struct MYSQL* mysql, const char* key, const char* cert, const char* ca, const char* capath, const char* cipher);
-const char* mysql_get_ssl_cipher(struct MYSQL* mysql);
-_Bool mysql_get_ssl_session_reused(struct MYSQL* mysql);
-void* mysql_get_ssl_session_data(struct MYSQL* mysql, unsigned int n_ticket, unsigned int* out_len);
-_Bool mysql_free_ssl_session_data(struct MYSQL* mysql, void* data);
-_Bool mysql_change_user(struct MYSQL* mysql, const char* user, const char* passwd, const char* db);
-struct MYSQL* mysql_real_connect(struct MYSQL* mysql, const char* host, const char* user, const char* passwd, const char* db, unsigned int port, const char* unix_socket, unsigned long  int clientflag);
-int mysql_select_db(struct MYSQL* mysql, const char* db);
-int mysql_query(struct MYSQL* mysql, const char* q);
-int mysql_send_query(struct MYSQL* mysql, const char* q, unsigned long  int length);
-int mysql_real_query(struct MYSQL* mysql, const char* q, unsigned long  int length);
-struct MYSQL_RES* mysql_store_result(struct MYSQL* mysql);
-struct MYSQL_RES* mysql_use_result(struct MYSQL* mysql);
-enum net_async_status mysql_real_connect_nonblocking(struct MYSQL* mysql, const char* host, const char* user, const char* passwd, const char* db, unsigned int port, const char* unix_socket, unsigned long  int clientflag);
-enum net_async_status mysql_send_query_nonblocking(struct MYSQL* mysql, const char* query, unsigned long  int length);
-enum net_async_status mysql_real_query_nonblocking(struct MYSQL* mysql, const char* query, unsigned long  int length);
-enum net_async_status mysql_store_result_nonblocking(struct MYSQL* mysql, struct MYSQL_RES** result);
-enum net_async_status mysql_next_result_nonblocking(struct MYSQL* mysql);
-enum net_async_status mysql_select_db_nonblocking(struct MYSQL* mysql, const char* db, _Bool* error);
-void mysql_get_character_set_info(struct MYSQL* mysql, struct character_set* charset);
-int mysql_session_track_get_first(struct MYSQL* mysql, enum enum_session_state_type type, const char** data, unsigned long  int* length);
-int mysql_session_track_get_next(struct MYSQL* mysql, enum enum_session_state_type type, const char** data, unsigned long  int* length);
-void mysql_set_local_infile_handler(struct MYSQL* mysql, int (*local_infile_init)(void**,const char*,void*), int (*local_infile_read)(void*,char*,unsigned int), void (*local_infile_end)(void*), int (*local_infile_error)(void*,char*,unsigned int), void* anonymous_var_nameX1625);
-void mysql_set_local_infile_default(struct MYSQL* mysql);
-int mysql_shutdown(struct MYSQL* mysql, enum mysql_enum_shutdown_level shutdown_level);
-int mysql_dump_debug_info(struct MYSQL* mysql);
-int mysql_refresh(struct MYSQL* mysql, unsigned int refresh_options);
-int mysql_kill(struct MYSQL* mysql, unsigned long  int pid);
-int mysql_set_server_option(struct MYSQL* mysql, enum enum_mysql_set_option option);
-int mysql_ping(struct MYSQL* mysql);
-const char* mysql_stat(struct MYSQL* mysql);
-const char* mysql_get_server_info(struct MYSQL* mysql);
+char mysql_thread_init();
+int mysql_set_server_option(struct st_mysql* mysql, enum enum_mysql_set_option option);
 const char* mysql_get_client_info();
 unsigned long  int mysql_get_client_version();
-const char* mysql_get_host_info(struct MYSQL* mysql);
-unsigned long  int mysql_get_server_version(struct MYSQL* mysql);
-unsigned int mysql_get_proto_info(struct MYSQL* mysql);
-struct MYSQL_RES* mysql_list_dbs(struct MYSQL* mysql, const char* wild);
-struct MYSQL_RES* mysql_list_tables(struct MYSQL* mysql, const char* wild);
-struct MYSQL_RES* mysql_list_processes(struct MYSQL* mysql);
-int mysql_options(struct MYSQL* mysql, enum mysql_option option, const void* arg);
-int mysql_options4(struct MYSQL* mysql, enum mysql_option option, const void* arg1, const void* arg2);
-int mysql_get_option(struct MYSQL* mysql, enum mysql_option option, const void* arg);
-void mysql_free_result(struct MYSQL_RES* result);
-enum net_async_status mysql_free_result_nonblocking(struct MYSQL_RES* result);
-void mysql_data_seek(struct MYSQL_RES* result, unsigned long  long offset);
-struct MYSQL_ROWS* mysql_row_seek(struct MYSQL_RES* result, struct MYSQL_ROWS* offset);
-unsigned int mysql_field_seek(struct MYSQL_RES* result, unsigned int offset);
-char** mysql_fetch_row(struct MYSQL_RES* result);
-enum net_async_status mysql_fetch_row_nonblocking(struct MYSQL_RES* res, char*** row);
-unsigned long  int* mysql_fetch_lengths(struct MYSQL_RES* result);
-struct MYSQL_FIELD* mysql_fetch_field(struct MYSQL_RES* result);
-struct MYSQL_RES* mysql_list_fields(struct MYSQL* mysql, const char* table, const char* wild);
-unsigned long  int mysql_escape_string(char* to, const char* from, unsigned long  int from_length);
-unsigned long  int mysql_hex_string(char* to, const char* from, unsigned long  int from_length);
-unsigned long  int mysql_real_escape_string(struct MYSQL* mysql, char* to, const char* from, unsigned long  int length);
-unsigned long  int mysql_real_escape_string_quote(struct MYSQL* mysql, char* to, const char* from, unsigned long  int length, char quote);
+char mariadb_connection(struct st_mysql* mysql);
+const char* mysql_get_server_name(struct st_mysql* mysql);
+struct ma_charset_info_st* mariadb_get_charset_by_name(const char* csname);
+struct ma_charset_info_st* mariadb_get_charset_by_nr(unsigned int csnr);
+unsigned long  int mariadb_convert_string(const char* from, unsigned long  int* from_len, struct ma_charset_info_st* from_cs, char* to, unsigned long  int* to_len, struct ma_charset_info_st* to_cs, int* errorcode);
+int mysql_optionsv(struct st_mysql* mysql, enum mysql_option option, ...);
+int mysql_get_optionv(struct st_mysql* mysql, enum mysql_option option, void* arg, ...);
+int mysql_get_option(struct st_mysql* mysql, enum mysql_option option, void* arg);
+unsigned long  int mysql_hex_string(char* to, const char* from, unsigned long  int len);
+int mysql_get_socket(struct st_mysql* mysql);
+unsigned int mysql_get_timeout_value(const struct st_mysql* mysql);
+unsigned int mysql_get_timeout_value_ms(const struct st_mysql* mysql);
+char mariadb_reconnect(struct st_mysql* mysql);
+int mariadb_cancel(struct st_mysql* mysql);
 void mysql_debug(const char* debug);
-void myodbc_remove_escape(struct MYSQL* mysql, char* name);
-unsigned int mysql_thread_safe();
-_Bool mysql_read_query_result(struct MYSQL* mysql);
-int mysql_reset_connection(struct MYSQL* mysql);
-enum net_async_status mysql_reset_connection_nonblocking(struct MYSQL* mysql);
-int mysql_binlog_open(struct MYSQL* mysql, struct MYSQL_RPL* rpl);
-int mysql_binlog_fetch(struct MYSQL* mysql, struct MYSQL_RPL* rpl);
-void mysql_binlog_close(struct MYSQL* mysql, struct MYSQL_RPL* rpl);
-_Bool mysql_bind_param(struct MYSQL* mysql, unsigned int n_params, struct MYSQL_BIND* binds, const char** names);
-struct MYSQL_STMT* mysql_stmt_init(struct MYSQL* mysql);
-int mysql_stmt_prepare(struct MYSQL_STMT* stmt, const char* query, unsigned long  int length);
-int mysql_stmt_execute(struct MYSQL_STMT* stmt);
-int mysql_stmt_fetch(struct MYSQL_STMT* stmt);
-int mysql_stmt_fetch_column(struct MYSQL_STMT* stmt, struct MYSQL_BIND* bind_arg, unsigned int column, unsigned long  int offset);
-int mysql_stmt_store_result(struct MYSQL_STMT* stmt);
-unsigned long  int mysql_stmt_param_count(struct MYSQL_STMT* stmt);
-_Bool mysql_stmt_attr_set(struct MYSQL_STMT* stmt, enum enum_stmt_attr_type attr_type, const void* attr);
-_Bool mysql_stmt_attr_get(struct MYSQL_STMT* stmt, enum enum_stmt_attr_type attr_type, void* attr);
-_Bool mysql_stmt_bind_param(struct MYSQL_STMT* stmt, struct MYSQL_BIND* bnd);
-_Bool mysql_stmt_bind_named_param(struct MYSQL_STMT* stmt, struct MYSQL_BIND* binds, unsigned int n_params, const char** names);
-_Bool mysql_stmt_bind_result(struct MYSQL_STMT* stmt, struct MYSQL_BIND* bnd);
-_Bool mysql_stmt_close(struct MYSQL_STMT* stmt);
-_Bool mysql_stmt_reset(struct MYSQL_STMT* stmt);
-_Bool mysql_stmt_free_result(struct MYSQL_STMT* stmt);
-_Bool mysql_stmt_send_long_data(struct MYSQL_STMT* stmt, unsigned int param_number, const char* data, unsigned long  int length);
-struct MYSQL_RES* mysql_stmt_result_metadata(struct MYSQL_STMT* stmt);
-struct MYSQL_RES* mysql_stmt_param_metadata(struct MYSQL_STMT* stmt);
-unsigned int mysql_stmt_errno(struct MYSQL_STMT* stmt);
-const char* mysql_stmt_error(struct MYSQL_STMT* stmt);
-const char* mysql_stmt_sqlstate(struct MYSQL_STMT* stmt);
-struct MYSQL_ROWS* mysql_stmt_row_seek(struct MYSQL_STMT* stmt, struct MYSQL_ROWS* offset);
-struct MYSQL_ROWS* mysql_stmt_row_tell(struct MYSQL_STMT* stmt);
-void mysql_stmt_data_seek(struct MYSQL_STMT* stmt, unsigned long  long offset);
-unsigned long  long mysql_stmt_num_rows(struct MYSQL_STMT* stmt);
-unsigned long  long mysql_stmt_affected_rows(struct MYSQL_STMT* stmt);
-unsigned long  long mysql_stmt_insert_id(struct MYSQL_STMT* stmt);
-unsigned int mysql_stmt_field_count(struct MYSQL_STMT* stmt);
-_Bool mysql_commit(struct MYSQL* mysql);
-_Bool mysql_rollback(struct MYSQL* mysql);
-_Bool mysql_autocommit(struct MYSQL* mysql, _Bool auto_mode);
-_Bool mysql_more_results(struct MYSQL* mysql);
-int mysql_next_result(struct MYSQL* mysql);
-int mysql_stmt_next_result(struct MYSQL_STMT* stmt);
-void mysql_close(struct MYSQL* sock);
-void mysql_reset_server_public_key();
-struct MYSQL* mysql_real_connect_dns_srv(struct MYSQL* mysql, const char* dns_srv_name, const char* user, const char* passwd, const char* db, unsigned long  int client_flag);
-enum connect_stage mysql_get_connect_nonblocking_stage(struct MYSQL* mysql);
+unsigned long  int mysql_net_read_packet(struct st_mysql* mysql);
+unsigned long  int mysql_net_field_length(unsigned char** packet);
+char mysql_embedded();
+struct anonymous_typeX46* mysql_get_parameters();
+int mysql_close_start(struct st_mysql* sock);
+int mysql_close_cont(struct st_mysql* sock, int status);
+int mysql_commit_start(char* ret, struct st_mysql* mysql);
+int mysql_commit_cont(char* ret, struct st_mysql* mysql, int status);
+int mysql_dump_debug_info_cont(int* ret, struct st_mysql* mysql, int ready_status);
+int mysql_dump_debug_info_start(int* ret, struct st_mysql* mysql);
+int mysql_rollback_start(char* ret, struct st_mysql* mysql);
+int mysql_rollback_cont(char* ret, struct st_mysql* mysql, int status);
+int mysql_autocommit_start(char* ret, struct st_mysql* mysql, char auto_mode);
+int mysql_list_fields_cont(struct st_mysql_res** ret, struct st_mysql* mysql, int ready_status);
+int mysql_list_fields_start(struct st_mysql_res** ret, struct st_mysql* mysql, const char* table, const char* wild);
+int mysql_autocommit_cont(char* ret, struct st_mysql* mysql, int status);
+int mysql_next_result_start(int* ret, struct st_mysql* mysql);
+int mysql_next_result_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_select_db_start(int* ret, struct st_mysql* mysql, const char* db);
+int mysql_select_db_cont(int* ret, struct st_mysql* mysql, int ready_status);
+int mysql_stmt_warning_count(struct st_mysql_stmt* stmt);
+int mysql_stmt_next_result_start(int* ret, struct st_mysql_stmt* stmt);
+int mysql_stmt_next_result_cont(int* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_set_character_set_start(int* ret, struct st_mysql* mysql, const char* csname);
+int mysql_set_character_set_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_change_user_start(char* ret, struct st_mysql* mysql, const char* user, const char* passwd, const char* db);
+int mysql_change_user_cont(char* ret, struct st_mysql* mysql, int status);
+int mysql_real_connect_start(struct st_mysql** ret, struct st_mysql* mysql, const char* host, const char* user, const char* passwd, const char* db, unsigned int port, const char* unix_socket, unsigned long  int clientflag);
+int mysql_real_connect_cont(struct st_mysql** ret, struct st_mysql* mysql, int status);
+int mysql_query_start(int* ret, struct st_mysql* mysql, const char* q);
+int mysql_query_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_send_query_start(int* ret, struct st_mysql* mysql, const char* q, unsigned long  int length);
+int mysql_send_query_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_real_query_start(int* ret, struct st_mysql* mysql, const char* q, unsigned long  int length);
+int mysql_real_query_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_store_result_start(struct st_mysql_res** ret, struct st_mysql* mysql);
+int mysql_store_result_cont(struct st_mysql_res** ret, struct st_mysql* mysql, int status);
+int mysql_shutdown_start(int* ret, struct st_mysql* mysql, enum mysql_enum_shutdown_level shutdown_level);
+int mysql_shutdown_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_refresh_start(int* ret, struct st_mysql* mysql, unsigned int refresh_options);
+int mysql_refresh_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_kill_start(int* ret, struct st_mysql* mysql, unsigned long  int pid);
+int mysql_kill_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_set_server_option_start(int* ret, struct st_mysql* mysql, enum enum_mysql_set_option option);
+int mysql_set_server_option_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_ping_start(int* ret, struct st_mysql* mysql);
+int mysql_ping_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_stat_start(const char** ret, struct st_mysql* mysql);
+int mysql_stat_cont(const char** ret, struct st_mysql* mysql, int status);
+int mysql_free_result_start(struct st_mysql_res* result);
+int mysql_free_result_cont(struct st_mysql_res* result, int status);
+int mysql_fetch_row_start(char*** ret, struct st_mysql_res* result);
+int mysql_fetch_row_cont(char*** ret, struct st_mysql_res* result, int status);
+int mysql_read_query_result_start(char* ret, struct st_mysql* mysql);
+int mysql_read_query_result_cont(char* ret, struct st_mysql* mysql, int status);
+int mysql_reset_connection_start(int* ret, struct st_mysql* mysql);
+int mysql_reset_connection_cont(int* ret, struct st_mysql* mysql, int status);
+int mysql_session_track_get_next(struct st_mysql* mysql, enum enum_session_state_type type, const char** data, unsigned long  int* length);
+int mysql_session_track_get_first(struct st_mysql* mysql, enum enum_session_state_type type, const char** data, unsigned long  int* length);
+int mysql_stmt_prepare_start(int* ret, struct st_mysql_stmt* stmt, const char* query, unsigned long  int length);
+int mysql_stmt_prepare_cont(int* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_stmt_execute_start(int* ret, struct st_mysql_stmt* stmt);
+int mysql_stmt_execute_cont(int* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_stmt_fetch_start(int* ret, struct st_mysql_stmt* stmt);
+int mysql_stmt_fetch_cont(int* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_stmt_store_result_start(int* ret, struct st_mysql_stmt* stmt);
+int mysql_stmt_store_result_cont(int* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_stmt_close_start(char* ret, struct st_mysql_stmt* stmt);
+int mysql_stmt_close_cont(char* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_stmt_reset_start(char* ret, struct st_mysql_stmt* stmt);
+int mysql_stmt_reset_cont(char* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_stmt_free_result_start(char* ret, struct st_mysql_stmt* stmt);
+int mysql_stmt_free_result_cont(char* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_stmt_send_long_data_start(char* ret, struct st_mysql_stmt* stmt, unsigned int param_number, const char* data, unsigned long  int len);
+int mysql_stmt_send_long_data_cont(char* ret, struct st_mysql_stmt* stmt, int status);
+int mysql_reset_connection(struct st_mysql* mysql);
 int socket_fd_write(int self, char* str);
 int server_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*,_Bool*));
 int client_socket(int port, char* address, void* parent, void (*block)(void*,int,_Bool*));
 char* client_socket2(int port, char* data, char* address);
 int httpd_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*));
-void ERR_print_errors_fp(struct __sFILE* f);
+void ERR_print_errors_fp(struct _IO_FILE* f);
 int httpsd_socket(int port, _Bool reuse, void* parent, void (*block)(void*,struct ssl_st*,_Bool*));
 int come_mysql_init();
 void come_mysql_final();
@@ -9779,6 +10066,24 @@ static struct list$1charph* list$1charph_add(struct list$1charph* self, char* it
 static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item);
 // uniq global variable
 // inline function
+static inline unsigned short int __bswap_16(unsigned short int __bsx){
+    return ((unsigned short int)((((__bsx)>>8)&255)|(((__bsx)&255)<<8)));
+}
+static inline unsigned int __bswap_32(unsigned int __bsx){
+    return ((((__bsx)&4278190080)>>24)|(((__bsx)&16711680)>>8)|(((__bsx)&65280)<<8)|(((__bsx)&255)<<24));
+}
+static inline unsigned long  int __bswap_64(unsigned long  int __bsx){
+    return ((((__bsx)&18374686479671623680)>>56)|(((__bsx)&71776119061217280)>>40)|(((__bsx)&280375465082880)>>24)|(((__bsx)&1095216660480)>>8)|(((__bsx)&4278190080)<<8)|(((__bsx)&16711680)<<24)|(((__bsx)&65280)<<40)|(((__bsx)&255)<<56));
+}
+static inline unsigned short int __uint16_identity(unsigned short int __x){
+    return __x;
+}
+static inline unsigned int __uint32_identity(unsigned int __x){
+    return __x;
+}
+static inline unsigned long  int __uint64_identity(unsigned long  int __x){
+    return __x;
+}
 static inline _Bool die(char* msg){
     perror(msg);
     stackframe();
@@ -9796,7 +10101,7 @@ static inline struct buffer* charpa_to_buffer(char* self, unsigned long  int len
 void* __result_obj__=(void*)0;
 struct buffer* result_0;
 struct buffer* __result2__;
-    result_0=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2399, "buffer"));
+    result_0=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2399, "buffer"));
     buffer_append(result_0,self,sizeof(char)*len);
     __result2__ = gComeFunResultObject = __result_obj__ = result_0;
     gComeFunResultObject = (void*)0;
@@ -9807,7 +10112,7 @@ void* __result_obj__=(void*)0;
 struct buffer* result_1;
 int i_2;
 struct buffer* __result3__;
-    result_1=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2406, "buffer"));
+    result_1=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2406, "buffer"));
     for(    i_2=0;    i_2<len;    i_2++    ){
         buffer_append(result_1,self[i_2],strlen(self[i_2]));
     }
@@ -9819,7 +10124,7 @@ static inline struct buffer* shortpa_to_buffer(short* self, unsigned long  int l
 void* __result_obj__=(void*)0;
 struct buffer* result_3;
 struct buffer* __result4__;
-    result_3=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2415, "buffer"));
+    result_3=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2415, "buffer"));
     buffer_append(result_3,(char*)self,sizeof(short)*len);
     __result4__ = gComeFunResultObject = __result_obj__ = result_3;
     gComeFunResultObject = (void*)0;
@@ -9829,7 +10134,7 @@ static inline struct buffer* intpa_to_buffer(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct buffer* result_4;
 struct buffer* __result5__;
-    result_4=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2422, "buffer"));
+    result_4=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2422, "buffer"));
     buffer_append(result_4,(char*)self,sizeof(int)*len);
     __result5__ = gComeFunResultObject = __result_obj__ = result_4;
     gComeFunResultObject = (void*)0;
@@ -9839,7 +10144,7 @@ static inline struct buffer* longpa_to_buffer(long* self, unsigned long  int len
 void* __result_obj__=(void*)0;
 struct buffer* result_5;
 struct buffer* __result6__;
-    result_5=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2429, "buffer"));
+    result_5=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2429, "buffer"));
     buffer_append(result_5,(char*)self,sizeof(long)*len);
     __result6__ = gComeFunResultObject = __result_obj__ = result_5;
     gComeFunResultObject = (void*)0;
@@ -9849,7 +10154,7 @@ static inline struct buffer* floatpa_to_buffer(float* self, unsigned long  int l
 void* __result_obj__=(void*)0;
 struct buffer* result_6;
 struct buffer* __result7__;
-    result_6=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2436, "buffer"));
+    result_6=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2436, "buffer"));
     buffer_append(result_6,(char*)self,sizeof(float)*len);
     __result7__ = gComeFunResultObject = __result_obj__ = result_6;
     gComeFunResultObject = (void*)0;
@@ -9859,7 +10164,7 @@ static inline struct buffer* doublepa_to_buffer(double* self, unsigned long  int
 void* __result_obj__=(void*)0;
 struct buffer* result_7;
 struct buffer* __result8__;
-    result_7=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2443, "buffer"));
+    result_7=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2443, "buffer"));
     buffer_append(result_7,(char*)self,sizeof(double)*len);
     __result8__ = gComeFunResultObject = __result_obj__ = result_7;
     gComeFunResultObject = (void*)0;
@@ -9868,35 +10173,35 @@ struct buffer* __result8__;
 static inline struct smart_pointer$1char* buffer_to_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1char* __result10__;
-    __result10__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "/usr/local/include/comelang.h", 2743, "smart_pointer$1char"),buffer_clone(self));
+    __result10__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2743, "smart_pointer$1char"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result10__;
 }
 static inline struct smart_pointer$1char* buffer_to_char_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1char* __result11__;
-    __result11__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "/usr/local/include/comelang.h", 2748, "smart_pointer$1char"),buffer_clone(self));
+    __result11__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2748, "smart_pointer$1char"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result11__;
 }
 static inline struct smart_pointer$1short* buffer_to_short_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1short* __result13__;
-    __result13__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "/usr/local/include/comelang.h", 2753, "smart_pointer$1short"),buffer_clone(self));
+    __result13__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "./comelang.h", 2753, "smart_pointer$1short"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result13__;
 }
 static inline struct smart_pointer$1int* buffer_to_int_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1int* __result15__;
-    __result15__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "/usr/local/include/comelang.h", 2758, "smart_pointer$1int"),buffer_clone(self));
+    __result15__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "./comelang.h", 2758, "smart_pointer$1int"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result15__;
 }
 static inline struct smart_pointer$1long* buffer_to_long_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 struct smart_pointer$1long* __result17__;
-    __result17__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "/usr/local/include/comelang.h", 2763, "smart_pointer$1long"),buffer_clone(self));
+    __result17__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "./comelang.h", 2763, "smart_pointer$1long"),buffer_clone(self));
     gComeFunResultObject = (void*)0;
     return __result17__;
 }
@@ -9904,9 +10209,9 @@ static inline struct smart_pointer$1char* charpa_to_pointer(char* self, unsigned
 void* __result_obj__=(void*)0;
 struct buffer* buf_8;
 struct smart_pointer$1char* __result18__;
-    buf_8=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2796, "buffer"));
+    buf_8=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2796, "buffer"));
     buffer_append(buf_8,(char*)self,sizeof(char)*len);
-    __result18__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "/usr/local/include/comelang.h", 2798, "smart_pointer$1char"),buf_8);
+    __result18__ = gComeFunResultObject = __result_obj__ = smart_pointer$1char_initialize_with_value((struct smart_pointer$1char*)come_calloc(1, sizeof(struct smart_pointer$1char)*(1), "./comelang.h", 2798, "smart_pointer$1char"),buf_8);
     gComeFunResultObject = (void*)0;
     return __result18__;
 }
@@ -9914,9 +10219,9 @@ static inline struct smart_pointer$1charp* charppa_to_pointer(char** self, unsig
 void* __result_obj__=(void*)0;
 struct buffer* buf_9;
 struct smart_pointer$1charp* __result20__;
-    buf_9=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2803, "buffer"));
+    buf_9=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2803, "buffer"));
     buffer_append(buf_9,(char*)self,sizeof(char*)*len);
-    __result20__ = gComeFunResultObject = __result_obj__ = smart_pointer$1charp_initialize_with_value((struct smart_pointer$1charp*)come_calloc(1, sizeof(struct smart_pointer$1charp)*(1), "/usr/local/include/comelang.h", 2805, "smart_pointer$1charp"),buf_9);
+    __result20__ = gComeFunResultObject = __result_obj__ = smart_pointer$1charp_initialize_with_value((struct smart_pointer$1charp*)come_calloc(1, sizeof(struct smart_pointer$1charp)*(1), "./comelang.h", 2805, "smart_pointer$1charp"),buf_9);
     gComeFunResultObject = (void*)0;
     return __result20__;
 }
@@ -9924,9 +10229,9 @@ static inline struct smart_pointer$1short* shortpa_to_pointer(short* self, unsig
 void* __result_obj__=(void*)0;
 struct buffer* buf_10;
 struct smart_pointer$1short* __result21__;
-    buf_10=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2810, "buffer"));
+    buf_10=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2810, "buffer"));
     buffer_append(buf_10,(char*)self,sizeof(short)*len);
-    __result21__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "/usr/local/include/comelang.h", 2812, "smart_pointer$1short"),buf_10);
+    __result21__ = gComeFunResultObject = __result_obj__ = smart_pointer$1short_initialize_with_value((struct smart_pointer$1short*)come_calloc(1, sizeof(struct smart_pointer$1short)*(1), "./comelang.h", 2812, "smart_pointer$1short"),buf_10);
     gComeFunResultObject = (void*)0;
     return __result21__;
 }
@@ -9934,9 +10239,9 @@ static inline struct smart_pointer$1int* intpa_to_pointer(int* self, unsigned lo
 void* __result_obj__=(void*)0;
 struct buffer* buf_11;
 struct smart_pointer$1int* __result22__;
-    buf_11=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2817, "buffer"));
+    buf_11=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2817, "buffer"));
     buffer_append(buf_11,(char*)self,sizeof(int)*len);
-    __result22__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "/usr/local/include/comelang.h", 2819, "smart_pointer$1int"),buf_11);
+    __result22__ = gComeFunResultObject = __result_obj__ = smart_pointer$1int_initialize_with_value((struct smart_pointer$1int*)come_calloc(1, sizeof(struct smart_pointer$1int)*(1), "./comelang.h", 2819, "smart_pointer$1int"),buf_11);
     gComeFunResultObject = (void*)0;
     return __result22__;
 }
@@ -9944,9 +10249,9 @@ static inline struct smart_pointer$1long* longpa_to_pointer(long* self, unsigned
 void* __result_obj__=(void*)0;
 struct buffer* buf_12;
 struct smart_pointer$1long* __result23__;
-    buf_12=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2824, "buffer"));
+    buf_12=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2824, "buffer"));
     buffer_append(buf_12,(char*)self,sizeof(long)*len);
-    __result23__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "/usr/local/include/comelang.h", 2826, "smart_pointer$1long"),buf_12);
+    __result23__ = gComeFunResultObject = __result_obj__ = smart_pointer$1long_initialize_with_value((struct smart_pointer$1long*)come_calloc(1, sizeof(struct smart_pointer$1long)*(1), "./comelang.h", 2826, "smart_pointer$1long"),buf_12);
     gComeFunResultObject = (void*)0;
     return __result23__;
 }
@@ -9954,9 +10259,9 @@ static inline struct smart_pointer$1float* floatpa_to_pointer(float* self, unsig
 void* __result_obj__=(void*)0;
 struct buffer* buf_13;
 struct smart_pointer$1float* __result25__;
-    buf_13=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2831, "buffer"));
+    buf_13=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2831, "buffer"));
     buffer_append(buf_13,(char*)self,sizeof(float)*len);
-    __result25__ = gComeFunResultObject = __result_obj__ = smart_pointer$1float_initialize_with_value((struct smart_pointer$1float*)come_calloc(1, sizeof(struct smart_pointer$1float)*(1), "/usr/local/include/comelang.h", 2833, "smart_pointer$1float"),buf_13);
+    __result25__ = gComeFunResultObject = __result_obj__ = smart_pointer$1float_initialize_with_value((struct smart_pointer$1float*)come_calloc(1, sizeof(struct smart_pointer$1float)*(1), "./comelang.h", 2833, "smart_pointer$1float"),buf_13);
     gComeFunResultObject = (void*)0;
     return __result25__;
 }
@@ -9964,107 +10269,107 @@ static inline struct smart_pointer$1double* doublepa_to_pointer(double* self, un
 void* __result_obj__=(void*)0;
 struct buffer* buf_14;
 struct smart_pointer$1double* __result27__;
-    buf_14=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "/usr/local/include/comelang.h", 2838, "buffer"));
+    buf_14=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 2838, "buffer"));
     buffer_append(buf_14,(char*)self,sizeof(double)*len);
-    __result27__ = gComeFunResultObject = __result_obj__ = smart_pointer$1double_initialize_with_value((struct smart_pointer$1double*)come_calloc(1, sizeof(struct smart_pointer$1double)*(1), "/usr/local/include/comelang.h", 2840, "smart_pointer$1double"),buf_14);
+    __result27__ = gComeFunResultObject = __result_obj__ = smart_pointer$1double_initialize_with_value((struct smart_pointer$1double*)come_calloc(1, sizeof(struct smart_pointer$1double)*(1), "./comelang.h", 2840, "smart_pointer$1double"),buf_14);
     gComeFunResultObject = (void*)0;
     return __result27__;
 }
 static inline struct list$1char* charpa_to_list(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct list$1char* __result30__;
-    __result30__ = gComeFunResultObject = __result_obj__ = list$1char_initialize_with_values((struct list$1char*)come_calloc(1, sizeof(struct list$1char)*(1), "/usr/local/include/comelang.h", 2845, "list$1char"),len,self);
+    __result30__ = gComeFunResultObject = __result_obj__ = list$1char_initialize_with_values((struct list$1char*)come_calloc(1, sizeof(struct list$1char)*(1), "./comelang.h", 2845, "list$1char"),len,self);
     gComeFunResultObject = (void*)0;
     return __result30__;
 }
 static inline struct list$1charp* charppa_to_list(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct list$1charp* __result33__;
-    __result33__ = gComeFunResultObject = __result_obj__ = list$1charp_initialize_with_values((struct list$1charp*)come_calloc(1, sizeof(struct list$1charp)*(1), "/usr/local/include/comelang.h", 2850, "list$1charp"),len,self);
+    __result33__ = gComeFunResultObject = __result_obj__ = list$1charp_initialize_with_values((struct list$1charp*)come_calloc(1, sizeof(struct list$1charp)*(1), "./comelang.h", 2850, "list$1charp"),len,self);
     gComeFunResultObject = (void*)0;
     return __result33__;
 }
 static inline struct list$1short* shortpa_to_list(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct list$1short* __result36__;
-    __result36__ = gComeFunResultObject = __result_obj__ = list$1short_initialize_with_values((struct list$1short*)come_calloc(1, sizeof(struct list$1short)*(1), "/usr/local/include/comelang.h", 2855, "list$1short"),len,self);
+    __result36__ = gComeFunResultObject = __result_obj__ = list$1short_initialize_with_values((struct list$1short*)come_calloc(1, sizeof(struct list$1short)*(1), "./comelang.h", 2855, "list$1short"),len,self);
     gComeFunResultObject = (void*)0;
     return __result36__;
 }
 static inline struct list$1int* intpa_to_list(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct list$1int* __result39__;
-    __result39__ = gComeFunResultObject = __result_obj__ = list$1int_initialize_with_values((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "/usr/local/include/comelang.h", 2860, "list$1int"),len,self);
+    __result39__ = gComeFunResultObject = __result_obj__ = list$1int_initialize_with_values((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "./comelang.h", 2860, "list$1int"),len,self);
     gComeFunResultObject = (void*)0;
     return __result39__;
 }
 static inline struct list$1long* longpa_to_list(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct list$1long* __result42__;
-    __result42__ = gComeFunResultObject = __result_obj__ = list$1long_initialize_with_values((struct list$1long*)come_calloc(1, sizeof(struct list$1long)*(1), "/usr/local/include/comelang.h", 2865, "list$1long"),len,self);
+    __result42__ = gComeFunResultObject = __result_obj__ = list$1long_initialize_with_values((struct list$1long*)come_calloc(1, sizeof(struct list$1long)*(1), "./comelang.h", 2865, "list$1long"),len,self);
     gComeFunResultObject = (void*)0;
     return __result42__;
 }
 static inline struct list$1float* floatpa_to_list(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct list$1float* __result45__;
-    __result45__ = gComeFunResultObject = __result_obj__ = list$1float_initialize_with_values((struct list$1float*)come_calloc(1, sizeof(struct list$1float)*(1), "/usr/local/include/comelang.h", 2870, "list$1float"),len,self);
+    __result45__ = gComeFunResultObject = __result_obj__ = list$1float_initialize_with_values((struct list$1float*)come_calloc(1, sizeof(struct list$1float)*(1), "./comelang.h", 2870, "list$1float"),len,self);
     gComeFunResultObject = (void*)0;
     return __result45__;
 }
 static inline struct list$1double* doublepa_to_list(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct list$1double* __result48__;
-    __result48__ = gComeFunResultObject = __result_obj__ = list$1double_initialize_with_values((struct list$1double*)come_calloc(1, sizeof(struct list$1double)*(1), "/usr/local/include/comelang.h", 2875, "list$1double"),len,self);
+    __result48__ = gComeFunResultObject = __result_obj__ = list$1double_initialize_with_values((struct list$1double*)come_calloc(1, sizeof(struct list$1double)*(1), "./comelang.h", 2875, "list$1double"),len,self);
     gComeFunResultObject = (void*)0;
     return __result48__;
 }
 static inline struct vector$1char* charpa_to_vector(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct vector$1char* __result50__;
-    __result50__ = gComeFunResultObject = __result_obj__ = vector$1char_initialize_with_values((struct vector$1char*)come_calloc(1, sizeof(struct vector$1char)*(1), "/usr/local/include/comelang.h", 2880, "vector$1char"),len,self);
+    __result50__ = gComeFunResultObject = __result_obj__ = vector$1char_initialize_with_values((struct vector$1char*)come_calloc(1, sizeof(struct vector$1char)*(1), "./comelang.h", 2880, "vector$1char"),len,self);
     gComeFunResultObject = (void*)0;
     return __result50__;
 }
 static inline struct vector$1charp* charppa_to_vector(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct vector$1charp* __result52__;
-    __result52__ = gComeFunResultObject = __result_obj__ = vector$1charp_initialize_with_values((struct vector$1charp*)come_calloc(1, sizeof(struct vector$1charp)*(1), "/usr/local/include/comelang.h", 2885, "vector$1charp"),len,self);
+    __result52__ = gComeFunResultObject = __result_obj__ = vector$1charp_initialize_with_values((struct vector$1charp*)come_calloc(1, sizeof(struct vector$1charp)*(1), "./comelang.h", 2885, "vector$1charp"),len,self);
     gComeFunResultObject = (void*)0;
     return __result52__;
 }
 static inline struct vector$1short* shortpa_to_vector(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct vector$1short* __result54__;
-    __result54__ = gComeFunResultObject = __result_obj__ = vector$1short_initialize_with_values((struct vector$1short*)come_calloc(1, sizeof(struct vector$1short)*(1), "/usr/local/include/comelang.h", 2890, "vector$1short"),len,self);
+    __result54__ = gComeFunResultObject = __result_obj__ = vector$1short_initialize_with_values((struct vector$1short*)come_calloc(1, sizeof(struct vector$1short)*(1), "./comelang.h", 2890, "vector$1short"),len,self);
     gComeFunResultObject = (void*)0;
     return __result54__;
 }
 static inline struct vector$1int* intpa_to_vector(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct vector$1int* __result56__;
-    __result56__ = gComeFunResultObject = __result_obj__ = vector$1int_initialize_with_values((struct vector$1int*)come_calloc(1, sizeof(struct vector$1int)*(1), "/usr/local/include/comelang.h", 2895, "vector$1int"),len,self);
+    __result56__ = gComeFunResultObject = __result_obj__ = vector$1int_initialize_with_values((struct vector$1int*)come_calloc(1, sizeof(struct vector$1int)*(1), "./comelang.h", 2895, "vector$1int"),len,self);
     gComeFunResultObject = (void*)0;
     return __result56__;
 }
 static inline struct vector$1long* longpa_to_vector(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct vector$1long* __result58__;
-    __result58__ = gComeFunResultObject = __result_obj__ = vector$1long_initialize_with_values((struct vector$1long*)come_calloc(1, sizeof(struct vector$1long)*(1), "/usr/local/include/comelang.h", 2900, "vector$1long"),len,self);
+    __result58__ = gComeFunResultObject = __result_obj__ = vector$1long_initialize_with_values((struct vector$1long*)come_calloc(1, sizeof(struct vector$1long)*(1), "./comelang.h", 2900, "vector$1long"),len,self);
     gComeFunResultObject = (void*)0;
     return __result58__;
 }
 static inline struct vector$1float* floatpa_to_vector(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct vector$1float* __result60__;
-    __result60__ = gComeFunResultObject = __result_obj__ = vector$1float_initialize_with_values((struct vector$1float*)come_calloc(1, sizeof(struct vector$1float)*(1), "/usr/local/include/comelang.h", 2905, "vector$1float"),len,self);
+    __result60__ = gComeFunResultObject = __result_obj__ = vector$1float_initialize_with_values((struct vector$1float*)come_calloc(1, sizeof(struct vector$1float)*(1), "./comelang.h", 2905, "vector$1float"),len,self);
     gComeFunResultObject = (void*)0;
     return __result60__;
 }
 static inline struct vector$1double* doublepa_to_vector(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 struct vector$1double* __result62__;
-    __result62__ = gComeFunResultObject = __result_obj__ = vector$1double_initialize_with_values((struct vector$1double*)come_calloc(1, sizeof(struct vector$1double)*(1), "/usr/local/include/comelang.h", 2910, "vector$1double"),len,self);
+    __result62__ = gComeFunResultObject = __result_obj__ = vector$1double_initialize_with_values((struct vector$1double*)come_calloc(1, sizeof(struct vector$1double)*(1), "./comelang.h", 2910, "vector$1double"),len,self);
     gComeFunResultObject = (void*)0;
     return __result62__;
 }
@@ -10125,84 +10430,6 @@ char* __result66__;
     __result66__ = gComeFunResultObject = __result_obj__ = string_printable(str);
     gComeFunResultObject = (void*)0;
     return __result66__;
-}
-static inline int __darwin_check_fd_set(int _a, const void* _b){
-    if(    (unsigned long  int)&__darwin_check_fd_set_overflow!=(unsigned long  int)0) {
-        return __darwin_check_fd_set_overflow(_a,_b,0);
-    }
-    else {
-        return 1;
-    }
-}
-static inline int __darwin_fd_isset(int _fd, const struct fd_set* _p){
-    if(    __darwin_check_fd_set(_fd,(const void*)_p)) {
-        return _p->fds_bits[(unsigned long  int)_fd/(sizeof(int)*8)]&((int)(((unsigned long  int)1)<<((unsigned long  int)_fd%(sizeof(int)*8))));
-    }
-    return 0;
-}
-static inline void __darwin_fd_set(int _fd, struct fd_set* _p){
-    if(    __darwin_check_fd_set(_fd,(const void*)_p)) {
-        (_p->fds_bits[(unsigned long  int)_fd/(sizeof(int)*8)]|=((int)(((unsigned long  int)1)<<((unsigned long  int)_fd%(sizeof(int)*8)))));
-    }
-}
-static inline void __darwin_fd_clr(int _fd, struct fd_set* _p){
-    if(    __darwin_check_fd_set(_fd,(const void*)_p)) {
-        (_p->fds_bits[(unsigned long  int)_fd/(sizeof(int)*8)]&=~((int)(((unsigned long  int)1)<<((unsigned long  int)_fd%(sizeof(int)*8)))));
-    }
-}
-static inline unsigned short int _OSSwapInt16(unsigned short int data){
-    return ((unsigned short int)((((unsigned short int)(data)&65280)>>8)|(((unsigned short int)(data)&255)<<8)));
-}
-static inline unsigned int _OSSwapInt32(unsigned int data){
-    return ((unsigned int)((((unsigned int)(data)&4278190080)>>24)|(((unsigned int)(data)&16711680)>>8)|(((unsigned int)(data)&65280)<<8)|(((unsigned int)(data)&255)<<24)));
-}
-static inline unsigned long  long _OSSwapInt64(unsigned long  long data){
-    return ((unsigned long  long)((((unsigned long  long)(data)&18374686479671623680)>>56)|(((unsigned long  long)(data)&71776119061217280)>>40)|(((unsigned long  long)(data)&280375465082880)>>24)|(((unsigned long  long)(data)&1095216660480)>>8)|(((unsigned long  long)(data)&4278190080)<<8)|(((unsigned long  long)(data)&16711680)<<24)|(((unsigned long  long)(data)&65280)<<40)|(((unsigned long  long)(data)&255)<<56)));
-}
-static inline unsigned short int OSReadSwapInt16(const void* base, unsigned long  int byteOffset){
-unsigned short int data_45;
-    data_45=*(unsigned short int*)((unsigned long  int)base+byteOffset);
-    return _OSSwapInt16(data_45);
-}
-static inline unsigned int OSReadSwapInt32(const void* base, unsigned long  int byteOffset){
-unsigned int data_46;
-    data_46=*(unsigned int*)((unsigned long  int)base+byteOffset);
-    return _OSSwapInt32(data_46);
-}
-static inline unsigned long  long OSReadSwapInt64(const void* base, unsigned long  int byteOffset){
-unsigned long  long data_47;
-    data_47=*(unsigned long  long*)((unsigned long  int)base+byteOffset);
-    return _OSSwapInt64(data_47);
-}
-static inline void OSWriteSwapInt16(void* base, unsigned long  int byteOffset, unsigned short int data){
-    *(unsigned short int*)((unsigned long  int)base+byteOffset)=_OSSwapInt16(data);
-}
-static inline void OSWriteSwapInt32(void* base, unsigned long  int byteOffset, unsigned int data){
-    *(unsigned int*)((unsigned long  int)base+byteOffset)=_OSSwapInt32(data);
-}
-static inline void OSWriteSwapInt64(void* base, unsigned long  int byteOffset, unsigned long  long data){
-    *(unsigned long  long*)((unsigned long  int)base+byteOffset)=_OSSwapInt64(data);
-}
-static inline int OSHostByteOrder(){
-    return (1);
-}
-static inline unsigned short int _OSReadInt16(const void* base, unsigned long  int byteOffset){
-    return *(unsigned short int*)((unsigned long  int)base+byteOffset);
-}
-static inline unsigned int _OSReadInt32(const void* base, unsigned long  int byteOffset){
-    return *(unsigned int*)((unsigned long  int)base+byteOffset);
-}
-static inline unsigned long  long _OSReadInt64(const void* base, unsigned long  int byteOffset){
-    return *(unsigned long  long*)((unsigned long  int)base+byteOffset);
-}
-static inline void _OSWriteInt16(void* base, unsigned long  int byteOffset, unsigned short int data){
-    *(unsigned short int*)((unsigned long  int)base+byteOffset)=data;
-}
-static inline void _OSWriteInt32(void* base, unsigned long  int byteOffset, unsigned int data){
-    *(unsigned int*)((unsigned long  int)base+byteOffset)=data;
-}
-static inline void _OSWriteInt64(void* base, unsigned long  int byteOffset, unsigned long  long data){
-    *(unsigned long  long*)((unsigned long  int)base+byteOffset)=data;
 }
 static inline char* ossl_check_OPENSSL_STRING_type(char* ptr){
     return ptr;
@@ -10274,24 +10501,6 @@ static inline void* (*ossl_check_void_copyfunc_type(void* (*cpy)(const void*)))(
     return (void* (*)(const void*))cpy;
 }
 static inline void (*ossl_check_void_freefunc_type(void (*fr)(void*)))(void*){
-    return (void (*)(void*))fr;
-}
-static inline struct ssl_comp_st* ossl_check_SSL_COMP_type(struct ssl_comp_st* ptr){
-    return ptr;
-}
-static inline const struct stack_st* ossl_check_const_SSL_COMP_sk_type(const struct stack_st_SSL_COMP* sk){
-    return (const struct stack_st*)sk;
-}
-static inline struct stack_st* ossl_check_SSL_COMP_sk_type(struct stack_st_SSL_COMP* sk){
-    return (struct stack_st*)sk;
-}
-static inline int (*ossl_check_SSL_COMP_compfunc_type(int (*cmp)(const struct ssl_comp_st**,const struct ssl_comp_st**)))(const void*,const void*){
-    return (int (*)(const void*,const void*))cmp;
-}
-static inline void* (*ossl_check_SSL_COMP_copyfunc_type(struct ssl_comp_st* (*cpy)(const struct ssl_comp_st*)))(const void*){
-    return (void* (*)(const void*))cpy;
-}
-static inline void (*ossl_check_SSL_COMP_freefunc_type(void (*fr)(struct ssl_comp_st*)))(void*){
     return (void (*)(void*))fr;
 }
 static inline struct bio_st* ossl_check_BIO_type(struct bio_st* ptr){
@@ -10417,34 +10626,19 @@ static inline int (*OSSL_FUNC_BIO_vsnprintf(const struct ossl_dispatch_st* opf))
 static inline int (*OSSL_FUNC_BIO_ctrl(const struct ossl_dispatch_st* opf))(struct ossl_core_bio_st*,int,long,void*){
     return (int (*)(struct ossl_core_bio_st*,int,long,void*))opf->function;
 }
-static inline void (*OSSL_FUNC_indicator_cb(const struct ossl_dispatch_st* opf))(struct openssl_core_ctx_st*,int (*)(const char*,const char*,const struct ossl_param_st*)){
-    return (void (*)(struct openssl_core_ctx_st*,int (*)(const char*,const char*,const struct ossl_param_st*)))opf->function;
-}
 static inline void (*OSSL_FUNC_self_test_cb(const struct ossl_dispatch_st* opf))(struct openssl_core_ctx_st*,int (*)(const struct ossl_param_st*,void*),void**){
     return (void (*)(struct openssl_core_ctx_st*,int (*)(const struct ossl_param_st*,void*),void**))opf->function;
 }
 static inline unsigned long  int (*OSSL_FUNC_get_entropy(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char**,int,unsigned long  int,unsigned long  int){
     return (unsigned long  int (*)(const struct ossl_core_handle_st*,unsigned char**,int,unsigned long  int,unsigned long  int))opf->function;
 }
-static inline unsigned long  int (*OSSL_FUNC_get_user_entropy(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char**,int,unsigned long  int,unsigned long  int){
-    return (unsigned long  int (*)(const struct ossl_core_handle_st*,unsigned char**,int,unsigned long  int,unsigned long  int))opf->function;
-}
 static inline void (*OSSL_FUNC_cleanup_entropy(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int){
-    return (void (*)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int))opf->function;
-}
-static inline void (*OSSL_FUNC_cleanup_user_entropy(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int){
     return (void (*)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int))opf->function;
 }
 static inline unsigned long  int (*OSSL_FUNC_get_nonce(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char**,unsigned long  int,unsigned long  int,const void*,unsigned long  int){
     return (unsigned long  int (*)(const struct ossl_core_handle_st*,unsigned char**,unsigned long  int,unsigned long  int,const void*,unsigned long  int))opf->function;
 }
-static inline unsigned long  int (*OSSL_FUNC_get_user_nonce(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char**,unsigned long  int,unsigned long  int,const void*,unsigned long  int){
-    return (unsigned long  int (*)(const struct ossl_core_handle_st*,unsigned char**,unsigned long  int,unsigned long  int,const void*,unsigned long  int))opf->function;
-}
 static inline void (*OSSL_FUNC_cleanup_nonce(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int){
-    return (void (*)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int))opf->function;
-}
-static inline void (*OSSL_FUNC_cleanup_user_nonce(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int){
     return (void (*)(const struct ossl_core_handle_st*,unsigned char*,unsigned long  int))opf->function;
 }
 static inline int (*OSSL_FUNC_provider_register_child_cb(const struct ossl_dispatch_st* opf))(const struct ossl_core_handle_st*,int (*)(const struct ossl_core_handle_st*,void*),int (*)(const struct ossl_core_handle_st*,void*),int (*)(const char*,void*),void*){
@@ -10502,9 +10696,6 @@ static inline int (*OSSL_FUNC_digest_update(const struct ossl_dispatch_st* opf))
     return (int (*)(void*,const unsigned char*,unsigned long  int))opf->function;
 }
 static inline int (*OSSL_FUNC_digest_final(const struct ossl_dispatch_st* opf))(void*,unsigned char*,unsigned long  int*,unsigned long  int){
-    return (int (*)(void*,unsigned char*,unsigned long  int*,unsigned long  int))opf->function;
-}
-static inline int (*OSSL_FUNC_digest_squeeze(const struct ossl_dispatch_st* opf))(void*,unsigned char*,unsigned long  int*,unsigned long  int){
     return (int (*)(void*,unsigned char*,unsigned long  int*,unsigned long  int))opf->function;
 }
 static inline int (*OSSL_FUNC_digest_digest(const struct ossl_dispatch_st* opf))(void*,const unsigned char*,unsigned long  int,unsigned char*,unsigned long  int*,unsigned long  int){
@@ -10720,12 +10911,6 @@ static inline int (*OSSL_FUNC_keymgmt_gen_set_params(const struct ossl_dispatch_
 static inline const struct ossl_param_st* (*OSSL_FUNC_keymgmt_gen_settable_params(const struct ossl_dispatch_st* opf))(void*,void*){
     return (const struct ossl_param_st* (*)(void*,void*))opf->function;
 }
-static inline int (*OSSL_FUNC_keymgmt_gen_get_params(const struct ossl_dispatch_st* opf))(void*,struct ossl_param_st*){
-    return (int (*)(void*,struct ossl_param_st*))opf->function;
-}
-static inline const struct ossl_param_st* (*OSSL_FUNC_keymgmt_gen_gettable_params(const struct ossl_dispatch_st* opf))(void*,void*){
-    return (const struct ossl_param_st* (*)(void*,void*))opf->function;
-}
 static inline void* (*OSSL_FUNC_keymgmt_gen(const struct ossl_dispatch_st* opf))(void*,int (*)(const struct ossl_param_st*,void*),void*){
     return (void* (*)(void*,int (*)(const struct ossl_param_st*,void*),void*))opf->function;
 }
@@ -10777,12 +10962,6 @@ static inline const struct ossl_param_st* (*OSSL_FUNC_keymgmt_export_types(const
 static inline void* (*OSSL_FUNC_keymgmt_dup(const struct ossl_dispatch_st* opf))(const void*,int){
     return (void* (*)(const void*,int))opf->function;
 }
-static inline const struct ossl_param_st* (*OSSL_FUNC_keymgmt_import_types_ex(const struct ossl_dispatch_st* opf))(void*,int){
-    return (const struct ossl_param_st* (*)(void*,int))opf->function;
-}
-static inline const struct ossl_param_st* (*OSSL_FUNC_keymgmt_export_types_ex(const struct ossl_dispatch_st* opf))(void*,int){
-    return (const struct ossl_param_st* (*)(void*,int))opf->function;
-}
 static inline void* (*OSSL_FUNC_keyexch_newctx(const struct ossl_dispatch_st* opf))(void*){
     return (void* (*)(void*))opf->function;
 }
@@ -10822,29 +11001,11 @@ static inline int (*OSSL_FUNC_signature_sign_init(const struct ossl_dispatch_st*
 static inline int (*OSSL_FUNC_signature_sign(const struct ossl_dispatch_st* opf))(void*,unsigned char*,unsigned long  int*,unsigned long  int,const unsigned char*,unsigned long  int){
     return (int (*)(void*,unsigned char*,unsigned long  int*,unsigned long  int,const unsigned char*,unsigned long  int))opf->function;
 }
-static inline int (*OSSL_FUNC_signature_sign_message_init(const struct ossl_dispatch_st* opf))(void*,void*,const struct ossl_param_st*){
-    return (int (*)(void*,void*,const struct ossl_param_st*))opf->function;
-}
-static inline int (*OSSL_FUNC_signature_sign_message_update(const struct ossl_dispatch_st* opf))(void*,const unsigned char*,unsigned long  int){
-    return (int (*)(void*,const unsigned char*,unsigned long  int))opf->function;
-}
-static inline int (*OSSL_FUNC_signature_sign_message_final(const struct ossl_dispatch_st* opf))(void*,unsigned char*,unsigned long  int*,unsigned long  int){
-    return (int (*)(void*,unsigned char*,unsigned long  int*,unsigned long  int))opf->function;
-}
 static inline int (*OSSL_FUNC_signature_verify_init(const struct ossl_dispatch_st* opf))(void*,void*,const struct ossl_param_st*){
     return (int (*)(void*,void*,const struct ossl_param_st*))opf->function;
 }
 static inline int (*OSSL_FUNC_signature_verify(const struct ossl_dispatch_st* opf))(void*,const unsigned char*,unsigned long  int,const unsigned char*,unsigned long  int){
     return (int (*)(void*,const unsigned char*,unsigned long  int,const unsigned char*,unsigned long  int))opf->function;
-}
-static inline int (*OSSL_FUNC_signature_verify_message_init(const struct ossl_dispatch_st* opf))(void*,void*,const struct ossl_param_st*){
-    return (int (*)(void*,void*,const struct ossl_param_st*))opf->function;
-}
-static inline int (*OSSL_FUNC_signature_verify_message_update(const struct ossl_dispatch_st* opf))(void*,const unsigned char*,unsigned long  int){
-    return (int (*)(void*,const unsigned char*,unsigned long  int))opf->function;
-}
-static inline int (*OSSL_FUNC_signature_verify_message_final(const struct ossl_dispatch_st* opf))(void*){
-    return (int (*)(void*))opf->function;
 }
 static inline int (*OSSL_FUNC_signature_verify_recover_init(const struct ossl_dispatch_st* opf))(void*,void*,const struct ossl_param_st*){
     return (int (*)(void*,void*,const struct ossl_param_st*))opf->function;
@@ -10906,9 +11067,6 @@ static inline int (*OSSL_FUNC_signature_set_ctx_md_params(const struct ossl_disp
 static inline const struct ossl_param_st* (*OSSL_FUNC_signature_settable_ctx_md_params(const struct ossl_dispatch_st* opf))(void*){
     return (const struct ossl_param_st* (*)(void*))opf->function;
 }
-static inline const char** (*OSSL_FUNC_signature_query_key_types(const struct ossl_dispatch_st* opf))(){
-    return (const char** (*)())opf->function;
-}
 static inline void* (*OSSL_FUNC_asym_cipher_newctx(const struct ossl_dispatch_st* opf))(void*){
     return (void* (*)(void*))opf->function;
 }
@@ -10948,17 +11106,11 @@ static inline void* (*OSSL_FUNC_kem_newctx(const struct ossl_dispatch_st* opf))(
 static inline int (*OSSL_FUNC_kem_encapsulate_init(const struct ossl_dispatch_st* opf))(void*,void*,const struct ossl_param_st*){
     return (int (*)(void*,void*,const struct ossl_param_st*))opf->function;
 }
-static inline int (*OSSL_FUNC_kem_auth_encapsulate_init(const struct ossl_dispatch_st* opf))(void*,void*,void*,const struct ossl_param_st*){
-    return (int (*)(void*,void*,void*,const struct ossl_param_st*))opf->function;
-}
 static inline int (*OSSL_FUNC_kem_encapsulate(const struct ossl_dispatch_st* opf))(void*,unsigned char*,unsigned long  int*,unsigned char*,unsigned long  int*){
     return (int (*)(void*,unsigned char*,unsigned long  int*,unsigned char*,unsigned long  int*))opf->function;
 }
 static inline int (*OSSL_FUNC_kem_decapsulate_init(const struct ossl_dispatch_st* opf))(void*,void*,const struct ossl_param_st*){
     return (int (*)(void*,void*,const struct ossl_param_st*))opf->function;
-}
-static inline int (*OSSL_FUNC_kem_auth_decapsulate_init(const struct ossl_dispatch_st* opf))(void*,void*,void*,const struct ossl_param_st*){
-    return (int (*)(void*,void*,void*,const struct ossl_param_st*))opf->function;
 }
 static inline int (*OSSL_FUNC_kem_decapsulate(const struct ossl_dispatch_st* opf))(void*,unsigned char*,unsigned long  int*,const unsigned char*,unsigned long  int){
     return (int (*)(void*,unsigned char*,unsigned long  int*,const unsigned char*,unsigned long  int))opf->function;
@@ -11061,12 +11213,6 @@ static inline int (*OSSL_FUNC_store_close(const struct ossl_dispatch_st* opf))(v
 }
 static inline int (*OSSL_FUNC_store_export_object(const struct ossl_dispatch_st* opf))(void*,const void*,unsigned long  int,int (*)(const struct ossl_param_st*,void*),void*){
     return (int (*)(void*,const void*,unsigned long  int,int (*)(const struct ossl_param_st*,void*),void*))opf->function;
-}
-static inline int (*OSSL_FUNC_store_delete(const struct ossl_dispatch_st* opf))(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*){
-    return (int (*)(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*))opf->function;
-}
-static inline void* (*OSSL_FUNC_store_open_ex(const struct ossl_dispatch_st* opf))(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*){
-    return (void* (*)(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*))opf->function;
 }
 static inline struct X509_algor_st* ossl_check_X509_ALGOR_type(struct X509_algor_st* ptr){
     return ptr;
@@ -11338,30 +11484,6 @@ static inline void* (*ossl_check_X509_INFO_copyfunc_type(struct X509_info_st* (*
 static inline void (*ossl_check_X509_INFO_freefunc_type(void (*fr)(struct X509_info_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static inline unsigned long  int lh_OPENSSL_STRING_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
-unsigned long  int (*hfn_conv_48)(const char**);
-memset(&hfn_conv_48, 0, sizeof(unsigned long  int (*)(const char**)));
-    hfn_conv_48=(unsigned long  int (*)(const char**))hfn;
-    return hfn_conv_48((const char**)data);
-}
-static inline int lh_OPENSSL_STRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_49)(const char**,const char**);
-memset(&cfn_conv_49, 0, sizeof(int (*)(const char**,const char**)));
-    cfn_conv_49=(int (*)(const char**,const char**))cfn;
-    return cfn_conv_49((const char**)da,(const char**)db);
-}
-static inline void lh_OPENSSL_STRING_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_50)(char**);
-memset(&doall_conv_50, 0, sizeof(void (*)(char**)));
-    doall_conv_50=(void (*)(char**))doall;
-    doall_conv_50((char**)node);
-}
-static inline void lh_OPENSSL_STRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_51)(char**,void*);
-memset(&doall_conv_51, 0, sizeof(void (*)(char**,void*)));
-    doall_conv_51=(void (*)(char**,void*))doall;
-    doall_conv_51((char**)node,arg);
-}
 static inline char** ossl_check_OPENSSL_STRING_lh_plain_type(char** ptr){
     return ptr;
 }
@@ -11382,30 +11504,6 @@ static inline unsigned long  int (*ossl_check_OPENSSL_STRING_lh_hashfunc_type(un
 }
 static inline void (*ossl_check_OPENSSL_STRING_lh_doallfunc_type(void (*dfn)(char**)))(void*){
     return (void (*)(void*))dfn;
-}
-static inline unsigned long  int lh_OPENSSL_CSTRING_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
-unsigned long  int (*hfn_conv_52)(const char**);
-memset(&hfn_conv_52, 0, sizeof(unsigned long  int (*)(const char**)));
-    hfn_conv_52=(unsigned long  int (*)(const char**))hfn;
-    return hfn_conv_52((const char**)data);
-}
-static inline int lh_OPENSSL_CSTRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_53)(const char**,const char**);
-memset(&cfn_conv_53, 0, sizeof(int (*)(const char**,const char**)));
-    cfn_conv_53=(int (*)(const char**,const char**))cfn;
-    return cfn_conv_53((const char**)da,(const char**)db);
-}
-static inline void lh_OPENSSL_CSTRING_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_54)(const char**);
-memset(&doall_conv_54, 0, sizeof(void (*)(const char**)));
-    doall_conv_54=(void (*)(const char**))doall;
-    doall_conv_54((const char**)node);
-}
-static inline void lh_OPENSSL_CSTRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_55)(const char**,void*);
-memset(&doall_conv_55, 0, sizeof(void (*)(const char**,void*)));
-    doall_conv_55=(void (*)(const char**,void*))doall;
-    doall_conv_55((const char**)node,arg);
 }
 static inline const char** ossl_check_OPENSSL_CSTRING_lh_plain_type(const char** ptr){
     return ptr;
@@ -11554,7 +11652,7 @@ static inline void* (*ossl_check_PKCS7_copyfunc_type(struct pkcs7_st* (*cpy)(con
 static inline void (*ossl_check_PKCS7_freefunc_type(void (*fr)(struct pkcs7_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static inline struct anonymous_typeX26* ossl_check_CONF_VALUE_type(struct anonymous_typeX26* ptr){
+static inline struct anonymous_typeX40* ossl_check_CONF_VALUE_type(struct anonymous_typeX40* ptr){
     return ptr;
 }
 static inline const struct stack_st* ossl_check_const_CONF_VALUE_sk_type(const struct stack_st_CONF_VALUE* sk){
@@ -11563,43 +11661,19 @@ static inline const struct stack_st* ossl_check_const_CONF_VALUE_sk_type(const s
 static inline struct stack_st* ossl_check_CONF_VALUE_sk_type(struct stack_st_CONF_VALUE* sk){
     return (struct stack_st*)sk;
 }
-static inline int (*ossl_check_CONF_VALUE_compfunc_type(int (*cmp)(const struct anonymous_typeX26**,const struct anonymous_typeX26**)))(const void*,const void*){
+static inline int (*ossl_check_CONF_VALUE_compfunc_type(int (*cmp)(const struct anonymous_typeX40**,const struct anonymous_typeX40**)))(const void*,const void*){
     return (int (*)(const void*,const void*))cmp;
 }
-static inline void* (*ossl_check_CONF_VALUE_copyfunc_type(struct anonymous_typeX26* (*cpy)(const struct anonymous_typeX26*)))(const void*){
+static inline void* (*ossl_check_CONF_VALUE_copyfunc_type(struct anonymous_typeX40* (*cpy)(const struct anonymous_typeX40*)))(const void*){
     return (void* (*)(const void*))cpy;
 }
-static inline void (*ossl_check_CONF_VALUE_freefunc_type(void (*fr)(struct anonymous_typeX26*)))(void*){
+static inline void (*ossl_check_CONF_VALUE_freefunc_type(void (*fr)(struct anonymous_typeX40*)))(void*){
     return (void (*)(void*))fr;
 }
-static inline unsigned long  int lh_CONF_VALUE_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
-unsigned long  int (*hfn_conv_56)(const struct anonymous_typeX26*);
-memset(&hfn_conv_56, 0, sizeof(unsigned long  int (*)(const struct anonymous_typeX26*)));
-    hfn_conv_56=(unsigned long  int (*)(const struct anonymous_typeX26*))hfn;
-    return hfn_conv_56((const struct anonymous_typeX26*)data);
-}
-static inline int lh_CONF_VALUE_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_57)(const struct anonymous_typeX26*,const struct anonymous_typeX26*);
-memset(&cfn_conv_57, 0, sizeof(int (*)(const struct anonymous_typeX26*,const struct anonymous_typeX26*)));
-    cfn_conv_57=(int (*)(const struct anonymous_typeX26*,const struct anonymous_typeX26*))cfn;
-    return cfn_conv_57((const struct anonymous_typeX26*)da,(const struct anonymous_typeX26*)db);
-}
-static inline void lh_CONF_VALUE_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_58)(struct anonymous_typeX26*);
-memset(&doall_conv_58, 0, sizeof(void (*)(struct anonymous_typeX26*)));
-    doall_conv_58=(void (*)(struct anonymous_typeX26*))doall;
-    doall_conv_58((struct anonymous_typeX26*)node);
-}
-static inline void lh_CONF_VALUE_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_59)(struct anonymous_typeX26*,void*);
-memset(&doall_conv_59, 0, sizeof(void (*)(struct anonymous_typeX26*,void*)));
-    doall_conv_59=(void (*)(struct anonymous_typeX26*,void*))doall;
-    doall_conv_59((struct anonymous_typeX26*)node,arg);
-}
-static inline struct anonymous_typeX26* ossl_check_CONF_VALUE_lh_plain_type(struct anonymous_typeX26* ptr){
+static inline struct anonymous_typeX40* ossl_check_CONF_VALUE_lh_plain_type(struct anonymous_typeX40* ptr){
     return ptr;
 }
-static inline const struct anonymous_typeX26* ossl_check_const_CONF_VALUE_lh_plain_type(const struct anonymous_typeX26* ptr){
+static inline const struct anonymous_typeX40* ossl_check_const_CONF_VALUE_lh_plain_type(const struct anonymous_typeX40* ptr){
     return ptr;
 }
 static inline const struct lhash_st* ossl_check_const_CONF_VALUE_lh_type(const struct lhash_st_CONF_VALUE* lh){
@@ -11608,13 +11682,13 @@ static inline const struct lhash_st* ossl_check_const_CONF_VALUE_lh_type(const s
 static inline struct lhash_st* ossl_check_CONF_VALUE_lh_type(struct lhash_st_CONF_VALUE* lh){
     return (struct lhash_st*)lh;
 }
-static inline int (*ossl_check_CONF_VALUE_lh_compfunc_type(int (*cmp)(const struct anonymous_typeX26*,const struct anonymous_typeX26*)))(const void*,const void*){
+static inline int (*ossl_check_CONF_VALUE_lh_compfunc_type(int (*cmp)(const struct anonymous_typeX40*,const struct anonymous_typeX40*)))(const void*,const void*){
     return (int (*)(const void*,const void*))cmp;
 }
-static inline unsigned long  int (*ossl_check_CONF_VALUE_lh_hashfunc_type(unsigned long  int (*hfn)(const struct anonymous_typeX26*)))(const void*){
+static inline unsigned long  int (*ossl_check_CONF_VALUE_lh_hashfunc_type(unsigned long  int (*hfn)(const struct anonymous_typeX40*)))(const void*){
     return (unsigned long  int (*)(const void*))hfn;
 }
-static inline void (*ossl_check_CONF_VALUE_lh_doallfunc_type(void (*dfn)(struct anonymous_typeX26*)))(void*){
+static inline void (*ossl_check_CONF_VALUE_lh_doallfunc_type(void (*dfn)(struct anonymous_typeX40*)))(void*){
     return (void (*)(void*))dfn;
 }
 static inline struct sct_st* ossl_check_SCT_type(struct sct_st* ptr){
@@ -11689,12 +11763,23 @@ static inline void* (*ossl_check_SSL_CIPHER_copyfunc_type(struct ssl_cipher_st* 
 static inline void (*ossl_check_SSL_CIPHER_freefunc_type(void (*fr)(struct ssl_cipher_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static inline struct bio_poll_descriptor_st SSL_as_poll_descriptor(struct ssl_st* s){
-struct bio_poll_descriptor_st d_60;
-memset(&d_60, 0, sizeof(struct bio_poll_descriptor_st));
-    d_60.type=2;
-    d_60.value.ssl=s;
-    return d_60;
+static inline struct ssl_comp_st* ossl_check_SSL_COMP_type(struct ssl_comp_st* ptr){
+    return ptr;
+}
+static inline const struct stack_st* ossl_check_const_SSL_COMP_sk_type(const struct stack_st_SSL_COMP* sk){
+    return (const struct stack_st*)sk;
+}
+static inline struct stack_st* ossl_check_SSL_COMP_sk_type(struct stack_st_SSL_COMP* sk){
+    return (struct stack_st*)sk;
+}
+static inline int (*ossl_check_SSL_COMP_compfunc_type(int (*cmp)(const struct ssl_comp_st**,const struct ssl_comp_st**)))(const void*,const void*){
+    return (int (*)(const void*,const void*))cmp;
+}
+static inline void* (*ossl_check_SSL_COMP_copyfunc_type(struct ssl_comp_st* (*cpy)(const struct ssl_comp_st*)))(const void*){
+    return (void* (*)(const void*))cpy;
+}
+static inline void (*ossl_check_SSL_COMP_freefunc_type(void (*fr)(struct ssl_comp_st*)))(void*){
+    return (void (*)(void*))fr;
 }
 static inline int ERR_GET_LIB(unsigned long  int errcode){
     if(    (((errcode)&((unsigned int)2147483647+1))!=0)) {
@@ -11720,30 +11805,6 @@ static inline int ERR_FATAL_ERROR(unsigned long  int errcode){
 static inline int ERR_COMMON_ERROR(unsigned long  int errcode){
     return (ERR_GET_RFLAGS(errcode)&(2<<18))!=0;
 }
-static inline unsigned long  int lh_ERR_STRING_DATA_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
-unsigned long  int (*hfn_conv_61)(const struct ERR_string_data_st*);
-memset(&hfn_conv_61, 0, sizeof(unsigned long  int (*)(const struct ERR_string_data_st*)));
-    hfn_conv_61=(unsigned long  int (*)(const struct ERR_string_data_st*))hfn;
-    return hfn_conv_61((const struct ERR_string_data_st*)data);
-}
-static inline int lh_ERR_STRING_DATA_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
-int (*cfn_conv_62)(const struct ERR_string_data_st*,const struct ERR_string_data_st*);
-memset(&cfn_conv_62, 0, sizeof(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*)));
-    cfn_conv_62=(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*))cfn;
-    return cfn_conv_62((const struct ERR_string_data_st*)da,(const struct ERR_string_data_st*)db);
-}
-static inline void lh_ERR_STRING_DATA_doall_thunk(void* node, void (*doall)(void*)){
-void (*doall_conv_63)(struct ERR_string_data_st*);
-memset(&doall_conv_63, 0, sizeof(void (*)(struct ERR_string_data_st*)));
-    doall_conv_63=(void (*)(struct ERR_string_data_st*))doall;
-    doall_conv_63((struct ERR_string_data_st*)node);
-}
-static inline void lh_ERR_STRING_DATA_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
-void (*doall_conv_64)(struct ERR_string_data_st*,void*);
-memset(&doall_conv_64, 0, sizeof(void (*)(struct ERR_string_data_st*,void*)));
-    doall_conv_64=(void (*)(struct ERR_string_data_st*,void*))doall;
-    doall_conv_64((struct ERR_string_data_st*)node,arg);
-}
 static inline struct ERR_string_data_st* ossl_check_ERR_STRING_DATA_lh_plain_type(struct ERR_string_data_st* ptr){
     return ptr;
 }
@@ -11765,21 +11826,14 @@ static inline unsigned long  int (*ossl_check_ERR_STRING_DATA_lh_hashfunc_type(u
 static inline void (*ossl_check_ERR_STRING_DATA_lh_doallfunc_type(void (*dfn)(struct ERR_string_data_st*)))(void*){
     return (void (*)(void*))dfn;
 }
-static inline const char* ER_CLIENT(int client_errno){
-void* __result_obj__=(void*)0;
-const char* __result67__;
-const char* __result68__;
-    if(    client_errno>=2000&&client_errno<=2075) {
-        __result67__ = gComeFunResultObject = __result_obj__ = client_errors[client_errno-2000];
-        gComeFunResultObject = (void*)0;
-        return __result67__;
-    }
-    __result68__ = gComeFunResultObject = __result_obj__ = client_errors[2000-2000];
-    gComeFunResultObject = (void*)0;
-    return __result68__;
-}
 
 // body function
+
+
+
+
+
+
 
 
 
@@ -11894,7 +11948,7 @@ struct list_item$1char* litem_17;
 struct list_item$1char* litem_18;
 struct list$1char* __result28__;
     if(    self->len==0) {
-        litem_16=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "/usr/local/include/comelang.h", 219, "list_item$1char");
+        litem_16=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 219, "list_item$1char");
         litem_16->prev=((void*)0);
         litem_16->next=((void*)0);
         litem_16->item=item;
@@ -11902,7 +11956,7 @@ struct list$1char* __result28__;
         self->head=litem_16;
     }
     else if(    self->len==1) {
-        litem_17=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "/usr/local/include/comelang.h", 229, "list_item$1char");
+        litem_17=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 229, "list_item$1char");
         litem_17->prev=self->head;
         litem_17->next=((void*)0);
         litem_17->item=item;
@@ -11910,7 +11964,7 @@ struct list$1char* __result28__;
         self->head->next=litem_17;
     }
     else {
-        litem_18=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "/usr/local/include/comelang.h", 239, "list_item$1char");
+        litem_18=(struct list_item$1char*)come_calloc(1, sizeof(struct list_item$1char)*(1), "./comelang.h", 239, "list_item$1char");
         litem_18->prev=self->tail;
         litem_18->next=((void*)0);
         litem_18->item=item;
@@ -11946,7 +12000,7 @@ struct list_item$1charp* litem_21;
 struct list_item$1charp* litem_22;
 struct list$1charp* __result31__;
     if(    self->len==0) {
-        litem_20=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "/usr/local/include/comelang.h", 219, "list_item$1charp");
+        litem_20=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 219, "list_item$1charp");
         litem_20->prev=((void*)0);
         litem_20->next=((void*)0);
         litem_20->item=item;
@@ -11954,7 +12008,7 @@ struct list$1charp* __result31__;
         self->head=litem_20;
     }
     else if(    self->len==1) {
-        litem_21=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "/usr/local/include/comelang.h", 229, "list_item$1charp");
+        litem_21=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 229, "list_item$1charp");
         litem_21->prev=self->head;
         litem_21->next=((void*)0);
         litem_21->item=item;
@@ -11962,7 +12016,7 @@ struct list$1charp* __result31__;
         self->head->next=litem_21;
     }
     else {
-        litem_22=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "/usr/local/include/comelang.h", 239, "list_item$1charp");
+        litem_22=(struct list_item$1charp*)come_calloc(1, sizeof(struct list_item$1charp)*(1), "./comelang.h", 239, "list_item$1charp");
         litem_22->prev=self->tail;
         litem_22->next=((void*)0);
         litem_22->item=item;
@@ -11998,7 +12052,7 @@ struct list_item$1short* litem_25;
 struct list_item$1short* litem_26;
 struct list$1short* __result34__;
     if(    self->len==0) {
-        litem_24=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "/usr/local/include/comelang.h", 219, "list_item$1short");
+        litem_24=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 219, "list_item$1short");
         litem_24->prev=((void*)0);
         litem_24->next=((void*)0);
         litem_24->item=item;
@@ -12006,7 +12060,7 @@ struct list$1short* __result34__;
         self->head=litem_24;
     }
     else if(    self->len==1) {
-        litem_25=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "/usr/local/include/comelang.h", 229, "list_item$1short");
+        litem_25=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 229, "list_item$1short");
         litem_25->prev=self->head;
         litem_25->next=((void*)0);
         litem_25->item=item;
@@ -12014,7 +12068,7 @@ struct list$1short* __result34__;
         self->head->next=litem_25;
     }
     else {
-        litem_26=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "/usr/local/include/comelang.h", 239, "list_item$1short");
+        litem_26=(struct list_item$1short*)come_calloc(1, sizeof(struct list_item$1short)*(1), "./comelang.h", 239, "list_item$1short");
         litem_26->prev=self->tail;
         litem_26->next=((void*)0);
         litem_26->item=item;
@@ -12050,7 +12104,7 @@ struct list_item$1int* litem_29;
 struct list_item$1int* litem_30;
 struct list$1int* __result37__;
     if(    self->len==0) {
-        litem_28=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "/usr/local/include/comelang.h", 219, "list_item$1int");
+        litem_28=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 219, "list_item$1int");
         litem_28->prev=((void*)0);
         litem_28->next=((void*)0);
         litem_28->item=item;
@@ -12058,7 +12112,7 @@ struct list$1int* __result37__;
         self->head=litem_28;
     }
     else if(    self->len==1) {
-        litem_29=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "/usr/local/include/comelang.h", 229, "list_item$1int");
+        litem_29=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 229, "list_item$1int");
         litem_29->prev=self->head;
         litem_29->next=((void*)0);
         litem_29->item=item;
@@ -12066,7 +12120,7 @@ struct list$1int* __result37__;
         self->head->next=litem_29;
     }
     else {
-        litem_30=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "/usr/local/include/comelang.h", 239, "list_item$1int");
+        litem_30=(struct list_item$1int*)come_calloc(1, sizeof(struct list_item$1int)*(1), "./comelang.h", 239, "list_item$1int");
         litem_30->prev=self->tail;
         litem_30->next=((void*)0);
         litem_30->item=item;
@@ -12102,7 +12156,7 @@ struct list_item$1long* litem_33;
 struct list_item$1long* litem_34;
 struct list$1long* __result40__;
     if(    self->len==0) {
-        litem_32=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "/usr/local/include/comelang.h", 219, "list_item$1long");
+        litem_32=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 219, "list_item$1long");
         litem_32->prev=((void*)0);
         litem_32->next=((void*)0);
         litem_32->item=item;
@@ -12110,7 +12164,7 @@ struct list$1long* __result40__;
         self->head=litem_32;
     }
     else if(    self->len==1) {
-        litem_33=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "/usr/local/include/comelang.h", 229, "list_item$1long");
+        litem_33=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 229, "list_item$1long");
         litem_33->prev=self->head;
         litem_33->next=((void*)0);
         litem_33->item=item;
@@ -12118,7 +12172,7 @@ struct list$1long* __result40__;
         self->head->next=litem_33;
     }
     else {
-        litem_34=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "/usr/local/include/comelang.h", 239, "list_item$1long");
+        litem_34=(struct list_item$1long*)come_calloc(1, sizeof(struct list_item$1long)*(1), "./comelang.h", 239, "list_item$1long");
         litem_34->prev=self->tail;
         litem_34->next=((void*)0);
         litem_34->item=item;
@@ -12154,7 +12208,7 @@ struct list_item$1float* litem_37;
 struct list_item$1float* litem_38;
 struct list$1float* __result43__;
     if(    self->len==0) {
-        litem_36=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "/usr/local/include/comelang.h", 219, "list_item$1float");
+        litem_36=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 219, "list_item$1float");
         litem_36->prev=((void*)0);
         litem_36->next=((void*)0);
         litem_36->item=item;
@@ -12162,7 +12216,7 @@ struct list$1float* __result43__;
         self->head=litem_36;
     }
     else if(    self->len==1) {
-        litem_37=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "/usr/local/include/comelang.h", 229, "list_item$1float");
+        litem_37=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 229, "list_item$1float");
         litem_37->prev=self->head;
         litem_37->next=((void*)0);
         litem_37->item=item;
@@ -12170,7 +12224,7 @@ struct list$1float* __result43__;
         self->head->next=litem_37;
     }
     else {
-        litem_38=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "/usr/local/include/comelang.h", 239, "list_item$1float");
+        litem_38=(struct list_item$1float*)come_calloc(1, sizeof(struct list_item$1float)*(1), "./comelang.h", 239, "list_item$1float");
         litem_38->prev=self->tail;
         litem_38->next=((void*)0);
         litem_38->item=item;
@@ -12206,7 +12260,7 @@ struct list_item$1double* litem_41;
 struct list_item$1double* litem_42;
 struct list$1double* __result46__;
     if(    self->len==0) {
-        litem_40=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "/usr/local/include/comelang.h", 219, "list_item$1double");
+        litem_40=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 219, "list_item$1double");
         litem_40->prev=((void*)0);
         litem_40->next=((void*)0);
         litem_40->item=item;
@@ -12214,7 +12268,7 @@ struct list$1double* __result46__;
         self->head=litem_40;
     }
     else if(    self->len==1) {
-        litem_41=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "/usr/local/include/comelang.h", 229, "list_item$1double");
+        litem_41=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 229, "list_item$1double");
         litem_41->prev=self->head;
         litem_41->next=((void*)0);
         litem_41->item=item;
@@ -12222,7 +12276,7 @@ struct list$1double* __result46__;
         self->head->next=litem_41;
     }
     else {
-        litem_42=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "/usr/local/include/comelang.h", 239, "list_item$1double");
+        litem_42=(struct list_item$1double*)come_calloc(1, sizeof(struct list_item$1double)*(1), "./comelang.h", 239, "list_item$1double");
         litem_42->prev=self->tail;
         litem_42->next=((void*)0);
         litem_42->item=item;
@@ -12241,7 +12295,7 @@ void* __result_obj__=(void*)0;
 struct vector$1char* __result49__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "/usr/local/include/comelang.h", 1013, "char");
+    self->items=(char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 1013, "char");
     memcpy(self->items,values,sizeof(char)*self->len);
     __result49__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -12254,7 +12308,7 @@ void* __result_obj__=(void*)0;
 struct vector$1charp* __result51__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(char**)come_calloc(1, sizeof(char*)*(1*(self->size)), "/usr/local/include/comelang.h", 1013, "char*");
+    self->items=(char**)come_calloc(1, sizeof(char*)*(1*(self->size)), "./comelang.h", 1013, "char*");
     memcpy(self->items,values,sizeof(char*)*self->len);
     __result51__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -12267,7 +12321,7 @@ void* __result_obj__=(void*)0;
 struct vector$1short* __result53__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(short*)come_calloc(1, sizeof(short)*(1*(self->size)), "/usr/local/include/comelang.h", 1013, "short");
+    self->items=(short*)come_calloc(1, sizeof(short)*(1*(self->size)), "./comelang.h", 1013, "short");
     memcpy(self->items,values,sizeof(short)*self->len);
     __result53__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -12280,7 +12334,7 @@ void* __result_obj__=(void*)0;
 struct vector$1int* __result55__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(int*)come_calloc(1, sizeof(int)*(1*(self->size)), "/usr/local/include/comelang.h", 1013, "int");
+    self->items=(int*)come_calloc(1, sizeof(int)*(1*(self->size)), "./comelang.h", 1013, "int");
     memcpy(self->items,values,sizeof(int)*self->len);
     __result55__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -12293,7 +12347,7 @@ void* __result_obj__=(void*)0;
 struct vector$1long* __result57__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(long*)come_calloc(1, sizeof(long)*(1*(self->size)), "/usr/local/include/comelang.h", 1013, "long");
+    self->items=(long*)come_calloc(1, sizeof(long)*(1*(self->size)), "./comelang.h", 1013, "long");
     memcpy(self->items,values,sizeof(long)*self->len);
     __result57__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -12306,7 +12360,7 @@ void* __result_obj__=(void*)0;
 struct vector$1float* __result59__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(float*)come_calloc(1, sizeof(float)*(1*(self->size)), "/usr/local/include/comelang.h", 1013, "float");
+    self->items=(float*)come_calloc(1, sizeof(float)*(1*(self->size)), "./comelang.h", 1013, "float");
     memcpy(self->items,values,sizeof(float)*self->len);
     __result59__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -12319,7 +12373,7 @@ void* __result_obj__=(void*)0;
 struct vector$1double* __result61__;
     self->size=num_value+1;
     self->len=num_value;
-    self->items=(double*)come_calloc(1, sizeof(double)*(1*(self->size)), "/usr/local/include/comelang.h", 1013, "double");
+    self->items=(double*)come_calloc(1, sizeof(double)*(1*(self->size)), "./comelang.h", 1013, "double");
     memcpy(self->items,values,sizeof(double)*self->len);
     __result61__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
@@ -12799,326 +12853,267 @@ struct vector$1double* __result61__;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int socket_fd_write(int self, char* str){
     return write(self,str,string_length(str));
 }
 
 int server_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*,_Bool*)){
-int sock_65;
+int sock_45;
 _Bool __exception_result_var_b1;
-int opt_66;
+int opt_46;
 _Bool __exception_result_var_b2;
-struct sockaddr_in address_67;
-int addrlen_68;
+struct sockaddr_in address_47;
+int addrlen_48;
 _Bool __exception_result_var_b3;
 _Bool __exception_result_var_b4;
-int new_socket_69;
-_Bool reconnection_70;
-_Bool break__71;
-memset(&address_67, 0, sizeof(struct sockaddr_in));
-    sock_65=socket(socket_family,socket_type,protocol);
-    if(    sock_65<0) {
+int new_socket_49;
+_Bool reconnection_50;
+_Bool break__51;
+memset(&address_47, 0, sizeof(struct sockaddr_in));
+    sock_45=socket(socket_family,socket_type,protocol);
+    if(    sock_45<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 16, 0),__exception_result_var_b1=die("socket failed"), come_pop_stackframe(), __exception_result_var_b1);
     }
     if(    reuse) {
-        opt_66=1;
-        if(        setsockopt(sock_65,65535,4,&opt_66,sizeof(opt_66))) {
-            close(sock_65);
+        opt_46=1;
+        if(        setsockopt(sock_45,1,2,&opt_46,sizeof(opt_46))) {
+            close(sock_45);
             (come_push_stackframe("libcomelang-net-gc.c", 23, 1),__exception_result_var_b2=die(xsprintf("setsockopt")), come_pop_stackframe(), __exception_result_var_b2);
         }
     }
-    address_67.sin_family=2;
-    address_67.sin_addr.s_addr=(unsigned int)0;
-    address_67.sin_port=_OSSwapInt16(port);
-    addrlen_68=sizeof(address_67);
-    if(    bind(sock_65,(struct sockaddr*)&address_67,sizeof(address_67))<0) {
-        close(sock_65);
+    address_47.sin_family=2;
+    address_47.sin_addr.s_addr=((unsigned int)0);
+    address_47.sin_port=htons(port);
+    addrlen_48=sizeof(address_47);
+    if(    bind(sock_45,(struct sockaddr*)&address_47,sizeof(address_47))<0) {
+        close(sock_45);
         (come_push_stackframe("libcomelang-net-gc.c", 37, 2),__exception_result_var_b3=die(xsprintf("Unable to bind")), come_pop_stackframe(), __exception_result_var_b3);
     }
-    if(    listen(sock_65,3)<0) {
-        close(sock_65);
+    if(    listen(sock_45,3)<0) {
+        close(sock_45);
         (come_push_stackframe("libcomelang-net-gc.c", 42, 3),__exception_result_var_b4=die(xsprintf("Unable to listen")), come_pop_stackframe(), __exception_result_var_b4);
     }
-    new_socket_69=accept(sock_65,(struct sockaddr*)&address_67,(unsigned int*)&addrlen_68);
+    new_socket_49=accept(sock_45,(struct sockaddr*)&address_47,(unsigned int*)&addrlen_48);
     while(1) {
-        reconnection_70=0;
-        break__71=0;
-        block(parent,new_socket_69,&break__71,&reconnection_70);
-        if(        reconnection_70) {
-            close(new_socket_69);
-            new_socket_69=accept(sock_65,(struct sockaddr*)&address_67,(unsigned int*)&addrlen_68);
+        reconnection_50=(_Bool)0;
+        break__51=(_Bool)0;
+        block(parent,new_socket_49,&break__51,&reconnection_50);
+        if(        reconnection_50) {
+            close(new_socket_49);
+            new_socket_49=accept(sock_45,(struct sockaddr*)&address_47,(unsigned int*)&addrlen_48);
         }
-        if(        break__71) {
+        if(        break__51) {
             break;
         }
     }
-    close(new_socket_69);
-    close(sock_65);
+    close(new_socket_49);
+    close(sock_45);
     return 0;
 }
 
 int client_socket(int port, char* address, void* parent, void (*block)(void*,int,_Bool*)){
-int sock_72;
-struct sockaddr_in serv_addr_73;
+int sock_52;
+struct sockaddr_in serv_addr_53;
 _Bool __exception_result_var_b5;
 _Bool __exception_result_var_b6;
 _Bool __exception_result_var_b7;
-_Bool break__74;
-_Bool break__75;
-memset(&serv_addr_73, 0, sizeof(struct sockaddr_in));
-    sock_72=0;
-    if(    (sock_72=socket(2,1,0))<0) {
+_Bool break__54;
+_Bool break__55;
+memset(&serv_addr_53, 0, sizeof(struct sockaddr_in));
+    sock_52=0;
+    if(    (sock_52=socket(2,(1),0))<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 75, 4),__exception_result_var_b5=die(xsprintf("socket")), come_pop_stackframe(), __exception_result_var_b5);
     }
-    serv_addr_73.sin_family=2;
-    serv_addr_73.sin_port=_OSSwapInt16(port);
-    if(    inet_pton(2,address,&serv_addr_73.sin_addr)<=0) {
-        close(sock_72);
+    serv_addr_53.sin_family=2;
+    serv_addr_53.sin_port=htons(port);
+    if(    inet_pton(2,address,&serv_addr_53.sin_addr)<=0) {
+        close(sock_52);
         (come_push_stackframe("libcomelang-net-gc.c", 83, 5),__exception_result_var_b6=die(xsprintf("Invalid address/ Address not supported")), come_pop_stackframe(), __exception_result_var_b6);
     }
-    if(    connect(sock_72,(struct sockaddr*)&serv_addr_73,sizeof(serv_addr_73))<0) {
-        close(sock_72);
+    if(    connect(sock_52,(struct sockaddr*)&serv_addr_53,sizeof(serv_addr_53))<0) {
+        close(sock_52);
         (come_push_stackframe("libcomelang-net-gc.c", 87, 6),__exception_result_var_b7=die(xsprintf("Connection Failed")), come_pop_stackframe(), __exception_result_var_b7);
     }
-    break__74=0;
+    break__54=(_Bool)0;
     while(1) {
-        break__75=0;
-        block(parent,sock_72,&break__75);
-        if(        break__75) {
+        break__55=(_Bool)0;
+        block(parent,sock_52,&break__55);
+        if(        break__55) {
             break;
         }
     }
-    close(sock_72);
+    close(sock_52);
     return 0;
 }
 
 char* client_socket2(int port, char* data, char* address){
 void* __result_obj__=(void*)0;
-int sock_76;
-struct sockaddr_in serv_addr_77;
+int sock_56;
+struct sockaddr_in serv_addr_57;
 _Bool __exception_result_var_b8;
 _Bool __exception_result_var_b9;
 _Bool __exception_result_var_b10;
 _Bool __exception_result_var_b11;
-struct buffer* buf_78;
-int size_80;
+struct buffer* buf_58;
+int size_60;
 _Bool __exception_result_var_b12;
-char* __result69__;
-memset(&serv_addr_77, 0, sizeof(struct sockaddr_in));
-    sock_76=0;
-    if(    (sock_76=socket(2,1,0))<0) {
+char* __result67__;
+memset(&serv_addr_57, 0, sizeof(struct sockaddr_in));
+    sock_56=0;
+    if(    (sock_56=socket(2,(1),0))<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 112, 7),__exception_result_var_b8=die(xsprintf("Socket creation error")), come_pop_stackframe(), __exception_result_var_b8);
     }
-    serv_addr_77.sin_family=2;
-    serv_addr_77.sin_port=_OSSwapInt16(port);
-    if(    inet_pton(2,address,&serv_addr_77.sin_addr)<=0) {
-        close(sock_76);
+    serv_addr_57.sin_family=2;
+    serv_addr_57.sin_port=htons(port);
+    if(    inet_pton(2,address,&serv_addr_57.sin_addr)<=0) {
+        close(sock_56);
         (come_push_stackframe("libcomelang-net-gc.c", 120, 8),__exception_result_var_b9=die(xsprintf("Invalid address/ Address not supported")), come_pop_stackframe(), __exception_result_var_b9);
     }
-    if(    connect(sock_76,(struct sockaddr*)&serv_addr_77,sizeof(serv_addr_77))<0) {
-        close(sock_76);
+    if(    connect(sock_56,(struct sockaddr*)&serv_addr_57,sizeof(serv_addr_57))<0) {
+        close(sock_56);
         (come_push_stackframe("libcomelang-net-gc.c", 124, 9),__exception_result_var_b10=die(xsprintf("Connection Failed")), come_pop_stackframe(), __exception_result_var_b10);
     }
-    if(    write(sock_76,data,strlen(data))<0) {
-        close(sock_76);
+    if(    write(sock_56,data,strlen(data))<0) {
+        close(sock_56);
         (come_push_stackframe("libcomelang-net-gc.c", 129, 10),__exception_result_var_b11=die(xsprintf("Write Failed")), come_pop_stackframe(), __exception_result_var_b11);
     }
-    buf_78=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net-gc.c", 132, "buffer"));
-    char buf2_79[1024]={0};
-    size_80=read(sock_76,buf2_79,1024);
-    if(    size_80<0) {
-        close(sock_76);
+    buf_58=buffer_initialize((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "libcomelang-net-gc.c", 132, "buffer"));
+    char buf2_59[1024]={0};
+    size_60=read(sock_56,buf2_59,1024);
+    if(    size_60<0) {
+        close(sock_56);
         (come_push_stackframe("libcomelang-net-gc.c", 140, 11),__exception_result_var_b12=die(xsprintf("Read Failed")), come_pop_stackframe(), __exception_result_var_b12);
     }
-    buffer_append(buf_78,buf2_79,size_80);
-    close(sock_76);
-    __result69__ = gComeFunResultObject = __result_obj__ = buffer_to_string(buf_78);
+    buffer_append(buf_58,buf2_59,size_60);
+    close(sock_56);
+    __result67__ = gComeFunResultObject = __result_obj__ = buffer_to_string(buf_58);
     gComeFunResultObject = (void*)0;
-    return __result69__;
+    return __result67__;
 }
 
 int httpd_socket(int port, int socket_family, int socket_type, int protocol, _Bool reuse, void* parent, void (*block)(void*,int,_Bool*)){
-int sock_81;
+int sock_61;
 _Bool __exception_result_var_b13;
-int opt_82;
+int opt_62;
 _Bool __exception_result_var_b14;
-struct sockaddr_in address_83;
-int addrlen_84;
+struct sockaddr_in address_63;
+int addrlen_64;
 _Bool __exception_result_var_b15;
 _Bool __exception_result_var_b16;
-int new_socket_85;
-_Bool break__86;
-memset(&address_83, 0, sizeof(struct sockaddr_in));
-    sock_81=socket(socket_family,socket_type,protocol);
-    if(    sock_81<0) {
+int new_socket_65;
+_Bool break__66;
+memset(&address_63, 0, sizeof(struct sockaddr_in));
+    sock_61=socket(socket_family,socket_type,protocol);
+    if(    sock_61<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 153, 12),__exception_result_var_b13=die("socket failed"), come_pop_stackframe(), __exception_result_var_b13);
     }
     if(    reuse) {
-        opt_82=1;
-        if(        setsockopt(sock_81,65535,4,&opt_82,sizeof(opt_82))) {
-            close(sock_81);
+        opt_62=1;
+        if(        setsockopt(sock_61,1,2,&opt_62,sizeof(opt_62))) {
+            close(sock_61);
             (come_push_stackframe("libcomelang-net-gc.c", 160, 13),__exception_result_var_b14=die(xsprintf("setsockpt failed")), come_pop_stackframe(), __exception_result_var_b14);
         }
     }
-    address_83.sin_family=2;
-    address_83.sin_addr.s_addr=(unsigned int)0;
-    address_83.sin_port=_OSSwapInt16(port);
-    addrlen_84=sizeof(address_83);
-    if(    bind(sock_81,(struct sockaddr*)&address_83,sizeof(address_83))<0) {
-        close(sock_81);
+    address_63.sin_family=2;
+    address_63.sin_addr.s_addr=((unsigned int)0);
+    address_63.sin_port=htons(port);
+    addrlen_64=sizeof(address_63);
+    if(    bind(sock_61,(struct sockaddr*)&address_63,sizeof(address_63))<0) {
+        close(sock_61);
         (come_push_stackframe("libcomelang-net-gc.c", 174, 14),__exception_result_var_b15=die(xsprintf("Unable to bind")), come_pop_stackframe(), __exception_result_var_b15);
     }
-    if(    listen(sock_81,3)<0) {
-        close(sock_81);
+    if(    listen(sock_61,3)<0) {
+        close(sock_61);
         (come_push_stackframe("libcomelang-net-gc.c", 179, 15),__exception_result_var_b16=die(xsprintf("Unable to listen")), come_pop_stackframe(), __exception_result_var_b16);
     }
     while(1) {
-        new_socket_85=accept(sock_81,(struct sockaddr*)&address_83,(unsigned int*)&addrlen_84);
-        break__86=0;
-        block(parent,new_socket_85,&break__86);
-        close(new_socket_85);
-        if(        break__86) {
+        new_socket_65=accept(sock_61,(struct sockaddr*)&address_63,(unsigned int*)&addrlen_64);
+        break__66=(_Bool)0;
+        block(parent,new_socket_65,&break__66);
+        close(new_socket_65);
+        if(        break__66) {
             break;
         }
     }
-    close(sock_81);
+    close(sock_61);
     return 0;
 }
 
-void ERR_print_errors_fp(struct __sFILE* f){
+void ERR_print_errors_fp(struct _IO_FILE* f){
 }
 
 int httpsd_socket(int port, _Bool reuse, void* parent, void (*block)(void*,struct ssl_st*,_Bool*)){
-int sock_87;
-struct ssl_ctx_st* ctx_88;
-const struct ssl_method_st* method_89;
+int sock_67;
+struct ssl_ctx_st* ctx_68;
+const struct ssl_method_st* method_69;
 _Bool __exception_result_var_b17;
 _Bool __exception_result_var_b18;
 _Bool __exception_result_var_b19;
 _Bool __exception_result_var_b20;
-struct sockaddr_in addr_90;
+struct sockaddr_in addr_70;
 _Bool __exception_result_var_b21;
 _Bool __exception_result_var_b22;
-struct sockaddr_in addr_91;
-unsigned int len_92;
-int client_93;
+struct sockaddr_in addr_71;
+unsigned int len_72;
+int client_73;
 _Bool __exception_result_var_b23;
-struct ssl_st* ssl_94;
-_Bool break__95;
-memset(&sock_87, 0, sizeof(int));
-ctx_88 = (void*)0;
-method_89 = (void*)0;
-memset(&addr_90, 0, sizeof(struct sockaddr_in));
-memset(&addr_91, 0, sizeof(struct sockaddr_in));
+struct ssl_st* ssl_74;
+_Bool break__75;
+memset(&sock_67, 0, sizeof(int));
+ctx_68 = (void*)0;
+method_69 = (void*)0;
+memset(&addr_70, 0, sizeof(struct sockaddr_in));
+memset(&addr_71, 0, sizeof(struct sockaddr_in));
     OPENSSL_init_ssl(2097152|2,((void*)0));
     OPENSSL_init_ssl(0,((void*)0));
-    method_89=TLS_server_method();
-    ctx_88=SSL_CTX_new(method_89);
-    if(    !ctx_88) {
+    method_69=TLS_server_method();
+    ctx_68=SSL_CTX_new(method_69);
+    if(    !ctx_68) {
         (come_push_stackframe("libcomelang-net-gc.c", 225, 16),__exception_result_var_b17=die(xsprintf("Unable to create SSL context")), come_pop_stackframe(), __exception_result_var_b17);
     }
-    if(    SSL_CTX_use_certificate_file(ctx_88,"cert.pem",1)<=0) {
+    if(    SSL_CTX_use_certificate_file(ctx_68,"cert.pem",1)<=0) {
         (come_push_stackframe("libcomelang-net-gc.c", 230, 17),__exception_result_var_b18=die(xsprintf("SSL_CTX_use_certificate_file")), come_pop_stackframe(), __exception_result_var_b18);
     }
-    if(    SSL_CTX_use_PrivateKey_file(ctx_88,"key.pem",1)<=0) {
+    if(    SSL_CTX_use_PrivateKey_file(ctx_68,"key.pem",1)<=0) {
         (come_push_stackframe("libcomelang-net-gc.c", 235, 18),__exception_result_var_b19=die(xsprintf("SSL_CTX_use_PrivateKey_file")), come_pop_stackframe(), __exception_result_var_b19);
     }
-    sock_87=socket(2,1,0);
-    if(    sock_87<0) {
+    sock_67=socket(2,(1),0);
+    if(    sock_67<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 240, 19),__exception_result_var_b20=die(xsprintf("Unable to create socket")), come_pop_stackframe(), __exception_result_var_b20);
     }
-    addr_90.sin_family=2;
-    addr_90.sin_port=_OSSwapInt16(port);
-    addr_90.sin_addr.s_addr=(unsigned int)0;
-    if(    bind(sock_87,(struct sockaddr*)&addr_90,sizeof(addr_90))<0) {
+    addr_70.sin_family=2;
+    addr_70.sin_port=htons(port);
+    addr_70.sin_addr.s_addr=((unsigned int)0);
+    if(    bind(sock_67,(struct sockaddr*)&addr_70,sizeof(addr_70))<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 249, 20),__exception_result_var_b21=die(xsprintf("Unable to bind")), come_pop_stackframe(), __exception_result_var_b21);
     }
-    if(    listen(sock_87,1)<0) {
+    if(    listen(sock_67,1)<0) {
         (come_push_stackframe("libcomelang-net-gc.c", 253, 21),__exception_result_var_b22=die(xsprintf("Unable to listen")), come_pop_stackframe(), __exception_result_var_b22);
     }
     while(1) {
-        len_92=sizeof(addr_91);
-        client_93=accept(sock_87,(struct sockaddr*)&addr_91,&len_92);
-        if(        client_93<0) {
+        len_72=sizeof(addr_71);
+        client_73=accept(sock_67,(struct sockaddr*)&addr_71,&len_72);
+        if(        client_73<0) {
             (come_push_stackframe("libcomelang-net-gc.c", 262, 22),__exception_result_var_b23=die(xsprintf("Unable to accept")), come_pop_stackframe(), __exception_result_var_b23);
         }
-        ssl_94=SSL_new(ctx_88);
-        SSL_set_fd(ssl_94,client_93);
-        if(        SSL_accept(ssl_94)<=0) {
-            ERR_print_errors_fp(__stdoutp);
+        ssl_74=SSL_new(ctx_68);
+        SSL_set_fd(ssl_74,client_73);
+        if(        SSL_accept(ssl_74)<=0) {
+            ERR_print_errors_fp(stdout);
         }
         else {
-            break__95=0;
-            block(parent,ssl_94,&break__95);
-            if(            break__95) {
+            break__75=(_Bool)0;
+            block(parent,ssl_74,&break__75);
+            if(            break__75) {
                 break;
             }
         }
-        SSL_shutdown(ssl_94);
-        SSL_free(ssl_94);
-        close(client_93);
+        SSL_shutdown(ssl_74);
+        SSL_free(ssl_74);
+        close(client_73);
     }
-    close(sock_87);
-    SSL_CTX_free(ctx_88);
+    close(sock_67);
+    SSL_CTX_free(ctx_68);
     while(0) {
         continue;
     }
@@ -13150,26 +13145,26 @@ _Bool __exception_result_var_b25;
 }
 
 int create_user_if_not_exists(char* user, char* password, char* root_password, char* host_name){
-char* check_user_query_96;
-struct MYSQL_RES* result_97;
-char** row_98;
-int user_exists_99;
+char* check_user_query_76;
+struct st_mysql_res* result_77;
+char** row_78;
+int user_exists_79;
     come_mysql_init();
     if(    mysql_real_connect(gComeMySQL,host_name,"root",root_password,((void*)0),0,((void*)0),0)==((void*)0)) {
         finish_with_error();
     }
-    check_user_query_96=xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",charp_to_string(user),charp_to_string(host_name));
-    if(    mysql_query(gComeMySQL,check_user_query_96)==((void*)0)) {
+    check_user_query_76=xsprintf("SELECT COUNT(*) FROM mysql.user WHERE user = '\%s' AND host = '\%s'",charp_to_string(user),charp_to_string(host_name));
+    if(    mysql_query(gComeMySQL,check_user_query_76)==((void*)0)) {
         finish_with_error();
     }
-    result_97=mysql_store_result(gComeMySQL);
-    if(    result_97==((void*)0)) {
+    result_77=mysql_store_result(gComeMySQL);
+    if(    result_77==((void*)0)) {
         finish_with_error();
     }
-    row_98=mysql_fetch_row(result_97);
-    user_exists_99=atoi(row_98[0]);
-    mysql_free_result(result_97);
-    if(    user_exists_99==0) {
+    row_78=mysql_fetch_row(result_77);
+    user_exists_79=atoi(row_78[0]);
+    mysql_free_result(result_77);
+    if(    user_exists_79==0) {
         if(        mysql_query(gComeMySQL,xsprintf("CREATE USER '\%s'@'\%s' IDENTIFIED BY '\%s'",charp_to_string(user),charp_to_string(host_name),charp_to_string(password)))==((void*)0)) {
             finish_with_error();
         }
@@ -13185,13 +13180,13 @@ int user_exists_99;
 }
 
 int create_database_if_not_exists(char* database_name, char* user_name, char* password, char* host_name){
-char* create_db_query_100;
+char* create_db_query_80;
     come_mysql_init();
     if(    mysql_real_connect(gComeMySQL,host_name,user_name,password,((void*)0),0,((void*)0),0)==((void*)0)) {
         finish_with_error();
     }
-    create_db_query_100=xsprintf("CREATE DATABASE IF NOT EXISTS \%s",charp_to_string(database_name));
-    if(    mysql_query(gComeMySQL,create_db_query_100)==((void*)0)) {
+    create_db_query_80=xsprintf("CREATE DATABASE IF NOT EXISTS \%s",charp_to_string(database_name));
+    if(    mysql_query(gComeMySQL,create_db_query_80)==((void*)0)) {
         finish_with_error();
     }
     come_mysql_final();
@@ -13221,14 +13216,14 @@ int xmysql_query(char* query, char* user, char* password, _Bool create_user, _Bo
 
 struct list$1list$1charphph* xmysql_query_and_fetch_row(char* query, char* user, char* password, _Bool create_user, _Bool create_database, char* root_password, char* database_name, char* host_name){
 void* __result_obj__=(void*)0;
-struct MYSQL_RES* res_101;
-int num_fields_102;
-struct list$1list$1charphph* result_103;
-char** row_104;
-struct list$1charph* li_105;
-int i_106;
-struct list$1list$1charphph* __result74__;
-row_104 = (void*)0;
+struct st_mysql_res* res_81;
+int num_fields_82;
+struct list$1list$1charphph* result_83;
+char** row_84;
+struct list$1charph* li_85;
+int i_86;
+struct list$1list$1charphph* __result72__;
+row_84 = (void*)0;
     if(    create_user) {
         create_user_if_not_exists(user,password,root_password,"localhost");
     }
@@ -13245,119 +13240,119 @@ row_104 = (void*)0;
     if(    mysql_query(gComeMySQL,query)==((void*)0)) {
         finish_with_error();
     }
-    res_101=mysql_store_result(gComeMySQL);
-    if(    res_101) {
+    res_81=mysql_store_result(gComeMySQL);
+    if(    res_81) {
         finish_with_error();
     }
-    num_fields_102=mysql_num_fields(res_101);
-    result_103=list$1list$1charphph_initialize((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net-gc.c", 421, "list$1list$1charphph"));
-    while((row_104=mysql_fetch_row(res_101))!=((void*)0)) {
-        li_105=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net-gc.c", 425, "list$1charph"));
-        for(        i_106=0;        i_106<num_fields_102;        i_106++        ){
-            if(            row_104[i_106]) {
-                list$1charph_add(li_105,__builtin_string(row_104[i_106]));
+    num_fields_82=mysql_num_fields(res_81);
+    result_83=list$1list$1charphph_initialize((struct list$1list$1charphph*)come_calloc(1, sizeof(struct list$1list$1charphph)*(1), "libcomelang-net-gc.c", 421, "list$1list$1charphph"));
+    while((row_84=mysql_fetch_row(res_81))!=((void*)0)) {
+        li_85=list$1charph_initialize((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "libcomelang-net-gc.c", 425, "list$1charph"));
+        for(        i_86=0;        i_86<num_fields_82;        i_86++        ){
+            if(            row_84[i_86]) {
+                list$1charph_add(li_85,__builtin_string(row_84[i_86]));
             }
         }
-        list$1list$1charphph_add(result_103,li_105);
+        list$1list$1charphph_add(result_83,li_85);
     }
-    mysql_free_result(res_101);
+    mysql_free_result(res_81);
     come_mysql_final();
-    __result74__ = gComeFunResultObject = __result_obj__ = result_103;
+    __result72__ = gComeFunResultObject = __result_obj__ = result_83;
     gComeFunResultObject = (void*)0;
-    return __result74__;
+    return __result72__;
 }
 
 static struct list$1list$1charphph* list$1list$1charphph_initialize(struct list$1list$1charphph* self){
 void* __result_obj__=(void*)0;
-struct list$1list$1charphph* __result70__;
+struct list$1list$1charphph* __result68__;
     self->head=((void*)0);
     self->tail=((void*)0);
     self->len=0;
+    __result68__ = gComeFunResultObject = __result_obj__ = self;
+    gComeFunResultObject = (void*)0;
+    return __result68__;
+}
+
+static struct list$1charph* list$1charph_initialize(struct list$1charph* self){
+void* __result_obj__=(void*)0;
+struct list$1charph* __result69__;
+    self->head=((void*)0);
+    self->tail=((void*)0);
+    self->len=0;
+    __result69__ = gComeFunResultObject = __result_obj__ = self;
+    gComeFunResultObject = (void*)0;
+    return __result69__;
+}
+
+static struct list$1charph* list$1charph_add(struct list$1charph* self, char* item){
+void* __result_obj__=(void*)0;
+struct list_item$1charph* litem_87;
+struct list_item$1charph* litem_88;
+struct list_item$1charph* litem_89;
+struct list$1charph* __result70__;
+    if(    self->len==0) {
+        litem_87=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 149, "list_item$1charph");
+        litem_87->prev=((void*)0);
+        litem_87->next=((void*)0);
+        litem_87->item=item;
+        self->tail=litem_87;
+        self->head=litem_87;
+    }
+    else if(    self->len==1) {
+        litem_88=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 159, "list_item$1charph");
+        litem_88->prev=self->head;
+        litem_88->next=((void*)0);
+        litem_88->item=item;
+        self->tail=litem_88;
+        self->head->next=litem_88;
+    }
+    else {
+        litem_89=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "./comelang.h", 169, "list_item$1charph");
+        litem_89->prev=self->tail;
+        litem_89->next=((void*)0);
+        litem_89->item=item;
+        self->tail->next=litem_89;
+        self->tail=litem_89;
+    }
+    self->len++;
     __result70__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
     return __result70__;
 }
 
-static struct list$1charph* list$1charph_initialize(struct list$1charph* self){
+static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item){
 void* __result_obj__=(void*)0;
-struct list$1charph* __result71__;
-    self->head=((void*)0);
-    self->tail=((void*)0);
-    self->len=0;
+struct list_item$1list$1charphph* litem_90;
+struct list_item$1list$1charphph* litem_91;
+struct list_item$1list$1charphph* litem_92;
+struct list$1list$1charphph* __result71__;
+    if(    self->len==0) {
+        litem_90=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 149, "list_item$1list$1charphph");
+        litem_90->prev=((void*)0);
+        litem_90->next=((void*)0);
+        litem_90->item=item;
+        self->tail=litem_90;
+        self->head=litem_90;
+    }
+    else if(    self->len==1) {
+        litem_91=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 159, "list_item$1list$1charphph");
+        litem_91->prev=self->head;
+        litem_91->next=((void*)0);
+        litem_91->item=item;
+        self->tail=litem_91;
+        self->head->next=litem_91;
+    }
+    else {
+        litem_92=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "./comelang.h", 169, "list_item$1list$1charphph");
+        litem_92->prev=self->tail;
+        litem_92->next=((void*)0);
+        litem_92->item=item;
+        self->tail->next=litem_92;
+        self->tail=litem_92;
+    }
+    self->len++;
     __result71__ = gComeFunResultObject = __result_obj__ = self;
     gComeFunResultObject = (void*)0;
     return __result71__;
-}
-
-static struct list$1charph* list$1charph_add(struct list$1charph* self, char* item){
-void* __result_obj__=(void*)0;
-struct list_item$1charph* litem_107;
-struct list_item$1charph* litem_108;
-struct list_item$1charph* litem_109;
-struct list$1charph* __result72__;
-    if(    self->len==0) {
-        litem_107=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 149, "list_item$1charph");
-        litem_107->prev=((void*)0);
-        litem_107->next=((void*)0);
-        litem_107->item=item;
-        self->tail=litem_107;
-        self->head=litem_107;
-    }
-    else if(    self->len==1) {
-        litem_108=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 159, "list_item$1charph");
-        litem_108->prev=self->head;
-        litem_108->next=((void*)0);
-        litem_108->item=item;
-        self->tail=litem_108;
-        self->head->next=litem_108;
-    }
-    else {
-        litem_109=(struct list_item$1charph*)come_calloc(1, sizeof(struct list_item$1charph)*(1), "/usr/local/include/comelang.h", 169, "list_item$1charph");
-        litem_109->prev=self->tail;
-        litem_109->next=((void*)0);
-        litem_109->item=item;
-        self->tail->next=litem_109;
-        self->tail=litem_109;
-    }
-    self->len++;
-    __result72__ = gComeFunResultObject = __result_obj__ = self;
-    gComeFunResultObject = (void*)0;
-    return __result72__;
-}
-
-static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item){
-void* __result_obj__=(void*)0;
-struct list_item$1list$1charphph* litem_110;
-struct list_item$1list$1charphph* litem_111;
-struct list_item$1list$1charphph* litem_112;
-struct list$1list$1charphph* __result73__;
-    if(    self->len==0) {
-        litem_110=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 149, "list_item$1list$1charphph");
-        litem_110->prev=((void*)0);
-        litem_110->next=((void*)0);
-        litem_110->item=item;
-        self->tail=litem_110;
-        self->head=litem_110;
-    }
-    else if(    self->len==1) {
-        litem_111=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 159, "list_item$1list$1charphph");
-        litem_111->prev=self->head;
-        litem_111->next=((void*)0);
-        litem_111->item=item;
-        self->tail=litem_111;
-        self->head->next=litem_111;
-    }
-    else {
-        litem_112=(struct list_item$1list$1charphph*)come_calloc(1, sizeof(struct list_item$1list$1charphph)*(1), "/usr/local/include/comelang.h", 169, "list_item$1list$1charphph");
-        litem_112->prev=self->tail;
-        litem_112->next=((void*)0);
-        litem_112->item=item;
-        self->tail->next=litem_112;
-        self->tail=litem_112;
-    }
-    self->len++;
-    __result73__ = gComeFunResultObject = __result_obj__ = self;
-    gComeFunResultObject = (void*)0;
-    return __result73__;
 }
 

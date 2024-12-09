@@ -95,9 +95,23 @@ sNode*% parse_union(string type_name, sInfo* info)
             printf("%s %d: parse_type failed\n", info->sname, info->sline);
             exit(2);
         }
-        expected_next_character(';');
-        
-        klass.mFields.push_back((name, type2));
+        if(*info->p == ',') {
+            while(*info->p == ',') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                string name2 = parse_word();
+                
+                klass.mFields.push_back((name2, type2));
+            }
+            
+            expected_next_character(';');
+        }
+        else {
+            expected_next_character(';');
+            
+            klass.mFields.push_back((name, type2));
+        }
         
         if(*info->p == '}') {
             info->p++;
@@ -152,9 +166,24 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
                 printf("%s %d: parse_type failed\n", info->sname, info->sline);
                 exit(2);
             }
-            expected_next_character(';');
             
-            klass.mFields.push_back((name, type2));
+            if(*info->p == ',') {
+                while(*info->p == ',') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    
+                    string name2 = parse_word();
+                    
+                    klass.mFields.push_back((name2, type2));
+                }
+                
+                expected_next_character(';');
+            }
+            else {
+                expected_next_character(';');
+                
+                klass.mFields.push_back((name, type2));
+            }
             
             if(*info->p == '}') {
                 info->p++;
