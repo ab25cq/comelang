@@ -1,11 +1,4 @@
-
-struct _atexit {
- struct _atexit *_next;
- int _ind;
-
- void (*_fns[32])(void);
-//        struct _on_exit_args _on_exit_args;
-};
+char*_Nonnull((1)) basename (const char *) __asm__(__ASMNAME("__gnu_basename"));
 
 int main(int argc, char** argv)
 {

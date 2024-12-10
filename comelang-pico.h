@@ -1,6 +1,9 @@
 #ifndef COMELANG_PICO_H
 #define COMELANG_PICO_H
 
+#define __BEGIN_DECLS using C {
+#define __END_DECLS }
+
 using comelang;
 
 #define _GNU_SOURCE

@@ -9,6 +9,9 @@
 
 
 
+
+
+
 using comelang;
 
 
@@ -833,7 +836,7 @@ void * aligned_alloc(size_t, size_t) __malloc_like __alloc_align(1)
 int at_quick_exit(void (*)(void));
 _Noreturn void
  quick_exit(int);
-# 13 "/usr/local/include/comelang-pico.h" 2
+# 16 "/usr/local/include/comelang-pico.h" 2
 # 1 "/usr/local//include/pico/string.h" 1
 # 24 "/usr/local//include/pico/string.h"
 # 1 "/usr/local//include/pico/strings.h" 1
@@ -842,7 +845,7 @@ typedef __size_t size_t;
 
 
 
-__BEGIN_DECLS
+using C {
 
 int bcmp(const void *, const void *, size_t) __pure;
 void bcopy(const void *, void *, size_t);
@@ -872,7 +875,7 @@ int strncasecmp(const char *, const char *, size_t) __pure;
 int strcasecmp_l (const char *, const char *, locale_t);
 int strncasecmp_l (const char *, const char *, size_t, locale_t);
 
-__END_DECLS
+}
 # 25 "/usr/local//include/pico/string.h" 2
 
 
@@ -985,7 +988,7 @@ char *_Nonnull ((1)) basename (const char *) __asm__(__ASMNAME("__gnu_basename")
 
 # 1 "/usr/local//include/pico/sys/string.h" 1
 # 176 "/usr/local//include/pico/string.h" 2
-# 14 "/usr/local/include/comelang-pico.h" 2
+# 17 "/usr/local/include/comelang-pico.h" 2
 # 1 "/usr/local//include/pico/stdio.h" 1
 # 40 "/usr/local//include/pico/stdio.h"
 # 1 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin//../lib/gcc/arm-none-eabi/13.3.1/include/stdarg.h" 1
@@ -1434,7 +1437,7 @@ _putchar_unlocked(int _c)
  _ptr = _impure_ptr;
  return (__sputc_r(_ptr, _c, ((_ptr)->_stdout)));
 }
-# 15 "/usr/local/include/comelang-pico.h" 2
+# 18 "/usr/local/include/comelang-pico.h" 2
 
 }
 
@@ -4182,7 +4185,7 @@ uniq void stackframe()
         printf("%s %d #%d\n", gComeStackFrameSName[i], gComeStackFrameSLine[i], gComeStackFrameID[i]);
     }
 }
-# 2770 "/usr/local/include/comelang-pico.h"
+# 2773 "/usr/local/include/comelang-pico.h"
 uniq void* come_null_check(void* mem, char* sname, int sline, int id)
 {
     if(mem == null) {
@@ -4358,7 +4361,7 @@ uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
     gComeMallocLib = come_malloc;
     gComeDebugLib = come_debug
     gComeGCLib = come_gc;
-# 2954 "/usr/local/include/comelang-pico.h"
+# 2957 "/usr/local/include/comelang-pico.h"
     gComeStackFrameBuffer = ((void *)0);
     memset(gComeStackFrameSName, 0, sizeof(char*)*128);
     memset(gComeStackFrameSLine, 0, sizeof(int)*128);
@@ -4545,7 +4548,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         sMemHeaderTiny* it = result;
 
         it->allocated = 177783;
-# 3150 "/usr/local/include/comelang-pico.h"
+# 3153 "/usr/local/include/comelang-pico.h"
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = ((void *)0);
 
@@ -4707,7 +4710,7 @@ uniq void come_free_object(void* mem)
     if(mem == ((void *)0)) {
         return;
     }
-# 3319 "/usr/local/include/comelang-pico.h"
+# 3322 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     come_free_mem_of_heap_pool((char*)ref_count);
@@ -4718,7 +4721,7 @@ uniq void come_free(void* mem)
     if(mem == ((void *)0)) {
         return;
     }
-# 3337 "/usr/local/include/comelang-pico.h"
+# 3340 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     come_free_mem_of_heap_pool((char*)ref_count);
@@ -4729,7 +4732,7 @@ uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_n
     if(!block) {
         return null;
     }
-# 3355 "/usr/local/include/comelang-pico.h"
+# 3358 "/usr/local/include/comelang-pico.h"
     char* mem = (char*)block - sizeof(size_t) - sizeof(size_t);
 
     size_t* size_p = (size_t*)(mem + sizeof(size_t));
@@ -4749,7 +4752,7 @@ uniq void* come_increment_ref_count(void* mem)
     if(mem == ((void *)0)) {
         return mem;
     }
-# 3382 "/usr/local/include/comelang-pico.h"
+# 3385 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     (*ref_count)++;
@@ -4762,7 +4765,7 @@ uniq void* come_print_ref_count(void* mem)
     if(mem == ((void *)0)) {
         return mem;
     }
-# 3402 "/usr/local/include/comelang-pico.h"
+# 3405 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     printf("ref_count %ld\n", *ref_count);
@@ -7063,7 +7066,7 @@ record uniq bool die(char* msg)
 
     return false;
 }
-# 5715 "/usr/local/include/comelang-pico.h"
+# 5718 "/usr/local/include/comelang-pico.h"
 uniq smart_pointer<char>*% char[]::to_pointer(char* self, size_t len)
 {
     var buf = new buffer();

@@ -1364,7 +1364,59 @@ void skip_pointer_attribute(sInfo* info=info)
     if(xisalpha(*info->p) || *info->p == '_') {
         string word = parse_word();
         
-        if(word === "const" || word === "__restrict" || word === "restrict" || word === "__user" || word === "volatile" || word === "_Nonnull" || word === "_Nullable" || word === "_Null_unspecified" || word === "__user" || word === "_Addr") {
+        if(word === "__nonnull" && *info->p == '(') {
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+            
+        }
+        else if(word === "_Nonnull" && *info->p == '(') {
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+            
+        }
+        else if(word === "const" || word === "__restrict" || word === "restrict" || word === "__user" || word === "volatile" || word === "_Nonnull" || word === "_Nullable" || word === "_Null_unspecified" || word === "__user" || word === "_Addr") {
         }
         else {
             info.p = p;
@@ -1969,6 +2021,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             break;
         }
     }
+    
+    skip_pointer_attribute();
     
     string tuple_name = null;
     if(*info->p == ':' && *(info->p+1) != ':' && type_name !== "int") {

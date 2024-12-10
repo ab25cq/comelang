@@ -772,6 +772,154 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("__attribute_pure__");
             skip_spaces_and_lf();
         }
+        else if(strmemcmp(info->p, "__malloc_like")) {
+            info->p += strlen("__malloc_like");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__result_use_check")) {
+            info->p += strlen("__result_use_check");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__alloc_size2")) {
+            info->p += strlen("__alloc_size2");
+            skip_spaces_and_lf();
+            
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "__alloc_size")) {
+            info->p += strlen("__alloc_size");
+            skip_spaces_and_lf();
+            
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "__nonnull")) {
+            info->p += strlen("__nonnull");
+            skip_spaces_and_lf();
+            
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "_Nonnull")) {
+            info->p += strlen("_Nonnull");
+            skip_spaces_and_lf();
+            
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "__alloc_align")) {
+            info->p += strlen("__alloc_align");
+            skip_spaces_and_lf();
+            
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+        }
         else if(strmemcmp(info->p, "__attribute_malloc__")) {
             info->p += strlen("__attribute_malloc__");
             skip_spaces_and_lf();
@@ -782,6 +930,14 @@ string parse_attribute(sInfo* info=info)
         }
         else if(strmemcmp(info->p, "__wur")) {
             info->p += strlen("__wur");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__pure2")) {
+            info->p += strlen("__pure2");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__pure")) {
+            info->p += strlen("__pure");
             skip_spaces_and_lf();
         }
         else if(strmemcmp(info->p, "__noreturn")) {
@@ -816,6 +972,11 @@ string parse_attribute(sInfo* info=info)
         else if(strmemcmp(info->p, "__asm__")) {
             info->p += strlen("__asm__");
             skip_spaces_and_lf();
+            
+            if(memcmp(info->p, "__ASMNAME", strlen("__ASMNAME")) == 0) {
+                info->p += strlen("__ASMNAME");
+                skip_spaces_and_lf();
+            }
 
             int len = 0;
 

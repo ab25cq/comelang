@@ -1,6 +1,9 @@
 #ifndef COMELANG_H
 #define COMELANG_H
 
+#define __BEGIN_DECLS using C {
+#define __END_DECLS }
+
 #ifdef __PICO__
 #include <comelang-pico.h>
 #else
