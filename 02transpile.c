@@ -694,7 +694,7 @@ module MEvalOptions<T, T2>
             gComeOriginalSourcePosition = false;
             char* env = getenv("PICO_SDK_PATH");
             cpp_option = new buffer();
-            cpp_option.append_str(s" \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I build/generated/pico_base/ -D__GNUC__ -D__PICO__");
+            cpp_option.append_format(s" -nostdinc -I %s/include/pico -I/\$(find \{env} -type d -name include | sed 's/^/ -I/g') -I $(find $PICO_TOOLCHAIN_PATH/.. -name stdarg.h | sed 's/stdarg.h//' | grep -v c++ | awk 'NR==1') -I build/generated/pico_base/ -D__PICO__", PREFIX);
         }
         else if(i + 1 < argc && argv[i] === "-target") {
             clang_option.append_str(s"-target \{argv[i+1]}");

@@ -137,6 +137,7 @@ struct sType
     string mAsmName;
     bool mArrayPointerType;
     bool mLambdaArray;
+    int mLambdaArrayNum;
     
     bool mTypedef;
     

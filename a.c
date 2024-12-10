@@ -1,6 +1,11 @@
-#define __BYTE_ORDER 1111
-struct timespec { int :8*(sizeof(long)-sizeof(int))*(__BYTE_ORDER==4321); long tv_nsec; int :8*(sizeof(long)-sizeof(int))*(__BYTE_ORDER!=4321); };
 
+struct _atexit {
+ struct _atexit *_next;
+ int _ind;
+
+ void (*_fns[32])(void);
+//        struct _on_exit_args _on_exit_args;
+};
 
 int main(int argc, char** argv)
 {

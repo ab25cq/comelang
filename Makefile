@@ -271,7 +271,13 @@ install:
 	mkdir -p "$(DESTDIR)/bin"
 	$(INSTALL) -m 755 ./comelang "$(DESTDIR)/bin"
 	mkdir -p "$(DESTDIR)/include"
+	mkdir -p "$(DESTDIR)/include/pico"
 	$(INSTALL) -m 644 ./comelang.h "$(DESTDIR)/include"
+	cp -Rf ./include-pico/* "$(DESTDIR)/include/pico"
+	$(INSTALL) -m 644 ./stdbool.h "$(DESTDIR)/include/pico"
+	$(INSTALL) -m 644 ./assert.h "$(DESTDIR)/include/pico"
+	$(INSTALL) -m 644 ./stddef.h "$(DESTDIR)/include/pico"
+	$(INSTALL) -m 644 ./cdefs.h "$(DESTDIR)/include/pico/sys"
 	$(INSTALL) -m 644 ./comelang-pico.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-str.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-net.h "$(DESTDIR)/include"
@@ -311,6 +317,7 @@ distclean: clean
 uninstall:
 	rm -f "$(DESTDIR)"/bin/comelang
 	rm -f "$(DESTDIR)"/include/comelang.h
+	rm -rf "$(DESTDIR)"/include/pico/
 	rm -f "$(DESTDIR)"/include/comelang-pico.h
 	rm -f "$(DESTDIR)"/include/comelang-str.h
 	rm -f "$(DESTDIR)"/include/comelang-net.h

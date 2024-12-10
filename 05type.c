@@ -1742,6 +1742,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                             break;
                         }
                     }
+                    else if(type_name === "signed") {
+                        type_name = parse_word();
+                        
+                        if(type_name === "int") {
+                            long_ = true;
+                            unsigned_ = false;
+                            break;
+                        }
+                    }
                     else if(type_name === "long") {
                         p = info.p;
                         sline = info.sline;
@@ -2310,9 +2319,19 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             var_name = xsprintf("anonymous_lambda_var_nameZ%d", num_anonymous_var_name);
         }
         bool function_pointer_array = false;
+        int function_pointer_array_num = 0;
         if(*info->p == '[') {
             info->p++;
             skip_spaces_and_lf();
+            
+            int n = 0 ;
+            while(xisdigit(*info->p)) {
+                n = n * 10 + *info->p - '0';
+                info->p++;
+            }
+            skip_spaces_and_lf();
+            function_pointer_array_num = n;
+            
             if(*info->p == ']') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2332,6 +2351,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mExtern = extern_;
         if(function_pointer_array) {
             type->mLambdaArray = true;
+            type->mLambdaArrayNum = function_pointer_array_num;
         }
         
         type->mFunctionPointerNum = function_pointer_num;

@@ -214,7 +214,12 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
     }
     else {
         if(type->mLambdaArray) {
-            buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType.v1), var_name);
+            if(type->mLambdaArrayNum == 0) {
+                buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType.v1), var_name);
+            }
+            else {
+                buf.append_format("%s (*%s[%d])(", make_type_name_string(type->mResultType.v1), var_name, type->mLambdaArrayNum);
+            }
         }
         else {
             buf.append_format("%s ", make_type_name_string(type->mResultType.v1));

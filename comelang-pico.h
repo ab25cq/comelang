@@ -5,28 +5,14 @@ using comelang;
 
 #define _GNU_SOURCE
 
+typedef int wint_t;
+
 using C
 {
-output {#include <stdlib.h>}
-no_output {
-#include <stdlib.h>
-}
-output {#include <string.h>}
-no_output {
-#include <string.h>
-}
-output {#include <stdio.h>}
-no_output {
-#include <stdio.h>
-}
-output {#include <stdarg.h>}
-no_output {
-#include <stdarg.h>
-}
-output {#include "pico/stdlib.h"}
-no_output {
 #include "pico/stdlib.h"
-}
+#include "string.h"
+#include "stdio.h"
+#include "stdlib.h"
 }
 
 typedef void* any;
