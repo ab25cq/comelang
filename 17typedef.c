@@ -42,7 +42,9 @@ class sTypedefNode extends sNodeBase
             else {
                 //if(info.struct_definition[type_name]?? == null) {
                 //if(type->mClass->mName !== type_name) {
-                    info.struct_definition.insert(type_name, "typedef __builtin_va_list __darwin_va_list;\n".to_buffer());
+                    if(!info->no_output_come_code2) {
+                        info.struct_definition.insert(type_name, "typedef __builtin_va_list __darwin_va_list;\n".to_buffer());
+                    }
                 //}
             }
         }
@@ -63,13 +65,17 @@ class sTypedefNode extends sNodeBase
                 else {
                     //if(info.struct_definition[type_name]?? == null) {
                     if(type->mClass->mName !== type_name) {
-                        info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name,in_header:true)).to_buffer());
+                        if(!info->no_output_come_code2) {
+                            info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name,in_header:true)).to_buffer());
+                        }
                     }
                     else {
                         static int var_num = 0;
                         var_num++;
                         string type_name2 = type_name + var_num.to_string() + "COMELANG";
-                        info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                        if(!info->no_output_come_code2) {
+                            info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                        }
                     }
                 }
             }
@@ -88,13 +94,17 @@ class sTypedefNode extends sNodeBase
             }
             else {
                 if(type->mClass->mName !== type_name) {
-                    info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                    if(!info->no_output_come_code2) {
+                        info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                    }
                 }
                 else {
                     static int var_num = 0;
                     var_num++;
                     string type_name2 = type_name + var_num.to_string() + "COMELANG";
-                    info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                    if(!info->no_output_come_code2) {
+                        info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                    }
                 }
             }
         }

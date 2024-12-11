@@ -1,3 +1,4 @@
+
 #rm -rf build
 #mkdir build
 #(cd build; cmake .. && make)
@@ -7,4 +8,4 @@ mkdir build
 (cd build; cmake .. && make VERBOSE=1)
 cd build
 
-cp build/led.uf2 /Volumes/RPI-RP2
+#cp build/led.uf2 /Volumes/RPI-RP2

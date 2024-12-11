@@ -1,7 +1,10 @@
-char*_Nonnull((1)) basename (const char *) __asm__(__ASMNAME("__gnu_basename"));
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
+"\
+#define aaa\
+".puts();
     return 0;
 }
 

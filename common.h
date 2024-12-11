@@ -404,6 +404,7 @@ struct sInfo
     
     map<string, string>*% uniq_definition;
     bool nocomelib;
+    bool in_top_level;
 };
 
 module sCurrentNodeModule
@@ -635,7 +636,7 @@ sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info)
 sNode*% parse_comma_block(sInfo* info=info);
 bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=false, sInfo* info=info);
 void cast_type(sType* left_type, sType* right_type, CVALUE* come_value, sInfo* info=info);
-string parse_attribute(sInfo* info=info);
+string parse_attribute(sInfo* info=info,bool parse_function_attribute=false);
 sNode*% get_number(bool minus, sInfo* info);
 sNode*% get_oct_number(sInfo* info);
 sNode*% get_hex_number(bool minus, sInfo* info);

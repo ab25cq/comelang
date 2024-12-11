@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 10.0.0
+version 10.0.1
 
 ``` C
 #include <comelang.h>
@@ -325,6 +325,7 @@ sh all_build.sh
 # Histories
 
 ```
+10.0.1 raspi pico.
 10.0.0 Really complete. see DOC-ja.md. DOC-en.md
 8.2.3 Remove $ function with emebbed string.
 8.2.2 char*::delete bug is fiexed.

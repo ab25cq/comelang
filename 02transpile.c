@@ -656,6 +656,69 @@ static void init_classes(sInfo* info)
     }
 }
 
+void create_pico_version_header()
+{
+    if(getenv("PICO_SDK_PATH")) {
+        (getenv("PICO_SDK_PATH") + "/pico_sdk_version.cmake").read().if {
+            int version_major = 0;
+            char* p = strstr(Value, "set(PICO_SDK_VERSION_MAJOR");
+            if(p) {
+                p += strlen("set(PICO_SDK_VERSION_MAJOR");
+                
+                while(*p == ' ' || *p == '\t') {
+                    p++;
+                }
+                while(xisdigit(*p)) {
+                    version_major = version_major*10 + (*p - '0');
+                    p++;
+                }
+            }
+            int version_miner = 0;
+            char* p = strstr(Value, "set(PICO_SDK_VERSION_MINOR");
+            if(p) {
+                p += strlen("set(PICO_SDK_VERSION_MINOR");
+                while(*p == ' ' || *p == '\t') {
+                    p++;
+                }
+                while(xisdigit(*p)) {
+                    version_miner = version_miner*10 + *p - '0';
+                    p++;
+                }
+            }
+            int version_revision = 0;
+            char* p = strstr(Value, "set(PICO_SDK_VERSION_REVISION");
+            if(p) {
+                p += strlen("set(PICO_SDK_VERSION_REVISION");
+                while(*p == ' ' || *p == '\t') {
+                    p++;
+                }
+                while(xisdigit(*p)) {
+                    version_revision = version_revision*10 + *p - '0';
+                    p++;
+                }
+            }
+            
+            string version_string = s"\{version_major}.\{version_miner}.\{version_revision}";
+            
+            system("mkdir -p pico").elif {
+                """
+\#ifndef _PICO_VERSION_H
+\#define _PICO_VERSION_H
+
+\#define PICO_SDK_VERSION_MAJOR    \{version_major}
+\#define PICO_SDK_VERSION_MINOR    \{version_miner}
+\#define PICO_SDK_VERSION_REVISION \{version_revision}
+\#define PICO_SDK_VERSION_STRING   "\{version_string}"
+
+\#endif
+""".write("pico/version.h");
+            }
+        }
+    }
+    (void)system("touch pico_config_extra_headers.h");
+    (void)system("touch pico_config_platform_headers.h");
+}
+
 module MEvalOptions<T, T2>
 {
     var clang_option = new buffer();
@@ -694,7 +757,8 @@ module MEvalOptions<T, T2>
             gComeOriginalSourcePosition = false;
             char* env = getenv("PICO_SDK_PATH");
             cpp_option = new buffer();
-            cpp_option.append_format(s" -nostdinc -I %s/include/pico -I/\$(find \{env} -type d -name include | sed 's/^/ -I/g') -I $(find $PICO_TOOLCHAIN_PATH/.. -name stdarg.h | sed 's/stdarg.h//' | grep -v c++ | awk 'NR==1') -I build/generated/pico_base/ -D__PICO__", PREFIX);
+            cpp_option.append_format(s" -nostdinc -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I %s/include/newlib-nano \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I $(find $PICO_TOOLCHAIN_PATH/.. -name stdarg.h | sed 's/stdarg.h//' | grep -v c++ | awk 'NR==1') -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__", PREFIX);
+            create_pico_version_header();
         }
         else if(i + 1 < argc && argv[i] === "-target") {
             clang_option.append_str(s"-target \{argv[i+1]}");

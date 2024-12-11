@@ -763,7 +763,7 @@ bool strmemcmp(char* p, char* p2)
     return !terminated && memcmp(p, p2, strlen(p2)) == 0;
 }
 
-string parse_attribute(sInfo* info=info)
+string parse_attribute(sInfo* info=info, bool parse_function_attribute=false)
 {
     buffer*% asm_fun_name = new buffer();
     
@@ -784,27 +784,29 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("__alloc_size2");
             skip_spaces_and_lf();
             
-            int nest = 0;
-            while(1) {
-                if(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    nest++;
-                }
-                else if(*info->p == ')') {
-                    info->p++
-                    skip_spaces_and_lf();
-                    
-                    nest--;
-                    if(nest == 0) {
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
                         break;
                     }
-                }
-                else if(*info->p == '\0') {
-                    break;
-                }
-                else {
-                    info->p++;
+                    else {
+                        info->p++;
+                    }
                 }
             }
         }
@@ -812,27 +814,29 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("__alloc_size");
             skip_spaces_and_lf();
             
-            int nest = 0;
-            while(1) {
-                if(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    nest++;
-                }
-                else if(*info->p == ')') {
-                    info->p++
-                    skip_spaces_and_lf();
-                    
-                    nest--;
-                    if(nest == 0) {
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
                         break;
                     }
-                }
-                else if(*info->p == '\0') {
-                    break;
-                }
-                else {
-                    info->p++;
+                    else {
+                        info->p++;
+                    }
                 }
             }
         }
@@ -840,27 +844,29 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("__nonnull");
             skip_spaces_and_lf();
             
-            int nest = 0;
-            while(1) {
-                if(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    nest++;
-                }
-                else if(*info->p == ')') {
-                    info->p++
-                    skip_spaces_and_lf();
-                    
-                    nest--;
-                    if(nest == 0) {
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
                         break;
                     }
-                }
-                else if(*info->p == '\0') {
-                    break;
-                }
-                else {
-                    info->p++;
+                    else {
+                        info->p++;
+                    }
                 }
             }
         }
@@ -868,27 +874,29 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("_Nonnull");
             skip_spaces_and_lf();
             
-            int nest = 0;
-            while(1) {
-                if(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    nest++;
-                }
-                else if(*info->p == ')') {
-                    info->p++
-                    skip_spaces_and_lf();
-                    
-                    nest--;
-                    if(nest == 0) {
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
                         break;
                     }
-                }
-                else if(*info->p == '\0') {
-                    break;
-                }
-                else {
-                    info->p++;
+                    else {
+                        info->p++;
+                    }
                 }
             }
         }
@@ -896,27 +904,29 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("__alloc_align");
             skip_spaces_and_lf();
             
-            int nest = 0;
-            while(1) {
-                if(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    nest++;
-                }
-                else if(*info->p == ')') {
-                    info->p++
-                    skip_spaces_and_lf();
-                    
-                    nest--;
-                    if(nest == 0) {
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
                         break;
                     }
-                }
-                else if(*info->p == '\0') {
-                    break;
-                }
-                else {
-                    info->p++;
+                    else {
+                        info->p++;
+                    }
                 }
             }
         }
@@ -948,22 +958,24 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("__attribute__");
             skip_spaces_and_lf();
 
-            int brace_num = 0;
-            while(*info->p) {
-                if(*info->p == '(') {
-                    info->p++;
-                    brace_num++;
-                }
-                else if(*info->p == ')') {
-                    info->p++;
-                    brace_num--;
-
-                    if(brace_num == 0) {
-                        break;
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
                     }
-                }
-                else {
-                    info->p++;
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
                 }
             }
 
@@ -980,32 +992,34 @@ string parse_attribute(sInfo* info=info)
 
             int len = 0;
 
-            bool in_dquort = false;
-            int brace_num = 0;
-            while(*info->p) {
-                if(*info->p == '"') {
-                    info->p++;
-
-                    in_dquort = !in_dquort;
-                }
-                else if(in_dquort) {
-                    asm_fun_name.append_char(*info->p);
-                    info->p++;
-                }
-                else if(*info->p == '(') {
-                    info->p++;
-                    brace_num++;
-                }
-                else if(*info->p == ')') {
-                    info->p++;
-                    brace_num--;
-
-                    if(brace_num == 0) {
-                        break;
+            if(*info->p == '(') {
+                bool in_dquort = false;
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '"') {
+                        info->p++;
+    
+                        in_dquort = !in_dquort;
                     }
-                }
-                else {
-                    info->p++;
+                    else if(in_dquort) {
+                        asm_fun_name.append_char(*info->p);
+                        info->p++;
+                    }
+                    else if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
                 }
             }
 
@@ -1015,26 +1029,55 @@ string parse_attribute(sInfo* info=info)
             info->p += strlen("__asm");
             skip_spaces_and_lf();
 
-            int brace_num = 0;
-            while(*info->p) {
-                if(*info->p == '(') {
-                    info->p++;
-                    brace_num++;
-                }
-                else if(*info->p == ')') {
-                    info->p++;
-                    brace_num--;
-
-                    if(brace_num == 0) {
-                        break;
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
                     }
-                }
-                else {
-                    info->p++;
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
                 }
             }
 
             skip_spaces_and_lf();
+        }
+        else if(parse_function_attribute && *info->p == '_') {
+            string word = parse_word();
+
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+            
         }
         else {
             break;
@@ -1370,6 +1413,7 @@ int transpile(sInfo* info) version 5
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
 {
+    info.in_top_level = true;
     char* source_head = info->p;
     
     bool is_type_name_flag = is_type_name(buf);
@@ -2181,6 +2225,9 @@ sNode*% parse_function(sInfo* info)
         version = n;
     }
     
+    bool in_top_level = info.in_top_level;
+    info.in_top_level = false;
+    
     if(base_fun_name === "lambda") {
         sBlock*% block = parse_block(in_function:true);
         
@@ -2388,7 +2435,7 @@ sNode*% parse_function(sInfo* info)
             return new sFunNode(fun, info) implements sNode;
         }
         else {
-            string asm_fun = parse_attribute();
+            string asm_fun = parse_attribute(parse_function_attribute:true);
             
             if(asm_fun !== "") {
                 fun_name = string(asm_fun);
@@ -2431,6 +2478,8 @@ sNode*% parse_function(sInfo* info)
     }
     
     info.constructor_ = false;
+    
+    info.in_top_level = in_top_level;
     
     return (sNode*%)null;
 }

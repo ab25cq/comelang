@@ -4,6 +4,14 @@
 #define __BEGIN_DECLS using C {
 #define __END_DECLS }
 
+#undef __cplusplus
+
+#ifdef __STDC__
+#define __P(protos) protos
+#else
+#define __P(protos) ()
+#endif
+
 #ifdef __PICO__
 #include <comelang-pico.h>
 #else

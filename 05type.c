@@ -12,7 +12,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         return (type && type->mTypedef) || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || (klass && klass->mNumber) || (klass && klass->mFloat) || buf === "void" || buf === "_Nullable" || generics_class || generics_type_name || mgenerics_type_name;
     }
     else {
-        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable" || buf === "exception" 
+        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable" || (info.in_top_level && buf === "exception")
         || (buf === "tup" && (*info->p == ':' || *info->p == '('))
     }
 }
@@ -1390,6 +1390,32 @@ void skip_pointer_attribute(sInfo* info=info)
             }
             
         }
+        else if(word === "__attribute__" && *info->p == '(') {
+            int nest = 0;
+            while(1) {
+                if(*info->p == '(') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    nest++;
+                }
+                else if(*info->p == ')') {
+                    info->p++
+                    skip_spaces_and_lf();
+                    
+                    nest--;
+                    if(nest == 0) {
+                        break;
+                    }
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else {
+                    info->p++;
+                }
+            }
+            
+        }
         else if(word === "_Nonnull" && *info->p == '(') {
             int nest = 0;
             while(1) {
@@ -1470,6 +1496,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool inline_ = false;
     bool come_mem_core_ = false;
     bool uniq_ = false;
+    bool tuple_ = false;
     
     sNode*% alignas_ = null;;
     
@@ -1951,6 +1978,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type_name = parse_word();
             
             parse_multiple_type = true;
+            tuple_ = true;
         }
         else if(type_name === "short") {
             short_ = false;
@@ -2025,7 +2053,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     skip_pointer_attribute();
     
     string tuple_name = null;
-    if(*info->p == ':' && *(info->p+1) != ':' && type_name !== "int") {
+    if(*info->p == ':' && *(info->p+1) != ':' && tuple_) {
         info->p++;
         skip_spaces_and_lf();
         

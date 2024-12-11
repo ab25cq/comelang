@@ -1,24 +1,38 @@
 #ifndef COMELANG_PICO_H
 #define COMELANG_PICO_H
 
-#define __BEGIN_DECLS using C {
-#define __END_DECLS }
-
-using comelang;
-
 #define _GNU_SOURCE
 
-typedef int wint_t;
+//typedef int wint_t;
+//typedef unsigned int uint;
 
-using C
-{
-#include "pico/stdlib.h"
-#include "string.h"
-#include "stdint.h"
+no_output {
 #include "stdarg.h"
-#include "stdio.h"
+}
+no_output {
+#include "stdint.h"
+}
+no_output {
+#include "string.h"
+}
+no_output {
 #include "stdlib.h"
 }
+no_output {
+#include "stdio.h"
+}
+output {#include "stdint.h"}
+output {#include "stdarg.h"}
+output {#include "string.h"}
+output {#include "stdlib.h"}
+output {#include "stdio.h"}
+no_output {
+#include "pico/stdlib.h"
+}
+output {#include "pico/stdlib.h"}
+output {#include "hardware/gpio.h"}
+
+using comelang;
 
 typedef void* any;
 typedef char*% string;
