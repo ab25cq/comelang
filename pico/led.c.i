@@ -989,18 +989,122 @@ char *_Nonnull ((1)) basename (const char *) __asm__(__ASMNAME("__gnu_basename")
 # 1 "/usr/local//include/pico/sys/string.h" 1
 # 176 "/usr/local//include/pico/string.h" 2
 # 17 "/usr/local/include/comelang-pico.h" 2
-# 1 "/usr/local//include/pico/stdio.h" 1
-# 40 "/usr/local//include/pico/stdio.h"
+# 1 "/usr/local//include/pico/stdint.h" 1
+# 13 "/usr/local//include/pico/stdint.h"
+# 1 "/usr/local//include/pico/sys/_intsup.h" 1
+# 14 "/usr/local//include/pico/stdint.h" 2
+# 1 "/usr/local//include/pico/sys/_stdint.h" 1
+# 20 "/usr/local//include/pico/sys/_stdint.h"
+typedef __int8_t int8_t ;
+
+
+
+typedef __uint8_t uint8_t ;
+
+
+
+
+
+
+
+typedef __int16_t int16_t ;
+
+
+
+typedef __uint16_t uint16_t ;
+
+
+
+
+
+
+
+typedef __int32_t int32_t ;
+
+
+
+typedef __uint32_t uint32_t ;
+
+
+
+
+
+
+
+typedef __int64_t int64_t ;
+
+
+
+typedef __uint64_t uint64_t ;
+
+
+
+
+
+
+typedef __intmax_t intmax_t;
+
+
+
+
+typedef __uintmax_t uintmax_t;
+
+
+
+
+typedef __intptr_t intptr_t;
+
+
+
+
+typedef __uintptr_t uintptr_t;
+# 15 "/usr/local//include/pico/stdint.h" 2
+
+
+
+
+
+
+typedef __int_least8_t int_least8_t;
+typedef __uint_least8_t uint_least8_t;
+
+
+
+
+typedef __int_least16_t int_least16_t;
+typedef __uint_least16_t uint_least16_t;
+
+
+
+
+typedef __int_least32_t int_least32_t;
+typedef __uint_least32_t uint_least32_t;
+
+
+
+
+typedef __int_least64_t int_least64_t;
+typedef __uint_least64_t uint_least64_t;
+# 51 "/usr/local//include/pico/stdint.h"
+  typedef signed char int_fast8_t;
+  typedef unsigned char uint_fast8_t;
+# 61 "/usr/local//include/pico/stdint.h"
+  typedef short int_fast16_t;
+  typedef unsigned short uint_fast16_t;
+# 71 "/usr/local//include/pico/stdint.h"
+  typedef int int_fast32_t;
+  typedef unsigned int uint_fast32_t;
+# 81 "/usr/local//include/pico/stdint.h"
+  typedef long long int int_fast64_t;
+  typedef long long unsigned int uint_fast64_t;
+# 18 "/usr/local/include/comelang-pico.h" 2
 # 1 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin//../lib/gcc/arm-none-eabi/13.3.1/include/stdarg.h" 1
 # 40 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin//../lib/gcc/arm-none-eabi/13.3.1/include/stdarg.h"
 typedef __builtin_va_list __gnuc_va_list;
-# 41 "/usr/local//include/pico/stdio.h" 2
-
-
-
-
-
+# 103 "/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin//../lib/gcc/arm-none-eabi/13.3.1/include/stdarg.h"
 typedef __gnuc_va_list va_list;
+# 19 "/usr/local/include/comelang-pico.h" 2
+# 1 "/usr/local//include/pico/stdio.h" 1
 # 66 "/usr/local//include/pico/stdio.h"
 typedef __FILE FILE;
 
@@ -1437,7 +1541,7 @@ _putchar_unlocked(int _c)
  _ptr = _impure_ptr;
  return (__sputc_r(_ptr, _c, ((_ptr)->_stdout)));
 }
-# 18 "/usr/local/include/comelang-pico.h" 2
+# 20 "/usr/local/include/comelang-pico.h" 2
 
 }
 
@@ -4185,7 +4289,7 @@ uniq void stackframe()
         printf("%s %d #%d\n", gComeStackFrameSName[i], gComeStackFrameSLine[i], gComeStackFrameID[i]);
     }
 }
-# 2773 "/usr/local/include/comelang-pico.h"
+# 2775 "/usr/local/include/comelang-pico.h"
 uniq void* come_null_check(void* mem, char* sname, int sline, int id)
 {
     if(mem == null) {
@@ -4361,7 +4465,7 @@ uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
     gComeMallocLib = come_malloc;
     gComeDebugLib = come_debug
     gComeGCLib = come_gc;
-# 2957 "/usr/local/include/comelang-pico.h"
+# 2959 "/usr/local/include/comelang-pico.h"
     gComeStackFrameBuffer = ((void *)0);
     memset(gComeStackFrameSName, 0, sizeof(char*)*128);
     memset(gComeStackFrameSLine, 0, sizeof(int)*128);
@@ -4548,7 +4652,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         sMemHeaderTiny* it = result;
 
         it->allocated = 177783;
-# 3153 "/usr/local/include/comelang-pico.h"
+# 3155 "/usr/local/include/comelang-pico.h"
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = ((void *)0);
 
@@ -4710,7 +4814,7 @@ uniq void come_free_object(void* mem)
     if(mem == ((void *)0)) {
         return;
     }
-# 3322 "/usr/local/include/comelang-pico.h"
+# 3324 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     come_free_mem_of_heap_pool((char*)ref_count);
@@ -4721,7 +4825,7 @@ uniq void come_free(void* mem)
     if(mem == ((void *)0)) {
         return;
     }
-# 3340 "/usr/local/include/comelang-pico.h"
+# 3342 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     come_free_mem_of_heap_pool((char*)ref_count);
@@ -4732,7 +4836,7 @@ uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_n
     if(!block) {
         return null;
     }
-# 3358 "/usr/local/include/comelang-pico.h"
+# 3360 "/usr/local/include/comelang-pico.h"
     char* mem = (char*)block - sizeof(size_t) - sizeof(size_t);
 
     size_t* size_p = (size_t*)(mem + sizeof(size_t));
@@ -4752,7 +4856,7 @@ uniq void* come_increment_ref_count(void* mem)
     if(mem == ((void *)0)) {
         return mem;
     }
-# 3385 "/usr/local/include/comelang-pico.h"
+# 3387 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     (*ref_count)++;
@@ -4765,7 +4869,7 @@ uniq void* come_print_ref_count(void* mem)
     if(mem == ((void *)0)) {
         return mem;
     }
-# 3405 "/usr/local/include/comelang-pico.h"
+# 3407 "/usr/local/include/comelang-pico.h"
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
 
     printf("ref_count %ld\n", *ref_count);
@@ -5185,10 +5289,10 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
     }
 
     va_list args;
-    va_start(args, msg);
+    __builtin_va_start(args,msg);
     char* result;
     int len = vasprintf(&result, msg, args);
-    va_end(args);
+    __builtin_va_end(args);
 
     if(len < 0) {
         return self;
@@ -6063,10 +6167,10 @@ uniq string xsprintf(char* msg, ...)
         return string("");
     }
     va_list args;
-    va_start(args, msg);
+    __builtin_va_start(args,msg);
     char* result;
     int len = vasprintf(&result, msg, args);
-    va_end(args);
+    __builtin_va_end(args);
 
     if(len < 0) {
         return string("");
@@ -6507,9 +6611,9 @@ uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
     char msg2[1024*2*2*2];
 
     va_list args;
-    va_start(args, msg);
+    __builtin_va_start(args,msg);
     vsnprintf(msg2, 1024*2*2*2, msg, args);
-    va_end(args);
+    __builtin_va_end(args);
 
     int result = fprintf(f, "%s", msg2);
 
@@ -6731,9 +6835,9 @@ uniq string string::printf(char* self, ...)
     char* msg2;
 
     va_list args;
-    va_start(args, self);
+    __builtin_va_start(args,self);
     vasprintf(&msg2,self,args);
-    va_end(args);
+    __builtin_va_end(args);
 
     printf("%s", msg2);
 
@@ -6750,9 +6854,9 @@ uniq string char*::printf(char* self, ...)
     char* msg2;
 
     va_list args;
-    va_start(args, self);
+    __builtin_va_start(args,self);
     vasprintf(&msg2,self,args);
-    va_end(args);
+    __builtin_va_end(args);
 
     printf("%s", msg2);
 
@@ -7066,7 +7170,7 @@ record uniq bool die(char* msg)
 
     return false;
 }
-# 5718 "/usr/local/include/comelang-pico.h"
+# 5720 "/usr/local/include/comelang-pico.h"
 uniq smart_pointer<char>*% char[]::to_pointer(char* self, size_t len)
 {
     var buf = new buffer();
