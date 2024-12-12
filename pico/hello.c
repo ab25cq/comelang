@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "pico/std_lib.h"
+#include "pico/stdlib.h"
 
 int main() {
     stdio_init_all();

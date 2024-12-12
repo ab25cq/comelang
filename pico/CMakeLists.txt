@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 3.13)
 
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-project(led_project)
+project(led)
 
 pico_sdk_init()
 
 add_executable(led led2.c)
+
+target_compile_options(led PRIVATE -mthumb -mcpu=cortex-m0plus)
 
 # 必要なライブラリをリンク
 target_link_libraries(led pico_stdlib hardware_gpio pico_malloc)
