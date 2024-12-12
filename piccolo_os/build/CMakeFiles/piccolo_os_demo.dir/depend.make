@@ -268,4 +268,4 @@ CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops
  generated/pico_base/pico/config_autogen.h \
  generated/pico_base/pico/version.h
 CMakeFiles/piccolo_os_demo.dir/context_switch.s.o: \
- /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/context_switch.s
+ /Users/ab25cq/comelang/piccolo_os/context_switch.s

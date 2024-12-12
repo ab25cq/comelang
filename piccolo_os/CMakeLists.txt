@@ -19,7 +19,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(piccolo_os_demo piccolo_os_demo.c context_switch.s piccolo_os.c)
+add_executable(piccolo_os_demo main.c.c context_switch.s piccolo.c.c)
 
 pico_set_program_name(piccolo_os_demo "piccolo_os_demo")
 pico_set_program_version(piccolo_os_demo "0.1")

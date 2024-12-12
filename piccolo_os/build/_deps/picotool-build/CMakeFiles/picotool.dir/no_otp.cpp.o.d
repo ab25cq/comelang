@@ -1,5 +1,5 @@
 CMakeFiles/picotool.dir/no_otp.cpp.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/no_otp.cpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/no_otp.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/algorithm \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assertion_handler \
@@ -929,11 +929,11 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__functional/pointer_to_binary_function.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__functional/pointer_to_unary_function.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__functional/unary_negate.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/otp.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/otp.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/_static_assert.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/forward_list \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/valarray \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/numeric \

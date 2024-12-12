@@ -1,5 +1,5 @@
 elf/CMakeFiles/elf.dir/elf_file.cpp.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf_file.cpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf_file.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/algorithm \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assertion_handler \
@@ -980,11 +980,11 @@ elf/CMakeFiles/elf.dir/elf_file.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__filesystem/u8path.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/sstream \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf_file.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/addresses.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors/errors.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/portable_endian.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf_file.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/addresses.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors/errors.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/portable_endian.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/libkern/OSByteOrder.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/libkern/arm/OSByteOrder.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/_types/_os_inline.h \

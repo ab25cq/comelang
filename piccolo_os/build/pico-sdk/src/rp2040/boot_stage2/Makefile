@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2040/boot_stage2//CMakeFiles/progress.marks
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles 0
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2040/boot_stage2//CMakeFiles/progress.marks
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/clean
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/preinstall
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/preinstall
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/rule:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/rule
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/rule
 .PHONY : pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/rule
 
 # Convenience name for target.
@@ -127,12 +127,12 @@ bs2_default: pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/rule
 
 # fast build rule for target.
 bs2_default/fast:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/build
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/build
 .PHONY : bs2_default/fast
 
 # Convenience name for target.
 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/rule:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/rule
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/rule
 .PHONY : pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/rule
 
 # Convenience name for target.
@@ -141,12 +141,12 @@ bs2_default_bin: pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/
 
 # fast build rule for target.
 bs2_default_bin/fast:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/build
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin.dir/build
 .PHONY : bs2_default_bin/fast
 
 # Convenience name for target.
 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/rule:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/rule
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/rule
 .PHONY : pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/rule
 
 # Convenience name for target.
@@ -155,7 +155,7 @@ bs2_default_library: pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_libr
 
 # fast build rule for target.
 bs2_default_library/fast:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/build
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/build
 .PHONY : bs2_default_library/fast
 
 bs2_default_padded_checksummed.o: bs2_default_padded_checksummed.S.o
@@ -163,7 +163,7 @@ bs2_default_padded_checksummed.o: bs2_default_padded_checksummed.S.o
 
 # target to build an object file
 bs2_default_padded_checksummed.S.o:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/bs2_default_padded_checksummed.S.o
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_library.dir/bs2_default_padded_checksummed.S.o
 .PHONY : bs2_default_padded_checksummed.S.o
 
 compile_time_choice.o: compile_time_choice.S.o
@@ -171,7 +171,7 @@ compile_time_choice.o: compile_time_choice.S.o
 
 # target to build an object file
 compile_time_choice.S.o:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/compile_time_choice.S.o
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/build.make pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/compile_time_choice.S.o
 .PHONY : compile_time_choice.S.o
 
 # Help Target
@@ -198,6 +198,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

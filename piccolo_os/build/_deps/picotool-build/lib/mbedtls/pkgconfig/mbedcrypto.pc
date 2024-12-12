@@ -1,4 +1,4 @@
-prefix=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps
+prefix=/Users/ab25cq/comelang/piccolo_os/build/_deps
 includedir=${prefix}/include
 libdir=${prefix}/lib
 

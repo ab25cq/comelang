@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build
 
 # Utility rule file for picotoolForceReconfigure.
 
@@ -67,7 +67,7 @@ include CMakeFiles/picotoolForceReconfigure.dir/compiler_depend.make
 include CMakeFiles/picotoolForceReconfigure.dir/progress.make
 
 CMakeFiles/picotoolForceReconfigure:
-	/opt/homebrew/bin/cmake -E touch_nocreate /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/CMakeLists.txt
+	/opt/homebrew/bin/cmake -E touch_nocreate /Users/ab25cq/comelang/piccolo_os/CMakeLists.txt
 
 CMakeFiles/picotoolForceReconfigure.dir/codegen:
 .PHONY : CMakeFiles/picotoolForceReconfigure.dir/codegen
@@ -85,6 +85,6 @@ CMakeFiles/picotoolForceReconfigure.dir/clean:
 .PHONY : CMakeFiles/picotoolForceReconfigure.dir/clean
 
 CMakeFiles/picotoolForceReconfigure.dir/depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang-dev/pico/piccolo_os_v1 /Users/ab25cq/comelang-dev/pico/piccolo_os_v1 /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/picotoolForceReconfigure.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang/piccolo_os /Users/ab25cq/comelang/piccolo_os /Users/ab25cq/comelang/piccolo_os/build /Users/ab25cq/comelang/piccolo_os/build /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolForceReconfigure.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/picotoolForceReconfigure.dir/depend
 

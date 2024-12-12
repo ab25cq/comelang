@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild
 
 # Utility rule file for picotool-populate.
 
@@ -77,60 +77,60 @@ CMakeFiles/picotool-populate-complete: picotool-populate-prefix/src/picotool-pop
 CMakeFiles/picotool-populate-complete: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-build
 CMakeFiles/picotool-populate-complete: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-install
 CMakeFiles/picotool-populate-complete: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-test
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'picotool-populate'"
-	/opt/homebrew/bin/cmake -E make_directory /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles
-	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles/picotool-populate-complete
-	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-done
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'picotool-populate'"
+	/opt/homebrew/bin/cmake -E make_directory /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles
+	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles/picotool-populate-complete
+	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-done
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update:
 .PHONY : picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-build: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-configure
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'picotool-populate'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'picotool-populate'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-build
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-configure: picotool-populate-prefix/tmp/picotool-populate-cfgcmd.txt
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-configure: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'picotool-populate'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-configure
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'picotool-populate'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-configure
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-download: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-gitinfo.txt
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-download: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-mkdir
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'picotool-populate'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps && /opt/homebrew/bin/cmake -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-gitclone.cmake
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-download
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'picotool-populate'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps && /opt/homebrew/bin/cmake -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-gitclone.cmake
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-download
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-install: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'picotool-populate'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-install
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'picotool-populate'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-install
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-mkdir:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'picotool-populate'"
-	/opt/homebrew/bin/cmake -Dcfgdir= -P /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-mkdirs.cmake
-	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-mkdir
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'picotool-populate'"
+	/opt/homebrew/bin/cmake -Dcfgdir= -P /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-mkdirs.cmake
+	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-mkdir
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch-info.txt
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'picotool-populate'"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'picotool-populate'"
 	/opt/homebrew/bin/cmake -E echo_append
-	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch
+	/opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update:
 .PHONY : picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-test: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-install
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'picotool-populate'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-test
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'picotool-populate'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-test
 
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update: picotool-populate-prefix/tmp/picotool-populate-gitupdate.cmake
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update-info.txt
 picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update: picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-download
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'picotool-populate'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src && /opt/homebrew/bin/cmake -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-gitupdate.cmake
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'picotool-populate'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src && /opt/homebrew/bin/cmake -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-gitupdate.cmake
 
 CMakeFiles/picotool-populate.dir/codegen:
 .PHONY : CMakeFiles/picotool-populate.dir/codegen
@@ -157,6 +157,6 @@ CMakeFiles/picotool-populate.dir/clean:
 .PHONY : CMakeFiles/picotool-populate.dir/clean
 
 CMakeFiles/picotool-populate.dir/depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/CMakeFiles/picotool-populate.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles/picotool-populate.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/picotool-populate.dir/depend
 

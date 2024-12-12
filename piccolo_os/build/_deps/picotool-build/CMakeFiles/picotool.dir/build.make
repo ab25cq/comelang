@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/picotool.dir/depend.make
@@ -72,67 +72,67 @@ CMakeFiles/picotool.dir/codegen:
 CMakeFiles/picotool.dir/data_locs.cpp.o: CMakeFiles/picotool.dir/flags.make
 CMakeFiles/picotool.dir/data_locs.cpp.o: data_locs.cpp
 CMakeFiles/picotool.dir/data_locs.cpp.o: CMakeFiles/picotool.dir/compiler_depend.ts
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/data_locs.cpp.o -MF CMakeFiles/picotool.dir/data_locs.cpp.o.d -o CMakeFiles/picotool.dir/data_locs.cpp.o -c /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/data_locs.cpp
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/data_locs.cpp.o -MF CMakeFiles/picotool.dir/data_locs.cpp.o.d -o CMakeFiles/picotool.dir/data_locs.cpp.o -c /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/data_locs.cpp
 
 CMakeFiles/picotool.dir/data_locs.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/picotool.dir/data_locs.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/data_locs.cpp > CMakeFiles/picotool.dir/data_locs.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/data_locs.cpp > CMakeFiles/picotool.dir/data_locs.cpp.i
 
 CMakeFiles/picotool.dir/data_locs.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/picotool.dir/data_locs.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/data_locs.cpp -o CMakeFiles/picotool.dir/data_locs.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/data_locs.cpp -o CMakeFiles/picotool.dir/data_locs.cpp.s
 
 CMakeFiles/picotool.dir/no_otp.cpp.o: CMakeFiles/picotool.dir/flags.make
-CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/no_otp.cpp
+CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/no_otp.cpp
 CMakeFiles/picotool.dir/no_otp.cpp.o: CMakeFiles/picotool.dir/compiler_depend.ts
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/no_otp.cpp.o -MF CMakeFiles/picotool.dir/no_otp.cpp.o.d -o CMakeFiles/picotool.dir/no_otp.cpp.o -c /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/no_otp.cpp
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/no_otp.cpp.o -MF CMakeFiles/picotool.dir/no_otp.cpp.o.d -o CMakeFiles/picotool.dir/no_otp.cpp.o -c /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/no_otp.cpp
 
 CMakeFiles/picotool.dir/no_otp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/picotool.dir/no_otp.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/no_otp.cpp > CMakeFiles/picotool.dir/no_otp.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/no_otp.cpp > CMakeFiles/picotool.dir/no_otp.cpp.i
 
 CMakeFiles/picotool.dir/no_otp.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/picotool.dir/no_otp.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/no_otp.cpp -o CMakeFiles/picotool.dir/no_otp.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/no_otp.cpp -o CMakeFiles/picotool.dir/no_otp.cpp.s
 
 CMakeFiles/picotool.dir/main.cpp.o: CMakeFiles/picotool.dir/flags.make
-CMakeFiles/picotool.dir/main.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/main.cpp
+CMakeFiles/picotool.dir/main.cpp.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/main.cpp
 CMakeFiles/picotool.dir/main.cpp.o: CMakeFiles/picotool.dir/compiler_depend.ts
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/main.cpp.o -MF CMakeFiles/picotool.dir/main.cpp.o.d -o CMakeFiles/picotool.dir/main.cpp.o -c /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/main.cpp
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/main.cpp.o -MF CMakeFiles/picotool.dir/main.cpp.o.d -o CMakeFiles/picotool.dir/main.cpp.o -c /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/main.cpp
 
 CMakeFiles/picotool.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/picotool.dir/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/main.cpp > CMakeFiles/picotool.dir/main.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/main.cpp > CMakeFiles/picotool.dir/main.cpp.i
 
 CMakeFiles/picotool.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/picotool.dir/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/main.cpp -o CMakeFiles/picotool.dir/main.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/main.cpp -o CMakeFiles/picotool.dir/main.cpp.s
 
 CMakeFiles/picotool.dir/lib/whereami/whereami.c.o: CMakeFiles/picotool.dir/flags.make
-CMakeFiles/picotool.dir/lib/whereami/whereami.c.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c
+CMakeFiles/picotool.dir/lib/whereami/whereami.c.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c
 CMakeFiles/picotool.dir/lib/whereami/whereami.c.o: CMakeFiles/picotool.dir/compiler_depend.ts
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/picotool.dir/lib/whereami/whereami.c.o -MF CMakeFiles/picotool.dir/lib/whereami/whereami.c.o.d -o CMakeFiles/picotool.dir/lib/whereami/whereami.c.o -c /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/picotool.dir/lib/whereami/whereami.c.o -MF CMakeFiles/picotool.dir/lib/whereami/whereami.c.o.d -o CMakeFiles/picotool.dir/lib/whereami/whereami.c.o -c /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c
 
 CMakeFiles/picotool.dir/lib/whereami/whereami.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/picotool.dir/lib/whereami/whereami.c.i"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c > CMakeFiles/picotool.dir/lib/whereami/whereami.c.i
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c > CMakeFiles/picotool.dir/lib/whereami/whereami.c.i
 
 CMakeFiles/picotool.dir/lib/whereami/whereami.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/picotool.dir/lib/whereami/whereami.c.s"
-	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c -o CMakeFiles/picotool.dir/lib/whereami/whereami.c.s
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c -o CMakeFiles/picotool.dir/lib/whereami/whereami.c.s
 
 CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: CMakeFiles/picotool.dir/flags.make
-CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.cpp
+CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.cpp
 CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: CMakeFiles/picotool.dir/compiler_depend.ts
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o -MF CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o.d -o CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o -c /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.cpp
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o -MF CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o.d -o CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o -c /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.cpp
 
 CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.cpp > CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.cpp > CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.i
 
 CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.cpp -o CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.cpp -o CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.s
 
 # Object files for target picotool
 picotool_OBJECTS = \
@@ -171,6 +171,6 @@ CMakeFiles/picotool.dir/clean:
 .PHONY : CMakeFiles/picotool.dir/clean
 
 CMakeFiles/picotool.dir/depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/CMakeFiles/picotool.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/CMakeFiles/picotool.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/picotool.dir/depend
 

@@ -4,7 +4,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors
+CXX_INCLUDES = -I/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors
 
 CXX_FLAGSarm64 = -O3 -DNDEBUG -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk
 

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build
 
 # Include any dependencies generated for this target.
 include lib/mbedtls/library/CMakeFiles/mbedx509.dir/depend.make
@@ -72,119 +72,119 @@ lib/mbedtls/library/CMakeFiles/mbedx509.dir/codegen:
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/certs.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/certs.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/certs.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/certs.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/certs.c.o -MF CMakeFiles/mbedx509.dir/certs.c.o.d -o CMakeFiles/mbedx509.dir/certs.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/certs.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/certs.c.o -MF CMakeFiles/mbedx509.dir/certs.c.o.d -o CMakeFiles/mbedx509.dir/certs.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/certs.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/certs.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/certs.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/certs.c > CMakeFiles/mbedx509.dir/certs.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/certs.c > CMakeFiles/mbedx509.dir/certs.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/certs.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/certs.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/certs.c -o CMakeFiles/mbedx509.dir/certs.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/certs.c -o CMakeFiles/mbedx509.dir/certs.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/pkcs11.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/pkcs11.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/pkcs11.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/pkcs11.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/pkcs11.c.o -MF CMakeFiles/mbedx509.dir/pkcs11.c.o.d -o CMakeFiles/mbedx509.dir/pkcs11.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/pkcs11.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/pkcs11.c.o -MF CMakeFiles/mbedx509.dir/pkcs11.c.o.d -o CMakeFiles/mbedx509.dir/pkcs11.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/pkcs11.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/pkcs11.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/pkcs11.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/pkcs11.c > CMakeFiles/mbedx509.dir/pkcs11.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/pkcs11.c > CMakeFiles/mbedx509.dir/pkcs11.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/pkcs11.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/pkcs11.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/pkcs11.c -o CMakeFiles/mbedx509.dir/pkcs11.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/pkcs11.c -o CMakeFiles/mbedx509.dir/pkcs11.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509.c.o -MF CMakeFiles/mbedx509.dir/x509.c.o.d -o CMakeFiles/mbedx509.dir/x509.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509.c.o -MF CMakeFiles/mbedx509.dir/x509.c.o.d -o CMakeFiles/mbedx509.dir/x509.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/x509.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509.c > CMakeFiles/mbedx509.dir/x509.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509.c > CMakeFiles/mbedx509.dir/x509.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/x509.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509.c -o CMakeFiles/mbedx509.dir/x509.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509.c -o CMakeFiles/mbedx509.dir/x509.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_create.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_create.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_create.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_create.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_create.c.o -MF CMakeFiles/mbedx509.dir/x509_create.c.o.d -o CMakeFiles/mbedx509.dir/x509_create.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_create.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_create.c.o -MF CMakeFiles/mbedx509.dir/x509_create.c.o.d -o CMakeFiles/mbedx509.dir/x509_create.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_create.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_create.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/x509_create.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_create.c > CMakeFiles/mbedx509.dir/x509_create.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_create.c > CMakeFiles/mbedx509.dir/x509_create.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_create.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/x509_create.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_create.c -o CMakeFiles/mbedx509.dir/x509_create.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_create.c -o CMakeFiles/mbedx509.dir/x509_create.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crl.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crl.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crl.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crl.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crl.c.o -MF CMakeFiles/mbedx509.dir/x509_crl.c.o.d -o CMakeFiles/mbedx509.dir/x509_crl.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crl.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crl.c.o -MF CMakeFiles/mbedx509.dir/x509_crl.c.o.d -o CMakeFiles/mbedx509.dir/x509_crl.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crl.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crl.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/x509_crl.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crl.c > CMakeFiles/mbedx509.dir/x509_crl.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crl.c > CMakeFiles/mbedx509.dir/x509_crl.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crl.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/x509_crl.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crl.c -o CMakeFiles/mbedx509.dir/x509_crl.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crl.c -o CMakeFiles/mbedx509.dir/x509_crl.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crt.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.o -MF CMakeFiles/mbedx509.dir/x509_crt.c.o.d -o CMakeFiles/mbedx509.dir/x509_crt.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crt.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.o -MF CMakeFiles/mbedx509.dir/x509_crt.c.o.d -o CMakeFiles/mbedx509.dir/x509_crt.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crt.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/x509_crt.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crt.c > CMakeFiles/mbedx509.dir/x509_crt.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crt.c > CMakeFiles/mbedx509.dir/x509_crt.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/x509_crt.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crt.c -o CMakeFiles/mbedx509.dir/x509_crt.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_crt.c -o CMakeFiles/mbedx509.dir/x509_crt.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_csr.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_csr.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_csr.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_csr.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_csr.c.o -MF CMakeFiles/mbedx509.dir/x509_csr.c.o.d -o CMakeFiles/mbedx509.dir/x509_csr.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_csr.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_csr.c.o -MF CMakeFiles/mbedx509.dir/x509_csr.c.o.d -o CMakeFiles/mbedx509.dir/x509_csr.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_csr.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_csr.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/x509_csr.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_csr.c > CMakeFiles/mbedx509.dir/x509_csr.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_csr.c > CMakeFiles/mbedx509.dir/x509_csr.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509_csr.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/x509_csr.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_csr.c -o CMakeFiles/mbedx509.dir/x509_csr.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509_csr.c -o CMakeFiles/mbedx509.dir/x509_csr.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_crt.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_crt.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_crt.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_crt.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_crt.c.o -MF CMakeFiles/mbedx509.dir/x509write_crt.c.o.d -o CMakeFiles/mbedx509.dir/x509write_crt.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_crt.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_crt.c.o -MF CMakeFiles/mbedx509.dir/x509write_crt.c.o.d -o CMakeFiles/mbedx509.dir/x509write_crt.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_crt.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_crt.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/x509write_crt.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_crt.c > CMakeFiles/mbedx509.dir/x509write_crt.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_crt.c > CMakeFiles/mbedx509.dir/x509write_crt.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_crt.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/x509write_crt.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_crt.c -o CMakeFiles/mbedx509.dir/x509write_crt.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_crt.c -o CMakeFiles/mbedx509.dir/x509write_crt.c.s
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/flags.make
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.o: /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_csr.c
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.o: lib/mbedtls/library/CMakeFiles/mbedx509.dir/compiler_depend.ts
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.o -MF CMakeFiles/mbedx509.dir/x509write_csr.c.o.d -o CMakeFiles/mbedx509.dir/x509write_csr.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_csr.c
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.o -MF CMakeFiles/mbedx509.dir/x509write_csr.c.o.d -o CMakeFiles/mbedx509.dir/x509write_csr.c.o -c /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_csr.c
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/mbedx509.dir/x509write_csr.c.i"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_csr.c > CMakeFiles/mbedx509.dir/x509write_csr.c.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_csr.c > CMakeFiles/mbedx509.dir/x509write_csr.c.i
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/mbedx509.dir/x509write_csr.c.s"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_csr.c -o CMakeFiles/mbedx509.dir/x509write_csr.c.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && /Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/pico-sdk/lib/mbedtls/library/x509write_csr.c -o CMakeFiles/mbedx509.dir/x509write_csr.c.s
 
 # Object files for target mbedx509
 mbedx509_OBJECTS = \
@@ -212,18 +212,18 @@ lib/mbedtls/library/libmbedx509.a: lib/mbedtls/library/CMakeFiles/mbedx509.dir/x
 lib/mbedtls/library/libmbedx509.a: lib/mbedtls/library/CMakeFiles/mbedx509.dir/x509write_csr.c.o
 lib/mbedtls/library/libmbedx509.a: lib/mbedtls/library/CMakeFiles/mbedx509.dir/build.make
 lib/mbedtls/library/libmbedx509.a: lib/mbedtls/library/CMakeFiles/mbedx509.dir/link.txt
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && $(CMAKE_COMMAND) -P CMakeFiles/mbedx509.dir/cmake_clean_target.cmake
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mbedx509.dir/link.txt --verbose=$(VERBOSE)
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && $(CMAKE_COMMAND) -P CMakeFiles/mbedx509.dir/cmake_clean_target.cmake
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mbedx509.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/build: lib/mbedtls/library/libmbedx509.a
 .PHONY : lib/mbedtls/library/CMakeFiles/mbedx509.dir/build
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/clean:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library && $(CMAKE_COMMAND) -P CMakeFiles/mbedx509.dir/cmake_clean.cmake
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library && $(CMAKE_COMMAND) -P CMakeFiles/mbedx509.dir/cmake_clean.cmake
 .PHONY : lib/mbedtls/library/CMakeFiles/mbedx509.dir/clean
 
 lib/mbedtls/library/CMakeFiles/mbedx509.dir/depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src /Users/ab25cq/pico-sdk/lib/mbedtls/library /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/library/CMakeFiles/mbedx509.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src /Users/ab25cq/pico-sdk/lib/mbedtls/library /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/library/CMakeFiles/mbedx509.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : lib/mbedtls/library/CMakeFiles/mbedx509.dir/depend
 

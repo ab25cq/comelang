@@ -1,5 +1,5 @@
 elf2uf2/CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf2uf2/elf2uf2.cpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf2uf2/elf2uf2.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/cstdio \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assertion_handler \
@@ -930,7 +930,7 @@ elf2uf2/CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__functional/pointer_to_unary_function.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__functional/unary_negate.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/set \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf2uf2/elf2uf2.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf2uf2/elf2uf2.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/fstream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/filesystem \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__filesystem/copy_options.h \
@@ -982,9 +982,9 @@ elf2uf2/CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o: \
   /Users/ab25cq/pico-sdk/src/common/boot_uf2_headers/include/boot/uf2.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/_static_assert.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf_file.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf_file.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/iostream \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/sstream \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/addresses.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors/errors.h
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/addresses.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors/errors.h

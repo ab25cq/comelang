@@ -1,5 +1,5 @@
 CMakeFiles/picotool.dir/data_locs.cpp.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/data_locs.cpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/data_locs.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/copy.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/copy_move_common.h \

@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/tools/install_local_manifest.txt"
+  file(WRITE "/Users/ab25cq/comelang/piccolo_os/build/pico-sdk/tools/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

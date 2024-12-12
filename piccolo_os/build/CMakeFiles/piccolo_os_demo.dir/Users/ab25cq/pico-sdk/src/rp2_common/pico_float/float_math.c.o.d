@@ -26,9 +26,9 @@ CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/f
  /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdint.h \
  /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_intsup.h \
  /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h \
- /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/generated/pico_base/pico/version.h \
+ /Users/ab25cq/comelang/piccolo_os/build/generated/pico_base/pico/version.h \
  /Users/ab25cq/pico-sdk/src/common/pico_base_headers/include/pico/config.h \
- /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/generated/pico_base/pico/config_autogen.h \
+ /Users/ab25cq/comelang/piccolo_os/build/generated/pico_base/pico/config_autogen.h \
  /Users/ab25cq/pico-sdk/src/boards/include/boards/pico.h \
  /Users/ab25cq/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h \
  /Users/ab25cq/pico-sdk/src/rp2040/pico_platform/include/pico/platform.h \

@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/CMakeFiles /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/elf//CMakeFiles/progress.marks
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/CMakeFiles 0
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/CMakeFiles /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/elf//CMakeFiles/progress.marks
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/clean
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,22 +148,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/preinstall
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/preinstall
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 elf/CMakeFiles/elf.dir/rule:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/CMakeFiles/elf.dir/rule
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 elf/CMakeFiles/elf.dir/rule
 .PHONY : elf/CMakeFiles/elf.dir/rule
 
 # Convenience name for target.
@@ -172,7 +172,7 @@ elf: elf/CMakeFiles/elf.dir/rule
 
 # fast build rule for target.
 elf/fast:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/build
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/build
 .PHONY : elf/fast
 
 elf_file.o: elf_file.cpp.o
@@ -180,7 +180,7 @@ elf_file.o: elf_file.cpp.o
 
 # target to build an object file
 elf_file.cpp.o:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/elf_file.cpp.o
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/elf_file.cpp.o
 .PHONY : elf_file.cpp.o
 
 elf_file.i: elf_file.cpp.i
@@ -188,7 +188,7 @@ elf_file.i: elf_file.cpp.i
 
 # target to preprocess a source file
 elf_file.cpp.i:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/elf_file.cpp.i
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/elf_file.cpp.i
 .PHONY : elf_file.cpp.i
 
 elf_file.s: elf_file.cpp.s
@@ -196,7 +196,7 @@ elf_file.s: elf_file.cpp.s
 
 # target to generate assembly for a file
 elf_file.cpp.s:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/elf_file.cpp.s
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(MAKE) $(MAKESILENT) -f elf/CMakeFiles/elf.dir/build.make elf/CMakeFiles/elf.dir/elf_file.cpp.s
 .PHONY : elf_file.cpp.s
 
 # Help Target
@@ -226,6 +226,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

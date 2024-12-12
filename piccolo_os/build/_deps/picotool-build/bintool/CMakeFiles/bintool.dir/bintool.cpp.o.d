@@ -1,5 +1,5 @@
 bintool/CMakeFiles/bintool.dir/bintool.cpp.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/bintool.cpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/bintool.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assertion_handler \
@@ -1029,11 +1029,11 @@ bintool/CMakeFiles/bintool.dir/bintool.cpp.o: \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdbool.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__tree \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf_file.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf_file.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/sstream \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/addresses.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/addresses.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/_static_assert.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/sha256.h \
@@ -1052,7 +1052,7 @@ bintool/CMakeFiles/bintool.dir/bintool.cpp.o: \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/pk.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/rsa.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/error.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/bintool.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/metadata.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/bintool.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/metadata.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/cassert \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors/errors.h
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors/errors.h

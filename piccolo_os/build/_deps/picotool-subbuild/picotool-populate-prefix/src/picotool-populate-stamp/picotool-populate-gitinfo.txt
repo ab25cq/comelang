@@ -3,9 +3,9 @@
 # No other meaning or use of this file is supported.
 
 method=git
-command=/opt/homebrew/bin/cmake;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-gitclone.cmake
-source_dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src
-work_dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps
+command=/opt/homebrew/bin/cmake;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/tmp/picotool-populate-gitclone.cmake
+source_dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src
+work_dir=/Users/ab25cq/comelang/piccolo_os/build/_deps
 repository=https://github.com/raspberrypi/picotool.git
 remote=origin
 init_submodules=TRUE

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build
 
 # Utility rule file for pioasmBuild.
 
@@ -76,10 +76,10 @@ pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild-complete: pico-
 pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild-complete: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure
 pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild-complete: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-build
 pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild-complete: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-install
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E make_directory /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild-complete
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-done
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E make_directory /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild-complete
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-done
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-install:
 .PHONY : pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-install
@@ -91,45 +91,45 @@ pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBui
 .PHONY : pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-install
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-build: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Performing build step for 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pioasm && $(MAKE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Performing build step for 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pioasm && $(MAKE)
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp/pioasmBuild-cfgcmd.txt
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp/pioasmBuild-cache-Release.cmake
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-patch
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Performing configure step for 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pioasm && /opt/homebrew/bin/cmake --no-warn-unused-cli -DCMAKE_MAKE_PROGRAM:FILEPATH=/opt/homebrew/bin/gmake -DPIOASM_FLAT_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pioasm-install -DCMAKE_RULE_MESSAGES=OFF -DCMAKE_INSTALL_MESSAGE=NEVER "-GUnix Makefiles" -C/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp/pioasmBuild-cache-Release.cmake -S /Users/ab25cq/pico-sdk/tools/pioasm -B /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pioasm
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pioasm && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Performing configure step for 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pioasm && /opt/homebrew/bin/cmake --no-warn-unused-cli -DCMAKE_MAKE_PROGRAM:FILEPATH=/opt/homebrew/bin/gmake -DPIOASM_FLAT_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/Users/ab25cq/comelang/piccolo_os/build/pioasm-install -DCMAKE_RULE_MESSAGES=OFF -DCMAKE_INSTALL_MESSAGE=NEVER "-GUnix Makefiles" -C/Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp/pioasmBuild-cache-Release.cmake -S /Users/ab25cq/pico-sdk/tools/pioasm -B /Users/ab25cq/comelang/piccolo_os/build/pioasm
+	cd /Users/ab25cq/comelang/piccolo_os/build/pioasm && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-download: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-source_dirinfo.txt
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-download: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-mkdir
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "No download step for 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-download
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "No download step for 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-download
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-install: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Performing install step for 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pioasm && $(MAKE) install
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Performing install step for 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pioasm && $(MAKE) install
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-build:
 .PHONY : pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-build
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-mkdir:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -Dcfgdir= -P /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp/pioasmBuild-mkdirs.cmake
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-mkdir
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -Dcfgdir= -P /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp/pioasmBuild-mkdirs.cmake
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-mkdir
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-patch: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-patch-info.txt
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-patch: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-update
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-patch
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-patch
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-update: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-update-info.txt
 pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-update: pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-download
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No update step for 'pioasmBuild'"
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-update
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No update step for 'pioasmBuild'"
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && /opt/homebrew/bin/cmake -E touch /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/src/pioasmBuild-stamp/pioasmBuild-update
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/codegen:
 .PHONY : pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/codegen
@@ -151,10 +151,10 @@ pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/build: pioa
 .PHONY : pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/build
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/clean:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver && $(CMAKE_COMMAND) -P CMakeFiles/pioasmBuild.dir/cmake_clean.cmake
+	cd /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver && $(CMAKE_COMMAND) -P CMakeFiles/pioasmBuild.dir/cmake_clean.cmake
 .PHONY : pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/clean
 
 pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang-dev/pico/piccolo_os_v1 /Users/ab25cq/pico-sdk/src/rp2_common/pico_cyw43_driver /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang/piccolo_os /Users/ab25cq/pico-sdk/src/rp2_common/pico_cyw43_driver /Users/ab25cq/comelang/piccolo_os/build /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/pioasmBuild.dir/depend
 

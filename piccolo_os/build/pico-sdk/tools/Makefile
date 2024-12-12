@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/tools//CMakeFiles/progress.marks
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles 0
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/tools//CMakeFiles/progress.marks
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/clean
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,17 +103,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/preinstall
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/preinstall
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pico-sdk/tools/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -135,6 +135,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/ab25cq/comelang/piccolo_os/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

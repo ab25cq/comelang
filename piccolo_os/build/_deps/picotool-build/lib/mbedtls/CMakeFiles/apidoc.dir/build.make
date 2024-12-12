@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build
 
 # Utility rule file for apidoc.
 
@@ -78,10 +78,10 @@ lib/mbedtls/CMakeFiles/apidoc.dir/build: apidoc
 .PHONY : lib/mbedtls/CMakeFiles/apidoc.dir/build
 
 lib/mbedtls/CMakeFiles/apidoc.dir/clean:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls && $(CMAKE_COMMAND) -P CMakeFiles/apidoc.dir/cmake_clean.cmake
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls && $(CMAKE_COMMAND) -P CMakeFiles/apidoc.dir/cmake_clean.cmake
 .PHONY : lib/mbedtls/CMakeFiles/apidoc.dir/clean
 
 lib/mbedtls/CMakeFiles/apidoc.dir/depend:
-	cd /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src /Users/ab25cq/pico-sdk/lib/mbedtls /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/lib/mbedtls/CMakeFiles/apidoc.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src /Users/ab25cq/pico-sdk/lib/mbedtls /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/lib/mbedtls/CMakeFiles/apidoc.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : lib/mbedtls/CMakeFiles/apidoc.dir/depend
 

@@ -1,5 +1,5 @@
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2040/boot_stage2/bs2_default.elf:     file format elf32-littlearm
+/Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2040/boot_stage2/bs2_default.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
@@ -9,18 +9,18 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   2 .debug_line   000000ed  00000000  00000000  00001012  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  3 .debug_line_str 0000010e  00000000  00000000  000010ff  2**0
+  3 .debug_line_str 00000102  00000000  00000000  000010ff  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  4 .debug_info   00000025  00000000  00000000  0000120d  2**0
+  4 .debug_info   00000025  00000000  00000000  00001201  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  5 .debug_abbrev 00000014  00000000  00000000  00001232  2**0
+  5 .debug_abbrev 00000014  00000000  00000000  00001226  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_aranges 00000020  00000000  00000000  00001248  2**3
+  6 .debug_aranges 00000020  00000000  00000000  00001240  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_str    000000a0  00000000  00000000  00001268  2**0
+  7 .debug_str    00000094  00000000  00000000  00001260  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/pico-sdk/src/rp2040/boot_stage2/bs2_default.elf:     file format elf32-littlearm
+/Users/ab25cq/comelang/piccolo_os/build/pico-sdk/src/rp2040/boot_stage2/bs2_default.elf:     file format elf32-littlearm
 
 
 Disassembly of section .text:

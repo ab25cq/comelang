@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf2uf2/elf2uf2.cpp" "elf2uf2/CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o" "gcc" "elf2uf2/CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o.d"
+  "/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf2uf2/elf2uf2.cpp" "elf2uf2/CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o" "gcc" "elf2uf2/CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -1,8 +1,8 @@
-# Install script for directory: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/picoboot_connection
+# Install script for directory: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/picoboot_connection
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps")
+  set(CMAKE_INSTALL_PREFIX "/Users/ab25cq/comelang/piccolo_os/build/_deps")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-build/picoboot_connection/install_local_manifest.txt"
+  file(WRITE "/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-build/picoboot_connection/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

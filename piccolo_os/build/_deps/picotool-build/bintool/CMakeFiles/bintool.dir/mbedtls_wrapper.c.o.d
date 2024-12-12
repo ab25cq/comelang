@@ -1,6 +1,6 @@
 bintool/CMakeFiles/bintool.dir/mbedtls_wrapper.c.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/mbedtls_wrapper.c \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/mbedtls_wrapper.c \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/stdint.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/_types/_int8_t.h \

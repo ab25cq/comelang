@@ -1,6 +1,6 @@
 CMakeFiles/picotool.dir/main.cpp.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/main.cpp \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/cli.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/main.cpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/cli.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/algorithm \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__assertion_handler \
@@ -977,7 +977,7 @@ CMakeFiles/picotool.dir/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__numeric/transform_exclusive_scan.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__numeric/transform_inclusive_scan.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/sstream \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/clipp/clipp.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/clipp/clipp.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/cinttypes \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/inttypes.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/inttypes.h \
@@ -995,12 +995,12 @@ CMakeFiles/picotool.dir/main.cpp.o: \
   /Users/ab25cq/pico-sdk/src/rp2350/hardware_regs/include/hardware/platform_defs.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/stdbool.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdbool.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/picoboot_connection/picoboot_connection.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/picoboot_connection/picoboot_connection.h \
   /Users/ab25cq/pico-sdk/src/common/boot_picoboot_headers/include/boot/picoboot.h \
   /Users/ab25cq/pico-sdk/src/common/boot_picoboot_headers/include/boot/picoboot_constants.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/addresses.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/bintool.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/addresses.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/bintool.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/sha256.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/config.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/check_config.h \
@@ -1016,7 +1016,7 @@ CMakeFiles/picotool.dir/main.cpp.o: \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/sha512.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/pk.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/rsa.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf_file.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf_file.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/fstream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/filesystem \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__filesystem/copy_options.h \
@@ -1036,9 +1036,9 @@ CMakeFiles/picotool.dir/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__filesystem/u8path.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/metadata.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf2uf2/elf2uf2.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/metadata.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf2uf2/elf2uf2.h \
   /Users/ab25cq/pico-sdk/src/rp2_common/boot_bootrom_headers/include/boot/bootrom_constants.h \
   /Users/ab25cq/pico-sdk/src/common/pico_binary_info/include/pico/binary_info.h \
   /Users/ab25cq/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/defs.h \
@@ -1046,11 +1046,11 @@ CMakeFiles/picotool.dir/main.cpp.o: \
   /Users/ab25cq/pico-sdk/src/common/pico_binary_info/include/pico/binary_info/code.h \
   /Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb/reset_interface.h \
   /Users/ab25cq/pico-sdk/src/common/pico_usb_reset_interface_headers/include/pico/usb_reset_interface.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/otp.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/otp.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/forward_list \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/valarray \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors/errors.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors/errors.h \
   /Users/ab25cq/pico-sdk/src/rp2350/hardware_regs/include/hardware/regs/otp_data.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/unistd.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/_types/_posix_vdisable.h \

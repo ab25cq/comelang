@@ -4,7 +4,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf2uf2 -I/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf -I/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors -isystem /Users/ab25cq/pico-sdk/src/common/boot_uf2_headers/include
+CXX_INCLUDES = -I/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf2uf2 -I/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf -I/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors -isystem /Users/ab25cq/pico-sdk/src/common/boot_uf2_headers/include
 
 CXX_FLAGSarm64 = -O3 -DNDEBUG -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk
 

@@ -905,7 +905,7 @@ CMakeFiles/picotool.dir/data_locs.cpp.o: data_locs.cpp \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h
 
-CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.cpp \
+CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -1888,10 +1888,10 @@ CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: /Users/ab25cq/comelang-de
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdbool.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c
 
-CMakeFiles/picotool.dir/lib/whereami/whereami.c.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c \
+CMakeFiles/picotool.dir/lib/whereami/whereami.c.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -2016,9 +2016,9 @@ CMakeFiles/picotool.dir/lib/whereami/whereami.c.o: /Users/ab25cq/comelang-dev/pi
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdbool.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.h
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.h
 
-CMakeFiles/picotool.dir/main.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/main.cpp \
+CMakeFiles/picotool.dir/main.cpp.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/main.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -3054,19 +3054,19 @@ CMakeFiles/picotool.dir/main.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdbool.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/bintool.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/metadata.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/cli.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/clipp/clipp.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/addresses.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf_file.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf2uf2/elf2uf2.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors/errors.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/otp.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/picoboot_connection/picoboot_connection.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/bintool.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/mbedtls_wrapper.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/metadata.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/cli.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/clipp/clipp.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/addresses.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf_file.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf2uf2/elf2uf2.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors/errors.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/otp.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/picoboot_connection/picoboot_connection.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/aes.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/bignum.h \
   /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/check_config.h \
@@ -3097,7 +3097,7 @@ CMakeFiles/picotool.dir/main.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v
   /Users/ab25cq/pico-sdk/src/rp2_common/boot_bootrom_headers/include/boot/bootrom_constants.h \
   /Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb/reset_interface.h
 
-CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/no_otp.cpp \
+CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/no_otp.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/AvailabilityInternalLegacy.h \
@@ -4075,11 +4075,13 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/otp.h
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/otp.h
 
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/no_otp.cpp:
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/no_otp.cpp:
+
+/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb/reset_interface.h:
 
 /Users/ab25cq/pico-sdk/src/rp2350/hardware_regs/include/hardware/platform_defs.h:
 
@@ -4119,25 +4121,11 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 
 /Users/ab25cq/pico-sdk/lib/mbedtls/include/mbedtls/check_config.h:
 
-/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/include/pico/stdio_usb/reset_interface.h:
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf2uf2/elf2uf2.h:
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/otp.h:
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/cli.h:
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/errors/errors.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf2uf2/elf2uf2.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf_file.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/clipp/clipp.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/cli.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/metadata.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/mbedtls_wrapper.h:
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/mbedtls_wrapper.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/time.h:
 
@@ -4229,17 +4217,15 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/_inttypes.h:
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/secure/_strings.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/secure/_common.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.h:
+
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdbool.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/unistd.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/picoboot_connection/picoboot_connection.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/mach/machine/thread_state.h:
 
@@ -4325,6 +4311,8 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__charconv/chars_format.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.cpp:
+
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_size_t.h:
@@ -4338,8 +4326,6 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_max_align_t.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg_va_list.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/bintool/bintool.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg_va_copy.h:
 
@@ -4358,6 +4344,8 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__format/format_arg_store.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/xlocale/_stdlib.h:
+
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/clipp/clipp.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__functional/default_searcher.h:
 
@@ -4444,8 +4432,6 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/_types/_key_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/_types/_intptr_t.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/sys/_types/_int8_t.h:
 
@@ -4601,8 +4587,6 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/ctime:
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.cpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/ranges_nth_element.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/is_specialization.h:
@@ -4648,8 +4632,6 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__utility/integer_sequence.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__utility/in_place.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/main.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__utility/exception_guard.h:
 
@@ -4771,6 +4753,8 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/is_object.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf_file.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/set_symmetric_difference.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/cerrno:
@@ -4834,6 +4818,8 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__utility/priority_tag.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/type_list.h:
+
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/metadata.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/is_class.h:
 
@@ -4914,6 +4900,8 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/add_volatile.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/add_rvalue_reference.h:
+
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/nlohmann_json/single_include/nlohmann/json.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/new:
 
@@ -5129,6 +5117,8 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__iterator/size.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/picoboot_connection/picoboot_connection.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/regex:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__iterator/segmented_iterator.h:
@@ -5176,8 +5166,6 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__iterator/move_sentinel.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__iterator/istreambuf_iterator.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/addresses.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__iterator/istream_iterator.h:
 
@@ -5268,6 +5256,8 @@ CMakeFiles/picotool.dir/no_otp.cpp.o: /Users/ab25cq/comelang-dev/pico/piccolo_os
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__format/formatter_tuple.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/is_array.h:
+
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__ranges/dangling.h:
 
@@ -5386,6 +5376,8 @@ data_locs.cpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/move_backward.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__concepts/class_or_enum.h:
+
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/elf.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__concepts/boolean_testable.h:
 
@@ -5589,6 +5581,8 @@ data_locs.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__format/format_to_n_result.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/errors/errors.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/ranges_stable_partition.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h:
@@ -5724,6 +5718,8 @@ data_locs.cpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/ranges_move.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/pthread.h:
+
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/elf/addresses.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__iterator/iter_swap.h:
 
@@ -5959,6 +5955,8 @@ data_locs.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/partition_copy.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__concepts/regular.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/lexicographical_compare.h:
@@ -6125,6 +6123,8 @@ data_locs.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__type_traits/is_member_pointer.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/bintool/bintool.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__concepts/constructible.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__fwd/ios.h:
@@ -6203,6 +6203,8 @@ data_locs.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/shift_right.h:
 
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/main.cpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/cstddef:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/shift_left.h:
@@ -6245,8 +6247,6 @@ data_locs.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/pstl_generate.h:
 
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/elf/elf.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__compare/common_comparison_category.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/comp.h:
@@ -6258,6 +6258,8 @@ data_locs.cpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/ranges_none_of.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/ranges_find_end.h:
+
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/otp.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/ranges_copy_backward.h:
 
@@ -6276,8 +6278,6 @@ data_locs.cpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__ranges/enable_view.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__concepts/copyable.h:
-
-/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__atomic/memory_order.h:
 

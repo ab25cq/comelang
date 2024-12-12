@@ -1,6 +1,6 @@
 CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.cpp \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami++.h \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.cpp \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami++.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/string \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/max.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__algorithm/comp.h \
@@ -955,7 +955,7 @@ CMakeFiles/picotool.dir/lib/whereami/whereami++.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__format/formatter_tuple.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/unistd.h \
-  /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src/lib/whereami/whereami.c \
+  /Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src/lib/whereami/whereami.c \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/mach-o/dyld.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/stdbool.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdbool.h \

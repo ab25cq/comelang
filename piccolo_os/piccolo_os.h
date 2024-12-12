@@ -10,12 +10,12 @@
 /* Exception return behavior */
 #define PICCOLO_OS_THREAD_PSP 0xFFFFFFFD
 
-struct {
+typedef struct {
   unsigned int task_stacks[PICCOLO_OS_TASK_LIMIT][PICCOLO_OS_STACK_SIZE];
   unsigned int *the_tasks[PICCOLO_OS_TASK_LIMIT];
   size_t task_count;
   size_t current_task;
-} typedef piccolo_os_internals_t;
+} piccolo_os_internals_t;
 
 typedef uint32_t piccolo_sleep_t;
 

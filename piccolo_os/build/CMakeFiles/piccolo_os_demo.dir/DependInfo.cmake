@@ -8,18 +8,18 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_ASM
-  "/Users/ab25cq/pico-sdk/src/rp2_common/hardware_divider/divider.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_divider/divider.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o"
-  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o"
-  "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/context_switch.s" "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles/piccolo_os_demo.dir/context_switch.s.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/hardware_divider/divider.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_divider/divider.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o"
+  "/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o"
+  "/Users/ab25cq/comelang/piccolo_os/context_switch.s" "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir/context_switch.s.o"
   )
 set(CMAKE_ASM_COMPILER_ID "GNU")
 
@@ -219,8 +219,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o.d"
   "/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o.d"
   "/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o.d"
-  "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/piccolo_os.c" "CMakeFiles/piccolo_os_demo.dir/piccolo_os.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/piccolo_os.c.o.d"
-  "/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/piccolo_os_demo.c" "CMakeFiles/piccolo_os_demo.dir/piccolo_os_demo.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/piccolo_os_demo.c.o.d"
+  "/Users/ab25cq/comelang/piccolo_os/main.c.c" "CMakeFiles/piccolo_os_demo.dir/main.c.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/main.c.c.o.d"
+  "/Users/ab25cq/comelang/piccolo_os/piccolo.c.c" "CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o.d"
   "/Users/ab25cq/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp.o.d"
   )
 

@@ -4,6 +4,6 @@
 
 method=source_dir
 command=
-source_dir=/Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/_deps/picotool-src
+source_dir=/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-src
 work_dir=
 

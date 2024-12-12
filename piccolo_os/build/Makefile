@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1
+CMAKE_SOURCE_DIR = /Users/ab25cq/comelang/piccolo_os
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build
+CMAKE_BINARY_DIR = /Users/ab25cq/comelang/piccolo_os/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles /Users/ab25cq/comelang/piccolo_os/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang-dev/pico/piccolo_os_v1/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -128,32 +128,6 @@ piccolo_os_demo: cmake_check_build_system
 piccolo_os_demo/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/build
 .PHONY : piccolo_os_demo/fast
-
-#=============================================================================
-# Target rules for targets named picotoolForceReconfigure
-
-# Build rule for target.
-picotoolForceReconfigure: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 picotoolForceReconfigure
-.PHONY : picotoolForceReconfigure
-
-# fast build rule for target.
-picotoolForceReconfigure/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/picotoolForceReconfigure.dir/build.make CMakeFiles/picotoolForceReconfigure.dir/build
-.PHONY : picotoolForceReconfigure/fast
-
-#=============================================================================
-# Target rules for targets named picotoolBuild
-
-# Build rule for target.
-picotoolBuild: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 picotoolBuild
-.PHONY : picotoolBuild
-
-# fast build rule for target.
-picotoolBuild/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/picotoolBuild.dir/build.make CMakeFiles/picotoolBuild.dir/build
-.PHONY : picotoolBuild/fast
 
 #=============================================================================
 # Target rules for targets named bs2_default
@@ -1972,53 +1946,53 @@ context_switch.s.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
 .PHONY : context_switch.s.o
 
-piccolo_os.o: piccolo_os.c.o
-.PHONY : piccolo_os.o
+main.c.o: main.c.c.o
+.PHONY : main.c.o
 
 # target to build an object file
-piccolo_os.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo_os.c.o
-.PHONY : piccolo_os.c.o
+main.c.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/main.c.c.o
+.PHONY : main.c.c.o
 
-piccolo_os.i: piccolo_os.c.i
-.PHONY : piccolo_os.i
+main.c.i: main.c.c.i
+.PHONY : main.c.i
 
 # target to preprocess a source file
-piccolo_os.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo_os.c.i
-.PHONY : piccolo_os.c.i
+main.c.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/main.c.c.i
+.PHONY : main.c.c.i
 
-piccolo_os.s: piccolo_os.c.s
-.PHONY : piccolo_os.s
+main.c.s: main.c.c.s
+.PHONY : main.c.s
 
 # target to generate assembly for a file
-piccolo_os.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo_os.c.s
-.PHONY : piccolo_os.c.s
+main.c.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/main.c.c.s
+.PHONY : main.c.c.s
 
-piccolo_os_demo.o: piccolo_os_demo.c.o
-.PHONY : piccolo_os_demo.o
+piccolo.c.o: piccolo.c.c.o
+.PHONY : piccolo.c.o
 
 # target to build an object file
-piccolo_os_demo.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo_os_demo.c.o
-.PHONY : piccolo_os_demo.c.o
+piccolo.c.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o
+.PHONY : piccolo.c.c.o
 
-piccolo_os_demo.i: piccolo_os_demo.c.i
-.PHONY : piccolo_os_demo.i
+piccolo.c.i: piccolo.c.c.i
+.PHONY : piccolo.c.i
 
 # target to preprocess a source file
-piccolo_os_demo.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo_os_demo.c.i
-.PHONY : piccolo_os_demo.c.i
+piccolo.c.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.i
+.PHONY : piccolo.c.c.i
 
-piccolo_os_demo.s: piccolo_os_demo.c.s
-.PHONY : piccolo_os_demo.s
+piccolo.c.s: piccolo.c.c.s
+.PHONY : piccolo.c.s
 
 # target to generate assembly for a file
-piccolo_os_demo.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo_os_demo.c.s
-.PHONY : piccolo_os_demo.c.s
+piccolo.c.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.s
+.PHONY : piccolo.c.c.s
 
 # Help Target
 help:
@@ -2030,8 +2004,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bs2_default_bin"
 	@echo "... cyw43_driver_picow_cyw43_bus_pio_spi_pio_h"
-	@echo "... picotoolBuild"
-	@echo "... picotoolForceReconfigure"
 	@echo "... pioasmBuild"
 	@echo "... bs2_default"
 	@echo "... bs2_default_library"
@@ -2255,12 +2227,12 @@ help:
 	@echo "... Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.i"
 	@echo "... Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.s"
 	@echo "... context_switch.o"
-	@echo "... piccolo_os.o"
-	@echo "... piccolo_os.i"
-	@echo "... piccolo_os.s"
-	@echo "... piccolo_os_demo.o"
-	@echo "... piccolo_os_demo.i"
-	@echo "... piccolo_os_demo.s"
+	@echo "... main.c.o"
+	@echo "... main.c.i"
+	@echo "... main.c.s"
+	@echo "... piccolo.c.o"
+	@echo "... piccolo.c.i"
+	@echo "... piccolo.c.s"
 .PHONY : help
 
 
