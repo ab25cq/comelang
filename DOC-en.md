@@ -1529,6 +1529,8 @@ CCC
 
 A multi-line string. The """ in the last line is ignored at the beginning of the line. You can expand the variable with `\{}`. It will be expanded to the heap.
 
+It's useless because of cpp. Don't use.
+
 # method block
 
 ```

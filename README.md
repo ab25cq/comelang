@@ -2661,6 +2661,8 @@ CCC
 }
 ```
 
+It's useless because of cpp. Don't use.
+
 # method block
 
 ```
