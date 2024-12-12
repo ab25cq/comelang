@@ -130,32 +130,6 @@ piccolo_os_demo/fast:
 .PHONY : piccolo_os_demo/fast
 
 #=============================================================================
-# Target rules for targets named picotoolForceReconfigure
-
-# Build rule for target.
-picotoolForceReconfigure: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 picotoolForceReconfigure
-.PHONY : picotoolForceReconfigure
-
-# fast build rule for target.
-picotoolForceReconfigure/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/picotoolForceReconfigure.dir/build.make CMakeFiles/picotoolForceReconfigure.dir/build
-.PHONY : picotoolForceReconfigure/fast
-
-#=============================================================================
-# Target rules for targets named picotoolBuild
-
-# Build rule for target.
-picotoolBuild: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 picotoolBuild
-.PHONY : picotoolBuild
-
-# fast build rule for target.
-picotoolBuild/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/picotoolBuild.dir/build.make CMakeFiles/picotoolBuild.dir/build
-.PHONY : picotoolBuild/fast
-
-#=============================================================================
 # Target rules for targets named bs2_default
 
 # Build rule for target.
@@ -1996,29 +1970,29 @@ main.c.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/main.c.c.s
 .PHONY : main.c.c.s
 
-piccolo.c.o: piccolo.c.c.o
-.PHONY : piccolo.c.o
+os.c.o: os.c.c.o
+.PHONY : os.c.o
 
 # target to build an object file
-piccolo.c.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o
-.PHONY : piccolo.c.c.o
+os.c.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+.PHONY : os.c.c.o
 
-piccolo.c.i: piccolo.c.c.i
-.PHONY : piccolo.c.i
+os.c.i: os.c.c.i
+.PHONY : os.c.i
 
 # target to preprocess a source file
-piccolo.c.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.i
-.PHONY : piccolo.c.c.i
+os.c.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/os.c.c.i
+.PHONY : os.c.c.i
 
-piccolo.c.s: piccolo.c.c.s
-.PHONY : piccolo.c.s
+os.c.s: os.c.c.s
+.PHONY : os.c.s
 
 # target to generate assembly for a file
-piccolo.c.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.s
-.PHONY : piccolo.c.c.s
+os.c.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/piccolo_os_demo.dir/build.make CMakeFiles/piccolo_os_demo.dir/os.c.c.s
+.PHONY : os.c.c.s
 
 # Help Target
 help:
@@ -2030,8 +2004,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bs2_default_bin"
 	@echo "... cyw43_driver_picow_cyw43_bus_pio_spi_pio_h"
-	@echo "... picotoolBuild"
-	@echo "... picotoolForceReconfigure"
 	@echo "... pioasmBuild"
 	@echo "... bs2_default"
 	@echo "... bs2_default_library"
@@ -2258,9 +2230,9 @@ help:
 	@echo "... main.c.o"
 	@echo "... main.c.i"
 	@echo "... main.c.s"
-	@echo "... piccolo.c.o"
-	@echo "... piccolo.c.i"
-	@echo "... piccolo.c.s"
+	@echo "... os.c.o"
+	@echo "... os.c.i"
+	@echo "... os.c.s"
 .PHONY : help
 
 

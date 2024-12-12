@@ -151,8 +151,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/piccolo_os_demo.dir/context_switch.s.o"
   "CMakeFiles/piccolo_os_demo.dir/main.c.c.o"
   "CMakeFiles/piccolo_os_demo.dir/main.c.c.o.d"
-  "CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o"
-  "CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o.d"
+  "CMakeFiles/piccolo_os_demo.dir/os.c.c.o"
+  "CMakeFiles/piccolo_os_demo.dir/os.c.c.o.d"
   "piccolo_os_demo.elf"
   "piccolo_os_demo.pdb"
 )

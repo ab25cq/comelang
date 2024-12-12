@@ -99,19 +99,19 @@ CMakeFiles/piccolo_os_demo.dir/context_switch.s.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling ASM source to assembly CMakeFiles/piccolo_os_demo.dir/context_switch.s.s"
 	/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/context_switch.s -o CMakeFiles/piccolo_os_demo.dir/context_switch.s.s
 
-CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o: CMakeFiles/piccolo_os_demo.dir/flags.make
-CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o: /Users/ab25cq/comelang/piccolo_os/piccolo.c.c
-CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o: CMakeFiles/piccolo_os_demo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o"
-	/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o -MF CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o.d -o CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o -c /Users/ab25cq/comelang/piccolo_os/piccolo.c.c
+CMakeFiles/piccolo_os_demo.dir/os.c.c.o: CMakeFiles/piccolo_os_demo.dir/flags.make
+CMakeFiles/piccolo_os_demo.dir/os.c.c.o: /Users/ab25cq/comelang/piccolo_os/os.c.c
+CMakeFiles/piccolo_os_demo.dir/os.c.c.o: CMakeFiles/piccolo_os_demo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/piccolo_os_demo.dir/os.c.c.o"
+	/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/piccolo_os_demo.dir/os.c.c.o -MF CMakeFiles/piccolo_os_demo.dir/os.c.c.o.d -o CMakeFiles/piccolo_os_demo.dir/os.c.c.o -c /Users/ab25cq/comelang/piccolo_os/os.c.c
 
-CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.i"
-	/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/comelang/piccolo_os/piccolo.c.c > CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.i
+CMakeFiles/piccolo_os_demo.dir/os.c.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/piccolo_os_demo.dir/os.c.c.i"
+	/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/ab25cq/comelang/piccolo_os/os.c.c > CMakeFiles/piccolo_os_demo.dir/os.c.c.i
 
-CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.s"
-	/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/piccolo.c.c -o CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.s
+CMakeFiles/piccolo_os_demo.dir/os.c.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/piccolo_os_demo.dir/os.c.c.s"
+	/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/ab25cq/comelang/piccolo_os/os.c.c -o CMakeFiles/piccolo_os_demo.dir/os.c.c.s
 
 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o: CMakeFiles/piccolo_os_demo.dir/flags.make
 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o: /Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c
@@ -1226,7 +1226,7 @@ CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_fix/rp2
 piccolo_os_demo_OBJECTS = \
 "CMakeFiles/piccolo_os_demo.dir/main.c.c.o" \
 "CMakeFiles/piccolo_os_demo.dir/context_switch.s.o" \
-"CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o" \
+"CMakeFiles/piccolo_os_demo.dir/os.c.c.o" \
 "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o" \
 "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o" \
 "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o" \
@@ -1313,7 +1313,7 @@ piccolo_os_demo_EXTERNAL_OBJECTS =
 
 piccolo_os_demo.elf: CMakeFiles/piccolo_os_demo.dir/main.c.c.o
 piccolo_os_demo.elf: CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
-piccolo_os_demo.elf: CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o
+piccolo_os_demo.elf: CMakeFiles/piccolo_os_demo.dir/os.c.c.o
 piccolo_os_demo.elf: CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o
 piccolo_os_demo.elf: CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
 piccolo_os_demo.elf: CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o

@@ -220,7 +220,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o.d"
   "/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o.d"
   "/Users/ab25cq/comelang/piccolo_os/main.c.c" "CMakeFiles/piccolo_os_demo.dir/main.c.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/main.c.c.o.d"
-  "/Users/ab25cq/comelang/piccolo_os/piccolo.c.c" "CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/piccolo.c.c.o.d"
+  "/Users/ab25cq/comelang/piccolo_os/os.c.c" "CMakeFiles/piccolo_os_demo.dir/os.c.c.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/os.c.c.o.d"
   "/Users/ab25cq/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp.o" "gcc" "CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_cxx_options/new_delete.cpp.o.d"
   )
 

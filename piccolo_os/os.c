@@ -13,10 +13,9 @@
 
 #include "pico/stdlib.h"
 #include <stdio.h>
-#include "piccolo_os.h"
+#include "os.h"
 
-unsigned int *__piccolo_os_create_task(unsigned int *stack,
-                                       void (*start)(void));
+unsigned int *__piccolo_os_create_task(unsigned int *stack, void (*start)(void));
 void __piccolo_task_init(void);
 unsigned int *__piccolo_pre_switch(unsigned int *stack);
 void __piccolo_task_init_stack(unsigned int *stack);
@@ -64,31 +63,30 @@ unsigned int *__piccolo_os_create_task(unsigned int *task_stack,
         +------+
         */
 
-  task_stack += PICCOLO_OS_STACK_SIZE - 17; /* End of task_stack, minus what we are about to push */
-  task_stack[8] = (unsigned int) PICCOLO_OS_THREAD_PSP;
-  task_stack[15] = (unsigned int) pointer_to_task_function;
-  task_stack[16] = (unsigned int) 0x01000000; /* PSR Thumb bit */
-  task_stack = __piccolo_pre_switch(task_stack);
-
-  return task_stack;
+    task_stack += PICCOLO_OS_STACK_SIZE - 17; /* End of task_stack, minus what we are about to push */
+    task_stack[8] = (unsigned int) PICCOLO_OS_THREAD_PSP;
+    task_stack[15] = (unsigned int) pointer_to_task_function;
+    task_stack[16] = (unsigned int) 0x01000000; /* PSR Thumb bit */
+    task_stack = __piccolo_pre_switch(task_stack);
+  
+    return task_stack;
 }
 
 int piccolo_create_task(void (*pointer_to_task_function)(void)) {
-  if (piccolo_ctx.task_count >= PICCOLO_OS_TASK_LIMIT)
-    return -1;
+  if (piccolo_ctx.task_count >= PICCOLO_OS_TASK_LIMIT) return -1;
+  
   int tc = piccolo_ctx.task_count; // Just for readability
-  piccolo_ctx.the_tasks[tc] =
-      __piccolo_os_create_task(piccolo_ctx.task_stacks[tc], pointer_to_task_function);
+  piccolo_ctx.the_tasks[tc] =  __piccolo_os_create_task(piccolo_ctx.task_stacks[tc], pointer_to_task_function);
   piccolo_ctx.task_count++;
 
   return piccolo_ctx.task_count - 1;
 }
 
 void piccolo_sleep(piccolo_sleep_t *start, int ticks) {
-  *start = to_ms_since_boot(get_absolute_time());
-  while (to_ms_since_boot(get_absolute_time()) < *start + ticks) {
-    piccolo_yield();
-  }
+    *start = to_ms_since_boot(get_absolute_time());
+    while (to_ms_since_boot(get_absolute_time()) < *start + ticks) {
+        piccolo_yield();
+    }
 }
 
 /* After a reset, processor is in thread mode
@@ -97,26 +95,26 @@ void piccolo_sleep(piccolo_sleep_t *start, int ticks) {
  * when switching to a task
  */
 void __piccolo_task_init(void) {
-  unsigned int dummy[32];
-  __piccolo_task_init_stack(dummy + 32);
+    unsigned int dummy[32];
+    __piccolo_task_init_stack(dummy + 32);
 }
 
 void piccolo_init() {
-  piccolo_ctx.task_count = 0;
-  stdio_init_all();
-  __piccolo_task_init();
+    piccolo_ctx.task_count = 0;
+    stdio_init_all();
+    __piccolo_task_init();
 }
 
 void piccolo_start() {
-  piccolo_ctx.current_task = 0;
+    piccolo_ctx.current_task = 0;
 
-  while (1) {
-    piccolo_ctx.the_tasks[piccolo_ctx.current_task] =
-        __piccolo_pre_switch(piccolo_ctx.the_tasks[piccolo_ctx.current_task]);
+    while (1) {
+        piccolo_ctx.the_tasks[piccolo_ctx.current_task] =
+            __piccolo_pre_switch(piccolo_ctx.the_tasks[piccolo_ctx.current_task]);
 
-    piccolo_ctx.current_task++;
-    if (piccolo_ctx.current_task >= piccolo_ctx.task_count)
-      piccolo_ctx.current_task = 0;
-  }
+        piccolo_ctx.current_task++;
+        if (piccolo_ctx.current_task >= piccolo_ctx.task_count)
+             piccolo_ctx.current_task = 0;
+    }
 } 
 

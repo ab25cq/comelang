@@ -1,6 +1,4 @@
 /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/piccolo_os_demo.dir
-/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolForceReconfigure.dir
-/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolBuild.dir
 /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/edit_cache.dir
 /Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/rebuild_cache.dir
 /Users/ab25cq/comelang/piccolo_os/build/pico-sdk/CMakeFiles/edit_cache.dir
