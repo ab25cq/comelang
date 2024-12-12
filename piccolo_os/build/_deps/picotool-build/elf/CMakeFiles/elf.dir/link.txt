@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libelf.a CMakeFiles/elf.dir/elf_file.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libelf.a
