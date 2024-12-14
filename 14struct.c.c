@@ -1701,7 +1701,6 @@ struct sInfo
     struct sFun* calling_fun;
     struct map$2charphint* outputed_class;
     struct map$2charphcharph* uniq_definition;
-    _Bool nocomelib;
     _Bool in_top_level;
 };
 

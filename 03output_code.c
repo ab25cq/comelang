@@ -817,7 +817,13 @@ int transpile(sInfo* info) version 3
 
 bool output_source_file(sInfo* info) version 3
 {
-    bool main_module = info->funcs[s"main"]?? != null;
+    sFun* main_fun = info->funcs[s"main"]??;
+    bool main_module = false;
+    if(main_fun) {
+        if(!main_fun->mExternal) {
+            main_module = true;
+        }
+    }
     
     /// go ///
     string output_file_name = xsprintf("%s.c", info.sname);

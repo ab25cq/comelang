@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 10.0.3
+version 10.1.0
 
 ``` C
 #include <comelang.h>
@@ -325,7 +325,7 @@ sh all_build.sh
 # Histories
 
 ```
-10.0.3 remove libcomelang.a, Only need include comelang.h
+10.1.0 remove libcomelang.a, Only need include comelang.h. delete floaint,integer, and -gc option.
 10.0.2 comelang can build piccolo os. comelang can make operating system.
 10.0.1 raspi pico.
 10.0.0 Really complete. see DOC-ja.md. DOC-en.md
@@ -3333,10 +3333,6 @@ Don't include comelang-str.h, comelang-net.h and comelang-pthread.h. Inlucde com
 Please use the C language extension library. The strength of comelang is that the C library can be used as is.
 
 拡張ライブラリはC言語のものを使ってください。comelangの強みはCライブラリがそのまま使える点です。
-
-# Boehm gc
-
-with -gc option, enable boehm GC. All finalizer no called.
 
 # Net libraries
 

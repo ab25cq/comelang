@@ -404,7 +404,6 @@ struct sInfo
     map<string, int>*% outputed_class;
     
     map<string, string>*% uniq_definition;
-    bool nocomelib;
     bool in_top_level;
 };
 

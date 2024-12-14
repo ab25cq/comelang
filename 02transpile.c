@@ -398,15 +398,6 @@ static bool linker(sInfo* info, list<string>* object_files)
         }
     }
     
-    if(!info.nocomelib) {
-        if(is_mac == 0) {
-            command.append_format(" %s/lib/libcomelang.c.o ", PREFIX);
-        }
-        else {
-            command.append_str(" -lcomelang ");
-        }
-    }
-    
     if(info.verbose) puts(command.to_string());
     system(command.to_string()).if {
         printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
@@ -735,7 +726,6 @@ module MEvalOptions<T, T2>
     bool verbose = false;
     bool come_debug = false;
     bool come_malloc = false;
-    bool nocomelib = false;
     for(int i=T; i<argc; i++) {
         if(argv[i] === "-o" && i+1 < argc) {
             output_file_name = string(argv[i+1]);
@@ -806,9 +796,6 @@ module MEvalOptions<T, T2>
         else if(argv[i] === "-v") {
             clang_option.append_str("-v ");
             verbose = true;
-        }
-        else if(argv[i] === "-nocomelib") {
-            nocomelib = true;
         }
         else if(strlen(argv[i]) >= 2 && memcmp(argv[i], "-I", strlen("-I")) == 0) {
             cpp_option.append_str(" " + argv[i] + " ");
@@ -1092,7 +1079,6 @@ int come_main(int argc, char** argv) version 2
             info.clang_option = clang_option.to_string();
             info.linker_option = linker_option.to_string();
             info.verbose = verbose;
-            info.nocomelib = nocomelib;
             
             if(output_file_name) {
                 info.output_file_name = string(output_file_name);
