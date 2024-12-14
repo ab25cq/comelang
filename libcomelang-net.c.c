@@ -9824,20 +9824,20 @@ static struct list$1charph* list$1charph_add(struct list$1charph* self, char* it
 static struct list$1list$1charphph* list$1list$1charphph_add(struct list$1list$1charphph* self, struct list$1charph* item);
 // uniq global variable
 // inline function
-static static inline _Bool die(char* msg){
+static _Bool die(char* msg){
     perror(msg);
     stackframe();
     exit(4);
     return (_Bool)0;
 }
-static static inline unsigned char* buffer_head_pointer(struct buffer* self){
+static unsigned char* buffer_head_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 unsigned char* __result52__;
     __result52__ = gComeFunResultObject = __result_obj__ = self->buf;
     gComeFunResultObject = (void*)0;
     return __result52__;
 }
-static static inline struct buffer* charpa_to_buffer(char* self, unsigned long  int len){
+static struct buffer* charpa_to_buffer(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value33 = (void*)0;
 void* __right_value34 = (void*)0;
@@ -9850,7 +9850,7 @@ struct buffer* __result53__;
     gComeFunResultObject = (void*)0;
     return __result53__;
 }
-static static inline struct buffer* charppa_to_buffer(char** self, unsigned long  int len){
+static struct buffer* charppa_to_buffer(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value35 = (void*)0;
 void* __right_value36 = (void*)0;
@@ -9866,7 +9866,7 @@ struct buffer* __result54__;
     gComeFunResultObject = (void*)0;
     return __result54__;
 }
-static static inline struct buffer* shortpa_to_buffer(short* self, unsigned long  int len){
+static struct buffer* shortpa_to_buffer(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value37 = (void*)0;
 void* __right_value38 = (void*)0;
@@ -9879,7 +9879,7 @@ struct buffer* __result55__;
     gComeFunResultObject = (void*)0;
     return __result55__;
 }
-static static inline struct buffer* intpa_to_buffer(int* self, unsigned long  int len){
+static struct buffer* intpa_to_buffer(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value39 = (void*)0;
 void* __right_value40 = (void*)0;
@@ -9892,7 +9892,7 @@ struct buffer* __result56__;
     gComeFunResultObject = (void*)0;
     return __result56__;
 }
-static static inline struct buffer* longpa_to_buffer(long* self, unsigned long  int len){
+static struct buffer* longpa_to_buffer(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value41 = (void*)0;
 void* __right_value42 = (void*)0;
@@ -9905,7 +9905,7 @@ struct buffer* __result57__;
     gComeFunResultObject = (void*)0;
     return __result57__;
 }
-static static inline struct buffer* floatpa_to_buffer(float* self, unsigned long  int len){
+static struct buffer* floatpa_to_buffer(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value43 = (void*)0;
 void* __right_value44 = (void*)0;
@@ -9918,7 +9918,7 @@ struct buffer* __result58__;
     gComeFunResultObject = (void*)0;
     return __result58__;
 }
-static static inline struct buffer* doublepa_to_buffer(double* self, unsigned long  int len){
+static struct buffer* doublepa_to_buffer(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value45 = (void*)0;
 void* __right_value46 = (void*)0;
@@ -9931,7 +9931,7 @@ struct buffer* __result59__;
     gComeFunResultObject = (void*)0;
     return __result59__;
 }
-static static inline struct smart_pointer$1char* buffer_to_pointer(struct buffer* self){
+static struct smart_pointer$1char* buffer_to_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value48 = (void*)0;
 void* __right_value49 = (void*)0;
@@ -9942,7 +9942,7 @@ struct smart_pointer$1char* __result62__;
     gComeFunResultObject = (void*)0;
     return __result62__;
 }
-static static inline struct smart_pointer$1char* buffer_to_char_pointer(struct buffer* self){
+static struct smart_pointer$1char* buffer_to_char_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value51 = (void*)0;
 void* __right_value52 = (void*)0;
@@ -9953,7 +9953,7 @@ struct smart_pointer$1char* __result63__;
     gComeFunResultObject = (void*)0;
     return __result63__;
 }
-static static inline struct smart_pointer$1short* buffer_to_short_pointer(struct buffer* self){
+static struct smart_pointer$1short* buffer_to_short_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value54 = (void*)0;
 void* __right_value55 = (void*)0;
@@ -9964,7 +9964,7 @@ struct smart_pointer$1short* __result65__;
     gComeFunResultObject = (void*)0;
     return __result65__;
 }
-static static inline struct smart_pointer$1int* buffer_to_int_pointer(struct buffer* self){
+static struct smart_pointer$1int* buffer_to_int_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value57 = (void*)0;
 void* __right_value58 = (void*)0;
@@ -9975,7 +9975,7 @@ struct smart_pointer$1int* __result67__;
     gComeFunResultObject = (void*)0;
     return __result67__;
 }
-static static inline struct smart_pointer$1long* buffer_to_long_pointer(struct buffer* self){
+static struct smart_pointer$1long* buffer_to_long_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value60 = (void*)0;
 void* __right_value61 = (void*)0;
@@ -9986,7 +9986,7 @@ struct smart_pointer$1long* __result69__;
     gComeFunResultObject = (void*)0;
     return __result69__;
 }
-static static inline struct smart_pointer$1char* charpa_to_pointer(char* self, unsigned long  int len){
+static struct smart_pointer$1char* charpa_to_pointer(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value63 = (void*)0;
 void* __right_value64 = (void*)0;
@@ -10002,7 +10002,7 @@ struct smart_pointer$1char* __result70__;
     gComeFunResultObject = (void*)0;
     return __result70__;
 }
-static static inline struct smart_pointer$1charp* charppa_to_pointer(char** self, unsigned long  int len){
+static struct smart_pointer$1charp* charppa_to_pointer(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value67 = (void*)0;
 void* __right_value68 = (void*)0;
@@ -10018,7 +10018,7 @@ struct smart_pointer$1charp* __result72__;
     gComeFunResultObject = (void*)0;
     return __result72__;
 }
-static static inline struct smart_pointer$1short* shortpa_to_pointer(short* self, unsigned long  int len){
+static struct smart_pointer$1short* shortpa_to_pointer(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value71 = (void*)0;
 void* __right_value72 = (void*)0;
@@ -10034,7 +10034,7 @@ struct smart_pointer$1short* __result73__;
     gComeFunResultObject = (void*)0;
     return __result73__;
 }
-static static inline struct smart_pointer$1int* intpa_to_pointer(int* self, unsigned long  int len){
+static struct smart_pointer$1int* intpa_to_pointer(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value75 = (void*)0;
 void* __right_value76 = (void*)0;
@@ -10050,7 +10050,7 @@ struct smart_pointer$1int* __result74__;
     gComeFunResultObject = (void*)0;
     return __result74__;
 }
-static static inline struct smart_pointer$1long* longpa_to_pointer(long* self, unsigned long  int len){
+static struct smart_pointer$1long* longpa_to_pointer(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value79 = (void*)0;
 void* __right_value80 = (void*)0;
@@ -10066,7 +10066,7 @@ struct smart_pointer$1long* __result75__;
     gComeFunResultObject = (void*)0;
     return __result75__;
 }
-static static inline struct smart_pointer$1float* floatpa_to_pointer(float* self, unsigned long  int len){
+static struct smart_pointer$1float* floatpa_to_pointer(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value83 = (void*)0;
 void* __right_value84 = (void*)0;
@@ -10082,7 +10082,7 @@ struct smart_pointer$1float* __result77__;
     gComeFunResultObject = (void*)0;
     return __result77__;
 }
-static static inline struct smart_pointer$1double* doublepa_to_pointer(double* self, unsigned long  int len){
+static struct smart_pointer$1double* doublepa_to_pointer(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value87 = (void*)0;
 void* __right_value88 = (void*)0;
@@ -10098,7 +10098,7 @@ struct smart_pointer$1double* __result79__;
     gComeFunResultObject = (void*)0;
     return __result79__;
 }
-static static inline struct list$1char* charpa_to_list(char* self, unsigned long  int len){
+static struct list$1char* charpa_to_list(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value91 = (void*)0;
 void* __right_value95 = (void*)0;
@@ -10108,7 +10108,7 @@ struct list$1char* __result82__;
     gComeFunResultObject = (void*)0;
     return __result82__;
 }
-static static inline struct list$1charp* charppa_to_list(char** self, unsigned long  int len){
+static struct list$1charp* charppa_to_list(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value96 = (void*)0;
 void* __right_value100 = (void*)0;
@@ -10118,7 +10118,7 @@ struct list$1charp* __result85__;
     gComeFunResultObject = (void*)0;
     return __result85__;
 }
-static static inline struct list$1short* shortpa_to_list(short* self, unsigned long  int len){
+static struct list$1short* shortpa_to_list(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value101 = (void*)0;
 void* __right_value105 = (void*)0;
@@ -10128,7 +10128,7 @@ struct list$1short* __result88__;
     gComeFunResultObject = (void*)0;
     return __result88__;
 }
-static static inline struct list$1int* intpa_to_list(int* self, unsigned long  int len){
+static struct list$1int* intpa_to_list(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value106 = (void*)0;
 void* __right_value110 = (void*)0;
@@ -10138,7 +10138,7 @@ struct list$1int* __result91__;
     gComeFunResultObject = (void*)0;
     return __result91__;
 }
-static static inline struct list$1long* longpa_to_list(long* self, unsigned long  int len){
+static struct list$1long* longpa_to_list(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value111 = (void*)0;
 void* __right_value115 = (void*)0;
@@ -10148,7 +10148,7 @@ struct list$1long* __result94__;
     gComeFunResultObject = (void*)0;
     return __result94__;
 }
-static static inline struct list$1float* floatpa_to_list(float* self, unsigned long  int len){
+static struct list$1float* floatpa_to_list(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value116 = (void*)0;
 void* __right_value120 = (void*)0;
@@ -10158,7 +10158,7 @@ struct list$1float* __result97__;
     gComeFunResultObject = (void*)0;
     return __result97__;
 }
-static static inline struct list$1double* doublepa_to_list(double* self, unsigned long  int len){
+static struct list$1double* doublepa_to_list(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value121 = (void*)0;
 void* __right_value125 = (void*)0;
@@ -10168,7 +10168,7 @@ struct list$1double* __result100__;
     gComeFunResultObject = (void*)0;
     return __result100__;
 }
-static static inline struct vector$1char* charpa_to_vector(char* self, unsigned long  int len){
+static struct vector$1char* charpa_to_vector(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value126 = (void*)0;
 void* __right_value128 = (void*)0;
@@ -10178,7 +10178,7 @@ struct vector$1char* __result102__;
     gComeFunResultObject = (void*)0;
     return __result102__;
 }
-static static inline struct vector$1charp* charppa_to_vector(char** self, unsigned long  int len){
+static struct vector$1charp* charppa_to_vector(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value129 = (void*)0;
 void* __right_value131 = (void*)0;
@@ -10188,7 +10188,7 @@ struct vector$1charp* __result104__;
     gComeFunResultObject = (void*)0;
     return __result104__;
 }
-static static inline struct vector$1short* shortpa_to_vector(short* self, unsigned long  int len){
+static struct vector$1short* shortpa_to_vector(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value132 = (void*)0;
 void* __right_value134 = (void*)0;
@@ -10198,7 +10198,7 @@ struct vector$1short* __result106__;
     gComeFunResultObject = (void*)0;
     return __result106__;
 }
-static static inline struct vector$1int* intpa_to_vector(int* self, unsigned long  int len){
+static struct vector$1int* intpa_to_vector(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value135 = (void*)0;
 void* __right_value137 = (void*)0;
@@ -10208,7 +10208,7 @@ struct vector$1int* __result108__;
     gComeFunResultObject = (void*)0;
     return __result108__;
 }
-static static inline struct vector$1long* longpa_to_vector(long* self, unsigned long  int len){
+static struct vector$1long* longpa_to_vector(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value138 = (void*)0;
 void* __right_value140 = (void*)0;
@@ -10218,7 +10218,7 @@ struct vector$1long* __result110__;
     gComeFunResultObject = (void*)0;
     return __result110__;
 }
-static static inline struct vector$1float* floatpa_to_vector(float* self, unsigned long  int len){
+static struct vector$1float* floatpa_to_vector(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value141 = (void*)0;
 void* __right_value143 = (void*)0;
@@ -10228,7 +10228,7 @@ struct vector$1float* __result112__;
     gComeFunResultObject = (void*)0;
     return __result112__;
 }
-static static inline struct vector$1double* doublepa_to_vector(double* self, unsigned long  int len){
+static struct vector$1double* doublepa_to_vector(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value144 = (void*)0;
 void* __right_value146 = (void*)0;
@@ -10238,10 +10238,10 @@ struct vector$1double* __result114__;
     gComeFunResultObject = (void*)0;
     return __result114__;
 }
-static static inline unsigned long  int charpa_length(char* self, unsigned long  int len){
+static unsigned long  int charpa_length(char* self, unsigned long  int len){
     return len;
 }
-static static inline _Bool charppa_contained(char** self, unsigned long  int len, char* str){
+static _Bool charppa_contained(char** self, unsigned long  int len, char* str){
 _Bool result_186;
 int i_187;
     result_186=(_Bool)0;
@@ -10253,22 +10253,22 @@ int i_187;
     }
     return result_186;
 }
-static static inline unsigned long  int shortpa_length(short* self, unsigned long  int len){
+static unsigned long  int shortpa_length(short* self, unsigned long  int len){
     return len;
 }
-static static inline unsigned long  int intpa_length(int* self, unsigned long  int len){
+static unsigned long  int intpa_length(int* self, unsigned long  int len){
     return len;
 }
-static static inline unsigned long  int longpa_length(long* self, unsigned long  int len){
+static unsigned long  int longpa_length(long* self, unsigned long  int len){
     return len;
 }
-static static inline unsigned long  int floatpa_length(float* self, unsigned long  int len){
+static unsigned long  int floatpa_length(float* self, unsigned long  int len){
     return len;
 }
-static static inline unsigned long  int doublepa_length(double* self, unsigned long  int len){
+static unsigned long  int doublepa_length(double* self, unsigned long  int len){
     return len;
 }
-static static inline char* string_xsprintf(char* self, char* msg, ...){
+static char* string_xsprintf(char* self, char* msg, ...){
 void* __result_obj__=(void*)0;
 void* __right_value220 = (void*)0;
 char* __result168__;
@@ -10277,7 +10277,7 @@ char* __result168__;
     gComeFunResultObject = (void*)0;
     return __result168__;
 }
-static static inline char* charp_xsprintf(char* self, char* msg, ...){
+static char* charp_xsprintf(char* self, char* msg, ...){
 void* __result_obj__=(void*)0;
 void* __right_value221 = (void*)0;
 char* __result169__;
@@ -10286,7 +10286,7 @@ char* __result169__;
     gComeFunResultObject = (void*)0;
     return __result169__;
 }
-static static inline char* int_xsprintf(int self, char* msg, ...){
+static char* int_xsprintf(int self, char* msg, ...){
 void* __result_obj__=(void*)0;
 void* __right_value222 = (void*)0;
 char* __result170__;
@@ -10295,7 +10295,7 @@ char* __result170__;
     gComeFunResultObject = (void*)0;
     return __result170__;
 }
-static static inline char* string_printable(char* str){
+static char* string_printable(char* str){
 void* __result_obj__=(void*)0;
 void* __right_value224 = (void*)0;
 char* __result172__;
@@ -10328,67 +10328,67 @@ static inline void __darwin_fd_clr(int _fd, struct fd_set* _p){
         (_p->fds_bits[(unsigned long  int)_fd/(sizeof(int)*8)]&=~((int)(((unsigned long  int)1)<<((unsigned long  int)_fd%(sizeof(int)*8)))));
     }
 }
-static static inline unsigned short int _OSSwapInt16(unsigned short int data){
+static unsigned short int _OSSwapInt16(unsigned short int data){
     return ((unsigned short int)((((unsigned short int)(data)&65280)>>8)|(((unsigned short int)(data)&255)<<8)));
 }
-static static inline unsigned int _OSSwapInt32(unsigned int data){
+static unsigned int _OSSwapInt32(unsigned int data){
     return ((unsigned int)((((unsigned int)(data)&4278190080)>>24)|(((unsigned int)(data)&16711680)>>8)|(((unsigned int)(data)&65280)<<8)|(((unsigned int)(data)&255)<<24)));
 }
-static static inline unsigned long  long _OSSwapInt64(unsigned long  long data){
+static unsigned long  long _OSSwapInt64(unsigned long  long data){
     return ((unsigned long  long)((((unsigned long  long)(data)&18374686479671623680)>>56)|(((unsigned long  long)(data)&71776119061217280)>>40)|(((unsigned long  long)(data)&280375465082880)>>24)|(((unsigned long  long)(data)&1095216660480)>>8)|(((unsigned long  long)(data)&4278190080)<<8)|(((unsigned long  long)(data)&16711680)<<24)|(((unsigned long  long)(data)&65280)<<40)|(((unsigned long  long)(data)&255)<<56)));
 }
-static static inline unsigned short int OSReadSwapInt16(const void* base, unsigned long  int byteOffset){
+static unsigned short int OSReadSwapInt16(const void* base, unsigned long  int byteOffset){
 unsigned short int data_271;
     data_271=*(unsigned short int*)((unsigned long  int)base+byteOffset);
     return _OSSwapInt16(data_271);
 }
-static static inline unsigned int OSReadSwapInt32(const void* base, unsigned long  int byteOffset){
+static unsigned int OSReadSwapInt32(const void* base, unsigned long  int byteOffset){
 unsigned int data_272;
     data_272=*(unsigned int*)((unsigned long  int)base+byteOffset);
     return _OSSwapInt32(data_272);
 }
-static static inline unsigned long  long OSReadSwapInt64(const void* base, unsigned long  int byteOffset){
+static unsigned long  long OSReadSwapInt64(const void* base, unsigned long  int byteOffset){
 unsigned long  long data_273;
     data_273=*(unsigned long  long*)((unsigned long  int)base+byteOffset);
     return _OSSwapInt64(data_273);
 }
-static static inline void OSWriteSwapInt16(void* base, unsigned long  int byteOffset, unsigned short int data){
+static void OSWriteSwapInt16(void* base, unsigned long  int byteOffset, unsigned short int data){
     *(unsigned short int*)((unsigned long  int)base+byteOffset)=_OSSwapInt16(data);
 }
-static static inline void OSWriteSwapInt32(void* base, unsigned long  int byteOffset, unsigned int data){
+static void OSWriteSwapInt32(void* base, unsigned long  int byteOffset, unsigned int data){
     *(unsigned int*)((unsigned long  int)base+byteOffset)=_OSSwapInt32(data);
 }
-static static inline void OSWriteSwapInt64(void* base, unsigned long  int byteOffset, unsigned long  long data){
+static void OSWriteSwapInt64(void* base, unsigned long  int byteOffset, unsigned long  long data){
     *(unsigned long  long*)((unsigned long  int)base+byteOffset)=_OSSwapInt64(data);
 }
-static static inline int OSHostByteOrder(){
+static int OSHostByteOrder(){
     return (1);
 }
-static static inline unsigned short int _OSReadInt16(const void* base, unsigned long  int byteOffset){
+static unsigned short int _OSReadInt16(const void* base, unsigned long  int byteOffset){
     return *(unsigned short int*)((unsigned long  int)base+byteOffset);
 }
-static static inline unsigned int _OSReadInt32(const void* base, unsigned long  int byteOffset){
+static unsigned int _OSReadInt32(const void* base, unsigned long  int byteOffset){
     return *(unsigned int*)((unsigned long  int)base+byteOffset);
 }
-static static inline unsigned long  long _OSReadInt64(const void* base, unsigned long  int byteOffset){
+static unsigned long  long _OSReadInt64(const void* base, unsigned long  int byteOffset){
     return *(unsigned long  long*)((unsigned long  int)base+byteOffset);
 }
-static static inline void _OSWriteInt16(void* base, unsigned long  int byteOffset, unsigned short int data){
+static void _OSWriteInt16(void* base, unsigned long  int byteOffset, unsigned short int data){
     *(unsigned short int*)((unsigned long  int)base+byteOffset)=data;
 }
-static static inline void _OSWriteInt32(void* base, unsigned long  int byteOffset, unsigned int data){
+static void _OSWriteInt32(void* base, unsigned long  int byteOffset, unsigned int data){
     *(unsigned int*)((unsigned long  int)base+byteOffset)=data;
 }
-static static inline void _OSWriteInt64(void* base, unsigned long  int byteOffset, unsigned long  long data){
+static void _OSWriteInt64(void* base, unsigned long  int byteOffset, unsigned long  long data){
     *(unsigned long  long*)((unsigned long  int)base+byteOffset)=data;
 }
-static static inline char* ossl_check_OPENSSL_STRING_type(char* ptr){
+static char* ossl_check_OPENSSL_STRING_type(char* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_OPENSSL_STRING_sk_type(const struct stack_st_OPENSSL_STRING* sk){
+static const struct stack_st* ossl_check_const_OPENSSL_STRING_sk_type(const struct stack_st_OPENSSL_STRING* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_OPENSSL_STRING_sk_type(struct stack_st_OPENSSL_STRING* sk){
+static struct stack_st* ossl_check_OPENSSL_STRING_sk_type(struct stack_st_OPENSSL_STRING* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_OPENSSL_STRING_compfunc_type(int (*cmp)(const char**,const char**)))(const void*,const void*){
@@ -10400,13 +10400,13 @@ static void* (*ossl_check_OPENSSL_STRING_copyfunc_type(char* (*cpy)(const char*)
 static void (*ossl_check_OPENSSL_STRING_freefunc_type(void (*fr)(char*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline const char* ossl_check_OPENSSL_CSTRING_type(const char* ptr){
+static const char* ossl_check_OPENSSL_CSTRING_type(const char* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_OPENSSL_CSTRING_sk_type(const struct stack_st_OPENSSL_CSTRING* sk){
+static const struct stack_st* ossl_check_const_OPENSSL_CSTRING_sk_type(const struct stack_st_OPENSSL_CSTRING* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_OPENSSL_CSTRING_sk_type(struct stack_st_OPENSSL_CSTRING* sk){
+static struct stack_st* ossl_check_OPENSSL_CSTRING_sk_type(struct stack_st_OPENSSL_CSTRING* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_OPENSSL_CSTRING_compfunc_type(int (*cmp)(const char**,const char**)))(const void*,const void*){
@@ -10418,13 +10418,13 @@ static void* (*ossl_check_OPENSSL_CSTRING_copyfunc_type(char* (*cpy)(const char*
 static void (*ossl_check_OPENSSL_CSTRING_freefunc_type(void (*fr)(char*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline void* ossl_check_OPENSSL_BLOCK_type(void* ptr){
+static void* ossl_check_OPENSSL_BLOCK_type(void* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_OPENSSL_BLOCK_sk_type(const struct stack_st_OPENSSL_BLOCK* sk){
+static const struct stack_st* ossl_check_const_OPENSSL_BLOCK_sk_type(const struct stack_st_OPENSSL_BLOCK* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_OPENSSL_BLOCK_sk_type(struct stack_st_OPENSSL_BLOCK* sk){
+static struct stack_st* ossl_check_OPENSSL_BLOCK_sk_type(struct stack_st_OPENSSL_BLOCK* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_OPENSSL_BLOCK_compfunc_type(int (*cmp)(const void**,const void**)))(const void*,const void*){
@@ -10436,13 +10436,13 @@ static void* (*ossl_check_OPENSSL_BLOCK_copyfunc_type(void* (*cpy)(const void*))
 static void (*ossl_check_OPENSSL_BLOCK_freefunc_type(void (*fr)(void*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline void* ossl_check_void_type(void* ptr){
+static void* ossl_check_void_type(void* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_void_sk_type(const struct stack_st_void* sk){
+static const struct stack_st* ossl_check_const_void_sk_type(const struct stack_st_void* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_void_sk_type(struct stack_st_void* sk){
+static struct stack_st* ossl_check_void_sk_type(struct stack_st_void* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_void_compfunc_type(int (*cmp)(const void**,const void**)))(const void*,const void*){
@@ -10454,13 +10454,13 @@ static void* (*ossl_check_void_copyfunc_type(void* (*cpy)(const void*)))(const v
 static void (*ossl_check_void_freefunc_type(void (*fr)(void*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct ssl_comp_st* ossl_check_SSL_COMP_type(struct ssl_comp_st* ptr){
+static struct ssl_comp_st* ossl_check_SSL_COMP_type(struct ssl_comp_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_SSL_COMP_sk_type(const struct stack_st_SSL_COMP* sk){
+static const struct stack_st* ossl_check_const_SSL_COMP_sk_type(const struct stack_st_SSL_COMP* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_SSL_COMP_sk_type(struct stack_st_SSL_COMP* sk){
+static struct stack_st* ossl_check_SSL_COMP_sk_type(struct stack_st_SSL_COMP* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_SSL_COMP_compfunc_type(int (*cmp)(const struct ssl_comp_st**,const struct ssl_comp_st**)))(const void*,const void*){
@@ -10472,13 +10472,13 @@ static void* (*ossl_check_SSL_COMP_copyfunc_type(struct ssl_comp_st* (*cpy)(cons
 static void (*ossl_check_SSL_COMP_freefunc_type(void (*fr)(struct ssl_comp_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct bio_st* ossl_check_BIO_type(struct bio_st* ptr){
+static struct bio_st* ossl_check_BIO_type(struct bio_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_BIO_sk_type(const struct stack_st_BIO* sk){
+static const struct stack_st* ossl_check_const_BIO_sk_type(const struct stack_st_BIO* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_BIO_sk_type(struct stack_st_BIO* sk){
+static struct stack_st* ossl_check_BIO_sk_type(struct stack_st_BIO* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_BIO_compfunc_type(int (*cmp)(const struct bio_st**,const struct bio_st**)))(const void*,const void*){
@@ -11246,13 +11246,13 @@ static int (*OSSL_FUNC_store_delete(const struct ossl_dispatch_st* opf))(void*,c
 static void* (*OSSL_FUNC_store_open_ex(const struct ossl_dispatch_st* opf))(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*){
     return (void* (*)(void*,const char*,const struct ossl_param_st*,int (*)(char*,unsigned long  int,unsigned long  int*,const struct ossl_param_st*,void*),void*))opf->function;
 }
-static static inline struct X509_algor_st* ossl_check_X509_ALGOR_type(struct X509_algor_st* ptr){
+static struct X509_algor_st* ossl_check_X509_ALGOR_type(struct X509_algor_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_ALGOR_sk_type(const struct stack_st_X509_ALGOR* sk){
+static const struct stack_st* ossl_check_const_X509_ALGOR_sk_type(const struct stack_st_X509_ALGOR* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_ALGOR_sk_type(struct stack_st_X509_ALGOR* sk){
+static struct stack_st* ossl_check_X509_ALGOR_sk_type(struct stack_st_X509_ALGOR* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_ALGOR_compfunc_type(int (*cmp)(const struct X509_algor_st**,const struct X509_algor_st**)))(const void*,const void*){
@@ -11264,13 +11264,13 @@ static void* (*ossl_check_X509_ALGOR_copyfunc_type(struct X509_algor_st* (*cpy)(
 static void (*ossl_check_X509_ALGOR_freefunc_type(void (*fr)(struct X509_algor_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct asn1_string_table_st* ossl_check_ASN1_STRING_TABLE_type(struct asn1_string_table_st* ptr){
+static struct asn1_string_table_st* ossl_check_ASN1_STRING_TABLE_type(struct asn1_string_table_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_ASN1_STRING_TABLE_sk_type(const struct stack_st_ASN1_STRING_TABLE* sk){
+static const struct stack_st* ossl_check_const_ASN1_STRING_TABLE_sk_type(const struct stack_st_ASN1_STRING_TABLE* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_ASN1_STRING_TABLE_sk_type(struct stack_st_ASN1_STRING_TABLE* sk){
+static struct stack_st* ossl_check_ASN1_STRING_TABLE_sk_type(struct stack_st_ASN1_STRING_TABLE* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_ASN1_STRING_TABLE_compfunc_type(int (*cmp)(const struct asn1_string_table_st**,const struct asn1_string_table_st**)))(const void*,const void*){
@@ -11282,13 +11282,13 @@ static void* (*ossl_check_ASN1_STRING_TABLE_copyfunc_type(struct asn1_string_tab
 static void (*ossl_check_ASN1_STRING_TABLE_freefunc_type(void (*fr)(struct asn1_string_table_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct asn1_type_st* ossl_check_ASN1_TYPE_type(struct asn1_type_st* ptr){
+static struct asn1_type_st* ossl_check_ASN1_TYPE_type(struct asn1_type_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_ASN1_TYPE_sk_type(const struct stack_st_ASN1_TYPE* sk){
+static const struct stack_st* ossl_check_const_ASN1_TYPE_sk_type(const struct stack_st_ASN1_TYPE* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_ASN1_TYPE_sk_type(struct stack_st_ASN1_TYPE* sk){
+static struct stack_st* ossl_check_ASN1_TYPE_sk_type(struct stack_st_ASN1_TYPE* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_ASN1_TYPE_compfunc_type(int (*cmp)(const struct asn1_type_st**,const struct asn1_type_st**)))(const void*,const void*){
@@ -11300,13 +11300,13 @@ static void* (*ossl_check_ASN1_TYPE_copyfunc_type(struct asn1_type_st* (*cpy)(co
 static void (*ossl_check_ASN1_TYPE_freefunc_type(void (*fr)(struct asn1_type_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct asn1_object_st* ossl_check_ASN1_OBJECT_type(struct asn1_object_st* ptr){
+static struct asn1_object_st* ossl_check_ASN1_OBJECT_type(struct asn1_object_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_ASN1_OBJECT_sk_type(const struct stack_st_ASN1_OBJECT* sk){
+static const struct stack_st* ossl_check_const_ASN1_OBJECT_sk_type(const struct stack_st_ASN1_OBJECT* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_ASN1_OBJECT_sk_type(struct stack_st_ASN1_OBJECT* sk){
+static struct stack_st* ossl_check_ASN1_OBJECT_sk_type(struct stack_st_ASN1_OBJECT* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_ASN1_OBJECT_compfunc_type(int (*cmp)(const struct asn1_object_st**,const struct asn1_object_st**)))(const void*,const void*){
@@ -11318,13 +11318,13 @@ static void* (*ossl_check_ASN1_OBJECT_copyfunc_type(struct asn1_object_st* (*cpy
 static void (*ossl_check_ASN1_OBJECT_freefunc_type(void (*fr)(struct asn1_object_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct asn1_string_st* ossl_check_ASN1_INTEGER_type(struct asn1_string_st* ptr){
+static struct asn1_string_st* ossl_check_ASN1_INTEGER_type(struct asn1_string_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_ASN1_INTEGER_sk_type(const struct stack_st_ASN1_INTEGER* sk){
+static const struct stack_st* ossl_check_const_ASN1_INTEGER_sk_type(const struct stack_st_ASN1_INTEGER* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_ASN1_INTEGER_sk_type(struct stack_st_ASN1_INTEGER* sk){
+static struct stack_st* ossl_check_ASN1_INTEGER_sk_type(struct stack_st_ASN1_INTEGER* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_ASN1_INTEGER_compfunc_type(int (*cmp)(const struct asn1_string_st**,const struct asn1_string_st**)))(const void*,const void*){
@@ -11336,13 +11336,13 @@ static void* (*ossl_check_ASN1_INTEGER_copyfunc_type(struct asn1_string_st* (*cp
 static void (*ossl_check_ASN1_INTEGER_freefunc_type(void (*fr)(struct asn1_string_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct asn1_string_st* ossl_check_ASN1_UTF8STRING_type(struct asn1_string_st* ptr){
+static struct asn1_string_st* ossl_check_ASN1_UTF8STRING_type(struct asn1_string_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_ASN1_UTF8STRING_sk_type(const struct stack_st_ASN1_UTF8STRING* sk){
+static const struct stack_st* ossl_check_const_ASN1_UTF8STRING_sk_type(const struct stack_st_ASN1_UTF8STRING* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_ASN1_UTF8STRING_sk_type(struct stack_st_ASN1_UTF8STRING* sk){
+static struct stack_st* ossl_check_ASN1_UTF8STRING_sk_type(struct stack_st_ASN1_UTF8STRING* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_ASN1_UTF8STRING_compfunc_type(int (*cmp)(const struct asn1_string_st**,const struct asn1_string_st**)))(const void*,const void*){
@@ -11354,13 +11354,13 @@ static void* (*ossl_check_ASN1_UTF8STRING_copyfunc_type(struct asn1_string_st* (
 static void (*ossl_check_ASN1_UTF8STRING_freefunc_type(void (*fr)(struct asn1_string_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct asn1_string_st* ossl_check_ASN1_GENERALSTRING_type(struct asn1_string_st* ptr){
+static struct asn1_string_st* ossl_check_ASN1_GENERALSTRING_type(struct asn1_string_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_ASN1_GENERALSTRING_sk_type(const struct stack_st_ASN1_GENERALSTRING* sk){
+static const struct stack_st* ossl_check_const_ASN1_GENERALSTRING_sk_type(const struct stack_st_ASN1_GENERALSTRING* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_ASN1_GENERALSTRING_sk_type(struct stack_st_ASN1_GENERALSTRING* sk){
+static struct stack_st* ossl_check_ASN1_GENERALSTRING_sk_type(struct stack_st_ASN1_GENERALSTRING* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_ASN1_GENERALSTRING_compfunc_type(int (*cmp)(const struct asn1_string_st**,const struct asn1_string_st**)))(const void*,const void*){
@@ -11372,13 +11372,13 @@ static void* (*ossl_check_ASN1_GENERALSTRING_copyfunc_type(struct asn1_string_st
 static void (*ossl_check_ASN1_GENERALSTRING_freefunc_type(void (*fr)(struct asn1_string_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct X509_name_st* ossl_check_X509_NAME_type(struct X509_name_st* ptr){
+static struct X509_name_st* ossl_check_X509_NAME_type(struct X509_name_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_NAME_sk_type(const struct stack_st_X509_NAME* sk){
+static const struct stack_st* ossl_check_const_X509_NAME_sk_type(const struct stack_st_X509_NAME* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_NAME_sk_type(struct stack_st_X509_NAME* sk){
+static struct stack_st* ossl_check_X509_NAME_sk_type(struct stack_st_X509_NAME* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_NAME_compfunc_type(int (*cmp)(const struct X509_name_st**,const struct X509_name_st**)))(const void*,const void*){
@@ -11390,13 +11390,13 @@ static void* (*ossl_check_X509_NAME_copyfunc_type(struct X509_name_st* (*cpy)(co
 static void (*ossl_check_X509_NAME_freefunc_type(void (*fr)(struct X509_name_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct x509_st* ossl_check_X509_type(struct x509_st* ptr){
+static struct x509_st* ossl_check_X509_type(struct x509_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_sk_type(const struct stack_st_X509* sk){
+static const struct stack_st* ossl_check_const_X509_sk_type(const struct stack_st_X509* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_sk_type(struct stack_st_X509* sk){
+static struct stack_st* ossl_check_X509_sk_type(struct stack_st_X509* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_compfunc_type(int (*cmp)(const struct x509_st**,const struct x509_st**)))(const void*,const void*){
@@ -11408,13 +11408,13 @@ static void* (*ossl_check_X509_copyfunc_type(struct x509_st* (*cpy)(const struct
 static void (*ossl_check_X509_freefunc_type(void (*fr)(struct x509_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct x509_revoked_st* ossl_check_X509_REVOKED_type(struct x509_revoked_st* ptr){
+static struct x509_revoked_st* ossl_check_X509_REVOKED_type(struct x509_revoked_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_REVOKED_sk_type(const struct stack_st_X509_REVOKED* sk){
+static const struct stack_st* ossl_check_const_X509_REVOKED_sk_type(const struct stack_st_X509_REVOKED* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_REVOKED_sk_type(struct stack_st_X509_REVOKED* sk){
+static struct stack_st* ossl_check_X509_REVOKED_sk_type(struct stack_st_X509_REVOKED* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_REVOKED_compfunc_type(int (*cmp)(const struct x509_revoked_st**,const struct x509_revoked_st**)))(const void*,const void*){
@@ -11426,13 +11426,13 @@ static void* (*ossl_check_X509_REVOKED_copyfunc_type(struct x509_revoked_st* (*c
 static void (*ossl_check_X509_REVOKED_freefunc_type(void (*fr)(struct x509_revoked_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct X509_crl_st* ossl_check_X509_CRL_type(struct X509_crl_st* ptr){
+static struct X509_crl_st* ossl_check_X509_CRL_type(struct X509_crl_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_CRL_sk_type(const struct stack_st_X509_CRL* sk){
+static const struct stack_st* ossl_check_const_X509_CRL_sk_type(const struct stack_st_X509_CRL* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_CRL_sk_type(struct stack_st_X509_CRL* sk){
+static struct stack_st* ossl_check_X509_CRL_sk_type(struct stack_st_X509_CRL* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_CRL_compfunc_type(int (*cmp)(const struct X509_crl_st**,const struct X509_crl_st**)))(const void*,const void*){
@@ -11444,13 +11444,13 @@ static void* (*ossl_check_X509_CRL_copyfunc_type(struct X509_crl_st* (*cpy)(cons
 static void (*ossl_check_X509_CRL_freefunc_type(void (*fr)(struct X509_crl_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct X509_name_entry_st* ossl_check_X509_NAME_ENTRY_type(struct X509_name_entry_st* ptr){
+static struct X509_name_entry_st* ossl_check_X509_NAME_ENTRY_type(struct X509_name_entry_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_NAME_ENTRY_sk_type(const struct stack_st_X509_NAME_ENTRY* sk){
+static const struct stack_st* ossl_check_const_X509_NAME_ENTRY_sk_type(const struct stack_st_X509_NAME_ENTRY* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_NAME_ENTRY_sk_type(struct stack_st_X509_NAME_ENTRY* sk){
+static struct stack_st* ossl_check_X509_NAME_ENTRY_sk_type(struct stack_st_X509_NAME_ENTRY* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_NAME_ENTRY_compfunc_type(int (*cmp)(const struct X509_name_entry_st**,const struct X509_name_entry_st**)))(const void*,const void*){
@@ -11462,13 +11462,13 @@ static void* (*ossl_check_X509_NAME_ENTRY_copyfunc_type(struct X509_name_entry_s
 static void (*ossl_check_X509_NAME_ENTRY_freefunc_type(void (*fr)(struct X509_name_entry_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct X509_extension_st* ossl_check_X509_EXTENSION_type(struct X509_extension_st* ptr){
+static struct X509_extension_st* ossl_check_X509_EXTENSION_type(struct X509_extension_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_EXTENSION_sk_type(const struct stack_st_X509_EXTENSION* sk){
+static const struct stack_st* ossl_check_const_X509_EXTENSION_sk_type(const struct stack_st_X509_EXTENSION* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_EXTENSION_sk_type(struct stack_st_X509_EXTENSION* sk){
+static struct stack_st* ossl_check_X509_EXTENSION_sk_type(struct stack_st_X509_EXTENSION* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_EXTENSION_compfunc_type(int (*cmp)(const struct X509_extension_st**,const struct X509_extension_st**)))(const void*,const void*){
@@ -11480,13 +11480,13 @@ static void* (*ossl_check_X509_EXTENSION_copyfunc_type(struct X509_extension_st*
 static void (*ossl_check_X509_EXTENSION_freefunc_type(void (*fr)(struct X509_extension_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct x509_attributes_st* ossl_check_X509_ATTRIBUTE_type(struct x509_attributes_st* ptr){
+static struct x509_attributes_st* ossl_check_X509_ATTRIBUTE_type(struct x509_attributes_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_ATTRIBUTE_sk_type(const struct stack_st_X509_ATTRIBUTE* sk){
+static const struct stack_st* ossl_check_const_X509_ATTRIBUTE_sk_type(const struct stack_st_X509_ATTRIBUTE* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_ATTRIBUTE_sk_type(struct stack_st_X509_ATTRIBUTE* sk){
+static struct stack_st* ossl_check_X509_ATTRIBUTE_sk_type(struct stack_st_X509_ATTRIBUTE* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_ATTRIBUTE_compfunc_type(int (*cmp)(const struct x509_attributes_st**,const struct x509_attributes_st**)))(const void*,const void*){
@@ -11498,13 +11498,13 @@ static void* (*ossl_check_X509_ATTRIBUTE_copyfunc_type(struct x509_attributes_st
 static void (*ossl_check_X509_ATTRIBUTE_freefunc_type(void (*fr)(struct x509_attributes_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct X509_info_st* ossl_check_X509_INFO_type(struct X509_info_st* ptr){
+static struct X509_info_st* ossl_check_X509_INFO_type(struct X509_info_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_INFO_sk_type(const struct stack_st_X509_INFO* sk){
+static const struct stack_st* ossl_check_const_X509_INFO_sk_type(const struct stack_st_X509_INFO* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_INFO_sk_type(struct stack_st_X509_INFO* sk){
+static struct stack_st* ossl_check_X509_INFO_sk_type(struct stack_st_X509_INFO* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_INFO_compfunc_type(int (*cmp)(const struct X509_info_st**,const struct X509_info_st**)))(const void*,const void*){
@@ -11516,40 +11516,40 @@ static void* (*ossl_check_X509_INFO_copyfunc_type(struct X509_info_st* (*cpy)(co
 static void (*ossl_check_X509_INFO_freefunc_type(void (*fr)(struct X509_info_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline unsigned long  int lh_OPENSSL_STRING_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
+static unsigned long  int lh_OPENSSL_STRING_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
 unsigned long  int (*hfn_conv_274)(const char**);
 memset(&hfn_conv_274, 0, sizeof(unsigned long  int (*)(const char**)));
     hfn_conv_274=(unsigned long  int (*)(const char**))hfn;
     return hfn_conv_274((const char**)data);
 }
-static static inline int lh_OPENSSL_STRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
+static int lh_OPENSSL_STRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
 int (*cfn_conv_275)(const char**,const char**);
 memset(&cfn_conv_275, 0, sizeof(int (*)(const char**,const char**)));
     cfn_conv_275=(int (*)(const char**,const char**))cfn;
     return cfn_conv_275((const char**)da,(const char**)db);
 }
-static static inline void lh_OPENSSL_STRING_doall_thunk(void* node, void (*doall)(void*)){
+static void lh_OPENSSL_STRING_doall_thunk(void* node, void (*doall)(void*)){
 void (*doall_conv_276)(char**);
 memset(&doall_conv_276, 0, sizeof(void (*)(char**)));
     doall_conv_276=(void (*)(char**))doall;
     doall_conv_276((char**)node);
 }
-static static inline void lh_OPENSSL_STRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
+static void lh_OPENSSL_STRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
 void (*doall_conv_277)(char**,void*);
 memset(&doall_conv_277, 0, sizeof(void (*)(char**,void*)));
     doall_conv_277=(void (*)(char**,void*))doall;
     doall_conv_277((char**)node,arg);
 }
-static static inline char** ossl_check_OPENSSL_STRING_lh_plain_type(char** ptr){
+static char** ossl_check_OPENSSL_STRING_lh_plain_type(char** ptr){
     return ptr;
 }
-static static inline const char** ossl_check_const_OPENSSL_STRING_lh_plain_type(const char** ptr){
+static const char** ossl_check_const_OPENSSL_STRING_lh_plain_type(const char** ptr){
     return ptr;
 }
-static static inline const struct lhash_st* ossl_check_const_OPENSSL_STRING_lh_type(const struct lhash_st_OPENSSL_STRING* lh){
+static const struct lhash_st* ossl_check_const_OPENSSL_STRING_lh_type(const struct lhash_st_OPENSSL_STRING* lh){
     return (const struct lhash_st*)lh;
 }
-static static inline struct lhash_st* ossl_check_OPENSSL_STRING_lh_type(struct lhash_st_OPENSSL_STRING* lh){
+static struct lhash_st* ossl_check_OPENSSL_STRING_lh_type(struct lhash_st_OPENSSL_STRING* lh){
     return (struct lhash_st*)lh;
 }
 static int (*ossl_check_OPENSSL_STRING_lh_compfunc_type(int (*cmp)(const char**,const char**)))(const void*,const void*){
@@ -11561,40 +11561,40 @@ static unsigned long  int (*ossl_check_OPENSSL_STRING_lh_hashfunc_type(unsigned 
 static void (*ossl_check_OPENSSL_STRING_lh_doallfunc_type(void (*dfn)(char**)))(void*){
     return (void (*)(void*))dfn;
 }
-static static inline unsigned long  int lh_OPENSSL_CSTRING_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
+static unsigned long  int lh_OPENSSL_CSTRING_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
 unsigned long  int (*hfn_conv_278)(const char**);
 memset(&hfn_conv_278, 0, sizeof(unsigned long  int (*)(const char**)));
     hfn_conv_278=(unsigned long  int (*)(const char**))hfn;
     return hfn_conv_278((const char**)data);
 }
-static static inline int lh_OPENSSL_CSTRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
+static int lh_OPENSSL_CSTRING_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
 int (*cfn_conv_279)(const char**,const char**);
 memset(&cfn_conv_279, 0, sizeof(int (*)(const char**,const char**)));
     cfn_conv_279=(int (*)(const char**,const char**))cfn;
     return cfn_conv_279((const char**)da,(const char**)db);
 }
-static static inline void lh_OPENSSL_CSTRING_doall_thunk(void* node, void (*doall)(void*)){
+static void lh_OPENSSL_CSTRING_doall_thunk(void* node, void (*doall)(void*)){
 void (*doall_conv_280)(const char**);
 memset(&doall_conv_280, 0, sizeof(void (*)(const char**)));
     doall_conv_280=(void (*)(const char**))doall;
     doall_conv_280((const char**)node);
 }
-static static inline void lh_OPENSSL_CSTRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
+static void lh_OPENSSL_CSTRING_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
 void (*doall_conv_281)(const char**,void*);
 memset(&doall_conv_281, 0, sizeof(void (*)(const char**,void*)));
     doall_conv_281=(void (*)(const char**,void*))doall;
     doall_conv_281((const char**)node,arg);
 }
-static static inline const char** ossl_check_OPENSSL_CSTRING_lh_plain_type(const char** ptr){
+static const char** ossl_check_OPENSSL_CSTRING_lh_plain_type(const char** ptr){
     return ptr;
 }
-static static inline const char** ossl_check_const_OPENSSL_CSTRING_lh_plain_type(const char** ptr){
+static const char** ossl_check_const_OPENSSL_CSTRING_lh_plain_type(const char** ptr){
     return ptr;
 }
-static static inline const struct lhash_st* ossl_check_const_OPENSSL_CSTRING_lh_type(const struct lhash_st_OPENSSL_CSTRING* lh){
+static const struct lhash_st* ossl_check_const_OPENSSL_CSTRING_lh_type(const struct lhash_st_OPENSSL_CSTRING* lh){
     return (const struct lhash_st*)lh;
 }
-static static inline struct lhash_st* ossl_check_OPENSSL_CSTRING_lh_type(struct lhash_st_OPENSSL_CSTRING* lh){
+static struct lhash_st* ossl_check_OPENSSL_CSTRING_lh_type(struct lhash_st_OPENSSL_CSTRING* lh){
     return (struct lhash_st*)lh;
 }
 static int (*ossl_check_OPENSSL_CSTRING_lh_compfunc_type(int (*cmp)(const char**,const char**)))(const void*,const void*){
@@ -11606,13 +11606,13 @@ static unsigned long  int (*ossl_check_OPENSSL_CSTRING_lh_hashfunc_type(unsigned
 static void (*ossl_check_OPENSSL_CSTRING_lh_doallfunc_type(void (*dfn)(const char**)))(void*){
     return (void (*)(void*))dfn;
 }
-static static inline struct x509_lookup_st* ossl_check_X509_LOOKUP_type(struct x509_lookup_st* ptr){
+static struct x509_lookup_st* ossl_check_X509_LOOKUP_type(struct x509_lookup_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_LOOKUP_sk_type(const struct stack_st_X509_LOOKUP* sk){
+static const struct stack_st* ossl_check_const_X509_LOOKUP_sk_type(const struct stack_st_X509_LOOKUP* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_LOOKUP_sk_type(struct stack_st_X509_LOOKUP* sk){
+static struct stack_st* ossl_check_X509_LOOKUP_sk_type(struct stack_st_X509_LOOKUP* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_LOOKUP_compfunc_type(int (*cmp)(const struct x509_lookup_st**,const struct x509_lookup_st**)))(const void*,const void*){
@@ -11624,13 +11624,13 @@ static void* (*ossl_check_X509_LOOKUP_copyfunc_type(struct x509_lookup_st* (*cpy
 static void (*ossl_check_X509_LOOKUP_freefunc_type(void (*fr)(struct x509_lookup_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct x509_object_st* ossl_check_X509_OBJECT_type(struct x509_object_st* ptr){
+static struct x509_object_st* ossl_check_X509_OBJECT_type(struct x509_object_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_OBJECT_sk_type(const struct stack_st_X509_OBJECT* sk){
+static const struct stack_st* ossl_check_const_X509_OBJECT_sk_type(const struct stack_st_X509_OBJECT* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_OBJECT_sk_type(struct stack_st_X509_OBJECT* sk){
+static struct stack_st* ossl_check_X509_OBJECT_sk_type(struct stack_st_X509_OBJECT* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_OBJECT_compfunc_type(int (*cmp)(const struct x509_object_st**,const struct x509_object_st**)))(const void*,const void*){
@@ -11642,13 +11642,13 @@ static void* (*ossl_check_X509_OBJECT_copyfunc_type(struct x509_object_st* (*cpy
 static void (*ossl_check_X509_OBJECT_freefunc_type(void (*fr)(struct x509_object_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct X509_VERIFY_PARAM_st* ossl_check_X509_VERIFY_PARAM_type(struct X509_VERIFY_PARAM_st* ptr){
+static struct X509_VERIFY_PARAM_st* ossl_check_X509_VERIFY_PARAM_type(struct X509_VERIFY_PARAM_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_VERIFY_PARAM_sk_type(const struct stack_st_X509_VERIFY_PARAM* sk){
+static const struct stack_st* ossl_check_const_X509_VERIFY_PARAM_sk_type(const struct stack_st_X509_VERIFY_PARAM* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_VERIFY_PARAM_sk_type(struct stack_st_X509_VERIFY_PARAM* sk){
+static struct stack_st* ossl_check_X509_VERIFY_PARAM_sk_type(struct stack_st_X509_VERIFY_PARAM* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_VERIFY_PARAM_compfunc_type(int (*cmp)(const struct X509_VERIFY_PARAM_st**,const struct X509_VERIFY_PARAM_st**)))(const void*,const void*){
@@ -11660,13 +11660,13 @@ static void* (*ossl_check_X509_VERIFY_PARAM_copyfunc_type(struct X509_VERIFY_PAR
 static void (*ossl_check_X509_VERIFY_PARAM_freefunc_type(void (*fr)(struct X509_VERIFY_PARAM_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct x509_trust_st* ossl_check_X509_TRUST_type(struct x509_trust_st* ptr){
+static struct x509_trust_st* ossl_check_X509_TRUST_type(struct x509_trust_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_X509_TRUST_sk_type(const struct stack_st_X509_TRUST* sk){
+static const struct stack_st* ossl_check_const_X509_TRUST_sk_type(const struct stack_st_X509_TRUST* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_X509_TRUST_sk_type(struct stack_st_X509_TRUST* sk){
+static struct stack_st* ossl_check_X509_TRUST_sk_type(struct stack_st_X509_TRUST* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_X509_TRUST_compfunc_type(int (*cmp)(const struct x509_trust_st**,const struct x509_trust_st**)))(const void*,const void*){
@@ -11678,13 +11678,13 @@ static void* (*ossl_check_X509_TRUST_copyfunc_type(struct x509_trust_st* (*cpy)(
 static void (*ossl_check_X509_TRUST_freefunc_type(void (*fr)(struct x509_trust_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct pkcs7_signer_info_st* ossl_check_PKCS7_SIGNER_INFO_type(struct pkcs7_signer_info_st* ptr){
+static struct pkcs7_signer_info_st* ossl_check_PKCS7_SIGNER_INFO_type(struct pkcs7_signer_info_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_PKCS7_SIGNER_INFO_sk_type(const struct stack_st_PKCS7_SIGNER_INFO* sk){
+static const struct stack_st* ossl_check_const_PKCS7_SIGNER_INFO_sk_type(const struct stack_st_PKCS7_SIGNER_INFO* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_PKCS7_SIGNER_INFO_sk_type(struct stack_st_PKCS7_SIGNER_INFO* sk){
+static struct stack_st* ossl_check_PKCS7_SIGNER_INFO_sk_type(struct stack_st_PKCS7_SIGNER_INFO* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_PKCS7_SIGNER_INFO_compfunc_type(int (*cmp)(const struct pkcs7_signer_info_st**,const struct pkcs7_signer_info_st**)))(const void*,const void*){
@@ -11696,13 +11696,13 @@ static void* (*ossl_check_PKCS7_SIGNER_INFO_copyfunc_type(struct pkcs7_signer_in
 static void (*ossl_check_PKCS7_SIGNER_INFO_freefunc_type(void (*fr)(struct pkcs7_signer_info_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct pkcs7_recip_info_st* ossl_check_PKCS7_RECIP_INFO_type(struct pkcs7_recip_info_st* ptr){
+static struct pkcs7_recip_info_st* ossl_check_PKCS7_RECIP_INFO_type(struct pkcs7_recip_info_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_PKCS7_RECIP_INFO_sk_type(const struct stack_st_PKCS7_RECIP_INFO* sk){
+static const struct stack_st* ossl_check_const_PKCS7_RECIP_INFO_sk_type(const struct stack_st_PKCS7_RECIP_INFO* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_PKCS7_RECIP_INFO_sk_type(struct stack_st_PKCS7_RECIP_INFO* sk){
+static struct stack_st* ossl_check_PKCS7_RECIP_INFO_sk_type(struct stack_st_PKCS7_RECIP_INFO* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_PKCS7_RECIP_INFO_compfunc_type(int (*cmp)(const struct pkcs7_recip_info_st**,const struct pkcs7_recip_info_st**)))(const void*,const void*){
@@ -11714,13 +11714,13 @@ static void* (*ossl_check_PKCS7_RECIP_INFO_copyfunc_type(struct pkcs7_recip_info
 static void (*ossl_check_PKCS7_RECIP_INFO_freefunc_type(void (*fr)(struct pkcs7_recip_info_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct pkcs7_st* ossl_check_PKCS7_type(struct pkcs7_st* ptr){
+static struct pkcs7_st* ossl_check_PKCS7_type(struct pkcs7_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_PKCS7_sk_type(const struct stack_st_PKCS7* sk){
+static const struct stack_st* ossl_check_const_PKCS7_sk_type(const struct stack_st_PKCS7* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_PKCS7_sk_type(struct stack_st_PKCS7* sk){
+static struct stack_st* ossl_check_PKCS7_sk_type(struct stack_st_PKCS7* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_PKCS7_compfunc_type(int (*cmp)(const struct pkcs7_st**,const struct pkcs7_st**)))(const void*,const void*){
@@ -11732,13 +11732,13 @@ static void* (*ossl_check_PKCS7_copyfunc_type(struct pkcs7_st* (*cpy)(const stru
 static void (*ossl_check_PKCS7_freefunc_type(void (*fr)(struct pkcs7_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct anonymous_typeX26* ossl_check_CONF_VALUE_type(struct anonymous_typeX26* ptr){
+static struct anonymous_typeX26* ossl_check_CONF_VALUE_type(struct anonymous_typeX26* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_CONF_VALUE_sk_type(const struct stack_st_CONF_VALUE* sk){
+static const struct stack_st* ossl_check_const_CONF_VALUE_sk_type(const struct stack_st_CONF_VALUE* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_CONF_VALUE_sk_type(struct stack_st_CONF_VALUE* sk){
+static struct stack_st* ossl_check_CONF_VALUE_sk_type(struct stack_st_CONF_VALUE* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_CONF_VALUE_compfunc_type(int (*cmp)(const struct anonymous_typeX26**,const struct anonymous_typeX26**)))(const void*,const void*){
@@ -11750,40 +11750,40 @@ static void* (*ossl_check_CONF_VALUE_copyfunc_type(struct anonymous_typeX26* (*c
 static void (*ossl_check_CONF_VALUE_freefunc_type(void (*fr)(struct anonymous_typeX26*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline unsigned long  int lh_CONF_VALUE_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
+static unsigned long  int lh_CONF_VALUE_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
 unsigned long  int (*hfn_conv_282)(const struct anonymous_typeX26*);
 memset(&hfn_conv_282, 0, sizeof(unsigned long  int (*)(const struct anonymous_typeX26*)));
     hfn_conv_282=(unsigned long  int (*)(const struct anonymous_typeX26*))hfn;
     return hfn_conv_282((const struct anonymous_typeX26*)data);
 }
-static static inline int lh_CONF_VALUE_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
+static int lh_CONF_VALUE_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
 int (*cfn_conv_283)(const struct anonymous_typeX26*,const struct anonymous_typeX26*);
 memset(&cfn_conv_283, 0, sizeof(int (*)(const struct anonymous_typeX26*,const struct anonymous_typeX26*)));
     cfn_conv_283=(int (*)(const struct anonymous_typeX26*,const struct anonymous_typeX26*))cfn;
     return cfn_conv_283((const struct anonymous_typeX26*)da,(const struct anonymous_typeX26*)db);
 }
-static static inline void lh_CONF_VALUE_doall_thunk(void* node, void (*doall)(void*)){
+static void lh_CONF_VALUE_doall_thunk(void* node, void (*doall)(void*)){
 void (*doall_conv_284)(struct anonymous_typeX26*);
 memset(&doall_conv_284, 0, sizeof(void (*)(struct anonymous_typeX26*)));
     doall_conv_284=(void (*)(struct anonymous_typeX26*))doall;
     doall_conv_284((struct anonymous_typeX26*)node);
 }
-static static inline void lh_CONF_VALUE_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
+static void lh_CONF_VALUE_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
 void (*doall_conv_285)(struct anonymous_typeX26*,void*);
 memset(&doall_conv_285, 0, sizeof(void (*)(struct anonymous_typeX26*,void*)));
     doall_conv_285=(void (*)(struct anonymous_typeX26*,void*))doall;
     doall_conv_285((struct anonymous_typeX26*)node,arg);
 }
-static static inline struct anonymous_typeX26* ossl_check_CONF_VALUE_lh_plain_type(struct anonymous_typeX26* ptr){
+static struct anonymous_typeX26* ossl_check_CONF_VALUE_lh_plain_type(struct anonymous_typeX26* ptr){
     return ptr;
 }
-static static inline const struct anonymous_typeX26* ossl_check_const_CONF_VALUE_lh_plain_type(const struct anonymous_typeX26* ptr){
+static const struct anonymous_typeX26* ossl_check_const_CONF_VALUE_lh_plain_type(const struct anonymous_typeX26* ptr){
     return ptr;
 }
-static static inline const struct lhash_st* ossl_check_const_CONF_VALUE_lh_type(const struct lhash_st_CONF_VALUE* lh){
+static const struct lhash_st* ossl_check_const_CONF_VALUE_lh_type(const struct lhash_st_CONF_VALUE* lh){
     return (const struct lhash_st*)lh;
 }
-static static inline struct lhash_st* ossl_check_CONF_VALUE_lh_type(struct lhash_st_CONF_VALUE* lh){
+static struct lhash_st* ossl_check_CONF_VALUE_lh_type(struct lhash_st_CONF_VALUE* lh){
     return (struct lhash_st*)lh;
 }
 static int (*ossl_check_CONF_VALUE_lh_compfunc_type(int (*cmp)(const struct anonymous_typeX26*,const struct anonymous_typeX26*)))(const void*,const void*){
@@ -11795,13 +11795,13 @@ static unsigned long  int (*ossl_check_CONF_VALUE_lh_hashfunc_type(unsigned long
 static void (*ossl_check_CONF_VALUE_lh_doallfunc_type(void (*dfn)(struct anonymous_typeX26*)))(void*){
     return (void (*)(void*))dfn;
 }
-static static inline struct sct_st* ossl_check_SCT_type(struct sct_st* ptr){
+static struct sct_st* ossl_check_SCT_type(struct sct_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_SCT_sk_type(const struct stack_st_SCT* sk){
+static const struct stack_st* ossl_check_const_SCT_sk_type(const struct stack_st_SCT* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_SCT_sk_type(struct stack_st_SCT* sk){
+static struct stack_st* ossl_check_SCT_sk_type(struct stack_st_SCT* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_SCT_compfunc_type(int (*cmp)(const struct sct_st**,const struct sct_st**)))(const void*,const void*){
@@ -11813,13 +11813,13 @@ static void* (*ossl_check_SCT_copyfunc_type(struct sct_st* (*cpy)(const struct s
 static void (*ossl_check_SCT_freefunc_type(void (*fr)(struct sct_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct ctlog_st* ossl_check_CTLOG_type(struct ctlog_st* ptr){
+static struct ctlog_st* ossl_check_CTLOG_type(struct ctlog_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_CTLOG_sk_type(const struct stack_st_CTLOG* sk){
+static const struct stack_st* ossl_check_const_CTLOG_sk_type(const struct stack_st_CTLOG* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_CTLOG_sk_type(struct stack_st_CTLOG* sk){
+static struct stack_st* ossl_check_CTLOG_sk_type(struct stack_st_CTLOG* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_CTLOG_compfunc_type(int (*cmp)(const struct ctlog_st**,const struct ctlog_st**)))(const void*,const void*){
@@ -11831,13 +11831,13 @@ static void* (*ossl_check_CTLOG_copyfunc_type(struct ctlog_st* (*cpy)(const stru
 static void (*ossl_check_CTLOG_freefunc_type(void (*fr)(struct ctlog_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct srtp_protection_profile_st* ossl_check_SRTP_PROTECTION_PROFILE_type(struct srtp_protection_profile_st* ptr){
+static struct srtp_protection_profile_st* ossl_check_SRTP_PROTECTION_PROFILE_type(struct srtp_protection_profile_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_SRTP_PROTECTION_PROFILE_sk_type(const struct stack_st_SRTP_PROTECTION_PROFILE* sk){
+static const struct stack_st* ossl_check_const_SRTP_PROTECTION_PROFILE_sk_type(const struct stack_st_SRTP_PROTECTION_PROFILE* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_SRTP_PROTECTION_PROFILE_sk_type(struct stack_st_SRTP_PROTECTION_PROFILE* sk){
+static struct stack_st* ossl_check_SRTP_PROTECTION_PROFILE_sk_type(struct stack_st_SRTP_PROTECTION_PROFILE* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_SRTP_PROTECTION_PROFILE_compfunc_type(int (*cmp)(const struct srtp_protection_profile_st**,const struct srtp_protection_profile_st**)))(const void*,const void*){
@@ -11849,13 +11849,13 @@ static void* (*ossl_check_SRTP_PROTECTION_PROFILE_copyfunc_type(struct srtp_prot
 static void (*ossl_check_SRTP_PROTECTION_PROFILE_freefunc_type(void (*fr)(struct srtp_protection_profile_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline const struct ssl_cipher_st* ossl_check_SSL_CIPHER_type(const struct ssl_cipher_st* ptr){
+static const struct ssl_cipher_st* ossl_check_SSL_CIPHER_type(const struct ssl_cipher_st* ptr){
     return ptr;
 }
-static static inline const struct stack_st* ossl_check_const_SSL_CIPHER_sk_type(const struct stack_st_SSL_CIPHER* sk){
+static const struct stack_st* ossl_check_const_SSL_CIPHER_sk_type(const struct stack_st_SSL_CIPHER* sk){
     return (const struct stack_st*)sk;
 }
-static static inline struct stack_st* ossl_check_SSL_CIPHER_sk_type(struct stack_st_SSL_CIPHER* sk){
+static struct stack_st* ossl_check_SSL_CIPHER_sk_type(struct stack_st_SSL_CIPHER* sk){
     return (struct stack_st*)sk;
 }
 static int (*ossl_check_SSL_CIPHER_compfunc_type(int (*cmp)(const struct ssl_cipher_st**,const struct ssl_cipher_st**)))(const void*,const void*){
@@ -11867,71 +11867,71 @@ static void* (*ossl_check_SSL_CIPHER_copyfunc_type(struct ssl_cipher_st* (*cpy)(
 static void (*ossl_check_SSL_CIPHER_freefunc_type(void (*fr)(struct ssl_cipher_st*)))(void*){
     return (void (*)(void*))fr;
 }
-static static inline struct bio_poll_descriptor_st SSL_as_poll_descriptor(struct ssl_st* s){
+static struct bio_poll_descriptor_st SSL_as_poll_descriptor(struct ssl_st* s){
 struct bio_poll_descriptor_st d_286;
 memset(&d_286, 0, sizeof(struct bio_poll_descriptor_st));
     d_286.type=2;
     d_286.value.ssl=s;
     return d_286;
 }
-static static inline int ERR_GET_LIB(unsigned long  int errcode){
+static int ERR_GET_LIB(unsigned long  int errcode){
     if(    (((errcode)&((unsigned int)2147483647+1))!=0)) {
         return 2;
     }
     return (errcode>>23)&255;
 }
-static static inline int ERR_GET_RFLAGS(unsigned long  int errcode){
+static int ERR_GET_RFLAGS(unsigned long  int errcode){
     if(    (((errcode)&((unsigned int)2147483647+1))!=0)) {
         return 0;
     }
     return errcode&(31<<18);
 }
-static static inline int ERR_GET_REASON(unsigned long  int errcode){
+static int ERR_GET_REASON(unsigned long  int errcode){
     if(    (((errcode)&((unsigned int)2147483647+1))!=0)) {
         return errcode&((unsigned int)2147483647);
     }
     return errcode&8388607;
 }
-static static inline int ERR_FATAL_ERROR(unsigned long  int errcode){
+static int ERR_FATAL_ERROR(unsigned long  int errcode){
     return (ERR_GET_RFLAGS(errcode)&(1<<18))!=0;
 }
-static static inline int ERR_COMMON_ERROR(unsigned long  int errcode){
+static int ERR_COMMON_ERROR(unsigned long  int errcode){
     return (ERR_GET_RFLAGS(errcode)&(2<<18))!=0;
 }
-static static inline unsigned long  int lh_ERR_STRING_DATA_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
+static unsigned long  int lh_ERR_STRING_DATA_hash_thunk(const void* data, unsigned long  int (*hfn)(const void*)){
 unsigned long  int (*hfn_conv_287)(const struct ERR_string_data_st*);
 memset(&hfn_conv_287, 0, sizeof(unsigned long  int (*)(const struct ERR_string_data_st*)));
     hfn_conv_287=(unsigned long  int (*)(const struct ERR_string_data_st*))hfn;
     return hfn_conv_287((const struct ERR_string_data_st*)data);
 }
-static static inline int lh_ERR_STRING_DATA_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
+static int lh_ERR_STRING_DATA_comp_thunk(const void* da, const void* db, int (*cfn)(const void*,const void*)){
 int (*cfn_conv_288)(const struct ERR_string_data_st*,const struct ERR_string_data_st*);
 memset(&cfn_conv_288, 0, sizeof(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*)));
     cfn_conv_288=(int (*)(const struct ERR_string_data_st*,const struct ERR_string_data_st*))cfn;
     return cfn_conv_288((const struct ERR_string_data_st*)da,(const struct ERR_string_data_st*)db);
 }
-static static inline void lh_ERR_STRING_DATA_doall_thunk(void* node, void (*doall)(void*)){
+static void lh_ERR_STRING_DATA_doall_thunk(void* node, void (*doall)(void*)){
 void (*doall_conv_289)(struct ERR_string_data_st*);
 memset(&doall_conv_289, 0, sizeof(void (*)(struct ERR_string_data_st*)));
     doall_conv_289=(void (*)(struct ERR_string_data_st*))doall;
     doall_conv_289((struct ERR_string_data_st*)node);
 }
-static static inline void lh_ERR_STRING_DATA_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
+static void lh_ERR_STRING_DATA_doall_arg_thunk(void* node, void* arg, void (*doall)(void*,void*)){
 void (*doall_conv_290)(struct ERR_string_data_st*,void*);
 memset(&doall_conv_290, 0, sizeof(void (*)(struct ERR_string_data_st*,void*)));
     doall_conv_290=(void (*)(struct ERR_string_data_st*,void*))doall;
     doall_conv_290((struct ERR_string_data_st*)node,arg);
 }
-static static inline struct ERR_string_data_st* ossl_check_ERR_STRING_DATA_lh_plain_type(struct ERR_string_data_st* ptr){
+static struct ERR_string_data_st* ossl_check_ERR_STRING_DATA_lh_plain_type(struct ERR_string_data_st* ptr){
     return ptr;
 }
-static static inline const struct ERR_string_data_st* ossl_check_const_ERR_STRING_DATA_lh_plain_type(const struct ERR_string_data_st* ptr){
+static const struct ERR_string_data_st* ossl_check_const_ERR_STRING_DATA_lh_plain_type(const struct ERR_string_data_st* ptr){
     return ptr;
 }
-static static inline const struct lhash_st* ossl_check_const_ERR_STRING_DATA_lh_type(const struct lhash_st_ERR_STRING_DATA* lh){
+static const struct lhash_st* ossl_check_const_ERR_STRING_DATA_lh_type(const struct lhash_st_ERR_STRING_DATA* lh){
     return (const struct lhash_st*)lh;
 }
-static static inline struct lhash_st* ossl_check_ERR_STRING_DATA_lh_type(struct lhash_st_ERR_STRING_DATA* lh){
+static struct lhash_st* ossl_check_ERR_STRING_DATA_lh_type(struct lhash_st_ERR_STRING_DATA* lh){
     return (struct lhash_st*)lh;
 }
 static int (*ossl_check_ERR_STRING_DATA_lh_compfunc_type(int (*cmp)(const struct ERR_string_data_st*,const struct ERR_string_data_st*)))(const void*,const void*){
@@ -11943,7 +11943,7 @@ static unsigned long  int (*ossl_check_ERR_STRING_DATA_lh_hashfunc_type(unsigned
 static void (*ossl_check_ERR_STRING_DATA_lh_doallfunc_type(void (*dfn)(struct ERR_string_data_st*)))(void*){
     return (void (*)(void*))dfn;
 }
-static static inline const char* ER_CLIENT(int client_errno){
+static const char* ER_CLIENT(int client_errno){
 void* __result_obj__=(void*)0;
 const char* __result223__;
 const char* __result224__;

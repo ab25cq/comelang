@@ -494,8 +494,7 @@ string output_function(sFun* fun, sInfo* info)
         if(fun->mStatic) {
             output.append_str("static ");
         }
-        
-        if(fun->mInline) {
+        else if(fun->mInline) {
             output.append_str("static inline ");
         }
         
@@ -544,8 +543,7 @@ string output_function(sFun* fun, sInfo* info)
         if(fun->mStatic) {
             output.append_str("static ");
         }
-        
-        if(fun->mInline) {
+        else if(fun->mInline) {
             output.append_str("static inline ");
         }
         
