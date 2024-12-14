@@ -891,7 +891,7 @@ bool output_source_file(sInfo* info) version 3
         }
         else if(it2->mExternal) {
         }
-        else if(main_module && it2->mResultType->mUniq) {
+        else if(!main_module && it2->mResultType->mUniq) {
         }
         else if(it2->mInline) {
         }

@@ -6230,7 +6230,7 @@ _Bool __result158__;
         }
         else if(        it2_279->mExternal) {
         }
-        else if(        main_module_230&&it2_279->mResultType->mUniq) {
+        else if(        !main_module_230&&it2_279->mResultType->mUniq) {
         }
         else if(        it2_279->mInline) {
         }

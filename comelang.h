@@ -1,8 +1,8 @@
 #ifndef COMELANG_H
 #define COMELANG_H
 
-#define __BEGIN_DECLS using C {
-#define __END_DECLS }
+#define __BEGIN_DECLS 
+#define __END_DECLS
 
 #undef __cplusplus
 
