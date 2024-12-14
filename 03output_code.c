@@ -97,13 +97,13 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str("_Bool");
     }
     else if(class_name === "lambda") {
-        string result_type_str = make_type_name_string(type->mResultType.v1, in_header);
+        string result_type_str = make_type_name_string(type->mResultType.v1, in_header, no_static:true);
         buf.append_str(result_type_str);
         buf.append_str(" (*)(");
         
         int j = 0;
         foreach(it, type->mParamTypes) {
-            string param_type_str = make_type_name_string(it, in_header);
+            string param_type_str = make_type_name_string(it, in_header, no_static:true);
             
             buf.append_str(param_type_str);
             
@@ -200,7 +200,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         
         int i = 0;
         foreach(it, type->mParamTypes) {
-            buf.append_str(make_type_name_string(it));
+            buf.append_str(make_type_name_string(it, no_static:true));
             if(i != type->mParamTypes.length()-1) {
                 buf.append_str(",");
             }
@@ -215,14 +215,14 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
     else {
         if(type->mLambdaArray) {
             if(type->mLambdaArrayNum == 0) {
-                buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType.v1), var_name);
+                buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType.v1, no_static:true), var_name);
             }
             else {
-                buf.append_format("%s (*%s[%d])(", make_type_name_string(type->mResultType.v1), var_name, type->mLambdaArrayNum);
+                buf.append_format("%s (*%s[%d])(", make_type_name_string(type->mResultType.v1, no_static:true), var_name, type->mLambdaArrayNum);
             }
         }
         else {
-            buf.append_format("%s ", make_type_name_string(type->mResultType.v1));
+            buf.append_format("%s ", make_type_name_string(type->mResultType.v1, no_static:true));
             if(type->mFunctionPointerNum > 1) {
                 buf.append_str("(");
                 for(int i=0; i<type->mFunctionPointerNum; i++) {
@@ -237,7 +237,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         
         int i = 0;
         foreach(it, type->mParamTypes) {
-            buf.append_str(make_type_name_string(it));
+            buf.append_str(make_type_name_string(it, no_static:true));
             if(i != type->mParamTypes.length()-1) {
                 buf.append_str(",");
             }
@@ -476,6 +476,10 @@ string output_function(sFun* fun, sInfo* info)
         
         string str = make_lambda_type_name_string(fun->mResultType, output2.to_string(), info);
         
+        if(fun->mStatic) {
+            output.append_str("static ");
+        }
+        
         output.append_str(str);
         
         info.module.mSourceHead.append_str(output.to_string());
@@ -485,7 +489,15 @@ string output_function(sFun* fun, sInfo* info)
         sType*% base_result_type = fun->mResultType;
         base_result_type.mArrayNum = new list<sNode*%>();
         
-        string result_type_str = make_type_name_string(base_result_type);
+        string result_type_str = make_type_name_string(base_result_type, no_static:true);
+        
+        if(fun->mStatic) {
+            output.append_str("static ");
+        }
+        
+        if(fun->mInline) {
+            output.append_str("static inline ");
+        }
         
         output.append_str(result_type_str);
         output.append_str(" (*");
@@ -527,7 +539,15 @@ string output_function(sFun* fun, sInfo* info)
         info.module.mSourceHead.append_str(";\n");
     }
     else {
-        string result_type_str = make_type_name_string(fun->mResultType);
+        string result_type_str = make_type_name_string(fun->mResultType, no_static:true);
+        
+        if(fun->mStatic) {
+            output.append_str("static ");
+        }
+        
+        if(fun->mInline) {
+            output.append_str("static inline ");
+        }
         
         output.append_str(result_type_str);
         output.append_str(" ");
@@ -596,6 +616,9 @@ string header_function(sFun* fun, sInfo* info)
         
         string str = make_lambda_type_name_string(fun->mResultType, output2.to_string(), info);
         
+        if(fun->mStatic) {
+            output.append_str("static ");
+        }
         output.append_str(str);
         output.append_str(";\n");
     }
@@ -603,7 +626,11 @@ string header_function(sFun* fun, sInfo* info)
         sType*% base_result_type = fun->mResultType;
         base_result_type->mArrayNum = new list<sNode*%>();
         
-        string result_type_str = make_type_name_string(base_result_type);
+        string result_type_str = make_type_name_string(base_result_type, no_static:true);
+        
+        if(fun->mStatic) {
+            output.append_str("static ");
+        }
         
         output.append_str(result_type_str);
         output.append_str(" (*");
@@ -640,7 +667,11 @@ string header_function(sFun* fun, sInfo* info)
         output.append_format("))[%s];\n", cvalue.c_value);
     }
     else {
-        string result_type_str = make_type_name_string(fun->mResultType);
+        string result_type_str = make_type_name_string(fun->mResultType, no_static:true);
+        
+        if(fun->mStatic) {
+            output.append_str("static ");
+        }
         
         output.append_str(result_type_str);
         output.append_str(" ");
@@ -676,7 +707,7 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
 {
     var output = new buffer();
     
-    string result_type_str = make_type_name_string(lambda_type->mResultType.v1);
+    string result_type_str = make_type_name_string(lambda_type->mResultType.v1, no_static:true);
     
     output.append_str(result_type_str);
     output.append_str(" ");
@@ -817,15 +848,7 @@ bool output_source_file(sInfo* info) version 3
         
         if(it2->no_output_come_code2) {
         }
-        else if(it2->mResultType->mUniq) {
-            fprintf(f, "%s", header);
-        }
-        else if(it2->mStatic && it2->mResultType->mInline) {
-        }
-        else if(it2->mStatic) {
-            fprintf(f, "static %s", header);
-        }
-        else if(it2->mResultType->mInline) {
+        else if(it2->mInline) {
         }
         else if(it !== "__builtin_va_start" && it !== "__builtin_va_end") {
             fprintf(f, "%s", header, it);
@@ -843,22 +866,12 @@ bool output_source_file(sInfo* info) version 3
     fprintf(f, "// inline function\n");
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[string(it)]??;
-
-        string header = header_function(it2, info);
         
         if(it2->no_output_come_code2) {
         }
-        else if(it2->mStatic && it2->mResultType->mInline) {
+        else if(it2->mInline) {
             string output = output_function(it2, info);
-            fprintf(f, "static inline %s", output);
-        }
-        else if(it2->mResultType->mInline) {
-            string output = output_function(it2, info);
-            fprintf(f, "static inline %s", output);
-        }
-        else if(it2->mStatic) {
-        }
-        else if(it !== "__builtin_va_start" && it !== "__builtin_va_end") {
+            fprintf(f, "%s", output);
         }
     }
     
@@ -876,21 +889,16 @@ bool output_source_file(sInfo* info) version 3
         */
         if(it2->no_output_come_code2) {
         }
-        else if(!it2->mExternal) {
+        else if(it2->mExternal) {
+        }
+        else if(main_module && it2->mResultType->mUniq) {
+        }
+        else if(it2->mInline) {
+        }
+        else {
             string output = output_function(it2, info);
             
-            if(it2->mStatic && it2->mResultType->mInline) {
-            }
-            else if(it2->mStatic) {
-                fprintf(f, "static %s", output);
-            }
-            else if(it2->mResultType->mInline) {
-            }
-            else if(!main_module && it2->mResultType->mUniq) {
-            }
-            else {
-                fprintf(f, "%s", output);
-            }
+            fprintf(f, "%s", output);
             
             fprintf(f, "\n");
         }

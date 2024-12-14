@@ -2270,20 +2270,20 @@ char* xdirname(char* path);
 unsigned long  int xwcslen(int* wstr);
 // uniq global variable
 // inline function
-static inline _Bool die(char* msg){
+static static inline _Bool die(char* msg){
     perror(msg);
     stackframe();
     exit(4);
     return (_Bool)0;
 }
-static inline unsigned char* buffer_head_pointer(struct buffer* self){
+static static inline unsigned char* buffer_head_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 unsigned char* __result1__;
     __result1__ = gComeFunResultObject = __result_obj__ = self->buf;
     gComeFunResultObject = (void*)0;
     return __result1__;
 }
-static inline struct buffer* charpa_to_buffer(char* self, unsigned long  int len){
+static static inline struct buffer* charpa_to_buffer(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value0 = (void*)0;
 void* __right_value1 = (void*)0;
@@ -2296,7 +2296,7 @@ struct buffer* __result2__;
     gComeFunResultObject = (void*)0;
     return __result2__;
 }
-static inline struct buffer* charppa_to_buffer(char** self, unsigned long  int len){
+static static inline struct buffer* charppa_to_buffer(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value2 = (void*)0;
 void* __right_value3 = (void*)0;
@@ -2312,7 +2312,7 @@ struct buffer* __result3__;
     gComeFunResultObject = (void*)0;
     return __result3__;
 }
-static inline struct buffer* shortpa_to_buffer(short* self, unsigned long  int len){
+static static inline struct buffer* shortpa_to_buffer(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value4 = (void*)0;
 void* __right_value5 = (void*)0;
@@ -2325,7 +2325,7 @@ struct buffer* __result4__;
     gComeFunResultObject = (void*)0;
     return __result4__;
 }
-static inline struct buffer* intpa_to_buffer(int* self, unsigned long  int len){
+static static inline struct buffer* intpa_to_buffer(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value6 = (void*)0;
 void* __right_value7 = (void*)0;
@@ -2338,7 +2338,7 @@ struct buffer* __result5__;
     gComeFunResultObject = (void*)0;
     return __result5__;
 }
-static inline struct buffer* longpa_to_buffer(long* self, unsigned long  int len){
+static static inline struct buffer* longpa_to_buffer(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value8 = (void*)0;
 void* __right_value9 = (void*)0;
@@ -2351,7 +2351,7 @@ struct buffer* __result6__;
     gComeFunResultObject = (void*)0;
     return __result6__;
 }
-static inline struct buffer* floatpa_to_buffer(float* self, unsigned long  int len){
+static static inline struct buffer* floatpa_to_buffer(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value10 = (void*)0;
 void* __right_value11 = (void*)0;
@@ -2364,7 +2364,7 @@ struct buffer* __result7__;
     gComeFunResultObject = (void*)0;
     return __result7__;
 }
-static inline struct buffer* doublepa_to_buffer(double* self, unsigned long  int len){
+static static inline struct buffer* doublepa_to_buffer(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value12 = (void*)0;
 void* __right_value13 = (void*)0;
@@ -2377,7 +2377,7 @@ struct buffer* __result8__;
     gComeFunResultObject = (void*)0;
     return __result8__;
 }
-static inline struct smart_pointer$1char* buffer_to_pointer(struct buffer* self){
+static static inline struct smart_pointer$1char* buffer_to_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value14 = (void*)0;
 void* __right_value15 = (void*)0;
@@ -2388,7 +2388,7 @@ struct smart_pointer$1char* __result10__;
     gComeFunResultObject = (void*)0;
     return __result10__;
 }
-static inline struct smart_pointer$1char* buffer_to_char_pointer(struct buffer* self){
+static static inline struct smart_pointer$1char* buffer_to_char_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value17 = (void*)0;
 void* __right_value18 = (void*)0;
@@ -2399,7 +2399,7 @@ struct smart_pointer$1char* __result11__;
     gComeFunResultObject = (void*)0;
     return __result11__;
 }
-static inline struct smart_pointer$1short* buffer_to_short_pointer(struct buffer* self){
+static static inline struct smart_pointer$1short* buffer_to_short_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value20 = (void*)0;
 void* __right_value21 = (void*)0;
@@ -2410,7 +2410,7 @@ struct smart_pointer$1short* __result13__;
     gComeFunResultObject = (void*)0;
     return __result13__;
 }
-static inline struct smart_pointer$1int* buffer_to_int_pointer(struct buffer* self){
+static static inline struct smart_pointer$1int* buffer_to_int_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value23 = (void*)0;
 void* __right_value24 = (void*)0;
@@ -2421,7 +2421,7 @@ struct smart_pointer$1int* __result15__;
     gComeFunResultObject = (void*)0;
     return __result15__;
 }
-static inline struct smart_pointer$1long* buffer_to_long_pointer(struct buffer* self){
+static static inline struct smart_pointer$1long* buffer_to_long_pointer(struct buffer* self){
 void* __result_obj__=(void*)0;
 void* __right_value26 = (void*)0;
 void* __right_value27 = (void*)0;
@@ -2432,7 +2432,7 @@ struct smart_pointer$1long* __result17__;
     gComeFunResultObject = (void*)0;
     return __result17__;
 }
-static inline struct smart_pointer$1char* charpa_to_pointer(char* self, unsigned long  int len){
+static static inline struct smart_pointer$1char* charpa_to_pointer(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value29 = (void*)0;
 void* __right_value30 = (void*)0;
@@ -2448,7 +2448,7 @@ struct smart_pointer$1char* __result18__;
     gComeFunResultObject = (void*)0;
     return __result18__;
 }
-static inline struct smart_pointer$1charp* charppa_to_pointer(char** self, unsigned long  int len){
+static static inline struct smart_pointer$1charp* charppa_to_pointer(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value33 = (void*)0;
 void* __right_value34 = (void*)0;
@@ -2464,7 +2464,7 @@ struct smart_pointer$1charp* __result20__;
     gComeFunResultObject = (void*)0;
     return __result20__;
 }
-static inline struct smart_pointer$1short* shortpa_to_pointer(short* self, unsigned long  int len){
+static static inline struct smart_pointer$1short* shortpa_to_pointer(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value37 = (void*)0;
 void* __right_value38 = (void*)0;
@@ -2480,7 +2480,7 @@ struct smart_pointer$1short* __result21__;
     gComeFunResultObject = (void*)0;
     return __result21__;
 }
-static inline struct smart_pointer$1int* intpa_to_pointer(int* self, unsigned long  int len){
+static static inline struct smart_pointer$1int* intpa_to_pointer(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value41 = (void*)0;
 void* __right_value42 = (void*)0;
@@ -2496,7 +2496,7 @@ struct smart_pointer$1int* __result22__;
     gComeFunResultObject = (void*)0;
     return __result22__;
 }
-static inline struct smart_pointer$1long* longpa_to_pointer(long* self, unsigned long  int len){
+static static inline struct smart_pointer$1long* longpa_to_pointer(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value45 = (void*)0;
 void* __right_value46 = (void*)0;
@@ -2512,7 +2512,7 @@ struct smart_pointer$1long* __result23__;
     gComeFunResultObject = (void*)0;
     return __result23__;
 }
-static inline struct smart_pointer$1float* floatpa_to_pointer(float* self, unsigned long  int len){
+static static inline struct smart_pointer$1float* floatpa_to_pointer(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value49 = (void*)0;
 void* __right_value50 = (void*)0;
@@ -2528,7 +2528,7 @@ struct smart_pointer$1float* __result25__;
     gComeFunResultObject = (void*)0;
     return __result25__;
 }
-static inline struct smart_pointer$1double* doublepa_to_pointer(double* self, unsigned long  int len){
+static static inline struct smart_pointer$1double* doublepa_to_pointer(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value53 = (void*)0;
 void* __right_value54 = (void*)0;
@@ -2544,7 +2544,7 @@ struct smart_pointer$1double* __result27__;
     gComeFunResultObject = (void*)0;
     return __result27__;
 }
-static inline struct list$1char* charpa_to_list(char* self, unsigned long  int len){
+static static inline struct list$1char* charpa_to_list(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value57 = (void*)0;
 void* __right_value61 = (void*)0;
@@ -2554,7 +2554,7 @@ struct list$1char* __result30__;
     gComeFunResultObject = (void*)0;
     return __result30__;
 }
-static inline struct list$1charp* charppa_to_list(char** self, unsigned long  int len){
+static static inline struct list$1charp* charppa_to_list(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value62 = (void*)0;
 void* __right_value66 = (void*)0;
@@ -2564,7 +2564,7 @@ struct list$1charp* __result33__;
     gComeFunResultObject = (void*)0;
     return __result33__;
 }
-static inline struct list$1short* shortpa_to_list(short* self, unsigned long  int len){
+static static inline struct list$1short* shortpa_to_list(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value67 = (void*)0;
 void* __right_value71 = (void*)0;
@@ -2574,7 +2574,7 @@ struct list$1short* __result36__;
     gComeFunResultObject = (void*)0;
     return __result36__;
 }
-static inline struct list$1int* intpa_to_list(int* self, unsigned long  int len){
+static static inline struct list$1int* intpa_to_list(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value72 = (void*)0;
 void* __right_value76 = (void*)0;
@@ -2584,7 +2584,7 @@ struct list$1int* __result39__;
     gComeFunResultObject = (void*)0;
     return __result39__;
 }
-static inline struct list$1long* longpa_to_list(long* self, unsigned long  int len){
+static static inline struct list$1long* longpa_to_list(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value77 = (void*)0;
 void* __right_value81 = (void*)0;
@@ -2594,7 +2594,7 @@ struct list$1long* __result42__;
     gComeFunResultObject = (void*)0;
     return __result42__;
 }
-static inline struct list$1float* floatpa_to_list(float* self, unsigned long  int len){
+static static inline struct list$1float* floatpa_to_list(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value82 = (void*)0;
 void* __right_value86 = (void*)0;
@@ -2604,7 +2604,7 @@ struct list$1float* __result45__;
     gComeFunResultObject = (void*)0;
     return __result45__;
 }
-static inline struct list$1double* doublepa_to_list(double* self, unsigned long  int len){
+static static inline struct list$1double* doublepa_to_list(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value87 = (void*)0;
 void* __right_value91 = (void*)0;
@@ -2614,7 +2614,7 @@ struct list$1double* __result48__;
     gComeFunResultObject = (void*)0;
     return __result48__;
 }
-static inline struct vector$1char* charpa_to_vector(char* self, unsigned long  int len){
+static static inline struct vector$1char* charpa_to_vector(char* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value92 = (void*)0;
 void* __right_value94 = (void*)0;
@@ -2624,7 +2624,7 @@ struct vector$1char* __result50__;
     gComeFunResultObject = (void*)0;
     return __result50__;
 }
-static inline struct vector$1charp* charppa_to_vector(char** self, unsigned long  int len){
+static static inline struct vector$1charp* charppa_to_vector(char** self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value95 = (void*)0;
 void* __right_value97 = (void*)0;
@@ -2634,7 +2634,7 @@ struct vector$1charp* __result52__;
     gComeFunResultObject = (void*)0;
     return __result52__;
 }
-static inline struct vector$1short* shortpa_to_vector(short* self, unsigned long  int len){
+static static inline struct vector$1short* shortpa_to_vector(short* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value98 = (void*)0;
 void* __right_value100 = (void*)0;
@@ -2644,7 +2644,7 @@ struct vector$1short* __result54__;
     gComeFunResultObject = (void*)0;
     return __result54__;
 }
-static inline struct vector$1int* intpa_to_vector(int* self, unsigned long  int len){
+static static inline struct vector$1int* intpa_to_vector(int* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value101 = (void*)0;
 void* __right_value103 = (void*)0;
@@ -2654,7 +2654,7 @@ struct vector$1int* __result56__;
     gComeFunResultObject = (void*)0;
     return __result56__;
 }
-static inline struct vector$1long* longpa_to_vector(long* self, unsigned long  int len){
+static static inline struct vector$1long* longpa_to_vector(long* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value104 = (void*)0;
 void* __right_value106 = (void*)0;
@@ -2664,7 +2664,7 @@ struct vector$1long* __result58__;
     gComeFunResultObject = (void*)0;
     return __result58__;
 }
-static inline struct vector$1float* floatpa_to_vector(float* self, unsigned long  int len){
+static static inline struct vector$1float* floatpa_to_vector(float* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value107 = (void*)0;
 void* __right_value109 = (void*)0;
@@ -2674,7 +2674,7 @@ struct vector$1float* __result60__;
     gComeFunResultObject = (void*)0;
     return __result60__;
 }
-static inline struct vector$1double* doublepa_to_vector(double* self, unsigned long  int len){
+static static inline struct vector$1double* doublepa_to_vector(double* self, unsigned long  int len){
 void* __result_obj__=(void*)0;
 void* __right_value110 = (void*)0;
 void* __right_value112 = (void*)0;
@@ -2684,10 +2684,10 @@ struct vector$1double* __result62__;
     gComeFunResultObject = (void*)0;
     return __result62__;
 }
-static inline unsigned long  int charpa_length(char* self, unsigned long  int len){
+static static inline unsigned long  int charpa_length(char* self, unsigned long  int len){
     return len;
 }
-static inline _Bool charppa_contained(char** self, unsigned long  int len, char* str){
+static static inline _Bool charppa_contained(char** self, unsigned long  int len, char* str){
 _Bool result_64;
 int i_65;
     result_64=(_Bool)0;
@@ -2699,22 +2699,22 @@ int i_65;
     }
     return result_64;
 }
-static inline unsigned long  int shortpa_length(short* self, unsigned long  int len){
+static static inline unsigned long  int shortpa_length(short* self, unsigned long  int len){
     return len;
 }
-static inline unsigned long  int intpa_length(int* self, unsigned long  int len){
+static static inline unsigned long  int intpa_length(int* self, unsigned long  int len){
     return len;
 }
-static inline unsigned long  int longpa_length(long* self, unsigned long  int len){
+static static inline unsigned long  int longpa_length(long* self, unsigned long  int len){
     return len;
 }
-static inline unsigned long  int floatpa_length(float* self, unsigned long  int len){
+static static inline unsigned long  int floatpa_length(float* self, unsigned long  int len){
     return len;
 }
-static inline unsigned long  int doublepa_length(double* self, unsigned long  int len){
+static static inline unsigned long  int doublepa_length(double* self, unsigned long  int len){
     return len;
 }
-static inline char* string_xsprintf(char* self, char* msg, ...){
+static static inline char* string_xsprintf(char* self, char* msg, ...){
 void* __result_obj__=(void*)0;
 void* __right_value113 = (void*)0;
 char* __result63__;
@@ -2723,7 +2723,7 @@ char* __result63__;
     gComeFunResultObject = (void*)0;
     return __result63__;
 }
-static inline char* charp_xsprintf(char* self, char* msg, ...){
+static static inline char* charp_xsprintf(char* self, char* msg, ...){
 void* __result_obj__=(void*)0;
 void* __right_value114 = (void*)0;
 char* __result64__;
@@ -2732,7 +2732,7 @@ char* __result64__;
     gComeFunResultObject = (void*)0;
     return __result64__;
 }
-static inline char* int_xsprintf(int self, char* msg, ...){
+static static inline char* int_xsprintf(int self, char* msg, ...){
 void* __result_obj__=(void*)0;
 void* __right_value115 = (void*)0;
 char* __result65__;
@@ -2741,7 +2741,7 @@ char* __result65__;
     gComeFunResultObject = (void*)0;
     return __result65__;
 }
-static inline char* string_printable(char* str){
+static static inline char* string_printable(char* str){
 void* __result_obj__=(void*)0;
 void* __right_value116 = (void*)0;
 char* __result66__;
@@ -2750,7 +2750,7 @@ char* __result66__;
     gComeFunResultObject = (void*)0;
     return __result66__;
 }
-static inline int* wstring_substring(int* str, int head, int tail){
+static static inline int* wstring_substring(int* str, int head, int tail){
 void* __result_obj__=(void*)0;
 void* __right_value117 = (void*)0;
 int* __result67__;
@@ -2759,22 +2759,22 @@ int* __result67__;
     gComeFunResultObject = (void*)0;
     return __result67__;
 }
-static inline int string_index_count(char* str, char* search_str, int count, int default_value){
+static static inline int string_index_count(char* str, char* search_str, int count, int default_value){
     return charp_index_count(str,search_str,count,default_value);
 }
-static inline int string_index_regex_count(char* self, struct come_regex* reg, int count, int default_value){
+static static inline int string_index_regex_count(char* self, struct come_regex* reg, int count, int default_value){
     return charp_index_regex_count(self,reg,count,default_value);
 }
-static inline int string_rindex(char* str, char* search_str, int default_value){
+static static inline int string_rindex(char* str, char* search_str, int default_value){
     return charp_rindex(str,search_str,default_value);
 }
-static inline int string_rindex_regex(char* self, struct come_regex* reg, int default_value){
+static static inline int string_rindex_regex(char* self, struct come_regex* reg, int default_value){
     return charp_rindex_regex(self,reg,default_value);
 }
-static inline int string_rindex_count(char* str, char* search_str, int count, int default_value){
+static static inline int string_rindex_count(char* str, char* search_str, int count, int default_value){
     return charp_rindex_count(str,search_str,default_value,-1);
 }
-static inline struct list$1charph* string_scan_block(char* self, struct come_regex* reg, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
+static static inline struct list$1charph* string_scan_block(char* self, struct come_regex* reg, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
 void* __result_obj__=(void*)0;
 void* __right_value118 = (void*)0;
 struct list$1charph* __result68__;
@@ -2783,7 +2783,7 @@ struct list$1charph* __result68__;
     gComeFunResultObject = (void*)0;
     return __result68__;
 }
-static inline struct list$1charph* string_scan_block_count(char* self, struct come_regex* reg, int count, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
+static static inline struct list$1charph* string_scan_block_count(char* self, struct come_regex* reg, int count, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
 void* __result_obj__=(void*)0;
 void* __right_value119 = (void*)0;
 struct list$1charph* __result69__;
@@ -2792,7 +2792,7 @@ struct list$1charph* __result69__;
     gComeFunResultObject = (void*)0;
     return __result69__;
 }
-static inline struct list$1charph* string_split_block(char* self, struct come_regex* reg, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
+static static inline struct list$1charph* string_split_block(char* self, struct come_regex* reg, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
 void* __result_obj__=(void*)0;
 void* __right_value120 = (void*)0;
 struct list$1charph* __result70__;
@@ -2801,7 +2801,7 @@ struct list$1charph* __result70__;
     gComeFunResultObject = (void*)0;
     return __result70__;
 }
-static inline struct list$1charph* string_split_block_count(char* self, struct come_regex* reg, int count, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
+static static inline struct list$1charph* string_split_block_count(char* self, struct come_regex* reg, int count, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
 void* __result_obj__=(void*)0;
 void* __right_value121 = (void*)0;
 struct list$1charph* __result71__;
@@ -2810,7 +2810,7 @@ struct list$1charph* __result71__;
     gComeFunResultObject = (void*)0;
     return __result71__;
 }
-static inline struct list$1charph* string_scan_group_strings(char* self, struct come_regex* reg, struct list$1charph* group_strings, int* num_group_string_in_regex){
+static static inline struct list$1charph* string_scan_group_strings(char* self, struct come_regex* reg, struct list$1charph* group_strings, int* num_group_string_in_regex){
 void* __result_obj__=(void*)0;
 void* __right_value122 = (void*)0;
 struct list$1charph* __result72__;
@@ -2819,7 +2819,7 @@ struct list$1charph* __result72__;
     gComeFunResultObject = (void*)0;
     return __result72__;
 }
-static inline char* string_strip(char* self){
+static static inline char* string_strip(char* self){
 void* __result_obj__=(void*)0;
 void* __right_value123 = (void*)0;
 char* __result73__;
@@ -2828,7 +2828,7 @@ char* __result73__;
     gComeFunResultObject = (void*)0;
     return __result73__;
 }
-static inline int* string_to_wstring(char* str){
+static static inline int* string_to_wstring(char* str){
 void* __result_obj__=(void*)0;
 void* __right_value124 = (void*)0;
 int* __result74__;
@@ -2837,7 +2837,7 @@ int* __result74__;
     gComeFunResultObject = (void*)0;
     return __result74__;
 }
-static inline char* wstring_to_string(int* wstr){
+static static inline char* wstring_to_string(int* wstr){
 void* __result_obj__=(void*)0;
 void* __right_value125 = (void*)0;
 char* __result75__;
@@ -2846,7 +2846,7 @@ char* __result75__;
     gComeFunResultObject = (void*)0;
     return __result75__;
 }
-static inline int* int_to_wstring(int self){
+static static inline int* int_to_wstring(int self){
 void* __result_obj__=(void*)0;
 void* __right_value126 = (void*)0;
 void* __right_value127 = (void*)0;
@@ -2857,10 +2857,10 @@ int* __result76__;
     gComeFunResultObject = (void*)0;
     return __result76__;
 }
-static inline int wstring_length(int* str){
+static static inline int wstring_length(int* str){
     return wchar_tp_length(str);
 }
-static inline int* wstring_delete(int* str, int head, int tail){
+static static inline int* wstring_delete(int* str, int head, int tail){
 void* __result_obj__=(void*)0;
 void* __right_value128 = (void*)0;
 int* __result77__;
@@ -2869,13 +2869,13 @@ int* __result77__;
     gComeFunResultObject = (void*)0;
     return __result77__;
 }
-static inline int wstring_index(int* str, int* search_str, int default_value){
+static static inline int wstring_index(int* str, int* search_str, int default_value){
     return wchar_tp_index(str,search_str,default_value);
 }
-static inline int wstring_rindex(int* str, int* search_str, int default_value){
+static static inline int wstring_rindex(int* str, int* search_str, int default_value){
     return wchar_tp_rindex(str,search_str,default_value);
 }
-static inline int* wstring_reverse(int* str){
+static static inline int* wstring_reverse(int* str){
 void* __result_obj__=(void*)0;
 void* __right_value129 = (void*)0;
 int* __result78__;
@@ -2884,7 +2884,7 @@ int* __result78__;
     gComeFunResultObject = (void*)0;
     return __result78__;
 }
-static inline int* wstring_multiply(int* str, int n){
+static static inline int* wstring_multiply(int* str, int n){
 void* __result_obj__=(void*)0;
 void* __right_value130 = (void*)0;
 int* __result79__;
@@ -2893,7 +2893,7 @@ int* __result79__;
     gComeFunResultObject = (void*)0;
     return __result79__;
 }
-static inline int* wstring_printable(int* str){
+static static inline int* wstring_printable(int* str){
 void* __result_obj__=(void*)0;
 void* __right_value131 = (void*)0;
 int* __result80__;
@@ -2902,19 +2902,19 @@ int* __result80__;
     gComeFunResultObject = (void*)0;
     return __result80__;
 }
-static inline unsigned int wstring_get_hash_key(int* value){
+static static inline unsigned int wstring_get_hash_key(int* value){
     return wchar_tp_get_hash_key(value);
 }
-static inline _Bool string_match_group_strings(char* self, struct come_regex* reg, int count, struct list$1charph* group_strings){
+static static inline _Bool string_match_group_strings(char* self, struct come_regex* reg, int count, struct list$1charph* group_strings){
     return charp_match_group_strings(self,reg,count,group_strings);
 }
-static inline int string_index(char* str, char* search_str, int default_value){
+static static inline int string_index(char* str, char* search_str, int default_value){
     return charp_index(str,search_str,default_value);
 }
-static inline int string_index_regex(char* self, struct come_regex* reg, int default_value){
+static static inline int string_index_regex(char* self, struct come_regex* reg, int default_value){
     return charp_index_regex(self,reg,default_value);
 }
-static inline char* string_replace(char* self, int index, char c){
+static static inline char* string_replace(char* self, int index, char c){
 void* __result_obj__=(void*)0;
 void* __right_value132 = (void*)0;
 char* __result81__;
@@ -2923,7 +2923,7 @@ char* __result81__;
     gComeFunResultObject = (void*)0;
     return __result81__;
 }
-static inline char* string_multiply(char* str, int n){
+static static inline char* string_multiply(char* str, int n){
 void* __result_obj__=(void*)0;
 void* __right_value133 = (void*)0;
 char* __result82__;
@@ -2932,7 +2932,7 @@ char* __result82__;
     gComeFunResultObject = (void*)0;
     return __result82__;
 }
-static inline char* string_sub(char* self, struct come_regex* reg, char* replace){
+static static inline char* string_sub(char* self, struct come_regex* reg, char* replace){
 void* __result_obj__=(void*)0;
 void* __right_value134 = (void*)0;
 char* __result83__;
@@ -2941,7 +2941,7 @@ char* __result83__;
     gComeFunResultObject = (void*)0;
     return __result83__;
 }
-static inline char* string_sub_count(char* self, struct come_regex* reg, char* replace, int count){
+static static inline char* string_sub_count(char* self, struct come_regex* reg, char* replace, int count){
 void* __result_obj__=(void*)0;
 void* __right_value135 = (void*)0;
 char* __result84__;
@@ -2950,7 +2950,7 @@ char* __result84__;
     gComeFunResultObject = (void*)0;
     return __result84__;
 }
-static inline struct list$1charph* string_split_str(char* self, char* str){
+static static inline struct list$1charph* string_split_str(char* self, char* str){
 void* __result_obj__=(void*)0;
 void* __right_value136 = (void*)0;
 struct list$1charph* __result85__;
@@ -2959,7 +2959,7 @@ struct list$1charph* __result85__;
     gComeFunResultObject = (void*)0;
     return __result85__;
 }
-static inline struct list$1charph* string_scan(char* self, struct come_regex* reg){
+static static inline struct list$1charph* string_scan(char* self, struct come_regex* reg){
 void* __result_obj__=(void*)0;
 void* __right_value137 = (void*)0;
 struct list$1charph* __result86__;
@@ -2968,7 +2968,7 @@ struct list$1charph* __result86__;
     gComeFunResultObject = (void*)0;
     return __result86__;
 }
-static inline struct list$1charph* string_split(char* self, struct come_regex* reg){
+static static inline struct list$1charph* string_split(char* self, struct come_regex* reg){
 void* __result_obj__=(void*)0;
 void* __right_value138 = (void*)0;
 struct list$1charph* __result87__;
@@ -2977,10 +2977,10 @@ struct list$1charph* __result87__;
     gComeFunResultObject = (void*)0;
     return __result87__;
 }
-static inline _Bool string_match(char* self, struct come_regex* reg){
+static static inline _Bool string_match(char* self, struct come_regex* reg){
     return charp_match(self,reg);
 }
-static inline struct list$1charph* string_split_maxsplit(char* self, struct come_regex* reg, int maxsplit){
+static static inline struct list$1charph* string_split_maxsplit(char* self, struct come_regex* reg, int maxsplit){
 void* __result_obj__=(void*)0;
 void* __right_value139 = (void*)0;
 struct list$1charph* __result88__;
@@ -2989,13 +2989,13 @@ struct list$1charph* __result88__;
     gComeFunResultObject = (void*)0;
     return __result88__;
 }
-static inline int string_rindex_regex_count(char* self, struct come_regex* reg, int count, int default_value){
+static static inline int string_rindex_regex_count(char* self, struct come_regex* reg, int count, int default_value){
     return charp_rindex_regex_count(self,reg,count,default_value);
 }
-static inline _Bool string_match_count(char* self, struct come_regex* reg, int count){
+static static inline _Bool string_match_count(char* self, struct come_regex* reg, int count){
     return charp_match_count(self,reg,count);
 }
-static inline char* string_sub_block(char* self, struct come_regex* reg, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
+static static inline char* string_sub_block(char* self, struct come_regex* reg, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
 void* __result_obj__=(void*)0;
 void* __right_value140 = (void*)0;
 char* __result89__;
@@ -3004,7 +3004,7 @@ char* __result89__;
     gComeFunResultObject = (void*)0;
     return __result89__;
 }
-static inline char* string_sub_block_count(char* self, struct come_regex* reg, int count, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
+static static inline char* string_sub_block_count(char* self, struct come_regex* reg, int count, void* parent, char* (*block)(void*,char*,struct list$1charph*)){
 void* __result_obj__=(void*)0;
 void* __right_value141 = (void*)0;
 char* __result90__;
@@ -3013,7 +3013,7 @@ char* __result90__;
     gComeFunResultObject = (void*)0;
     return __result90__;
 }
-static inline char* charp_chomp(char* str){
+static static inline char* charp_chomp(char* str){
 void* __result_obj__=(void*)0;
 void* __right_value143 = (void*)0;
 char* __result92__;
@@ -3024,16 +3024,6 @@ char* __result92__;
 }
 
 // body function
-
-
-
-
-
-
-
-
-
-
 static struct smart_pointer$1char* smart_pointer$1char_initialize_with_value(struct smart_pointer$1char* self, struct buffer* value){
 void* __result_obj__=(void*)0;
 struct buffer* __dec_obj1;
@@ -3061,8 +3051,6 @@ struct buffer* __dec_obj2;
         }
     }
 }
-
-
 
 static struct smart_pointer$1short* smart_pointer$1short_initialize_with_value(struct smart_pointer$1short* self, struct buffer* value){
 void* __result_obj__=(void*)0;
@@ -3092,7 +3080,6 @@ struct buffer* __dec_obj4;
     }
 }
 
-
 static struct smart_pointer$1int* smart_pointer$1int_initialize_with_value(struct smart_pointer$1int* self, struct buffer* value){
 void* __result_obj__=(void*)0;
 struct buffer* __dec_obj5;
@@ -3120,7 +3107,6 @@ struct buffer* __dec_obj6;
         }
     }
 }
-
 
 static struct smart_pointer$1long* smart_pointer$1long_initialize_with_value(struct smart_pointer$1long* self, struct buffer* value){
 void* __result_obj__=(void*)0;
@@ -3150,8 +3136,6 @@ struct buffer* __dec_obj8;
     }
 }
 
-
-
 static struct smart_pointer$1charp* smart_pointer$1charp_initialize_with_value(struct smart_pointer$1charp* self, struct buffer* value){
 void* __result_obj__=(void*)0;
 struct buffer* __dec_obj9;
@@ -3179,10 +3163,6 @@ struct buffer* __dec_obj10;
         }
     }
 }
-
-
-
-
 
 static struct smart_pointer$1float* smart_pointer$1float_initialize_with_value(struct smart_pointer$1float* self, struct buffer* value){
 void* __result_obj__=(void*)0;
@@ -3212,7 +3192,6 @@ struct buffer* __dec_obj12;
     }
 }
 
-
 static struct smart_pointer$1double* smart_pointer$1double_initialize_with_value(struct smart_pointer$1double* self, struct buffer* value){
 void* __result_obj__=(void*)0;
 struct buffer* __dec_obj13;
@@ -3240,7 +3219,6 @@ struct buffer* __dec_obj14;
         }
     }
 }
-
 
 static struct list$1char* list$1char_initialize_with_values(struct list$1char* self, int num_value, char* values){
 void* __result_obj__=(void*)0;
@@ -3311,7 +3289,6 @@ struct list_item$1char* prev_it_20;
 static void list_item$1charp_finalize(struct list_item$1char* self){
 }
 
-
 static struct list$1charp* list$1charp_initialize_with_values(struct list$1charp* self, int num_value, char** values){
 void* __result_obj__=(void*)0;
 int i_21;
@@ -3380,7 +3357,6 @@ struct list_item$1charp* prev_it_26;
 
 static void list_item$1charpp_finalize(struct list_item$1charp* self){
 }
-
 
 static struct list$1short* list$1short_initialize_with_values(struct list$1short* self, int num_value, short* values){
 void* __result_obj__=(void*)0;
@@ -3451,7 +3427,6 @@ struct list_item$1short* prev_it_32;
 static void list_item$1shortp_finalize(struct list_item$1short* self){
 }
 
-
 static struct list$1int* list$1int_initialize_with_values(struct list$1int* self, int num_value, int* values){
 void* __result_obj__=(void*)0;
 int i_33;
@@ -3520,7 +3495,6 @@ struct list_item$1int* prev_it_38;
 
 static void list_item$1intp_finalize(struct list_item$1int* self){
 }
-
 
 static struct list$1long* list$1long_initialize_with_values(struct list$1long* self, int num_value, long* values){
 void* __result_obj__=(void*)0;
@@ -3591,7 +3565,6 @@ struct list_item$1long* prev_it_44;
 static void list_item$1longp_finalize(struct list_item$1long* self){
 }
 
-
 static struct list$1float* list$1float_initialize_with_values(struct list$1float* self, int num_value, float* values){
 void* __result_obj__=(void*)0;
 int i_45;
@@ -3660,7 +3633,6 @@ struct list_item$1float* prev_it_50;
 
 static void list_item$1floatp_finalize(struct list_item$1float* self){
 }
-
 
 static struct list$1double* list$1double_initialize_with_values(struct list$1double* self, int num_value, double* values){
 void* __result_obj__=(void*)0;
@@ -3731,7 +3703,6 @@ struct list_item$1double* prev_it_56;
 static void list_item$1doublep_finalize(struct list_item$1double* self){
 }
 
-
 static struct vector$1char* vector$1char_initialize_with_values(struct vector$1char* self, int num_value, char* values){
 void* __result_obj__=(void*)0;
 void* __right_value93 = (void*)0;
@@ -3756,7 +3727,6 @@ int i_57;
         come_free((char*)self->items);
     }
 }
-
 
 static struct vector$1charp* vector$1charp_initialize_with_values(struct vector$1charp* self, int num_value, char** values){
 void* __result_obj__=(void*)0;
@@ -3784,7 +3754,6 @@ int i_58;
     }
 }
 
-
 static struct vector$1short* vector$1short_initialize_with_values(struct vector$1short* self, int num_value, short* values){
 void* __result_obj__=(void*)0;
 void* __right_value99 = (void*)0;
@@ -3809,7 +3778,6 @@ int i_59;
         come_free((char*)self->items);
     }
 }
-
 
 static struct vector$1int* vector$1int_initialize_with_values(struct vector$1int* self, int num_value, int* values){
 void* __result_obj__=(void*)0;
@@ -3836,7 +3804,6 @@ int i_60;
     }
 }
 
-
 static struct vector$1long* vector$1long_initialize_with_values(struct vector$1long* self, int num_value, long* values){
 void* __result_obj__=(void*)0;
 void* __right_value105 = (void*)0;
@@ -3861,7 +3828,6 @@ int i_61;
         come_free((char*)self->items);
     }
 }
-
 
 static struct vector$1float* vector$1float_initialize_with_values(struct vector$1float* self, int num_value, float* values){
 void* __result_obj__=(void*)0;
@@ -3888,7 +3854,6 @@ int i_62;
     }
 }
 
-
 static struct vector$1double* vector$1double_initialize_with_values(struct vector$1double* self, int num_value, double* values){
 void* __result_obj__=(void*)0;
 void* __right_value111 = (void*)0;
@@ -3914,24 +3879,6 @@ int i_63;
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static void list$1charphp_finalize(struct list$1charph* self){
 struct list_item$1charph* it_66;
 struct list_item$1charph* prev_it_67;
@@ -3955,39 +3902,6 @@ char* __dec_obj15;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 struct tuple2$2come_regexphcharph* come_regex_initialize(struct come_regex* self, char* str, _Bool ignore_case, _Bool multiline, _Bool global, _Bool extended, _Bool dotall, _Bool anchored, _Bool dollar_endonly, _Bool ungreedy){
 void* __result_obj__=(void*)0;

@@ -2305,9 +2305,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
-        result_type->mRecord = result_type->mStatic || static_;
+        result_type->mRecord = result_type->mRecord || record_;
         result_type->mUniq = result_type->mUniq || uniq_;
-        result_type->mStatic = result_type->mRecord || record_;
+        result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
         result_type->mException = result_type->mException || exception_;
         result_type->mExtern = result_type->mExtern || extern_;
         result_type->mInline = result_type->mInline || inline_;
@@ -2375,8 +2375,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
-        result_type->mStatic = result_type->mStatic || static_;
         result_type->mUniq = result_type->mUniq || uniq_;
+        result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
         result_type->mRecord = result_type->mRecord || record_;
         result_type->mException = result_type->mException || exception_;
         result_type->mExtern = result_type->mExtern || extern_;
@@ -2513,8 +2513,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
+            type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
             type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
@@ -2540,8 +2540,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
+            type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
             type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
@@ -2567,8 +2567,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
+            type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
             type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
@@ -2635,8 +2635,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
+            type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
             type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
@@ -2673,8 +2673,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mStatic = type->mStatic || static_;
             type->mUniq = type->mUniq || uniq_;
+            type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
             type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;

@@ -1152,7 +1152,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_calloc(int count, int size, char* sname, int sline, char* class_name)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1167,7 +1167,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_increment_ref_count(void* mem)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1182,7 +1182,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1197,7 +1197,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, _Bool no_decrement, _Bool no_free)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1212,7 +1212,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void come_free_object(void* mem)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1231,7 +1231,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_memdup(void* block, char* sname, int sline, char* class_name)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1246,7 +1246,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* memset(void* b, int c, size_t len)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1261,7 +1261,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("char* __builtin_string(char* str)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1277,7 +1277,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("short __builtin_bswap16(short x)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1292,7 +1292,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("int __builtin_bswap32(int x)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1307,7 +1307,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("long __builtin_bswap64(long x)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1324,7 +1324,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("come_heap_init(int come_malloc, int come_debug, int come_gc)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1339,7 +1339,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void come_heap_final()")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1354,7 +1354,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_null_check(void* mem, char* sname, int sline, int id)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1369,7 +1369,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void __builtin_va_start()")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), fun);
     }
@@ -1385,7 +1385,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void __builtin_va_va_arg(char* ap)")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), fun);
     }
@@ -1401,7 +1401,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void __builtin_va_end()")
             , string("")
-            , info);
+            , info, false@inline_);
         
         info.funcs.insert(string(name), fun);
     }
@@ -1833,7 +1833,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                                     , param_types, param_names
                                     , param_default_parametors
                                     , true@external, var_args, null@block
-                                    , false@static_, header_buf.to_string(), string(info->sname), info);
+                                    , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_);
                 
                 var fun2 = info.funcs[string(fun_name)]??;
                 if(fun2 == null || fun2.mExternal) {
@@ -1958,12 +1958,14 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     info.sname = sname;
     
     result_type->mInline = false;
+    result_type->mStatic = false;
+    result_type->mUniq = false;
     
     bool var_args = generics_fun.mVarArgs;
     var fun = new sFun(fun_name, result_type
                     , clone param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, string(""), string(""), info);
+                    , var_args, block, true@static_, string(""), string(""), info, false@inline_);
     
     info.funcs.insert(clone fun_name, fun);
     
@@ -2065,12 +2067,14 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     info.sname = sname;
     
     result_type->mInline = false;
+    result_type->mStatic = false;
+    result_type->mUniq = false;
     
     bool var_args = generics_fun.mVarArgs;
     var fun = new sFun(fun_name, result_type
                     , clone param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, string(""), string(""), info);
+                    , var_args, block, true@static_, string(""), string(""), info, false@inline_);
     
     info.funcs.insert(clone fun_name, fun);
     
@@ -2236,12 +2240,14 @@ sNode*% parse_function(sInfo* info)
         
         string fun_name = xsprintf("lambda%d", lambda_num);
         
+        result_type->mInline = false;
         result_type->mStatic = false;
+        result_type->mUniq = false;
         
         var fun = new sFun(string(fun_name), result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, var_args, block
-                            , true@static_, header_buf.to_string(), string(""), info);
+                            , true@static_, header_buf.to_string(), string(""), info, false@inline_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -2363,10 +2369,18 @@ sNode*% parse_function(sInfo* info)
         
         sBlock*% block = parse_block(in_function:true, info, false, constructor_);
         
-        bool static_ = false;
+        bool static_fun = false;
         if(result_type->mStatic) {
             result_type->mStatic = false;
-            static_ = true;
+            result_type->mUniq = false;
+            static_fun = true;
+        }
+        
+        bool inline_fun = false;
+        if(result_type->mInline) {
+            result_type->mInline = false;
+            result_type->mUniq = false;
+            inline_fun = true;
         }
         
         if(version > 0) {
@@ -2378,10 +2392,10 @@ sNode*% parse_function(sInfo* info)
                                 , param_names
                                 , param_default_parametors
                                 , false@external, var_args, clone block
-                                , static_
+                                , static_fun@static_
                                 , header_buf.to_string()
                                 , string(info->sname)
-                                , info);
+                                , info, inline_fun);
     
         if(info.in_class) {
             info.funcs.insert(clone fun_name, fun);
@@ -2408,12 +2422,14 @@ sNode*% parse_function(sInfo* info)
             
             bool result_type_static = result_type->mStatic;
             result_type->mStatic = false;
+            result_type->mUniq = false;
+            result_type->mInline = false;
             
             var fun = new sFun(string(fun_name), result_type
                                 , param_types, param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
-                                , false@static_, header_buf.to_string(), string(info->sname), info);
+                                , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_);
             
             var fun2 = info.funcs[string(fun_name)]??;
             if(fun2 == null || fun2.mExternal) {
@@ -2445,12 +2461,14 @@ sNode*% parse_function(sInfo* info)
             
             bool result_type_static = result_type->mStatic;
             result_type->mStatic = false;
+            result_type->mUniq = false;
+            result_type->mInline = false;
             
             var fun = new sFun(string(fun_name), result_type, param_types
                                 , param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
-                                , false@static_, header_buf.to_string(), string(info->sname), info);
+                                , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_);
             
             var fun2 = info.funcs[string(fun_name)]??;
             if(fun2 == null || fun2.mExternal) {
@@ -2602,6 +2620,8 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -2609,7 +2629,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -2738,6 +2758,8 @@ sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, s
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -2745,7 +2767,7 @@ sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, s
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -2880,6 +2902,8 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -2887,7 +2911,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3042,6 +3066,8 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3049,7 +3075,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3201,6 +3227,8 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3208,7 +3236,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3345,6 +3373,8 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3352,7 +3382,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3528,6 +3558,8 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3535,7 +3567,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
                         
         fun->mCloner = true;
         
@@ -3692,6 +3724,8 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         header_buf.append_str(")");
         
         result_type->mStatic = false;
+        result_type->mUniq = false;
+        result_type->mInline = false;
         
         var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3699,7 +3733,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info);
+                        , info, false@inline_);
                         
         fun->mCloner = true;
         
