@@ -1650,7 +1650,6 @@ struct sInfo
     char* if_result_var_name;
     struct list$1sVarph* match_it_var;
     int sline_top;
-    _Bool new_;
     struct sFun* calling_fun;
     struct map$2charphint* outputed_class;
     struct map$2charphcharph* uniq_definition;

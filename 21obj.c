@@ -1234,12 +1234,7 @@ class sIsPointer extends sNodeBase
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 21
 {
-    if(!gComeC && (buf === "new" || info.new_)) {
-        if(info.new_) {
-            info.p = head;
-            info.sline = head_sline;
-        }
-        
+    if(!gComeC && buf === "new") {
         var type, name, err = parse_type();
         if(!err) {
             err_msg(info, "parse_type failed");

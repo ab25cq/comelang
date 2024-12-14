@@ -398,7 +398,6 @@ struct sInfo
     list<sVar*%>*% match_it_var;
     
     int sline_top;
-    bool new_;
     sFun* calling_fun;
     
     map<string, int>*% outputed_class;

@@ -1937,53 +1937,6 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.sline = head_sline;
         }
         /// backtrace ///
-        bool new_ = false;
-        if(!is_special_word)
-        {
-            info.p = head;
-            info.sline = head_sline;
-            
-            buf = parse_word();
-            
-            sClass* klass = info.classes[buf]??;
-            
-            if(klass && *info->p == '{') {
-                new_ = true;
-            }
-            
-            sClass* generics_class = info.generics_classes[buf]??;
-            
-            if(generics_class && *info->p == '<') {
-                int nest = 0;
-                while(true) {
-                    if(*info->p == '<') {
-                        info->p++;
-                        nest++;
-                    }
-                    else if(*info->p == '>') {
-                        info->p++;
-                        nest--;
-                        if(nest == 0) {
-                            skip_spaces_and_lf();
-                            break;
-                        }
-                    }
-                    else if(*info->p == '\0') {
-                        break;
-                    }
-                    else {
-                        info->p++;
-                    }
-                }
-                
-                if(*info->p == '{') {
-                    new_ = true;
-                }
-            }
-            
-            info.p = head;
-            info.sline = head_sline;
-        }
         
         bool inline_asm = false;
         {
@@ -2166,10 +2119,8 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             return new sVarArgTypeName(type) implements sNode;
         }
-        else if(new_ || buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__") {
-            info->new_ = new_;
+        else if(buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__") {
             sNode*% node = string_node(buf, head, head_sline, info)
-            info->new_ = false;
             
             return node;
         }
@@ -2288,9 +2239,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             return node;
         }
         else {
-            info->new_ = new_;
             sNode*% node = string_node(buf, head, head_sline, info);
-            info->new_ = false;
             
             return node;
         }
