@@ -9,11 +9,43 @@ bool is_type_name(char* buf, sInfo* info=info)
     bool mgenerics_type_name = info.method_generics_type_names.contained(string(buf));
     
     if(gComeC) {
-        return (type && type->mTypedef) || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || (klass && klass->mNumber) || (klass && klass->mFloat) || buf === "void" || buf === "_Nullable" || generics_class || generics_type_name || mgenerics_type_name;
+        return (type && type->mTypedef) 
+            || (klass && klass->mNumber) 
+            || (klass && klass->mFloat) 
+            || buf === "const" || buf === "register" || buf === "static" || buf === "volatile" || buf === "unsigned" 
+            || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" 
+            || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline" 
+            || buf === "__extension__" 
+            || buf === "_Noreturn" 
+            || buf === "__noreturn" 
+            || buf === "_noreturn" 
+            || buf === "__typeof__" 
+            || buf === "_Nullable" 
+            || buf === "__declspec" 
+            || buf === "_Alignas"
+            || (buf === "__attribute__" && *info->p == '(' )
+            || buf === "void" ;
     }
     else {
-        return generics_class || generics_type_name || mgenerics_type_name || klass || type || buf === "const" || buf === "register" || buf === "uniq" || buf === "static" || buf === "record" || buf === "volatile" || buf === "unsigned" || buf === "signed" || buf === "immutable" || buf === "mutable" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__extension__" || buf === "_Noreturn" || buf === "__typeof__" || buf === "_Nullable" || (info.in_top_level && buf === "exception")
+        return generics_class || generics_type_name || mgenerics_type_name || klass || type 
+        || buf === "const" || buf === "register" || buf === "static" || buf === "volatile" || buf === "unsigned" 
+        || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" 
+        || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline"
+        || buf === "__extension__" 
+        || buf === "_Noreturn" 
+        || buf === "__noreturn" 
+        || buf === "_noreturn" 
+        || buf === "__typeof__" 
+        || buf === "_Nullable" 
+        || buf === "__declspec" 
+        || buf === "_Alignas"
+        || (buf === "__attribute__" && *info->p == '(')
+        || (buf === "immutable")
+        || (buf === "mutable")
         || (buf === "tup" && (*info->p == ':' || *info->p == '('))
+        || (info.in_top_level && buf === "exception") 
+        || (info.in_top_level && buf === "record") 
+        || (info.in_top_level && buf === "uniq") ;
     }
 }
 
@@ -1402,9 +1434,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     info.define_struct = false;
     
     string type_name = parse_word();
-    while(type_name === "__extension__") {
-        type_name = parse_word();
-    }
     
     bool record_ = false;
     bool exception_ = false;
@@ -1423,7 +1452,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool no_heap = false;
     bool extern_ = false;
     bool inline_ = false;
-    bool come_mem_core_ = false;
     bool uniq_ = false;
     bool tuple_ = false;
     
@@ -1432,7 +1460,126 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool anonymous_type = false;
     bool anonymous_name = false;
     while(true) {
-        if(type_name === "struct") {
+        if(type_name === "__extension__") {
+            type_name = parse_word();
+        }
+        else if(type_name === "__attribute__") {
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+    
+            skip_spaces_and_lf();
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "__declspec") {
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+    
+            skip_spaces_and_lf();
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "_Noreturn") {
+            type_name = parse_word();
+        }
+        else if(type_name === "__noreturn") {
+            type_name = parse_word();
+        }
+        else if(type_name === "_Nullable") {
+            type_name = parse_word();
+        }
+        else if(type_name === "_noreturn") {
+            type_name = parse_word();
+        }
+        else if(type_name === "_Alignas") {
+            expected_next_character('(');
+            
+            sNode*% exp = expression();
+            
+            alignas_ = exp;
+            
+            expected_next_character(')');
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "const") {
+            constant = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "static") {
+            static_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "uniq") {
+            uniq_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "record") {
+            record_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "exception") {
+            exception_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "extern") {
+            extern_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "inline" || type_name === "__inline" || type_name === "__inline__" || type_name === "__always_inline" || type_name === "__forceinline") 
+        {
+            inline_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "volatile") {
+            volatile_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "struct") {
             struct_ = true;
             
             if(*info->p == '{') {
@@ -1661,69 +1808,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     break;
                 }
             }
-        }
-        else if(type_name === "_Alignas") {
-            expected_next_character('(');
-            
-            sNode*% exp = expression();
-            
-            alignas_ = exp;
-            
-            expected_next_character(')');
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "const") {
-            constant = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "static") {
-            static_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "uniq") {
-            uniq_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "_Nullable") {
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "record") {
-            record_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "exception") {
-            exception_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "come_mem_core") {
-            come_mem_core_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "extern") {
-            extern_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "_Noreturn") {
-            type_name = parse_word();
-        }
-        else if(type_name === "inline" || type_name === "__inline" || type_name === "__inline__" || type_name === "__always_inline") {
-            inline_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "volatile") {
-            volatile_ = true;
-            
-            type_name = parse_word();
         }
         else if(type_name === "long") {
             /// backtrace ///

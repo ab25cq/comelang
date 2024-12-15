@@ -763,7 +763,364 @@ bool strmemcmp(char* p, char* p2)
     return !terminated && memcmp(p, p2, strlen(p2)) == 0;
 }
 
-string parse_attribute(sInfo* info=info, bool parse_function_attribute=false)
+string parse_function_attribute(sInfo* info=info)
+{
+    buffer*% asm_fun_name = new buffer();
+    
+    while(true) {
+        if(strmemcmp(info->p, "__attribute__")) {
+            info->p += strlen("__attribute__");
+            skip_spaces_and_lf();
+
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__declspec")) {
+            info->p += strlen("__declspec");
+            skip_spaces_and_lf();
+
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "_Noreturn")) {
+            info->p += strlen("_Noreturn");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__noreturn")) {
+            info->p += strlen("__noreturn");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__asm__")) {
+            info->p += strlen("__asm__");
+            skip_spaces_and_lf();
+            
+            if(memcmp(info->p, "__ASMNAME", strlen("__ASMNAME")) == 0) {
+                info->p += strlen("__ASMNAME");
+                skip_spaces_and_lf();
+            }
+
+            int len = 0;
+
+            if(*info->p == '(') {
+                bool in_dquort = false;
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '"') {
+                        info->p++;
+    
+                        in_dquort = !in_dquort;
+                    }
+                    else if(in_dquort) {
+                        asm_fun_name.append_char(*info->p);
+                        info->p++;
+                    }
+                    else if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__attribute_pure__")) {
+            info->p += strlen("__attribute_pure__");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__malloc_like")) {
+            info->p += strlen("__malloc_like");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__result_use_check")) {
+            info->p += strlen("__result_use_check");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__alloc_size2")) {
+            info->p += strlen("__alloc_size2");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "__alloc_size")) {
+            info->p += strlen("__alloc_size");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "__nonnull")) {
+            info->p += strlen("__nonnull");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "_Nonnull")) {
+            info->p += strlen("_Nonnull");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "__alloc_align")) {
+            info->p += strlen("__alloc_align");
+            skip_spaces_and_lf();
+            
+            if(*info->p == '(') {
+                int nest = 0;
+                while(1) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        nest++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++
+                        skip_spaces_and_lf();
+                        
+                        nest--;
+                        if(nest == 0) {
+                            break;
+                        }
+                    }
+                    else if(*info->p == '\0') {
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+        }
+        else if(strmemcmp(info->p, "__attribute_malloc__")) {
+            info->p += strlen("__attribute_malloc__");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__attr_dealloc_fclose")) {
+            info->p += strlen("__attr_dealloc_fclose");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__wur")) {
+            info->p += strlen("__wur");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__pure2")) {
+            info->p += strlen("__pure2");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__pure")) {
+            info->p += strlen("__pure");
+            skip_spaces_and_lf();
+        }
+        else if(strmemcmp(info->p, "__asm")) {
+            info->p += strlen("__asm");
+            skip_spaces_and_lf();
+
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+        }
+/*
+        else if(*info->p == '_') {
+            string word = parse_word();
+
+            if(*info->p == '(') {
+                int brace_num = 0;
+                while(*info->p) {
+                    if(*info->p == '(') {
+                        info->p++;
+                        brace_num++;
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        brace_num--;
+    
+                        if(brace_num == 0) {
+                            break;
+                        }
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+
+            skip_spaces_and_lf();
+            
+        }
+*/
+        else {
+            break;
+        }
+    }
+
+    return asm_fun_name.to_string();
+}
+
+string parse_attribute(sInfo* info=info)
 {
     buffer*% asm_fun_name = new buffer();
     
@@ -1051,33 +1408,6 @@ string parse_attribute(sInfo* info=info, bool parse_function_attribute=false)
             }
 
             skip_spaces_and_lf();
-        }
-        else if(parse_function_attribute && *info->p == '_') {
-            string word = parse_word();
-
-            if(*info->p == '(') {
-                int brace_num = 0;
-                while(*info->p) {
-                    if(*info->p == '(') {
-                        info->p++;
-                        brace_num++;
-                    }
-                    else if(*info->p == ')') {
-                        info->p++;
-                        brace_num--;
-    
-                        if(brace_num == 0) {
-                            break;
-                        }
-                    }
-                    else {
-                        info->p++;
-                    }
-                }
-            }
-
-            skip_spaces_and_lf();
-            
         }
         else {
             break;
@@ -2459,7 +2789,7 @@ sNode*% parse_function(sInfo* info)
             return new sFunNode(fun, info) implements sNode;
         }
         else {
-            string asm_fun = parse_attribute(parse_function_attribute:true);
+            string asm_fun = parse_function_attribute();
             
             if(asm_fun !== "") {
                 fun_name = string(asm_fun);
@@ -2670,143 +3000,6 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     return (finalizer, real_fun_name);
 }
 
-sFun*,string create_force_finalizer_automatically(sType* type, char* fun_name, sInfo* info)
-{
-    string last_code = info.module.mLastCode;
-    info.module.mLastCode = null;
-    string last_code2 = info.module.mLastCode2;
-    info.module.mLastCode2 = null;
-    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
-    info->comma_instead_of_semicolon = false;
-    
-    sClass* current_stack_frame_struct = info->current_stack_frame_struct;
-    info->current_stack_frame_struct = null;
-    
-    sFun* finalizer = null;
-    
-    string real_fun_name = create_method_name(type, false@no_pointer_name, fun_name, info);
-    
-    sType*% type2 = solve_generics(type, type, info);
-    
-    type = borrow type2;
-    
-    sClass* klass = type->mClass;
-    
-    if(type->mPointerNum > 0 && klass->mStruct) {
-        var source = new buffer();
-        
-        source.append_char('{');
-        
-        klass = info.classes[klass->mName]??;
-        foreach(it, klass->mFields) {
-            var name, field_type = it;
-            
-            if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-            {
-                err_msg(info, "Define recusively the finalizer. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                exit(2);
-            }
-            
-            if(field_type->mHeap) {
-                char source2[1024];
-                snprintf(source2, 1024, "if(self != ((void*)0) && self.%s != ((void*)0)) { if(self.%s == gComeFunResultObject) { gc_dec_nofree(self.%s); } else { force_delete borrow self.%s; }}\n", name, name, name,name);
-                
-                source.append_str(source2);
-            }
-        }
-        
-        source.append_char('}');
-        
-        char* p = info.p;
-        int sline = info.sline;
-        string sname = info.sname;
-        char* head = info.head;
-        buffer*% source3 = info.source;
-        
-        info.source = source;
-        info.p = source.buf;
-        info.head = source.buf;
-        
-        info.sname = string(real_fun_name);
-        info.sline = 0;
-        
-        sBlock*% block = parse_block();
-        
-        var result_type = new sType("void");
-        var name = clone real_fun_name;
-        var self_type = clone type;
-        self_type->mHeap = false;
-        if(self_type->mPointerNum > 1) {
-            self_type->mPointerNum = 1;
-        }
-        var param_types = [self_type];
-        var param_names = [string("self")];
-        var param_default_parametors = new list<string>();
-        param_default_parametors.push_back(null);
-        
-        buffer*% header_buf = new buffer();
-        
-        header_buf.append_str(make_come_type_name_string(result_type));
-        header_buf.append_str(" ");
-        header_buf.append_str(real_fun_name);
-        header_buf.append_str("(");
-        
-        for(int i=0; i<param_types.length(); i++) {
-            sType* param_type = param_types[i];
-            char* param_name = param_names[i];
-            
-            header_buf.append_str(make_come_type_name_string(param_type));
-            header_buf.append_str(" ");
-            header_buf.append_str(param_name);
-            
-            if(i != param_types.length() -1) {
-                header_buf.append_str(",");
-            }
-        }
-        header_buf.append_str(")");
-        
-        result_type->mStatic = false;
-        result_type->mUniq = false;
-        result_type->mInline = false;
-        
-        var fun = new sFun(name, result_type, param_types, param_names
-                        , param_default_parametors
-                        , false@external, false@var_args, block
-                        , true@static_
-                        , header_buf.to_string()
-                        , string("")
-                        , info, false@inline_, false@uniq_);
-        
-        var fun2 = info.funcs[string(fun_name)]??;
-        if(fun2 == null || fun2.mExternal) {
-    
-            info.funcs.insert(clone name, fun);
-        }
-        
-        finalizer = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
-            exit(2);
-        }
-        
-        info.source = source3;
-        info.p = p;
-        info.head = head;
-        info.sline = sline;
-        info.sname = sname;
-    }
-    
-    info->current_stack_frame_struct = current_stack_frame_struct;
-    
-    info.module.mLastCode = last_code;
-    info.module.mLastCode2 = last_code2;
-    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
-    
-    return (finalizer, real_fun_name);
-}
 
 sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* info)
 {
