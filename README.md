@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 10.1.0
+version 10.1.1
 
 ``` C
 #include <comelang.h>
@@ -325,6 +325,7 @@ sh all_build.sh
 # Histories
 
 ```
+10.1.1 Function attribute, type attribute, more compability for C Language.
 10.1.0 remove libcomelang.a, Only need include comelang.h. delete floaint,integer, and -gc option.
 10.0.2 comelang can build piccolo os. comelang can make operating system.
 10.0.1 raspi pico.
