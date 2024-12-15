@@ -293,7 +293,7 @@ clangとmake, autoconf, valgrind, gdb, lldb, musl-dev(alpine linux), pcre-devが
 
 sh fast_build.shとすると自動的に必要なパッケージがインストールされます。
 
-LinuxとMacOS(Darwin), termux(Android) userland(Android), raspberry piをサポートしています。
+LinuxとMacOS(Darwin), termux(Android) userland(Android), raspberry pi, raspberry pi picoをサポートしています。
 
 sudoとgitは事前にインストールしてください。
 
