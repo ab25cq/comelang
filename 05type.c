@@ -1252,25 +1252,7 @@ sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* i
         info->p++;
         skip_spaces_and_lf();
         
-        {
-            char* p = info.p;
-            int sline = info.sline;
-        
-            if(xisalpha(*info->p) || *info->p == '_') {
-                string word = parse_word();
-                
-                if(word === "const" || word === "__restrict" || word === "restrict" || word === "__user" || word === "volatile" || word === "_Nonnull" || word === "_Nullable" || word === "_Null_unspecified" || word === "__user" || word === "_Addr") {
-                }
-                else {
-                    info.p = p;
-                    info.sline = sline;
-                }
-            }
-            else {
-                info.p = p;
-                info.sline = sline;
-            }
-        }
+        skip_pointer_attribute();
         
         result_type->mPointerNum++;
     }
@@ -1364,7 +1346,7 @@ void skip_pointer_attribute(sInfo* info=info)
     if(xisalpha(*info->p) || *info->p == '_') {
         string word = parse_word();
         
-        if(word === "__nonnull" && *info->p == '(') {
+        if(word === "__attribute__" && *info->p == '(') {
             int nest = 0;
             while(1) {
                 if(*info->p == '(') {
@@ -1388,61 +1370,8 @@ void skip_pointer_attribute(sInfo* info=info)
                     info->p++;
                 }
             }
-            
         }
-        else if(word === "__attribute__" && *info->p == '(') {
-            int nest = 0;
-            while(1) {
-                if(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    nest++;
-                }
-                else if(*info->p == ')') {
-                    info->p++
-                    skip_spaces_and_lf();
-                    
-                    nest--;
-                    if(nest == 0) {
-                        break;
-                    }
-                }
-                else if(*info->p == '\0') {
-                    break;
-                }
-                else {
-                    info->p++;
-                }
-            }
-            
-        }
-        else if(word === "_Nonnull" && *info->p == '(') {
-            int nest = 0;
-            while(1) {
-                if(*info->p == '(') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    nest++;
-                }
-                else if(*info->p == ')') {
-                    info->p++
-                    skip_spaces_and_lf();
-                    
-                    nest--;
-                    if(nest == 0) {
-                        break;
-                    }
-                }
-                else if(*info->p == '\0') {
-                    break;
-                }
-                else {
-                    info->p++;
-                }
-            }
-            
-        }
-        else if(word === "const" || word === "__restrict" || word === "restrict" || word === "__user" || word === "volatile" || word === "_Nonnull" || word === "_Nullable" || word === "_Null_unspecified" || word === "__user" || word === "_Addr") {
+        else if(word === "const" || word === "__restrict" || word === "restrict" || word === "__user" || word === "volatile" || word === "_Nonnull" || word === "_Nullable" || word === "__nonnull" || word === "_Null_unspecified" || word === "__user" || word === "_Addr") {
         }
         else {
             info.p = p;
@@ -2181,6 +2110,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             while(*info->p == '*') {
                 info->p++
                 skip_spaces_and_lf(info);
+                
+                skip_pointer_attribute();
+                
                 pointer_num++;
             }
             
@@ -2222,6 +2154,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             while(*info->p == '*') {
                 info->p++
                 skip_spaces_and_lf(info);
+                
+                skip_pointer_attribute();
+                
                 pointer_num++;
             }
             
@@ -2341,6 +2276,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         while(*info->p == '*' || *info->p == '^') {
             info->p++;
             skip_spaces_and_lf();
+            skip_pointer_attribute();
             function_pointer_num++;
         }
         

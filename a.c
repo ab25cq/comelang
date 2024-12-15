@@ -1,8 +1,7 @@
-#include <comelang.h>
+int fun(int* _Nonnull a, int const* _Nullable _attr, void* _Nonnull (* _Nonnull _start)(void* _Nonnull), void* _Nullable);
+//int fun(int* _Nonnull a, int const* _Nullable _attr, void* _Nonnull (* _Nonnull _start)(void* _Nonnull), void* _Nullable);
 
-enum eEnum: unsigned int {
-    a = 0xFFFFF, b = 0xFFFF
-};
+
 
 int main(int argc, char** argv)
 {
