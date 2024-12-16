@@ -1811,6 +1811,49 @@ sNode*% expression_node(sInfo* info=info) version 97
             return new sReturnNode(value, string(buf), info) implements sNode;
         }
     }
+    /// comment
+    else if(*info->p == '/' && *(info->p+1) == '*') {
+        int nest = 0;
+        while(1) {
+            if(*info->p == '/' && *(info->p+1) == '*') {
+                info->p +=2;
+                nest++;
+            }
+            else if(*info->p == '*' && *(info->p+1) == '/') {
+                info->p +=2;
+                nest--;
+                
+                if(nest == 0) {
+                    break;
+                }
+            }
+            else if(*info->p == '\n') {
+                info->p++;
+                info->sline++;
+            }
+            else {
+                info->p++;
+            }
+        }
+    }
+    /// comment
+    else if(*info->p == '/' && *(info->p+1) == '/') {
+        info->p+=2;
+        
+        while(1) {
+            if(*info->p == '\n') {
+                info->p++;
+                skip_spaces_and_lf();
+                break;
+            }
+            else if(*info->p == '\0') {
+                break;
+            }
+            else { 
+                info->p++;
+            }
+        }
+    }
     else if((xisalpha(*info->p) || *info->p == '_' ) && !((*info->p == 'L' || *info->p == 'l' || *info->p == 's' || *info->p == 'S' || *info->p == 'r' || *info->p == 'R' || *info->p == 'b' || *info->p == 'B' || *info->p == 'h' || *info->p == 'H') && *(info->p+1) == '"' || (*info->p == 'L' && *(info->p+1) == '\''))) {
         char* head = info.p;
         int head_sline = info.sline;

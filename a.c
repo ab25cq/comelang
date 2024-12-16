@@ -1,10 +1,22 @@
-int fun(int* _Nonnull a, int const* _Nullable _attr, void* _Nonnull (* _Nonnull _start)(void* _Nonnull), void* _Nullable);
-//int fun(int* _Nonnull a, int const* _Nullable _attr, void* _Nonnull (* _Nonnull _start)(void* _Nonnull), void* _Nullable);
-
-
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
+/*
+/*
+aaa
+*/
+*/
+    puts("UHO!");
+    printf("""
+AAA
+/*
+aaa
+*/
+BBB
+CCC
+    """);
+    
     return 0;
 }
 

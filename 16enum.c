@@ -142,6 +142,8 @@ sNode*% parse_enum(string type_name, sInfo* info)
         klass = clone info.classes.at(type_name, null);
     }
     
+    parse_sharp();
+    
     sType*% type_elements = null;
     if(*info->p == ':') {
         info->p++;
@@ -152,7 +154,11 @@ sNode*% parse_enum(string type_name, sInfo* info)
         type_elements = type;
     }
     
+    parse_sharp();
+    
     expected_next_character('{');
+    
+    parse_sharp();
     
     list<tup: string,sNode*%>*% elements = new list<tup: string,sNode*%>();
     
@@ -166,6 +172,8 @@ sNode*% parse_enum(string type_name, sInfo* info)
         if(*info->p == '=') {
             info->p++;
             skip_spaces_and_lf();
+            
+            parse_sharp();
             
             bool no_comma = info.no_comma;
             info.no_comma = true;
@@ -198,6 +206,8 @@ sNode*% parse_enum(string type_name, sInfo* info)
             break;
         }
     }
+    
+    parse_sharp();
     
     return new sEnumNode(type_name, elements, type_elements, info) implements sNode;
 }

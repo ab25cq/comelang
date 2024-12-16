@@ -74,114 +74,6 @@ void skip_paren(sInfo* info)
     }
 }
 
-void parse_sharp(sInfo* info=info) version 5
-{
-    while(strmemcmp(info.p, "__attribute__")) {
-        info->p += strlen("__attribute__");
-        skip_spaces_and_lf();
-        skip_paren(info);
-    }
-    while(strmemcmp(info.p, "__extension__")) {
-        info->p += strlen("__extension__");
-        skip_spaces_and_lf();
-    }
-/*
-    while(strmemcmp(info.p, "__asm")) {
-        if(strmemcmp(info.p, "__asm__")) {
-            break;
-        }
-        else {
-            info->p += strlen("__asm");
-            skip_spaces_and_lf();
-            skip_paren(info);
-        }
-    }
-*/
-
-    while(*info->p == '#') {
-        skip_spaces_and_lf();
-    
-        info->p++;
-        skip_spaces_and_lf();
-        
-        if(strmemcmp(info->p, "pragma")) {
-            while(*info->p) {
-                if(*info->p == '\n') {
-                    skip_spaces_and_lf();
-                    break;
-                }
-                else {
-                    info->p++;
-                }
-            }
-        }
-        else if(xisdigit(*info->p)) {
-            int line = 0;
-            buffer*% fname = new buffer();
-
-            while(xisdigit(*info->p)) {
-                line = line * 10 + (*info->p - '0');
-                info->p++;
-            }
-            skip_spaces_and_lf();
-
-            if(*info->p == '"') {
-                info->p++;
-
-                while(*info->p != '"') {
-                    fname.append_char(*info->p);
-                    info->p++;
-                }
-
-                while(*info->p != '\n') {
-                    info->p++;
-                }
-                info->p++;
-            }
-
-            info->sline = line;
-            info->sname = fname.to_string();
-
-            skip_spaces_and_lf();
-        }
-        else if(*info->p == '"') {
-            info->p++;
-
-            while(*info->p != '"') {
-                info->p++;
-            }
-
-            while(*info->p != '\n') {
-                info->p++;
-            }
-            info->p++;
-        }
-    
-        skip_spaces_and_lf();
-    }
-    
-    while(strmemcmp(info.p, "__attribute__")) {
-        info->p += strlen("__attribute__");
-        skip_spaces_and_lf();
-        skip_paren(info);
-    }
-    while(strmemcmp(info.p, "__extension__")) {
-        info->p += strlen("__extension__");
-        skip_spaces_and_lf();
-    }
-/*
-    while(strmemcmp(info.p, "__asm")) {
-        if(strmemcmp(info.p, "__asm__")) {
-            break;
-        }
-        else {
-            info->p += strlen("__asm");
-            skip_spaces_and_lf();
-            skip_paren(info);
-        }
-    }
-*/
-}
 
 bool parsecmp(char* str, sInfo* info=info) 
 {
@@ -248,6 +140,147 @@ void skip_spaces_and_lf(sInfo* info=info)
             break;
         }
     }
+    
+    parse_sharp();
+}
+
+void skip_spaces_and_lf2(sInfo* info=info)
+{
+    while(true) {
+        if(*info->p == ' ' || *info->p == '\t') {
+            info->p++;
+        }
+        else if(*info->p == '\n') {
+            info->p++;
+            info->sline++;
+        }
+        else {
+            break;
+        }
+    }
+}
+
+void parse_sharp(sInfo* info=info) version 5
+{
+    while(1) {
+        if(*info->p == '#') {
+            skip_spaces_and_lf2();
+        
+            info->p++;
+            skip_spaces_and_lf2();
+            
+            if(strmemcmp(info->p, "pragma")) {
+                while(*info->p) {
+                    if(*info->p == '\n') {
+                        skip_spaces_and_lf2();
+                        break;
+                    }
+                    else {
+                        info->p++;
+                    }
+                }
+            }
+            else if(xisdigit(*info->p)) {
+                int line = 0;
+                buffer*% fname = new buffer();
+    
+                while(xisdigit(*info->p)) {
+                    line = line * 10 + (*info->p - '0');
+                    info->p++;
+                }
+                skip_spaces_and_lf2();
+    
+                if(*info->p == '"') {
+                    info->p++;
+    
+                    while(*info->p != '"') {
+                        fname.append_char(*info->p);
+                        info->p++;
+                    }
+    
+                    while(*info->p != '\n') {
+                        info->p++;
+                    }
+                    info->p++;
+                }
+    
+                info->sline = line;
+                info->sname = fname.to_string();
+    
+                skip_spaces_and_lf2();
+            }
+            else if(*info->p == '"') {
+                info->p++;
+    
+                while(*info->p != '"') {
+                    info->p++;
+                }
+    
+                while(*info->p != '\n') {
+                    info->p++;
+                }
+                info->p++;
+            }
+        
+            skip_spaces_and_lf2();
+        }
+        else if(*info->p == '/' && *(info->p+1) == '*') {
+            int nest = 0;
+            while(1) {
+                if(*info->p == '/' && *(info->p+1) == '*') {
+                    info->p +=2;
+                    nest++;
+                }
+                else if(*info->p == '*' && *(info->p+1) == '/') {
+                    info->p +=2;
+                    nest--;
+                    
+                    if(nest == 0) {
+                        skip_spaces_and_lf2();
+                        break;
+                    }
+                }
+                else if(*info->p == '\n') {
+                    info->p++;
+                    info->sline++;
+                }
+                else {
+                    info->p++;
+                }
+            }
+        }
+        /// comment
+        else if(*info->p == '/' && *(info->p+1) == '/') {
+            info->p+=2;
+            
+            while(1) {
+                if(*info->p == '\n') {
+                    info->p++;
+                    skip_spaces_and_lf2();
+                    break;
+                }
+                else if(*info->p == '\0') {
+                    break;
+                }
+                else { 
+                    info->p++;
+                }
+            }
+        }
+        else if(strmemcmp(info.p, "__attribute__")) {
+            info->p += strlen("__attribute__");
+            skip_spaces_and_lf2();
+            skip_paren(info);
+        }
+        else if(strmemcmp(info.p, "__extension__")) {
+            info->p += strlen("__extension__");
+            skip_spaces_and_lf2();
+        }
+        else {
+            break;
+        }
+    }
+    
 }
 
 bool is_contained_generics_class(sType* type, sInfo* info)

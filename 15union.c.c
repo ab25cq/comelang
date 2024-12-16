@@ -4992,6 +4992,7 @@ klass_339 = (void*)0;
         map$2charphsTypeph_insert(info->types,(char*)come_increment_ref_count(type_name),(struct sType*)come_increment_ref_count(sType_clone(type_405)));
         /*i*/come_call_finalizer3(type_405,sType_finalize, 0, 0, 0, 0, (void*)0);
     }
+    parse_sharp_v5(info);
     expected_next_character(123,info);
     while((_Bool)1) {
         multiple_assign_var2=((struct tuple3$3sTypephcharphbool*)(__right_value341=parse_type(info,(_Bool)1,(_Bool)1,(_Bool)0)));
@@ -4999,24 +5000,30 @@ klass_339 = (void*)0;
         name_407=(char*)come_increment_ref_count(multiple_assign_var2->v2);
         err_408=multiple_assign_var2->v3;
         /*g*/come_call_finalizer3(__right_value341,tuple3$3sTypephcharphboolp_finalize, 0, 1, 0, 0, __result_obj__);
+        parse_sharp_v5(info);
         if(        !err_408) {
             printf("%s %d: parse_type failed\n",info->sname,info->sline);
             exit(2);
         }
         if(        *info->p==44) {
+            parse_sharp_v5(info);
             while(*info->p==44) {
                 info->p++;
                 skip_spaces_and_lf(info);
                 name2_409=(char*)come_increment_ref_count(parse_word(info));
-                list$1tuple2$2charphsTypephph_push_back(klass_339->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 105, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name2_409),(struct sType*)come_increment_ref_count(type2_406))));
+                list$1tuple2$2charphsTypephph_push_back(klass_339->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 109, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name2_409),(struct sType*)come_increment_ref_count(type2_406))));
                 /* U13 */name2_409 = come_decrement_ref_count2(name2_409, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
+            parse_sharp_v5(info);
             expected_next_character(59,info);
         }
         else {
+            parse_sharp_v5(info);
             expected_next_character(59,info);
-            list$1tuple2$2charphsTypephph_push_back(klass_339->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 113, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name_407),(struct sType*)come_increment_ref_count(type2_406))));
+            parse_sharp_v5(info);
+            list$1tuple2$2charphsTypephph_push_back(klass_339->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 120, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name_407),(struct sType*)come_increment_ref_count(type2_406))));
         }
+        parse_sharp_v5(info);
         if(        *info->p==125) {
             info->p++;
             skip_spaces_and_lf(info);
@@ -5024,11 +5031,12 @@ klass_339 = (void*)0;
             /* U13 */name_407 = come_decrement_ref_count2(name_407, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             break;
         }
+        parse_sharp_v5(info);
         /*i*/come_call_finalizer3(type2_406,sType_finalize, 0, 0, 0, 0, (void*)0);
         /* U13 */name_407 = come_decrement_ref_count2(name_407, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
-    _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "15union.c", 123, "struct sNode");
-    _inf_obj_value1=(struct sUnionNode*)come_increment_ref_count(((struct sUnionNode*)(__right_value351=sUnionNode_initialize((struct sUnionNode*)come_increment_ref_count((struct sUnionNode*)come_calloc(1, sizeof(struct sUnionNode)*(1), "15union.c", 123, "sUnionNode")),(char*)come_increment_ref_count(type_name),klass_339,info))));
+    _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "15union.c", 134, "struct sNode");
+    _inf_obj_value1=(struct sUnionNode*)come_increment_ref_count(((struct sUnionNode*)(__right_value351=sUnionNode_initialize((struct sUnionNode*)come_increment_ref_count((struct sUnionNode*)come_calloc(1, sizeof(struct sUnionNode)*(1), "15union.c", 134, "sUnionNode")),(char*)come_increment_ref_count(type_name),klass_339,info))));
     _inf_value1->_protocol_obj=_inf_obj_value1;
     _inf_value1->finalize=(void*)sUnionNode_finalize;
     _inf_value1->clone=(void*)sUnionNode_clone;
@@ -6316,9 +6324,9 @@ klass_418 = (void*)0;
         source_head_416=info->p;
         type_name_417=(char*)come_increment_ref_count(parse_word(info));
         if(        map$2charphsClassph_at(info->classes,type_name_417,((void*)0))==((void*)0)) {
-            map$2charphsClassph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string(type_name_417)),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "15union.c", 141, "sClass")),((char*)(__right_value360=__builtin_string(type_name_417))),(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,info)));
+            map$2charphsClassph_insert(info->classes,(char*)come_increment_ref_count(__builtin_string(type_name_417)),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "15union.c", 152, "sClass")),((char*)(__right_value360=__builtin_string(type_name_417))),(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,-1,-1,(_Bool)0,info)));
             /* U11 */__right_value360 = come_decrement_ref_count2(__right_value360, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-            type_419=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "15union.c", 142, "sType")),type_name_417,(_Bool)0,info));
+            type_419=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "15union.c", 153, "sType")),type_name_417,(_Bool)0,info));
             map$2charphsTypeph_insert(info->types,(char*)come_increment_ref_count(type_name_417),(struct sType*)come_increment_ref_count(sType_clone(type_419)));
             klass_418=map$2charphsClassph_at(info->classes,type_name_417,((void*)0));
             /*i*/come_call_finalizer3(type_419,sType_finalize, 0, 0, 0, 0, (void*)0);
@@ -6330,13 +6338,14 @@ klass_418 = (void*)0;
             if(            override__420) {
                 typedef__421=override__420->mTypedef;
             }
-            type_422=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "15union.c", 154, "sType")),type_name_417,(_Bool)0,info));
+            type_422=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "15union.c", 165, "sType")),type_name_417,(_Bool)0,info));
             if(            typedef__421) {
                 type_422->mTypedef=typedef__421;
             }
             map$2charphsTypeph_insert(info->types,(char*)come_increment_ref_count(type_name_417),(struct sType*)come_increment_ref_count(sType_clone(type_422)));
             /*i*/come_call_finalizer3(type_422,sType_finalize, 0, 0, 0, 0, (void*)0);
         }
+        parse_sharp_v5(info);
         expected_next_character(123,info);
         while((_Bool)1) {
             multiple_assign_var3=((struct tuple3$3sTypephcharphbool*)(__right_value368=parse_type(info,(_Bool)1,(_Bool)1,(_Bool)0)));
@@ -6348,19 +6357,24 @@ klass_418 = (void*)0;
                 printf("%s %d: parse_type failed\n",info->sname,info->sline);
                 exit(2);
             }
+            parse_sharp_v5(info);
             if(            *info->p==44) {
                 while(*info->p==44) {
                     info->p++;
                     skip_spaces_and_lf(info);
                     name2_426=(char*)come_increment_ref_count(parse_word(info));
-                    list$1tuple2$2charphsTypephph_push_back(klass_418->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 177, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name2_426),(struct sType*)come_increment_ref_count(type2_423))));
+                    list$1tuple2$2charphsTypephph_push_back(klass_418->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 191, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name2_426),(struct sType*)come_increment_ref_count(type2_423))));
                     /* U13 */name2_426 = come_decrement_ref_count2(name2_426, (void*)0, (void*)0, 0, 0, 0, (void*)0);
                 }
+                parse_sharp_v5(info);
                 expected_next_character(59,info);
+                parse_sharp_v5(info);
             }
             else {
+                parse_sharp_v5(info);
                 expected_next_character(59,info);
-                list$1tuple2$2charphsTypephph_push_back(klass_418->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 185, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name_424),(struct sType*)come_increment_ref_count(type2_423))));
+                parse_sharp_v5(info);
+                list$1tuple2$2charphsTypephph_push_back(klass_418->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "15union.c", 205, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(name_424),(struct sType*)come_increment_ref_count(type2_423))));
             }
             if(            *info->p==125) {
                 info->p++;
@@ -6372,14 +6386,15 @@ klass_418 = (void*)0;
             /*i*/come_call_finalizer3(type2_423,sType_finalize, 0, 0, 0, 0, (void*)0);
             /* U13 */name_424 = come_decrement_ref_count2(name_424, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
+        parse_sharp_v5(info);
         source_tail_427=info->p;
-        header_428=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "15union.c", 197, "buffer"))));
+        header_428=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "15union.c", 219, "buffer"))));
         buffer_append_str(header_428,"union ");
         buffer_append(header_428,source_head_416,source_tail_427-source_head_416);
         add_come_code_at_come_header(info,"%s;\n",((char*)(__right_value376=buffer_to_string(header_428))));
         /* U11 */__right_value376 = come_decrement_ref_count2(__right_value376, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-        _inf_value2=(struct sNode*)come_calloc(1, sizeof(struct sNode), "15union.c", 203, "struct sNode");
-        _inf_obj_value2=(struct sUnionNode*)come_increment_ref_count(((struct sUnionNode*)(__right_value378=sUnionNode_initialize((struct sUnionNode*)come_increment_ref_count((struct sUnionNode*)come_calloc(1, sizeof(struct sUnionNode)*(1), "15union.c", 203, "sUnionNode")),(char*)come_increment_ref_count(type_name_417),klass_418,info))));
+        _inf_value2=(struct sNode*)come_calloc(1, sizeof(struct sNode), "15union.c", 225, "struct sNode");
+        _inf_obj_value2=(struct sUnionNode*)come_increment_ref_count(((struct sUnionNode*)(__right_value378=sUnionNode_initialize((struct sUnionNode*)come_increment_ref_count((struct sUnionNode*)come_calloc(1, sizeof(struct sUnionNode)*(1), "15union.c", 225, "sUnionNode")),(char*)come_increment_ref_count(type_name_417),klass_418,info))));
         _inf_value2->_protocol_obj=_inf_obj_value2;
         _inf_value2->finalize=(void*)sUnionNode_finalize;
         _inf_value2->clone=(void*)sUnionNode_clone;

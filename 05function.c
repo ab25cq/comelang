@@ -708,6 +708,12 @@ string skip_block(sInfo* info=info)
             else if(*info->p == '#') {
                 parse_sharp();
             }
+            else if(*info->p == '/' && *(info->p+1) == '*') {
+                parse_sharp();
+            }
+            else if(*info->p == '/' && *(info->p+1) == '/') {
+                parse_sharp();
+            }
             else if(*info->p == '{') {
                 info->p++;
 
@@ -1748,6 +1754,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
     
     bool is_type_name_flag = is_type_name(buf);
     int sline = info.sline;
+    
     
     /// backtrace ///
     bool define_struct_nobody = false;

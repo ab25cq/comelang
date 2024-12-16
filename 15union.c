@@ -85,17 +85,21 @@ sNode*% parse_union(string type_name, sInfo* info)
         }
         info.types.insert(type_name, clone type);
     }
+    parse_sharp();
     
     expected_next_character('{');
     
     while(true) {
         var type2, name, err = parse_type(parse_variable_name:true);
         
+        parse_sharp();
+        
         if(!err) {
             printf("%s %d: parse_type failed\n", info->sname, info->sline);
             exit(2);
         }
         if(*info->p == ',') {
+            parse_sharp();
             while(*info->p == ',') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -104,20 +108,27 @@ sNode*% parse_union(string type_name, sInfo* info)
                 
                 klass.mFields.push_back((name2, type2));
             }
+            parse_sharp();
             
             expected_next_character(';');
         }
         else {
+            parse_sharp();
             expected_next_character(';');
+            parse_sharp();
             
             klass.mFields.push_back((name, type2));
         }
+        
+        parse_sharp();
         
         if(*info->p == '}') {
             info->p++;
             skip_spaces_and_lf();
             break;
         }
+    
+        parse_sharp();
     }
     
     sNode*% node = new sUnionNode(type_name, klass, info) implements sNode;
@@ -157,6 +168,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
             }
             info.types.insert(type_name, clone type);
         }
+        parse_sharp();
         
         expected_next_character('{');
         
@@ -167,6 +179,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
                 exit(2);
             }
             
+            parse_sharp();
+            
             if(*info->p == ',') {
                 while(*info->p == ',') {
                     info->p++;
@@ -176,11 +190,17 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
                     
                     klass.mFields.push_back((name2, type2));
                 }
+            
+                parse_sharp();
                 
                 expected_next_character(';');
+            
+                parse_sharp();
             }
             else {
+                parse_sharp();
                 expected_next_character(';');
+                parse_sharp();
                 
                 klass.mFields.push_back((name, type2));
             }
@@ -191,6 +211,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
                 break;
             }
         }
+    
+        parse_sharp();
         
         char* source_tail = info.p;
         
