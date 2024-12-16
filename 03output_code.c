@@ -769,7 +769,7 @@ void add_come_code_at_come_header(sInfo* info, const char* msg, ...)
     if(info->no_output_come_code) {
         return;
     }
-    if(info->sname === info->base_sname) {
+    if(info->sname_at_head === info->base_sname) {
         char* msg2;
     
         va_list args;

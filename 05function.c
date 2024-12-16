@@ -723,7 +723,6 @@ string skip_block(sInfo* info=info)
                 info->p++;
 
                 if(nest == 0) {
-                    skip_spaces_and_lf();
                     break;
                 }
 
@@ -751,6 +750,8 @@ string skip_block(sInfo* info=info)
     char*% buf = new char[tail-head+1];
     memcpy(buf, head, tail-head);
     buf[tail-head] = '\0';
+    
+    skip_spaces_and_lf();
     
     return string(buf);
 }
@@ -1426,6 +1427,7 @@ string parse_attribute(sInfo* info=info)
 void transpile_toplevel(bool block=false, sInfo* info=info)
 {
     while(*info->p) {
+        info.sname_at_head = clone info.sname;
         parse_sharp();
         
         char* head = info.p;
@@ -1455,6 +1457,7 @@ void transpile_toplevel(bool block=false, sInfo* info=info)
                 exit(2);
             }
         }
+        
         parse_sharp();
         
         skip_spaces_and_lf();
@@ -2763,6 +2766,12 @@ sNode*% parse_function(sInfo* info)
         
         if(*info->p == ';') {
             info->p++;
+            
+            char* source_tail = info.p;
+            
+            buffer*% header = new buffer();
+            header.append(source_head, source_tail - source_head);
+            
             skip_spaces_and_lf();
             
             bool result_type_static = result_type->mStatic;
@@ -2782,11 +2791,6 @@ sNode*% parse_function(sInfo* info)
                 info.funcs.insert(clone fun_name, fun);
             }
             
-            char* source_tail = info.p;
-            
-            buffer*% header = new buffer();
-            header.append(source_head, source_tail - source_head);
-            
             if(!result_type_static) {
                 if(!info->no_output_come_code) {
                     add_come_code_at_come_header(info, "%s", header.to_string());
@@ -2802,7 +2806,13 @@ sNode*% parse_function(sInfo* info)
                 fun_name = string(asm_fun);
             }
             
-            expected_next_character(';');
+            buffer*% header = new buffer();
+            if(*info->p == ';') {
+                info->p++;
+                char* source_tail = info.p;
+                header.append(source_head, source_tail - source_head);
+                skip_spaces_and_lf();
+            }
             
             bool result_type_static = result_type->mStatic;
             result_type->mStatic = false;
@@ -2820,11 +2830,6 @@ sNode*% parse_function(sInfo* info)
     
                 info.funcs.insert(clone fun_name, fun);
             }
-            
-            char* source_tail = info.p;
-            
-            buffer*% header = new buffer();
-            header.append(source_head, source_tail - source_head);
             
             if(!result_type_static) {
                 if(!info->no_output_come_code) {

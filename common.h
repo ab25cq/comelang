@@ -294,6 +294,7 @@ struct sInfo
     buffer*% original_source;
     buffer*% source;
     string sname;
+    string sname_at_head;
     string base_sname;
     int sline;
     int err_num;
