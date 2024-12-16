@@ -1,7 +1,6 @@
+#include "common.h"
 #include <libgen.h>
 #include <dirent.h>
-
-#include "common.h"
 
 static bool is_directory_path(char* path)
 {
