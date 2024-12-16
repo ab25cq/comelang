@@ -10,6 +10,9 @@ version 10.1.2
 ``` C
 #include <comelang.h>
 
+/* comment /* nest */ comment */
+// comment2
+
 int fun(int x=123, int y = 234, int z = 345) 
 {
     printf("x %d y %d z %d\n", x, y, z);
