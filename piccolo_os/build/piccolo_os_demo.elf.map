@@ -651,8 +651,12 @@ Discarded input sections
                 0x00000000       0x30 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
  .text.__piccolo_task_init
                 0x00000000       0x18 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+ .text.timer_callback
+                0x00000000       0x38 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
  .text.timer_init
                 0x00000000        0x4 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+ .bss.timer_fired
+                0x00000000        0x1 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
  .text          0x00000000        0x0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o
  .data          0x00000000        0x0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o
  .bss           0x00000000        0x0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o
@@ -4916,578 +4920,578 @@ LOAD linker stubs
  .comment       0x00000045       0x46 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
  .comment       0x00000045       0x46 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
-.debug_info     0x00000000    0x4a2c0
+.debug_info     0x00000000    0x4a302
  .debug_info    0x00000000    0x1b12e CMakeFiles/piccolo_os_demo.dir/main.c.c.o
  .debug_info    0x0001b12e       0x25 CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
- .debug_info    0x0001b153      0x67f CMakeFiles/piccolo_os_demo.dir/os.c.c.o
- .debug_info    0x0001b7d2     0x2437 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
- .debug_info    0x0001dc09      0x129 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
- .debug_info    0x0001dd32      0x1bf CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
- .debug_info    0x0001def1      0x995 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
- .debug_info    0x0001e886      0x458 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
- .debug_info    0x0001ecde      0x245 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
- .debug_info    0x0001ef23     0x21a8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
- .debug_info    0x000210cb      0x15f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
- .debug_info    0x0002122a     0x2803 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
- .debug_info    0x00023a2d      0x308 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
- .debug_info    0x00023d35     0x485e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
- .debug_info    0x00028593     0x2b11 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
- .debug_info    0x0002b0a4     0x2935 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
- .debug_info    0x0002d9d9      0x4e5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
- .debug_info    0x0002debe      0x8af CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
- .debug_info    0x0002e76d      0x248 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
- .debug_info    0x0002e9b5      0x633 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
- .debug_info    0x0002efe8      0x1cc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
- .debug_info    0x0002f1b4      0x21a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
- .debug_info    0x0002f3ce      0x795 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
- .debug_info    0x0002fb63      0x780 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
- .debug_info    0x000302e3       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
- .debug_info    0x00030306       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
- .debug_info    0x00030329       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
- .debug_info    0x0003034c      0x28a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
- .debug_info    0x000305d6       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
- .debug_info    0x000305f9       0x24 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
- .debug_info    0x0003061d       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
- .debug_info    0x00030640      0x28a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
- .debug_info    0x000308ca       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
- .debug_info    0x000308ed      0x3e4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
- .debug_info    0x00030cd1       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
- .debug_info    0x00030cf4      0x2e2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
- .debug_info    0x00030fd6     0x211a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
- .debug_info    0x000330f0       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
- .debug_info    0x00033113      0xb54 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
- .debug_info    0x00033c67     0x1bc3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
- .debug_info    0x0003582a      0xa6e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
- .debug_info    0x00036298     0x1e41 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
- .debug_info    0x000380d9      0x686 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
- .debug_info    0x0003875f      0x201 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
- .debug_info    0x00038960     0x12f3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
- .debug_info    0x00039c53     0x27ac CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
- .debug_info    0x0003c3ff     0x1158 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
- .debug_info    0x0003d557     0x481e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
- .debug_info    0x00041d75      0xb15 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
- .debug_info    0x0004288a     0x1fb7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
- .debug_info    0x00044841     0x1632 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
- .debug_info    0x00045e73     0x1c0a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
- .debug_info    0x00047a7d     0x2843 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+ .debug_info    0x0001b153      0x6c1 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+ .debug_info    0x0001b814     0x2437 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+ .debug_info    0x0001dc4b      0x129 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+ .debug_info    0x0001dd74      0x1bf CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
+ .debug_info    0x0001df33      0x995 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+ .debug_info    0x0001e8c8      0x458 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+ .debug_info    0x0001ed20      0x245 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+ .debug_info    0x0001ef65     0x21a8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+ .debug_info    0x0002110d      0x15f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+ .debug_info    0x0002126c     0x2803 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+ .debug_info    0x00023a6f      0x308 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+ .debug_info    0x00023d77     0x485e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+ .debug_info    0x000285d5     0x2b11 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+ .debug_info    0x0002b0e6     0x2935 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+ .debug_info    0x0002da1b      0x4e5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+ .debug_info    0x0002df00      0x8af CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+ .debug_info    0x0002e7af      0x248 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+ .debug_info    0x0002e9f7      0x633 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+ .debug_info    0x0002f02a      0x1cc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+ .debug_info    0x0002f1f6      0x21a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+ .debug_info    0x0002f410      0x795 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+ .debug_info    0x0002fba5      0x780 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+ .debug_info    0x00030325       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
+ .debug_info    0x00030348       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
+ .debug_info    0x0003036b       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
+ .debug_info    0x0003038e      0x28a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+ .debug_info    0x00030618       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
+ .debug_info    0x0003063b       0x24 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
+ .debug_info    0x0003065f       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
+ .debug_info    0x00030682      0x28a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+ .debug_info    0x0003090c       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
+ .debug_info    0x0003092f      0x3e4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+ .debug_info    0x00030d13       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
+ .debug_info    0x00030d36      0x2e2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
+ .debug_info    0x00031018     0x211a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+ .debug_info    0x00033132       0x23 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
+ .debug_info    0x00033155      0xb54 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+ .debug_info    0x00033ca9     0x1bc3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+ .debug_info    0x0003586c      0xa6e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+ .debug_info    0x000362da     0x1e41 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+ .debug_info    0x0003811b      0x686 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+ .debug_info    0x000387a1      0x201 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+ .debug_info    0x000389a2     0x12f3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+ .debug_info    0x00039c95     0x27ac CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+ .debug_info    0x0003c441     0x1158 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+ .debug_info    0x0003d599     0x481e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+ .debug_info    0x00041db7      0xb15 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+ .debug_info    0x000428cc     0x1fb7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+ .debug_info    0x00044883     0x1632 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+ .debug_info    0x00045eb5     0x1c0a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+ .debug_info    0x00047abf     0x2843 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
-.debug_abbrev   0x00000000     0x8f09
+.debug_abbrev   0x00000000     0x8f0c
  .debug_abbrev  0x00000000      0x6f6 CMakeFiles/piccolo_os_demo.dir/main.c.c.o
  .debug_abbrev  0x000006f6       0x14 CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
- .debug_abbrev  0x0000070a      0x341 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
- .debug_abbrev  0x00000a4b      0x4f9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
- .debug_abbrev  0x00000f44       0x77 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
- .debug_abbrev  0x00000fbb      0x12b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
- .debug_abbrev  0x000010e6      0x33b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
- .debug_abbrev  0x00001421      0x20d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
- .debug_abbrev  0x0000162e      0x1bb CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
- .debug_abbrev  0x000017e9      0x5ff CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
- .debug_abbrev  0x00001de8       0xee CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
- .debug_abbrev  0x00001ed6      0x48c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
- .debug_abbrev  0x00002362      0x1d5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
- .debug_abbrev  0x00002537      0x67b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
- .debug_abbrev  0x00002bb2      0x4f2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
- .debug_abbrev  0x000030a4      0x4e2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
- .debug_abbrev  0x00003586      0x1d2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
- .debug_abbrev  0x00003758      0x294 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
- .debug_abbrev  0x000039ec      0x145 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
- .debug_abbrev  0x00003b31      0x1d7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
- .debug_abbrev  0x00003d08      0x11b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
- .debug_abbrev  0x00003e23      0x182 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
- .debug_abbrev  0x00003fa5      0x222 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
- .debug_abbrev  0x000041c7      0x294 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
- .debug_abbrev  0x0000445b       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
- .debug_abbrev  0x0000446d       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
- .debug_abbrev  0x0000447f       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
- .debug_abbrev  0x00004491      0x17a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
- .debug_abbrev  0x0000460b       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
- .debug_abbrev  0x0000461d       0x14 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
- .debug_abbrev  0x00004631       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
- .debug_abbrev  0x00004643      0x173 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
- .debug_abbrev  0x000047b6       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
- .debug_abbrev  0x000047c8      0x1ad CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
- .debug_abbrev  0x00004975       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
- .debug_abbrev  0x00004987       0xb8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
- .debug_abbrev  0x00004a3f      0x525 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
- .debug_abbrev  0x00004f64       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
- .debug_abbrev  0x00004f76      0x352 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
- .debug_abbrev  0x000052c8      0x5d6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
- .debug_abbrev  0x0000589e      0x3a4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
- .debug_abbrev  0x00005c42      0x567 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
- .debug_abbrev  0x000061a9      0x16c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
- .debug_abbrev  0x00006315      0x153 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
- .debug_abbrev  0x00006468      0x35c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
- .debug_abbrev  0x000067c4      0x5bd CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
- .debug_abbrev  0x00006d81      0x480 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
- .debug_abbrev  0x00007201      0x7a8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
- .debug_abbrev  0x000079a9      0x344 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
- .debug_abbrev  0x00007ced      0x537 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
- .debug_abbrev  0x00008224      0x412 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
- .debug_abbrev  0x00008636      0x4b4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
- .debug_abbrev  0x00008aea      0x41f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+ .debug_abbrev  0x0000070a      0x344 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+ .debug_abbrev  0x00000a4e      0x4f9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+ .debug_abbrev  0x00000f47       0x77 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+ .debug_abbrev  0x00000fbe      0x12b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
+ .debug_abbrev  0x000010e9      0x33b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+ .debug_abbrev  0x00001424      0x20d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+ .debug_abbrev  0x00001631      0x1bb CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+ .debug_abbrev  0x000017ec      0x5ff CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+ .debug_abbrev  0x00001deb       0xee CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+ .debug_abbrev  0x00001ed9      0x48c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+ .debug_abbrev  0x00002365      0x1d5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+ .debug_abbrev  0x0000253a      0x67b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+ .debug_abbrev  0x00002bb5      0x4f2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+ .debug_abbrev  0x000030a7      0x4e2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+ .debug_abbrev  0x00003589      0x1d2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+ .debug_abbrev  0x0000375b      0x294 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+ .debug_abbrev  0x000039ef      0x145 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+ .debug_abbrev  0x00003b34      0x1d7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+ .debug_abbrev  0x00003d0b      0x11b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+ .debug_abbrev  0x00003e26      0x182 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+ .debug_abbrev  0x00003fa8      0x222 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+ .debug_abbrev  0x000041ca      0x294 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+ .debug_abbrev  0x0000445e       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
+ .debug_abbrev  0x00004470       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
+ .debug_abbrev  0x00004482       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
+ .debug_abbrev  0x00004494      0x17a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+ .debug_abbrev  0x0000460e       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
+ .debug_abbrev  0x00004620       0x14 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
+ .debug_abbrev  0x00004634       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
+ .debug_abbrev  0x00004646      0x173 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+ .debug_abbrev  0x000047b9       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
+ .debug_abbrev  0x000047cb      0x1ad CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+ .debug_abbrev  0x00004978       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
+ .debug_abbrev  0x0000498a       0xb8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
+ .debug_abbrev  0x00004a42      0x525 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+ .debug_abbrev  0x00004f67       0x12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
+ .debug_abbrev  0x00004f79      0x352 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+ .debug_abbrev  0x000052cb      0x5d6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+ .debug_abbrev  0x000058a1      0x3a4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+ .debug_abbrev  0x00005c45      0x567 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+ .debug_abbrev  0x000061ac      0x16c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+ .debug_abbrev  0x00006318      0x153 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+ .debug_abbrev  0x0000646b      0x35c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+ .debug_abbrev  0x000067c7      0x5bd CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+ .debug_abbrev  0x00006d84      0x480 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+ .debug_abbrev  0x00007204      0x7a8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+ .debug_abbrev  0x000079ac      0x344 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+ .debug_abbrev  0x00007cf0      0x537 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+ .debug_abbrev  0x00008227      0x412 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+ .debug_abbrev  0x00008639      0x4b4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+ .debug_abbrev  0x00008aed      0x41f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
 .debug_loclists
-                0x00000000    0x3272f
+                0x00000000    0x3274c
  .debug_loclists
                 0x00000000    0x18ffb CMakeFiles/piccolo_os_demo.dir/main.c.c.o
  .debug_loclists
-                0x00018ffb      0x2b2 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+                0x00018ffb      0x2cf CMakeFiles/piccolo_os_demo.dir/os.c.c.o
  .debug_loclists
-                0x000192ad     0x1a03 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+                0x000192ca     0x1a03 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_loclists
-                0x0001acb0       0x53 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+                0x0001accd       0x53 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
  .debug_loclists
-                0x0001ad03      0x36e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+                0x0001ad20      0x36e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
  .debug_loclists
-                0x0001b071       0xf1 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+                0x0001b08e       0xf1 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
  .debug_loclists
-                0x0001b162       0x7d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+                0x0001b17f       0x7d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
  .debug_loclists
-                0x0001b1df     0x116f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+                0x0001b1fc     0x116f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
  .debug_loclists
-                0x0001c34e       0x41 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+                0x0001c36b       0x41 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
  .debug_loclists
-                0x0001c38f      0xafa CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+                0x0001c3ac      0xafa CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
  .debug_loclists
-                0x0001ce89       0xb6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+                0x0001cea6       0xb6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
  .debug_loclists
-                0x0001cf3f     0x24bd CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+                0x0001cf5c     0x24bd CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
  .debug_loclists
-                0x0001f3fc     0x1a12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+                0x0001f419     0x1a12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
  .debug_loclists
-                0x00020e0e     0x28a5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+                0x00020e2b     0x28a5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
  .debug_loclists
-                0x000236b3      0x1e0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+                0x000236d0      0x1e0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
  .debug_loclists
-                0x00023893      0x532 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+                0x000238b0      0x532 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
  .debug_loclists
-                0x00023dc5       0x47 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+                0x00023de2       0x47 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
  .debug_loclists
-                0x00023e0c      0x38a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+                0x00023e29      0x38a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
  .debug_loclists
-                0x00024196       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+                0x000241b3       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
  .debug_loclists
-                0x000241de       0x7e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+                0x000241fb       0x7e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
  .debug_loclists
-                0x0002425c       0xba CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+                0x00024279       0xba CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
  .debug_loclists
-                0x00024316       0x74 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+                0x00024333       0x74 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
  .debug_loclists
-                0x0002438a       0x3d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+                0x000243a7       0x3d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
  .debug_loclists
-                0x000243c7       0x59 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+                0x000243e4       0x59 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
  .debug_loclists
-                0x00024420      0x206 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+                0x0002443d      0x206 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
  .debug_loclists
-                0x00024626     0x2f65 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+                0x00024643     0x2f65 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
  .debug_loclists
-                0x0002758b      0x431 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+                0x000275a8      0x431 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
  .debug_loclists
-                0x000279bc      0xea9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+                0x000279d9      0xea9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
  .debug_loclists
-                0x00028865      0x2d3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+                0x00028882      0x2d3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
  .debug_loclists
-                0x00028b38      0x7cd CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+                0x00028b55      0x7cd CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
  .debug_loclists
-                0x00029305       0xed CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+                0x00029322       0xed CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
  .debug_loclists
-                0x000293f2      0x3d5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+                0x0002940f      0x3d5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
  .debug_loclists
-                0x000297c7      0x8c5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+                0x000297e4      0x8c5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
  .debug_loclists
-                0x0002a08c     0x1758 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+                0x0002a0a9     0x1758 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
  .debug_loclists
-                0x0002b7e4      0x734 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+                0x0002b801      0x734 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
  .debug_loclists
-                0x0002bf18     0x21d8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+                0x0002bf35     0x21d8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
  .debug_loclists
-                0x0002e0f0      0x43b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+                0x0002e10d      0x43b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
  .debug_loclists
-                0x0002e52b      0xbfe CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+                0x0002e548      0xbfe CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
  .debug_loclists
-                0x0002f129      0x76e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+                0x0002f146      0x76e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
  .debug_loclists
-                0x0002f897      0xe7c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+                0x0002f8b4      0xe7c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
  .debug_loclists
-                0x00030713     0x201c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+                0x00030730     0x201c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
-.debug_aranges  0x00000000     0x1c50
+.debug_aranges  0x00000000     0x1c58
  .debug_aranges
                 0x00000000      0x5c8 CMakeFiles/piccolo_os_demo.dir/main.c.c.o
  .debug_aranges
                 0x000005c8       0x20 CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
  .debug_aranges
-                0x000005e8       0x50 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+                0x000005e8       0x58 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
  .debug_aranges
-                0x00000638      0x120 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+                0x00000640      0x120 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_aranges
-                0x00000758       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+                0x00000760       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
  .debug_aranges
-                0x00000778       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
+                0x00000780       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
  .debug_aranges
-                0x000007a0       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+                0x000007a8       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
  .debug_aranges
-                0x000007e8       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+                0x000007f0       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
  .debug_aranges
-                0x00000830       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+                0x00000838       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
  .debug_aranges
-                0x00000858       0xb0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+                0x00000860       0xb0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
  .debug_aranges
-                0x00000908       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+                0x00000910       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
  .debug_aranges
-                0x00000928       0x98 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+                0x00000930       0x98 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
  .debug_aranges
-                0x000009c0       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+                0x000009c8       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
  .debug_aranges
-                0x000009f0       0xe0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+                0x000009f8       0xe0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
  .debug_aranges
-                0x00000ad0       0xf0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+                0x00000ad8       0xf0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
  .debug_aranges
-                0x00000bc0       0x90 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+                0x00000bc8       0x90 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
  .debug_aranges
-                0x00000c50       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+                0x00000c58       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
  .debug_aranges
-                0x00000c78       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+                0x00000c80       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
  .debug_aranges
-                0x00000cd8       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+                0x00000ce0       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
  .debug_aranges
-                0x00000d08       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+                0x00000d10       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
  .debug_aranges
-                0x00000d48       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+                0x00000d50       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
  .debug_aranges
-                0x00000d78       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+                0x00000d80       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
  .debug_aranges
-                0x00000db0       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+                0x00000db8       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
  .debug_aranges
-                0x00000df8       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+                0x00000e00       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
  .debug_aranges
-                0x00000e18       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
+                0x00000e20       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
  .debug_aranges
-                0x00000e78       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
+                0x00000e80       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
  .debug_aranges
-                0x00000eb8      0x140 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
+                0x00000ec0      0x140 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
  .debug_aranges
-                0x00000ff8       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+                0x00001000       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
  .debug_aranges
-                0x00001018       0xc8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
+                0x00001020       0xc8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
  .debug_aranges
-                0x000010e0       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
+                0x000010e8       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
  .debug_aranges
-                0x00001100      0x130 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
+                0x00001108      0x130 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
  .debug_aranges
-                0x00001230       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+                0x00001238       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
  .debug_aranges
-                0x00001250       0x50 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
+                0x00001258       0x50 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
  .debug_aranges
-                0x000012a0       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+                0x000012a8       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
  .debug_aranges
-                0x000012d8       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
+                0x000012e0       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
  .debug_aranges
-                0x00001310       0x18 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
+                0x00001318       0x18 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
  .debug_aranges
-                0x00001328       0x90 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+                0x00001330       0x90 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
  .debug_aranges
-                0x000013b8       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
+                0x000013c0       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
  .debug_aranges
-                0x000013e0       0xa0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+                0x000013e8       0xa0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
  .debug_aranges
-                0x00001480       0xc8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+                0x00001488       0xc8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
  .debug_aranges
-                0x00001548       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+                0x00001550       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
  .debug_aranges
-                0x000015a8       0x68 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+                0x000015b0       0x68 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
  .debug_aranges
-                0x00001610       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+                0x00001618       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
  .debug_aranges
-                0x00001640       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+                0x00001648       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
  .debug_aranges
-                0x00001670       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+                0x00001678       0x60 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
  .debug_aranges
-                0x000016d0       0xb8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+                0x000016d8       0xb8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
  .debug_aranges
-                0x00001788       0x70 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+                0x00001790       0x70 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
  .debug_aranges
-                0x000017f8      0x170 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+                0x00001800      0x170 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
  .debug_aranges
-                0x00001968       0x50 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+                0x00001970       0x50 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
  .debug_aranges
-                0x000019b8       0xc0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+                0x000019c0       0xc0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
  .debug_aranges
-                0x00001a78       0x80 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+                0x00001a80       0x80 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
  .debug_aranges
-                0x00001af8       0xa8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+                0x00001b00       0xa8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
  .debug_aranges
-                0x00001ba0       0xb0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+                0x00001ba8       0xb0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
 .debug_rnglists
-                0x00000000     0x63b2
+                0x00000000     0x63b8
  .debug_rnglists
                 0x00000000     0x2070 CMakeFiles/piccolo_os_demo.dir/main.c.c.o
  .debug_rnglists
-                0x00002070       0x6d CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+                0x00002070       0x73 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
  .debug_rnglists
-                0x000020dd      0x5c7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+                0x000020e3      0x5c7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_rnglists
-                0x000026a4       0x13 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+                0x000026aa       0x13 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
  .debug_rnglists
-                0x000026b7       0x19 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
+                0x000026bd       0x19 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
  .debug_rnglists
-                0x000026d0       0xc5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+                0x000026d6       0xc5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
  .debug_rnglists
-                0x00002795       0x67 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+                0x0000279b       0x67 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
  .debug_rnglists
-                0x000027fc       0x3d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+                0x00002802       0x3d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
  .debug_rnglists
-                0x00002839      0x355 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+                0x0000283f      0x355 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
  .debug_rnglists
-                0x00002b8e       0x1f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+                0x00002b94       0x1f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
  .debug_rnglists
-                0x00002bad      0x32c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+                0x00002bb3      0x32c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
  .debug_rnglists
-                0x00002ed9       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+                0x00002edf       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
  .debug_rnglists
-                0x00002f04      0x77c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+                0x00002f0a      0x77c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
  .debug_rnglists
-                0x00003680      0x2c6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+                0x00003686      0x2c6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
  .debug_rnglists
-                0x00003946      0x4ad CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+                0x0000394c      0x4ad CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
  .debug_rnglists
-                0x00003df3       0x5c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+                0x00003df9       0x5c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
  .debug_rnglists
-                0x00003e4f       0xdf CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+                0x00003e55       0xdf CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
  .debug_rnglists
-                0x00003f2e       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+                0x00003f34       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
  .debug_rnglists
-                0x00003f59      0x10c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+                0x00003f5f      0x10c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
  .debug_rnglists
-                0x00004065       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+                0x0000406b       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
  .debug_rnglists
-                0x00004090       0x3d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+                0x00004096       0x3d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
  .debug_rnglists
-                0x000040cd       0x49 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+                0x000040d3       0x49 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
  .debug_rnglists
-                0x00004116       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+                0x0000411c       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
  .debug_rnglists
-                0x00004136       0x43 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
+                0x0000413c       0x43 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
  .debug_rnglists
-                0x00004179       0x2c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
+                0x0000417f       0x2c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
  .debug_rnglists
-                0x000041a5       0xed CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
+                0x000041ab       0xed CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
  .debug_rnglists
-                0x00004292       0x14 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+                0x00004298       0x14 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
  .debug_rnglists
-                0x000042a6       0x99 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
+                0x000042ac       0x99 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
  .debug_rnglists
-                0x0000433f       0xdf CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
+                0x00004345       0xdf CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
  .debug_rnglists
-                0x0000441e       0x13 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+                0x00004424       0x13 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
  .debug_rnglists
-                0x00004431       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
+                0x00004437       0x38 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
  .debug_rnglists
-                0x00004469       0x49 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+                0x0000446f       0x49 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
  .debug_rnglists
-                0x000044b2       0x25 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
+                0x000044b8       0x25 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
  .debug_rnglists
-                0x000044d7      0x27c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+                0x000044dd      0x27c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
  .debug_rnglists
-                0x00004753       0x1b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
+                0x00004759       0x1b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
  .debug_rnglists
-                0x0000476e       0x7f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+                0x00004774       0x7f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
  .debug_rnglists
-                0x000047ed      0x297 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+                0x000047f3      0x297 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
  .debug_rnglists
-                0x00004a84       0x43 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+                0x00004a8a       0x43 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
  .debug_rnglists
-                0x00004ac7      0x13d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+                0x00004acd      0x13d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
  .debug_rnglists
-                0x00004c04       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+                0x00004c0a       0x2b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
  .debug_rnglists
-                0x00004c2f       0x70 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+                0x00004c35       0x70 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
  .debug_rnglists
-                0x00004c9f      0x297 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+                0x00004ca5      0x297 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
  .debug_rnglists
-                0x00004f36      0x44a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+                0x00004f3c      0x44a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
  .debug_rnglists
-                0x00005380       0xec CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+                0x00005386       0xec CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
  .debug_rnglists
-                0x0000546c      0x5f5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+                0x00005472      0x5f5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
  .debug_rnglists
-                0x00005a61       0x8e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+                0x00005a67       0x8e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
  .debug_rnglists
-                0x00005aef      0x1df CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+                0x00005af5      0x1df CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
  .debug_rnglists
-                0x00005cce      0x12c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+                0x00005cd4      0x12c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
  .debug_rnglists
-                0x00005dfa      0x1d4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+                0x00005e00      0x1d4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
  .debug_rnglists
-                0x00005fce      0x3e4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+                0x00005fd4      0x3e4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
-.debug_line     0x00000000    0x2fe6c
+.debug_line     0x00000000    0x2feb7
  .debug_line    0x00000000     0xd6cc CMakeFiles/piccolo_os_demo.dir/main.c.c.o
  .debug_line    0x0000d6cc       0x88 CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
- .debug_line    0x0000d754      0x5d9 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
- .debug_line    0x0000dd2d     0x1c49 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
- .debug_line    0x0000f976      0x244 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
- .debug_line    0x0000fbba      0x281 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
- .debug_line    0x0000fe3b      0x8e2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
- .debug_line    0x0001071d      0x49c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
- .debug_line    0x00010bb9      0x390 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
- .debug_line    0x00010f49     0x16b0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
- .debug_line    0x000125f9      0x2bb CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
- .debug_line    0x000128b4     0x1ac2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
- .debug_line    0x00014376      0x3e3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
- .debug_line    0x00014759     0x30b2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
- .debug_line    0x0001780b     0x1cc2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
- .debug_line    0x000194cd     0x1daa CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
- .debug_line    0x0001b277      0x4be CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
- .debug_line    0x0001b735      0x77e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
- .debug_line    0x0001beb3      0x31a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
- .debug_line    0x0001c1cd      0x475 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
- .debug_line    0x0001c642      0x333 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
- .debug_line    0x0001c975      0x2fb CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
- .debug_line    0x0001cc70      0x500 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
- .debug_line    0x0001d170      0x501 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
- .debug_line    0x0001d671      0x107 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
- .debug_line    0x0001d778      0x2a9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
- .debug_line    0x0001da21      0x3f8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
- .debug_line    0x0001de19      0x4ee CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
- .debug_line    0x0001e307      0x66d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
- .debug_line    0x0001e974       0x61 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
- .debug_line    0x0001e9d5      0x3b4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
- .debug_line    0x0001ed89      0x403 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
- .debug_line    0x0001f18c      0x195 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
- .debug_line    0x0001f321      0x289 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
- .debug_line    0x0001f5aa       0x94 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
- .debug_line    0x0001f63e      0x1e3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
- .debug_line    0x0001f821     0x1b8f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
- .debug_line    0x000213b0       0xa5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
- .debug_line    0x00021455      0x81f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
- .debug_line    0x00021c74     0x145b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
- .debug_line    0x000230cf      0x4e5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
- .debug_line    0x000235b4     0x1118 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
- .debug_line    0x000246cc      0x38b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
- .debug_line    0x00024a57      0x652 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
- .debug_line    0x000250a9      0xb15 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
- .debug_line    0x00025bbe     0x1fd4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
- .debug_line    0x00027b92      0xc89 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
- .debug_line    0x0002881b     0x27f8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
- .debug_line    0x0002b013      0x6e6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
- .debug_line    0x0002b6f9     0x10ff CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
- .debug_line    0x0002c7f8      0xacc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
- .debug_line    0x0002d2c4     0x10e5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
- .debug_line    0x0002e3a9     0x1ac3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+ .debug_line    0x0000d754      0x624 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+ .debug_line    0x0000dd78     0x1c49 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+ .debug_line    0x0000f9c1      0x244 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+ .debug_line    0x0000fc05      0x281 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
+ .debug_line    0x0000fe86      0x8e2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+ .debug_line    0x00010768      0x49c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+ .debug_line    0x00010c04      0x390 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+ .debug_line    0x00010f94     0x16b0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+ .debug_line    0x00012644      0x2bb CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+ .debug_line    0x000128ff     0x1ac2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+ .debug_line    0x000143c1      0x3e3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+ .debug_line    0x000147a4     0x30b2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+ .debug_line    0x00017856     0x1cc2 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+ .debug_line    0x00019518     0x1daa CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+ .debug_line    0x0001b2c2      0x4be CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+ .debug_line    0x0001b780      0x77e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+ .debug_line    0x0001befe      0x31a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+ .debug_line    0x0001c218      0x475 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+ .debug_line    0x0001c68d      0x333 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+ .debug_line    0x0001c9c0      0x2fb CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+ .debug_line    0x0001ccbb      0x500 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+ .debug_line    0x0001d1bb      0x501 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+ .debug_line    0x0001d6bc      0x107 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
+ .debug_line    0x0001d7c3      0x2a9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
+ .debug_line    0x0001da6c      0x3f8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
+ .debug_line    0x0001de64      0x4ee CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+ .debug_line    0x0001e352      0x66d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
+ .debug_line    0x0001e9bf       0x61 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
+ .debug_line    0x0001ea20      0x3b4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
+ .debug_line    0x0001edd4      0x403 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+ .debug_line    0x0001f1d7      0x195 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
+ .debug_line    0x0001f36c      0x289 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+ .debug_line    0x0001f5f5       0x94 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
+ .debug_line    0x0001f689      0x1e3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
+ .debug_line    0x0001f86c     0x1b8f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+ .debug_line    0x000213fb       0xa5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
+ .debug_line    0x000214a0      0x81f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+ .debug_line    0x00021cbf     0x145b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+ .debug_line    0x0002311a      0x4e5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+ .debug_line    0x000235ff     0x1118 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+ .debug_line    0x00024717      0x38b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+ .debug_line    0x00024aa2      0x652 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+ .debug_line    0x000250f4      0xb15 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+ .debug_line    0x00025c09     0x1fd4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+ .debug_line    0x00027bdd      0xc89 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+ .debug_line    0x00028866     0x27f8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+ .debug_line    0x0002b05e      0x6e6 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+ .debug_line    0x0002b744     0x10ff CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+ .debug_line    0x0002c843      0xacc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+ .debug_line    0x0002d30f     0x10e5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+ .debug_line    0x0002e3f4     0x1ac3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
-.debug_str      0x00000000     0xb10d
- .debug_str     0x00000000     0xb10d CMakeFiles/piccolo_os_demo.dir/main.c.c.o
+.debug_str      0x00000000     0xb128
+ .debug_str     0x00000000     0xb128 CMakeFiles/piccolo_os_demo.dir/main.c.c.o
                                0x367f (size before relaxing)
- .debug_str     0x0000b10d       0x69 CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
- .debug_str     0x0000b10d      0x3e5 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
- .debug_str     0x0000b10d      0xc64 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
- .debug_str     0x0000b10d      0x1e8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
- .debug_str     0x0000b10d      0x1ef CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
- .debug_str     0x0000b10d      0x372 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
- .debug_str     0x0000b10d      0x31b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
- .debug_str     0x0000b10d      0x22e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
- .debug_str     0x0000b10d      0xa52 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
- .debug_str     0x0000b10d      0x1fa CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
- .debug_str     0x0000b10d      0x78d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
- .debug_str     0x0000b10d      0x2ba CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
- .debug_str     0x0000b10d     0x118a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
- .debug_str     0x0000b10d      0x9d5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
- .debug_str     0x0000b10d      0x984 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
- .debug_str     0x0000b10d      0x44d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
- .debug_str     0x0000b10d      0x384 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
- .debug_str     0x0000b10d      0x27c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
- .debug_str     0x0000b10d      0x32a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
- .debug_str     0x0000b10d      0x231 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
- .debug_str     0x0000b10d      0x281 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
- .debug_str     0x0000b10d      0x775 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
- .debug_str     0x0000b10d      0x489 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
- .debug_str     0x0000b10d       0x79 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
- .debug_str     0x0000b10d       0x7c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
- .debug_str     0x0000b10d       0x7e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
- .debug_str     0x0000b10d      0x2b1 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
- .debug_str     0x0000b10d       0x84 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
- .debug_str     0x0000b10d       0x82 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
- .debug_str     0x0000b10d       0x7c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
- .debug_str     0x0000b10d      0x296 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
- .debug_str     0x0000b10d       0x82 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
- .debug_str     0x0000b10d      0x227 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
- .debug_str     0x0000b10d       0x79 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
- .debug_str     0x0000b10d      0x42a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
- .debug_str     0x0000b10d      0x4c4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
- .debug_str     0x0000b10d       0x6d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
- .debug_str     0x0000b10d      0x70f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
- .debug_str     0x0000b10d      0xad3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
- .debug_str     0x0000b10d      0xde9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
- .debug_str     0x0000b10d      0xe12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
- .debug_str     0x0000b10d      0xf8b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
- .debug_str     0x0000b10d      0x260 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
- .debug_str     0x0000b10d      0x6ba CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
- .debug_str     0x0000b10d     0x1140 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
- .debug_str     0x0000b10d      0x9df CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
- .debug_str     0x0000b10d     0x1a4a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
- .debug_str     0x0000b10d      0x675 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
- .debug_str     0x0000b10d     0x16d7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
- .debug_str     0x0000b10d      0xd92 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
- .debug_str     0x0000b10d      0xb9e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
- .debug_str     0x0000b10d      0x61f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+ .debug_str     0x0000b128       0x69 CMakeFiles/piccolo_os_demo.dir/context_switch.s.o
+ .debug_str     0x0000b128      0x40a CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+ .debug_str     0x0000b128      0xc64 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+ .debug_str     0x0000b128      0x1e8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+ .debug_str     0x0000b128      0x1ef CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
+ .debug_str     0x0000b128      0x372 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+ .debug_str     0x0000b128      0x31b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+ .debug_str     0x0000b128      0x22e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+ .debug_str     0x0000b128      0xa52 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+ .debug_str     0x0000b128      0x1fa CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+ .debug_str     0x0000b128      0x78d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+ .debug_str     0x0000b128      0x2ba CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+ .debug_str     0x0000b128     0x118a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+ .debug_str     0x0000b128      0x9d5 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+ .debug_str     0x0000b128      0x984 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+ .debug_str     0x0000b128      0x44d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+ .debug_str     0x0000b128      0x384 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+ .debug_str     0x0000b128      0x27c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+ .debug_str     0x0000b128      0x32a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+ .debug_str     0x0000b128      0x231 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+ .debug_str     0x0000b128      0x281 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+ .debug_str     0x0000b128      0x775 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+ .debug_str     0x0000b128      0x489 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+ .debug_str     0x0000b128       0x79 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o
+ .debug_str     0x0000b128       0x7c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_divider/divider_hardware.S.o
+ .debug_str     0x0000b128       0x7e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_aeabi_rp2040.S.o
+ .debug_str     0x0000b128      0x2b1 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+ .debug_str     0x0000b128       0x84 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim_rp2040.S.o
+ .debug_str     0x0000b128       0x82 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.o
+ .debug_str     0x0000b128       0x7c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_aeabi_rp2040.S.o
+ .debug_str     0x0000b128      0x296 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+ .debug_str     0x0000b128       0x82 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim_rp2040.S.o
+ .debug_str     0x0000b128      0x227 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+ .debug_str     0x0000b128       0x79 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.o
+ .debug_str     0x0000b128      0x42a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
+ .debug_str     0x0000b128      0x4c4 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+ .debug_str     0x0000b128       0x6d CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
+ .debug_str     0x0000b128      0x70f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+ .debug_str     0x0000b128      0xad3 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+ .debug_str     0x0000b128      0xde9 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+ .debug_str     0x0000b128      0xe12 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+ .debug_str     0x0000b128      0xf8b CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+ .debug_str     0x0000b128      0x260 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+ .debug_str     0x0000b128      0x6ba CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+ .debug_str     0x0000b128     0x1140 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+ .debug_str     0x0000b128      0x9df CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+ .debug_str     0x0000b128     0x1a4a CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+ .debug_str     0x0000b128      0x675 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+ .debug_str     0x0000b128     0x16d7 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+ .debug_str     0x0000b128      0xd92 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+ .debug_str     0x0000b128      0xb9e CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+ .debug_str     0x0000b128      0x61f CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
 
-.debug_frame    0x00000000     0x45d8
+.debug_frame    0x00000000     0x45f4
  .debug_frame   0x00000000     0x1378 CMakeFiles/piccolo_os_demo.dir/main.c.c.o
- .debug_frame   0x00001378       0xd0 CMakeFiles/piccolo_os_demo.dir/os.c.c.o
- .debug_frame   0x00001448      0x330 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
- .debug_frame   0x00001778       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
- .debug_frame   0x00001798       0x44 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
- .debug_frame   0x000017dc       0xa0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
- .debug_frame   0x0000187c       0xa8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
- .debug_frame   0x00001924       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
- .debug_frame   0x00001954      0x1bc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
- .debug_frame   0x00001b10       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
- .debug_frame   0x00001b30      0x1e0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
- .debug_frame   0x00001d10       0x50 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
- .debug_frame   0x00001d60      0x2d0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
- .debug_frame   0x00002030      0x2c0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
- .debug_frame   0x000022f0      0x1f0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
- .debug_frame   0x000024e0       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
- .debug_frame   0x00002520       0xc0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
- .debug_frame   0x000025e0       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
- .debug_frame   0x00002620       0xa0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
- .debug_frame   0x000026c0       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
- .debug_frame   0x00002700       0x70 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
- .debug_frame   0x00002770       0x84 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
- .debug_frame   0x000027f4       0x2c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
- .debug_frame   0x00002820       0x2c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
- .debug_frame   0x0000284c       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
- .debug_frame   0x00002874       0x74 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
- .debug_frame   0x000028e8      0x1ec CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
- .debug_frame   0x00002ad4      0x174 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
- .debug_frame   0x00002c48      0x2a8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
- .debug_frame   0x00002ef0       0xbc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
- .debug_frame   0x00002fac      0x118 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
- .debug_frame   0x000030c4       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
- .debug_frame   0x0000310c       0x5c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
- .debug_frame   0x00003168      0x110 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
- .debug_frame   0x00003278      0x200 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
- .debug_frame   0x00003478      0x128 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
- .debug_frame   0x000035a0      0x3d0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
- .debug_frame   0x00003970       0xc0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
- .debug_frame   0x00003a30      0x240 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
- .debug_frame   0x00003c70      0x164 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
- .debug_frame   0x00003dd4      0x208 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
- .debug_frame   0x00003fdc      0x220 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
- .debug_frame   0x000041fc       0x28 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-calloc.o)
- .debug_frame   0x00004224       0x2c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-callocr.o)
- .debug_frame   0x00004250       0x3c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-mallocr.o)
- .debug_frame   0x0000428c       0x40 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-mlock.o)
- .debug_frame   0x000042cc      0x138 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-findfp.o)
- .debug_frame   0x00004404       0x2c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-sbrkr.o)
- .debug_frame   0x00004430       0x20 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-errno.o)
- .debug_frame   0x00004450       0x28 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-sysconf.o)
- .debug_frame   0x00004478       0xb0 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-lock.o)
- .debug_frame   0x00004528       0x28 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-strlen-stub.o)
- .debug_frame   0x00004550       0x5c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-freer.o)
- .debug_frame   0x000045ac       0x2c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-reent.o)
+ .debug_frame   0x00001378       0xec CMakeFiles/piccolo_os_demo.dir/os.c.c.o
+ .debug_frame   0x00001464      0x330 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.o
+ .debug_frame   0x00001794       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2040/pico_platform/platform.c.o
+ .debug_frame   0x000017b4       0x44 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_platform_panic/panic.c.o
+ .debug_frame   0x000017f8       0xa0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/hardware_claim/claim.c.o
+ .debug_frame   0x00001898       0xa8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync/sync.c.o
+ .debug_frame   0x00001940       0x30 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+ .debug_frame   0x00001970      0x1bc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_irq/irq.c.o
+ .debug_frame   0x00001b2c       0x20 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/lock_core.c.o
+ .debug_frame   0x00001b4c      0x1e0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/mutex.c.o
+ .debug_frame   0x00001d2c       0x50 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_sync/critical_section.c.o
+ .debug_frame   0x00001d7c      0x2d0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/common/pico_time/time.c.o
+ .debug_frame   0x0000204c      0x2c0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_timer/timer.c.o
+ .debug_frame   0x0000230c      0x1f0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.o
+ .debug_frame   0x000024fc       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_pll/pll.c.o
+ .debug_frame   0x0000253c       0xc0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.o
+ .debug_frame   0x000025fc       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_ticks/ticks.c.o
+ .debug_frame   0x0000263c       0xa0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.o
+ .debug_frame   0x000026dc       0x40 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.o
+ .debug_frame   0x0000271c       0x70 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime/runtime.c.o
+ .debug_frame   0x0000278c       0x84 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init.c.o
+ .debug_frame   0x00002810       0x2c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+ .debug_frame   0x0000283c       0x2c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_double/double_init_rom_rp2040.c.o
+ .debug_frame   0x00002868       0x28 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_float/float_init_rom_rp2040.c.o
+ .debug_frame   0x00002890       0x74 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_malloc/malloc.c.o
+ .debug_frame   0x00002904      0x1ec CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_printf/printf.c.o
+ .debug_frame   0x00002af0      0x174 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+ .debug_frame   0x00002c64      0x2a8 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
+ .debug_frame   0x00002f0c       0xbc CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/reset_interface.c.o
+ .debug_frame   0x00002fc8      0x118 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+ .debug_frame   0x000030e0       0x48 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb_descriptors.c.o
+ .debug_frame   0x00003128       0x5c CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o
+ .debug_frame   0x00003184      0x110 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/src/rp2_common/hardware_flash/flash.c.o
+ .debug_frame   0x00003294      0x200 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+ .debug_frame   0x00003494      0x128 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+ .debug_frame   0x000035bc      0x3d0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd.c.o
+ .debug_frame   0x0000398c       0xc0 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/device/usbd_control.c.o
+ .debug_frame   0x00003a4c      0x240 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.o
+ .debug_frame   0x00003c8c      0x164 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.o
+ .debug_frame   0x00003df0      0x208 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/tusb.c.o
+ .debug_frame   0x00003ff8      0x220 CMakeFiles/piccolo_os_demo.dir/Users/ab25cq/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.o
+ .debug_frame   0x00004218       0x28 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-calloc.o)
+ .debug_frame   0x00004240       0x2c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-callocr.o)
+ .debug_frame   0x0000426c       0x3c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-mallocr.o)
+ .debug_frame   0x000042a8       0x40 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-mlock.o)
+ .debug_frame   0x000042e8      0x138 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-findfp.o)
+ .debug_frame   0x00004420       0x2c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-sbrkr.o)
+ .debug_frame   0x0000444c       0x20 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-errno.o)
+ .debug_frame   0x0000446c       0x28 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-sysconf.o)
+ .debug_frame   0x00004494       0xb0 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-lock.o)
+ .debug_frame   0x00004544       0x28 /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-strlen-stub.o)
+ .debug_frame   0x0000456c       0x5c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-freer.o)
+ .debug_frame   0x000045c8       0x2c /Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg.a(libc_a-reent.o)
 
 .debug_line_str
                 0x00000000      0x341

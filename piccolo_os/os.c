@@ -105,7 +105,6 @@ void piccolo_init() {
     __piccolo_task_init();
 }
 
-/*
 volatile bool timer_fired = false;
 
 // タイマ割り込みハンドラ
@@ -119,7 +118,6 @@ void timer_callback(uint alarm_num) {
     if (piccolo_ctx.current_task >= piccolo_ctx.task_count)
          piccolo_ctx.current_task = 0;
 }
-*/
 
 
 void timer_init(void) {

@@ -302,6 +302,7 @@ typedef struct anonymous_typeX14 piccolo_os_internals_t;
 typedef unsigned int piccolo_sleep_t;
 
 struct anonymous_typeX14 piccolo_ctx;
+_Bool timer_fired=0;
 // source head
 #include "stdint.h"
 #include "stdarg.h"
@@ -555,6 +556,7 @@ int piccolo_create_task(void (*pointer_to_task_function)());
 void piccolo_sleep(unsigned int* start, int ticks);
 void __piccolo_task_init();
 void piccolo_init();
+void timer_callback(unsigned int alarm_num);
 void timer_init();
 void piccolo_start();
 // uniq global variable
@@ -2035,6 +2037,14 @@ void piccolo_init(){
     piccolo_ctx.task_count=0;
     stdio_init_all();
     __piccolo_task_init();
+}
+
+void timer_callback(unsigned int alarm_num){
+    piccolo_ctx.the_tasks[piccolo_ctx.current_task]=__piccolo_pre_switch(piccolo_ctx.the_tasks[piccolo_ctx.current_task]);
+    piccolo_ctx.current_task++;
+    if(    piccolo_ctx.current_task>=piccolo_ctx.task_count) {
+        piccolo_ctx.current_task=0;
+    }
 }
 
 void timer_init(){

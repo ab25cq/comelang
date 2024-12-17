@@ -215,17 +215,17 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         while(*info->p) {
             parse_sharp();
             
-            char* head = info.p;
-            int head_sline = info.sline;
-            string buf = parse_word();
-            
-            parse_sharp();
-            
             if(block && *info->p == '}') {
                 info->p++;
                 skip_spaces_and_lf(info);
                 break;
             }
+            
+            char* head = info.p;
+            int head_sline = info.sline;
+            string buf = parse_word();
+            
+            parse_sharp();
             
             sNode*% node = top_level(buf, head, head_sline, info);
             parse_sharp();
