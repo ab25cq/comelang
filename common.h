@@ -411,6 +411,7 @@ struct sInfo
     bool in_top_level;
     bool remove_comment;
     int sline_real;
+    int sline_block;
 };
 
 module sCurrentNodeModule

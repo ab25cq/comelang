@@ -37,6 +37,7 @@ bool node_compile(sNode* node, sInfo* info=info)
 {
     string sname = string(info->sname);
     int sline = info->sline;
+    int sline_real = info->sline_real;
     
     info->sname = string(node->sname());
     info->sline = node->sline();
@@ -48,6 +49,7 @@ bool node_compile(sNode* node, sInfo* info=info)
     
     info->sname = string(sname);
     info->sline = sline;
+    info->sline_real = sline_real;
     
     return result;
 }
@@ -76,12 +78,12 @@ void err_msg(sInfo* info, char* msg, ...)
         if(last_lf) {
             int col = info.p - last_lf;
         
-            printf("%s %d(real %d) %d: %s\n", info.sname, info.sline, info.sline_real, col, msg2);
+            printf("%s %d(real %d)(block %d) %d: %s\n", info.sname, info.sline, info.sline_real, info.sline_block, col, msg2);
         }
         else {
             int col = info.p - info.head;
         
-            printf("%s %d(real %d) %d: %s\n", info.sname, info.sline, info.sline_real, col, msg2);
+            printf("%s %d(real %d)(block %d) %d: %s\n", info.sname, info.sline, info.sline_real, info.sline_block, col, msg2);
         }
         
         info.err_num++;

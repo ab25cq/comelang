@@ -358,6 +358,8 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
         parse_sharp();
         sNode*% node;
         
+        info.sline_block = info.sline;
+        
         if(*info->p == ';') {
             info->p++;
             skip_spaces_and_lf();

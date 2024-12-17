@@ -1707,6 +1707,7 @@ struct sInfo
     _Bool in_top_level;
     _Bool remove_comment;
     int sline_real;
+    int sline_block;
 };
 
 struct tuple2$2sTypephcharph
@@ -4175,15 +4176,15 @@ struct sType* __dec_obj106;
 _Bool __result280__;
     info->current_stack_num++;
     class_name_271=(char*)come_increment_ref_count(xsprintf("__current_stack%d__",info->current_stack_num));
-    current_stack_272=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "./common.h", 441, "sClass")),class_name_271,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info));
+    current_stack_272=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "./common.h", 442, "sClass")),class_name_271,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info));
     vtable_273=info->lv_table;
     while(vtable_273) {
         for(        o2_saved_274=(struct map$2charphsVarph*)come_increment_ref_count((vtable_273->mVars)),it_277=map$2charphsVarph_begin((o2_saved_274));        !map$2charphsVarph_end((o2_saved_274));        it_277=map$2charphsVarph_next((o2_saved_274))        ){
             key_280=it_277;
-            value_281=((struct sVar*)come_null_check(map$2charphsVarphp_operator_load_element(vtable_273->mVars,key_280), "./common.h", 448, 0));
+            value_281=((struct sVar*)come_null_check(map$2charphsVarphp_operator_load_element(vtable_273->mVars,key_280), "./common.h", 449, 0));
             type2_295=(struct sType*)come_increment_ref_count(sType_clone(value_281->mType));
             type2_295->mPointerNum++;
-            item_314=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "./common.h", 454, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(__builtin_string(value_281->mCValueName)),(struct sType*)come_increment_ref_count(type2_295)));
+            item_314=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "./common.h", 455, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(__builtin_string(value_281->mCValueName)),(struct sType*)come_increment_ref_count(type2_295)));
             if(            value_281->mCValueName!=((void*)0)) {
                 if(                strcmp(value_281->mCValueName,"__list_values")==0) {
                 }
@@ -4198,7 +4199,7 @@ _Bool __result280__;
                     list$1sNodeph_reset(type3_315->mArrayNum);
                     type3_315->mPointerNum=1;
                     type3_315->mOriginIsArray=(_Bool)1;
-                    item2_318=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "./common.h", 474, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(__builtin_string(value_281->mCValueName)),(struct sType*)come_increment_ref_count(type3_315)));
+                    item2_318=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "./common.h", 475, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(__builtin_string(value_281->mCValueName)),(struct sType*)come_increment_ref_count(type3_315)));
                     list$1tuple2$2charphsTypephph_push_back(current_stack_272->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypephp_clone(item2_318)));
                     value_281->mType->mOriginIsArray=(_Bool)1;
                     /*i*/come_call_finalizer3(type3_315,sType_finalize, 0, 0, 0, 0, (void*)0);
@@ -4222,9 +4223,9 @@ _Bool __result280__;
     while(vtable_273) {
         for(        o2_saved_370=(struct map$2charphsVarph*)come_increment_ref_count((vtable_273->mVars)),it_371=map$2charphsVarph_begin((o2_saved_370));        !map$2charphsVarph_end((o2_saved_370));        it_371=map$2charphsVarph_next((o2_saved_370))        ){
             key_372=it_371;
-            value_373=((struct sVar*)come_null_check(map$2charphsVarphp_operator_load_element(vtable_273->mVars,key_372), "./common.h", 499, 1));
+            value_373=((struct sVar*)come_null_check(map$2charphsVarphp_operator_load_element(vtable_273->mVars,key_372), "./common.h", 500, 1));
             type2_374=(struct sType*)come_increment_ref_count(sType_clone(value_373->mType));
-            item_375=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "./common.h", 503, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(value_373->mCValueName),(struct sType*)come_increment_ref_count(type2_374)));
+            item_375=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph*)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "./common.h", 504, "struct tuple2$2charphsTypeph")),(char*)come_increment_ref_count(value_373->mCValueName),(struct sType*)come_increment_ref_count(type2_374)));
             if(            value_373->mCValueName!=((void*)0)) {
                 if(                strcmp(value_373->mCValueName,"__list_values")==0) {
                 }
@@ -4249,12 +4250,12 @@ _Bool __result280__;
         /*i*/come_call_finalizer3(o2_saved_370,map$2charphsVarphp_finalize, 0, 0, 0, 0, (void*)0);
         vtable_273=vtable_273->mParent;
     }
-    come_value_376=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "./common.h", 532, "CVALUE"))));
+    come_value_376=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "./common.h", 533, "CVALUE"))));
     __dec_obj105=come_value_376->c_value;
     come_value_376->c_value=(char*)come_increment_ref_count(xsprintf("&__current_stack%d__",info->current_stack_num));
     /*G*/ __dec_obj105 = come_decrement_ref_count2(__dec_obj105, (void*)0, (void*)0, 0,0,0, (void*)0);
     __dec_obj106=come_value_376->type;
-    come_value_376->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "./common.h", 535, "sType")),class_name_271,(_Bool)0,info));
+    come_value_376->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "./common.h", 536, "sType")),class_name_271,(_Bool)0,info));
     come_call_finalizer3(__dec_obj106,sType_finalize, 0, 0, 0, 0, (void*)0);
     come_value_376->var=((void*)0);
     add_come_last_code(info,"%s;\n",come_value_376->c_value);

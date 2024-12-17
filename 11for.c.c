@@ -1707,6 +1707,7 @@ struct sInfo
     _Bool in_top_level;
     _Bool remove_comment;
     int sline_real;
+    int sline_block;
 };
 
 struct tuple2$2sTypephcharph
