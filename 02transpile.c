@@ -40,6 +40,7 @@ bool node_compile(sNode* node, sInfo* info=info)
     
     info->sname = string(node->sname());
     info->sline = node->sline();
+    info->sline_real = node->sline_real();
     
     write_source_file_position_to_source();
     
@@ -75,12 +76,12 @@ void err_msg(sInfo* info, char* msg, ...)
         if(last_lf) {
             int col = info.p - last_lf;
         
-            printf("%s %d(top %d) %d: %s\n", info.sname, info.sline, info.sline_top, col, msg2);
+            printf("%s %d(real %d) %d: %s\n", info.sname, info.sline, info.sline_real, col, msg2);
         }
         else {
             int col = info.p - info.head;
         
-            printf("%s %d(top %d) %d: %s\n", info.sname, info.sline, info.sline_top, col, msg2);
+            printf("%s %d(real %d) %d: %s\n", info.sname, info.sline, info.sline_real, col, msg2);
         }
         
         info.err_num++;

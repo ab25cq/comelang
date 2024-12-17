@@ -1232,6 +1232,8 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 7
 {
+    int sline_real = info.sline_real;
+    info.sline_real = head_sline;
     bool is_type_name_flag = is_type_name(buf);
     
     /// backtrace ///
@@ -1347,7 +1349,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             right_value = post_position_operator(right_value, info);
             parse_sharp();
             
-            return new sStoreNode(string(buf2)@name, multiple_assign, null@multiple_declare, null@type, true@alloc, right_value, info) implements sNode;
+            sNode*% node = new sStoreNode(string(buf2)@name, multiple_assign, null@multiple_declare, null@type, true@alloc, right_value, info) implements sNode;
+            info.sline_real = sline_real;
+            return node;
         }
         else {
             err_msg(info, "var requires a right value(%c)", *info->p);
@@ -1355,7 +1359,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         }
     }
     else if(gComePthread && buf === "__channel__") {
-        return new sNewChannel(info) implements sNode;
+        sNode*% node = new sNewChannel(info) implements sNode;
+        info.sline_real = sline_real;
+        return node;
     }
     else if(multiple_declare) {
         info.p = head;
@@ -1447,7 +1453,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         sNode*% right_node = null;
         string var_name2 = string("");
         
-        return new sStoreNode(string(buf)@name, null@multiple_assign, multiple_declare, base_type@type, true@alloc, null@right_value, info) implements sNode;
+        sNode*% node = new sStoreNode(string(buf)@name, null@multiple_assign, multiple_declare, base_type@type, true@alloc, null@right_value, info) implements sNode;
+        info.sline_real = sline_real;
+        return node;
     }
     else if(attr_define) {
         /// backtrace ///
@@ -1479,9 +1487,12 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             sNode*% right_node = expression();
             
-            return store_field(self_node, right_node, name, info);
+            sNode*% node = store_field(self_node, right_node, name, info);
+            info.sline_real = sline_real;
+            return node;
         }
         else {
+            info.sline_real = sline_real;
             return create_null_node();
         }
     }
@@ -1497,13 +1508,16 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         
         parse_sharp();
         
-        return new sStoreNode(string(buf)@name, null@multiple_assign, null@multiple_declare, null@type, false@alloc, right_value, info) implements sNode;
+        sNode*% node = new sStoreNode(string(buf)@name, null@multiple_assign, null@multiple_declare, null@type, false@alloc, right_value, info) implements sNode;
+        info.sline_real = sline_real;
+        return node;
     }
     else if(!is_type_name_flag || info.funcs[buf]??) {
         sNode*% node = new sLoadNode(string(buf)@name, info) implements sNode;
         
         node = post_position_operator(node, info);
         
+        info.sline_real = sline_real;
         return node;
     }
     else if(!is_type_name_flag) {
@@ -1511,6 +1525,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         
         node = post_position_operator(node, info);
         
+        info.sline_real = sline_real;
         return node;
     }
     else {
@@ -1542,7 +1557,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             parse_sharp();
             
             if(*info->p == '=' && *(info->p+1) != '>' && info->no_assign) {
-                return new sLoadNode(name@name, info) implements sNode;
+                sNode*% node = new sLoadNode(name@name, info) implements sNode;
+                info.sline_real = sline_real;
+                return node;
             }
             else if(*info->p == '=' && *(info->p+1) != '>' && !info->no_assign) {
                 info.p++;
@@ -1569,10 +1586,14 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 
                 right_value = post_position_operator(right_value, info);
                 
-                return new sStoreNode(name, null@multiple_assign, null@multiple_declare, type, true@alloc, right_value, info) implements sNode;
+                sNode*% node = new sStoreNode(name, null@multiple_assign, null@multiple_declare, type, true@alloc, right_value, info) implements sNode;
+                info.sline_real = sline_real;
+                return node;
             }
             else {
-                return new sStoreNode(name, null@multiple_assign, null@multiple_declare, type, true@alloc, null@right_value, info) implements sNode;
+                sNode*% node = new sStoreNode(name, null@multiple_assign, null@multiple_declare, type, true@alloc, null@right_value, info) implements sNode;
+                info.sline_real = sline_real;
+                return node;
             }
         }
     }

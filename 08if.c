@@ -702,6 +702,8 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     if(buf === "if") {
         string sname = clone info->sname;
         int sline = info->sline;
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         
         parse_sharp();
     
@@ -742,6 +744,8 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             parse_sharp();
     
             if(buf === "else") {
+                int sline_real = info.sline_real;
+                info.sline_real = info.sline;
                 if(parsecmp("if", info)) {
                     parse_sharp();
                     info->p+=strlen("if");
@@ -769,6 +773,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                     else_block = parse_block();
                     break;
                 }
+                info.sline_real = sline_real;
             }
             else {
                 info->p = saved_p;
@@ -778,6 +783,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         };
     
         sNode*% result = new sIfNode(expression_node, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
+        info.sline_real = sline_real;
         
         return result;
     }

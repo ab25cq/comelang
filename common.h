@@ -59,6 +59,7 @@ interface sNode
 {
     bool compile(sInfo* info);
     int sline();
+    int sline_real();
     string sname();
     bool terminated();
     string kind();
@@ -68,10 +69,12 @@ struct sNodeBase
 {
     int sline;
     string sname;
+    int sline_real;
 };
 
 int sNodeBase*::sline(sNodeBase* self, sInfo* info);
 string sNodeBase*::sname(sNodeBase* self, sInfo* info);
+int sNodeBase*::sline_real(sNodeBase* self, sInfo* info);
 
 struct sType
 {
@@ -407,6 +410,7 @@ struct sInfo
     map<string, string>*% uniq_definition;
     bool in_top_level;
     bool remove_comment;
+    int sline_real;
 };
 
 module sCurrentNodeModule

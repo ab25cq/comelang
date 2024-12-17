@@ -256,6 +256,7 @@ void parse_sharp(sInfo* info=info) version 5
             while(1) {
                 if(*info->p == '\n') {
                     info->p++;
+                    info->sline++;
                     skip_spaces_and_lf2();
                     break;
                 }

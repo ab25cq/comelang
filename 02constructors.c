@@ -190,6 +190,7 @@ sNodeBase*% sNodeBase*::initialize(sNodeBase*% self, sInfo* info=info)
 {
     self.sline = info.sline;
     self.sname = string(info.sname);
+    self.sline_real = info.sline_real;
     
     return self;
 }
@@ -197,6 +198,12 @@ sNodeBase*% sNodeBase*::initialize(sNodeBase*% self, sInfo* info=info)
 int sNodeBase*::sline(sNodeBase* self, sInfo* info)
 {
     return self.sline;
+}
+
+
+int sNodeBase*::sline_real(sNodeBase* self, sInfo* info)
+{
+    return self.sline_real;
 }
 
 bool sNodeBase*::terminated(sNodeBase* self)

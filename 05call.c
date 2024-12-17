@@ -1857,6 +1857,8 @@ sNode*% expression_node(sInfo* info=info) version 97
     else if((xisalpha(*info->p) || *info->p == '_' ) && !((*info->p == 'L' || *info->p == 'l' || *info->p == 's' || *info->p == 'S' || *info->p == 'r' || *info->p == 'R' || *info->p == 'b' || *info->p == 'B' || *info->p == 'h' || *info->p == 'H') && *(info->p+1) == '"' || (*info->p == 'L' && *(info->p+1) == '\''))) {
         char* head = info.p;
         int head_sline = info.sline;
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         
         string buf = backtrace_parse_word();
         
@@ -2018,11 +2020,13 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.sline = head_sline;
             
             sNode*% node =  parse_function(info);
+            info.sline_real = sline_real;
             return node;
         }
         else if((buf === "string" || buf === "wstring") && *info->p == '(') {
             sNode*% node = parse_function_call(buf, info);
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(gComePthread && buf === "come") {
@@ -2074,6 +2078,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             sNode*% node = new sComeCallNode(come_block, come_block_sline, info) implements sNode;
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(gComePthread && buf === "come_join" && *info->p == '(') {
@@ -2084,6 +2089,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             sNode*% node = expression();
             expected_next_character(')', info);
             
+            info.sline_real = sline_real;
             return new sComeJoinNode(node, info) implements sNode;
         }
 #if defined(__LINUX__) || defined(__MAC__) || defined(__ANDROID__)
@@ -2120,38 +2126,48 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             expected_next_character('}');
             
+            info.sline_real = sline_real;
             return new sComePollNode(vars, blocks, time_out, info) implements sNode;
         }
 #endif
         else if(buf === "none" && *info->p == '(') {
             sNode*% node = parse_none(info);
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(buf === "some" && *info->p == '(') {
             sNode*% node = parse_some(info);
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(buf === "__func__" || buf === "__FUNCTION__") {
+            info.sline_real = sline_real;
             return new sFuncNode(info) implements sNode;
         }
         else if(buf === "wildcard") {
+            info.sline_real = sline_real;
             return new sWildCard(info) implements sNode;
         }
         else if(buf === "__line__" || buf === "__LINE__") {
+            info.sline_real = sline_real;
             return new sLineNode(info) implements sNode;
         }
         else if(buf === "__sname__") {
+            info.sline_real = sline_real;
             return new sSNameNode(info) implements sNode;
         }
         else if(buf === "__caller_func__") {
+            info.sline_real = sline_real;
             return new sCallerFuncNode(info) implements sNode;
         }
         else if(buf === "__caller_line__") {
+            info.sline_real = sline_real;
             return new sCallerLineNode(info) implements sNode;
         }
         else if(buf === "__caller_sname__") {
+            info.sline_real = sline_real;
             return new sCallerSNameNode(info) implements sNode;
         }
         else if(info->va_arg && is_type_name(buf)) {
@@ -2160,11 +2176,13 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             var type, name, err = parse_type(parse_variable_name:false, parse_multiple_type:false);
             
+            info.sline_real = sline_real;
             return new sVarArgTypeName(type) implements sNode;
         }
         else if(buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__") {
             sNode*% node = string_node(buf, head, head_sline, info)
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(inline_asm) {
@@ -2209,6 +2227,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             skip_spaces_and_lf();
             parse_sharp();
             
+            info.sline_real = sline_real;
             return new sInlineAssembler(buf2.to_string(), info) implements sNode;
         }
         else if(fun_name_with_type_name) {
@@ -2250,6 +2269,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             sNode*% node = parse_function_call(fun_name.to_string(), info);
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(*info->p == ':' && *(info->p+1) == ':') {
@@ -2268,22 +2288,26 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             sNode*% node = parse_function_call(fun_name.to_string(), info);
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(call_method_generics_fun_call) {
             sNode*% node = parse_function_call(buf, info);
             
+            info.sline_real = sline_real;
             return node;
         }
         else if(!is_special_word && *info->p == '(' && !(*(info->p+1) == '*' && is_type_name_))
         {
             sNode*% node = parse_function_call(buf, info);
             
+            info.sline_real = sline_real;
             return node;
         }
         else {
             sNode*% node = string_node(buf, head, head_sline, info);
             
+            info.sline_real = sline_real;
             return node;
         }
     }

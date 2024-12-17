@@ -540,7 +540,7 @@ class sNormalBlock extends sNodeBase
         
         bool come_c = gComeC;
         if(self.clang) { gComeC = true; }
-    
+        
         transpile_block(block, null, null, info, comma:self.comma);
         
         if(!self.comma) {
@@ -679,7 +679,11 @@ class sCastNode extends sNodeBase
 
 sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info)
 {
+    int sline_real = info.sline_real;
+    info.sline_real = info.sline;
     sBlock*% block = parse_block();
+    
+    info.sline_real = sline_real;
     
     return new sNormalBlock(block, clang, comma, info) implements sNode;
 }

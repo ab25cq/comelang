@@ -1401,6 +1401,8 @@ sNode*% expression_node(sInfo* info) version 96
 {
     /// here document ///
     if(*info->p == '"' && *(info->p+1) == '"' && *(info->p+2) == '"' && *(info->p+3) == '\n') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p +=4;
         info->sline++;
 
@@ -1556,10 +1558,13 @@ sNode*% expression_node(sInfo* info) version 96
 
         skip_spaces_and_lf();
         
+        info.sline_real = sline_real;
         return new sSStringNode(value.to_string(), exps, sline, info) implements sNode;
     }
     else if(*info->p == '"') 
     {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p++;
 
         int sline = info->sline;
@@ -1616,10 +1621,13 @@ sNode*% expression_node(sInfo* info) version 96
 
         skip_spaces_and_lf();
         
+        info.sline_real = sline_real;
         return new sStrNode(value.to_string(), sline, info) implements sNode;
     }
     else if((*info->p == 'b' || *info->p == 'B') && *(info->p+1) == '"') 
     {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p+=2;
 
         int sline = info->sline;
@@ -1750,9 +1758,12 @@ sNode*% expression_node(sInfo* info) version 96
 
         skip_spaces_and_lf();
         
+        info.sline_real = sline_real;
         return new sBufferNode(value, size, info) implements sNode;
     }
     else if(*info->p == '/') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p++;
         
         int sline = info->sline;
@@ -1827,9 +1838,12 @@ sNode*% expression_node(sInfo* info) version 96
             node = create_exception_value(clone node, info);
         }
         
+        info.sline_real = sline_real;
         return node;
     }
     else if((*info->p == 'R' || *info->p == 'r') && *(info->p+1) == '"') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p+=2;
         
         int sline = info->sline;
@@ -1991,9 +2005,12 @@ sNode*% expression_node(sInfo* info) version 96
             node = create_exception_value(clone node, info);
         }
         
+        info.sline_real = sline_real;
         return node;
     }
     else if(*info->p == '\'') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p++;
 
         int c;
@@ -2108,11 +2125,14 @@ sNode*% expression_node(sInfo* info) version 96
 
             skip_spaces_and_lf();
 
+            info.sline_real = sline_real;
             return new sCharNode(c, info) implements sNode;
         }
     }
     /// wchararacter ///
     else if(*info->p == 'L' && *(info->p+1) == '\'') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p+=2;
 
         wchar_t c;
@@ -2247,11 +2267,14 @@ sNode*% expression_node(sInfo* info) version 96
 
             skip_spaces_and_lf();
 
+            info.sline_real = sline_real;
             return new sWCharNode(c, quote, info) implements sNode;
         }
     }
     /// wstring ///
     else if(*info->p == 'L' && *(info->p+1) == '"') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p+=2;
 
         int sline = info->sline;
@@ -2318,10 +2341,13 @@ sNode*% expression_node(sInfo* info) version 96
         
         wstr[len] = 0;
         
+        info.sline_real = sline_real;
         return new sWStringNode(wstr, sline, info) implements sNode;
     }
     /// heap string ///
     else if((*info->p == 's' || *info->p == 'S')  && *(info->p+1) == '"') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p+=2;
 
         int sline = info->sline;
@@ -2474,9 +2500,12 @@ sNode*% expression_node(sInfo* info) version 96
 
         skip_spaces_and_lf();
         
+        info.sline_real = sline_real;
         return new sSStringNode(value.to_string(), exps, sline, info) implements sNode;
     }
     else if(*info->p == '[') {
+        int sline_real = info.sline_real;
+        info.sline_real = info.sline;
         info->p++;
         skip_spaces_and_lf();
         
@@ -2618,6 +2647,7 @@ sNode*% expression_node(sInfo* info) version 96
         }
         
         if(list_elements.length() > 0) {
+            info.sline_real = sline_real;
             return new sListNode(list_elements, info) implements sNode;
         }
         else {
