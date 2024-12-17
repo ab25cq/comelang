@@ -406,6 +406,7 @@ struct sInfo
     
     map<string, string>*% uniq_definition;
     bool in_top_level;
+    bool remove_comment;
 };
 
 module sCurrentNodeModule
