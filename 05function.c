@@ -355,10 +355,10 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
         }
     }
     else {
+        info.sline_block = info.sline;
+        
         parse_sharp();
         sNode*% node;
-        
-        info.sline_block = info.sline;
         
         if(*info->p == ';') {
             info->p++;

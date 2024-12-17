@@ -5823,8 +5823,8 @@ node_406 = (void*)0;
         /* U13 */sname_saved_315 = come_decrement_ref_count2(sname_saved_315, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     else {
-        parse_sharp_v5(info);
         info->sline_block=info->sline;
+        parse_sharp_v5(info);
         if(        *info->p==59) {
             info->p++;
             skip_spaces_and_lf(info);
