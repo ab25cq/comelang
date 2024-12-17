@@ -16,10 +16,10 @@
 
 #ifdef __PICO__
 no_output {
-#include "stdarg.h"
+#include "stdint.h"
 }
 no_output {
-#include "stdint.h"
+#include "stdarg.h"
 }
 no_output {
 #include "string.h"
@@ -30,16 +30,24 @@ no_output {
 no_output {
 #include "stdio.h"
 }
+no_output {
+#include "pico/stdlib.h"
+}
+no_output {
+#include "hardware/irq.h"
+}
+no_output {
+#include "hardware/timer.h"
+}
 output {#include "stdint.h"}
 output {#include "stdarg.h"}
 output {#include "string.h"}
 output {#include "stdlib.h"}
 output {#include "stdio.h"}
-no_output {
-#include "pico/stdlib.h"
-}
 output {#include "pico/stdlib.h"}
-output {#include "hardware/gpio.h"}
+output {#include "hardware/irq.h"}
+output {#include "hardware/timer.h"}
+
 #else
 
 using C

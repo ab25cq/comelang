@@ -105,6 +105,39 @@ void piccolo_init() {
     __piccolo_task_init();
 }
 
+/*
+volatile bool timer_fired = false;
+
+// タイマ割り込みハンドラ
+void timer_callback(uint alarm_num) {
+    // タスク切り替えなどの処理をここで呼び出す
+    //piccolo_yield();  // タスク切り替え関数
+    piccolo_ctx.the_tasks[piccolo_ctx.current_task] =
+        __piccolo_pre_switch(piccolo_ctx.the_tasks[piccolo_ctx.current_task]);
+
+    piccolo_ctx.current_task++;
+    if (piccolo_ctx.current_task >= piccolo_ctx.task_count)
+         piccolo_ctx.current_task = 0;
+}
+*/
+
+
+void timer_init(void) {
+/*
+    // タイマアラーム0に1msごとの割り込みを設定
+    uint64_t target_time = time_us_64() + 1000; // 現在時間 + 1ms
+
+    // アラームのコールバック関数を設定
+    hardware_alarm_claim(0);
+    hardware_alarm_set_callback(0, timer_callback);
+
+    // 次回のアラームを設定
+    hardware_alarm_set_target(0, target_time);
+    
+    piccolo_ctx.current_task = 0;
+*/
+}
+
 void piccolo_start() {
     piccolo_ctx.current_task = 0;
 

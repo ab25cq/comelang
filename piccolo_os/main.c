@@ -66,15 +66,19 @@ void task3_func(void) {
 */
 
 int main() {
-  piccolo_init();
+    piccolo_init();
+//    timer_init();
 
-  printf("PICCOLO OS Demo Starting...\n");
+    printf("PICCOLO OS Demo Starting...\n");
 
-  piccolo_create_task(&task1_func);
-  piccolo_create_task(&task2_func);
+    piccolo_create_task(&task1_func);
+    piccolo_create_task(&task2_func);
 //  piccolo_create_task(&task3_func);
 
-  piccolo_start();
+    piccolo_start();
+    
+    while(1) {
+    }
 
-  return 0; /* Never gonna happen */
+    return 0; /* Never gonna happen */
 }

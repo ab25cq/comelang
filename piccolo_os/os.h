@@ -1,6 +1,8 @@
 #ifndef PICCOLO_OS_H
 #define PICCOLO_OS_H
 
+void timer_init(void);
+
 /* Size of our user task stacks in words */
 #define PICCOLO_OS_STACK_SIZE 256
 
