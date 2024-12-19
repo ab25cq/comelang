@@ -17,8 +17,8 @@ libdir=${exec_prefix}/lib
 #########################################
 CC=comelang
 INSTALL=install
-CFLAGS= -common-header -O2 
-CFLAGS_DEBUG= -common-header -gdwarf-4 -cg 
+CFLAGS= -common-header -O2  -ldwarf -lelf
+CFLAGS_DEBUG= -common-header -gdwarf-4 -cg -ldwarf -lelf
 LIBS=-lpcre
 OS=linux
 DESTDIR=/usr/local/
@@ -81,7 +81,7 @@ uninstall:
 
 run: codb
 	rm -f *.log
-	./codb
+	./codb ./a target_function
 
 compile: codb
 

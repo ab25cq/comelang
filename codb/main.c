@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <libdwarf/libdwarf.h>
+#include <stdint.h>
+header {#include <stdint.h>}
 #include <libelf.h>
 #include <fcntl.h>
 #include <string.h>
@@ -19,6 +21,8 @@
 #include <syscall.h>
 #include <sys/syscall.h>
 #include <sys/uio.h>  // PTRACE_GETREGSET
+#include <linux/ptrace.h> // NT_PRSTATUS
+#include <sys/user.h>  // user_regs_struct
 
 map<string, void*>*% get_function_addr_from_elf_file(const char *filename) 
 {
@@ -77,17 +81,6 @@ map<string, void*>*% get_function_addr_from_elf_file(const char *filename)
 
     return result;
 }
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ptrace.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/uio.h>  // PTRACE_GETREGSET
-#include <linux/ptrace.h> // NT_PRSTATUS
-#include <sys/user.h>  // user_regs_struct
 
 #define BREAKPOINT 0xd4200000  // ARM64 BRK
 
@@ -181,12 +174,19 @@ void run_target(char* target_program) {
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {
-        fprintf(stderr, "Usage: %s <program> <function_address>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <program> <function_name>\n", argv[0]);
         exit(EXIT_FAILURE);
     }
+    
+puts(argv[1]);
+    var addrs = get_function_addr_from_elf_file(string(argv[1]));
+    
+puts(argv[2]);
 
     char *program = argv[1];
-    void *func_addr = (void *)strtoull(argv[2], NULL, 16);
+    void *func_addr = addrs[string(argv[2])]??;
+    
+printf("func_addr %p\n", func_addr);
 
     pid_t child_pid = fork();
     if (child_pid == 0) {
