@@ -18,7 +18,7 @@
 #include <sys/fcntl.h>
 #include <syscall.h>
 #include <sys/syscall.h>
-#include <errno.h>
+#include <sys/uio.h>  // PTRACE_GETREGSET
 
 map<string, void*>*% get_function_addr_from_elf_file(const char *filename) 
 {
@@ -78,83 +78,126 @@ map<string, void*>*% get_function_addr_from_elf_file(const char *filename)
     return result;
 }
 
-void run_target(char* target_program) 
-{
-    if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) == -1) {
-        perror("ptrace");
-        exit(1);
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ptrace.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/uio.h>  // PTRACE_GETREGSET
+#include <linux/ptrace.h> // NT_PRSTATUS
+#include <sys/user.h>  // user_regs_struct
+
+#define BREAKPOINT 0xd4200000  // ARM64 BRK
+
+void set_breakpoint(pid_t child_pid, void *addr, uint32_t *original_data) {
+    // 
+    *original_data = ptrace(PTRACE_PEEKTEXT, child_pid, addr, NULL);
+    if (errno != 0) {
+        perror("ptrace PEEKTEXT");
+        exit(EXIT_FAILURE);
     }
-    execl(target_program, s"./\{target_program}", NULL);
+
+    // 
+    ptrace(PTRACE_POKETEXT, child_pid, addr, (BREAKPOINT | (*original_data & ~0xFFFFFFFF)));
+}
+
+void remove_breakpoint(pid_t child_pid, void *addr, uint32_t original_data) {
+    // 
+    ptrace(PTRACE_POKETEXT, child_pid, addr, original_data);
+}
+
+void get_registers(pid_t child_pid, struct user_regs_struct *regs) {
+    struct iovec iov;
+    iov.iov_base = regs;
+    iov.iov_len = sizeof(*regs);
+
+    if (ptrace(PTRACE_GETREGSET, child_pid, NT_PRSTATUS, &iov) == -1) {
+        perror("ptrace GETREGSET");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void set_registers(pid_t child_pid, struct user_regs_struct *regs) {
+    struct iovec iov;
+    iov.iov_base = regs;
+    iov.iov_len = sizeof(*regs);
+
+    if (ptrace(PTRACE_SETREGSET, child_pid, NT_PRSTATUS, &iov) == -1) {
+        perror("ptrace SETREGSET");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void run_debugger(pid_t child_pid, void *func_addr) {
     int wait_status;
-    struct user_regs_struct regs;
 
-
+    // 
     waitpid(child_pid, &wait_status, 0);
 
+    uint32_t original_data;
+    set_breakpoint(child_pid, func_addr, &original_data);
 
-    printf("Setting breakpoint at address %p\n", func_addr);
-    long original_data = ptrace(PTRACE_PEEKTEXT, child_pid, func_addr, NULL);
-    if (errno != 0) {
-        perror("ptrace PEEKTEXT");
-        exit(1);
-    }
-
-
-    ptrace(PTRACE_POKETEXT, child_pid, func_addr, (original_data & ~0xFF) | 0xCC);
-
-
+    // 
     ptrace(PTRACE_CONT, child_pid, NULL, NULL);
-
-
     waitpid(child_pid, &wait_status, 0);
+
     if (WIFSTOPPED(wait_status) && WSTOPSIG(wait_status) == SIGTRAP) {
         printf("Hit breakpoint at address %p\n", func_addr);
 
+        // 
+        struct user_regs_struct regs;
+        get_registers(child_pid, &regs);
 
-        ptrace(PTRACE_GETREGS, child_pid, NULL, &regs);
-        printf("RIP = 0x%llx\n", regs.rip);
+        printf("PC = 0x%llx\n", regs.pc);
 
+        // 
+        remove_breakpoint(child_pid, func_addr, original_data);
 
-        ptrace(PTRACE_POKETEXT, child_pid, func_addr, original_data);
+        // PC1
+        regs.pc -= 4;
+        set_registers(child_pid, &regs);
 
-
-        regs.rip -= 1;
-        ptrace(PTRACE_SETREGS, child_pid, NULL, &regs);
-
-
+        // 1
         ptrace(PTRACE_SINGLESTEP, child_pid, NULL, NULL);
         waitpid(child_pid, &wait_status, 0);
     }
 
-
+    // 
     ptrace(PTRACE_CONT, child_pid, NULL, NULL);
     waitpid(child_pid, &wait_status, 0);
+
     printf("Target program finished.\n");
 }
 
-int main(int argc, char **argv) {
-    if(argc == 3) {
-        string program_name = string(argv[1]);
-        var addrs = get_function_addr_from_elf_file(program_name);
+void run_target(char* target_program) {
+    if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) == -1) {
+        perror("ptrace TRACEME");
+        exit(EXIT_FAILURE);
+    }
+    execl(target_program, target_program, NULL);
+}
 
-        string func_name = string(argv[2]);
-    
-        pid_t child_pid;
-        void (*func_ptr)() = addrs[func_name]??;
+int main(int argc, char *argv[]) {
+    if (argc < 3) {
+        fprintf(stderr, "Usage: %s <program> <function_address>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
 
+    char *program = argv[1];
+    void *func_addr = (void *)strtoull(argv[2], NULL, 16);
 
-        child_pid = fork();
-        if (child_pid == 0) {
-            run_target(rogrm
-        } else if (child_pid > 0) {
-            run_debugger(child_pid, func_addr);
-        } else {
-            perror("fork");
-            return 1;
-        }
+    pid_t child_pid = fork();
+    if (child_pid == 0) {
+        // : 
+        run_target(program);
+    } else if (child_pid > 0) {
+        // : 
+        run_debugger(child_pid, func_addr);
+    } else {
+        perror("fork");
+        exit(EXIT_FAILURE);
     }
 
     return 0;
