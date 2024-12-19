@@ -756,7 +756,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             return new sStructNode(string(type_name), struct_class, info) implements sNode;
         }
     }
-    else if(buf === "class") {
+    else if(!gComeC && buf === "class") {
         char* source_head = head;
         
         string type_name = parse_word();

@@ -608,7 +608,7 @@ int expected_next_character(char c, sInfo* info=info)
     parse_sharp();
     if(*info->p != c) {
         if(!info.no_output_err) {
-            err_msg(info, "expected next charaster is %c, but %c\n", c, *info->p);
+            err_msg(info, "expected next charaster is %c, but %c, caller %s %d\n", c, *info->p, info->caller_sname, info->caller_line);
             exit(2);
         }
     }
@@ -1792,7 +1792,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
         
         if(xisalpha(*info->p) || *info->p == '_') {
             var result_type, fun_name, err = backtrace_parse_type();
-
             
             if(*info->p == '(') {
                 info->p ++;
@@ -1802,9 +1801,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                     define_function_pointer_result_function = true;
                     
                     if(xisalpha(*info->p) || *info->p == '_') {
-                        info->p++;
-                        skip_spaces_and_lf();
-                        
                         string word = parse_word();
                         
                         if(!is_type_name(word) && *info->p == ')') {
@@ -1967,6 +1963,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
     }
     
     /// backtrace ///
+    if(!define_function_pointer_result_function)
     {
         char* p = info.p;
         info.p = head;

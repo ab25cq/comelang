@@ -1322,32 +1322,32 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     else if(buf === "false") {
         return new sFalseNode(info) implements sNode;
     }
-    else if(buf === "delete") {
+    else if(!gComeC && buf === "delete") {
          sNode*% node = expression();
          
          return new sDeleteNode(node, info) implements sNode;
     }
-    else if(buf === "borrow") {
+    else if(!gComeC && buf === "borrow") {
          sNode*% node = expression();
          
          return new sBorrowNode(node, info) implements sNode;
     }
-    else if(buf === "clone") {
+    else if(!gComeC && buf === "clone") {
          sNode*% node = expression();
          
          return new sCloneNode(node, info) implements sNode;
     }
-    else if(buf === "dupe") {
+    else if(!gComeC && buf === "dupe") {
          sNode*% node = expression();
          
          return new sDupeNode(node, info) implements sNode;
     }
-    else if(buf === "dummy_heap") {
+    else if(!gComeC && buf === "dummy_heap") {
          sNode*% node = expression();
          
          return new sDummyHeapNode(node, info) implements sNode;
     }
-    else if(buf === "gc_inc" && *info->p == '(') {
+    else if(!gComeC && buf === "gc_inc" && *info->p == '(') {
          info->p++;
          skip_spaces_and_lf();
          
@@ -1357,7 +1357,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
          
          return new sGCIncNode(node, info) implements sNode;
     }
-    else if(buf === "gc_dec" && *info->p == '(') {
+    else if(!gComeC && buf === "gc_dec" && *info->p == '(') {
          info->p++;
          skip_spaces_and_lf();
          
@@ -1367,7 +1367,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
          
          return new sGCDecNode(node, info) implements sNode;
     }
-    else if(buf === "gc_dec_nofree" && *info->p == '(') {
+    else if(!gComeC && buf === "gc_dec_nofree" && *info->p == '(') {
          info->p++;
          skip_spaces_and_lf();
          
@@ -1377,7 +1377,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
          
          return new sGCDecNoFreeNode(node, info) implements sNode;
     }
-    else if(buf === "isheap" && *info->p == '(') {
+    else if(!gComeC && buf === "isheap" && *info->p == '(') {
         info->p++;
         skip_spaces_and_lf();
         
@@ -1874,7 +1874,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
 
 sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
 {
-    if(parsecmp("implements")) {
+    if(!gComeC && parsecmp("implements")) {
         info->p += strlen("implements");
         skip_spaces_and_lf();
         

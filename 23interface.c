@@ -74,7 +74,7 @@ sType*%, string parse_interface_function(sInfo* info)
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
 {
-    if(buf === "interface" || buf === "protocol") {
+    if(!gComeC && (buf === "interface" || buf === "protocol")) {
         char* source_head = info.p;
         
         bool output = true;

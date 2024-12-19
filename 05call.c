@@ -2033,7 +2033,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.sline_real = sline_real;
             return node;
         }
-        else if((buf === "string" || buf === "wstring") && *info->p == '(') {
+        else if(!gComeC && (buf === "string" || buf === "wstring") && *info->p == '(') {
             sNode*% node = parse_function_call(buf, info);
             
             info.sline_real = sline_real;
@@ -2140,13 +2140,13 @@ sNode*% expression_node(sInfo* info=info) version 97
             return new sComePollNode(vars, blocks, time_out, info) implements sNode;
         }
 #endif
-        else if(buf === "none" && *info->p == '(') {
+        else if(!gComeC && buf === "none" && *info->p == '(') {
             sNode*% node = parse_none(info);
             
             info.sline_real = sline_real;
             return node;
         }
-        else if(buf === "some" && *info->p == '(') {
+        else if(!gComeC && buf === "some" && *info->p == '(') {
             sNode*% node = parse_some(info);
             
             info.sline_real = sline_real;
@@ -2156,7 +2156,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.sline_real = sline_real;
             return new sFuncNode(info) implements sNode;
         }
-        else if(buf === "wildcard") {
+        else if(!gComeC && buf === "wildcard") {
             info.sline_real = sline_real;
             return new sWildCard(info) implements sNode;
         }

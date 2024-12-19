@@ -14,7 +14,7 @@ bool is_type_name(char* buf, sInfo* info=info)
             || (klass && klass->mFloat) 
             || buf === "const" || buf === "register" || buf === "static" || buf === "volatile" || buf === "unsigned" 
             || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" 
-            || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline" 
+            || info->in_top_level && (buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline" )
             || buf === "__extension__" 
             || buf === "_Noreturn" 
             || buf === "__noreturn" 
@@ -30,7 +30,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         return generics_class || generics_type_name || mgenerics_type_name || klass || type 
         || buf === "const" || buf === "register" || buf === "static" || buf === "volatile" || buf === "unsigned" 
         || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" 
-        || buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline"
+        || info->in_top_level && (buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline")
         || buf === "__extension__" 
         || buf === "_Noreturn" 
         || buf === "__noreturn" 
@@ -94,7 +94,7 @@ string parse_word(sInfo* info=info)
     skip_spaces_and_lf();
     
     if(buf.to_string().length() == 0) {
-        err_msg(info, "unexpected character(%c). expected word character", *info->p);
+        err_msg(info, "unexpected character(%c), expected word character, caller %s %d\n", *info->p, info->caller_sname, info->caller_line);
         return string("");
     }
     
