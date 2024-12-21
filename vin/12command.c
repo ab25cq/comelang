@@ -413,7 +413,12 @@ void Vi*::exitFromComandMode(Vi* self)
         }
     }
 
-    self.mode = kEditMode;
+    if(string(self.commandString).index("paste", -1) == 0) {
+        self.enterInsertMode();
+    }
+    else {
+        self.mode = kEditMode;
+    }
 }
 
 Vi*% Vi*::initialize(Vi*% self) version 12
