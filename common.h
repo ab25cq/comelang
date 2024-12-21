@@ -688,6 +688,7 @@ sNode*% expression_node(sInfo* info=info) version 97;
 int transpile(sInfo* info) version 5;
 void parse_sharp(sInfo* info=info) version 5;
 string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true);
+string create_method_name_original_obj_type(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true);
 string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true);
 string create_method_name_using_class(sClass* obj_class, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true);
 

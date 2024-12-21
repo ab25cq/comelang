@@ -1,10 +1,13 @@
 #include <comelang.h>
 
+char char*::test(char* str)
+{
+    return str[0];
+}
 
 int main(int argc, char** argv)
 {
-_Static_assert(sizeof(int) == 4, "sizeofint");
-    _Atomic(signed char) a;
+    printf("%c\n", s"AAA".test());
     
     return 0;
 }

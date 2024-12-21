@@ -81,15 +81,15 @@ typedef void* any;
 typedef char*% string;
 
 uniq void* gComeFunResultObject = NULL;
+
 uniq char* gComeStackFrameSName[COME_STACKFRAME_MAX_GLOBAL];
 uniq int gComeStackFrameSLine[COME_STACKFRAME_MAX_GLOBAL];
 uniq int gComeStackFrameID[COME_STACKFRAME_MAX_GLOBAL];
 uniq int gNumComeStackFrame = 0;
 
-void* gComeFunResultObject = NULL;
 uniq char* gComeStackFrameBuffer = NULL;
 
-extern any wildcard;
+uniq any wildcard;
 
 //////////////////////////////
 /// exception
@@ -113,7 +113,6 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...);
 uniq string __builtin_string(char* str);
 uniq string buffer*::to_string(buffer* self);
 uniq string char*::to_string(char* self);
-uniq string string::to_string(char* self);
 uniq string double::to_string(double self);
 uniq string float::to_string(float self);
 uniq string size_t::to_string(size_t self);
@@ -319,7 +318,6 @@ uniq sMemHeader* gAllocMem;
 
 uniq any gComeResultObject = NULL;
 bool gComeGCLib;
-uniq void* gComeFunResultObject = NULL;
 
 uniq bool gComeMallocLib = false;
 uniq bool gComeDebugLib = false;
@@ -697,13 +695,6 @@ uniq void come_free_object(void* mem)
     if(mem == NULL) {
         return;
     }
-/*
-    if(gComeMallocLib) {
-        if(!is_valid_object(mem)) {
-            return ;
-        }
-    }
-*/
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
     
@@ -715,13 +706,6 @@ uniq void come_free(void* mem)
     if(mem == NULL) {
         return;
     }
-/*
-    if(gComeMallocLib) {
-        if(!is_valid_object(mem)) {
-            return ;
-        }
-    }
-*/
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
     
@@ -733,13 +717,6 @@ uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_n
     if(!block) {
         return null;
     }
-/*
-    if(gComeMallocLib) {
-        if(!is_valid_object(block)) {
-            return null;
-        }
-    }
-*/
 
     char* mem = (char*)block - sizeof(size_t) - sizeof(size_t);
     
@@ -760,13 +737,6 @@ uniq void* come_increment_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
-/*
-    if(gComeMallocLib) {
-        if(!is_valid_object(mem)) {
-            return mem;
-        }
-    }
-*/
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
     
@@ -780,13 +750,6 @@ uniq void* come_print_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
-/*
-    if(gComeMallocLib) {
-        if(!is_valid_object(mem)) {
-            return mem;
-        }
-    }
-*/
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
     
@@ -3604,19 +3567,6 @@ uniq int buffer*::compare(buffer* left, buffer* right)
     return strcmp(left.buf, right.buf);
 }
 
-uniq buffer*% string::to_buffer(char* self) 
-{
-    var result = new buffer.initialize();
-    
-    if(self == null) {
-        return result;
-    }
-
-    result.append_str(self);
-
-    return result;
-}
-
 uniq buffer*% char*::to_buffer(char* self) 
 {
     var result = new buffer.initialize();
@@ -4281,21 +4231,6 @@ uniq bool long::operator_not_equals(long self, long right)
     return !(self == right);
 }
 
-uniq bool string::equals(char* self, char* right) 
-{
-    if(self == null && right == null) {
-        return true;
-    }
-    else if(self == null) {
-        return false;
-    }
-    else if(right == null) {
-        return false;
-    }
-    
-    return strcmp(self, right) == 0;
-}
-
 uniq bool char*::equals(char* self, char* right) 
 {
     if(self == null && right == null) {
@@ -4530,20 +4465,6 @@ uniq unsigned int double::get_hash_key(double value)
     return (unsigned int)value;
 }
 
-uniq unsigned int string::get_hash_key(char* value)
-{
-    if(value == null) {
-        return 0;
-    }
-    int result = 0;
-    char* p = value;
-    while(*p) {
-        result += (*p);
-        p++;
-    }
-    return result;
-}
-
 uniq unsigned int char*::get_hash_key(char* value)
 {
     if(value == null) {
@@ -4687,23 +4608,6 @@ uniq int char*::length(char* str) {
         return 0;
     }
     return strlen(str);
-}
-
-uniq string string::reverse(char* str) 
-{
-    if(str == null) {
-        return string("");
-    }
-    int len = strlen(str);
-    char*% result = new char[len + 1];
-
-    for(int i=0; i<len; i++) {
-        result[i] = str[len-i-1];
-    }
-
-    result[len] = '\0';
-
-    return result;
 }
 
 uniq string char*::reverse(char* str) 
@@ -4852,49 +4756,6 @@ uniq string char*::substring(char* str, int head, int tail)
     return result;
 }
 
-uniq string string::substring(char* str, int head, int tail)
-{
-    if(str == null) {
-        return string("");
-    }
-
-    int len = strlen(str);
-
-    if(head < 0) {
-        head += len;
-    }
-    if(tail < 0) {
-        tail += len + 1;
-    }
-
-    if(head > tail) {
-        return str.substring(tail, head).reverse();
-    }
-
-    if(head < 0) {
-        head = 0;
-    }
-
-    if(tail >= len) {
-        tail = len;
-    }
-
-    if(head == tail) {
-        return string("");
-    }
-
-    if(tail-head+1 < 1) {
-        return string("");
-    }
-
-    string result = new char[tail-head+1];
-
-    memcpy(result, str + head, tail-head);
-    result[tail-head] = '\0';
-
-    return result;
-}
-
 uniq string xsprintf(char* msg, ...)
 {
     if(msg == null) {
@@ -4959,45 +4820,6 @@ uniq string char*::delete(char* str, int head, int tail)
     return result;
 }
 
-uniq string string::delete(char* str, int head, int tail) 
-{
-    if(str == null) {
-        return string("");
-    }
-    
-    int len = strlen(str);
-
-    if(strcmp(str, "") == 0) {
-        return string(str);
-    }
-    
-    if(head < 0) {
-       head += len;
-    }
-    
-    if(tail < 0) {
-       tail += len + 1;
-    }
-
-    if(head < 0) {
-        head = 0;
-    }
-
-    if(tail < 0) {
-        return string(str);
-    }
-
-    if(tail >= len) {
-        tail = len;
-    }
-    
-    string sub_str = str.substring(tail, -1);
-
-    memcpy(str + head, sub_str, sub_str.length()+1);
-
-    return string(str);
-}
-
 uniq list<string>*% char*::split_char(char* self, char c) 
 {
     if(self == null) {
@@ -5022,37 +4844,6 @@ uniq list<string>*% char*::split_char(char* self, char c)
     }
 
     return result;
-}
-
-uniq list<string>*% string::split_char(char* self, char c) 
-{
-    if(self == null) {
-        return new list<string>();
-    }
-    
-    auto result = new list<string>.initialize();
-
-    auto str = new buffer.initialize();
-
-    for(int i=0; i<self.length(); i++) {
-        if(self[i] == c) {
-            result.push_back(string(str.buf));
-            str.reset();
-        }
-        else {
-            str.append_char(self[i]);
-        }
-    }
-    if(str.length() != 0) {
-        result.push_back(string(str.buf));
-    }
-
-    return result;
-}
-
-static inline string string::xsprintf(char* self, char* msg, ...)
-{
-    return xsprintf(msg, self);
 }
 
 static inline string char*::xsprintf(char* self, char* msg, ...)
@@ -5089,10 +4880,6 @@ uniq string char*::printable(char* str)
     result[n] = '\0'
 
     return result;
-}
-static inline string string::printable(char* str)
-{
-    return string::printable(str);
 }
 
 //////////////////////////////
@@ -5468,38 +5255,6 @@ uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
     return f;
 }
 
-uniq int string::write(char* self, char* file_name, bool append=false) 
-{
-    if(self == null || file_name == null) {
-        return -1;
-    }
-    
-    FILE* f;
-    if(append) {
-       f = fopen(file_name, "a");
-    }
-    else {
-       f = fopen(file_name, "w");
-    }
-    
-    if(f == NULL) {
-        return -1;
-    }
-    
-    int result = fwrite(self, strlen(self), 1, f);
-    
-    if(result < 0) {
-        return result;
-    }
-    
-    int result2 = fclose(f)
-    
-    if(result2 < 0) {
-        return result2;
-    }
-    
-    return result;
-}
 
 uniq int char*::write(char* self, char* file_name, bool append=false) 
 {
@@ -5529,43 +5284,6 @@ uniq int char*::write(char* self, char* file_name, bool append=false)
     
     if(result2 < 0) {
         return result2;
-    }
-    
-    return result;
-}
-
-uniq string string::read(char* file_name) 
-{
-    if(file_name == null) {
-        return string("");
-    }
-    
-    FILE* f = fopen(file_name, "r");
-    
-    if(f == NULL) {
-        return string("");
-    }
-    
-    buffer*% buf = new buffer.initialize();
-    
-    while(1) {
-        char buf2[BUFSIZ];
-        
-        int size = fread(buf2, 1, BUFSIZ, f);
-        
-        buf.append(buf2, size);
-
-        if(size < BUFSIZ) {
-            break;
-        }
-    }
-    
-    string result = buf.to_string();
-    
-    int result2 = fclose(f)
-    
-    if(result2 < 0) {
-        return string("");
     }
     
     return result;
@@ -5670,25 +5388,6 @@ uniq string char*::print(char* self)
     return string(self);
 }
 
-uniq string string::printf(char* self, ...)
-{
-    if(self == null) {
-        return string("");
-    }
-    char* msg2;
-
-    va_list args;
-    va_start(args, self);
-    vasprintf(&msg2,self,args);
-    va_end(args);
-    
-    printf("%s", msg2);
-
-    free(msg2);
-    
-    return string(self);
-}
-
 uniq string char*::printf(char* self, ...)
 {
     if(self == null) {
@@ -5713,16 +5412,6 @@ uniq int int::printf(int self, char* msg)
     printf(msg, self);
     
     return self;
-}
-
-uniq string string::puts(char* self) 
-{
-    if(self == null) {
-        return string("");
-    }
-    puts(self);
-    
-    return string(self);
 }
 
 //////////////////////////////
