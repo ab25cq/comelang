@@ -101,6 +101,7 @@ class sSStringNode extends sNodeBase
         
         if(self.exps.length() > 0) {
             foreach(it, self.exps) {
+/*
                 node_compile(it).elif {
                     return false;
                 }
@@ -113,7 +114,26 @@ class sSStringNode extends sNodeBase
                 if(come_value_type->mArrayNum.length() > 0) {
                     come_value_type->mPointerNum += come_value_type->mArrayNum.length();
                 }
+*/
                 
+                sNode*% obj = clone it;
+                
+                list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
+                params.add((s"self", clone it));
+                
+                sNode*% node = create_method_call("to_string", obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
+                
+                node_compile(node).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                buf.append_str(",");
+                buf.append_str(come_value.c_value);
+                
+/*
                 string method_name = create_method_name(come_value_type, false@no_pointer_name, "to_string", info);
                 
                 if(info.funcs.at(method_name, null) == null) {
@@ -148,6 +168,7 @@ class sSStringNode extends sNodeBase
                 
                 buf.append_str(",");
                 buf.append_str(c_value);
+*/
             }
         }
         
@@ -1435,17 +1456,6 @@ sNode*% expression_node(sInfo* info) version 96
                 value.append_char('"');
                 info->p++;
             }
-/*
-            else if(*info->p == '$') {
-                info->p++;
-                
-                sNode*% exp = expression();
-                
-                exps.add(exp);
-                
-                value.append_str("%s");
-            }
-*/
             else if(*info->p == '\\') {
                 value.append_char('\\');
                 info->p++;
