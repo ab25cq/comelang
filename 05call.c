@@ -692,9 +692,18 @@ class sFunCallNode extends sNodeBase
                 || fun_name === "__builtin_arm_crc32ch"
     */
                 || fun_name === "__c11_atomic_thread_fence"
-                || fun_name === "__c11_atomic_exchange"
+                || fun_name === "__c11_atomic_signal_fence"
                 || fun_name === "__c11_atomic_store"
-                || fun_name === "__c11_atomic_signal_fence")
+                || fun_name === "__c11_atomic_load"
+                || fun_name === "__c11_atomic_exchange"
+                || fun_name === "__c11_atomic_exchange_strong"
+                || fun_name === "__c11_atomic_exchange_weak"
+                
+                || fun_name === "__c11_atomic_fetch_add"
+                || fun_name === "__c11_atomic_fetch_sub"
+                || fun_name === "__c11_atomic_fetch_and"
+                || fun_name === "__c11_atomic_fetch_or"
+                || fun_name === "__c11_atomic_fetch_xor")
             {
                 list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                 foreach(it, params) {
@@ -785,14 +794,39 @@ class sFunCallNode extends sNodeBase
                 else if(fun_name === "__c11_atomic_thread_fence") {
                     come_value.type = new sType("void");
                 }
+                else if(fun_name === "__c11_atomic_signal_fence") {
+                    come_value.type = new sType("void");
+                }
                 else if(fun_name === "__c11_atomic_exchange") {
+                    come_value.type = clone come_params[1].type;
+                }
+                else if(fun_name === "__c11_atomic_exchange_strong") {
+                    come_value.type = clone come_params[2].type;
+                }
+                else if(fun_name === "__c11_atomic_exchange_weak") {
                     come_value.type = clone come_params[2].type;
                 }
                 else if(fun_name === "__c11_atomic_store") {
                     come_value.type = new sType("void");
                 }
-                else if(fun_name === "__c11_atomic_signal_fence") {
-                    come_value.type = new sType("void");
+                else if(fun_name === "__c11_atomic_load") {
+                    come_value.type = clone come_params[0].type;
+                    come_value.type.mPointerNum--;
+                }
+                else if(fun_name === "__c11_atomic_fetch_add") {
+                    come_value.type = clone come_params[1].type;
+                }
+                else if(fun_name === "__c11_atomic_fetch_sub") {
+                    come_value.type = clone come_params[1].type;
+                }
+                else if(fun_name === "__c11_atomic_fetch_and") {
+                    come_value.type = clone come_params[1].type;
+                }
+                else if(fun_name === "__c11_atomic_fetch_or") {
+                    come_value.type = clone come_params[1].type;
+                }
+                else if(fun_name === "__c11_atomic_fetch_xor") {
+                    come_value.type = clone come_params[1].type;
                 }
                 else if(fun_name === "__dsb") {
                     come_value.type = new sType("void");
