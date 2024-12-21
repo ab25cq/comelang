@@ -1,21 +1,31 @@
-enum __ptrace_setoptions
-{
-  1 = 0x00000001,
-  (1 << 1) = 0x00000002,
-  (1 << 2) = 0x00000004,
-  (1 << 3) = 0x00000008,
-  (1 << 4) = 0x00000010,
-  (1 << 5) = 0x00000020,
-  (1 << 6) = 0x00000040,
-  (1 << 7) = 0x00000080,
-  (1 << 20) = 0x00100000,
-  (1 << 21) = 0x00200000,
-  ( 0x000000ff | (1 << 20) | (1 << 21)) = 0x003000ff
-};
+#include <comelang.h>
+#include <comelang-pthread.h>
 
 
 int main(int argc, char** argv)
 {
+    puts("UHO!");
+    int@ a = __channel__;
+    
+    var thread_id = come {
+        for(int i=0; i<1000; i++) {
+            a <- i;
+        }
+    }
+    
+    while(true) {
+        come_poll  {
+            a {
+                int b = <-a;
+                printf("get %d\n", b);
+            }
+            else {
+                break;
+            }
+        }
+    }
+    
+    come_join(thread_id);
     
     return 0;
 }

@@ -13,6 +13,8 @@ then
     (cd vin; make clean)
 fi
 
+(cd codb; comelang clean)
+
 if [ -e webweb/Makefile ]
 then
     (cd webweb; sh clean_build.sh)

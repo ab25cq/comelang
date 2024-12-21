@@ -1427,11 +1427,12 @@ class sComeJoinNode extends sNodeBase
 #if defined(__LINUX__) || defined(__MAC__) || defined(__ANDROID__)
 class sComePollNode extends sNodeBase
 {
-    new(list<sNode*%>*% vars, list<sBlock*%>*% blocks, int time_out, sInfo* info) {
+    new(list<sNode*%>*% vars, list<sBlock*%>*% blocks, sBlock*% else_block, int time_out, sInfo* info) {
         self.super();
         
         list<sNode*%>*% self.vars = vars;
         list<sBlock*%>*% self.blocks = blocks;
+        sBlock*% self.else_block = else_block;
         int self.time_out = time_out;
     }
     
@@ -1481,6 +1482,11 @@ class sComePollNode extends sNodeBase
             
             n++;
         }
+        
+        add_come_code(info, "}\n");
+        add_come_code(info, "else {\n", var_num);
+        
+        transpile_block(self.else_block, null@param_types, null@param_names, info);
         
         add_come_code(info, "}\n");
         
@@ -2120,24 +2126,37 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             list<sNode*%>*% vars = new list<sNode*%>();
             list<sBlock*%>*% blocks = new list<sBlock*%>();
+            sBlock*% else_block = new sBlock(info);
             while(1) {
-                sNode*% var_name = expression();
-                
-                sBlock*% block = parse_block();
-                
-                vars.add(var_name);
-                
-                blocks.add(block);
-                
-                if(*info->p == '}') {
-                    break;
+                if(memcmp(info->p, "else", strlen("else")) == 0) {
+                    info->p += strlen("else");
+                    skip_spaces_and_lf();
+                    
+                    else_block = parse_block();
+                    
+                    if(*info->p == '}') {
+                        break;
+                    }
+                }
+                else {
+                    sNode*% var_name = expression();
+                    
+                    sBlock*% block = parse_block();
+                    
+                    vars.add(var_name);
+                    
+                    blocks.add(block);
+                    
+                    if(*info->p == '}') {
+                        break;
+                    }
                 }
             }
             
             expected_next_character('}');
             
             info.sline_real = sline_real;
-            return new sComePollNode(vars, blocks, time_out, info) implements sNode;
+            return new sComePollNode(vars, blocks, else_block, time_out, info) implements sNode;
         }
 #endif
         else if(!gComeC && buf === "none" && *info->p == '(') {

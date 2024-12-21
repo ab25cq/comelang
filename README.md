@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 10.2.1
+version 10.2.2
 
 ``` C
 #include <comelang.h>
@@ -328,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+10.2.2 Maybe complete.
 10.2.1 Maybe complete.
 10.2.0 Maybe complete.
 10.1.2 /* */ comment can nest like Java or Rust. /* */ and // comment can write in here docment.

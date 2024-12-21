@@ -303,6 +303,15 @@ typedef unsigned int piccolo_sleep_t;
 
 const unsigned int LED_PIN=25;
 const unsigned int LED2_PIN=14;
+struct __current_stack2__
+{
+    int* __list_values1___277;
+    unsigned int* t_275;
+    int* p_276;
+    unsigned int* t_273;
+    int* p_274;
+};
+
 // source head
 #include "stdint.h"
 #include "stdarg.h"
@@ -557,6 +566,13 @@ void piccolo_start();
 void task1_func();
 int is_prime(unsigned int n);
 void task2_func();
+static struct list$1int* list$1int_map(struct list$1int* self, void* parent, int (*block)(void*,int));
+static struct list$1int* list$1int_initialize(struct list$1int* self);
+int method_block2_(struct __current_stack2__* parent, int it);
+static int list$1int_begin(struct list$1int* self);
+static _Bool list$1int_end(struct list$1int* self);
+static int list$1int_next(struct list$1int* self);
+void task3_func();
 int main();
 // uniq global variable
 char* gComeStackFrameSName[128];
@@ -5189,6 +5205,7 @@ memset(&t_271, 0, sizeof(unsigned int));
         gpio_put(LED_PIN,0);
         piccolo_sleep(&t_271,1000);
     }
+    piccolo_sleep(&t_271,1000);
 }
 
 int is_prime(unsigned int n){
@@ -5208,30 +5225,171 @@ memset(&p_272, 0, sizeof(unsigned int));
 void task2_func(){
 unsigned int t_273;
 int p_274;
+unsigned int t_275;
+int p_276;
+int __list_values1___277[9];
+void* __right_value280 = (void*)0;
+void* __right_value281 = (void*)0;
+struct __current_stack2__ __current_stack2__;
+void* __right_value284 = (void*)0;
+struct list$1int* li_287;
+struct list$1int* o2_saved_288;
+int it_291;
 memset(&t_273, 0, sizeof(unsigned int));
 memset(&p_274, 0, sizeof(int));
-    printf("task2: Created!\n");
+memset(&t_275, 0, sizeof(unsigned int));
+memset(&p_276, 0, sizeof(int));
+memset(&__current_stack2__, 0, sizeof(struct __current_stack2__));
     while(1) {
-        p_274=to_ms_since_boot(get_absolute_time());
-        if(        is_prime(p_274)==1) {
-            printf("%d is prime!\n",p_274);
+        while(1) {
+            __current_stack2__.__list_values1___277 = &__list_values1___277;
+            __current_stack2__.t_275 = &t_275;
+            __current_stack2__.p_276 = &p_276;
+            __current_stack2__.t_273 = &t_273;
+            __current_stack2__.p_274 = &p_274;
+            li_287=(struct list$1int*)come_increment_ref_count(list$1int_map(((struct list$1int*)(__right_value281=(__list_values1___277[0]=1,
+__list_values1___277[1]=2,
+__list_values1___277[2]=3,
+__list_values1___277[3]=4,
+__list_values1___277[4]=5,
+__list_values1___277[5]=6,
+__list_values1___277[6]=7,
+__list_values1___277[7]=8,
+__list_values1___277[8]=9,
+list$1int_initialize_with_values((struct list$1int*)come_increment_ref_count((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "main.c", 50, "struct list$1int")),9,__list_values1___277)))),&__current_stack2__,(void*)method_block2_));
+            /*g*/come_call_finalizer3(__right_value281,list$1intp_finalize, 0, 1, 0, 0, (void*)0);
+            for(            o2_saved_288=(struct list$1int*)come_increment_ref_count((li_287)),it_291=list$1int_begin((o2_saved_288));            !list$1int_end((o2_saved_288));            it_291=list$1int_next((o2_saved_288))            ){
+                printf("task2: Created!\n");
+                printf("it %d\n",it_291);
+                piccolo_sleep(&t_275,75);
+            }
+            /*i*/come_call_finalizer3(o2_saved_288,list$1intp_finalize, 0, 0, 0, 0, (void*)0);
+            /*i*/come_call_finalizer3(li_287,list$1intp_finalize, 0, 0, 0, 0, (void*)0);
         }
         piccolo_yield();
     }
 }
 
+static struct list$1int* list$1int_map(struct list$1int* self, void* parent, int (*block)(void*,int)){
+void* __result_obj__=(void*)0;
+void* __right_value282 = (void*)0;
+void* __right_value283 = (void*)0;
+struct list$1int* result_284;
+struct list_item$1int* it_285;
+int item_286;
+struct list$1int* __result228__;
+    result_284=(struct list$1int*)come_increment_ref_count(list$1int_initialize((struct list$1int*)come_increment_ref_count((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "/usr/local/include/comelang.h", 1777, "list$1int"))));
+    it_285=self->head;
+    while(it_285!=((void*)0)) {
+        item_286=block(parent,it_285->item);
+        list$1int_push_back(result_284,item_286);
+        it_285=it_285->next;
+    }
+    __result228__ = gComeFunResultObject = __result_obj__ = result_284;
+    /*i*/come_call_finalizer3(result_284,list$1intp_finalize, 0, 0, 1, 0, (void*)0);
+    gComeFunResultObject = (void*)0;
+    return __result228__;
+}
+
+static struct list$1int* list$1int_initialize(struct list$1int* self){
+void* __result_obj__=(void*)0;
+struct list$1int* __result227__;
+    self->head=((void*)0);
+    self->tail=((void*)0);
+    self->len=0;
+    __result227__ = gComeFunResultObject = __result_obj__ = self;
+    /*i*/come_call_finalizer3(self,list$1intp_finalize, 0, 0, 1, 0, (void*)0);
+    gComeFunResultObject = (void*)0;
+    return __result227__;
+}
+
+int method_block2_(struct __current_stack2__* parent, int it){
+    return it*2;
+}
+
+static int list$1int_begin(struct list$1int* self){
+int result_289;
+int result_290;
+memset(&result_289, 0, sizeof(int));
+memset(&result_290, 0, sizeof(int));
+    if(    self==((void*)0)) {
+        memset(&result_289,0,sizeof(int));
+        return result_289;
+    }
+    self->it=self->head;
+    if(    self->it) {
+        return self->it->item;
+    }
+    memset(&result_290,0,sizeof(int));
+    return result_290;
+}
+
+static _Bool list$1int_end(struct list$1int* self){
+    return self==((void*)0)||self->it==((void*)0);
+}
+
+static int list$1int_next(struct list$1int* self){
+int result_292;
+int result_293;
+memset(&result_292, 0, sizeof(int));
+memset(&result_293, 0, sizeof(int));
+    if(    self==((void*)0)||self->it==((void*)0)) {
+        memset(&result_292,0,sizeof(int));
+        return result_292;
+    }
+    self->it=self->it->next;
+    if(    self->it) {
+        return self->it->item;
+    }
+    memset(&result_293,0,sizeof(int));
+    return result_293;
+}
+
+void task3_func(){
+unsigned int t_294;
+int p_295;
+int __list_values2___296[9];
+void* __right_value285 = (void*)0;
+void* __right_value286 = (void*)0;
+struct list$1int* li_297;
+struct list$1int* o2_saved_298;
+int it_299;
+memset(&t_294, 0, sizeof(unsigned int));
+memset(&p_295, 0, sizeof(int));
+    while(1) {
+        li_297=(struct list$1int*)come_increment_ref_count((__list_values2___296[0]=1,
+__list_values2___296[1]=2,
+__list_values2___296[2]=3,
+__list_values2___296[3]=4,
+__list_values2___296[4]=5,
+__list_values2___296[5]=6,
+__list_values2___296[6]=7,
+__list_values2___296[7]=8,
+__list_values2___296[8]=9,
+list$1int_initialize_with_values((struct list$1int*)come_increment_ref_count((struct list$1int*)come_calloc(1, sizeof(struct list$1int)*(1), "main.c", 77, "struct list$1int")),9,__list_values2___296)));
+        for(        o2_saved_298=(struct list$1int*)come_increment_ref_count((li_297)),it_299=list$1int_begin((o2_saved_298));        !list$1int_end((o2_saved_298));        it_299=list$1int_next((o2_saved_298))        ){
+            printf("task3: Created!\n");
+            printf("it %d\n",it_299);
+            piccolo_sleep(&t_294,75);
+        }
+        /*i*/come_call_finalizer3(o2_saved_298,list$1intp_finalize, 0, 0, 0, 0, (void*)0);
+        /*i*/come_call_finalizer3(li_297,list$1intp_finalize, 0, 0, 0, 0, (void*)0);
+    }
+}
+
 int main(){
-int __result223__;
+int __result229__;
     come_heap_init(0, 0, 0);
     piccolo_init();
     printf("PICCOLO OS Demo Starting...\n");
     piccolo_create_task(&task1_func);
     piccolo_create_task(&task2_func);
+    piccolo_create_task(&task3_func);
     piccolo_start();
     while(1) {
     }
-    __result223__ = 0;
+    __result229__ = 0;
     come_heap_final();
-    return __result223__;
+    return __result229__;
 }
 

@@ -17,12 +17,13 @@ void task1_func(void) {
     piccolo_sleep_t t;
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
-    while (true) {
+    while(1) {
         gpio_put(LED_PIN, 1);
         piccolo_sleep(&t, 1000);
         gpio_put(LED_PIN, 0);
         piccolo_sleep(&t, 1000);
     }
+    piccolo_sleep(&t, 1000);
 }
 
 int is_prime(unsigned int n)
@@ -41,18 +42,24 @@ void task2_func(void) {
     piccolo_sleep_t t;
     int p;
 
-    printf("task2: Created!\n");
-    while (1) {
-        p = to_ms_since_boot(get_absolute_time());
-        if(is_prime(p)==1) {
-          printf("%d is prime!\n", p);
+    while(1) {
+        piccolo_sleep_t t;
+        int p;
+        
+        while(1) {
+            var li = [1,2,3,4,5,6,7,8,9].map { it * 2 };
+            foreach(it, li) {
+                printf("task2: Created!\n");
+                printf("it %d\n", it);
+                piccolo_sleep(&t, 75);
+            }
         }
         piccolo_yield();
     }
 }
 
-/*
 void task3_func(void) {
+/*
     piccolo_sleep_t t;
     gpio_init(LED2_PIN);
     gpio_set_dir(LED2_PIN, GPIO_OUT);
@@ -62,18 +69,28 @@ void task3_func(void) {
         gpio_put(LED2_PIN, 0);
         piccolo_sleep(&t, 75);
     }
-}
 */
+    piccolo_sleep_t t;
+    int p;
+    
+    while(1) {
+        var li = [1,2,3,4,5,6,7,8,9];
+        foreach(it, li) {
+            printf("task3: Created!\n");
+            printf("it %d\n", it);
+            piccolo_sleep(&t, 75);
+        }
+    }
+}
 
 int main() {
     piccolo_init();
-//    timer_init();
 
     printf("PICCOLO OS Demo Starting...\n");
 
     piccolo_create_task(&task1_func);
     piccolo_create_task(&task2_func);
-//  piccolo_create_task(&task3_func);
+    piccolo_create_task(&task3_func);
 
     piccolo_start();
     
