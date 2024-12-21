@@ -2125,6 +2125,40 @@ int main(int argc, char** argv)
 }
 ```
 
+```
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+
+int main(int argc, char** argv)
+{
+    puts("UHO!");
+    int@ a = __channel__;
+    
+    var thread_id = come {
+        for(int i=0; i<1000; i++) {
+            a <- i;
+        }
+    }
+    
+    while(true) {
+        come_poll  {
+            a {
+                int b = <-a;
+                printf("get %d\n", b);
+            }
+            else {
+                break;
+            }
+        }
+    }
+    
+    come_join(thread_id);
+    
+    return 0;
+}
+```
+
 Well, there is parallel processing like go. There may be bugs as I haven't used it myself yet. It simply uses threads and pipes.
 It may not be obvious in this example. I will also explain it after I try using it on a web server and confirm that there are no bugs.
 

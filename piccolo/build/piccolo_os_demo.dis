@@ -39,19 +39,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_abbrev 00008e6e  00000000  00000000  00059ac4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_loclists 00035023  00000000  00000000  00062932  2**0
+ 18 .debug_loclists 0003501e  00000000  00000000  00062932  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_aranges 00001c68  00000000  00000000  00097958  2**3
+ 19 .debug_aranges 00001c68  00000000  00000000  00097950  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_rnglists 00006777  00000000  00000000  000995c0  2**0
+ 20 .debug_rnglists 00006776  00000000  00000000  000995b8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line   00031533  00000000  00000000  0009fd37  2**0
+ 21 .debug_line   00031533  00000000  00000000  0009fd2e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_str    0000b3e1  00000000  00000000  000d126a  2**0
+ 22 .debug_str    0000b3e1  00000000  00000000  000d1261  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 23 .debug_frame  000046e8  00000000  00000000  000dc64c  2**2
+ 23 .debug_frame  000046e8  00000000  00000000  000dc644  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 24 .debug_line_str 00000341  00000000  00000000  000e0d34  2**0
+ 24 .debug_line_str 00000341  00000000  00000000  000e0d2c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 /Users/ab25cq/comelang/piccolo_os/build/piccolo_os_demo.elf:     file format elf32-littlearm
@@ -1141,9 +1141,9 @@ Disassembly of section .text:
 100009b0:	10007f0c 	.word	0x10007f0c
 100009b4:	10007f1c 	.word	0x10007f1c
 100009b8:	200079de 	.word	0x200079de
-100009bc:	00000483 	.word	0x00000483
-100009c0:	0000046f 	.word	0x0000046f
-100009c4:	00000479 	.word	0x00000479
+100009bc:	0000048b 	.word	0x0000048b
+100009c0:	00000477 	.word	0x00000477
+100009c4:	00000481 	.word	0x00000481
 100009c8:	0002b677 	.word	0x0002b677
 
 100009cc <list$1int_push_back.isra.0>:
@@ -1292,13 +1292,13 @@ Disassembly of section .text:
 10000af4:	200079dd 	.word	0x200079dd
 10000af8:	10007efc 	.word	0x10007efc
 10000afc:	10007ec0 	.word	0x10007ec0
-10000b00:	00000483 	.word	0x00000483
+10000b00:	0000048b 	.word	0x0000048b
 10000b04:	20002338 	.word	0x20002338
 10000b08:	0002b677 	.word	0x0002b677
 10000b0c:	20002334 	.word	0x20002334
 10000b10:	20006950 	.word	0x20006950
-10000b14:	0000046f 	.word	0x0000046f
-10000b18:	00000479 	.word	0x00000479
+10000b14:	00000477 	.word	0x00000477
+10000b18:	00000481 	.word	0x00000481
 
 10000b1c <task2_func>:
 10000b1c:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -1599,7 +1599,7 @@ Disassembly of section .text:
 10000d98:	200079de 	.word	0x200079de
 10000d9c:	10007f30 	.word	0x10007f30
 10000da0:	10007f1c 	.word	0x10007f1c
-10000da4:	000006f1 	.word	0x000006f1
+10000da4:	000006f9 	.word	0x000006f9
 10000da8:	0002b677 	.word	0x0002b677
 
 10000dac <main>:

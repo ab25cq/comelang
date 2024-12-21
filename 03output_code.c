@@ -21,6 +21,9 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
     if(type->mStatic && !no_static) {// && !type->mClass->mStruct && !type->mClass->mUnion) {
         buf.append_str("static ");
     }
+    if(type->mAtomic) {
+        buf.append_str("_Atomic(");
+    }
     
     if(type->mConstant) {
         buf.append_str("const ");
@@ -134,6 +137,9 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
     
     if(type->mRestrict) {
         buf.append_str("restrict");
+    }
+    if(type->mAtomic) {
+        buf.append_str(")");
     }
     
     return buf.to_string();

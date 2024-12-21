@@ -34,10 +34,16 @@ no_output {
 #include "pico/stdlib.h"
 }
 no_output {
+#include "pico/time.h"
+}
+no_output {
 #include "hardware/irq.h"
 }
 no_output {
 #include "hardware/timer.h"
+}
+no_output {
+#include "hardware/uart.h"
 }
 output {#include "stdint.h"}
 output {#include "stdarg.h"}
@@ -45,8 +51,10 @@ output {#include "string.h"}
 output {#include "stdlib.h"}
 output {#include "stdio.h"}
 output {#include "pico/stdlib.h"}
+output {#include "pico/time.h"}
 output {#include "hardware/irq.h"}
 output {#include "hardware/timer.h"}
+output {#include "hardware/uart.h"}
 
 #else
 

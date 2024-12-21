@@ -661,7 +661,40 @@ class sFunCallNode extends sNodeBase
                 || fun_name === "__builtin___memset_chk" || fun_name === "__builtin_object_size" 
                 || fun_name === "__builtin___memcpy_chk" || fun_name === "__builtin___strncpy_chk" 
                 || fun_name === "__builtin___strncat_chk" || fun_name === "__builtin___vsnprintf_chk" 
-                || fun_name === "__builtin_clz") 
+                || fun_name === "__builtin_clz"
+                || fun_name === "__dsb"
+                || fun_name === "__isb"
+                || fun_name === "__dmb"
+                || memcmp(fun_name, "__builtin_arm_", strlen("__builtin_arm_")) == 0
+/*
+                || fun_name === "__builtin_arm_ldcl"
+                || fun_name === "__builtin_arm_stcl"
+                || fun_name === "__builtin_arm_stc"
+                || fun_name === "__builtin_arm_cdp"
+                || fun_name === "__builtin_arm_ldc"
+                || fun_name === "__builtin_arm_mcr"
+                || fun_name === "__builtin_arm_mrc"
+                || fun_name === "__builtin_arm_mcr2"
+                || fun_name === "__builtin_arm_mrc2"
+                || fun_name === "__builtin_arm_cdp2"
+                || fun_name === "__builtin_arm_ldc2"
+                || fun_name === "__builtin_arm_ldc2l"
+                || fun_name === "__builtin_arm_stc2"
+                || fun_name === "__builtin_arm_stc2l"
+                || fun_name === "__builtin_arm_mcrr"
+                || fun_name === "__builtin_arm_mrrc"
+                || fun_name === "__builtin_arm_mcrr2"
+                || fun_name === "__builtin_arm_mrrc2"
+                || fun_name === "__builtin_arm_crc32b"
+                || fun_name === "__builtin_arm_crc32h"
+                || fun_name === "__builtin_arm_crc32w"
+                || fun_name === "__builtin_arm_crc32cb"
+                || fun_name === "__builtin_arm_crc32ch"
+    */
+                || fun_name === "__c11_atomic_thread_fence"
+                || fun_name === "__c11_atomic_exchange"
+                || fun_name === "__c11_atomic_store"
+                || fun_name === "__c11_atomic_signal_fence")
             {
                 list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                 foreach(it, params) {
@@ -748,6 +781,42 @@ class sFunCallNode extends sNodeBase
                 }
                 else if(fun_name === "__builtin_clz") {
                     come_value.type = new sType("int");
+                }
+                else if(fun_name === "__c11_atomic_thread_fence") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__c11_atomic_exchange") {
+                    come_value.type = clone come_params[2].type;
+                }
+                else if(fun_name === "__c11_atomic_store") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__c11_atomic_signal_fence") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__dsb") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__isb") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__dmb") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__builtin_arm_cdp") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__builtin_arm_ldc") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__builtin_arm_stc") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__builtin_arm_stcl") {
+                    come_value.type = new sType("void");
+                }
+                else if(fun_name === "__builtin_arm_ldcl") {
+                    come_value.type = new sType("void");
                 }
                 
                 come_value.var = null;
@@ -1880,11 +1949,11 @@ sNode*% expression_node(sInfo* info=info) version 97
         
         bool is_type_name_ = is_type_name(buf);
         
-        static char* is_special_word_array[18] = { "if", "while", "for", "switch", "return", "sizeof", "isheap", "ispointer", "__typeof__"
+        static char* is_special_word_array[19] = { "if", "while", "for", "switch", "return", "sizeof", "isheap", "ispointer", "__typeof__"
                                     , "dynamic_typeof", "typeof", "gc_inc", "gc_dec", "gc_dec_nofree", "case", "_Alignof"
-                                    , "_Alignas", "__alignof__"}
+                                    , "_Alignas", "__alignof__", "_Atomic" }
                                     
-        bool is_special_word = is_special_word_array.contained(18, buf);
+        bool is_special_word = is_special_word_array.contained(19, buf);
         
         /// backtrace ///
         bool define_function_pointer_flag = false;
@@ -2038,6 +2107,23 @@ sNode*% expression_node(sInfo* info=info) version 97
             sNode*% node =  parse_function(info);
             info.sline_real = sline_real;
             return node;
+        }
+        else if((buf === "_Static_assert" || buf === "static_assert") && *info->p == '(') 
+        {
+            expected_next_character('(');
+            
+            bool no_comma = info->no_comma;
+            info->no_comma = true;
+            sNode*% exp = expression();
+            info->no_comma = no_comma;
+            
+            expected_next_character(',');
+            
+            sNode*% exp2 = expression();
+            
+            expected_next_character(')');
+            
+            return static_assert_node(exp, exp2);
         }
         else if(!gComeC && (buf === "string" || buf === "wstring") && *info->p == '(') {
             sNode*% node = parse_function_call(buf, info);

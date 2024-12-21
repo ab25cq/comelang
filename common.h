@@ -103,6 +103,7 @@ struct sType
     bool mLong;
     bool mLongLong;
     bool mConstant;
+    bool mAtomic;
     bool mRegister;
     bool mVolatile;
     bool mStatic;
@@ -847,5 +848,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
 /// 24module.c
 /////////////////////////////////////////////////////////////////////
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91;
+sNode*% static_assert_node(sNode*% exp, sNode*% exp2, sInfo* info=info);
 
 #endif

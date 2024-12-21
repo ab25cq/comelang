@@ -45,6 +45,56 @@ class sHeaderNode extends sNodeBase {
     }
 };
 
+class sStaticAssert extends sNodeBase {
+    new(sNode*% exp, sNode*% exp2, sInfo* info=info) {
+        self.super();
+        
+        sNode*% self.exp = exp;
+        sNode*% self.exp2 = exp2;
+    }
+
+    string kind()
+    {
+        return string("sStaticAssert");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% exp = self.exp;
+        
+        node_compile(exp).elif {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        sNode*% exp2 = self.exp2;
+        
+        node_compile(exp2).elif {
+            return false;
+        }
+        
+        CVALUE*% come_value2 = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        CVALUE*% come_value3 = new CVALUE();
+        
+        come_value3.c_value = xsprintf("_Static_assert(%s, %s)", come_value.c_value, come_value2.c_value);
+        come_value3.type = new sType("void");
+        come_value3.var = null;
+        
+        add_come_last_code(info, "%s", come_value2.c_value);
+        
+        return true;
+    }
+};
+
+sNode*% static_assert_node(sNode*% exp, sNode*% exp2, sInfo* info=info)
+{
+    return new sStaticAssert(exp, exp2, info) implements sNode;
+}
+
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
 {
     if(buf === "module") {
@@ -249,6 +299,22 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         info->no_output_come_code2 = no_output_come_code2;
         
         return new sHeaderNode(s"", info) implements sNode;
+    }
+    else if(buf === "_Static_assert" || buf === "static_assert") {
+        expected_next_character('(');
+        
+        bool no_comma = info->no_comma;
+        info->no_comma = true;
+        sNode*% exp = expression();
+        info->no_comma = no_comma;
+        
+        expected_next_character(',');
+        
+        sNode*% exp2 = expression();
+        
+        expected_next_character(')');
+        
+        return new sStaticAssert(exp, exp2, info) implements sNode;
     }
     
     return inherit(buf, head, head_sline, info);

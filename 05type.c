@@ -23,6 +23,7 @@ bool is_type_name(char* buf, sInfo* info=info)
             || buf === "_Nullable" 
             || buf === "__declspec" 
             || buf === "_Alignas"
+            || buf === "_Atomic"
             || (buf === "__attribute__" && *info->p == '(' )
             || buf === "void" ;
     }
@@ -39,6 +40,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         || buf === "_Nullable" 
         || buf === "__declspec" 
         || buf === "_Alignas"
+        || buf === "_Atomic"
         || (buf === "__attribute__" && *info->p == '(')
         || (buf === "immutable")
         || (buf === "mutable")
@@ -1493,8 +1495,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     
     bool anonymous_type = false;
     bool anonymous_name = false;
+    bool atomic_ = false;
     while(true) {
-        if(type_name === "__extension__") {
+        if(type_name === "_Atomic") {
+            expected_next_character('(');
+            type_name = parse_word();
+            atomic_ = true;
+        }
+        else if(type_name === "__extension__") {
             type_name = parse_word();
         }
         else if(type_name === "__attribute__") {
@@ -2107,6 +2115,10 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         tuple_name = parse_word();
     }
     
+    if(atomic_) {
+        expected_next_character(')');
+    }
+    
     bool lambda_flag = false;
     {
         char* pX = info.p;
@@ -2353,6 +2365,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             result_type = new sType(type_name);
         }
         
+        result_type->mAtomic = result_type->mAtomic || atomic_;
         result_type->mConstant = result_type->mConstant || constant;
         result_type->mAlignas = alignas_;
         result_type->mRegister = register_;
@@ -2425,6 +2438,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         
         result_type->mConstant = result_type->mConstant || constant;
+        result_type->mAtomic = result_type->mAtomic || atomic_;
         result_type->mAlignas = alignas_;
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
@@ -2563,6 +2577,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type.mOriginalTypeNameHeap = heap;
             
             type->mConstant = type->mConstant || constant;
+            type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2590,6 +2605,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             
             type->mConstant = type->mConstant || constant;
+            type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2617,6 +2633,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             
             type->mConstant = type->mConstant || constant;
+            type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2685,6 +2702,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             
             type->mConstant = type->mConstant || constant;
+            type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2723,6 +2741,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type = new sType(type_name);
             
             type->mConstant = type->mConstant || constant;
+            type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
