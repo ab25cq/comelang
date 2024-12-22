@@ -496,64 +496,6 @@ class sTypeOfExpNode extends sNodeBase
     }
 };
 
-class sDynamicTypeOfNode extends sNodeBase
-{
-    new(sNode*% exp, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.exp = clone exp;
-    }
-    
-    string kind()
-    {
-        return string("sDynamicTypeOfNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode*% exp = self.exp;
-        
-        node_compile(exp).elif {
-            return false;
-        }
-        
-        CVALUE*% come_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        if(!come_value.type.mHeap) {
-            sType*% type = clone come_value.type;
-            
-            var type2 = solve_generics(type, info->generics_type, info);
-            
-            string type_name = make_type_name_string(type2);
-            
-            come_value.c_value = xsprintf("\"%s\"", type_name);
-            come_value.type = new sType("char*");
-            come_value.var = null;
-            
-            add_come_last_code(info, "%s", come_value.c_value);
-            
-            info.stack.push_back(come_value);
-            
-            return true;
-        }
-        else {
-            CVALUE*% come_value2 = new CVALUE();
-            
-            come_value2.c_value = xsprintf("come_dynamic_typeof(%s)", come_value.c_value);
-            come_value2.type = new sType("char*");
-            come_value2.var = null;
-            
-            add_come_last_code(info, "%s", come_value2.c_value);
-            
-            info.stack.push_back(come_value2);
-        }
-        
-        return true;
-    }
-};
-
 class sAlignOfNode extends sNodeBase
 {
     new(sType*% type, sInfo* info)
@@ -1070,41 +1012,6 @@ class sGCDecNode extends sNodeBase
     }
 };
 
-class sGCDecNoFreeNode extends sNodeBase
-{
-    new(sNode*% node, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.node = clone node;
-    }
-    
-    string kind()
-    {
-        return string("sGCDecNoFreeNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode* node = self.node;
-        
-        node_compile(node).elif {
-            return false;
-        }
-        
-        CVALUE*% come_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        sType* type = come_value.type;
-        
-        decrement_ref_count_object(type, come_value.c_value, info, no_free:true);
-        
-        info.stack.push_back(come_value);
-        
-        return true;
-    }
-};
-
 class sIsHeap extends sNodeBase
 {
     new(sType*% type, sInfo* info)
@@ -1149,6 +1056,7 @@ class sIsHeap extends sNodeBase
         return true;
     }
 };
+
 
 class sIsPointer extends sNodeBase
 {
@@ -1195,6 +1103,41 @@ class sIsPointer extends sNodeBase
     }
 };
 
+class sGCDecNoFreeNode extends sNodeBase
+{
+    new(sNode*% node, sInfo* info)
+    {
+        self.super();
+        
+        sNode*% self.node = clone node;
+    }
+    
+    string kind()
+    {
+        return string("sGCDecNoFreeNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode* node = self.node;
+        
+        node_compile(node).elif {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        sType* type = come_value.type;
+        
+        decrement_ref_count_object(type, come_value.c_value, info, no_free:true);
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 21
 {
     if(!gComeC && buf === "new") {
@@ -1205,24 +1148,10 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         }
         
         if(*info->p == '(') {
-            if(type->mClass->mProtocol) {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                sType*% inf_type = clone type;
-                
-                sNode*% node = expression();
-                
-                expected_next_character(')');
-                
-                return new sImplementsNode(node, inf_type, info) implements sNode;
-            }
-            else {
-                sNode*% obj = new sNewNode(type, null, info) implements sNode;
-                string fun_name = string("initialize");
-                
-                return parse_method_call(clone obj, fun_name, info);
-            }
+            sNode*% obj = new sNewNode(type, null, info) implements sNode;
+            string fun_name = string("initialize");
+            
+            return parse_method_call(clone obj, fun_name, info);
         }
         else if(*info->p == '{') {
             info->p++;
@@ -1279,10 +1208,10 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             return new sNewNode(type, null, info) implements sNode;
         }
     }
-    else if(buf === "true") {
+    else if(!gComeC && buf === "true") {
         return new sTrueNode(info) implements sNode;
     }
-    else if(buf === "false") {
+    else if(!gComeC && buf === "false") {
         return new sFalseNode(info) implements sNode;
     }
     else if(!gComeC && buf === "delete") {
@@ -1584,17 +1513,6 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             return new sTypeOfExpNode(exp, info) implements sNode;
         }
     }
-/*
-    else if(buf === "dynamic_typeof") {
-        expected_next_character('(');
-        
-        var exp = expression();
-        
-        expected_next_character(')');
-        
-        return new sDynamicTypeOfNode(exp, info) implements sNode;
-    }
-*/
     else if(buf === "_Alignof") {
         bool paren = false;
         if(*info->p == '(') {

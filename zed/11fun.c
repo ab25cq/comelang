@@ -88,7 +88,7 @@ sNode*% exp_node(sInfo* info) version 9
         string fun_name = string("read");
         list<sNode*%>*% params = new list<sNode*%>();
         sNodeBlock? block = null
-        result = new sNode(new sFunNode(fun_name, clone result, params, block));
+        result = new sFunNode(fun_name, clone result, params, block) implements sNode;
     }
     else {
         result = inherit(info);
@@ -149,7 +149,7 @@ sNode*% exp_node(sInfo* info) version 9
             block = parse_block(info);
         }
         
-        result = new sNode(new sFunNode(fun_name, dummy_heap result, params, block));
+        result = new sFunNode(fun_name, dummy_heap result, params, block) implements sNode;
     }
     
     return result;

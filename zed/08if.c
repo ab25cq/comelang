@@ -269,13 +269,13 @@ sNode*% exp_node(sInfo* info) version 6
         info->p += strlen("true");
         skip_spaces(info);
         
-        return new sNode(new sTrueNode());
+        return new sTrueNode() implements sNode;
     }
     else if(is_word("false", info)) {
         info->p += strlen("false");
         skip_spaces(info);
         
-        return new sNode(new sFalseNode());
+        return new sFalseNode() implements sNode;
     }
     else if(is_word("if", info)) {
         info->p += strlen("if");
@@ -322,7 +322,7 @@ sNode*% exp_node(sInfo* info) version 6
             else_block = parse_block(info);
         }
         
-        return new sNode(new sIfNode(if_exp, if_block, elif_exps, elif_blocks, clone else_block));
+        return new sIfNode(if_exp, if_block, elif_exps, elif_blocks, clone else_block) implements sNode;
     }
     else {
         return inherit(info);

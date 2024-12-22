@@ -339,10 +339,10 @@ sNode*% exp_node(sInfo* info) version 5
                 exit(2);
             }
             
-            result = new sNode(new sStoreNode(var_name.to_string().to_wstring(), node));
+            result = new sStoreNode(var_name.to_string().to_wstring(), node) implements sNode;
         }
         else {
-           result = new sNode(new sLoadNode(var_name.to_string().to_wstring()));
+           result = new sLoadNode(var_name.to_string().to_wstring()) implements sNode;
         }
     }
     else {
@@ -376,12 +376,12 @@ sNode*% exp_node(sInfo* info) version 5
                 exit(2);
             }
             
-            sNode*% result2 = new sNode(new sStoreElementNode(var_name.to_string(), node, node2));
+            sNode*% result2 = new sStoreElementNode(var_name.to_string(), node, node2) implements sNode;
             
             result = result2;
         }
         else {
-            sNode*% result2 = new sNode(new sLoadElementNode(var_name.to_string(), node))
+            sNode*% result2 = new sLoadElementNode(var_name.to_string(), node) implements sNode;
             
             result = result2;
         }

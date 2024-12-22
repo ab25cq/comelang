@@ -101,21 +101,6 @@ class sSStringNode extends sNodeBase
         
         if(self.exps.length() > 0) {
             foreach(it, self.exps) {
-/*
-                node_compile(it).elif {
-                    return false;
-                }
-                
-                CVALUE*% come_value = get_value_from_stack(-1, info);
-                dec_stack_ptr(1, info);
-                
-                sType*% come_value_type = clone come_value.type;
-                
-                if(come_value_type->mArrayNum.length() > 0) {
-                    come_value_type->mPointerNum += come_value_type->mArrayNum.length();
-                }
-*/
-                
                 sNode*% obj = clone it;
                 
                 list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
@@ -132,43 +117,6 @@ class sSStringNode extends sNodeBase
                 
                 buf.append_str(",");
                 buf.append_str(come_value.c_value);
-                
-/*
-                string method_name = create_method_name(come_value_type, false@no_pointer_name, "to_string", info);
-                
-                if(info.funcs.at(method_name, null) == null) {
-                    sType* obj_type = come_value.type.mNoSolvedGenericsType.v1;
-                    if(obj_type && obj_type.mGenericsTypes.length() > 0) {
-                        sType* obj_type2 = come_value.type;
-                        method_name = make_generics_function(obj_type2, string("to_string"), info);
-                    }
-                    else {
-                        var fun2, real_fun_name = create_to_string_automatically(come_value_type, "to_string", info);
-                        
-                        method_name = real_fun_name;
-                        
-                        if(fun2 == null) {
-                            err_msg(info, "require to_string implementation(%s)", come_value.type.mClass.mName);
-                            exit(1);
-                        }
-                    }
-                }
-                
-                var buf2 = new buffer();
-                
-                buf2.append_str(method_name);
-                buf2.append_str("(");
-                buf2.append_str(come_value.c_value);
-                buf2.append_str(")");
-                
-                sType*% type = new sType("char*");
-                type->mHeap = true;
-                
-                string c_value =  append_object_to_right_values(buf2.to_string(), type, info);
-                
-                buf.append_str(",");
-                buf.append_str(c_value);
-*/
             }
         }
         

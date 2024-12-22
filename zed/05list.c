@@ -181,7 +181,7 @@ sNode*% exp_node(sInfo* info) version 3
                 }
             }
             
-            return new sNode(new sMapNode(value));
+            return new sMapNode(value) implements sNode;
         }
         else {
             info->p = p;
@@ -209,7 +209,7 @@ sNode*% exp_node(sInfo* info) version 3
                 }
             }
             
-            return new sNode(new sListNode(list_));
+            return new sListNode(list_) implements sNode;
         }
     }
     else {

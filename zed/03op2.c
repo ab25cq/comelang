@@ -306,7 +306,7 @@ sNode*% op_mult_node(sInfo* info) version 2
                 return null;
             }
             
-            result = new sNode(new sMultNode(result, right));
+            result = new sMultNode(result, right) implements sNode;
         }
         else if(*info->p == '/') {
             info->p++;
@@ -322,7 +322,7 @@ sNode*% op_mult_node(sInfo* info) version 2
                 return null;
             }
             
-            result = new sNode(new sDivNode(result, right));
+            result = new sDivNode(result, right) implements sNode;
         }
         else if(*info->p == '%') {
             info->p++;
@@ -338,7 +338,7 @@ sNode*% op_mult_node(sInfo* info) version 2
                 return null;
             }
             
-            result = new sNode(new sModNode(result, right));
+            result = new sModNode(result, right) implements sNode;
         }
     }
     
@@ -422,7 +422,7 @@ sNode*% op_eq_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sEqNode(result, right));
+            result = new sEqNode(result, right) implements sNode;
         }
         else if(*info->p == '!' && *(info->p+1) == '=') {
             info->p+=2;
@@ -438,7 +438,7 @@ sNode*% op_eq_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sNotEqNode(result, right));
+            result = new sNotEqNode(result, right) implements sNode;
         }
         else if(*info->p == '>' && *(info->p +1 ) == '=') {
             info->p+=2;
@@ -454,7 +454,7 @@ sNode*% op_eq_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sGTEqNode(result, right));
+            result = new sGTEqNode(result, right) implements sNode;
         }
         else if(*info->p == '<' && *(info->p +1 ) == '=') {
             info->p+=2;
@@ -470,7 +470,7 @@ sNode*% op_eq_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sLTEqNode(result, right));
+            result = new sLTEqNode(result, right) implements sNode;
         }
         else if(*info->p == '>') {
             info->p+=2;
@@ -486,7 +486,7 @@ sNode*% op_eq_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sGTNode(result, right));
+            result = new sGTNode(result, right) implements sNode;
         }
         else if(*info->p == '<') {
             info->p+=2;
@@ -502,7 +502,7 @@ sNode*% op_eq_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sLTNode(result, right));
+            result = new sLTNode(result, right) implements sNode;
         }
     }
     
@@ -528,7 +528,7 @@ sNode*% op_andand_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sAndAndNode(result, right));
+            result = new sAndAndNode(result, right) implements sNode;
         }
         else if(*info->p == '|' && *(info->p+1) == '|') {
             info->p+=2;
@@ -544,7 +544,7 @@ sNode*% op_andand_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sOrOrNode(result, right));
+            result = new sOrOrNode(result, right) implements sNode;
         }
     }
     
