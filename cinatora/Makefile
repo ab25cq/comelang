@@ -5,10 +5,10 @@ exec_prefix=${prefix}
 bindir=${exec_prefix}/bin
 datadir=${datarootdir}
 mandir=${datarootdir}/man
-sharedstatedir=${prefix}/blotus
-sysconfdir=${prefix}/etc/blotus
-includedir=${prefix}/include/blotus
-datarootdir=${prefix}/share/blotus
+sharedstatedir=${prefix}/cinatora
+sysconfdir=${prefix}/etc/cinatora
+includedir=${prefix}/include/cinatora
+datarootdir=${prefix}/share/cinatora
 docdir=${datarootdir}/doc
 libdir=${exec_prefix}/lib
 
@@ -26,8 +26,8 @@ SRCS=$(wildcard *.c)
 SINGLE_SRCS=$(filter-out %.c.c, $(SRCS))
 OBJS=$(SINGLE_SRCS:.c=.o)
 DEBUG_OBJS=$(SINGLE_SRCS:.c=.debug.o)
-TARGET=blotus
-TARGET_DEBUG=blotus-debug
+TARGET=cinatora
+TARGET_DEBUG=cinatora-debug
 
 #########################################
 # main
@@ -60,31 +60,31 @@ common.h: $(SINGLE_SRCS)
 #########################################
 install:
 	mkdir -p "$(DESTDIR)/bin"
-	$(INSTALL) -m 755 ./blotus "$(DESTDIR)/bin"
+	$(INSTALL) -m 755 ./cinatora "$(DESTDIR)/bin"
 	mkdir -p "$(DESTDIR)/include"
 	mkdir -p "$(DESTDIR)/lib"
-	mkdir -p "$(DESTDIR)/share/doc/blotus"
-	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/blotus/README.md"
+	mkdir -p "$(DESTDIR)/share/doc/cinatora"
+	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/cinatora/README.md"
 
 #########################################
 # clean
 #########################################
 clean:
-	rm -fR *.o *.c.i *.c.out *.c.c blotus *.log *.out common.h blotus-debug
+	rm -fR *.o *.c.i *.c.out *.c.c cinatora *.log *.out common.h cinatora-debug
 
 #########################################
 # uninstall
 #########################################
 uninstall:
-	rm -f "$(DESTDIR)"/bin/blotus
-	rm -f "$(DESTDIR)/share/doc/blotus/README.md"
+	rm -f "$(DESTDIR)"/bin/cinatora
+	rm -f "$(DESTDIR)/share/doc/cinatora/README.md"
 
-run: blotus
+run: cinatora
 	rm -f *.log
-	./blotus
+	./cinatora
 
-compile: blotus
+compile: cinatora
 
-debug: blotus-debug
+debug: cinatora-debug
 	rm -f *.log
-	./blotus-debug
+	./cinatora-debug
