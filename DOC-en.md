@@ -206,26 +206,22 @@ Because comelang has a package manager, you can perform separate compilation wit
 ```
 > comelang new X
 > cd X
-> vim a.c
+> vim 01b.c
+int fun(int x, int y)
+{
+    return x + y;
+}
+> vim 02a.c
 int main(int argc, char** argv)
 {
     int y = fun(1, 2);
     return 0;
 }
-> vim b.c
-int fun(int x, int y)
-{
-    return x + y;
-}
 > comelang compile
 ```
 
-I am creating a project called X with comelang new X. Among them, we have created a source file called a.c and a source file called b.c.
-a.c uses a function called fun defined in b.c. Normally, you would have to create a b.c header file, but comelang automatically creates the header file for you.
-When you compile comelang, a header file common.h is automatically created from a file with the extension .c, and it is automatically \#included in a.c and b.c.
-When you compile comelang, an executable called X will be created.
-If you type comelang run, it will not only compile but also execute.
-If you use comelang debug, it will run with debug mode turned on. In debug mode, compile with C language debug option -g and comelang debug option -cg as compile options.
+I am creating a project called X with comelang new X. In it, I am creating source files called 02a.c and 01b.c. 02a.c uses a function called fun defined in 01b.c. Normally, I would have to create a header file for 01b.c, but comelang will create the header file automatically. The first number is the processing order of the automatically generated header files. Please write the order of the headers you want to generate in the comelang project manager. For example, in this case, fun is referenced in 02a.c, so it is set to 01b.c. You also need to consider the order of structures, enumerations, etc. The headers are comelang header common.h *.c in the Makefile, so if you specify the order here, the numbers are not necessary. If you want to control the order, please modify this. When you run comelang compile, the header file common.h will be automatically created from files with the extension .c, and will be automatically #included in 02a.c and 01b.c. When you run comelang compile, an executable called X will be created. comelang run will compile and run the program. comelang debug will run the program with debug mode turned on. Debug mode is achieved by compiling with the C debug option -g and the comelang debug option -cg.
+
 
 # variable
 
@@ -746,7 +742,7 @@ enum eGender { kMale, kFemale };
 
 void show(tup(string:name, int:age, int:gender) t)
 {
-     puts(s"name \{t.name} age \{t.age} gender \{gGender[t.gender]}");
+     puts(s"name \{t.name} age \{t.age} gender \{gGender[t.er]}");
 }
 
 int main(int argc, char** argv) 
@@ -917,11 +913,7 @@ int main(int argc, char** argv)
 
 Probably. However, the difference with buffer is that you can add data to it. C-style writing is a method of allocating data in a static area, and is suitable for embedded systems with limited memory and processing that requires high processing speed.
 When allocated in the static area, processing speed is fastest and memory usage is also small. This method is best when writing an OS or controlling a device with a microcontroller.
-However, in system programs written on servers such as server applications, compilers, interpreters, and editors, it is necessary to be able to change the data size like comelang. Comelang can be written either way, so choose whether to allocate data in a heap that can change its size depending on the situation, or in a static area that cannot change its size but is faster.
-
-Next, let's go to string.
-
-string has already appeared in this sentence. `s""` is the value representation. The difference between `"" and `s"" is that `s"" is data that is allocated in the heap area, and `"" is data that is allocated in the static area. In comelang, methods for strings can also be used for `""`. For example, there is a method that takes a substring, `.substring(int head, int tail)`.
+However, in system programs written on servers such as server applications, compilers, interpreteeap area, and `"" is data that is allocated in the static area. In comelang, methods for strings can also be used for `""`. For example, there is a method that takes a substring, `.substring(int head, int tail)`.
 
 ```C
     "ABC".substring(head:0,tail:1);
@@ -1081,11 +1073,7 @@ int main()
 }
 ```
 
-Let me explain. This feature may not be very useful as it complicates the source.
-I also tried using it to implement editors and other apps, but the functionality was a little strange. It is up to the user whether to use it or not.
-To explain, let's say that a function called fun() returns 1, but you later want to return 2.
-Of course, it is normal to use return 2; in the original function's fun(), but fun may be a library and it may be difficult to change the source.
-In that case, overwrite it as `int fun() version 2`. `inherit()` calls the original function and is just called `fun()`.
+Let me explain. This feature mnd is just called `fun()`.
 1 is entered in n. You can also pass arguments. The caller's `fun()` will be called with version 2 of fun.
 Internally, `int fun() version 2` is defined as `fun_v2`, and `fun_v2` is simply called on the caller side.
 To call version 2 of fun before it is called
@@ -1243,19 +1231,7 @@ int main(int argc, char** argv)
 ```
 
 This is when the block after `less` has an error. If `int fd =` comes in the lvalue, -1 is returned because the return value of the block is required.
-When you run this program, ABC to XXX
-is written, and when you type `cat XXX` on the command line, ABC should be displayed.
-`(void)close(fd)` is explicitly written as `(void)` to indicate that no errors will be handled, since close almost never fails.
-
-Writing the above source in C
-
-```C
-#include <unistd.h>
-#include <fcntl.h>
-
-int main(int argc, char** argv)
-{
-    int fd = open("XXX", O_WRONLY|O_CREAT, 0644);
+When you run this program, ABC to XXXO_CREAT, 0644);
     if(fd < 0)  {
         perror("open");
         exit(2);
@@ -1355,40 +1331,7 @@ For example, if you write this code in C,
 
 ```C
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-struct sChildBase
-{
-     int kind;
-};
-
-enum eChildKind { kChildKindA, kChildKindB };
-
-struct sChildA
-{
-     int kind;
-     int x;
-     int y;
-     int z;
-     char str[128];
-};
-
-struct sChildA* sChildA_initialize(struct sChildA* self)
-{
-   self.kind = kChildKindA;
-   self.x = 1;
-   self.y = 2;
-   self.z = 3;
-
-   strncpy(self.str, "ABC", 128);
-
-   return self;
-}
-    
-void sChildA_show(struct sChildA* self) 
-{
-     printf("x %d y %d z %d str %s\n", self.x, self->y, self->z, self->str);
+#includd y %d z %d str %s\n", self.x, self->y, self->z, self->str);
 }
 
 struct sChildB
@@ -1498,38 +1441,7 @@ int main(int argc, char* argv)
 
     int c = 123;
 
-    puts(s"c == \{c}");   // c == 123;
-
-    puts(s"1 + 1 == \{1+1}");   // 1+1 == 2;
-
-    return 0;
-}
-```
-
-Expressions can be embedded in string type strings using `\{}`. `""` is a string allocated in the static area of the program, while `s""` is a string allocated in the heap.
-
-# Here document
-
-```C
-#include <comelang.h>
-
-int main(int argc, char** argv)
-{
-    int a = 123;
-    printf("""
-AAA
-\{a}
-BBB
-CCC
-    """);
-
-    return 0;
-}
-```
-
-A multi-line string. The """ in the last line is ignored at the beginning of the line. You can expand the variable with `\{}`. It will be expanded to the heap.
-
-It's useless because of cpp. Don't use.
+    puts(s"c ed at the beginning of the line. You can expand the variable with `\{}`. It will be expanded to the heap.
 
 # method block
 
@@ -1730,52 +1642,7 @@ int main(int argc, char** argv)
     
     printf("a %d\n", a);
     
-    puts("HEHE");
-    
-    return 0;
-}
-```
-a 1
-HEHE
-
-```
-#include <comelang.h>
-
-exception int fun()
-{
-    return none(s"Err");
-}
-
-exception int fun2()
-{
-    return fun().exception_throw;
-}
-
-int main(int argc, char** argv)
-{
-    int a = fun2()!!;
-    
-    printf("a %d\n", a);
-    
-    puts("HEHE");
-    
-    return 0;
-}
-```
-Err
-
-```
-#include <comelang.h>
-
-exception int fun()
-{
-    return none(s"Err");
-}
-
-exception int fun2()
-{
-    return fun().exception_throw;
-}
+    puts("H
 
 int main(int argc, char** argv)
 {
@@ -1927,45 +1794,7 @@ For comelangn pattern matching, if the expression is `!=0`, elif is `==0`, case 
 ```C
 #include <comelang.h>
 
-char*% fun(int a)
-{
-    if(a == 0) {
-        return null;
-    }
-    else {
-        return xsprintf("%d", a);
-    }
-}
-
-int main(int argc, char** argv)
-{
-    string a = fun(1).elif {
-        s"null"
-    }
-    
-    puts(a);  // "1"
-    
-    return 0;
-}
-```
-
-
-If you omit the else block, the return value will be the return value of fun(1). In this case, `s"null"` is assigned only if elif matches.
-
-```C
-#include <comelang.h>
-
-int fun()
-{
-    return 0;
-}
-
-int fun2()
-{
-    return -1;
-}
-
-int main(int argc, char** argv)
+char*% fuar** argv)
 {
     int n = fun().less {   // n == 0 block not runned
         puts("ERR");
@@ -2125,40 +1954,6 @@ int main(int argc, char** argv)
 }
 ```
 
-```
-#include <comelang.h>
-#include <comelang-pthread.h>
-
-
-int main(int argc, char** argv)
-{
-    puts("UHO!");
-    int@ a = __channel__;
-    
-    var thread_id = come {
-        for(int i=0; i<1000; i++) {
-            a <- i;
-        }
-    }
-    
-    while(true) {
-        come_poll  {
-            a {
-                int b = <-a;
-                printf("get %d\n", b);
-            }
-            else {
-                break;
-            }
-        }
-    }
-    
-    come_join(thread_id);
-    
-    return 0;
-}
-```
-
 Well, there is parallel processing like go. There may be bugs as I haven't used it myself yet. It simply uses threads and pipes.
 It may not be obvious in this example. I will also explain it after I try using it on a web server and confirm that there are no bugs.
 
@@ -2170,9 +1965,7 @@ I have no regrets this time. I feel like I've accomplished something.
 Programming is like a chore, it never ends. Just when you think you're done, it's over.
 I also want to continue working on the web server and database server, and improve the vi clone called vin.
 I would like to play with the channel. Also, is it a microcomputer? I have m5stack and raspi pico.
-I had a dream of creating an OS, so I guess I'll give it a try...I think it'll take 5 years or so.
-Well, this is my confidence work. clover2 was useless unless an extension library was created, but comelang can use a C language library, so there is no need to worry about that.
-That's a big thing. In the end, it's a pain that if you don't use the language specified by the manufacturer, you won't be able to use the manufacturer's library. For free software.
-Nowadays, with AI, it has become easier to take on challenges in new fields. Would you like to try your hand at creating an OS? I think I can still enjoy programming.
+I ys, with AI, it has become easier to take on challenges in new fields. Would you like to try your hand at creating an OS? I think I can still enjoy programming.
 Please enjoy programming without sacrificing your social life. Please stop focusing on programming. Because programming never ends.
 I will continue my never-ending story. Well then. Enjoy programming!
+
