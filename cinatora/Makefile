@@ -17,8 +17,8 @@ libdir=${exec_prefix}/lib
 #########################################
 CC=comelang
 INSTALL=install
-CFLAGS= -common-header -O2 
-CFLAGS_DEBUG= -common-header -gdwarf-4 -cg 
+CFLAGS= -common-header -O2 -str -net
+CFLAGS_DEBUG= -common-header -gdwarf-4 -cg -str -net
 LIBS=-lpcre
 OS=linux
 DESTDIR=/usr/local/
