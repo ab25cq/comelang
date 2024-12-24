@@ -75,7 +75,7 @@ puts(contents);
     
             if(header.match(/^GET /) && header.match(/Accept: text\/html/)) {
 puts("GET");
-                string path = clone header.scan(/GET (.+) HTTP/)[1]??;
+                string path = header.scan(/GET (.+) HTTP/)[1]??;
                 
 puts(path);
                 char* p2 = strstr(path, "?");

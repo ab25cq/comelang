@@ -2,6 +2,7 @@
 (cd tcc; make clean)
 (cd lcc; make clean)
 (cd 9cc; make clean)
+(cd cinatora; comelang clean)
 
 if [ -e Makefile ]
 then

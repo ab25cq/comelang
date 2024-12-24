@@ -1,13 +1,11 @@
 #include <comelang.h>
-
-char char*::test(char* str)
-{
-    return str[0];
-}
+#include <comelang-str.h>
 
 int main(int argc, char** argv)
 {
-    printf("%c\n", s"AAA".test());
+    string a = s"AAA".scan(/./)[0];
+    
+    puts(a);
     
     return 0;
 }
