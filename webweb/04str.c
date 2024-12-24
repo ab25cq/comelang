@@ -122,7 +122,7 @@ sNode*% exp_node(sInfo* info) version 2
             }
         }
         
-        return new sNode(new sStrNode(buf.to_string().to_wstring()));
+        return new sStrNode(buf.to_string().to_wstring()) implements sNode;
     }
     else {
         return inherit(info);

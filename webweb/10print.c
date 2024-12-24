@@ -142,7 +142,7 @@ bool vm(sInfo* info) version 9
 sNode*% exp_node(sInfo* info) version 8
 {
     if(*info->p == '.') {
-        return new sNode(new sStdinNode());
+        return new sStdinNode() implements sNode;
     }
     
     if(is_word("print", info)) {
@@ -158,13 +158,13 @@ sNode*% exp_node(sInfo* info) version 8
         
         sNode*% print_exp = node;
         
-        return new sNode(new sPrintNode(print_exp));
+        return new sPrintNode(print_exp) implements sNode;
     }
     else if(is_word("stdin", info)) {
         info->p += strlen("stdin");
         skip_spaces(info);
         
-        return new sNode(new sStdinNode());
+        return new sStdinNode() implements sNode;
     }
     else {
         return inherit(info);

@@ -141,7 +141,7 @@ sNode*% exp_node(sInfo* info) version 4
             }
         }
         
-        return new sNode(new sRegexNode(buf.to_string().to_wstring(), global ,ignore_case));
+        return new sRegexNode(buf.to_string().to_wstring(), global ,ignore_case) implements sNode;
     }
     else {
         return inherit(info);

@@ -35,7 +35,7 @@ sNode*% exp_node(sInfo* info) version 1
             }
             skip_spaces(info);
             
-            return new sNode(new sIntNode(-n));
+            return new sIntNode(-n) implements sNode;
         }
     }
     else if(xisdigit(*info->p)) {
@@ -46,7 +46,7 @@ sNode*% exp_node(sInfo* info) version 1
         }
         skip_spaces(info);
         
-        return new sNode(new sIntNode(n));
+        return new sIntNode(n) implements sNode;
     }
     else if(*info->p == '(') {
         info->p++;

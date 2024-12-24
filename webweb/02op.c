@@ -87,7 +87,7 @@ sNode*% op_add_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sAddNode(result, dummy_heap right));
+            result = new sAddNode(result, dummy_heap right) implements sNode;
         }
         else if(*info->p == '-') {
             info->p++;
@@ -103,7 +103,7 @@ sNode*% op_add_node(sInfo* info)
                 return null;
             }
             
-            result = new sNode(new sSubNode(result, dummy_heap right));
+            result = new sSubNode(result, dummy_heap right) implements sNode;
         }
     }
     

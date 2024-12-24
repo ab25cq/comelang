@@ -112,13 +112,13 @@ sNode*% exp_node(sInfo* info) version 7
         
         sNodeBlock while_block = parse_block(info);
         
-        return new sNode(new sWhileNode(while_exp, clone while_block));
+        return new sWhileNode(while_exp, clone while_block) implements sNode;
     }
     else if(is_word("break", info)) {
         info->p += strlen("break");
         skip_spaces(info);
         
-        return new sNode(new sBreakNode());
+        return new sBreakNode() implements sNode;
     }
     else {
         return inherit(info);
