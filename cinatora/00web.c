@@ -1,3 +1,4 @@
+#include <comelang.h>
 #include <comelang-str.h>
 #include <comelang-net.h>
 #include <sys/stat.h>
@@ -14,12 +15,11 @@ struct Cinatora
 };
 
 extern string Cinatora::main(Cinatora* self);
+extern string Cinatora::cgi_main(Cinatora* self);
+extern string Cinatora::post_main(Cinatora* self);
 
 string Cinatora::get(Cinatora* self)
 {
-puts("CINATORA::get");
-puts("self.path");
-puts(self.path);
     return self.path;
 }
 
@@ -86,24 +86,41 @@ puts(path);
                     cinatora.path = string(path);
                 
                     string output = (&cinatora).main();
-puts("output");
 puts(output);
                     string response = xsprintf("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n%s", output);
                     write(it, response, strlen(response));
                 }
-                /*
                 else {
                     p2++;
                     
+                    cinatora.header = header;
+                    cinatora.contents = contents;
+                    cinatora.path = string(path);
+                    
                     string query_string = string(p2);
                     
-                    var cgi_path = new buffer();
-                    char* p = strstr(file_path, "?");
-                    cgi_path.append(file_path, p - file_path);
+                    setenv("REQUEST_METHOD", "GET", 1);
+                    setenv("QUERY_STRING", query_string, 1);
                     
-                    run_get_cgi_http(it, cgi_path.to_string(), header, contents, query_string);
+                    string p = header.scan(/Content-Length: (\d+)/)[1]??;
+                    if(p) {
+                        int content_length = atoi(p);
+                        setenv("CONTENT_LENGTH", s"\{content_length}", 1);
+                    }
+                    string p = header.scan(/Cookie: (.+)/)[1]??;
+                    if(p) {
+                        setenv("HTTP_COOKIE", p, 1);
+                    }
+                    cinatora.header = header;
+                    cinatora.contents = contents;
+                    cinatora.path = string(path);
+                    
+                    string output = (&cinatora).cgi_main();
+                    
+                    string response = xsprintf("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n%s", output);
+                    
+                    write(it, response, strlen(response));
                 }
-                */
             }
             /// image ///
             else if(header.match(/^GET /) && header.match(/Accept: image/)) {
@@ -154,22 +171,37 @@ printf("image_size %ld\n", image_size);
                     fclose(image_file);
                 }
             }
-/*
             else if(header.match(/^POST /)) {
 puts("POST");
-                char* str = header.scan(/POST (.+) /)[1]??;
+                string file_path = header.scan(/POST (.+) /)[1];
+                setenv("REQUEST_METHOD", "POST", 1);
                 
-                if(str === "/") {
-                    str = "/index.html";
+                string p = header.scan(/Content-Length: (\d+)/)[1]??;
+                if(p) {
+                    int content_length = atoi(p);
+                    setenv("CONTENT_LENGTH", s"\{content_length}", 1);
                 }
                 
-                string file_path = str.substring(1,-1);
-puts("file_path");
-puts(file_path);
+                char* p2 = strstr(header, "Cookie: ");
+                if(p2) {
+                    setenv("HTTP_COOKIE", p2, 1);
+                }
                 
-                run_post_cgi_http(it, file_path, header, contents);
+                cinatora.header = header;
+                cinatora.contents = contents;
+                cinatora.path = string(file_path);
+                
+                string output = (&cinatora).post_main();
+                
+                if(output.match(/Location:/)) {
+                    write(it, output, strlen(output));
+                }
+                else {
+                    string response = xsprintf("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n%s", output);
+                    
+                    write(it, response, strlen(response));
+                }
             }
-*/
             else {
                 const char *not_found = "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\n\r\n"
                                         "<html><body><h1>404 Not Found</h1></body></html>";
