@@ -413,6 +413,7 @@ struct sInfo
     bool remove_comment;
     int sline_real;
     int sline_block;
+    bool m5stack_cpp;
 };
 
 module sCurrentNodeModule

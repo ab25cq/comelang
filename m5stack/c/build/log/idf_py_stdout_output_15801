@@ -1,0 +1,34 @@
+-- The C compiler identification is AppleClang 16.0.0.16000026
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- IDF_TARGET is not set, guessed 'esp32' from sdkconfig '/Users/ab25cq/comelang/m5stack/c/sdkconfig'
+-- Found Git: /usr/bin/git (found version "2.39.5 (Apple Git-154)")
+-- Minimal build - OFF
+-- The CXX compiler identification is AppleClang 16.0.0.16000026
+-- The ASM compiler identification is AppleClang
+-- Found assembler: /Library/Developer/CommandLineTools/usr/bin/cc
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Building ESP-IDF components for target esp32
+-- Project sdkconfig file /Users/ab25cq/comelang/m5stack/c/sdkconfig
+-- Compiler supported targets: 
+  Registered Targets:
+    aarch64    - AArch64 (little endian)
+    aarch64_32 - AArch64 (little endian ILP32)
+    aarch64_be - AArch64 (big endian)
+    arm        - ARM
+    arm64      - ARM64 (little endian)
+    arm64_32   - ARM64 (little endian ILP32)
+    armeb      - ARM (big endian)
+    thumb      - Thumb
+    thumbeb    - Thumb (big endian)
+    x86        - 32-bit X86: Pentium-Pro and above
+    x86-64     - 64-bit X86: EM64T and AMD64
+
+-- Configuring incomplete, errors occurred!

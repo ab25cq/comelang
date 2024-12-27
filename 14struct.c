@@ -406,6 +406,16 @@ sNode*% parse_struct(string type_name, sInfo* info)
     expected_next_character('{');
     
     while(true) {
+        parse_sharp();
+        
+        if(*info->p == '}') {
+            info->p++;
+            skip_spaces_and_lf();
+            break;
+        }
+        
+        parse_sharp();
+        
         bool multiple_declare = false;
         {
             char* p = info.p;
@@ -563,6 +573,14 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             while(true) {
                 parse_sharp();
                 
+                if(*info->p == '}') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
+                }
+        
+                parse_sharp();
+                
                 var type2, name, err = parse_type(parse_variable_name:true);
                 
                 if(!err) {
@@ -676,6 +694,12 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             expected_next_character('{') ;
            
             while(true) {
+                parse_sharp();
+                if(*info->p == '}') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    break;
+                }
                 parse_sharp();
                     
                 bool multiple_declare = false;

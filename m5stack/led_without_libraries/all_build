@@ -1,0 +1,12 @@
+source /Users/ab25cq/esp-idf/export.sh
+
+#xtensa-esp32-elf-gcc -o main.o main.c
+
+xtensa-esp32-elf-gcc -T script.ld -o main.elf main.c -nostdlib
+#esptool.py --chip esp32 elf2image main.elf
+
+esptool.py --chip esp32 elf2image main.o
+#esptool.py --chip esp32 load_ram *.bin
+
+esptool.py --chip esp32 --port /dev/tty.usbserial-* --baud 115200 write_flash 0x1000 main.bin
+

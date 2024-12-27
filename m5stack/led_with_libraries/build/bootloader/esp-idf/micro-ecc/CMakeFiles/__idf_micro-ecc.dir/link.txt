@@ -1,0 +1,2 @@
+/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ar qc libmicro-ecc.a "CMakeFiles/__idf_micro-ecc.dir/uECC_verify_antifault.c.obj"
+/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ranlib libmicro-ecc.a

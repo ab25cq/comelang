@@ -1,0 +1,23 @@
+xtensa-esp32-elf-gcc -c -nostdlib -T esp32_out.ld -o app.elf main.c
+#xtensa-esp32-elf-gcc -nostdlib -T esp32_out.ld -o app.elf main.c
+#xtensa-esp32-elf-ld -Ttext 0x40080000 -o hello_world.elf hello_world.o
+#xtensa-esp32-elf-objcopy -O binary hello_world.elf hello_world.bin
+#xtensa-esp32-elf-objcopy -O binary app.elf app.bin
+#esptool.py --chip esp32 --port /dev/tty.usbserial-* --baud 115200 write_flash 0x1000 hello_world.bin
+#esptool.py --chip esp32 --port /dev/tty.usbserial-* --baud 115200 write_flash 0x1000 app.bin
+
+#cd m5stack_uart
+#idf.py set-target esp32
+#idf.py build
+#idf.py flash
+
+xtensa-esp32-elf-gcc -I. -c main.c -o main.o
+xtensa-esp32-elf-gcc -T $IDF_PATH/components/esp32/ld/esp32.ld \
+                     -T $IDF_PATH/components/esp32/ld/esp32.rom.ld \
+                     -T $IDF_PATH/components/esp32/ld/esp32.peripherals.ld \
+                     -nostdlib -Wl,--gc-sections \
+                     -o app.elf main.o
+                                                                                    
+xtensa-esp32-elf-objcopy -O binary app.elf app.bin
+esptool.py --chip esp32 --port /dev/tty.usbserial-* --baud 115200 write_flash 0x1000 app.bin
+

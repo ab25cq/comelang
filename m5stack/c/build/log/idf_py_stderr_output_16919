@@ -1,0 +1,19 @@
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Error at /Users/ab25cq/esp-idf/components/xtensa/project_include.cmake:19 (message):
+  Internal error, toolchain has not been set correctly by project (or an
+  invalid CMakeCache.txt file has been generated somehow)
+Call Stack (most recent call first):
+  /Users/ab25cq/esp-idf/tools/cmake/build.cmake:457 (include)
+  /Users/ab25cq/esp-idf/tools/cmake/build.cmake:691 (__build_process_project_includes)
+  /Users/ab25cq/esp-idf/tools/cmake/project.cmake:735 (idf_build_process)
+  CMakeLists.txt:16 (project)
+
+

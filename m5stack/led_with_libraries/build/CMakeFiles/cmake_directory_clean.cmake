@@ -1,0 +1,11 @@
+file(REMOVE_RECURSE
+  "config/sdkconfig.h"
+  "config/sdkconfig.cmake"
+  "bootloader/bootloader.elf"
+  "bootloader/bootloader.bin"
+  "bootloader/bootloader.map"
+  "M5Stack_Basic_Led.bin"
+  "flash_project_args"
+  "M5Stack_Basic_Led.map"
+  "project_elf_src_esp32.c"
+)
