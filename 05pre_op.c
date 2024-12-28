@@ -358,6 +358,43 @@ class sLogicalDenial extends sNodeBase
     }
 };
 
+class sLogicalDenial2 extends sNodeBase
+{
+    new(sNode*% value, sInfo* info)
+    {
+        self.super();
+        
+        sNode*% self.value = value;
+    }
+    
+    string kind()
+    {
+        return string("sLogicalDenial");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        if(!node_compile(self.value)) {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        CVALUE*% come_value2 = new CVALUE();
+        
+        come_value2.c_value = xsprintf("!!%s", come_value.c_value);
+        come_value2.type = clone come_value.type;
+        come_value2.var = null;
+        
+        info.stack.push_back(come_value2);
+        
+        add_come_last_code(info, "%s", come_value2.c_value);
+        
+        return true;
+    }
+};
+
 class sReverseNode extends sNodeBase
 {
     new(sNode*% value, sInfo* info)
@@ -759,6 +796,14 @@ sNode*% pre_position_operator(sInfo* info=info)
         sNode*% node = expression_node();
 
         return new sLogicalDenial(node, info) implements sNode;
+    }
+    else if(*info->p == '!' && *(info->p+1) == '!') {
+        info->p++;
+        skip_spaces_and_lf();
+
+        sNode*% node = expression_node();
+
+        return new sLogicalDenial2(node, info) implements sNode;
     }
     else if(*info->p == '-' && *(info->p+1) == '-') {
         info->p+=2;

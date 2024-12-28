@@ -661,6 +661,7 @@ class sFunCallNode extends sNodeBase
                 || fun_name === "__builtin___memset_chk" || fun_name === "__builtin_object_size" 
                 || fun_name === "__builtin___memcpy_chk" || fun_name === "__builtin___strncpy_chk" 
                 || fun_name === "__builtin___strncat_chk" || fun_name === "__builtin___vsnprintf_chk" 
+                || fun_name === "__builtin_strrchr"
                 || fun_name === "__builtin_clz"
                 || fun_name === "__dsb"
                 || fun_name === "__isb"
@@ -782,6 +783,10 @@ class sFunCallNode extends sNodeBase
                     come_value.type.mPointerNum = 1;
                 }
                 else if(fun_name === "__builtin___strncat_chk") {
+                    come_value.type = new sType("char");
+                    come_value.type.mPointerNum = 1;
+                }
+                else if(fun_name === "__builtin_strrchr") {
                     come_value.type = new sType("char");
                     come_value.type.mPointerNum = 1;
                 }
@@ -2158,6 +2163,11 @@ sNode*% expression_node(sInfo* info=info) version 97
             expected_next_character(')');
             
             return static_assert_node(exp, exp2);
+        }
+        else if(buf === "extern") {
+            sNode*% node = parse_function(info);
+            
+            return node;
         }
         else if(!gComeC && (buf === "string" || buf === "wstring") && *info->p == '(') {
             sNode*% node = parse_function_call(buf, info);

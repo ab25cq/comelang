@@ -192,6 +192,10 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
                 skip_spaces_and_lf();
                 break;
             }
+            while(*info->p == ';') {
+                info->p++;
+                skip_spaces_and_lf();
+            }
             
             parse_sharp();
             
