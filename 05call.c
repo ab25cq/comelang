@@ -150,11 +150,12 @@ class sReturnNode extends sNodeBase
 
 class sInlineAssembler extends sNodeBase
 {
-    new(string source, sInfo* info)
+    new(string source, list<sNode*%>*% exps, sInfo* info)
     {
         self.super();
         
         string self.source = source;
+        list<sNode*%>*% self.exps = exps;
     }
     
     string kind()
@@ -170,7 +171,24 @@ class sInlineAssembler extends sNodeBase
         
         var buf = new buffer();
         char* p = source;
+        
+        while(*p != '(') {
+            buf.append_char(*p);
+            p++;
+        }
+        
+        if(*p == '(') {
+            buf.append_char(*p);
+            p++;
+            
+            while(*p == ' ' || *p == '\t' || *p == '\n') {
+                buf.append_char(*p);
+                p++;
+            }
+        }
+        
         bool dquort = false;
+        int num_exp = 0;
         while(*p) {
             if(*p == '"'){ 
                 buf.append_char(*p);
@@ -186,17 +204,16 @@ class sInlineAssembler extends sNodeBase
                 buf.append_char(*p);
                 p++;
                 
-                var var_name = new buffer();
-                while(xisalnum(*p) || *p =='_') {
-                    var_name.append_char(*p);
-                    p++;
+                sNode*% node = self.exps[num_exp++];
+                
+                node_compile(node, info).elif {
+                    return false;
                 }
                 
-                sVar* var_ = info.lv_table.mVars.at(var_name.to_string(), null);
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
                 
-                if(var_) {
-                    buf.append_str(var_->mCValueName);
-                }
+                buf.append_str(come_value.c_value);
                 
                 if(*p == ')') {
                     buf.append_char(*p);
@@ -2353,21 +2370,27 @@ sNode*% expression_node(sInfo* info=info) version 97
                 buf2.append_str(word);
             }
             
-            int nest = 0;
+            expected_next_character('(');
+            buf2.append_char('(');
+            
+            list<sNode*%>*% exps = new list<sNode*%>();
             while(true) {
                 if(*info->p == '(') {
                     buf2.append_char('(');
                     info->p++;
-                    nest++;
+                    
+                    sNode*% exp = expression();
+                    
+                    exps.add(exp);
+                    
+                    expected_next_character(')');
+                    buf2.append_char(')');
                 }
                 else if(*info->p == ')') {
                     buf2.append_char(')');
                     info->p++;
-                    nest--;
-                    
-                    if(nest == 0) {
-                        break;
-                    }
+                    skip_spaces_and_lf();
+                    break;
                 }
                 else if(*info->p == '\n') {
                     info->sline++;
@@ -2387,7 +2410,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             parse_sharp();
             
             info.sline_real = sline_real;
-            return new sInlineAssembler(buf2.to_string(), info) implements sNode;
+            return new sInlineAssembler(buf2.to_string(), exps, info) implements sNode;
         }
         else if(fun_name_with_type_name) {
             buffer*% fun_name = new buffer();

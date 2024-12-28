@@ -1,2 +1,0 @@
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ar qc libesp_system.a CMakeFiles/__idf_esp_system.dir/esp_err.c.obj
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ranlib libesp_system.a

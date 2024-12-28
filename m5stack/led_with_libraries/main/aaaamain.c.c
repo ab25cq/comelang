@@ -2543,7 +2543,7 @@ memset(&lock_set_19, 0, sizeof(_Bool));
 memset(&start_count_20, 0, sizeof(unsigned long  int));
 memset(&__tmp_21, 0, sizeof(unsigned int));
     (((__builtin_expect(!!!(lock),1))?((void)0):(__assert_func((__builtin_strrchr("//Users/ab25cq/esp-idf/components/esp_hw_support/include/spinlock.h",47)+1),84,"spinlock_acquire","lock"))));
-    irq_status_16=({__asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_21): : "memory" ); __tmp_21; });
+    irq_status_16=({__tmp_21; __asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_21): : "memory" ); __tmp_21; });
     core_owner_id_17=xt_utils_get_raw_core_id();
     other_core_owner_id_18=(52685^43947)^core_owner_id_17;
     if(    lock->owner==core_owner_id_17) {
@@ -2591,7 +2591,7 @@ memset(&irq_status_24, 0, sizeof(unsigned long  int));
 memset(&core_owner_id_25, 0, sizeof(unsigned long  int));
 memset(&__tmp_26, 0, sizeof(unsigned int));
     (((__builtin_expect(!!!(lock),1))?((void)0):(__assert_func((__builtin_strrchr("//Users/ab25cq/esp-idf/components/esp_hw_support/include/spinlock.h",47)+1),181,"spinlock_release","lock"))));
-    irq_status_24=({__asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_26): : "memory" ); __tmp_26; });
+    irq_status_24=({__tmp_26; __asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_26): : "memory" ); __tmp_26; });
     core_owner_id_25=xt_utils_get_raw_core_id();
     (((__builtin_expect(!!!(core_owner_id_25==lock->owner),1))?((void)0):(__assert_func((__builtin_strrchr("//Users/ab25cq/esp-idf/components/esp_hw_support/include/spinlock.h",47)+1),190,"spinlock_release","core_owner_id == lock->owner"))));
     lock->count--;
@@ -2682,7 +2682,7 @@ static unsigned int xPortSetInterruptMaskFromISR(){
 unsigned int __tmp_35;
 unsigned int prev_int_level_34;
 memset(&__tmp_35, 0, sizeof(unsigned int));
-    prev_int_level_34=({__asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_35): : "memory" ); __tmp_35; });
+    prev_int_level_34=({__tmp_35; __asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_35): : "memory" ); __tmp_35; });
     return prev_int_level_34;
 }
 static void vPortClearInterruptMaskFromISR(unsigned int prev_level){

@@ -1,2 +1,0 @@
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ar qc libesp_driver_spi.a CMakeFiles/__idf_esp_driver_spi.dir/src/gpspi/spi_common.c.obj CMakeFiles/__idf_esp_driver_spi.dir/src/gpspi/spi_master.c.obj CMakeFiles/__idf_esp_driver_spi.dir/src/gpspi/spi_slave.c.obj CMakeFiles/__idf_esp_driver_spi.dir/src/gpspi/spi_dma.c.obj
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ranlib libesp_driver_spi.a

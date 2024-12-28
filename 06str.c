@@ -1719,7 +1719,7 @@ sNode*% expression_node(sInfo* info) version 96
         info.sline_real = sline_real;
         return new sBufferNode(value, size, info) implements sNode;
     }
-    else if(*info->p == '/') {
+    else if(*info->p == '/' && *(info->p-1) != '*' && *(info->p+1) != '*') {
         int sline_real = info.sline_real;
         info.sline_real = info.sline;
         info->p++;

@@ -9359,7 +9359,7 @@ memset(&size_638, 0, sizeof(int));
         return __result338__;
         /*i*/come_call_finalizer3(value_584,buffer_finalize, 0, 0, 0, 0, (void*)0);
     }
-    else if(    *info->p==47) {
+    else if(    *info->p==47&&*(info->p-1)!=42&&*(info->p+1)!=42) {
         sline_real_591=info->sline_real;
         info->sline_real=info->sline;
         info->p++;

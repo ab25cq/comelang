@@ -839,6 +839,7 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
     sBlock*% else_block = null;
     
     while(true) {
+        parse_sharp();
         if(strncmp(info->p, "else", strlen("else")) == 0) {
             info->p += strlen("else");
             skip_spaces_and_lf();

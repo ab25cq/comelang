@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 11.0.1
+version 11.0.2
 
 ``` C
 #include <comelang.h>
@@ -328,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+11.0.2 m5stack support. More compatibilities for C Language.
 11.0.1 Cinatora project finished. support m5stack. More compatibilities for C Language.
 11.0.0 Colelction library bug fixed. Really complete. Cinatora project starts.
 10.2.4 Searching for method algorithm more powerfull.

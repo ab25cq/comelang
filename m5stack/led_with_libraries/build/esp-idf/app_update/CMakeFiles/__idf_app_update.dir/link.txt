@@ -1,2 +1,0 @@
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ar qc libapp_update.a CMakeFiles/__idf_app_update.dir/esp_ota_ops.c.obj CMakeFiles/__idf_app_update.dir/esp_ota_app_desc.c.obj
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ranlib libapp_update.a

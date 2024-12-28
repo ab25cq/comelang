@@ -2339,7 +2339,8 @@ static void xt_set_intclear(unsigned int arg){
 static unsigned long  int xt_utils_get_core_id(){
 unsigned long  int id_2;
 memset(&id_2, 0, sizeof(unsigned long  int));
-    __asm volatile("rsr.prid %0\n"
+    __asm volatile(
+        "rsr.prid %0\n"
         "extui %0,%0,13,1"
         :"=r"(id_2));
     return id_2;
@@ -2347,7 +2348,8 @@ memset(&id_2, 0, sizeof(unsigned long  int));
 static unsigned long  int xt_utils_get_raw_core_id(){
 unsigned long  int id_3;
 memset(&id_3, 0, sizeof(unsigned long  int));
-    __asm volatile("rsr.prid %0\n"
+    __asm volatile(
+        "rsr.prid %0\n"
         :"=r"(id_3));
     return id_3;
 }
@@ -2360,11 +2362,11 @@ sp_4 = (void*)0;
 static unsigned long  int xt_utils_get_cycle_count(){
 unsigned long  int ccount_5;
 memset(&ccount_5, 0, sizeof(unsigned long  int));
-    __asm volatile("rsr %0, %1" : "=r" (ccount_5): "i" (234));
+    __asm volatile("rsr %0, %1" : "=r" (ccount_5) : "i" ());
     return ccount_5;
 }
 static void xt_utils_set_cycle_count(unsigned long  int ccount){
-    __asm volatile("wsr %0, %1" : : "r" (ccount), "i" (234));
+    __asm volatile("wsr %0, %1" : : "r" (ccount), "i" ());
 }
 static void xt_utils_wait_for_intr(){
     __asm volatile("waiti 0\n");
@@ -2375,35 +2377,35 @@ static void xt_utils_set_vecbase(unsigned long  int vecbase){
 static unsigned long  int xt_utils_intr_get_enabled_mask(){
 unsigned long  int intr_mask_6;
 memset(&intr_mask_6, 0, sizeof(unsigned long  int));
-    __asm volatile("rsr %0, %1" : "=r" (intr_mask_6): "i" (228));
+    __asm volatile("rsr %0, %1" : "=r" (intr_mask_6) : "i" ());
     return intr_mask_6;
 }
 static void xt_utils_set_breakpoint(int bp_num, unsigned long  int bp_addr){
 unsigned long  int brk_ena_reg_7;
 memset(&brk_ena_reg_7, 0, sizeof(unsigned long  int));
     if(    bp_num==1) {
-        __asm volatile("wsr %0, %1" : : "r" (bp_addr), "i" (129));
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
     else {
-        __asm volatile("wsr %0, %1" : : "r" (bp_addr), "i" (128));
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
-    __asm volatile("rsr %0, %1" : "=r" (brk_ena_reg_7): "i" (96));
+    __asm volatile("rsr %0, %1" : "=r" (brk_ena_reg_7) : "i" ());
     brk_ena_reg_7|=(1<<(bp_num));
-    __asm volatile("wsr %0, %1" : : "r" (brk_ena_reg_7), "i" (96));
+    __asm volatile("wsr %0, %1" : : "r" (brk_ena_reg_7), "i" ());
 }
 static void xt_utils_clear_breakpoint(int bp_num){
 unsigned long  int bp_en_8;
 unsigned long  int bp_addr_9;
     bp_en_8=0;
-    __asm volatile("rsr %0, %1" : "=r" (bp_en_8): "i" (96));
+    __asm volatile("rsr %0, %1" : "=r" (bp_en_8) : "i" ());
     bp_en_8&=~(1<<(bp_num));
-    __asm volatile("wsr %0, %1" : : "r" (bp_en_8), "i" (96));
+    __asm volatile("wsr %0, %1" : : "r" (bp_en_8), "i" ());
     bp_addr_9=0;
     if(    bp_num==1) {
-        __asm volatile("wsr %0, %1" : : "r" (bp_addr_9), "i" (129));
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
     else {
-        __asm volatile("wsr %0, %1" : : "r" (bp_addr_9), "i" (128));
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
 }
 static void xt_utils_set_watchpoint(int wp_num, unsigned long  int wp_addr, unsigned int size, _Bool on_read, _Bool on_write){
@@ -2418,22 +2420,22 @@ unsigned long  int dbreakc_reg_10;
         dbreakc_reg_10|=(1<<(31));
     }
     if(    wp_num==1) {
-        __asm volatile("wsr %0, %1" : : "r" ((unsigned long  int)wp_addr), "i" (145));
-        __asm volatile("wsr %0, %1" : : "r" (dbreakc_reg_10), "i" (161));
+        __asm volatile("wsr %0, %1" : : "r" (() wp_addr), "i" ());
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
     else {
-        __asm volatile("wsr %0, %1" : : "r" ((unsigned long  int)wp_addr), "i" (144));
-        __asm volatile("wsr %0, %1" : : "r" (dbreakc_reg_10), "i" (160));
+        __asm volatile("wsr %0, %1" : : "r" (() wp_addr), "i" ());
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
 }
 static void xt_utils_clear_watchpoint(int wp_num){
     if(    wp_num==1) {
-        __asm volatile("wsr %0, %1" : : "r" (0), "i" (161));
-        __asm volatile("wsr %0, %1" : : "r" (0), "i" (145));
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
     else {
-        __asm volatile("wsr %0, %1" : : "r" (0), "i" (160));
-        __asm volatile("wsr %0, %1" : : "r" (0), "i" (144));
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
+        __asm volatile("wsr %0, %1" : : "r" (), "i" ());
     }
 }
 static _Bool xt_utils_dbgr_is_attached(){
@@ -2441,7 +2443,7 @@ unsigned long  int dcr_11;
 unsigned long  int reg_12;
     dcr_11=0;
     reg_12=1056780;
-    __asm volatile("rer %0, %1" : "=r" (dcr_11): "r" (reg_12));
+    __asm volatile("rer %0, %1" : "=r" (dcr_11) : "r" (reg_12));
     return (_Bool)(dcr_11&1);
 }
 static void xt_utils_dbgr_break(){
@@ -2450,9 +2452,12 @@ static void xt_utils_dbgr_break(){
 static _Bool xt_utils_compare_and_set(unsigned long  int* addr, unsigned long  int compare_value, unsigned long  int new_value){
 unsigned long  int old_value_13;
     old_value_13=new_value;
-    __asm __volatile__("WSR    %2, SCOMPARE1 \n"
+    __asm __volatile__(
+        "WSR    %2, SCOMPARE1 \n"
         "S32C1I %0, %1, 0 \n"
-        :"=r"(old_value_13):"r"(addr), "r"(compare_value), "0"(old_value_13));
+        :"=r"(old_value_13)
+        :"r"(addr), "r"(compare_value), "0"(old_value_13)
+    );
     return (old_value_13==compare_value);
 }
 static int esp_intr_flags_to_level(int flags){
@@ -2543,7 +2548,7 @@ memset(&lock_set_19, 0, sizeof(_Bool));
 memset(&start_count_20, 0, sizeof(unsigned long  int));
 memset(&__tmp_21, 0, sizeof(unsigned int));
     (((__builtin_expect(!!!(lock),1))?((void)0):(__assert_func((__builtin_strrchr("//Users/ab25cq/esp-idf/components/esp_hw_support/include/spinlock.h",47)+1),84,"spinlock_acquire","lock"))));
-    irq_status_16=({__asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_21): : "memory" ); __tmp_21; });
+    irq_status_16=({__tmp_21; __asm __volatile__( "rsil	%0, " "3" "\n" : "=a" (__tmp_21) : : "memory" ); __tmp_21; });
     core_owner_id_17=xt_utils_get_raw_core_id();
     other_core_owner_id_18=(52685^43947)^core_owner_id_17;
     if(    lock->owner==core_owner_id_17) {
@@ -2551,7 +2556,7 @@ memset(&__tmp_21, 0, sizeof(unsigned int));
         lock->count++;
         do {
             __tmp_22=(irq_status_16);
-            __asm __volatile__("wsr.ps	%0 ; rsync\n" : : "a" (__tmp_22): "memory" );
+            __asm __volatile__( "wsr.ps	%0 ; rsync\n" : : "a" (__tmp_22) : "memory" );
         } while(0);
         return 1;
     }
@@ -2578,7 +2583,7 @@ memset(&__tmp_21, 0, sizeof(unsigned int));
     }
     do {
         __tmp_23=(irq_status_16);
-        __asm __volatile__("wsr.ps	%0 ; rsync\n" : : "a" (__tmp_23): "memory" );
+        __asm __volatile__( "wsr.ps	%0 ; rsync\n" : : "a" (__tmp_23) : "memory" );
     } while(0);
     return lock_set_19;
 }
@@ -2591,7 +2596,7 @@ memset(&irq_status_24, 0, sizeof(unsigned long  int));
 memset(&core_owner_id_25, 0, sizeof(unsigned long  int));
 memset(&__tmp_26, 0, sizeof(unsigned int));
     (((__builtin_expect(!!!(lock),1))?((void)0):(__assert_func((__builtin_strrchr("//Users/ab25cq/esp-idf/components/esp_hw_support/include/spinlock.h",47)+1),181,"spinlock_release","lock"))));
-    irq_status_24=({__asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_26): : "memory" ); __tmp_26; });
+    irq_status_24=({__tmp_26; __asm __volatile__( "rsil	%0, " "3" "\n" : "=a" (__tmp_26) : : "memory" ); __tmp_26; });
     core_owner_id_25=xt_utils_get_raw_core_id();
     (((__builtin_expect(!!!(core_owner_id_25==lock->owner),1))?((void)0):(__assert_func((__builtin_strrchr("//Users/ab25cq/esp-idf/components/esp_hw_support/include/spinlock.h",47)+1),190,"spinlock_release","core_owner_id == lock->owner"))));
     lock->count--;
@@ -2603,7 +2608,7 @@ memset(&__tmp_26, 0, sizeof(unsigned int));
     }
     do {
         __tmp_27=(irq_status_24);
-        __asm __volatile__("wsr.ps	%0 ; rsync\n" : : "a" (__tmp_27): "memory" );
+        __asm __volatile__( "wsr.ps	%0 ; rsync\n" : : "a" (__tmp_27) : "memory" );
     } while(0);
 }
 static _Bool esp_dram_match_iram(){
@@ -2682,7 +2687,7 @@ static unsigned int xPortSetInterruptMaskFromISR(){
 unsigned int __tmp_35;
 unsigned int prev_int_level_34;
 memset(&__tmp_35, 0, sizeof(unsigned int));
-    prev_int_level_34=({__asm __volatile__("rsil	%0, " "3" "\n" : "=a" (__tmp_35): : "memory" ); __tmp_35; });
+    prev_int_level_34=({__tmp_35; __asm __volatile__( "rsil	%0, " "3" "\n" : "=a" (__tmp_35) : : "memory" ); __tmp_35; });
     return prev_int_level_34;
 }
 static void vPortClearInterruptMaskFromISR(unsigned int prev_level){
@@ -2719,7 +2724,7 @@ static void vPortExitCriticalSafe(struct anonymous_typeX17* mux){
 static _Bool xPortCanYield(){
 unsigned long  int ps_reg_37;
     ps_reg_37=0;
-    __asm volatile("rsr %0, %1" : "=r" (ps_reg_37): "i" (230));
+    __asm volatile("rsr %0, %1" : "=r" (ps_reg_37) : "i" ());
     return ((ps_reg_37&15)==0);
 }
 static int xPortGetCoreID(){

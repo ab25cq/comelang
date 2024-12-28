@@ -1,2 +1,0 @@
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ar qc libesp_vfs_console.a CMakeFiles/__idf_esp_vfs_console.dir/vfs_console.c.obj
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ranlib libesp_vfs_console.a

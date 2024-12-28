@@ -1,10 +1,3 @@
-/*
-#define CONFIG_FREERTOS_NUMBER_OF_CORES 1
-#define CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES 32
-#define CONFIG_FREERTOS_MAX_TASK_NAME_LEN 32
-#define CONFIG_LIBC_NEWLIB 1
-*/
-
 #include "sdkconfig.h"
 #include <stdio.h>
 #include <wchar.h>

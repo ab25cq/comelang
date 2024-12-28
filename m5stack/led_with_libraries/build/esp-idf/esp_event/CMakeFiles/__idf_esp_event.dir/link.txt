@@ -1,2 +1,0 @@
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ar qc libesp_event.a CMakeFiles/__idf_esp_event.dir/default_event_loop.c.obj CMakeFiles/__idf_esp_event.dir/esp_event.c.obj CMakeFiles/__idf_esp_event.dir/esp_event_private.c.obj
-/Users/ab25cq/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-ranlib libesp_event.a

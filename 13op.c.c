@@ -8485,7 +8485,7 @@ struct sNode* __result347__;
             return __result331__;
             if(right_540) { right_540 = come_decrement_ref_count2(right_540, ((struct sNode*)right_540)->finalize, ((struct sNode*)right_540)->_protocol_obj, 0, 0, 0, (void*)0); } 
         }
-        else if(        *info->p==47&&*(info->p+1)!=61) {
+        else if(        *info->p==47&&*(info->p+1)!=61&&*(info->p+1)!=42&&*(info->p-1)!=42) {
             info->p++;
             sline_real_542=info->sline_real;
             info->sline_real=info->sline;
