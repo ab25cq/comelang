@@ -1,0 +1,439 @@
+#include <avr/io.h>
+#include <string.h>
+#include <stdio.h>
+#include <avr/io.h>
+#include <util/delay.h>
+
+#define LED1_PIN PB5  // On-board LED
+#define LED2_PIN PB4  // 外部LED
+
+#define STACK_MAX 128
+
+// ボーレート設定
+#define BAUD 9600
+#define BAUD_PRESCALE (((F_CPU / (BAUD * 16UL))) - 1)
+
+// UART初期化関数
+void USART_Init(void) {
+    // ボーレートの設定
+    UBRR0H = (uint8_t)(BAUD_PRESCALE >> 8);  // 上位バイト
+    UBRR0L = (uint8_t)BAUD_PRESCALE;         // 下位バイト
+
+    // データフレーム: 8ビットデータ, 1ストップビット, パリティなし
+    UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
+
+    // 送信有効化, 受信有効化
+    UCSR0B = (1 << RXEN0) | (1 << TXEN0);
+}
+
+// データ送信関数
+void USART_Transmit(uint8_t data) {
+    // 送信可能になるまで待機
+    while (!(UCSR0A & (1 << UDRE0)));
+
+    // データを送信レジスタに書き込む
+    UDR0 = data;
+}
+
+// データ受信関数
+uint8_t USART_Receive(void) {
+    // データ受信完了を待機
+    while (!(UCSR0A & (1 << RXC0)));
+
+    // 受信したデータを返す
+    return UDR0;
+}
+
+// 文字列送信関数
+void USART_TransmitString(const char* str) {
+    while (*str) {
+        USART_Transmit(*str++);
+    }
+    
+    _delay_ms(1000);
+}
+
+struct sTaskState {
+    void (*fun)();
+    
+    volatile uint16_t program_counter;
+    volatile uint16_t stack_pointer;
+    volatile uint8_t status_register;
+    volatile uint16_t x_register;
+    volatile uint16_t y_register;
+    volatile uint16_t z_register;
+    volatile uint8_t* registers[32];
+};
+
+#define TASK_MAX 3
+
+struct sTaskState gTasks[TASK_MAX];
+int gNumTasks = 0;
+int gCurrentTask = 0;
+
+char gStack[TASK_MAX][STACK_MAX];
+
+void save_registers(int task_num)
+{
+    struct sTaskState* task = gTasks + task_num;
+
+/*
+    uint8_t registers[32]; // 汎用レジスタを保存する配列
+
+    // 各レジスタの値を配列に保存
+    asm volatile (
+        "st %a[array]+, r0    \n" // R0を保存
+        "st %a[array]+, r1    \n" // R1を保存
+        "st %a[array]+, r2    \n" // R2を保存
+        "st %a[array]+, r3    \n" // R3を保存
+        "st %a[array]+, r4    \n" // R4を保存
+        "st %a[array]+, r5    \n" // R5を保存
+        "st %a[array]+, r6    \n" // R6を保存
+        "st %a[array]+, r7    \n" // R7を保存
+        "st %a[array]+, r8    \n" // R8を保存
+        "st %a[array]+, r9    \n" // R9を保存
+        "st %a[array]+, r10   \n" // R10を保存
+        "st %a[array]+, r11   \n" // R11を保存
+        "st %a[array]+, r12   \n" // R12を保存
+        "st %a[array]+, r13   \n" // R13を保存
+        "st %a[array]+, r14   \n" // R14を保存
+        "st %a[array]+, r15   \n" // R15を保存
+        "st %a[array]+, r16   \n" // R16を保存
+        "st %a[array]+, r17   \n" // R17を保存
+        "st %a[array]+, r18   \n" // R18を保存
+        "st %a[array]+, r19   \n" // R19を保存
+        "st %a[array]+, r20   \n" // R20を保存
+        "st %a[array]+, r21   \n" // R21を保存
+        "st %a[array]+, r22   \n" // R22を保存
+        "st %a[array]+, r23   \n" // R23を保存
+        "st %a[array]+, r24   \n" // R24を保存
+        "st %a[array]+, r25   \n" // R25を保存
+        :
+        : [array] "e" (registers)    // 配列の先頭アドレスを渡す
+        : "memory"                   // メモリが変更されることを示す
+    );
+    
+    memcpy(task->registers, registers, sizeof(uint8_t)*32);
+*/
+
+/*
+    uint8_t status_register; // SREGを保存する変数
+
+    asm volatile (
+        "in %[result], __SREG__ \n"  // SREGをロード
+        : [result] "=r" (status_register) // 出力オペランド
+        :
+        :                              // 使用するレジスタなし
+    );
+
+    task->status_register = status_register;
+
+    uint16_t x_register; // Xレジスタを保存する変数
+
+    asm volatile (
+        "mov %A0, r26      \n"   // Xレジスタの下位バイトを保存
+        "mov %B0, r27      \n"   // Xレジスタの上位バイトを保存
+        : "=r" (x_register)      // 出力オペランド
+        :
+        : "r26", "r27"           // 使用するレジスタ
+    );
+
+    task->x_register = x_register;
+
+    uint16_t z_register; // zレジスタを保存する変数
+
+    asm volatile (
+        "mov %A0, r30      \n"   // zレジスタの下位バイトを保存
+        "mov %B0, r31      \n"   // zレジスタの上位バイトを保存
+        : "=r" (z_register)      // 出力オペランド
+        :
+        : "r30", "r31"           // 使用するレジスタ
+    );
+
+    task->z_register = z_register;
+*/
+
+    uint16_t stack_pointer; // スタックポインタを保存する変数
+
+    asm volatile (
+        "in r24, __SP_L__    \n\t"   // SPL（下位バイト）をr24にロード
+        "in r25, __SP_H__    \n\t"   // SPH（上位バイト）をr25にロード
+        "mov %A0, r24        \n\t"   // r24をstack_pointerの下位バイトに保存
+        "mov %B0, r25        \n\t"   // r25をstack_pointerの上位バイトに保存
+        : "=r" (stack_pointer)     // 出力オペランド
+        :
+        : "r24", "r25"    // 使用するレジスタを明示
+    );
+
+    task->stack_pointer = stack_pointer;
+    
+    char buf[64];
+    snprintf(buf, 64, "save sp %p\r\n", stack_pointer);
+    
+    USART_TransmitString(buf);
+
+    uint16_t program_counter;
+       
+    asm volatile (
+        "call 1f              \n\t" // スタックにPCをプッシュ
+        "1:                   \n\t" // スタックにPCをプッシュ
+        "pop r24              \n\t" // 下位バイトを取り出す
+        "pop r25              \n\t" // 上位バイトを取り出す
+        "mov %A0, r24         \n\t" // 下位バイト
+        "mov %B0, r25         \n\t" // 上位バイト
+        : "=r" (program_counter)    // 出力: program_counter に保存
+        :
+        : "r24", "r25"
+    );
+    
+    char buf2[64];
+    snprintf(buf2, 64, "save pc %p\r\n", program_counter);
+    
+    USART_TransmitString(buf2);
+        
+    task->program_counter = program_counter;
+}
+
+void restore_registers(int task_num)
+{
+    struct sTaskState* task = gTasks + task_num;
+
+/*
+    uint16_t x_register = task->x_register; // 復元する値
+
+    asm volatile (
+        "mov r26, %A0      \n" // Xレジスタの下位バイトを復元
+        "mov r27, %B0      \n" // Xレジスタの上位バイトを復元
+        :
+        : "r" (x_register)       // 入力オペランド
+        : "r26", "r27"           // 使用するレジスタ
+    );
+
+    uint16_t z_register = task->z_register; // 復元する値
+
+    asm volatile (
+        "mov r30, %A0      \n"   // Zレジスタの下位バイトを復元
+        "mov r31, %B0      \n"   // Zレジスタの上位バイトを復元
+        :
+        : "r" (z_register)       // 入力オペランド
+        : "r30", "r31"           // 使用するレジスタ
+    );
+    
+    uint8_t status_register = task->status_register;
+
+    asm volatile (
+        "out __SREG__, %[input] \n"  // SREGに値を書き戻す
+        :
+        : [input] "r" (status_register) // 入力オペランド
+    );
+*/
+/*
+    uint8_t registers[32]; // 汎用レジスタを復元する配列
+ 
+    // タスクのレジスタ状態を復元用配列にコピー
+    memcpy(registers, task->registers, sizeof(uint8_t) * 32);
+    
+    // 各レジスタに保存された値を復元
+    asm volatile (
+        "ld r0, %a[array]+   \n" // R0に復帰
+        "ld r1, %a[array]+   \n" // R1に復帰
+        "ld r2, %a[array]+   \n" // R2に復帰
+        "ld r3, %a[array]+   \n" // R3に復帰
+        "ld r4, %a[array]+   \n" // R4に復帰
+        "ld r5, %a[array]+   \n" // R5に復帰
+        "ld r6, %a[array]+   \n" // R6に復帰
+        "ld r7, %a[array]+   \n" // R7に復帰
+        "ld r8, %a[array]+   \n" // R8に復帰
+        "ld r9, %a[array]+   \n" // R9に復帰
+        "ld r10, %a[array]+  \n" // R10に復帰
+        "ld r11, %a[array]+  \n" // R11に復帰
+        "ld r12, %a[array]+  \n" // R12に復帰
+        "ld r13, %a[array]+  \n" // R13に復帰
+        "ld r14, %a[array]+  \n" // R14に復帰
+        "ld r15, %a[array]+  \n" // R15に復帰
+        "ld r16, %a[array]+  \n" // R16に復帰
+        "ld r17, %a[array]+  \n" // R17に復帰
+        "ld r18, %a[array]+  \n" // R18に復帰
+        "ld r19, %a[array]+  \n" // R19に復帰
+        "ld r20, %a[array]+  \n" // R20に復帰
+        "ld r21, %a[array]+  \n" // R21に復帰
+        "ld r22, %a[array]+  \n" // R22に復帰
+        "ld r23, %a[array]+  \n" // R23に復帰
+        "ld r24, %a[array]+  \n" // R24に復帰
+        "ld r25, %a[array]+  \n" // R25に復帰
+        :
+        : [array] "e" (registers)    // 配列の先頭アドレスを渡す
+        : "memory"                   // メモリが変更されることを示す
+    );
+*/
+    
+    // スタックポインタを復元
+    uint16_t stack_pointer = task->stack_pointer;
+    
+    asm volatile (
+        "mov r24, %A0       \n\t"
+        "mov r25, %B0       \n\t"
+
+        "out __SP_L__, r24     \n\t"
+        "out __SP_H__, r25     \n\t"
+        :
+        : "r" (stack_pointer)    // スタックポインタの変数を指定
+        : "r24", "r25"          // 使用するレジスタを指定
+    );
+    
+    char buf[64];
+    snprintf(buf, 64, "restore sp %p\r\n", stack_pointer);
+    
+    USART_TransmitString(buf);
+
+    uint16_t program_counter = task->program_counter; // 復元するPCアドレス
+    
+    asm volatile (
+        "mov r24, %A0       \n\t" // pc_value の下位バイトを r24 に移動
+        "push r24           \n\t" // スタックにプッシュ
+        "mov r25, %B0       \n\t" // pc_value の上位バイトを r25 に移動
+        "push r25           \n\t" // スタックにプッシュ
+        "ret                \n\t" // スタックから復帰
+        :
+        : "r" (program_counter)          // 入力オペランドとして pc_value を指定
+        : "r24", "r25"            // 使用するレジスタとメモリを指定
+    );
+    
+    char buf2[64];
+    snprintf(buf2, 64, "restore pc %p\r\n", program_counter);
+    
+    USART_TransmitString(buf2);
+}
+
+void init_task(void (*fun)())
+{
+    struct sTaskState* task = gTasks + gNumTasks++;
+    memset(task, 0, sizeof(struct sTaskState));
+    
+    uint16_t stack_pointer = (uint16_t)(gStack[gNumTasks-1] + STACK_MAX);
+
+    asm volatile (
+        "mov r24, %A0       \n\t"
+        "mov r25, %B0       \n\t"
+
+        "out __SP_L__, r24     \n\t"
+        "out __SP_H__, r25     \n\t"
+        :
+        : "r" (stack_pointer)       // スタックポインタの変数を指定
+        : "r24", "r25"          // 使用するレジスタを指定
+    );
+    
+    task->stack_pointer = stack_pointer;
+    
+    char buf[64];
+    snprintf(buf, 64, "init sp %p\r\n", task->stack_pointer);
+    
+    USART_TransmitString(buf);
+    
+    task->program_counter = (uint16_t)fun;
+    
+    snprintf(buf, 64, "init pc %p\r\n", task->program_counter);
+    
+    USART_TransmitString(buf);
+}
+
+void task_yield()
+{
+    char buf[64];
+    snprintf(buf, 64, "task yield1 gCurrentTask %d\r\n", gCurrentTask);
+    
+    USART_TransmitString(buf);
+    
+    save_registers(gCurrentTask);
+
+    gCurrentTask ++;
+    if(gCurrentTask >= gNumTasks) {
+        gCurrentTask = 0;
+    }
+    snprintf(buf, 64, "task yield2 gCurrentTask %d\r\n", gCurrentTask);
+    
+    USART_TransmitString(buf);
+    restore_registers(gCurrentTask);
+}
+
+void task_sleep(int n)
+{
+    volatile int i;
+    for(i=0; i<n; i++) {
+        if(i % 1000 == 0) {
+            task_yield();
+        }
+    }
+}
+
+void led1_pika()
+{
+    task_yield();
+    // LED1点灯
+    //PORTB = 0x00;
+    //task_yield();
+//    PORTB = 0x00;
+//    task_yield();
+//    task_sleep(5000);
+    
+    // LED1消灯
+//    PORTB = 0x00;
+//    task_sleep(5000);
+}
+
+void led2_pika()
+{
+    task_yield();
+//    PORTB = 0x00;
+//    task_yield();
+
+    // LED1点灯、LED2消灯
+//    
+//    task_sleep(5000);
+
+    // LED1消灯、LED2点灯
+//    PORTB = 0x00;
+//    task_sleep(5000);
+}
+
+void start_task()
+{
+    uint16_t program_counter = led1_pika;
+    
+    asm volatile (
+        "mov r24, %A0       \n\t" // pc_value の下位バイトを r24 に移動
+        "push r24           \n\t" // スタックにプッシュ
+        "mov r25, %B0       \n\t" // pc_value の上位バイトを r25 に移動
+        "push r25           \n\t" // スタックにプッシュ
+        "ret                \n\t" // スタックから復帰
+        :
+        : "r" (program_counter)          // 入力オペランドとして pc_value を指定
+        : "r24", "r25"            // 使用するレジスタとメモリを指定
+    );
+}
+
+int main(void) {
+    USART_Init();
+
+    // LEDピンを出力モードに設定
+    DDRB |= (1 << LED1_PIN) | (1 << LED2_PIN);
+    
+    char buf[64];
+    snprintf(buf, 64, "led1 %p led2 %p\r\n", led1_pika, led2_pika);
+    
+    USART_TransmitString(buf);
+    
+    _delay_ms(3000);
+    
+    init_task(led1_pika);
+    init_task(led2_pika);
+    
+    start_task();
+    
+    while(1) {
+    }
+
+    return 0;
+}
+
+
