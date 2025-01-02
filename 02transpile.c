@@ -171,6 +171,7 @@ static bool cpp(sInfo* info)
     int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null"); // Android?
     int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null"); // Debian?
     int is_m5stack = info.m5stack_cpp; // M5Stack?
+    int is_pico = info.pico_cpp; // PICO?
     
     /// Android ///
     if(is_android == 0) {
@@ -190,7 +191,24 @@ static bool cpp(sInfo* info)
         }
     }
     else if(is_m5stack) {
-        string cmd2 = xsprintf("xtensa-esp-elf-cpp -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":"-C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        string cmd2 = xsprintf("xtensa-esp-elf-cpp -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__M5STACK__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":"-C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+        
+        if(info.verbose) puts(cmd2);
+        
+        int rc = system(cmd2);
+        
+        if(rc != 0) {
+            printf("failed to cpp(2) (%s)\n", cmd2);
+            exit(5);
+        }
+        
+        var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
+    }
+    else if(is_pico) {
+        string cmd2 = xsprintf("arm-none-eabi-gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__PICO__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":"-C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
         if(info.verbose) puts(cmd2);
         
@@ -748,6 +766,7 @@ module MEvalOptions<T, T2>
     bool come_malloc = false;
     bool remove_comment = false;
     bool m5stack_cpp = false;
+    bool pico_cpp = false;
     for(int i=T; i<argc; i++) {
         if(argv[i] === "-o" && i+1 < argc) {
             output_file_name = string(argv[i+1]);
@@ -769,8 +788,9 @@ module MEvalOptions<T, T2>
             gComeOriginalSourcePosition = false;
             char* env = getenv("PICO_SDK_PATH");
             cpp_option = new buffer();
-            cpp_option.append_format(s" -nostdinc -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \{env}/src/rp2_common/hardware_sync/include -I %s/include/newlib-nano \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I $(find $PICO_TOOLCHAIN_PATH/.. -name stdarg.h | sed 's/stdarg.h//' | grep -v c++ | awk 'NR==1') -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__", PREFIX);
+            cpp_option.append_format(s" -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \{env}/src/rp2_common/hardware_sync/include -I %s/include/newlib-nano \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__", PREFIX);
             create_pico_version_header();
+            pico_cpp = true;
         }
         else if(argv[i] === "-m5stack") {
             m5stack_cpp = true;
@@ -1050,6 +1070,7 @@ int come_main(int argc, char** argv) version 2
             info.outputed_class = new map<string, int>();
             info.remove_comment = remove_comment;
             info.m5stack_cpp = m5stack_cpp;
+            info.pico_cpp = pico_cpp;
             
             init_classes(&info);
             

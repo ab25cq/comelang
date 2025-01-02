@@ -4159,6 +4159,7 @@ struct MYSQL_PLUGIN_VIO_INFO
 {
     enum anonymous_typeY35 protocol;
     int socket;
+    _Bool is_tls_established;
 };
 
 enum net_async_status { NET_ASYNC_COMPLETE=(0),
