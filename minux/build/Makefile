@@ -130,32 +130,6 @@ minux/fast:
 .PHONY : minux/fast
 
 #=============================================================================
-# Target rules for targets named picotoolForceReconfigure
-
-# Build rule for target.
-picotoolForceReconfigure: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 picotoolForceReconfigure
-.PHONY : picotoolForceReconfigure
-
-# fast build rule for target.
-picotoolForceReconfigure/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/picotoolForceReconfigure.dir/build.make CMakeFiles/picotoolForceReconfigure.dir/build
-.PHONY : picotoolForceReconfigure/fast
-
-#=============================================================================
-# Target rules for targets named picotoolBuild
-
-# Build rule for target.
-picotoolBuild: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 picotoolBuild
-.PHONY : picotoolBuild
-
-# fast build rule for target.
-picotoolBuild/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/picotoolBuild.dir/build.make CMakeFiles/picotoolBuild.dir/build
-.PHONY : picotoolBuild/fast
-
-#=============================================================================
 # Target rules for targets named bs2_default
 
 # Build rule for target.
@@ -1988,6 +1962,30 @@ Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minux.dir/build.make CMakeFiles/minux.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.s
 .PHONY : Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.s
 
+main.c.o: main.c.c.o
+.PHONY : main.c.o
+
+# target to build an object file
+main.c.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minux.dir/build.make CMakeFiles/minux.dir/main.c.c.o
+.PHONY : main.c.c.o
+
+main.c.i: main.c.c.i
+.PHONY : main.c.i
+
+# target to preprocess a source file
+main.c.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minux.dir/build.make CMakeFiles/minux.dir/main.c.c.i
+.PHONY : main.c.c.i
+
+main.c.s: main.c.c.s
+.PHONY : main.c.s
+
+# target to generate assembly for a file
+main.c.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minux.dir/build.make CMakeFiles/minux.dir/main.c.c.s
+.PHONY : main.c.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1998,8 +1996,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bs2_default_bin"
 	@echo "... cyw43_driver_picow_cyw43_bus_pio_spi_pio_h"
-	@echo "... picotoolBuild"
-	@echo "... picotoolForceReconfigure"
 	@echo "... pioasmBuild"
 	@echo "... bs2_default"
 	@echo "... bs2_default_library"
@@ -2225,6 +2221,9 @@ help:
 	@echo "... Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.o"
 	@echo "... Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.i"
 	@echo "... Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.s"
+	@echo "... main.c.o"
+	@echo "... main.c.i"
+	@echo "... main.c.s"
 .PHONY : help
 
 

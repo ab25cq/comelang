@@ -7,5 +7,5 @@ events:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:205 (message)"
       - "CMakeLists.txt:16 (project)"
     message: |
-      The system is: Darwin - 24.1.0 - arm64
+      The system is: Darwin - 24.2.0 - arm64
 ...

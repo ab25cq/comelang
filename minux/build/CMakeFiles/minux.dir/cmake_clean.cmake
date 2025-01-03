@@ -150,6 +150,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/minux.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.o.d"
   "CMakeFiles/minux.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o"
   "CMakeFiles/minux.dir/Users/ab25cq/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.o.d"
+  "CMakeFiles/minux.dir/main.c.c.o"
+  "CMakeFiles/minux.dir/main.c.c.o.d"
   "minux.elf"
   "minux.pdb"
 )

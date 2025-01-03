@@ -1,6 +1,4 @@
 /Users/ab25cq/comelang-dev/minux/build/CMakeFiles/minux.dir
-/Users/ab25cq/comelang-dev/minux/build/CMakeFiles/picotoolForceReconfigure.dir
-/Users/ab25cq/comelang-dev/minux/build/CMakeFiles/picotoolBuild.dir
 /Users/ab25cq/comelang-dev/minux/build/CMakeFiles/edit_cache.dir
 /Users/ab25cq/comelang-dev/minux/build/CMakeFiles/rebuild_cache.dir
 /Users/ab25cq/comelang-dev/minux/build/pico-sdk/CMakeFiles/edit_cache.dir

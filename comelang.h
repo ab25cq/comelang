@@ -15,6 +15,7 @@
 #define _GNU_SOURCE
 
 #ifdef __PICO__
+
 no_output {
 #include "stdint.h"
 }
@@ -45,6 +46,9 @@ no_output {
 no_output {
 #include "hardware/uart.h"
 }
+#undef _GNU_SOURCE
+output {#define _GNU_SOURCE}
+#define _GNU_SOURCE
 output {#include "stdint.h"}
 output {#include "stdarg.h"}
 output {#include "string.h"}
@@ -439,7 +443,7 @@ uniq void* alloc_from_pages(size_t size)
                 
                 if(gHeapPages.mCurrentPages == gHeapPages.mSizePages) {
                     int new_size_pages = gHeapPages.mSizePages * NEW_ALLOC_SIZE;
-                    void** new_pages = calloc(1, sizeof(char*)*new_size_pages);
+                    char** new_pages = calloc(1, sizeof(char*)*new_size_pages);
                     
                     int i=0;
                     for(; i<gHeapPages.mSizePages; i++) {
