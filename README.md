@@ -5,7 +5,7 @@ Another modern Object Oriented C traspiler. It has a heap system that is a cross
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
 
-version 11.0.4
+version 11.0.5
 
 ``` C
 #include <comelang.h>
@@ -328,6 +328,7 @@ sh all_build.sh
 # Histories
 
 ```
+11.0.5 pico support. pico os project starts.
 11.0.4 avr os. yaos
 11.0.3 avr os.
 11.0.2 m5stack support. More compatibilities for C Language.

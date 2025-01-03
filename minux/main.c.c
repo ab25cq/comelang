@@ -290,6 +290,16 @@ struct list$1charph
     struct list_item$1charph* it;
 };
 
+struct sContext
+{
+    unsigned long  int pc;
+    unsigned long  int sp;
+};
+
+struct sContext gContext[2];
+unsigned char gStack[2][64];
+int gNumTasks=0;
+int gCurrentTask=0;
 // source head
 #define _GNU_SOURCE
 #include "stdint.h"
@@ -525,6 +535,10 @@ char* charp_printf(char* self, ...);
 int int_printf(int self, char* msg);
 void int_times(int self, void* parent, void (*block)(void*,int));
 int assert_v2(int exp);
+void init_task(void (*fun)());
+void task_yield();
+void task1();
+void task2();
 int main();
 // uniq global variable
 void* gComeFunResultObject=((void*)0);
@@ -4766,17 +4780,93 @@ int assert_v2(int exp){
     }
 }
 
-int main(){
-    come_heap_init(0, 0, 0);
-    const unsigned int LED_PIN_247=25;
-    gpio_init(LED_PIN_247);
-    gpio_set_dir(LED_PIN_247,1);
-    while(1) {
-        gpio_put(LED_PIN_247,1);
-        sleep_ms(500);
-        gpio_put(LED_PIN_247,0);
-        sleep_ms(500);
+void init_task(void (*fun)()){
+    gContext[gNumTasks].pc=(unsigned long  int)fun;
+    gContext[gNumTasks].sp=0;
+    gNumTasks++;
+}
+
+void task_yield(){
+unsigned long  int saved_pc_247;
+unsigned long  int saved_msp_248;
+unsigned long  int sp_249;
+unsigned long  int pc_250;
+unsigned long  int stack_end_251;
+memset(&saved_pc_247, 0, sizeof(unsigned long  int));
+memset(&saved_msp_248, 0, sizeof(unsigned long  int));
+    __asm volatile("mov %0, lr  \n"
+        : "=r" (saved_pc_247):
+    );
+    printf("saved_pc %d\n",saved_pc_247);
+    gContext[gCurrentTask].pc=saved_pc_247;
+    __asm volatile("mrs %0, msp\n"
+        : "=r"(saved_msp_248):
+    );
+    printf("saved_msp %d\n",saved_msp_248);
+    gContext[gCurrentTask].sp=saved_msp_248;
+    gCurrentTask++;
+    if(    gCurrentTask>=2) {
+        gCurrentTask=0;
     }
-come_heap_final();
+    sp_249=(unsigned long  int)gContext[gCurrentTask].sp;
+    pc_250=(unsigned long  int)gContext[gCurrentTask].pc;
+    if(    sp_249==0) {
+        stack_end_251=(unsigned long  int)gStack[gCurrentTask]+64;
+        gContext[gCurrentTask].sp=(unsigned long  int)stack_end_251;
+        sp_249=gContext[gCurrentTask].sp;
+    }
+    printf("new pc %d\n",pc_250);
+    printf("new sp %d\n",sp_249);
+    __asm volatile("mov r0, %0\n"
+        "msr msp, r0\n"
+        :
+        : "r"(sp_249): "r0"
+    );
+    __asm volatile("bx %0\n"
+        :
+        : "r"(pc_250));
+}
+
+void task1(){
+    puts("TASK1");
+    task_yield();
+    puts("TASK1 END");
+    task_yield();
+    while(1) {
+    }
+}
+
+void task2(){
+    puts("TASK2");
+    task_yield();
+    puts("TASK2 END");
+    while(1) {
+    }
+}
+
+int main(){
+unsigned long  int pc_252;
+unsigned long  int stack_end_253;
+unsigned long  int sp_254;
+int __result198__;
+    come_heap_init(0, 0, 0);
+    stdio_init_all();
+    sleep_ms(15000);
+    init_task(task1);
+    init_task(task2);
+    pc_252=gContext[gCurrentTask].pc;
+    stack_end_253=(unsigned long  int)gStack[gCurrentTask]+64;
+    sp_254=(unsigned long  int)stack_end_253;
+    __asm volatile("msr msp, %0\n"
+        :
+        : "r"(sp_254));
+    __asm volatile("bx %0\n"
+        :
+        : "r"(pc_252));
+    while(1) {
+    }
+    __result198__ = 0;
+    come_heap_final();
+    return __result198__;
 }
 
