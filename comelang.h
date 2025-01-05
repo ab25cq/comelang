@@ -76,6 +76,17 @@ using C
 
 #endif
 
+#ifdef ENABLE_GC
+using C
+{
+#ifdef __MAC__
+#include <gc/gc.h>
+#else
+#include <gc.h>
+#endif
+}
+#endif
+
 using comelang;
 
 #define COME_STACKFRAME_MAX 16
@@ -355,6 +366,14 @@ uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
     gComeDebugLib = come_debug
     gComeGCLib = come_gc;
     
+#ifdef ENABLE_GC
+    if(gComeGCLib) {
+        GC_init();
+        GC_set_warn_proc(GC_ignore_warn_proc);
+        GC_enable_incremental();
+    }
+#endif
+    
     gComeStackFrameBuffer = NULL;
     memset(gComeStackFrameSName, 0, sizeof(char*)*COME_STACKFRAME_MAX_GLOBAL);
     memset(gComeStackFrameSLine, 0, sizeof(int)*COME_STACKFRAME_MAX_GLOBAL);
@@ -382,6 +401,9 @@ uniq void come_heap_final()
     }
     
     if(gComeGCLib) {
+#ifdef ENABLE_GC
+        //GC_gcollect();
+#endif
     }
     else if(gComeDebugLib) {
         sMemHeader* it = gAllocMem;
@@ -477,7 +499,12 @@ uniq void* alloc_from_pages(size_t size)
 uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name=null)
 {
     if(gComeDebugLib) {
+#ifdef ENABLE_GC
+        void* result = GC_malloc(size + sizeof(sMemHeader));
+        memset(result, 0, size + sizeof(sMemHeader));
+#else
         void* result = alloc_from_pages(size + sizeof(sMemHeader));
+#endif
         
         sMemHeader* it = result;
         
@@ -523,7 +550,12 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         return (char*)result + sizeof(sMemHeader);
     }
     else {
+#ifdef ENABLE_GC
+        void* result = GC_malloc(size + sizeof(sMemHeaderTiny));
+        memset(result, 0, size + sizeof(sMemHeaderTiny));
+#else
         void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
+#endif
         
         sMemHeaderTiny* it = result;
         

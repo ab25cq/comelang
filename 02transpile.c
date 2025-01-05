@@ -738,6 +738,10 @@ module MEvalOptions<T, T2>
         else if(argv[i] === "-pthread") {
             gComePthread = true;
         }
+        else if(argv[i] === "-gc") {
+            gComeGC = true;
+            cpp_option.append_format(s" -DENABLE_GC ");
+        }
         else if(argv[i] === "-gcc") {
             gcc_compiler = true;
             CC="gcc"
@@ -771,9 +775,6 @@ module MEvalOptions<T, T2>
         }
         else if(argv[i] === "-net") {
             gComeNet = true;
-        }
-        else if(argv[i] === "-gc") {
-            gComeGC = true;
         }
         else if(argv[i] === "-cg") {
             come_debug = true;

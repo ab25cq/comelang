@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 12.0.2
+version 12.0.5
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+12.0.5 -gc option support again to use boehm GC
 12.0.2 -gcc option to use gcc instead of clang
 12.0.1 Refactoring.
 12.0.0 Really complete.
