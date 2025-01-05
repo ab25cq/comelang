@@ -719,11 +719,12 @@ module MEvalOptions<T, T2>
     bool verbose = false;
     bool come_debug = false;
     bool come_malloc = false;
-    bool remove_comment = false;
     bool m5stack_cpp = false;
     bool pico_cpp = false;
     bool gcc_compiler = false;
     for(int i=T; i<argc; i++) {
+        string ext_name = xextname(argv[i]);
+        
         if(argv[i] === "-o" && i+1 < argc) {
             output_file_name = string(argv[i+1]);
             i++;
@@ -781,10 +782,43 @@ module MEvalOptions<T, T2>
             clang_option.append_str("-g ");
         }
         else if(argv[i] === "-C") {
-            remove_comment = true;
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-M") {
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-MM") {
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-dM") {
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-dD") {
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-H") {
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-P") {
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-nostdinc") {
+            cpp_option.append_str(s"\{argv[i]} ");
+        }
+        else if(argv[i] === "-CC") {
+            cpp_option.append_str(s"\{argv[i]} ");
         }
         else if(i + 1 < argc && argv[i] === "-target") {
             clang_option.append_str(s"-target \{argv[i+1]}");
+            i++;
+        }
+        else if(i + 1 < argc && argv[i] === "-include") {
+            cpp_option.append_str(s"-iclude \{argv[i+1]}");
+            i++;
+        }
+        else if(i + 1 < argc && argv[i] === "-isystem") {
+            cpp_option.append_str(s"-isystem \{argv[i+1]}");
+            clang_option.append_str(s"-isystem \{argv[i+1]}");
             i++;
         }
         else if(i + 1 < argc && argv[i] === "-T") {
@@ -805,11 +839,16 @@ module MEvalOptions<T, T2>
             cpp_option.append_str(s" \{argv[i]} ");
             clang_option.append_str(s" \{argv[i]} ");
         }
+        else if(argv[i][0..2] === "-U") {
+            cpp_option.append_str(s" \{argv[i]} ");
+            clang_option.append_str(s" \{argv[i]} ");
+        }
         else if(argv[i] === "-g") {
             clang_option.append_str("-g ");
         }
         else if(argv[i] === "-v") {
             clang_option.append_str("-v ");
+            cpp_option.append_str("-v ");
             verbose = true;
         }
         else if(strlen(argv[i]) >= 2 && memcmp(argv[i], "-I", strlen("-I")) == 0) {
@@ -837,8 +876,11 @@ module MEvalOptions<T, T2>
         else if(strlen(argv[i]) > 2 && memcmp(argv[i] + strlen(argv[i]) -2, ".a", 2) == 0) {
             object_files.push_back(string(argv[i]));
         }
-        else {
+        else if(ext_name === "c") {
             files.push_back(string(argv[i]));
+        }
+        else {
+            clang_option.append_str(argv[i] + " ");
         }
     }
 #ifdef __MAC__ // for lldb
@@ -908,7 +950,6 @@ int come_main(int argc, char** argv) version 2
         info.verbose = verbose;
         info.output_header_file = true;
         info.outputed_class = new map<string, int>();
-        info.remove_comment = remove_comment;
         
         static int n = 0;
         info.num_source_files = n++;
@@ -1028,7 +1069,6 @@ int come_main(int argc, char** argv) version 2
             info.generics_classes = new map<string, sClass*%>();
             info.verbose = verbose;
             info.outputed_class = new map<string, int>();
-            info.remove_comment = remove_comment;
             info.m5stack_cpp = m5stack_cpp;
             info.pico_cpp = pico_cpp;
             info.gcc_compiler = gcc_compiler;
