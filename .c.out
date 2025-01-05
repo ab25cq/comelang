@@ -1,0 +1,7 @@
+.c:2603:37: warning: comparison of distinct pointer types ('struct sMemHeader *' and 'struct sMemHeaderTiny *') [-Wcompare-distinct-pointer-types]
+ 2603 |             if(            gAllocMem==it_24) {
+      |                            ~~~~~~~~~^ ~~~~~
+.c:5939:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+ 5939 | }
+      | ^
+2 warnings generated.

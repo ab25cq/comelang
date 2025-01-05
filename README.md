@@ -1,35 +1,19 @@
 
 # comelang
 
-Another modern Object Oriented C traspiler. It has a heap system that is a cross between an automatically-free-system and a reference-counted GC, and includes a collection library and a string library. 
+Another modern Object Oriented C compiler. It has Rerfference Count GC, and includes the generics collection libraries.
 
-もう一つのモダンなオブジェクト指向Cコンパイラ。automatically-free-systemとリファレンスカウントGCの間をとったようなヒープシステムがありコレクションライブラリ、文字列ライブラリを備えてます。
+もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 11.0.5
+version 12.0.0
 
 ``` C
 #include <comelang.h>
 
-/* comment /* nest */ comment */
-// comment2
-
-int fun(int x=123, int y = 234, int z = 345) 
-{
-    printf("x %d y %d z %d\n", x, y, z);
-}
-
-int, string fun2() 
-{
-    return (1, string("ABC"))
-}
-
 class sData
 {
-    new(int a, int b)
-    {
-        int self.a = b;
-        int self.b = b;
-    }
+    int a;
+    int b;
     
     void show()
     {
@@ -39,264 +23,35 @@ class sData
 
 class sData2 extends sData
 {
-    new(int a, int b, int c)
+    int c;
+    
+    void show()
     {
-        self.a = a;
-        self.b = b;
-        int self.c = c;
+        printf("a %d b %d c %d\n", self.a, self.b, self.c);
     }
 };
-
-interface sDataRun
-{
-    void show();
-};
-
-int putc(int c, FILE* f) version 2
-{
-    inherit(c, f);
-    puts("");
-    
-    return 1;
-}
 
 int main() 
 {
+    var data = new sData2 { a:123, b:234, c:345 };
+    
+    data.show();  // a 123 b 234 c 345
+    
     puts("HO!" * 3);             // HO!HO!HO!\n
-    puts(xsprintf("%d", 1+1));   // 2\n
-    
-    3.times { puts(("HO" + "!") * 3); }    // HO!HO!HO!\nHO!HO!HO!\nHO!HO!HO!\n
-    
-    int xxx = 123;
-    
-    3.times {
-        xxx+=2;
-        printf("xxx %d\n", xxx); // xxx 125\nxxx 127\nxxx 129\n
-    }
-    printf("xxx %d\n", xxx); // xxx 129\n
-
-    var li = ["AAA", "BBB", "CCC"]
-
-    foreach(it, li) {
-        puts(it);           // AAA\nBBB\nCCC\n
-    }
-    
-    [1,2,3].each {
-        printf("%d\n", it);   //1\n2\n3\n
-    }
-
-    var m = ["AAA":1, "BBB":2, "CCC":3]
-    
-    foreach(key, m) {
-        var item = m[key];
-
-        printf("%s %d\n", key, item); // AAA 1\nBBB 2\nCCC 3\n
-    }
-
-    puts("ABC"[0..1]);   // A\n
-
-    3.times {
-        puts("HELLO METHOD BLOCK");
-    }
-
-    var li2 = [1,2,3]
-
-    li.filter { it > 1 }.each {
-        printf("%d\n", it);       // 2\n3\n
-    }
-    
-    var li2 = ["1", "2", "3", "4", "5"]
-
-    [3,1,2,7].filter { it > 2 }.each { it.printf("%d\n"); }   // 3\n7\n
-    
-    var ma1 = ["AAA":1, "BBB":2, "CCC":3];
-    
-    if(ma1["AAA"] == 1 && ma1["BBB"] == 2 && ma1["CCC"] == 3) {
-        puts("OK");
-    }
-    
-    fopen("AAA", "w").fprintf("ABC\n").fclose();
-    
-    fopen("AAA", "r").if {
-        Value.read().print();   // ABC\n
-        fclose(Value);
-    }
-    
-    puts("AAA".read());   // ABC\n\n
-    
-    unlink("AAA");
-    
-    stdin.readlines().map { it.strip() }.join(",").printf("[%s]\n"); // if stdin is aaa\nbbb\nccc --> [aaa,bbb,ccc]\n
-    
-    int, int, char* t1 = (1,2,"ABC");
-    
-    xassert("tuple value test1", t1.v1 == 1 && t1.v2 == 2 && t1.v3 === "ABC");
-    
-    xassert("string equals test1", "ABC" === "ABC");
-    xassert("operator overload test", "ABC" * 2 === "ABCABC");
-    xassert("operator overload test", "ABC" + "DEF" === "ABCDEF");
-    xassert("operator overload test2", [1,2] + [3] === [1,2,3]);
-    xassert("operator overload test3", [1,2] * 2 === [1,2,1,2]);
-    
-    var z = [1,2,3];
-    
-    z.add(4).add(5);
-    
-    xassert("list test", z === [1,2,3,4,5]);
-    
-    z[1] = 22;
-    
-    xassert("operator overload test", z[0] == 1 && z[1] == 22 && z[2] == 3);
-    
-    var zz = ["AAA":1, "BBB":2, "CCC":3];
-    
-    xassert("operator overload test", zz["AAA"] == 1 && z["BBB"] == 22 && z["CCC"] == 3);
-    
-    zz["DDD"] = 4
-    
-    xassert("operator overload test", zz["AAA"] == 1 && z["BBB"] == 22 && z["CCC"] == 3 && z["DDD"] == 4);
-    
-    fun(y:2,x:1);  // print x 1 y 2 z 345
-    
-    putc('X');     // print X\n
-    
-    var l, m = fun2();
-    
-    xassert("multiple return", l == 1 && m === "ABC");
-    
-    "12345\n".write("AAA");
-    "12345\n".write("AAA", append:true);
-    
-    printf("AAA".read());  // print out 12345\n12345\n
-    
-    var data = new sData(3,5);
-    
-    xassert("class test", data.a == 3 && data.b == 5);
-    
-    var z = [new sData(1,2), new sData(3,4)];
-    
-    int x = 2;
-    ([1,2] + [3]).each {
-        printf("%d\n", it*x);  // 1\n6\n9\n
-        x = 3;
-    }
-    
-    printf("x %d\n", x);   // x 3\n
-    
-    ["1","7","3","2","9"].map { atoi(it) }.each { printf("%d\n", it); } // 1\n7\n3\n2\n9\n
-    
-    int zzz = 123;
-    puts(s"zzz == \{zzz}");    // zzz == 123
-    
-    puts(s"1+1 == \{1+1}");    // 1+1 == 2
-    
-    var str2 = string("ABCDEF");
-    
-    puts(str2[0..2]);          // AB
-    
-    var list1 = [1,2,3,4,5];
-    
-    puts(list1[0..2]);   // [1,2]
-    
-    puts(1);             // 1
-    
-    sData*% data = new sData(111, 222);
-    
-    data.show();
-    
-    sData2*% data2 = new sData2(1, 2, 3);
-    
-    data2.show();
-    
-    sDataRun*% inf = new sData2(1,2,3) implements sDataRun;
-    
-    inf.show();
 
     return 0;
 }
 ```
 
-1. Compatible with C language. The C preprocessor also works.
-
-2. There are automatically-free-systems like Rust, V, and Nim.
-
-3. There are generics and inline functions.
-
-4. There is a mixin-layer system. You can implement your application layer by layer.
-
-5. There is an interface. Polymorphism can be implemented.
-
-6. There is a Ruby-like method block.
-
-7. Supports default parameters and parameter labels.
-
-8. There are operator overloads.
-
-9. I have an expression embedded string.
-
-10. There are smart pointers that are memory safe and do not cause segmentation faults.
-
-11. Has memory leak detection function.
-
-12. class and inheritance system supported.
-
-13. Type inferrence of template.
-
-14. Exception. 
-
-15. Pattern matching.
-
-16. Thread, Channel
-
-17. comelang only depends on the standard C library. Even in an embedded environment, you can output source files that only use the standard C library.
-
-1. C言語と互換性があります。Cプリプロセッサーも動きます。
-
-2. RustやVやNimのようなautomatically-free-systemがあります。
-
-3. ジェネリクスとinline関数があります。
-
-4. mixin-layerシステムがあります。レイヤーを重ねるようにアプリケーションを実装できます。
-
-5. インターフェースがあります。多態が実装できます。
-
-6. Rubyのようなメソッドブロックがあります。
-
-7. デフォルトパラメータとパラメーターラベルをサポートしています。
-
-8. 演算子のオーバーロードがあります。 
-
-9. 式埋め込み文字列があります。
-
-10. メモリーセーフなセグメンテーションフォルトを起こさないスマートポインターがあります。
-
-11. メモリリーク検出機能があります。
-
-12. クラスと継承システムをサポートします。
-
-13. テンプレートの型推論があります。
-
-14. Exception.
-
-15. Pattern matching.
-
-16. Thread, channel
-
-17. comelangは標準Cライブラリにしか依存していません。組み込み環境でも標準Cライブラリしか使わないソースファイルを出力できます。
-
 # インストール
-
-Requires clang, make, autoconf, valgrind, gdb, lldb, musl-dev (alpine linux), and pcre-dev.
 
 sh fast_build.sh will automatically install the necessary packages.
 
 Supports Linux, MacOS (Darwin), termux (Android) userland (Android), and raspberry pi.
 
-clangとmake, autoconf, valgrind, gdb, lldb, musl-dev(alpine linux), pcre-devが必要です。
-
 sh fast_build.shとすると自動的に必要なパッケージがインストールされます。
 
-LinuxとMacOS(Darwin), termux(Android) userland(Android), raspberry pi, raspberry pi picoをサポートしています。
+LinuxとMacOS(Darwin), termux(Android), raspberry pi, raspberry pi picoをサポートしています。
 
 sudoとgitは事前にインストールしてください。
 
@@ -328,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+12.0.0 Really complete.
 11.0.5 pico support. pico os project starts.
 11.0.4 avr os. yaos
 11.0.3 avr os.

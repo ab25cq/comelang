@@ -9662,7 +9662,8 @@ list$1sNodeph_initialize_with_values((struct list$1sNodeph*)come_increment_ref_c
         /*g*/come_call_finalizer3(__right_value662,sType_finalize, 0, 1, 0, 0, __result_obj__);
         type4_597=(struct sType*)come_increment_ref_count(solve_generics(type2_590,type3_596,info));
         type4_597->mException=(_Bool)1;
-        __result327__ = gComeFunResultObject = __result_obj__ = ((struct tuple3$3sTypephcharphbool*)(__right_value665=tuple3$3sTypephcharphbool_initialize((struct tuple3$3sTypephcharphbool*)come_increment_ref_count((struct tuple3$3sTypephcharphbool*)come_calloc(1, sizeof(struct tuple3$3sTypephcharphbool)*(1), "05type.c", 2867, "struct tuple3$3sTypephcharphbool")),(struct sType*)come_increment_ref_count(type4_597),(char*)come_increment_ref_count(var_name_473),(_Bool)1)));
+        type4_597->mUniq=type_472->mUniq;
+        __result327__ = gComeFunResultObject = __result_obj__ = ((struct tuple3$3sTypephcharphbool*)(__right_value665=tuple3$3sTypephcharphbool_initialize((struct tuple3$3sTypephcharphbool*)come_increment_ref_count((struct tuple3$3sTypephcharphbool*)come_calloc(1, sizeof(struct tuple3$3sTypephcharphbool)*(1), "05type.c", 2868, "struct tuple3$3sTypephcharphbool")),(struct sType*)come_increment_ref_count(type4_597),(char*)come_increment_ref_count(var_name_473),(_Bool)1)));
         /*i*/come_call_finalizer3(type2_590,sType_finalize, 0, 0, 0, 0, (void*)0);
         /*i*/come_call_finalizer3(type3_596,sType_finalize, 0, 0, 0, 0, (void*)0);
         /*i*/come_call_finalizer3(type4_597,sType_finalize, 0, 0, 0, 0, (void*)0);
@@ -9679,7 +9680,7 @@ list$1sNodeph_initialize_with_values((struct list$1sNodeph*)come_increment_ref_c
         /*i*/come_call_finalizer3(type3_596,sType_finalize, 0, 0, 0, 0, (void*)0);
         /*i*/come_call_finalizer3(type4_597,sType_finalize, 0, 0, 0, 0, (void*)0);
     }
-    __result328__ = gComeFunResultObject = __result_obj__ = ((struct tuple3$3sTypephcharphbool*)(__right_value667=tuple3$3sTypephcharphbool_initialize((struct tuple3$3sTypephcharphbool*)come_increment_ref_count((struct tuple3$3sTypephcharphbool*)come_calloc(1, sizeof(struct tuple3$3sTypephcharphbool)*(1), "05type.c", 2870, "struct tuple3$3sTypephcharphbool")),(struct sType*)come_increment_ref_count(type_472),(char*)come_increment_ref_count(var_name_473),(_Bool)1)));
+    __result328__ = gComeFunResultObject = __result_obj__ = ((struct tuple3$3sTypephcharphbool*)(__right_value667=tuple3$3sTypephcharphbool_initialize((struct tuple3$3sTypephcharphbool*)come_increment_ref_count((struct tuple3$3sTypephcharphbool*)come_calloc(1, sizeof(struct tuple3$3sTypephcharphbool)*(1), "05type.c", 2871, "struct tuple3$3sTypephcharphbool")),(struct sType*)come_increment_ref_count(type_472),(char*)come_increment_ref_count(var_name_473),(_Bool)1)));
     /* U13 */type_name_406 = come_decrement_ref_count2(type_name_406, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     if(alignas__426) { alignas__426 = come_decrement_ref_count2(alignas__426, ((struct sNode*)alignas__426)->finalize, ((struct sNode*)alignas__426)->_protocol_obj, 0, 0, 0, (void*)0); } 
     /* U13 */tuple_name_468 = come_decrement_ref_count2(tuple_name_468, (void*)0, (void*)0, 0, 0, 0, (void*)0);

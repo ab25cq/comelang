@@ -365,38 +365,13 @@ static bool linker(sInfo* info, list<string>* object_files)
     command.append_format(" %s ", info.clang_option);
     
     if(gComeStr) {
-        if(gComeGC) {
-            if(is_mac == 0) {
-                command.append_format(" %s/lib/libcomelang-str-gc.c.o -lpcre ", PREFIX);
-            }
-            else {
-                command.append_str(" -lcomelang-str-gc -lpcre ");
-            }
-        }
-        else {
-            if(is_mac == 0) {
-                command.append_format(" %s/lib/libcomelang-str.c.o -lpcre ", PREFIX);
-            }
-            else {
-                command.append_str(" -lcomelang-str -lpcre ");
-            }
-        }
+        command.append_format(" -lpcre ");
     }
     if(gComeGC) {
-        if(is_mac == 0) {
-            command.append_format(" %s/lib/libcomelang-gc.c.o -lgc ", PREFIX);
-        }
-        else {
-            command.append_str(" -lcomelang-gc -lgc ");
-        }
+        command.append_str(" -lgc ");
     }
     if(gComePthread) {
-        if(is_mac == 0) {
-            command.append_format(" %s/lib/libcomelang-pthread.c.o -lpthread ", PREFIX);
-        }
-        else {
-            command.append_str(" -lcomelang-pthread -lpthread ");
-        }
+        command.append_str(" -lpthread ");
     }
     if(gComeNet) {
         int is_apline = system("which apk 1> /dev/null 2>/dev/null");
@@ -404,36 +379,16 @@ static bool linker(sInfo* info, list<string>* object_files)
         int is_android = system("uname -a | grep Android 1>/dev/null 2>/dev/null");
         
         if(is_android == 0) { // is Android
-            if(gComeGC) {
-                command.append_str(" -lcomelang-net-gc -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
-            }
-            else {
-                command.append_str(" -lcomelang-net -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
-            }
+            command.append_str(" -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
         }
         else if(is_apline == 0 || is_debian == 0) { // Alpine | Debian
-            if(gComeGC) {
-                command.append_str(" -lcomelang-net-gc -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
-            }
-            else {
-                command.append_str(" -lcomelang-net -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
-            }
+            command.append_str(" -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
         }
         else if(is_mac == 0) {
-            if(gComeGC) {
-                command.append_format(" %s/lib/libcomelang-net-gc.c.o -lssl `mysql_config --cflags --libs`", PREFIX);
-            }
-            else {
-                command.append_format(" %s/lib/libcomelang-net.c.o -lssl `mysql_config --cflags --libs`", PREFIX);
-            }
+            command.append_format(" -lssl `mysql_config --cflags --libs`");
         }
         else { // Ohter
-            if(gComeGC) {
-                command.append_str(" -lcomelang-net-gc -lssl `mysql_config --cflags --libs`");
-            }
-            else {
-                command.append_str(" -lcomelang-net -lssl `mysql_config --cflags --libs`");
-            }
+            command.append_str(" -lssl `mysql_config --cflags --libs`");
         }
     }
     
@@ -788,7 +743,7 @@ module MEvalOptions<T, T2>
             gComeOriginalSourcePosition = false;
             char* env = getenv("PICO_SDK_PATH");
             cpp_option = new buffer();
-            cpp_option.append_format(s" -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \{env}/src/rp2_common/hardware_sync/include -I %s/include/newlib-nano \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__", PREFIX);
+            cpp_option.append_format(s" -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \{env}/src/rp2_common/hardware_sync/include \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__");
             create_pico_version_header();
             pico_cpp = true;
         }

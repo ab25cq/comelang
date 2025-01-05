@@ -13,7 +13,7 @@ LIBS= -lutil -ldl -lm -lrt
 #########################################
 all: comelang-sh
 
-comelang: 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o libcomelang-str.a libcomelang-net.a libcomelang-pthread.a 
+comelang: 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o 
 	comelang -o comelang 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o $(CFLAGS) 
 
 01main.c.o: 01main.c
@@ -103,19 +103,7 @@ comelang: 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 0
 24module.c.o: 24module.c
 	comelang -S -C -o 24module.c.o -c 24module.c $(CFLAGS) 
 
-libcomelang-str.a: libcomelang-str.c
-	comelang -str -C -S -c libcomelang-str.c $(CFLAGS) 
-	ar rcs libcomelang-str.a libcomelang-str.c.o
-
-libcomelang-net.a: libcomelang-net.c
-	comelang -net -C -S -c libcomelang-net.c $(CFLAGS) 
-	ar rcs libcomelang-net.a libcomelang-net.c.o
-
-libcomelang-pthread.a: libcomelang-pthread.c
-	comelang -pthread -C -S -c libcomelang-pthread.c $(CFLAGS) 
-	ar rcs libcomelang-pthread.a libcomelang-pthread.c.o
-
-comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05pre_op.c.o.tmp 05call.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp libcomelang-str.c.o.tmp libcomelang-net.c.o.tmp libcomelang-pthread.c.o.tmp
+comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05pre_op.c.o.tmp 05call.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp 
 	clang -o comelang-sh  01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05call.c.o.tmp 05pre_op.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp 
 	cp -p comelang-sh comelang
 
@@ -206,18 +194,6 @@ comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o
 24module.c.o.tmp: 24module.c.c
 	clang -o 24module.c.o.tmp -c 24module.c.c $(CFLAGS) 2> /dev/null
 
-libcomelang-str.c.o.tmp: libcomelang-str.c.c
-	clang -o libcomelang-str.c.o.tmp -c libcomelang-str.c.c $(CFLAGS) 2> /dev/null
-	ar rcs libcomelang-str.a libcomelang-str.c.o.tmp
-
-libcomelang-net.c.o.tmp: libcomelang-net.c.c
-	clang -o libcomelang-net.c.o.tmp -c libcomelang-net.c.c $(CFLAGS) 2> /dev/null
-	ar rcs libcomelang-net.a libcomelang-net.c.o.tmp
-
-libcomelang-pthread.c.o.tmp: libcomelang-pthread.c.c
-	clang -o libcomelang-pthread.c.o.tmp -c libcomelang-pthread.c.c $(CFLAGS) 2> /dev/null
-	ar rcs libcomelang-pthread.a libcomelang-pthread.c.o.tmp
-
 #########################################
 # install
 #########################################
@@ -225,19 +201,10 @@ install:
 	mkdir -p "$(DESTDIR)/bin"
 	$(INSTALL) -m 755 ./comelang "$(DESTDIR)/bin"
 	mkdir -p "$(DESTDIR)/include"
-	mkdir -p "$(DESTDIR)/include/newlib-nano"
 	$(INSTALL) -m 644 ./comelang.h "$(DESTDIR)/include"
-	cp -Rf ./include-newlib-nano/* "$(DESTDIR)/include/newlib-nano"
 	$(INSTALL) -m 644 ./comelang-str.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-net.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-pthread.h "$(DESTDIR)/include"
-	mkdir -p "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-str.a "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-net.a "$(DESTDIR)/lib"
-	$(INSTALL) -m 644 ./libcomelang-pthread.a "$(DESTDIR)/lib"
-	if test -e ./libcomelang-str.c.o; then $(INSTALL) -m 644 ./libcomelang-str.c.o "$(DESTDIR)/lib"; fi
-	if test -e ./libcomelang-net.c.o; then $(INSTALL) -m 644 ./libcomelang-net.c.o "$(DESTDIR)/lib"; fi
-	if test -e ./libcomelang-pthtread.c.o; then $(INSTALL) -m 644 ./libcomelang-pthread.c.o "$(DESTDIR)/lib"; fi
 	mkdir -p "$(DESTDIR)/share/doc/comelang"
 	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/comelang/README.md"
 
@@ -256,26 +223,8 @@ distclean: clean
 uninstall:
 	rm -f "$(DESTDIR)"/bin/comelang
 	rm -f "$(DESTDIR)"/include/comelang.h
-	rm -rf "$(DESTDIR)"/include/pico/
-	rm -f "$(DESTDIR)"/include/comelang-pico.h
 	rm -f "$(DESTDIR)"/include/comelang-str.h
 	rm -f "$(DESTDIR)"/include/comelang-net.h
 	rm -f "$(DESTDIR)"/include/comelang-pthread.h
-	rm -f "$(DESTDIR)"/lib/libcomelang.a
-	rm -f "$(DESTDIR)"/lib/libcomelang-str.a
-	rm -f "$(DESTDIR)"/lib/libcomelang-net.a
-	rm -f "$(DESTDIR)"/lib/libcomelang-pthread.a
-	rm -f "$(DESTDIR)"/lib/libcomelang-gc.a
-	rm -f "$(DESTDIR)"/lib/libcomelang-str-gc.a
-	rm -f "$(DESTDIR)"/lib/libcomelang-net-gc.a
-	rm -f "$(DESTDIR)"/lib/libcomelang-pthread-gc.a
-	rm -f "$(DESTDIR)"/lib/libcomelang.c.o
-	rm -f "$(DESTDIR)"/lib/libcomelang-str.c.o
-	rm -f "$(DESTDIR)"/lib/libcomelang-net.c.o
-	rm -f "$(DESTDIR)"/lib/libcomelang-pthread.c.o
-	rm -f "$(DESTDIR)"/lib/libcomelang-gc.c.o
-	rm -f "$(DESTDIR)"/lib/libcomelang-str-gc.c.o
-	rm -f "$(DESTDIR)"/lib/libcomelang-net-gc.c.o
-	rm -f "$(DESTDIR)"/lib/libcomelang-pthread-gc.c.o
 	rm -f "$(DESTDIR)/share/doc/comelang/README.md"
 
