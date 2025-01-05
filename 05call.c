@@ -505,6 +505,7 @@ class sFunCallNode extends sNodeBase
             var_ = get_variable_from_table(info.gv_table, fun_name);
         }
         
+        /// lambda call //
         if(var_) {
             sType* lambda_type = var_->mType;
             
@@ -580,376 +581,54 @@ class sFunCallNode extends sNodeBase
             info.stack.push_back(come_value);
             
             info.calling_fun = null;
+            
+            return true;
         }
-        else {
-            sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
-            bool method_generics = false;
-            if(generics_fun) {
-                method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
-            }
-            if(self.method_generics_types.length() > 0 || method_generics) {
-                if(self.method_generics_types.length() == 0) {
-                    list<sType*%>*% method_generics_types = new list<sType*%>();
-                    string generics_fun_name = make_method_generics_function(fun_name, method_generics_types, info);
+        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
+        bool method_generics = false;
+        if(generics_fun) {
+            method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
+        }
+        if(self.method_generics_types.length() > 0 || method_generics) {
+            if(self.method_generics_types.length() == 0) {
+                list<sType*%>*% method_generics_types = new list<sType*%>();
+                string generics_fun_name = make_method_generics_function(fun_name, method_generics_types, info);
+                
+                sFun* fun = info.funcs.at(generics_fun_name, null);
+                
+                if(method_block) {
+                    list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                     
                     sFun* fun = info.funcs.at(generics_fun_name, null);
                     
-                    if(method_block) {
-                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
-                        
-                        sFun* fun = info.funcs.at(generics_fun_name, null);
-                        
-                        bool no_output_come_code = info->no_output_come_code;
-                        info->no_output_come_code = true;
-                        if(!compile_method_block(method_block, come_params, fun, fun_name, method_block_sline, info, true)) {
-                            return false;
-                        }
-                        info->no_output_come_code = no_output_come_code;
-                        CVALUE* method_block_node = come_params[-1]??;
-                        
-                        sType*% method_block_lambda_type = clone method_block_node.type;
-                        sType*% method_block_result_type = clone info.come_method_block_function_result_type;
-                        
-                        sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
-                        sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType.v1;
-                        
-                        if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
-                            int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
-                            method_generics_types[method_generics_num] = clone method_block_result_type;
-                        }
-                        int n = 0;
-                        foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
-                            if(it.mClass.mMethodGenerics) {
-                                int method_generics_num = it.mMethodGenericsNum;
-                                method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
-                            }
-                            n++;
-                        }
+                    bool no_output_come_code = info->no_output_come_code;
+                    info->no_output_come_code = true;
+                    if(!compile_method_block(method_block, come_params, fun, fun_name, method_block_sline, info, true)) {
+                        return false;
                     }
+                    info->no_output_come_code = no_output_come_code;
+                    CVALUE* method_block_node = come_params[-1]??;
                     
-                    list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+                    sType*% method_block_lambda_type = clone method_block_node.type;
+                    sType*% method_block_result_type = clone info.come_method_block_function_result_type;
                     
-                    int i = 0;
-                    sType*% result_type = null;
-                    foreach(it, params) {
-                        var label, node = it;
-                        
-                        node_compile(node).elif {
-                            return false;
-                        }
-                        
-                        CVALUE*% come_value = get_value_from_stack(-1, info);
-                        dec_stack_ptr(1, info);
-                        
-                        come_params.add(come_value);
-                    }
+                    sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
+                    sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType.v1;
                     
-                    if(generics_fun.mResultType.mClass.mMethodGenerics) {
-                        int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
-            
-                        if(info->function_result_type) {
-                            method_generics_types[method_generics_num] = clone info->function_result_type;
-                        }
+                    if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
+                        int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
+                        method_generics_types[method_generics_num] = clone method_block_result_type;
                     }
                     int n = 0;
-                    foreach(it, generics_fun.mParamTypes) {
+                    foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
                         if(it.mClass.mMethodGenerics) {
                             int method_generics_num = it.mMethodGenericsNum;
-                            if(n < come_params.length()) {
-                                method_generics_types[method_generics_num] = clone come_params[n]??.type;
-                            }
+                            method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
                         }
                         n++;
                     }
-                    
-                    info.funcs.remove(generics_fun_name);
-                    
-                    fun_name = make_method_generics_function(fun_name, method_generics_types, info);
-                }
-                else {
-                    fun_name = make_method_generics_function(fun_name, self.method_generics_types, info);
-                }
-            }
-            
-            if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" 
-                || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" 
-                || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" 
-                || fun_name === "__builtin_constant_p" || fun_name === "__builtin_expect" 
-                || fun_name === "__builtin___memset_chk" || fun_name === "__builtin_object_size" 
-                || fun_name === "__builtin___memcpy_chk" || fun_name === "__builtin___strncpy_chk" 
-                || fun_name === "__builtin___strncat_chk" || fun_name === "__builtin___vsnprintf_chk" 
-                || fun_name === "__builtin_strrchr"
-                || fun_name === "__builtin_clz"
-                || fun_name === "__dsb"
-                || fun_name === "__isb"
-                || fun_name === "__dmb"
-                || memcmp(fun_name, "__builtin_arm_", strlen("__builtin_arm_")) == 0
-/*
-                || fun_name === "__builtin_arm_ldcl"
-                || fun_name === "__builtin_arm_stcl"
-                || fun_name === "__builtin_arm_stc"
-                || fun_name === "__builtin_arm_cdp"
-                || fun_name === "__builtin_arm_ldc"
-                || fun_name === "__builtin_arm_mcr"
-                || fun_name === "__builtin_arm_mrc"
-                || fun_name === "__builtin_arm_mcr2"
-                || fun_name === "__builtin_arm_mrc2"
-                || fun_name === "__builtin_arm_cdp2"
-                || fun_name === "__builtin_arm_ldc2"
-                || fun_name === "__builtin_arm_ldc2l"
-                || fun_name === "__builtin_arm_stc2"
-                || fun_name === "__builtin_arm_stc2l"
-                || fun_name === "__builtin_arm_mcrr"
-                || fun_name === "__builtin_arm_mrrc"
-                || fun_name === "__builtin_arm_mcrr2"
-                || fun_name === "__builtin_arm_mrrc2"
-                || fun_name === "__builtin_arm_crc32b"
-                || fun_name === "__builtin_arm_crc32h"
-                || fun_name === "__builtin_arm_crc32w"
-                || fun_name === "__builtin_arm_crc32cb"
-                || fun_name === "__builtin_arm_crc32ch"
-    */
-                || fun_name === "__c11_atomic_thread_fence"
-                || fun_name === "__c11_atomic_signal_fence"
-                || fun_name === "__c11_atomic_store"
-                || fun_name === "__c11_atomic_load"
-                || fun_name === "__c11_atomic_exchange"
-                || fun_name === "__c11_atomic_exchange_strong"
-                || fun_name === "__c11_atomic_exchange_weak"
-                
-                || fun_name === "__c11_atomic_fetch_add"
-                || fun_name === "__c11_atomic_fetch_sub"
-                || fun_name === "__c11_atomic_fetch_and"
-                || fun_name === "__c11_atomic_fetch_or"
-                || fun_name === "__c11_atomic_fetch_xor")
-            {
-                list<CVALUE*%>*% come_params = new list<CVALUE*%>();
-                foreach(it, params) {
-                    var label, node = it;
-                    
-                    node_compile(node).elif {
-                        return false;
-                    }
-                    
-                    CVALUE*% come_value = get_value_from_stack(-1, info);
-                    dec_stack_ptr(1, info);
-                    
-                    come_params.push_back(come_value);
                 }
                 
-                buffer*% buf = new buffer();
-                
-                buf.append_str(fun_name);
-                buf.append_str("(");
-                
-                int j = 0;
-                foreach(it, come_params) {
-                    buf.append_str(it.c_value);
-                    
-                    if(j != come_params.length()-1) {
-                        buf.append_str(",");
-                    }
-                    
-                    j++;
-                }
-                buf.append_str(")");
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = buf.to_string();
-                
-                if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__builtin_ffs") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__builtin_ffsl") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__builtin_ffsll") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__builtin_bswap16") {
-                    come_value.type = new sType("short");
-                }
-                else if(fun_name === "__builtin_bswap32") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__builtin_bswap64") {
-                    come_value.type = new sType("long");
-                }
-                else if(fun_name === "__builtin_constant_p") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__builtin_expect") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__builtin___memset_chk") {
-                    come_value.type = new sType("void");
-                    come_value.type.mPointerNum = 1;
-                }
-                else if(fun_name === "__builtin_object_size") {
-                    come_value.type = new sType("long");
-                }
-                else if(fun_name === "__builtin___memcpy_chk") {
-                    come_value.type = new sType("void");
-                    come_value.type.mPointerNum = 1;
-                }
-                else if(fun_name === "__builtin___strncpy_chk") {
-                    come_value.type = new sType("char");
-                    come_value.type.mPointerNum = 1;
-                }
-                else if(fun_name === "__builtin___strncat_chk") {
-                    come_value.type = new sType("char");
-                    come_value.type.mPointerNum = 1;
-                }
-                else if(fun_name === "__builtin_strrchr") {
-                    come_value.type = new sType("char");
-                    come_value.type.mPointerNum = 1;
-                }
-                else if(fun_name === "__builtin___vsnprintf_chk") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__builtin_clz") {
-                    come_value.type = new sType("int");
-                }
-                else if(fun_name === "__c11_atomic_thread_fence") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__c11_atomic_signal_fence") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__c11_atomic_exchange") {
-                    come_value.type = clone come_params[1].type;
-                }
-                else if(fun_name === "__c11_atomic_exchange_strong") {
-                    come_value.type = clone come_params[2].type;
-                }
-                else if(fun_name === "__c11_atomic_exchange_weak") {
-                    come_value.type = clone come_params[2].type;
-                }
-                else if(fun_name === "__c11_atomic_store") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__c11_atomic_load") {
-                    come_value.type = clone come_params[0].type;
-                    come_value.type.mPointerNum--;
-                }
-                else if(fun_name === "__c11_atomic_fetch_add") {
-                    come_value.type = clone come_params[1].type;
-                }
-                else if(fun_name === "__c11_atomic_fetch_sub") {
-                    come_value.type = clone come_params[1].type;
-                }
-                else if(fun_name === "__c11_atomic_fetch_and") {
-                    come_value.type = clone come_params[1].type;
-                }
-                else if(fun_name === "__c11_atomic_fetch_or") {
-                    come_value.type = clone come_params[1].type;
-                }
-                else if(fun_name === "__c11_atomic_fetch_xor") {
-                    come_value.type = clone come_params[1].type;
-                }
-                else if(fun_name === "__dsb") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__isb") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__dmb") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__builtin_arm_cdp") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__builtin_arm_ldc") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__builtin_arm_stc") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__builtin_arm_stcl") {
-                    come_value.type = new sType("void");
-                }
-                else if(fun_name === "__builtin_arm_ldcl") {
-                    come_value.type = new sType("void");
-                }
-                
-                come_value.var = null;
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-                
-                info.stack.push_back(come_value);
-                
-                return true;
-            }
-            else if(fun_name === "string") {
-                fun_name = string("__builtin_string");
-            }
-            else if(fun_name === "wstring") {
-                fun_name = string("__builtin_wstring");
-            }
-            else if(fun_name === "inherit") {
-                char* p = info.come_fun.mName;
-        
-                int version = 0;
-                while(*p) {
-                    if(*p == '_' && *(p+1) == 'v' && xisdigit(*(p+2))) {
-                        char* p2 = p + 2;
-                        version = 0;
-                        while(xisdigit(*p2)) {
-                            version = version * 10 + (*p2 - '0');
-                            p2++;
-                        }
-                        break;
-                    }
-                    else {
-                        p++;
-                    }
-                }
-        
-                char real_fun_name[2048];
-                memcpy(real_fun_name, info.come_fun.mName, p - info.come_fun.mName);
-                real_fun_name[p-info.come_fun.mName] = '\0';
-                
-                int i;
-                for(i=version-1; i>=1; i--) {
-                    string new_fun_name = xsprintf("%s_v%d", real_fun_name, i);
-                    
-                    if(info.funcs[new_fun_name]??) {
-                        fun_name = string(new_fun_name);
-                        break;
-                    }
-                }
-                
-                if(i==0) {
-                    string new_fun_name = xsprintf("%s", real_fun_name);
-                    
-                    if(info.funcs[new_fun_name]??) {
-                        fun_name = string(new_fun_name);
-                    }
-                    
-                    if(fun_name === info.come_fun.mName) {
-                        err_msg(info, "invalid inherit");
-                        return false;
-                    }
-                }
-            }
-            else {
-                for(int i=FUN_VERSION_MAX; i>=1; i--) {
-                    string new_fun_name = xsprintf("%s_v%d", fun_name, i);
-                
-                    if(info.funcs[new_fun_name]??) {
-                        fun_name = string(new_fun_name);
-                        break;
-                    }
-                }
-            }
-            
-            sFun* fun = info.funcs.at(fun_name, null);
-            
-            
-            if(fun_name === "__builtin_va_arg") {
                 list<CVALUE*%>*% come_params = new list<CVALUE*%>();
                 
                 int i = 0;
@@ -965,146 +644,450 @@ class sFunCallNode extends sNodeBase
                     dec_stack_ptr(1, info);
                     
                     come_params.add(come_value);
-                    
-                    result_type = come_value.type;
                 }
                 
-                buffer*% buf = new buffer();
-                
-                buf.append_str(fun_name);
-                buf.append_str("(");
-                
-                int j = 0;
-                foreach(it, come_params) {
-                    buf.append_str(it.c_value);
-                    
-                    if(j != come_params.length()-1) {
-                        buf.append_str(",");
+                if(generics_fun.mResultType.mClass.mMethodGenerics) {
+                    int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
+        
+                    if(info->function_result_type) {
+                        method_generics_types[method_generics_num] = clone info->function_result_type;
                     }
-                    
-                    j++;
                 }
-                buf.append_str(")");
+                int n = 0;
+                foreach(it, generics_fun.mParamTypes) {
+                    if(it.mClass.mMethodGenerics) {
+                        int method_generics_num = it.mMethodGenericsNum;
+                        if(n < come_params.length()) {
+                            method_generics_types[method_generics_num] = clone come_params[n]??.type;
+                        }
+                    }
+                    n++;
+                }
                 
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = buf.to_string();
-                come_value.type = result_type;
-                come_value.var = null;
+                info.funcs.remove(generics_fun_name);
                 
-                add_come_last_code(info, "%s", come_value.c_value);
-                
-                info.stack.push_back(come_value);
-            }
-            else if(fun == null) {
-                err_msg(info, "function not found(%s) at normal function call(1)\n", fun_name);
-                return true;
+                fun_name = make_method_generics_function(fun_name, method_generics_types, info);
             }
             else {
-                sType*% result_type = clone fun.mResultType;
-                result_type->mStatic = false;
+                fun_name = make_method_generics_function(fun_name, self.method_generics_types, info);
+            }
+        }
+        
+        /// builtin ///
+        if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" 
+            || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" 
+            || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" 
+            || fun_name === "__builtin_constant_p" || fun_name === "__builtin_expect" 
+            || fun_name === "__builtin___memset_chk" || fun_name === "__builtin_object_size" 
+            || fun_name === "__builtin___memcpy_chk" || fun_name === "__builtin___strncpy_chk" 
+            || fun_name === "__builtin___strncat_chk" || fun_name === "__builtin___vsnprintf_chk" 
+            || fun_name === "__builtin_strrchr"
+            || fun_name === "__builtin_clz"
+            || fun_name === "__dsb"
+            || fun_name === "__isb"
+            || fun_name === "__dmb"
+            || memcmp(fun_name, "__builtin_arm_", strlen("__builtin_arm_")) == 0
+            || fun_name === "__c11_atomic_thread_fence"
+            || fun_name === "__c11_atomic_signal_fence"
+            || fun_name === "__c11_atomic_store"
+            || fun_name === "__c11_atomic_load"
+            || fun_name === "__c11_atomic_exchange"
+            || fun_name === "__c11_atomic_exchange_strong"
+            || fun_name === "__c11_atomic_exchange_weak"
+            
+            || fun_name === "__c11_atomic_fetch_add"
+            || fun_name === "__c11_atomic_fetch_sub"
+            || fun_name === "__c11_atomic_fetch_and"
+            || fun_name === "__c11_atomic_fetch_or"
+            || fun_name === "__c11_atomic_fetch_xor")
+        {
+            list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            foreach(it, params) {
+                var label, node = it;
                 
-                list<sType*%>*% param_types = new list<sType*%>();
-                foreach(it, fun.mParamTypes) {
-                    sType*% it2 = solve_generics(clone it, info.generics_type, info);
-                    param_types.push_back(clone it2);
+                node_compile(node).elif {
+                    return false;
                 }
                 
-                result_type = solve_generics(result_type, info.generics_type, info);
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
                 
+                come_params.push_back(come_value);
+            }
+            
+            buffer*% buf = new buffer();
+            
+            buf.append_str(fun_name);
+            buf.append_str("(");
+            
+            int j = 0;
+            foreach(it, come_params) {
+                buf.append_str(it.c_value);
                 
-                list<CVALUE*%>*% come_params = new list<CVALUE*%>();
-                
-                for(int i=0; i<fun.mParamTypes.length()-(method_block?2:0); i++) {
-                    come_params.add(null);
+                if(j != come_params.length()-1) {
+                    buf.append_str(",");
                 }
                 
-                foreach(it, params) {
-                    var label, node = it;
+                j++;
+            }
+            buf.append_str(")");
+            
+            CVALUE*% come_value = new CVALUE();
+            come_value.c_value = buf.to_string();
+            
+            if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__builtin_ffs") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__builtin_ffsl") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__builtin_ffsll") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__builtin_bswap16") {
+                come_value.type = new sType("short");
+            }
+            else if(fun_name === "__builtin_bswap32") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__builtin_bswap64") {
+                come_value.type = new sType("long");
+            }
+            else if(fun_name === "__builtin_constant_p") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__builtin_expect") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__builtin___memset_chk") {
+                come_value.type = new sType("void");
+                come_value.type.mPointerNum = 1;
+            }
+            else if(fun_name === "__builtin_object_size") {
+                come_value.type = new sType("long");
+            }
+            else if(fun_name === "__builtin___memcpy_chk") {
+                come_value.type = new sType("void");
+                come_value.type.mPointerNum = 1;
+            }
+            else if(fun_name === "__builtin___strncpy_chk") {
+                come_value.type = new sType("char");
+                come_value.type.mPointerNum = 1;
+            }
+            else if(fun_name === "__builtin___strncat_chk") {
+                come_value.type = new sType("char");
+                come_value.type.mPointerNum = 1;
+            }
+            else if(fun_name === "__builtin_strrchr") {
+                come_value.type = new sType("char");
+                come_value.type.mPointerNum = 1;
+            }
+            else if(fun_name === "__builtin___vsnprintf_chk") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__builtin_clz") {
+                come_value.type = new sType("int");
+            }
+            else if(fun_name === "__c11_atomic_thread_fence") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__c11_atomic_signal_fence") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__c11_atomic_exchange") {
+                come_value.type = clone come_params[1].type;
+            }
+            else if(fun_name === "__c11_atomic_exchange_strong") {
+                come_value.type = clone come_params[2].type;
+            }
+            else if(fun_name === "__c11_atomic_exchange_weak") {
+                come_value.type = clone come_params[2].type;
+            }
+            else if(fun_name === "__c11_atomic_store") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__c11_atomic_load") {
+                come_value.type = clone come_params[0].type;
+                come_value.type.mPointerNum--;
+            }
+            else if(fun_name === "__c11_atomic_fetch_add") {
+                come_value.type = clone come_params[1].type;
+            }
+            else if(fun_name === "__c11_atomic_fetch_sub") {
+                come_value.type = clone come_params[1].type;
+            }
+            else if(fun_name === "__c11_atomic_fetch_and") {
+                come_value.type = clone come_params[1].type;
+            }
+            else if(fun_name === "__c11_atomic_fetch_or") {
+                come_value.type = clone come_params[1].type;
+            }
+            else if(fun_name === "__c11_atomic_fetch_xor") {
+                come_value.type = clone come_params[1].type;
+            }
+            else if(fun_name === "__dsb") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__isb") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__dmb") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__builtin_arm_cdp") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__builtin_arm_ldc") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__builtin_arm_stc") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__builtin_arm_stcl") {
+                come_value.type = new sType("void");
+            }
+            else if(fun_name === "__builtin_arm_ldcl") {
+                come_value.type = new sType("void");
+            }
+            
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+            
+            return true;
+        }
+        else if(fun_name === "__builtin_va_arg") {
+            list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            
+            int i = 0;
+            sType*% result_type = null;
+            foreach(it, params) {
+                var label, node = it;
+                
+                node_compile(node).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                come_params.add(come_value);
+                
+                result_type = come_value.type;
+            }
+            
+            buffer*% buf = new buffer();
+            
+            buf.append_str(fun_name);
+            buf.append_str("(");
+            
+            int j = 0;
+            foreach(it, come_params) {
+                buf.append_str(it.c_value);
+                
+                if(j != come_params.length()-1) {
+                    buf.append_str(",");
+                }
+                
+                j++;
+            }
+            buf.append_str(")");
+            
+            CVALUE*% come_value = new CVALUE();
+            come_value.c_value = buf.to_string();
+            come_value.type = result_type;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+            
+            return true;
+        }
+        
+        if(fun_name === "string") {
+            fun_name = string("__builtin_string");
+        }
+        else if(fun_name === "wstring") {
+            fun_name = string("__builtin_wstring");
+        }
+        else if(fun_name === "inherit") {
+            char* p = info.come_fun.mName;
+    
+            int version = 0;
+            while(*p) {
+                if(*p == '_' && *(p+1) == 'v' && xisdigit(*(p+2))) {
+                    char* p2 = p + 2;
+                    version = 0;
+                    while(xisdigit(*p2)) {
+                        version = version * 10 + (*p2 - '0');
+                        p2++;
+                    }
+                    break;
+                }
+                else {
+                    p++;
+                }
+            }
+    
+            char real_fun_name[2048];
+            memcpy(real_fun_name, info.come_fun.mName, p - info.come_fun.mName);
+            real_fun_name[p-info.come_fun.mName] = '\0';
+            
+            int i;
+            for(i=version-1; i>=1; i--) {
+                string new_fun_name = xsprintf("%s_v%d", real_fun_name, i);
+                
+                if(info.funcs[new_fun_name]??) {
+                    fun_name = string(new_fun_name);
+                    break;
+                }
+            }
+            
+            if(i==0) {
+                string new_fun_name = xsprintf("%s", real_fun_name);
+                
+                if(info.funcs[new_fun_name]??) {
+                    fun_name = string(new_fun_name);
+                }
+                
+                if(fun_name === info.come_fun.mName) {
+                    err_msg(info, "invalid inherit");
+                    return false;
+                }
+            }
+        }
+        else {
+            for(int i=FUN_VERSION_MAX; i>=1; i--) {
+                string new_fun_name = xsprintf("%s_v%d", fun_name, i);
+            
+                if(info.funcs[new_fun_name]??) {
+                    fun_name = string(new_fun_name);
+                    break;
+                }
+            }
+        }
+        
+        /// normal function call ///
+        sFun* fun = info.funcs.at(fun_name, null);
+        
+        if(fun == null) {
+            printf("function not found(%s) at function call(1), so no check types and no heap management\n", fun_name);
+            
+            list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            
+            int i = 0;
+            sType*% result_type = null;
+            foreach(it, params) {
+                var label, node = it;
+                
+                node_compile(node).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                come_params.add(come_value);
+                
+                result_type = come_value.type;
+            }
+            
+            buffer*% buf = new buffer();
+            
+            buf.append_str(fun_name);
+            buf.append_str("(");
+            
+            int j = 0;
+            foreach(it, come_params) {
+                buf.append_str(it.c_value);
+                
+                if(j != come_params.length()-1) {
+                    buf.append_str(",");
+                }
+                
+                j++;
+            }
+            buf.append_str(")");
+            
+            CVALUE*% come_value = new CVALUE();
+            come_value.c_value = buf.to_string();
+            come_value.type = result_type;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+            
+            return true;
+        }
+        
+        sType*% result_type = clone fun.mResultType;
+        result_type->mStatic = false;
+        
+        list<sType*%>*% param_types = new list<sType*%>();
+        foreach(it, fun.mParamTypes) {
+            sType*% it2 = solve_generics(clone it, info.generics_type, info);
+            param_types.push_back(clone it2);
+        }
+        
+        result_type = solve_generics(result_type, info.generics_type, info);
+        
+        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+        
+        for(int i=0; i<fun.mParamTypes.length()-(method_block?2:0); i++) {
+            come_params.add(null);
+        }
+        
+        foreach(it, params) {
+            var label, node = it;
+            
+            if(fun.mVarArgs || fun_name === "__builtin_va_start") {
+            }
+            else if(label) {
+                node_compile(node).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                int n = 0;
+                foreach(it, fun.mParamNames) {
+                    if(label === it) {
+                        break;
+                    }
                     
-                    if(fun.mVarArgs || fun_name === "__builtin_va_start") {
-                    }
-                    else if(label) {
-                        node_compile(node).elif {
-                            return false;
-                        }
-                        
-                        CVALUE*% come_value = get_value_from_stack(-1, info);
-                        dec_stack_ptr(1, info);
-                        
-                        int n = 0;
-                        foreach(it, fun.mParamNames) {
-                            if(label === it) {
-                                break;
-                            }
-                            
-                            n++;
-                        }
-                        
-                        if(param_types[n]??) {
-                            check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value);
-                        }
-                        if(param_types[n]?? && param_types[n].mHeap && come_value.type.mHeap) {
-                            std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
-                        }
-                        
-                        come_params.replace(n, come_value);
-                    }
+                    n++;
                 }
                 
-                int i = 0;
-                foreach(it, params) {
-                    var label, node = it;
-                    
-                    if(fun.mVarArgs || fun_name === "__builtin_va_start") {
-                        node_compile(node).elif {
-                            return false;
-                        }
-                        
-                        CVALUE*% come_value = get_value_from_stack(-1, info);
-                        dec_stack_ptr(1, info);
-                        
-                        while(true) {
-                            if(come_params[i]?? == null) {
-                                break;
-                            }
-                            else {
-                                i++;
-                            }
-                        }
-                        
-                        come_params.replace(i, come_value);
-                        i++;
-                    }
-                    else if(label) {
-                    }
-                    else {
-                        node_compile(node).elif {
-                            return false;
-                        }
-                        
-                        CVALUE*% come_value = get_value_from_stack(-1, info);
-                        dec_stack_ptr(1, info);
-                        
-                        while(true) {
-                            if(come_params[i]?? == null) {
-                                break;
-                            }
-                            else {
-                                i++;
-                            }
-                        }
-                        
-                        if(param_types[i]??) {
-                            check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
-                        }
-                        if(param_types[i]?? && param_types[i].mHeap && come_value.type.mHeap) {
-                            std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
-                        }
-                        
-                        come_params.replace(i, come_value);
-                        i++;
-                    }
+                if(param_types[n]??) {
+                    check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value);
                 }
+                if(param_types[n]?? && param_types[n].mHeap && come_value.type.mHeap) {
+                    std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
+                }
+                
+                come_params.replace(n, come_value);
+            }
+        }
+        
+        int i = 0;
+        foreach(it, params) {
+            var label, node = it;
+            
+            if(fun.mVarArgs || fun_name === "__builtin_va_start") {
+                node_compile(node).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
                 
                 while(true) {
                     if(come_params[i]?? == null) {
@@ -1115,226 +1098,266 @@ class sFunCallNode extends sNodeBase
                     }
                 }
                 
-                if(params.length() < fun.mParamTypes.length())
-                {
-                    for(; i<fun.mParamTypes.length()-(method_block?2:0); i++) {
-                        string default_param = clone fun.mParamDefaultParametors[i]??;
-                        char* param_name = fun.mParamNames[i];
-                        
-                        if(default_param && default_param !== "" && come_params[i]?? == null) {
-                            buffer*% source = info.source;
-                            char* p = info.p;
-                            char* head = info.head;
-                            int sline = info.sline;
-                            
-                            info.source = default_param.to_buffer();
-                            info.p = info.source.buf;
-                            info.head = info.source.buf;
-                            
-                            sNode*% node = expression();
-                            
-                            node_compile(node).elif {
-                                return false;
-                            }
-                            
-                            info.source = source;
-                            info.p = p;
-                            info.head = head;
-                            info.sline = sline;
-                    
-                            CVALUE*% come_value = get_value_from_stack(-1, info);
-                            if(param_types[i]) {
-                                check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
-                            }
-                            if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
-                                std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
-                            }
-                            come_params.replace(i, come_value);
-                            dec_stack_ptr(1, info);
-                        }
-                        else {
-                            if(come_params[i]?? == null) {
-                                err_msg(info, "require parametor(%s)(1) %d", fun.mName,i);
-                                return false;
-                            }
-                        }
-                    }
-                }
-                
-                if(fun.mParamTypes.length() - (method_block?2:0)!= come_params.length() && !fun.mVarArgs && fun_name !== "__builtin_va_start" && fun_name !== "__builtin_va_end") 
-                {
-                    err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, fun.mParamTypes.length(), params.length());
+                come_params.replace(i, come_value);
+                i++;
+            }
+            else if(label) {
+            }
+            else {
+                node_compile(node).elif {
                     return false;
                 }
                 
-                if(method_block) {
-                    sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
-                    
-                    node_compile(current_stack_frame_node).elif {
-                        return false;
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                while(true) {
+                    if(come_params[i]?? == null) {
+                        break;
                     }
-                    
-                    CVALUE*% come_value = get_value_from_stack(-1, info);
-                    come_params.push_back(come_value);
-                    dec_stack_ptr(1, info);
-                    
-                    buffer*% method_block2 = new buffer();
-                    sType*% method_block_type = clone fun.mParamTypes[-1];
-                    
-                    string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
-                    
-                    method_block_type.mParamTypes[0].mClass = info.classes[class_name]??;
-                    sClass* current_stack_frame_struct = info.current_stack_frame_struct;
-                    info->current_stack_frame_struct = info.classes[class_name]??;
-                    
-                    info->num_method_block++;
-                    
-                    if(method_block_type.mClass.mName !== "lambda") {
-                        err_msg(info, "This function does not have method block(%s)", fun_name);
-                        return false;
-                    }
-                    
-                    sType*% result_type = clone method_block_type->mResultType.v1;
-                    result_type->mStatic = false;
-                    list<sType*%>*% param_types = clone method_block_type->mParamTypes;
-                    list<string>* param_names = method_block_type->mParamNames;
-                    
-                    buffer*% all_alhabet_sname = new buffer();
-                    {
-                        char* p = info->sname;
-                        while(*p) {
-                            if(xisalnum(*p)) {
-                                all_alhabet_sname.append_char(*p++);
-                            }
-                            else {
-                                p++;
-                            }
-                        }
-                    }
-                    
-                    method_block2.append_format("%s fun_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string());
-                    
-                    i = 0;
-                    foreach(it, param_types) {
-                        sType* param_type = it;
-                        
-                        if(i == 0) {
-                            string param_name = xsprintf("parent");
-                            
-                            method_block2.append_format("%s", make_define_var(param_type, param_name));
-                        }
-                        else if(i == 1) {
-                            string param_name = xsprintf("it");
-                            
-                            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
-                        }
-                        else {
-                            string param_name = xsprintf("it%d", i);
-                            
-                            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
-                        }
-                        
-                        if(i != param_types.length() - 1) {
-                            method_block2.append_str(",");
-                        }
-                        
+                    else {
                         i++;
                     }
-                    method_block2.append_str(")\n");
-                    
-                    method_block2.append_str(method_block.to_string());
-                    
-                    buffer*% source3 = info.source;
+                }
+                
+                if(param_types[i]??) {
+                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
+                }
+                if(param_types[i]?? && param_types[i].mHeap && come_value.type.mHeap) {
+                    std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
+                }
+                
+                come_params.replace(i, come_value);
+                i++;
+            }
+        }
+        
+        while(true) {
+            if(come_params[i]?? == null) {
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        
+        if(params.length() < fun.mParamTypes.length())
+        {
+            for(; i<fun.mParamTypes.length()-(method_block?2:0); i++) {
+                string default_param = clone fun.mParamDefaultParametors[i]??;
+                char* param_name = fun.mParamNames[i];
+                
+                if(default_param && default_param !== "" && come_params[i]?? == null) {
+                    buffer*% source = info.source;
                     char* p = info.p;
                     char* head = info.head;
                     int sline = info.sline;
-                    //sVarTable* lv_table = info.lv_table;
                     
-                    info.source = method_block2;
+                    info.source = default_param.to_buffer();
                     info.p = info.source.buf;
                     info.head = info.source.buf;
-                    info.sline = method_block_sline;
-                    //sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:null);
-                   
-                    sNode*% node = parse_function(info);
+                    
+                    sNode*% node = expression();
                     
                     node_compile(node).elif {
                         return false;
                     }
                     
-                    char*% method_block_name = xsprintf("fun_block%d_%s", info->num_method_block, all_alhabet_sname.to_string());
-                    
-                    CVALUE*% come_value2 = new CVALUE();
-                    
-                    sFun* fun2 = info.funcs.at(method_block_name, null);
-                    
-                    if(fun2 == null) {
-                        err_msg(info, "method block function not found(%s)", method_block_name);
-                        return true;
-                    }
-                    
-                    sType* method_block_type2 = fun2.mLambdaType;
-                    
-                    come_value2.c_value = xsprintf("(void*)%s", method_block_name);
-                    come_value2.type = clone method_block_type2;
-                    come_value2.var = null;
-                    
-                    come_params.push_back(come_value2);
-                    
-                    info.source = source3;
+                    info.source = source;
                     info.p = p;
                     info.head = head;
                     info.sline = sline;
-                    
-                    info->current_stack_frame_struct = current_stack_frame_struct;
-                }
-                
-                buffer*% buf = new buffer();
-                
-                buf.append_str(fun_name);
-                buf.append_str("(");
-                
-                int j = 0;
-                foreach(it, come_params) {
-                    buf.append_str(it.c_value);
-                    
-                    if(j != come_params.length()-1) {
-                        buf.append_str(",");
+            
+                    CVALUE*% come_value = get_value_from_stack(-1, info);
+                    if(param_types[i]) {
+                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
                     }
-                    
-                    j++;
+                    if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
+                        std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
+                    }
+                    come_params.replace(i, come_value);
+                    dec_stack_ptr(1, info);
                 }
-                buf.append_str(")");
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = buf.to_string();
-                come_value.type = clone result_type;
-                come_value.type->mStatic = false;
-                come_value.var = null;
-                
-                if(fun.mResultType->mHeap) {
-                    append_object_to_right_values2(come_value, result_type, info);
-                }
-                
-                if(info.come_fun_name !== "come_alloc_mem_from_heap_pool" && info.come_fun_name !== "come_calloc" && info.come_fun_name !== "come_free_mem_of_heap_pool" && info.come_fun_name !== "come_free") 
-                {
-                    if(fun_name !== "come_alloc_mem_from_heap_pool" && fun_name !== "null_check" && fun_name !== "come_push_stackframe" && fun_name !== "come_pop_stackframe") {
-                        come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
+                else {
+                    if(come_params[i]?? == null) {
+                        err_msg(info, "require parametor(%s)(1) %d", fun.mName,i);
+                        return false;
                     }
                 }
-                
-                if(!self.guard_break && result_type.mGuardValue && result_type->mPointerNum > 0) {
-                    come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
-                }
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-                
-                info.stack.push_back(come_value);
-                
+            }
+        }
+        
+        if(fun.mParamTypes.length() - (method_block?2:0)!= come_params.length() && !fun.mVarArgs && fun_name !== "__builtin_va_start" && fun_name !== "__builtin_va_end") 
+        {
+            err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, fun.mParamTypes.length(), params.length());
+            return false;
+        }
+        
+        if(method_block) {
+            sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
+            
+            node_compile(current_stack_frame_node).elif {
+                return false;
             }
             
-            info.calling_fun = fun;
+            CVALUE*% come_value = get_value_from_stack(-1, info);
+            come_params.push_back(come_value);
+            dec_stack_ptr(1, info);
+            
+            buffer*% method_block2 = new buffer();
+            sType*% method_block_type = clone fun.mParamTypes[-1];
+            
+            string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
+            
+            method_block_type.mParamTypes[0].mClass = info.classes[class_name]??;
+            sClass* current_stack_frame_struct = info.current_stack_frame_struct;
+            info->current_stack_frame_struct = info.classes[class_name]??;
+            
+            info->num_method_block++;
+            
+            if(method_block_type.mClass.mName !== "lambda") {
+                err_msg(info, "This function does not have method block(%s)", fun_name);
+                return false;
+            }
+            
+            sType*% result_type = clone method_block_type->mResultType.v1;
+            result_type->mStatic = false;
+            list<sType*%>*% param_types = clone method_block_type->mParamTypes;
+            list<string>* param_names = method_block_type->mParamNames;
+            
+            buffer*% all_alhabet_sname = new buffer();
+            {
+                char* p = info->sname;
+                while(*p) {
+                    if(xisalnum(*p)) {
+                        all_alhabet_sname.append_char(*p++);
+                    }
+                    else {
+                        p++;
+                    }
+                }
+            }
+            
+            method_block2.append_format("%s fun_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string());
+            
+            i = 0;
+            foreach(it, param_types) {
+                sType* param_type = it;
+                
+                if(i == 0) {
+                    string param_name = xsprintf("parent");
+                    
+                    method_block2.append_format("%s", make_define_var(param_type, param_name));
+                }
+                else if(i == 1) {
+                    string param_name = xsprintf("it");
+                    
+                    method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
+                }
+                else {
+                    string param_name = xsprintf("it%d", i);
+                    
+                    method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
+                }
+                
+                if(i != param_types.length() - 1) {
+                    method_block2.append_str(",");
+                }
+                
+                i++;
+            }
+            method_block2.append_str(")\n");
+            
+            method_block2.append_str(method_block.to_string());
+            
+            buffer*% source3 = info.source;
+            char* p = info.p;
+            char* head = info.head;
+            int sline = info.sline;
+            //sVarTable* lv_table = info.lv_table;
+            
+            info.source = method_block2;
+            info.p = info.source.buf;
+            info.head = info.source.buf;
+            info.sline = method_block_sline;
+            //sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:null);
+           
+            sNode*% node = parse_function(info);
+            
+            node_compile(node).elif {
+                return false;
+            }
+            
+            char*% method_block_name = xsprintf("fun_block%d_%s", info->num_method_block, all_alhabet_sname.to_string());
+            
+            CVALUE*% come_value2 = new CVALUE();
+            
+            sFun* fun2 = info.funcs.at(method_block_name, null);
+            
+            if(fun2 == null) {
+                err_msg(info, "method block function not found(%s)", method_block_name);
+                return true;
+            }
+            
+            sType* method_block_type2 = fun2.mLambdaType;
+            
+            come_value2.c_value = xsprintf("(void*)%s", method_block_name);
+            come_value2.type = clone method_block_type2;
+            come_value2.var = null;
+            
+            come_params.push_back(come_value2);
+            
+            info.source = source3;
+            info.p = p;
+            info.head = head;
+            info.sline = sline;
+            
+            info->current_stack_frame_struct = current_stack_frame_struct;
         }
+        
+        buffer*% buf = new buffer();
+        
+        buf.append_str(fun_name);
+        buf.append_str("(");
+        
+        int j = 0;
+        foreach(it, come_params) {
+            buf.append_str(it.c_value);
+            
+            if(j != come_params.length()-1) {
+                buf.append_str(",");
+            }
+            
+            j++;
+        }
+        buf.append_str(")");
+        
+        CVALUE*% come_value = new CVALUE();
+        come_value.c_value = buf.to_string();
+        come_value.type = clone result_type;
+        come_value.type->mStatic = false;
+        come_value.var = null;
+        
+        if(fun.mResultType->mHeap) {
+            append_object_to_right_values2(come_value, result_type, info);
+        }
+        
+        if(info.come_fun_name !== "come_alloc_mem_from_heap_pool" && info.come_fun_name !== "come_calloc" && info.come_fun_name !== "come_free_mem_of_heap_pool" && info.come_fun_name !== "come_free") 
+        {
+            if(fun_name !== "come_alloc_mem_from_heap_pool" && fun_name !== "null_check" && fun_name !== "come_push_stackframe" && fun_name !== "come_pop_stackframe") {
+                come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
+            }
+        }
+        
+        if(!self.guard_break && result_type.mGuardValue && result_type->mPointerNum > 0) {
+            come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+        }
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        info.stack.push_back(come_value);
+        
+        info.calling_fun = fun;
         
         return true;
     }
@@ -2657,7 +2680,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 1
     
     return (sNode*%)null;
 }
-
 
 sNode*% post_position_operator(sNode*% node, sInfo* info)
 {
