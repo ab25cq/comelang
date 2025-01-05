@@ -1712,6 +1712,7 @@ struct sInfo
     int sline_block;
     _Bool m5stack_cpp;
     _Bool pico_cpp;
+    _Bool gcc_compiler;
 };
 
 struct tuple2$2sTypephcharph

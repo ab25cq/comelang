@@ -415,6 +415,7 @@ struct sInfo
     int sline_block;
     bool m5stack_cpp;
     bool pico_cpp;
+    bool gcc_compiler;
 };
 
 module sCurrentNodeModule
