@@ -4793,7 +4793,7 @@ void task_yield(){
         :
         : "r0", "r1"
     );
-    __asm volatile("mrs r1, msp\n"
+    __asm volatile("mrs r1, psp\n"
         "ldr r0, =SP; \n"
         "str r1, [r0]; \n"
         :
@@ -4814,7 +4814,7 @@ void task_yield(){
     printf("new sp %d\n",SP);
     __asm volatile("ldr r0, =SP; \n"
         "ldr r4, [r0]; \n"
-        "msr msp, r4; \n"
+        "msr psp, r4; \n"
         :
         :
         : "r0", "r4"
@@ -4868,14 +4868,15 @@ int __result198__;
     printf("task1 %d task2 %d\n",task1,task2);
     PC=gTask[gCurrentTask].pc;
     SP=gTask[gCurrentTask].sp;
-    printf("new pc %d\n",PC);
-    printf("new sp %d\n",SP);
     __asm volatile("ldr r0, =SP; \n"
         "ldr r4, [r0]; \n"
-        "msr msp, r4; \n"
+        "msr psp, r4\n"
+        "mov r0, #0x02\n"
+        "msr CONTROL, r0\n"
+        "isb\n"
         :
         :
-        : "r0", "r4"
+        : "r0","r4" // 使用するレジスタ
     );
     __asm volatile("ldr r0, =PC; \n"
         "ldr r4, [r0]; \n"
