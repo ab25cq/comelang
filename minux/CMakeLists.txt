@@ -8,7 +8,7 @@ pico_sdk_init()
 
 add_executable(minux main.c.c)
 
-target_compile_options(minux PRIVATE -mthumb -mcpu=cortex-m0plus)
+target_compile_options(minux PRIVATE -mthumb -mcpu=cortex-m0plus -O0)
 
 # 必要なライブラリをリンク
 target_link_libraries(minux pico_stdlib hardware_gpio pico_malloc)
