@@ -148,6 +148,28 @@ class sReturnNode extends sNodeBase
     }
 };
 
+class sOutputNode extends sNodeBase
+{
+    new(string contents, sInfo* info)
+    {
+        self.super();
+        
+        string self.contents = contents;
+    }
+    
+    string kind()
+    {
+        return string("sOutputNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        add_come_last_code(info, "%s", self.contents);
+        
+        return true;
+    }
+};
+
 class sInlineAssembler extends sNodeBase
 {
     new(string source, list<sNode*%>*% exps, sInfo* info)
@@ -2203,6 +2225,14 @@ sNode*% expression_node(sInfo* info=info) version 97
             expected_next_character(')');
             
             return static_assert_node(exp, exp2);
+        }
+        else if(buf === "output" && *info->p == '{') 
+        {
+            string block_text = skip_block();
+            
+            string contents = block_text;
+            
+            return new sOutputNode(contents, info) implements sNode;
         }
         else if(buf === "extern") {
             sNode*% node = parse_function(info);

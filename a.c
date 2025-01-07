@@ -2,10 +2,8 @@
 
 int main(int argc, char** argv)
 {
-    puts("""
-/* aa */
-///
-    """);
-    puts("HELLO" * 2);
+    output {
+    puts("HELLO");
+    }
     return 0;
 }

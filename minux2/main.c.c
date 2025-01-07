@@ -556,11 +556,12 @@ char* charp_printf(char* self, ...);
 int int_printf(int self, char* msg);
 void int_times(int self, void* parent, void (*block)(void*,int));
 int assert_v2(int exp);
-void task_yield();
-void init_task(void (*fun)());
 void task1();
 void task2();
+void save_context();
+void restore_context();
 _Bool timer_callback(struct repeating_timer* t);
+void init_task(void (*fun)());
 int main();
 static void repeating_timer_finalize(struct repeating_timer* self);
 // uniq global variable
@@ -4803,149 +4804,9 @@ int assert_v2(int exp){
     }
 }
 
-void task_yield(){
-    __asm volatile("mov r1, lr\n"
-        "ldr r0, =PC; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1"
-    );
-    __asm volatile("mov r1, r4\n"
-        "ldr r0, =R4; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r4"
-    );
-    __asm volatile("mov r1, r5\n"
-        "ldr r0, =R5; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r5"
-    );
-    __asm volatile("mov r1, r6\n"
-        "ldr r0, =R6; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r6"
-    );
-    __asm volatile("mov r1, r7\n"
-        "ldr r0, =R7; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r7"
-    );
-    __asm volatile("ldr r0, =R8\n" // グローバル変数 R8 のアドレスを取得
-        "mov r1, r8\n"
-        "str r1, [r0]\n" // r8 の値をグローバル変数 R8 に保存
-        :
-        :
-        : "r0" // 使用した r0 を破壊リストに追加
-    );
-    __asm volatile("mrs r1, psp\n"
-        "ldr r0, =SP; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1"
-    );
-    __asm volatile("mrs r1, psp\n"
-        "ldr r0, =SP; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1"
-    );
-    gTask[gCurrentTask].pc=PC;
-    gTask[gCurrentTask].sp=SP;
-    gTask[gCurrentTask].r4=R4;
-    gTask[gCurrentTask].r5=R5;
-    gTask[gCurrentTask].r6=R6;
-    gTask[gCurrentTask].r7=R7;
-    gTask[gCurrentTask].r8=R8;
-    gCurrentTask=(gCurrentTask+1)%2;
-    PC=gTask[gCurrentTask].pc;
-    SP=gTask[gCurrentTask].sp;
-    R4=gTask[gCurrentTask].r4;
-    R5=gTask[gCurrentTask].r5;
-    R6=gTask[gCurrentTask].r6;
-    R7=gTask[gCurrentTask].r7;
-    R8=gTask[gCurrentTask].r8;
-    __asm volatile("ldr r0, =R4; \n"
-        "ldr r3, [r0]; \n"
-        "mov r4, r3; \n"
-        :
-        :
-        : "r0", "r3", "r4"
-    );
-    __asm volatile("ldr r0, =R5; \n"
-        "ldr r3, [r0]; \n"
-        "mov r5, r3; \n"
-        :
-        :
-        : "r0", "r3", "r5"
-    );
-    __asm volatile("ldr r0, =R6; \n"
-        "ldr r3, [r0]; \n"
-        "mov r6, r3; \n"
-        :
-        :
-        : "r0", "r3", "r6"
-    );
-    __asm volatile("ldr r0, =R7; \n"
-        "ldr r3, [r0]; \n"
-        "mov r7, r3; \n"
-        :
-        :
-        : "r0", "r3", "r7"
-    );
-    {
-        asm volatile (
-            "ldr r3, [%[r8_addr]]\n" // グローバル変数 R8 の値を r3 にロード
-            "mov r8, r3\n" // r3 の値を r8 に移動
-            :
-            : [r8_addr] "r" (&R8) // R8 のアドレスを渡す
-            : "r3", "r8" // 使用したレジスタを破壊リストに追加
-        );
-    };
-    __asm volatile("ldr r0, =SP; \n"
-        "ldr r3, [r0]; \n"
-        "msr psp, r3; \n"
-        :
-        :
-        : "r0", "r3"
-    );
-    __asm volatile("ldr r0, =PC; \n"
-        "ldr r4, [r0]; \n"
-        "bx r4; \n"
-        :
-        :
-        : "r0", "r4"
-    );
-}
-
-void init_task(void (*fun)()){
-unsigned long  int saved_sp_247;
-unsigned long  int pc_248;
-unsigned long  int stack_end_249;
-unsigned long  int sp_250;
-memset(&saved_sp_247, 0, sizeof(unsigned long  int));
-    pc_248=(unsigned long  int)fun;
-    stack_end_249=(unsigned long  int)(&gStackArea[gNumTasks][8048-1]);
-    sp_250=(unsigned long  int)stack_end_249;
-    gTask[gNumTasks].sp=sp_250;
-    gTask[gNumTasks].pc=pc_248;
-    gNumTasks++;
-}
-
 void task1(){
     while(1) {
         puts("TASK1");
-        task_yield();
         sleep_ms(1000);
     }
 }
@@ -4953,12 +4814,11 @@ void task1(){
 void task2(){
     while(1) {
         puts("TASK2");
-        task_yield();
         sleep_ms(1000);
     }
 }
 
-_Bool timer_callback(struct repeating_timer* t){
+void save_context(){
     __asm volatile("mov r1, r4\n"
         "ldr r0, =R4; \n"
         "str r1, [r0]; \n"
@@ -5031,8 +4891,9 @@ _Bool timer_callback(struct repeating_timer* t){
         : "r0", "r1"
     );
     gTask[gCurrentTask].sp=SP;
-    printf("saved sp %d\n",SP);
-    gCurrentTask=(gCurrentTask+1)%2;
+}
+
+void restore_context(){
     SP=gTask[gCurrentTask].sp;
     R4=gTask[gCurrentTask].r4;
     R5=gTask[gCurrentTask].r5;
@@ -5042,7 +4903,6 @@ _Bool timer_callback(struct repeating_timer* t){
     R9=gTask[gCurrentTask].r9;
     R10=gTask[gCurrentTask].r10;
     R11=gTask[gCurrentTask].r11;
-    printf("new sp %d\n",SP);
     __asm volatile("ldr r0, =R4; \n"
         "ldr r3, [r0]; \n"
         "mov r4, r3; \n"
@@ -5106,21 +4966,36 @@ _Bool timer_callback(struct repeating_timer* t){
         :
         : "r0", "r3"
     );
+}
+
+_Bool timer_callback(struct repeating_timer* t){
+    save_context();
+    gCurrentTask=(gCurrentTask+1)%2;
+    restore_context();
     return 1;
 }
 
+void init_task(void (*fun)()){
+unsigned long  int* stack_end_247;
+int i_248;
+memset(&i_248, 0, sizeof(int));
+    stack_end_247=(unsigned long  int*)(&gStackArea[gNumTasks][8048-1]);
+    *(--stack_end_247)=16777216;
+    *(--stack_end_247)=(unsigned long  int)fun;
+    *(--stack_end_247)=-3;
+    for(    i_248=0;    i_248<5;    i_248++    ){
+        *(--stack_end_247)=0;
+    }
+    gTask[gNumTasks++].sp=(unsigned long  int)stack_end_247;
+}
+
 int main(){
-struct repeating_timer timer_251;
+struct repeating_timer timer_249;
 int __result198__;
-memset(&timer_251, 0, sizeof(struct repeating_timer));
+memset(&timer_249, 0, sizeof(struct repeating_timer));
     come_heap_init(0, 0, 0);
     stdio_init_all();
     sleep_ms(5000);
-    init_task(task1);
-    init_task(task2);
-    printf("task1 %d task2 %d\n",task1,task2);
-    PC=gTask[gCurrentTask].pc;
-    SP=gTask[gCurrentTask].sp;
     __asm volatile("ldr r0, =SP; \n"
         "ldr r4, [r0]; \n"
         "msr psp, r4\n"
@@ -5131,17 +5006,23 @@ memset(&timer_251, 0, sizeof(struct repeating_timer));
         :
         : "r0","r4" // 使用するレジスタ
     );
-    __asm volatile("ldr r0, =PC; \n"
-        "ldr r4, [r0]; \n"
-        "bx r4; \n"
+    init_task(task1);
+    init_task(task2);
+    printf("task1 %d task2 %d\n",task1,task2);
+    PC=gTask[gCurrentTask].pc;
+    SP=gTask[gCurrentTask].sp;
+    __asm volatile("ldr r0, =SP; \n"
+        "ldr r3, [r0]; \n"
+        "msr psp, r3; \n"
         :
         :
-        : "r0", "r4"
+        : "r0", "r3"
     );
+    task1();
     while(1) {
     }
     __result198__ = 0;
-    come_call_finalizer3((&timer_251),repeating_timer_finalize, 1, 0, 0, 0, (void*)0);
+    come_call_finalizer3((&timer_249),repeating_timer_finalize, 1, 0, 0, 0, (void*)0);
     come_heap_final();
     return __result198__;
 }

@@ -1,3 +1,5 @@
 foreach no macro
 enum
 
+skip_block  /* } */ comment
+
