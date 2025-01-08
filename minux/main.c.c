@@ -560,9 +560,7 @@ void task_yield();
 void init_task(void (*fun)());
 void task1();
 void task2();
-_Bool timer_callback(struct repeating_timer* t);
 int main();
-static void repeating_timer_finalize(struct repeating_timer* self);
 // uniq global variable
 void* gComeFunResultObject=((void*)0);
 
@@ -4811,48 +4809,6 @@ void task_yield(){
         :
         : "r0", "r1"
     );
-    __asm volatile("mov r1, r4\n"
-        "ldr r0, =R4; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r4"
-    );
-    __asm volatile("mov r1, r5\n"
-        "ldr r0, =R5; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r5"
-    );
-    __asm volatile("mov r1, r6\n"
-        "ldr r0, =R6; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r6"
-    );
-    __asm volatile("mov r1, r7\n"
-        "ldr r0, =R7; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r7"
-    );
-    __asm volatile("ldr r0, =R8\n" // グローバル変数 R8 のアドレスを取得
-        "mov r1, r8\n"
-        "str r1, [r0]\n" // r8 の値をグローバル変数 R8 に保存
-        :
-        :
-        : "r0" // 使用した r0 を破壊リストに追加
-    );
-    __asm volatile("mrs r1, psp\n"
-        "ldr r0, =SP; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1"
-    );
     __asm volatile("mrs r1, psp\n"
         "ldr r0, =SP; \n"
         "str r1, [r0]; \n"
@@ -4862,62 +4818,18 @@ void task_yield(){
     );
     gTask[gCurrentTask].pc=PC;
     gTask[gCurrentTask].sp=SP;
-    gTask[gCurrentTask].r4=R4;
-    gTask[gCurrentTask].r5=R5;
-    gTask[gCurrentTask].r6=R6;
-    gTask[gCurrentTask].r7=R7;
-    gTask[gCurrentTask].r8=R8;
-    gCurrentTask=(gCurrentTask+1)%2;
+    gCurrentTask++;
+    if(    gCurrentTask>=2) {
+        gCurrentTask=0;
+    }
     PC=gTask[gCurrentTask].pc;
     SP=gTask[gCurrentTask].sp;
-    R4=gTask[gCurrentTask].r4;
-    R5=gTask[gCurrentTask].r5;
-    R6=gTask[gCurrentTask].r6;
-    R7=gTask[gCurrentTask].r7;
-    R8=gTask[gCurrentTask].r8;
-    __asm volatile("ldr r0, =R4; \n"
-        "ldr r3, [r0]; \n"
-        "mov r4, r3; \n"
-        :
-        :
-        : "r0", "r3", "r4"
-    );
-    __asm volatile("ldr r0, =R5; \n"
-        "ldr r3, [r0]; \n"
-        "mov r5, r3; \n"
-        :
-        :
-        : "r0", "r3", "r5"
-    );
-    __asm volatile("ldr r0, =R6; \n"
-        "ldr r3, [r0]; \n"
-        "mov r6, r3; \n"
-        :
-        :
-        : "r0", "r3", "r6"
-    );
-    __asm volatile("ldr r0, =R7; \n"
-        "ldr r3, [r0]; \n"
-        "mov r7, r3; \n"
-        :
-        :
-        : "r0", "r3", "r7"
-    );
-    {
-        asm volatile (
-            "ldr r3, [%[r8_addr]]\n" // グローバル変数 R8 の値を r3 にロード
-            "mov r8, r3\n" // r3 の値を r8 に移動
-            :
-            : [r8_addr] "r" (&R8) // R8 のアドレスを渡す
-            : "r3", "r8" // 使用したレジスタを破壊リストに追加
-        );
-    };
     __asm volatile("ldr r0, =SP; \n"
-        "ldr r3, [r0]; \n"
-        "msr psp, r3; \n"
+        "ldr r4, [r0]; \n"
+        "msr psp, r4; \n"
         :
         :
-        : "r0", "r3"
+        : "r0", "r4"
     );
     __asm volatile("ldr r0, =PC; \n"
         "ldr r4, [r0]; \n"
@@ -4958,167 +4870,13 @@ void task2(){
     }
 }
 
-_Bool timer_callback(struct repeating_timer* t){
-    __asm volatile("mov r1, r4\n"
-        "ldr r0, =R4; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r4"
-    );
-    __asm volatile("mov r1, r5\n"
-        "ldr r0, =R5; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r5"
-    );
-    __asm volatile("mov r1, r6\n"
-        "ldr r0, =R6; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r6"
-    );
-    __asm volatile("mov r1, r7\n"
-        "ldr r0, =R7; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r7"
-    );
-    __asm volatile("mov r1, r8\n"
-        "ldr r0, =R8; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r8"
-    );
-    __asm volatile("mov r1, r9\n"
-        "ldr r0, =R9; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r9"
-    );
-    __asm volatile("mov r1, r10\n"
-        "ldr r0, =R10; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r10"
-    );
-    __asm volatile("mov r1, r11\n"
-        "ldr r0, =R11; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1", "r11"
-    );
-    gTask[gCurrentTask].r4=R4;
-    gTask[gCurrentTask].r5=R5;
-    gTask[gCurrentTask].r6=R6;
-    gTask[gCurrentTask].r7=R7;
-    gTask[gCurrentTask].r8=R8;
-    gTask[gCurrentTask].r9=R9;
-    gTask[gCurrentTask].r10=R10;
-    gTask[gCurrentTask].r11=R11;
-    __asm volatile("mrs r1, psp\n"
-        "ldr r0, =SP; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1"
-    );
-    gTask[gCurrentTask].sp=SP;
-    printf("saved sp %d\n",SP);
-    gCurrentTask=(gCurrentTask+1)%2;
-    SP=gTask[gCurrentTask].sp;
-    R4=gTask[gCurrentTask].r4;
-    R5=gTask[gCurrentTask].r5;
-    R6=gTask[gCurrentTask].r6;
-    R7=gTask[gCurrentTask].r7;
-    R8=gTask[gCurrentTask].r8;
-    R9=gTask[gCurrentTask].r9;
-    R10=gTask[gCurrentTask].r10;
-    R11=gTask[gCurrentTask].r11;
-    printf("new sp %d\n",SP);
-    __asm volatile("ldr r0, =R4; \n"
-        "ldr r3, [r0]; \n"
-        "mov r4, r3; \n"
-        :
-        :
-        : "r0", "r3", "r4"
-    );
-    __asm volatile("ldr r0, =R5; \n"
-        "ldr r3, [r0]; \n"
-        "mov r5, r3; \n"
-        :
-        :
-        : "r0", "r3", "r5"
-    );
-    __asm volatile("ldr r0, =R6; \n"
-        "ldr r3, [r0]; \n"
-        "mov r6, r3; \n"
-        :
-        :
-        : "r0", "r3", "r6"
-    );
-    __asm volatile("ldr r0, =R7; \n"
-        "ldr r3, [r0]; \n"
-        "mov r7, r3; \n"
-        :
-        :
-        : "r0", "r3", "r7"
-    );
-    __asm volatile("ldr r0, =R8; \n"
-        "ldr r3, [r0]; \n"
-        "mov r8, r3; \n"
-        :
-        :
-        : "r0", "r3", "r8"
-    );
-    __asm volatile("ldr r0, =R9; \n"
-        "ldr r3, [r0]; \n"
-        "mov r9, r3; \n"
-        :
-        :
-        : "r0", "r3", "r9"
-    );
-    __asm volatile("ldr r0, =R10; \n"
-        "ldr r3, [r0]; \n"
-        "mov r10, r3; \n"
-        :
-        :
-        : "r0", "r3", "r10"
-    );
-    __asm volatile("ldr r0, =R11; \n"
-        "ldr r3, [r0]; \n"
-        "mov r11, r3; \n"
-        :
-        :
-        : "r0", "r3", "r11"
-    );
-    __asm volatile("ldr r0, =SP; \n"
-        "ldr r3, [r0]; \n"
-        "msr psp, r3; \n"
-        :
-        :
-        : "r0", "r3"
-    );
-    return 1;
-}
-
 int main(){
-struct repeating_timer timer_251;
 int __result198__;
-memset(&timer_251, 0, sizeof(struct repeating_timer));
     come_heap_init(0, 0, 0);
     stdio_init_all();
     sleep_ms(5000);
     init_task(task1);
     init_task(task2);
-    printf("task1 %d task2 %d\n",task1,task2);
     PC=gTask[gCurrentTask].pc;
     SP=gTask[gCurrentTask].sp;
     __asm volatile("ldr r0, =SP; \n"
@@ -5141,11 +4899,7 @@ memset(&timer_251, 0, sizeof(struct repeating_timer));
     while(1) {
     }
     __result198__ = 0;
-    come_call_finalizer3((&timer_251),repeating_timer_finalize, 1, 0, 0, 0, (void*)0);
     come_heap_final();
     return __result198__;
-}
-
-static void repeating_timer_finalize(struct repeating_timer* self){
 }
 
