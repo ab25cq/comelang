@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 12.0.7
+version 12.0.8
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+12.0.8 minux2 timer intterupt task switching pico os.
 12.0.7 minux1 roudrobin task switching pico os, minux2 timer intterupt task switching pico os.
 12.0.6 arrange cpp option and clang option.
 12.0.5 -gc option support again to use boehm GC

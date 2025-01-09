@@ -4808,6 +4808,8 @@ void task1(){
     while(1) {
         puts("TASK1");
         sleep_ms(1000);
+        puts("TASK1-2");
+        sleep_ms(1000);
     }
 }
 
@@ -4815,10 +4817,72 @@ void task2(){
     while(1) {
         puts("TASK2");
         sleep_ms(1000);
+        puts("TASK2-2");
+        sleep_ms(1000);
     }
 }
 
 void save_context(){
+    __asm volatile("ldr r0, =R4; \n"
+        "str r4, [r0];\n"
+        :
+        :
+        : "r0", "r4"
+    );
+    gTask[gCurrentTask].r4=R4;
+    __asm volatile("ldr r0, =R5; \n"
+        "str r5, [r0];\n"
+        :
+        :
+        : "r0", "r5"
+    );
+    gTask[gCurrentTask].r5=R5;
+    __asm volatile("ldr r0, =R6; \n"
+        "str r6, [r0];\n"
+        :
+        :
+        : "r0", "r6"
+    );
+    gTask[gCurrentTask].r6=R6;
+    __asm volatile("ldr r0, =R7; \n"
+        "str r7, [r0];\n"
+        :
+        :
+        : "r0", "r7"
+    );
+    gTask[gCurrentTask].r7=R7;
+    __asm volatile("ldr r0, =R8; \n"
+        "mov r3, r8;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r8"
+    );
+    gTask[gCurrentTask].r8=R8;
+    __asm volatile("ldr r0, =R9; \n"
+        "mov r3, r9;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r9"
+    );
+    gTask[gCurrentTask].r9=R9;
+    __asm volatile("ldr r0, =R10; \n"
+        "mov r3, r10;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r10"
+    );
+    gTask[gCurrentTask].r10=R10;
+    __asm volatile("ldr r0, =R11; \n"
+        "mov r3, r11;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r11"
+    );
+    gTask[gCurrentTask].r11=R11;
     __asm volatile("mrs r1, psp\n"
         "ldr r0, =SP; \n"
         "str r1, [r0]; \n"
@@ -4832,13 +4896,72 @@ void save_context(){
 void restore_context(){
     SP=gTask[gCurrentTask].sp;
     PC=*((unsigned long  int*)SP+6);
-    printf("PC6 %d\n",PC);
     __asm volatile("ldr r0, =SP; \n"
         "ldr r3, [r0]; \n"
         "msr psp, r3; \n"
         :
         :
         : "r0", "r3"
+    );
+    R11=gTask[gCurrentTask].r11;
+    __asm volatile("ldr r0, =R11; \n"
+        "ldr r4, [r0];\n"
+        "mov r11, r4;\n"
+        :
+        :
+        : "r0", "r4", "r11"
+    );
+    R10=gTask[gCurrentTask].r10;
+    __asm volatile("ldr r0, =R10; \n"
+        "ldr r4, [r0];\n"
+        "mov r10, r4;\n"
+        :
+        :
+        : "r0", "r4", "r10"
+    );
+    R9=gTask[gCurrentTask].r9;
+    __asm volatile("ldr r0, =R9; \n"
+        "ldr r4, [r0];\n"
+        "mov r9, r4;\n"
+        :
+        :
+        : "r0", "r4", "r9"
+    );
+    R8=gTask[gCurrentTask].r8;
+    __asm volatile("ldr r0, =R8; \n"
+        "ldr r4, [r0];\n"
+        "mov r8, r4;\n"
+        :
+        :
+        : "r0", "r4", "r8"
+    );
+    R7=gTask[gCurrentTask].r7;
+    __asm volatile("ldr r0, =R7; \n"
+        "ldr r7, [r0];\n"
+        :
+        :
+        : "r0", "r7"
+    );
+    R6=gTask[gCurrentTask].r6;
+    __asm volatile("ldr r0, =R6; \n"
+        "ldr r6, [r0];\n"
+        :
+        :
+        : "r0", "r6"
+    );
+    R5=gTask[gCurrentTask].r5;
+    __asm volatile("ldr r0, =R5; \n"
+        "ldr r5, [r0];\n"
+        :
+        :
+        : "r0", "r5"
+    );
+    R4=gTask[gCurrentTask].r4;
+    __asm volatile("ldr r0, =R4; \n"
+        "ldr r4, [r0];\n"
+        :
+        :
+        : "r0", "r4"
     );
 }
 
@@ -4862,7 +4985,6 @@ memset(&i_248, 0, sizeof(int));
     }
     memset(gTask+gNumTasks,0,sizeof(struct sTask));
     gTask[gNumTasks].sp=(unsigned long  int)stack_end_247;
-    printf("init task3 SP %d\n",gTask[gNumTasks].sp);
     gNumTasks++;
 }
 
@@ -4876,11 +4998,9 @@ memset(&timer_249, 0, sizeof(struct repeating_timer));
     printf("task1 %d task2 %d\n",task1,task2);
     init_task(task1);
     init_task(task2);
-    puts("1");
     PC=gTask[gCurrentTask].pc;
     SP=gTask[gCurrentTask].sp;
-    add_repeating_timer_ms(2000,timer_callback,((void*)0),&timer_249);
-    puts("2");
+    add_repeating_timer_ms(1000,timer_callback,((void*)0),&timer_249);
     __asm volatile("ldr r0, =SP; \n"
         "ldr r4, [r0]; \n"
         "msr psp, r4\n"
