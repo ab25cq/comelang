@@ -317,9 +317,22 @@ struct sTask
     unsigned long  int r11;
 };
 
-struct sTask gTask[2];
-unsigned int gStackArea[2][8048];
-int gNumTasks=0;
+struct list_item$1sTaskph
+{
+    struct sTask* item;
+    struct list_item$1sTaskph* prev;
+    struct list_item$1sTaskph* next;
+};
+
+struct list$1sTaskph
+{
+    struct list_item$1sTaskph* head;
+    struct list_item$1sTaskph* tail;
+    int len;
+    struct list_item$1sTaskph* it;
+};
+
+struct list$1sTaskph* gTasks;
 int gCurrentTask=0;
 // source head
 #define _GNU_SOURCE
@@ -556,13 +569,21 @@ char* charp_printf(char* self, ...);
 int int_printf(int self, char* msg);
 void int_times(int self, void* parent, void (*block)(void*,int));
 int assert_v2(int exp);
+void init_task(void (*fun)());
+static struct list$1sTaskph* list$1sTaskph_add(struct list$1sTaskph* self, struct sTask* item);
+static void sTask_finalize(struct sTask* self);
+void save_context(struct sTask* task);
+void restore_context(struct sTask* task);
+_Bool timer_callback(struct repeating_timer* t);
+static struct sTask* list$1sTaskphp_operator_load_element(struct list$1sTaskph* self, int position);
+static int list$1sTaskph_length(struct list$1sTaskph* self);
 void task1();
 void task2();
-void save_context();
-void restore_context();
-_Bool timer_callback(struct repeating_timer* t);
-void init_task(void (*fun)());
 int main();
+static struct list$1sTaskph* list$1sTaskph_initialize(struct list$1sTaskph* self);
+static void list$1sTaskphp_finalize(struct list$1sTaskph* self);
+static void list_item$1sTaskphp_finalize(struct list_item$1sTaskph* self);
+static void list$1sTaskph_finalize(struct list$1sTaskph* self);
 static void repeating_timer_finalize(struct repeating_timer* self);
 // uniq global variable
 void* gComeFunResultObject=((void*)0);
@@ -4804,6 +4825,269 @@ int assert_v2(int exp){
     }
 }
 
+void init_task(void (*fun)()){
+unsigned long  int* stack_247;
+unsigned long  int* stack_end_248;
+int i_249;
+void* __right_value245 = (void*)0;
+struct sTask* task_250;
+memset(&i_249, 0, sizeof(int));
+    stack_247=(unsigned long  int*)calloc(1,sizeof(unsigned long  int)*1024);
+    stack_end_248=(unsigned long  int*)(&stack_247[1024-1]);
+    *(--stack_end_248)=16777216;
+    *(--stack_end_248)=(unsigned long  int)fun;
+    *(--stack_end_248)=-3;
+    for(    i_249=0;    i_249<5;    i_249++    ){
+        *(--stack_end_248)=0;
+    }
+    task_250=(struct sTask*)come_increment_ref_count((struct sTask*)come_calloc(1, sizeof(struct sTask)*(1), "main.c", 39, "sTask"));
+    task_250->sp=(unsigned long  int)stack_end_248;
+    list$1sTaskph_add(gTasks,(struct sTask*)come_increment_ref_count(task_250));
+    come_call_finalizer3(task_250,sTask_finalize, 0, 0, 0, 0, (void*)0);
+}
+
+static struct list$1sTaskph* list$1sTaskph_add(struct list$1sTaskph* self, struct sTask* item){
+void* __result_obj__=(void*)0;
+void* __right_value246 = (void*)0;
+struct list_item$1sTaskph* litem_251;
+struct sTask* __dec_obj32;
+void* __right_value247 = (void*)0;
+struct list_item$1sTaskph* litem_252;
+struct sTask* __dec_obj33;
+void* __right_value248 = (void*)0;
+struct list_item$1sTaskph* litem_253;
+struct sTask* __dec_obj34;
+struct list$1sTaskph* __result198__;
+    if(    self->len==0) {
+        litem_251=(struct list_item$1sTaskph*)come_increment_ref_count(((struct list_item$1sTaskph*)(__right_value246=(struct list_item$1sTaskph*)come_calloc(1, sizeof(struct list_item$1sTaskph)*(1), "/usr/local/include/comelang.h", 1072, "list_item$1sTaskph"))));
+        litem_251->prev=((void*)0);
+        litem_251->next=((void*)0);
+        __dec_obj32=litem_251->item;
+        litem_251->item=(struct sTask*)come_increment_ref_count(item);
+        come_call_finalizer3(__dec_obj32,sTask_finalize, 0, 0, 0, 0, (void*)0);
+        self->tail=litem_251;
+        self->head=litem_251;
+    }
+    else if(    self->len==1) {
+        litem_252=(struct list_item$1sTaskph*)come_increment_ref_count(((struct list_item$1sTaskph*)(__right_value247=(struct list_item$1sTaskph*)come_calloc(1, sizeof(struct list_item$1sTaskph)*(1), "/usr/local/include/comelang.h", 1082, "list_item$1sTaskph"))));
+        litem_252->prev=self->head;
+        litem_252->next=((void*)0);
+        __dec_obj33=litem_252->item;
+        litem_252->item=(struct sTask*)come_increment_ref_count(item);
+        come_call_finalizer3(__dec_obj33,sTask_finalize, 0, 0, 0, 0, (void*)0);
+        self->tail=litem_252;
+        self->head->next=litem_252;
+    }
+    else {
+        litem_253=(struct list_item$1sTaskph*)come_increment_ref_count(((struct list_item$1sTaskph*)(__right_value248=(struct list_item$1sTaskph*)come_calloc(1, sizeof(struct list_item$1sTaskph)*(1), "/usr/local/include/comelang.h", 1092, "list_item$1sTaskph"))));
+        litem_253->prev=self->tail;
+        litem_253->next=((void*)0);
+        __dec_obj34=litem_253->item;
+        litem_253->item=(struct sTask*)come_increment_ref_count(item);
+        come_call_finalizer3(__dec_obj34,sTask_finalize, 0, 0, 0, 0, (void*)0);
+        self->tail->next=litem_253;
+        self->tail=litem_253;
+    }
+    self->len++;
+    __result198__ = gComeFunResultObject = __result_obj__ = self;
+    come_call_finalizer3(item,sTask_finalize, 0, 0, 0, 0, (void*)0);
+    gComeFunResultObject = (void*)0;
+    return __result198__;
+}
+
+static void sTask_finalize(struct sTask* self){
+}
+
+void save_context(struct sTask* task){
+    __asm volatile("ldr r0, =R4; \n"
+        "str r4, [r0];\n"
+        :
+        :
+        : "r0", "r4"
+    );
+    task->r4=R4;
+    __asm volatile("ldr r0, =R5; \n"
+        "str r5, [r0];\n"
+        :
+        :
+        : "r0", "r5"
+    );
+    task->r5=R5;
+    __asm volatile("ldr r0, =R6; \n"
+        "str r6, [r0];\n"
+        :
+        :
+        : "r0", "r6"
+    );
+    task->r6=R6;
+    __asm volatile("ldr r0, =R7; \n"
+        "str r7, [r0];\n"
+        :
+        :
+        : "r0", "r7"
+    );
+    task->r7=R7;
+    __asm volatile("ldr r0, =R8; \n"
+        "mov r3, r8;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r8"
+    );
+    task->r8=R8;
+    __asm volatile("ldr r0, =R9; \n"
+        "mov r3, r9;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r9"
+    );
+    task->r9=R9;
+    __asm volatile("ldr r0, =R10; \n"
+        "mov r3, r10;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r10"
+    );
+    task->r10=R10;
+    __asm volatile("ldr r0, =R11; \n"
+        "mov r3, r11;\n"
+        "str r3, [r0];\n"
+        :
+        :
+        : "r0", "r3", "r11"
+    );
+    task->r11=R11;
+    __asm volatile("mrs r1, psp\n"
+        "ldr r0, =SP; \n"
+        "str r1, [r0]; \n"
+        :
+        :
+        : "r0", "r1"
+    );
+    task->sp=SP;
+}
+
+void restore_context(struct sTask* task){
+    SP=task->sp;
+    PC=*((unsigned long  int*)SP+6);
+    __asm volatile("ldr r0, =SP; \n"
+        "ldr r3, [r0]; \n"
+        "msr psp, r3; \n"
+        :
+        :
+        : "r0", "r3"
+    );
+    R11=task->r11;
+    __asm volatile("ldr r0, =R11; \n"
+        "ldr r4, [r0];\n"
+        "mov r11, r4;\n"
+        :
+        :
+        : "r0", "r4", "r11"
+    );
+    R10=task->r10;
+    __asm volatile("ldr r0, =R10; \n"
+        "ldr r4, [r0];\n"
+        "mov r10, r4;\n"
+        :
+        :
+        : "r0", "r4", "r10"
+    );
+    R9=task->r9;
+    __asm volatile("ldr r0, =R9; \n"
+        "ldr r4, [r0];\n"
+        "mov r9, r4;\n"
+        :
+        :
+        : "r0", "r4", "r9"
+    );
+    R8=task->r8;
+    __asm volatile("ldr r0, =R8; \n"
+        "ldr r4, [r0];\n"
+        "mov r8, r4;\n"
+        :
+        :
+        : "r0", "r4", "r8"
+    );
+    R7=task->r7;
+    __asm volatile("ldr r0, =R7; \n"
+        "ldr r7, [r0];\n"
+        :
+        :
+        : "r0", "r7"
+    );
+    R6=task->r6;
+    __asm volatile("ldr r0, =R6; \n"
+        "ldr r6, [r0];\n"
+        :
+        :
+        : "r0", "r6"
+    );
+    R5=task->r5;
+    __asm volatile("ldr r0, =R5; \n"
+        "ldr r5, [r0];\n"
+        :
+        :
+        : "r0", "r5"
+    );
+    R4=task->r4;
+    __asm volatile("ldr r0, =R4; \n"
+        "ldr r4, [r0];\n"
+        :
+        :
+        : "r0", "r4"
+    );
+}
+
+_Bool timer_callback(struct repeating_timer* t){
+void* __right_value249 = (void*)0;
+void* __right_value250 = (void*)0;
+    save_context(((struct sTask*)come_null_check(((struct sTask*)(__right_value249=list$1sTaskphp_operator_load_element(gTasks,gCurrentTask))), "main.c", 214, 0)));
+    come_call_finalizer3(__right_value249,sTask_finalize, 0, 1, 0, 0, (void*)0);
+    gCurrentTask=(gCurrentTask+1)%list$1sTaskph_length(gTasks);
+    restore_context(((struct sTask*)come_null_check(((struct sTask*)(__right_value250=list$1sTaskphp_operator_load_element(gTasks,gCurrentTask))), "main.c", 218, 1)));
+    come_call_finalizer3(__right_value250,sTask_finalize, 0, 1, 0, 0, (void*)0);
+    return 1;
+}
+
+static struct sTask* list$1sTaskphp_operator_load_element(struct list$1sTaskph* self, int position){
+void* __result_obj__=(void*)0;
+struct list_item$1sTaskph* it_254;
+int i_255;
+struct sTask* __result199__;
+struct sTask* default_value_256;
+struct sTask* __result200__;
+default_value_256 = (void*)0;
+    if(    position<0) {
+        position+=self->len;
+    }
+    it_254=self->head;
+    i_255=0;
+    while(it_254!=((void*)0)) {
+        if(        position==i_255) {
+            __result199__ = gComeFunResultObject = __result_obj__ = it_254->item;
+            gComeFunResultObject = (void*)0;
+            return __result199__;
+        }
+        it_254=it_254->next;
+        i_255++;
+    }
+    memset(&default_value_256,0,sizeof(struct sTask*));
+    __result200__ = gComeFunResultObject = __result_obj__ = default_value_256;
+    come_call_finalizer3(default_value_256,sTask_finalize, 0, 0, 1, 0, (void*)0);
+    gComeFunResultObject = (void*)0;
+    return __result200__;
+}
+
+static int list$1sTaskph_length(struct list$1sTaskph* self){
+    if(    self==((void*)0)) {
+        return 0;
+    }
+    return self->len;
+}
+
 void task1(){
     while(1) {
         puts("TASK1");
@@ -4822,185 +5106,25 @@ void task2(){
     }
 }
 
-void save_context(){
-    __asm volatile("ldr r0, =R4; \n"
-        "str r4, [r0];\n"
-        :
-        :
-        : "r0", "r4"
-    );
-    gTask[gCurrentTask].r4=R4;
-    __asm volatile("ldr r0, =R5; \n"
-        "str r5, [r0];\n"
-        :
-        :
-        : "r0", "r5"
-    );
-    gTask[gCurrentTask].r5=R5;
-    __asm volatile("ldr r0, =R6; \n"
-        "str r6, [r0];\n"
-        :
-        :
-        : "r0", "r6"
-    );
-    gTask[gCurrentTask].r6=R6;
-    __asm volatile("ldr r0, =R7; \n"
-        "str r7, [r0];\n"
-        :
-        :
-        : "r0", "r7"
-    );
-    gTask[gCurrentTask].r7=R7;
-    __asm volatile("ldr r0, =R8; \n"
-        "mov r3, r8;\n"
-        "str r3, [r0];\n"
-        :
-        :
-        : "r0", "r3", "r8"
-    );
-    gTask[gCurrentTask].r8=R8;
-    __asm volatile("ldr r0, =R9; \n"
-        "mov r3, r9;\n"
-        "str r3, [r0];\n"
-        :
-        :
-        : "r0", "r3", "r9"
-    );
-    gTask[gCurrentTask].r9=R9;
-    __asm volatile("ldr r0, =R10; \n"
-        "mov r3, r10;\n"
-        "str r3, [r0];\n"
-        :
-        :
-        : "r0", "r3", "r10"
-    );
-    gTask[gCurrentTask].r10=R10;
-    __asm volatile("ldr r0, =R11; \n"
-        "mov r3, r11;\n"
-        "str r3, [r0];\n"
-        :
-        :
-        : "r0", "r3", "r11"
-    );
-    gTask[gCurrentTask].r11=R11;
-    __asm volatile("mrs r1, psp\n"
-        "ldr r0, =SP; \n"
-        "str r1, [r0]; \n"
-        :
-        :
-        : "r0", "r1"
-    );
-    gTask[gCurrentTask].sp=SP;
-}
-
-void restore_context(){
-    SP=gTask[gCurrentTask].sp;
-    PC=*((unsigned long  int*)SP+6);
-    __asm volatile("ldr r0, =SP; \n"
-        "ldr r3, [r0]; \n"
-        "msr psp, r3; \n"
-        :
-        :
-        : "r0", "r3"
-    );
-    R11=gTask[gCurrentTask].r11;
-    __asm volatile("ldr r0, =R11; \n"
-        "ldr r4, [r0];\n"
-        "mov r11, r4;\n"
-        :
-        :
-        : "r0", "r4", "r11"
-    );
-    R10=gTask[gCurrentTask].r10;
-    __asm volatile("ldr r0, =R10; \n"
-        "ldr r4, [r0];\n"
-        "mov r10, r4;\n"
-        :
-        :
-        : "r0", "r4", "r10"
-    );
-    R9=gTask[gCurrentTask].r9;
-    __asm volatile("ldr r0, =R9; \n"
-        "ldr r4, [r0];\n"
-        "mov r9, r4;\n"
-        :
-        :
-        : "r0", "r4", "r9"
-    );
-    R8=gTask[gCurrentTask].r8;
-    __asm volatile("ldr r0, =R8; \n"
-        "ldr r4, [r0];\n"
-        "mov r8, r4;\n"
-        :
-        :
-        : "r0", "r4", "r8"
-    );
-    R7=gTask[gCurrentTask].r7;
-    __asm volatile("ldr r0, =R7; \n"
-        "ldr r7, [r0];\n"
-        :
-        :
-        : "r0", "r7"
-    );
-    R6=gTask[gCurrentTask].r6;
-    __asm volatile("ldr r0, =R6; \n"
-        "ldr r6, [r0];\n"
-        :
-        :
-        : "r0", "r6"
-    );
-    R5=gTask[gCurrentTask].r5;
-    __asm volatile("ldr r0, =R5; \n"
-        "ldr r5, [r0];\n"
-        :
-        :
-        : "r0", "r5"
-    );
-    R4=gTask[gCurrentTask].r4;
-    __asm volatile("ldr r0, =R4; \n"
-        "ldr r4, [r0];\n"
-        :
-        :
-        : "r0", "r4"
-    );
-}
-
-_Bool timer_callback(struct repeating_timer* t){
-    save_context();
-    gCurrentTask=(gCurrentTask+1)%2;
-    restore_context();
-    return 1;
-}
-
-void init_task(void (*fun)()){
-unsigned long  int* stack_end_247;
-int i_248;
-memset(&i_248, 0, sizeof(int));
-    stack_end_247=(unsigned long  int*)(&gStackArea[gNumTasks][8048-1]);
-    *(--stack_end_247)=16777216;
-    *(--stack_end_247)=(unsigned long  int)fun;
-    *(--stack_end_247)=-3;
-    for(    i_248=0;    i_248<5;    i_248++    ){
-        *(--stack_end_247)=0;
-    }
-    memset(gTask+gNumTasks,0,sizeof(struct sTask));
-    gTask[gNumTasks].sp=(unsigned long  int)stack_end_247;
-    gNumTasks++;
-}
-
 int main(){
-struct repeating_timer timer_249;
-int __result198__;
-memset(&timer_249, 0, sizeof(struct repeating_timer));
+void* __right_value251 = (void*)0;
+void* __right_value252 = (void*)0;
+struct list$1sTaskph* __dec_obj36;
+void* __right_value253 = (void*)0;
+struct repeating_timer timer_261;
+int __result202__;
+memset(&timer_261, 0, sizeof(struct repeating_timer));
     come_heap_init(0, 0, 0);
     stdio_init_all();
     sleep_ms(5000);
-    printf("task1 %d task2 %d\n",task1,task2);
+    __dec_obj36=gTasks;
+    gTasks=(struct list$1sTaskph*)come_increment_ref_count(list$1sTaskph_initialize((struct list$1sTaskph*)come_increment_ref_count((struct list$1sTaskph*)come_calloc(1, sizeof(struct list$1sTaskph)*(1), "main.c", 248, "list$1sTaskph"))));
+    come_call_finalizer3(__dec_obj36,list$1sTaskph_finalize, 0, 0, 0, 0, (void*)0);
     init_task(task1);
     init_task(task2);
-    PC=gTask[gCurrentTask].pc;
-    SP=gTask[gCurrentTask].sp;
-    add_repeating_timer_ms(1000,timer_callback,((void*)0),&timer_249);
+    SP=((struct sTask*)come_null_check(((struct sTask*)(__right_value253=list$1sTaskphp_operator_load_element(gTasks,gCurrentTask))), "main.c", 253, 2))->sp;
+    come_call_finalizer3(__right_value253,sTask_finalize, 0, 1, 0, 0, (void*)0);
+    add_repeating_timer_ms(1000,timer_callback,((void*)0),&timer_261);
     __asm volatile("ldr r0, =SP; \n"
         "ldr r4, [r0]; \n"
         "msr psp, r4\n"
@@ -5014,10 +5138,58 @@ memset(&timer_249, 0, sizeof(struct repeating_timer));
     task1();
     while(1) {
     }
-    __result198__ = 0;
-    come_call_finalizer3((&timer_249),repeating_timer_finalize, 1, 0, 0, 0, (void*)0);
+    __result202__ = 0;
+    come_call_finalizer3((&timer_261),repeating_timer_finalize, 1, 0, 0, 0, (void*)0);
+    come_call_finalizer3(gTasks,list$1sTaskphp_finalize, 0, 0, 0, 0, (void*)0);
     come_heap_final();
-    return __result198__;
+    return __result202__;
+}
+
+static struct list$1sTaskph* list$1sTaskph_initialize(struct list$1sTaskph* self){
+void* __result_obj__=(void*)0;
+struct list$1sTaskph* __result201__;
+    self->head=((void*)0);
+    self->tail=((void*)0);
+    self->len=0;
+    __result201__ = gComeFunResultObject = __result_obj__ = self;
+    come_call_finalizer3(self,list$1sTaskphp_finalize, 0, 0, 1, 0, (void*)0);
+    gComeFunResultObject = (void*)0;
+    return __result201__;
+}
+
+static void list$1sTaskphp_finalize(struct list$1sTaskph* self){
+struct list_item$1sTaskph* it_257;
+struct list_item$1sTaskph* prev_it_258;
+    it_257=self->head;
+    while(it_257!=((void*)0)) {
+        prev_it_258=it_257;
+        it_257=it_257->next;
+        come_call_finalizer3(prev_it_258,list_item$1sTaskphp_finalize, 0, 0, 0, 0, (void*)0);
+    }
+}
+
+static void list_item$1sTaskphp_finalize(struct list_item$1sTaskph* self){
+struct sTask* __dec_obj35;
+    if(    self!=((void*)0)&&self->item!=((void*)0)) {
+        if(        self->item==gComeFunResultObject) {
+            __dec_obj35=self->item;
+            come_call_finalizer3(__dec_obj35,sTask_finalize, 0, 0, 1, 0, (void*)0);
+        }
+        else {
+            come_call_finalizer3(self->item,sTask_finalize, 0, 0, 0, 0, (void*)0);
+        }
+    }
+}
+
+static void list$1sTaskph_finalize(struct list$1sTaskph* self){
+struct list_item$1sTaskph* it_259;
+struct list_item$1sTaskph* prev_it_260;
+    it_259=self->head;
+    while(it_259!=((void*)0)) {
+        prev_it_260=it_259;
+        it_259=it_259->next;
+        come_call_finalizer3(prev_it_260,list_item$1sTaskphp_finalize, 0, 0, 0, 0, (void*)0);
+    }
 }
 
 static void repeating_timer_finalize(struct repeating_timer* self){
