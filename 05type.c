@@ -24,7 +24,7 @@ bool is_type_name(char* buf, sInfo* info=info)
             || buf === "__declspec" 
             || buf === "_Alignas"
             || buf === "_Atomic"
-            || (buf === "__attribute__" && *info->p == '(' )
+            || ((buf === "__attribute" || buf === "__attribute__") && *info->p == '(' )
             || buf === "void" ;
     }
     else {
@@ -41,7 +41,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         || buf === "__declspec" 
         || buf === "_Alignas"
         || buf === "_Atomic"
-        || (buf === "__attribute__" && *info->p == '(')
+        || ((buf === "__attribute" || buf === "__attribute__") && *info->p == '(')
         || (buf === "immutable")
         || (buf === "mutable")
         || (buf === "tup" && (*info->p == ':' || *info->p == '('))
@@ -272,6 +272,11 @@ void parse_sharp(sInfo* info=info) version 5
         }
         else if(strmemcmp(info.p, "__attribute__")) {
             info->p += strlen("__attribute__");
+            skip_spaces_and_lf2();
+            skip_paren(info);
+        }
+        else if(strmemcmp(info.p, "__attribute")) {
+            info->p += strlen("__attribute");
             skip_spaces_and_lf2();
             skip_paren(info);
         }
@@ -1035,7 +1040,7 @@ void skip_pointer_attribute(sInfo* info=info)
     if(xisalpha(*info->p) || *info->p == '_') {
         string word = parse_word();
         
-        if(word === "__attribute__" && *info->p == '(') {
+        if((word === "__attribute" || word === "__attribute__") && *info->p == '(') {
             int nest = 0;
             while(1) {
                 if(*info->p == '(') {
@@ -1060,7 +1065,7 @@ void skip_pointer_attribute(sInfo* info=info)
                 }
             }
         }
-        else if(word === "const" || word === "__restrict" || word === "restrict" || word === "__user" || word === "volatile" || word === "_Nonnull" || word === "_Nullable" || word === "__nonnull" || word === "_Null_unspecified" || word === "__user" || word === "_Addr") {
+        else if(word === "const" || word === "__restrict" || word === "restrict" || word === "__user" || word === "volatile" || word === "_Nonnull" || word === "_Nullable" || word === "__nonnull" || word === "_Null_unspecified" || word === "__user" || word === "_Addr" || word === "__noreturn" || word === "_noreturn" || word === "_Noreturn") {
         }
         else {
             info.p = p;
