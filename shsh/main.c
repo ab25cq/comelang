@@ -1000,7 +1000,7 @@ int, bool run(char* source)
                 }
             }
             
-            tcsetpgrp(0, getpgrp()) or die("tcsetpgrp");
+            tcsetpgrp(0, getpgrp()) and die("tcsetpgrp");
             
             info.rcode = WEXITSTATUS(status);
             
@@ -1047,7 +1047,7 @@ void set_signal()
     memset(&sa, 0, sizeof(sa));
     sa.sa_flags = SA_SIGINFO;
     sa.sa_handler = (sig_t)sig_int;
-    sigaction(SIGINT, &sa, null) or die("sigaction2");
+    sigaction(SIGINT, &sa, null) and die("sigaction2");
 }
 
 string line_buffer_from_head_to_cursor_point()
