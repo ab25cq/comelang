@@ -24,6 +24,7 @@ fi
 (cd pico; rm -rf build)
 (cd minux; rm -rf build)
 (cd minux2; rm -rf build)
+(cd sd; rm -rf build)
 
 if [ -e webweb2/Makefile ]
 then

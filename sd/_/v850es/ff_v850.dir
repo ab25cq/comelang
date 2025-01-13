@@ -1,0 +1,56 @@
+#   Sample link directive file (not use RTOS/use internal memory only)
+#
+#   Copyright (C) NEC Electronics Corporation 2002
+#   All rights reserved by NEC Electronics Corporation.
+#
+#   This is a sample file.
+#   NEC Electronics assumes no responsibility for any losses incurred by customers or 
+#   third parties arising from the use of this file.
+#
+#   Generated      : PM+ V6.11  [24 Oct 2005]
+#   Sample Version : E1.00b [12 Jun 2002]
+#   Device         : uPD70F3340 (C:\Program Files\NEC Electronics Tools\DEV\DF3340.800)
+#   Internal RAM   : 0x3ff5000 - 0x3ffefff
+#   
+#   NOTICE:
+#        Allocation of SCONST, CONST and TEXT depends on the user program.
+#   
+#        If interrupt handler(s) are specified in the user program then
+#        the interrupt handler(s) are allocated from address 0 and 
+#        SCONST, CONST and TEXT are allocated after the interrupt handler(s).
+
+SCONST  : !LOAD ?R {
+        .sconst         = $PROGBITS     ?A .sconst;
+};
+
+CONST   : !LOAD ?R {
+        .const          = $PROGBITS     ?A .const;
+};
+
+TEXT    : !LOAD ?RX {
+        .pro_epi_runtime = $PROGBITS    ?AX .pro_epi_runtime;
+        .text            = $PROGBITS    ?AX .text;
+};
+
+SIDATA  : !LOAD ?RW V0x3ff5000 {
+        .tidata.byte    = $PROGBITS     ?AW .tidata.byte;
+        .tibss.byte     = $NOBITS       ?AW .tibss.byte;
+        .tidata.word    = $PROGBITS     ?AW .tidata.word;
+        .tibss.word     = $NOBITS       ?AW .tibss.word;
+        .tidata         = $PROGBITS     ?AW .tidata;
+        .tibss          = $NOBITS       ?AW .tibss;
+        .sidata         = $PROGBITS     ?AW .sidata;
+        .sibss          = $NOBITS       ?AW .sibss;
+};
+
+DATA    : !LOAD ?RW V0x3ff5100 {
+        .data           = $PROGBITS     ?AW  .data;
+        .sdata          = $PROGBITS     ?AWG .sdata;
+        .sbss           = $NOBITS       ?AWG .sbss;
+        .bss            = $NOBITS       ?AW  .bss;
+};
+
+__tp_TEXT @ %TP_SYMBOL;
+__gp_DATA @ %GP_SYMBOL &__tp_TEXT{DATA};
+__ep_DATA @ %EP_SYMBOL;
+

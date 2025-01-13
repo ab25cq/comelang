@@ -1,0 +1,77 @@
+[ProjectManager]
+Version=6.00
+Path=D:\user\Prj_V850\ff_v850\
+Title=ff_v850
+Series=850.PM
+Device=uPD70F3340
+DeviceVer=V1.10
+Target=obj\romp.out
+DebugMode=0
+[Tools]
+MakeFile=ff_v850.mak
+Debugger=
+DebOption=
+DebCpuReset=1
+DebSymReset=0
+MuitiLoad=0
+LoadPrjNum=0
+CheckVersion=CA850|V3.50
+[Options.NECOS]
+OS Type=
+[SrcFile]
+Source1=uart_v850es.c
+Source2=xprintf.c
+Source3=ff.c
+Source4=ffunicode.c
+Source5=main.c
+Source6=mmc_v850es.c
+[Options.CA850]
+Version=V3.50  [18 Feb 2011]
+Pedantic=1
+Warning=2
+AnyOption0=-woff=2782 -Wa,-woff=3029
+Optimize=s
+BuildMode=0
+[Options.CA850 1]
+DebugInfo=0
+[Options.AS850]
+Version=V4.20  [14 Jul 2010]
+[Options.AS850 1]
+DebugInfo=0
+[Options.AS850 1 StartUp]
+DebugInfo=0
+[Options.AS850 1 RompCrt]
+DebugInfo=0
+[Options.SF850]
+Version=V2.10  [28 Jun 2007]
+IntDir0=obj
+FinDir0=obj
+Romp=1
+StartUp=D:\user\Prj_V850\ff_v850\startup.s
+LinkDir=D:\user\Prj_V850\ff_v850\ff_v850.dir
+[Options.SF850 1]
+StartUp=D:\user\Prj_V850\ff_v850\startup.s
+LinkDir=D:\user\Prj_V850\ff_v850\ff_v850.dir
+[Options.LD850]
+Version=V3.10  [18 Feb 2011]
+[Options.ROMP850]
+Version=V3.60  [ 3 Jul 2007]
+[Options.HX850]
+Version=V2.30  [24 Aug 2007]
+OutFile0=ff_v850.hex
+[BuildBefore-AfterCmd]
+Before1=if not exist obj mkdir obj
+[ToolSet]
+ToolSetName=(ïœçX)(ëIë01)V850 Series Software Package V4.20
+Tool1=CA850|V3.50
+Tool2=LDG|V1.20
+[IncFile]
+Include1=uart_v850es.h
+Include2=v850es.h
+Include3=xprintf.h
+Include4=ff.h
+Include5=ffconf.h
+Include6=diskio.h
+Include7=C:\Program Files (x86)\NEC Electronics Tools\CA850\V3.50\inc850\stdarg.h
+Include8=C:\Program Files (x86)\NEC Electronics Tools\CA850\V3.50\inc850\string.h
+Include9=C:\Program Files (x86)\NEC Electronics Tools\CA850\V3.50\inc850\stddef.h

@@ -381,7 +381,6 @@ struct buffer* buffer_append(struct buffer* self, char* mem, unsigned int size);
 struct buffer* buffer_append_char(struct buffer* self, char c);
 struct buffer* buffer_append_str(struct buffer* self, char* mem);
 struct buffer* buffer_append_format(struct buffer* self, char* msg, ...);
-static void va_list_finalize(va_list self);
 struct buffer* buffer_append_nullterminated_str(struct buffer* self, char* mem);
 struct buffer* buffer_append_int(struct buffer* self, int value);
 struct buffer* buffer_append_long(struct buffer* self, long value);
@@ -2074,7 +2073,6 @@ result_78 = (void*)0;
     __builtin_va_end(args_77);
     if(    len_79<0) {
         __result35__ = gComeFunResultObject = __result_obj__ = self;
-        come_call_finalizer3((&args_77),va_list_finalize, 1, 0, 0, 0, (void*)0);
         gComeFunResultObject = (void*)0;
         return __result35__;
     }
@@ -2098,13 +2096,9 @@ result_78 = (void*)0;
     self->buf[self->len]=0;
     free(result_78);
     __result36__ = gComeFunResultObject = __result_obj__ = self;
-    come_call_finalizer3((&args_77),va_list_finalize, 1, 0, 0, 0, (void*)0);
     mem_80 = come_decrement_ref_count2(mem_80, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result36__;
-}
-
-static void va_list_finalize(va_list self){
 }
 
 struct buffer* buffer_append_nullterminated_str(struct buffer* self, char* mem){
@@ -3893,7 +3887,6 @@ result_203 = (void*)0;
     __builtin_va_end(args_202);
     if(    len_204<0) {
         __result143__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value180=__builtin_string("")));
-        come_call_finalizer3((&args_202),va_list_finalize, 1, 0, 0, 0, (void*)0);
         __right_value180 = come_decrement_ref_count2(__right_value180, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         gComeFunResultObject = (void*)0;
         return __result143__;
@@ -3901,7 +3894,6 @@ result_203 = (void*)0;
     result2_205=(char*)come_increment_ref_count(__builtin_string(result_203));
     free(result_203);
     __result144__ = gComeFunResultObject = __result_obj__ = result2_205;
-    come_call_finalizer3((&args_202),va_list_finalize, 1, 0, 0, 0, (void*)0);
     result2_205 = come_decrement_ref_count2(result2_205, (void*)0, (void*)0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result144__;
@@ -4586,12 +4578,10 @@ memset(&args_230, 0, sizeof(va_list));
     result_231=fprintf(f,"%s",msg2_229);
     if(    result_231<0) {
         __result184__ = gComeFunResultObject = __result_obj__ = f;
-        come_call_finalizer3((&args_230),va_list_finalize, 1, 0, 0, 0, (void*)0);
         gComeFunResultObject = (void*)0;
         return __result184__;
     }
     __result185__ = gComeFunResultObject = __result_obj__ = f;
-    come_call_finalizer3((&args_230),va_list_finalize, 1, 0, 0, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result185__;
 }
@@ -4784,7 +4774,6 @@ memset(&args_245, 0, sizeof(va_list));
     printf("%s",msg2_244);
     free(msg2_244);
     __result197__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value244=__builtin_string(self)));
-    come_call_finalizer3((&args_245),va_list_finalize, 1, 0, 0, 0, (void*)0);
     __right_value244 = come_decrement_ref_count2(__right_value244, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result197__;

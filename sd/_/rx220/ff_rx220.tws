@@ -1,0 +1,23 @@
+[HIMDBVersion]
+2.0
+[DATABASE_VERSION]
+"1.2" 
+[CURRENT_PROJECT]
+"ff_rx220" 
+[GENERAL_DATA]
+[BREAKPOINTS]
+[OPEN_WORKSPACE_FILES]
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\ff.c" 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\ffunicode.c" 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\main.c" 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\mmc_rspi.c" 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\resetprg.c" 
+[WORKSPACE_FILE_STATES]
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\ff.c" 0 0 1325 907 0 2 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\ffunicode.c" 22 22 1031 594 0 1 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\main.c" -4 -23 1325 907 1 4 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\mmc_rspi.c" 0 0 1325 907 0 3 
+"C:\user\Prj_Renesas\ff_rx220\ff_rx220\resetprg.c" 0 0 1027 837 0 0 
+[LOADED_PROJECTS]
+"ff_rx220" 
+[END]

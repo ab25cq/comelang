@@ -1,0 +1,17 @@
+obj\startup.o
+-cpu
+F3340
+-o
+obj\a.out
+-D
+C:\user\Prj_V850\ff_v850\ff_v850.dir
+obj\uart_v850es.o
+obj\xprintf.o
+obj\ff.o
+obj\ffunicode.o
+obj\main.o
+obj\mmc_v850es.o
+-lm
+-lc
+-lr
+"C:\Program Files\NEC Electronics Tools\CA850\V3.50\lib850\r32\rompcrt.o"
