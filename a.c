@@ -1,10 +1,8 @@
-#ifndef __noreturn
-#define __noreturn __attribute((noreturn))
-#endif
+#include <comelang.h>
 
-
-void __noreturn __breakpoint();
-
-void __noreturn panic_unsupported();
-
-void __noreturn panic(const char *fmt, ...);
+int main(int argc, char** argv)
+{
+    "AAABBBAAADDD".sub_plain("AAA", "XXX").puts();
+    
+    return 0;
+}

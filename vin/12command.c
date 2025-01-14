@@ -21,7 +21,7 @@ void ViWin*::commandModeView(ViWin* self, Vi* nvi)
     self.textsView(nvi);
 
     wattron(self.win, A_REVERSE);
-    mvwprintw(self.win, self.height-1, 0, ":%s", nvi.commandString);
+    mvwprintw(self.win, self.height-1, 0, ":%s", nvi.commandString.printable());
     wattroff(self.win, A_REVERSE);
 
     wrefresh(self.win);
@@ -302,6 +302,24 @@ void ViWin*::commandModeInput(ViWin* self, Vi* nvi)
             nvi.mode = kEditMode;
             break;
             
+        case 'V'-'A'+1: {
+            auto key2 = self.getKey(false);
+            
+            if(key2 == 10) {
+                char a[128];
+                a[0] = 13;
+                a[1] = '\0';
+                strncat(nvi.commandString, a, 128);
+            }
+            else {
+                char a[128];
+                a[0] = key2;
+                a[1] = '\0';
+                strncat(nvi.commandString, a, 128);
+            }
+            }
+            break;
+            
         case '\t':
             self.fileCompetion(nvi);
             break;
@@ -345,23 +363,29 @@ void ViWin*::input(ViWin* self, Vi* nvi) version 12
 
 void ViWin*::subAllTextsFromCommandMode(ViWin* self, Vi* nvi) 
 {
-    auto command = string(nvi.commandString).scan(r"%s/\(.+\)/\(.*\)/");
-
-    auto str = command.item(1, null);
-    auto replace = command.item(2, null);
+    var p = strstr(nvi.commandString, "%s/") + strlen("%s/");
     
-    if(str != null && replace != null) {
-        self.pushUndo();
-        int it2 = 0;
-        foreach(it, self.texts) {
-            nvi.searchString.to_string().to_regex().rescue {null}.if {
-                auto new_line = it.to_string().sub(Value, replace).to_wstring();
+    var p2 = strstr(p, "/") + strlen("/");
+    var p3 = strstr(p2, "/");
+    
+    if(p && p2 && p3) {
+        auto str = p.substring(0, p2 -p -1);
+        auto replace = p2.substring(0, p3 - p2);
+        
+        if(str != null && replace != null) {
+            self.pushUndo();
+            int it2 = 0;
+            foreach(it, self.texts) {
+                wstring new_line;
+                str.to_regex().rescue { null }.if {
+                    new_line = it.to_string().sub(Value, replace).to_wstring();
+                }
                 
                 self.texts.replace(it2, new_line);
                 self.texts_length.replace(it2, wcslen(new_line));
+    
+                it2++;
             }
-
-            it2++;
         }
     }
 }

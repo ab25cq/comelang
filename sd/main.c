@@ -92,20 +92,17 @@ int  main( void )
 
     
     ret = fat_test_init();
-    while(1) {
-        if( ret != 0 ) {
-            printf("fat_test_init()  ERROR!\n" );
-        }
-        else {
-            puts("SUCCESS");
-        }
+    if( ret != 0 ) {
+        printf("fat_test_init()  ERROR!\n" );
+    }
+    else {
+        puts("SUCCESS");
     }
 
-/*
     ret = fat_test_read( buff_fattest, DEF_FATBUFF );
     sprintf( sbuff, "fat_test_read()  ret = %d\n", ret );
     puts(sbuff);
-
+    
     if( ret > 0 ) {
         wsize = ret;
         ret = fat_test_write( "w_test1.txt", buff_fattest, wsize );
@@ -120,7 +117,6 @@ int  main( void )
     buff_fattest[ 11 ] = 0xa;
     buff_fattest[ 12 ] = 0x0;
     puts(buff_fattest);
-*/
 
     return  0;
 }

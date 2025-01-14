@@ -4918,6 +4918,37 @@ uniq string char*::printable(char* str)
     return result;
 }
 
+uniq string char*::sub_plain(char* self, char* str, char* replace)
+{
+    if(str == null || replace == null) {
+        return string(self);
+    }
+
+    auto result = new buffer.initialize();
+    
+    char* p = self;
+    
+    while(true) {
+        char* p2 = strstr(p, str);
+        
+        if(p2 == null) {
+            p2 = p;
+            while(*p2) {
+                p2++;
+            }
+            result.append(p, p2 - p);
+            break;
+        }
+        
+        result.append(p, p2 - p);
+        result.append_str(replace);
+        
+        p = p2 + strlen(str);
+    }
+
+    return result.to_string();
+}
+
 //////////////////////////////
 /// base library(path library)
 //////////////////////////////
