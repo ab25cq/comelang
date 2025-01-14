@@ -376,10 +376,7 @@ void ViWin*::subAllTextsFromCommandMode(ViWin* self, Vi* nvi)
             self.pushUndo();
             int it2 = 0;
             foreach(it, self.texts) {
-                wstring new_line;
-                str.to_regex().rescue { null }.if {
-                    new_line = it.to_string().sub(Value, replace).to_wstring();
-                }
+                wstring new_line = it.to_string().sub_plain(str, replace).to_wstring();
                 
                 self.texts.replace(it2, new_line);
                 self.texts_length.replace(it2, wcslen(new_line));

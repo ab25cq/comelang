@@ -227,6 +227,15 @@ void ViWin*::inputSearchlMode(ViWin* self, Vi* nvi)
         case 'C'-'A'+1:
             nvi.exitFromSearchMode();
             break;
+            
+        case 'V'-'A'+1: {
+            key = self.getKey(false);
+            char a[2];
+            a[0] = key;
+            a[1] = '\0';
+            wcsncat(nvi.searchString, a.to_wstring(), 128);
+            }
+            break;
 
         case 'W'-'A'+1: {
             while(true) {
