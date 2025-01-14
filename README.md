@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+12.0.9 char*::sub_plain added to comelang.h. vin bug fixed.
 12.0.8 minux2 timer intterupt task switching pico os.
 12.0.7 minux1 roudrobin task switching pico os, minux2 timer intterupt task switching pico os.
 12.0.6 arrange cpp option and clang option.
