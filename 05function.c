@@ -777,12 +777,14 @@ bool strmemcmp(char* p, char* p2)
     return !terminated && memcmp(p, p2, strlen(p2)) == 0;
 }
 
-string parse_function_attribute(sInfo* info=info)
+string,string parse_function_attribute(sInfo* info=info)
 {
     buffer*% asm_fun_name = new buffer();
+    buffer*% result = new buffer();
     
     while(true) {
         if(strmemcmp(info->p, "__attribute__")) {
+            char* head = info.p;
             info->p += strlen("__attribute__");
             skip_spaces_and_lf();
 
@@ -808,8 +810,14 @@ string parse_function_attribute(sInfo* info=info)
             }
 
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__declspec")) {
+            char* head = info.p;
+            
             info->p += strlen("__declspec");
             skip_spaces_and_lf();
 
@@ -835,14 +843,28 @@ string parse_function_attribute(sInfo* info=info)
             }
 
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "_Noreturn")) {
+            char* head = info.p;
+            
             info->p += strlen("_Noreturn");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__noreturn")) {
+            char* head = info.p;
+            
             info->p += strlen("__noreturn");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__asm__")) {
             info->p += strlen("__asm__");
@@ -889,18 +911,35 @@ string parse_function_attribute(sInfo* info=info)
             skip_spaces_and_lf();
         }
         else if(strmemcmp(info->p, "__attribute_pure__")) {
+            char* head = info.p; 
+            
             info->p += strlen("__attribute_pure__");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__malloc_like")) {
+            char* head = info.p; 
+            
             info->p += strlen("__malloc_like");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__result_use_check")) {
+            char* head = info.p; 
+            
             info->p += strlen("__result_use_check");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__alloc_size2")) {
+            char* head = info.p; 
+            
             info->p += strlen("__alloc_size2");
             skip_spaces_and_lf();
             
@@ -929,8 +968,13 @@ string parse_function_attribute(sInfo* info=info)
                     }
                 }
             }
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__alloc_size")) {
+            char* head = info.p;
+            
             info->p += strlen("__alloc_size");
             skip_spaces_and_lf();
             
@@ -959,8 +1003,13 @@ string parse_function_attribute(sInfo* info=info)
                     }
                 }
             }
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__nonnull")) {
+            char* head = info.p;
+            
             info->p += strlen("__nonnull");
             skip_spaces_and_lf();
             
@@ -989,8 +1038,13 @@ string parse_function_attribute(sInfo* info=info)
                     }
                 }
             }
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "_Nonnull")) {
+            char* head = info.p;
+            
             info->p += strlen("_Nonnull");
             skip_spaces_and_lf();
             
@@ -1019,8 +1073,13 @@ string parse_function_attribute(sInfo* info=info)
                     }
                 }
             }
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__alloc_align")) {
+            char* head = info.p;
+            
             info->p += strlen("__alloc_align");
             skip_spaces_and_lf();
             
@@ -1049,28 +1108,58 @@ string parse_function_attribute(sInfo* info=info)
                     }
                 }
             }
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__attribute_malloc__")) {
+            char* head = info.p;
+            
             info->p += strlen("__attribute_malloc__");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__attr_dealloc_fclose")) {
+            char* head = info.p;
+            
             info->p += strlen("__attr_dealloc_fclose");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__wur")) {
+            char* head = info.p;
+            
             info->p += strlen("__wur");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__pure2")) {
+            char* head = info.p;
+            
             info->p += strlen("__pure2");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__pure")) {
+            char* head = info.p;
+            
             info->p += strlen("__pure");
             skip_spaces_and_lf();
+            
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
         else if(strmemcmp(info->p, "__asm")) {
+            char* head = info.p;
+            
             info->p += strlen("__asm");
             skip_spaces_and_lf();
 
@@ -1096,42 +1185,16 @@ string parse_function_attribute(sInfo* info=info)
             }
 
             skip_spaces_and_lf();
-        }
-/*
-        else if(*info->p == '_') {
-            string word = parse_word();
-
-            if(*info->p == '(') {
-                int brace_num = 0;
-                while(*info->p) {
-                    if(*info->p == '(') {
-                        info->p++;
-                        brace_num++;
-                    }
-                    else if(*info->p == ')') {
-                        info->p++;
-                        brace_num--;
-    
-                        if(brace_num == 0) {
-                            break;
-                        }
-                    }
-                    else {
-                        info->p++;
-                    }
-                }
-            }
-
-            skip_spaces_and_lf();
             
+            char* tail = info.p;
+            result.append(head, tail-head);
         }
-*/
         else {
             break;
         }
     }
 
-    return asm_fun_name.to_string();
+    return (asm_fun_name.to_string(), result.to_string());
 }
 
 string parse_attribute(sInfo* info=info)
@@ -2178,7 +2241,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                                     , param_types, param_names
                                     , param_default_parametors
                                     , true@external, var_args, null@block
-                                    , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_, false@uniq_);
+                                    , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_
+                                    , false@uniq_);
                 
                 var fun2 = info.funcs[string(fun_name)]??;
                 if(fun2 == null || fun2.mExternal) {
@@ -2460,7 +2524,7 @@ sNode*% parse_function(sInfo* info)
     char* header_head = info.p;
     char* source_head = info.p;
     
-    string struct_attribute = parse_struct_attribute();
+    string attribute = parse_struct_attribute();
     
     sType*% result_type = null;
     string var_name = null;
@@ -2758,7 +2822,7 @@ sNode*% parse_function(sInfo* info)
                                 , static_fun@static_
                                 , header_buf.to_string()
                                 , string(info->sname)
-                                , info, inline_fun, uniq_fun);
+                                , info, inline_fun, uniq_fun, attribute);
     
         if(info.in_class) {
             info.funcs.insert(clone fun_name, fun);
@@ -2798,7 +2862,8 @@ sNode*% parse_function(sInfo* info)
                                 , param_types, param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
-                                , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_, false@uniq_);
+                                , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_
+                                , false@uniq_, attribute);
             
             var fun2 = info.funcs[string(fun_name)]??;
             if(fun2 == null || fun2.mExternal) {
@@ -2815,7 +2880,7 @@ sNode*% parse_function(sInfo* info)
             return new sFunNode(fun, info) implements sNode;
         }
         else {
-            string asm_fun = parse_function_attribute();
+            var asm_fun, fun_attribute = parse_function_attribute();
             
             if(asm_fun !== "") {
                 fun_name = string(asm_fun);
@@ -2838,7 +2903,8 @@ sNode*% parse_function(sInfo* info)
                                 , param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
-                                , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_, false@uniq_);
+                                , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_, false@uniq_
+                                , attribute, fun_attribute);
             
             var fun2 = info.funcs[string(fun_name)]??;
             if(fun2 == null || fun2.mExternal) {

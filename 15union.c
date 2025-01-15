@@ -22,7 +22,12 @@ void output_union(sClass* klass, sInfo* info)
         buf.append_str(";\n");
     }
     
-    buf.append_format("};\n");
+    if(klass->mAttribute == null) {
+        buf.append_str("};\n");
+    }
+    else {
+        buf.append_format("} %s;\n", klass->mAttribute);
+    }
     
     if(info.struct_definition[name]?? == null) {
         info.struct_definition.insert(name, buf);
@@ -131,6 +136,14 @@ sNode*% parse_union(string type_name, sInfo* info)
         parse_sharp();
     }
     
+    string struct_attribute = parse_struct_attribute();
+    
+    if(struct_attribute === "") {
+    }
+    else {
+        klass->mAttribute = struct_attribute;
+    }
+    
     sNode*% node = new sUnionNode(type_name, klass, info) implements sNode;
     
     node_compile(node, info).elif {
@@ -222,6 +235,18 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
         header.append(source_head, source_tail - source_head);
         
         add_come_code_at_come_header(info, "%s;\n", header.to_string());
+        
+        if(struct_attribute === "" && struct_attribute2 === "") {
+        }
+        else if(struct_attribute === "") {
+            klass->mAttribute = struct_attribute2;
+        }
+        else if(struct_attribute2 === "") {
+            klass->mAttribute = struct_attribute;
+        }
+        else {
+            klass->mAttribute = struct_attribute + " " + struct_attribute2;
+        }
         
         sNode*% node = new sUnionNode(type_name, klass, info) implements sNode;
         

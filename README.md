@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 12.1.1
+version 12.1.2
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+12.1.2 __attribute__ more proper
 12.1.1 __attribute__ more proper
 12.1.0 vin
 12.0.9 char*::sub_plain added to comelang.h. vin bug fixed.

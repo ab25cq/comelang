@@ -482,14 +482,25 @@ string output_function(sFun* fun, sInfo* info)
         
         string str = make_lambda_type_name_string(fun->mResultType, output2.to_string(), info);
         
+        if(fun->mAttribute !== "") {
+            output.append_str(s"\{fun->mAttribute} ");
+        }
         if(fun->mStatic) {
             output.append_str("static ");
+        }
+        if(fun->mInline) {
+            output.append_str("inline ");
         }
         
         output.append_str(str);
         
         info.module.mSourceHead.append_str(output.to_string());
-        info.module.mSourceHead.append_str(";\n");
+        if(fun->mFunAttribute !== "") {
+            info.module.mSourceHead.append_str(s" \{fun->mFunAttribute};\n");
+        }
+        else {
+            info.module.mSourceHead.append_str(";\n");
+        }
     }
     else if(fun->mResultType->mArrayNum.length() > 0) {
         sType*% base_result_type = fun->mResultType;
@@ -497,11 +508,14 @@ string output_function(sFun* fun, sInfo* info)
         
         string result_type_str = make_type_name_string(base_result_type, no_static:true);
         
+        if(fun->mAttribute !== "") {
+            output.append_str(s"\{fun->mAttribute} ");
+        }
         if(fun->mStatic) {
             output.append_str("static ");
         }
-        else if(fun->mInline) {
-            output.append_str("static inline ");
+        if(fun->mInline) {
+            output.append_str("inline ");
         }
         
         output.append_str(result_type_str);
@@ -541,16 +555,24 @@ string output_function(sFun* fun, sInfo* info)
         output.append_format("))[%s]", cvalue.c_value);
         
         info.module.mSourceHead.append_str(output.to_string());
-        info.module.mSourceHead.append_str(";\n");
+        if(fun->mFunAttribute !== "") {
+            info.module.mSourceHead.append_str(s" \{fun->mFunAttribute};\n");
+        }
+        else {
+            info.module.mSourceHead.append_str(";\n");
+        }
     }
     else {
         string result_type_str = make_type_name_string(fun->mResultType, no_static:true);
         
+        if(fun->mAttribute !== "") {
+            output.append_str(s"\{fun->mAttribute} ");
+        }
         if(fun->mStatic) {
             output.append_str("static ");
         }
-        else if(fun->mInline) {
-            output.append_str("static inline ");
+        if(fun->mInline) {
+            output.append_str("inline ");
         }
         
         output.append_str(result_type_str);
@@ -580,7 +602,16 @@ string output_function(sFun* fun, sInfo* info)
         output.append_str(")");
         
         info.module.mSourceHead.append_str(output.to_string());
-        info.module.mSourceHead.append_str(";\n");
+        if(fun->mFunAttribute !== "") {
+            info.module.mSourceHead.append_str(s" \{fun->mFunAttribute};\n");
+        }
+        else {
+            info.module.mSourceHead.append_str(";\n");
+        }
+    }
+    
+    if(fun->mFunAttribute !== "") {
+        output.append_str(s" \{fun->mFunAttribute} ");
     }
     
     output.append_str("{\n");
@@ -620,11 +651,22 @@ string header_function(sFun* fun, sInfo* info)
         
         string str = make_lambda_type_name_string(fun->mResultType, output2.to_string(), info);
         
+        if(fun->mAttribute !== "") {
+            output.append_str(s"\{fun->mAttribute} ");
+        }
         if(fun->mStatic) {
             output.append_str("static ");
         }
+        if(fun->mInline) {
+            output.append_str("inline ");
+        }
         output.append_str(str);
-        output.append_str(";\n");
+        if(fun->mFunAttribute !== "") {
+            output.append_str(s" \{fun->mFunAttribute};\n");
+        }
+        else {
+            output.append_str(";\n");
+        }
     }
     else if(fun->mResultType->mArrayNum.length() > 0) {
         sType*% base_result_type = fun->mResultType;
@@ -632,8 +674,14 @@ string header_function(sFun* fun, sInfo* info)
         
         string result_type_str = make_type_name_string(base_result_type, no_static:true);
         
+        if(fun->mAttribute !== "") {
+            output.append_str(s"\{fun->mAttribute} ");
+        }
         if(fun->mStatic) {
             output.append_str("static ");
+        }
+        if(fun->mInline) {
+            output.append_str("inline ");
         }
         
         output.append_str(result_type_str);
@@ -668,13 +716,25 @@ string header_function(sFun* fun, sInfo* info)
         CVALUE*% cvalue = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        output.append_format("))[%s];\n", cvalue.c_value);
+        if(fun->mFunAttribute !== "") {
+            output.append_format("))[%s]", cvalue.c_value);
+            output.append_str(s" \{fun->mFunAttribute};\n");
+        }
+        else {
+            output.append_format("))[%s];\n", cvalue.c_value);
+        }
     }
     else {
         string result_type_str = make_type_name_string(fun->mResultType, no_static:true);
         
+        if(fun->mAttribute !== "") {
+            output.append_str(s"\{fun->mAttribute} ");
+        }
         if(fun->mStatic) {
             output.append_str("static ");
+        }
+        if(fun->mInline) {
+            output.append_str("inline ");
         }
         
         output.append_str(result_type_str);
@@ -701,7 +761,12 @@ string header_function(sFun* fun, sInfo* info)
             i++;
         }
         
-        output.append_str(");\n");
+        if(fun->mFunAttribute !== "") {
+            output.append_str(s") \{fun->mFunAttribute};\n");
+        }
+        else {
+            output.append_str(");\n");
+        }
     }
     
     return output.to_string();
