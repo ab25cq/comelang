@@ -1250,10 +1250,14 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         
         if(xisalpha(*info->p) || *info->p == '_') {
             
+            (void)parse_struct_attribute();
             var type, name, err = parse_type();
+            (void)parse_struct_attribute();
             
             if(err) {
+                (void)parse_struct_attribute();
                 var type,name = parse_variable_name(type@base_type_name, true@first, info);
+                (void)parse_struct_attribute();
                 
                 if(*info->p == '=' && *(info->p+1) != '>' && !info->no_assign) {
                     info->p++;
@@ -1300,7 +1304,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         info.p = head;
         info.sline = head_sline;
         
+        (void)parse_struct_attribute();
         var type, name, err = parse_type(parse_variable_name:false);
+        (void)parse_struct_attribute();
         
         if(err && strmemcmp(info->p, "self")) {
             attr_define = true;
@@ -1378,9 +1384,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             exit(2);
         }
         
-        parse_sharp();
+        (void)parse_struct_attribute();
         var type2,var_name = parse_variable_name(base_type, true@first, info);
-        parse_sharp();
+        (void)parse_struct_attribute();
         
         
         if(*info->p == '=') {
@@ -1416,9 +1422,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             info->p++;
             skip_spaces_and_lf();
             
-            parse_sharp();
+            (void)parse_struct_attribute();
             var type2, var_name = parse_variable_name(base_type, false@first, info);
-            parse_sharp();
+            (void)parse_struct_attribute();
             
             if(*info->p == '=')  {
                 info->p++;
@@ -1464,8 +1470,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         info.p = head;
         info.sline = head_sline;
         
-        parse_sharp();
+        (void)parse_struct_attribute();
         var type, name, err = parse_type(parse_variable_name:false);
+        (void)parse_struct_attribute();
         
         if(!err) {
             printf("%s %d: parse_type failed\n", info->sname, info->sline);
@@ -1549,8 +1556,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         info.sline = head_sline;
         
         if(is_type_name_flag) {
-            parse_sharp();
+            (void)parse_struct_attribute();
             var type, name, err = parse_type(parse_variable_name:true);
+            (void)parse_struct_attribute();
             
             if(!err) {
                 printf("%s %d: parse_type failed\n", info->sname, info->sline);

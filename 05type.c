@@ -270,16 +270,18 @@ void parse_sharp(sInfo* info=info) version 5
                 }
             }
         }
-        else if(strmemcmp(info.p, "__attribute__")) {
+/*
+        else if(!info.parsing_struct && strmemcmp(info.p, "__attribute__")) {
             info->p += strlen("__attribute__");
             skip_spaces_and_lf2();
             skip_paren(info);
         }
-        else if(strmemcmp(info.p, "__attribute")) {
+        else if(!info.parsing_struct && strmemcmp(info.p, "__attribute")) {
             info->p += strlen("__attribute");
             skip_spaces_and_lf2();
             skip_paren(info);
         }
+*/
         else if(strmemcmp(info.p, "__extension__")) {
             info->p += strlen("__extension__");
             skip_spaces_and_lf2();
@@ -1276,6 +1278,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             parse_sharp();
             
             if(*info->p != '>') {
+                (void)parse_struct_attribute();
+                
                 type_name = parse_word();
                 
                 parse_sharp();
@@ -1316,9 +1320,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     
                     skip_block(info);
                     
-                    if(strlen(info->p) >= strlen("__attribute__") && memcmp(info->p, "__attribute__", strlen("__attribute__")) == 0) {
-                        parse_attribute();
-                    }
+                    (void)parse_struct_attribute();
                     
                     if(*info->p == ';') {
                         info.p = head;
@@ -1333,7 +1335,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                         //info.p = head;
                         //info.sline = head_sline;
                         
-                        sNode*% node = parse_struct(type_name, info);
+                        sNode*% node = parse_struct(type_name, s"", info);
                         
                         node_compile(node).elif {
                             return ((sType*%)null, (string)null, false);
@@ -1855,7 +1857,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type_name = xsprintf("anonymous_typeX%d", ++anonymous_num);
             }
             
-            sNode*% node = parse_struct(type_name, info);
+            sNode*% node = parse_struct(type_name, s"", info);
             
             node_compile(node).elif {
                 err_msg(info, "parse_struct is failed");
@@ -1926,7 +1928,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         
         if(parse_variable_name) {
-            parse_sharp();
+            (void)parse_struct_attribute();
             if(var_name_between_brace && *info->p == '(') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -1965,6 +1967,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mSizeNum = node;
             }
+            (void)parse_struct_attribute();
         }
     }
     else if(lambda_flag) {
@@ -2151,7 +2154,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type = clone come_value.type;
 
         if(parse_variable_name) {
-            parse_sharp();
+            (void)parse_struct_attribute();
             
             if(var_name_between_brace && *info->p == '(') {
                 info->p++;
@@ -2191,6 +2194,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mSizeNum = node;
             }
+            (void)parse_struct_attribute();
         }
     }
     else {
@@ -2531,7 +2535,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
 
         if(parse_variable_name) {
-            parse_sharp();
+            (void)parse_struct_attribute();
             
             if(var_name_between_brace && *info->p == '(') {
                 info->p++;
@@ -2571,6 +2575,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mSizeNum = node;
             }
+            (void)parse_struct_attribute();
         }
     }
     parse_sharp();

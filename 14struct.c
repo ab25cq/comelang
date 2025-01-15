@@ -78,7 +78,12 @@ void output_struct(sClass* klass, sInfo* info)
         buf.append_str(";\n");
     }
             
-    buf.append_str("};\n");
+    if(klass->mAttribute == null) {
+        buf.append_str("};\n");
+    }
+    else {
+        buf.append_format("} %s;\n", klass->mAttribute);
+    }
             
     if(info.struct_definition[name]?? == null && !existance_generics) {
         info.struct_definition.insert(name, buf);
@@ -110,7 +115,13 @@ void output_struct_come_header(sClass* klass, sInfo* info)
             buf.append_str(make_define_var_no_solved(type, name,original_type_name:true));
             buf.append_str(";\n");
         }
-        buf.append_str("};\n");
+            
+        if(klass->mAttribute == null) {
+            buf.append_str("};\n");
+        }
+        else {
+            buf.append_format("} %s;\n", klass->mAttribute);
+        }
         
         if(klass.mDeclareSName === info->base_sname) {
             add_come_code_at_come_header(info, "%s", buf.to_string());
@@ -361,7 +372,7 @@ class sClassNode extends sNodeBase
     }
 };
 
-sNode*% parse_struct(string type_name, sInfo* info)
+sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
 {
     sClass* klass;
     if(info.classes.at(type_name, null) == null) {
@@ -471,9 +482,24 @@ sNode*% parse_struct(string type_name, sInfo* info)
         }
         parse_sharp();
     }
+    
+    string struct_attribute2 = parse_struct_attribute();
+    
     if(parent_class) {
         klass->mParentClassName = clone parent_class->mName;
         info.classes.insert(klass->mName, clone klass);
+    }
+    
+    if(struct_attribute === "" && struct_attribute2 === "") {
+    }
+    else if(struct_attribute === "") {
+        klass->mAttribute = struct_attribute2;
+    }
+    else if(struct_attribute2 === "") {
+        klass->mAttribute = struct_attribute;
+    }
+    else {
+        klass->mAttribute = struct_attribute + " " + struct_attribute2;
     }
     
     sNode*% node = new sStructNode(string(type_name), klass, info) implements sNode;
@@ -485,10 +511,37 @@ sNode*% parse_struct(string type_name, sInfo* info)
     return new sNothingNode(info) implements sNode;
 }
 
+string parse_struct_attribute(sInfo* info=info)
+{
+    parse_sharp();
+    buffer*% result = new buffer();
+    while(1) {
+        if(memcmp(info->p, "__attribute__", strlen("__attribute__")) == 0) {
+            char* head = info.p;
+            
+            info->p += strlen("__attribute__");
+            skip_spaces_and_lf();
+            skip_paren(info);
+            
+            char* tail = info->p;
+            
+            result.append(head, tail-head);
+        }
+        else {
+            break;
+        }
+    }
+    parse_sharp();
+    
+    return result.to_string();
+}
+
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
 {
     if(buf === "struct") {
         char* source_head = head;
+        
+        string struct_attribute = parse_struct_attribute();
         
         string type_name = parse_word();
         
@@ -759,7 +812,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 parse_sharp();
             }
             
-            parse_attribute();
+            string struct_attribute2 = parse_struct_attribute();
             
             info.generics_type_names.reset();
             
@@ -775,6 +828,18 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             if(parent_class) {
                 struct_class->mParentClassName = clone parent_class->mName;
                 info.classes.insert(struct_class->mName, clone struct_class);
+            }
+            
+            if(struct_attribute === "" && struct_attribute2 === "") {
+            }
+            else if(struct_attribute === "") {
+                struct_class->mAttribute = struct_attribute2;
+            }
+            else if(struct_attribute2 === "") {
+                struct_class->mAttribute = struct_attribute;
+            }
+            else {
+                struct_class->mAttribute = struct_attribute + " " + struct_attribute2;
             }
             
             return new sStructNode(string(type_name), struct_class, info) implements sNode;
@@ -1151,9 +1216,11 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     }
     
     if(define_struct) {
+        string struct_attribute = parse_struct_attribute();
+        
         string type_name = parse_word();
         
-        return parse_struct(type_name, info);
+        return parse_struct(type_name, struct_attribute, info);
     }
     
     return inherit(buf, head, head_sline, info);

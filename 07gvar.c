@@ -174,7 +174,9 @@ sNode*% parse_global_variable(sInfo* info)
             var type, name, err = parse_type();
             
             if(err) {
+                (void)parse_struct_attribute();
                 var type,name = parse_variable_name(type@base_type_name, true@first, info);
+                (void)parse_struct_attribute();
                 
                 if(*info->p == '=' && *(info->p+1) != '>') {
                     info->p++;
@@ -221,9 +223,9 @@ sNode*% parse_global_variable(sInfo* info)
             exit(2);
         }
         
-        parse_sharp();
+        (void)parse_struct_attribute();
         var type2, var_name = parse_variable_name(base_type, true@first, info);
-        parse_sharp();
+        (void)parse_struct_attribute();
         
         if(*info->p == '=') {
             info->p++;
@@ -268,9 +270,9 @@ sNode*% parse_global_variable(sInfo* info)
             info->p++;
             skip_spaces_and_lf();
             
-            parse_sharp();
+            (void)parse_struct_attribute();
             var type2, var_name = parse_variable_name(base_type, false@first, info);
-            parse_sharp();
+            (void)parse_struct_attribute();
             
             if(*info->p == '=')  {
                 info->p++;
@@ -328,7 +330,9 @@ sNode*% parse_global_variable(sInfo* info)
         }
     }
     else {
+        (void)parse_struct_attribute();
         var result_type, var_name,err = parse_type(parse_variable_name:true);
+        (void)parse_struct_attribute();
         
         if(!err) {
             printf("%s %d: parse_type failed\n", info->sname, info->sline);

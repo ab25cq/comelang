@@ -51,6 +51,8 @@ struct sClass
     bool mNobodyStruct;
     
     string mParentClassName;
+    
+    string mAttribute;
 };
 
 struct sInfo;
@@ -643,6 +645,7 @@ sNode*% craete_logical_denial(sNode*% node, sInfo* info);
 tup: sType*%,string,bool backtrace_parse_type(bool parse_variable_name=false,sInfo* info=info);
 void transpile_toplevel(bool block=false, sInfo* info=info);
 void skip_pointer_attribute(sInfo* info=info);
+void skip_paren(sInfo* info);
 sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info);
 sNode*% parse_comma_block(sInfo* info=info);
 bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=false, sInfo* info=info);
@@ -772,11 +775,12 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 /// 14struct.c
 /////////////////////////////////////////////////////////////////////
+string parse_struct_attribute(sInfo* info=info);
 sNode*% create_nothing_node(sInfo* info=info);
 bool is_contained_method_generics_types(sType* type, sInfo* info);
 bool is_contained_generics_types(sType* type, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 14;
-sNode*% parse_struct(string type_name, sInfo* info);
+sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info);
 string get_none_generics_name(char* class_name);
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98;
 bool output_generics_struct(sType* type, sType* generics_type, sInfo* info);

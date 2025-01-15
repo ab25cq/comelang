@@ -142,7 +142,7 @@ sNode*% parse_enum(string type_name, sInfo* info)
         klass = clone info.classes.at(type_name, null);
     }
     
-    parse_sharp();
+    parse_struct_attribute();
     
     sType*% type_elements = null;
     if(*info->p == ':') {
@@ -154,26 +154,26 @@ sNode*% parse_enum(string type_name, sInfo* info)
         type_elements = type;
     }
     
-    parse_sharp();
+    parse_struct_attribute();
     
     expected_next_character('{');
     
-    parse_sharp();
+    parse_struct_attribute();
     
     list<tup: string,sNode*%>*% elements = new list<tup: string,sNode*%>();
     
     while(true) {
-        parse_sharp();
+        parse_struct_attribute();
 
         string element_name = parse_word();
 
-        parse_sharp();
+        parse_struct_attribute();
         
         if(*info->p == '=') {
             info->p++;
             skip_spaces_and_lf();
             
-            parse_sharp();
+            parse_struct_attribute();
             
             bool no_comma = info.no_comma;
             info.no_comma = true;
@@ -191,14 +191,14 @@ sNode*% parse_enum(string type_name, sInfo* info)
             }
         }
 
-        parse_sharp();
+        parse_struct_attribute();
         
         if(*info->p == ',') {
             info->p++;
             skip_spaces_and_lf();
         }
 
-        parse_sharp();
+        parse_struct_attribute();
         
         if(*info->p == '}') {
             info->p++;
@@ -207,7 +207,7 @@ sNode*% parse_enum(string type_name, sInfo* info)
         }
     }
     
-    parse_sharp();
+    parse_struct_attribute();
     
     return new sEnumNode(type_name, elements, type_elements, info) implements sNode;
 }
@@ -220,7 +220,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
         string type_name = null;
         sType*% type_elements = null;
         
-        parse_sharp();
+        parse_struct_attribute();
         
         if(*info->p == ':') {
             info->p++;
@@ -229,7 +229,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             var type,name,err = parse_type();
             
             type_elements = type;
-            parse_sharp();
+            parse_struct_attribute();
         }
         if(*info->p == '{') {
             type_name = string("");
@@ -239,13 +239,13 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             }
             else {
             }
-            parse_sharp();
+            parse_struct_attribute();
             
             type_name = parse_word();
             
             info.classes.insert(type_name, new sClass(name:type_name, enum_:true));
             
-            parse_sharp();
+            parse_struct_attribute();
             if(*info->p == ':') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -255,17 +255,17 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
                 type_elements = type;
             }
         }
-        parse_sharp();
+        parse_struct_attribute();
         
         expected_next_character('{');
-        parse_sharp();
+        parse_struct_attribute();
         
         list<tup: string,sNode*%>*% elements = new list<tup: string,sNode*%>();
         
         while(true) {
-            parse_sharp();
+            parse_struct_attribute();
             string element_name = parse_word();
-            parse_sharp();
+            parse_struct_attribute();
 
             if(*info->p == '=') {
                 info->p++;
@@ -282,13 +282,13 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             else {
                 elements.push_back((element_name, null));
             }
-            parse_sharp();
+            parse_struct_attribute();
 
             if(*info->p == ',') {
                 info->p++;
                 skip_spaces_and_lf();
             }
-            parse_sharp();
+            parse_struct_attribute();
 
             if(*info->p == '}') {
                 info->p++;

@@ -145,6 +145,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
     if(buf === "union") {
         char* source_head = info.p;
         
+        string struct_attribute = parse_struct_attribute();
+        
         string type_name = parse_word();
         
         sClass* klass;
@@ -168,7 +170,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
             }
             info.types.insert(type_name, clone type);
         }
-        parse_sharp();
         
         expected_next_character('{');
         
@@ -212,7 +213,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
             }
         }
     
-        parse_sharp();
+        string struct_attribute2 = parse_struct_attribute();
         
         char* source_tail = info.p;
         
