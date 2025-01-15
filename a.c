@@ -1,8 +1,13 @@
 #include <comelang.h>
 
-__attribute__((always_inline)) static inline int fun()
+__attribute__((constructor)) static void fun()
 {
-    return 3;
+    puts("CONSTRUCTOR");
+}
+
+__attribute__((constructor)) static void fun2()
+{
+    puts("CONSTRUCTOR2");
 }
 
 struct __attribute__((packed)) sData
