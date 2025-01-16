@@ -16,9 +16,12 @@ struct __attribute__((packed)) sData
     int b;
 };
 
+int __attribute__((aligned(16))) gBuf[256];
+
 int main(int argc, char** argv)
 {
     "AAABBBAAADDD".sub_plain("AAA", "XXX").puts();
+    
     
     return 0;
 }

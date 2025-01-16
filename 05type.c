@@ -70,6 +70,10 @@ void skip_paren(sInfo* info)
                 break;
             }
         }
+        else if(*info->p == '\0') {
+            err_msg(info, "invalid the source end. require )");
+            break;
+        }
         else {
             info->p++;
         }
@@ -1029,6 +1033,16 @@ sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* i
         expected_next_character(']');
     }
     
+    string attribute = parse_struct_attribute();
+    if(attribute !== "") {
+        if(result_type->mAttribute) {
+            result_type->mAttribute = result_type->mAttribute + " " + attribute;
+        }
+        else {
+            result_type->mAttribute = attribute;
+        }
+    }
+    
     parse_attribute();
     
     return (result_type, var_name);
@@ -1701,6 +1715,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             break;
         }
     }
+    string attribute = parse_struct_attribute();
     
     skip_pointer_attribute();
     
@@ -1927,8 +1942,13 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             return ((sType*%)null, (string)null, false);
         }
         
+        string attribute = parse_struct_attribute();
+        
+        if(attribute !== "") {
+            type->mAttribute = attribute;
+        }
+        
         if(parse_variable_name) {
-            (void)parse_struct_attribute();
             if(var_name_between_brace && *info->p == '(') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -1967,7 +1987,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mSizeNum = node;
             }
-            (void)parse_struct_attribute();
+        
+            string attribute2 = parse_struct_attribute();
+            
+            if(attribute !== "" && attribute2 !== "") {
+                type->mAttribute = attribute + " " + attribute2;
+            }
+            else if(attribute2 !== "") {
+                type->mAttribute = attribute2;
+            }
         }
     }
     else if(lambda_flag) {
@@ -2152,10 +2180,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         dec_stack_ptr(1, info);
         
         type = clone come_value.type;
+        
+        string attribute = parse_struct_attribute();
+        
+        if(attribute !== "") {
+            type->mAttribute = attribute;
+        }
 
         if(parse_variable_name) {
-            (void)parse_struct_attribute();
-            
             if(var_name_between_brace && *info->p == '(') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2194,7 +2226,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mSizeNum = node;
             }
-            (void)parse_struct_attribute();
+        
+            string attribute2 = parse_struct_attribute();
+            
+            if(attribute !== "" && attribute2 !== "") {
+                type->mAttribute = attribute + " " + attribute2;
+            }
+            else if(attribute2 !== "") {
+                type->mAttribute = attribute2;
+            }
         }
     }
     else {
@@ -2533,10 +2573,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             type->mMultipleTypes = true;
         }
+        
+        string attribute = parse_struct_attribute();
+        
+        if(attribute !== "") {
+            type->mAttribute = attribute;
+        }
 
         if(parse_variable_name) {
-            (void)parse_struct_attribute();
-            
             if(var_name_between_brace && *info->p == '(') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2575,7 +2619,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mSizeNum = node;
             }
-            (void)parse_struct_attribute();
+        
+            string attribute2 = parse_struct_attribute();
+            
+            if(attribute !== "" && attribute2 !== "") {
+                type->mAttribute = attribute + " " + attribute2;
+            }
+            else if(attribute2 !== "") {
+                type->mAttribute = attribute2;
+            }
         }
     }
     parse_sharp();
@@ -2603,7 +2655,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         expected_next_character(']');
     }
-    string asm_name = parse_attribute();
+    var asm_name,attribute2 = parse_attribute();
+    
+    if(attribute2 !== "") {
+        type->mAttribute = attribute2;
+    }
     
     type->mAsmName = asm_name;
     
@@ -2635,6 +2691,10 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type4->mUniq = type->mUniq;
         
         return (type4, var_name, true);
+    }
+    
+    if(attribute !== "") {
+        type->mAttribute = attribute;
     }
     
     return (type, var_name, true);

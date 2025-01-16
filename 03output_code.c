@@ -142,6 +142,10 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str(")");
     }
     
+    if(type->mAttribute) {
+        buf.append_str(" " + type->mAttribute);
+    }
+    
     return buf.to_string();
 }
 
@@ -182,6 +186,10 @@ string make_come_type_name_string(sType* type, sInfo* info=info)
     
     if(type->mHeap) {
         buf.append_str("%");
+    }
+    
+    if(type->mAttribute) {
+        buf.append_str(" " + type->mAttribute);
     }
     
     return buf.to_string();

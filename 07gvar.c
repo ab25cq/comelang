@@ -171,12 +171,14 @@ sNode*% parse_global_variable(sInfo* info)
         int sline = info.sline;
         
         if(xisalpha(*info->p) || *info->p == '_') {
+            parse_sharp();
             var type, name, err = parse_type();
+            parse_sharp();
             
             if(err) {
-                (void)parse_struct_attribute();
+                parse_sharp();
                 var type,name = parse_variable_name(type@base_type_name, true@first, info);
-                (void)parse_struct_attribute();
+                parse_sharp();
                 
                 if(*info->p == '=' && *(info->p+1) != '>') {
                     info->p++;
@@ -216,16 +218,18 @@ sNode*% parse_global_variable(sInfo* info)
     if(multiple_declare) {
         list<tup: sType*%,string,string>*% multiple_declare = new list<tup: sType*%,string,string>();
         
+        parse_sharp();
         var base_type, name, err = parse_type();
+        parse_sharp();
         
         if(!err) {
             printf("%s %d: parse_type failed\n", info->sname, info->sline);
             exit(2);
         }
         
-        (void)parse_struct_attribute();
+        parse_sharp();
         var type2, var_name = parse_variable_name(base_type, true@first, info);
-        (void)parse_struct_attribute();
+        parse_sharp();
         
         if(*info->p == '=') {
             info->p++;
@@ -270,9 +274,8 @@ sNode*% parse_global_variable(sInfo* info)
             info->p++;
             skip_spaces_and_lf();
             
-            (void)parse_struct_attribute();
+            parse_sharp();
             var type2, var_name = parse_variable_name(base_type, false@first, info);
-            (void)parse_struct_attribute();
             
             if(*info->p == '=')  {
                 info->p++;
@@ -330,9 +333,9 @@ sNode*% parse_global_variable(sInfo* info)
         }
     }
     else {
-        (void)parse_struct_attribute();
+        parse_sharp();
         var result_type, var_name,err = parse_type(parse_variable_name:true);
-        (void)parse_struct_attribute();
+        parse_sharp();
         
         if(!err) {
             printf("%s %d: parse_type failed\n", info->sname, info->sline);

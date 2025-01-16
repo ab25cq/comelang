@@ -1197,9 +1197,10 @@ string,string parse_function_attribute(sInfo* info=info)
     return (asm_fun_name.to_string(), result.to_string());
 }
 
-string parse_attribute(sInfo* info=info)
+string,string parse_attribute(sInfo* info=info)
 {
     buffer*% asm_fun_name = new buffer();
+    string attribute = s"";
     
     while(true) {
         if(strmemcmp(info->p, "__attribute_pure__")) {
@@ -1389,31 +1390,7 @@ string parse_attribute(sInfo* info=info)
             skip_spaces_and_lf();
         }
         else if(strmemcmp(info->p, "__attribute__")) {
-            info->p += strlen("__attribute__");
-            skip_spaces_and_lf();
-
-            if(*info->p == '(') {
-                int brace_num = 0;
-                while(*info->p) {
-                    if(*info->p == '(') {
-                        info->p++;
-                        brace_num++;
-                    }
-                    else if(*info->p == ')') {
-                        info->p++;
-                        brace_num--;
-    
-                        if(brace_num == 0) {
-                            break;
-                        }
-                    }
-                    else {
-                        info->p++;
-                    }
-                }
-            }
-
-            skip_spaces_and_lf();
+            attribute = parse_struct_attribute();
         }
         else if(strmemcmp(info->p, "__asm__")) {
             info->p += strlen("__asm__");
@@ -1491,7 +1468,7 @@ string parse_attribute(sInfo* info=info)
         }
     }
 
-    return asm_fun_name.to_string();
+    return (asm_fun_name.to_string(), attribute);
 }
 
 void transpile_toplevel(bool block=false, sInfo* info=info)
