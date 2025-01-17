@@ -236,9 +236,6 @@ argument, the casting might be incorrectly applied. */
 #define SET_PCRE_STACK_GUARD8(stack_guard) \
   pcre_stack_guard = stack_guard
 
-#define PCRE_ASSIGN_JIT_STACK8(extra, callback, userdata) \
-   pcre_assign_jit_stack(extra, callback, userdata)
-
 #define PCRE_COMPILE8(re, pat, options, error, erroffset, tables) \
   re = pcre_compile((char *)pat, options, error, erroffset, tables)
 
@@ -292,12 +289,6 @@ argument, the casting might be incorrectly applied. */
 #define PCRE_STUDY8(extra, re, options, error) \
   extra = pcre_study(re, options, error)
 
-#define PCRE_JIT_STACK_ALLOC8(startsize, maxsize) \
-  pcre_jit_stack_alloc(startsize, maxsize)
-
-#define PCRE_JIT_STACK_FREE8(stack) \
-  pcre_jit_stack_free(stack)
-
 #define pcre8_maketables pcre_maketables
 
 #endif /* SUPPORT_PCRE8 */
@@ -323,9 +314,6 @@ argument, the casting might be incorrectly applied. */
 #define SET_PCRE_STACK_GUARD16(stack_guard) \
   pcre16_stack_guard = (int (*)(void))stack_guard
 
-#define PCRE_ASSIGN_JIT_STACK16(extra, callback, userdata) \
-  pcre16_assign_jit_stack((pcre16_extra *)extra, \
-    (pcre16_jit_callback)callback, userdata)
 
 #define PCRE_COMPILE16(re, pat, options, error, erroffset, tables) \
   re = (pcre *)pcre16_compile((PCRE_SPTR16)pat, options, error, erroffset, \
@@ -386,12 +374,6 @@ argument, the casting might be incorrectly applied. */
 #define PCRE_STUDY16(extra, re, options, error) \
   extra = (pcre_extra *)pcre16_study((pcre16 *)re, options, error)
 
-#define PCRE_JIT_STACK_ALLOC16(startsize, maxsize) \
-  (pcre_jit_stack *)pcre16_jit_stack_alloc(startsize, maxsize)
-
-#define PCRE_JIT_STACK_FREE16(stack) \
-  pcre16_jit_stack_free((pcre16_jit_stack *)stack)
-
 #endif /* SUPPORT_PCRE16 */
 
 /* -----------------------------------------------------------*/
@@ -414,10 +396,6 @@ argument, the casting might be incorrectly applied. */
 
 #define SET_PCRE_STACK_GUARD32(stack_guard) \
   pcre32_stack_guard = (int (*)(void))stack_guard
-
-#define PCRE_ASSIGN_JIT_STACK32(extra, callback, userdata) \
-  pcre32_assign_jit_stack((pcre32_extra *)extra, \
-    (pcre32_jit_callback)callback, userdata)
 
 #define PCRE_COMPILE32(re, pat, options, error, erroffset, tables) \
   re = (pcre *)pcre32_compile((PCRE_SPTR32)pat, options, error, erroffset, \
@@ -478,11 +456,6 @@ argument, the casting might be incorrectly applied. */
 #define PCRE_STUDY32(extra, re, options, error) \
   extra = (pcre_extra *)pcre32_study((pcre32 *)re, options, error)
 
-#define PCRE_JIT_STACK_ALLOC32(startsize, maxsize) \
-  (pcre_jit_stack *)pcre32_jit_stack_alloc(startsize, maxsize)
-
-#define PCRE_JIT_STACK_FREE32(stack) \
-  pcre32_jit_stack_free((pcre32_jit_stack *)stack)
 
 #endif /* SUPPORT_PCRE32 */
 
@@ -551,14 +524,6 @@ cases separately. */
     SET_PCRE_STACK_GUARD8(stack_guard)
 
 #define STRLEN(p) (pcre_mode == PCRE32_MODE ? STRLEN32(p) : pcre_mode == PCRE16_MODE ? STRLEN16(p) : STRLEN8(p))
-
-#define PCRE_ASSIGN_JIT_STACK(extra, callback, userdata) \
-  if (pcre_mode == PCRE32_MODE) \
-    PCRE_ASSIGN_JIT_STACK32(extra, callback, userdata); \
-  else if (pcre_mode == PCRE16_MODE) \
-    PCRE_ASSIGN_JIT_STACK16(extra, callback, userdata); \
-  else \
-    PCRE_ASSIGN_JIT_STACK8(extra, callback, userdata)
 
 #define PCRE_COMPILE(re, pat, options, error, erroffset, tables) \
   if (pcre_mode == PCRE32_MODE) \
@@ -674,21 +639,6 @@ cases separately. */
   else \
     PCRE_GET_SUBSTRING_LIST8(rc, bptr, offsets, count, listptr)
 
-#define PCRE_JIT_STACK_ALLOC(startsize, maxsize) \
-  (pcre_mode == PCRE32_MODE ? \
-     PCRE_JIT_STACK_ALLOC32(startsize, maxsize) \
-    : pcre_mode == PCRE16_MODE ? \
-      PCRE_JIT_STACK_ALLOC16(startsize, maxsize) \
-      : PCRE_JIT_STACK_ALLOC8(startsize, maxsize))
-
-#define PCRE_JIT_STACK_FREE(stack) \
-  if (pcre_mode == PCRE32_MODE) \
-    PCRE_JIT_STACK_FREE32(stack); \
-  else if (pcre_mode == PCRE16_MODE) \
-    PCRE_JIT_STACK_FREE16(stack); \
-  else \
-    PCRE_JIT_STACK_FREE8(stack)
-
 #define PCRE_MAKETABLES \
   (pcre_mode == PCRE32_MODE ? pcre32_maketables() : pcre_mode == PCRE16_MODE ? pcre16_maketables() : pcre_maketables())
 
@@ -782,12 +732,6 @@ the three different cases. */
 #define STRLEN(p) ((pcre_mode == G(G(PCRE,BITONE),_MODE)) ? \
   G(STRLEN,BITONE)(p) : G(STRLEN,BITTWO)(p))
 
-#define PCRE_ASSIGN_JIT_STACK(extra, callback, userdata) \
-  if (pcre_mode == G(G(PCRE,BITONE),_MODE)) \
-    G(PCRE_ASSIGN_JIT_STACK,BITONE)(extra, callback, userdata); \
-  else \
-    G(PCRE_ASSIGN_JIT_STACK,BITTWO)(extra, callback, userdata)
-
 #define PCRE_COMPILE(re, pat, options, error, erroffset, tables) \
   if (pcre_mode == G(G(PCRE,BITONE),_MODE)) \
     G(PCRE_COMPILE,BITONE)(re, pat, options, error, erroffset, tables); \
@@ -874,17 +818,6 @@ the three different cases. */
   else \
     G(PCRE_GET_SUBSTRING_LIST,BITTWO)(rc, bptr, offsets, count, listptr)
 
-#define PCRE_JIT_STACK_ALLOC(startsize, maxsize) \
-  (pcre_mode == G(G(PCRE,BITONE),_MODE)) ? \
-     G(PCRE_JIT_STACK_ALLOC,BITONE)(startsize, maxsize) \
-    : G(PCRE_JIT_STACK_ALLOC,BITTWO)(startsize, maxsize)
-
-#define PCRE_JIT_STACK_FREE(stack) \
-  if (pcre_mode == G(G(PCRE,BITONE),_MODE)) \
-    G(PCRE_JIT_STACK_FREE,BITONE)(stack); \
-  else \
-    G(PCRE_JIT_STACK_FREE,BITTWO)(stack)
-
 #define PCRE_MAKETABLES \
   (pcre_mode == G(G(PCRE,BITONE),_MODE)) ? \
     G(G(pcre,BITONE),_maketables)() : G(G(pcre,BITTWO),_maketables)()
@@ -922,7 +855,6 @@ the three different cases. */
 #define SET_PCRE_CALLOUT          SET_PCRE_CALLOUT8
 #define SET_PCRE_STACK_GUARD      SET_PCRE_STACK_GUARD8
 #define STRLEN                    STRLEN8
-#define PCRE_ASSIGN_JIT_STACK     PCRE_ASSIGN_JIT_STACK8
 #define PCRE_COMPILE              PCRE_COMPILE8
 #define PCRE_CONFIG               pcre_config
 #define PCRE_COPY_NAMED_SUBSTRING PCRE_COPY_NAMED_SUBSTRING8
@@ -936,8 +868,6 @@ the three different cases. */
 #define PCRE_GET_STRINGNUMBER     PCRE_GET_STRINGNUMBER8
 #define PCRE_GET_SUBSTRING        PCRE_GET_SUBSTRING8
 #define PCRE_GET_SUBSTRING_LIST   PCRE_GET_SUBSTRING_LIST8
-#define PCRE_JIT_STACK_ALLOC      PCRE_JIT_STACK_ALLOC8
-#define PCRE_JIT_STACK_FREE       PCRE_JIT_STACK_FREE8
 #define PCRE_MAKETABLES           pcre_maketables()
 #define PCRE_PATTERN_TO_HOST_BYTE_ORDER PCRE_PATTERN_TO_HOST_BYTE_ORDER8
 #define PCRE_PRINTINT             PCRE_PRINTINT8
@@ -953,7 +883,6 @@ the three different cases. */
 #define SET_PCRE_CALLOUT          SET_PCRE_CALLOUT16
 #define SET_PCRE_STACK_GUARD      SET_PCRE_STACK_GUARD16
 #define STRLEN                    STRLEN16
-#define PCRE_ASSIGN_JIT_STACK     PCRE_ASSIGN_JIT_STACK16
 #define PCRE_COMPILE              PCRE_COMPILE16
 #define PCRE_CONFIG               pcre16_config
 #define PCRE_COPY_NAMED_SUBSTRING PCRE_COPY_NAMED_SUBSTRING16
@@ -967,8 +896,6 @@ the three different cases. */
 #define PCRE_GET_STRINGNUMBER     PCRE_GET_STRINGNUMBER16
 #define PCRE_GET_SUBSTRING        PCRE_GET_SUBSTRING16
 #define PCRE_GET_SUBSTRING_LIST   PCRE_GET_SUBSTRING_LIST16
-#define PCRE_JIT_STACK_ALLOC      PCRE_JIT_STACK_ALLOC16
-#define PCRE_JIT_STACK_FREE       PCRE_JIT_STACK_FREE16
 #define PCRE_MAKETABLES           pcre16_maketables()
 #define PCRE_PATTERN_TO_HOST_BYTE_ORDER PCRE_PATTERN_TO_HOST_BYTE_ORDER16
 #define PCRE_PRINTINT             PCRE_PRINTINT16
@@ -984,7 +911,6 @@ the three different cases. */
 #define SET_PCRE_CALLOUT          SET_PCRE_CALLOUT32
 #define SET_PCRE_STACK_GUARD      SET_PCRE_STACK_GUARD32
 #define STRLEN                    STRLEN32
-#define PCRE_ASSIGN_JIT_STACK     PCRE_ASSIGN_JIT_STACK32
 #define PCRE_COMPILE              PCRE_COMPILE32
 #define PCRE_CONFIG               pcre32_config
 #define PCRE_COPY_NAMED_SUBSTRING PCRE_COPY_NAMED_SUBSTRING32
@@ -998,8 +924,6 @@ the three different cases. */
 #define PCRE_GET_STRINGNUMBER     PCRE_GET_STRINGNUMBER32
 #define PCRE_GET_SUBSTRING        PCRE_GET_SUBSTRING32
 #define PCRE_GET_SUBSTRING_LIST   PCRE_GET_SUBSTRING_LIST32
-#define PCRE_JIT_STACK_ALLOC      PCRE_JIT_STACK_ALLOC32
-#define PCRE_JIT_STACK_FREE       PCRE_JIT_STACK_FREE32
 #define PCRE_MAKETABLES           pcre32_maketables()
 #define PCRE_PATTERN_TO_HOST_BYTE_ORDER PCRE_PATTERN_TO_HOST_BYTE_ORDER32
 #define PCRE_PRINTINT             PCRE_PRINTINT32
@@ -1109,20 +1033,6 @@ static int pcre_mode = PCRE16_MODE;
 #elif defined SUPPORT_PCRE32
 static int pcre_mode = PCRE32_MODE;
 #endif
-
-/* JIT study options for -s+n and /S+n where '1' <= n <= '7'. */
-
-static int jit_study_bits[] =
-  {
-  PCRE_STUDY_JIT_COMPILE,
-  PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE,
-  PCRE_STUDY_JIT_COMPILE + PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE,
-  PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE,
-  PCRE_STUDY_JIT_COMPILE + PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE,
-  PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE + PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE,
-  PCRE_STUDY_JIT_COMPILE + PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE +
-    PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE
-};
 
 #define PCRE_STUDY_ALLJIT (PCRE_STUDY_JIT_COMPILE | \
   PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE | PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE)
@@ -3099,10 +3009,10 @@ while (argc > 1 && argv[op][0] == '-')
     arg += 3;
     if (*arg == '+') { arg++; verify_jit = TRUE; }
     force_study = 1;
-    if (*arg == 0)
-      force_study_options = jit_study_bits[6];
-    else if (*arg >= '1' && *arg <= '7')
-      force_study_options = jit_study_bits[*arg - '1'];
+    if (*arg == 0) {
+    }
+    else if (*arg >= '1' && *arg <= '7') {
+    }
     else goto BAD_ARG;
     }
   else if (strcmp(arg, "-8") == 0)
@@ -3832,10 +3742,10 @@ while (!done)
             verify_jit = TRUE;
             pp++;
             }
-          if (*pp >= '1' && *pp <= '7')
-            study_options |= jit_study_bits[*pp++ - '1'];
-          else
-            study_options |= jit_study_bits[6];
+          if (*pp >= '1' && *pp <= '7') {
+          }
+          else {
+          }
           break;
 
           case '-':
@@ -4807,15 +4717,6 @@ while (!done)
         continue;
 
         case 'J':
-        while(isdigit(*p)) n = n * 10 + *p++ - '0';
-        if (extra != NULL
-            && (extra->flags & PCRE_EXTRA_EXECUTABLE_JIT) != 0
-            && extra->executable_jit != NULL)
-          {
-          if (jit_stack != NULL) { PCRE_JIT_STACK_FREE(jit_stack); }
-          jit_stack = PCRE_JIT_STACK_ALLOC(1, n * 1024);
-          PCRE_ASSIGN_JIT_STACK(extra, jit_callback, jit_stack);
-          }
         continue;
 
         case 'L':
@@ -5115,9 +5016,6 @@ while (!done)
 
     /* Ensure that there is a JIT callback if we want to verify that JIT was
     actually used. If jit_stack == NULL, no stack has yet been assigned. */
-
-    if (verify_jit && jit_stack == NULL && extra != NULL)
-       { PCRE_ASSIGN_JIT_STACK(extra, jit_callback, jit_stack); }
 
     for (;; gmatched++)    /* Loop for /g or /G */
       {
@@ -5713,11 +5611,6 @@ while (!done)
     new_free((void *)tables);
     setlocale(LC_CTYPE, "C");
     locale_set = 0;
-    }
-  if (jit_stack != NULL)
-    {
-    PCRE_JIT_STACK_FREE(jit_stack);
-    jit_stack = NULL;
     }
   }
 

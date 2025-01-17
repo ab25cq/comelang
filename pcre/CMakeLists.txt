@@ -515,7 +515,6 @@ SET(PCRE_SOURCES
   pcre_fullinfo.c
   pcre_get.c
   pcre_globals.c
-  pcre_jit_compile.c
   pcre_maketables.c
   pcre_newline.c
   pcre_ord2utf8.c
@@ -733,25 +732,6 @@ ENDIF(MINGW AND NOT PCRE_STATIC)
 ENDIF(PCRE_BUILD_PCRE32)
 
 # pcrecpp
-IF(PCRE_BUILD_PCRECPP)
-ADD_LIBRARY(pcrecpp ${PCRECPP_HEADERS} ${PCRECPP_SOURCES})
-SET(targets ${targets} pcrecpp)
-TARGET_LINK_LIBRARIES(pcrecpp pcre)
-
-  IF(MINGW AND NOT PCRE_STATIC)
-    IF(NON_STANDARD_LIB_PREFIX)
-      SET_TARGET_PROPERTIES(pcrecpp
-                            PROPERTIES PREFIX ""
-      )
-    ENDIF(NON_STANDARD_LIB_PREFIX)
-
-    IF(NON_STANDARD_LIB_SUFFIX)
-      SET_TARGET_PROPERTIES(pcrecpp
-                          PROPERTIES SUFFIX "-0.dll"
-      )
-    ENDIF(NON_STANDARD_LIB_SUFFIX)
-  ENDIF(MINGW AND NOT PCRE_STATIC)
-ENDIF(PCRE_BUILD_PCRECPP)
 
 
 # Executables
@@ -799,40 +779,7 @@ IF(PCRE_BUILD_TESTS)
   ENDIF(PCRE_BUILD_PCRE32)
   TARGET_LINK_LIBRARIES(pcretest ${PCRETEST_LIBS})
 
-  IF(PCRE_SUPPORT_JIT)
-    ADD_EXECUTABLE(pcre_jit_test pcre_jit_test.c)
-    SET(targets ${targets} pcre_jit_test)
-    SET(PCRE_JIT_TEST_LIBS )
-    IF(PCRE_BUILD_PCRE8)
-      LIST(APPEND PCRE_JIT_TEST_LIBS pcre)
-    ENDIF(PCRE_BUILD_PCRE8)
-    IF(PCRE_BUILD_PCRE16)
-      LIST(APPEND PCRE_JIT_TEST_LIBS pcre16)
-    ENDIF(PCRE_BUILD_PCRE16)
-    IF(PCRE_BUILD_PCRE32)
-      LIST(APPEND PCRE_JIT_TEST_LIBS pcre32)
-    ENDIF(PCRE_BUILD_PCRE32)
-    TARGET_LINK_LIBRARIES(pcre_jit_test ${PCRE_JIT_TEST_LIBS})
-  ENDIF(PCRE_SUPPORT_JIT)
 
-  IF(PCRE_BUILD_PCRECPP)
-    ADD_EXECUTABLE(pcrecpp_unittest pcrecpp_unittest.cc)
-    SET(targets ${targets} pcrecpp_unittest)
-    TARGET_LINK_LIBRARIES(pcrecpp_unittest pcrecpp)
-    IF(MINGW AND NON_STANDARD_LIB_NAMES AND NOT PCRE_STATIC)
-      SET_TARGET_PROPERTIES(pcrecpp
-                        PROPERTIES PREFIX ""
-      )
-    ENDIF(MINGW AND NON_STANDARD_LIB_NAMES AND NOT PCRE_STATIC)
-
-    ADD_EXECUTABLE(pcre_scanner_unittest pcre_scanner_unittest.cc)
-    SET(targets ${targets} pcre_scanner_unittest)
-    TARGET_LINK_LIBRARIES(pcre_scanner_unittest pcrecpp)
-
-    ADD_EXECUTABLE(pcre_stringpiece_unittest pcre_stringpiece_unittest.cc)
-    SET(targets ${targets} pcre_stringpiece_unittest)
-    TARGET_LINK_LIBRARIES(pcre_stringpiece_unittest pcrecpp)
-  ENDIF(PCRE_BUILD_PCRECPP)
 
   # exes in Debug location tested by the RunTest shell script
   # via "make test"
@@ -919,9 +866,6 @@ echo RunTest.bat tests successfully completed
 
   # Changed to accommodate testing whichever location was just built
 
-  IF(PCRE_SUPPORT_JIT)
-    ADD_TEST(pcre_jit_test         pcre_jit_test)
-  ENDIF(PCRE_SUPPORT_JIT)
 
   IF(PCRE_BUILD_PCRECPP)
     ADD_TEST(pcrecpp_test          pcrecpp_unittest)
