@@ -433,36 +433,6 @@ IF(NOT BUILD_SHARED_LIBS)
 ENDIF(NOT BUILD_SHARED_LIBS)
 # TO-DO: @PTHREAD_CFLAGS@ @PTHREAD_LIBS@
 
-CONFIGURE_FILE(libpcreposix.pc.in ${PROJECT_BINARY_DIR}/libpcreposix.pc @ONLY)
-
-IF(PCRE_BUILD_PCRE8)
-  CONFIGURE_FILE(libpcre.pc.in ${PROJECT_BINARY_DIR}/libpcre.pc @ONLY)
-  SET(enable_pcre8 "yes")
-ELSE()
-  SET(enable_pcre8 "no")
-ENDIF()
-
-IF(PCRE_BUILD_PCRE16)
-  CONFIGURE_FILE(libpcre16.pc.in ${PROJECT_BINARY_DIR}/libpcre16.pc @ONLY)
-  SET(enable_pcre16 "yes")
-ELSE()
-  SET(enable_pcre16 "no")
-ENDIF()
-
-IF(PCRE_BUILD_PCRE32)
-  CONFIGURE_FILE(libpcre32.pc.in ${PROJECT_BINARY_DIR}/libpcre32.pc @ONLY)
-  SET(enable_pcre32 "yes")
-ELSE()
-  SET(enable_pcre32 "no")
-ENDIF()
-
-IF(PCRE_BUILD_PCRECPP)
-  CONFIGURE_FILE(libpcrecpp.pc.in ${PROJECT_BINARY_DIR}/libpcrecpp.pc @ONLY)
-  SET(enable_cpp "yes")
-ELSE()
-  SET(enable_cpp "no")
-ENDIF()
-
 CONFIGURE_FILE(pcre-config.in pcre-config @ONLY)
 
 # Character table generation
@@ -845,7 +815,6 @@ INSTALL(FILES ${PCRE_HEADERS} ${PCREPOSIX_HEADERS} DESTINATION include)
 FILE(GLOB html ${PROJECT_SOURCE_DIR}/doc/html/*.html)
 FILE(GLOB man1 ${PROJECT_SOURCE_DIR}/doc/*.1)
 FILE(GLOB man3 ${PROJECT_SOURCE_DIR}/doc/*.3)
-FILE(GLOB pc ${PROJECT_BINARY_DIR}/*.pc)
 
 IF(PCRE_BUILD_PCRECPP)
         INSTALL(FILES ${PCRECPP_HEADERS} DESTINATION include)
