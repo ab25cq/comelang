@@ -451,7 +451,6 @@ am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
 am__v_at_0 = @
 am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
-depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/dftables.Po \
 	./$(DEPDIR)/libpcre16_la-pcre16_byte_order.Plo \
@@ -797,7 +796,6 @@ am__set_b = \
 am__test_logs1 = $(TESTS:=.log)
 am__test_logs2 = $(am__test_logs1:@EXEEXT@.log=.log)
 TEST_LOGS = $(am__test_logs2:.test.log=.log)
-TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver
 TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
 am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
@@ -807,9 +805,9 @@ am__DIST_COMMON = $(dist_man_MANS) $(srcdir)/Makefile.in \
 	$(srcdir)/pcre-config.in $(srcdir)/pcre.h.in \
 	$(srcdir)/pcre_stringpiece.h.in $(srcdir)/pcrecpparg.h.in \
 	AUTHORS COPYING ChangeLog INSTALL NEWS README ar-lib compile \
-	config.guess config.sub depcomp install-sh ltmain.sh missing \
+	config.guess config.sub install-sh ltmain.sh missing \
 	test-driver
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+DISTFILES = $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
 am__remove_distdir = \
@@ -1102,46 +1100,9 @@ MAINTAINERCLEANFILES = pcre.h.generic config.h.generic
 # pcredemo_LDADD = libpcre.la
 EXTRA_DIST = m4/ax_pthread.m4 m4/pcre_visibility.m4  \
 	NON-UNIX-USE NON-AUTOTOOLS-BUILD HACKING PrepareRelease \
-	CheckMan CleanTxt Detrail 132html doc/index.html.src \
+	Detrail 132html doc/index.html.src \
 	makevp.bat makevp_c.txt makevp_l.txt \
 	pcre.h.generic config.h.generic pcre_chartables.c.dist \
-	testdata/grepfilelist testdata/grepinput testdata/grepinput3 \
-	testdata/grepinput8 testdata/grepinputv testdata/grepinputx \
-	testdata/greplist testdata/grepoutput testdata/grepoutput8 \
-	testdata/grepoutputN testdata/greppatN4 testdata/saved16 \
-	testdata/saved16BE-1 testdata/saved16BE-2 testdata/saved16LE-1 \
-	testdata/saved16LE-2 testdata/saved32 testdata/saved32BE-1 \
-	testdata/saved32BE-2 testdata/saved32LE-1 testdata/saved32LE-2 \
-	testdata/saved8 testdata/testinput1 testdata/testinput2 \
-	testdata/testinput3 testdata/testinput4 testdata/testinput5 \
-	testdata/testinput6 testdata/testinput7 testdata/testinput8 \
-	testdata/testinput9 testdata/testinput10 testdata/testinput11 \
-	testdata/testinput12 testdata/testinput13 testdata/testinput14 \
-	testdata/testinput15 testdata/testinput16 testdata/testinput17 \
-	testdata/testinput18 testdata/testinput19 testdata/testinput20 \
-	testdata/testinput21 testdata/testinput22 testdata/testinput23 \
-	testdata/testinput24 testdata/testinput25 testdata/testinput26 \
-	testdata/testinputEBC testdata/testoutput1 \
-	testdata/testoutput2 testdata/testoutput3 \
-	testdata/testoutput3A testdata/testoutput3B \
-	testdata/testoutput4 testdata/testoutput5 testdata/testoutput6 \
-	testdata/testoutput7 testdata/testoutput8 testdata/testoutput9 \
-	testdata/testoutput10 testdata/testoutput11-8 \
-	testdata/testoutput11-16 testdata/testoutput11-32 \
-	testdata/testoutput12 testdata/testoutput13 \
-	testdata/testoutput14 testdata/testoutput15 \
-	testdata/testoutput16 testdata/testoutput17 \
-	testdata/testoutput18-16 testdata/testoutput18-32 \
-	testdata/testoutput19 testdata/testoutput20 \
-	testdata/testoutput21-16 testdata/testoutput21-32 \
-	testdata/testoutput22-16 testdata/testoutput22-32 \
-	testdata/testoutput23 testdata/testoutput24 \
-	testdata/testoutput25 testdata/testoutput26 \
-	testdata/testoutputEBC testdata/valgrind-jit.supp \
-	testdata/wintestinput3 testdata/wintestoutput3  \
-	pcredemo.c $(pcrecpp_man) cmake/COPYING-CMAKE-SCRIPTS \
-	cmake/FindPackageHandleStandardArgs.cmake \
-	cmake/FindReadline.cmake cmake/FindEditline.cmake \
 	CMakeLists.txt config-cmake.h.in
 
 # These are the header files we'll install. We do not distribute pcre.h because
@@ -1424,20 +1385,7 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
 
-config.h: stamp-h1
-	@test -f $@ || rm -f stamp-h1
-	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) stamp-h1
-
-stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
-	@rm -f stamp-h1
-	cd $(top_builddir) && $(SHELL) ./config.status config.h
-$(srcdir)/config.h.in:  $(am__configure_deps)
-	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
-	rm -f stamp-h1
-	touch $@
-
 distclean-hdr:
-	-rm -f config.h stamp-h1
 libpcre.pc: $(top_builddir)/config.status $(srcdir)/libpcre.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 libpcre16.pc: $(top_builddir)/config.status $(srcdir)/libpcre16.pc.in
@@ -1700,665 +1648,570 @@ am--depfiles: $(am__depfiles_remade)
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
 
 .c.obj:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .c.lo:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
 libpcre_la-pcre_byte_order.lo: pcre_byte_order.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_byte_order.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_byte_order.Tpo -c -o libpcre_la-pcre_byte_order.lo `test -f 'pcre_byte_order.c' || echo '$(srcdir)/'`pcre_byte_order.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_byte_order.Tpo $(DEPDIR)/libpcre_la-pcre_byte_order.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_byte_order.c' object='libpcre_la-pcre_byte_order.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_byte_order.lo `test -f 'pcre_byte_order.c' || echo '$(srcdir)/'`pcre_byte_order.c
 
 libpcre_la-pcre_compile.lo: pcre_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_compile.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_compile.Tpo -c -o libpcre_la-pcre_compile.lo `test -f 'pcre_compile.c' || echo '$(srcdir)/'`pcre_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_compile.Tpo $(DEPDIR)/libpcre_la-pcre_compile.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_compile.c' object='libpcre_la-pcre_compile.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_compile.lo `test -f 'pcre_compile.c' || echo '$(srcdir)/'`pcre_compile.c
 
 libpcre_la-pcre_config.lo: pcre_config.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_config.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_config.Tpo -c -o libpcre_la-pcre_config.lo `test -f 'pcre_config.c' || echo '$(srcdir)/'`pcre_config.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_config.Tpo $(DEPDIR)/libpcre_la-pcre_config.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_config.c' object='libpcre_la-pcre_config.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_config.lo `test -f 'pcre_config.c' || echo '$(srcdir)/'`pcre_config.c
 
 libpcre_la-pcre_dfa_exec.lo: pcre_dfa_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_dfa_exec.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_dfa_exec.Tpo -c -o libpcre_la-pcre_dfa_exec.lo `test -f 'pcre_dfa_exec.c' || echo '$(srcdir)/'`pcre_dfa_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_dfa_exec.Tpo $(DEPDIR)/libpcre_la-pcre_dfa_exec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_dfa_exec.c' object='libpcre_la-pcre_dfa_exec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_dfa_exec.lo `test -f 'pcre_dfa_exec.c' || echo '$(srcdir)/'`pcre_dfa_exec.c
 
 libpcre_la-pcre_exec.lo: pcre_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_exec.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_exec.Tpo -c -o libpcre_la-pcre_exec.lo `test -f 'pcre_exec.c' || echo '$(srcdir)/'`pcre_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_exec.Tpo $(DEPDIR)/libpcre_la-pcre_exec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_exec.c' object='libpcre_la-pcre_exec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_exec.lo `test -f 'pcre_exec.c' || echo '$(srcdir)/'`pcre_exec.c
 
 libpcre_la-pcre_fullinfo.lo: pcre_fullinfo.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_fullinfo.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_fullinfo.Tpo -c -o libpcre_la-pcre_fullinfo.lo `test -f 'pcre_fullinfo.c' || echo '$(srcdir)/'`pcre_fullinfo.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_fullinfo.Tpo $(DEPDIR)/libpcre_la-pcre_fullinfo.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_fullinfo.c' object='libpcre_la-pcre_fullinfo.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_fullinfo.lo `test -f 'pcre_fullinfo.c' || echo '$(srcdir)/'`pcre_fullinfo.c
 
 libpcre_la-pcre_get.lo: pcre_get.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_get.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_get.Tpo -c -o libpcre_la-pcre_get.lo `test -f 'pcre_get.c' || echo '$(srcdir)/'`pcre_get.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_get.Tpo $(DEPDIR)/libpcre_la-pcre_get.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_get.c' object='libpcre_la-pcre_get.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_get.lo `test -f 'pcre_get.c' || echo '$(srcdir)/'`pcre_get.c
 
 libpcre_la-pcre_globals.lo: pcre_globals.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_globals.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_globals.Tpo -c -o libpcre_la-pcre_globals.lo `test -f 'pcre_globals.c' || echo '$(srcdir)/'`pcre_globals.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_globals.Tpo $(DEPDIR)/libpcre_la-pcre_globals.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_globals.c' object='libpcre_la-pcre_globals.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_globals.lo `test -f 'pcre_globals.c' || echo '$(srcdir)/'`pcre_globals.c
 
 libpcre_la-pcre_jit_compile.lo: pcre_jit_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_jit_compile.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_jit_compile.Tpo -c -o libpcre_la-pcre_jit_compile.lo `test -f 'pcre_jit_compile.c' || echo '$(srcdir)/'`pcre_jit_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_jit_compile.Tpo $(DEPDIR)/libpcre_la-pcre_jit_compile.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_jit_compile.c' object='libpcre_la-pcre_jit_compile.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_jit_compile.lo `test -f 'pcre_jit_compile.c' || echo '$(srcdir)/'`pcre_jit_compile.c
 
 libpcre_la-pcre_maketables.lo: pcre_maketables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_maketables.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_maketables.Tpo -c -o libpcre_la-pcre_maketables.lo `test -f 'pcre_maketables.c' || echo '$(srcdir)/'`pcre_maketables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_maketables.Tpo $(DEPDIR)/libpcre_la-pcre_maketables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_maketables.c' object='libpcre_la-pcre_maketables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_maketables.lo `test -f 'pcre_maketables.c' || echo '$(srcdir)/'`pcre_maketables.c
 
 libpcre_la-pcre_newline.lo: pcre_newline.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_newline.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_newline.Tpo -c -o libpcre_la-pcre_newline.lo `test -f 'pcre_newline.c' || echo '$(srcdir)/'`pcre_newline.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_newline.Tpo $(DEPDIR)/libpcre_la-pcre_newline.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_newline.c' object='libpcre_la-pcre_newline.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_newline.lo `test -f 'pcre_newline.c' || echo '$(srcdir)/'`pcre_newline.c
 
 libpcre_la-pcre_ord2utf8.lo: pcre_ord2utf8.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_ord2utf8.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_ord2utf8.Tpo -c -o libpcre_la-pcre_ord2utf8.lo `test -f 'pcre_ord2utf8.c' || echo '$(srcdir)/'`pcre_ord2utf8.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_ord2utf8.Tpo $(DEPDIR)/libpcre_la-pcre_ord2utf8.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_ord2utf8.c' object='libpcre_la-pcre_ord2utf8.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_ord2utf8.lo `test -f 'pcre_ord2utf8.c' || echo '$(srcdir)/'`pcre_ord2utf8.c
 
 libpcre_la-pcre_refcount.lo: pcre_refcount.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_refcount.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_refcount.Tpo -c -o libpcre_la-pcre_refcount.lo `test -f 'pcre_refcount.c' || echo '$(srcdir)/'`pcre_refcount.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_refcount.Tpo $(DEPDIR)/libpcre_la-pcre_refcount.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_refcount.c' object='libpcre_la-pcre_refcount.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_refcount.lo `test -f 'pcre_refcount.c' || echo '$(srcdir)/'`pcre_refcount.c
 
 libpcre_la-pcre_string_utils.lo: pcre_string_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_string_utils.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_string_utils.Tpo -c -o libpcre_la-pcre_string_utils.lo `test -f 'pcre_string_utils.c' || echo '$(srcdir)/'`pcre_string_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_string_utils.Tpo $(DEPDIR)/libpcre_la-pcre_string_utils.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_string_utils.c' object='libpcre_la-pcre_string_utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_string_utils.lo `test -f 'pcre_string_utils.c' || echo '$(srcdir)/'`pcre_string_utils.c
 
 libpcre_la-pcre_study.lo: pcre_study.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_study.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_study.Tpo -c -o libpcre_la-pcre_study.lo `test -f 'pcre_study.c' || echo '$(srcdir)/'`pcre_study.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_study.Tpo $(DEPDIR)/libpcre_la-pcre_study.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_study.c' object='libpcre_la-pcre_study.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_study.lo `test -f 'pcre_study.c' || echo '$(srcdir)/'`pcre_study.c
 
 libpcre_la-pcre_tables.lo: pcre_tables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_tables.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_tables.Tpo -c -o libpcre_la-pcre_tables.lo `test -f 'pcre_tables.c' || echo '$(srcdir)/'`pcre_tables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_tables.Tpo $(DEPDIR)/libpcre_la-pcre_tables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_tables.c' object='libpcre_la-pcre_tables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_tables.lo `test -f 'pcre_tables.c' || echo '$(srcdir)/'`pcre_tables.c
 
 libpcre_la-pcre_ucd.lo: pcre_ucd.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_ucd.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_ucd.Tpo -c -o libpcre_la-pcre_ucd.lo `test -f 'pcre_ucd.c' || echo '$(srcdir)/'`pcre_ucd.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_ucd.Tpo $(DEPDIR)/libpcre_la-pcre_ucd.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_ucd.c' object='libpcre_la-pcre_ucd.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_ucd.lo `test -f 'pcre_ucd.c' || echo '$(srcdir)/'`pcre_ucd.c
 
 libpcre_la-pcre_valid_utf8.lo: pcre_valid_utf8.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_valid_utf8.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_valid_utf8.Tpo -c -o libpcre_la-pcre_valid_utf8.lo `test -f 'pcre_valid_utf8.c' || echo '$(srcdir)/'`pcre_valid_utf8.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_valid_utf8.Tpo $(DEPDIR)/libpcre_la-pcre_valid_utf8.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_valid_utf8.c' object='libpcre_la-pcre_valid_utf8.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_valid_utf8.lo `test -f 'pcre_valid_utf8.c' || echo '$(srcdir)/'`pcre_valid_utf8.c
 
 libpcre_la-pcre_version.lo: pcre_version.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_version.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_version.Tpo -c -o libpcre_la-pcre_version.lo `test -f 'pcre_version.c' || echo '$(srcdir)/'`pcre_version.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_version.Tpo $(DEPDIR)/libpcre_la-pcre_version.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_version.c' object='libpcre_la-pcre_version.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_version.lo `test -f 'pcre_version.c' || echo '$(srcdir)/'`pcre_version.c
 
 libpcre_la-pcre_xclass.lo: pcre_xclass.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_xclass.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_xclass.Tpo -c -o libpcre_la-pcre_xclass.lo `test -f 'pcre_xclass.c' || echo '$(srcdir)/'`pcre_xclass.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_xclass.Tpo $(DEPDIR)/libpcre_la-pcre_xclass.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_xclass.c' object='libpcre_la-pcre_xclass.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_xclass.lo `test -f 'pcre_xclass.c' || echo '$(srcdir)/'`pcre_xclass.c
 
 libpcre_la-pcre_chartables.lo: pcre_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -MT libpcre_la-pcre_chartables.lo -MD -MP -MF $(DEPDIR)/libpcre_la-pcre_chartables.Tpo -c -o libpcre_la-pcre_chartables.lo `test -f 'pcre_chartables.c' || echo '$(srcdir)/'`pcre_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre_la-pcre_chartables.Tpo $(DEPDIR)/libpcre_la-pcre_chartables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_chartables.c' object='libpcre_la-pcre_chartables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre_la_CFLAGS) $(CFLAGS) -c -o libpcre_la-pcre_chartables.lo `test -f 'pcre_chartables.c' || echo '$(srcdir)/'`pcre_chartables.c
 
 libpcre16_la-pcre16_byte_order.lo: pcre16_byte_order.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_byte_order.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_byte_order.Tpo -c -o libpcre16_la-pcre16_byte_order.lo `test -f 'pcre16_byte_order.c' || echo '$(srcdir)/'`pcre16_byte_order.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_byte_order.Tpo $(DEPDIR)/libpcre16_la-pcre16_byte_order.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_byte_order.c' object='libpcre16_la-pcre16_byte_order.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_byte_order.lo `test -f 'pcre16_byte_order.c' || echo '$(srcdir)/'`pcre16_byte_order.c
 
 libpcre16_la-pcre16_chartables.lo: pcre16_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_chartables.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_chartables.Tpo -c -o libpcre16_la-pcre16_chartables.lo `test -f 'pcre16_chartables.c' || echo '$(srcdir)/'`pcre16_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_chartables.Tpo $(DEPDIR)/libpcre16_la-pcre16_chartables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_chartables.c' object='libpcre16_la-pcre16_chartables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_chartables.lo `test -f 'pcre16_chartables.c' || echo '$(srcdir)/'`pcre16_chartables.c
 
 libpcre16_la-pcre16_compile.lo: pcre16_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_compile.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_compile.Tpo -c -o libpcre16_la-pcre16_compile.lo `test -f 'pcre16_compile.c' || echo '$(srcdir)/'`pcre16_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_compile.Tpo $(DEPDIR)/libpcre16_la-pcre16_compile.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_compile.c' object='libpcre16_la-pcre16_compile.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_compile.lo `test -f 'pcre16_compile.c' || echo '$(srcdir)/'`pcre16_compile.c
 
 libpcre16_la-pcre16_config.lo: pcre16_config.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_config.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_config.Tpo -c -o libpcre16_la-pcre16_config.lo `test -f 'pcre16_config.c' || echo '$(srcdir)/'`pcre16_config.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_config.Tpo $(DEPDIR)/libpcre16_la-pcre16_config.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_config.c' object='libpcre16_la-pcre16_config.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_config.lo `test -f 'pcre16_config.c' || echo '$(srcdir)/'`pcre16_config.c
 
 libpcre16_la-pcre16_dfa_exec.lo: pcre16_dfa_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_dfa_exec.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_dfa_exec.Tpo -c -o libpcre16_la-pcre16_dfa_exec.lo `test -f 'pcre16_dfa_exec.c' || echo '$(srcdir)/'`pcre16_dfa_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_dfa_exec.Tpo $(DEPDIR)/libpcre16_la-pcre16_dfa_exec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_dfa_exec.c' object='libpcre16_la-pcre16_dfa_exec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_dfa_exec.lo `test -f 'pcre16_dfa_exec.c' || echo '$(srcdir)/'`pcre16_dfa_exec.c
 
 libpcre16_la-pcre16_exec.lo: pcre16_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_exec.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_exec.Tpo -c -o libpcre16_la-pcre16_exec.lo `test -f 'pcre16_exec.c' || echo '$(srcdir)/'`pcre16_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_exec.Tpo $(DEPDIR)/libpcre16_la-pcre16_exec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_exec.c' object='libpcre16_la-pcre16_exec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_exec.lo `test -f 'pcre16_exec.c' || echo '$(srcdir)/'`pcre16_exec.c
 
 libpcre16_la-pcre16_fullinfo.lo: pcre16_fullinfo.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_fullinfo.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_fullinfo.Tpo -c -o libpcre16_la-pcre16_fullinfo.lo `test -f 'pcre16_fullinfo.c' || echo '$(srcdir)/'`pcre16_fullinfo.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_fullinfo.Tpo $(DEPDIR)/libpcre16_la-pcre16_fullinfo.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_fullinfo.c' object='libpcre16_la-pcre16_fullinfo.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_fullinfo.lo `test -f 'pcre16_fullinfo.c' || echo '$(srcdir)/'`pcre16_fullinfo.c
 
 libpcre16_la-pcre16_get.lo: pcre16_get.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_get.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_get.Tpo -c -o libpcre16_la-pcre16_get.lo `test -f 'pcre16_get.c' || echo '$(srcdir)/'`pcre16_get.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_get.Tpo $(DEPDIR)/libpcre16_la-pcre16_get.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_get.c' object='libpcre16_la-pcre16_get.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_get.lo `test -f 'pcre16_get.c' || echo '$(srcdir)/'`pcre16_get.c
 
 libpcre16_la-pcre16_globals.lo: pcre16_globals.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_globals.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_globals.Tpo -c -o libpcre16_la-pcre16_globals.lo `test -f 'pcre16_globals.c' || echo '$(srcdir)/'`pcre16_globals.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_globals.Tpo $(DEPDIR)/libpcre16_la-pcre16_globals.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_globals.c' object='libpcre16_la-pcre16_globals.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_globals.lo `test -f 'pcre16_globals.c' || echo '$(srcdir)/'`pcre16_globals.c
 
 libpcre16_la-pcre16_jit_compile.lo: pcre16_jit_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_jit_compile.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_jit_compile.Tpo -c -o libpcre16_la-pcre16_jit_compile.lo `test -f 'pcre16_jit_compile.c' || echo '$(srcdir)/'`pcre16_jit_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_jit_compile.Tpo $(DEPDIR)/libpcre16_la-pcre16_jit_compile.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_jit_compile.c' object='libpcre16_la-pcre16_jit_compile.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_jit_compile.lo `test -f 'pcre16_jit_compile.c' || echo '$(srcdir)/'`pcre16_jit_compile.c
 
 libpcre16_la-pcre16_maketables.lo: pcre16_maketables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_maketables.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_maketables.Tpo -c -o libpcre16_la-pcre16_maketables.lo `test -f 'pcre16_maketables.c' || echo '$(srcdir)/'`pcre16_maketables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_maketables.Tpo $(DEPDIR)/libpcre16_la-pcre16_maketables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_maketables.c' object='libpcre16_la-pcre16_maketables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_maketables.lo `test -f 'pcre16_maketables.c' || echo '$(srcdir)/'`pcre16_maketables.c
 
 libpcre16_la-pcre16_newline.lo: pcre16_newline.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_newline.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_newline.Tpo -c -o libpcre16_la-pcre16_newline.lo `test -f 'pcre16_newline.c' || echo '$(srcdir)/'`pcre16_newline.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_newline.Tpo $(DEPDIR)/libpcre16_la-pcre16_newline.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_newline.c' object='libpcre16_la-pcre16_newline.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_newline.lo `test -f 'pcre16_newline.c' || echo '$(srcdir)/'`pcre16_newline.c
 
 libpcre16_la-pcre16_ord2utf16.lo: pcre16_ord2utf16.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_ord2utf16.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_ord2utf16.Tpo -c -o libpcre16_la-pcre16_ord2utf16.lo `test -f 'pcre16_ord2utf16.c' || echo '$(srcdir)/'`pcre16_ord2utf16.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_ord2utf16.Tpo $(DEPDIR)/libpcre16_la-pcre16_ord2utf16.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_ord2utf16.c' object='libpcre16_la-pcre16_ord2utf16.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_ord2utf16.lo `test -f 'pcre16_ord2utf16.c' || echo '$(srcdir)/'`pcre16_ord2utf16.c
 
 libpcre16_la-pcre16_refcount.lo: pcre16_refcount.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_refcount.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_refcount.Tpo -c -o libpcre16_la-pcre16_refcount.lo `test -f 'pcre16_refcount.c' || echo '$(srcdir)/'`pcre16_refcount.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_refcount.Tpo $(DEPDIR)/libpcre16_la-pcre16_refcount.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_refcount.c' object='libpcre16_la-pcre16_refcount.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_refcount.lo `test -f 'pcre16_refcount.c' || echo '$(srcdir)/'`pcre16_refcount.c
 
 libpcre16_la-pcre16_string_utils.lo: pcre16_string_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_string_utils.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_string_utils.Tpo -c -o libpcre16_la-pcre16_string_utils.lo `test -f 'pcre16_string_utils.c' || echo '$(srcdir)/'`pcre16_string_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_string_utils.Tpo $(DEPDIR)/libpcre16_la-pcre16_string_utils.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_string_utils.c' object='libpcre16_la-pcre16_string_utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_string_utils.lo `test -f 'pcre16_string_utils.c' || echo '$(srcdir)/'`pcre16_string_utils.c
 
 libpcre16_la-pcre16_study.lo: pcre16_study.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_study.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_study.Tpo -c -o libpcre16_la-pcre16_study.lo `test -f 'pcre16_study.c' || echo '$(srcdir)/'`pcre16_study.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_study.Tpo $(DEPDIR)/libpcre16_la-pcre16_study.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_study.c' object='libpcre16_la-pcre16_study.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_study.lo `test -f 'pcre16_study.c' || echo '$(srcdir)/'`pcre16_study.c
 
 libpcre16_la-pcre16_tables.lo: pcre16_tables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_tables.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_tables.Tpo -c -o libpcre16_la-pcre16_tables.lo `test -f 'pcre16_tables.c' || echo '$(srcdir)/'`pcre16_tables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_tables.Tpo $(DEPDIR)/libpcre16_la-pcre16_tables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_tables.c' object='libpcre16_la-pcre16_tables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_tables.lo `test -f 'pcre16_tables.c' || echo '$(srcdir)/'`pcre16_tables.c
 
 libpcre16_la-pcre16_ucd.lo: pcre16_ucd.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_ucd.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_ucd.Tpo -c -o libpcre16_la-pcre16_ucd.lo `test -f 'pcre16_ucd.c' || echo '$(srcdir)/'`pcre16_ucd.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_ucd.Tpo $(DEPDIR)/libpcre16_la-pcre16_ucd.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_ucd.c' object='libpcre16_la-pcre16_ucd.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_ucd.lo `test -f 'pcre16_ucd.c' || echo '$(srcdir)/'`pcre16_ucd.c
 
 libpcre16_la-pcre16_utf16_utils.lo: pcre16_utf16_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_utf16_utils.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_utf16_utils.Tpo -c -o libpcre16_la-pcre16_utf16_utils.lo `test -f 'pcre16_utf16_utils.c' || echo '$(srcdir)/'`pcre16_utf16_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_utf16_utils.Tpo $(DEPDIR)/libpcre16_la-pcre16_utf16_utils.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_utf16_utils.c' object='libpcre16_la-pcre16_utf16_utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_utf16_utils.lo `test -f 'pcre16_utf16_utils.c' || echo '$(srcdir)/'`pcre16_utf16_utils.c
 
 libpcre16_la-pcre16_valid_utf16.lo: pcre16_valid_utf16.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_valid_utf16.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_valid_utf16.Tpo -c -o libpcre16_la-pcre16_valid_utf16.lo `test -f 'pcre16_valid_utf16.c' || echo '$(srcdir)/'`pcre16_valid_utf16.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_valid_utf16.Tpo $(DEPDIR)/libpcre16_la-pcre16_valid_utf16.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_valid_utf16.c' object='libpcre16_la-pcre16_valid_utf16.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_valid_utf16.lo `test -f 'pcre16_valid_utf16.c' || echo '$(srcdir)/'`pcre16_valid_utf16.c
 
 libpcre16_la-pcre16_version.lo: pcre16_version.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_version.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_version.Tpo -c -o libpcre16_la-pcre16_version.lo `test -f 'pcre16_version.c' || echo '$(srcdir)/'`pcre16_version.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_version.Tpo $(DEPDIR)/libpcre16_la-pcre16_version.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_version.c' object='libpcre16_la-pcre16_version.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_version.lo `test -f 'pcre16_version.c' || echo '$(srcdir)/'`pcre16_version.c
 
 libpcre16_la-pcre16_xclass.lo: pcre16_xclass.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre16_xclass.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre16_xclass.Tpo -c -o libpcre16_la-pcre16_xclass.lo `test -f 'pcre16_xclass.c' || echo '$(srcdir)/'`pcre16_xclass.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre16_xclass.Tpo $(DEPDIR)/libpcre16_la-pcre16_xclass.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_xclass.c' object='libpcre16_la-pcre16_xclass.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre16_xclass.lo `test -f 'pcre16_xclass.c' || echo '$(srcdir)/'`pcre16_xclass.c
 
 libpcre16_la-pcre_chartables.lo: pcre_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -MT libpcre16_la-pcre_chartables.lo -MD -MP -MF $(DEPDIR)/libpcre16_la-pcre_chartables.Tpo -c -o libpcre16_la-pcre_chartables.lo `test -f 'pcre_chartables.c' || echo '$(srcdir)/'`pcre_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre16_la-pcre_chartables.Tpo $(DEPDIR)/libpcre16_la-pcre_chartables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_chartables.c' object='libpcre16_la-pcre_chartables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre16_la_CFLAGS) $(CFLAGS) -c -o libpcre16_la-pcre_chartables.lo `test -f 'pcre_chartables.c' || echo '$(srcdir)/'`pcre_chartables.c
 
 libpcre32_la-pcre32_byte_order.lo: pcre32_byte_order.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_byte_order.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_byte_order.Tpo -c -o libpcre32_la-pcre32_byte_order.lo `test -f 'pcre32_byte_order.c' || echo '$(srcdir)/'`pcre32_byte_order.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_byte_order.Tpo $(DEPDIR)/libpcre32_la-pcre32_byte_order.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_byte_order.c' object='libpcre32_la-pcre32_byte_order.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_byte_order.lo `test -f 'pcre32_byte_order.c' || echo '$(srcdir)/'`pcre32_byte_order.c
 
 libpcre32_la-pcre32_chartables.lo: pcre32_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_chartables.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_chartables.Tpo -c -o libpcre32_la-pcre32_chartables.lo `test -f 'pcre32_chartables.c' || echo '$(srcdir)/'`pcre32_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_chartables.Tpo $(DEPDIR)/libpcre32_la-pcre32_chartables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_chartables.c' object='libpcre32_la-pcre32_chartables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_chartables.lo `test -f 'pcre32_chartables.c' || echo '$(srcdir)/'`pcre32_chartables.c
 
 libpcre32_la-pcre32_compile.lo: pcre32_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_compile.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_compile.Tpo -c -o libpcre32_la-pcre32_compile.lo `test -f 'pcre32_compile.c' || echo '$(srcdir)/'`pcre32_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_compile.Tpo $(DEPDIR)/libpcre32_la-pcre32_compile.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_compile.c' object='libpcre32_la-pcre32_compile.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_compile.lo `test -f 'pcre32_compile.c' || echo '$(srcdir)/'`pcre32_compile.c
 
 libpcre32_la-pcre32_config.lo: pcre32_config.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_config.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_config.Tpo -c -o libpcre32_la-pcre32_config.lo `test -f 'pcre32_config.c' || echo '$(srcdir)/'`pcre32_config.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_config.Tpo $(DEPDIR)/libpcre32_la-pcre32_config.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_config.c' object='libpcre32_la-pcre32_config.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_config.lo `test -f 'pcre32_config.c' || echo '$(srcdir)/'`pcre32_config.c
 
 libpcre32_la-pcre32_dfa_exec.lo: pcre32_dfa_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_dfa_exec.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_dfa_exec.Tpo -c -o libpcre32_la-pcre32_dfa_exec.lo `test -f 'pcre32_dfa_exec.c' || echo '$(srcdir)/'`pcre32_dfa_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_dfa_exec.Tpo $(DEPDIR)/libpcre32_la-pcre32_dfa_exec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_dfa_exec.c' object='libpcre32_la-pcre32_dfa_exec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_dfa_exec.lo `test -f 'pcre32_dfa_exec.c' || echo '$(srcdir)/'`pcre32_dfa_exec.c
 
 libpcre32_la-pcre32_exec.lo: pcre32_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_exec.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_exec.Tpo -c -o libpcre32_la-pcre32_exec.lo `test -f 'pcre32_exec.c' || echo '$(srcdir)/'`pcre32_exec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_exec.Tpo $(DEPDIR)/libpcre32_la-pcre32_exec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_exec.c' object='libpcre32_la-pcre32_exec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_exec.lo `test -f 'pcre32_exec.c' || echo '$(srcdir)/'`pcre32_exec.c
 
 libpcre32_la-pcre32_fullinfo.lo: pcre32_fullinfo.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_fullinfo.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_fullinfo.Tpo -c -o libpcre32_la-pcre32_fullinfo.lo `test -f 'pcre32_fullinfo.c' || echo '$(srcdir)/'`pcre32_fullinfo.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_fullinfo.Tpo $(DEPDIR)/libpcre32_la-pcre32_fullinfo.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_fullinfo.c' object='libpcre32_la-pcre32_fullinfo.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_fullinfo.lo `test -f 'pcre32_fullinfo.c' || echo '$(srcdir)/'`pcre32_fullinfo.c
 
 libpcre32_la-pcre32_get.lo: pcre32_get.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_get.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_get.Tpo -c -o libpcre32_la-pcre32_get.lo `test -f 'pcre32_get.c' || echo '$(srcdir)/'`pcre32_get.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_get.Tpo $(DEPDIR)/libpcre32_la-pcre32_get.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_get.c' object='libpcre32_la-pcre32_get.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_get.lo `test -f 'pcre32_get.c' || echo '$(srcdir)/'`pcre32_get.c
 
 libpcre32_la-pcre32_globals.lo: pcre32_globals.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_globals.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_globals.Tpo -c -o libpcre32_la-pcre32_globals.lo `test -f 'pcre32_globals.c' || echo '$(srcdir)/'`pcre32_globals.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_globals.Tpo $(DEPDIR)/libpcre32_la-pcre32_globals.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_globals.c' object='libpcre32_la-pcre32_globals.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_globals.lo `test -f 'pcre32_globals.c' || echo '$(srcdir)/'`pcre32_globals.c
 
 libpcre32_la-pcre32_jit_compile.lo: pcre32_jit_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_jit_compile.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_jit_compile.Tpo -c -o libpcre32_la-pcre32_jit_compile.lo `test -f 'pcre32_jit_compile.c' || echo '$(srcdir)/'`pcre32_jit_compile.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_jit_compile.Tpo $(DEPDIR)/libpcre32_la-pcre32_jit_compile.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_jit_compile.c' object='libpcre32_la-pcre32_jit_compile.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_jit_compile.lo `test -f 'pcre32_jit_compile.c' || echo '$(srcdir)/'`pcre32_jit_compile.c
 
 libpcre32_la-pcre32_maketables.lo: pcre32_maketables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_maketables.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_maketables.Tpo -c -o libpcre32_la-pcre32_maketables.lo `test -f 'pcre32_maketables.c' || echo '$(srcdir)/'`pcre32_maketables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_maketables.Tpo $(DEPDIR)/libpcre32_la-pcre32_maketables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_maketables.c' object='libpcre32_la-pcre32_maketables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_maketables.lo `test -f 'pcre32_maketables.c' || echo '$(srcdir)/'`pcre32_maketables.c
 
 libpcre32_la-pcre32_newline.lo: pcre32_newline.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_newline.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_newline.Tpo -c -o libpcre32_la-pcre32_newline.lo `test -f 'pcre32_newline.c' || echo '$(srcdir)/'`pcre32_newline.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_newline.Tpo $(DEPDIR)/libpcre32_la-pcre32_newline.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_newline.c' object='libpcre32_la-pcre32_newline.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_newline.lo `test -f 'pcre32_newline.c' || echo '$(srcdir)/'`pcre32_newline.c
 
 libpcre32_la-pcre32_ord2utf32.lo: pcre32_ord2utf32.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_ord2utf32.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_ord2utf32.Tpo -c -o libpcre32_la-pcre32_ord2utf32.lo `test -f 'pcre32_ord2utf32.c' || echo '$(srcdir)/'`pcre32_ord2utf32.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_ord2utf32.Tpo $(DEPDIR)/libpcre32_la-pcre32_ord2utf32.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_ord2utf32.c' object='libpcre32_la-pcre32_ord2utf32.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_ord2utf32.lo `test -f 'pcre32_ord2utf32.c' || echo '$(srcdir)/'`pcre32_ord2utf32.c
 
 libpcre32_la-pcre32_refcount.lo: pcre32_refcount.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_refcount.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_refcount.Tpo -c -o libpcre32_la-pcre32_refcount.lo `test -f 'pcre32_refcount.c' || echo '$(srcdir)/'`pcre32_refcount.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_refcount.Tpo $(DEPDIR)/libpcre32_la-pcre32_refcount.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_refcount.c' object='libpcre32_la-pcre32_refcount.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_refcount.lo `test -f 'pcre32_refcount.c' || echo '$(srcdir)/'`pcre32_refcount.c
 
 libpcre32_la-pcre32_string_utils.lo: pcre32_string_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_string_utils.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_string_utils.Tpo -c -o libpcre32_la-pcre32_string_utils.lo `test -f 'pcre32_string_utils.c' || echo '$(srcdir)/'`pcre32_string_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_string_utils.Tpo $(DEPDIR)/libpcre32_la-pcre32_string_utils.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_string_utils.c' object='libpcre32_la-pcre32_string_utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_string_utils.lo `test -f 'pcre32_string_utils.c' || echo '$(srcdir)/'`pcre32_string_utils.c
 
 libpcre32_la-pcre32_study.lo: pcre32_study.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_study.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_study.Tpo -c -o libpcre32_la-pcre32_study.lo `test -f 'pcre32_study.c' || echo '$(srcdir)/'`pcre32_study.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_study.Tpo $(DEPDIR)/libpcre32_la-pcre32_study.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_study.c' object='libpcre32_la-pcre32_study.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_study.lo `test -f 'pcre32_study.c' || echo '$(srcdir)/'`pcre32_study.c
 
 libpcre32_la-pcre32_tables.lo: pcre32_tables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_tables.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_tables.Tpo -c -o libpcre32_la-pcre32_tables.lo `test -f 'pcre32_tables.c' || echo '$(srcdir)/'`pcre32_tables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_tables.Tpo $(DEPDIR)/libpcre32_la-pcre32_tables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_tables.c' object='libpcre32_la-pcre32_tables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_tables.lo `test -f 'pcre32_tables.c' || echo '$(srcdir)/'`pcre32_tables.c
 
 libpcre32_la-pcre32_ucd.lo: pcre32_ucd.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_ucd.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_ucd.Tpo -c -o libpcre32_la-pcre32_ucd.lo `test -f 'pcre32_ucd.c' || echo '$(srcdir)/'`pcre32_ucd.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_ucd.Tpo $(DEPDIR)/libpcre32_la-pcre32_ucd.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_ucd.c' object='libpcre32_la-pcre32_ucd.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_ucd.lo `test -f 'pcre32_ucd.c' || echo '$(srcdir)/'`pcre32_ucd.c
 
 libpcre32_la-pcre32_utf32_utils.lo: pcre32_utf32_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_utf32_utils.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_utf32_utils.Tpo -c -o libpcre32_la-pcre32_utf32_utils.lo `test -f 'pcre32_utf32_utils.c' || echo '$(srcdir)/'`pcre32_utf32_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_utf32_utils.Tpo $(DEPDIR)/libpcre32_la-pcre32_utf32_utils.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_utf32_utils.c' object='libpcre32_la-pcre32_utf32_utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_utf32_utils.lo `test -f 'pcre32_utf32_utils.c' || echo '$(srcdir)/'`pcre32_utf32_utils.c
 
 libpcre32_la-pcre32_valid_utf32.lo: pcre32_valid_utf32.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_valid_utf32.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_valid_utf32.Tpo -c -o libpcre32_la-pcre32_valid_utf32.lo `test -f 'pcre32_valid_utf32.c' || echo '$(srcdir)/'`pcre32_valid_utf32.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_valid_utf32.Tpo $(DEPDIR)/libpcre32_la-pcre32_valid_utf32.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_valid_utf32.c' object='libpcre32_la-pcre32_valid_utf32.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_valid_utf32.lo `test -f 'pcre32_valid_utf32.c' || echo '$(srcdir)/'`pcre32_valid_utf32.c
 
 libpcre32_la-pcre32_version.lo: pcre32_version.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_version.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_version.Tpo -c -o libpcre32_la-pcre32_version.lo `test -f 'pcre32_version.c' || echo '$(srcdir)/'`pcre32_version.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_version.Tpo $(DEPDIR)/libpcre32_la-pcre32_version.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_version.c' object='libpcre32_la-pcre32_version.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_version.lo `test -f 'pcre32_version.c' || echo '$(srcdir)/'`pcre32_version.c
 
 libpcre32_la-pcre32_xclass.lo: pcre32_xclass.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre32_xclass.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre32_xclass.Tpo -c -o libpcre32_la-pcre32_xclass.lo `test -f 'pcre32_xclass.c' || echo '$(srcdir)/'`pcre32_xclass.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre32_xclass.Tpo $(DEPDIR)/libpcre32_la-pcre32_xclass.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_xclass.c' object='libpcre32_la-pcre32_xclass.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre32_xclass.lo `test -f 'pcre32_xclass.c' || echo '$(srcdir)/'`pcre32_xclass.c
 
 libpcre32_la-pcre_chartables.lo: pcre_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -MT libpcre32_la-pcre_chartables.lo -MD -MP -MF $(DEPDIR)/libpcre32_la-pcre_chartables.Tpo -c -o libpcre32_la-pcre_chartables.lo `test -f 'pcre_chartables.c' || echo '$(srcdir)/'`pcre_chartables.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcre32_la-pcre_chartables.Tpo $(DEPDIR)/libpcre32_la-pcre_chartables.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_chartables.c' object='libpcre32_la-pcre_chartables.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcre32_la_CFLAGS) $(CFLAGS) -c -o libpcre32_la-pcre_chartables.lo `test -f 'pcre_chartables.c' || echo '$(srcdir)/'`pcre_chartables.c
 
 libpcreposix_la-pcreposix.lo: pcreposix.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcreposix_la_CFLAGS) $(CFLAGS) -MT libpcreposix_la-pcreposix.lo -MD -MP -MF $(DEPDIR)/libpcreposix_la-pcreposix.Tpo -c -o libpcreposix_la-pcreposix.lo `test -f 'pcreposix.c' || echo '$(srcdir)/'`pcreposix.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcreposix_la-pcreposix.Tpo $(DEPDIR)/libpcreposix_la-pcreposix.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcreposix.c' object='libpcreposix_la-pcreposix.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcreposix_la_CFLAGS) $(CFLAGS) -c -o libpcreposix_la-pcreposix.lo `test -f 'pcreposix.c' || echo '$(srcdir)/'`pcreposix.c
 
 pcre_jit_test-pcre_jit_test.o: pcre_jit_test.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_jit_test_CFLAGS) $(CFLAGS) -MT pcre_jit_test-pcre_jit_test.o -MD -MP -MF $(DEPDIR)/pcre_jit_test-pcre_jit_test.Tpo -c -o pcre_jit_test-pcre_jit_test.o `test -f 'pcre_jit_test.c' || echo '$(srcdir)/'`pcre_jit_test.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcre_jit_test-pcre_jit_test.Tpo $(DEPDIR)/pcre_jit_test-pcre_jit_test.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_jit_test.c' object='pcre_jit_test-pcre_jit_test.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_jit_test_CFLAGS) $(CFLAGS) -c -o pcre_jit_test-pcre_jit_test.o `test -f 'pcre_jit_test.c' || echo '$(srcdir)/'`pcre_jit_test.c
 
 pcre_jit_test-pcre_jit_test.obj: pcre_jit_test.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_jit_test_CFLAGS) $(CFLAGS) -MT pcre_jit_test-pcre_jit_test.obj -MD -MP -MF $(DEPDIR)/pcre_jit_test-pcre_jit_test.Tpo -c -o pcre_jit_test-pcre_jit_test.obj `if test -f 'pcre_jit_test.c'; then $(CYGPATH_W) 'pcre_jit_test.c'; else $(CYGPATH_W) '$(srcdir)/pcre_jit_test.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcre_jit_test-pcre_jit_test.Tpo $(DEPDIR)/pcre_jit_test-pcre_jit_test.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_jit_test.c' object='pcre_jit_test-pcre_jit_test.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_jit_test_CFLAGS) $(CFLAGS) -c -o pcre_jit_test-pcre_jit_test.obj `if test -f 'pcre_jit_test.c'; then $(CYGPATH_W) 'pcre_jit_test.c'; else $(CYGPATH_W) '$(srcdir)/pcre_jit_test.c'; fi`
 
 pcregrep-pcregrep.o: pcregrep.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcregrep_CFLAGS) $(CFLAGS) -MT pcregrep-pcregrep.o -MD -MP -MF $(DEPDIR)/pcregrep-pcregrep.Tpo -c -o pcregrep-pcregrep.o `test -f 'pcregrep.c' || echo '$(srcdir)/'`pcregrep.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcregrep-pcregrep.Tpo $(DEPDIR)/pcregrep-pcregrep.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcregrep.c' object='pcregrep-pcregrep.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcregrep_CFLAGS) $(CFLAGS) -c -o pcregrep-pcregrep.o `test -f 'pcregrep.c' || echo '$(srcdir)/'`pcregrep.c
 
 pcregrep-pcregrep.obj: pcregrep.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcregrep_CFLAGS) $(CFLAGS) -MT pcregrep-pcregrep.obj -MD -MP -MF $(DEPDIR)/pcregrep-pcregrep.Tpo -c -o pcregrep-pcregrep.obj `if test -f 'pcregrep.c'; then $(CYGPATH_W) 'pcregrep.c'; else $(CYGPATH_W) '$(srcdir)/pcregrep.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcregrep-pcregrep.Tpo $(DEPDIR)/pcregrep-pcregrep.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcregrep.c' object='pcregrep-pcregrep.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcregrep_CFLAGS) $(CFLAGS) -c -o pcregrep-pcregrep.obj `if test -f 'pcregrep.c'; then $(CYGPATH_W) 'pcregrep.c'; else $(CYGPATH_W) '$(srcdir)/pcregrep.c'; fi`
 
 pcretest-pcretest.o: pcretest.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcretest.o -MD -MP -MF $(DEPDIR)/pcretest-pcretest.Tpo -c -o pcretest-pcretest.o `test -f 'pcretest.c' || echo '$(srcdir)/'`pcretest.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcretest.Tpo $(DEPDIR)/pcretest-pcretest.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcretest.c' object='pcretest-pcretest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcretest.o `test -f 'pcretest.c' || echo '$(srcdir)/'`pcretest.c
 
 pcretest-pcretest.obj: pcretest.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcretest.obj -MD -MP -MF $(DEPDIR)/pcretest-pcretest.Tpo -c -o pcretest-pcretest.obj `if test -f 'pcretest.c'; then $(CYGPATH_W) 'pcretest.c'; else $(CYGPATH_W) '$(srcdir)/pcretest.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcretest.Tpo $(DEPDIR)/pcretest-pcretest.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcretest.c' object='pcretest-pcretest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcretest.obj `if test -f 'pcretest.c'; then $(CYGPATH_W) 'pcretest.c'; else $(CYGPATH_W) '$(srcdir)/pcretest.c'; fi`
 
 pcretest-pcre_printint.o: pcre_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcre_printint.o -MD -MP -MF $(DEPDIR)/pcretest-pcre_printint.Tpo -c -o pcretest-pcre_printint.o `test -f 'pcre_printint.c' || echo '$(srcdir)/'`pcre_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcre_printint.Tpo $(DEPDIR)/pcretest-pcre_printint.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_printint.c' object='pcretest-pcre_printint.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcre_printint.o `test -f 'pcre_printint.c' || echo '$(srcdir)/'`pcre_printint.c
 
 pcretest-pcre_printint.obj: pcre_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcre_printint.obj -MD -MP -MF $(DEPDIR)/pcretest-pcre_printint.Tpo -c -o pcretest-pcre_printint.obj `if test -f 'pcre_printint.c'; then $(CYGPATH_W) 'pcre_printint.c'; else $(CYGPATH_W) '$(srcdir)/pcre_printint.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcre_printint.Tpo $(DEPDIR)/pcretest-pcre_printint.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre_printint.c' object='pcretest-pcre_printint.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcre_printint.obj `if test -f 'pcre_printint.c'; then $(CYGPATH_W) 'pcre_printint.c'; else $(CYGPATH_W) '$(srcdir)/pcre_printint.c'; fi`
 
 pcretest-pcre16_printint.o: pcre16_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcre16_printint.o -MD -MP -MF $(DEPDIR)/pcretest-pcre16_printint.Tpo -c -o pcretest-pcre16_printint.o `test -f 'pcre16_printint.c' || echo '$(srcdir)/'`pcre16_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcre16_printint.Tpo $(DEPDIR)/pcretest-pcre16_printint.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_printint.c' object='pcretest-pcre16_printint.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcre16_printint.o `test -f 'pcre16_printint.c' || echo '$(srcdir)/'`pcre16_printint.c
 
 pcretest-pcre16_printint.obj: pcre16_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcre16_printint.obj -MD -MP -MF $(DEPDIR)/pcretest-pcre16_printint.Tpo -c -o pcretest-pcre16_printint.obj `if test -f 'pcre16_printint.c'; then $(CYGPATH_W) 'pcre16_printint.c'; else $(CYGPATH_W) '$(srcdir)/pcre16_printint.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcre16_printint.Tpo $(DEPDIR)/pcretest-pcre16_printint.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre16_printint.c' object='pcretest-pcre16_printint.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcre16_printint.obj `if test -f 'pcre16_printint.c'; then $(CYGPATH_W) 'pcre16_printint.c'; else $(CYGPATH_W) '$(srcdir)/pcre16_printint.c'; fi`
 
 pcretest-pcre32_printint.o: pcre32_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcre32_printint.o -MD -MP -MF $(DEPDIR)/pcretest-pcre32_printint.Tpo -c -o pcretest-pcre32_printint.o `test -f 'pcre32_printint.c' || echo '$(srcdir)/'`pcre32_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcre32_printint.Tpo $(DEPDIR)/pcretest-pcre32_printint.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_printint.c' object='pcretest-pcre32_printint.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcre32_printint.o `test -f 'pcre32_printint.c' || echo '$(srcdir)/'`pcre32_printint.c
 
 pcretest-pcre32_printint.obj: pcre32_printint.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -MT pcretest-pcre32_printint.obj -MD -MP -MF $(DEPDIR)/pcretest-pcre32_printint.Tpo -c -o pcretest-pcre32_printint.obj `if test -f 'pcre32_printint.c'; then $(CYGPATH_W) 'pcre32_printint.c'; else $(CYGPATH_W) '$(srcdir)/pcre32_printint.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcretest-pcre32_printint.Tpo $(DEPDIR)/pcretest-pcre32_printint.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pcre32_printint.c' object='pcretest-pcre32_printint.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcretest_CFLAGS) $(CFLAGS) -c -o pcretest-pcre32_printint.obj `if test -f 'pcre32_printint.c'; then $(CYGPATH_W) 'pcre32_printint.c'; else $(CYGPATH_W) '$(srcdir)/pcre32_printint.c'; fi`
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
 
 .cc.obj:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .cc.lo:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
 libpcrecpp_la-pcrecpp.lo: pcrecpp.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcrecpp_la_CXXFLAGS) $(CXXFLAGS) -MT libpcrecpp_la-pcrecpp.lo -MD -MP -MF $(DEPDIR)/libpcrecpp_la-pcrecpp.Tpo -c -o libpcrecpp_la-pcrecpp.lo `test -f 'pcrecpp.cc' || echo '$(srcdir)/'`pcrecpp.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcrecpp_la-pcrecpp.Tpo $(DEPDIR)/libpcrecpp_la-pcrecpp.Plo
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcrecpp.cc' object='libpcrecpp_la-pcrecpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcrecpp_la_CXXFLAGS) $(CXXFLAGS) -c -o libpcrecpp_la-pcrecpp.lo `test -f 'pcrecpp.cc' || echo '$(srcdir)/'`pcrecpp.cc
 
 libpcrecpp_la-pcre_scanner.lo: pcre_scanner.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcrecpp_la_CXXFLAGS) $(CXXFLAGS) -MT libpcrecpp_la-pcre_scanner.lo -MD -MP -MF $(DEPDIR)/libpcrecpp_la-pcre_scanner.Tpo -c -o libpcrecpp_la-pcre_scanner.lo `test -f 'pcre_scanner.cc' || echo '$(srcdir)/'`pcre_scanner.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcrecpp_la-pcre_scanner.Tpo $(DEPDIR)/libpcrecpp_la-pcre_scanner.Plo
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcre_scanner.cc' object='libpcrecpp_la-pcre_scanner.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcrecpp_la_CXXFLAGS) $(CXXFLAGS) -c -o libpcrecpp_la-pcre_scanner.lo `test -f 'pcre_scanner.cc' || echo '$(srcdir)/'`pcre_scanner.cc
 
 libpcrecpp_la-pcre_stringpiece.lo: pcre_stringpiece.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcrecpp_la_CXXFLAGS) $(CXXFLAGS) -MT libpcrecpp_la-pcre_stringpiece.lo -MD -MP -MF $(DEPDIR)/libpcrecpp_la-pcre_stringpiece.Tpo -c -o libpcrecpp_la-pcre_stringpiece.lo `test -f 'pcre_stringpiece.cc' || echo '$(srcdir)/'`pcre_stringpiece.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpcrecpp_la-pcre_stringpiece.Tpo $(DEPDIR)/libpcrecpp_la-pcre_stringpiece.Plo
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcre_stringpiece.cc' object='libpcrecpp_la-pcre_stringpiece.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libpcrecpp_la_CXXFLAGS) $(CXXFLAGS) -c -o libpcrecpp_la-pcre_stringpiece.lo `test -f 'pcre_stringpiece.cc' || echo '$(srcdir)/'`pcre_stringpiece.cc
 
 pcre_scanner_unittest-pcre_scanner_unittest.o: pcre_scanner_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_scanner_unittest_CXXFLAGS) $(CXXFLAGS) -MT pcre_scanner_unittest-pcre_scanner_unittest.o -MD -MP -MF $(DEPDIR)/pcre_scanner_unittest-pcre_scanner_unittest.Tpo -c -o pcre_scanner_unittest-pcre_scanner_unittest.o `test -f 'pcre_scanner_unittest.cc' || echo '$(srcdir)/'`pcre_scanner_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcre_scanner_unittest-pcre_scanner_unittest.Tpo $(DEPDIR)/pcre_scanner_unittest-pcre_scanner_unittest.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcre_scanner_unittest.cc' object='pcre_scanner_unittest-pcre_scanner_unittest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_scanner_unittest_CXXFLAGS) $(CXXFLAGS) -c -o pcre_scanner_unittest-pcre_scanner_unittest.o `test -f 'pcre_scanner_unittest.cc' || echo '$(srcdir)/'`pcre_scanner_unittest.cc
 
 pcre_scanner_unittest-pcre_scanner_unittest.obj: pcre_scanner_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_scanner_unittest_CXXFLAGS) $(CXXFLAGS) -MT pcre_scanner_unittest-pcre_scanner_unittest.obj -MD -MP -MF $(DEPDIR)/pcre_scanner_unittest-pcre_scanner_unittest.Tpo -c -o pcre_scanner_unittest-pcre_scanner_unittest.obj `if test -f 'pcre_scanner_unittest.cc'; then $(CYGPATH_W) 'pcre_scanner_unittest.cc'; else $(CYGPATH_W) '$(srcdir)/pcre_scanner_unittest.cc'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcre_scanner_unittest-pcre_scanner_unittest.Tpo $(DEPDIR)/pcre_scanner_unittest-pcre_scanner_unittest.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcre_scanner_unittest.cc' object='pcre_scanner_unittest-pcre_scanner_unittest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_scanner_unittest_CXXFLAGS) $(CXXFLAGS) -c -o pcre_scanner_unittest-pcre_scanner_unittest.obj `if test -f 'pcre_scanner_unittest.cc'; then $(CYGPATH_W) 'pcre_scanner_unittest.cc'; else $(CYGPATH_W) '$(srcdir)/pcre_scanner_unittest.cc'; fi`
 
 pcre_stringpiece_unittest-pcre_stringpiece_unittest.o: pcre_stringpiece_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_stringpiece_unittest_CXXFLAGS) $(CXXFLAGS) -MT pcre_stringpiece_unittest-pcre_stringpiece_unittest.o -MD -MP -MF $(DEPDIR)/pcre_stringpiece_unittest-pcre_stringpiece_unittest.Tpo -c -o pcre_stringpiece_unittest-pcre_stringpiece_unittest.o `test -f 'pcre_stringpiece_unittest.cc' || echo '$(srcdir)/'`pcre_stringpiece_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcre_stringpiece_unittest-pcre_stringpiece_unittest.Tpo $(DEPDIR)/pcre_stringpiece_unittest-pcre_stringpiece_unittest.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcre_stringpiece_unittest.cc' object='pcre_stringpiece_unittest-pcre_stringpiece_unittest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_stringpiece_unittest_CXXFLAGS) $(CXXFLAGS) -c -o pcre_stringpiece_unittest-pcre_stringpiece_unittest.o `test -f 'pcre_stringpiece_unittest.cc' || echo '$(srcdir)/'`pcre_stringpiece_unittest.cc
 
 pcre_stringpiece_unittest-pcre_stringpiece_unittest.obj: pcre_stringpiece_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_stringpiece_unittest_CXXFLAGS) $(CXXFLAGS) -MT pcre_stringpiece_unittest-pcre_stringpiece_unittest.obj -MD -MP -MF $(DEPDIR)/pcre_stringpiece_unittest-pcre_stringpiece_unittest.Tpo -c -o pcre_stringpiece_unittest-pcre_stringpiece_unittest.obj `if test -f 'pcre_stringpiece_unittest.cc'; then $(CYGPATH_W) 'pcre_stringpiece_unittest.cc'; else $(CYGPATH_W) '$(srcdir)/pcre_stringpiece_unittest.cc'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcre_stringpiece_unittest-pcre_stringpiece_unittest.Tpo $(DEPDIR)/pcre_stringpiece_unittest-pcre_stringpiece_unittest.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcre_stringpiece_unittest.cc' object='pcre_stringpiece_unittest-pcre_stringpiece_unittest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcre_stringpiece_unittest_CXXFLAGS) $(CXXFLAGS) -c -o pcre_stringpiece_unittest-pcre_stringpiece_unittest.obj `if test -f 'pcre_stringpiece_unittest.cc'; then $(CYGPATH_W) 'pcre_stringpiece_unittest.cc'; else $(CYGPATH_W) '$(srcdir)/pcre_stringpiece_unittest.cc'; fi`
 
 pcrecpp_unittest-pcrecpp_unittest.o: pcrecpp_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcrecpp_unittest_CXXFLAGS) $(CXXFLAGS) -MT pcrecpp_unittest-pcrecpp_unittest.o -MD -MP -MF $(DEPDIR)/pcrecpp_unittest-pcrecpp_unittest.Tpo -c -o pcrecpp_unittest-pcrecpp_unittest.o `test -f 'pcrecpp_unittest.cc' || echo '$(srcdir)/'`pcrecpp_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcrecpp_unittest-pcrecpp_unittest.Tpo $(DEPDIR)/pcrecpp_unittest-pcrecpp_unittest.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcrecpp_unittest.cc' object='pcrecpp_unittest-pcrecpp_unittest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcrecpp_unittest_CXXFLAGS) $(CXXFLAGS) -c -o pcrecpp_unittest-pcrecpp_unittest.o `test -f 'pcrecpp_unittest.cc' || echo '$(srcdir)/'`pcrecpp_unittest.cc
 
 pcrecpp_unittest-pcrecpp_unittest.obj: pcrecpp_unittest.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcrecpp_unittest_CXXFLAGS) $(CXXFLAGS) -MT pcrecpp_unittest-pcrecpp_unittest.obj -MD -MP -MF $(DEPDIR)/pcrecpp_unittest-pcrecpp_unittest.Tpo -c -o pcrecpp_unittest-pcrecpp_unittest.obj `if test -f 'pcrecpp_unittest.cc'; then $(CYGPATH_W) 'pcrecpp_unittest.cc'; else $(CYGPATH_W) '$(srcdir)/pcrecpp_unittest.cc'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pcrecpp_unittest-pcrecpp_unittest.Tpo $(DEPDIR)/pcrecpp_unittest-pcrecpp_unittest.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pcrecpp_unittest.cc' object='pcrecpp_unittest-pcrecpp_unittest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pcrecpp_unittest_CXXFLAGS) $(CXXFLAGS) -c -o pcrecpp_unittest-pcrecpp_unittest.obj `if test -f 'pcrecpp_unittest.cc'; then $(CYGPATH_W) 'pcrecpp_unittest.cc'; else $(CYGPATH_W) '$(srcdir)/pcrecpp_unittest.cc'; fi`
 
 mostlyclean-libtool:
@@ -2782,62 +2635,6 @@ recheck: all $(check_SCRIPTS)
 	        am__force_recheck=am--force-recheck \
 	        TEST_LOGS="$$log_list"; \
 	exit $$?
-pcre_jit_test.log: pcre_jit_test$(EXEEXT)
-	@p='pcre_jit_test$(EXEEXT)'; \
-	b='pcre_jit_test'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-pcrecpp_unittest.log: pcrecpp_unittest$(EXEEXT)
-	@p='pcrecpp_unittest$(EXEEXT)'; \
-	b='pcrecpp_unittest'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-pcre_scanner_unittest.log: pcre_scanner_unittest$(EXEEXT)
-	@p='pcre_scanner_unittest$(EXEEXT)'; \
-	b='pcre_scanner_unittest'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-pcre_stringpiece_unittest.log: pcre_stringpiece_unittest$(EXEEXT)
-	@p='pcre_stringpiece_unittest$(EXEEXT)'; \
-	b='pcre_stringpiece_unittest'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-RunTest.log: RunTest
-	@p='RunTest'; \
-	b='RunTest'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-RunGrepTest.log: RunGrepTest
-	@p='RunGrepTest'; \
-	b='RunGrepTest'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-.test.log:
-	@p='$<'; \
-	$(am__set_b); \
-	$(am__check_pre) $(TEST_LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_TEST_LOG_DRIVER_FLAGS) $(TEST_LOG_DRIVER_FLAGS) -- $(TEST_LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-@am__EXEEXT_TRUE@.test$(EXEEXT).log:
-@am__EXEEXT_TRUE@	@p='$<'; \
-@am__EXEEXT_TRUE@	$(am__set_b); \
-@am__EXEEXT_TRUE@	$(am__check_pre) $(TEST_LOG_DRIVER) --test-name "$$f" \
-@am__EXEEXT_TRUE@	--log-file $$b.log --trs-file $$b.trs \
-@am__EXEEXT_TRUE@	$(am__common_driver_flags) $(AM_TEST_LOG_DRIVER_FLAGS) $(TEST_LOG_DRIVER_FLAGS) -- $(TEST_LOG_COMPILE) \
-@am__EXEEXT_TRUE@	"$$tst" $(AM_TESTS_FD_REDIRECT)
 
 distdir: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) distdir-am

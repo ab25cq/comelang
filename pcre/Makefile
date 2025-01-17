@@ -1102,7 +1102,7 @@ MAINTAINERCLEANFILES = pcre.h.generic config.h.generic
 # pcredemo_LDADD = libpcre.la
 EXTRA_DIST = m4/ax_pthread.m4 m4/pcre_visibility.m4  \
 	NON-UNIX-USE NON-AUTOTOOLS-BUILD HACKING PrepareRelease \
-	CheckMan CleanTxt Detrail 132html doc/index.html.src \
+	Detrail 132html doc/index.html.src \
 	makevp.bat makevp_c.txt makevp_l.txt \
 	pcre.h.generic config.h.generic pcre_chartables.c.dist \
 	testdata/grepfilelist testdata/grepinput testdata/grepinput3 \
@@ -1423,18 +1423,6 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-
-config.h: stamp-h1
-	@test -f $@ || rm -f stamp-h1
-	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) stamp-h1
-
-stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
-	@rm -f stamp-h1
-	cd $(top_builddir) && $(SHELL) ./config.status config.h
-$(srcdir)/config.h.in:  $(am__configure_deps)
-	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
-	rm -f stamp-h1
-	touch $@
 
 distclean-hdr:
 	-rm -f config.h stamp-h1

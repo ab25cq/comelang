@@ -400,24 +400,6 @@ CONFIGURE_FILE(config-cmake.h.in
 
 # Parse version numbers and date out of configure.ac
 
-file(STRINGS ${PROJECT_SOURCE_DIR}/configure.ac
-  configure_lines
-  LIMIT_COUNT 50 # Read only the first 50 lines of the file
-)
-
-set(SEARCHED_VARIABLES "pcre_major" "pcre_minor" "pcre_prerelease" "pcre_date")
-foreach(configure_line ${configure_lines})
-    foreach(_substitution_variable ${SEARCHED_VARIABLES})
-        string(TOUPPER ${_substitution_variable} _substitution_variable_upper)
-        if (NOT ${_substitution_variable_upper})
-            string(REGEX MATCH "m4_define\\(${_substitution_variable}, \\[(.*)\\]" MATCHED_STRING ${configure_line})
-            if (CMAKE_MATCH_1)
-                set(${_substitution_variable_upper} ${CMAKE_MATCH_1})
-            endif()
-        endif()
-    endforeach()
-endforeach()
-
 CONFIGURE_FILE(pcre.h.in
                ${PROJECT_BINARY_DIR}/pcre.h
                @ONLY)
@@ -476,15 +458,12 @@ SET(PCRE_SOURCES
   pcre_ord2utf8.c
   pcre_refcount.c
   pcre_string_utils.c
-  pcre_study.c
   pcre_tables.c
   pcre_ucd.c
   pcre_valid_utf8.c
   pcre_version.c
   pcre_xclass.c
 )
-
-SET(PCREPOSIX_HEADERS pcreposix.h)
 
 SET(PCREPOSIX_SOURCES pcreposix.c)
 
@@ -561,9 +540,6 @@ PRE-LINK
 COMMAND windres ARGS pcreposix.rc pcreposix.o
 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 COMMENT Using pcreposix coff info in mingw build)
-SET(PCREPOSIX_SOURCES
-  ${PCREPOSIX_SOURCES} ${PROJECT_SOURCE_DIR}/pcreposix.o
-)
 ENDIF(EXISTS ${PROJECT_SOURCE_DIR}/pcreposix.rc)
 ENDIF(MINGW AND NOT PCRE_STATIC)
 
@@ -573,8 +549,6 @@ SET(PCRE_SOURCES
   ${PCRE_SOURCES} pcre.rc)
 ENDIF(EXISTS ${PROJECT_SOURCE_DIR}/pcre.rc)
 IF (EXISTS ${PROJECT_SOURCE_DIR}/pcreposix.rc)
-SET(PCREPOSIX_SOURCES
-  ${PCREPOSIX_SOURCES} pcreposix.rc)
 ENDIF (EXISTS ${PROJECT_SOURCE_DIR}/pcreposix.rc)
 ENDIF(MSVC AND NOT PCRE_STATIC)
 
@@ -627,19 +601,16 @@ SET(targets)
 IF(PCRE_BUILD_PCRE8)
 ADD_LIBRARY(pcre ${PCRE_HEADERS} ${PCRE_SOURCES} ${PROJECT_BINARY_DIR}/config.h)
 SET(targets ${targets} pcre)
-ADD_LIBRARY(pcreposix ${PCREPOSIX_HEADERS} ${PCREPOSIX_SOURCES})
-SET(targets ${targets} pcreposix)
-TARGET_LINK_LIBRARIES(pcreposix pcre)
 
 IF(MINGW AND NOT PCRE_STATIC)
   IF(NON_STANDARD_LIB_PREFIX)
-    SET_TARGET_PROPERTIES(pcre pcreposix
+    SET_TARGET_PROPERTIES(pcre 
                         PROPERTIES PREFIX ""
     )
   ENDIF(NON_STANDARD_LIB_PREFIX)
 
   IF(NON_STANDARD_LIB_SUFFIX)
-    SET_TARGET_PROPERTIES(pcre pcreposix
+    SET_TARGET_PROPERTIES(pcre 
                         PROPERTIES SUFFIX "-0.dll"
     )
   ENDIF(NON_STANDARD_LIB_SUFFIX)
@@ -695,113 +666,13 @@ ENDIF(PCRE_BUILD_PCRE32)
 # Removed by PH (2008-01-23) because pcredemo shouldn't really be built
 # automatically, and it gave trouble in some environments anyway.
 # ADD_EXECUTABLE(pcredemo pcredemo.c)
-# TARGET_LINK_LIBRARIES(pcredemo pcreposix)
+# TARGET_LINK_LIBRARIES(pcredemo)
 # IF(NOT BUILD_SHARED_LIBS)
 #     # make sure to not use declspec(dllimport) in static mode on windows
 #         SET_TARGET_PROPERTIES(pcredemo PROPERTIES COMPILE_FLAGS "-DPCRE_STATIC")
 # ENDIF(NOT BUILD_SHARED_LIBS)
 
 # Testing
-IF(PCRE_BUILD_TESTS)
-  ENABLE_TESTING()
-
-  SET(PCRETEST_SOURCES pcretest.c)
-  IF(PCRE_BUILD_PCRE8)
-    LIST(APPEND PCRETEST_SOURCES pcre_printint.c)
-  ENDIF(PCRE_BUILD_PCRE8)
-  IF(PCRE_BUILD_PCRE16)
-    LIST(APPEND PCRETEST_SOURCES pcre16_printint.c)
-  ENDIF(PCRE_BUILD_PCRE16)
-  IF(PCRE_BUILD_PCRE32)
-    LIST(APPEND PCRETEST_SOURCES pcre32_printint.c)
-  ENDIF(PCRE_BUILD_PCRE32)
-
-  ADD_EXECUTABLE(pcretest ${PCRETEST_SOURCES})
-  SET(targets ${targets} pcretest)
-  IF(PCRE_BUILD_PCRE8)
-    LIST(APPEND PCRETEST_LIBS pcreposix pcre)
-  ENDIF(PCRE_BUILD_PCRE8)
-  IF(PCRE_BUILD_PCRE16)
-    LIST(APPEND PCRETEST_LIBS pcre16)
-  ENDIF(PCRE_BUILD_PCRE16)
-  IF(PCRE_BUILD_PCRE32)
-    LIST(APPEND PCRETEST_LIBS pcre32)
-  ENDIF(PCRE_BUILD_PCRE32)
-  TARGET_LINK_LIBRARIES(pcretest ${PCRETEST_LIBS})
-
-
-
-  # exes in Debug location tested by the RunTest shell script
-  # via "make test"
-
-  GET_TARGET_PROPERTY(PCRETEST_EXE pcretest DEBUG_LOCATION)
-
-# =================================================
-  # Write out a CTest configuration file
-  #
-  FILE(WRITE ${PROJECT_BINARY_DIR}/CTestCustom.ctest
-  "# This is a generated file.
-MESSAGE(\"When testing is complete, review test output in the
-\\\"${PROJECT_BINARY_DIR}/Testing/Temporary\\\" folder.\")
-MESSAGE(\" \")
-")
-
-  FILE(WRITE ${PROJECT_BINARY_DIR}/pcre_test.sh
-  "#! /bin/sh
-# This is a generated file.
-srcdir=${PROJECT_SOURCE_DIR}
-pcretest=${PCRETEST_EXE}
-. ${PROJECT_SOURCE_DIR}/RunTest
-if test \"$?\" != \"0\"; then exit 1; fi
-# End
-")
-
-  IF(UNIX)
-    ADD_TEST(pcre_test      sh ${PROJECT_BINARY_DIR}/pcre_test.sh)
-  ENDIF(UNIX)
-
-  IF(WIN32)
-    # Provide environment for executing the bat file version of RunTest
-    FILE(TO_NATIVE_PATH ${PROJECT_SOURCE_DIR} winsrc)
-    FILE(TO_NATIVE_PATH ${PROJECT_BINARY_DIR} winbin)
-    FILE(TO_NATIVE_PATH ${PCRETEST_EXE} winexe)
-
-    FILE(WRITE ${PROJECT_BINARY_DIR}/pcre_test.bat
-    "\@REM This is a generated file.
-\@echo off
-setlocal
-SET srcdir=\"${winsrc}\"
-SET pcretest=\"${winexe}\"
-if not [%CMAKE_CONFIG_TYPE%]==[] SET pcretest=\"${winbin}\\%CMAKE_CONFIG_TYPE%\\pcretest.exe\"
-call %srcdir%\\RunTest.Bat
-if errorlevel 1 exit /b 1
-echo RunTest.bat tests successfully completed
-")
-
-  ADD_TEST(NAME pcre_test_bat
-  COMMAND pcre_test.bat)
-  SET_TESTS_PROPERTIES(pcre_test_bat PROPERTIES
-  PASS_REGULAR_EXPRESSION "RunTest\\.bat tests successfully completed")
-
-    IF("$ENV{OSTYPE}" STREQUAL "msys")
-      # Both the sh and bat file versions of RunTest are run if make test is used
-      # in msys
-      ADD_TEST(pcre_test_sh    sh.exe ${PROJECT_BINARY_DIR}/pcre_test.sh)
-    ENDIF("$ENV{OSTYPE}" STREQUAL "msys")
-
-  ENDIF(WIN32)
-
-  # Changed to accommodate testing whichever location was just built
-
-
-  IF(PCRE_BUILD_PCRECPP)
-    ADD_TEST(pcrecpp_test          pcrecpp_unittest)
-    ADD_TEST(pcre_scanner_test     pcre_scanner_unittest)
-    ADD_TEST(pcre_stringpiece_test pcre_stringpiece_unittest)
-  ENDIF(PCRE_BUILD_PCRECPP)
-
-ENDIF(PCRE_BUILD_TESTS)
-
 # Installation
 SET(CMAKE_INSTALL_ALWAYS 1)
 
@@ -810,7 +681,7 @@ INSTALL(TARGETS ${targets}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-INSTALL(FILES ${PCRE_HEADERS} ${PCREPOSIX_HEADERS} DESTINATION include)
+INSTALL(FILES ${PCRE_HEADERS} DESTINATION include)
 
 FILE(GLOB html ${PROJECT_SOURCE_DIR}/doc/html/*.html)
 FILE(GLOB man1 ${PROJECT_SOURCE_DIR}/doc/*.1)
@@ -840,11 +711,9 @@ INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/pcre-config"
 
 IF(MSVC AND INSTALL_MSVC_PDB)
     INSTALL(FILES ${PROJECT_BINARY_DIR}/pcre.pdb
-                  ${PROJECT_BINARY_DIR}/pcreposix.pdb
             DESTINATION bin
             CONFIGURATIONS RelWithDebInfo)
     INSTALL(FILES ${PROJECT_BINARY_DIR}/pcred.pdb
-                  ${PROJECT_BINARY_DIR}/pcreposixd.pdb
             DESTINATION bin
             CONFIGURATIONS Debug)
 ENDIF(MSVC AND INSTALL_MSVC_PDB)
