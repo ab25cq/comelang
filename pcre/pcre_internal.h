@@ -114,10 +114,6 @@ setjmp and stdarg are used is when NO_RECURSE is set. */
 
 /* Valgrind (memcheck) support */
 
-#ifdef SUPPORT_VALGRIND
-#include <valgrind/memcheck.h>
-#endif
-
 /* When compiling a DLL for Windows, the exported symbols have to be declared
 using some MS magic. I found some useful information on this web page:
 http://msdn2.microsoft.com/en-us/library/y4h7bcy6(VS.80).aspx. According to the

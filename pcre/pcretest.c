@@ -58,26 +58,6 @@ supported library functions. */
 #include <locale.h>
 #include <errno.h>
 
-/* Both libreadline and libedit are optionally supported. The user-supplied
-original patch uses readline/readline.h for libedit, but in at least one system
-it is installed as editline/readline.h, so the configuration code now looks for
-that first, falling back to readline/readline.h. */
-
-#if defined(SUPPORT_LIBREADLINE) || defined(SUPPORT_LIBEDIT)
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-#if defined(SUPPORT_LIBREADLINE)
-#include <readline/readline.h>
-#include <readline/history.h>
-#else
-#if defined(HAVE_EDITLINE_READLINE_H)
-#include <editline/readline.h>
-#else
-#include <readline/readline.h>
-#endif
-#endif
-#endif
 
 /* A number of things vary for Windows builds. Originally, pcretest opened its
 input and output without "b"; then I was told that "b" was needed in some
@@ -87,44 +67,9 @@ for the input on Windows. I've now abstracted the modes into two macros that
 are set here, to make it easier to fiddle with them, and removed "b" from the
 input mode under Windows. */
 
-#if defined(_WIN32) || defined(WIN32)
-#include <io.h>                /* For _setmode() */
-#include <fcntl.h>             /* For _O_BINARY */
-#define INPUT_MODE   "r"
-#define OUTPUT_MODE  "wb"
-
-#ifndef isatty
-#define isatty _isatty         /* This is what Windows calls them, I'm told, */
-#endif                         /* though in some environments they seem to   */
-                               /* be already defined, hence the #ifndefs.    */
-#ifndef fileno
-#define fileno _fileno
-#endif
-
-/* A user sent this fix for Borland Builder 5 under Windows. */
-
-#ifdef __BORLANDC__
-#define _setmode(handle, mode) setmode(handle, mode)
-#endif
-
-/* Not Windows */
-
-#else
-#include <sys/time.h>          /* These two includes are needed */
-#include <sys/resource.h>      /* for setrlimit(). */
-#if defined NATIVE_ZOS         /* z/OS uses non-binary I/O */
-#define INPUT_MODE   "r"
-#define OUTPUT_MODE  "w"
-#else
 #define INPUT_MODE   "rb"
 #define OUTPUT_MODE  "wb"
-#endif
-#endif
 
-#ifdef __VMS
-#include <ssdef.h>
-void vms_setsymbol( char *, char *, int );
-#endif
 
 
 #define PRIV(name) name
@@ -289,6 +234,9 @@ argument, the casting might be incorrectly applied. */
 #define PCRE_STUDY8(extra, re, options, error) \
   extra = pcre_study(re, options, error)
 
+#define PCRE_JIT_STACK_ALLOC8(startsize, maxsize) \
+  pcre_jit_stack_alloc(startsize, maxsize)
+
 #define pcre8_maketables pcre_maketables
 
 #endif /* SUPPORT_PCRE8 */
@@ -314,6 +262,9 @@ argument, the casting might be incorrectly applied. */
 #define SET_PCRE_STACK_GUARD16(stack_guard) \
   pcre16_stack_guard = (int (*)(void))stack_guard
 
+#define PCRE_ASSIGN_JIT_STACK16(extra, callback, userdata) \
+  pcre16_assign_jit_stack((pcre16_extra *)extra, \
+    (pcre16_jit_callback)callback, userdata)
 
 #define PCRE_COMPILE16(re, pat, options, error, erroffset, tables) \
   re = (pcre *)pcre16_compile((PCRE_SPTR16)pat, options, error, erroffset, \
@@ -374,6 +325,9 @@ argument, the casting might be incorrectly applied. */
 #define PCRE_STUDY16(extra, re, options, error) \
   extra = (pcre_extra *)pcre16_study((pcre16 *)re, options, error)
 
+#define PCRE_JIT_STACK_ALLOC16(startsize, maxsize) \
+  (pcre_jit_stack *)pcre16_jit_stack_alloc(startsize, maxsize)
+
 #endif /* SUPPORT_PCRE16 */
 
 /* -----------------------------------------------------------*/
@@ -396,6 +350,10 @@ argument, the casting might be incorrectly applied. */
 
 #define SET_PCRE_STACK_GUARD32(stack_guard) \
   pcre32_stack_guard = (int (*)(void))stack_guard
+
+#define PCRE_ASSIGN_JIT_STACK32(extra, callback, userdata) \
+  pcre32_assign_jit_stack((pcre32_extra *)extra, \
+    (pcre32_jit_callback)callback, userdata)
 
 #define PCRE_COMPILE32(re, pat, options, error, erroffset, tables) \
   re = (pcre *)pcre32_compile((PCRE_SPTR32)pat, options, error, erroffset, \
@@ -456,6 +414,8 @@ argument, the casting might be incorrectly applied. */
 #define PCRE_STUDY32(extra, re, options, error) \
   extra = (pcre_extra *)pcre32_study((pcre32 *)re, options, error)
 
+#define PCRE_JIT_STACK_ALLOC32(startsize, maxsize) \
+  (pcre_jit_stack *)pcre32_jit_stack_alloc(startsize, maxsize)
 
 #endif /* SUPPORT_PCRE32 */
 
@@ -818,6 +778,11 @@ the three different cases. */
   else \
     G(PCRE_GET_SUBSTRING_LIST,BITTWO)(rc, bptr, offsets, count, listptr)
 
+#define PCRE_JIT_STACK_ALLOC(startsize, maxsize) \
+  (pcre_mode == G(G(PCRE,BITONE),_MODE)) ? \
+     G(PCRE_JIT_STACK_ALLOC,BITONE)(startsize, maxsize) \
+    : G(PCRE_JIT_STACK_ALLOC,BITTWO)(startsize, maxsize)
+
 #define PCRE_MAKETABLES \
   (pcre_mode == G(G(PCRE,BITONE),_MODE)) ? \
     G(G(pcre,BITONE),_maketables)() : G(G(pcre,BITTWO),_maketables)()
@@ -868,6 +833,7 @@ the three different cases. */
 #define PCRE_GET_STRINGNUMBER     PCRE_GET_STRINGNUMBER8
 #define PCRE_GET_SUBSTRING        PCRE_GET_SUBSTRING8
 #define PCRE_GET_SUBSTRING_LIST   PCRE_GET_SUBSTRING_LIST8
+#define PCRE_JIT_STACK_ALLOC      PCRE_JIT_STACK_ALLOC8
 #define PCRE_MAKETABLES           pcre_maketables()
 #define PCRE_PATTERN_TO_HOST_BYTE_ORDER PCRE_PATTERN_TO_HOST_BYTE_ORDER8
 #define PCRE_PRINTINT             PCRE_PRINTINT8
@@ -896,6 +862,7 @@ the three different cases. */
 #define PCRE_GET_STRINGNUMBER     PCRE_GET_STRINGNUMBER16
 #define PCRE_GET_SUBSTRING        PCRE_GET_SUBSTRING16
 #define PCRE_GET_SUBSTRING_LIST   PCRE_GET_SUBSTRING_LIST16
+#define PCRE_JIT_STACK_ALLOC      PCRE_JIT_STACK_ALLOC16
 #define PCRE_MAKETABLES           pcre16_maketables()
 #define PCRE_PATTERN_TO_HOST_BYTE_ORDER PCRE_PATTERN_TO_HOST_BYTE_ORDER16
 #define PCRE_PRINTINT             PCRE_PRINTINT16
@@ -924,6 +891,7 @@ the three different cases. */
 #define PCRE_GET_STRINGNUMBER     PCRE_GET_STRINGNUMBER32
 #define PCRE_GET_SUBSTRING        PCRE_GET_SUBSTRING32
 #define PCRE_GET_SUBSTRING_LIST   PCRE_GET_SUBSTRING_LIST32
+#define PCRE_JIT_STACK_ALLOC      PCRE_JIT_STACK_ALLOC32
 #define PCRE_MAKETABLES           pcre32_maketables()
 #define PCRE_PATTERN_TO_HOST_BYTE_ORDER PCRE_PATTERN_TO_HOST_BYTE_ORDER32
 #define PCRE_PRINTINT             PCRE_PRINTINT32
@@ -1033,6 +1001,20 @@ static int pcre_mode = PCRE16_MODE;
 #elif defined SUPPORT_PCRE32
 static int pcre_mode = PCRE32_MODE;
 #endif
+
+/* JIT study options for -s+n and /S+n where '1' <= n <= '7'. */
+
+static int jit_study_bits[] =
+  {
+  PCRE_STUDY_JIT_COMPILE,
+  PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE,
+  PCRE_STUDY_JIT_COMPILE + PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE,
+  PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE,
+  PCRE_STUDY_JIT_COMPILE + PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE,
+  PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE + PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE,
+  PCRE_STUDY_JIT_COMPILE + PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE +
+    PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE
+};
 
 #define PCRE_STUDY_ALLJIT (PCRE_STUDY_JIT_COMPILE | \
   PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE | PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE)
@@ -3009,10 +2991,10 @@ while (argc > 1 && argv[op][0] == '-')
     arg += 3;
     if (*arg == '+') { arg++; verify_jit = TRUE; }
     force_study = 1;
-    if (*arg == 0) {
-    }
-    else if (*arg >= '1' && *arg <= '7') {
-    }
+    if (*arg == 0)
+      force_study_options = jit_study_bits[6];
+    else if (*arg >= '1' && *arg <= '7')
+      force_study_options = jit_study_bits[*arg - '1'];
     else goto BAD_ARG;
     }
   else if (strcmp(arg, "-8") == 0)
@@ -3078,23 +3060,6 @@ while (argc > 1 && argv[op][0] == '-')
       ((stack_size = get_value((pcre_uint8 *)argv[op+1], &endptr)),
         *endptr == 0))
     {
-#if defined(_WIN32) || defined(WIN32) || defined(__minix) || defined(NATIVE_ZOS) || defined(__VMS)
-    printf("PCRE: -S not supported on this OS\n");
-    exit(1);
-#else
-    int rc;
-    struct rlimit rlim;
-    getrlimit(RLIMIT_STACK, &rlim);
-    rlim.rlim_cur = stack_size * 1024 * 1024;
-    rc = setrlimit(RLIMIT_STACK, &rlim);
-    if (rc != 0)
-      {
-    printf("PCRE: setrlimit() failed with error %d\n", rc);
-    exit(1);
-      }
-    op++;
-    argc--;
-#endif
     }
 #if !defined NOPOSIX
   else if (strcmp(arg, "-p") == 0) posix = 1;
@@ -3112,9 +3077,6 @@ while (argc > 1 && argv[op][0] == '-')
         printf("%d\n", rc);
         yield = rc;
 
-#ifdef __VMS
-        vms_setsymbol("LINKSIZE",0,yield );
-#endif
         }
       else if (strcmp(argv[op + 1], "pcre8") == 0)
         {
@@ -3124,9 +3086,6 @@ while (argc > 1 && argv[op][0] == '-')
 #else
         printf("0\n");
         yield = 0;
-#endif
-#ifdef __VMS
-        vms_setsymbol("PCRE8",0,yield );
 #endif
         }
       else if (strcmp(argv[op + 1], "pcre16") == 0)
@@ -3138,9 +3097,6 @@ while (argc > 1 && argv[op][0] == '-')
         printf("0\n");
         yield = 0;
 #endif
-#ifdef __VMS
-        vms_setsymbol("PCRE16",0,yield );
-#endif
         }
       else if (strcmp(argv[op + 1], "pcre32") == 0)
         {
@@ -3150,9 +3106,6 @@ while (argc > 1 && argv[op][0] == '-')
 #else
         printf("0\n");
         yield = 0;
-#endif
-#ifdef __VMS
-        vms_setsymbol("PCRE32",0,yield );
 #endif
         }
       else if (strcmp(argv[op + 1], "utf") == 0)
@@ -3171,9 +3124,6 @@ while (argc > 1 && argv[op][0] == '-')
 #endif
         printf("%d\n", rc);
         yield = rc;
-#ifdef __VMS
-        vms_setsymbol("UTF",0,yield );
-#endif
         }
       else if (strcmp(argv[op + 1], "ucp") == 0)
         {
@@ -3742,10 +3692,10 @@ while (!done)
             verify_jit = TRUE;
             pp++;
             }
-          if (*pp >= '1' && *pp <= '7') {
-          }
-          else {
-          }
+          if (*pp >= '1' && *pp <= '7')
+            study_options |= jit_study_bits[*pp++ - '1'];
+          else
+            study_options |= jit_study_bits[6];
           break;
 
           case '-':
@@ -4485,14 +4435,6 @@ while (!done)
       }
 #endif
 
-#ifdef SUPPORT_VALGRIND
-    /* Mark the dbuffer as addressable but undefined again. */
-
-    if (dbuffer != NULL)
-      {
-      VALGRIND_MAKE_MEM_UNDEFINED(dbuffer, dbuffer_size * CHAR_SIZE);
-      }
-#endif
 
     /* Allocate a buffer to hold the data line; len+1 is an upper bound on
     the number of pcre_uchar units that will be needed. */
@@ -4932,26 +4874,6 @@ while (!done)
     If we are using the POSIX interface, we must include the terminating zero. */
 
     bptr = dbuffer;
-
-#if !defined NOPOSIX
-    if (posix || do_posix)
-      {
-#ifdef SUPPORT_VALGRIND
-      VALGRIND_MAKE_MEM_NOACCESS(dbuffer + len + 1, dbuffer_size - (len + 1));
-#else
-      memmove(bptr + dbuffer_size - len - 1, bptr, len + 1);
-      bptr += dbuffer_size - len - 1;
-#endif
-      }
-    else
-#endif
-      {
-#ifdef SUPPORT_VALGRIND
-      VALGRIND_MAKE_MEM_NOACCESS(dbuffer + len * CHAR_SIZE, (dbuffer_size - len) * CHAR_SIZE);
-#else
-      bptr = memmove(bptr + (dbuffer_size - len) * CHAR_SIZE, bptr, len * CHAR_SIZE);
-#endif
-      }
 
     if ((all_use_dfa || use_dfa) && find_match_limit)
       {
@@ -5655,9 +5577,6 @@ if (dfa_workspace != NULL)
   free(dfa_workspace);
 #endif
 
-#if defined(__VMS)
-  yield = SS$_NORMAL;  /* Return values via DCL symbols */
-#endif
 
 return yield;
 }

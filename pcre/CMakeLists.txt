@@ -169,9 +169,6 @@ SET(PCRE_POSIX_MALLOC_THRESHOLD "10" CACHE STRING
 SET(PCRE_SUPPORT_JIT OFF CACHE BOOL
     "Enable support for Just-in-time compiling.")
 
-SET(PCRE_SUPPORT_PCREGREP_JIT ON CACHE BOOL
-    "Enable use of Just-in-time compiling in pcregrep.")
-
 SET(PCRE_SUPPORT_UTF OFF CACHE BOOL
     "Enable support for Unicode Transformation Format (UTF-8/UTF-16/UTF-32) encoding.")
 
@@ -185,7 +182,6 @@ SET(PCRE_SUPPORT_VALGRIND OFF CACHE BOOL
     "Enable Valgrind support.")
 
 OPTION(PCRE_SHOW_REPORT    "Show the final configuration report" ON)
-OPTION(PCRE_BUILD_PCREGREP "Build pcregrep" ON)
 OPTION(PCRE_BUILD_TESTS    "Build the tests" ON)
 
 IF (MINGW)
@@ -425,16 +421,6 @@ endforeach()
 CONFIGURE_FILE(pcre.h.in
                ${PROJECT_BINARY_DIR}/pcre.h
                @ONLY)
-
-IF(PCRE_BUILD_PCRECPP)
-        CONFIGURE_FILE(pcre_stringpiece.h.in
-                       ${PROJECT_BINARY_DIR}/pcre_stringpiece.h
-                       @ONLY)
-
-        CONFIGURE_FILE(pcrecpparg.h.in
-                       ${PROJECT_BINARY_DIR}/pcrecpparg.h
-                       @ONLY)
-ENDIF(PCRE_BUILD_PCRECPP)
 
 # Generate pkg-config files
 SET(PACKAGE_VERSION "${PCRE_MAJOR}.${PCRE_MINOR}")
@@ -745,12 +731,6 @@ ENDIF(PCRE_BUILD_PCRE32)
 #         SET_TARGET_PROPERTIES(pcredemo PROPERTIES COMPILE_FLAGS "-DPCRE_STATIC")
 # ENDIF(NOT BUILD_SHARED_LIBS)
 
-IF(PCRE_BUILD_PCREGREP)
-  ADD_EXECUTABLE(pcregrep pcregrep.c)
-  SET(targets ${targets} pcregrep)
-  TARGET_LINK_LIBRARIES(pcregrep pcreposix ${PCREGREP_LIBS})
-ENDIF(PCRE_BUILD_PCREGREP)
-
 # Testing
 IF(PCRE_BUILD_TESTS)
   ENABLE_TESTING()
@@ -783,9 +763,6 @@ IF(PCRE_BUILD_TESTS)
 
   # exes in Debug location tested by the RunTest shell script
   # via "make test"
-  IF(PCRE_BUILD_PCREGREP)
-    GET_TARGET_PROPERTY(PCREGREP_EXE pcregrep DEBUG_LOCATION)
-  ENDIF(PCRE_BUILD_PCREGREP)
 
   GET_TARGET_PROPERTY(PCRETEST_EXE pcretest DEBUG_LOCATION)
 
@@ -812,23 +789,6 @@ if test \"$?\" != \"0\"; then exit 1; fi
   IF(UNIX)
     ADD_TEST(pcre_test      sh ${PROJECT_BINARY_DIR}/pcre_test.sh)
   ENDIF(UNIX)
-
-  IF(PCRE_BUILD_PCREGREP)
-    FILE(WRITE ${PROJECT_BINARY_DIR}/pcre_grep_test.sh
-    "#! /bin/sh
-# This is a generated file.
-srcdir=${PROJECT_SOURCE_DIR}
-pcregrep=${PCREGREP_EXE}
-pcretest=${PCRETEST_EXE}
-. ${PROJECT_SOURCE_DIR}/RunGrepTest
-if test \"$?\" != \"0\"; then exit 1; fi
-# End
-")
-
-    IF(UNIX)
-      ADD_TEST(pcre_grep_test sh ${PROJECT_BINARY_DIR}/pcre_grep_test.sh)
-    ENDIF(UNIX)
-  ENDIF(PCRE_BUILD_PCREGREP)
 
   IF(WIN32)
     # Provide environment for executing the bat file version of RunTest
@@ -857,9 +817,6 @@ echo RunTest.bat tests successfully completed
       # Both the sh and bat file versions of RunTest are run if make test is used
       # in msys
       ADD_TEST(pcre_test_sh    sh.exe ${PROJECT_BINARY_DIR}/pcre_test.sh)
-      IF(PCRE_BUILD_PCREGREP)
-        ADD_TEST(pcre_grep_test  sh.exe ${PROJECT_BINARY_DIR}/pcre_grep_test.sh)
-      ENDIF(PCRE_BUILD_PCREGREP)
     ENDIF("$ENV{OSTYPE}" STREQUAL "msys")
 
   ENDIF(WIN32)
@@ -968,21 +925,6 @@ IF(PCRE_SHOW_REPORT)
   MESSAGE(STATUS "  Match limit recursion ........... : ${PCRE_MATCH_LIMIT_RECURSION}")
   MESSAGE(STATUS "  Build shared libs ............... : ${BUILD_SHARED_LIBS}")
   MESSAGE(STATUS "  Build static libs ............... : ${BUILD_STATIC_LIBS}")
-  MESSAGE(STATUS "  Build pcregrep .................. : ${PCRE_BUILD_PCREGREP}")
-  MESSAGE(STATUS "  Enable JIT in pcregrep .......... : ${PCRE_SUPPORT_PCREGREP_JIT}")
-  MESSAGE(STATUS "  Buffer size for pcregrep ........ : ${PCREGREP_BUFSIZE}")
-  MESSAGE(STATUS "  Build tests (implies pcretest  .. : ${PCRE_BUILD_TESTS}")
-  MESSAGE(STATUS "               and pcregrep)")
-  IF(ZLIB_FOUND)
-    MESSAGE(STATUS "  Link pcregrep with libz ......... : ${PCRE_SUPPORT_LIBZ}")
-  ELSE(ZLIB_FOUND)
-    MESSAGE(STATUS "  Link pcregrep with libz ......... : Library not found" )
-  ENDIF(ZLIB_FOUND)
-  IF(BZIP2_FOUND)
-    MESSAGE(STATUS "  Link pcregrep with libbz2 ....... : ${PCRE_SUPPORT_LIBBZ2}")
-  ELSE(BZIP2_FOUND)
-    MESSAGE(STATUS "  Link pcregrep with libbz2 ....... : Library not found" )
-  ENDIF(BZIP2_FOUND)
   IF(EDITLINE_FOUND)
     MESSAGE(STATUS "  Link pcretest with libeditline .. : ${PCRE_SUPPORT_LIBEDIT}")
   ELSE(EDITLINE_FOUND)

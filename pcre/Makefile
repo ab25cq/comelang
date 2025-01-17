@@ -344,8 +344,7 @@ libpcre32_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(CFLAGS) $(libpcre32_la_LDFLAGS) $(LDFLAGS) -o $@
 #am_libpcre32_la_rpath = -rpath $(libdir)
 libpcrecpp_la_DEPENDENCIES = libpcre.la
-am__libpcrecpp_la_SOURCES_DIST = pcrecpp_internal.h pcrecpp.cc \
-	pcre_scanner.cc pcre_stringpiece.cc
+am__libpcrecpp_la_SOURCES_DIST = pcrecpp_internal.h 
 am_libpcrecpp_la_OBJECTS =  \
 	libpcrecpp_la-pcrecpp.lo \
 	libpcrecpp_la-pcre_scanner.lo \
@@ -384,7 +383,6 @@ am__DEPENDENCIES_1 =
 pcre_jit_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(pcre_jit_test_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-am__pcre_scanner_unittest_SOURCES_DIST = pcre_scanner_unittest.cc
 am_pcre_scanner_unittest_OBJECTS = pcre_scanner_unittest-pcre_scanner_unittest.$(OBJEXT)
 pcre_scanner_unittest_OBJECTS = $(am_pcre_scanner_unittest_OBJECTS)
 #am__DEPENDENCIES_3 =  \
@@ -395,8 +393,6 @@ pcre_scanner_unittest_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(pcre_scanner_unittest_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am__pcre_stringpiece_unittest_SOURCES_DIST =  \
-	pcre_stringpiece_unittest.cc
 am_pcre_stringpiece_unittest_OBJECTS = pcre_stringpiece_unittest-pcre_stringpiece_unittest.$(OBJEXT)
 pcre_stringpiece_unittest_OBJECTS =  \
 	$(am_pcre_stringpiece_unittest_OBJECTS)
@@ -590,8 +586,6 @@ DIST_SOURCES = $(am__libpcre_la_SOURCES_DIST) \
 	$(am__libpcrecpp_la_SOURCES_DIST) \
 	$(am__libpcreposix_la_SOURCES_DIST) \
 	$(am__dftables_SOURCES_DIST) $(am__pcre_jit_test_SOURCES_DIST) \
-	$(am__pcre_scanner_unittest_SOURCES_DIST) \
-	$(am__pcre_stringpiece_unittest_SOURCES_DIST) \
 	$(am__pcrecpp_unittest_SOURCES_DIST) \
 	$(am__pcregrep_SOURCES_DIST) $(am__pcretest_SOURCES_DIST)
 am__can_run_installinfo = \
@@ -1106,22 +1100,11 @@ MAINTAINERCLEANFILES = pcre.h.generic config.h.generic
 # noinst_PROGRAMS += pcredemo
 # pcredemo_SOURCES = pcredemo.c
 # pcredemo_LDADD = libpcre.la
-EXTRA_DIST = m4/ax_pthread.m4 m4/pcre_visibility.m4 doc/perltest.txt \
+EXTRA_DIST = m4/ax_pthread.m4 m4/pcre_visibility.m4  \
 	NON-UNIX-USE NON-AUTOTOOLS-BUILD HACKING PrepareRelease \
 	CheckMan CleanTxt Detrail 132html doc/index.html.src \
-	makevp.bat makevp_c.txt makevp_l.txt pcregexp.pas \
+	makevp.bat makevp_c.txt makevp_l.txt \
 	pcre.h.generic config.h.generic pcre_chartables.c.dist \
-	sljit/sljitConfig.h sljit/sljitConfigInternal.h \
-	sljit/sljitExecAllocator.c sljit/sljitLir.c sljit/sljitLir.h \
-	sljit/sljitNativeARM_32.c sljit/sljitNativeARM_64.c \
-	sljit/sljitNativeARM_T2_32.c sljit/sljitNativeMIPS_32.c \
-	sljit/sljitNativeMIPS_64.c sljit/sljitNativeMIPS_common.c \
-	sljit/sljitNativePPC_32.c sljit/sljitNativePPC_64.c \
-	sljit/sljitNativePPC_common.c sljit/sljitNativeSPARC_32.c \
-	sljit/sljitNativeSPARC_common.c sljit/sljitNativeTILEGX_64.c \
-	sljit/sljitNativeTILEGX-encoder.c sljit/sljitNativeX86_32.c \
-	sljit/sljitNativeX86_64.c sljit/sljitNativeX86_common.c \
-	sljit/sljitUtils.c RunTest.bat testdata/grepbinary \
 	testdata/grepfilelist testdata/grepinput testdata/grepinput3 \
 	testdata/grepinput8 testdata/grepinputv testdata/grepinputx \
 	testdata/greplist testdata/grepoutput testdata/grepoutput8 \
@@ -1155,7 +1138,7 @@ EXTRA_DIST = m4/ax_pthread.m4 m4/pcre_visibility.m4 doc/perltest.txt \
 	testdata/testoutput23 testdata/testoutput24 \
 	testdata/testoutput25 testdata/testoutput26 \
 	testdata/testoutputEBC testdata/valgrind-jit.supp \
-	testdata/wintestinput3 testdata/wintestoutput3 perltest.pl \
+	testdata/wintestinput3 testdata/wintestoutput3  \
 	pcredemo.c $(pcrecpp_man) cmake/COPYING-CMAKE-SCRIPTS \
 	cmake/FindPackageHandleStandardArgs.cmake \
 	cmake/FindReadline.cmake cmake/FindEditline.cmake \
@@ -1570,12 +1553,6 @@ clean-libLTLIBRARIES:
 libpcre.la: $(libpcre_la_OBJECTS) $(libpcre_la_DEPENDENCIES) $(EXTRA_libpcre_la_DEPENDENCIES)
 	$(AM_V_CCLD)$(libpcre_la_LINK) $(am_libpcre_la_rpath) $(libpcre_la_OBJECTS) $(libpcre_la_LIBADD) $(LIBS)
 
-libpcre16.la: $(libpcre16_la_OBJECTS) $(libpcre16_la_DEPENDENCIES) $(EXTRA_libpcre16_la_DEPENDENCIES)
-	$(AM_V_CCLD)$(libpcre16_la_LINK) $(am_libpcre16_la_rpath) $(libpcre16_la_OBJECTS) $(libpcre16_la_LIBADD) $(LIBS)
-
-libpcre32.la: $(libpcre32_la_OBJECTS) $(libpcre32_la_DEPENDENCIES) $(EXTRA_libpcre32_la_DEPENDENCIES)
-	$(AM_V_CCLD)$(libpcre32_la_LINK) $(am_libpcre32_la_rpath) $(libpcre32_la_OBJECTS) $(libpcre32_la_LIBADD) $(LIBS)
-
 libpcrecpp.la: $(libpcrecpp_la_OBJECTS) $(libpcrecpp_la_DEPENDENCIES) $(EXTRA_libpcrecpp_la_DEPENDENCIES)
 	$(AM_V_CXXLD)$(libpcrecpp_la_LINK) $(am_libpcrecpp_la_rpath) $(libpcrecpp_la_OBJECTS) $(libpcrecpp_la_LIBADD) $(LIBS)
 
@@ -1585,26 +1562,6 @@ libpcreposix.la: $(libpcreposix_la_OBJECTS) $(libpcreposix_la_DEPENDENCIES) $(EX
 dftables$(EXEEXT): $(dftables_OBJECTS) $(dftables_DEPENDENCIES) $(EXTRA_dftables_DEPENDENCIES)
 	@rm -f dftables$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(dftables_OBJECTS) $(dftables_LDADD) $(LIBS)
-
-pcre_jit_test$(EXEEXT): $(pcre_jit_test_OBJECTS) $(pcre_jit_test_DEPENDENCIES) $(EXTRA_pcre_jit_test_DEPENDENCIES)
-	@rm -f pcre_jit_test$(EXEEXT)
-	$(AM_V_CCLD)$(pcre_jit_test_LINK) $(pcre_jit_test_OBJECTS) $(pcre_jit_test_LDADD) $(LIBS)
-
-pcre_scanner_unittest$(EXEEXT): $(pcre_scanner_unittest_OBJECTS) $(pcre_scanner_unittest_DEPENDENCIES) $(EXTRA_pcre_scanner_unittest_DEPENDENCIES)
-	@rm -f pcre_scanner_unittest$(EXEEXT)
-	$(AM_V_CXXLD)$(pcre_scanner_unittest_LINK) $(pcre_scanner_unittest_OBJECTS) $(pcre_scanner_unittest_LDADD) $(LIBS)
-
-pcre_stringpiece_unittest$(EXEEXT): $(pcre_stringpiece_unittest_OBJECTS) $(pcre_stringpiece_unittest_DEPENDENCIES) $(EXTRA_pcre_stringpiece_unittest_DEPENDENCIES)
-	@rm -f pcre_stringpiece_unittest$(EXEEXT)
-	$(AM_V_CXXLD)$(pcre_stringpiece_unittest_LINK) $(pcre_stringpiece_unittest_OBJECTS) $(pcre_stringpiece_unittest_LDADD) $(LIBS)
-
-pcrecpp_unittest$(EXEEXT): $(pcrecpp_unittest_OBJECTS) $(pcrecpp_unittest_DEPENDENCIES) $(EXTRA_pcrecpp_unittest_DEPENDENCIES)
-	@rm -f pcrecpp_unittest$(EXEEXT)
-	$(AM_V_CXXLD)$(pcrecpp_unittest_LINK) $(pcrecpp_unittest_OBJECTS) $(pcrecpp_unittest_LDADD) $(LIBS)
-
-pcregrep$(EXEEXT): $(pcregrep_OBJECTS) $(pcregrep_DEPENDENCIES) $(EXTRA_pcregrep_DEPENDENCIES)
-	@rm -f pcregrep$(EXEEXT)
-	$(AM_V_CCLD)$(pcregrep_LINK) $(pcregrep_OBJECTS) $(pcregrep_LDADD) $(LIBS)
 
 pcretest$(EXEEXT): $(pcretest_OBJECTS) $(pcretest_DEPENDENCIES) $(EXTRA_pcretest_DEPENDENCIES)
 	@rm -f pcretest$(EXEEXT)

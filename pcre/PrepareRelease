@@ -32,14 +32,8 @@
 #             looking for text files.
 
 
-# First, sort out the documentation. Remove pcredemo.3 first because it won't
-# pass the markup check (it is created below, using markup that none of the
-# other pages use).
-
 cd doc
 echo Processing documentation
-
-/bin/rm -f pcredemo.3
 
 # Check the remaining man pages
 
@@ -90,36 +84,6 @@ done
 
 # Make pcredemo.3 from the pcredemo.c source file
 
-echo "Making pcredemo.3"
-perl <<"END" >pcredemo.3
-  open(IN, "../pcredemo.c") || die "Failed to open pcredemo.c\n";
-  open(OUT, ">pcredemo.3") || die "Failed to open pcredemo.3\n";
-  print OUT ".\\\" Start example.\n" .
-            ".de EX\n" .
-            ".  nr mE \\\\n(.f\n" .
-            ".  nf\n" .
-            ".  nh\n" .
-            ".  ft CW\n" .
-            "..\n" .
-            ".\n" .
-            ".\n" .
-            ".\\\" End example.\n" .
-            ".de EE\n" .
-            ".  ft \\\\n(mE\n" .
-            ".  fi\n" .
-            ".  hy \\\\n(HY\n" .
-            "..\n" .
-            ".\n" .
-            ".EX\n" ;
-  while (<IN>)
-    {
-    s/\\/\\e/g;
-    print OUT;
-    }
-  print OUT ".EE\n";
-  close(IN);
-  close(OUT);
-END
 if [ $? != 0 ] ; then exit 1; fi
 
 
@@ -198,8 +162,6 @@ files="\
   libpcrecpp.pc.in \
   config.h.in \
   pcre_chartables.c.dist \
-  pcredemo.c \
-  pcregrep.c \
   pcretest.c \
   dftables.c \
   pcreposix.c \
