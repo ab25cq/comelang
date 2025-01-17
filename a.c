@@ -22,6 +22,10 @@ int main(int argc, char** argv)
 {
     "AAABBBAAADDD".sub_plain("AAA", "XXX").puts();
     
+    char a[128];
+    
+    printf("%d\n", sizeof a);
+    
     
     return 0;
 }
