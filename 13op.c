@@ -109,11 +109,17 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
             right_value2 = clone right_value.c_value;
         }
         
-        come_value.c_value = s"\{fun_name2}(\{left_value2},\{right_value2})";
-        
         sType*% type2 = clone operator_fun->mResultType;
         
         sType*% type3 = solve_generics(type2, generics_type, info);
+        
+        come_value.c_value = s"\{fun_name2}(\{left_value2},\{right_value2})";
+        
+        if(type2->mRefference && type2->mRefferenceOriginalType && type2->mRefferenceOriginalType->v1) {
+            come_value.c_value = s"((\{make_type_name_string(type3)})" + come_value.c_value + s"->_protocol_obj)";
+            
+            type3 = type2->mRefferenceOriginalType.v1;
+        }
         
         come_value.type = clone type3;
         come_value.var = null;

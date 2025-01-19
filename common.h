@@ -84,6 +84,9 @@ struct sType
     
     tuple1<sType*%>*% mNoSolvedGenericsType;
     tuple1<sType*%>*% mOriginalLoadVarType;
+    tuple1<sType*%>*% mRefferenceOriginalType;
+    
+    string mInterfaceName;
     
     string mGenericsName;
 
@@ -115,6 +118,7 @@ struct sType
     bool mRestrict;
     bool mImmutable;
     bool mHeap;
+    bool mRefference;
     bool mChannel;
     bool mNoHeap;
     bool mNoCallingDestructor;
@@ -837,6 +841,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 /// 21obj.c
 /////////////////////////////////////////////////////////////////////
+sNode*% create_implements(sNode*% node, sType*% inf_type, sInfo* info=info);
 sNode*% create_object(sType*% type, sInfo* info);
 sNode*% create_true_object(sInfo* info);
 sNode*% create_false_object(sInfo* info);

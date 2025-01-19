@@ -1,31 +1,22 @@
 #include <comelang.h>
 
-__attribute__((constructor)) static void fun()
-{
-    puts("CONSTRUCTOR");
-}
-
-__attribute__((constructor)) static void fun2()
-{
-    puts("CONSTRUCTOR2");
-}
-
-struct __attribute__((packed)) sData
+struct sData
 {
     int a;
     int b;
 };
 
-int __attribute__((aligned(16))) gBuf[256];
-
 int main(int argc, char** argv)
 {
-    "AAABBBAAADDD".sub_plain("AAA", "XXX").puts();
+    list<object as sData>*% li = new list<object as sData>();
     
-    char a[128];
+    li.add(new sData { a:111, b:222 } implements object);
     
-    printf("%d\n", sizeof a);
+    var data = li[0];
     
+    printf("%d %d\n", data.a, data.b);
+    
+    puts(data.to_string());
     
     return 0;
 }

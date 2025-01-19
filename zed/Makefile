@@ -71,7 +71,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.o *.c.i *.c.out *.c.c zed *.log *.out common.h zed-debug
+	rm -fR *.o *.c.i *.c.out *.c.c zed *.log *.out common.h zed-debug tmp-common*.txt
 
 #########################################
 # uninstall

@@ -119,6 +119,12 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         klass.mFields.push_back((string("clone"), cloner));
         
         while(true) {
+            if(*info->p == '}') {
+                info->p++;
+                skip_spaces_and_lf();
+                break;
+            }
+            parse_sharp();
             parse_sharp();
             var type2, name = parse_interface_function(info);
             expected_next_character(';');

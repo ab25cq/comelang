@@ -490,7 +490,7 @@ install:
 \# clean
 \#########################################
 clean:
-\trm -fR *.o *.c.i *.c.out *.c.c \{project_name} *.log *.out common.h \{project_name_debug}
+\trm -fR *.o *.c.i *.c.out *.c.c \{project_name} *.log *.out common.h \{project_name_debug} tmp-common-header.c
 
 \#########################################
 \# uninstall
@@ -963,6 +963,7 @@ int come_main(int argc, char** argv) version 2
         
         cpp(&info).elif {
             printf("%s %d: transpile failed\n", info.sname, info.sline);
+            system(xsprintf("%s %s*", RM, tmp_file));
             exit(2);
         }
         
@@ -976,6 +977,7 @@ int come_main(int argc, char** argv) version 2
             
             output_header_file(&info).elif {
                 printf("%s %d: output source file faield\n", info->sname, info->sline);
+                system(xsprintf("%s %s*", RM, tmp_file));
                 exit(2);
             }
         }

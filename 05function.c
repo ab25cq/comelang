@@ -2298,6 +2298,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     if(generics_type->mNoSolvedGenericsType.v1) {
         generics_type = generics_type->mNoSolvedGenericsType.v1;
     }
+    
     sFun* funX = info.funcs[fun_name]??;
     if(funX) {
         return true;

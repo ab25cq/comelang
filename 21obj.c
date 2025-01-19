@@ -1743,6 +1743,11 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
     return inherit(buf, head, head_sline, info);
 }
 
+sNode*% create_implements(sNode*% node, sType*% inf_type, sInfo* info=info)
+{
+    return new sImplementsNode(node, inf_type, info) implements sNode;
+}
+
 sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
 {
     if(!gComeC && parsecmp("implements")) {

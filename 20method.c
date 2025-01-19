@@ -929,9 +929,15 @@ class sMethodCallNode extends sNodeBase
             CVALUE*% come_value2 = new CVALUE();
             
             come_value2.c_value = buf.to_string();
+            come_value2.var = null;
+            
+            if(result_type->mRefference && result_type->mRefferenceOriginalType && result_type->mRefferenceOriginalType->v1) {
+                come_value2.c_value = s"((\{make_type_name_string(result_type->mRefferenceOriginalType.v1)})" + come_value2.c_value + s"->_protocol_obj)";
+                result_type2 = result_type->mRefferenceOriginalType.v1;
+            }
+            
             come_value2.type = clone result_type2;
             come_value2.type->mStatic = false;
-            come_value2.var = null;
             
             if(result_type2->mHeap) {
                 append_object_to_right_values2(come_value2, result_type2, info);
