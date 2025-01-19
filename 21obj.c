@@ -231,6 +231,25 @@ class sImplementsNode extends sNodeBase
             
             sFun* fun = info.funcs.at(method_name, null);
             
+            if(fun == null && name === "to_string") {
+                sType*% type2 = clone type;
+                type2->mPointerNum++;
+                
+                var fun2, real_fun_name = create_to_string_automatically(type2, name, info);
+                
+                fun = fun2;
+                method_name = real_fun_name;
+            }
+            if(fun == null && name === "equals") {
+                sType*% type2 = clone type;
+                type2->mPointerNum++;
+                
+                var fun2, real_fun_name = create_equals_automatically(type2, name, info);
+                
+                fun = fun2;
+                method_name = real_fun_name;
+            }
+            
             if(fun == null) {
                 sClass* klass2 = info->classes[type->mClass->mName];
                 while(info->classes[klass2->mParentClassName]??) {

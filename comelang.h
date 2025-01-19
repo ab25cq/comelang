@@ -1008,6 +1008,7 @@ uniq bool come_is_contained_element(void** array, int len, void* element)
 //////////////////////////////
 interface object
 {
+    string to_string();
 };
 
 //////////////////////////////
@@ -1606,10 +1607,8 @@ impl list <T>
 
         return result;
     }
-    T~ operator_store_element(list<T>* self, int position, T item) {
+    void operator_store_element(list<T>* self, int position, T item) {
         self.replace(position, item);
-        
-        return item;
     }
     T??~ operator_load_element(list<T>* self, int position) {
         if(position < 0) {
@@ -2788,10 +2787,8 @@ impl map <T, T2>
         return default_value;
     }
     
-    T2~ operator_store_element(map<T, T2>* self, T key, T2 item) {
+    void operator_store_element(map<T, T2>* self, T key, T2 item) {
         self.insert(key, item);
-        
-        return item;
     }
     
     bool equals(map<T, T2>* left, map<T, T2>* right)

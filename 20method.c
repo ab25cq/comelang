@@ -665,9 +665,22 @@ class sMethodCallNode extends sNodeBase
                 else if(label) {
                 }
                 else {
-                    node_compile(node).elif {
-                        return false;
+/*
+                    if(param_types[i]?? && param_types[i].mProtocol && param_types[i].mRefference && node.kind() !== "sImplementsNode") {
+                        sType*% param_type = clone param_types[i];
+                        param_type->mPointerNum--;
+                        sNode*% node2 = create_implements(node, param_type);
+                        
+                        node_compile(node2).elif {
+                            return false;
+                        }
                     }
+                    else {
+*/
+                        node_compile(node).elif {
+                            return false;
+                        }
+//                    }
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     dec_stack_ptr(1, info);

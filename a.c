@@ -16,7 +16,7 @@ int main(int argc, char** argv)
     
     printf("%d %d\n", data.a, data.b);
     
-    puts(data.to_string());
+    puts(li.to_string());
     
     return 0;
 }
