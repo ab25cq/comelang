@@ -11,12 +11,11 @@ int main(int argc, char** argv)
     list<sData~>*% li = new list<sData~>();
     
     li.add(new sData { a:111, b:222 }~);
+    li.add(new sData { a:333, b:444 }~);
     
-    var data = li[0];
-    
-    printf("%d %d\n", data.a, data.b);
-    
-    puts(li.to_string());
+    foreach(it, li) {
+        it.to_string().puts();
+    }
     
     return 0;
 }

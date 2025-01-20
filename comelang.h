@@ -1210,7 +1210,7 @@ impl list <T>
         return result.to_string();
     }
     
-    T& begin(list<T>* self) {
+    T&~~ begin(list<T>* self) {
         if(self == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -1227,7 +1227,7 @@ impl list <T>
         return result;
     }
 
-    T& next(list<T>* self) {
+    T&~~ next(list<T>* self) {
         if(self == null || self.it == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -2181,14 +2181,14 @@ impl vector<T>
         return self;
     }
 
-    T& begin(vector<T>* self) {
+    T&~~ begin(vector<T>* self) {
         self.it = 0;
 
         T` default_value;
         return self.item(0, default_value);
     }
 
-    T& next(vector<T>* self) {
+    T&~~ next(vector<T>* self) {
         self.it++;
 
         T` default_value
@@ -2515,7 +2515,7 @@ impl map <T, T2>
         return self.len;
     }
     
-    T& begin(map<T, T2>* self) {
+    T&~~ begin(map<T, T2>* self) {
         if(self == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -2532,7 +2532,7 @@ impl map <T, T2>
         return result;
     }
 
-    T& next(map<T, T2>* self) {
+    T&~~ next(map<T, T2>* self) {
         if(self == null || self.key_list.it == null) {
             T&` result;
             memset(&result, 0, sizeof(T));

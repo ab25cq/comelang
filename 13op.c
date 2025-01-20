@@ -119,6 +119,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
             come_value.c_value = s"((\{make_type_name_string(type3)})" + come_value.c_value + s"->_protocol_obj)";
             
             type3 = type2->mRefferenceOriginalType.v1;
+            type3->mHeap = type2->mHeap;
         }
         
         come_value.type = clone type3;
