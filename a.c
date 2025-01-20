@@ -8,9 +8,9 @@ struct sData
 
 int main(int argc, char** argv)
 {
-    list<object as sData>*% li = new list<object as sData>();
+    list<sData~>*% li = new list<sData~>();
     
-    li.add(new sData { a:111, b:222 } implements object);
+    li.add(new sData { a:111, b:222 }~);
     
     var data = li[0];
     

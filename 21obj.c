@@ -1783,6 +1783,14 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
         
         return new sImplementsNode(node, inf_type, info) implements sNode;
     }
+    else if(*info->p == '~') {
+        info->p ++;
+        skip_spaces_and_lf();
+        
+        sType*% inf_type = new sType("object");
+        
+        return new sImplementsNode(node, inf_type, info) implements sNode;
+    }
     else if(*info->p == '@') {
         info->p++;
         while(xisalnum(*info->p) || *info->p == '_') {

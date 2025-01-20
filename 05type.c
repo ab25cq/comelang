@@ -1723,6 +1723,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool heap = false;
     bool refference = false;
     bool channel = false;
+    bool object_interface = false;
     while(1) {
         if(*info->p == '*') {
             info->p++;
@@ -1732,13 +1733,21 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             pointer_num++;
         }
+        else if(*info->p == '~' && *(info->p+1) == '~') {
+            info->p+=2;
+            skip_spaces_and_lf();
+            
+            skip_pointer_attribute();
+            
+            refference = true;
+        }
         else if(*info->p == '~') {
             info->p++;
             skip_spaces_and_lf();
             
             skip_pointer_attribute();
             
-            refference = true;
+            object_interface = true;
         }
         else if(*info->p == '%') {
             info->p++;
@@ -2378,7 +2387,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     break;
                 }
                 else {
-                    err_msg(info, "invalid generics type\n");
+                    err_msg(info, "invalid generics type(%c)(%c)(%c)\n", *info->p, *(info->p+1), *(info->p+2));
                     return ((sType*%)null, (string)null, false);
                 }
             }
@@ -2481,14 +2490,20 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.v1.mHeap = true;
                 }
             }
-            else if(*info->p == '~') {
-                info->p++;
+            else if(*info->p == '~' && *(info->p+1) == '~') {
+                info->p+=2;
                 skip_spaces_and_lf();
                 
                 type->mRefference = true;
                 if(type->mNoSolvedGenericsType.v1) {
                     type->mNoSolvedGenericsType.v1.mRefference = true;
                 }
+            }
+            else if(*info->p == '~') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                object_interface = true;
             }
             else if(*info->p == '&') {
                 info->p++;
@@ -2548,14 +2563,20 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.v1.mHeap = true;
                 }
             }
-            else if(*info->p == '~') {
-                info->p++;
+            else if(*info->p == '~' && *(info->p+1) == '~') {
+                info->p+=2;
                 skip_spaces_and_lf();
                 
                 type->mRefference = true;
                 if(type->mNoSolvedGenericsType.v1) {
                     type->mNoSolvedGenericsType.v1.mRefference = true;
                 }
+            }
+            else if(*info->p == '~') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                object_interface = true;
             }
             else if(gComePthread && *info->p == '@') {
                 info->p++;
@@ -2739,6 +2760,13 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     
     if(attribute !== "") {
         type->mAttribute = attribute;
+    }
+    
+    if(object_interface) {
+        type = new sType("object");
+        type->mPointerNum++;
+        type->mHeap = true;
+        type_name2 = string(type_name);
     }
     
     if(type_name2) {
