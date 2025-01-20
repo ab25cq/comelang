@@ -932,7 +932,11 @@ class sMethodCallNode extends sNodeBase
             come_value2.var = null;
             
             if(result_type->mRefference && result_type->mRefferenceOriginalType && result_type->mRefferenceOriginalType->v1) {
-                come_value2.c_value = s"((\{make_type_name_string(result_type->mRefferenceOriginalType.v1)})" + come_value2.c_value + s"->_protocol_obj)";
+                static int i = 0;
+                i++;
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type, s"__tmp_inf\{i}"));
+                
+                come_value2.c_value = s"((__tmp_inf\{i}=\{come_value2.c_value}),((\{make_type_name_string(result_type->mRefferenceOriginalType.v1)})(__tmp_inf\{i} ? __tmp_inf\{i}->_protocol_obj:(void*)0)))";
                 result_type2 = result_type->mRefferenceOriginalType.v1;
                 result_type2->mHeap = result_type->mHeap;
             }

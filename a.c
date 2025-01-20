@@ -17,5 +17,11 @@ int main(int argc, char** argv)
         it.to_string().puts();
     }
     
+    var item = li.item(0,null);
+    
+    item.to_string().puts();
+    
+    puts(li.to_string());
+    
     return 0;
 }
