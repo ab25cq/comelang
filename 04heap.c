@@ -446,7 +446,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
             }
         }
         
-        if(finalizer == NULL && !type->mClass->mProtocol && !type->mClass->mNumber)
+        if(finalizer == NULL && !type->mClass->mProtocol && !type->mClass->mNumber && type->mArrayNum.length() == 0)
         {
             var fun,new_fun_name = create_finalizer_automatically(type, fun_name, info);
             
@@ -559,7 +559,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             }
         }
         
-        if(finalizer == NULL && !type->mClass->mProtocol && !type->mClass->mNumber)
+        if(finalizer == NULL && !type->mClass->mProtocol && !type->mClass->mNumber && type->mArrayNum.length() == 0)
         {
             var fun,new_fun_name = create_finalizer_automatically(type, fun_name, info);
             
