@@ -2463,7 +2463,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     
     result_type->mInline = false;
     result_type->mStatic = false;
-    result_type->mUniq = true;
+    result_type->mUniq = false;
     
     bool var_args = generics_fun.mVarArgs;
     var fun = new sFun(fun_name, result_type
