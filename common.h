@@ -156,6 +156,7 @@ struct sType
     
     string mTupleName;
     string mAttribute;
+    int mGenericsNumBefore;
 };
 
 struct sVar;

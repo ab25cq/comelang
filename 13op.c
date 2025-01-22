@@ -115,14 +115,27 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         
         come_value.c_value = s"\{fun_name2}(\{left_value2},\{right_value2})";
         
-        if(type2->mRefference && type2->mRefferenceOriginalType && type2->mRefferenceOriginalType->v1) {
-            static int i = 0;
-            i++;
-            add_come_code_at_function_head(info, "%s;\n", make_define_var(type2, s"__tmp_infX\{i}"));
+        sType*% result_type = type2;
+        sType*% obj_type = generics_type;
+        
+        if(type3->mProtocol) {
+            int generics_num = result_type->mGenericsNumBefore;
             
-            come_value.c_value = s"((__tmp_infX\{i}=\{come_value.c_value}),((\{make_type_name_string(type3)})(__tmp_infX\{i} ? __tmp_infX\{i}->_protocol_obj:(void*)0)))";
-            type3 = type2->mRefferenceOriginalType.v1;
-            type3->mHeap = type2->mHeap;
+            if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
+                sType*% refference_type = obj_type->mNoSolvedGenericsType.v1.mGenericsTypes[generics_num]??;
+                
+                if(refference_type && refference_type->mRefferenceOriginalType) {
+                    refference_type = refference_type->mRefferenceOriginalType.v1;
+                    
+                    static int i = 0;
+                    i++;
+                    add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type, s"__tmp_infX\{i}"));
+                    
+                    come_value.c_value = s"((__tmp_infX\{i}=\{come_value.c_value}),((\{make_type_name_string(refference_type)})(__tmp_infX\{i} ? __tmp_infX\{i}->_protocol_obj:(void*)0)))";
+                    type3 = refference_type;
+                    type3->mHeap = result_type->mHeap;
+                }
+            }
         }
         
         come_value.type = clone type3;

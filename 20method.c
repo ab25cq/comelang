@@ -589,7 +589,7 @@ class sMethodCallNode extends sNodeBase
             
             sType*% result_type = clone fun->mResultType;
             result_type->mStatic = false;
-            
+
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
             
             list<sType*%>*% param_types = new list<sType*%>();
@@ -618,13 +618,6 @@ class sMethodCallNode extends sNodeBase
                     first_param = false;
                 }
                 else if(label) {
-                    node_compile(node).elif {
-                        return false;
-                    }
-                    
-                    CVALUE*% come_value = get_value_from_stack(-1, info);
-                    dec_stack_ptr(1, info);
-                    
                     int n = 0;
                     foreach(it, fun.mParamNames) {
                         if(label === it) {
@@ -633,6 +626,25 @@ class sMethodCallNode extends sNodeBase
                         
                         n++;
                     }
+                    
+                    if(param_types[n]?? && param_types[n].mRefferenceOriginalType && param_types[n].mRefferenceOriginalType.v1) {
+                        sType*% inf_type = new sType("object");
+                        inf_type->mHeap = 1;
+                        
+                        sNode*% node2 = create_implements(node, inf_type, info);
+                        
+                        node_compile(node2).elif {
+                            return false;
+                        }
+                    }
+                    else {
+                        node_compile(node).elif {
+                            return false;
+                        }
+                    }
+                    
+                    CVALUE*% come_value = get_value_from_stack(-1, info);
+                    dec_stack_ptr(1, info);
                     
                     if(param_types[n]??) {
                         check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value);
@@ -665,13 +677,6 @@ class sMethodCallNode extends sNodeBase
                 else if(label) {
                 }
                 else {
-                    node_compile(node).elif {
-                        return false;
-                    }
-                    
-                    CVALUE*% come_value = get_value_from_stack(-1, info);
-                    dec_stack_ptr(1, info);
-                    
                     while(true) {
                         if(come_params[i]?? == null) {
                             break;
@@ -680,6 +685,25 @@ class sMethodCallNode extends sNodeBase
                             i++;
                         }
                     }
+                    
+                    if(param_types[i]?? && param_types[i].mRefferenceOriginalType && param_types[i].mRefferenceOriginalType.v1) {
+                        sType*% inf_type = new sType("object");
+                        inf_type->mHeap = 1;
+                        
+                        sNode*% node2 = create_implements(node, inf_type, info);
+                        
+                        node_compile(node2).elif {
+                            return false;
+                        }
+                    }
+                    else {
+                        node_compile(node).elif {
+                            return false;
+                        }
+                    }
+                    
+                    CVALUE*% come_value = get_value_from_stack(-1, info);
+                    dec_stack_ptr(1, info);
                     
                     if(param_types[i]??) {
                         check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
@@ -931,14 +955,24 @@ class sMethodCallNode extends sNodeBase
             come_value2.c_value = buf.to_string();
             come_value2.var = null;
             
-            if(result_type->mRefference && result_type->mRefferenceOriginalType && result_type->mRefferenceOriginalType->v1) {
-                static int i = 0;
-                i++;
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type, s"__tmp_inf\{i}"));
+            if(result_type2->mClass->mProtocol) {
+                int generics_num = result_type->mGenericsNumBefore;
                 
-                come_value2.c_value = s"((__tmp_inf\{i}=\{come_value2.c_value}),((\{make_type_name_string(result_type->mRefferenceOriginalType.v1)})(__tmp_inf\{i} ? __tmp_inf\{i}->_protocol_obj:(void*)0)))";
-                result_type2 = result_type->mRefferenceOriginalType.v1;
-                result_type2->mHeap = result_type->mHeap;
+                if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
+                    sType*% refference_type = obj_type->mNoSolvedGenericsType.v1.mGenericsTypes[generics_num]??;
+                    
+                    if(refference_type && refference_type->mRefferenceOriginalType) {
+                        refference_type = refference_type->mRefferenceOriginalType.v1;
+                        
+                        static int i = 0;
+                        i++;
+                        add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type, s"__tmp_inf\{i}"));
+                        
+                        come_value2.c_value = s"((__tmp_inf\{i}=\{come_value2.c_value}),((\{make_type_name_string(refference_type)})(__tmp_inf\{i} ? __tmp_inf\{i}->_protocol_obj:(void*)0)))";
+                        result_type2 = refference_type;
+                        result_type2->mHeap = result_type->mHeap;
+                    }
+                }
             }
             
             come_value2.type = clone result_type2;

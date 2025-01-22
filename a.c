@@ -6,22 +6,31 @@ struct sData
     int b;
 };
 
+struct sData2
+{
+    int a;
+    int b;
+    int c;
+};
+
 int main(int argc, char** argv)
 {
     list<sData~>*% li = new list<sData~>();
+    list<sData2~>*% li2 = new list<sData2~>();
     
-    li.add(new sData { a:111, b:222 }~);
-    li.add(new sData { a:333, b:444 }~);
+    li.add(new sData { a:111, b:222 });
+    li.add(new sData { a:333, b:444 });
     
     foreach(it, li) {
-        it.to_string().puts();
+        puts(it.to_string());
     }
     
-    var item = li.item(0,null);
+    li2.add(new sData2 { a:111, b:222, c:333 });
+    li2.add(new sData2 { a:333, b:444, c:555 });
     
-    item.to_string().puts();
-    
-    puts(li.to_string());
+    foreach(it, li2) {
+        puts(it.to_string());
+    }
     
     return 0;
 }

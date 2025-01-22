@@ -132,6 +132,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool exception_ = type->mException;
             
             result = clone generics_type->mGenericsTypes[generics_number];
+            result.mGenericsNumBefore = generics_number;
 
             if(refference) {
                 result->mRefference = refference;
@@ -178,7 +179,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         result.mGenericsTypes.reset();
         foreach(it, type->mGenericsTypes) {
             var type = solve_generics(it, generics_type, info);
-            result->mGenericsTypes.push_back(clone type);
+            result->mGenericsTypes.push_back(type);
         }
         
         if(!output_generics_struct(result, generics_type, info))

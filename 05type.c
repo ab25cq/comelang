@@ -2622,7 +2622,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mHeap = true;
             
             foreach(it, types) {
-                type->mGenericsTypes.push_back(clone it);
+                type->mGenericsTypes.push_back((clone it));
             }
             
             if(is_contained_generics_class(type, info)) {
