@@ -118,11 +118,19 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         sType*% result_type = type2;
         sType*% obj_type = generics_type;
         
-        if(type3->mProtocol) {
+        if(type3->mClass->mProtocol) {
             int generics_num = result_type->mGenericsNumBefore;
-            
+
+            sType*% type;
             if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
-                sType*% refference_type = obj_type->mNoSolvedGenericsType.v1.mGenericsTypes[generics_num]??;
+                type = obj_type->mNoSolvedGenericsType.v1;
+            }
+            else {
+                type = obj_type;
+            }
+            
+            if(type) {
+                sType*% refference_type = type->mGenericsTypes[generics_num]??;
                 
                 if(refference_type && refference_type->mRefferenceOriginalType) {
                     refference_type = refference_type->mRefferenceOriginalType.v1;

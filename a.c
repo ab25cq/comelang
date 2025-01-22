@@ -6,31 +6,23 @@ struct sData
     int b;
 };
 
-struct sData2
+struct sInfo
 {
-    int a;
-    int b;
-    int c;
+    list<sData~>*% li;
 };
+
 
 int main(int argc, char** argv)
 {
-    list<sData~>*% li = new list<sData~>();
-    list<sData2~>*% li2 = new list<sData2~>();
+    sInfo info;
     
-    li.add(new sData { a:111, b:222 });
-    li.add(new sData { a:333, b:444 });
+    info.li = new list<sData~>();
     
-    foreach(it, li) {
-        puts(it.to_string());
-    }
+    info.li.add(new sData { a:1, b:2 });
     
-    li2.add(new sData2 { a:111, b:222, c:333 });
-    li2.add(new sData2 { a:333, b:444, c:555 });
+    sData* data = info.li[0];
     
-    foreach(it, li2) {
-        puts(it.to_string());
-    }
+    data.to_string().puts();
     
     return 0;
 }

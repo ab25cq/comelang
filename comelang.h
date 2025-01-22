@@ -1264,7 +1264,7 @@ impl list <T>
         
         return self;
     }
-    T item(list<T>* self, int position, T default_value) 
+    T item(list<T>* self, int position, T& default_value) 
     {
         if(position < 0) {
             position += self.len;
@@ -1614,7 +1614,7 @@ impl list <T>
     void operator_store_element(list<T>* self, int position, T item) {
         self.replace(position, item);
     }
-    T?? operator_load_element(list<T>* self, int position) {
+    T??~~ operator_load_element(list<T>* self, int position) {
         if(position < 0) {
             position += self.len;
         }
@@ -2029,7 +2029,7 @@ impl vector<T>
         self.replace(index, item);
     }
     
-    T?? operator_load_element(vector<T>* self, int index) {
+    T??~~ operator_load_element(vector<T>* self, int index) {
         T` default_value;
         memset(&default_value, 0, sizeof(T));
         
@@ -2082,7 +2082,7 @@ impl vector<T>
         return self;
     }
 
-    T item(vector<T>* self, int index, T default_value) 
+    T item(vector<T>* self, int index, T& default_value) 
     {
         if(index < 0) {
             index += self.len;
@@ -2441,7 +2441,7 @@ impl map <T, T2>
         return result.to_string();
     }
     
-    T2 at(map<T, T2>* self, T& key, T2 default_value) {
+    T2~~ at(map<T, T2>* self, T& key, T2 default_value) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2759,7 +2759,7 @@ impl map <T, T2>
         
         return self;
     }
-    T2?? operator_load_element(map<T, T2>* self, T& key) {
+    T2??~~ operator_load_element(map<T, T2>* self, T& key) {
         T2` default_value;
         memset(&default_value, 0, sizeof(T2));
         
