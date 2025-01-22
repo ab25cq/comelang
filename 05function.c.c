@@ -12351,7 +12351,7 @@ _Bool __result366__;
     __dec_obj259 = come_decrement_ref_count2(__dec_obj259, (void*)0, (void*)0, 0,0,0, (void*)0);
     result_type_820->mInline=(_Bool)0;
     result_type_820->mStatic=(_Bool)0;
-    result_type_820->mUniq=(_Bool)0;
+    result_type_820->mUniq=(_Bool)1;
     var_args_836=generics_fun->mVarArgs;
     fun_837=(struct sFun*)come_increment_ref_count(sFun_initialize((struct sFun*)come_increment_ref_count((struct sFun*)come_calloc(1, sizeof(struct sFun)*(1), "05function.c", 2469, "sFun")),(char*)come_increment_ref_count(fun_name),(struct sType*)come_increment_ref_count(result_type_820),(struct list$1sTypeph*)come_increment_ref_count(list$1sTypephp_clone(param_types_821)),(struct list$1charph*)come_increment_ref_count(param_names_825),(struct list$1charph*)come_increment_ref_count(param_default_parametors_826),(_Bool)0,var_args_836,(struct sBlock*)come_increment_ref_count(block_835),(_Bool)1,(char*)come_increment_ref_count(__builtin_string("")),(char*)come_increment_ref_count(__builtin_string("")),info,(_Bool)0,(_Bool)0,(char*)come_increment_ref_count(xsprintf("")),(char*)come_increment_ref_count(xsprintf(""))));
     map$2charphsFunph_insert(info->funcs,(char*)come_increment_ref_count(string_clone(fun_name)),(struct sFun*)come_increment_ref_count(fun_837));
