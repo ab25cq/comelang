@@ -224,7 +224,7 @@ class sMethodCallNode extends sNodeBase
         dec_stack_ptr(1, info);
         
         if(gComeDebug && obj_value.type->mPointerNum > 0) {
-            obj_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(obj_value.type)!, obj_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            obj_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(obj_value.type,no_static:true)!, obj_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
 /*
@@ -626,8 +626,9 @@ class sMethodCallNode extends sNodeBase
                         
                         n++;
                     }
+                    bool is_inner_calling_ = is_inner_calling(obj, info);
                     
-                    if(param_types[n]?? && param_types[n].mHeap && param_types[n].mRefferenceOriginalType && param_types[n].mRefferenceOriginalType.v1) {
+                    if(!is_inner_calling_ && param_types[n]?? && param_types[n].mHeap && param_types[n].mRefferenceOriginalType && param_types[n].mRefferenceOriginalType.v1) {
                         sType*% inf_type = new sType("object");
                         inf_type->mHeap = 1;
                         
@@ -685,8 +686,11 @@ class sMethodCallNode extends sNodeBase
                             i++;
                         }
                     }
+
+                    bool is_inner_calling_ = is_inner_calling(obj, info);
                     
-                    if(param_types[i]?? && param_types[i].mHeap && param_types[i].mRefferenceOriginalType && param_types[i].mRefferenceOriginalType.v1) {
+                    if(!is_inner_calling_ && param_types[i]?? && param_types[i].mHeap && param_types[i].mRefferenceOriginalType && param_types[i].mRefferenceOriginalType.v1) 
+                    {
                         sType*% inf_type = new sType("object");
                         inf_type->mHeap = 1;
                         

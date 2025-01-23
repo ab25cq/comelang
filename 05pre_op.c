@@ -260,7 +260,7 @@ class sDerefferenceNode extends sNodeBase
         
         if(gComeDebug) {
             if(value.kind() !== "sExpEqualNode") {
-                left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+                left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type, no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
             }
             else {
                 char* p = left_value.c_value;
@@ -288,7 +288,7 @@ class sDerefferenceNode extends sNodeBase
                 var buf2 = new buffer();
                 buf2.append(p2, p + strlen(p) - p2);
                 
-                left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))%s", make_type_name_string(left_value.type)!, buf.to_string(), info->sname, info->sline, gComeDebugStackFrameID++, buf2.to_string());
+                left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))%s", make_type_name_string(left_value.type, no_static:true)!, buf.to_string(), info->sname, info->sline, gComeDebugStackFrameID++, buf2.to_string());
             }
         }
         

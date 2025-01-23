@@ -1437,6 +1437,7 @@ struct sType
     _Bool mImmutable;
     _Bool mHeap;
     _Bool mRefference;
+    _Bool mNoRefference;
     _Bool mChannel;
     _Bool mNoHeap;
     _Bool mNoCallingDestructor;
@@ -2732,6 +2733,7 @@ char* create_method_name(struct sType* obj_type, _Bool no_pointer_name, char* fu
 char* create_method_name_original_obj_type(struct sType* obj_type, _Bool no_pointer_name, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
 char* create_non_method_name(struct sType* obj_type, _Bool no_pointer_name, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
 char* create_method_name_using_class(struct sClass* obj_class, _Bool no_pointer_name, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
+_Bool is_inner_calling(struct sNode* node, struct sInfo* info);
 struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
 struct sNode* expression_node_v95(struct sInfo* info);
 struct sNode* store_var(char* name, struct list$1charph* multiple_assign, struct list$1tuple3$3sTypephcharphsNodephph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info);
@@ -5018,6 +5020,9 @@ struct sType* __result229__;
     }
     if(    self!=((void*)0)) {
         result_285->mRefference=self->mRefference;
+    }
+    if(    self!=((void*)0)) {
+        result_285->mNoRefference=self->mNoRefference;
     }
     if(    self!=((void*)0)) {
         result_285->mChannel=self->mChannel;

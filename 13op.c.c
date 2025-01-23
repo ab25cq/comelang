@@ -1437,6 +1437,7 @@ struct sType
     _Bool mImmutable;
     _Bool mHeap;
     _Bool mRefference;
+    _Bool mNoRefference;
     _Bool mChannel;
     _Bool mNoHeap;
     _Bool mNoCallingDestructor;
@@ -2848,6 +2849,7 @@ struct sNode* expression_node_v96(struct sInfo* info);
 struct sNode* parse_tuple(struct sInfo* info, _Bool named_tuple);
 struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
+_Bool is_inner_calling(struct sNode* node, struct sInfo* info);
 struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
 struct sNode* expression_node_v95(struct sInfo* info);
 struct sNode* store_var(char* name, struct list$1charph* multiple_assign, struct list$1tuple3$3sTypephcharphsNodephph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info);
@@ -4860,7 +4862,7 @@ type_339 = (void*)0;
         }
         if(        !break_guard&&type3_335->mGuardValue&&type3_335->mPointerNum>0) {
             __dec_obj127=come_value_328->c_value;
-            come_value_328->c_value=(char*)come_increment_ref_count(xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))",((char*)(__right_value345=make_type_name_string(type3_335,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0))),come_value_328->c_value,info->sname,info->sline,gComeDebugStackFrameID++));
+            come_value_328->c_value=(char*)come_increment_ref_count(xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))",((char*)(__right_value345=make_type_name_string(type3_335,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)1))),come_value_328->c_value,info->sname,info->sline,gComeDebugStackFrameID++));
             __dec_obj127 = come_decrement_ref_count2(__dec_obj127, (void*)0, (void*)0, 0,0,0, (void*)0);
             __right_value345 = come_decrement_ref_count2(__right_value345, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
@@ -5046,6 +5048,9 @@ struct sType* __result223__;
     }
     if(    self!=((void*)0)) {
         result_267->mRefference=self->mRefference;
+    }
+    if(    self!=((void*)0)) {
+        result_267->mNoRefference=self->mNoRefference;
     }
     if(    self!=((void*)0)) {
         result_267->mChannel=self->mChannel;

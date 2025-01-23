@@ -1,17 +1,8 @@
 #include "common.h"
 
-bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVALUE* middle_value, CVALUE* right_value, sInfo* info)
+string, sFun* get_operator_function(sType* type, char* fun_name, sInfo* info=info)
 {
-    sType*% generics_type = clone type;
-    
-    if(generics_type->mNoSolvedGenericsType.v1) {
-        generics_type = generics_type->mNoSolvedGenericsType.v1;
-    }
-    
-    sClass* klass = type->mClass;
-    char* class_name = klass->mName;
-    
-    string fun_name2;
+    string fun_name2 = null;
     sFun* operator_fun = null;
     
     if(type->mNoSolvedGenericsType.v1) {
@@ -54,6 +45,22 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
             operator_fun = info->funcs[fun_name2]??;
         }
     }
+    
+    return (fun_name2, operator_fun);
+}
+
+bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVALUE* middle_value, CVALUE* right_value, sInfo* info)
+{
+    sType*% generics_type = clone type;
+    
+    if(generics_type->mNoSolvedGenericsType.v1) {
+        generics_type = generics_type->mNoSolvedGenericsType.v1;
+    }
+    
+    sClass* klass = type->mClass;
+    char* class_name = klass->mName;
+    
+    var fun_name2, operator_fun = get_operator_function(type, fun_name);
     
     bool result = false;
     
@@ -160,7 +167,7 @@ class sStoreFieldNode extends sNodeBase
         }
         
         if(gComeDebug && left_value.type.mPointerNum > 0) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
         node_compile(right).elif {
@@ -498,7 +505,7 @@ class sNullCheckNode extends sNodeBase
         else if(left_value.type->mPointerNum > 0) {
             CVALUE*% come_value = new CVALUE();
             
-            come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
             come_value.type = clone left_value.type;
             come_value.var = null;
             
@@ -561,86 +568,6 @@ sNode*% create_nullable_node(sNode* left, sInfo* info=info)
     return new sNullableNode(left, info) implements sNode;
 }
 
-class sRangeCheckNode extends sNodeBase
-{
-    new(sNode* left, sNode* begin, sNode* end, sInfo* info)
-    {
-        self.super();
-    
-        sNode*% self.mLeft = clone left;
-        sNode*% self.mBegin = clone begin;
-        sNode*% self.mEnd = clone end;
-    }
-    
-    string kind()
-    {
-        return string("sRangeCheckNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode* left = self.mLeft;
-        
-        node_compile(left).elif {
-            return false;
-        }
-        
-        CVALUE*% left_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        sNode* begin = self.mBegin;
-        
-        node_compile(begin).elif {
-            return false;
-        }
-        
-        CVALUE*% begin_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        sNode* end = self.mEnd;
-        
-        node_compile(end).elif {
-            return false;
-        }
-        
-        CVALUE*% end_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        if(left_value.type->mPointerNum > 0) {
-            if(!gComeDebug) {
-                CVALUE*% come_value = new CVALUE();
-                
-                come_value.c_value = xsprintf("(*((%s)%s))", make_type_name_string(left_value.type), left_value.c_value);
-                
-                left_value.type->mPointerNum--;
-                come_value.type = clone left_value.type;
-                come_value.var = null;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-            }
-            else {
-                CVALUE*% come_value = new CVALUE();
-                
-                come_value.c_value = xsprintf("(*((%s)come_range_check(%s, %s, %s, \"%s\", %d)))", make_type_name_string(left_value.type), left_value.c_value, begin_value.c_value, end_value.c_value, info->sname, info->sline);
-                left_value.type->mPointerNum--;
-                come_value.type = clone left_value.type;
-                come_value.var = null;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-            }
-        }
-        else {
-            info.stack.push_back(left_value);
-        }
-    
-        return true;
-    }
-};
-
 class sLoadFieldNode extends sNodeBase
 {
     new(sNode* left, string name, sInfo* info)
@@ -684,7 +611,7 @@ class sLoadFieldNode extends sNodeBase
         }
         
         if(gComeDebug && left_value.type.mPointerNum > 0) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
         sType* left_type = left_value.type;
@@ -838,7 +765,7 @@ class sStoreArrayNode extends sNodeBase
         dec_stack_ptr(1, info);
         
         if(gComeDebug && left_value.type.mPointerNum > 0) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
         sType* left_type = left_value.type;
@@ -856,8 +783,36 @@ class sStoreArrayNode extends sNodeBase
             array_num.push_back(c_value);
         }
         
-        node_compile(right).elif {
-            return false;
+        char* fun_name = "operator_store_element";
+        var fun_name2, operator_fun = get_operator_function(left_type, fun_name);
+        
+        if(operator_fun) {
+            sType*% param_type = operator_fun.mParamTypes[2]??;
+            sType*% param_type2 = solve_generics(param_type, left_type, info);
+            
+            bool is_inner_calling_ = is_inner_calling(left, info);
+            
+            if(!is_inner_calling_ && param_type2 && param_type2.mHeap && param_type2.mRefferenceOriginalType && param_type2.mRefferenceOriginalType.v1) 
+            {
+                sType*% inf_type = new sType("object");
+                inf_type->mHeap = 1;
+                
+                sNode*% right2 = create_implements(clone right, inf_type, info);
+                
+                node_compile(right2).elif {
+                    return false;
+                }
+            }
+            else {
+                node_compile(right).elif {
+                    return false;
+                }
+            }
+        }
+        else {
+            node_compile(right).elif {
+                return false;
+            }
         }
         
         CVALUE*% right_value = get_value_from_stack(-1, info);
@@ -869,7 +824,6 @@ class sStoreArrayNode extends sNodeBase
         
         sType*% type = clone left_value.type;
         
-        char* fun_name = "operator_store_element";
         bool calling_fun;
         if(self.mQuote) {
             calling_fun = false;
@@ -879,92 +833,8 @@ class sStoreArrayNode extends sNodeBase
         }
         
         if(!calling_fun) {
-            string check_code = null;
-            if(left_value.var && left_value.var->mType && left_value.var->mType->mArrayNum.length() > 0) 
-            {
-                sType* var_type = left_value.var.mType;
-                sType*% result_type = clone left_type;
-                
-                if(result_type->mOriginalLoadVarType->v1) {
-                    result_type = result_type->mOriginalLoadVarType->v1;
-                }
-                
-                if(result_type.mArrayNum.length() > 0) {
-                    int n = result_type.mArrayNum.length() - array_num.length();
-                    
-                    if(n == 0) {
-                        result_type = clone left_type;
-                        if(left_type->mOriginalLoadVarType.v1) {
-                            result_type = clone left_type->mOriginalLoadVarType.v1;
-                        }
-                        result_type->mArrayNum.reset();
-                    }
-                    else if(n > 0) {
-                        for(int i=0; i<n; i++) {
-                            result_type.mArrayNum.delete(-1, -1);
-                        }
-                    }
-                    else if(n < 0) {
-                        result_type.mArrayNum.reset();
-                        result_type.mPointerNum += n;
-                        
-                        if(result_type.mPointerNum < 0) {
-                            result_type.mPointerNum = 0;
-                        }
-                    }
-                }
-                else {
-                    if(result_type->mPointerNum > 0) {
-                        result_type->mPointerNum -= array_num.length();
-                        
-                        if(result_type->mPointerNum < 0) {
-                            result_type->mPointerNum = 0;
-                        }
-                    }
-                }
-                
-                CVALUE*% come_value = new CVALUE();
-                
-                buffer*% buf = new buffer();
-                
-                sType*% result_type2 = clone result_type;
-                result_type2->mPointerNum++;
-                
-                buf.append_format("come_range_check(&%s", left_value.c_value);
-                
-                foreach(it, array_num) {
-                    buf.append_format("[%s]", it.c_value);
-                }
-                buf.append_format(",%s,%s+(", left_value.c_value, left_value.c_value);
-                int i=0;
-                foreach(it, var_type.mArrayNum) {
-                    node_compile(it).elif {
-                        err_msg(info, "invalid array num");
-                        exit(1);
-                    }
-                    
-                    CVALUE*% come_value = get_value_from_stack(-1, info);
-                    dec_stack_ptr(1, info);
-                
-                    buf.append_format("%s", come_value.c_value);
-                    if(i != var_type.mArrayNum.length()-1) {
-                        buf.append_str("*");
-                    }
-                    i++;
-                }
-                buf.append_format("), \"%s\", %d)", info->sname, info->sline);
-                
-                check_code = buf.to_string();
-            }
-            
             CVALUE*% come_value = new CVALUE();
             
-    /*
-            if(left_type->mHeap && !right_type->mHeap) {
-                err_msg(info, "require right value as heap object(2)");
-                return false;
-            }
-    */
             if(left_type.mArrayNum.length() > 0) {
                 for(int i=0; i<array_num.length(); i++) {
                     left_type.mArrayNum.delete(-1, -1);
@@ -1023,10 +893,6 @@ class sStoreArrayNode extends sNodeBase
             come_value.type = result_type;
             come_value.var = null;
             
-            if(check_code && gComeDebug) {
-                come_value.c_value = xsprintf("(%s, %s)", check_code, come_value.c_value);
-            }
-            
             info.stack.push_back(come_value);
             
             add_come_last_code(info, "%s", come_value.c_value);
@@ -1067,7 +933,7 @@ class sLoadArrayNode extends sNodeBase
         dec_stack_ptr(1, info);
         
         if(gComeDebug && left_value.type.mPointerNum > 0 && !self.mBreakGuard) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
         sType*% left_type = clone left_value.type;
@@ -1097,154 +963,66 @@ class sLoadArrayNode extends sNodeBase
         }
         
         if(!calling_fun) {
-            if(gComeDebug && left_value.var && left_value.var->mType && left_value.var->mType->mArrayNum.length() > 0) 
-            {
-                sType* var_type = left_value.var.mType;
-                sType*% result_type = clone left_type;
+            CVALUE*% come_value = new CVALUE();
+            
+            buffer*% buf = new buffer();
+            
+            buf.append_str(left_value.c_value);
+            
+            foreach(it, array_num) {
+                buf.append_format("[%s]", it.c_value);
+            }
+            
+            string left_value_code = buf.to_string();
+            
+            come_value.c_value = xsprintf("%s", left_value_code);
+            
+            sType*% result_type = clone left_type;
+            
+            if(result_type->mOriginalLoadVarType->v1) {
+                result_type = result_type->mOriginalLoadVarType->v1;
+            }
+            
+            if(result_type.mArrayNum.length() > 0) {
+                int n = result_type.mArrayNum.length() - array_num.length();
                 
-                if(result_type->mOriginalLoadVarType->v1) {
-                    result_type = result_type->mOriginalLoadVarType->v1;
+                if(n == 0) {
+                    result_type = clone left_type;
+                    if(left_type->mOriginalLoadVarType.v1) {
+                        result_type = clone left_type->mOriginalLoadVarType.v1;
+                    }
+                    result_type->mArrayNum.reset();
                 }
-                
-                if(result_type.mArrayNum.length() > 0) {
-                    int n = result_type.mArrayNum.length() - array_num.length();
+                else if(n > 0) {
+                    for(int i=0; i<n; i++) {
+                        result_type.mArrayNum.delete(-1, -1);
+                    }
+                }
+                else if(n < 0) {
+                    result_type.mArrayNum.reset();
+                    result_type.mPointerNum += n;
                     
-                    if(n == 0) {
-                        result_type = clone left_type;
-                        if(left_type->mOriginalLoadVarType.v1) {
-                            result_type = clone left_type->mOriginalLoadVarType.v1;
-                        }
-                        result_type->mArrayNum.reset();
-                    }
-                    else if(n > 0) {
-                        for(int i=0; i<n; i++) {
-                            result_type.mArrayNum.delete(-1, -1);
-                        }
-                    }
-                    else if(n < 0) {
-                        result_type.mArrayNum.reset();
-                        result_type.mPointerNum += n;
-                        
-                        if(result_type.mPointerNum < 0) {
-                            result_type.mPointerNum = 0;
-                        }
+                    if(result_type.mPointerNum < 0) {
+                        result_type.mPointerNum = 0;
                     }
                 }
-                else {
-                    if(result_type->mPointerNum > 0) {
-                        result_type->mPointerNum -= array_num.length();
-                        
-                        if(result_type->mPointerNum < 0) {
-                            result_type->mPointerNum = 0;
-                        }
-                    }
-                }
-                
-                CVALUE*% come_value = new CVALUE();
-                
-                buffer*% buf = new buffer();
-                
-                
-                sType*% result_type2 = clone result_type;
-                result_type2->mPointerNum++;
-                
-                buf.append_format("*(%s)come_range_check(&%s", make_type_name_string(result_type2), left_value.c_value);
-                
-                foreach(it, array_num) {
-                    buf.append_format("[%s]", it.c_value);
-                }
-                buf.append_format(",%s,%s+(", left_value.c_value, left_value.c_value);
-                int i=0;
-                foreach(it, var_type.mArrayNum) {
-                    node_compile(it).elif {
-                        err_msg(info, "invalid array num");
-                        exit(1);
-                    }
-                    
-                    CVALUE*% come_value = get_value_from_stack(-1, info);
-                    dec_stack_ptr(1, info);
-                
-                    buf.append_format("%s", come_value.c_value);
-                    if(i != var_type.mArrayNum.length()-1) {
-                        buf.append_str("*");
-                    }
-                    i++;
-                }
-                buf.append_format("), \"%s\", %d)", info->sname, info->sline);
-                
-                string left_value_code = buf.to_string();
-                
-                come_value.c_value = xsprintf("%s", left_value_code);
-                
-                come_value.type = clone result_type;
-                come_value.var = null;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
             }
             else {
-                CVALUE*% come_value = new CVALUE();
-                
-                buffer*% buf = new buffer();
-                
-                buf.append_str(left_value.c_value);
-                
-                foreach(it, array_num) {
-                    buf.append_format("[%s]", it.c_value);
-                }
-                
-                string left_value_code = buf.to_string();
-                
-                come_value.c_value = xsprintf("%s", left_value_code);
-                
-                sType*% result_type = clone left_type;
-                
-                if(result_type->mOriginalLoadVarType->v1) {
-                    result_type = result_type->mOriginalLoadVarType->v1;
-                }
-                
-                if(result_type.mArrayNum.length() > 0) {
-                    int n = result_type.mArrayNum.length() - array_num.length();
+                if(result_type->mPointerNum > 0) {
+                    result_type->mPointerNum -= array_num.length();
                     
-                    if(n == 0) {
-                        result_type = clone left_type;
-                        if(left_type->mOriginalLoadVarType.v1) {
-                            result_type = clone left_type->mOriginalLoadVarType.v1;
-                        }
-                        result_type->mArrayNum.reset();
-                    }
-                    else if(n > 0) {
-                        for(int i=0; i<n; i++) {
-                            result_type.mArrayNum.delete(-1, -1);
-                        }
-                    }
-                    else if(n < 0) {
-                        result_type.mArrayNum.reset();
-                        result_type.mPointerNum += n;
-                        
-                        if(result_type.mPointerNum < 0) {
-                            result_type.mPointerNum = 0;
-                        }
+                    if(result_type->mPointerNum < 0) {
+                        result_type->mPointerNum = 0;
                     }
                 }
-                else {
-                    if(result_type->mPointerNum > 0) {
-                        result_type->mPointerNum -= array_num.length();
-                        
-                        if(result_type->mPointerNum < 0) {
-                            result_type->mPointerNum = 0;
-                        }
-                    }
-                }
-                
-                come_value.type = clone result_type;
-                come_value.var = null;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
             }
+            
+            come_value.type = clone result_type;
+            come_value.var = null;
+            
+            info.stack.push_back(come_value);
+            
+            add_come_last_code(info, "%s", come_value.c_value);
         }
     
         return true;
@@ -1538,6 +1316,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 node = new sLoadArrayNode(node, array_num, quote, break_guard, info) implements sNode;
             }
         }
+/*
         else if(*info->p == '!' && *(info->p+1) == '{') {
             info->p+=2;
             skip_spaces_and_lf();
@@ -1557,6 +1336,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
             
             node = new sRangeCheckNode(node, begin ,end, info) implements sNode;
         }
+*/
         else if(*info->p == '!' && *(info->p+1) != '=' && *(info->p+1) != '!') {
             info->p++;
             skip_spaces_and_lf();
@@ -1653,12 +1433,12 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                     node = create_exception_value(clone node, info);
                 }
                 else {
-                    node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
+                    //node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
                     node = parse_method_call(clone node, field_name, info);
                 }
             }
             else {
-                node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
+                //node = new sNullCheckNode(clone node, true@only_null_checker, info) implements sNode;
                 node = new sLoadFieldNode(node, field_name, info) implements sNode;
             }
         }

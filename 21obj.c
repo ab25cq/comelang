@@ -290,6 +290,39 @@ class sImplementsNode extends sNodeBase
     }
 };
 
+class sAppendNoRefference extends sNodeBase
+{
+    new(sNode*% obj_exp, sInfo* info)
+    {
+        self.super();
+        
+        sNode*% self.obj_exp = clone obj_exp;
+    }
+    
+    string kind()
+    {
+        return string("sAppendNoRefference");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% obj_exp = clone self.obj_exp;
+        
+        node_compile(obj_exp).elif {
+            return false;
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        dec_stack_ptr(1, info);
+        
+        come_value.type.mNoRefference = true;
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
 
 class sTrueNode extends sNodeBase
 {

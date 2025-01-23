@@ -1437,6 +1437,7 @@ struct sType
     _Bool mImmutable;
     _Bool mHeap;
     _Bool mRefference;
+    _Bool mNoRefference;
     _Bool mChannel;
     _Bool mNoHeap;
     _Bool mNoCallingDestructor;
@@ -2717,6 +2718,7 @@ struct sNode* expression_node_v96(struct sInfo* info);
 struct sNode* parse_tuple(struct sInfo* info, _Bool named_tuple);
 struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
+_Bool is_inner_calling(struct sNode* node, struct sInfo* info);
 struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
 struct sNode* expression_node_v95(struct sInfo* info);
 struct sNode* store_var(char* name, struct list$1charph* multiple_assign, struct list$1tuple3$3sTypephcharphsNodephph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info);
@@ -4723,6 +4725,9 @@ struct sType* __result223__;
         result_267->mRefference=self->mRefference;
     }
     if(    self!=((void*)0)) {
+        result_267->mNoRefference=self->mNoRefference;
+    }
+    if(    self!=((void*)0)) {
         result_267->mChannel=self->mChannel;
     }
     if(    self!=((void*)0)) {
@@ -6275,7 +6280,7 @@ memset(&calling_fun_351, 0, sizeof(_Bool));
         if(        (_if_conditional4=(string_operator_not_equals(((char*)(__right_value352=value_343->kind(value_343->_protocol_obj))),"sExpEqualNode"))),        (__right_value352 = come_decrement_ref_count2(__right_value352, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
         _if_conditional4) {
             __dec_obj143=left_value_344->c_value;
-            left_value_344->c_value=(char*)come_increment_ref_count(xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))",((char*)(__right_value353=make_type_name_string(left_value_344->type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0))),left_value_344->c_value,info->sname,info->sline,gComeDebugStackFrameID++));
+            left_value_344->c_value=(char*)come_increment_ref_count(xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))",((char*)(__right_value353=make_type_name_string(left_value_344->type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)1))),left_value_344->c_value,info->sname,info->sline,gComeDebugStackFrameID++));
             __dec_obj143 = come_decrement_ref_count2(__dec_obj143, (void*)0, (void*)0, 0,0,0, (void*)0);
             __right_value353 = come_decrement_ref_count2(__right_value353, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         }
@@ -6301,7 +6306,7 @@ memset(&calling_fun_351, 0, sizeof(_Bool));
             buf2_348=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "05pre_op.c", 288, "buffer"))));
             buffer_append(buf2_348,p2_346,p_345+strlen(p_345)-p2_346);
             __dec_obj144=left_value_344->c_value;
-            left_value_344->c_value=(char*)come_increment_ref_count(xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))%s",((char*)(__right_value359=make_type_name_string(left_value_344->type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0))),((char*)(__right_value360=buffer_to_string(buf_347))),info->sname,info->sline,gComeDebugStackFrameID++,((char*)(__right_value361=buffer_to_string(buf2_348)))));
+            left_value_344->c_value=(char*)come_increment_ref_count(xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))%s",((char*)(__right_value359=make_type_name_string(left_value_344->type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)1))),((char*)(__right_value360=buffer_to_string(buf_347))),info->sname,info->sline,gComeDebugStackFrameID++,((char*)(__right_value361=buffer_to_string(buf2_348)))));
             __dec_obj144 = come_decrement_ref_count2(__dec_obj144, (void*)0, (void*)0, 0,0,0, (void*)0);
             __right_value359 = come_decrement_ref_count2(__right_value359, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             __right_value360 = come_decrement_ref_count2(__right_value360, (void*)0, (void*)0, 1, 0, 0, (void*)0);
