@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 12.2.8
+version 12.2.9
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+12.2.9 no generating code collection buggy.
 12.2.8 no generating code collection perfectly releally complete. More improved;
 12.2.6 no generating code collection releally complete. More improved;
 12.2.5 no generating code collection complete. More improved;
@@ -3631,15 +3632,15 @@ int main(int argc, char** argv)
     list<sData~>*% li = new list<sData~>();
     list<sData2~>*% li2 = new list<sData2~>();
     
-    li.add(new sData { a:111, b:222 });
-    li.add(new sData { a:333, b:444 });
+    li.add(new sData { a:111, b:222 }~);
+    li.add(new sData { a:333, b:444 }~);
     
     foreach(it, li) {
         puts(it.to_string());
     }
     
-    li2.add(new sData2 { a:111, b:222, c:333 });
-    li2.add(new sData2 { a:333, b:444, c:555 });
+    li2.add(new sData2 { a:111, b:222, c:333 }~);
+    li2.add(new sData2 { a:333, b:444, c:555 }~);
     
     foreach(it, li2) {
         puts(it.to_string());

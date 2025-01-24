@@ -487,7 +487,7 @@ class sMultipleNode extends sNodeBase
     }
 };
 
-list<sRightValueObject~>*% gExceptionRightValueObjects = (void*)0;
+list<sRightValueObject*%>*% gExceptionRightValueObjects = (void*)0;
 
 class sSaveRightValueObjects extends sNodeBase
 {
@@ -509,7 +509,7 @@ class sSaveRightValueObjects extends sNodeBase
     bool compile(sInfo* info)
     {
         gExceptionRightValueObjects = info.right_value_objects;
-        info.right_value_objects = new list<sRightValueObject~>();
+        info.right_value_objects = new list<sRightValueObject*%>();
         
         return true;
     }

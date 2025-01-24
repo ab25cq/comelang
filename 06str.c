@@ -1788,7 +1788,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         int method_block_sline = info.sline;
         
-        list<sType~>*% method_generics_types = new list<sType~>();
+        list<sType*%>*% method_generics_types = new list<sType*%>();
         
         sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
         
@@ -1955,7 +1955,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         int method_block_sline = info.sline;
         
-        list<sType~>*% method_generics_types = new list<sType~>();
+        list<sType*%>*% method_generics_types = new list<sType*%>();
         
         sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
         

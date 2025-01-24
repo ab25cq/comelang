@@ -344,10 +344,10 @@ struct sInfo
     
     sType*% type;
     
-    list<sRightValueObject~>*% right_value_objects;
+    list<sRightValueObject*%>*% right_value_objects;
     
     sType*% generics_type;
-    list<sType~>*% method_generics_types;
+    list<sType*%>*% method_generics_types;
     
     list<CVALUE*%>*% stack;
     
@@ -641,8 +641,8 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
 /////////////////////////////////////////////////////////////////////
 sNode*% cast_node(sType*% type, sNode*% node, sInfo* info=info);
 sNode*% reffence_node(sNode*% value, sInfo* info);
-sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType~>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info);
-string make_method_generics_function(string fun_name, list<sType~>*% method_generics_types, sInfo* info);
+sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info);
+string make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info);
 sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info);
 sNode*% post_position_operator(sNode*% node, sInfo* info);
 bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sInfo* info);
@@ -835,7 +835,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 19;
 /////////////////////////////////////////////////////////////////////
 /// 20method.c
 /////////////////////////////////////////////////////////////////////
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType~>* method_generics_types, sInfo* info);
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info);
 bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sFun* fun, char* fun_name, int method_block_sline, sInfo* info, bool no_create_current_stack=false) ;
 string make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true);
  sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20;

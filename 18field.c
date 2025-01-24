@@ -790,6 +790,7 @@ class sStoreArrayNode extends sNodeBase
             sType*% param_type = operator_fun.mParamTypes[2]??;
             sType*% param_type2 = solve_generics(param_type, left_type, info);
             
+            /*
             bool is_inner_calling_ = is_inner_calling(left, info);
             
             if(!is_inner_calling_ && param_type2 && param_type2.mHeap && param_type2.mRefferenceOriginalType && param_type2.mRefferenceOriginalType.v1) 
@@ -804,10 +805,11 @@ class sStoreArrayNode extends sNodeBase
                 }
             }
             else {
+            */
                 node_compile(right).elif {
                     return false;
                 }
-            }
+            //}
         }
         else {
             node_compile(right).elif {
