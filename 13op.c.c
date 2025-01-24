@@ -4811,7 +4811,7 @@ type_339 = (void*)0;
         __right_value331 = come_decrement_ref_count2(__right_value331, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         result_type_336=(struct sType*)come_increment_ref_count(type2_334);
         obj_type_337=(struct sType*)come_increment_ref_count(generics_type_266);
-        if(        type3_335->mClass->mProtocol) {
+        if(        type3_335->mClass->mProtocol&&type3_335->mRefference) {
             generics_num_338=result_type_336->mGenericsNumBefore;
             if(            obj_type_337->mNoSolvedGenericsType&&obj_type_337->mNoSolvedGenericsType->v1) {
                 __dec_obj121=type_339;

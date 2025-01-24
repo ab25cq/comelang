@@ -118,7 +118,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         sType*% result_type = type2;
         sType*% obj_type = generics_type;
         
-        if(type3->mClass->mProtocol) {
+        if(type3->mClass->mProtocol && type3->mRefference) {
             int generics_num = result_type->mGenericsNumBefore;
 
             sType*% type;

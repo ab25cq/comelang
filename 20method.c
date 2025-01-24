@@ -964,7 +964,7 @@ class sMethodCallNode extends sNodeBase
             come_value2.c_value = buf.to_string();
             come_value2.var = null;
             
-            if(result_type2->mClass->mProtocol) {
+            if(result_type2->mClass->mProtocol && result_type2->mRefference) {
                 int generics_num = result_type->mGenericsNumBefore;
                 
                 if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {

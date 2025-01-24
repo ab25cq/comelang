@@ -316,11 +316,7 @@ class sProtocolObject extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        CVALUE*% come_value2 = new CVALUE();
-        
-        come_value2.c_value = clone come_value.c_value;
-        come_value2.var = null;
-        come_value2.type = clone come_value.type;
+        CVALUE*% come_value2 = clone come_value;
         
         sType*% obj_type = clone come_value.type;
         
@@ -336,6 +332,8 @@ class sProtocolObject extends sNodeBase
                 come_value2.type = refference_type;
             }
         }
+        
+puts(come_value2.c_value);
         
         add_come_last_code(info, "%s", come_value2.c_value);
         
@@ -1871,14 +1869,12 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
         
         return new sImplementsNode(node, inf_type, info) implements sNode;
     }
-/*
     else if(*info->p == '~' && *(info->p+1) == '!') {
         info->p+=2;
         skip_spaces_and_lf();
         
         return new sProtocolObject(node, info) implements sNode;
     }
-*/
     else if(*info->p == '~') {
         info->p ++;
         skip_spaces_and_lf();

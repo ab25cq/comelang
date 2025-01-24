@@ -8742,7 +8742,7 @@ _Bool __result364__;
         come_value2_658->c_value=(char*)come_increment_ref_count(buffer_to_string(buf_654));
         __dec_obj229 = come_decrement_ref_count2(__dec_obj229, (void*)0, (void*)0, 0,0,0, (void*)0);
         come_value2_658->var=((void*)0);
-        if(        result_type2_562->mClass->mProtocol) {
+        if(        result_type2_562->mClass->mProtocol&&result_type2_562->mRefference) {
             generics_num_659=result_type_561->mGenericsNumBefore;
             if(            obj_type_451->mNoSolvedGenericsType&&obj_type_451->mNoSolvedGenericsType->v1) {
                 refference_type_660=(struct sType*)come_increment_ref_count(list$1sTypephp_operator_load_element(obj_type_451->mNoSolvedGenericsType->v1->mGenericsTypes,generics_num_659));
