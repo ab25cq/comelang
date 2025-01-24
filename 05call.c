@@ -463,12 +463,12 @@ class sCallerSNameNode extends sNodeBase
     }
 };
 
-string make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info)
+string make_method_generics_function(string fun_name, list<sType~>*% method_generics_types, sInfo* info)
 {
     static int num_method_generics = 0;
     string fun_name3 = xsprintf("%s_method_generics%d", fun_name, num_method_generics++);
     
-    list<sType*%>*% method_generics_types_before = info.method_generics_types;
+    list<sType~>*% method_generics_types_before = info.method_generics_types;
     info->method_generics_types= method_generics_types;
     
     sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
@@ -487,14 +487,14 @@ string make_method_generics_function(string fun_name, list<sType*%>*% method_gen
 
 class sFunCallNode extends sNodeBase
 {
-    new(char* fun_name, list<tup:string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+    new(char* fun_name, list<tup:string,sNode*%>* params, bool guard_break, list<sType~>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
     {
         self.super();
         
         string self.fun_name = string(fun_name);
         list<tup: string,sNode*%>*% self.params = clone params;
         bool self.guard_break = guard_break;
-        list<sType*%>*% self.method_generics_types = method_generics_types;
+        list<sType~>*% self.method_generics_types = method_generics_types;
         buffer*% self.method_block = method_block;
         int self.method_block_sline = method_block_sline;
     }
@@ -613,7 +613,7 @@ class sFunCallNode extends sNodeBase
         }
         if(self.method_generics_types.length() > 0 || method_generics) {
             if(self.method_generics_types.length() == 0) {
-                list<sType*%>*% method_generics_types = new list<sType*%>();
+                list<sType~>*% method_generics_types = new list<sType~>();
                 string generics_fun_name = make_method_generics_function(fun_name, method_generics_types, info);
                 
                 sFun* fun = info.funcs.at(generics_fun_name, null);
@@ -1665,7 +1665,7 @@ class sComePollNode extends sNodeBase
 };
 #endif
 
-sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType~>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
 {
     sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
     
@@ -1812,7 +1812,7 @@ class sVarArgTypeName extends sNodeBase
 
 sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
 {
-    list<sType*%>*% method_generics_types = new list<sType*%>();
+    list<sType~>*% method_generics_types = new list<sType~>();
     
     if(*info->p == '<') {
         info->p++;

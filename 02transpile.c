@@ -939,7 +939,7 @@ int come_main(int argc, char** argv) version 2
         info.modules = new map<string, sClassModule*%>();
         info.types = new map<string, sType*%>();
         info.module = new sModule();
-        info.right_value_objects = new list<sRightValueObject*%>();
+        info.right_value_objects = new list<sRightValueObject~>();
         info.stack = new list<CVALUE*%>();
         info.gv_table = new sVarTable(global:true, parent:null);
         sVarTable*% lv_table = new sVarTable(global:false, parent:null);
@@ -1061,7 +1061,7 @@ int come_main(int argc, char** argv) version 2
             info.modules = new map<string, sClassModule*%>();
             info.types = new map<string, sType*%>();
             info.module = new sModule();
-            info.right_value_objects = new list<sRightValueObject*%>();
+            info.right_value_objects = new list<sRightValueObject~>();
             info.stack = new list<CVALUE*%>();
             info.gv_table = new sVarTable(global:true, parent:null);
             sVarTable*% lv_table = new sVarTable(global:false, parent:null);

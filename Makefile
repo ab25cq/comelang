@@ -2,10 +2,10 @@
 # environmnet variables
 #########################################
 DESTDIR=/usr/local
-CFLAGS_OPT=-O2
+CFLAGS_OPT=
 CC=clang
 INSTALL=/usr/bin/install -c
-CFLAGS=-DPREFIX="\"${DESTDIR}/\""  -I/usr/local/include -gdwarf-4 $(CFLAGS_OPT)
+CFLAGS=-DPREFIX="\"${DESTDIR}/\""  -I/usr/local/include -gdwarf-4 $(CFLAGS_OPT) -g
 LIBS= -lutil -ldl -lm -lrt
 
 #########################################

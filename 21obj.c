@@ -206,17 +206,18 @@ class sImplementsNode extends sNodeBase
         
         static int inf_num = 0;
         ++inf_num;
+        int inf_num_stack = inf_num;
         
-        string buf = xsprintf("%s* _inf_value%d;\n", type_name, inf_num);
+        string buf = xsprintf("%s* _inf_value%d;\n", type_name, inf_num_stack);
         add_come_code_at_function_head(info, buf);
-        string buf2 = xsprintf("%s* _inf_obj_value%d;\n", type_name2, inf_num);
+        string buf2 = xsprintf("%s* _inf_obj_value%d;\n", type_name2, inf_num_stack);
         add_come_code_at_function_head(info, buf2);
         
-        add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num, type_name, type_name, info.sname, info.sline, type_name);
+        add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
         
         string c_value = increment_ref_count_object(come_value.type, come_value.c_value, info);
-        add_come_code(info, "_inf_obj_value%d=%s;\n", inf_num, c_value);
-        add_come_code(info, "_inf_value%d->_protocol_obj=_inf_obj_value%d;\n", inf_num, inf_num);
+        add_come_code(info, "_inf_obj_value%d=%s;\n", inf_num_stack, c_value);
+        add_come_code(info, "_inf_value%d->_protocol_obj=_inf_obj_value%d;\n", inf_num_stack, inf_num_stack);
         
         sType*% typeX = clone type;
         typeX->mPointerNum++;
@@ -264,14 +265,14 @@ class sImplementsNode extends sNodeBase
                     }
                 }
                 
-                add_come_code(info, "_inf_value%d->%s=(void*)%s;\n", inf_num, name, method_name);
+                add_come_code(info, "_inf_value%d->%s=(void*)%s;\n", inf_num_stack, name, method_name);
             }
             else {
-                add_come_code(info, "_inf_value%d->%s=(void*)%s;\n", inf_num, name, method_name);
+                add_come_code(info, "_inf_value%d->%s=(void*)%s;\n", inf_num_stack, name, method_name);
             }
         }
         
-        come_value2.c_value = xsprintf("_inf_value%d", inf_num);
+        come_value2.c_value = xsprintf("_inf_value%d", inf_num_stack);
         sType*% type3 = clone inf_type;
         type3->mPointerNum++;
         type3->mHeap = true;

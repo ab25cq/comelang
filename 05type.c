@@ -1133,7 +1133,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool uniq_ = false;
     bool tuple_ = false;
     
-    sNode*% alignas_ = null;;
+    sNode*% alignas_ = null;
     
     bool anonymous_type = false;
     bool anonymous_name = false;
