@@ -333,8 +333,6 @@ class sProtocolObject extends sNodeBase
             }
         }
         
-puts(come_value2.c_value);
-        
         add_come_last_code(info, "%s", come_value2.c_value);
         
         info.stack.push_back(come_value2);
@@ -1869,7 +1867,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
         
         return new sImplementsNode(node, inf_type, info) implements sNode;
     }
-    else if(*info->p == '~' && *(info->p+1) == '!') {
+    else if(*info->p == '~' && *(info->p+1) == '~') {
         info->p+=2;
         skip_spaces_and_lf();
         
