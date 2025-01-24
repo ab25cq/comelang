@@ -8,9 +8,9 @@ then
     make DESTDIR=$HOME CFLAGS_OPT="-O2" comelang && make DESTDIR=$HOME install
 elif uname -a | grep Darwin
 then
-    make CFLAGS_OPT="" comelang && sudo make install
-    #make CFLAGS_OPT="-O2" comelang && sudo make install
+    #make CFLAGS_OPT="" comelang && sudo make install
+    make CFLAGS_OPT="-O2" comelang && sudo make install
 else
-    make CFLAGS_OPT="" comelang && sudo make install
-    #make CFLAGS_OPT="-O2" comelang && sudo make install
+    #make CFLAGS_OPT="" comelang && sudo make install
+    make CFLAGS_OPT="-O2" comelang && sudo make install
 fi
