@@ -43,7 +43,7 @@ struct sClass
     int mGenericsNum;
     int mMethodGenericsNum;
     
-    list<tup: string, sType*%>*% mFields;
+    list<tup: string, sType~>*% mFields;
     
     bool mOutputed;
     bool mOutputed2;

@@ -3044,15 +3044,18 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         if(fun2 == null || fun2.mExternal) {
     
             info.funcs.insert(clone name, fun);
+            
+            finalizer = fun;
+            
+            sNode*% node = new sFunNode(fun, info) implements sNode;
+            
+            node_compile(node).elif {
+                printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
+                exit(2);
+            }
         }
-        
-        finalizer = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
-            exit(2);
+        else {
+            finalizer = fun2;
         }
         
         info.source = source3;
