@@ -3032,17 +3032,16 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun = new sFun(name, result_type, param_types, param_names
+        var fun2 = info.funcs[string(fun_name)]??;
+        if(fun2 == null || fun2.mExternal) {
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
                         , header_buf.to_string()
                         , string("")
                         , info, false@inline_, false@uniq_);
-        
-        var fun2 = info.funcs[string(fun_name)]??;
-        if(fun2 == null || fun2.mExternal) {
-    
+                        
             info.funcs.insert(clone name, fun);
             
             finalizer = fun;
@@ -3180,27 +3179,29 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun = new sFun(name, result_type, param_types, param_names
+        var fun2 = info.funcs[string(fun_name)]??;
+        if(fun2 == null || fun2.mExternal) {
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
                         , header_buf.to_string()
                         , string("")
                         , info, false@inline_, false@uniq_);
-        
-        var fun2 = info.funcs[string(fun_name)]??;
-        if(fun2 == null || fun2.mExternal) {
-    
+                        
             info.funcs.insert(clone name, fun);
+        
+            sNode*% node = new sFunNode(fun, info) implements sNode;
+            
+            node_compile(node).elif {
+                err_msg(info, "compiling error");
+                exit(2);
+            }
+            
+            equaler = fun;
         }
-        
-        equaler = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            err_msg(info, "compiling error");
-            exit(2);
+        else {
+            equaler = fun2;
         }
         
         info.source = source3;
@@ -3344,27 +3345,29 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun = new sFun(name, result_type, param_types, param_names
-                        , param_default_parametors
-                        , false@external, false@var_args, block
-                        , true@static_
-                        , header_buf.to_string()
-                        , string("")
-                        , info, false@inline_, false@uniq_);
-        
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
-    
+            var fun = new sFun(name, result_type, param_types, param_names
+                            , param_default_parametors
+                            , false@external, false@var_args, block
+                            , true@static_
+                            , header_buf.to_string()
+                            , string("")
+                            , info, false@inline_, false@uniq_);
+                            
             info.funcs.insert(clone name, fun);
+        
+            sNode*% node = new sFunNode(fun, info) implements sNode;
+            
+            node_compile(node).elif {
+                err_msg(info, "compiling error");
+                exit(2);
+            }
+            
+            equaler = fun;
         }
-        
-        equaler = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            err_msg(info, "compiling error");
-            exit(2);
+        else {
+            equaler = fun2;
         }
         
         info.source = source3;
@@ -3505,27 +3508,29 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun = new sFun(name, result_type, param_types, param_names
+        var fun2 = info.funcs[string(fun_name)]??;
+        if(fun2 == null || fun2.mExternal) {
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
                         , header_buf.to_string()
                         , string("")
                         , info, false@inline_, false@uniq_);
-        
-        var fun2 = info.funcs[string(fun_name)]??;
-        if(fun2 == null || fun2.mExternal) {
-    
+                        
             info.funcs.insert(clone name, fun);
+        
+            sNode*% node = new sFunNode(fun, info) implements sNode;
+            
+            node_compile(node).elif {
+                err_msg(info, "compiling error");
+                exit(2);
+            }
+            
+            equaler = fun;
         }
-        
-        equaler = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            err_msg(info, "compiling error");
-            exit(2);
+        else {
+            equaler = fun2;
         }
         
         info.source = source3;
@@ -3651,27 +3656,29 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun = new sFun(name, result_type, param_types, param_names
+        var fun2 = info.funcs[string(fun_name)]??;
+        if(fun2 == null || fun2.mExternal) {
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
                         , header_buf.to_string()
                         , string("")
                         , info, false@inline_, false@uniq_);
-        
-        var fun2 = info.funcs[string(fun_name)]??;
-        if(fun2 == null || fun2.mExternal) {
-    
+                        
             info.funcs.insert(clone name, fun);
+        
+            sNode*% node = new sFunNode(fun, info) implements sNode;
+            
+            node_compile(node).elif {
+                err_msg(info, "compiling error(X)");
+                exit(2);
+            }
+        
+            equaler = fun;
         }
-        
-        equaler = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            err_msg(info, "compiling error(X)");
-            exit(2);
+        else {
+            equaler = fun2;
         }
         
         info.source = source3;
@@ -3836,7 +3843,9 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun = new sFun(name, result_type, param_types, param_names
+        var fun2 = info.funcs[string(fun_name)]??;
+        if(fun2 == null || fun2.mExternal) {
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
@@ -3844,20 +3853,21 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
                         , string("")
                         , info, false@inline_, false@uniq_);
                         
-        fun->mCloner = true;
-        
-        var fun2 = info.funcs[string(fun_name)]??;
-        if(fun2 == null || fun2.mExternal) {
+            fun->mCloner = true;
+            
             info.funcs.insert(clone name, fun);
+            
+            sNode*% node = new sFunNode(fun, info) implements sNode;
+            
+            node_compile(node).elif {
+                err_msg(info, "compiling error(Y)");
+                exit(2);
+            }
+            
+            cloner = fun;
         }
-        
-        cloner = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            err_msg(info, "compiling error(Y)");
-            exit(2);
+        else {
+            cloner = fun2;
         }
         
         info.sname = sname;
@@ -4002,28 +4012,31 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun = new sFun(name, result_type, param_types, param_names
-                        , param_default_parametors
-                        , false@external, false@var_args, block
-                        , true@static_
-                        , header_buf.to_string()
-                        , string("")
-                        , info, false@inline_, false@uniq_);
-                        
-        fun->mCloner = true;
-        
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
+            var fun = new sFun(name, result_type, param_types, param_names
+                            , param_default_parametors
+                            , false@external, false@var_args, block
+                            , true@static_
+                            , header_buf.to_string()
+                            , string("")
+                            , info, false@inline_, false@uniq_);
+                            
+            fun->mCloner = true;
+            
             info.funcs.insert(clone name, fun);
+            
+            cloner = fun;
+            
+            sNode*% node = new sFunNode(fun, info) implements sNode;
+            
+            node_compile(node).elif {
+                err_msg(info, "compiling error(Y)");
+                exit(2);
+            }
         }
-        
-        cloner = fun;
-        
-        sNode*% node = new sFunNode(fun, info) implements sNode;
-        
-        node_compile(node).elif {
-            err_msg(info, "compiling error(Y)");
-            exit(2);
+        else {
+            cloner = fun2;
         }
         
         info.sname = sname;

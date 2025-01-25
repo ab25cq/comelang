@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+12.3.0 no generating code collection 
 12.2.9 no generating code collection buggy.
 12.2.8 no generating code collection perfectly releally complete. More improved;
 12.2.6 no generating code collection releally complete. More improved;
