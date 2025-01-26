@@ -2425,6 +2425,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRefference = type->mRefference || refference;
             type->mChannel = type->mChannel || channel;
             type->mTupleName = tuple_name;
+            
+            type_name = type->mClass->mName;
         }
         else {
             if(struct_) {
@@ -2625,6 +2627,57 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type->mGenericsTypes.push_back((clone it)~);
             }
             
+            while(1) {
+                if(*info->p == '*') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                
+                    skip_pointer_attribute();
+                    
+                    type->mPointerNum++;
+                    
+                    if(type->mNoSolvedGenericsType.v1) {
+                        type->mNoSolvedGenericsType.v1.mPointerNum++;
+                    }
+                }
+                else if(*info->p == '%') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    
+                    type->mHeap = true;
+                    if(type->mNoSolvedGenericsType.v1) {
+                        type->mNoSolvedGenericsType.v1.mHeap = true;
+                    }
+                }
+                else if(*info->p == '~' && *(info->p+1) == '~') {
+                    info->p+=2;
+                    skip_spaces_and_lf();
+                    
+                    type->mRefference = true;
+                    if(type->mNoSolvedGenericsType.v1) {
+                        type->mNoSolvedGenericsType.v1.mRefference = true;
+                    }
+                }
+                else if(*info->p == '~') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    
+                    object_interface = true;
+                }
+                else if(gComePthread && *info->p == '@') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    
+                    type->mChannel = true;
+                    if(type->mNoSolvedGenericsType.v1) {
+                        type->mNoSolvedGenericsType.v1.mChannel = true;
+                    }
+                }
+                else {
+                    break;
+                }
+            }
+            
             if(is_contained_generics_class(type, info)) {
                 type = solve_generics(type, info.generics_type, info);
             }
@@ -2637,6 +2690,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
             }
             type->mMultipleTypes = true;
+            
+            type_name = type->mClass->mName;
         }
         
         string attribute = parse_struct_attribute();
