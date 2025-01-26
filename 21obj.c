@@ -326,9 +326,9 @@ class sProtocolObject extends sNodeBase
             if(refference_type) {
                 static int i = 0;
                 i++;
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(obj_type, s"__tmp_inf\{i}"));
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(obj_type, s"__tmp_infY\{i}"));
                 
-                come_value2.c_value = s"((__tmp_inf\{i}=\{come_value2.c_value}),((\{make_type_name_string(refference_type)})(__tmp_inf\{i} ? __tmp_inf\{i}->_protocol_obj:(void*)0)))";
+                come_value2.c_value = s"((__tmp_infY\{i}=\{come_value2.c_value}),((\{make_type_name_string(refference_type)})(__tmp_infY\{i} ? __tmp_infY\{i}->_protocol_obj:(void*)0)))";
                 come_value2.type = refference_type;
             }
         }

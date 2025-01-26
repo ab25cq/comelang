@@ -6712,12 +6712,12 @@ _Bool __result269__;
         if(        refference_type_393) {
             static int i_394=0;
             i_394++;
-            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value366=make_define_var(obj_type_392,((char*)(__right_value365=xsprintf("__tmp_inf\%s",((char*)(__right_value364=int_to_string(i_394)))))),(_Bool)0,info))));
+            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value366=make_define_var(obj_type_392,((char*)(__right_value365=xsprintf("__tmp_infY\%s",((char*)(__right_value364=int_to_string(i_394)))))),(_Bool)0,info))));
             __right_value364 = come_decrement_ref_count2(__right_value364, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             __right_value365 = come_decrement_ref_count2(__right_value365, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             __right_value366 = come_decrement_ref_count2(__right_value366, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             __dec_obj147=come_value2_390->c_value;
-            come_value2_390->c_value=(char*)come_increment_ref_count(xsprintf("((__tmp_inf\%s=\%s),((\%s)(__tmp_inf\%s ? __tmp_inf\%s->_protocol_obj:(void*)0)))",((char*)(__right_value367=int_to_string(i_394))),((char*)(__right_value368=string_to_string(come_value2_390->c_value))),((char*)(__right_value370=string_to_string(((char*)(__right_value369=make_type_name_string(refference_type_393,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0)))))),((char*)(__right_value371=int_to_string(i_394))),((char*)(__right_value372=int_to_string(i_394)))));
+            come_value2_390->c_value=(char*)come_increment_ref_count(xsprintf("((__tmp_infY\%s=\%s),((\%s)(__tmp_infY\%s ? __tmp_infY\%s->_protocol_obj:(void*)0)))",((char*)(__right_value367=int_to_string(i_394))),((char*)(__right_value368=string_to_string(come_value2_390->c_value))),((char*)(__right_value370=string_to_string(((char*)(__right_value369=make_type_name_string(refference_type_393,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0)))))),((char*)(__right_value371=int_to_string(i_394))),((char*)(__right_value372=int_to_string(i_394)))));
             __dec_obj147 = come_decrement_ref_count2(__dec_obj147, (void*)0, (void*)0, 0,0,0, (void*)0);
             __right_value367 = come_decrement_ref_count2(__right_value367, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             __right_value368 = come_decrement_ref_count2(__right_value368, (void*)0, (void*)0, 1, 0, 0, (void*)0);
