@@ -130,7 +130,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
             }
             
             if(type) {
-                sType*% refference_type = type->mGenericsTypes[generics_num]??~~;
+                sType*% refference_type = type->mGenericsTypes[generics_num]??;
                 
                 if(refference_type && refference_type->mRefferenceOriginalType) {
                     refference_type = refference_type->mRefferenceOriginalType.v1;

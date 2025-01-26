@@ -104,7 +104,7 @@ class sStoreNode extends sNodeBase
                         info.lv_table.mVars.remove(it);
                     }
             
-                    sType* right_type2 = right_type.mGenericsTypes[i]~~;
+                    sType* right_type2 = right_type.mGenericsTypes[i];
                     right_type2->mFunctionParam = false;
                     add_variable_to_table(it, clone right_type2, info);
                 }
@@ -128,7 +128,7 @@ class sStoreNode extends sNodeBase
             i = 0;
             foreach(it, self.multiple_assign) {
                 if(i < right_type.mGenericsTypes.length()) {
-                    sType*% right_type2 = clone right_type.mGenericsTypes[i]~~;
+                    sType*% right_type2 = clone right_type.mGenericsTypes[i];
                     
                     sVar* var_ = get_variable_from_table(info.lv_table, it);
                     

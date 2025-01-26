@@ -90,7 +90,7 @@ struct sType
     
     string mGenericsName;
 
-    list<sType~>*% mGenericsTypes;
+    list<sType*%>*% mGenericsTypes;
     
     list<sNode*%>*% mArrayNum;
     bool mOmitArrayNum;

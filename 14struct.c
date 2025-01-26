@@ -30,7 +30,7 @@ string create_generics_name(sType* generics_type, sInfo* info)
         buf.append_char(generics_type->mGenericsTypes.length()+'0');
         
         for(int i=0; i<generics_type->mGenericsTypes.length(); i++) {
-            sType* type = generics_type->mGenericsTypes[i]~~;
+            sType* type = generics_type->mGenericsTypes[i];
             string type_name = create_generics_name(type, info);
             
             buf.append_str(type_name);
@@ -143,7 +143,7 @@ bool is_contained_generics_types(sType* type, sInfo* info)
         return true;
     }
     for(int i=0; i<type->mGenericsTypes.length(); i++) {
-        bool result = is_contained_generics_types(type->mGenericsTypes[i]~~, info);
+        bool result = is_contained_generics_types(type->mGenericsTypes[i], info);
         
         if(result) {
             return true;
@@ -167,7 +167,7 @@ bool is_contained_method_generics_types(sType* type, sInfo* info)
         return true;
     }
     for(int i=0; i<type->mGenericsTypes.length(); i++) {
-        bool result = is_contained_method_generics_types(type->mGenericsTypes[i]~~, info);
+        bool result = is_contained_method_generics_types(type->mGenericsTypes[i], info);
         
         if(result) {
             return true;

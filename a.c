@@ -22,7 +22,9 @@ int main(int argc, char** argv)
     
     li.add((1,2)~);
     
-    printf("%d\n", li[0]~~.v2);
+    var a,b = li[0]~~;
+    
+    printf("%d %d\n", a, b);
     
     return 0;
 }

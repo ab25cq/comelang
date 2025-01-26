@@ -115,7 +115,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             exit(2);
         }
 
-        sClass* klass2 = generics_type->mGenericsTypes[generics_number]~~->mClass;
+        sClass* klass2 = generics_type->mGenericsTypes[generics_number]->mClass;
 
         int generics_number2 = klass2->mGenericsNum;
 
@@ -136,7 +136,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool multiple_types = type->mMultipleTypes;
             bool exception_ = type->mException;
             
-            result = clone generics_type->mGenericsTypes[generics_number]~~;
+            result = clone generics_type->mGenericsTypes[generics_number];
             result.mGenericsNumBefore = generics_number;
 
             if(refference) {
@@ -186,8 +186,8 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
     else {
         result.mGenericsTypes.reset();
         foreach(it, type->mGenericsTypes) {
-            var type = solve_generics(it~~, generics_type, info);
-            result->mGenericsTypes.push_back(type ~);
+            var type = solve_generics(it, generics_type, info);
+            result->mGenericsTypes.push_back(type);
         }
         
         if(!output_generics_struct(result, generics_type, info))
@@ -272,7 +272,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
     
     int i = 0;
     foreach(it, type->mGenericsTypes) {
-        result->mGenericsTypes[i] = solve_method_generics(it~~, info)~;
+        result->mGenericsTypes[i] = solve_method_generics(it, info);
         i++;
     }
     i = 0;

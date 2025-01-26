@@ -968,7 +968,7 @@ class sMethodCallNode extends sNodeBase
                 int generics_num = result_type->mGenericsNumBefore;
                 
                 if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
-                    sType*% refference_type = obj_type->mNoSolvedGenericsType.v1.mGenericsTypes[generics_num]??~~;
+                    sType*% refference_type = obj_type->mNoSolvedGenericsType.v1.mGenericsTypes[generics_num]??;
                     
                     if(refference_type && refference_type->mRefferenceOriginalType) {
                         refference_type = refference_type->mRefferenceOriginalType.v1;
