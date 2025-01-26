@@ -160,7 +160,7 @@ class sStoreFieldNode extends sNodeBase
         if(left_type2.mClass.mName === "tuple1" || left_type2.mClass.mName === "tuple2" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple4" || left_type2.mClass.mName === "tuple5")
         {
             for(int i=0; i<left_type2.mGenericsTypes.length(); i++) {
-                if(name === left_type2.mGenericsTypes[i].mTupleName) {
+                if(name === left_type2.mGenericsTypes[i]~~.mTupleName) {
                     name = xsprintf("v%d", i+1);
                 }
             }
@@ -604,7 +604,7 @@ class sLoadFieldNode extends sNodeBase
         if(left_type2.mClass.mName === "tuple1" || left_type2.mClass.mName === "tuple2" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple4" || left_type2.mClass.mName === "tuple5")
         {
             for(int i=0; i<left_type2.mGenericsTypes.length(); i++) {
-                if(name === left_type2.mGenericsTypes[i].mTupleName) {
+                if(name === left_type2.mGenericsTypes[i]~~.mTupleName) {
                     name = xsprintf("v%d", i+1);
                 }
             }

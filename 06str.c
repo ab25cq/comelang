@@ -369,7 +369,7 @@ class sListNode extends sNodeBase
         //add_come_code(info, "%s", source.to_string());
         
         sType*% list_type = new sType("list");
-        list_type->mGenericsTypes.push_back((clone list_element_type));
+        list_type->mGenericsTypes.push_back((clone list_element_type)~);
         
         sType*% obj_type = clone list_type;
         char* fun_name = "initialize_with_values";
@@ -528,7 +528,7 @@ class sTupleNode extends sNodeBase
         sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
         
         foreach(it, tuple_types) {
-            type->mGenericsTypes.push_back((clone it));
+            type->mGenericsTypes.push_back((clone it)~);
         }
         
         CVALUE*% obj_value = new CVALUE();
@@ -665,7 +665,7 @@ class sSomeNode extends sNodeBase
         sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
         
         foreach(it, tuple_types) {
-            type->mGenericsTypes.push_back((clone it));
+            type->mGenericsTypes.push_back((clone it)~);
         }
         
         CVALUE*% obj_value = new CVALUE();
@@ -852,7 +852,7 @@ class sNullReturnValueOfException extends sNodeBase
                 result_type2 = result_type2->mNoSolvedGenericsType.v1;
             }
             
-            sType*% left_type = clone result_type2->mGenericsTypes[0]??;
+            sType*% left_type = clone result_type2->mGenericsTypes[0]??~~;
             
             if(left_type == null || result_type2.mClass.mName !== "tuple2") {
                 err_msg(info, "function is not exception type");
@@ -975,7 +975,7 @@ class sNoneNode extends sNodeBase
         sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
         
         foreach(it, tuple_types) {
-            type->mGenericsTypes.push_back((clone it));
+            type->mGenericsTypes.push_back((clone it)~);
         }
         
         CVALUE*% obj_value = new CVALUE();
@@ -1250,8 +1250,8 @@ class sMapNode extends sNodeBase
         }
         
         sType*% map_type = new sType("map");
-        map_type->mGenericsTypes.push_back((clone map_key_type));
-        map_type->mGenericsTypes.push_back((clone map_element_type));
+        map_type->mGenericsTypes.push_back((clone map_key_type)~);
+        map_type->mGenericsTypes.push_back((clone map_element_type)~);
         
         sType*% obj_type = clone map_type;
         char* fun_name = "initialize_with_values";

@@ -160,7 +160,7 @@ string make_come_type_name_string(sType* type, sInfo* info=info)
     if(type->mGenericsTypes.length() > 0) {
         buf.append_str("<");
         for(int i=0; i<type->mGenericsTypes.length(); i++) {
-            sType* gtype = type->mGenericsTypes[i];
+            sType* gtype = type->mGenericsTypes[i]~~;
             
             buf.append_str(make_come_type_name_string(gtype));
             
@@ -386,7 +386,7 @@ sType*% get_no_solved_type(sType* type)
     
     int i = 0;
     foreach(it, type->mGenericsTypes) {
-        result.mGenericsTypes[i] = get_no_solved_type(it);
+        result.mGenericsTypes[i] = get_no_solved_type(it~~)~;
         i++;
     }
     
@@ -420,7 +420,7 @@ string make_come_type_name_string_no_solved(sType* type, bool original_type_name
         if(no_solved_type->mGenericsTypes.length() > 0) {
             buf.append_str("<");
             for(int i=0; i<no_solved_type->mGenericsTypes.length(); i++) {
-                sType* gtype = no_solved_type->mGenericsTypes[i];
+                sType* gtype = no_solved_type->mGenericsTypes[i]~~;
                 
                 buf.append_str(make_come_type_name_string_no_solved(gtype, true));
                 

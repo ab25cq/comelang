@@ -300,7 +300,7 @@ void parse_sharp(sInfo* info=info) version 5
 bool is_contained_generics_class(sType* type, sInfo* info)
 {
     foreach(it, type->mGenericsTypes) {
-        if(is_contained_generics_class(it, info)) {
+        if(is_contained_generics_class(it~~, info)) {
             return true;
         }
     }
@@ -565,7 +565,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 }
                 
                 for(int i=0; i<left_no_solved_generics_type->mGenericsTypes.length(); i++) {
-                    check_assign_type(msg, left_no_solved_generics_type->mGenericsTypes[i], right_no_solved_generics_type->mGenericsTypes[i], come_value, check_no_pointer:false);
+                    check_assign_type(msg, left_no_solved_generics_type->mGenericsTypes[i]~~, right_no_solved_generics_type->mGenericsTypes[i]~~, come_value, check_no_pointer:false);
                 }
                 
                 check_assign_type(msg, left_no_solved_generics_type, right_no_solved_generics_type, come_value);
@@ -878,7 +878,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 exit(2);
             }
             for(int i=0; i<left_type->mGenericsTypes.length(); i++) {
-                check_assign_type(msg, left_type->mGenericsTypes[i], right_type2->mGenericsTypes[i], come_value, check_no_pointer:false);
+                check_assign_type(msg, left_type->mGenericsTypes[i]~~, right_type2->mGenericsTypes[i]~~, come_value, check_no_pointer:false);
             }
         }
     }
@@ -2374,7 +2374,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     return ((sType*%)null, (string)null, false);
                 }
                 
-                type->mGenericsTypes.push_back(generics_type);
+                type->mGenericsTypes.push_back(generics_type~);
                 
                 if(*info->p == ',') {
                     info->p++;
@@ -2622,7 +2622,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mHeap = true;
             
             foreach(it, types) {
-                type->mGenericsTypes.push_back((clone it));
+                type->mGenericsTypes.push_back((clone it)~);
             }
             
             if(is_contained_generics_class(type, info)) {
@@ -2740,15 +2740,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     }
     else if(type->mException) {
         sType*% type2 = new sType("tuple2");
-        type2->mGenericsTypes[0] = new sType("generics_type0");
-        type2->mGenericsTypes[1] = new sType("generics_type1");
+        type2->mGenericsTypes[0] = new sType("generics_type0")~;
+        type2->mGenericsTypes[1] = new sType("generics_type1")~;
         type2->mPointerNum = 1;
         type2->mHeap = true;
         
         sType*% type3 = new sType("tuple2");
-        type3->mGenericsTypes[0] = type;
-        type3->mGenericsTypes[1] = new sType("char*");
-        type3->mGenericsTypes[1].mHeap = true;
+        type3->mGenericsTypes[0] = type~;
+        type3->mGenericsTypes[1] = new sType("char*")~;
+        type3->mGenericsTypes[1]~~.mHeap = true;
         
         sType*% type4 = solve_generics(type2,  type3, info);
         
