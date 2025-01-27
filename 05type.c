@@ -1138,8 +1138,19 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool anonymous_type = false;
     bool anonymous_name = false;
     bool atomic_ = false;
+    bool object_interface = false;
     while(true) {
-        if(type_name === "_Atomic") {
+        if(type_name === "object" && *info->p == ':') {
+            info->p ++;
+            skip_spaces_and_lf();
+            
+            skip_pointer_attribute();
+            
+            object_interface = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "_Atomic") {
             expected_next_character('(');
             type_name = parse_word();
             atomic_ = true;
@@ -1715,6 +1726,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             break;
         }
     }
+    
     string attribute = parse_struct_attribute();
     
     skip_pointer_attribute();
@@ -1723,7 +1735,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool heap = false;
     bool refference = false;
     bool channel = false;
-    bool object_interface = false;
     while(1) {
         if(*info->p == '*') {
             info->p++;
@@ -1741,14 +1752,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             refference = true;
         }
-        else if(*info->p == '~') {
-            info->p++;
-            skip_spaces_and_lf();
-            
-            skip_pointer_attribute();
-            
-            object_interface = true;
-        }
         else if(*info->p == '%') {
             info->p++;
             skip_spaces_and_lf();
@@ -1764,16 +1767,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else {
             break;
         }
-    }
-    
-    string type_name2 = null;
-    if(memcmp(info->p, "as", strlen("as")) == 0 && (*(info->p +2) == ' ' || *(info->p+2) == '\t' || *(info->p+2) == '\n')) {
-        info->p += 2;
-        skip_spaces_and_lf();
-        
-        type_name2 = parse_word();
-        pointer_num = 1;
-        heap = 1;
     }
     
     skip_pointer_attribute();
@@ -2501,12 +2494,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.v1.mRefference = true;
                 }
             }
-            else if(*info->p == '~') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                object_interface = true;
-            }
             else if(*info->p == '&') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2573,12 +2560,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 if(type->mNoSolvedGenericsType.v1) {
                     type->mNoSolvedGenericsType.v1.mRefference = true;
                 }
-            }
-            else if(*info->p == '~') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                object_interface = true;
             }
             else if(gComePthread && *info->p == '@') {
                 info->p++;
@@ -2657,12 +2638,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     if(type->mNoSolvedGenericsType.v1) {
                         type->mNoSolvedGenericsType.v1.mRefference = true;
                     }
-                }
-                else if(*info->p == '~') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    
-                    object_interface = true;
                 }
                 else if(gComePthread && *info->p == '@') {
                     info->p++;
@@ -2812,23 +2787,21 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         return (type4, var_name, true);
     }
-    
-    if(attribute !== "") {
-        type->mAttribute = attribute;
-    }
-    
-    if(object_interface) {
+    else if(object_interface) {
+        sType*% refference_type = type;
+        
         type = new sType("object");
         type->mPointerNum++;
         type->mHeap = true;
-        type_name2 = string(type_name);
-    }
-    
-    if(type_name2) {
+        
         type.mRefferenceOriginalType = new tuple1<sType*%>;
-        type.mRefferenceOriginalType.v1 = new sType(type_name2);
+        type.mRefferenceOriginalType.v1 = refference_type;
         type.mRefferenceOriginalType.v1.mHeap = true;
         type.mRefferenceOriginalType.v1.mPointerNum = 1;
+    }
+    
+    if(attribute !== "") {
+        type->mAttribute = attribute;
     }
     
     return (type, var_name, true);

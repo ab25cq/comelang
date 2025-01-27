@@ -5,7 +5,7 @@ struct sData
     int a;
     int b;
     
-    list<sData~>*% li;
+    list<object:sData>*% li;
 };
 
 int main(int argc, char** argv)
@@ -14,11 +14,11 @@ int main(int argc, char** argv)
     
     data.a = 111;
     data.b = 222;
-    data.li = new list<sData~>();
+    data.li = new list<object:sData>();
     
     data.li.add((new sData)~);
     
-    list<tup(int, int)~>*% li = new list<tup(int, int)~>();
+    list<object:tup(int, int)>*% li = new list<object:tup(int, int)>();
     
     li.add((1,2)~);
     
