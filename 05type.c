@@ -2796,8 +2796,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         type.mRefferenceOriginalType = new tuple1<sType*%>;
         type.mRefferenceOriginalType.v1 = refference_type;
-        type.mRefferenceOriginalType.v1.mHeap = true;
-        type.mRefferenceOriginalType.v1.mPointerNum = 1;
     }
     
     if(attribute !== "") {

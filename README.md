@@ -3630,8 +3630,8 @@ struct sData2
 
 int main(int argc, char** argv)
 {
-    list<object:sData>*% li = new list<object:sData>();
-    list<object:sData2>*% li2 = new list<object:sData2>();
+    list<object:sData*%>*% li = new list<object:sData*%>();
+    list<object:sData2*%>*% li2 = new list<object:sData2*%>();
     
     li.add(new sData { a:111, b:222 }~);
     li.add(new sData { a:333, b:444 }~);
