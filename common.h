@@ -43,7 +43,7 @@ struct sClass
     int mGenericsNum;
     int mMethodGenericsNum;
     
-    list<tup: string, sType*%>*% mFields;
+    list<object: tup: string, sType*%>*% mFields;
     
     bool mOutputed;
     bool mOutputed2;
@@ -489,11 +489,11 @@ module sCurrentNodeModule
                         type3->mPointerNum = 1;
                         type3->mOriginIsArray = true;
                         tup: string, sType*% item2 = (string(value.mCValueName), type3);
-                        current_stack.mFields.push_back(clone item2);
+                        current_stack.mFields.push_back(clone item2~);
                         value->mType->mOriginIsArray = true;
                     }
                     else {
-                        current_stack.mFields.push_back(clone item);
+                        current_stack.mFields.push_back(clone item~);
                     }
                 }
             }

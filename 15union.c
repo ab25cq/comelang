@@ -16,7 +16,7 @@ void output_union(sClass* klass, sInfo* info)
     buf.append_format("union %s\n{\n", klass.mName);
     
     foreach(it, klass.mFields) {
-        var name, type = it;
+        var name, type = it~~;
         
         buf.append_str(make_define_var(type, name));
         buf.append_str(";\n");
@@ -111,7 +111,7 @@ sNode*% parse_union(string type_name, sInfo* info)
                 
                 string name2 = parse_word();
                 
-                klass.mFields.push_back((name2, type2));
+                klass.mFields.push_back((name2, type2)~);
             }
             parse_sharp();
             
@@ -122,7 +122,7 @@ sNode*% parse_union(string type_name, sInfo* info)
             expected_next_character(';');
             parse_sharp();
             
-            klass.mFields.push_back((name, type2));
+            klass.mFields.push_back((name, type2)~);
         }
         
         parse_sharp();
@@ -202,7 +202,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
                     
                     string name2 = parse_word();
                     
-                    klass.mFields.push_back((name2, type2));
+                    klass.mFields.push_back((name2, type2)~);
                 }
             
                 parse_sharp();
@@ -216,7 +216,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
                 expected_next_character(';');
                 parse_sharp();
                 
-                klass.mFields.push_back((name, type2));
+                klass.mFields.push_back((name, type2)~);
             }
             
             if(*info->p == '}') {

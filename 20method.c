@@ -373,7 +373,7 @@ class sMethodCallNode extends sNodeBase
         bool calling_dynamic_method = false;
         sType* lambda_type = null;
         foreach(it, klass.mFields) {
-            var field_name, field_type = it;
+            var field_name, field_type = it~~;
             
             if(field_name === fun_name && field_type.mClass.mName === "lambda") {
                 calling_dynamic_method = true;
