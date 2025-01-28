@@ -1734,6 +1734,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     int pointer_num = 0;
     bool heap = false;
     bool refference = false;
+    bool no_refference = false;
     bool channel = false;
     while(1) {
         if(*info->p == '*') {
@@ -1746,6 +1747,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else if(*info->p == '~' && *(info->p+1) == '~') {
             info->p+=2;
+            skip_spaces_and_lf();
+            
+            skip_pointer_attribute();
+            
+            no_refference = true;
+        }
+        else if(*info->p == '~') {
+            info->p++;
             skip_spaces_and_lf();
             
             skip_pointer_attribute();
@@ -2062,6 +2071,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum = pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mRefference = result_type->mRefference || refference;
+        result_type->mNoRefference = result_type->mNoRefference || no_refference;
         result_type->mChannel = result_type->mChannel || channel;
         
         var_name = parse_word();
@@ -2135,6 +2145,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum += pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mRefference = result_type->mRefference || refference;
+        result_type->mNoRefference = result_type->mNoRefference || no_refference;
         result_type->mChannel = result_type->mChannel || channel;
         
         if(xisalnum(*info.p) || *info->p == '_') {
@@ -2288,6 +2299,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mRefference = type->mRefference || refference;
+            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mTupleName = tuple_name;
         }
@@ -2317,6 +2329,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mRefference = type->mRefference || refference;
+            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mTupleName = tuple_name;
         }
@@ -2346,6 +2359,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mRefference = type->mRefference || refference;
+            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mTupleName = tuple_name;
         }
@@ -2416,6 +2430,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mRefference = type->mRefference || refference;
+            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mTupleName = tuple_name;
             
@@ -2458,6 +2473,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mRefference = type->mRefference || refference;
+            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mTupleName = tuple_name;
         }
@@ -2487,6 +2503,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             else if(*info->p == '~' && *(info->p+1) == '~') {
                 info->p+=2;
+                skip_spaces_and_lf();
+                
+                type->mNoRefference = true;
+                if(type->mNoSolvedGenericsType.v1) {
+                    type->mNoSolvedGenericsType.v1.mNoRefference = true;
+                }
+            }
+            else if(*info->p == '~') {
+                info->p++;
                 skip_spaces_and_lf();
                 
                 type->mRefference = true;
@@ -2554,6 +2579,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             else if(*info->p == '~' && *(info->p+1) == '~') {
                 info->p+=2;
+                skip_spaces_and_lf();
+                
+                type->mNoRefference = true;
+                if(type->mNoSolvedGenericsType.v1) {
+                    type->mNoSolvedGenericsType.v1.mNoRefference = true;
+                }
+            }
+            else if(*info->p == '~') {
+                info->p++;
                 skip_spaces_and_lf();
                 
                 type->mRefference = true;
@@ -2632,6 +2666,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
                 else if(*info->p == '~' && *(info->p+1) == '~') {
                     info->p+=2;
+                    skip_spaces_and_lf();
+                    
+                    type->mNoRefference = true;
+                    if(type->mNoSolvedGenericsType.v1) {
+                        type->mNoSolvedGenericsType.v1.mRefference = true;
+                    }
+                }
+                else if(*info->p == '~') {
+                    info->p++;
                     skip_spaces_and_lf();
                     
                     type->mRefference = true;
