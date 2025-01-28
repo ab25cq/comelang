@@ -16,13 +16,13 @@ int main(int argc, char** argv)
     data.b = 222;
     data.li = new list<object:sData>();
     
-    data.li.add((new sData)~);
+    data.li.add((new sData));
     
     list<object:tup(int, sData*%)>*% li = new list<object:tup(int, sData*%)>();
     
-    li.add((1,new sData { a:11, b: 22})~);
+    li.add((1,new sData { a:11, b: 22}));
     
-    var a,b = li[0]~~;
+    var a,b = li[0];
     
     printf("%d %d\n", a, b.a);
     

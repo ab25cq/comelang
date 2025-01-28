@@ -1496,7 +1496,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         name = parse_word();
         
         parse_sharp();
-        info.defining_class->mFields.add((name, type)~);
+        info.defining_class->mFields.add((name, type));
         
         if(*info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>') {
             info->p++;

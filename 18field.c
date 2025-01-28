@@ -200,7 +200,7 @@ class sStoreFieldNode extends sNodeBase
         }
         
         foreach(field, klass->mFields) {
-            var field_name, field_type2 = field~~;
+            var field_name, field_type2 = field;
             
             if(field_name === name) {
                 field_type = clone field_type2;
@@ -213,12 +213,12 @@ class sStoreFieldNode extends sNodeBase
         if(index == klass->mFields.length()) {
             index = 0;
             foreach(field, klass->mFields) {
-                var field_name, field_type2 = field~~;
+                var field_name, field_type2 = field;
                 
                 sClass* klass2 = field_type2->mClass;
                 
                 foreach(field2, klass2->mFields) {
-                    var field_name2, field_type3 = field2~~;
+                    var field_name2, field_type3 = field2;
                     
                     if(field_name2 === name) {
                         child_field_name = string(field_name);
@@ -631,7 +631,7 @@ class sLoadFieldNode extends sNodeBase
             return false;
         }
         foreach(field, klass->mFields) {
-            var field_name, field_type2 = field~~;
+            var field_name, field_type2 = field;
             
             if(field_name === name) {
                 field_type = clone field_type2;
@@ -644,12 +644,12 @@ class sLoadFieldNode extends sNodeBase
         if(index == klass->mFields.length()) {
             index = 0;
             foreach(field, klass->mFields) {
-                var field_name, field_type2 = field~~;
+                var field_name, field_type2 = field;
                 
                 sClass* klass2 = field_type2->mClass;
                 
                 foreach(field2, klass2->mFields) {
-                    var field_name2, field_type3 = field2~~;
+                    var field_name2, field_type3 = field2;
                     
                     if(field_name2 === name) {
                         child_field_name = string(field_name);
@@ -790,7 +790,6 @@ class sStoreArrayNode extends sNodeBase
             sType*% param_type = operator_fun.mParamTypes[2]??;
             sType*% param_type2 = solve_generics(param_type, left_type, info);
             
-            /*
             bool is_inner_calling_ = is_inner_calling(left, info);
             
             if(!is_inner_calling_ && param_type2 && param_type2.mHeap && param_type2.mRefference && param_type2.mRefferenceOriginalType && param_type2.mRefferenceOriginalType.v1) 
@@ -805,11 +804,10 @@ class sStoreArrayNode extends sNodeBase
                 }
             }
             else {
-            */
                 node_compile(right).elif {
                     return false;
                 }
-            //}
+            }
         }
         else {
             node_compile(right).elif {

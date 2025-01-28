@@ -2950,7 +2950,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         
         klass = info.classes[klass->mName]??;
         foreach(it, klass->mFields) {
-            var name, field_type = it~~;
+            var name, field_type = it;
             
             if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
             {
@@ -3109,7 +3109,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         else {
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
-                var name, field_type = it~~;
+                var name, field_type = it;
                 
                 if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
                 {
@@ -3264,7 +3264,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
             int i = 0;
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
-                var name, field_type = it~~;
+                var name, field_type = it;
                 
                 if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
                 {
@@ -3427,7 +3427,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
             int i = 0;
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
-                var name, field_type = it~~;
+                var name, field_type = it;
                 
                 if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
                 {
@@ -3586,7 +3586,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
             
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
-                var name, field_type = it~~;
+                var name, field_type = it;
                 
                 if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
                 {
@@ -3735,7 +3735,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
             
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
-                var name, field_type = it~~;
+                var name, field_type = it;
                 
                 if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
                 {
@@ -3762,7 +3762,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         else {
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
-                var name, field_type = it~~;
+                var name, field_type = it;
                 
                 if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
                 {
@@ -3920,7 +3920,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         int i = 0;
         klass = info.classes[klass->mName]??;
         foreach(it, klass->mFields) {
-            var name, field_type = it~~;
+            var name, field_type = it;
             
             if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
             {
