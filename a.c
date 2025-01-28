@@ -16,15 +16,19 @@ int main(int argc, char** argv)
     data.b = 222;
     data.li = new list<object:sData>();
     
-    data.li.add(new sData~);
+    data.li.add(new sData);
     
     list<object:tup(int, sData*%)>*% li = new list<object:tup(int, sData*%)>();
     
     li.add((1,new sData { a:11, b: 22}));
+    li.add((2,new sData { a:33, b: 33}));
+    li.add((3,new sData { a:55, b: 55}));
     
-    var a,b = li[0];
-    
-    printf("%d %d\n", a, b.a);
+    foreach(it, li) {
+        var a,b = it;
+        
+        printf("%d %d %d\n", a, b.a, b.b);
+    }
     
     return 0;
 }

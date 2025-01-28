@@ -629,7 +629,7 @@ class sMethodCallNode extends sNodeBase
                     }
                     bool is_inner_calling_ = is_inner_calling(obj, info);
                     
-                    if(!is_inner_calling_ && param_types[n]?? && param_types[n].mRefference && param_types[n].mHeap && param_types[n].mRefferenceOriginalType && param_types[n].mRefferenceOriginalType.v1) {
+                    if(!is_inner_calling_ && param_types[n]?? && param_types[n].mRefference && param_types[n].mClass.mName === "object" && param_types[n].mHeap && param_types[n].mRefferenceOriginalType && param_types[n].mRefferenceOriginalType.v1) {
                         node_compile(node).elif {
                             return false;
                         }
@@ -704,7 +704,7 @@ class sMethodCallNode extends sNodeBase
 
                     bool is_inner_calling_ = is_inner_calling(obj, info);
                     
-                    if(!is_inner_calling_ && param_types[i]?? && param_types[i].mHeap && param_types[i].mRefference && param_types[i].mRefferenceOriginalType && param_types[i].mRefferenceOriginalType.v1){
+                    if(!is_inner_calling_ && param_types[i]?? && param_types[i].mHeap && param_types[i].mClass.mName === "object" && param_types[i].mRefference && param_types[i].mRefferenceOriginalType && param_types[i].mRefferenceOriginalType.v1){
                         node_compile(node).elif {
                             return false;
                         }

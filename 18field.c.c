@@ -7643,7 +7643,7 @@ memset(&calling_fun_459, 0, sizeof(_Bool));
         param_type_444=(struct sType*)come_increment_ref_count(list$1sTypephp_operator_load_element(operator_fun_443->mParamTypes,2));
         param_type2_445=(struct sType*)come_increment_ref_count(solve_generics(param_type_444,left_type_429,info));
         is_inner_calling__446=is_inner_calling(left_424,info);
-        if(        !is_inner_calling__446&&param_type2_445&&param_type2_445->mHeap&&param_type2_445->mRefference&&param_type2_445->mRefferenceOriginalType&&param_type2_445->mRefferenceOriginalType->v1) {
+        if(        !is_inner_calling__446&&param_type2_445&&param_type2_445->mHeap&&string_operator_equals(param_type2_445->mClass->mName,"object")&&param_type2_445->mRefference&&param_type2_445->mRefferenceOriginalType&&param_type2_445->mRefferenceOriginalType->v1) {
             Value_447=node_compile(right_425,info);
             if(            !Value_447) {
                 __result300__ = (_Bool)0;
