@@ -85,7 +85,7 @@ class sNewNode extends sNodeBase
                 
                 sType*% left_type = null;
                 foreach(it2, klass->mFields) {
-                    var field_name, field_type = it2;
+                    var field_name, field_type = it2~~;
                     
                     if(name === field_name) {
                         left_type = clone field_type;
@@ -226,7 +226,7 @@ class sImplementsNode extends sNodeBase
         create_cloner_automatically(typeX, "clone", info);
         
         for(int i=1; i<klass->mFields.length(); i++) {
-            var name, field_type = klass->mFields[i];
+            var name, field_type = klass->mFields[i]~~;
             
             string method_name = create_method_name(type, false@no_pointer_name, name, info);
             

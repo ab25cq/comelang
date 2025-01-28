@@ -65,7 +65,7 @@ void output_struct(sClass* klass, sInfo* info)
             
     bool existance_generics = false;
     foreach(it, klass.mFields) {
-        var name, type = it;
+        var name, type = it~~;
             
         if(is_contained_method_generics_types(type, info) || is_contained_generics_types(type, info)) {
             existance_generics = true;
@@ -107,7 +107,7 @@ void output_struct_come_header(sClass* klass, sInfo* info)
             buf.append_format("struct %s\n{\n", klass.mName);
         }
         foreach(it, klass.mFields) {
-            var name, type = it;
+            var name, type = it~~;
             
             type->mStatic = false;
             
@@ -196,11 +196,11 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
         
         int i = 0;
         foreach(it, generics_class.mFields) {
-            var name, type = it;
+            var name, type = it~~;
             
             sType*% new_type = solve_generics(type, generics_type, info);
             
-            new_class.mFields.push_back((clone name, clone new_type));
+            new_class.mFields.push_back((clone name, clone new_type)~);
         }
         
         type->mNoSolvedGenericsType.v1 = clone type;
@@ -447,7 +447,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
             
             var type2, name2 = parse_variable_name(base_type, true@first, info);
             
-            klass.mFields.push_back((name2, type2));
+            klass.mFields.push_back((name2, type2)~);
             
             while(*info->p == ',') {
                 info->p++;
@@ -455,7 +455,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
                 
                 var type2, name2 = parse_variable_name(base_type, false@first, info);
                 
-                klass.mFields.push_back((name2, type2));
+                klass.mFields.push_back((name2, type2)~);
             }
         }
         else {
@@ -466,7 +466,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
                 exit(2);
             }
             
-            klass.mFields.push_back((name, type2));
+            klass.mFields.push_back((name, type2)~);
         }
         if(*info->p == ';') {
             info->p++;
@@ -642,7 +642,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 }
                 
                 if(*info->p == ',') {
-                    generics_class.mFields.push_back((name, type2));
+                    generics_class.mFields.push_back((name, type2)~);
                     
                     while(*info->p == ',') {
                         info->p++;
@@ -664,11 +664,11 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                             type3->mSizeNum = node;
                         }
                         
-                        generics_class.mFields.push_back((name2, type3));
+                        generics_class.mFields.push_back((name2, type3)~);
                     }
                 }
                 else {
-                    generics_class.mFields.push_back((name, type2));
+                    generics_class.mFields.push_back((name, type2)~);
                 }
                 
                 if(*info->p == ';') {
@@ -775,7 +775,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                     
                     var type2,name2 = parse_variable_name(base_type, true@first, info);
                     
-                    struct_class.mFields.push_back((name2, type2));
+                    struct_class.mFields.push_back((name2, type2)~);
                     
                     while(*info->p == ',') {
                         info->p++;
@@ -783,7 +783,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                         
                         var type2, name2 = parse_variable_name(base_type, false@first, info);
                         
-                        struct_class.mFields.push_back((name2, type2));
+                        struct_class.mFields.push_back((name2, type2)~);
                     }
                 }
                 else {
@@ -793,7 +793,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                         exit(2);
                     }
                     
-                    struct_class.mFields.push_back((name, type2));
+                    struct_class.mFields.push_back((name, type2)~);
                 }
                 
                 if(*info->p == ';') {
@@ -1055,7 +1055,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 
                 var type2,name2 = parse_variable_name(base_type, true@first, info);
                 
-                struct_class.mFields.push_back((name2, type2));
+                struct_class.mFields.push_back((name2, type2)~);
                 
                 while(*info->p == ',') {
                     info->p++;
@@ -1063,7 +1063,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                     
                     var type2, name2 = parse_variable_name(base_type, false@first, info);
                     
-                    struct_class.mFields.push_back((name2, type2));
+                    struct_class.mFields.push_back((name2, type2)~);
                 }
                 expected_next_character(';') ;
             }
@@ -1145,7 +1145,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                     exit(2);
                 }
                 
-                struct_class.mFields.push_back((name, type2));
+                struct_class.mFields.push_back((name, type2)~);
                 if(*info->p == ';') {
                     info->p++;
                     skip_spaces_and_lf();

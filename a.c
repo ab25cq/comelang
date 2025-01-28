@@ -18,13 +18,13 @@ int main(int argc, char** argv)
     
     data.li.add((new sData)~);
     
-    list<object:tup(int, int)>*% li = new list<object:tup(int, int)>();
+    list<object:tup(int, sData*%)>*% li = new list<object:tup(int, sData*%)>();
     
-    li.add((1,2)~);
+    li.add((1,new sData { a:11, b: 22})~);
     
     var a,b = li[0]~~;
     
-    printf("%d %d\n", a, b);
+    printf("%d %d\n", a, b.a);
     
     return 0;
 }
