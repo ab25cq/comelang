@@ -628,7 +628,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             if(klass->mStruct && type->mPointerNum == 0) {
                 //klass = info.classes[klass->mName];
                 foreach(it, klass->mFields) {
-                    var name, field_type = it~~;
+                    var name, field_type = it;
                     
                     if(field_type->mHeap && field_type->mPointerNum > 0) {
                         string obj = xsprintf("(((%s)%s).%s)", make_type_name_string(type), c_value, name);
@@ -639,7 +639,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             else if(klass->mStruct && type->mPointerNum == 1) {
                 //klass = info.classes[klass->mName];
                 foreach(it, klass->mFields) {
-                    var name, field_type = it~~;
+                    var name, field_type = it;
                     
                     if(field_type->mHeap && field_type->mPointerNum > 0) {
                         string obj = xsprintf("(((%s)%s)->%s)", make_type_name_string(type), c_value, name);

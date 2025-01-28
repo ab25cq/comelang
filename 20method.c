@@ -373,7 +373,7 @@ class sMethodCallNode extends sNodeBase
         bool calling_dynamic_method = false;
         sType* lambda_type = null;
         foreach(it, klass.mFields) {
-            var field_name, field_type = it~~;
+            var field_name, field_type = it;
             
             if(field_name === fun_name && field_type.mClass.mName === "lambda") {
                 calling_dynamic_method = true;
@@ -629,23 +629,35 @@ class sMethodCallNode extends sNodeBase
                     }
                     bool is_inner_calling_ = is_inner_calling(obj, info);
                     
-/*
                     if(!is_inner_calling_ && param_types[n]?? && param_types[n].mRefference && param_types[n].mHeap && param_types[n].mRefferenceOriginalType && param_types[n].mRefferenceOriginalType.v1) {
-                        sType*% inf_type = new sType("object");
-                        inf_type->mHeap = 1;
-                        
-                        sNode*% node2 = create_implements(node, inf_type, info);
-                        
-                        node_compile(node2).elif {
-                            return false;
-                        }
-                    }
-                    else {
-*/
                         node_compile(node).elif {
                             return false;
                         }
-//                    }
+                        
+                        CVALUE*% come_value = get_value_from_stack(-1, info);
+                        dec_stack_ptr(1, info);
+                        
+                        if(come_value.type.mClass.mName !== "object") {
+                            sType*% inf_type = new sType("object");
+                            inf_type->mHeap = 1;
+                            
+                            sNode*% node2 = create_implements(node, inf_type, info);
+                            
+                            node_compile(node2).elif {
+                                return false;
+                            }
+                        }
+                        else {
+                            node_compile(node).elif {
+                                return false;
+                            }
+                        }
+                    }
+                    else {
+                        node_compile(node).elif {
+                            return false;
+                        }
+                    }
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     dec_stack_ptr(1, info);
@@ -692,24 +704,35 @@ class sMethodCallNode extends sNodeBase
 
                     bool is_inner_calling_ = is_inner_calling(obj, info);
                     
-/*
-                    if(!is_inner_calling_ && param_types[i]?? && param_types[i].mHeap && param_types[i].mRefference && param_types[i].mRefferenceOriginalType && param_types[i].mRefferenceOriginalType.v1) 
-                    {
-                        sType*% inf_type = new sType("object");
-                        inf_type->mHeap = 1;
-                        
-                        sNode*% node2 = create_implements(node, inf_type, info);
-                        
-                        node_compile(node2).elif {
-                            return false;
-                        }
-                    }
-                    else {
-*/
+                    if(!is_inner_calling_ && param_types[i]?? && param_types[i].mHeap && param_types[i].mRefference && param_types[i].mRefferenceOriginalType && param_types[i].mRefferenceOriginalType.v1){
                         node_compile(node).elif {
                             return false;
                         }
-//                    }
+                        
+                        CVALUE*% come_value = get_value_from_stack(-1, info);
+                        dec_stack_ptr(1, info);
+                        
+                        if(come_value.type.mClass.mName !== "object") {
+                            sType*% inf_type = new sType("object");
+                            inf_type->mHeap = 1;
+                            
+                            sNode*% node2 = create_implements(node, inf_type, info);
+                            
+                            node_compile(node2).elif {
+                                return false;
+                            }
+                        }
+                        else {
+                            node_compile(node).elif {
+                                return false;
+                            }
+                        }
+                    }
+                    else {
+                        node_compile(node).elif {
+                            return false;
+                        }
+                    }
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     dec_stack_ptr(1, info);
@@ -964,8 +987,7 @@ class sMethodCallNode extends sNodeBase
             come_value2.c_value = buf.to_string();
             come_value2.var = null;
             
-/*
-            if(result_type2->mClass->mProtocol && result_type2->mNoRefference) {
+            if(result_type2->mClass->mProtocol && result_type2->mClass->mName === "object" && result_type2->mNoRefference) {
                 int generics_num = result_type->mGenericsNumBefore;
                 
                 if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
@@ -984,7 +1006,6 @@ class sMethodCallNode extends sNodeBase
                     }
                 }
             }
-*/
             
             come_value2.type = clone result_type2;
             come_value2.type->mStatic = false;

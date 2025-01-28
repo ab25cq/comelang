@@ -29,7 +29,7 @@ class sInterfaceNode extends sNodeBase
         
     //    klass= info.classes[klass->mName];
         foreach(it, klass.mFields) {
-            var name, type = it~~;
+            var name, type = it;
             
             buf.append_str("    ");
             buf.append_str(make_define_var(type, name));
@@ -98,7 +98,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         sType*% voidp = new sType("void");
         voidp->mPointerNum++;
         
-        klass.mFields.push_back((string("_protocol_obj"), voidp)~);
+        klass.mFields.push_back((string("_protocol_obj"), voidp));
         
         sType*% finalizer = new sType("lambda");
     
@@ -107,7 +107,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         finalizer->mVarArgs = false;
         finalizer->mResultType = new tuple1<sType*%>(new sType("void"));
         
-        klass.mFields.push_back((string("finalize"), finalizer)~);
+        klass.mFields.push_back((string("finalize"), finalizer));
         
         sType*% cloner = new sType("lambda");
     
@@ -116,7 +116,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         cloner->mVarArgs = false;
         cloner->mResultType = new tuple1<sType*%>(clone voidp);
         
-        klass.mFields.push_back((string("clone"), cloner)~);
+        klass.mFields.push_back((string("clone"), cloner));
         
         while(true) {
             if(*info->p == '}') {
@@ -129,7 +129,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
             var type2, name = parse_interface_function(info);
             expected_next_character(';');
             
-            klass.mFields.push_back((name, type2)~);
+            klass.mFields.push_back((name, type2));
             
             parse_sharp();
             

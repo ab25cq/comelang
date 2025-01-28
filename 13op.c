@@ -118,8 +118,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         sType*% result_type = type2;
         sType*% obj_type = generics_type;
         
-/*
-        if(type3->mClass->mProtocol && type3->mNoRefference) {
+        if(type3->mClass->mProtocol && type3->mClass->mName === "object" && type3->mNoRefference) {
             int generics_num = result_type->mGenericsNumBefore;
 
             sType*% type;
@@ -146,7 +145,6 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
                 }
             }
         }
-*/
         
         come_value.type = clone type3;
         come_value.var = null;

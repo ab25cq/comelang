@@ -630,11 +630,11 @@ static void init_classes(sInfo* info)
     else { // Other
         sClass*% klass = new sClass("__builtin_va_list", struct_:true);
         
-        klass.mFields.push_back((string("v1"), new sType("char*"))~);
-        klass.mFields.push_back((string("v2"), new sType("char*"))~);
-        klass.mFields.push_back((string("v3"), new sType("char*"))~);
-        klass.mFields.push_back((string("v4"), new sType("int"))~);
-        klass.mFields.push_back((string("v5"), new sType("int"))~);
+        klass.mFields.push_back((string("v1"), new sType("char*")));
+        klass.mFields.push_back((string("v2"), new sType("char*")));
+        klass.mFields.push_back((string("v3"), new sType("char*")));
+        klass.mFields.push_back((string("v4"), new sType("int")));
+        klass.mFields.push_back((string("v5"), new sType("int")));
         
         info.classes.insert(string("__builtin_va_list"), klass);
     }

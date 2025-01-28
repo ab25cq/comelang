@@ -200,7 +200,7 @@ class sStoreFieldNode extends sNodeBase
         }
         
         foreach(field, klass->mFields) {
-            var field_name, field_type2 = field~~;
+            var field_name, field_type2 = field;
             
             if(field_name === name) {
                 field_type = clone field_type2;
@@ -213,12 +213,12 @@ class sStoreFieldNode extends sNodeBase
         if(index == klass->mFields.length()) {
             index = 0;
             foreach(field, klass->mFields) {
-                var field_name, field_type2 = field~~;
+                var field_name, field_type2 = field;
                 
                 sClass* klass2 = field_type2->mClass;
                 
                 foreach(field2, klass2->mFields) {
-                    var field_name2, field_type3 = field2~~;
+                    var field_name2, field_type3 = field2;
                     
                     if(field_name2 === name) {
                         child_field_name = string(field_name);
@@ -631,7 +631,7 @@ class sLoadFieldNode extends sNodeBase
             return false;
         }
         foreach(field, klass->mFields) {
-            var field_name, field_type2 = field~~;
+            var field_name, field_type2 = field;
             
             if(field_name === name) {
                 field_type = clone field_type2;
@@ -644,12 +644,12 @@ class sLoadFieldNode extends sNodeBase
         if(index == klass->mFields.length()) {
             index = 0;
             foreach(field, klass->mFields) {
-                var field_name, field_type2 = field~~;
+                var field_name, field_type2 = field;
                 
                 sClass* klass2 = field_type2->mClass;
                 
                 foreach(field2, klass2->mFields) {
-                    var field_name2, field_type3 = field2~~;
+                    var field_name2, field_type3 = field2;
                     
                     if(field_name2 === name) {
                         child_field_name = string(field_name);
@@ -754,7 +754,7 @@ class sStoreArrayNode extends sNodeBase
     bool compile(sInfo* info)
     {
         sNode* left = self.mLeft;
-        sNode* right = self.mRight;
+        sNode*% right = self.mRight;
         list<sNode*%>* array_num_nodes = self.mArrayNum;
         
         node_compile(left).elif {
@@ -792,24 +792,36 @@ class sStoreArrayNode extends sNodeBase
             
             bool is_inner_calling_ = is_inner_calling(left, info);
             
-/*
-            if(!is_inner_calling_ && param_type2 && param_type2.mHeap && param_type2.mRefference && param_type2.mRefferenceOriginalType && param_type2.mRefferenceOriginalType.v1) 
+            if(!is_inner_calling_ && param_type2 && param_type2.mHeap && param_type2.mRefference && param_type2.mRefferenceOriginalType && param_type2.mRefferenceOriginalType.v1)
             {
-                sType*% inf_type = new sType("object");
-                inf_type->mHeap = 1;
-                
-                sNode*% right2 = create_implements(clone right, inf_type, info);
-                
-                node_compile(right2).elif {
-                    return false;
-                }
-            }
-            else {
-*/
                 node_compile(right).elif {
                     return false;
                 }
-//            }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                dec_stack_ptr(1, info);
+                
+                if(come_value.type.mClass.mName !== "object") {
+                    sType*% inf_type = new sType("object");
+                    inf_type->mHeap = 1;
+                    
+                    sNode*% right2 = create_implements(right, inf_type, info);
+                    
+                    node_compile(right2).elif {
+                        return false;
+                    }
+                }
+                else {
+                    node_compile(right).elif {
+                        return false;
+                    }
+                }
+            }
+            else {
+                node_compile(right).elif {
+                    return false;
+                }
+            }
         }
         else {
             node_compile(right).elif {
