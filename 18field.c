@@ -792,6 +792,7 @@ class sStoreArrayNode extends sNodeBase
             
             bool is_inner_calling_ = is_inner_calling(left, info);
             
+/*
             if(!is_inner_calling_ && param_type2 && param_type2.mHeap && param_type2.mRefference && param_type2.mRefferenceOriginalType && param_type2.mRefferenceOriginalType.v1) 
             {
                 sType*% inf_type = new sType("object");
@@ -804,10 +805,11 @@ class sStoreArrayNode extends sNodeBase
                 }
             }
             else {
+*/
                 node_compile(right).elif {
                     return false;
                 }
-            }
+//            }
         }
         else {
             node_compile(right).elif {
