@@ -1312,19 +1312,19 @@ struct tuple2$2charphsTypeph
     struct sType* v2;
 };
 
-struct list_item$1tuple2$2charphsTypephph
+struct list_item$1objectph
 {
-    struct tuple2$2charphsTypeph* item;
-    struct list_item$1tuple2$2charphsTypephph* prev;
-    struct list_item$1tuple2$2charphsTypephph* next;
+    struct object* item;
+    struct list_item$1objectph* prev;
+    struct list_item$1objectph* next;
 };
 
-struct list$1tuple2$2charphsTypephph
+struct list$1objectph
 {
-    struct list_item$1tuple2$2charphsTypephph* head;
-    struct list_item$1tuple2$2charphsTypephph* tail;
+    struct list_item$1objectph* head;
+    struct list_item$1objectph* tail;
     int len;
-    struct list_item$1tuple2$2charphsTypephph* it;
+    struct list_item$1objectph* it;
 };
 
 struct sClass
@@ -1340,7 +1340,7 @@ struct sClass
     char* mName;
     int mGenericsNum;
     int mMethodGenericsNum;
-    struct list$1tuple2$2charphsTypephph* mFields;
+    struct list$1objectph* mFields;
     _Bool mOutputed;
     _Bool mOutputed2;
     char* mDeclareSName;

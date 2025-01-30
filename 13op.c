@@ -144,13 +144,17 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
                     type3->mHeap = result_type->mHeap;
                 }
             }
+            
+            come_value.type = clone type3;
+            come_value.var = null;
         }
-        
-        come_value.type = clone type3;
-        come_value.var = null;
-        
-        if(type3->mHeap) {
-            append_object_to_right_values2(come_value, type3, info);
+        else {
+            come_value.type = clone type3;
+            come_value.var = null;
+            
+            if(type3->mHeap) {
+                append_object_to_right_values2(come_value, type3, info);
+            }
         }
         
         if(!break_guard && type3.mGuardValue && type3.mPointerNum > 0) {

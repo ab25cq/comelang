@@ -1005,13 +1005,17 @@ class sMethodCallNode extends sNodeBase
                         result_type2->mHeap = result_type->mHeap;
                     }
                 }
+                
+                come_value2.type = clone result_type2;
+                come_value2.type->mStatic = false;
             }
-            
-            come_value2.type = clone result_type2;
-            come_value2.type->mStatic = false;
-            
-            if(result_type2->mHeap) {
-                append_object_to_right_values2(come_value2, result_type2, info);
+            else {
+                come_value2.type = clone result_type2;
+                come_value2.type->mStatic = false;
+                
+                if(result_type2->mHeap) {
+                    append_object_to_right_values2(come_value2, result_type2, info);
+                }
             }
             
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
