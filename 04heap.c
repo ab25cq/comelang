@@ -385,7 +385,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         return ;
     }
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -507,7 +507,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
         return ;
     }
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
 
     sType* type_before = type;
 
@@ -712,7 +712,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     string result = null
     sType*% result_type = null;
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
     
     string c_value = string(obj);
     
@@ -805,7 +805,7 @@ bool create_equals_method(sType* type, sInfo* info)
     }
     string result = null
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -876,7 +876,7 @@ bool create_operator_equals_method(sType* type, sInfo* info)
     }
     string result = null
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -947,7 +947,7 @@ bool create_operator_not_equals_method(sType* type, sInfo* info)
     }
     string result = null
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -1022,7 +1022,7 @@ void free_right_value_objects(sInfo* info, bool comma=false)
     }
     
     bool free_right_value = false;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
     
     int n = 0;
     foreach(it, right_value_objects) {
@@ -1220,7 +1220,7 @@ bool existance_free_right_value_objects(sInfo* info)
     if(gComeGC || gComeC) {
         return false;
     }
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<object: sRightValueObject*%>* right_value_objects = info.right_value_objects;
     
     foreach(it, right_value_objects) {
         if(it && !it->mFreed) {
