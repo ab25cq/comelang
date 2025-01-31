@@ -448,8 +448,14 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
 {
     sType*% right_type2 = clone right_type;
     
-    sType* left_no_solved_generics_type = left_type->mNoSolvedGenericsType.v1;
-    sType* right_no_solved_generics_type = right_type2->mNoSolvedGenericsType.v1;
+    sType* left_no_solved_generics_type = null;
+    if(left_type->mNoSolvedGenericsType) {
+        left_no_solved_generics_type = left_type->mNoSolvedGenericsType.v1;
+    }
+    sType* right_no_solved_generics_type = null;
+    if(right_type2->mNoSolvedGenericsType) {
+        right_no_solved_generics_type = right_type2->mNoSolvedGenericsType.v1;
+    }
     
     sClass* left_class = left_type->mClass;
     sClass* right_class = right_type2->mClass;
@@ -818,6 +824,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
             else if(left_type->mClass->mName !== right_type2->mClass->mName) {
                 if(print_err_msg) {
+                    puts(msg);
                     err_msg(info, "type error14");
                     printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
@@ -2839,6 +2846,13 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         type.mRefferenceOriginalType = new tuple1<sType*%>;
         type.mRefferenceOriginalType.v1 = refference_type;
+        
+/*
+        if(type.mNoSolvedGenericsType && type.mNoSolvedGenericsType.v1) {
+            type.mNoSolvedGenericsType.v1.mRefferenceOriginalType = new tuple1<sType*%>;
+            type.mNoSolvedGenericsType.v1.mRefferenceOriginalType.v1 = refference_type;
+        }
+*/
     }
     
     if(attribute !== "") {

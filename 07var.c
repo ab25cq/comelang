@@ -88,6 +88,10 @@ class sStoreNode extends sNodeBase
             sType* right_type = right_value.type;
             dec_stack_ptr(1, info);
             
+            if(right_type->mRefferenceOriginalType && right_type->mRefferenceOriginalType.v1) {
+                right_type = right_type->mRefferenceOriginalType.v1;
+            }
+            
             if(right_type->mNoSolvedGenericsType.v1) {
                 right_type = right_type->mNoSolvedGenericsType.v1;
             }
@@ -95,7 +99,7 @@ class sStoreNode extends sNodeBase
             int i = 0;
             foreach(it, self.multiple_assign) {
                 if(i < right_type.mGenericsTypes.length()) {
-                    sVar* var_ = info.lv_table.mVars[it]??;
+                    sVar*% var_ = info.lv_table.mVars[it]??;
                     if(var_) {
                         if(var_->mType->mHeap) {
                             free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -104,7 +108,7 @@ class sStoreNode extends sNodeBase
                         info.lv_table.mVars.remove(it);
                     }
             
-                    sType* right_type2 = right_type.mGenericsTypes[i];
+                    sType*% right_type2 = right_type.mGenericsTypes[i];
                     right_type2->mFunctionParam = false;
                     add_variable_to_table(it, clone right_type2, info);
                 }

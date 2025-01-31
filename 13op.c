@@ -133,7 +133,10 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
                 sType*% refference_type = type->mGenericsTypes[generics_num]??;
                 
                 if(refference_type && refference_type->mRefferenceOriginalType) {
-                    refference_type = refference_type->mRefferenceOriginalType.v1;
+//                    sType*% refference_type_before = clone refference_type->mRefferenceOriginalType.v1;
+                    refference_type = clone refference_type->mRefferenceOriginalType.v1;
+///                    refference_type->mRefferenceOriginalType = new tuple1<sType*%>;
+//                    refference_type->mRefferenceOriginalType.v1 = refference_type_before;
                     
                     static int i = 0;
                     i++;
@@ -141,6 +144,9 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
                     
                     come_value.c_value = s"((__tmp_infX\{i}=\{come_value.c_value}),((\{make_type_name_string(refference_type)})(__tmp_infX\{i} ? __tmp_infX\{i}->_protocol_obj:(void*)0)))";
                     type3 = refference_type;
+                    //type3->mRefferenceOriginalType.v1 = refference_type;
+                    type3->mRefferenceOriginalType = new tuple1<sType*%>;
+                    type3->mRefferenceOriginalType.v1 = type->mGenericsTypes[generics_num]->mRefferenceOriginalType->mGenericsTypes[generics_num];
                     type3->mHeap = result_type->mHeap;
                 }
             }

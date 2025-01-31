@@ -102,7 +102,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         
         sType*% finalizer = new sType("lambda");
     
-        finalizer->mParamTypes = [clone voidp ];
+        finalizer->mParamTypes = [(clone voidp) ];
         finalizer->mParamNames = [string("self")];
         finalizer->mVarArgs = false;
         finalizer->mResultType = new tuple1<sType*%>(new sType("void"));
@@ -111,7 +111,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         
         sType*% cloner = new sType("lambda");
     
-        cloner->mParamTypes = [clone voidp ];
+        cloner->mParamTypes = [(clone voidp) ];
         cloner->mParamNames = [string("self")];
         cloner->mVarArgs = false;
         cloner->mResultType = new tuple1<sType*%>(clone voidp);

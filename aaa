@@ -1,0 +1,568 @@
+INSERT
+smart_pointer$1char_initialize_with_value
+smart_pointer$1char
+buffer
+smart_pointer$1char_initialize_with_value
+EXIST
+param smart_pointer$1char
+param buffer
+RETURN
+INSERT
+smart_pointer$1short_initialize_with_value
+smart_pointer$1short
+buffer
+INSERT
+smart_pointer$1int_initialize_with_value
+smart_pointer$1int
+buffer
+INSERT
+smart_pointer$1long_initialize_with_value
+smart_pointer$1long
+buffer
+smart_pointer$1char_initialize_with_value
+EXIST
+param smart_pointer$1char
+param buffer
+RETURN
+INSERT
+smart_pointer$1charp_initialize_with_value
+smart_pointer$1charp
+buffer
+smart_pointer$1short_initialize_with_value
+EXIST
+param smart_pointer$1short
+param buffer
+RETURN
+smart_pointer$1int_initialize_with_value
+EXIST
+param smart_pointer$1int
+param buffer
+RETURN
+smart_pointer$1long_initialize_with_value
+EXIST
+param smart_pointer$1long
+param buffer
+RETURN
+INSERT
+smart_pointer$1float_initialize_with_value
+smart_pointer$1float
+buffer
+INSERT
+smart_pointer$1double_initialize_with_value
+smart_pointer$1double
+buffer
+INSERT
+list$1char_initialize_with_values
+list$1char
+int
+char
+INSERT
+list$1char_push_back
+list$1char
+char
+INSERT
+list$1charp_finalize
+list$1char
+INSERT
+list$1charp_initialize_with_values
+list$1charp
+int
+char
+INSERT
+list$1charp_push_back
+list$1charp
+char
+INSERT
+list$1charpp_finalize
+list$1charp
+INSERT
+list$1short_initialize_with_values
+list$1short
+int
+short
+INSERT
+list$1short_push_back
+list$1short
+short
+INSERT
+list$1shortp_finalize
+list$1short
+INSERT
+list$1int_initialize_with_values
+list$1int
+int
+int
+INSERT
+list$1int_push_back
+list$1int
+int
+INSERT
+list$1intp_finalize
+list$1int
+INSERT
+list$1long_initialize_with_values
+list$1long
+int
+long
+INSERT
+list$1long_push_back
+list$1long
+long
+INSERT
+list$1longp_finalize
+list$1long
+INSERT
+list$1float_initialize_with_values
+list$1float
+int
+float
+INSERT
+list$1float_push_back
+list$1float
+float
+INSERT
+list$1floatp_finalize
+list$1float
+INSERT
+list$1double_initialize_with_values
+list$1double
+int
+double
+INSERT
+list$1double_push_back
+list$1double
+double
+INSERT
+list$1doublep_finalize
+list$1double
+INSERT
+vector$1char_initialize_with_values
+vector$1char
+int
+char
+INSERT
+vector$1charp_finalize
+vector$1char
+INSERT
+vector$1charp_initialize_with_values
+vector$1charp
+int
+char
+INSERT
+vector$1charpp_finalize
+vector$1charp
+INSERT
+vector$1short_initialize_with_values
+vector$1short
+int
+short
+INSERT
+vector$1shortp_finalize
+vector$1short
+INSERT
+vector$1int_initialize_with_values
+vector$1int
+int
+int
+INSERT
+vector$1intp_finalize
+vector$1int
+INSERT
+vector$1long_initialize_with_values
+vector$1long
+int
+long
+INSERT
+vector$1longp_finalize
+vector$1long
+INSERT
+vector$1float_initialize_with_values
+vector$1float
+int
+float
+INSERT
+vector$1floatp_finalize
+vector$1float
+INSERT
+vector$1double_initialize_with_values
+vector$1double
+int
+double
+INSERT
+vector$1doublep_finalize
+vector$1double
+INSERT
+list$1charph_initialize
+list$1charph
+INSERT
+list$1charphp_finalize
+list$1charph
+list$1charph_initialize
+EXIST
+param list$1charph
+RETURN
+INSERT
+list$1charph_push_back
+list$1charph
+char
+list$1charph_push_back
+EXIST
+param list$1charph
+param char
+RETURN
+list$1charph_initialize
+EXIST
+param list$1charph
+RETURN
+list$1charph_push_back
+EXIST
+param list$1charph
+param char
+RETURN
+INSERT
+list$1objectph_begin
+list$1objectph
+INSERT
+list$1objectph_end
+list$1objectph
+INSERT
+list$1objectph_next
+list$1objectph
+INSERT
+list$1objectphp_finalize
+list$1objectph
+INSERT
+list$1objectph_finalize
+list$1objectph
+INSERT
+list$1sNodeph_finalize
+list$1sNodeph
+INSERT
+list$1sNodephp_finalize
+list$1sNodeph
+INSERT
+list$1charph_finalize
+list$1charph
+INSERT
+list$1objectphp_clone
+list$1objectph
+INSERT
+list$1objectph_initialize
+list$1objectph
+INSERT
+list$1objectph_add
+list$1objectph
+object
+INSERT
+list$1sNodephp_clone
+list$1sNodeph
+INSERT
+list$1sNodeph_initialize
+list$1sNodeph
+INSERT
+list$1sNodeph_add
+list$1sNodeph
+sNode
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+INSERT
+list$1charphp_clone
+list$1charph
+list$1charph_initialize
+EXIST
+param list$1charph
+RETURN
+INSERT
+list$1charph_add
+list$1charph
+char
+INSERT
+list$1objectph_length
+list$1objectph
+INSERT
+tuple1$1sTypeph_initialize
+tuple1$1sTypeph
+sType
+INSERT
+list$1objectph_reset
+list$1objectph
+list$1objectph_begin
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_end
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_next
+EXIST
+param list$1objectph
+RETURN
+INSERT
+list$1objectph_push_back
+list$1objectph
+object
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1sNodephp_clone
+EXIST
+param list$1sNodeph
+RETURN
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1charphp_clone
+EXIST
+param list$1charph
+RETURN
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+INSERT
+list$1objectphp_operator_load_element
+list$1objectph
+int
+INSERT
+list$1sNodeph_length
+list$1sNodeph
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+list$1objectphp_operator_load_element
+EXIST
+param list$1objectph
+param int
+RETURN
+list$1objectphp_operator_load_element
+EXIST
+param list$1objectph
+param int
+RETURN
+list$1sNodeph_length
+EXIST
+param list$1sNodeph
+RETURN
+list$1objectph_reset
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_begin
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_end
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_next
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_push_back
+EXIST
+param list$1objectph
+param object
+RETURN
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1sNodephp_clone
+EXIST
+param list$1sNodeph
+RETURN
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1charphp_clone
+EXIST
+param list$1charph
+RETURN
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+list$1objectphp_operator_load_element
+EXIST
+param list$1objectph
+param int
+RETURN
+list$1sNodeph_length
+EXIST
+param list$1sNodeph
+RETURN
+list$1objectph_begin
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_end
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_next
+EXIST
+param list$1objectph
+RETURN
+INSERT
+list$1objectphp_operator_store_element
+list$1objectph
+int
+object
+INSERT
+list$1objectph_replace
+list$1objectph
+int
+object
+list$1objectph_push_back
+EXIST
+param list$1objectph
+param object
+RETURN
+list$1objectph_push_back
+EXIST
+param list$1objectph
+param object
+RETURN
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1sNodephp_clone
+EXIST
+param list$1sNodeph
+RETURN
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1charphp_clone
+EXIST
+param list$1charph
+RETURN
+list$1objectphp_operator_store_element
+EXIST
+param list$1objectph
+param int
+param object
+RETURN
+CHECK ASSIGN param types 2 object
+list$1objectph_begin
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_end
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_next
+EXIST
+param list$1objectph
+RETURN
+list$1objectphp_operator_store_element
+EXIST
+param list$1objectph
+param int
+param object
+RETURN
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1sNodephp_clone
+EXIST
+param list$1sNodeph
+RETURN
+list$1objectphp_clone
+EXIST
+param list$1objectph
+RETURN
+list$1charphp_clone
+EXIST
+param list$1charph
+RETURN
+list$1objectphp_operator_store_element
+EXIST
+param list$1objectph
+param int
+param object
+RETURN
+CHECK ASSIGN param types 2 object
+list$1objectph_push_back
+EXIST
+param list$1objectph
+param object
+RETURN
+list$1objectph_push_back
+EXIST
+param list$1objectph
+param object
+RETURN
+list$1objectph_begin
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_end
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_next
+EXIST
+param list$1objectph
+RETURN
+INSERT
+list$1objectph_delete
+list$1objectph
+int
+int
+list$1objectph_reset
+EXIST
+param list$1objectph
+RETURN
+list$1objectph_length
+EXIST
+param list$1objectph
+RETURN
+INSERT
+map$2charphsFunphp_operator_load_element
+map$2charphsFunph
+char
+INSERT
+map$2charphsGenericsFunphp_operator_load_element
+map$2charphsGenericsFunph
+char
+map$2charphsFunphp_operator_load_element
+EXIST
+param map$2charphsFunph
+param char
+RETURN
+map$2charphsFunphp_operator_load_element
+EXIST
+param map$2charphsFunph
+param char
+RETURN
+map$2charphsFunphp_operator_load_element
+EX

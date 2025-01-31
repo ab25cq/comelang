@@ -481,7 +481,7 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
         int i;
         foreach(node, block->mNodes) {
             var right_value_objects = info.right_value_objects;
-            info.right_value_objects = new list<object: sRightValueObject*%>();
+            info.right_value_objects = new list<sRightValueObject*%>();
             
             info.module.mLastCode = null;
             info.module.mLastCode2 = null;
@@ -2299,7 +2299,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
         generics_type = generics_type->mNoSolvedGenericsType.v1;
     }
     
-    sFun* funX = info.funcs[fun_name]??;
+    sFun*% funX = info.funcs[fun_name]??;
     if(funX) {
         return true;
     }
@@ -2311,7 +2311,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
         sType*% param_type = solve_generics(clone it, generics_type, info);
         
         param_type->mFunctionParam = true;
-
+        
         param_types.add(clone param_type);
     }
     list<string>*% param_names = clone generics_fun->mParamNames;
@@ -2358,7 +2358,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     
     bool var_args = generics_fun.mVarArgs;
     var fun = new sFun(fun_name, result_type
-                    , clone param_types
+                    , param_types
                     , param_names, param_default_parametors, false@external
                     , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_);
     
@@ -3004,7 +3004,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         if(self_type->mPointerNum > 1) {
             self_type->mPointerNum = 1;
         }
-        var param_types = [self_type];
+        list<sType*%>*% param_types = [self_type];
         var param_names = [string("self")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
@@ -3152,7 +3152,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         left_type->mHeap = false;
         var right_type = clone type;
         right_type->mHeap = false;
-        var param_types = [left_type, right_type];
+        list<sType*%>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
@@ -3320,7 +3320,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         left_type->mHeap = false;
         var right_type = clone type;
         right_type->mHeap = false;
-        var param_types = [left_type, right_type];
+        list<sType*%>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
@@ -3485,7 +3485,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         left_type->mHeap = false;
         var right_type = clone type;
         right_type->mHeap = false;
-        var param_types = [left_type, right_type];
+        list<sType*%>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
@@ -3635,7 +3635,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         left_type->mHeap = false;
         var right_type = clone type;
         right_type->mHeap = false;
-        var param_types = [left_type, right_type];
+        list<sType*%>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
@@ -3827,7 +3827,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         var name = clone real_fun_name;
         var self_type = clone type;
         self_type->mHeap = false;
-        var param_types = [self_type];
+        list<sType*%>*% param_types = [self_type];
         var param_names = [string("self")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
@@ -3998,7 +3998,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         var name = clone real_fun_name;
         var self_type = clone type;
         self_type->mHeap = false;
-        var param_types = [self_type];
+        list<sType*%>*% param_types = [self_type];
         var param_names = [string("self")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);

@@ -4,43 +4,39 @@ struct sData
 {
     int a;
     int b;
-    
-    list<object:sData*>*% li;
-    sData*% data;
+};
+
+sData*%, int, int fun()
+{
+    return (new sData { a:111, b:222 }, 1, 2);
+}
+
+struct sClass
+{
+    string mName;
+    list<object: tup: sData*%, int, int>*% mFields;
+};
+
+struct sType
+{
+    string mName;
+    sClass*% mClass;
 };
 
 int main(int argc, char** argv)
 {
-    var data = new sData;
+    list<object: sType*%>*% li = new list<object: sType*%>();
+    li.add(new sType { mName: s"AAA", mClass: new sClass { mName: s"AAA", mFields: new list<object: tup: sData*%, int, int>() }});
     
-    data.a = 111;
-    data.b = 222;
-    data.li = new list<object:sData>();
+    var data, a, b = fun();
     
-    data.li.add(new sData { a:111, b:222});
+    li[0].mClass.mFields.push_back((data, 1, 2));
+    li[0].mClass.mFields.push_back((data, 1, 2));
+    li[0].mClass.mFields.push_back((data, 1, 2));
     
-    puts(data.li[0].a.to_string());
-    
-    list<object:tup(int, sData*%)>*% li = new list<object:tup(int, sData*%)>();
-    
-    li.add((1,new sData { a:11, b: 22}));
-    li.add((2,new sData { a:33, b: 33}));
-    li.add((3,new sData { a:55, b: 55}));
-    
-    foreach(it, li) {
-        var a,b = it;
-        
-        printf("%d %d %d\n", a, b.a, b.b);
-    }
-    
-    list<object:sData*%>*% li2 = new list<object:sData*%>();
-    
-    li2.add(new sData { a:111, b: 1});
-    li2.add(new sData { a:222, b: 2});
-    li2.add(new sData { a:333, b: 3});
-    
-    foreach(it, li2) {
-        printf("%d %d\n", it.a, it.b);
+    foreach(it, li[0].mClass.mFields) {
+        var data, a, b = it;
+        printf("%d %d %d\n", data.a, a, b);
     }
     
     return 0;
