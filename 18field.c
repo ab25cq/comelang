@@ -21,7 +21,7 @@ string, sFun* get_operator_function(sType* type, char* fun_name, sInfo* info=inf
         
         if(generics_fun) {
             if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
-                return false;
+                exit(1);
             }
         }
         
