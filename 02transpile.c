@@ -269,16 +269,23 @@ static bool cpp(sInfo* info)
     
             if(info.verbose) puts(cmd4);
             int rc = system(cmd4);
+    
+            if(rc != 0) {
+                command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", "gcc", output_file_name, input_file_name, info.clang_option, input_file_name);
+        
+                if(info.verbose) puts(cmd4);
+                rc = system(cmd4);
+                
+                if(rc != 0) {
+                    printf("failed to cpp(2) (%s)\n", cmd4);
+                    exit(5);
+                }
+            }
             
             var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
             
             if(info.verbose) puts(command2);
             (void)system(command2);
-    
-            if(rc != 0) {
-                printf("failed to cpp(2) (%s)\n", cmd4);
-                exit(5);
-            }
         }
     }
     
@@ -302,15 +309,22 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     if(info.verbose) puts(command);
     int rc = system(command);
     
+    if(rc != 0) {
+        command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", "gcc", output_file_name, input_file_name, info.clang_option, input_file_name);
+        
+        if(info.verbose) puts(command);
+        int rc = system(command);
+        
+        if(rc != 0) {
+            printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
+            return false;
+        }
+    }
+    
     var command2 = xsprintf("grep error\\: %s.out", input_file_name);
     
     if(info.verbose) puts(command2);
     (void)system(command2);
-    
-    if(rc != 0) {
-        printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
-        return false;
-    }
     
     if(!output_object_file) {
         object_files.insert(0, string(output_file_name));
@@ -391,11 +405,17 @@ static bool linker(sInfo* info, list<string>* object_files)
             command.append_str(" -lssl `mysql_config --cflags --libs`");
         }
     }
+        string str = s"gcc" + command.to_string().substring(strlen(CC), -1);
+        
     
     if(info.verbose) puts(command.to_string());
     system(command.to_string()).if {
-        printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
-        return false;
+        string str = s"gcc" + command.to_string().substring(strlen(CC), -1);
+        
+        system(str).if { 
+            printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
+            return false;
+        }
     }
     
     return true;
