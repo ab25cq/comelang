@@ -708,7 +708,7 @@ class sFunCallNode extends sNodeBase
             || fun_name === "__dsb"
             || fun_name === "__isb"
             || fun_name === "__dmb"
-            || memcmp(fun_name, "__builtin_arm_", strlen("__builtin_arm_")) == 0
+            || (strlen(fun_name) == strlen("__builtin_arm_") && memcmp(fun_name, "__builtin_arm_", strlen("__builtin_arm_")) == 0)
             || fun_name === "__c11_atomic_thread_fence"
             || fun_name === "__c11_atomic_signal_fence"
             || fun_name === "__c11_atomic_store"

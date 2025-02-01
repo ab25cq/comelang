@@ -83,6 +83,9 @@ void skip_paren(sInfo* info)
 
 bool parsecmp(char* str, sInfo* info=info) 
 {
+    if(strlen(info.p) < strlen(str)) {
+        return false;
+    }
     char c = *(info->p+strlen(str));
     return strmemcmp(info.p, str) && (c == ';' || c == ' ' || c == '\t' || c == '\n' || c == '\n' || c == '(');
 }

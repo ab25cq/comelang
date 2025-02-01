@@ -103,6 +103,95 @@ comelang: 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 0
 24module.c.o: 24module.c
 	comelang -S -C -o 24module.c.o -c 24module.c $(CFLAGS) 
 
+valgrind:  01main.valgrind  02transpile.valgrind  03output_code.valgrind  04heap.valgrind  05pre_op.valgrind  05call.valgrind  05function.valgrind  05number.valgrind  05type.valgrind  06str.valgrind  07var.valgrind  07gvar.valgrind  08if.valgrind  09while.valgrind  10do_while.valgrind  11for.valgrind  12switch.valgrind  13op.valgrind  14struct.valgrind  15union.valgrind  16enum.valgrind  17typedef.valgrind  18field.valgrind  19eq.valgrind  20method.valgrind  21obj.valgrind  22impl.valgrind  23interface.valgrind  24module.valgrind
+
+01main.valgrind: 01main.c
+	valgrind comelang -S -C -o 01main.c.o -c 01main.c $(CFLAGS) 2> 01main.valgrind
+
+02transpile.valgrind: 02transpile.c
+	valgrind comelang -S -C -o 02transpile.c.o -c 02transpile.c $(CFLAGS) 2> 02transpile.valgrind
+
+03output_code.valgrind: 03output_code.c
+	valgrind comelang -S -C -o 03output_code.c.o -c 03output_code.c $(CFLAGS) 2> 03output_code.valgrind
+
+04heap.valgrind: 04heap.c
+	valgrind comelang -S -C -o 04heap.c.o -c 04heap.c $(CFLAGS) 2> 04heap.valgrind
+
+05pre_op.valgrind: 05pre_op.c
+	valgrind comelang -S -C  -o 05pre_op.c.o -c 05pre_op.c $(CFLAGS) 2> 05pre_op.valgrind
+
+05call.valgrind: 05call.c
+	valgrind comelang -S -C -o 05call.c.o -c 05call.c $(CFLAGS) 2> 05call.valgrind
+
+05function.valgrind: 05function.c
+	valgrind comelang -S -C -o 05function.c.o -c 05function.c $(CFLAGS) 2> 05function.valgrind
+
+05number.valgrind: 05number.c
+	valgrind comelang -S -C -o 05number.c.o -c 05number.c $(CFLAGS) 2> 05number.valgrind
+
+05type.valgrind: 05type.c
+	valgrind comelang -S -C -o 05type.c.o -c 05type.c $(CFLAGS) 2> 05type.valgrind
+
+06str.valgrind: 06str.c
+	valgrind comelang -S -C -o 06str.c.o -c 06str.c $(CFLAGS) 2> 06str.valgrind
+
+07var.valgrind: 07var.c
+	valgrind comelang -S -C -o 07var.c.o -c 07var.c $(CFLAGS) 2> 07var.valgrind
+
+07gvar.valgrind: 07gvar.c
+	valgrind comelang -S -C -o 07gvar.c.o -c 07gvar.c $(CFLAGS) 2> 07gvar.valgrind
+
+08if.valgrind: 08if.c
+	valgrind comelang -S -C -o 08if.c.o -c 08if.c $(CFLAGS) 2> 08if.valgrind
+
+09while.valgrind: 09while.c
+	valgrind comelang -S -C -o 09while.c.o -c 09while.c $(CFLAGS) 2> 09while.valgrind
+
+10do_while.valgrind: 10do_while.c
+	valgrind comelang -S -C -o 10do_while.c.o -c 10do_while.c $(CFLAGS) 2> 10do_while.valgrind
+
+11for.valgrind: 11for.c
+	valgrind comelang -S -C -o 11for.c.o -c 11for.c $(CFLAGS) 2> 11for.valgrind
+
+12switch.valgrind: 12switch.c
+	valgrind comelang -S -C -o 12switch.c.o -c 12switch.c $(CFLAGS) 2> 12switch.valgrind
+
+13op.valgrind: 13op.c
+	valgrind comelang -S -C -o 13op.c.o -c 13op.c $(CFLAGS) 2> 13op.valgrind
+
+14struct.valgrind: 14struct.c
+	valgrind comelang -S -C -o 14struct.c.o -c 14struct.c $(CFLAGS) 2> 14struct.valgrind
+
+15union.valgrind: 15union.c
+	valgrind comelang -S -C -o 15union.c.o -c 15union.c $(CFLAGS) 2> 15union.valgrind
+
+16enum.valgrind: 16enum.c
+	valgrind comelang -S -C -o 16enum.c.o -c 16enum.c $(CFLAGS) 2> 16enum.valgrind
+
+17typedef.valgrind: 17typedef.c
+	valgrind comelang -S -C -o 17typedef.c.o -c 17typedef.c $(CLAGS) 2> 17typedef.valgrind
+
+18field.valgrind: 18field.c
+	valgrind comelang -S -C -o 18field.c.o -c 18field.c $(CFLAGS) 2> 18field.valgrind
+
+19eq.valgrind: 19eq.c
+	valgrind comelang -S -C -o 19eq.c.o -c 19eq.c $(CFLAGS) 2> 19eq.valgrind
+
+20method.valgrind: 20method.c
+	valgrind comelang -S -C -o 20method.c.o -c 20method.c $(CFLAGS) 2> 20method.valgrind
+
+21obj.valgrind: 21obj.c
+	valgrind comelang -S -C -o 21obj.c.o -c 21obj.c $(CFLAGS) 2> 21obj.valgrind
+
+22impl.valgrind: 22impl.c
+	valgrind comelang -S -C -o 22impl.c.o -c 22impl.c $(CFLAGS) 2> 22impl.valgrind
+
+23interface.valgrind: 23interface.c
+	valgrind comelang -S -C -o 23interface.c.o -c 23interface.c $(CFLAGS) 2> 23interface.valgrind
+
+24module.valgrind: 24module.c
+	comelang -S -C -o 24module.c.o -c 24module.c $(CFLAGS) 2> 24module.valgrind
+
 comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05pre_op.c.o.tmp 05call.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp 
 	clang -o comelang-sh  01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05call.c.o.tmp 05pre_op.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp 
 	cp -p comelang-sh comelang
@@ -212,7 +301,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang libcomelang.a libcomelang-str.a libcomelang-net.a libcomelang-gc.a libcomelang-str-gc.a libcomelang-net-gc.a libcomelang-pthread.a libcomelang-pthread-gc.a *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c
+	rm -fR *.log *.c.o comelang libcomelang.a libcomelang-str.a libcomelang-net.a libcomelang-gc.a libcomelang-str-gc.a libcomelang-net-gc.a libcomelang-pthread.a libcomelang-pthread-gc.a *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 

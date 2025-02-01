@@ -201,7 +201,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
             
             char* p = info.p;
             int sline = info.sline;
-            char* sname = info.sname;
+            string sname = string(info.sname);
             
             if(*info->p == '{') {
                 info->sline_top = sline;
