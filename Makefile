@@ -193,95 +193,95 @@ valgrind:  01main.valgrind  02transpile.valgrind  03output_code.valgrind  04heap
 	comelang -S -C -o 24module.c.o -c 24module.c $(CFLAGS) 2> 24module.valgrind
 
 comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05pre_op.c.o.tmp 05call.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp 
-	clang -o comelang-sh  01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05call.c.o.tmp 05pre_op.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp 
+	$(CC) -o comelang-sh  01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o.tmp 05call.c.o.tmp 05pre_op.c.o.tmp 05function.c.o.tmp 05number.c.o.tmp 05type.c.o.tmp 06str.c.o.tmp 07var.c.o.tmp 07gvar.c.o.tmp 08if.c.o.tmp 09while.c.o.tmp 10do_while.c.o.tmp 11for.c.o.tmp 12switch.c.o.tmp 13op.c.o.tmp 14struct.c.o.tmp 15union.c.o.tmp 16enum.c.o.tmp 17typedef.c.o.tmp 18field.c.o.tmp 19eq.c.o.tmp 20method.c.o.tmp 21obj.c.o.tmp 22impl.c.o.tmp 23interface.c.o.tmp 24module.c.o.tmp 
 	cp -p comelang-sh comelang
 
 01main.c.o.tmp: 01main.c.c
-	clang -o 01main.c.o.tmp -c 01main.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 01main.c.o.tmp -c 01main.c.c $(CFLAGS) 2> /dev/null
 
 02transpile.c.o.tmp: 02transpile.c.c
-	clang -o 02transpile.c.o.tmp -c 02transpile.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 02transpile.c.o.tmp -c 02transpile.c.c $(CFLAGS) 2> /dev/null
 
 03output_code.c.o.tmp: 03output_code.c.c
-	clang -o 03output_code.c.o.tmp -c 03output_code.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 03output_code.c.o.tmp -c 03output_code.c.c $(CFLAGS) 2> /dev/null
 
 04heap.c.o.tmp: 04heap.c.c
-	clang -o 04heap.c.o.tmp -c 04heap.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 04heap.c.o.tmp -c 04heap.c.c $(CFLAGS) 2> /dev/null
 
 05pre_op.c.o.tmp: 05pre_op.c.c
-	clang -o 05pre_op.c.o.tmp -c 05pre_op.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 05pre_op.c.o.tmp -c 05pre_op.c.c $(CFLAGS) 2> /dev/null
 
 05call.c.o.tmp: 05call.c.c
-	clang -o 05call.c.o.tmp -c 05call.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 05call.c.o.tmp -c 05call.c.c $(CFLAGS) 2> /dev/null
 
 05function.c.o.tmp: 05function.c.c
-	clang -o 05function.c.o.tmp -c 05function.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 05function.c.o.tmp -c 05function.c.c $(CFLAGS) 2> /dev/null
 
 05number.c.o.tmp: 05number.c.c
-	clang -o 05number.c.o.tmp -c 05number.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 05number.c.o.tmp -c 05number.c.c $(CFLAGS) 2> /dev/null
 
 05type.c.o.tmp: 05type.c.c
-	clang -o 05type.c.o.tmp -c 05type.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 05type.c.o.tmp -c 05type.c.c $(CFLAGS) 2> /dev/null
 
 06str.c.o.tmp: 06str.c.c
-	clang  -o 06str.c.o.tmp -c 06str.c.c $(CFLAGS) 2> /dev/null
+	$(CC)  -o 06str.c.o.tmp -c 06str.c.c $(CFLAGS) 2> /dev/null
 
 07var.c.o.tmp: 07var.c.c
-	clang -o 07var.c.o.tmp -c 07var.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 07var.c.o.tmp -c 07var.c.c $(CFLAGS) 2> /dev/null
 
 07gvar.c.o.tmp: 07gvar.c.c
-	clang -o 07gvar.c.o.tmp -c 07gvar.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 07gvar.c.o.tmp -c 07gvar.c.c $(CFLAGS) 2> /dev/null
 
 08if.c.o.tmp: 08if.c.c
-	clang -o 08if.c.o.tmp -c 08if.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 08if.c.o.tmp -c 08if.c.c $(CFLAGS) 2> /dev/null
 
 09while.c.o.tmp: 09while.c.c
-	clang -o 09while.c.o.tmp -c 09while.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 09while.c.o.tmp -c 09while.c.c $(CFLAGS) 2> /dev/null
 
 10do_while.c.o.tmp: 10do_while.c.c
-	clang -o 10do_while.c.o.tmp -c 10do_while.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 10do_while.c.o.tmp -c 10do_while.c.c $(CFLAGS) 2> /dev/null
 
 11for.c.o.tmp: 11for.c.c
-	clang -o 11for.c.o.tmp -c 11for.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 11for.c.o.tmp -c 11for.c.c $(CFLAGS) 2> /dev/null
 
 12switch.c.o.tmp: 12switch.c.c
-	clang -o 12switch.c.o.tmp -c 12switch.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 12switch.c.o.tmp -c 12switch.c.c $(CFLAGS) 2> /dev/null
 
 13op.c.o.tmp: 13op.c.c
-	clang -o 13op.c.o.tmp -c 13op.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 13op.c.o.tmp -c 13op.c.c $(CFLAGS) 2> /dev/null
 
 14struct.c.o.tmp: 14struct.c.c
-	clang -o 14struct.c.o.tmp -c 14struct.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 14struct.c.o.tmp -c 14struct.c.c $(CFLAGS) 2> /dev/null
 
 15union.c.o.tmp: 15union.c.c
-	clang -o 15union.c.o.tmp -c 15union.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 15union.c.o.tmp -c 15union.c.c $(CFLAGS) 2> /dev/null
 
 16enum.c.o.tmp: 16enum.c.c
-	clang -o 16enum.c.o.tmp -c 16enum.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 16enum.c.o.tmp -c 16enum.c.c $(CFLAGS) 2> /dev/null
 
 17typedef.c.o.tmp: 17typedef.c.c
-	clang -o 17typedef.c.o.tmp -c 17typedef.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 17typedef.c.o.tmp -c 17typedef.c.c $(CFLAGS) 2> /dev/null
 
 18field.c.o.tmp: 18field.c.c
-	clang -o 18field.c.o.tmp -c 18field.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 18field.c.o.tmp -c 18field.c.c $(CFLAGS) 2> /dev/null
 
 19eq.c.o.tmp: 19eq.c.c
-	clang -o 19eq.c.o.tmp -c 19eq.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 19eq.c.o.tmp -c 19eq.c.c $(CFLAGS) 2> /dev/null
 
 20method.c.o.tmp: 20method.c.c
-	clang -o 20method.c.o.tmp -c 20method.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 20method.c.o.tmp -c 20method.c.c $(CFLAGS) 2> /dev/null
 
 21obj.c.o.tmp: 21obj.c.c
-	clang -o 21obj.c.o.tmp -c 21obj.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 21obj.c.o.tmp -c 21obj.c.c $(CFLAGS) 2> /dev/null
 
 22impl.c.o.tmp: 22impl.c.c
-	clang -o 22impl.c.o.tmp -c 22impl.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 22impl.c.o.tmp -c 22impl.c.c $(CFLAGS) 2> /dev/null
 
 23interface.c.o.tmp: 23interface.c.c
-	clang -o 23interface.c.o.tmp -c 23interface.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 23interface.c.o.tmp -c 23interface.c.c $(CFLAGS) 2> /dev/null
 
 24module.c.o.tmp: 24module.c.c
-	clang -o 24module.c.o.tmp -c 24module.c.c $(CFLAGS) 2> /dev/null
+	$(CC) -o 24module.c.o.tmp -c 24module.c.c $(CFLAGS) 2> /dev/null
 
 #########################################
 # install
