@@ -736,8 +736,11 @@ uniq void* come_get_finalizer(void* mem)
         sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+            /*
             printf("invalid heap object(%p)(3)\n", it);
             exit(2);
+            */
         }
         
         return it->finalizer_fun;
@@ -746,8 +749,7 @@ uniq void* come_get_finalizer(void* mem)
         sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            printf("invalid heap object(%p)(4)\n", it);
-            exit(2);
+            return NULL;
         }
         
         return it->finalizer_fun;
@@ -760,8 +762,7 @@ uniq void* come_get_cloner(void* mem)
         sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            printf("invalid heap object(%p)(5)\n", it);
-            exit(2);
+            return NULL;
         }
         
         return it->cloner_fun;
@@ -770,8 +771,7 @@ uniq void* come_get_cloner(void* mem)
         sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            printf("invalid heap object(%p)(6)\n", it);
-            exit(2);
+            return NULL;
         }
         
         return it->cloner_fun;
@@ -789,7 +789,7 @@ uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0,
     size_t* size2 = (size_t*)(mem + sizeof(size_t));
     
     *size2 = size*count + sizeof(size_t) + sizeof(size_t);
-
+    
     return mem + sizeof(size_t) + sizeof(size_t);
 }
 
@@ -927,8 +927,8 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
     }
     
     if(call_finalizer_only) {
-        /*
         void* fun2 = come_get_finalizer(mem);
+        /*
         if(fun2) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
@@ -958,8 +958,8 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
         size_t count = *ref_count;
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
-                /*
                 void* fun2 = come_get_finalizer(mem);
+                /*
                 if(fun2) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
@@ -998,8 +998,8 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
     }
     
     if(call_finalizer_only) {
-        /*
         void* fun2 = come_get_finalizer(mem);
+        /*
         if(fun2) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
@@ -1008,7 +1008,8 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
             void (*finalizer)(void*) = fun2;
             finalizer(mem);
         }
-        else */
+        else 
+        */
         if(fun) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
@@ -1028,8 +1029,8 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
         size_t count = *ref_count;
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
-                /*
                 void* fun2 = come_get_finalizer(mem);
+                /*
                 if(fun2) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
@@ -1069,8 +1070,8 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
     
     if(call_finalizer_only) {
         if(fun) {
-            /*
             void* fun2 = come_get_finalizer(mem);
+            /*
             if(fun2) {
                 void (*finalizer)(void*) = fun2;
                 finalizer(mem);
@@ -1092,8 +1093,8 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
         size_t count = *ref_count;
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
-                /*
                 void* fun2 = come_get_finalizer(mem);
+                /*
                 if(fun2) {
                     void (*finalizer)(void*) = fun2;
                     finalizer(mem);
@@ -1117,20 +1118,18 @@ uniq void* come_call_cloner(void* fun, void* mem)
         return NULL;
     }
     
-//    void* fun2 = come_get_cloner(mem);
+    void* fun2 = come_get_cloner(mem);
     
-/*
     if(fun2) {
         void* (*cloner)(void*) = fun2;
         
         return cloner(mem);
     }
     else {
-*/
         void* (*cloner)(void*) = fun;
         
         return cloner(mem);
-//    }
+    }
 }
 
 uniq string __builtin_string(char* str)
