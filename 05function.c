@@ -1525,8 +1525,8 @@ int transpile(sInfo* info) version 5
     {
         var name = string("come_calloc");
         var result_type = new sType("void*");
-        var param_types = [new sType("int"), new sType("int"), new sType("char*"), new sType("int"), new sType("char*")];
-        var param_names = [string("count"), string("size"), string("sname"), string("sline"), string("class_name")];
+        var param_types = [new sType("int"), new sType("int"), new sType("char*"), new sType("int"), new sType("char*"), new sType("void*"), new sType("void*")];
+        var param_names = [string("count"), string("size"), string("sname"), string("sline"), string("class_name"), string("finalizer_fun"), string("cloner_fun")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(null);
@@ -1536,7 +1536,7 @@ int transpile(sInfo* info) version 5
         var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
-            , string("void* come_calloc(int count, int size, char* sname, int sline, char* class_name)")
+            , string("void* come_calloc(int count, int size, char* sname, int sline, char* class_name, void* finalizer_fun, void* cloner_fun)")
             , string("")
             , info, false@inline_, false@uniq_);
         
@@ -3034,7 +3034,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun2 = info.funcs[string(fun_name)]??;
+        var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
             var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3183,7 +3183,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun2 = info.funcs[string(fun_name)]??;
+        var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
             var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3351,7 +3351,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun2 = info.funcs[string(fun_name)]??;
+        var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
             var fun = new sFun(name, result_type, param_types, param_names
                             , param_default_parametors
@@ -3516,7 +3516,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun2 = info.funcs[string(fun_name)]??;
+        var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
             var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3666,7 +3666,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun2 = info.funcs[string(fun_name)]??;
+        var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
             var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -3857,7 +3857,8 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun2 = info.funcs[string(fun_name)]??;
+        var fun2 = info.funcs[string(name)]??;
+        
         if(fun2 == null || fun2.mExternal) {
             var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
@@ -4028,7 +4029,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         result_type->mUniq = false;
         result_type->mInline = false;
         
-        var fun2 = info.funcs[string(fun_name)]??;
+        var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
             var fun = new sFun(name, result_type, param_types, param_names
                             , param_default_parametors

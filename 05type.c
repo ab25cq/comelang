@@ -516,7 +516,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             if(pointer_massive) {
                 if(print_err_msg) {
                     err_msg(info, "poinetr num err");
-                    printf("left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                    puts(msg);
+                    printf("(3)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
                     printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                     exit(2);
                 }
@@ -534,7 +535,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             if(pointer_massive) {
                 if(print_err_msg) {
                     err_msg(info, "poinetr num err");
-                    printf("left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                    puts(msg);
+                    printf("(2)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
                     printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                     exit(2);
                 }
@@ -552,7 +554,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         }
         else if(left_type->mClass->mName === right_type2->mClass->mName && (left_type->mPointerNum != right_type2->mPointerNum || left_type->mHeap != right_type2->mHeap)) {
             err_msg(info, "poinetr num err");
-            printf("left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+            puts(msg);
+            printf("(1)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
             printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
             exit(2);
         }
@@ -565,7 +568,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 {
                     if(print_err_msg) {
                         err_msg(info, "generics type parametor number error");
-                        printf("left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                        puts(msg);
+                        printf("(4)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
                         printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                         exit(2);
                     }
@@ -585,7 +589,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         if(pointer_massive) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
-                printf("left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                puts(msg);
+                printf("(5)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
                 printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                 exit(2);
             }
@@ -603,7 +608,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         if(pointer_massive) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
-                printf("left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                puts(msg);
+                printf("(6)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
                 printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                 exit(2);
             }
@@ -883,6 +889,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         if(left_type->mGenericsTypes.length() > 0) {
             if(left_type->mGenericsTypes.length() != right_type2->mGenericsTypes.length()) {
                 err_msg(info, "generics type number error");
+                puts(msg);
                 printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);

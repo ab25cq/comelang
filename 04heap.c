@@ -774,7 +774,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
         result_type = cloner->mResultType;
         result_type = solve_generics(result_type, type, info);
         
-        result = xsprintf("%s(%s)", fun_name2, c_value);
+        result = xsprintf("come_call_cloner(%s, %s)", fun_name2, c_value);
         
         if(gComeDebug) {
             result = append_stackframe(result, result_type, info);
@@ -784,7 +784,10 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
         result_type = clone type;
         type2->mHeap = true;
         string type_name = make_type_name_string(type2);
-        result = xsprintf("(%s)come_memdup(%s, \"%s\", %d, \"%s\")", type_name, c_value, info.sname, info.sline, type_name);
+        
+        string finalizer_name = create_method_name(type2, false@no_poiner_name, "finalize", info);
+        string cloner_name = create_method_name(type2, false@no_poiner_name, "clone", info);
+        result = xsprintf("(%s)come_memdup(%s, \"%s\", %d, \"%s\", \"%s\", \"%s\")", type_name, c_value, info.sname, info.sline, type_name, finalizer_name, cloner_name);
         if(gComeDebug) {
             result = append_stackframe(result, result_type, info);
         }

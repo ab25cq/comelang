@@ -1,8 +1,10 @@
-#include <stdio.h>
+#include <comelang.h>
 
 int main(int argc, char** argv)
 {
-    puts("HELLO WORLD");
+    var li = new list<char>();
+    
+    puts(dynamic_typeof(li));
     
     return 0;
 }

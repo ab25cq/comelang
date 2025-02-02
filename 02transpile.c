@@ -316,7 +316,7 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
         int rc = system(command);
         
         if(rc != 0) {
-            printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
+            printf("%s %d: %s is faild\n", info->sname, info->sline, CC);
             return false;
         }
     }
