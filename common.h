@@ -85,6 +85,9 @@ struct sType
     tuple1<sType*%>*% mNoSolvedGenericsType;
     tuple1<sType*%>*% mOriginalLoadVarType;
     tuple1<sType*%>*% mRefferenceOriginalType;
+    sType*% mAnyOriginalType;
+    
+    bool mAnyClass;
     
     string mInterfaceName;
     

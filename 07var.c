@@ -764,6 +764,18 @@ sNode*% store_var(string name, list<string>*% multiple_assign, list<tup: sType*%
     return new sStoreNode(name, multiple_assign, multiple_declare, type, alloc, right_value, info) implements sNode;
 }
 
+CVALUE*% get_value_from_object(CVALUE*% come_value, sInfo* info=info)
+{
+    CVALUE*% result = clone come_value;
+    
+    if(come_value.type->mAnyOriginalType) {
+        result.type = come_value.type->mAnyOriginalType;
+        result.c_value = xsprintf("((%s)%s)", make_type_name_string(result.type), come_value.c_value);
+    }
+    
+    return result;
+}
+
 class sLoadNode extends sNodeBase
 {
     new(string name, sInfo* info)
@@ -805,6 +817,8 @@ class sLoadNode extends sNodeBase
                     come_value.type = clone type;
                     come_value.var = null;
                     
+                    come_value = get_value_from_object(come_value);
+                    
                     add_come_last_code(info, "%s", come_value.c_value);
                     
                     info.stack.push_back(come_value);
@@ -844,6 +858,8 @@ class sLoadNode extends sNodeBase
         come_value.c_value = xsprintf("%s", var_->mCValueName);
         come_value.type = clone var_->mType;
         come_value.var = var_;
+        
+        come_value = get_value_from_object(come_value);
         
         info.stack.push_back(come_value);
         

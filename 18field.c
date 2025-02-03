@@ -157,6 +157,9 @@ class sStoreFieldNode extends sNodeBase
         if(left_type2.mNoSolvedGenericsType && left_type2.mNoSolvedGenericsType.v1) {
             left_type2 = left_type2.mNoSolvedGenericsType.v1;
         }
+        if(left_type2.mAnyOriginalType) {
+            left_type2 = left_type2.mAnyOriginalType;
+        }
         if(left_type2.mClass.mName === "tuple1" || left_type2.mClass.mName === "tuple2" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple4" || left_type2.mClass.mName === "tuple5")
         {
             for(int i=0; i<left_type2.mGenericsTypes.length(); i++) {
@@ -600,6 +603,9 @@ class sLoadFieldNode extends sNodeBase
         
         if(left_type2.mNoSolvedGenericsType && left_type2.mNoSolvedGenericsType.v1) {
             left_type2 = left_type2.mNoSolvedGenericsType.v1;
+        }
+        if(left_type2.mAnyOriginalType) {
+            left_type2 = left_type2.mAnyOriginalType;
         }
         if(left_type2.mClass.mName === "tuple1" || left_type2.mClass.mName === "tuple2" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple4" || left_type2.mClass.mName === "tuple5")
         {

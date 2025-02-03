@@ -650,7 +650,50 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             
             /// free memory ///
             if(!type->mAllocaValue) {
-                if(klass->mProtocol && type->mPointerNum == 1) {
+                if(type->mAnyOriginalType) {
+                    if(klass->mProtocol && type->mPointerNum == 1) {
+                        string type_name = make_type_name_string(type);
+                        if(c_value) {
+                            if(no_decrement) {
+                                if(comma) {
+                                    add_come_code(info, s"come_call_finalizer2((void*)0, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize :(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj :(void*)0, %d, %d, %d, %d, %s),\n", type->mAllocaValue, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0": "__result_obj__");
+                                }
+                                else {
+                                    add_come_code(info, s"come_call_finalizer2((void*)0, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize:(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj:(void*)0, %d, %d, %d, %d, %s);\n", type->mAllocaValue, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__");
+                                }
+                            }
+                            else {
+                                if(comma) {
+                                    add_come_code(info, s"come_call_finalizer2((void*)0, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize:(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj:(void*)0, %d, %d, %d, %d, (void*)0),\n", type->mAllocaValue, no_decrement, no_free, force_delete_);
+                                }
+                                else {
+                                    add_come_code(info, s"come_call_finalizer2((void*)0, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize:(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj:(void*)0, %d, %d, %d, %d, (void*)0);\n", type->mAllocaValue, no_decrement, no_free, force_delete_);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if(c_value) {
+                            if(no_decrement) {
+                                if(comma) {
+                                    add_come_code(info, xsprintf("come_call_finalizer3(%s,(void*)0, %d, %d, %d, %d, %s),\n", c_value, type->mAllocaValue, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__"));
+                                }
+                                else {
+                                    add_come_code(info, xsprintf("come_call_finalizer3(%s,(void*)0, %d, %d, %d, %d, %s);\n", c_value, type->mAllocaValue, no_decrement, no_free, force_delete_, info.come_fun.mNoResultType ? "(void*)0":"__result_obj__"));
+                                }
+                            }
+                            else {
+                                if(comma) {
+                                    add_come_code(info, xsprintf("come_call_finalizer3(%s, (void*)0, %d, %d, %d, %d, (void*)0),\n", c_value, type->mAllocaValue, no_decrement, no_free, force_delete_));
+                                }
+                                else {
+                                    add_come_code(info, xsprintf("come_call_finalizer3(%s, (void*)0, %d, %d, %d, %d, (void*)0);\n", c_value, type->mAllocaValue, no_decrement, no_free, force_delete_));
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(klass->mProtocol && type->mPointerNum == 1) {
                     if(c_value) {
                         string type_name = make_type_name_string(type);
                         if(no_decrement) {

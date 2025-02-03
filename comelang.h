@@ -97,7 +97,7 @@ using comelang;
 #define COME_STACKFRAME_MAX 16
 #define COME_STACKFRAME_MAX_GLOBAL 128
 
-typedef void* any;
+typedef void*% any;
 typedef char*% string;
 
 uniq void* gComeFunResultObject = NULL;
@@ -109,7 +109,7 @@ uniq int gNumComeStackFrame = 0;
 
 uniq char* gComeStackFrameBuffer = NULL;
 
-uniq any wildcard;
+uniq void* wildcard;
 
 //////////////////////////////
 /// exception
@@ -345,7 +345,7 @@ struct sMemHeader
 
 uniq sMemHeader* gAllocMem;
 
-uniq any gComeResultObject = NULL;
+uniq void* gComeResultObject = NULL;
 bool gComeGCLib;
 
 uniq bool gComeMallocLib = false;
@@ -928,7 +928,6 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
     
     if(call_finalizer_only) {
         void* fun2 = come_get_finalizer(mem);
-        /*
         if(fun2) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
@@ -937,9 +936,7 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
             void (*finalizer)(void*) = fun2;
             finalizer(mem);
         }
-        else 
-        */
-        if(fun) {
+        else if(fun) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
                 finalizer(protocol_obj);
@@ -959,7 +956,6 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
                 void* fun2 = come_get_finalizer(mem);
-                /*
                 if(fun2) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
@@ -969,7 +965,6 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
                     finalizer(mem);
                 }
                 else {
-                */
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
@@ -979,7 +974,7 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
-                //}
+                }
                 come_free_object(mem);
             }
         }
@@ -999,7 +994,6 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
     
     if(call_finalizer_only) {
         void* fun2 = come_get_finalizer(mem);
-        /*
         if(fun2) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
@@ -1008,9 +1002,7 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
             void (*finalizer)(void*) = fun2;
             finalizer(mem);
         }
-        else 
-        */
-        if(fun) {
+        else if(fun) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
                 finalizer(protocol_obj);
@@ -1030,7 +1022,6 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
                 void* fun2 = come_get_finalizer(mem);
-                /*
                 if(fun2) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
@@ -1040,7 +1031,6 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
                     finalizer(mem);
                 }
                 else {
-                */
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
@@ -1050,7 +1040,7 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
-                //}
+                }
                 come_free_object(mem);
             }
         }
@@ -1071,16 +1061,14 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
     if(call_finalizer_only) {
         if(fun) {
             void* fun2 = come_get_finalizer(mem);
-            /*
             if(fun2) {
                 void (*finalizer)(void*) = fun2;
                 finalizer(mem);
             }
             else {
-            */
                 void (*finalizer)(void*) = fun;
                 finalizer(mem);
-            //}
+            }
         }
     }
     else {
@@ -1094,19 +1082,17 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
                 void* fun2 = come_get_finalizer(mem);
-                /*
                 if(fun2) {
                     void (*finalizer)(void*) = fun2;
                     finalizer(mem);
                 }
                 else {
-                */
                     if(fun) {
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
-                    come_free_object(mem);
-                //}
+                }
+                come_free_object(mem);
             }
         }
     }

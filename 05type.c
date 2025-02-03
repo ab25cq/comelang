@@ -1753,6 +1753,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool refference = false;
     bool no_refference = false;
     bool channel = false;
+    bool any_class = false;
     while(1) {
         if(*info->p == '*') {
             info->p++;
@@ -1777,6 +1778,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             skip_pointer_attribute();
             
             refference = true;
+        }
+        else if(*info->p == '^') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            skip_pointer_attribute();
+            
+            any_class = true;
         }
         else if(*info->p == '%') {
             info->p++;
@@ -2090,6 +2099,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRefference = result_type->mRefference || refference;
         result_type->mNoRefference = result_type->mNoRefference || no_refference;
         result_type->mChannel = result_type->mChannel || channel;
+        result_type->mAnyClass = result_type->mAnyClass || any_class;
         
         var_name = parse_word();
         
@@ -2164,6 +2174,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRefference = result_type->mRefference || refference;
         result_type->mNoRefference = result_type->mNoRefference || no_refference;
         result_type->mChannel = result_type->mChannel || channel;
+        result_type->mAnyClass = result_type->mAnyClass || any_class;
         
         if(xisalnum(*info.p) || *info->p == '_') {
             var_name = parse_word();
@@ -2318,6 +2329,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRefference = type->mRefference || refference;
             type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
+            type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
         }
         else if(info.generics_type_names.contained(type_name)) {
@@ -2348,6 +2360,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRefference = type->mRefference || refference;
             type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
+            type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
         }
         else if(info.method_generics_type_names.contained(type_name)) {
@@ -2378,6 +2391,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRefference = type->mRefference || refference;
             type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
+            type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
         }
         else if(*info->p == '<') {
@@ -2449,6 +2463,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRefference = type->mRefference || refference;
             type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
+            type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
             
             type_name = type->mClass->mName;
@@ -2492,6 +2507,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRefference = type->mRefference || refference;
             type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
+            type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
         }
         
@@ -2612,6 +2628,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.v1.mRefference = true;
                 }
             }
+            else if(*info->p == '^') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                type->mAnyClass = true;
+                if(type->mNoSolvedGenericsType.v1) {
+                    type->mNoSolvedGenericsType.v1.mAnyClass = true;
+                }
+            }
             else if(gComePthread && *info->p == '@') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2697,6 +2722,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mRefference = true;
                     if(type->mNoSolvedGenericsType.v1) {
                         type->mNoSolvedGenericsType.v1.mRefference = true;
+                    }
+                }
+                else if(*info->p == '^') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    
+                    type->mAnyClass = true;
+                    if(type->mNoSolvedGenericsType.v1) {
+                        type->mNoSolvedGenericsType.v1.mAnyClass = true;
                     }
                 }
                 else if(gComePthread && *info->p == '@') {
@@ -2827,6 +2861,15 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mChannelType = new tuple1<sType*%>;
         type->mChannelType.v1 = type_before;
         type->mChannel = true;
+    }
+    else if(type->mAnyClass) {
+        sType*% type_before = clone type;
+        type_before.mHeap = true;
+        type_before.mPointerNum = 1;
+        type = new sType("void*");
+        type->mHeap = true;
+        type->mAnyOriginalType = type_before;
+        type->mAnyClass = true;
     }
     else if(type->mException) {
         sType*% type2 = new sType("tuple2");

@@ -71,20 +71,23 @@ class sNewNode extends sNodeBase
             buf.append_str("(");
             
             string obj;
-            if(type->mRefferenceOriginalType && type->mRefferenceOriginalType.v1) {
-                sType*% refference_type = type->mRefferenceOriginalType.v1;
+            if(type2->mAnyClass && type2->mAnyOriginalType) {
+                sType*% any_type = clone type2->mAnyOriginalType;
                 
-                string finalizer_name = create_method_name(refference_type, false@no_poiner_name, "finalize", info);
-                string cloner_name = create_method_name(refference_type, false@no_poiner_name, "clone", info);
+                string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+                string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
                 
                 if(info.funcs[finalizer_name]?? == null) {
-                    (void*)create_finalizer_automatically(refference_type, "finalize", info);
+                    (void*)create_finalizer_automatically(any_type, "finalize", info);
                 }
                 if(info.funcs[cloner_name]?? == null) {
-                    (void*)create_cloner_automatically(refference_type, "clone", info);
+                    (void*)create_cloner_automatically(any_type, "clone", info);
                 }
                 
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
+                any_type->mPointerNum--;
+                string any_type_name = make_type_name_string(any_type);
+                
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, any_type_name, type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
             }
             else {
                 obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
@@ -175,20 +178,26 @@ class sNewNode extends sNodeBase
             string type_name3 = make_type_name_string(type3);
             
             string obj;
-            if(type->mRefferenceOriginalType && type->mRefferenceOriginalType.v1) {
-                sType*% refference_type = type->mRefferenceOriginalType.v1;
+            if(type2->mAnyClass && type2->mAnyOriginalType) {
+                sType*% any_type = clone type2->mAnyOriginalType;
                 
-                string finalizer_name = create_method_name(refference_type, false@no_poiner_name, "finalize", info);
-                string cloner_name = create_method_name(refference_type, false@no_poiner_name, "clone", info);
+                string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+                string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
                 
                 if(info.funcs[finalizer_name]?? == null) {
-                    (void*)create_finalizer_automatically(refference_type, "finalize", info);
+                    (void*)create_finalizer_automatically(any_type, "finalize", info);
                 }
                 if(info.funcs[cloner_name]?? == null) {
-                    (void*)create_cloner_automatically(refference_type, "clone", info);
+                    (void*)create_cloner_automatically(any_type, "clone", info);
                 }
                 
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
+                any_type->mPointerNum--;
+            
+                string any_type_name = make_type_name_string(any_type);
+                
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
+                
+                type2->mPointerNum--;
             }
             else {
                 come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
