@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 12.3.2
+version 13.0.0
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,8 @@ sh all_build.sh
 # Histories
 
 ```
+13.0.0 no generating code collection finally comes. Some bugs may remained. It's usefull for embbeded system because it doesn't take few code size.
+
 12.3.2 valgrind check, no invalid memory access.
 12.3.1 no generating code collection 
 12.3.0 no generating code collection 
@@ -3621,33 +3623,36 @@ struct sData
 {
     int a;
     int b;
+    string c;
 };
 
 struct sData2
 {
-    int a;
-    int b;
-    int c;
+    string a;
 };
+
+sData^ fun()
+{
+    var result = new sData^;
+    
+    result.c = s"AAA";
+    
+    return result;
+}
 
 int main(int argc, char** argv)
 {
-    list<object:sData*%>*% li = new list<object:sData*%>();
-    list<object:sData2*%>*% li2 = new list<object:sData2*%>();
+    list<sData^>*% li = new list<sData^>();
     
-    li.add(new sData { a:111, b:222 });
-    li.add(new sData { a:333, b:444 });
+    li.add(new sData^ { c:s"BBB" });
+    li.add(fun());
     
-    foreach(it, li) {
-        puts(it.to_string());
-    }
+    puts(li[0].c);
+    puts(li[1].c);
     
-    li2.add(new sData2 { a:111, b:222, c:333 });
-    li2.add(new sData2 { a:333, b:444, c:555 });
-    
-    foreach(it, li2) {
-        puts(it.to_string());
-    }
+    list<sData2^>*% li2 = new list<sData2^>();
+    li2.add(new sData2^ { a:s"AAA"});
+    puts(li2[0].a);
     
     return 0;
 }

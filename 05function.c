@@ -2295,6 +2295,13 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     string sname_top = string(info->sname);
     int sline_top = info->sline;
     
+/*
+    foreach(it, generics_type.mGenericsTypes) {
+        it.mAnyClass = false;
+        it.mAnyOriginalType = null;
+    }
+*/
+    
     if(generics_type->mNoSolvedGenericsType.v1) {
         generics_type = generics_type->mNoSolvedGenericsType.v1;
     }

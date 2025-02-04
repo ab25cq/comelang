@@ -640,6 +640,7 @@ struct CVALUE
     struct sVar* var;
     struct sRightValueObject* right_value_objects;
     char* c_value_without_right_value_objects;
+    char* c_value_without_cast_object_value;
 };
 
 struct sVar
@@ -1010,6 +1011,12 @@ struct list$1tuple2$2charphsNodephph
     struct list_item$1tuple2$2charphsNodephph* tail;
     int len;
     struct list_item$1tuple2$2charphsNodephph* it;
+};
+
+struct tuple2$2charphsGenericsFunp
+{
+    char* v1;
+    struct sGenericsFun* v2;
 };
 
 struct tuple3$3sTypephcharphbool
@@ -1654,7 +1661,7 @@ void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* inf
 struct sNode* cast_node(struct sType* type, struct sNode* node, struct sInfo* info);
 struct sNode* reffence_node(struct sNode* value, struct sInfo* info);
 struct sNode* craete_fun_call(char* fun_name, struct list$1tuple2$2charphsNodephph* params, _Bool guard_break, struct list$1sTypeph* method_generics_types, struct buffer* method_block, int method_block_sline, struct sInfo* info);
-char* make_method_generics_function(char* fun_name, struct list$1sTypeph* method_generics_types, struct sInfo* info);
+struct tuple2$2charphsGenericsFunp* make_method_generics_function(char* fun_name, struct list$1sTypeph* method_generics_types, struct sInfo* info);
 struct sNode* create_return_node(struct sNode* value, char* value_source, struct sInfo* info);
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
 _Bool create_method_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sInfo* info);
@@ -1722,6 +1729,7 @@ struct sNode* expression_node_v96(struct sInfo* info);
 struct sNode* parse_tuple(struct sInfo* info, _Bool named_tuple);
 struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
+struct CVALUE* get_value_from_object(struct CVALUE* come_value, struct sInfo* info);
 _Bool is_inner_calling(struct sNode* node, struct sInfo* info);
 struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
 struct sNode* expression_node_v95(struct sInfo* info);
@@ -1780,7 +1788,7 @@ struct sNode* parse_method_call_v18(struct sNode* obj, char* fun_name, struct sI
 struct sNode* post_position_operator_v19(struct sNode* node, struct sInfo* info);
 struct sNode* create_method_call(char* fun_name, struct sNode* obj, struct list$1tuple2$2charphsNodephph* params, struct buffer* method_block, int method_block_sline, struct list$1sTypeph* method_generics_types, struct sInfo* info);
 _Bool compile_method_block(struct buffer* method_block, struct list$1CVALUEph* come_params, struct sFun* fun, char* fun_name, int method_block_sline, struct sInfo* info, _Bool no_create_current_stack);
-char* make_generics_function(struct sType* type, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
+struct tuple2$2charphsGenericsFunp* make_generics_function(struct sType* type, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
 struct sNode* parse_method_call_v20(struct sNode* obj, char* fun_name, struct sInfo* info);
 struct sNode* string_node_v20(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* create_implements(struct sNode* node, struct sType* inf_type, struct sInfo* info);

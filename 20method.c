@@ -5,7 +5,7 @@ class sCurrentNode extends sNodeBase
     include sCurrentNodeModule;
 };
 
-string make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true)
+string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true)
 {
 /*
     sType*% obj_type = solve_generics(type, info.generics_type, info);
@@ -20,11 +20,33 @@ string make_generics_function(sType* type, string fun_name, sInfo* info, bool ar
     if(generics_fun) {
         if(!create_generics_fun(string(fun_name2), generics_fun, type, info)) {
             err_msg(info, "%s not found", fun_name3);
-            return string("");
+            return (string(""), null);
         }
     }
     
-    return fun_name2;
+    return (clone fun_name2, generics_fun);
+}
+
+string,sGenericsFun* make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info)
+{
+    static int num_method_generics = 0;
+    string fun_name3 = xsprintf("%s_method_generics%d", fun_name, num_method_generics++);
+    
+    list<sType*%>*% method_generics_types_before = info.method_generics_types;
+    info->method_generics_types= method_generics_types;
+    
+    sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
+    
+    if(generics_fun) {
+        if(!create_method_generics_fun(string(fun_name3), generics_fun, info)) {
+            err_msg(info, "%s not found", fun_name3);
+            return (string(""), null);
+        }
+    }
+    
+    info.method_generics_types = method_generics_types_before;
+    
+    return (clone fun_name3, generics_fun);
 }
 
 bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sFun* fun, char* fun_name, int method_block_sline, sInfo* info, bool no_create_current_stack=false) 
@@ -224,9 +246,11 @@ class sMethodCallNode extends sNodeBase
         CVALUE*% obj_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
+/*
         if(gComeDebug && obj_value.type->mPointerNum > 0) {
             obj_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(obj_value.type,no_static:true)!, obj_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
+*/
         
 /*
         sType*% obj_type = solve_generics(obj_value.type, info.generics_type, info);
@@ -251,7 +275,9 @@ class sMethodCallNode extends sNodeBase
                 bool method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
                 
                 if(method_generics && info->method_generics_types.length() == 0) {
-                    string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+                    var name, gfun = make_generics_function(obj_type, string(fun_name), info);
+                    
+                    string generics_fun_name = name;
                     
                     sFun* fun = info.funcs.at(generics_fun_name, null);
                     
@@ -460,6 +486,7 @@ class sMethodCallNode extends sNodeBase
             info.calling_fun = null;
         }
         else {
+            sGenericsFun* generics_fun = null;
             string generics_fun_name = null;
             sFun* fun = null;
             if(fun_name === "super") {
@@ -480,15 +507,21 @@ class sMethodCallNode extends sNodeBase
             }
             else {
                 if(obj_type && obj_type.mNoSolvedGenericsType && obj_type.mNoSolvedGenericsType.v1 && obj_type.mNoSolvedGenericsType.v1.mGenericsTypes.length() > 0) {
-                    generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+                    var name, gfun = make_generics_function(obj_type, string(fun_name), info);
+                    generics_fun_name = name;
+                    generics_fun = gfun;
                 }
                 else if(info.method_generics_types.length() > 0) {
                     string none_generics_name = get_none_generics_name(obj_type.mClass.mName);
                     string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
-                    generics_fun_name = make_method_generics_function(string(fun_name3), info.method_generics_types, info).to_string();
+                    var name, gfun = make_method_generics_function(string(fun_name3), info.method_generics_types, info);
+                    generics_fun_name = name;
+                    generics_fun = gfun;
                 }
                 else {
-                    generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+                    var name, gfun = make_generics_function(obj_type, string(fun_name), info);
+                    generics_fun_name = name;
+                    generics_fun = gfun;
                 }
                 
                 for(int i=FUN_VERSION_MAX; i>=1; i--) {
@@ -1013,6 +1046,17 @@ class sMethodCallNode extends sNodeBase
                 come_value2.type = clone result_type2;
                 come_value2.type->mStatic = false;
             }
+            else if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
+                sType*% obj_type2 = obj_type->mNoSolvedGenericsType.v1;
+                result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
+                
+                come_value2.type = clone result_type2;
+                come_value2.type->mStatic = false;
+                
+                if(result_type2->mHeap) {
+                    append_object_to_right_values2(come_value2, result_type2, info);
+                }
+            }
             else {
                 come_value2.type = clone result_type2;
                 come_value2.type->mStatic = false;
@@ -1023,6 +1067,8 @@ class sMethodCallNode extends sNodeBase
             }
             
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
+            
+            come_value2 = get_value_from_object(come_value2);
             
             add_come_last_code(info, "%s", come_value2.c_value);
             

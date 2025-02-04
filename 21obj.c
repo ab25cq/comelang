@@ -62,6 +62,10 @@ class sNewNode extends sNodeBase
                 type3->mNoSolvedGenericsType.v1.mPointerNum++;
             }
             
+            if(type3->mAnyOriginalType) {
+                type3 = type3->mAnyOriginalType;
+            }
+            
             string type_name3 = make_type_name_string(type3);
             
             add_come_code_at_function_head(info, "%s;\n", make_define_var(type3, var_name));
@@ -87,7 +91,7 @@ class sNewNode extends sNodeBase
                 any_type->mPointerNum--;
                 string any_type_name = make_type_name_string(any_type);
                 
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, any_type_name, type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
             }
             else {
                 obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);

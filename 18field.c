@@ -1,9 +1,10 @@
 #include "common.h"
 
-string, sFun* get_operator_function(sType* type, char* fun_name, sInfo* info=info)
+string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, sInfo* info=info)
 {
     string fun_name2 = null;
     sFun* operator_fun = null;
+    sGenericsFun* generics_fun = null;
     
     if(type->mNoSolvedGenericsType.v1) {
         type = type->mNoSolvedGenericsType.v1;
@@ -17,7 +18,7 @@ string, sFun* get_operator_function(sType* type, char* fun_name, sInfo* info=inf
         fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
         string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
         
-        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
+        generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
             if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
@@ -46,7 +47,7 @@ string, sFun* get_operator_function(sType* type, char* fun_name, sInfo* info=inf
         }
     }
     
-    return (fun_name2, operator_fun);
+    return (fun_name2, operator_fun,generics_fun);
 }
 
 bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVALUE* middle_value, CVALUE* right_value, sInfo* info)
@@ -60,7 +61,7 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
     sClass* klass = type->mClass;
     char* class_name = klass->mName;
     
-    var fun_name2, operator_fun = get_operator_function(type, fun_name);
+    var fun_name2, operator_fun,generics_fun = get_operator_function(type, fun_name);
     
     bool result = false;
     
@@ -100,18 +101,33 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
         
         sType*% result_type2 = solve_generics(result_type1, generics_type, info);
         
-        come_value.type = clone result_type2;
+        sType*% obj_type = generics_type;
+        
+        if(result_type2->mAnyOriginalType && generics_fun) {
+            result_type2 = solve_generics(generics_fun->mResultType, obj_type, info);
+            
+            come_value.type = clone result_type2;
+            come_value.type->mStatic = false;
+        }
+        else {
+            come_value.type = clone result_type2;
+        }
+        
         come_value.var = null;
         
         if(result_type2->mHeap) {
             append_object_to_right_values2(come_value, result_type2, info);
         }
         
+/*
         if(result_type2.mGuardValue && result_type2->mPointerNum > 0) {
             come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type2)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
+*/
         
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
+        
+        come_value = get_value_from_object(come_value);
         
         add_come_last_code(info, "%s", come_value.c_value);
         
@@ -475,7 +491,8 @@ class sNullCheckNode extends sNodeBase
                 sType* obj_type = left_value.type.mNoSolvedGenericsType.v1;
                 if(obj_type.mGenericsTypes.length() > 0) {
                     sType* obj_type2 = left_value.type;
-                    method_name = make_generics_function(obj_type2, string("expect"), info);
+                    var name,generics_fun = make_generics_function(obj_type2, string("expect"), info);
+                    method_name = name;
                 }
                 else {
                     err_msg(info, "require expect implementation(%s)", left_value.type.mClass.mName);
@@ -790,7 +807,7 @@ class sStoreArrayNode extends sNodeBase
         }
         
         char* fun_name = "operator_store_element";
-        var fun_name2, operator_fun = get_operator_function(left_type, fun_name);
+        var fun_name2, operator_fun,generics_fun = get_operator_function(left_type, fun_name);
         
         if(operator_fun) {
             sType*% param_type = operator_fun.mParamTypes[2]??;

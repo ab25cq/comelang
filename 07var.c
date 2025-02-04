@@ -771,6 +771,7 @@ CVALUE*% get_value_from_object(CVALUE*% come_value, sInfo* info=info)
     if(come_value.type->mAnyOriginalType) {
         result.type = come_value.type->mAnyOriginalType;
         result.c_value = xsprintf("((%s)%s)", make_type_name_string(result.type), come_value.c_value);
+        result.c_value_without_cast_object_value = come_value.c_value;
     }
     
     return result;

@@ -16,6 +16,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
     sFun* operator_fun = null;
     
     string fun_name2;
+    sGenericsFun* generics_fun = null;
     if(type->mGenericsTypes.length() > 0) {
         string none_generics_name = get_none_generics_name(type.mClass.mName);
         
@@ -24,8 +25,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
         string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
         
-        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
-        
+        generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
             if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
@@ -118,58 +118,32 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         sType*% result_type = type2;
         sType*% obj_type = generics_type;
         
-        if(type3->mClass->mProtocol && type3->mClass->mName === "object" && type3->mNoRefference) {
-            int generics_num = result_type->mGenericsNumBefore;
-
-            sType*% type;
-            if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
-                type = obj_type->mNoSolvedGenericsType.v1;
-            }
-            else {
-                type = obj_type;
-            }
-            
-            if(type) {
-                sType*% refference_type = type->mGenericsTypes[generics_num]??;
-                
-                if(refference_type && refference_type->mRefferenceOriginalType) {
-//                    sType*% refference_type_before = clone refference_type->mRefferenceOriginalType.v1;
-                    refference_type = clone refference_type->mRefferenceOriginalType.v1;
-///                    refference_type->mRefferenceOriginalType = new tuple1<sType*%>;
-//                    refference_type->mRefferenceOriginalType.v1 = refference_type_before;
-                    
-                    static int i = 0;
-                    i++;
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type, s"__tmp_infX\{i}"));
-                    
-                    come_value.c_value = s"((__tmp_infX\{i}=\{come_value.c_value}),((\{make_type_name_string(refference_type)})(__tmp_infX\{i} ? __tmp_infX\{i}->_protocol_obj:(void*)0)))";
-                    type3 = refference_type;
-                    //type3->mRefferenceOriginalType.v1 = refference_type;
-                    type3->mRefferenceOriginalType = new tuple1<sType*%>;
-                    type3->mRefferenceOriginalType.v1 = type->mGenericsTypes[generics_num]->mRefferenceOriginalType->mGenericsTypes[generics_num];
-                    type3->mHeap = result_type->mHeap;
-                }
-            }
+        come_value.var = null;
+        if(result_type->mAnyOriginalType && generics_fun) {
+            type3 = solve_generics(generics_fun->mResultType, obj_type, info);
             
             come_value.type = clone type3;
-            come_value.var = null;
+            come_value.type->mStatic = false;
         }
         else {
             come_value.type = clone type3;
-            come_value.var = null;
-            
-            if(type3->mHeap) {
-                append_object_to_right_values2(come_value, type3, info);
-            }
         }
         
+        if(type3->mHeap) {
+            append_object_to_right_values2(come_value, type3, info);
+        }
+        
+/*
         if(!break_guard && type3.mGuardValue && type3.mPointerNum > 0) {
             come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(type3, no_static:true)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
+*/
         
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
         
         add_come_last_code(info, "%s", come_value.c_value);
+        
+        come_value = get_value_from_object(come_value);
         
         info.stack.push_back(come_value);
     

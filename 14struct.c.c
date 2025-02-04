@@ -640,6 +640,7 @@ struct CVALUE
     struct sVar* var;
     struct sRightValueObject* right_value_objects;
     char* c_value_without_right_value_objects;
+    char* c_value_without_cast_object_value;
 };
 
 struct sVar
@@ -1010,6 +1011,12 @@ struct list$1tuple2$2charphsNodephph
     struct list_item$1tuple2$2charphsNodephph* tail;
     int len;
     struct list_item$1tuple2$2charphsNodephph* it;
+};
+
+struct tuple2$2charphsGenericsFunp
+{
+    char* v1;
+    struct sGenericsFun* v2;
 };
 
 struct tuple3$3sTypephcharphbool
@@ -1694,7 +1701,7 @@ void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* inf
 struct sNode* cast_node(struct sType* type, struct sNode* node, struct sInfo* info);
 struct sNode* reffence_node(struct sNode* value, struct sInfo* info);
 struct sNode* craete_fun_call(char* fun_name, struct list$1tuple2$2charphsNodephph* params, _Bool guard_break, struct list$1sTypeph* method_generics_types, struct buffer* method_block, int method_block_sline, struct sInfo* info);
-char* make_method_generics_function(char* fun_name, struct list$1sTypeph* method_generics_types, struct sInfo* info);
+struct tuple2$2charphsGenericsFunp* make_method_generics_function(char* fun_name, struct list$1sTypeph* method_generics_types, struct sInfo* info);
 struct sNode* create_return_node(struct sNode* value, char* value_source, struct sInfo* info);
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
 _Bool create_method_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sInfo* info);
@@ -1762,6 +1769,7 @@ struct sNode* expression_node_v96(struct sInfo* info);
 struct sNode* parse_tuple(struct sInfo* info, _Bool named_tuple);
 struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
+struct CVALUE* get_value_from_object(struct CVALUE* come_value, struct sInfo* info);
 _Bool is_inner_calling(struct sNode* node, struct sInfo* info);
 struct sNode* post_position_operator_v7(struct sNode* node, struct sInfo* info);
 struct sNode* expression_node_v95(struct sInfo* info);
@@ -1813,7 +1821,7 @@ struct sNode* parse_method_call_v18(struct sNode* obj, char* fun_name, struct sI
 struct sNode* post_position_operator_v19(struct sNode* node, struct sInfo* info);
 struct sNode* create_method_call(char* fun_name, struct sNode* obj, struct list$1tuple2$2charphsNodephph* params, struct buffer* method_block, int method_block_sline, struct list$1sTypeph* method_generics_types, struct sInfo* info);
 _Bool compile_method_block(struct buffer* method_block, struct list$1CVALUEph* come_params, struct sFun* fun, char* fun_name, int method_block_sline, struct sInfo* info, _Bool no_create_current_stack);
-char* make_generics_function(struct sType* type, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
+struct tuple2$2charphsGenericsFunp* make_generics_function(struct sType* type, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
 struct sNode* parse_method_call_v20(struct sNode* obj, char* fun_name, struct sInfo* info);
 struct sNode* string_node_v20(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* create_implements(struct sNode* node, struct sType* inf_type, struct sInfo* info);
@@ -3429,7 +3437,7 @@ char* __result223__;
         buffer_append_char(buf_291,36);
         buffer_append_char(buf_291,list$1sTypeph_length(generics_type->mGenericsTypes)+48);
         for(        i_294=0;        i_294<list$1sTypeph_length(generics_type->mGenericsTypes);        i_294++        ){
-            type_295=((struct sType*)come_null_check(((struct sType*)(__right_value254=list$1sTypephp_operator_load_element(generics_type->mGenericsTypes,i_294))), "14struct.c", 33, 0));
+            type_295=((struct sType*)(__right_value254=list$1sTypephp_operator_load_element(generics_type->mGenericsTypes,i_294)));
             come_call_finalizer3(__right_value254,sType_finalize, 0, 1, 0, 0, __result_obj__);
             type_name_309=(char*)come_increment_ref_count(create_generics_name(type_295,info));
             buffer_append_str(buf_291,type_name_309);
@@ -4494,7 +4502,7 @@ _Bool result_376;
         return (_Bool)1;
     }
     for(    i_375=0;    i_375<list$1sTypeph_length(type->mGenericsTypes);    i_375++    ){
-        result_376=is_contained_generics_types(((struct sType*)come_null_check(((struct sType*)(__right_value270=list$1sTypephp_operator_load_element(type->mGenericsTypes,i_375))), "14struct.c", 146, 1)),info);
+        result_376=is_contained_generics_types(((struct sType*)(__right_value270=list$1sTypephp_operator_load_element(type->mGenericsTypes,i_375))),info);
         come_call_finalizer3(__right_value270,sType_finalize, 0, 1, 0, 0, (void*)0);
         if(        result_376) {
             return (_Bool)1;
@@ -4518,7 +4526,7 @@ _Bool result_380;
         return (_Bool)1;
     }
     for(    i_379=0;    i_379<list$1sTypeph_length(type->mGenericsTypes);    i_379++    ){
-        result_380=is_contained_method_generics_types(((struct sType*)come_null_check(((struct sType*)(__right_value271=list$1sTypephp_operator_load_element(type->mGenericsTypes,i_379))), "14struct.c", 170, 2)),info);
+        result_380=is_contained_method_generics_types(((struct sType*)(__right_value271=list$1sTypephp_operator_load_element(type->mGenericsTypes,i_379))),info);
         come_call_finalizer3(__right_value271,sType_finalize, 0, 1, 0, 0, (void*)0);
         if(        result_380) {
             return (_Bool)1;
@@ -8073,7 +8081,7 @@ struct_class_578 = (void*)0;
                     gComeFunResultObject = (void*)0;
                     return __result361__;
                 }
-                module_641=((struct sClassModule*)come_null_check(((struct sClassModule*)(__right_value583=map$2charphsClassModulephp_operator_load_element(info->modules,module_name_635))), "14struct.c", 1122, 3));
+                module_641=((struct sClassModule*)(__right_value583=map$2charphsClassModulephp_operator_load_element(info->modules,module_name_635)));
                 come_call_finalizer3(__right_value583,sClassModule_finalize, 0, 1, 0, 0, __result_obj__);
                 if(                list$1charph_length(module_641->mParams)!=list$1charph_length(params_636)) {
                     err_msg(info,"invalid parametor number");
@@ -8084,7 +8092,7 @@ struct_class_578 = (void*)0;
                 come_call_finalizer3(__dec_obj174,map$2charphcharph_finalize, 0, 0, 0, 0, (void*)0);
                 i_645=0;
                 for(                o2_saved_646=(struct list$1charph*)come_increment_ref_count((module_641->mParams)),it_649=list$1charph_begin((o2_saved_646));                !list$1charph_end((o2_saved_646));                it_649=list$1charph_next((o2_saved_646))                ){
-                    map$2charphcharphp_operator_store_element(info->module_params,(char*)come_increment_ref_count(__builtin_string(it_649)),(char*)come_increment_ref_count(__builtin_string(((char*)come_null_check(((char*)(__right_value597=list$1charphp_operator_load_element(params_636,i_645))), "14struct.c", 1133, 4)))));
+                    map$2charphcharphp_operator_store_element(info->module_params,(char*)come_increment_ref_count(__builtin_string(it_649)),(char*)come_increment_ref_count(__builtin_string(((char*)(__right_value597=list$1charphp_operator_load_element(params_636,i_645))))));
                     __right_value597 = come_decrement_ref_count2(__right_value597, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
                     i_645++;
                 }

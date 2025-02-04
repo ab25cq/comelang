@@ -463,27 +463,6 @@ class sCallerSNameNode extends sNodeBase
     }
 };
 
-string make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info)
-{
-    static int num_method_generics = 0;
-    string fun_name3 = xsprintf("%s_method_generics%d", fun_name, num_method_generics++);
-    
-    list<sType*%>*% method_generics_types_before = info.method_generics_types;
-    info->method_generics_types= method_generics_types;
-    
-    sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
-    
-    if(generics_fun) {
-        if(!create_method_generics_fun(string(fun_name3), generics_fun, info)) {
-            err_msg(info, "%s not found", fun_name3);
-            return string("");
-        }
-    }
-    
-    info.method_generics_types = method_generics_types_before;
-    
-    return fun_name3;
-}
 
 class sFunCallNode extends sNodeBase
 {
@@ -614,7 +593,8 @@ class sFunCallNode extends sNodeBase
         if(self.method_generics_types.length() > 0 || method_generics) {
             if(self.method_generics_types.length() == 0) {
                 list<sType*%>*% method_generics_types = new list<sType*%>();
-                string generics_fun_name = make_method_generics_function(fun_name, method_generics_types, info);
+                var name, gfun = make_method_generics_function(fun_name, method_generics_types, info);
+                string generics_fun_name = name;
                 
                 sFun* fun = info.funcs.at(generics_fun_name, null);
                 
@@ -688,10 +668,12 @@ class sFunCallNode extends sNodeBase
                 
                 info.funcs.remove(generics_fun_name);
                 
-                fun_name = make_method_generics_function(fun_name, method_generics_types, info);
+                var name, gfun = make_method_generics_function(fun_name, method_generics_types, info);
+                fun_name = name;
             }
             else {
-                fun_name = make_method_generics_function(fun_name, self.method_generics_types, info);
+                var name, gfun = make_method_generics_function(fun_name, self.method_generics_types, info);
+                fun_name = name;
             }
         }
         
@@ -1374,6 +1356,8 @@ class sFunCallNode extends sNodeBase
         if(!self.guard_break && result_type.mGuardValue && result_type->mPointerNum > 0) {
             come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type, no_static:true)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
+        
+        come_value = get_value_from_object(come_value);
         
         add_come_last_code(info, "%s", come_value.c_value);
         

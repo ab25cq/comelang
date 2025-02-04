@@ -16,6 +16,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
     sFun* operator_fun = null;
     
     string fun_name2;
+    sGenericsFun* generics_fun = null;
     if(type->mGenericsTypes.length() > 0) {
         string none_generics_name = get_none_generics_name(type.mClass.mName);
         
@@ -24,7 +25,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
         string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
         
-        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
+        generics_fun = info.generics_funcs.at(fun_name3, null);
         
         
         if(generics_fun) {
@@ -91,14 +92,25 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         
         sType*% type3 = solve_generics(type2, generics_type, info);
         
-        come_value.type = clone type3;
         come_value.var = null;
+        
+        if(type3->mAnyOriginalType && generics_fun) {
+            type3 = solve_generics(generics_fun->mResultType, type, info);
+            
+            come_value.type = clone type3;
+            come_value.type->mStatic = false;
+        }
+        else {
+            come_value.type = clone type3;
+        }
         
         if(type3->mHeap) {
             append_object_to_right_values2(come_value, type3, info);
         }
         
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
+        
+        come_value = get_value_from_object(come_value);
         
         add_come_last_code(info, "%s", come_value.c_value);
         
@@ -137,7 +149,13 @@ class sRefferenceNode extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("&%s", left_value.c_value);
+        if(left_value.c_value_without_cast_object_value) {
+            come_value.c_value = xsprintf("&%s", left_value.c_value_without_cast_object_value);
+        }
+        else {
+            come_value.c_value = xsprintf("&%s", left_value.c_value);
+        }
+        
         come_value.type = clone left_value.type;
         come_value.type->mPointerNum++;
         come_value.var = null;
@@ -258,6 +276,7 @@ class sDerefferenceNode extends sNodeBase
         CVALUE*% left_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
+/*
         if(gComeDebug) {
             if(value.kind() !== "sExpEqualNode") {
                 left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type, no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
@@ -291,6 +310,7 @@ class sDerefferenceNode extends sNodeBase
                 left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))%s", make_type_name_string(left_value.type, no_static:true)!, buf.to_string(), info->sname, info->sline, gComeDebugStackFrameID++, buf2.to_string());
             }
         }
+*/
         
         sType*% type = left_value.type;
         

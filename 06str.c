@@ -391,7 +391,8 @@ class sListNode extends sNodeBase
         sType*% obj_type = clone list_type;
         char* fun_name = "initialize_with_values";
         
-        string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+        var name, generics_fun = make_generics_function(obj_type, string(fun_name), info);
+        string generics_fun_name = name;
         
         sFun* fun = info.funcs.at(generics_fun_name, null);
         
@@ -597,7 +598,8 @@ class sTupleNode extends sNodeBase
         sType*% obj_type = clone type2;
         char* fun_name = "initialize";
         
-        string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+        var name, generics_fun = make_generics_function(obj_type, string(fun_name), info);
+        string generics_fun_name = name;
         
         sFun* fun = info.funcs.at(generics_fun_name, null);
         
@@ -746,7 +748,8 @@ class sSomeNode extends sNodeBase
         sType*% obj_type = clone type2;
         char* fun_name = "initialize";
         
-        string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+        var name, generics_fun = make_generics_function(obj_type, string(fun_name), info);
+        string generics_fun_name = name;
         
         sFun* fun = info.funcs.at(generics_fun_name, null);
         
@@ -1068,7 +1071,8 @@ class sNoneNode extends sNodeBase
         sType*% obj_type = clone type2;
         char* fun_name = "initialize";
         
-        string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+        var name, generics_fun = make_generics_function(obj_type, string(fun_name), info);
+        string generics_fun_name = name;
         
         sFun* fun = info.funcs.at(generics_fun_name, null);
         
@@ -1321,7 +1325,8 @@ class sMapNode extends sNodeBase
         sType*% obj_type = clone map_type;
         char* fun_name = "initialize_with_values";
         
-        string generics_fun_name = make_generics_function(obj_type, string(fun_name), info).to_string();
+        var name, generics_fun = make_generics_function(obj_type, string(fun_name), info);
+        string generics_fun_name = name;
         
         sFun* fun = info.funcs.at(generics_fun_name, null);
         
