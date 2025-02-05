@@ -35,5 +35,13 @@ int main(int argc, char** argv)
     li2.add(new sData2^ { a:s"AAA"});
     puts(li2[0].a);
     
+    list<list<sData^>^>*% li3 = new list<list<sData^>^>();
+    
+    li3.add(li);
+    
+    list<sData^>*% x = li3[0];
+    
+    puts(x[0].c);
+    
     return 0;
 }
