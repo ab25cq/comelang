@@ -1,10 +1,13 @@
 #include <comelang.h>
 
+int, int fun()
+{
+    return (1, 1);
+}
+
 int main(int argc, char** argv)
 {
-    var li = new list<char>();
-    
-    puts(dynamic_typeof(li));
+    var a, b = fun();
     
     return 0;
 }

@@ -88,9 +88,6 @@ class sStoreNode extends sNodeBase
             sType* right_type = right_value.type;
             dec_stack_ptr(1, info);
             
-            if(right_type->mRefferenceOriginalType && right_type->mRefferenceOriginalType.v1) {
-                right_type = right_type->mRefferenceOriginalType.v1;
-            }
             
             if(right_type->mNoSolvedGenericsType.v1) {
                 right_type = right_type->mNoSolvedGenericsType.v1;

@@ -809,46 +809,8 @@ class sStoreArrayNode extends sNodeBase
         char* fun_name = "operator_store_element";
         var fun_name2, operator_fun,generics_fun = get_operator_function(left_type, fun_name);
         
-        if(operator_fun) {
-            sType*% param_type = operator_fun.mParamTypes[2]??;
-            sType*% param_type2 = solve_generics(param_type, left_type, info);
-            
-            bool is_inner_calling_ = is_inner_calling(left, info);
-            
-            if(!is_inner_calling_ && param_type2 && param_type2.mHeap && param_type2.mClass.mName === "object" && param_type2.mRefference) {
-                node_compile(right).elif {
-                    return false;
-                }
-                
-                CVALUE*% come_value = get_value_from_stack(-1, info);
-                dec_stack_ptr(1, info);
-                
-                if(come_value.type.mClass.mName !== "object") {
-                    sType*% inf_type = new sType("object");
-                    inf_type->mHeap = 1;
-                    
-                    sNode*% right2 = create_implements(right, inf_type, info);
-                    
-                    node_compile(right2).elif {
-                        return false;
-                    }
-                }
-                else {
-                    node_compile(right).elif {
-                        return false;
-                    }
-                }
-            }
-            else {
-                node_compile(right).elif {
-                    return false;
-                }
-            }
-        }
-        else {
-            node_compile(right).elif {
-                return false;
-            }
+        node_compile(right).elif {
+            return false;
         }
         
         CVALUE*% right_value = get_value_from_stack(-1, info);

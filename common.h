@@ -84,7 +84,6 @@ struct sType
     
     tuple1<sType*%>*% mNoSolvedGenericsType;
     tuple1<sType*%>*% mOriginalLoadVarType;
-    tuple1<sType*%>*% mRefferenceOriginalType;
     sType*% mAnyOriginalType;
     
     bool mAnyClass;
@@ -121,8 +120,6 @@ struct sType
     bool mRestrict;
     bool mImmutable;
     bool mHeap;
-    bool mRefference;
-    bool mNoRefference;
     bool mChannel;
     bool mNoHeap;
     bool mNoCallingDestructor;

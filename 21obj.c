@@ -358,7 +358,8 @@ class sImplementsNode extends sNodeBase
     }
 };
 
-class sProtocolObject extends sNodeBase
+/*
+class sAppendAnyFlagNode extends sNodeBase
 {
     new(sNode*% obj_exp, sInfo* info)
     {
@@ -369,7 +370,7 @@ class sProtocolObject extends sNodeBase
     
     string kind()
     {
-        return string("sProtocolObject");
+        return string("sAppendAnyFlagNode");
     }
     
     bool compile(sInfo* info)
@@ -383,64 +384,18 @@ class sProtocolObject extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        CVALUE*% come_value2 = clone come_value;
+        sType*% original_type = come_value.type;
         
-        sType*% obj_type = clone come_value.type;
-        
-        if(obj_type->mClass->mProtocol && obj_type->mRefferenceOriginalType) {
-            sType*% refference_type = obj_type->mRefferenceOriginalType.v1;
-            
-            if(refference_type) {
-                static int i = 0;
-                i++;
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(obj_type, s"__tmp_infY\{i}"));
-                
-                come_value2.c_value = s"((__tmp_infY\{i}=\{come_value2.c_value}),((\{make_type_name_string(refference_type)})(__tmp_infY\{i} ? __tmp_infY\{i}->_protocol_obj:(void*)0)))";
-                come_value2.type = refference_type;
-            }
-        }
-        
-        add_come_last_code(info, "%s", come_value2.c_value);
-        
-        info.stack.push_back(come_value2);
-        
-        return true;
-    }
-};
-
-class sAppendNoRefference extends sNodeBase
-{
-    new(sNode*% obj_exp, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.obj_exp = clone obj_exp;
-    }
-    
-    string kind()
-    {
-        return string("sAppendNoRefference");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode*% obj_exp = clone self.obj_exp;
-        
-        node_compile(obj_exp).elif {
-            return false;
-        }
-        
-        CVALUE*% come_value = get_value_from_stack(-1, info);
-        dec_stack_ptr(1, info);
-        
-        come_value.type.mNoRefference = true;
+        come_value.type = new sType("void*");
+        come_value.type.mAnyOriginalType = original_type;
+        come_value.type.mAnyClass = true;
         
         info.stack.push_back(come_value);
         
         return true;
     }
 };
-
+*/
 
 class sTrueNode extends sNodeBase
 {
@@ -2005,20 +1960,14 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
         
         return new sImplementsNode(node, inf_type, info) implements sNode;
     }
-    else if(*info->p == '~' && *(info->p+1) == '~') {
-        info->p+=2;
-        skip_spaces_and_lf();
-        
-        return new sProtocolObject(node, info) implements sNode;
-    }
+/*
     else if(*info->p == '~') {
         info->p ++;
         skip_spaces_and_lf();
         
-        sType*% inf_type = new sType("object");
-        
-        return new sImplementsNode(node, inf_type, info) implements sNode;
+        return new sAppendAnyFlagNode(node, info) implements sNode;
     }
+*/
     else if(*info->p == '@') {
         info->p++;
         while(xisalnum(*info->p) || *info->p == '_') {

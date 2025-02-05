@@ -510,7 +510,40 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     }
     
     if(left_no_solved_generics_type && right_no_solved_generics_type) {
-        if(right_type->mPointerNum == 0 && left_type->mPointerNum > 0) {
+        if(strlen(left_type->mClass->mName) >= strlen("tuple") 
+            && memcmp(left_type->mClass->mName, "tuple", strlen("tuple")) == 0
+            && !(strlen(right_type->mClass->mName) >= strlen("tuple") 
+            && memcmp(right_type->mClass->mName, "tuple", strlen("tuple")) == 0)
+            && (right_type->mClass->mName !== "void" && right_type->mPointerNum >= 1))
+        {
+            if(print_err_msg) {
+                err_msg(info, "tuple err");
+                puts(msg);
+                printf("left type is tuple, right type is none tuple\n");
+                exit(2);
+            }
+        } 
+/*
+        else if(left_type->mAnyOriginalType && !right_type->mAnyOriginalType) {
+            if(print_err_msg) {
+                err_msg(info, "poinetr num err");
+                puts(msg);
+                printf("left type is any, right type is none any\n");
+                exit(2);
+            }
+        }
+*/
+/*
+        else if(!left_type->mAnyOriginalType && right_type->mAnyOriginalType) {
+            if(print_err_msg) {
+                err_msg(info, "poinetr num err");
+                puts(msg);
+                printf("left type is none any, right type is any\n");
+                exit(2);
+            }
+        }
+*/
+        else if(right_type->mPointerNum == 0 && left_type->mPointerNum > 0) {
         }
         else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
             if(pointer_massive) {
@@ -585,6 +618,37 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
         }
     }
+    else if(strlen(left_type->mClass->mName) >= strlen("tuple") 
+        && memcmp(left_type->mClass->mName, "tuple", strlen("tuple")) == 0
+        && !(strlen(right_type->mClass->mName) >= strlen("tuple") 
+        && memcmp(right_type->mClass->mName, "tuple", strlen("tuple")) == 0)
+        && (right_type->mClass->mName !== "void" && right_type->mPointerNum >= 1))
+    {
+        if(print_err_msg) {
+            err_msg(info, "tuple err");
+            puts(msg);
+            printf("left type is tuple, right type is none tuple\n");
+            exit(2);
+        }
+    } 
+/*
+    else if(left_type->mAnyOriginalType && !right_type->mAnyOriginalType) {
+        if(print_err_msg) {
+            err_msg(info, "poinetr num err");
+            puts(msg);
+            printf("left type is any, right type is none any\n");
+            exit(2);
+        }
+    }
+    else if(!left_type->mAnyOriginalType && right_type->mAnyOriginalType) {
+        if(print_err_msg) {
+            err_msg(info, "poinetr num err");
+            puts(msg);
+            printf("left type is none any, right type is any\n");
+            exit(2);
+        }
+    }
+*/
     else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
@@ -1763,23 +1827,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             pointer_num++;
         }
-        else if(*info->p == '~' && *(info->p+1) == '~') {
-            info->p+=2;
-            skip_spaces_and_lf();
-            
-            skip_pointer_attribute();
-            
-            no_refference = true;
-        }
         else if(*info->p == '~') {
-            info->p++;
-            skip_spaces_and_lf();
-            
-            skip_pointer_attribute();
-            
-            refference = true;
-        }
-        else if(*info->p == '^') {
             info->p++;
             skip_spaces_and_lf();
             
@@ -2096,8 +2144,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mShort = result_type->mShort || short_;
         result_type->mPointerNum = pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
-        result_type->mRefference = result_type->mRefference || refference;
-        result_type->mNoRefference = result_type->mNoRefference || no_refference;
         result_type->mChannel = result_type->mChannel || channel;
         result_type->mAnyClass = result_type->mAnyClass || any_class;
         
@@ -2171,8 +2217,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mShort = result_type->mShort || short_;
         result_type->mPointerNum += pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
-        result_type->mRefference = result_type->mRefference || refference;
-        result_type->mNoRefference = result_type->mNoRefference || no_refference;
         result_type->mChannel = result_type->mChannel || channel;
         result_type->mAnyClass = result_type->mAnyClass || any_class;
         
@@ -2235,7 +2279,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         node_compile(exp).elif {
             err_msg(info, "invalid __typeof__ expression");
-            return ((sType*)null,(string)null,false);
+            return ((sType*%)null,(string)null,false);
         }
         
         CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -2326,8 +2370,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
-            type->mRefference = type->mRefference || refference;
-            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
@@ -2357,8 +2399,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
-            type->mRefference = type->mRefference || refference;
-            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
@@ -2388,8 +2428,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
-            type->mRefference = type->mRefference || refference;
-            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
@@ -2460,8 +2498,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
-            type->mRefference = type->mRefference || refference;
-            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
@@ -2504,8 +2540,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mShort = type->mShort || short_;
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
-            type->mRefference = type->mRefference || refference;
-            type->mNoRefference = type->mNoRefference || no_refference;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
             type->mTupleName = tuple_name;
@@ -2532,24 +2566,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type->mHeap = true;
                 if(type->mNoSolvedGenericsType.v1) {
                     type->mNoSolvedGenericsType.v1.mHeap = true;
-                }
-            }
-            else if(*info->p == '~' && *(info->p+1) == '~') {
-                info->p+=2;
-                skip_spaces_and_lf();
-                
-                type->mNoRefference = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mNoRefference = true;
-                }
-            }
-            else if(*info->p == '~') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                type->mRefference = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mRefference = true;
                 }
             }
             else if(*info->p == '&') {
@@ -2610,25 +2626,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.v1.mHeap = true;
                 }
             }
-            else if(*info->p == '~' && *(info->p+1) == '~') {
-                info->p+=2;
-                skip_spaces_and_lf();
-                
-                type->mNoRefference = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mNoRefference = true;
-                }
-            }
             else if(*info->p == '~') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                type->mRefference = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mRefference = true;
-                }
-            }
-            else if(*info->p == '^') {
                 info->p++;
                 skip_spaces_and_lf();
                 
@@ -2706,25 +2704,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                         type->mNoSolvedGenericsType.v1.mHeap = true;
                     }
                 }
-                else if(*info->p == '~' && *(info->p+1) == '~') {
-                    info->p+=2;
-                    skip_spaces_and_lf();
-                    
-                    type->mNoRefference = true;
-                    if(type->mNoSolvedGenericsType.v1) {
-                        type->mNoSolvedGenericsType.v1.mRefference = true;
-                    }
-                }
                 else if(*info->p == '~') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    
-                    type->mRefference = true;
-                    if(type->mNoSolvedGenericsType.v1) {
-                        type->mNoSolvedGenericsType.v1.mRefference = true;
-                    }
-                }
-                else if(*info->p == '^') {
                     info->p++;
                     skip_spaces_and_lf();
                     
@@ -2889,23 +2869,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type4->mUniq = type->mUniq;
         
         return (type4, var_name, true);
-    }
-    else if(object_interface) {
-        sType*% refference_type = type;
-        
-        type = new sType("object");
-        type->mPointerNum++;
-        type->mHeap = true;
-        
-        type.mRefferenceOriginalType = new tuple1<sType*%>;
-        type.mRefferenceOriginalType.v1 = refference_type;
-        
-/*
-        if(type.mNoSolvedGenericsType && type.mNoSolvedGenericsType.v1) {
-            type.mNoSolvedGenericsType.v1.mRefferenceOriginalType = new tuple1<sType*%>;
-            type.mNoSolvedGenericsType.v1.mRefferenceOriginalType.v1 = refference_type;
-        }
-*/
     }
     
     if(attribute !== "") {

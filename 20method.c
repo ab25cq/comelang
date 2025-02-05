@@ -660,36 +660,9 @@ class sMethodCallNode extends sNodeBase
                         
                         n++;
                     }
-                    bool is_inner_calling_ = is_inner_calling(obj, info);
                     
-                    if(!is_inner_calling_ && param_types[n]?? && param_types[n].mRefference && param_types[n].mClass.mName === "object" && param_types[n].mHeap) {
-                        node_compile(node).elif {
-                            return false;
-                        }
-                        
-                        CVALUE*% come_value = get_value_from_stack(-1, info);
-                        dec_stack_ptr(1, info);
-                        
-                        if(come_value.type.mClass.mName !== "object") {
-                            sType*% inf_type = new sType("object");
-                            inf_type->mHeap = 1;
-                            
-                            sNode*% node2 = create_implements(node, inf_type, info);
-                            
-                            node_compile(node2).elif {
-                                return false;
-                            }
-                        }
-                        else {
-                            node_compile(node).elif {
-                                return false;
-                            }
-                        }
-                    }
-                    else {
-                        node_compile(node).elif {
-                            return false;
-                        }
+                    node_compile(node).elif {
+                        return false;
                     }
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -735,36 +708,8 @@ class sMethodCallNode extends sNodeBase
                         }
                     }
 
-                    bool is_inner_calling_ = is_inner_calling(obj, info);
-                    
-                    if(!is_inner_calling_ && param_types[i]?? && param_types[i].mHeap && param_types[i].mClass.mName === "object" && param_types[i].mRefference) {
-                        node_compile(node).elif {
-                            return false;
-                        }
-                        
-                        CVALUE*% come_value = get_value_from_stack(-1, info);
-                        dec_stack_ptr(1, info);
-                        
-                        if(come_value.type.mClass.mName !== "object") {
-                            sType*% inf_type = new sType("object");
-                            inf_type->mHeap = 1;
-                            
-                            sNode*% node2 = create_implements(node, inf_type, info);
-                            
-                            node_compile(node2).elif {
-                                return false;
-                            }
-                        }
-                        else {
-                            node_compile(node).elif {
-                                return false;
-                            }
-                        }
-                    }
-                    else {
-                        node_compile(node).elif {
-                            return false;
-                        }
+                    node_compile(node).elif {
+                        return false;
                     }
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -1020,33 +965,7 @@ class sMethodCallNode extends sNodeBase
             come_value2.c_value = buf.to_string();
             come_value2.var = null;
             
-            if(result_type2->mClass->mProtocol && result_type2->mClass->mName === "object" && result_type2->mNoRefference) {
-                int generics_num = result_type->mGenericsNumBefore;
-                
-                if(obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
-                    sType*% refference_type = obj_type->mNoSolvedGenericsType.v1.mGenericsTypes[generics_num]??;
-                    
-                    if(refference_type && refference_type->mRefferenceOriginalType) {
-//                        sType*% refference_type_before = clone refference_type->mRefferenceOriginalType.v1;
-                        refference_type = clone refference_type->mRefferenceOriginalType.v1;
-//                        refference_type->mRefferenceOriginalType = new tuple1<sType*%>;
-//                        refference_type->mRefferenceOriginalType.v1 = refference_type_before;
-                        
-                        static int i = 0;
-                        i++;
-                        add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type, s"__tmp_inf\{i}"));
-                        
-                        come_value2.c_value = s"((__tmp_inf\{i}=\{come_value2.c_value}),((\{make_type_name_string(refference_type)})(__tmp_inf\{i} ? __tmp_inf\{i}->_protocol_obj:(void*)0)))";
-                        result_type2 = refference_type;
-                        result_type2->mRefferenceOriginalType = obj_type->mNoSolvedGenericsType.v1.mGenericsTypes[generics_num]->mRefferenceOriginalType;
-                        result_type2->mHeap = result_type->mHeap;
-                    }
-                }
-                
-                come_value2.type = clone result_type2;
-                come_value2.type->mStatic = false;
-            }
-            else if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
+            if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
                 sType*% obj_type2 = obj_type->mNoSolvedGenericsType.v1;
                 result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
                 

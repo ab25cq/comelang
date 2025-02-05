@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 13.0.0
+version 13.0.1
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+13.0.1 no generating code collection finally comes. Some bugs may remained. It's usefull for embbeded system because it doesn't take few code size.
 13.0.0 no generating code collection finally comes. Some bugs may remained. It's usefull for embbeded system because it doesn't take few code size.
 
 12.3.2 valgrind check, no invalid memory access.
@@ -3631,9 +3632,9 @@ struct sData2
     string a;
 };
 
-sData^ fun()
+sData~ fun()
 {
-    var result = new sData^;
+    var result = new sData~;
     
     result.c = s"AAA";
     
@@ -3642,16 +3643,16 @@ sData^ fun()
 
 int main(int argc, char** argv)
 {
-    list<sData^>*% li = new list<sData^>();
+    list<sData~>*% li = new list<sData~>();
     
-    li.add(new sData^ { c:s"BBB" });
+    li.add(new sData~ { c:s"BBB" });
     li.add(fun());
     
     puts(li[0].c);
     puts(li[1].c);
     
-    list<sData2^>*% li2 = new list<sData2^>();
-    li2.add(new sData2^ { a:s"AAA"});
+    list<sData2~>*% li2 = new list<sData2~>();
+    li2.add(new sData2~ { a:s"AAA"});
     puts(li2[0].a);
     
     return 0;

@@ -58,8 +58,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool immutable_ = type->mImmutable;
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
-        bool refference = type->mRefference;
-        bool no_refference = type->mNoRefference;
         bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
         
@@ -71,12 +69,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
 
         if(heap) {
             result->mHeap = heap;
-        }
-        if(refference) {
-            result->mRefference = refference;
-        }
-        if(no_refference) {
-            result->mNoRefference = no_refference;
         }
         if(guard_) {
             result->mGuardValue = guard_;
@@ -125,8 +117,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool immutable_ = type->mImmutable;
             int pointer_num = type->mPointerNum;
             bool heap = type->mHeap;
-            bool refference = type->mRefference;
-            bool no_refference = type->mNoRefference;
             bool guard_ = type->mGuardValue;
             
             bool no_heap = type->mNoHeap;
@@ -139,12 +129,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             result = clone generics_type->mGenericsTypes[generics_number];
             result.mGenericsNumBefore = generics_number;
 
-            if(refference) {
-                result->mRefference = refference;
-            }
-            if(no_refference) {
-                result->mNoRefference = no_refference;
-            }
             if(heap) {
                 result->mHeap = heap;
             }
@@ -221,8 +205,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool immutable_ = type->mImmutable;
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
-        bool refference = type->mRefference;
-        bool no_refference = type->mNoRefference;
         bool guard_ = type->mGuardValue;
         
         bool no_heap = type->mNoHeap;
@@ -234,12 +216,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
 
         if(heap) {
             result->mHeap = heap || result->mHeap;
-        }
-        if(refference) {
-            result->mRefference = refference || result->mRefference;
-        }
-        if(no_refference) {
-            result->mNoRefference = no_refference || result->mNoRefference;
         }
         if(exception_) {
             result->mException = exception_;

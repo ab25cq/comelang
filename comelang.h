@@ -1214,7 +1214,7 @@ impl list <T>
 
         return result;
     }
-    list<T>* add(list<T>* self, T~ item)
+    list<T>* add(list<T>* self, T item)
     {
         if(self.len == 0) {
             list_item<T>* litem = borrow gc_inc(new list_item<T>);
@@ -1284,7 +1284,7 @@ impl list <T>
             self.len--;
         }
     }
-    list<T>* push_back(list<T>* self, T~ item)
+    list<T>* push_back(list<T>* self, T item)
     {
         if(self.len == 0) {
             list_item<T>* litem = borrow gc_inc(new list_item<T>);
@@ -1345,7 +1345,7 @@ impl list <T>
         return result.to_string();
     }
     
-    T&~~ begin(list<T>* self) {
+    T& begin(list<T>* self) {
         if(self == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -1362,7 +1362,7 @@ impl list <T>
         return result;
     }
 
-    T&~~ next(list<T>* self) {
+    T& next(list<T>* self) {
         if(self == null || self.it == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -1400,7 +1400,7 @@ impl list <T>
         
         return self;
     }
-    T~~ item(list<T>* self, int position, T& default_value) 
+    T item(list<T>* self, int position, T& default_value) 
     {
         if(position < 0) {
             position += self.len;
@@ -1427,7 +1427,7 @@ impl list <T>
         return self.len;
     }
     
-    list<T>* insert(list<T>* self, int position, T~ item)
+    list<T>* insert(list<T>* self, int position, T item)
     {
         if(position < 0) {
             position += self.len + 1;
@@ -1648,7 +1648,7 @@ impl list <T>
         
         return self;
     }
-    list<T>* replace(list<T>* self, int position, T~ item)
+    list<T>* replace(list<T>* self, int position, T item)
     {
         if(position < 0) {
             position += self.len;
@@ -1747,10 +1747,10 @@ impl list <T>
 
         return result;
     }
-    void operator_store_element(list<T>* self, int position, T~ item) {
+    void operator_store_element(list<T>* self, int position, T item) {
         self.replace(position, item);
     }
-    T??~~ operator_load_element(list<T>* self, int position) {
+    T?? operator_load_element(list<T>* self, int position) {
         if(position < 0) {
             position += self.len;
         }
@@ -2161,18 +2161,18 @@ impl vector<T>
     bool operator_not_equals(vector<T>* left, vector<T>* right) {
         return !left.operator_equals(right);
     }
-    void operator_store_element(vector<T>* self, int index, T~ item) {
+    void operator_store_element(vector<T>* self, int index, T item) {
         self.replace(index, item);
     }
     
-    T??~~ operator_load_element(vector<T>* self, int index) {
+    T?? operator_load_element(vector<T>* self, int index) {
         T` default_value;
         memset(&default_value, 0, sizeof(T));
         
         return self.item(index, default_value)??;
     }
     
-    vector<T>* push_back(vector<T>* self, T~ item) {
+    vector<T>* push_back(vector<T>* self, T item) {
         if(self.len == self.size) {
             auto new_size = self.size * 2;
             auto items = self.items;
@@ -2195,7 +2195,7 @@ impl vector<T>
         return self;
     }
     
-    vector<T>* add(vector<T>* self, T~ item) {
+    vector<T>* add(vector<T>* self, T item) {
         if(self.len == self.size) {
             auto new_size = self.size * 2;
             auto items = self.items;
@@ -2218,7 +2218,7 @@ impl vector<T>
         return self;
     }
 
-    T~~ item(vector<T>* self, int index, T& default_value) 
+    T item(vector<T>* self, int index, T& default_value) 
     {
         if(index < 0) {
             index += self.len;
@@ -2249,7 +2249,7 @@ impl vector<T>
         return true;
     }
     
-    vector<T>* replace(vector<T>* self, int index, T~ value)
+    vector<T>* replace(vector<T>* self, int index, T value)
     {
         if(index < 0) {
             index += self.len;
@@ -2316,14 +2316,14 @@ impl vector<T>
         return self;
     }
 
-    T&~~ begin(vector<T>* self) {
+    T& begin(vector<T>* self) {
         self.it = 0;
 
         T` default_value;
         return self.item(0, default_value);
     }
 
-    T&~~ next(vector<T>* self) {
+    T& next(vector<T>* self) {
         self.it++;
 
         T` default_value
@@ -2577,7 +2577,7 @@ impl map <T, T2>
         return result.to_string();
     }
     
-    T2~~ at(map<T, T2>* self, T& key, T2 default_value) {
+    T2 at(map<T, T2>* self, T& key, T2 default_value) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2650,7 +2650,7 @@ impl map <T, T2>
         return self.len;
     }
     
-    T&~~ begin(map<T, T2>* self) {
+    T& begin(map<T, T2>* self) {
         if(self == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -2667,7 +2667,7 @@ impl map <T, T2>
         return result;
     }
 
-    T&~~ next(map<T, T2>* self) {
+    T& next(map<T, T2>* self) {
         if(self == null || self.key_list.it == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -2741,7 +2741,7 @@ impl map <T, T2>
         self.len = len;
     }
     
-    map<T,T2>* insert(map<T,T2>* self, T~ key, T2~ item) {
+    map<T,T2>* insert(map<T,T2>* self, T key, T2 item) {
         if(self.len*10 >= self.size) {
             self.rehash();
         }
@@ -2818,7 +2818,7 @@ impl map <T, T2>
         
         return self;
     }
-    map<T,T2>* put(map<T,T2>* self, T~ key, T2~ item) {
+    map<T,T2>* put(map<T,T2>* self, T key, T2 item) {
         if(self.len*2 >= self.size) {
             self.rehash();
         }
@@ -2895,7 +2895,7 @@ impl map <T, T2>
         
         return self;
     }
-    T2??~~ operator_load_element(map<T, T2>* self, T& key) {
+    T2?? operator_load_element(map<T, T2>* self, T& key) {
         T2` default_value;
         memset(&default_value, 0, sizeof(T2));
         
@@ -2927,7 +2927,7 @@ impl map <T, T2>
         return default_value;
     }
     
-    void operator_store_element(map<T, T2>* self, T~ key, T2~ item) {
+    void operator_store_element(map<T, T2>* self, T key, T2 item) {
         self.insert(key, item);
     }
     

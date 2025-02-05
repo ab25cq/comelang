@@ -77,7 +77,7 @@ class sReturnNode extends sNodeBase
 */
                 
                 if(!info.come_fun.mNoResultType) {
-                    if(!(strlen(result_type2->mClass->mName) > strlen("tuple") && memcmp(result_type2->mClass->mName, "tuple", strlen("tuple")) == 0)) {
+                    if(!gComeC || !(strlen(result_type2->mClass->mName) > strlen("tuple") && memcmp(result_type2->mClass->mName, "tuple", strlen("tuple")) == 0)) {
                         check_assign_type("result type", result_type2, come_value_type, come_value);
                     }
                     
