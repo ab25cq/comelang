@@ -1111,11 +1111,13 @@ uniq void* come_call_cloner(void* fun, void* mem)
         
         return cloner(mem);
     }
-    else {
+    else if(fun) {
         void* (*cloner)(void*) = fun;
         
         return cloner(mem);
     }
+    
+    return NULL;
 }
 
 uniq string __builtin_string(char* str)

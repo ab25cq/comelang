@@ -2930,149 +2930,205 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
     
+    string real_fun_name = null;
     sFun* finalizer = null;
     
-    string real_fun_name = create_method_name(type, false@no_pointer_name, fun_name, info);
-    
-    string user_real_fun_name = create_method_name(type, false@no_pointer_name, "user_finalize", info);
-    sFun* user_finalizer = info->funcs[user_real_fun_name]??
-    
-    sType*% type2 = solve_generics(type, type, info);
-    
-    type = borrow type2;
-    
-    sClass* klass = type->mClass;
-    
-    if(type->mPointerNum > 0 && klass->mStruct || type->mAllocaValue) {
-        var source = new buffer();
+    sType*% type_before = clone type;
         
-        source.append_char('{');
+    sType*% type2 = clone type;
+    type2->mHeap = false;
+    
+    string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
         
-        if(user_finalizer) {
-            char source2[1024];
-            snprintf(source2, 1024, "if(self != ((void*)0)) { %s(self); }\n", user_real_fun_name);
-            
-            source.append_str(source2);
-        }
+    if(type->mNoSolvedGenericsType.v1) {
+        type = type->mNoSolvedGenericsType.v1;
+    }
         
-        klass = info.classes[klass->mName]??;
-        foreach(it, klass->mFields) {
-            var name, field_type = it;
+    if(type->mGenericsTypes.length() > 0) {
+        finalizer = info->funcs[fun_name2]??;
+        
+        if(finalizer == NULL) {
+            string none_generics_name = get_none_generics_name(type2.mClass.mName);
             
-/*
-            if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-            {
-                err_msg(info, "Define recusively the finalizer. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                exit(2);
-            }
-*/
+            string generics_fun_name = xsprintf("%s_%s", none_generics_name, fun_name);
+            sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
             
-            if(field_type->mHeap) {
-                char source2[1024];
-                snprintf(source2, 1024, "if(self != ((void*)0) && self.%s != ((void*)0)) { if(self.%s == gComeFunResultObject) { gc_dec_nofree(self.%s); } else { delete borrow self.%s; }}\n", name, name, name,name);
-                
-                source.append_str(source2);
-            }
-            else if(field_type->mChannel) {
-                char source2[1024];
-                snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[0] != ((void*)0)) { close(self.%s[0]); }", name, name);
-                source.append_str(source2);
-                
-                snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[1] != ((void*)0)) { close(self.%s[1]); }", name, name);
-                
-                source.append_str(source2);
+            if(generics_fun) {
+                if(!create_generics_fun(fun_name2, generics_fun, type, info))
+                {
+                    printf("%s %d: can't create generics finalizer\n", info->sname, info->sline);
+                    exit(2);
+                }
+                finalizer = info->funcs[fun_name2]??;
             }
         }
         
-        source.append_char('}');
-        
-        char* p = info.p;
-        int sline = info.sline;
-        string sname = info.sname;
-        char* head = info.head;
-        buffer*% source3 = info.source;
-        
-        info.source = source;
-        info.p = source.buf;
-        info.head = source.buf;
-        
-        info.sname = string(real_fun_name);
-        info.sline = 0;
-        
-        sBlock*% block = parse_block();
-        
-        var result_type = new sType("void");
-        var name = clone real_fun_name;
-        var self_type = clone type;
-        self_type->mHeap = false;
-        if(self_type->mPointerNum == 0) {
-            self_type->mPointerNum = 1;
-        }
-        if(self_type->mPointerNum > 1) {
-            self_type->mPointerNum = 1;
-        }
-        list<sType*%>*% param_types = [self_type];
-        var param_names = [string("self")];
-        var param_default_parametors = new list<string>();
-        param_default_parametors.push_back(null);
-        
-        buffer*% header_buf = new buffer();
-        
-        header_buf.append_str(make_come_type_name_string(result_type));
-        header_buf.append_str(" ");
-        header_buf.append_str(real_fun_name);
-        header_buf.append_str("(");
-        
-        for(int i=0; i<param_types.length(); i++) {
-            sType* param_type = param_types[i];
-            char* param_name = param_names[i];
+        real_fun_name = fun_name2;
+    }
+    else {
+        int i;
+        for(i=FUN_VERSION_MAX-1; i>=1; i--) {
+            string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
+            finalizer = info->funcs[new_fun_name]??;
             
-            header_buf.append_str(make_come_type_name_string(param_type));
-            header_buf.append_str(" ");
-            header_buf.append_str(param_name);
-            
-            if(i != param_types.length() -1) {
-                header_buf.append_str(",");
+            if(finalizer) {
+                fun_name2 = string(new_fun_name);
+                break;
             }
         }
-        header_buf.append_str(")");
         
-        result_type->mStatic = false;
-        result_type->mUniq = false;
-        result_type->mInline = false;
-        
-        var fun2 = info.funcs[string(name)]??;
-        if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun(name, result_type, param_types, param_names
-                        , param_default_parametors
-                        , false@external, false@var_args, block
-                        , true@static_
-                        , header_buf.to_string()
-                        , string("")
-                        , info, false@inline_, false@uniq_);
-                        
-            info.funcs.insert(clone name, fun);
-            
-            finalizer = fun;
-            
-            sNode*% node = new sFunNode(fun, info) implements sNode;
-            
-            node_compile(node).elif {
-                printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
-                exit(2);
-            }
-        }
-        else {
-            finalizer = fun2;
+        if(finalizer == NULL) {
+            finalizer = info->funcs[fun_name2]??;
         }
         
-        info.source = source3;
-        info.p = p;
-        info.head = head;
-        info.sline = sline;
-        info.sname = sname;
+        real_fun_name = fun_name2;
     }
     
+    if(finalizer == null) {
+        type = type_before;
+        
+        real_fun_name = create_method_name(type, false@no_pointer_name, fun_name, info);
+        
+        string user_real_fun_name = create_method_name(type, false@no_pointer_name, "user_finalize", info);
+        sFun* user_finalizer = info->funcs[user_real_fun_name]??
+        
+        sType*% type2 = solve_generics(type, type, info);
+        
+        type = borrow type2;
+        
+        sClass* klass = type->mClass;
+        
+        if(type->mPointerNum > 0 && klass->mStruct || type->mAllocaValue) {
+            var source = new buffer();
+            
+            source.append_char('{');
+            
+            if(user_finalizer) {
+                char source2[1024];
+                snprintf(source2, 1024, "if(self != ((void*)0)) { %s(self); }\n", user_real_fun_name);
+                
+                source.append_str(source2);
+            }
+            
+            klass = info.classes[klass->mName]??;
+            foreach(it, klass->mFields) {
+                var name, field_type = it;
+                
+    /*
+                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
+                {
+                    err_msg(info, "Define recusively the finalizer. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
+                    exit(2);
+                }
+    */
+                
+                if(field_type->mHeap) {
+                    char source2[1024];
+                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s != ((void*)0)) { if(self.%s == gComeFunResultObject) { gc_dec_nofree(self.%s); } else { delete borrow self.%s; }}\n", name, name, name,name);
+                    
+                    source.append_str(source2);
+                }
+                else if(field_type->mChannel) {
+                    char source2[1024];
+                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[0] != ((void*)0)) { close(self.%s[0]); }", name, name);
+                    source.append_str(source2);
+                    
+                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[1] != ((void*)0)) { close(self.%s[1]); }", name, name);
+                    
+                    source.append_str(source2);
+                }
+            }
+            
+            source.append_char('}');
+            
+            char* p = info.p;
+            int sline = info.sline;
+            string sname = info.sname;
+            char* head = info.head;
+            buffer*% source3 = info.source;
+            
+            info.source = source;
+            info.p = source.buf;
+            info.head = source.buf;
+            
+            info.sname = string(real_fun_name);
+            info.sline = 0;
+            
+            sBlock*% block = parse_block();
+            
+            var result_type = new sType("void");
+            var name = clone real_fun_name;
+            var self_type = clone type;
+            self_type->mHeap = false;
+            if(self_type->mPointerNum == 0) {
+                self_type->mPointerNum = 1;
+            }
+            if(self_type->mPointerNum > 1) {
+                self_type->mPointerNum = 1;
+            }
+            list<sType*%>*% param_types = [self_type];
+            var param_names = [string("self")];
+            var param_default_parametors = new list<string>();
+            param_default_parametors.push_back(null);
+            
+            buffer*% header_buf = new buffer();
+            
+            header_buf.append_str(make_come_type_name_string(result_type));
+            header_buf.append_str(" ");
+            header_buf.append_str(real_fun_name);
+            header_buf.append_str("(");
+            
+            for(int i=0; i<param_types.length(); i++) {
+                sType* param_type = param_types[i];
+                char* param_name = param_names[i];
+                
+                header_buf.append_str(make_come_type_name_string(param_type));
+                header_buf.append_str(" ");
+                header_buf.append_str(param_name);
+                
+                if(i != param_types.length() -1) {
+                    header_buf.append_str(",");
+                }
+            }
+            header_buf.append_str(")");
+            
+            result_type->mStatic = false;
+            result_type->mUniq = false;
+            result_type->mInline = false;
+            
+            var fun2 = info.funcs[string(name)]??;
+            if(fun2 == null || fun2.mExternal) {
+                var fun = new sFun(name, result_type, param_types, param_names
+                            , param_default_parametors
+                            , false@external, false@var_args, block
+                            , true@static_
+                            , header_buf.to_string()
+                            , string("")
+                            , info, false@inline_, false@uniq_);
+                            
+                info.funcs.insert(clone name, fun);
+                
+                finalizer = fun;
+                
+                sNode*% node = new sFunNode(fun, info) implements sNode;
+                
+                node_compile(node).elif {
+                    printf("%s %d: compiling is failed(X)\n", info->sname, info->sline);
+                    exit(2);
+                }
+            }
+            else {
+                finalizer = fun2;
+            }
+            
+            info.source = source3;
+            info.p = p;
+            info.head = head;
+            info.sline = sline;
+            info.sname = sname;
+        }
+    }
+        
     info->current_stack_frame_struct = current_stack_frame_struct;
     
     info.module.mLastCode = last_code;
@@ -3716,6 +3772,9 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
 
 sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* info)
 {
+    if(type->mClass->mName === "void") {
+        return ((sFun*)null, (string)null);
+    }
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
@@ -3733,15 +3792,62 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     
     type = borrow type2;
     
+//    type->mHeap = true;
+    
     sClass* klass = type->mClass;
     
-    if(type->mPointerNum > 0 && !klass->mNumber) {
+    string fun_name2;
+    
+    if(type->mGenericsTypes.length() > 0) {
+        string none_generics_name = get_none_generics_name(type.mClass.mName);
+        
+        sType*% obj_type = solve_generics(type, info.generics_type, info);
+        
+        fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
+        string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
+        
+        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
+        
+        if(generics_fun) {
+            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+                if(type->mClass->mName === "void") {
+                    return ((sFun*)null, (string)null);
+                }
+            }
+        }
+        
+        cloner = info->funcs[fun_name2]??;
+        
+        real_fun_name = fun_name2;
+    }
+    else {
+        fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
+        
+        int i;
+        for(i=FUN_VERSION_MAX-1; i>=1; i--) {
+            string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
+            cloner = info->funcs[new_fun_name]??;
+            
+            if(cloner) {
+                fun_name2 = string(new_fun_name);
+                break;
+            }
+        }
+        
+        if(cloner == NULL) {
+            cloner = info->funcs[fun_name2]??;
+        }
+        
+        real_fun_name = fun_name2;
+    }
+    
+    if(cloner == null && !type->mClass->mNumber && type->mPointerNum > 0)
+    {
         var source = new buffer();
         
         source.append_str("{\n");
         source.append_str("if(self == (void*)0) { return (void*)0; }\n");
-        source.append_format("var result = new %s;\n", make_type_name_string(type, no_pointer:true));
-        
+        source.append_format("var result = new %s~;\n", make_type_name_string(type, no_pointer:true));
         
         if(klass->mProtocol) {
             char* name = "_protocol_obj";

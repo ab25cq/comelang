@@ -444,8 +444,13 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         }
 
         /// call finalizer ///
-        if(finalizer != null) {
-            if(klass->mProtocol && type->mPointerNum == 1) {
+        if(finalizer != null || (finalizer == null && type->mClass.mName === "void" && type->mPointerNum == 1)) {
+            if(type->mClass.mName === "void") {
+                if(c_value) {
+                    add_come_last_code2(info, s"come_call_finalizer3(\{c_value},(void*)0, %d, %d, %d, %d, (void*)0)", type->mAllocaValue, no_decrement, no_free, force_delete_);
+                }
+            }
+            else if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
                 if(c_value) {
                     add_come_last_code2(info, s"come_call_finalizer2(\{fun_name2}, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize:(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj:(void*)0, %d, %d, %d, %d, (void*)0)", type->mAllocaValue, no_decrement, no_free, force_delete_);
@@ -789,7 +794,10 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     }
 
     /// call cloner ///
-    if(cloner != null) {
+    if(type->mAnyOriginalType) {
+        result = xsprintf("come_call_cloner((void*)0, %s)", c_value);
+    }
+    else if(cloner != null) {
         result_type = cloner->mResultType;
         result_type = solve_generics(result_type, type, info);
         

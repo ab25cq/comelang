@@ -2842,12 +2842,13 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mChannelType.v1 = type_before;
         type->mChannel = true;
     }
-    else if(type->mAnyClass) {
+    else if(type->mAnyClass && !type->mClass->mProtocol) {
         sType*% type_before = clone type;
         type_before.mHeap = true;
         type_before.mPointerNum = 1;
-        type = new sType("void*");
+        type = new sType("void");
         type->mHeap = true;
+        type->mPointerNum = 1;
         type->mAnyOriginalType = type_before;
         type->mAnyClass = true;
     }

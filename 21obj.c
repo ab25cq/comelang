@@ -39,6 +39,18 @@ class sNewNode extends sNodeBase
         
         sType*% type2 = solve_generics(type, info->generics_type, info);
         
+        bool generics_any_child = false;
+        sType*% no_solved_type = null;
+        if(type2->mNoSolvedGenericsType && type2->mNoSolvedGenericsType.v1) {
+            no_solved_type = type2->mNoSolvedGenericsType.v1;
+            
+            foreach(it, no_solved_type->mGenericsTypes) {
+                if(it->mAnyOriginalType) {
+                    generics_any_child = true;
+                }
+            }
+        }
+        
     /*
         if(type->mArrayNum.length() > 0) {
             type2->mPointerNum--;
@@ -85,7 +97,28 @@ class sNewNode extends sNodeBase
                     (void*)create_finalizer_automatically(any_type, "finalize", info);
                 }
                 if(info.funcs[cloner_name]?? == null) {
-                    (void*)create_cloner_automatically(any_type, "clone", info);
+                    var fun, name = create_cloner_automatically(any_type, "clone", info);
+                    cloner_name = name;
+                }
+                
+                any_type->mPointerNum--;
+                string any_type_name = make_type_name_string(any_type);
+                
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
+            }
+            else if(generics_any_child) {
+                sType*% any_type = no_solved_type;
+                any_type->mPointerNum = true;
+                
+                string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+                string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+                
+                if(info.funcs[finalizer_name]?? == null) {
+                    (void*)create_finalizer_automatically(any_type, "finalize", info);
+                }
+                if(info.funcs[cloner_name]?? == null) {
+                    var fun, name = create_cloner_automatically(any_type, "clone", info);
+                    cloner_name = name;
                 }
                 
                 any_type->mPointerNum--;
@@ -184,6 +217,8 @@ class sNewNode extends sNodeBase
             string obj;
             if(type2->mAnyClass && type2->mAnyOriginalType) {
                 sType*% any_type = clone type2->mAnyOriginalType;
+                any_type->mPointerNum = 1;
+                any_type->mHeap = true;
                 
                 string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
                 string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
@@ -192,7 +227,8 @@ class sNewNode extends sNodeBase
                     (void*)create_finalizer_automatically(any_type, "finalize", info);
                 }
                 if(info.funcs[cloner_name]?? == null) {
-                    (void*)create_cloner_automatically(any_type, "clone", info);
+                    var fun, name = create_cloner_automatically(any_type, "clone", info);
+                    cloner_name = name;
                 }
                 
                 any_type->mPointerNum--;
@@ -202,6 +238,29 @@ class sNewNode extends sNodeBase
                 come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
                 
                 type2->mPointerNum--;
+            }
+            else if(generics_any_child) {
+                sType*% any_type = no_solved_type;
+                any_type->mAnyClass = false;
+                any_type->mAnyOriginalType = null;
+                any_type->mPointerNum = 1;
+                any_type->mHeap = true;
+                
+                string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+                string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+                
+                if(info.funcs[finalizer_name]?? == null) {
+                    (void*)create_finalizer_automatically(any_type, "finalize", info);
+                }
+                if(info.funcs[cloner_name]?? == null) {
+                    var fun, name = create_cloner_automatically(any_type, "clone", info);
+                    cloner_name = name;
+                }
+                
+                any_type->mPointerNum--;
+                string any_type_name = make_type_name_string(any_type);
+                
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
             }
             else {
                 come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
