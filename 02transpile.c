@@ -317,14 +317,14 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
         
         if(rc != 0) {
             printf("%s %d: %s is faild\n", info->sname, info->sline, CC);
+            
+            var command2 = xsprintf("grep error\\: %s.out", input_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
             return false;
         }
     }
-    
-    var command2 = xsprintf("grep error\\: %s.out", input_file_name);
-    
-    if(info.verbose) puts(command2);
-    (void)system(command2);
     
     if(!output_object_file) {
         object_files.insert(0, string(output_file_name));

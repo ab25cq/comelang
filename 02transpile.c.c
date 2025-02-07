@@ -3891,9 +3891,9 @@ int rc_355;
 void* __right_value306 = (void*)0;
 char* __dec_obj40;
 int rc_356;
-_Bool __result237__;
 void* __right_value307 = (void*)0;
 char* command2_357;
+_Bool __result237__;
 void* __right_value311 = (void*)0;
 _Bool __result240__;
 output_file_name_353 = (void*)0;
@@ -3923,18 +3923,20 @@ output_file_name_353 = (void*)0;
         rc_356=system(command_354);
         if(        rc_356!=0) {
             printf("%s %d: %s is faild\n",info->sname,info->sline,CC);
+            command2_357=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.out",input_file_name_352));
+            if(            info->verbose) {
+                puts(command2_357);
+            }
+            (void)system(command2_357);
             __result237__ = (_Bool)0;
+            command2_357 = come_decrement_ref_count2(command2_357, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             input_file_name_352 = come_decrement_ref_count2(input_file_name_352, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             output_file_name_353 = come_decrement_ref_count2(output_file_name_353, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             command_354 = come_decrement_ref_count2(command_354, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             return __result237__;
+            command2_357 = come_decrement_ref_count2(command2_357, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
     }
-    command2_357=(char*)come_increment_ref_count(xsprintf("grep error\\: %s.out",input_file_name_352));
-    if(    info->verbose) {
-        puts(command2_357);
-    }
-    (void)system(command2_357);
     if(    !output_object_file) {
         list$1charph_insert(object_files,0,(char*)come_increment_ref_count(__builtin_string(output_file_name_353)));
     }
@@ -3942,7 +3944,6 @@ output_file_name_353 = (void*)0;
     input_file_name_352 = come_decrement_ref_count2(input_file_name_352, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     output_file_name_353 = come_decrement_ref_count2(output_file_name_353, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     command_354 = come_decrement_ref_count2(command_354, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    command2_357 = come_decrement_ref_count2(command2_357, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     return __result240__;
 }
 
