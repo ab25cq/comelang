@@ -13,13 +13,12 @@ int main(int argc, char** argv)
     
     list<sData~>*% li = new list<sData*%~>();
     li.add(new sData*%~ { c:s"WIN" });
+    li.add(new sData*%~ { c:s"WIN" });
     
     li3.add(li);
     li3.add(clone li);
     
-    list<sData~>*% x = li3[0];
-    
-    puts(x[0].c);
+    puts((li3[0])[0].c);
     
     return 0;
 }

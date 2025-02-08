@@ -1,13 +1,27 @@
 #include <comelang.h>
 
-int, int fun()
+struct sData
 {
-    return (1, 1);
-}
+    int a;
+    int b;
+    string c;
+};
 
 int main(int argc, char** argv)
 {
-    var a, b = fun();
+    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
+    
+/*
+    list<sData~>*% li = new list<sData*%~>();
+    li.add(new sData*%~ { c:s"WIN" });
+    
+    li3.add(li);
+    li3.add(clone li);
+    
+    list<sData~>*% x = li3[0];
+    
+    puts(x[0].c);
+*/
     
     return 0;
 }
