@@ -158,6 +158,8 @@ struct sType
     string mTupleName;
     string mAttribute;
     int mGenericsNumBefore;
+    
+    bool mGenerate;
 };
 
 struct sVar;
@@ -220,6 +222,7 @@ struct sFun
     bool mStatic;
     bool mInline;
     bool mUniq;
+    bool mGenerate;
     
     string mComeHeader;
     bool mCloner;
@@ -250,6 +253,7 @@ struct sGenericsFun
     int mSLine;
     
     bool mVarArgs;
+    bool mGenerate;
     
     string mGenericsSName;
     int mGenericsSLine;
@@ -583,7 +587,7 @@ sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* par
 void sVarTable*::finalize(sVarTable* self);
 sClass*% sClass*::initialize(sClass*% self, char* name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, sInfo* info=info);
 sClassModule*% sClassModule*::initialize(sClassModule*% self, char* name, string text, string sname, int sline, sInfo* info);
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string come_header, string declare_sname, sInfo* info, bool inline_, bool uniq_, string attribute=s"", string fun_attribute=s"");
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string come_header, string declare_sname, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"");
 string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false);
 string make_come_type_name_string(sType* type, sInfo* info=info);
 string make_come_type_name_string_no_solved(sType* type, bool original_type_name=false, sInfo* info=info);
@@ -683,7 +687,7 @@ string backtrace_parse_word(sInfo* info=info);
 void skip_spaces_and_lf(sInfo* info=info);
 int expected_next_character(char c, sInfo* info=info);
 sBlock*% sBlock*::initialize(sBlock*% self, sInfo* info);
-bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info);
+string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info);
 
 sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);
 tup: sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* info);

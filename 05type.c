@@ -43,6 +43,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         || buf === "_Atomic"
         || ((buf === "__attribute" || buf === "__attribute__") && *info->p == '(')
         || (buf === "immutable")
+        || (buf === "generate")
         || (buf === "mutable")
         || (buf === "tup" && (*info->p == ':' || *info->p == '('))
         || (info.in_top_level && buf === "exception") 
@@ -1213,6 +1214,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool inline_ = false;
     bool uniq_ = false;
     bool tuple_ = false;
+    bool generate_ = false;
     
     sNode*% alignas_ = null;
     
@@ -1352,6 +1354,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else if(type_name === "volatile") {
             volatile_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "generate") {
+            generate_ = true;
             
             type_name = parse_word();
         }
@@ -2132,6 +2139,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
+        result_type->mGenerate = generate_;
         result_type->mRecord = result_type->mRecord || record_;
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
@@ -2205,6 +2213,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
+        result_type->mGenerate = generate_;
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
         result_type->mRecord = result_type->mRecord || record_;
@@ -2358,6 +2367,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
+            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2387,6 +2397,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
+            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2416,6 +2427,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
+            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2486,6 +2498,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
+            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2528,6 +2541,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
+            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;

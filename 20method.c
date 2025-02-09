@@ -5,22 +5,78 @@ class sCurrentNode extends sNodeBase
     include sCurrentNodeModule;
 };
 
+sType*% use_any_type(sType*% type)
+{
+    if(type->mAnyOriginalType) {
+        type = type->mAnyOriginalType;
+    }
+    
+    int i = 0;
+    foreach(it, type->mGenericsTypes) {
+        type->mGenericsTypes[i] = use_any_type(clone it);
+        i++;
+    }
+    
+    return type;
+}
+
+sType*% remove_any_type(sType*% type)
+{
+    if(type->mAnyOriginalType) {
+        type->mAnyOriginalType = null;
+        type->mAnyClass = false;
+    }
+    
+    int i = 0;
+    foreach(it, type->mGenericsTypes) {
+        type->mGenericsTypes[i] = remove_any_type(clone it);
+        i++;
+    }
+    
+    return type;
+}
+
 string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true)
 {
-/*
-    sType*% obj_type = solve_generics(type, info.generics_type, info);
-*/
-    
     string none_generics_name = get_none_generics_name(type.mClass.mName);
     string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info, array_equal_pointer);
     string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
     
     sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
     
+    bool generics_any_child = false;
+    sType*% no_solved_type = null;
+    if(type->mNoSolvedGenericsType && type->mNoSolvedGenericsType.v1) {
+        no_solved_type = type->mNoSolvedGenericsType.v1;
+        
+        foreach(it, no_solved_type->mGenericsTypes) {
+            if(it->mAnyOriginalType) {
+                generics_any_child = true;
+            }
+        }
+    }
+    
     if(generics_fun) {
-        if(!create_generics_fun(string(fun_name2), generics_fun, type, info)) {
-            err_msg(info, "%s not found", fun_name3);
-            return (string(""), null);
+        if(generics_fun->mResultType->mGenerate && (type->mAnyOriginalType || generics_any_child)) {
+            sType*% type2 = use_any_type(clone no_solved_type);
+            
+
+            fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, array_equal_pointer);
+            
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
+            
+            if(!err) {
+                err_msg(info, "%s not found", fun_name3);
+                return (string(""), null);
+            }
+        }
+        else {
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, type, info);
+            
+            if(!err) {
+                err_msg(info, "%s not found", fun_name3);
+                return (string(""), null);
+            }
         }
     }
     

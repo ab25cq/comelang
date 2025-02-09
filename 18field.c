@@ -21,12 +21,17 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
         generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
                 exit(1);
             }
+            
+            operator_fun = info->funcs[name]??;
         }
-        
-        operator_fun = info->funcs[fun_name2]??;
+        else {
+            operator_fun = info->funcs[fun_name2]??;
+        }
     }
     else {
         fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);

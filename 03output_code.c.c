@@ -628,6 +628,7 @@ struct sType
     char* mTupleName;
     char* mAttribute;
     int mGenericsNumBefore;
+    _Bool mGenerate;
 };
 
 struct CVALUE
@@ -671,6 +672,7 @@ struct sFun
     _Bool mStatic;
     _Bool mInline;
     _Bool mUniq;
+    _Bool mGenerate;
     char* mComeHeader;
     _Bool mCloner;
     char* mDeclareSName;
@@ -694,6 +696,7 @@ struct sGenericsFun
     char* mBlock;
     int mSLine;
     _Bool mVarArgs;
+    _Bool mGenerate;
     char* mGenericsSName;
     int mGenericsSLine;
 };
@@ -1041,6 +1044,12 @@ struct tuple2$2sFunpcharph
 {
     struct sFun* v1;
     char* v2;
+};
+
+struct tuple2$2charphbool
+{
+    char* v1;
+    _Bool v2;
 };
 
 struct tuple3$3sTypephcharphsNodeph
@@ -1601,7 +1610,7 @@ struct sVarTable* sVarTable_initialize(struct sVarTable* self, _Bool global, str
 void sVarTable_finalize(struct sVarTable* self);
 struct sClass* sClass_initialize(struct sClass* self, char* name, _Bool number, _Bool union_, _Bool generics, _Bool method_generics, _Bool protocol_, _Bool struct_, _Bool float_, int generics_num, int method_generics_num, _Bool enum_, struct sInfo* info);
 struct sClassModule* sClassModule_initialize(struct sClassModule* self, char* name, char* text, char* sname, int sline, struct sInfo* info);
-struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct list$1charph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, char* come_header, char* declare_sname, struct sInfo* info, _Bool inline_, _Bool uniq_, char* attribute, char* fun_attribute);
+struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct list$1charph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, char* come_header, char* declare_sname, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute);
 char* create_generics_name(struct sType* generics_type, struct sInfo* info);
 struct sType* solve_method_generics(struct sType* type, struct sInfo* info);
 _Bool existance_free_right_value_objects(struct sInfo* info);
@@ -1668,7 +1677,7 @@ char* backtrace_parse_word(struct sInfo* info);
 void skip_spaces_and_lf(struct sInfo* info);
 int expected_next_character(char c, struct sInfo* info);
 struct sBlock* sBlock_initialize(struct sBlock* self, struct sInfo* info);
-_Bool create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sType* generics_type, struct sInfo* info);
+struct tuple2$2charphbool* create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sType* generics_type, struct sInfo* info);
 struct tuple3$3sTypephcharphbool* parse_type(struct sInfo* info, _Bool parse_variable_name, _Bool parse_multiple_type, _Bool in_function_parametor);
 struct tuple2$2sTypephcharph* parse_variable_name(struct sType* base_type_name, _Bool first, struct sInfo* info);
 struct sBlock* parse_block(struct sInfo* info, _Bool no_block_level, _Bool return_self_at_last, _Bool in_function);
@@ -4412,6 +4421,9 @@ struct sType* __result252__;
     }
     if(    self!=((void*)0)) {
         ((struct sType*)result_332)->mGenericsNumBefore=self->mGenericsNumBefore;
+    }
+    if(    self!=((void*)0)) {
+        ((struct sType*)result_332)->mGenerate=self->mGenerate;
     }
     __result252__ = gComeFunResultObject = __result_obj__ = ((struct sType*)result_332);
     come_call_finalizer3(result_332, (void*)0, 0, 0, 1, 0, (void*)0);

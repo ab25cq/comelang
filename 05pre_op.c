@@ -29,11 +29,14 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         
         
         if(generics_fun) {
-            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
                 return false;
             }
             
-            operator_fun = info->funcs[fun_name2]??;
+            operator_fun = info->funcs[name]??;
+            //operator_fun = info->funcs[fun_name2]??;
         }
         else {
             if(fun_name === "operator_equals") {

@@ -628,6 +628,7 @@ struct sType
     char* mTupleName;
     char* mAttribute;
     int mGenericsNumBefore;
+    _Bool mGenerate;
 };
 
 struct CVALUE
@@ -671,6 +672,7 @@ struct sFun
     _Bool mStatic;
     _Bool mInline;
     _Bool mUniq;
+    _Bool mGenerate;
     char* mComeHeader;
     _Bool mCloner;
     char* mDeclareSName;
@@ -694,6 +696,7 @@ struct sGenericsFun
     char* mBlock;
     int mSLine;
     _Bool mVarArgs;
+    _Bool mGenerate;
     char* mGenericsSName;
     int mGenericsSLine;
 };
@@ -1041,6 +1044,12 @@ struct tuple2$2sFunpcharph
 {
     struct sFun* v1;
     char* v2;
+};
+
+struct tuple2$2charphbool
+{
+    char* v1;
+    _Bool v2;
 };
 
 struct tuple3$3sTypephcharphsNodeph
@@ -1675,7 +1684,7 @@ char* backtrace_parse_word(struct sInfo* info);
 void skip_spaces_and_lf(struct sInfo* info);
 int expected_next_character(char c, struct sInfo* info);
 struct sBlock* sBlock_initialize(struct sBlock* self, struct sInfo* info);
-_Bool create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sType* generics_type, struct sInfo* info);
+struct tuple2$2charphbool* create_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sType* generics_type, struct sInfo* info);
 struct tuple3$3sTypephcharphbool* parse_type(struct sInfo* info, _Bool parse_variable_name, _Bool parse_multiple_type, _Bool in_function_parametor);
 struct tuple2$2sTypephcharph* parse_variable_name(struct sType* base_type_name, _Bool first, struct sInfo* info);
 struct sBlock* parse_block(struct sInfo* info, _Bool no_block_level, _Bool return_self_at_last, _Bool in_function);
@@ -1830,7 +1839,7 @@ struct sClass* sClass_initialize(struct sClass* self, char* name, _Bool number, 
 static struct list$1tuple2$2charphsTypephph* list$1tuple2$2charphsTypephph_initialize(struct list$1tuple2$2charphsTypephph* self);
 struct sClassModule* sClassModule_initialize(struct sClassModule* self, char* name, char* text, char* sname, int sline, struct sInfo* info);
 static void sClassModule_finalize(struct sClassModule* self);
-struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct list$1charph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, char* come_header, char* declare_sname, struct sInfo* info, _Bool inline_, _Bool uniq_, char* attribute, char* fun_attribute);
+struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct list$1charph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, char* come_header, char* declare_sname, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute);
 static struct sType* list$1sTypeph_begin(struct list$1sTypeph* self);
 static _Bool list$1sTypeph_end(struct list$1sTypeph* self);
 static struct sType* list$1sTypeph_next(struct list$1sTypeph* self);
@@ -8262,7 +8271,7 @@ char* __dec_obj105;
     }
 }
 
-struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct list$1charph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, char* come_header, char* declare_sname, struct sInfo* info, _Bool inline_, _Bool uniq_, char* attribute, char* fun_attribute){
+struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sTypeph* param_types, struct list$1charph* param_names, struct list$1charph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, char* come_header, char* declare_sname, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute){
 void* __result_obj__=(void*)0;
 char* __dec_obj106;
 struct sType* __dec_obj107;
@@ -8322,8 +8331,9 @@ result_395 = (void*)0;
     self->mStatic=static_;
     self->mInline=inline_;
     self->mUniq=uniq_;
+    self->mGenerate=generate_;
     __dec_obj111=self->mLambdaType;
-    self->mLambdaType=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "01main.c", 167, "struct sType*", (void*)0, (void*)0)),"lambda",(_Bool)0,info));
+    self->mLambdaType=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "01main.c", 168, "struct sType*", (void*)0, (void*)0)),"lambda",(_Bool)0,info));
     come_call_finalizer3(__dec_obj111,sType_finalize, 0, 0, 0, 0, (void*)0);
     for(    o2_saved_362=(struct list$1sTypeph*)come_increment_ref_count((param_types)),it_365=list$1sTypeph_begin((o2_saved_362));    !list$1sTypeph_end((o2_saved_362));    it_365=list$1sTypeph_next((o2_saved_362))    ){
         list$1sTypeph_push_back(self->mLambdaType->mParamTypes,(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, it_365)));
@@ -8334,20 +8344,20 @@ result_395 = (void*)0;
     }
     come_call_finalizer3(o2_saved_389,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
     __dec_obj143=self->mLambdaType->mResultType;
-    self->mLambdaType->mResultType=(struct tuple1$1sTypeph*)come_increment_ref_count(tuple1$1sTypeph_initialize((struct tuple1$1sTypeph*)come_increment_ref_count((struct tuple1$1sTypeph*)come_calloc(1, sizeof(struct tuple1$1sTypeph)*(1), "01main.c", 177, "struct tuple1$1sTypeph*", (void*)0, (void*)0)),(struct sType*)come_increment_ref_count(result_type)));
+    self->mLambdaType->mResultType=(struct tuple1$1sTypeph*)come_increment_ref_count(tuple1$1sTypeph_initialize((struct tuple1$1sTypeph*)come_increment_ref_count((struct tuple1$1sTypeph*)come_calloc(1, sizeof(struct tuple1$1sTypeph)*(1), "01main.c", 178, "struct tuple1$1sTypeph*", (void*)0, (void*)0)),(struct sType*)come_increment_ref_count(result_type)));
     come_call_finalizer3(__dec_obj143,tuple1$1sTypeph_finalize, 0, 0, 0, 0, (void*)0);
     self->mLambdaType->mVarArgs=var_args;
     __dec_obj144=self->mSource;
-    self->mSource=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 180, "struct buffer*", (void*)0, (void*)0))));
+    self->mSource=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 181, "struct buffer*", (void*)0, (void*)0))));
     come_call_finalizer3(__dec_obj144,buffer_finalize, 0, 0, 0, 0, (void*)0);
     __dec_obj145=self->mSourceHead;
-    self->mSourceHead=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 181, "struct buffer*", (void*)0, (void*)0))));
+    self->mSourceHead=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 182, "struct buffer*", (void*)0, (void*)0))));
     come_call_finalizer3(__dec_obj145,buffer_finalize, 0, 0, 0, 0, (void*)0);
     __dec_obj146=self->mSourceHead2;
-    self->mSourceHead2=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 182, "struct buffer*", (void*)0, (void*)0))));
+    self->mSourceHead2=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 183, "struct buffer*", (void*)0, (void*)0))));
     come_call_finalizer3(__dec_obj146,buffer_finalize, 0, 0, 0, 0, (void*)0);
     __dec_obj147=self->mSourceDefer;
-    self->mSourceDefer=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 183, "struct buffer*", (void*)0, (void*)0))));
+    self->mSourceDefer=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "01main.c", 184, "struct buffer*", (void*)0, (void*)0))));
     come_call_finalizer3(__dec_obj147,buffer_finalize, 0, 0, 0, 0, (void*)0);
     __dec_obj148=self->mBlock;
     self->mBlock=(struct sBlock*)come_increment_ref_count(block);
@@ -8753,6 +8763,9 @@ struct sType* __result279__;
     }
     if(    self!=((void*)0)) {
         ((struct sType*)result_371)->mGenericsNumBefore=self->mGenericsNumBefore;
+    }
+    if(    self!=((void*)0)) {
+        ((struct sType*)result_371)->mGenerate=self->mGenerate;
     }
     __result279__ = gComeFunResultObject = __result_obj__ = ((struct sType*)result_371);
     come_call_finalizer3(result_371, (void*)0, 0, 0, 1, 0, (void*)0);

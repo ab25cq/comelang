@@ -151,7 +151,7 @@ sClassModule*% sClassModule*::initialize(sClassModule*% self, char* name, string
     return self;
 };
 
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string come_header, string declare_sname, sInfo* info, bool inline_, bool uniq_=false, string attribute=s"", string fun_attribute=s"")
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string come_header, string declare_sname, sInfo* info, bool inline_, bool uniq_=false, bool generate_, string attribute=s"", string fun_attribute=s"")
 {
     self.mName = name;
     self.mResultType = result_type;
@@ -163,6 +163,7 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
     self.mStatic = static_;
     self.mInline = inline_;
     self.mUniq = uniq_;
+    self.mGenerate = generate_;
     
     self.mLambdaType = new sType("lambda");
     

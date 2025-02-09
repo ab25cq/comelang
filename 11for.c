@@ -89,7 +89,10 @@ class sForNode extends sNodeBase
                 conditional_value = get_value_from_stack(-1, info);
                 dec_stack_ptr(1, info);
             
+                bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+                info.comma_instead_of_semicolon = true;
                 free_right_value_objects(info, comma:true);
+                info.comma_instead_of_semicolon = comma_instead_of_semicolon;
                 
                 add_come_code(info, "0;");
             }

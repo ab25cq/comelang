@@ -150,6 +150,14 @@ sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type,
     self.mGenericsSName = string(generics_sname);
     self.mGenericsSLine = generics_sline;
     
+/*
+    bool generate_ = false;
+    if(self.mResultType->mGenerate) {
+        self.mResultType.mGenerate = false;
+        self.mGenerate = true;
+    }
+*/
+    
     return self;
 }
 
@@ -1538,7 +1546,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_calloc(int count, int size, char* sname, int sline, char* class_name, void* finalizer_fun, void* cloner_fun)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1553,7 +1561,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_increment_ref_count(void* mem)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1568,7 +1576,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1583,7 +1591,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, _Bool no_decrement, _Bool no_free)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1598,7 +1606,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void come_free_object(void* mem)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1617,7 +1625,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_memdup(void* block, char* sname, int sline, char* class_name)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1632,7 +1640,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* memset(void* b, int c, size_t len)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1647,7 +1655,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("char* __builtin_string(char* str)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1663,7 +1671,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("short __builtin_bswap16(short x)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1678,7 +1686,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("int __builtin_bswap32(int x)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1693,7 +1701,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("long __builtin_bswap64(long x)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1710,7 +1718,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("come_heap_init(int come_malloc, int come_debug, int come_gc)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1725,7 +1733,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void come_heap_final()")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1740,7 +1748,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void* come_null_check(void* mem, char* sname, int sline, int id)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
     }
@@ -1755,7 +1763,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void __builtin_va_start()")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), fun);
     }
@@ -1771,7 +1779,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void __builtin_va_va_arg(char* ap)")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), fun);
     }
@@ -1787,7 +1795,7 @@ int transpile(sInfo* info) version 5
             , null@block, false@static_
             , string("void __builtin_va_end()")
             , string("")
-            , info, false@inline_, false@uniq_);
+            , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), fun);
     }
@@ -2219,7 +2227,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                                     , param_default_parametors
                                     , true@external, var_args, null@block
                                     , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_
-                                    , false@uniq_);
+                                    , false@uniq_, false@generate);
                 
                 var fun2 = info.funcs[string(fun_name)]??;
                 if(fun2 == null || fun2.mExternal) {
@@ -2275,8 +2283,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
     return inherit(buf2, head, head_sline, info);
 }
 
-
-bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info)
+string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info)
 {
     sFun* caller_fun = info->caller_fun;
     info->caller_fun = info->come_fun;
@@ -2295,22 +2302,15 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     string sname_top = string(info->sname);
     int sline_top = info->sline;
     
-/*
-    foreach(it, generics_type.mGenericsTypes) {
-        it.mAnyClass = false;
-        it.mAnyOriginalType = null;
-    }
-*/
-    
     if(generics_type->mNoSolvedGenericsType.v1) {
         generics_type = generics_type->mNoSolvedGenericsType.v1;
     }
     
     sFun*% funX = info.funcs[fun_name]??;
     if(funX) {
-        return true;
+        return (fun_name, true);
     }
-
+    
     sType*% result_type = solve_generics(generics_fun->mResultType, generics_type, info);
     
     list<sType*%>*% param_types = new list<sType*%>();
@@ -2367,7 +2367,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     var fun = new sFun(fun_name, result_type
                     , param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_);
+                    , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_, false@generate_);
     
     info.funcs.insert(clone fun_name, fun);
     
@@ -2376,7 +2376,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     bool in_generics_fun = info.in_generics_fun;
     info.in_generics_fun = true;
     node_compile(node).elif {
-        return false
+        return (s"", false);
     }
     info.in_generics_fun = in_generics_fun;
     
@@ -2396,7 +2396,7 @@ bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* gen
     info->caller_sname = caller_sname;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
     
-    return true;
+    return (string(fun_name), true);
 }
 
 bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sInfo* info)
@@ -2472,11 +2472,17 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     result_type->mStatic = false;
     result_type->mUniq = false;
     
+    bool generate_ = false;
+    if(result_type->mGenerate) {
+        result_type->mGenerate = false;
+        generate_ = true;
+    }
+    
     bool var_args = generics_fun.mVarArgs;
     var fun = new sFun(fun_name, result_type
                     , clone param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_);
+                    , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_, generate_);
     
     info.funcs.insert(clone fun_name, fun);
     
@@ -2647,11 +2653,12 @@ sNode*% parse_function(sInfo* info)
         result_type->mInline = false;
         result_type->mStatic = false;
         result_type->mUniq = false;
+        result_type->mGenerate = false;
         
         var fun = new sFun(string(fun_name), result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, var_args, block
-                            , true@static_, header_buf.to_string(), string(""), info, false@inline_, false@uniq_);
+                            , true@static_, header_buf.to_string(), string(""), info, false@inline_, false@uniq_, false@generate_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -2794,6 +2801,13 @@ sNode*% parse_function(sInfo* info)
             result_type->mStatic = false;
             uniq_fun = true;
         }
+        bool generate_fun = false;
+        if(result_type->mUniq) {
+            result_type->mUniq = false;
+            result_type->mInline = false;
+            result_type->mStatic = false;
+            generate_fun = true;
+        }
         
         if(version > 0) {
             string new_fun_name = xsprintf("%s_v%d", string(fun_name), version);
@@ -2807,7 +2821,7 @@ sNode*% parse_function(sInfo* info)
                                 , static_fun@static_
                                 , header_buf.to_string()
                                 , string(info->sname)
-                                , info, inline_fun, uniq_fun, attribute);
+                                , info, inline_fun, uniq_fun, generate_fun, attribute);
     
         if(info.in_class) {
             info.funcs.insert(clone fun_name, fun);
@@ -2842,13 +2856,14 @@ sNode*% parse_function(sInfo* info)
             result_type->mStatic = false;
             result_type->mUniq = false;
             result_type->mInline = false;
+            result_type->mGenerate = false;
             
             var fun = new sFun(string(fun_name), result_type
                                 , param_types, param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
                                 , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_
-                                , false@uniq_, attribute);
+                                , false@uniq_, false@generate_, attribute);
             
             var fun2 = info.funcs[string(fun_name)]??;
             if(fun2 == null || fun2.mExternal) {
@@ -2883,12 +2898,14 @@ sNode*% parse_function(sInfo* info)
             result_type->mStatic = false;
             result_type->mUniq = false;
             result_type->mInline = false;
+            result_type->mGenerate = false;
             
             var fun = new sFun(string(fun_name), result_type, param_types
                                 , param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
                                 , false@static_, header_buf.to_string(), string(info->sname), info, false@inline_, false@uniq_
+                                , false@genereate_
                                 , attribute, fun_attribute);
             
             var fun2 = info.funcs[string(fun_name)]??;
@@ -2954,12 +2971,16 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
             sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
             
             if(generics_fun) {
-                if(!create_generics_fun(fun_name2, generics_fun, type, info))
+                var name, err = create_generics_fun(fun_name2, generics_fun, type, info);
+                
+                if(!err) 
                 {
                     printf("%s %d: can't create generics finalizer\n", info->sname, info->sline);
                     exit(2);
                 }
-                finalizer = info->funcs[fun_name2]??;
+                
+                finalizer = info->funcs[name]??;
+                //finalizer = info->funcs[fun_name2]??;
             }
         }
         
@@ -3095,6 +3116,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
             result_type->mStatic = false;
             result_type->mUniq = false;
             result_type->mInline = false;
+            result_type->mGenerate = false;
             
             var fun2 = info.funcs[string(name)]??;
             if(fun2 == null || fun2.mExternal) {
@@ -3104,7 +3126,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
                             , true@static_
                             , header_buf.to_string()
                             , string("")
-                            , info, false@inline_, false@uniq_);
+                            , info, false@inline_, false@uniq_, false@generate_);
                             
                 info.funcs.insert(clone name, fun);
                 
@@ -3245,6 +3267,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
+        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3254,7 +3277,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info, false@inline_, false@uniq_);
+                        , info, false@inline_, false@uniq_, true@genereate_);
                         
             info.funcs.insert(clone name, fun);
         
@@ -3413,6 +3436,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
+        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3422,7 +3446,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
                             , true@static_
                             , header_buf.to_string()
                             , string("")
-                            , info, false@inline_, false@uniq_);
+                            , info, false@inline_, false@uniq_, true@gnereate_);
                             
             info.funcs.insert(clone name, fun);
         
@@ -3578,6 +3602,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
+        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3587,7 +3612,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info, false@inline_, false@uniq_);
+                        , info, false@inline_, false@uniq_, false@generate_);
                         
             info.funcs.insert(clone name, fun);
         
@@ -3728,6 +3753,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
+        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3737,7 +3763,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info, false@inline_, false@uniq_);
+                        , info, false@inline_, false@uniq_, false@genereate_);
                         
             info.funcs.insert(clone name, fun);
         
@@ -3809,14 +3835,19 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
                 if(type->mClass->mName === "void") {
                     return ((sFun*)null, (string)null);
                 }
             }
+            
+            cloner = info->funcs[name]??;
         }
-        
-        cloner = info->funcs[fun_name2]??;
+        else {
+            cloner = info->funcs[fun_name2]??;
+        }
         
         real_fun_name = fun_name2;
     }
@@ -3969,6 +4000,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
+        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         
@@ -3979,7 +4011,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
                         , true@static_
                         , header_buf.to_string()
                         , string("")
-                        , info, false@inline_, false@uniq_);
+                        , info, false@inline_, false@uniq_, false@generate_);
                         
             fun->mCloner = true;
             
@@ -4141,6 +4173,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
+        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -4150,7 +4183,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , true@static_
                             , header_buf.to_string()
                             , string("")
-                            , info, false@inline_, false@uniq_);
+                            , info, false@inline_, false@uniq_, true@generate_);
                             
             fun->mCloner = true;
             
@@ -4224,12 +4257,15 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
             sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
             
             if(generics_fun) {
-                if(!create_generics_fun(real_fun_name, generics_fun, type, info))
+                var name, err = create_generics_fun(real_fun_name, generics_fun, type, info);
+                
+                if(!err)
                 {
                     printf("%s %d: can't create generics to_string_fun\n", info->sname, info->sline);
                     exit(2);
                 }
-                to_string_fun = info->funcs[real_fun_name]??;
+                to_string_fun = info->funcs[name]??;
+                //to_string_fun = info->funcs[real_fun_name]??;
             }
         }
     }
@@ -4365,7 +4401,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , true@static_
                             , header_buf.to_string()
                             , string("")
-                            , info, false@inline_, false@uniq_);
+                            , info, false@inline_, false@uniq_, false@generate_);
                             
             fun->mCloner = true;
             
@@ -4439,12 +4475,15 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
             sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
             
             if(generics_fun) {
-                if(!create_generics_fun(real_fun_name, generics_fun, type, info))
+                var name, err = create_generics_fun(real_fun_name, generics_fun, type, info);
+                
+                if(!err)
                 {
                     printf("%s %d: can't create generics get_hash_key_fun\n", info->sname, info->sline);
                     exit(2);
                 }
-                get_hash_key_fun = info->funcs[real_fun_name]??;
+                get_hash_key_fun = info->funcs[name]??;
+                //get_hash_key_fun = info->funcs[real_fun_name]??;
             }
         }
     }
@@ -4537,6 +4576,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
+        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -4546,7 +4586,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
                             , true@static_
                             , header_buf.to_string()
                             , string("")
-                            , info, false@inline_, false@uniq_);
+                            , info, false@inline_, false@uniq_, true@generate_);
                             
             fun->mCloner = true;
             

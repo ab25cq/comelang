@@ -64,9 +64,13 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
         bool null_value = type->mNullValue;
+        bool generate_ = type->mGenerate;
         
         result = clone info->method_generics_types[generics_number];
 
+        if(generate_) {
+            result->mGenerate = generate_;
+        }
         if(heap) {
             result->mHeap = heap;
         }
@@ -125,10 +129,14 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool record_ = type->mRecord;
             bool multiple_types = type->mMultipleTypes;
             bool exception_ = type->mException;
+            bool generate_ = type->mGenerate;
             
             result = clone generics_type->mGenericsTypes[generics_number];
             result.mGenericsNumBefore = generics_number;
 
+            if(generate_) {
+                result->mGenerate = generate_;
+            }
             if(heap) {
                 result->mHeap = heap;
             }
@@ -211,9 +219,13 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool no_calling_destructor = type->mNoCallingDestructor;
         bool null_value = type->mNullValue;
         bool exception_ = type->mException;
+        bool generate_ = type->mGenerate;
         
         result = clone info->method_generics_types[generics_number];
 
+        if(generate_) {
+            result->mGenerate = generate_;
+        }
         if(heap) {
             result->mHeap = heap || result->mHeap;
         }
@@ -409,12 +421,14 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
                 sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
                 
                 if(generics_fun) {
-                    if(!create_generics_fun(fun_name2, generics_fun, type, info))
-                    {
+                    var name, err = create_generics_fun(fun_name2, generics_fun, type, info);
+                    
+                    if(!err) {
                         printf("%s %d: can't create generics finalizer\n", info->sname, info->sline);
                         exit(2);
                     }
-                    finalizer = info->funcs[fun_name2]??;
+                    finalizer = info->funcs[name]??;
+                    //finalizer = info->funcs[fun_name2]??;
                 }
             }
         }
@@ -527,12 +541,14 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                 sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
                 
                 if(generics_fun) {
-                    if(!create_generics_fun(fun_name2, generics_fun, type, info))
-                    {
+                    var name, err = create_generics_fun(fun_name2, generics_fun, type, info);
+                    
+                    if(!err) {
                         printf("%s %d: can't create generics finalizer\n", info->sname, info->sline);
                         exit(2);
                     }
-                    finalizer = info->funcs[fun_name2]??;
+                    //finalizer = info->funcs[fun_name2]??;
+                    finalizer = info->funcs[name]??;
                 }
             }
         }
@@ -759,12 +775,16 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
         sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
                 return (new sType("void"), string(""));
             }
+            cloner = info->funcs[name]??;
         }
-        
-        cloner = info->funcs[fun_name2]??;
+        else {
+            cloner = info->funcs[fun_name2]??;
+        }
     }
     else {
         fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
@@ -859,12 +879,18 @@ bool create_equals_method(sType* type, sInfo* info)
         sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+            var name,err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+        
+            if(!err) {
                 return false;
             }
+            else {
+                cloner = info->funcs[name]??;
+            }
         }
-        
-        cloner = info->funcs[fun_name2]??;
+        else {
+            cloner = info->funcs[fun_name2]??;
+        }
     }
     else {
         fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
@@ -930,12 +956,16 @@ bool create_operator_equals_method(sType* type, sInfo* info)
         sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+            var name,err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
                 return false;
             }
+            cloner = info->funcs[name]??;
         }
-        
-        cloner = info->funcs[fun_name2]??;
+        else {
+            cloner = info->funcs[fun_name2]??;
+        }
     }
     else {
         fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
@@ -1001,12 +1031,16 @@ bool create_operator_not_equals_method(sType* type, sInfo* info)
         sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            if(!create_generics_fun(string(fun_name2), generics_fun, obj_type, info)) {
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
                 return false;
             }
+            cloner = info->funcs[name]??;
         }
-        
-        cloner = info->funcs[fun_name2]??;
+        else {
+            cloner = info->funcs[fun_name2]??;
+        }
     }
     else {
         fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
