@@ -48,7 +48,7 @@ string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo*
     sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
     
     bool generics_any_child = false;
-    sType*% no_solved_type = null;
+    sType*% no_solved_type = clone type;
     if(type->mNoSolvedGenericsType && type->mNoSolvedGenericsType.v1) {
         no_solved_type = type->mNoSolvedGenericsType.v1;
         
