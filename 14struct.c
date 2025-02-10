@@ -131,7 +131,7 @@ void output_struct_come_header(sClass* klass, sInfo* info)
 
 bool is_contained_generics_types(sType* type, sInfo* info)
 {
-    sType* type2 = type->mNoSolvedGenericsType.v1;
+    sType* type2 = type->mNoSolvedGenericsType;
     
     if(type2 && is_contained_generics_types(type2, info)) {
         return true;
@@ -155,7 +155,7 @@ bool is_contained_generics_types(sType* type, sInfo* info)
 
 bool is_contained_method_generics_types(sType* type, sInfo* info)
 {
-    sType* type2 = type->mNoSolvedGenericsType.v1;
+    sType* type2 = type->mNoSolvedGenericsType;
     
     if(type2 && is_contained_method_generics_types(type2, info)) {
         return true;
@@ -203,17 +203,17 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
             new_class.mFields.push_back((clone name, clone new_type));
         }
         
-        type->mNoSolvedGenericsType.v1 = clone type;
-        type->mNoSolvedGenericsType.v1.mPointerNum = type->mPointerNum;
+        type->mNoSolvedGenericsType = clone type;
+        type->mNoSolvedGenericsType.mPointerNum = type->mPointerNum;
         type->mClass = new_class;
         type->mGenericsTypes.reset();
         
         output_struct(new_class, info);
     }
     else { 
-        if(type->mNoSolvedGenericsType.v1 == null) {
-            type->mNoSolvedGenericsType.v1 = clone type;
-            type->mNoSolvedGenericsType.v1.mPointerNum = type->mPointerNum;
+        if(type->mNoSolvedGenericsType == null) {
+            type->mNoSolvedGenericsType = clone type;
+            type->mNoSolvedGenericsType.mPointerNum = type->mPointerNum;
         }
         type->mClass = info.classes[new_name]??;
         type->mGenericsTypes.reset();

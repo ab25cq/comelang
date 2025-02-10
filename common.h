@@ -82,8 +82,8 @@ struct sType
 {
     sClass* mClass;
     
-    tuple1<sType*%>*% mNoSolvedGenericsType;
-    tuple1<sType*%>*% mOriginalLoadVarType;
+    sType*% mNoSolvedGenericsType;
+    sType*% mOriginalLoadVarType;
     sType*% mAnyOriginalType;
     
     bool mAnyClass;
@@ -99,11 +99,11 @@ struct sType
     
     list<sType*%>*% mParamTypes;
     list<string>*% mParamNames;
-    tuple1<sType*%>*% mResultType;
+    sType*% mResultType;
     bool mVarArgs;
     
     sNode*% mAlignas;
-    tuple1<sType*%>*% mChannelType;
+    sType*% mChannelType;
     
     bool mUnsigned;
     bool mShort;

@@ -33,9 +33,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
     sClass* klass = type->mClass;
 
     if(klass->mName === "lambda") {
-        var result_type = solve_generics(type->mResultType.v1, generics_type, info);
+        var result_type = solve_generics(type->mResultType, generics_type, info);
         
-        result->mResultType = new tuple1<sType*%>(result_type);
+        result->mResultType = result_type;
         
         result.mParamTypes.reset();
 
@@ -270,7 +270,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
     }
     
     if(type->mResultType) {
-        result->mResultType.v1 = solve_method_generics(type->mResultType.v1, info);
+        result->mResultType = solve_method_generics(type->mResultType, info);
     }
     
     return result;
@@ -406,8 +406,8 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         
         string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
         
-        if(type->mNoSolvedGenericsType.v1) {
-            type = type->mNoSolvedGenericsType.v1;
+        if(type->mNoSolvedGenericsType) {
+            type = type->mNoSolvedGenericsType;
         }
         
         sFun* finalizer = NULL;
@@ -510,9 +510,9 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
         comma = true;
     }
     
-    if(type->mNoSolvedGenericsType.v1) {
+    if(type->mNoSolvedGenericsType) {
         bool alloca_value = type->mAllocaValue;
-        type = type->mNoSolvedGenericsType.v1;
+        type = type->mNoSolvedGenericsType;
         type->mAllocaValue = alloca_value;
     }
 
@@ -745,8 +745,8 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     info.in_clone_object = true;
     
     sType*% type2 = clone type;
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
     
     string result = null
@@ -850,8 +850,8 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
 
 bool create_equals_method(sType* type, sInfo* info)
 {
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
     string result = null
     var stack_saved = info.stack;
@@ -927,8 +927,8 @@ bool create_equals_method(sType* type, sInfo* info)
 
 bool create_operator_equals_method(sType* type, sInfo* info)
 {
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
     string result = null
     var stack_saved = info.stack;
@@ -1002,8 +1002,8 @@ bool create_operator_equals_method(sType* type, sInfo* info)
 
 bool create_operator_not_equals_method(sType* type, sInfo* info)
 {
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
     string result = null
     var stack_saved = info.stack;

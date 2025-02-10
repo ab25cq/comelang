@@ -6,8 +6,8 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
     sFun* operator_fun = null;
     sGenericsFun* generics_fun = null;
     
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
     
     if(type->mGenericsTypes.length() > 0) {
@@ -59,8 +59,8 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
 {
     sType*% generics_type = clone type;
     
-    if(generics_type->mNoSolvedGenericsType.v1) {
-        generics_type = generics_type->mNoSolvedGenericsType.v1;
+    if(generics_type->mNoSolvedGenericsType) {
+        generics_type = generics_type->mNoSolvedGenericsType;
     }
     
     sClass* klass = type->mClass;
@@ -175,8 +175,8 @@ class sStoreFieldNode extends sNodeBase
         
         sType*% left_type2 = left_value.type;
         
-        if(left_type2.mNoSolvedGenericsType && left_type2.mNoSolvedGenericsType.v1) {
-            left_type2 = left_type2.mNoSolvedGenericsType.v1;
+        if(left_type2.mNoSolvedGenericsType) {
+            left_type2 = left_type2.mNoSolvedGenericsType;
         }
         if(left_type2.mAnyOriginalType) {
             left_type2 = left_type2.mAnyOriginalType;
@@ -489,11 +489,11 @@ class sNullCheckNode extends sNodeBase
         CVALUE*% left_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        if(!self.mOnlyNullCecker && left_value.type.mNoSolvedGenericsType && left_value.type.mNoSolvedGenericsType.v1 && left_value.type.mNoSolvedGenericsType.v1.mClass && left_value.type.mNoSolvedGenericsType.v1.mClass.mName === "optional") {
+        if(!self.mOnlyNullCecker && left_value.type.mNoSolvedGenericsType && left_value.type.mNoSolvedGenericsType.mClass && left_value.type.mNoSolvedGenericsType.mClass.mName === "optional") {
             string method_name = create_method_name(left_value.type, false@no_pointer_name, "expect", info);
             
             if(info.funcs.at(method_name, null) == null) {
-                sType* obj_type = left_value.type.mNoSolvedGenericsType.v1;
+                sType* obj_type = left_value.type.mNoSolvedGenericsType;
                 if(obj_type.mGenericsTypes.length() > 0) {
                     sType* obj_type2 = left_value.type;
                     var name,generics_fun = make_generics_function(obj_type2, string("expect"), info);
@@ -623,8 +623,8 @@ class sLoadFieldNode extends sNodeBase
         
         sType*% left_type2 = left_value.type;
         
-        if(left_type2.mNoSolvedGenericsType && left_type2.mNoSolvedGenericsType.v1) {
-            left_type2 = left_type2.mNoSolvedGenericsType.v1;
+        if(left_type2.mNoSolvedGenericsType) {
+            left_type2 = left_type2.mNoSolvedGenericsType;
         }
         if(left_type2.mAnyOriginalType) {
             left_type2 = left_type2.mAnyOriginalType;
@@ -744,7 +744,7 @@ class sLoadFieldNode extends sNodeBase
         }
         
         if(come_value.type->mArrayNum.length() == 1) {
-            come_value.type->mOriginalLoadVarType.v1 = clone come_value.type;
+            come_value.type->mOriginalLoadVarType = clone come_value.type;
             
             come_value.type->mArrayNum.reset();
             come_value.type->mPointerNum++;
@@ -982,8 +982,8 @@ class sLoadArrayNode extends sNodeBase
             
             sType*% result_type = clone left_type;
             
-            if(result_type->mOriginalLoadVarType->v1) {
-                result_type = result_type->mOriginalLoadVarType->v1;
+            if(result_type->mOriginalLoadVarType) {
+                result_type = result_type->mOriginalLoadVarType;
             }
             
             if(result_type.mArrayNum.length() > 0) {
@@ -991,8 +991,8 @@ class sLoadArrayNode extends sNodeBase
                 
                 if(n == 0) {
                     result_type = clone left_type;
-                    if(left_type->mOriginalLoadVarType.v1) {
-                        result_type = clone left_type->mOriginalLoadVarType.v1;
+                    if(left_type->mOriginalLoadVarType) {
+                        result_type = clone left_type->mOriginalLoadVarType;
                     }
                     result_type->mArrayNum.reset();
                 }
@@ -1104,8 +1104,8 @@ class sLoadRangeArrayNode extends sNodeBase
             
             sType*% result_type = clone left_type;
             
-            if(result_type->mOriginalLoadVarType->v1) {
-                result_type = result_type->mOriginalLoadVarType->v1;
+            if(result_type->mOriginalLoadVarType) {
+                result_type = result_type->mOriginalLoadVarType;
             }
             
             if(result_type.mArrayNum.length() > 0) {
@@ -1113,8 +1113,8 @@ class sLoadRangeArrayNode extends sNodeBase
                 
                 if(n == 0) {
                     result_type = clone left_type;
-                    if(left_type->mOriginalLoadVarType.v1) {
-                        result_type = clone left_type->mOriginalLoadVarType.v1;
+                    if(left_type->mOriginalLoadVarType) {
+                        result_type = clone left_type->mOriginalLoadVarType;
                     }
                     result_type->mArrayNum.reset();
                 }

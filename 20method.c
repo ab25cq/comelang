@@ -26,8 +26,8 @@ sType*% remove_any_type(sType*% type)
         type->mAnyOriginalType = null;
     }
     
-    if(type->mNoSolvedGenericsType && type->mNoSolvedGenericsType.v1) {
-        type->mNoSolvedGenericsType.v1.mAnyOriginalType = null;
+    if(type->mNoSolvedGenericsType) {
+        type->mNoSolvedGenericsType.mAnyOriginalType = null;
     }
     
     int i = 0;
@@ -49,8 +49,8 @@ string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo*
     
     bool generics_any_child = false;
     sType*% no_solved_type = clone type;
-    if(type->mNoSolvedGenericsType && type->mNoSolvedGenericsType.v1) {
-        no_solved_type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        no_solved_type = type->mNoSolvedGenericsType;
         
         foreach(it, no_solved_type->mGenericsTypes) {
             if(it->mAnyOriginalType) {
@@ -147,7 +147,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         return false;
     }
     
-    sType*% result_type = clone method_block_type->mResultType.v1;
+    sType*% result_type = clone method_block_type->mResultType;
     result_type->mStatic = false;
     list<sType*%>* param_types = method_block_type->mParamTypes;
     list<string>* param_names = method_block_type->mParamNames;
@@ -365,7 +365,7 @@ class sMethodCallNode extends sNodeBase
                         sType*% method_block_result_type = clone info.come_method_block_function_result_type;
                         
                         sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
-                        sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType.v1;
+                        sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
                         
                         if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
                             int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
@@ -479,7 +479,7 @@ class sMethodCallNode extends sNodeBase
         }
         
         if(calling_dynamic_method) {
-            sType*% result_type = clone lambda_type->mResultType.v1;
+            sType*% result_type = clone lambda_type->mResultType;
             result_type->mStatic = false;
             
             list<CVALUE*%>*% come_params = new list<CVALUE*%>();
@@ -576,7 +576,7 @@ class sMethodCallNode extends sNodeBase
                 
             }
             else {
-                if(obj_type && obj_type.mNoSolvedGenericsType && obj_type.mNoSolvedGenericsType.v1 && obj_type.mNoSolvedGenericsType.v1.mGenericsTypes.length() > 0) {
+                if(obj_type && obj_type.mNoSolvedGenericsType && obj_type.mNoSolvedGenericsType.mGenericsTypes.length() > 0) {
                     var name, gfun = make_generics_function(obj_type, string(fun_name), info);
                     generics_fun_name = name;
                     generics_fun = gfun;
@@ -606,7 +606,7 @@ class sMethodCallNode extends sNodeBase
                 }
                 
                 if(fun == null) {
-                    sType* obj_array_type = obj_type->mOriginalLoadVarType.v1;
+                    sType* obj_array_type = obj_type->mOriginalLoadVarType;
                     
                     if(obj_array_type && obj_array_type.mArrayNum.length() > 0) {
                         string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
@@ -806,7 +806,7 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
-            sType* obj_array_type = obj_type->mOriginalLoadVarType.v1;
+            sType* obj_array_type = obj_type->mOriginalLoadVarType;
             if(obj_array_type && obj_array_type.mArrayNum.length() > 0) {
                 string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
                 if(generics_fun_name === array_method_name) {
@@ -1035,8 +1035,8 @@ class sMethodCallNode extends sNodeBase
             come_value2.c_value = buf.to_string();
             come_value2.var = null;
             
-            if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType && obj_type->mNoSolvedGenericsType.v1) {
-                sType*% obj_type2 = obj_type->mNoSolvedGenericsType.v1;
+            if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType) {
+                sType*% obj_type2 = obj_type->mNoSolvedGenericsType;
                 result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
                 
                 come_value2.type = clone result_type2;

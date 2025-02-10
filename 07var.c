@@ -89,8 +89,8 @@ class sStoreNode extends sNodeBase
             dec_stack_ptr(1, info);
             
             
-            if(right_type->mNoSolvedGenericsType.v1) {
-                right_type = right_type->mNoSolvedGenericsType.v1;
+            if(right_type->mNoSolvedGenericsType) {
+                right_type = right_type->mNoSolvedGenericsType;
             }
             
             int i = 0;
@@ -667,7 +667,7 @@ class sWriteChannelNode extends sNodeBase
         
         sType*% left_type = clone come_value.type;
         
-        sType*% channel_type = left_type->mChannelType.v1;
+        sType*% channel_type = left_type->mChannelType;
         
         static int var_num = 0;
         var_num++;
@@ -734,7 +734,7 @@ class sReadChannelNode extends sNodeBase
             return false;
         }
         
-        sType*% channel_type = var_type->mChannelType.v1;
+        sType*% channel_type = var_type->mChannelType;
             
         static int var_num = 0;
         var_num++;
@@ -862,7 +862,7 @@ class sLoadNode extends sNodeBase
         info.stack.push_back(come_value);
         
         if(come_value.type->mArrayNum.length() == 1) {
-            come_value.type->mOriginalLoadVarType.v1 = clone come_value.type;
+            come_value.type->mOriginalLoadVarType = clone come_value.type;
             
             come_value.type->mArrayNum.reset();
             come_value.type->mPointerNum++;

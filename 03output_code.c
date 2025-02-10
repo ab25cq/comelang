@@ -100,7 +100,7 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str("_Bool");
     }
     else if(class_name === "lambda") {
-        string result_type_str = make_type_name_string(type->mResultType.v1, in_header, no_static:true);
+        string result_type_str = make_type_name_string(type->mResultType, in_header, no_static:true);
         buf.append_str(result_type_str);
         buf.append_str(" (*)(");
         
@@ -208,7 +208,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         return string("");
     }
     
-    if(type->mResultType.v1 && type->mResultType.v1.mClass->mName === "lambda") 
+    if(type->mResultType && type->mResultType.mClass->mName === "lambda") 
     {
         buf.append_format("(*%s)(", var_name);
         
@@ -224,19 +224,19 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         
         buf.append_str(")");
         
-        return make_lambda_type_name_string(type->mResultType.v1, buf.to_string(), info);
+        return make_lambda_type_name_string(type->mResultType, buf.to_string(), info);
     }
     else {
         if(type->mLambdaArray) {
             if(type->mLambdaArrayNum == 0) {
-                buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType.v1, no_static:true), var_name);
+                buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType, no_static:true), var_name);
             }
             else {
-                buf.append_format("%s (*%s[%d])(", make_type_name_string(type->mResultType.v1, no_static:true), var_name, type->mLambdaArrayNum);
+                buf.append_format("%s (*%s[%d])(", make_type_name_string(type->mResultType, no_static:true), var_name, type->mLambdaArrayNum);
             }
         }
         else {
-            buf.append_format("%s ", make_type_name_string(type->mResultType.v1, no_static:true));
+            buf.append_format("%s ", make_type_name_string(type->mResultType, no_static:true));
             if(type->mFunctionPointerNum > 1) {
                 buf.append_str("(");
                 for(int i=0; i<type->mFunctionPointerNum; i++) {
@@ -377,8 +377,8 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
 sType*% get_no_solved_type(sType* type)
 {
     sType*% result;
-    if(type->mNoSolvedGenericsType.v1) {
-        result = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        result = type->mNoSolvedGenericsType;
     }
     else {
         result = clone type;
@@ -798,7 +798,7 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
 {
     var output = new buffer();
     
-    string result_type_str = make_type_name_string(lambda_type->mResultType.v1, no_static:true);
+    string result_type_str = make_type_name_string(lambda_type->mResultType, no_static:true);
     
     output.append_str(result_type_str);
     output.append_str(" ");

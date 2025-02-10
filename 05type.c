@@ -454,11 +454,11 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     
     sType* left_no_solved_generics_type = null;
     if(left_type->mNoSolvedGenericsType) {
-        left_no_solved_generics_type = left_type->mNoSolvedGenericsType.v1;
+        left_no_solved_generics_type = left_type->mNoSolvedGenericsType;
     }
     sType* right_no_solved_generics_type = null;
     if(right_type2->mNoSolvedGenericsType) {
-        right_no_solved_generics_type = right_type2->mNoSolvedGenericsType.v1;
+        right_no_solved_generics_type = right_type2->mNoSolvedGenericsType;
     }
     
     sClass* left_class = left_type->mClass;
@@ -2161,7 +2161,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         type = new sType("lambda");
         
-        type->mResultType = new tuple1<sType*%>(result_type);
+        type->mResultType = result_type;
         type->mParamTypes = param_types;
         type->mParamNames = param_names;
         type->mVarArgs = var_args;
@@ -2266,7 +2266,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         type = new sType("lambda");
         
-        type->mResultType = new tuple1<sType*%>(clone result_type);
+        type->mResultType = clone result_type;
         type->mParamTypes = param_types;
         type->mParamNames = param_names;
         type->mVarArgs = var_args;
@@ -2569,8 +2569,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 skip_pointer_attribute();
                 
                 type->mPointerNum++;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mPointerNum++;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mPointerNum++;
                 }
             }
             else if(*info->p == '%') {
@@ -2578,8 +2578,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 skip_spaces_and_lf();
                 
                 type->mHeap = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mHeap = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mHeap = true;
                 }
             }
             else if(*info->p == '&') {
@@ -2588,8 +2588,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mNoHeap = true;
                 
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mHeap = false;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mHeap = false;
                 }
             }
             else if(*info->p == '?') {
@@ -2627,8 +2627,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mPointerNum++;
                 
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mPointerNum++;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mPointerNum++;
                 }
             }
             else if(*info->p == '%') {
@@ -2636,8 +2636,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 skip_spaces_and_lf();
                 
                 type->mHeap = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mHeap = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mHeap = true;
                 }
             }
             else if(*info->p == '~') {
@@ -2645,8 +2645,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 skip_spaces_and_lf();
                 
                 type->mAnyClass = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mAnyClass = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mAnyClass = true;
                 }
             }
             else if(gComePthread && *info->p == '@') {
@@ -2654,8 +2654,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 skip_spaces_and_lf();
                 
                 type->mChannel = true;
-                if(type->mNoSolvedGenericsType.v1) {
-                    type->mNoSolvedGenericsType.v1.mChannel = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mChannel = true;
                 }
             }
             else {
@@ -2705,8 +2705,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     
                     type->mPointerNum++;
                     
-                    if(type->mNoSolvedGenericsType.v1) {
-                        type->mNoSolvedGenericsType.v1.mPointerNum++;
+                    if(type->mNoSolvedGenericsType) {
+                        type->mNoSolvedGenericsType.mPointerNum++;
                     }
                 }
                 else if(*info->p == '%') {
@@ -2714,8 +2714,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     skip_spaces_and_lf();
                     
                     type->mHeap = true;
-                    if(type->mNoSolvedGenericsType.v1) {
-                        type->mNoSolvedGenericsType.v1.mHeap = true;
+                    if(type->mNoSolvedGenericsType) {
+                        type->mNoSolvedGenericsType.mHeap = true;
                     }
                 }
                 else if(*info->p == '~') {
@@ -2723,8 +2723,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     skip_spaces_and_lf();
                     
                     type->mAnyClass = true;
-                    if(type->mNoSolvedGenericsType.v1) {
-                        type->mNoSolvedGenericsType.v1.mAnyClass = true;
+                    if(type->mNoSolvedGenericsType) {
+                        type->mNoSolvedGenericsType.mAnyClass = true;
                     }
                 }
                 else if(gComePthread && *info->p == '@') {
@@ -2732,8 +2732,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     skip_spaces_and_lf();
                     
                     type->mChannel = true;
-                    if(type->mNoSolvedGenericsType.v1) {
-                        type->mNoSolvedGenericsType.v1.mChannel = true;
+                    if(type->mNoSolvedGenericsType) {
+                        type->mNoSolvedGenericsType.mChannel = true;
                     }
                 }
                 else {
@@ -2852,8 +2852,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         sType*% type_before = clone type;
         type = new sType("int");
         type->mArrayNum = [ create_int_node(2@value, info) ];
-        type->mChannelType = new tuple1<sType*%>;
-        type->mChannelType.v1 = type_before;
+        type->mChannelType = type_before;
         type->mChannel = true;
     }
     else if(type->mAnyClass && !type->mClass->mProtocol) {

@@ -2208,7 +2208,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                 
                 sType*% result_type2 = new sType("lambda");
                 
-                result_type2->mResultType = new tuple1<sType*%>(result_type);
+                result_type2->mResultType = result_type;
                 result_type2->mParamTypes = clone param_types2;
                 result_type2->mParamNames = clone param_names2;
                 result_type2->mVarArgs = false;
@@ -2302,8 +2302,8 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     string sname_top = string(info->sname);
     int sline_top = info->sline;
     
-    if(generics_type->mNoSolvedGenericsType.v1) {
-        generics_type = generics_type->mNoSolvedGenericsType.v1;
+    if(generics_type->mNoSolvedGenericsType) {
+        generics_type = generics_type->mNoSolvedGenericsType;
     }
     
     sFun*% funX = info.funcs[fun_name]??;
@@ -2957,8 +2957,8 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
     
     string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
         
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
         
     if(type->mGenericsTypes.length() > 0) {
@@ -3034,14 +3034,6 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
                 var name, field_type = it;
-                
-    /*
-                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-                {
-                    err_msg(info, "Define recusively the finalizer. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                    exit(2);
-                }
-    */
                 
                 if(field_type->mHeap) {
                     char source2[1024];
@@ -3198,14 +3190,6 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
             foreach(it, klass->mFields) {
                 var name, field_type = it;
                 
-/*
-                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-                {
-                    err_msg(info, "Define recusively the equals. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                    exit(2);
-                }
-*/
-                
                 char source2[1024];
                 snprintf(source2, 1024, "if(!left.%s.equals(right.%s)) { return false; }\n", name, name, name);
                 
@@ -3355,14 +3339,6 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
                 var name, field_type = it;
-                
-/*
-                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-                {
-                    err_msg(info, "Define recusively the equals. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                    exit(2);
-                }
-*/                
                 
                 char source2[1024];
                 snprintf(source2, 1024, "(left.%s === right.%s)", name, name, name);
@@ -3522,14 +3498,6 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
             foreach(it, klass->mFields) {
                 var name, field_type = it;
                 
-/*
-                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-                {
-                    err_msg(info, "Define recusively the equals. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                    exit(2);
-                }
-*/
-                
                 char source2[1024];
                 snprintf(source2, 1024, "left.%s.equals(right.%s)", name, name);
                 source.append_str(source2);
@@ -3683,14 +3651,6 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
                 var name, field_type = it;
-                
-/*
-                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-                {
-                    err_msg(info, "Define recusively the equals. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                    exit(2);
-                }
-*/
                 
                 char source2[1024];
                 snprintf(source2, 1024, "if(left.%s !== right.%s) { return false; }\n", name, name, name);
@@ -3891,14 +3851,6 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
             foreach(it, klass->mFields) {
                 var name, field_type = it;
                 
-/*
-                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-                {
-                    err_msg(info, "Define recusively the cloner. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                    exit(2);
-                }
-*/
-                
                 if(name === "_protocol_obj") {
                 }
                 else if(field_type->mArrayNum.length() > 0) {
@@ -3919,14 +3871,6 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
                 var name, field_type = it;
-                
-/*
-                if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-                {
-                    err_msg(info, "Define recusively the cloner. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                    exit(2);
-                }
-*/
                 
                 if(field_type->mHeap) {
                     char source2[1024];
@@ -4082,14 +4026,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         foreach(it, klass->mFields) {
             var name, field_type = it;
             
-/*
-            if(type->mClass->mName === field_type->mClass->mName && type->mPointerNum == field_type->mPointerNum && field_type->mHeap)
-            {
-                err_msg(info, "Define recusively the cloner. I recommanded tuple1<%s>*%.\n", type->mClass->mName);
-                exit(2);
-            }
-*/
-            
             if(i == klass->mFields.length() -1) {
                 char source2[1024];
                 
@@ -4243,8 +4179,8 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     
     sClass* klass = type->mClass;
         
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
         
     if(type->mGenericsTypes.length() > 0) {
@@ -4460,8 +4396,8 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
     sClass* klass = type->mClass;
     
 /*
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
 */
         

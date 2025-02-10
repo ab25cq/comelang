@@ -27,9 +27,9 @@ class sReturnNode extends sNodeBase
             
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
             
-            sType* result_type3 = result_type2->mNoSolvedGenericsType.v1;
-            if(result_type2->mNoSolvedGenericsType.v1) {
-                result_type3 = result_type2->mNoSolvedGenericsType.v1;
+            sType* result_type3 = result_type2->mNoSolvedGenericsType;
+            if(result_type2->mNoSolvedGenericsType) {
+                result_type3 = result_type2->mNoSolvedGenericsType;
             }
             else {
                 result_type3 = result_type2;
@@ -515,7 +515,7 @@ class sFunCallNode extends sNodeBase
                 return false;
             }
             
-            sType*% result_type = clone lambda_type->mResultType.v1;
+            sType*% result_type = clone lambda_type->mResultType;
             result_type->mStatic = false;
             
             list<CVALUE*%>*% come_params = new list<CVALUE*%>();
@@ -573,8 +573,8 @@ class sFunCallNode extends sNodeBase
             come_value.type->mStatic = false;
             come_value.var = null;
             
-            if(lambda_type->mResultType.v1.mHeap) {
-                append_object_to_right_values2(come_value, lambda_type->mResultType.v1, info);
+            if(lambda_type->mResultType.mHeap) {
+                append_object_to_right_values2(come_value, lambda_type->mResultType, info);
             }
             
             add_come_last_code(info, "%s", come_value.c_value);
@@ -615,7 +615,7 @@ class sFunCallNode extends sNodeBase
                     sType*% method_block_result_type = clone info.come_method_block_function_result_type;
                     
                     sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
-                    sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType.v1;
+                    sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
                     
                     if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
                         int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
@@ -1224,7 +1224,7 @@ class sFunCallNode extends sNodeBase
                 return false;
             }
             
-            sType*% result_type = clone method_block_type->mResultType.v1;
+            sType*% result_type = clone method_block_type->mResultType;
             result_type->mStatic = false;
             list<sType*%>*% param_types = clone method_block_type->mParamTypes;
             list<string>* param_names = method_block_type->mParamNames;
@@ -1692,7 +1692,7 @@ class sLambdaCall extends sNodeBase
             return false;
         }
         
-        sType*% result_type = clone lambda_type->mResultType.v1;
+        sType*% result_type = clone lambda_type->mResultType;
         result_type->mStatic = false;
         
         list<CVALUE*%>*% come_params = new list<CVALUE*%>();
@@ -1748,8 +1748,8 @@ class sLambdaCall extends sNodeBase
         CVALUE*% come_value2 = new CVALUE();
         come_value2.c_value = buf.to_string();
         
-        if(lambda_type->mResultType.v1.mHeap) {
-            append_object_to_right_values2(come_value2, lambda_type->mResultType.v1, info);
+        if(lambda_type->mResultType.mHeap) {
+            append_object_to_right_values2(come_value2, lambda_type->mResultType, info);
         }
         
         come_value2.type = clone result_type;

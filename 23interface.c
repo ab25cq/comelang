@@ -67,7 +67,7 @@ sType*%, string parse_interface_function(sInfo* info)
     type->mParamTypes = clone param_types;
     type->mParamNames = clone param_names;
     type->mVarArgs = var_args;
-    type->mResultType = new tuple1<sType*%>(clone result_type);
+    type->mResultType = clone result_type;
     
     return (type, fun_name);
 }
@@ -105,7 +105,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         finalizer->mParamTypes = [(clone voidp) ];
         finalizer->mParamNames = [string("self")];
         finalizer->mVarArgs = false;
-        finalizer->mResultType = new tuple1<sType*%>(new sType("void"));
+        finalizer->mResultType = new sType("void");
         
         klass.mFields.push_back((string("finalize"), finalizer));
         
@@ -114,7 +114,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         cloner->mParamTypes = [(clone voidp) ];
         cloner->mParamNames = [string("self")];
         cloner->mVarArgs = false;
-        cloner->mResultType = new tuple1<sType*%>(clone voidp);
+        cloner->mResultType = clone voidp;
         
         klass.mFields.push_back((string("clone"), cloner));
         

@@ -3,12 +3,12 @@
 bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVALUE* right_value, bool break_guard, sInfo* info)
 {
     sType*% generics_type = clone type;
-    if(generics_type->mNoSolvedGenericsType.v1) {
-        generics_type = generics_type->mNoSolvedGenericsType.v1;
+    if(generics_type->mNoSolvedGenericsType) {
+        generics_type = generics_type->mNoSolvedGenericsType;
     }
     
-    if(type->mNoSolvedGenericsType.v1) {
-        type = type->mNoSolvedGenericsType.v1;
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
     }
     sClass* klass = type->mClass;
     char* class_name = klass->mName;

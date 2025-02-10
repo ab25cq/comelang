@@ -41,8 +41,8 @@ class sNewNode extends sNodeBase
         
         bool generics_any_child = false;
         sType*% no_solved_type = null;
-        if(type2->mNoSolvedGenericsType && type2->mNoSolvedGenericsType.v1) {
-            no_solved_type = type2->mNoSolvedGenericsType.v1;
+        if(type2->mNoSolvedGenericsType) {
+            no_solved_type = type2->mNoSolvedGenericsType;
             
             foreach(it, no_solved_type->mGenericsTypes) {
                 if(it->mAnyOriginalType) {
@@ -70,8 +70,8 @@ class sNewNode extends sNodeBase
             
             sType*% type3 = clone type2;
             type3->mPointerNum++;
-            if(type3->mNoSolvedGenericsType && type3->mNoSolvedGenericsType.v1) {
-                type3->mNoSolvedGenericsType.v1.mPointerNum++;
+            if(type3->mNoSolvedGenericsType) {
+                type3->mNoSolvedGenericsType.mPointerNum++;
             }
             
             if(type3->mAnyOriginalType) {
@@ -188,9 +188,9 @@ class sNewNode extends sNodeBase
             type2->mHeap = true;
             type2->mPointerNum++;
             
-            if(type2->mNoSolvedGenericsType.v1) {
-                type2->mNoSolvedGenericsType.v1->mPointerNum++;
-                type2->mNoSolvedGenericsType.v1->mHeap = true;
+            if(type2->mNoSolvedGenericsType) {
+                type2->mNoSolvedGenericsType->mPointerNum++;
+                type2->mNoSolvedGenericsType->mHeap = true;
             }
             
             come_value.type = clone type2;
@@ -207,9 +207,9 @@ class sNewNode extends sNodeBase
             type3->mPointerNum++;
             type3->mHeap = true;
             
-            if(type3->mNoSolvedGenericsType && type3->mNoSolvedGenericsType.v1) {
-                type3->mNoSolvedGenericsType.v1.mPointerNum++;
-                type3->mNoSolvedGenericsType.v1.mHeap = true;
+            if(type3->mNoSolvedGenericsType) {
+                type3->mNoSolvedGenericsType.mPointerNum++;
+                type3->mNoSolvedGenericsType.mHeap = true;
             }
             
             string type_name3 = make_type_name_string(type3);
@@ -268,9 +268,9 @@ class sNewNode extends sNodeBase
             type2->mHeap = true;
             type2->mPointerNum++;
             
-            if(type2->mNoSolvedGenericsType.v1) {
-                type2->mNoSolvedGenericsType.v1->mPointerNum++;
-                type2->mNoSolvedGenericsType.v1->mHeap = true;
+            if(type2->mNoSolvedGenericsType) {
+                type2->mNoSolvedGenericsType->mPointerNum++;
+                type2->mNoSolvedGenericsType->mHeap = true;
             }
             
             come_value.type = clone type2;

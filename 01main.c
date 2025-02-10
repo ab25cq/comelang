@@ -85,8 +85,8 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
         self.mClass = info.classes[string(name)]??;
     }
     
-    self.mNoSolvedGenericsType = new tuple1<sType*%>(null);
-    self.mOriginalLoadVarType = new tuple1<sType*%>(null);
+    self.mNoSolvedGenericsType = null;
+    self.mOriginalLoadVarType = null;
     self.mGenericsTypes = new list<sType*%>();
     self.mArrayNum = new list<sNode*%>();
     self.mOmitArrayNum = false;
@@ -175,7 +175,7 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
         self.mLambdaType.mParamNames.push_back(clone it);
     }
     
-    self.mLambdaType.mResultType = new tuple1<sType*%>(result_type);
+    self.mLambdaType.mResultType = result_type;
     self.mLambdaType.mVarArgs = var_args;
     
     self.mSource = new buffer();

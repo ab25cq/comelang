@@ -904,8 +904,8 @@ class sNullReturnValueOfException extends sNodeBase
             
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
             
-            if(result_type2->mNoSolvedGenericsType.v1) {
-                result_type2 = result_type2->mNoSolvedGenericsType.v1;
+            if(result_type2->mNoSolvedGenericsType) {
+                result_type2 = result_type2->mNoSolvedGenericsType;
             }
             
             sType*% left_type = clone result_type2->mGenericsTypes[0]??;
