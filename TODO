@@ -1,7 +1,6 @@
 foreach no macro
 enum
 
-field type check
 self host any type
 
 begin, next remove &

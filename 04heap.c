@@ -647,7 +647,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             
             /// free memory ///
             if(!type->mAllocaValue) {
-                if(type->mAnyOriginalType) {
+                if(type->mAnyClass) {
                     if(klass->mProtocol && type->mPointerNum == 1) {
                         string type_name = make_type_name_string(type);
                         if(c_value) {

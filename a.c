@@ -12,6 +12,16 @@ struct sData2
     string b;
 };
 
+
+void sData::fun(sData* self)
+{
+    puts("sData::fun()");
+}
+
+void sData2*::fun(sData2* self) {
+    puts("sData2*::fun()");
+}
+
 struct sData3<T>
 {
     T a;
@@ -21,7 +31,7 @@ struct sData3<T>
 impl sData3<T>
 {
     generate void fun(sData3<T>* self, T a) {
-        a.to_string().puts();
+        a.fun();
     }
 }
 
@@ -30,7 +40,6 @@ int main(int argc, char** argv)
 //    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
     
     list<sData~>*% li = new list<sData*%~>();
-    li.add(new sData*%~ { c:s"WIN" });
     li.add(new sData*%~ { c:s"WIN" });
     
     list<sData2~>*% li2 = new list<sData2*%~>();

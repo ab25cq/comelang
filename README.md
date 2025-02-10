@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+13.0.3 Type eraser generics collection complete.
 13.0.2 no generating code collection finally comes. Some bugs may remained. It's usefull for embbeded system because it doesn't take few code size.
 13.0.1 no generating code collection finally comes. Some bugs may remained. It's usefull for embbeded system because it doesn't take few code size.
 13.0.0 no generating code collection finally comes. Some bugs may remained. It's usefull for embbeded system because it doesn't take few code size.
@@ -3616,7 +3617,7 @@ int main(int argc, char** argv)
 }
 ```
 
-# No generating code collection
+# Type eraser generics collection
 
 ```C
 #include <comelang.h>
@@ -3655,6 +3656,70 @@ int main(int argc, char** argv)
     list<sData2~>*% li2 = new list<sData2~>();
     li2.add(new sData2~ { a:s"AAA"});
     puts(li2[0].a);
+    
+    return 0;
+}
+```
+
+```
+#include <comelang.h>
+struct sData
+{
+    int a;
+    int b;
+    string c;
+};
+
+struct sData2
+{
+    int a;
+    string b;
+};
+
+
+void sData::fun(sData* self)
+{
+    puts("sData::fun()");
+}
+
+void sData2*::fun(sData2* self) {
+    puts("sData2*::fun()");
+}
+
+struct sData3<T>
+{
+    T a;
+    T b;
+};
+
+impl sData3<T>
+{
+    generate void fun(sData3<T>* self, T a) {
+        a.fun();
+    }
+}
+
+int main(int argc, char** argv)
+{
+//    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
+    
+    list<sData~>*% li = new list<sData*%~>();
+    li.add(new sData*%~ { c:s"WIN" });
+    
+    list<sData2~>*% li2 = new list<sData2*%~>();
+    li2.add(new sData2*%~ { b:s"WIN2" });
+    
+    puts(li[0].c);
+    
+    puts(li2[0].b);
+    
+    sData3<sData~>*% data1 = new sData3<sData~>;
+    
+    data1.fun(new sData~ { c:s"WIN" });
+    
+    sData3<sData2~>*% data2 = new sData3<sData2~>;
+    
+    data2.fun(new sData2~ { b:s"WIN" });
     
     return 0;
 }

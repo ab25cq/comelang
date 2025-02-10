@@ -24,7 +24,10 @@ sType*% remove_any_type(sType*% type)
 {
     if(type->mAnyOriginalType) {
         type->mAnyOriginalType = null;
-        type->mAnyClass = false;
+    }
+    
+    if(type->mNoSolvedGenericsType && type->mNoSolvedGenericsType.v1) {
+        type->mNoSolvedGenericsType.v1.mAnyOriginalType = null;
     }
     
     int i = 0;
@@ -60,6 +63,7 @@ string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo*
         if(generics_fun->mResultType->mGenerate && (type->mAnyOriginalType || generics_any_child)) {
             sType*% type2 = use_any_type(clone no_solved_type);
             
+            sType*% type_before = clone type;
 
             fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, array_equal_pointer);
             
@@ -69,14 +73,24 @@ string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo*
                 err_msg(info, "%s not found", fun_name3);
                 return (string(""), null);
             }
+            
+            type = type_before;
         }
         else {
-            var name, err = create_generics_fun(string(fun_name2), generics_fun, type, info);
+            sType*% type2 = remove_any_type(clone no_solved_type);
+            
+            sType*% type_before = clone type;
+
+            fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, array_equal_pointer);
+            
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
             
             if(!err) {
                 err_msg(info, "%s not found", fun_name3);
                 return (string(""), null);
             }
+            
+            type = type_before;
         }
     }
     

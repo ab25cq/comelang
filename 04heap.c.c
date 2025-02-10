@@ -6312,7 +6312,7 @@ memset(&i_478, 0, sizeof(int));
                 come_call_finalizer3(o2_saved_494,list$1tuple2$2charphsTypephphp_finalize, 0, 0, 0, 0, (void*)0);
             }
             if(            !type->mAllocaValue) {
-                if(                type->mAnyOriginalType) {
+                if(                type->mAnyClass) {
                     if(                    klass_467->mProtocol&&type->mPointerNum==1) {
                         type_name_499=(char*)come_increment_ref_count(make_type_name_string(type,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0));
                         if(                        c_value_466) {
