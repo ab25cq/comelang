@@ -1,27 +1,25 @@
 #include <comelang.h>
 
+struct X
+{
+    int a;
+    int b;
+};
+
 struct sData
 {
     int a;
     int b;
-    string c;
+    X*% x;
 };
 
 int main(int argc, char** argv)
 {
-    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
+    sData data;
     
-/*
-    list<sData~>*% li = new list<sData*%~>();
-    li.add(new sData*%~ { c:s"WIN" });
+    data.x = new X;
     
-    li3.add(li);
-    li3.add(clone li);
-    
-    list<sData~>*% x = li3[0];
-    
-    puts(x[0].c);
-*/
+    data.x.x = 1111;
     
     return 0;
 }

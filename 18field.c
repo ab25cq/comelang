@@ -266,7 +266,7 @@ class sStoreFieldNode extends sNodeBase
                 index++;
             }
             
-            if(index == klass->mFields.length()) {
+            if(index == klass->mFields.length() || field_type == null) {
                 err_msg(info, "field not found(%s) in %s(1)", name, klass->mName);
                 return false;
             }

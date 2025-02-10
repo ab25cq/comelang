@@ -5416,7 +5416,7 @@ c_value_402 = (void*)0;
             come_call_finalizer3(field_type2_389,sType_finalize, 0, 0, 0, 0, (void*)0);
         }
         come_call_finalizer3(o2_saved_386,list$1tuple2$2charphsTypephphp_finalize, 0, 0, 0, 0, (void*)0);
-        if(        index_375==list$1tuple2$2charphsTypephph_length(klass_366->mFields)) {
+        if(        index_375==list$1tuple2$2charphsTypephph_length(klass_366->mFields)||field_type_374==((void*)0)) {
             err_msg(info,"field not found(%s) in %s(1)",name_355,klass_366->mName);
             __result266__ = (_Bool)0;
             name_355 = come_decrement_ref_count2(name_355, (void*)0, (void*)0, 0, 0, 0, (void*)0);
