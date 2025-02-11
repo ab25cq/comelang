@@ -58,21 +58,22 @@ class sBufferNode extends sNodeBase
         sType*% type2 = new sType("buffer");
         type2->mPointerNum++;
         
-        /*
-        string finalizer_name = create_method_name(type2, false@no_poiner_name, "finalize", info);
-        string cloner_name = create_method_name(type2, false@no_poiner_name, "clone", info);
-        */
+        sType*% any_type = new sType("buffer");
+        any_type->mPointerNum = 1;
+        any_type->mHeap = true;
         
-        /*
+        string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+        string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+        
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(type2, "finalize", info);
+            (void*)create_finalizer_automatically(any_type, "finalize", info);
         }
         if(info.funcs[cloner_name]?? == null) {
-            (void*)create_cloner_automatically(type2, "clone", info);
+            var fun, name = create_cloner_automatically(any_type, "clone", info);
+            cloner_name = name;
         }
-        */
         
-        buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\", (void*)0, (void*)0)), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
+        buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\", %s, %s), \"%s\", %ld)", info->sname, info->sline, finalizer_name, cloner_name, value.to_string(), size);
         
         sType*% type2 = new sType("buffer*");
         type2->mHeap = true;
@@ -422,19 +423,22 @@ class sListNode extends sNodeBase
         
         string type_name = make_type_name_string(type2, array_cast_pointer:true);
         
-        string finalizer_name = create_method_name(type2, false@no_poiner_name, "finalize", info);
-        string cloner_name = create_method_name(type2, false@no_poiner_name, "clone", info);
+        sType*% any_type = type2;
+        any_type->mPointerNum = 1;
+        any_type->mHeap = true;
         
-        /*
+        string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+        string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+        
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(type2, "finalize", info);
+            (void*)create_finalizer_automatically(any_type, "finalize", info);
         }
         if(info.funcs[cloner_name]?? == null) {
-            (void*)create_cloner_automatically(type2, "clone", info);
+            var fun, name = create_cloner_automatically(any_type, "clone", info);
+            cloner_name = name;
         }
-        */
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -571,19 +575,22 @@ class sTupleNode extends sNodeBase
         
         string type_name = make_type_name_string(type2, array_cast_pointer:true);
         
-        /*
-        string finalizer_name = create_method_name(type2, false@no_poiner_name, "finalize", info);
-        string cloner_name = create_method_name(type2, false@no_poiner_name, "clone", info);
+        sType*% any_type = type2;
+        any_type->mPointerNum = 1;
+        any_type->mHeap = true;
+        
+        string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+        string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
         
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(type2, "finalize", info);
+            (void*)create_finalizer_automatically(any_type, "finalize", info);
         }
         if(info.funcs[cloner_name]?? == null) {
-            (void*)create_cloner_automatically(type2, "clone", info);
+            var fun, name = create_cloner_automatically(any_type, "clone", info);
+            cloner_name = name;
         }
-        */
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -1356,19 +1363,22 @@ class sMapNode extends sNodeBase
         
         string type_name = make_type_name_string(type2, array_cast_pointer:true);
         
-        string finalizer_name = create_method_name(type2, false@no_poiner_name, "finalize", info);
-        string cloner_name = create_method_name(type2, false@no_poiner_name, "clone", info);
+        sType*% any_type = type2;
+        any_type->mPointerNum = 1;
+        any_type->mHeap = true;
         
-        /*
+        string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+        string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+        
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(type2, "finalize", info);
+            (void*)create_finalizer_automatically(any_type, "finalize", info);
         }
         if(info.funcs[cloner_name]?? == null) {
-            (void*)create_cloner_automatically(type2, "clone", info);
+            var fun, name = create_cloner_automatically(any_type, "clone", info);
+            cloner_name = name;
         }
-        */
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
