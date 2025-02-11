@@ -769,6 +769,10 @@ CVALUE*% get_value_from_object(CVALUE*% come_value, sInfo* info=info)
         result.type = come_value.type->mAnyOriginalType;
         result.c_value = xsprintf("((%s)%s)", make_type_name_string(result.type), come_value.c_value);
         result.c_value_without_cast_object_value = come_value.c_value;
+        
+        if(come_value.type.mNoHeap) {
+            result.type->mHeap = false;
+        }
     }
     
     return result;

@@ -694,6 +694,7 @@ class sMethodCallNode extends sNodeBase
             sType*% result_type = clone fun->mResultType;
             result_type->mStatic = false;
 
+            //sType*% result_type2 = solve_generics(result_type, obj_type2, info);
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
             
             list<sType*%>*% param_types = new list<sType*%>();
@@ -1035,8 +1036,30 @@ class sMethodCallNode extends sNodeBase
             come_value2.c_value = buf.to_string();
             come_value2.var = null;
             
+            bool generics_any_child = false;
+            sType*% obj_type2 = obj_type;
+            if(obj_type2->mNoSolvedGenericsType) {
+                obj_type2 = obj_type2->mNoSolvedGenericsType;
+                
+                foreach(it, obj_type2->mGenericsTypes) {
+                    if(it->mAnyOriginalType) {
+                        generics_any_child = true;
+                    }
+                }
+            }
+            
             if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType) {
                 sType*% obj_type2 = obj_type->mNoSolvedGenericsType;
+                result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
+                
+                come_value2.type = clone result_type2;
+                come_value2.type->mStatic = false;
+                
+                if(result_type2->mHeap) {
+                    append_object_to_right_values2(come_value2, result_type2, info);
+                }
+            }
+            else if(generics_fun && generics_any_child) {
                 result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
                 
                 come_value2.type = clone result_type2;

@@ -35,6 +35,11 @@ impl sData3<T>
     }
 }
 
+struct sInfo
+{
+    list<sData~>*% mGenericsTypes;
+};
+
 int main(int argc, char** argv)
 {
 //    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
@@ -56,6 +61,19 @@ int main(int argc, char** argv)
     sData3<sData2~>*% data2 = new sData3<sData2~>;
     
     data2.fun(new sData2~ { b:s"WIN" });
+    
+    sInfo*% info = new sInfo;
+    
+    info.mGenericsTypes = new list<sData~>();
+    
+    info.mGenericsTypes.add(new sData~ { c:s"AAA" });
+    info.mGenericsTypes.add(new sData~ { c:s"BBB" });
+    
+    puts(info.mGenericsTypes[0].c);
+    
+    foreach(it, info.mGenericsTypes) {
+        puts(it.c);
+    }
     
     return 0;
 }

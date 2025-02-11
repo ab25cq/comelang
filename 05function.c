@@ -2336,6 +2336,9 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     info.head = info.source.buf;
     
     sType*% generics_type_saved = info->generics_type;
+    if(generics_type->mNoSolvedGenericsType) {
+        generics_type = generics_type->mNoSolvedGenericsType;
+    }
     info->generics_type = clone generics_type;
     
     list<string>*% method_generics_type_names = info->method_generics_type_names;

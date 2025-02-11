@@ -736,6 +736,12 @@ class sLoadFieldNode extends sNodeBase
             }
         }
         come_value.type = clone field_type;
+        
+/*
+        if(come_value.type->mNoSolvedGenericsType) {
+            come_value.type = come_value.type->mNoSolvedGenericsType;
+        }
+*/
         come_value.var = null;
         
         if(field_type == null) {
