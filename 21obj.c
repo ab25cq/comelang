@@ -127,7 +127,9 @@ class sNewNode extends sNodeBase
                 obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
             }
             else {
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+                char *finalizer_name = "(void*)0";
+                char *cloner_name = "(void*)0";
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
             }
             
             buf.append_str(obj);
@@ -262,7 +264,9 @@ class sNewNode extends sNodeBase
                 come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
             }
             else {
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+                char *finalizer_name = "(void*)0";
+                char *cloner_name = "(void*)0";
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
             }
             
             type2->mHeap = true;

@@ -928,20 +928,20 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
     
     if(call_finalizer_only) {
         void* fun2 = come_get_finalizer(mem);
-        if(fun2) {
-            if(protocol_obj && protocol_fun) {
-                void (*finalizer)(void*) = protocol_fun;
-                finalizer(protocol_obj);
-            }
-            void (*finalizer)(void*) = fun2;
-            finalizer(mem);
-        }
-        else if(fun) {
+        if(fun) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
                 finalizer(protocol_obj);
             }
             void (*finalizer)(void*) = fun;
+            finalizer(mem);
+        }
+        else if(fun2) {
+            if(protocol_obj && protocol_fun) {
+                void (*finalizer)(void*) = protocol_fun;
+                finalizer(protocol_obj);
+            }
+            void (*finalizer)(void*) = fun2;
             finalizer(mem);
         }
     }
@@ -956,15 +956,7 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
                 void* fun2 = come_get_finalizer(mem);
-                if(fun2) {
-                    if(protocol_obj && protocol_fun) {
-                        void (*finalizer)(void*) = protocol_fun;
-                        finalizer(protocol_obj);
-                    }
-                    void (*finalizer)(void*) = fun2;
-                    finalizer(mem);
-                }
-                else {
+                if(fun) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
@@ -974,6 +966,14 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
+                }
+                else if(fun2) {
+                    if(protocol_obj && protocol_fun) {
+                        void (*finalizer)(void*) = protocol_fun;
+                        finalizer(protocol_obj);
+                    }
+                    void (*finalizer)(void*) = fun2;
+                    finalizer(mem);
                 }
                 come_free_object(mem);
             }
@@ -994,20 +994,20 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
     
     if(call_finalizer_only) {
         void* fun2 = come_get_finalizer(mem);
-        if(fun2) {
-            if(protocol_obj && protocol_fun) {
-                void (*finalizer)(void*) = protocol_fun;
-                finalizer(protocol_obj);
-            }
-            void (*finalizer)(void*) = fun2;
-            finalizer(mem);
-        }
-        else if(fun) {
+        if(fun) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
                 finalizer(protocol_obj);
             }
             void (*finalizer)(void*) = fun;
+            finalizer(mem);
+        }
+        else if(fun2) {
+            if(protocol_obj && protocol_fun) {
+                void (*finalizer)(void*) = protocol_fun;
+                finalizer(protocol_obj);
+            }
+            void (*finalizer)(void*) = fun2;
             finalizer(mem);
         }
     }
@@ -1022,15 +1022,7 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
                 void* fun2 = come_get_finalizer(mem);
-                if(fun2) {
-                    if(protocol_obj && protocol_fun) {
-                        void (*finalizer)(void*) = protocol_fun;
-                        finalizer(protocol_obj);
-                    }
-                    void (*finalizer)(void*) = fun2;
-                    finalizer(mem);
-                }
-                else {
+                if(fun) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
@@ -1040,6 +1032,14 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
+                }
+                else if(fun2) {
+                    if(protocol_obj && protocol_fun) {
+                        void (*finalizer)(void*) = protocol_fun;
+                        finalizer(protocol_obj);
+                    }
+                    void (*finalizer)(void*) = fun2;
+                    finalizer(mem);
                 }
                 come_free_object(mem);
             }
@@ -1061,12 +1061,12 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
     if(call_finalizer_only) {
         if(fun) {
             void* fun2 = come_get_finalizer(mem);
-            if(fun2) {
-                void (*finalizer)(void*) = fun2;
+            if(fun) {
+                void (*finalizer)(void*) = fun;
                 finalizer(mem);
             }
-            else {
-                void (*finalizer)(void*) = fun;
+            else if(fun2) {
+                void (*finalizer)(void*) = fun2;
                 finalizer(mem);
             }
         }
@@ -1082,15 +1082,13 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
                 void* fun2 = come_get_finalizer(mem);
-                if(fun2) {
-                    void (*finalizer)(void*) = fun2;
+                if(fun) {
+                    void (*finalizer)(void*) = fun;
                     finalizer(mem);
                 }
-                else {
-                    if(fun) {
-                        void (*finalizer)(void*) = fun;
-                        finalizer(mem);
-                    }
+                else if(fun2) {
+                    void (*finalizer)(void*) = fun2;
+                    finalizer(mem);
                 }
                 come_free_object(mem);
             }
@@ -1106,13 +1104,13 @@ uniq void* come_call_cloner(void* fun, void* mem)
     
     void* fun2 = come_get_cloner(mem);
     
-    if(fun2) {
-        void* (*cloner)(void*) = fun2;
+    if(fun) {
+        void* (*cloner)(void*) = fun;
         
         return cloner(mem);
     }
-    else if(fun) {
-        void* (*cloner)(void*) = fun;
+    else if(fun2) {
+        void* (*cloner)(void*) = fun2;
         
         return cloner(mem);
     }

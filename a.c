@@ -42,7 +42,6 @@ struct sInfo
 
 int main(int argc, char** argv)
 {
-/*
 //    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
     
     list<sData~>*% li = new list<sData*%~>();
@@ -51,6 +50,7 @@ int main(int argc, char** argv)
     list<sData2~>*% li2 = new list<sData2*%~>();
     li2.add(new sData2*%~ { b:s"WIN2" });
     
+/*
     puts(li[0].c);
     
     puts(li2[0].b);
@@ -75,13 +75,13 @@ int main(int argc, char** argv)
     foreach(it, info.mGenericsTypes) {
         puts(it.c);
     }
-*/
     
     list<tup(string, sData*%)~>*% data = new list<tup(string, sData*%)~>();
     
     data.add((s"AAA", new sData { a:123 }));
     
     puts(data[0].v1);
+*/
     
     return 0;
 }

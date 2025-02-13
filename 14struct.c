@@ -1146,6 +1146,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 }
                 
                 struct_class.mFields.push_back((name, type2));
+                
                 if(*info->p == ';') {
                     info->p++;
                     skip_spaces_and_lf();
