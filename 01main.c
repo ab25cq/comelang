@@ -32,7 +32,7 @@ sModule*% sModule*::initialize(sModule*% self)
 
 sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent)
 {
-    self.mVars = new map<string, sVar*%>();
+    self.mVars = new map<string, sVar~>();
     self.mGlobal = global;
     self.mParent = parent;
     static int id = 0;

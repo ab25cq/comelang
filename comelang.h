@@ -130,6 +130,7 @@ uniq string xsprintf(char* msg, ...);
 uniq string char*::to_string(char* self);
 uniq string int::to_string(int self);
 uniq unsigned int int::get_hash_key(int value);
+uniq unsigned int void*::get_hash_key(int value);
 uniq string char*::substring(char* str, int head, int tail);
 uniq buffer* buffer*::append_format(buffer* self, char* msg, ...);
 uniq string __builtin_string(char* str);
@@ -2577,7 +2578,7 @@ impl map <T, T2>
         return result.to_string();
     }
     
-    T2 at(map<T, T2>* self, T& key, T2 default_value) {
+    generate T2 at(map<T, T2>* self, T& key, T2 default_value) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2605,7 +2606,7 @@ impl map <T, T2>
 
         return default_value;
     }
-    map<T,T2>* remove(map<T, T2>* self, T& key) {
+    generate map<T,T2>* remove(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2688,7 +2689,7 @@ impl map <T, T2>
         return self == null || self.key_list == null || self.key_list.it == null;
     }
     
-    void rehash(map<T,T2>* self) {
+    generate void rehash(map<T,T2>* self) {
         int size = self.size * 10;
         T&* keys = borrow gc_inc(new T[size]);
         T2&* items = borrow gc_inc(new T2[size]);
@@ -2741,7 +2742,7 @@ impl map <T, T2>
         self.len = len;
     }
     
-    map<T,T2>* insert(map<T,T2>* self, T key, T2 item) {
+    generate map<T,T2>* insert(map<T,T2>* self, T key, T2 item) {
         if(self.len*10 >= self.size) {
             self.rehash();
         }
@@ -2818,7 +2819,7 @@ impl map <T, T2>
         
         return self;
     }
-    map<T,T2>* put(map<T,T2>* self, T key, T2 item) {
+    generate map<T,T2>* put(map<T,T2>* self, T key, T2 item) {
         if(self.len*2 >= self.size) {
             self.rehash();
         }
@@ -2895,7 +2896,7 @@ impl map <T, T2>
         
         return self;
     }
-    T2?? operator_load_element(map<T, T2>* self, T& key) {
+    generate T2?? operator_load_element(map<T, T2>* self, T& key) {
         T2` default_value;
         memset(&default_value, 0, sizeof(T2));
         
@@ -2927,7 +2928,7 @@ impl map <T, T2>
         return default_value;
     }
     
-    void operator_store_element(map<T, T2>* self, T key, T2 item) {
+    generate void operator_store_element(map<T, T2>* self, T key, T2 item) {
         self.insert(key, item);
     }
     
@@ -3002,7 +3003,7 @@ impl map <T, T2>
         return !(left.operator_equals(right);
     }
     
-    bool find(map<T, T2>* self, T& key) {
+    generate bool find(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         int it = hash;
 
@@ -4657,6 +4658,11 @@ uniq unsigned int char*::get_hash_key(char* value)
         p++;
     }
     return result;
+}
+
+uniq unsigned int void*::get_hash_key(void* value)
+{
+    return (((int)value).get_hash_key());
 }
 
 //////////////////////////////

@@ -268,7 +268,7 @@ class sMatchNode extends sNodeBase
             assert(var_ != null);
         
             if(info->match_it_var == null) {
-                info->match_it_var = new list<sVar*%>();
+                info->match_it_var = new list<sVar~>();
             }
             info->match_it_var.add(clone var_);
         }

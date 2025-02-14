@@ -1202,7 +1202,7 @@ sNode*% parse_struct_initializer(sInfo* info=info)
 
 void add_variable_to_table(char* name, sType*% type, sInfo* info)
 {
-    sVar*% self = new sVar;
+    sVar*% self = new sVar~;
     
     self->mName = string(name);
     self->mType = clone type;
@@ -1231,7 +1231,7 @@ void add_variable_to_table(char* name, sType*% type, sInfo* info)
 
 void add_variable_to_global_table(char* name, sType*% type, sInfo* info)
 {
-    sVar*% self = new sVar;
+    sVar*% self = new sVar~;
     
     self->mName = string(name);
     self->mType = clone type;
@@ -1250,7 +1250,7 @@ void add_variable_to_global_table(char* name, sType*% type, sInfo* info)
 
 void add_variable_to_global_table_with_int_value(char* name, sType*% type, char* c_value, sInfo* info)
 {
-    sVar*% self = new sVar;
+    sVar*% self = new sVar~;
     
     self->mName = string(name);
     self->mType = clone type;

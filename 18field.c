@@ -21,13 +21,51 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
         generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
-            
-            if(!err) {
-                exit(1);
+            bool generics_any_child = false;
+            sType*% no_solved_type = clone type;
+            if(type->mNoSolvedGenericsType) {
+                no_solved_type = type->mNoSolvedGenericsType;
+                
+                foreach(it, no_solved_type->mGenericsTypes) {
+                    if(it->mAnyOriginalType) {
+                        generics_any_child = true;
+                    }
+                }
             }
-            
-            operator_fun = info->funcs[name]??;
+            foreach(it, type->mGenericsTypes) {
+                if(it->mAnyOriginalType) {
+                    generics_any_child = true;
+                }
+            }
+            if(generics_fun->mResultType->mGenerate && (type->mAnyOriginalType || generics_any_child)) {
+                sType*% type2 = use_any_type(clone type);
+                
+                sType*% type_before = clone type;
+    
+                fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, true@array_equal_pointer);
+                
+                var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
+                
+                if(!err) {
+                    err_msg(info, "%s not found", fun_name3);
+                    exit(1);
+                }
+                
+                operator_fun = info->funcs[name]??;
+                
+                fun_name2 = name;
+                
+                type = type_before;
+            }
+            else {
+                var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+                
+                if(!err) {
+                    exit(1);
+                }
+                
+                operator_fun = info->funcs[name]??;
+            }
         }
         else {
             operator_fun = info->funcs[fun_name2]??;

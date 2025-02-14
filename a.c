@@ -54,6 +54,7 @@ int main(int argc, char** argv)
 {
 //    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
     
+/*
     list<sData~>*% li = new list<sData~>();
     li.add(new sData~.initialize());
     
@@ -63,6 +64,13 @@ int main(int argc, char** argv)
     puts(li[0].c);
     
     puts(li2[0].b);
+*/
+    
+    map<string~, sData~>*% uho = new map<string~, sData~>();
+    
+    uho[s"AAA"] = new sData~();
+    
+    printf("%s\n", uho[s"AAA"].c);
     
 /*
     sData3<sData~>*% data1 = new sData3<sData~>;
