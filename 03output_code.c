@@ -880,8 +880,8 @@ int transpile(sInfo* info) version 3
 {
 /*
     var name = string("main");
-    var result_type = new sType("int");
-    var param_types = [new sType("int"), new sType("char**")];
+    var result_type = new sType~("int");
+    var param_types = [new sType~("int"), new sType~("char**")];
     var param_names = [string("argc"), string("argv")];
     var param_default_parametors = new list<string>();
     var main_fun = new sFun(name, result_type, param_types, param_names

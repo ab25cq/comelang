@@ -66,7 +66,7 @@ class sIfNode extends sNodeBase
         
         string if_result_var_name = info.if_result_var_name;
         if(existance_of_result_value) {
-            sType*% if_result_type = new sType("void*");
+            sType*% if_result_type = new sType~("void*");
             
             static int var_num = 0;
             info->if_result_var_name = xsprintf("__if_result__%d", var_num++);

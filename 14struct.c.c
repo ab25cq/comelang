@@ -6215,7 +6215,7 @@ _Bool __result330__;
         klass2_454->mFields=(struct list$1voidph*)come_increment_ref_count(come_call_cloner(list$1voidphp_clone, klass_452->mFields));
         come_call_finalizer3(__dec_obj123,list$1voidph_finalize, 0, 0, 0, 0, (void*)0);
     }
-    type_455=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 352, "struct sType*", (void*)0, (void*)0)),name_453,(_Bool)0,info));
+    type_455=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 352, "struct sType", sType_finalize, sType_clone)),name_453,(_Bool)0,info));
     override__456=((struct sType*)(__right_value379=map$2charphsTypephp_at(info->types,name_453,((void*)0))));
     come_call_finalizer3(__right_value379,sType_finalize, 0, 1, 0, 0, (void*)0);
     if(    override__456) {
@@ -6678,7 +6678,7 @@ klass_485 = (void*)0;
     _if_conditional3) {
         map$2charphsClassphp_insert(info->classes,(char*)come_increment_ref_count(__builtin_string(type_name)),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "14struct.c", 379, "struct sClass*", (void*)0, (void*)0)),((char*)(__right_value389=__builtin_string(type_name))),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info)));
         __right_value389 = come_decrement_ref_count2(__right_value389, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-        type_486=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 380, "struct sType*", (void*)0, (void*)0)),type_name,(_Bool)0,info));
+        type_486=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 380, "struct sType", sType_finalize, sType_clone)),type_name,(_Bool)0,info));
         override__487=((struct sType*)(__right_value393=map$2charphsTypephp_at(info->types,type_name,((void*)0))));
         come_call_finalizer3(__right_value393,sType_finalize, 0, 1, 0, 0, __result_obj__);
         if(        override__487) {
@@ -6694,7 +6694,7 @@ klass_485 = (void*)0;
     else {
         klass_485=((struct sClass*)(__right_value396=map$2charphsClassphp_at(info->classes,type_name,((void*)0))));
         come_call_finalizer3(__right_value396,sClass_finalize, 0, 1, 0, 0, __result_obj__);
-        type_488=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 393, "struct sType*", (void*)0, (void*)0)),type_name,(_Bool)0,info));
+        type_488=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 393, "struct sType", sType_finalize, sType_clone)),type_name,(_Bool)0,info));
         override__489=((struct sType*)(__right_value399=map$2charphsTypephp_at(info->types,type_name,((void*)0))));
         come_call_finalizer3(__right_value399,sType_finalize, 0, 1, 0, 0, __result_obj__);
         if(        override__489) {
@@ -7331,7 +7331,7 @@ struct_class_577 = (void*)0;
                 map$2charphsClassphp_insert(info->classes,(char*)come_increment_ref_count(type_name_517),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "14struct.c", 554, "struct sClass*", (void*)0, (void*)0)),type_name_517,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info)));
                 struct_class_518=((struct sClass*)(__right_value439=map$2charphsClassphp_at(info->classes,type_name_517,((void*)0))));
                 come_call_finalizer3(__right_value439,sClass_finalize, 0, 1, 0, 0, __result_obj__);
-                type_519=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 556, "struct sType*", (void*)0, (void*)0)),type_name_517,(_Bool)0,info));
+                type_519=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 556, "struct sType", sType_finalize, sType_clone)),type_name_517,(_Bool)0,info));
                 override__520=((struct sType*)(__right_value442=map$2charphsTypephp_at(info->types,type_name_517,((void*)0))));
                 come_call_finalizer3(__right_value442,sType_finalize, 0, 1, 0, 0, __result_obj__);
                 if(                override__520) {
@@ -7345,7 +7345,7 @@ struct_class_577 = (void*)0;
             else {
                 struct_class_518=((struct sClass*)(__right_value443=map$2charphsClassphp_at(info->classes,type_name_517,((void*)0))));
                 come_call_finalizer3(__right_value443,sClass_finalize, 0, 1, 0, 0, __result_obj__);
-                type_521=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 567, "struct sType*", (void*)0, (void*)0)),type_name_517,(_Bool)0,info));
+                type_521=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 567, "struct sType", sType_finalize, sType_clone)),type_name_517,(_Bool)0,info));
                 override__522=((struct sType*)(__right_value446=map$2charphsTypephp_at(info->types,type_name_517,((void*)0))));
                 come_call_finalizer3(__right_value446,sType_finalize, 0, 1, 0, 0, __result_obj__);
                 if(                override__522) {
@@ -7516,7 +7516,7 @@ struct_class_577 = (void*)0;
             if(            (_if_conditional7=(((struct sClass*)(__right_value481=map$2charphsClassphp_at(info->classes,type_name_517,((void*)0))))==((void*)0))),            come_call_finalizer3(__right_value481,sClass_finalize, 0, 1, 0, 0, __result_obj__),
             _if_conditional7) {
                 map$2charphsClassphp_insert(info->classes,(char*)come_increment_ref_count(type_name_517),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "14struct.c", 707, "struct sClass*", (void*)0, (void*)0)),type_name_517,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info)));
-                type_540=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 709, "struct sType*", (void*)0, (void*)0)),type_name_517,(_Bool)0,info));
+                type_540=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 709, "struct sType", sType_finalize, sType_clone)),type_name_517,(_Bool)0,info));
                 override__541=((struct sType*)(__right_value486=map$2charphsTypephp_at(info->types,type_name_517,((void*)0))));
                 come_call_finalizer3(__right_value486,sType_finalize, 0, 1, 0, 0, __result_obj__);
                 if(                override__541) {
@@ -7530,7 +7530,7 @@ struct_class_577 = (void*)0;
                 come_call_finalizer3(type_540,sType_finalize, 0, 0, 0, 0, (void*)0);
             }
             else {
-                type_542=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 721, "struct sType*", (void*)0, (void*)0)),type_name_517,(_Bool)0,info));
+                type_542=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 721, "struct sType", sType_finalize, sType_clone)),type_name_517,(_Bool)0,info));
                 override__543=((struct sType*)(__right_value490=map$2charphsTypephp_at(info->types,type_name_517,((void*)0))));
                 come_call_finalizer3(__right_value490,sType_finalize, 0, 1, 0, 0, __result_obj__);
                 if(                override__543) {
@@ -7909,7 +7909,7 @@ struct_class_577 = (void*)0;
                 tail_621=info->p;
                 pointer_num_622=1;
                 __dec_obj157=info->impl_type;
-                info->impl_type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 1041, "struct sType*", (void*)0, (void*)0)),type_name_567,(_Bool)0,info));
+                info->impl_type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "14struct.c", 1041, "struct sType", sType_finalize, sType_clone)),type_name_567,(_Bool)0,info));
                 come_call_finalizer3(__dec_obj157,sType_finalize, 0, 0, 0, 0, (void*)0);
                 info->impl_type->mPointerNum=pointer_num_622;
                 info->in_class=(_Bool)1;

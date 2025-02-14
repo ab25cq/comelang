@@ -19,7 +19,7 @@ class sIntNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%d", self.value);
-        come_value.type = new sType("int");
+        come_value.type = new sType~("int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -49,7 +49,7 @@ class sUIntNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%u", self.value);
-        come_value.type = new sType("int");
+        come_value.type = new sType~("int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -79,7 +79,7 @@ class sLongNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%ld", self.value);
-        come_value.type = new sType("long");
+        come_value.type = new sType~("long");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -109,7 +109,7 @@ class sULongNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%lu", self.value);
-        come_value.type = new sType("long");
+        come_value.type = new sType~("long");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -139,7 +139,7 @@ class sFloatNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%s", self.value);
-        come_value.type = new sType("float");
+        come_value.type = new sType~("float");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -169,7 +169,7 @@ class sDoubleNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%s", self.value);
-        come_value.type = new sType("double");
+        come_value.type = new sType~("double");
         come_value.var = null;
         
         info.stack.push_back(come_value);

@@ -165,7 +165,7 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
     self.mUniq = uniq_;
     self.mGenerate = generate_;
     
-    self.mLambdaType = new sType("lambda");
+    self.mLambdaType = new sType~("lambda");
     
     foreach(it, param_types) {
         self.mLambdaType.mParamTypes.push_back(clone it);

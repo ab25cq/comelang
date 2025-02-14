@@ -349,7 +349,7 @@ class sClassNode extends sNodeBase
             klass2.mFields = clone klass.mFields;
         }
         
-        sType*% type = new sType(name);
+        sType*% type = new sType~(name);
         sType* override_ = info.types.at(name, null);
         if(override_) {
             if(override_->mTypedef) {
@@ -377,7 +377,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
     sClass* klass;
     if(info.classes.at(type_name, null) == null) {
         info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
-        sType*% type = new sType(type_name);
+        sType*% type = new sType~(type_name);
         sType* override_ = info.types.at(type_name, null);
         if(override_) {
             if(override_->mTypedef) {
@@ -390,7 +390,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
     }
     else {
         klass = info.classes.at(type_name, null);
-        sType*% type = new sType(type_name);
+        sType*% type = new sType~(type_name);
         sType* override_ = info.types.at(type_name, null);
         if(override_) {
             if(override_->mTypedef) {
@@ -553,7 +553,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             if(info.classes.at(type_name, null) == null) {
                 info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
                 struct_class = info.classes.at(type_name, null);
-                sType*% type = new sType(type_name);
+                sType*% type = new sType~(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -564,7 +564,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             }
             else {
                 struct_class = info.classes.at(type_name, null);
-                sType*% type = new sType(type_name);
+                sType*% type = new sType~(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -706,7 +706,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             if(info.classes.at(type_name, null) == null) {
                 info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
                 
-                sType*% type = new sType(type_name);
+                sType*% type = new sType~(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -718,7 +718,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 struct_class = info.classes.at(type_name, null);
             }
             else {
-                sType*% type = new sType(type_name);
+                sType*% type = new sType~(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -1038,7 +1038,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 
                 int pointer_num = 1;
         
-                info->impl_type = new sType(type_name);
+                info->impl_type = new sType~(type_name);
                 info->impl_type->mPointerNum = pointer_num;
                 
                 info->in_class = true;

@@ -5319,7 +5319,7 @@ _Bool __result250__;
     come_value_366->c_value=(char*)come_increment_ref_count(xsprintf("((void*)0)"));
     __dec_obj128 = come_decrement_ref_count2(__dec_obj128, (void*)0, (void*)0, 0,0,0, (void*)0);
     __dec_obj129=come_value_366->type;
-    come_value_366->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "13op.c", 176, "struct sType*", (void*)0, (void*)0)),"void*",(_Bool)0,info));
+    come_value_366->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "13op.c", 176, "struct sType", sType_finalize, sType_clone)),"void*",(_Bool)0,info));
     come_call_finalizer3(__dec_obj129,sType_finalize, 0, 0, 0, 0, (void*)0);
     come_value_366->var=((void*)0);
     add_come_last_code(info,"%s",come_value_366->c_value);
@@ -5449,7 +5449,7 @@ _Bool __result256__;
     come_value_368->c_value=(char*)come_increment_ref_count(xsprintf("((void*)0)"));
     __dec_obj132 = come_decrement_ref_count2(__dec_obj132, (void*)0, (void*)0, 0,0,0, (void*)0);
     __dec_obj133=come_value_368->type;
-    come_value_368->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "13op.c", 209, "struct sType*", (void*)0, (void*)0)),"void*",(_Bool)0,info));
+    come_value_368->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "13op.c", 209, "struct sType", sType_finalize, sType_clone)),"void*",(_Bool)0,info));
     come_call_finalizer3(__dec_obj133,sType_finalize, 0, 0, 0, 0, (void*)0);
     come_value_368->type->mNullValue=(_Bool)1;
     come_value_368->var=((void*)0);
@@ -5717,7 +5717,7 @@ memset(&calling_fun_388, 0, sizeof(_Bool));
         result_type_389=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, left_value_382->type));
         if(        left_value_382->type->mPointerNum>0&&right_value_385->type->mPointerNum>0) {
             __dec_obj147=result_type_389;
-            result_type_389=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "13op.c", 342, "struct sType*", (void*)0, (void*)0)),"long",(_Bool)0,info));
+            result_type_389=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "13op.c", 342, "struct sType", sType_finalize, sType_clone)),"long",(_Bool)0,info));
             come_call_finalizer3(__dec_obj147,sType_finalize, 0, 0, 0, 0, (void*)0);
         }
         come_value_390=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "13op.c", 345, "struct CVALUE*", (void*)0, (void*)0))));

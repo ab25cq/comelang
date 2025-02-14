@@ -778,7 +778,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
             var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
             
             if(!err) {
-                return (new sType("void"), string(""));
+                return (new sType~("void"), string(""));
             }
             cloner = info->funcs[name]??;
         }

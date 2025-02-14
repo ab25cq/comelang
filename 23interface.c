@@ -59,10 +59,10 @@ sType*%, string parse_interface_function(sInfo* info)
     
     var param_types, param_names, param_default_parametors, var_args = parse_params(info);
     
-    param_types.insert(0, new sType("void*"));
+    param_types.insert(0, new sType~("void*"));
     param_names.insert(0, string("self"));
     
-    sType*% type = new sType("lambda");
+    sType*% type = new sType~("lambda");
     
     type->mParamTypes = clone param_types;
     type->mParamNames = clone param_names;
@@ -95,21 +95,21 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         
         expected_next_character('{');
     
-        sType*% voidp = new sType("void");
+        sType*% voidp = new sType~("void");
         voidp->mPointerNum++;
         
         klass.mFields.push_back((string("_protocol_obj"), voidp));
         
-        sType*% finalizer = new sType("lambda");
+        sType*% finalizer = new sType~("lambda");
     
         finalizer->mParamTypes = [(clone voidp) ];
         finalizer->mParamNames = [string("self")];
         finalizer->mVarArgs = false;
-        finalizer->mResultType = new sType("void");
+        finalizer->mResultType = new sType~("void");
         
         klass.mFields.push_back((string("finalize"), finalizer));
         
-        sType*% cloner = new sType("lambda");
+        sType*% cloner = new sType~("lambda");
     
         cloner->mParamTypes = [(clone voidp) ];
         cloner->mParamNames = [string("self")];

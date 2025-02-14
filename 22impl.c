@@ -42,7 +42,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93
         
         expected_next_character('{', info);
         
-        info->impl_type = new sType(word);
+        info->impl_type = new sType~(word);
         info->impl_type->mPointerNum = pointer_num;
         
         while(*info->p != '}') {

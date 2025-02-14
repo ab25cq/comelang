@@ -836,7 +836,7 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType("long");
+                        come_value.type = new sType~("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
@@ -865,7 +865,7 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType("long");
+                        come_value.type = new sType~("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
@@ -894,7 +894,7 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType("long");
+                        come_value.type = new sType~("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
@@ -923,7 +923,7 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType("long");
+                        come_value.type = new sType~("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
@@ -952,7 +952,7 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType("long");
+                        come_value.type = new sType~("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));

@@ -3562,7 +3562,7 @@ _Bool __result282__;
     guard__388=self->mGuard;
     if_result_var_name_389=(char*)come_increment_ref_count(info->if_result_var_name);
     if(    existance_of_result_value_381) {
-        if_result_type_390=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "08if.c", 69, "struct sType*", (void*)0, (void*)0)),"void*",(_Bool)0,info));
+        if_result_type_390=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "08if.c", 69, "struct sType", sType_finalize, sType_clone)),"void*",(_Bool)0,info));
         static int var_num_391=0;
         __dec_obj108=info->if_result_var_name;
         info->if_result_var_name=(char*)come_increment_ref_count(xsprintf("__if_result__%d",var_num_391++));
