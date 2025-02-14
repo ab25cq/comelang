@@ -466,14 +466,14 @@ class sCallerSNameNode extends sNodeBase
 
 class sFunCallNode extends sNodeBase
 {
-    new(char* fun_name, list<tup:string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+    new(char* fun_name, list<tup:string,sNode*%>* params, bool guard_break, list<sType~>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
     {
         self.super();
         
         string self.fun_name = string(fun_name);
         list<tup: string,sNode*%>*% self.params = clone params;
         bool self.guard_break = guard_break;
-        list<sType*%>*% self.method_generics_types = method_generics_types;
+        list<sType~>*% self.method_generics_types = method_generics_types;
         buffer*% self.method_block = method_block;
         int self.method_block_sline = method_block_sline;
     }
@@ -592,7 +592,7 @@ class sFunCallNode extends sNodeBase
         }
         if(self.method_generics_types.length() > 0 || method_generics) {
             if(self.method_generics_types.length() == 0) {
-                list<sType*%>*% method_generics_types = new list<sType*%>();
+                list<sType~>*% method_generics_types = new list<sType~>();
                 var name, gfun = make_method_generics_function(fun_name, method_generics_types, info);
                 string generics_fun_name = name;
                 
@@ -1034,7 +1034,7 @@ class sFunCallNode extends sNodeBase
         sType*% result_type = clone fun.mResultType;
         result_type->mStatic = false;
         
-        list<sType*%>*% param_types = new list<sType*%>();
+        list<sType~>*% param_types = new list<sType~>();
         foreach(it, fun.mParamTypes) {
             sType*% it2 = solve_generics(clone it, info.generics_type, info);
             param_types.push_back(clone it2);
@@ -1226,7 +1226,7 @@ class sFunCallNode extends sNodeBase
             
             sType*% result_type = clone method_block_type->mResultType;
             result_type->mStatic = false;
-            list<sType*%>*% param_types = clone method_block_type->mParamTypes;
+            list<sType~>*% param_types = clone method_block_type->mParamTypes;
             list<string>* param_names = method_block_type->mParamNames;
             
             buffer*% all_alhabet_sname = new buffer();
@@ -1649,7 +1649,7 @@ class sComePollNode extends sNodeBase
 };
 #endif
 
-sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType~>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
 {
     sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
     
@@ -1796,7 +1796,7 @@ class sVarArgTypeName extends sNodeBase
 
 sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
 {
-    list<sType*%>*% method_generics_types = new list<sType*%>();
+    list<sType~>*% method_generics_types = new list<sType~>();
     
     if(*info->p == '<') {
         info->p++;

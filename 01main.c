@@ -87,10 +87,10 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
     
     self.mNoSolvedGenericsType = null;
     self.mOriginalLoadVarType = null;
-    self.mGenericsTypes = new list<sType*%>();
+    self.mGenericsTypes = new list<sType~>();
     self.mArrayNum = new list<sNode*%>();
     self.mOmitArrayNum = false;
-    self.mParamTypes = new list<sType*%>();
+    self.mParamTypes = new list<sType~>();
     self.mParamNames = new list<string>();
     self.mVarArgs = false;
     self.mResultType = null;
@@ -151,7 +151,7 @@ sClassModule*% sClassModule*::initialize(sClassModule*% self, char* name, string
     return self;
 };
 
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string come_header, string declare_sname, sInfo* info, bool inline_, bool uniq_=false, bool generate_, string attribute=s"", string fun_attribute=s"")
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType~>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string come_header, string declare_sname, sInfo* info, bool inline_, bool uniq_=false, bool generate_, string attribute=s"", string fun_attribute=s"")
 {
     self.mName = name;
     self.mResultType = result_type;

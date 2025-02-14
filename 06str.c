@@ -528,7 +528,7 @@ class sTupleNode extends sNodeBase
     bool compile(sInfo* info)
     {
         list<tup: string, sNode*%>* tuple_elements = self.tuple_elements;
-        list<sType*%>*% tuple_types = new list<sType*%>();
+        list<sType~>*% tuple_types = new list<sType~>();
         list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
         
         int n = 0;
@@ -697,7 +697,7 @@ class sSomeNode extends sNodeBase
     bool compile(sInfo* info)
     {
         list<sNode*%>* tuple_elements = self.tuple_elements;
-        list<sType*%>*% tuple_types = new list<sType*%>();
+        list<sType~>*% tuple_types = new list<sType~>();
         list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
         
         foreach(it, tuple_elements) {
@@ -1011,7 +1011,7 @@ class sNoneNode extends sNodeBase
     bool compile(sInfo* info)
     {
         list<sNode*%>* tuple_elements = self.tuple_elements;
-        list<sType*%>*% tuple_types = new list<sType*%>();
+        list<sType~>*% tuple_types = new list<sType~>();
         list<CVALUE*%>*% tuple_values = new list<CVALUE*%>();
         
         int i = 0;
@@ -1880,7 +1880,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         int method_block_sline = info.sline;
         
-        list<sType*%>*% method_generics_types = new list<sType*%>();
+        list<sType~>*% method_generics_types = new list<sType~>();
         
         sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
         
@@ -2047,7 +2047,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         int method_block_sline = info.sline;
         
-        list<sType*%>*% method_generics_types = new list<sType*%>();
+        list<sType~>*% method_generics_types = new list<sType~>();
         
         sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
         
