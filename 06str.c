@@ -64,6 +64,7 @@ class sBufferNode extends sNodeBase
         
         string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
         string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+        string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
         
         if(info.funcs[finalizer_name]?? == null) {
             (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -72,8 +73,12 @@ class sBufferNode extends sNodeBase
             var fun, name = create_cloner_automatically(any_type, "clone", info);
             cloner_name = name;
         }
+        if(info.funcs[get_hash_key_name]?? == null) {
+            var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
+            get_hash_key_name = name;
+        }
         
-        buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\", %s, %s), \"%s\", %ld)", info->sname, info->sline, finalizer_name, cloner_name, value.to_string(), size);
+        buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\", %s, %s, %s), \"%s\", %ld)", info->sname, info->sline, finalizer_name, cloner_name, get_hash_key_name, value.to_string(), size);
         
         sType*% type2 = new sType~("buffer*");
         type2->mHeap = true;
@@ -429,6 +434,7 @@ class sListNode extends sNodeBase
         
         string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
         string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+        string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
         
         if(info.funcs[finalizer_name]?? == null) {
             (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -437,8 +443,12 @@ class sListNode extends sNodeBase
             var fun, name = create_cloner_automatically(any_type, "clone", info);
             cloner_name = name;
         }
+        if(info.funcs[get_hash_key_name]?? == null) {
+            var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
+            get_hash_key_name = name;
+        }
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name, get_hash_key_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -581,6 +591,7 @@ class sTupleNode extends sNodeBase
         
         string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
         string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+        string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
         
         if(info.funcs[finalizer_name]?? == null) {
             (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -589,8 +600,12 @@ class sTupleNode extends sNodeBase
             var fun, name = create_cloner_automatically(any_type, "clone", info);
             cloner_name = name;
         }
+        if(info.funcs[get_hash_key_name]?? == null) {
+            var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
+            get_hash_key_name = name;
+        }
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name, get_hash_key_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -740,7 +755,7 @@ class sSomeNode extends sNodeBase
         }
         */
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -1063,7 +1078,7 @@ class sNoneNode extends sNodeBase
         }
         */
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -1369,6 +1384,7 @@ class sMapNode extends sNodeBase
         
         string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
         string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+        string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
         
         if(info.funcs[finalizer_name]?? == null) {
             (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -1377,8 +1393,12 @@ class sMapNode extends sNodeBase
             var fun, name = create_cloner_automatically(any_type, "clone", info);
             cloner_name = name;
         }
+        if(info.funcs[get_hash_key_name]?? == null) {
+            var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
+            get_hash_key_name = name;
+        }
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name, get_hash_key_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;

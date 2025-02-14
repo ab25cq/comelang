@@ -1533,8 +1533,8 @@ int transpile(sInfo* info) version 5
     {
         var name = string("come_calloc");
         var result_type = new sType~("void*");
-        var param_types = [new sType~("int"), new sType~("int"), new sType~("char*"), new sType~("int"), new sType~("char*"), new sType~("void*"), new sType~("void*")];
-        var param_names = [string("count"), string("size"), string("sname"), string("sline"), string("class_name"), string("finalizer_fun"), string("cloner_fun")];
+        var param_types = [new sType~("int"), new sType~("int"), new sType~("char*"), new sType~("int"), new sType~("char*"), new sType~("void*"), new sType~("void*"), new sType~("void*")];
+        var param_names = [string("count"), string("size"), string("sname"), string("sline"), string("class_name"), string("finalizer_fun"), string("cloner_fun"), string("get_hash_key_fun")];
         var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(null);
@@ -1544,7 +1544,7 @@ int transpile(sInfo* info) version 5
         var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
-            , string("void* come_calloc(int count, int size, char* sname, int sline, char* class_name, void* finalizer_fun, void* cloner_fun)")
+            , string("void* come_calloc(int count, int size, char* sname, int sline, char* class_name, void* finalizer_fun, void* cloner_fun, void* get_hash_key_fun)")
             , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
@@ -4456,7 +4456,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
             
             char source2[1024];
             
-            snprintf(source2, 1024, "result += self.%s.get_hash_key();\n", name);
+            snprintf(source2, 1024, "result += ((int)self.%s).get_hash_key();\n", name);
             
             source.append_str(source2);
             

@@ -97,7 +97,7 @@ using comelang;
 #define COME_STACKFRAME_MAX 16
 #define COME_STACKFRAME_MAX_GLOBAL 128
 
-typedef void* any;
+typedef void*% any;
 typedef char*% string;
 
 uniq void* gComeFunResultObject = NULL;
@@ -109,7 +109,7 @@ uniq int gNumComeStackFrame = 0;
 
 uniq char* gComeStackFrameBuffer = NULL;
 
-uniq any wildcard;
+uniq void* wildcard;
 
 //////////////////////////////
 /// exception
@@ -129,7 +129,17 @@ uniq buffer* buffer*::append(buffer* self, char* mem, size_t size);
 uniq string xsprintf(char* msg, ...);
 uniq string char*::to_string(char* self);
 uniq string int::to_string(int self);
+uniq unsigned int bool::get_hash_key(bool value);
+uniq unsigned int char::get_hash_key(char value);
+uniq unsigned int short::get_hash_key(short int value);
 uniq unsigned int int::get_hash_key(int value);
+uniq unsigned int long::get_hash_key(long value);
+uniq unsigned int size_t::get_hash_key(size_t value);
+uniq unsigned int float::get_hash_key(float value);
+uniq unsigned int double::get_hash_key(double value);
+uniq unsigned int char*::get_hash_key(char* value);
+uniq unsigned int string::get_hash_key(char* value);
+uniq unsigned int void*::get_hash_key(void* value);
 uniq string char*::substring(char* str, int head, int tail);
 uniq buffer* buffer*::append_format(buffer* self, char* msg, ...);
 uniq string __builtin_string(char* str);
@@ -302,7 +312,7 @@ uniq void xassert(char* msg, bool test)
     puts("ok");
 }
 
-record static inline bool die(char* msg)
+record uniq bool die(char* msg)
 {
     perror(msg);
     stackframe();
@@ -324,6 +334,7 @@ struct sMemHeaderTiny
     char* class_name;
     void* finalizer_fun;
     void* cloner_fun;
+    void* get_hash_key_fun;
 };
 
 struct sMemHeader
@@ -341,11 +352,12 @@ struct sMemHeader
     char* class_name;
     void* finalizer_fun;
     void* cloner_fun;
+    void* get_hash_key_fun;
 };
 
 uniq sMemHeader* gAllocMem;
 
-uniq any gComeResultObject = NULL;
+uniq void* gComeResultObject = NULL;
 bool gComeGCLib;
 
 uniq bool gComeMallocLib = false;
@@ -510,7 +522,7 @@ uniq void* alloc_from_pages(size_t size)
     return result;
 }
 
-uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, void* cloner_fun=(void*)0)
+uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, void* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0)
 {
     if(gComeDebugLib) {
 #ifdef ENABLE_GC
@@ -549,6 +561,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->class_name = class_name; 
         it->finalizer_fun = finalizer_fun;
         it->cloner_fun = cloner_fun;
+        it->get_hash_key_fun = get_hash_key_fun;
         
         if(gAllocMem) {
             gAllocMem->prev = it;
@@ -575,6 +588,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->class_name = class_name; 
         it->finalizer_fun = finalizer_fun;
         it->cloner_fun = cloner_fun;
+        it->get_hash_key_fun = get_hash_key_fun;
         
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = NULL;
@@ -736,8 +750,11 @@ uniq void* come_get_finalizer(void* mem)
         sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+            /*
             printf("invalid heap object(%p)(3)\n", it);
             exit(2);
+            */
         }
         
         return it->finalizer_fun;
@@ -746,8 +763,7 @@ uniq void* come_get_finalizer(void* mem)
         sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            printf("invalid heap object(%p)(4)\n", it);
-            exit(2);
+            return NULL;
         }
         
         return it->finalizer_fun;
@@ -760,8 +776,7 @@ uniq void* come_get_cloner(void* mem)
         sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            printf("invalid heap object(%p)(5)\n", it);
-            exit(2);
+            return NULL;
         }
         
         return it->cloner_fun;
@@ -770,17 +785,16 @@ uniq void* come_get_cloner(void* mem)
         sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
         
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            printf("invalid heap object(%p)(6)\n", it);
-            exit(2);
+            return NULL;
         }
         
         return it->cloner_fun;
     }
 }
 
-uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, char* cloner_fun=(void*)0)
+uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, char* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0)
 {
-    char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name, finalizer_fun, cloner_fun);
+    char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name, finalizer_fun, cloner_fun, get_hash_key_fun);
     
     size_t* ref_count = (size_t*)mem;
 
@@ -789,7 +803,7 @@ uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0,
     size_t* size2 = (size_t*)(mem + sizeof(size_t));
     
     *size2 = size*count + sizeof(size_t) + sizeof(size_t);
-
+    
     return mem + sizeof(size_t) + sizeof(size_t);
 }
 
@@ -828,7 +842,7 @@ uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_n
     size_t size = *size_p - sizeof(size_t) - sizeof(size_t);
 
     //void* result = come_calloc(1, size, sname, sline);
-    void* result = come_calloc(1, size, sname, sline, class_name, finalizer_fun, cloner_fun);
+    void* result = come_calloc(1, size, sname, sline, class_name, finalizer_fun, cloner_fun, (void*)0);
 
     memcpy(result, block, size);
     
@@ -927,24 +941,21 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
     }
     
     if(call_finalizer_only) {
-        /*
         void* fun2 = come_get_finalizer(mem);
-        if(fun2) {
-            if(protocol_obj && protocol_fun) {
-                void (*finalizer)(void*) = protocol_fun;
-                finalizer(protocol_obj);
-            }
-            void (*finalizer)(void*) = fun2;
-            finalizer(mem);
-        }
-        else 
-        */
         if(fun) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
                 finalizer(protocol_obj);
             }
             void (*finalizer)(void*) = fun;
+            finalizer(mem);
+        }
+        else if(fun2) {
+            if(protocol_obj && protocol_fun) {
+                void (*finalizer)(void*) = protocol_fun;
+                finalizer(protocol_obj);
+            }
+            void (*finalizer)(void*) = fun2;
             finalizer(mem);
         }
     }
@@ -958,18 +969,8 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
         size_t count = *ref_count;
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
-                /*
                 void* fun2 = come_get_finalizer(mem);
-                if(fun2) {
-                    if(protocol_obj && protocol_fun) {
-                        void (*finalizer)(void*) = protocol_fun;
-                        finalizer(protocol_obj);
-                    }
-                    void (*finalizer)(void*) = fun2;
-                    finalizer(mem);
-                }
-                else {
-                */
+                if(fun) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
@@ -979,7 +980,15 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
-                //}
+                }
+                else if(fun2) {
+                    if(protocol_obj && protocol_fun) {
+                        void (*finalizer)(void*) = protocol_fun;
+                        finalizer(protocol_obj);
+                    }
+                    void (*finalizer)(void*) = fun2;
+                    finalizer(mem);
+                }
                 come_free_object(mem);
             }
         }
@@ -998,23 +1007,21 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
     }
     
     if(call_finalizer_only) {
-        /*
         void* fun2 = come_get_finalizer(mem);
-        if(fun2) {
-            if(protocol_obj && protocol_fun) {
-                void (*finalizer)(void*) = protocol_fun;
-                finalizer(protocol_obj);
-            }
-            void (*finalizer)(void*) = fun2;
-            finalizer(mem);
-        }
-        else */
         if(fun) {
             if(protocol_obj && protocol_fun) {
                 void (*finalizer)(void*) = protocol_fun;
                 finalizer(protocol_obj);
             }
             void (*finalizer)(void*) = fun;
+            finalizer(mem);
+        }
+        else if(fun2) {
+            if(protocol_obj && protocol_fun) {
+                void (*finalizer)(void*) = protocol_fun;
+                finalizer(protocol_obj);
+            }
+            void (*finalizer)(void*) = fun2;
             finalizer(mem);
         }
     }
@@ -1028,18 +1035,8 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
         size_t count = *ref_count;
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
-                /*
                 void* fun2 = come_get_finalizer(mem);
-                if(fun2) {
-                    if(protocol_obj && protocol_fun) {
-                        void (*finalizer)(void*) = protocol_fun;
-                        finalizer(protocol_obj);
-                    }
-                    void (*finalizer)(void*) = fun2;
-                    finalizer(mem);
-                }
-                else {
-                */
+                if(fun) {
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
@@ -1049,7 +1046,15 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
-                //}
+                }
+                else if(fun2) {
+                    if(protocol_obj && protocol_fun) {
+                        void (*finalizer)(void*) = protocol_fun;
+                        finalizer(protocol_obj);
+                    }
+                    void (*finalizer)(void*) = fun2;
+                    finalizer(mem);
+                }
                 come_free_object(mem);
             }
         }
@@ -1069,17 +1074,15 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
     
     if(call_finalizer_only) {
         if(fun) {
-            /*
             void* fun2 = come_get_finalizer(mem);
-            if(fun2) {
+            if(fun) {
+                void (*finalizer)(void*) = fun;
+                finalizer(mem);
+            }
+            else if(fun2) {
                 void (*finalizer)(void*) = fun2;
                 finalizer(mem);
             }
-            else {
-            */
-                void (*finalizer)(void*) = fun;
-                finalizer(mem);
-            //}
         }
     }
     else {
@@ -1092,20 +1095,16 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
         size_t count = *ref_count;
         if(!no_free && (count <= 0 || force_delete_)) {
             if(mem) {
-                /*
                 void* fun2 = come_get_finalizer(mem);
-                if(fun2) {
+                if(fun) {
+                    void (*finalizer)(void*) = fun;
+                    finalizer(mem);
+                }
+                else if(fun2) {
                     void (*finalizer)(void*) = fun2;
                     finalizer(mem);
                 }
-                else {
-                */
-                    if(fun) {
-                        void (*finalizer)(void*) = fun;
-                        finalizer(mem);
-                    }
-                    come_free_object(mem);
-                //}
+                come_free_object(mem);
             }
         }
     }
@@ -1117,20 +1116,20 @@ uniq void* come_call_cloner(void* fun, void* mem)
         return NULL;
     }
     
-//    void* fun2 = come_get_cloner(mem);
+    void* fun2 = come_get_cloner(mem);
     
-/*
-    if(fun2) {
+    if(fun) {
+        void* (*cloner)(void*) = fun;
+        
+        return cloner(mem);
+    }
+    else if(fun2) {
         void* (*cloner)(void*) = fun2;
         
         return cloner(mem);
     }
-    else {
-*/
-        void* (*cloner)(void*) = fun;
-        
-        return cloner(mem);
-//    }
+    
+    return NULL;
 }
 
 uniq string __builtin_string(char* str)
@@ -1229,7 +1228,7 @@ impl list <T>
 
         return result;
     }
-    list<T>* add(list<T>* self, T~ item)
+    list<T>* add(list<T>* self, T item)
     {
         if(self.len == 0) {
             list_item<T>* litem = borrow gc_inc(new list_item<T>);
@@ -1299,7 +1298,7 @@ impl list <T>
             self.len--;
         }
     }
-    list<T>* push_back(list<T>* self, T~ item)
+    list<T>* push_back(list<T>* self, T item)
     {
         if(self.len == 0) {
             list_item<T>* litem = borrow gc_inc(new list_item<T>);
@@ -1360,7 +1359,7 @@ impl list <T>
         return result.to_string();
     }
     
-    T&~~ begin(list<T>* self) {
+    T& begin(list<T>* self) {
         if(self == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -1377,7 +1376,7 @@ impl list <T>
         return result;
     }
 
-    T&~~ next(list<T>* self) {
+    T& next(list<T>* self) {
         if(self == null || self.it == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -1415,7 +1414,7 @@ impl list <T>
         
         return self;
     }
-    T~~ item(list<T>* self, int position, T& default_value) 
+    T item(list<T>* self, int position, T& default_value) 
     {
         if(position < 0) {
             position += self.len;
@@ -1442,7 +1441,7 @@ impl list <T>
         return self.len;
     }
     
-    list<T>* insert(list<T>* self, int position, T~ item)
+    list<T>* insert(list<T>* self, int position, T item)
     {
         if(position < 0) {
             position += self.len + 1;
@@ -1663,7 +1662,7 @@ impl list <T>
         
         return self;
     }
-    list<T>* replace(list<T>* self, int position, T~ item)
+    list<T>* replace(list<T>* self, int position, T item)
     {
         if(position < 0) {
             position += self.len;
@@ -1762,10 +1761,10 @@ impl list <T>
 
         return result;
     }
-    void operator_store_element(list<T>* self, int position, T~ item) {
+    void operator_store_element(list<T>* self, int position, T item) {
         self.replace(position, item);
     }
-    T??~~ operator_load_element(list<T>* self, int position) {
+    T?? operator_load_element(list<T>* self, int position) {
         if(position < 0) {
             position += self.len;
         }
@@ -2176,18 +2175,18 @@ impl vector<T>
     bool operator_not_equals(vector<T>* left, vector<T>* right) {
         return !left.operator_equals(right);
     }
-    void operator_store_element(vector<T>* self, int index, T~ item) {
+    void operator_store_element(vector<T>* self, int index, T item) {
         self.replace(index, item);
     }
     
-    T??~~ operator_load_element(vector<T>* self, int index) {
+    T?? operator_load_element(vector<T>* self, int index) {
         T` default_value;
         memset(&default_value, 0, sizeof(T));
         
         return self.item(index, default_value)??;
     }
     
-    vector<T>* push_back(vector<T>* self, T~ item) {
+    vector<T>* push_back(vector<T>* self, T item) {
         if(self.len == self.size) {
             auto new_size = self.size * 2;
             auto items = self.items;
@@ -2210,7 +2209,7 @@ impl vector<T>
         return self;
     }
     
-    vector<T>* add(vector<T>* self, T~ item) {
+    vector<T>* add(vector<T>* self, T item) {
         if(self.len == self.size) {
             auto new_size = self.size * 2;
             auto items = self.items;
@@ -2233,7 +2232,7 @@ impl vector<T>
         return self;
     }
 
-    T~~ item(vector<T>* self, int index, T& default_value) 
+    T item(vector<T>* self, int index, T& default_value) 
     {
         if(index < 0) {
             index += self.len;
@@ -2264,7 +2263,7 @@ impl vector<T>
         return true;
     }
     
-    vector<T>* replace(vector<T>* self, int index, T~ value)
+    vector<T>* replace(vector<T>* self, int index, T value)
     {
         if(index < 0) {
             index += self.len;
@@ -2331,14 +2330,14 @@ impl vector<T>
         return self;
     }
 
-    T&~~ begin(vector<T>* self) {
+    T& begin(vector<T>* self) {
         self.it = 0;
 
         T` default_value;
         return self.item(0, default_value);
     }
 
-    T&~~ next(vector<T>* self) {
+    T& next(vector<T>* self) {
         self.it++;
 
         T` default_value
@@ -2592,7 +2591,7 @@ impl map <T, T2>
         return result.to_string();
     }
     
-    T2~~ at(map<T, T2>* self, T& key, T2 default_value) {
+    generate T2 at(map<T, T2>* self, T& key, T2 default_value) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2620,7 +2619,7 @@ impl map <T, T2>
 
         return default_value;
     }
-    map<T,T2>* remove(map<T, T2>* self, T& key) {
+    generate map<T,T2>* remove(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2665,7 +2664,7 @@ impl map <T, T2>
         return self.len;
     }
     
-    T&~~ begin(map<T, T2>* self) {
+    T& begin(map<T, T2>* self) {
         if(self == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -2682,7 +2681,7 @@ impl map <T, T2>
         return result;
     }
 
-    T&~~ next(map<T, T2>* self) {
+    T& next(map<T, T2>* self) {
         if(self == null || self.key_list.it == null) {
             T&` result;
             memset(&result, 0, sizeof(T));
@@ -2703,7 +2702,7 @@ impl map <T, T2>
         return self == null || self.key_list == null || self.key_list.it == null;
     }
     
-    void rehash(map<T,T2>* self) {
+    generate void rehash(map<T,T2>* self) {
         int size = self.size * 10;
         T&* keys = borrow gc_inc(new T[size]);
         T2&* items = borrow gc_inc(new T2[size]);
@@ -2756,7 +2755,7 @@ impl map <T, T2>
         self.len = len;
     }
     
-    map<T,T2>* insert(map<T,T2>* self, T~ key, T2~ item) {
+    generate map<T,T2>* insert(map<T,T2>* self, T key, T2 item) {
         if(self.len*10 >= self.size) {
             self.rehash();
         }
@@ -2833,7 +2832,7 @@ impl map <T, T2>
         
         return self;
     }
-    map<T,T2>* put(map<T,T2>* self, T~ key, T2~ item) {
+    generate map<T,T2>* put(map<T,T2>* self, T key, T2 item) {
         if(self.len*2 >= self.size) {
             self.rehash();
         }
@@ -2910,7 +2909,7 @@ impl map <T, T2>
         
         return self;
     }
-    T2??~~ operator_load_element(map<T, T2>* self, T& key) {
+    generate T2?? operator_load_element(map<T, T2>* self, T& key) {
         T2` default_value;
         memset(&default_value, 0, sizeof(T2));
         
@@ -2942,7 +2941,7 @@ impl map <T, T2>
         return default_value;
     }
     
-    void operator_store_element(map<T, T2>* self, T~ key, T2~ item) {
+    generate void operator_store_element(map<T, T2>* self, T key, T2 item) {
         self.insert(key, item);
     }
     
@@ -3017,7 +3016,7 @@ impl map <T, T2>
         return !(left.operator_equals(right);
     }
     
-    bool find(map<T, T2>* self, T& key) {
+    generate bool find(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         int it = hash;
 
@@ -3784,19 +3783,19 @@ uniq string buffer*::to_string(buffer* self)
     return string(self.buf);
 }
 
-static inline unsigned char* buffer*::head_pointer(buffer* self)
+uniq unsigned char* buffer*::head_pointer(buffer* self)
 {
     return self.buf;
 }
 
-static inline buffer*% char[]::to_buffer(char* self, size_t len) 
+uniq buffer*% char[]::to_buffer(char* self, size_t len) 
 {
     var result = new buffer();
     result.append(self, sizeof(char)*len);
     return result;
 }
 
-static inline buffer*% char*[]::to_buffer(char** self, size_t len) 
+uniq buffer*% char*[]::to_buffer(char** self, size_t len) 
 {
     var result = new buffer();
     for(int i=0; i<len; i++) {
@@ -3805,35 +3804,35 @@ static inline buffer*% char*[]::to_buffer(char** self, size_t len)
     return result;
 }
 
-static inline buffer*% short[]::to_buffer(short* self, size_t len) 
+uniq buffer*% short[]::to_buffer(short* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(short)*len);
     return result;
 }
 
-static inline buffer*% int[]::to_buffer(int* self, size_t len) 
+uniq buffer*% int[]::to_buffer(int* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(int)*len);
     return result;
 }
 
-static inline buffer*% long[]::to_buffer(long* self, size_t len) 
+uniq buffer*% long[]::to_buffer(long* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(long)*len);
     return result;
 }
 
-static inline buffer*% float[]::to_buffer(float* self, size_t len) 
+uniq buffer*% float[]::to_buffer(float* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(float)*len);
     return result;
 }
 
-static inline buffer*% double[]::to_buffer(double* self, size_t len) 
+uniq buffer*% double[]::to_buffer(double* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(double)*len);
@@ -4161,27 +4160,27 @@ impl smart_pointer<T>
     }
 }
 
-static inline smart_pointer<char>*% buffer*::to_pointer(buffer* self)
+uniq smart_pointer<char>*% buffer*::to_pointer(buffer* self)
 {
     return new smart_pointer<char>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<char>*% buffer*::to_char_pointer(buffer* self)
+uniq smart_pointer<char>*% buffer*::to_char_pointer(buffer* self)
 {
     return new smart_pointer<char>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<short>*% buffer*::to_short_pointer(buffer* self)
+uniq smart_pointer<short>*% buffer*::to_short_pointer(buffer* self)
 {
     return new smart_pointer<short>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<int>*% buffer*::to_int_pointer(buffer* self)
+uniq smart_pointer<int>*% buffer*::to_int_pointer(buffer* self)
 {
     return new smart_pointer<int>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
+uniq smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
 {
     return new smart_pointer<long>.initialize_with_value(clone self);
 }
@@ -4214,121 +4213,121 @@ impl list <T>
 //////////////////////////////
 /// base library(primitive array)
 //////////////////////////////
-static inline smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
+uniq smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(char)*len);
     return new smart_pointer<char>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
+uniq smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(char*)*len);
     return new smart_pointer<char*>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
+uniq smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(short)*len);
     return new smart_pointer<short>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
+uniq smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(int)*len);
     return new smart_pointer<int>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
+uniq smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(long)*len);
     return new smart_pointer<long>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
+uniq smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(float)*len);
     return new smart_pointer<float>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
+uniq smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(double)*len);
     return new smart_pointer<double>.initialize_with_value(buf);
 }
 
-static inline list<char>*% char[]::to_list(char* self, size_t len) 
+uniq list<char>*% char[]::to_list(char* self, size_t len) 
 {
     return new list<char>.initialize_with_values(len, self);
 }
 
-static inline list<char*>*% char*[]::to_list(char** self, size_t len) 
+uniq list<char*>*% char*[]::to_list(char** self, size_t len) 
 {
     return new list<char*>.initialize_with_values(len, self);
 }
 
-static inline list<short>*% short[]::to_list(short* self, size_t len) 
+uniq list<short>*% short[]::to_list(short* self, size_t len) 
 {
     return new list<short>.initialize_with_values(len, self);
 }
 
-static inline list<int>*% int[]::to_list(int* self, size_t len) 
+uniq list<int>*% int[]::to_list(int* self, size_t len) 
 {
     return new list<int>.initialize_with_values(len, self);
 }
 
-static inline list<long>*% long[]::to_list(long* self, size_t len) 
+uniq list<long>*% long[]::to_list(long* self, size_t len) 
 {
     return new list<long>.initialize_with_values(len, self);
 }
 
-static inline list<float>*% float[]::to_list(float* self, size_t len) 
+uniq list<float>*% float[]::to_list(float* self, size_t len) 
 {
     return new list<float>.initialize_with_values(len, self);
 }
 
-static inline list<double>*% double[]::to_list(double* self, size_t len) 
+uniq list<double>*% double[]::to_list(double* self, size_t len) 
 {
     return new list<double>.initialize_with_values(len, self);
 }
 
-static inline vector<char>*% char[]::to_vector(char* self, size_t len) 
+uniq vector<char>*% char[]::to_vector(char* self, size_t len) 
 {
     return new vector<char>.initialize_with_values(len, self);
 }
 
-static inline vector<char*>*% char*[]::to_vector(char** self, size_t len) 
+uniq vector<char*>*% char*[]::to_vector(char** self, size_t len) 
 {
     return new vector<char*>.initialize_with_values(len, self);
 }
 
-static inline vector<short>*% short[]::to_vector(short* self, size_t len) 
+uniq vector<short>*% short[]::to_vector(short* self, size_t len) 
 {
     return new vector<short>.initialize_with_values(len, self);
 }
 
-static inline vector<int>*% int[]::to_vector(int* self, size_t len) 
+uniq vector<int>*% int[]::to_vector(int* self, size_t len) 
 {
     return new vector<int>.initialize_with_values(len, self);
 }
 
-static inline vector<long>*% long[]::to_vector(long* self, size_t len) 
+uniq vector<long>*% long[]::to_vector(long* self, size_t len) 
 {
     return new vector<long>.initialize_with_values(len, self);
 }
 
-static inline vector<float>*% float[]::to_vector(float* self, size_t len) 
+uniq vector<float>*% float[]::to_vector(float* self, size_t len) 
 {
     return new vector<float>.initialize_with_values(len, self);
 }
 
-static inline vector<double>*% double[]::to_vector(double* self, size_t len) 
+uniq vector<double>*% double[]::to_vector(double* self, size_t len) 
 {
     return new vector<double>.initialize_with_values(len, self);
 }
@@ -4575,12 +4574,12 @@ uniq string string::operator_mult(char* self, int right)
     return buf.to_string();
 }
 
-static inline size_t char[]::length(char* self, size_t len) 
+uniq size_t char[]::length(char* self, size_t len) 
 {
     return len;
 }
 
-static inline bool char*[]::contained(char** self, size_t len, char* str) 
+uniq bool char*[]::contained(char** self, size_t len, char* str) 
 {
     bool result = false;
     for(int i=0; i<len; i++) {
@@ -4592,27 +4591,27 @@ static inline bool char*[]::contained(char** self, size_t len, char* str)
     return result;
 }
 
-static inline size_t short[]::length(short* self, size_t len) 
+uniq size_t short[]::length(short* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t int[]::length(int* self, size_t len) 
+uniq size_t int[]::length(int* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t long[]::length(long* self, size_t len) 
+uniq size_t long[]::length(long* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t float[]::length(float* self, size_t len) 
+uniq size_t float[]::length(float* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t double[]::length(double* self, size_t len) 
+uniq size_t double[]::length(double* self, size_t len) 
 {
     return len;
 }
@@ -4672,6 +4671,25 @@ uniq unsigned int char*::get_hash_key(char* value)
         p++;
     }
     return result;
+}
+
+uniq unsigned int string::get_hash_key(char* value)
+{
+    if(value == null) {
+        return 0;
+    }
+    int result = 0;
+    char* p = value;
+    while(*p) {
+        result += (*p);
+        p++;
+    }
+    return result;
+}
+
+uniq unsigned int void*::get_hash_key(void* value)
+{
+    return (((int)value).get_hash_key());
 }
 
 //////////////////////////////
@@ -5041,12 +5059,12 @@ uniq list<string>*% char*::split_char(char* self, char c)
     return result;
 }
 
-static inline string char*::xsprintf(char* self, char* msg, ...)
+uniq string char*::xsprintf(char* self, char* msg, ...)
 {
     return xsprintf(msg, self);
 }
 
-static inline string int::xsprintf(int self, char* msg, ...)
+uniq string int::xsprintf(int self, char* msg, ...)
 {
     return xsprintf(msg, self);
 }

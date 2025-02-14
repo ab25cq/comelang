@@ -129,8 +129,17 @@ uniq buffer* buffer*::append(buffer* self, char* mem, size_t size);
 uniq string xsprintf(char* msg, ...);
 uniq string char*::to_string(char* self);
 uniq string int::to_string(int self);
+uniq unsigned int bool::get_hash_key(bool value);
+uniq unsigned int char::get_hash_key(char value);
+uniq unsigned int short::get_hash_key(short int value);
 uniq unsigned int int::get_hash_key(int value);
-uniq unsigned int void*::get_hash_key(int value);
+uniq unsigned int long::get_hash_key(long value);
+uniq unsigned int size_t::get_hash_key(size_t value);
+uniq unsigned int float::get_hash_key(float value);
+uniq unsigned int double::get_hash_key(double value);
+uniq unsigned int char*::get_hash_key(char* value);
+uniq unsigned int string::get_hash_key(char* value);
+uniq unsigned int void*::get_hash_key(void* value);
 uniq string char*::substring(char* str, int head, int tail);
 uniq buffer* buffer*::append_format(buffer* self, char* msg, ...);
 uniq string __builtin_string(char* str);
@@ -303,7 +312,7 @@ uniq void xassert(char* msg, bool test)
     puts("ok");
 }
 
-record static inline bool die(char* msg)
+record uniq bool die(char* msg)
 {
     perror(msg);
     stackframe();
@@ -325,6 +334,7 @@ struct sMemHeaderTiny
     char* class_name;
     void* finalizer_fun;
     void* cloner_fun;
+    void* get_hash_key_fun;
 };
 
 struct sMemHeader
@@ -342,6 +352,7 @@ struct sMemHeader
     char* class_name;
     void* finalizer_fun;
     void* cloner_fun;
+    void* get_hash_key_fun;
 };
 
 uniq sMemHeader* gAllocMem;
@@ -511,7 +522,7 @@ uniq void* alloc_from_pages(size_t size)
     return result;
 }
 
-uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, void* cloner_fun=(void*)0)
+uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, void* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0)
 {
     if(gComeDebugLib) {
 #ifdef ENABLE_GC
@@ -550,6 +561,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->class_name = class_name; 
         it->finalizer_fun = finalizer_fun;
         it->cloner_fun = cloner_fun;
+        it->get_hash_key_fun = get_hash_key_fun;
         
         if(gAllocMem) {
             gAllocMem->prev = it;
@@ -576,6 +588,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->class_name = class_name; 
         it->finalizer_fun = finalizer_fun;
         it->cloner_fun = cloner_fun;
+        it->get_hash_key_fun = get_hash_key_fun;
         
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = NULL;
@@ -779,9 +792,9 @@ uniq void* come_get_cloner(void* mem)
     }
 }
 
-uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, char* cloner_fun=(void*)0)
+uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, char* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0)
 {
-    char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name, finalizer_fun, cloner_fun);
+    char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name, finalizer_fun, cloner_fun, get_hash_key_fun);
     
     size_t* ref_count = (size_t*)mem;
 
@@ -829,7 +842,7 @@ uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_n
     size_t size = *size_p - sizeof(size_t) - sizeof(size_t);
 
     //void* result = come_calloc(1, size, sname, sline);
-    void* result = come_calloc(1, size, sname, sline, class_name, finalizer_fun, cloner_fun);
+    void* result = come_calloc(1, size, sname, sline, class_name, finalizer_fun, cloner_fun, (void*)0);
 
     memcpy(result, block, size);
     
@@ -3770,19 +3783,19 @@ uniq string buffer*::to_string(buffer* self)
     return string(self.buf);
 }
 
-static inline unsigned char* buffer*::head_pointer(buffer* self)
+uniq unsigned char* buffer*::head_pointer(buffer* self)
 {
     return self.buf;
 }
 
-static inline buffer*% char[]::to_buffer(char* self, size_t len) 
+uniq buffer*% char[]::to_buffer(char* self, size_t len) 
 {
     var result = new buffer();
     result.append(self, sizeof(char)*len);
     return result;
 }
 
-static inline buffer*% char*[]::to_buffer(char** self, size_t len) 
+uniq buffer*% char*[]::to_buffer(char** self, size_t len) 
 {
     var result = new buffer();
     for(int i=0; i<len; i++) {
@@ -3791,35 +3804,35 @@ static inline buffer*% char*[]::to_buffer(char** self, size_t len)
     return result;
 }
 
-static inline buffer*% short[]::to_buffer(short* self, size_t len) 
+uniq buffer*% short[]::to_buffer(short* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(short)*len);
     return result;
 }
 
-static inline buffer*% int[]::to_buffer(int* self, size_t len) 
+uniq buffer*% int[]::to_buffer(int* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(int)*len);
     return result;
 }
 
-static inline buffer*% long[]::to_buffer(long* self, size_t len) 
+uniq buffer*% long[]::to_buffer(long* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(long)*len);
     return result;
 }
 
-static inline buffer*% float[]::to_buffer(float* self, size_t len) 
+uniq buffer*% float[]::to_buffer(float* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(float)*len);
     return result;
 }
 
-static inline buffer*% double[]::to_buffer(double* self, size_t len) 
+uniq buffer*% double[]::to_buffer(double* self, size_t len) 
 {
     var result = new buffer();
     result.append((char*)self, sizeof(double)*len);
@@ -4147,27 +4160,27 @@ impl smart_pointer<T>
     }
 }
 
-static inline smart_pointer<char>*% buffer*::to_pointer(buffer* self)
+uniq smart_pointer<char>*% buffer*::to_pointer(buffer* self)
 {
     return new smart_pointer<char>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<char>*% buffer*::to_char_pointer(buffer* self)
+uniq smart_pointer<char>*% buffer*::to_char_pointer(buffer* self)
 {
     return new smart_pointer<char>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<short>*% buffer*::to_short_pointer(buffer* self)
+uniq smart_pointer<short>*% buffer*::to_short_pointer(buffer* self)
 {
     return new smart_pointer<short>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<int>*% buffer*::to_int_pointer(buffer* self)
+uniq smart_pointer<int>*% buffer*::to_int_pointer(buffer* self)
 {
     return new smart_pointer<int>.initialize_with_value(clone self);
 }
 
-static inline smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
+uniq smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
 {
     return new smart_pointer<long>.initialize_with_value(clone self);
 }
@@ -4200,121 +4213,121 @@ impl list <T>
 //////////////////////////////
 /// base library(primitive array)
 //////////////////////////////
-static inline smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
+uniq smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(char)*len);
     return new smart_pointer<char>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
+uniq smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(char*)*len);
     return new smart_pointer<char*>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
+uniq smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(short)*len);
     return new smart_pointer<short>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
+uniq smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(int)*len);
     return new smart_pointer<int>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
+uniq smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(long)*len);
     return new smart_pointer<long>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
+uniq smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(float)*len);
     return new smart_pointer<float>.initialize_with_value(buf);
 }
 
-static inline smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
+uniq smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
 {
     var buf = new buffer();
     buf.append((char*)self, sizeof(double)*len);
     return new smart_pointer<double>.initialize_with_value(buf);
 }
 
-static inline list<char>*% char[]::to_list(char* self, size_t len) 
+uniq list<char>*% char[]::to_list(char* self, size_t len) 
 {
     return new list<char>.initialize_with_values(len, self);
 }
 
-static inline list<char*>*% char*[]::to_list(char** self, size_t len) 
+uniq list<char*>*% char*[]::to_list(char** self, size_t len) 
 {
     return new list<char*>.initialize_with_values(len, self);
 }
 
-static inline list<short>*% short[]::to_list(short* self, size_t len) 
+uniq list<short>*% short[]::to_list(short* self, size_t len) 
 {
     return new list<short>.initialize_with_values(len, self);
 }
 
-static inline list<int>*% int[]::to_list(int* self, size_t len) 
+uniq list<int>*% int[]::to_list(int* self, size_t len) 
 {
     return new list<int>.initialize_with_values(len, self);
 }
 
-static inline list<long>*% long[]::to_list(long* self, size_t len) 
+uniq list<long>*% long[]::to_list(long* self, size_t len) 
 {
     return new list<long>.initialize_with_values(len, self);
 }
 
-static inline list<float>*% float[]::to_list(float* self, size_t len) 
+uniq list<float>*% float[]::to_list(float* self, size_t len) 
 {
     return new list<float>.initialize_with_values(len, self);
 }
 
-static inline list<double>*% double[]::to_list(double* self, size_t len) 
+uniq list<double>*% double[]::to_list(double* self, size_t len) 
 {
     return new list<double>.initialize_with_values(len, self);
 }
 
-static inline vector<char>*% char[]::to_vector(char* self, size_t len) 
+uniq vector<char>*% char[]::to_vector(char* self, size_t len) 
 {
     return new vector<char>.initialize_with_values(len, self);
 }
 
-static inline vector<char*>*% char*[]::to_vector(char** self, size_t len) 
+uniq vector<char*>*% char*[]::to_vector(char** self, size_t len) 
 {
     return new vector<char*>.initialize_with_values(len, self);
 }
 
-static inline vector<short>*% short[]::to_vector(short* self, size_t len) 
+uniq vector<short>*% short[]::to_vector(short* self, size_t len) 
 {
     return new vector<short>.initialize_with_values(len, self);
 }
 
-static inline vector<int>*% int[]::to_vector(int* self, size_t len) 
+uniq vector<int>*% int[]::to_vector(int* self, size_t len) 
 {
     return new vector<int>.initialize_with_values(len, self);
 }
 
-static inline vector<long>*% long[]::to_vector(long* self, size_t len) 
+uniq vector<long>*% long[]::to_vector(long* self, size_t len) 
 {
     return new vector<long>.initialize_with_values(len, self);
 }
 
-static inline vector<float>*% float[]::to_vector(float* self, size_t len) 
+uniq vector<float>*% float[]::to_vector(float* self, size_t len) 
 {
     return new vector<float>.initialize_with_values(len, self);
 }
 
-static inline vector<double>*% double[]::to_vector(double* self, size_t len) 
+uniq vector<double>*% double[]::to_vector(double* self, size_t len) 
 {
     return new vector<double>.initialize_with_values(len, self);
 }
@@ -4561,12 +4574,12 @@ uniq string string::operator_mult(char* self, int right)
     return buf.to_string();
 }
 
-static inline size_t char[]::length(char* self, size_t len) 
+uniq size_t char[]::length(char* self, size_t len) 
 {
     return len;
 }
 
-static inline bool char*[]::contained(char** self, size_t len, char* str) 
+uniq bool char*[]::contained(char** self, size_t len, char* str) 
 {
     bool result = false;
     for(int i=0; i<len; i++) {
@@ -4578,27 +4591,27 @@ static inline bool char*[]::contained(char** self, size_t len, char* str)
     return result;
 }
 
-static inline size_t short[]::length(short* self, size_t len) 
+uniq size_t short[]::length(short* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t int[]::length(int* self, size_t len) 
+uniq size_t int[]::length(int* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t long[]::length(long* self, size_t len) 
+uniq size_t long[]::length(long* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t float[]::length(float* self, size_t len) 
+uniq size_t float[]::length(float* self, size_t len) 
 {
     return len;
 }
 
-static inline size_t double[]::length(double* self, size_t len) 
+uniq size_t double[]::length(double* self, size_t len) 
 {
     return len;
 }
@@ -4647,6 +4660,20 @@ uniq unsigned int double::get_hash_key(double value)
 }
 
 uniq unsigned int char*::get_hash_key(char* value)
+{
+    if(value == null) {
+        return 0;
+    }
+    int result = 0;
+    char* p = value;
+    while(*p) {
+        result += (*p);
+        p++;
+    }
+    return result;
+}
+
+uniq unsigned int string::get_hash_key(char* value)
 {
     if(value == null) {
         return 0;
@@ -5032,12 +5059,12 @@ uniq list<string>*% char*::split_char(char* self, char c)
     return result;
 }
 
-static inline string char*::xsprintf(char* self, char* msg, ...)
+uniq string char*::xsprintf(char* self, char* msg, ...)
 {
     return xsprintf(msg, self);
 }
 
-static inline string int::xsprintf(int self, char* msg, ...)
+uniq string int::xsprintf(int self, char* msg, ...)
 {
     return xsprintf(msg, self);
 }

@@ -678,6 +678,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
 sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo* info);
+sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInfo* info);
 string skip_block(sInfo* info=info);
 bool is_contained_generics_class(sType* type, sInfo* info);
 bool is_type_name(char* buf, sInfo* info=info);
