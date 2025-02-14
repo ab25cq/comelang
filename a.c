@@ -1,10 +1,20 @@
 #include <comelang.h>
+
 struct sData
 {
     int a;
     int b;
     string c;
 };
+
+sData*% sData*::initialize(sData*% self)
+{
+    self.a = 111;
+    self.b = 123;
+    self.c = string("WIN");
+    
+    return self;
+}
 
 struct sData2
 {
@@ -44,17 +54,17 @@ int main(int argc, char** argv)
 {
 //    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
     
-    list<sData~>*% li = new list<sData*%~>();
-    li.add(new sData*%~ { c:s"WIN" });
+    list<sData~>*% li = new list<sData~>();
+    li.add(new sData~.initialize());
     
     list<sData2~>*% li2 = new list<sData2*%~>();
-    li2.add(new sData2*%~ { b:s"WIN2" });
+    li2.add(new sData2~ { b:s"WIN2" });
     
-/*
     puts(li[0].c);
     
     puts(li2[0].b);
     
+/*
     sData3<sData~>*% data1 = new sData3<sData~>;
     
     data1.fun(new sData~ { c:s"WIN" });

@@ -105,6 +105,10 @@ class sNewNode extends sNodeBase
                 string any_type_name = make_type_name_string(any_type);
                 
                 obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
+                
+                any_type->mPointerNum++;
+                
+                come_value.type = clone any_type;
             }
             else if(generics_any_child) {
                 sType*% any_type = no_solved_type;
@@ -125,6 +129,20 @@ class sNewNode extends sNodeBase
                 string any_type_name = make_type_name_string(any_type);
                 
                 obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
+                
+                any_type->mPointerNum++;
+                
+//                come_value.type = clone any_type;
+            
+                type2->mHeap = true;
+                type2->mPointerNum++;
+                
+                if(type2->mNoSolvedGenericsType) {
+                    type2->mNoSolvedGenericsType->mPointerNum++;
+                    type2->mNoSolvedGenericsType->mHeap = true;
+                }
+                
+                come_value.type = clone type2;
             }
             else {
                 char *finalizer_name = "(void*)0";
@@ -240,6 +258,10 @@ class sNewNode extends sNodeBase
                 come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name);
                 
                 type2->mPointerNum--;
+                
+                any_type->mPointerNum++;
+                
+                come_value.type = clone any_type;
             }
             else if(generics_any_child) {
                 sType*% any_type = no_solved_type;
@@ -262,22 +284,63 @@ class sNewNode extends sNodeBase
                 string any_type_name = make_type_name_string(any_type);
                 
                 come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
+                
+                any_type->mPointerNum++;
+                
+                //come_value.type = clone any_type;
+            
+                type2->mHeap = true;
+                type2->mPointerNum++;
+                
+                if(type2->mNoSolvedGenericsType) {
+                    type2->mNoSolvedGenericsType->mPointerNum++;
+                    type2->mNoSolvedGenericsType->mHeap = true;
+                }
+                
+                come_value.type = clone type2;
             }
             else {
                 char *finalizer_name = "(void*)0";
                 char *cloner_name = "(void*)0";
+                
+/*
+                sType*% type3 = clone type2;
+                type3->mPointerNum++;
+                if(type3->mNoSolvedGenericsType) {
+                    type3->mNoSolvedGenericsType.mPointerNum++;
+                }
+                
+                if(type3->mGenericsTypes.length() == 0) {
+                    sType*% any_type = clone type2;
+                    
+                    any_type->mHeap = true;
+                    any_type->mPointerNum++;
+                    
+                    string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+                    string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+                    
+                    if(info.funcs[finalizer_name]?? == null) {
+                        var fun, name = create_finalizer_automatically(any_type, "finalize", info);
+                        finalizer_name = name;
+                    }
+                    if(info.funcs[cloner_name]?? == null) {
+                        var fun, name = create_cloner_automatically(any_type, "clone", info);
+                        cloner_name = name;
+                    }
+                }
+*/
                 come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name);
+            
+                type2->mHeap = true;
+                type2->mPointerNum++;
+                
+                if(type2->mNoSolvedGenericsType) {
+                    type2->mNoSolvedGenericsType->mPointerNum++;
+                    type2->mNoSolvedGenericsType->mHeap = true;
+                }
+                
+                come_value.type = clone type2;
             }
-            
-            type2->mHeap = true;
-            type2->mPointerNum++;
-            
-            if(type2->mNoSolvedGenericsType) {
-                type2->mNoSolvedGenericsType->mPointerNum++;
-                type2->mNoSolvedGenericsType->mHeap = true;
-            }
-            
-            come_value.type = clone type2;
             come_value.var = null;
             
             append_object_to_right_values2(come_value, type2 ,info);
