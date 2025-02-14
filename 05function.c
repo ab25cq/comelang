@@ -489,7 +489,7 @@ int transpile_block(sBlock* block, list<sType~>* param_types, list<string>* para
         int i;
         foreach(node, block->mNodes) {
             var right_value_objects = info.right_value_objects;
-            info.right_value_objects = new list<sRightValueObject*%>();
+            info.right_value_objects = new list<sRightValueObject~>();
             
             info.module.mLastCode = null;
             info.module.mLastCode2 = null;

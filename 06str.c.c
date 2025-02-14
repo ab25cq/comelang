@@ -803,21 +803,6 @@ struct map$2charphbufferph
     int it;
 };
 
-struct list_item$1sRightValueObjectph
-{
-    struct sRightValueObject* item;
-    struct list_item$1sRightValueObjectph* prev;
-    struct list_item$1sRightValueObjectph* next;
-};
-
-struct list$1sRightValueObjectph
-{
-    struct list_item$1sRightValueObjectph* head;
-    struct list_item$1sRightValueObjectph* tail;
-    int len;
-    struct list_item$1sRightValueObjectph* it;
-};
-
 struct list_item$1CVALUEph
 {
     struct CVALUE* item;
@@ -904,7 +889,7 @@ struct sInfo
     struct map$2charphbufferph* previous_struct_definition;
     struct sModule* module;
     struct sType* type;
-    struct list$1sRightValueObjectph* right_value_objects;
+    struct list$1voidph* right_value_objects;
     struct sType* generics_type;
     struct list$1voidph* method_generics_types;
     struct list$1CVALUEph* stack;
@@ -1054,7 +1039,7 @@ struct list$1tuple3$3sTypephcharphsNodephph
     struct list_item$1tuple3$3sTypephcharphsNodephph* it;
 };
 
-extern struct list$1sRightValueObjectph* gExceptionRightValueObjects;
+extern struct list$1voidph* gExceptionRightValueObjects;
 struct sStrNode
 {
     int sline;

@@ -286,7 +286,7 @@ string append_object_to_right_values(char* obj, sType*% type, sInfo* info)
     if(info->no_output_come_code) {
         return string("");
     }
-    var new_value = new sRightValueObject;
+    var new_value = new sRightValueObject~;
     new_value.mType = type;
     new_value.mFreed = false;
     new_value.mID = gRightValueNum;
@@ -310,7 +310,7 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
     if(info->no_output_come_code) {
         return ;
     }
-    var new_value = new sRightValueObject;
+    var new_value = new sRightValueObject~;
     new_value.mType = type;
     new_value.mFreed = false;
     new_value.mID = gRightValueNum;
@@ -373,7 +373,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         return ;
     }
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -502,7 +502,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
         return ;
     }
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
 
     sType* type_before = type;
 
@@ -752,7 +752,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     string result = null
     sType*% result_type = null;
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
     
     string c_value = string(obj);
     
@@ -855,7 +855,7 @@ bool create_equals_method(sType* type, sInfo* info)
     }
     string result = null
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -932,7 +932,7 @@ bool create_operator_equals_method(sType* type, sInfo* info)
     }
     string result = null
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -1007,7 +1007,7 @@ bool create_operator_not_equals_method(sType* type, sInfo* info)
     }
     string result = null
     var stack_saved = info.stack;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
     
     sClass* klass = type->mClass;
     
@@ -1086,7 +1086,7 @@ void free_right_value_objects(sInfo* info, bool comma=false)
     }
     
     bool free_right_value = false;
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
     
     int n = 0;
     foreach(it, right_value_objects) {
@@ -1284,7 +1284,7 @@ bool existance_free_right_value_objects(sInfo* info)
     if(gComeGC || gComeC) {
         return false;
     }
-    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    list<sRightValueObject~>* right_value_objects = info.right_value_objects;
     
     foreach(it, right_value_objects) {
         if(it && !it->mFreed) {
