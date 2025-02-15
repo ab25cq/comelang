@@ -5632,7 +5632,7 @@ struct map$2charphsVarph* __result262__;
     if(    self->len*2>=self->size) {
         map$2charphsVarphp_rehash(self);
     }
-    hash_372=string_get_hash_key(key)%self->size;
+    hash_372=string_get_hash_key(((char*)key))%self->size;
     it_373=hash_372;
     while((_Bool)1) {
         if(        self->item_existance[it_373]) {
@@ -5727,7 +5727,7 @@ default_value_371 = (void*)0;
         memset(&default_value_367,0,sizeof(struct sVar*));
         it2_368=((struct sVar*)(__right_value277=map$2charphsVarphp_at(self,it_366,default_value_367)));
         come_call_finalizer3(__right_value277,sVar_finalize, 0, 1, 0, 0, (void*)0);
-        hash_369=string_get_hash_key(it_366)%size_361;
+        hash_369=string_get_hash_key(((char*)it_366))%size_361;
         n_370=hash_369;
         while((_Bool)1) {
             if(            item_existance_364[n_370]) {

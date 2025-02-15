@@ -73,7 +73,7 @@ int main(int argc, char** argv)
     
     uho[aaa] = new sData~();
     
-    printf("%p\n", uho[aaa]);
+    printf("%s\n", uho[aaa].c);
     
 /*
     sData3<sData~>*% data1 = new sData3<sData~>;

@@ -6071,7 +6071,7 @@ struct map$2charphsClassModuleph* __result280__;
     if(    self->len*10>=self->size) {
         map$2charphsClassModulephp_rehash(self);
     }
-    hash_387=string_get_hash_key(key)%self->size;
+    hash_387=string_get_hash_key(((char*)key))%self->size;
     it_388=hash_387;
     while((_Bool)1) {
         if(        self->item_existance[it_388]) {
@@ -6166,7 +6166,7 @@ default_value_386 = (void*)0;
         memset(&default_value_380,0,sizeof(struct sClassModule*));
         it2_381=((struct sClassModule*)(__right_value335=map$2charphsClassModulephp_at(self,it_377,default_value_380)));
         come_call_finalizer3(__right_value335,sClassModule_finalize, 0, 1, 0, 0, (void*)0);
-        hash_384=string_get_hash_key(it_377)%size_370;
+        hash_384=string_get_hash_key(((char*)it_377))%size_370;
         n_385=hash_384;
         while((_Bool)1) {
             if(            item_existance_373[n_385]) {

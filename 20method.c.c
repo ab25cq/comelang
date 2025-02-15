@@ -5788,7 +5788,7 @@ struct map$2charphsClassph* __result282__;
     if(    self->len*10>=self->size) {
         map$2charphsClassphp_rehash(self);
     }
-    hash_387=string_get_hash_key(key)%self->size;
+    hash_387=string_get_hash_key(((char*)key))%self->size;
     it_388=hash_387;
     while((_Bool)1) {
         if(        self->item_existance[it_388]) {
@@ -5883,7 +5883,7 @@ default_value_386 = (void*)0;
         memset(&default_value_380,0,sizeof(struct sClass*));
         it2_381=((struct sClass*)(__right_value313=map$2charphsClassphp_at(self,it_377,default_value_380)));
         come_call_finalizer3(__right_value313,sClass_finalize, 0, 1, 0, 0, (void*)0);
-        hash_384=string_get_hash_key(it_377)%size_370;
+        hash_384=string_get_hash_key(((char*)it_377))%size_370;
         n_385=hash_384;
         while((_Bool)1) {
             if(            item_existance_373[n_385]) {
@@ -9414,7 +9414,7 @@ _Bool __result387__;
         buffer_append_str(buf_730,")");
         come_value2_734=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "20method.c", 1034, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
         come_value2_734->var=((void*)0);
-        if(        obj_type_530->mAnyOriginalType&&string_operator_equals(fun_name_519,"get_hash_key")) {
+        if(        obj_type_530->mAnyClass&&string_operator_equals(fun_name_519,"get_hash_key")) {
             __dec_obj219=come_value2_734->c_value;
             come_value2_734->c_value=(char*)come_increment_ref_count(xsprintf("come_call_get_hash_key((void*)0, %s)",obj_value_529->c_value));
             __dec_obj219 = come_decrement_ref_count2(__dec_obj219, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -9423,7 +9423,7 @@ _Bool __result387__;
             come_call_finalizer3(__dec_obj220,sType_finalize, 0, 0, 0, 0, (void*)0);
             come_value2_734->type->mUnsigned=(_Bool)1;
         }
-        else if(        obj_type_530->mAnyOriginalType&&string_operator_equals(fun_name_519,"equals")) {
+        else if(        obj_type_530->mAnyClass&&string_operator_equals(fun_name_519,"equals")) {
             __dec_obj221=come_value2_734->c_value;
             come_value2_734->c_value=(char*)come_increment_ref_count(xsprintf("come_call_equals((void*)0, %s)",obj_value_529->c_value));
             __dec_obj221 = come_decrement_ref_count2(__dec_obj221, (void*)0, (void*)0, 0,0,0, (void*)0);

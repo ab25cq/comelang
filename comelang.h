@@ -2815,7 +2815,7 @@ impl map <T, T2>
             T2&` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = self.at(it, default_value);
-            unsigned int hash = it.get_hash_key() % size;
+            unsigned int hash = ((T)it).get_hash_key() % size;
             int n = hash;
 
             while(true) {
@@ -2860,7 +2860,7 @@ impl map <T, T2>
         if(self.len*10 >= self.size) {
             self.rehash();
         }
-        unsigned int hash = key.get_hash_key() % self.size;
+        unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
         while(true) {
@@ -2937,7 +2937,7 @@ impl map <T, T2>
         if(self.len*2 >= self.size) {
             self.rehash();
         }
-        unsigned int hash = key.get_hash_key() % self.size;
+        unsigned int hash = ((T)key).get_hash_key() % self.size;
         int it = hash;
 
         while(true) {

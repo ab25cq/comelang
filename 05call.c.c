@@ -6663,7 +6663,7 @@ struct map$2charphsClassph* __result300__;
     if(    self->len*10>=self->size) {
         map$2charphsClassphp_rehash(self);
     }
-    hash_423=string_get_hash_key(key)%self->size;
+    hash_423=string_get_hash_key(((char*)key))%self->size;
     it_424=hash_423;
     while((_Bool)1) {
         if(        self->item_existance[it_424]) {
@@ -6758,7 +6758,7 @@ default_value_422 = (void*)0;
         memset(&default_value_416,0,sizeof(struct sClass*));
         it2_417=((struct sClass*)(__right_value345=map$2charphsClassphp_at(self,it_413,default_value_416)));
         come_call_finalizer3(__right_value345,sClass_finalize, 0, 1, 0, 0, (void*)0);
-        hash_420=string_get_hash_key(it_413)%size_406;
+        hash_420=string_get_hash_key(((char*)it_413))%size_406;
         n_421=hash_420;
         while((_Bool)1) {
             if(            item_existance_409[n_421]) {
@@ -14208,7 +14208,7 @@ struct map$2charphsVarph* __result486__;
     if(    self->len*2>=self->size) {
         map$2charphsVarphp_rehash(self);
     }
-    hash_911=string_get_hash_key(key)%self->size;
+    hash_911=string_get_hash_key(((char*)key))%self->size;
     it_912=hash_911;
     while((_Bool)1) {
         if(        self->item_existance[it_912]) {
@@ -14303,7 +14303,7 @@ default_value_910 = (void*)0;
         memset(&default_value_906,0,sizeof(struct sVar*));
         it2_907=((struct sVar*)(__right_value871=map$2charphsVarphp_at(self,it_905,default_value_906)));
         come_call_finalizer3(__right_value871,sVar_finalize, 0, 1, 0, 0, (void*)0);
-        hash_908=string_get_hash_key(it_905)%size_900;
+        hash_908=string_get_hash_key(((char*)it_905))%size_900;
         n_909=hash_908;
         while((_Bool)1) {
             if(            item_existance_903[n_909]) {

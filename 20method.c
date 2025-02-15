@@ -1034,12 +1034,12 @@ class sMethodCallNode extends sNodeBase
             CVALUE*% come_value2 = new CVALUE();
             come_value2.var = null;
             
-            if(obj_type->mAnyOriginalType && fun_name === "get_hash_key") {
+            if(obj_type->mAnyClass && fun_name === "get_hash_key") {
                 come_value2.c_value = xsprintf("come_call_get_hash_key((void*)0, %s)", obj_value.c_value);
                 come_value2.type = new sType~("int");
                 come_value2.type->mUnsigned = true;
             }
-            else if(obj_type->mAnyOriginalType && fun_name === "equals") {
+            else if(obj_type->mAnyClass && fun_name === "equals") {
                 come_value2.c_value = xsprintf("come_call_equals((void*)0, %s)", obj_value.c_value);
                 come_value2.type = new sType~("int");
                 come_value2.type->mUnsigned = true;
