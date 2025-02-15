@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2658,7 +2659,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -4878,6 +4878,9 @@ struct sType* __result247__;
     if(    self!=((void*)0)) {
         result_335->mGenerate=self->mGenerate;
     }
+    if(    self!=((void*)0)) {
+        result_335->mCreateVTable=self->mCreateVTable;
+    }
     __result247__ = gComeFunResultObject = __result_obj__ = result_335;
     come_call_finalizer3(result_335,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -4949,6 +4952,7 @@ unsigned int result_328;
     result_328+=int_get_hash_key(((int)self->mAttribute));
     result_328+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_328+=int_get_hash_key(((int)self->mGenerate));
+    result_328+=int_get_hash_key(((int)self->mCreateVTable));
     return result_328;
 }
 
@@ -5137,6 +5141,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -6446,7 +6453,7 @@ right_value2_403 = (void*)0;
         come_value_397=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 112, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
         check_assign_type(((char*)(__right_value320=xsprintf("\%s is assigned to",((char*)(__right_value319=string_to_string(fun_name2_393)))))),((struct sType*)((void*)(__right_value321=list$1voidphp_operator_load_element(operator_fun_394->mParamTypes,0)))),left_value->type,left_value,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value319 = come_decrement_ref_count2(__right_value319, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value320,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value320 = come_decrement_ref_count2(__right_value320, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         come_call_finalizer3(__right_value321,(void*)0, 0, 1, 0, 0, (void*)0);
         if(        (_if_conditional1=(((struct sType*)((void*)(__right_value322=list$1voidphp_operator_load_element(operator_fun_394->mParamTypes,0))))->mHeap&&left_value->type->mHeap)),        come_call_finalizer3(__right_value322,(void*)0, 0, 1, 0, 0, (void*)0),
         _if_conditional1) {
@@ -6463,7 +6470,7 @@ right_value2_403 = (void*)0;
         }
         check_assign_type(((char*)(__right_value327=xsprintf("\%s is assigned to",((char*)(__right_value326=string_to_string(fun_name2_393)))))),((struct sType*)((void*)(__right_value328=list$1voidphp_operator_load_element(operator_fun_394->mParamTypes,1)))),middle_value->type,middle_value,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value326 = come_decrement_ref_count2(__right_value326, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value327,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value327 = come_decrement_ref_count2(__right_value327, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         come_call_finalizer3(__right_value328,(void*)0, 0, 1, 0, 0, (void*)0);
         if(        (_if_conditional2=(((struct sType*)((void*)(__right_value329=list$1voidphp_operator_load_element(operator_fun_394->mParamTypes,1))))->mHeap&&middle_value->type->mHeap)),        come_call_finalizer3(__right_value329,(void*)0, 0, 1, 0, 0, (void*)0),
         _if_conditional2) {
@@ -6480,7 +6487,7 @@ right_value2_403 = (void*)0;
         }
         check_assign_type(((char*)(__right_value334=xsprintf("\%s is assigned to",((char*)(__right_value333=string_to_string(fun_name2_393)))))),((struct sType*)((void*)(__right_value335=list$1voidphp_operator_load_element(operator_fun_394->mParamTypes,2)))),right_value->type,right_value,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value333 = come_decrement_ref_count2(__right_value333, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value334,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value334 = come_decrement_ref_count2(__right_value334, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         come_call_finalizer3(__right_value335,(void*)0, 0, 1, 0, 0, (void*)0);
         if(        (_if_conditional3=(((struct sType*)((void*)(__right_value336=list$1voidphp_operator_load_element(operator_fun_394->mParamTypes,2))))->mHeap&&right_value->type->mHeap)),        come_call_finalizer3(__right_value336,(void*)0, 0, 1, 0, 0, (void*)0),
         _if_conditional3) {
@@ -7014,7 +7021,7 @@ c_value_451 = (void*)0;
     come_value_444=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "18field.c", 313, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
     check_assign_type(((char*)(__right_value378=xsprintf("\%s is assigned to",((char*)(__right_value377=string_to_string(name_412)))))),field_type_427,right_type_420,right_value_419,(_Bool)0,(_Bool)1,(_Bool)0,info);
     __right_value377 = come_decrement_ref_count2(__right_value377, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    come_call_finalizer3(__right_value378,charp_finalize, 0, 1, 0, 0, (void*)0);
+    __right_value378 = come_decrement_ref_count2(__right_value378, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     right_type_420=((struct sType*)(__right_value379=come_call_cloner(sType_clone, right_value_419->type)));
     come_call_finalizer3(__right_value379,sType_finalize, 0, 1, 0, 0, (void*)0);
     if(    field_type_427->mHeap&&!right_value_419->type->mHeap) {
@@ -8642,7 +8649,7 @@ memset(&calling_fun_532, 0, sizeof(_Bool));
         come_call_finalizer3(o2_saved_551,list$1CVALUEphp_finalize, 0, 0, 0, 0, (void*)0);
         left_value_code_557=(char*)come_increment_ref_count(buffer_to_string(buf_550));
         check_assign_type(((char*)(__right_value503=xsprintf("array is assinged to"))),left_type_511,right_type_529,right_value_528,(_Bool)0,(_Bool)1,(_Bool)0,info);
-        come_call_finalizer3(__right_value503,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value503 = come_decrement_ref_count2(__right_value503, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         if(        left_type_511->mHeap&&right_type_529->mHeap&&left_type_511->mPointerNum>0&&right_type_529->mPointerNum>0) {
             if(            left_value_510->type->mPointerNum>=1) {
                 decrement_ref_count_object(left_type_511,left_value_code_557,info,(_Bool)0,(_Bool)0);

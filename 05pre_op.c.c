@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2691,7 +2692,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -4295,7 +4295,7 @@ left_value2_371 = (void*)0;
         come_value_370=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "05pre_op.c", 81, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
         check_assign_type(((char*)(__right_value309=xsprintf("\%s is assigned to",((char*)(__right_value308=string_to_string(fun_name2_347)))))),((struct sType*)((void*)(__right_value310=list$1voidphp_operator_load_element(operator_fun_346->mParamTypes,0)))),left_value->type,left_value,(_Bool)0,(_Bool)1,(_Bool)0,info);
         __right_value308 = come_decrement_ref_count2(__right_value308, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value309,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value309 = come_decrement_ref_count2(__right_value309, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         come_call_finalizer3(__right_value310,(void*)0, 0, 1, 0, 0, (void*)0);
         if(        (_if_conditional1=(((struct sType*)((void*)(__right_value311=list$1voidphp_operator_load_element(operator_fun_346->mParamTypes,0))))->mHeap&&left_value->type->mHeap)),        come_call_finalizer3(__right_value311,(void*)0, 0, 1, 0, 0, (void*)0),
         _if_conditional1) {
@@ -4618,6 +4618,9 @@ struct sType* __result243__;
     }
     if(    self!=((void*)0)) {
         result_326->mGenerate=self->mGenerate;
+    }
+    if(    self!=((void*)0)) {
+        result_326->mCreateVTable=self->mCreateVTable;
     }
     __result243__ = gComeFunResultObject = __result_obj__ = result_326;
     come_call_finalizer3(result_326,sType_finalize, 0, 0, 1, 0, (void*)0);
@@ -4944,6 +4947,7 @@ unsigned int result_319;
     result_319+=int_get_hash_key(((int)self->mAttribute));
     result_319+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_319+=int_get_hash_key(((int)self->mGenerate));
+    result_319+=int_get_hash_key(((int)self->mCreateVTable));
     return result_319;
 }
 
@@ -5132,6 +5136,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
     return (_Bool)1;

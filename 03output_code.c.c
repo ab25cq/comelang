@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2583,7 +2584,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -5039,6 +5039,9 @@ struct sType* __result259__;
     if(    self!=((void*)0)) {
         result_357->mGenerate=self->mGenerate;
     }
+    if(    self!=((void*)0)) {
+        result_357->mCreateVTable=self->mCreateVTable;
+    }
     __result259__ = gComeFunResultObject = __result_obj__ = result_357;
     come_call_finalizer3(result_357,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -5110,6 +5113,7 @@ unsigned int result_350;
     result_350+=int_get_hash_key(((int)self->mAttribute));
     result_350+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_350+=int_get_hash_key(((int)self->mGenerate));
+    result_350+=int_get_hash_key(((int)self->mCreateVTable));
     return result_350;
 }
 
@@ -5298,6 +5302,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -6101,7 +6108,7 @@ char* __result282__;
         if(        string_operator_not_equals(fun->mAttribute,"")) {
             buffer_append_str(output_411,((char*)(__right_value355=xsprintf("\%s ",((char*)(__right_value354=string_to_string(fun->mAttribute)))))));
             __right_value354 = come_decrement_ref_count2(__right_value354, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-            come_call_finalizer3(__right_value355,charp_finalize, 0, 1, 0, 0, __result_obj__);
+            __right_value355 = come_decrement_ref_count2(__right_value355, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         }
         if(        fun->mStatic) {
             buffer_append_str(output_411,"static ");
@@ -6125,7 +6132,7 @@ char* __result282__;
         if(        string_operator_not_equals(fun->mAttribute,"")) {
             buffer_append_str(output_411,((char*)(__right_value361=xsprintf("\%s ",((char*)(__right_value360=string_to_string(fun->mAttribute)))))));
             __right_value360 = come_decrement_ref_count2(__right_value360, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-            come_call_finalizer3(__right_value361,charp_finalize, 0, 1, 0, 0, __result_obj__);
+            __right_value361 = come_decrement_ref_count2(__right_value361, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         }
         if(        fun->mStatic) {
             buffer_append_str(output_411,"static ");
@@ -6182,7 +6189,7 @@ char* __result282__;
         if(        string_operator_not_equals(fun->mAttribute,"")) {
             buffer_append_str(output_411,((char*)(__right_value370=xsprintf("\%s ",((char*)(__right_value369=string_to_string(fun->mAttribute)))))));
             __right_value369 = come_decrement_ref_count2(__right_value369, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-            come_call_finalizer3(__right_value370,charp_finalize, 0, 1, 0, 0, __result_obj__);
+            __right_value370 = come_decrement_ref_count2(__right_value370, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         }
         if(        fun->mStatic) {
             buffer_append_str(output_411,"static ");
@@ -6369,7 +6376,7 @@ char* __result284__;
         if(        string_operator_not_equals(fun->mAttribute,"")) {
             buffer_append_str(output_440,((char*)(__right_value387=xsprintf("\%s ",((char*)(__right_value386=string_to_string(fun->mAttribute)))))));
             __right_value386 = come_decrement_ref_count2(__right_value386, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-            come_call_finalizer3(__right_value387,charp_finalize, 0, 1, 0, 0, __result_obj__);
+            __right_value387 = come_decrement_ref_count2(__right_value387, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         }
         if(        fun->mStatic) {
             buffer_append_str(output_440,"static ");
@@ -6391,7 +6398,7 @@ char* __result284__;
         if(        string_operator_not_equals(fun->mAttribute,"")) {
             buffer_append_str(output_440,((char*)(__right_value392=xsprintf("\%s ",((char*)(__right_value391=string_to_string(fun->mAttribute)))))));
             __right_value391 = come_decrement_ref_count2(__right_value391, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-            come_call_finalizer3(__right_value392,charp_finalize, 0, 1, 0, 0, __result_obj__);
+            __right_value392 = come_decrement_ref_count2(__right_value392, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         }
         if(        fun->mStatic) {
             buffer_append_str(output_440,"static ");
@@ -6445,7 +6452,7 @@ char* __result284__;
         if(        string_operator_not_equals(fun->mAttribute,"")) {
             buffer_append_str(output_440,((char*)(__right_value400=xsprintf("\%s ",((char*)(__right_value399=string_to_string(fun->mAttribute)))))));
             __right_value399 = come_decrement_ref_count2(__right_value399, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-            come_call_finalizer3(__right_value400,charp_finalize, 0, 1, 0, 0, __result_obj__);
+            __right_value400 = come_decrement_ref_count2(__right_value400, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         }
         if(        fun->mStatic) {
             buffer_append_str(output_440,"static ");
@@ -6639,7 +6646,7 @@ void* __right_value432 = (void*)0;
 char* output_529;
 _Bool __result316__;
     main_fun_477=((struct sFun*)(__right_value414=map$2charphsFunphp_operator_load_element(info->funcs,((char*)(__right_value413=xsprintf("main"))))));
-    come_call_finalizer3(__right_value413,charp_finalize, 0, 1, 0, 0, (void*)0);
+    __right_value413 = come_decrement_ref_count2(__right_value413, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     come_call_finalizer3(__right_value414,sFun_finalize, 0, 1, 0, 0, (void*)0);
     main_module_481=(_Bool)0;
     if(    main_fun_477) {

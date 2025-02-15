@@ -160,6 +160,7 @@ struct sType
     int mGenericsNumBefore;
     
     bool mGenerate;
+    bool mCreateVTable;
 };
 
 struct sVar;

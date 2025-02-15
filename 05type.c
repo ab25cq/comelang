@@ -1825,6 +1825,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool no_refference = false;
     bool channel = false;
     bool any_class = false;
+    bool vtable = false;
     while(1) {
         if(*info->p == '*') {
             info->p++;
@@ -1833,6 +1834,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             skip_pointer_attribute();
             
             pointer_num++;
+        }
+        else if(*info->p == '~' && *(info->p+1) == '~') {
+            info->p+=2;
+            skip_spaces_and_lf();
+            
+            skip_pointer_attribute();
+            
+            vtable = true;
         }
         else if(*info->p == '~') {
             info->p++;
@@ -2154,6 +2163,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
         result_type->mAnyClass = result_type->mAnyClass || any_class;
+        result_type->mCreateVTable = result_type->mCreateVTable || vtable;
         
         var_name = parse_word();
         
@@ -2228,6 +2238,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
         result_type->mAnyClass = result_type->mAnyClass || any_class;
+        result_type->mCreateVTable = result_type->mCreateVTable || vtable;
         
         if(xisalnum(*info.p) || *info->p == '_') {
             var_name = parse_word();
@@ -2382,6 +2393,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
+            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         else if(info.generics_type_names.contained(type_name)) {
@@ -2412,6 +2424,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
+            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         else if(info.method_generics_type_names.contained(type_name)) {
@@ -2442,6 +2455,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
+            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         else if(*info->p == '<') {
@@ -2513,6 +2527,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
+            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
             
             type_name = type->mClass->mName;
@@ -2556,6 +2571,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
             type->mAnyClass = type->mAnyClass || any_class;
+            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         
@@ -2640,6 +2656,17 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.mHeap = true;
                 }
             }
+            else if(*info->p == '~' && *(info->p+1) == '~') {
+                info->p+=2;
+                skip_spaces_and_lf();
+                
+                skip_pointer_attribute();
+                
+                type->mCreateVTable = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mCreateVTable = true;
+                }
+            }
             else if(*info->p == '~') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2716,6 +2743,17 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mHeap = true;
                     if(type->mNoSolvedGenericsType) {
                         type->mNoSolvedGenericsType.mHeap = true;
+                    }
+                }
+                else if(*info->p == '~' && *(info->p+1) == '~') {
+                    info->p+=2;
+                    skip_spaces_and_lf();
+                    
+                    skip_pointer_attribute();
+                    
+                    type->mCreateVTable = true;
+                    if(type->mNoSolvedGenericsType) {
+                        type->mNoSolvedGenericsType.mCreateVTable = true;
                     }
                 }
                 else if(*info->p == '~') {

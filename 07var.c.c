@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2687,7 +2688,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -4609,7 +4609,7 @@ struct sType* __dec_obj152;
                 come_value_413=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "07var.c", 147, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
                 check_assign_type(((char*)(__right_value330=xsprintf("\%s is assining to}",((char*)(__right_value329=string_to_string(self->name)))))),left_type_411,right_type2_408,come_value_413,(_Bool)0,(_Bool)1,(_Bool)0,info);
                 __right_value329 = come_decrement_ref_count2(__right_value329, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                come_call_finalizer3(__right_value330,charp_finalize, 0, 1, 0, 0, (void*)0);
+                __right_value330 = come_decrement_ref_count2(__right_value330, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                 if(                right_type2_408->mHeap&&left_type_411->mHeap&&left_type_411->mPointerNum>0&&right_type2_408->mPointerNum>0) {
                     std_move(left_type_411,right_type2_408,right_value2_412,info,(_Bool)0);
                     __dec_obj114=come_value_413->c_value;
@@ -4806,7 +4806,7 @@ struct sType* __dec_obj152;
         else if(        var__429->mType->mStatic||var__429->mType->mConstant) {
             check_assign_type(((char*)(__right_value373=xsprintf("\%s is assining to",((char*)(__right_value372=string_to_string(self->name)))))),left_type_438,right_type_436,right_value_435,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value372 = come_decrement_ref_count2(__right_value372, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value373,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value373 = come_decrement_ref_count2(__right_value373, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             add_come_code(info,"%s=%s;\n",((char*)(__right_value374=make_define_var(left_type_438,var__429->mCValueName,(_Bool)0,info))),right_value_435->c_value);
             __right_value374 = come_decrement_ref_count2(__right_value374, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             come_value_443=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "07var.c", 333, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
@@ -4820,7 +4820,7 @@ struct sType* __dec_obj152;
         else if(        right_type_436->mHeap&&left_type_438->mHeap&&left_type_438->mPointerNum>0&&right_type_436->mPointerNum>0) {
             check_assign_type(((char*)(__right_value379=xsprintf("\%s is assining to",((char*)(__right_value378=string_to_string(self->name)))))),left_type_438,right_type_436,right_value_435,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value378 = come_decrement_ref_count2(__right_value378, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value379,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value379 = come_decrement_ref_count2(__right_value379, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             std_move(left_type_438,right_type_436,right_value_435,info,(_Bool)0);
             add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value380=make_define_var(left_type_438,var__429->mCValueName,(_Bool)0,info))));
             __right_value380 = come_decrement_ref_count2(__right_value380, (void*)0, (void*)0, 1, 0, 0, (void*)0);
@@ -4856,7 +4856,7 @@ struct sType* __dec_obj152;
         else if(        left_type_438->mPointerNum>0&&left_type_438->mHeap&&string_operator_equals(right_type_436->mClass->mName,"void")&&right_type_436->mPointerNum>0) {
             check_assign_type(((char*)(__right_value392=xsprintf("\%s is assining to",((char*)(__right_value391=string_to_string(self->name)))))),left_type_438,right_type_436,right_value_435,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value391 = come_decrement_ref_count2(__right_value391, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value392,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value392 = come_decrement_ref_count2(__right_value392, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value393=make_define_var(left_type_438,var__429->mCValueName,(_Bool)0,info))));
             __right_value393 = come_decrement_ref_count2(__right_value393, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             come_value_446=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "07var.c", 379, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
@@ -4874,7 +4874,7 @@ struct sType* __dec_obj152;
         else {
             check_assign_type(((char*)(__right_value399=xsprintf("\%s is assining to",((char*)(__right_value398=string_to_string(self->name)))))),left_type_438,right_type_436,right_value_435,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value398 = come_decrement_ref_count2(__right_value398, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value399,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value399 = come_decrement_ref_count2(__right_value399, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             if(            right_type_436->mHeap&&left_type_438->mHeap&&left_type_438->mPointerNum>0&&right_type_436->mPointerNum>0) {
                 std_move(left_type_438,right_type_436,right_value_435,info,(_Bool)0);
             }
@@ -4926,7 +4926,7 @@ struct sType* __dec_obj152;
                     if(                    left_type_454->mPointerNum>0&&right_type_451->mPointerNum>0&&right_type_451->mHeap&&left_type_454->mHeap) {
                         check_assign_type(((char*)(__right_value409=xsprintf("\%s is assigning to",((char*)(__right_value408=string_to_string(self->name)))))),left_type_454,right_type_451,right_value_450,(_Bool)0,(_Bool)1,(_Bool)0,info);
                         __right_value408 = come_decrement_ref_count2(__right_value408, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                        come_call_finalizer3(__right_value409,charp_finalize, 0, 1, 0, 0, (void*)0);
+                        __right_value409 = come_decrement_ref_count2(__right_value409, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         c_value_455=(char*)come_increment_ref_count(xsprintf("*(parent->%s)",parent_var_453->mCValueName));
                         decrement_ref_count_object(parent_var_453->mType,c_value_455,info,(_Bool)0,(_Bool)0);
                         std_move(left_type_454,right_type_451,right_value_450,info,(_Bool)0);
@@ -4958,7 +4958,7 @@ struct sType* __dec_obj152;
                     else if(                    left_type_454->mPointerNum>0&&right_type_451->mPointerNum>0&&string_operator_equals(right_type_451->mClass->mName,"void")&&left_type_454->mHeap) {
                         check_assign_type(((char*)(__right_value417=xsprintf("\%s is assigning to",((char*)(__right_value416=string_to_string(self->name)))))),left_type_454,right_type_451,right_value_450,(_Bool)0,(_Bool)1,(_Bool)0,info);
                         __right_value416 = come_decrement_ref_count2(__right_value416, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                        come_call_finalizer3(__right_value417,charp_finalize, 0, 1, 0, 0, (void*)0);
+                        __right_value417 = come_decrement_ref_count2(__right_value417, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         c_value_457=(char*)come_increment_ref_count(xsprintf("*(parent->%s)",parent_var_453->mCValueName));
                         decrement_ref_count_object(parent_var_453->mType,c_value_457,info,(_Bool)0,(_Bool)0);
                         come_value_458=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "07var.c", 467, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
@@ -4989,7 +4989,7 @@ struct sType* __dec_obj152;
                     else {
                         check_assign_type(((char*)(__right_value425=xsprintf("\%s is assigning to",((char*)(__right_value424=string_to_string(self->name)))))),left_type_454,right_type_451,right_value_450,(_Bool)0,(_Bool)1,(_Bool)0,info);
                         __right_value424 = come_decrement_ref_count2(__right_value424, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                        come_call_finalizer3(__right_value425,charp_finalize, 0, 1, 0, 0, (void*)0);
+                        __right_value425 = come_decrement_ref_count2(__right_value425, (void*)0, (void*)0, 1, 0, 0, (void*)0);
                         if(                        left_type_454->mHeap&&!right_value_450->type->mHeap) {
                             err_msg(info,"require right value as heap object(%s)",self->name);
                             __result288__ = (_Bool)0;
@@ -5041,7 +5041,7 @@ struct sType* __dec_obj152;
         if(        (var__460->mType->mStatic||var__460->mType->mConstant)&&!var__460->mGlobal) {
             check_assign_type(((char*)(__right_value434=xsprintf("\%s is assining to",((char*)(__right_value433=string_to_string(self->name)))))),left_type_461,right_type_451,right_value_450,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value433 = come_decrement_ref_count2(__right_value433, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value434,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value434 = come_decrement_ref_count2(__right_value434, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             come_value_462=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "07var.c", 533, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
             __dec_obj143=come_value_462->c_value;
             come_value_462->c_value=(char*)come_increment_ref_count(xsprintf("%s=%s",var__460->mCValueName,right_value_450->c_value));
@@ -5057,7 +5057,7 @@ struct sType* __dec_obj152;
         else if(        right_type_451->mHeap&&left_type_461->mHeap&&left_type_461->mPointerNum>0&&right_type_451->mPointerNum>0) {
             check_assign_type(((char*)(__right_value440=xsprintf("\%s is assining to",((char*)(__right_value439=string_to_string(self->name)))))),left_type_461,right_type_451,right_value_450,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value439 = come_decrement_ref_count2(__right_value439, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value440,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value440 = come_decrement_ref_count2(__right_value440, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             decrement_ref_count_object(left_type_461,var__460->mCValueName,info,(_Bool)0,(_Bool)0);
             std_move(left_type_461,right_type_451,right_value_450,info,(_Bool)0);
             come_value_463=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "07var.c", 550, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
@@ -5075,7 +5075,7 @@ struct sType* __dec_obj152;
         else if(        left_type_461->mPointerNum>0&&left_type_461->mHeap&&string_operator_equals(right_type_451->mClass->mName,"void")&&right_type_451->mPointerNum>0) {
             check_assign_type(((char*)(__right_value446=xsprintf("\%s is assining to",((char*)(__right_value445=string_to_string(self->name)))))),left_type_461,right_type_451,right_value_450,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value445 = come_decrement_ref_count2(__right_value445, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value446,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value446 = come_decrement_ref_count2(__right_value446, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             decrement_ref_count_object(left_type_461,var__460->mCValueName,info,(_Bool)0,(_Bool)0);
             come_value_464=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "07var.c", 566, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
             __dec_obj147=come_value_464->c_value;
@@ -5106,7 +5106,7 @@ struct sType* __dec_obj152;
         else {
             check_assign_type(((char*)(__right_value457=xsprintf("\%s is assining to",((char*)(__right_value456=string_to_string(self->name)))))),left_type_461,right_type_451,right_value_450,(_Bool)0,(_Bool)1,(_Bool)0,info);
             __right_value456 = come_decrement_ref_count2(__right_value456, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            come_call_finalizer3(__right_value457,charp_finalize, 0, 1, 0, 0, (void*)0);
+            __right_value457 = come_decrement_ref_count2(__right_value457, (void*)0, (void*)0, 1, 0, 0, (void*)0);
             if(            left_type_461->mHeap&&!right_value_450->type->mHeap) {
                 err_msg(info,"require right value as heap object(%s)",self->name);
                 __result291__ = (_Bool)0;
@@ -5410,6 +5410,9 @@ struct sType* __result243__;
     }
     if(    self!=((void*)0)) {
         result_325->mGenerate=self->mGenerate;
+    }
+    if(    self!=((void*)0)) {
+        result_325->mCreateVTable=self->mCreateVTable;
     }
     __result243__ = gComeFunResultObject = __result_obj__ = result_325;
     come_call_finalizer3(result_325,sType_finalize, 0, 0, 1, 0, (void*)0);
@@ -5736,6 +5739,7 @@ unsigned int result_318;
     result_318+=int_get_hash_key(((int)self->mAttribute));
     result_318+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_318+=int_get_hash_key(((int)self->mGenerate));
+    result_318+=int_get_hash_key(((int)self->mCreateVTable));
     return result_318;
 }
 
@@ -5924,6 +5928,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
     return (_Bool)1;

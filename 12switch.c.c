@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2638,7 +2639,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -4926,6 +4926,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
+        return (_Bool)0;
+    }
     return (_Bool)1;
 }
 
@@ -5952,6 +5955,9 @@ struct sType* __result274__;
     if(    self!=((void*)0)) {
         result_395->mGenerate=self->mGenerate;
     }
+    if(    self!=((void*)0)) {
+        result_395->mCreateVTable=self->mCreateVTable;
+    }
     __result274__ = gComeFunResultObject = __result_obj__ = result_395;
     come_call_finalizer3(result_395,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -6023,6 +6029,7 @@ unsigned int result_394;
     result_394+=int_get_hash_key(((int)self->mAttribute));
     result_394+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_394+=int_get_hash_key(((int)self->mGenerate));
+    result_394+=int_get_hash_key(((int)self->mCreateVTable));
     return result_394;
 }
 
@@ -6485,12 +6492,12 @@ void* __right_value334 = (void*)0;
     if(    self->semi_colon) {
         add_come_code(info,((char*)(__right_value332=xsprintf("\%s: ;\n",((char*)(__right_value331=string_to_string(self->label)))))));
         __right_value331 = come_decrement_ref_count2(__right_value331, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value332,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value332 = come_decrement_ref_count2(__right_value332, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     else {
         add_come_code(info,((char*)(__right_value334=xsprintf("\%s:\n",((char*)(__right_value333=string_to_string(self->label)))))));
         __right_value333 = come_decrement_ref_count2(__right_value333, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value334,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value334 = come_decrement_ref_count2(__right_value334, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     }
     transpiler_clear_last_code(info);
     return (_Bool)1;
@@ -6551,7 +6558,7 @@ void* __right_value337 = (void*)0;
 void* __right_value338 = (void*)0;
     add_come_code(info,((char*)(__right_value338=xsprintf("goto \%s;\n",((char*)(__right_value337=string_to_string(self->label)))))));
     __right_value337 = come_decrement_ref_count2(__right_value337, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    come_call_finalizer3(__right_value338,charp_finalize, 0, 1, 0, 0, (void*)0);
+    __right_value338 = come_decrement_ref_count2(__right_value338, (void*)0, (void*)0, 1, 0, 0, (void*)0);
     transpiler_clear_last_code(info);
     return (_Bool)1;
 }

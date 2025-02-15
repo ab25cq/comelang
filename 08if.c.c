@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2685,7 +2686,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -5236,6 +5236,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
+        return (_Bool)0;
+    }
     return (_Bool)1;
 }
 
@@ -6262,6 +6265,9 @@ struct sType* __result274__;
     if(    self!=((void*)0)) {
         result_395->mGenerate=self->mGenerate;
     }
+    if(    self!=((void*)0)) {
+        result_395->mCreateVTable=self->mCreateVTable;
+    }
     __result274__ = gComeFunResultObject = __result_obj__ = result_395;
     come_call_finalizer3(result_395,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -6333,6 +6339,7 @@ unsigned int result_394;
     result_394+=int_get_hash_key(((int)self->mAttribute));
     result_394+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_394+=int_get_hash_key(((int)self->mGenerate));
+    result_394+=int_get_hash_key(((int)self->mCreateVTable));
     return result_394;
 }
 
@@ -7732,8 +7739,8 @@ struct sNode* __result336__;
 __list_values1___504[1]=(char*)come_increment_ref_count(((char*)(__right_value390=xsprintf("Err")))),
 list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "08if.c", 557, "struct list$1charph", list$1charph_finalize, list$1charph_clone, list$1charph_get_hash_key, list$1charph_equals)),2,__list_values1___504)));
     __right_value388 = come_decrement_ref_count2(__right_value388, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value389,charp_finalize, 0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value390,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value389 = come_decrement_ref_count2(__right_value389, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value390 = come_decrement_ref_count2(__right_value390, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     get_return_value_508=(struct sNode*)come_increment_ref_count(store_var((char*)come_increment_ref_count(xsprintf("var")),(struct list$1charph*)come_increment_ref_count(multiple_assign_507),((void*)0),((void*)0),(_Bool)1,(struct sNode*)come_increment_ref_count(expression_node),info));
     if_block_509=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
     elif_expression_nodes_510=(struct list$1sNodeph*)come_increment_ref_count(list$1sNodephp_initialize((struct list$1sNodeph*)come_increment_ref_count((struct list$1sNodeph*)come_calloc(1, sizeof(struct list$1sNodeph)*(1), "08if.c", 564, "struct list$1sNodeph*", (void*)0, (void*)0, (void*)0, (void*)0))));
@@ -7743,9 +7750,9 @@ list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_co
     else_block_513->mOmitSemicolon=(_Bool)1;
     list$1sNodephp_push_back(else_block_513->mNodes,(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value406=xsprintf("come_exception_var_\%s",((char*)(__right_value405=int_to_string(var_num_stack_503)))))),info)));
     __right_value405 = come_decrement_ref_count2(__right_value405, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value406,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value406 = come_decrement_ref_count2(__right_value406, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     expression_node2_517=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value408=xsprintf("Err"))),info));
-    come_call_finalizer3(__right_value408,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value408 = come_decrement_ref_count2(__right_value408, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     _inf_value1=(struct sNode*)come_calloc(1, sizeof(struct sNode), "08if.c", 575, "struct sNode", (void*)0, (void*)0, (void*)0, (void*)0);
     _inf_obj_value1=(struct sIfNode*)come_increment_ref_count(((struct sIfNode*)(__right_value411=sIfNode_initialize((struct sIfNode*)come_increment_ref_count((struct sIfNode*)come_calloc(1, sizeof(struct sIfNode)*(1), "08if.c", 575, "struct sIfNode*", (void*)0, (void*)0, (void*)0, (void*)0)),(struct sNode*)come_increment_ref_count(expression_node2_517),if_block_509,elif_expression_nodes_510,elif_blocks_512,elif_num_511,else_block_513,(_Bool)0,info))));
     _inf_value1->_protocol_obj=_inf_obj_value1;
@@ -8371,8 +8378,8 @@ struct sNode* __result337__;
 __list_values3___539[1]=(char*)come_increment_ref_count(((char*)(__right_value441=xsprintf("Err")))),
 list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "08if.c", 602, "struct list$1charph", list$1charph_finalize, list$1charph_clone, list$1charph_get_hash_key, list$1charph_equals)),2,__list_values3___539)));
     __right_value439 = come_decrement_ref_count2(__right_value439, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value440,charp_finalize, 0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value441,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value440 = come_decrement_ref_count2(__right_value440, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value441 = come_decrement_ref_count2(__right_value441, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     get_return_value_541=(struct sNode*)come_increment_ref_count(store_var((char*)come_increment_ref_count(xsprintf("var")),(struct list$1charph*)come_increment_ref_count(multiple_assign_540),((void*)0),((void*)0),(_Bool)1,(struct sNode*)come_increment_ref_count(expression_node),info));
     source_542=(struct buffer*)come_increment_ref_count(info->source);
     p_543=info->p;
@@ -8397,7 +8404,7 @@ list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_co
     elif_blocks_549=(struct list$1sBlockph*)come_increment_ref_count(list$1sBlockphp_initialize((struct list$1sBlockph*)come_increment_ref_count((struct list$1sBlockph*)come_calloc(1, sizeof(struct list$1sBlockph)*(1), "08if.c", 630, "struct list$1sBlockph*", (void*)0, (void*)0, (void*)0, (void*)0))));
     else_block_550=((void*)0);
     expression_node2_551=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value453=xsprintf("Err"))),info));
-    come_call_finalizer3(__right_value453,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value453 = come_decrement_ref_count2(__right_value453, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     _inf_value5=(struct sNode*)come_calloc(1, sizeof(struct sNode), "08if.c", 636, "struct sNode", (void*)0, (void*)0, (void*)0, (void*)0);
     _inf_obj_value5=(struct sIfNode*)come_increment_ref_count(((struct sIfNode*)(__right_value456=sIfNode_initialize((struct sIfNode*)come_increment_ref_count((struct sIfNode*)come_calloc(1, sizeof(struct sIfNode)*(1), "08if.c", 636, "struct sIfNode*", (void*)0, (void*)0, (void*)0, (void*)0)),(struct sNode*)come_increment_ref_count(expression_node2_551),if_block_546,elif_expression_nodes_547,elif_blocks_549,elif_num_548,else_block_550,(_Bool)0,info))));
     _inf_value5->_protocol_obj=_inf_obj_value5;
@@ -8413,7 +8420,7 @@ list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_co
     come_call_finalizer3(__right_value456,sIfNode_finalize, 0, 1, 0, 0, __result_obj__);
     load_var_553=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value459=xsprintf("come_exception_var_b\%s",((char*)(__right_value458=int_to_string(var_num_stack_538)))))),info));
     __right_value458 = come_decrement_ref_count2(__right_value458, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value459,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value459 = come_decrement_ref_count2(__right_value459, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     _inf_value6=(struct sNode*)come_calloc(1, sizeof(struct sNode), "08if.c", 639, "struct sNode", (void*)0, (void*)0, (void*)0, (void*)0);
     _inf_obj_value6=(struct sSaveRightValueObjects*)come_increment_ref_count(((struct sSaveRightValueObjects*)(__right_value462=sSaveRightValueObjects_initialize((struct sSaveRightValueObjects*)come_increment_ref_count((struct sSaveRightValueObjects*)come_calloc(1, sizeof(struct sSaveRightValueObjects)*(1), "08if.c", 639, "struct sSaveRightValueObjects*", (void*)0, (void*)0, (void*)0, (void*)0)),info))));
     _inf_value6->_protocol_obj=_inf_obj_value6;
@@ -8549,8 +8556,8 @@ struct sNode* __result338__;
 __list_values5___562[1]=(char*)come_increment_ref_count(((char*)(__right_value475=xsprintf("Err")))),
 list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "08if.c", 659, "struct list$1charph", list$1charph_finalize, list$1charph_clone, list$1charph_get_hash_key, list$1charph_equals)),2,__list_values5___562)));
     __right_value473 = come_decrement_ref_count2(__right_value473, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value474,charp_finalize, 0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value475,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value474 = come_decrement_ref_count2(__right_value474, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    __right_value475 = come_decrement_ref_count2(__right_value475, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     get_return_value_564=(struct sNode*)come_increment_ref_count(store_var((char*)come_increment_ref_count(xsprintf("var")),(struct list$1charph*)come_increment_ref_count(multiple_assign_563),((void*)0),((void*)0),(_Bool)1,(struct sNode*)come_increment_ref_count(expression_node),info));
     source_565=(struct buffer*)come_increment_ref_count(info->source);
     p_566=info->p;
@@ -8574,11 +8581,11 @@ list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_co
     info->head=head_567;
     info->sline=sline_559;
     expression_node2_571=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value483=xsprintf("Err"))),info));
-    come_call_finalizer3(__right_value483,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value483 = come_decrement_ref_count2(__right_value483, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     cond_572=(struct sNode*)come_increment_ref_count(conditional_node((struct sNode*)come_increment_ref_count(expression_node2_571),(struct sNode*)come_increment_ref_count(exp_570),(struct sNode*)come_increment_ref_count(create_int_node(0,info)),info));
     load_var_573=(struct sNode*)come_increment_ref_count(create_load_var(((char*)(__right_value488=xsprintf("come_exception_var_c\%s",((char*)(__right_value487=int_to_string(var_num_stack_561)))))),info));
     __right_value487 = come_decrement_ref_count2(__right_value487, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-    come_call_finalizer3(__right_value488,charp_finalize, 0, 1, 0, 0, __result_obj__);
+    __right_value488 = come_decrement_ref_count2(__right_value488, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     _inf_value9=(struct sNode*)come_calloc(1, sizeof(struct sNode), "08if.c", 692, "struct sNode", (void*)0, (void*)0, (void*)0, (void*)0);
     _inf_obj_value9=(struct sSaveRightValueObjects*)come_increment_ref_count(((struct sSaveRightValueObjects*)(__right_value491=sSaveRightValueObjects_initialize((struct sSaveRightValueObjects*)come_increment_ref_count((struct sSaveRightValueObjects*)come_calloc(1, sizeof(struct sSaveRightValueObjects)*(1), "08if.c", 692, "struct sSaveRightValueObjects*", (void*)0, (void*)0, (void*)0, (void*)0)),info))));
     _inf_value9->_protocol_obj=_inf_obj_value9;

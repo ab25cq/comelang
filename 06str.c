@@ -68,7 +68,12 @@ class sBufferNode extends sNodeBase
         string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
         
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(any_type, "finalize", info);
+            if(finalizer_name === "string_finalize" || finalizer_name === "charp_finalize") {
+                finalizer_name = s"(void*)0";
+            }
+            else {
+                (void*)create_finalizer_automatically(any_type, "finalize", info);
+            }
         }
         if(info.funcs[cloner_name]?? == null) {
             var fun, name = create_cloner_automatically(any_type, "clone", info);
@@ -443,7 +448,12 @@ class sListNode extends sNodeBase
         string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
         
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(any_type, "finalize", info);
+            if(finalizer_name === "string_finalize" || finalizer_name === "charp_finalize") {
+                finalizer_name = s"(void*)0";
+            }
+            else {
+                (void*)create_finalizer_automatically(any_type, "finalize", info);
+            }
         }
         if(info.funcs[cloner_name]?? == null) {
             var fun, name = create_cloner_automatically(any_type, "clone", info);
@@ -605,7 +615,12 @@ class sTupleNode extends sNodeBase
         string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
         
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(any_type, "finalize", info);
+            if(finalizer_name === "string_finalize" || finalizer_name === "charp_finalize") {
+                finalizer_name = s"(void*)0";
+            }
+            else {
+                (void*)create_finalizer_automatically(any_type, "finalize", info);
+            }
         }
         if(info.funcs[cloner_name]?? == null) {
             var fun, name = create_cloner_automatically(any_type, "clone", info);
@@ -1387,7 +1402,12 @@ class sMapNode extends sNodeBase
         string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
         
         if(info.funcs[finalizer_name]?? == null) {
-            (void*)create_finalizer_automatically(any_type, "finalize", info);
+            if(finalizer_name === "string_finalize" || finalizer_name === "charp_finalize") {
+                finalizer_name = s"(void*)0";
+            }
+            else {
+                (void*)create_finalizer_automatically(any_type, "finalize", info);
+            }
         }
         if(info.funcs[cloner_name]?? == null) {
             var fun, name = create_cloner_automatically(any_type, "clone", info);

@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2621,7 +2622,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -4702,6 +4702,9 @@ struct sType* __result247__;
     if(    self!=((void*)0)) {
         result_327->mGenerate=self->mGenerate;
     }
+    if(    self!=((void*)0)) {
+        result_327->mCreateVTable=self->mCreateVTable;
+    }
     __result247__ = gComeFunResultObject = __result_obj__ = result_327;
     come_call_finalizer3(result_327,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -4773,6 +4776,7 @@ unsigned int result_320;
     result_320+=int_get_hash_key(((int)self->mAttribute));
     result_320+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_320+=int_get_hash_key(((int)self->mGenerate));
+    result_320+=int_get_hash_key(((int)self->mCreateVTable));
     return result_320;
 }
 
@@ -4961,6 +4965,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -8074,7 +8081,7 @@ char* __result315__;
     buf_509[tail_508-head_503]=0;
     skip_spaces_and_lf(info);
     __result315__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value389=__builtin_string(buf_509)));
-    come_call_finalizer3(buf_509,charp_finalize, 0, 0, 0, 0, (void*)0);
+    buf_509 = come_decrement_ref_count2(buf_509, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     __right_value389 = come_decrement_ref_count2(__right_value389, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
     gComeFunResultObject = (void*)0;
     return __result315__;
@@ -9661,9 +9668,9 @@ list$1sTypeph_initialize_with_values((struct list$1sTypeph**)come_increment_ref_
 __list_values18___682[1]=(char*)come_increment_ref_count(((char*)(__right_value660=xsprintf("come_debug")))),
 __list_values18___682[2]=(char*)come_increment_ref_count(((char*)(__right_value661=xsprintf("come_gc")))),
 list$1charph_initialize_with_values((struct list$1charph**)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "05function.c", 1713, "struct list$1charph", list$1charph_finalize, list$1charph_clone, list$1charph_get_hash_key, list$1charph_equals)),3,__list_values18___682)));
-        come_call_finalizer3(__right_value659,charp_finalize, 0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value660,charp_finalize, 0, 1, 0, 0, (void*)0);
-        come_call_finalizer3(__right_value661,charp_finalize, 0, 1, 0, 0, (void*)0);
+        __right_value659 = come_decrement_ref_count2(__right_value659, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value660 = come_decrement_ref_count2(__right_value660, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        __right_value661 = come_decrement_ref_count2(__right_value661, (void*)0, (void*)0, 1, 0, 0, (void*)0);
         param_default_parametors_684=(struct list$1charph*)come_increment_ref_count(list$1charphp_initialize((struct list$1charph*)come_increment_ref_count((struct list$1charph*)come_calloc(1, sizeof(struct list$1charph)*(1), "05function.c", 1714, "struct list$1charph*", (void*)0, (void*)0, (void*)0, (void*)0))));
         list$1charphp_push_back(param_default_parametors_684,((void*)0));
         main_fun_685=(struct sFun*)come_increment_ref_count(sFun_initialize((struct sFun*)come_increment_ref_count((struct sFun*)come_calloc(1, sizeof(struct sFun)*(1), "05function.c", 1716, "struct sFun*", (void*)0, (void*)0, (void*)0, (void*)0)),(char*)come_increment_ref_count(name_678),(struct sType*)come_increment_ref_count(result_type_679),(struct list$1sTypeph*)come_increment_ref_count(param_types_681),(struct list$1charph*)come_increment_ref_count(param_names_683),(struct list$1charph*)come_increment_ref_count(param_default_parametors_684),(_Bool)1,(_Bool)0,((void*)0),(_Bool)0,(char*)come_increment_ref_count(__builtin_string("come_heap_init(int come_malloc, int come_debug, int come_gc)")),(char*)come_increment_ref_count(__builtin_string("")),info,(_Bool)0,(_Bool)0,(_Bool)0,(char*)come_increment_ref_count(xsprintf("")),(char*)come_increment_ref_count(xsprintf(""))));
@@ -12920,7 +12927,7 @@ fun_name_908 = (void*)0;
     if(    constructor__900) {
         __dec_obj260=base_fun_name_909;
         base_fun_name_909=(char*)come_increment_ref_count(__builtin_string("initialize"));
-        come_call_finalizer3(__dec_obj260,charp_finalize, 0, 0, 0, 0, (void*)0);
+        __dec_obj260 = come_decrement_ref_count2(__dec_obj260, (void*)0, (void*)0, 0,0,0, (void*)0);
         __dec_obj261=fun_name_908;
         fun_name_908=(char*)come_increment_ref_count(create_method_name(info->impl_type,(_Bool)0,base_fun_name_909,info,(_Bool)1));
         __dec_obj261 = come_decrement_ref_count2(__dec_obj261, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -12939,7 +12946,7 @@ fun_name_908 = (void*)0;
         expected_next_character(58,info);
         __dec_obj262=base_fun_name_909;
         base_fun_name_909=(char*)come_increment_ref_count(parse_word(info));
-        come_call_finalizer3(__dec_obj262,charp_finalize, 0, 0, 0, 0, (void*)0);
+        __dec_obj262 = come_decrement_ref_count2(__dec_obj262, (void*)0, (void*)0, 0,0,0, (void*)0);
         __dec_obj263=fun_name_908;
         fun_name_908=(char*)come_increment_ref_count(create_method_name(obj_type_910,(_Bool)0,base_fun_name_909,info,(_Bool)1));
         __dec_obj263 = come_decrement_ref_count2(__dec_obj263, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -12949,7 +12956,7 @@ fun_name_908 = (void*)0;
     else if(    info->impl_type) {
         __dec_obj264=base_fun_name_909;
         base_fun_name_909=(char*)come_increment_ref_count(parse_word(info));
-        come_call_finalizer3(__dec_obj264,charp_finalize, 0, 0, 0, 0, (void*)0);
+        __dec_obj264 = come_decrement_ref_count2(__dec_obj264, (void*)0, (void*)0, 0,0,0, (void*)0);
         __dec_obj265=fun_name_908;
         fun_name_908=(char*)come_increment_ref_count(create_method_name(info->impl_type,(_Bool)0,base_fun_name_909,info,(_Bool)1));
         __dec_obj265 = come_decrement_ref_count2(__dec_obj265, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -12960,7 +12967,7 @@ fun_name_908 = (void*)0;
         __dec_obj266 = come_decrement_ref_count2(__dec_obj266, (void*)0, (void*)0, 0,0,0, (void*)0);
         __dec_obj267=base_fun_name_909;
         base_fun_name_909=(char*)come_increment_ref_count(__builtin_string(fun_name_908));
-        come_call_finalizer3(__dec_obj267,charp_finalize, 0, 0, 0, 0, (void*)0);
+        __dec_obj267 = come_decrement_ref_count2(__dec_obj267, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
     if(    info->in_class&&charp_operator_equals(base_fun_name_909,"initialize")) {
         info->in_class=(_Bool)0;
@@ -13027,7 +13034,7 @@ fun_name_908 = (void*)0;
         come_call_finalizer3(result_type_898,sType_finalize, 0, 0, 0, 0, (void*)0);
         var_name_899 = come_decrement_ref_count2(var_name_899, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         fun_name_908 = come_decrement_ref_count2(fun_name_908, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        come_call_finalizer3(base_fun_name_909,charp_finalize, 0, 0, 0, 0, (void*)0);
+        base_fun_name_909 = come_decrement_ref_count2(base_fun_name_909, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_types_913,list$1voidphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_names_914,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_default_parametors_915,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
@@ -13061,7 +13068,7 @@ fun_name_908 = (void*)0;
         come_call_finalizer3(result_type_898,sType_finalize, 0, 0, 0, 0, (void*)0);
         var_name_899 = come_decrement_ref_count2(var_name_899, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         fun_name_908 = come_decrement_ref_count2(fun_name_908, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        come_call_finalizer3(base_fun_name_909,charp_finalize, 0, 0, 0, 0, (void*)0);
+        base_fun_name_909 = come_decrement_ref_count2(base_fun_name_909, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_types_913,list$1voidphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_names_914,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_default_parametors_915,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
@@ -13097,7 +13104,7 @@ fun_name_908 = (void*)0;
         come_call_finalizer3(result_type_898,sType_finalize, 0, 0, 0, 0, (void*)0);
         var_name_899 = come_decrement_ref_count2(var_name_899, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         fun_name_908 = come_decrement_ref_count2(fun_name_908, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        come_call_finalizer3(base_fun_name_909,charp_finalize, 0, 0, 0, 0, (void*)0);
+        base_fun_name_909 = come_decrement_ref_count2(base_fun_name_909, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_types_913,list$1voidphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_names_914,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_default_parametors_915,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
@@ -13256,7 +13263,7 @@ fun_name_908 = (void*)0;
         come_call_finalizer3(result_type_898,sType_finalize, 0, 0, 0, 0, (void*)0);
         var_name_899 = come_decrement_ref_count2(var_name_899, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         fun_name_908 = come_decrement_ref_count2(fun_name_908, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        come_call_finalizer3(base_fun_name_909,charp_finalize, 0, 0, 0, 0, (void*)0);
+        base_fun_name_909 = come_decrement_ref_count2(base_fun_name_909, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_types_913,list$1voidphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_names_914,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(param_default_parametors_915,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
@@ -13319,7 +13326,7 @@ fun_name_908 = (void*)0;
             come_call_finalizer3(result_type_898,sType_finalize, 0, 0, 0, 0, (void*)0);
             var_name_899 = come_decrement_ref_count2(var_name_899, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             fun_name_908 = come_decrement_ref_count2(fun_name_908, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-            come_call_finalizer3(base_fun_name_909,charp_finalize, 0, 0, 0, 0, (void*)0);
+            base_fun_name_909 = come_decrement_ref_count2(base_fun_name_909, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             come_call_finalizer3(param_types_913,list$1voidphp_finalize, 0, 0, 0, 0, (void*)0);
             come_call_finalizer3(param_names_914,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
             come_call_finalizer3(param_default_parametors_915,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
@@ -13387,7 +13394,7 @@ fun_name_908 = (void*)0;
             come_call_finalizer3(result_type_898,sType_finalize, 0, 0, 0, 0, (void*)0);
             var_name_899 = come_decrement_ref_count2(var_name_899, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             fun_name_908 = come_decrement_ref_count2(fun_name_908, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-            come_call_finalizer3(base_fun_name_909,charp_finalize, 0, 0, 0, 0, (void*)0);
+            base_fun_name_909 = come_decrement_ref_count2(base_fun_name_909, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             come_call_finalizer3(param_types_913,list$1voidphp_finalize, 0, 0, 0, 0, (void*)0);
             come_call_finalizer3(param_names_914,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
             come_call_finalizer3(param_default_parametors_915,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
@@ -13414,7 +13421,7 @@ fun_name_908 = (void*)0;
     come_call_finalizer3(result_type_898,sType_finalize, 0, 0, 0, 0, (void*)0);
     var_name_899 = come_decrement_ref_count2(var_name_899, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     fun_name_908 = come_decrement_ref_count2(fun_name_908, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    come_call_finalizer3(base_fun_name_909,charp_finalize, 0, 0, 0, 0, (void*)0);
+    base_fun_name_909 = come_decrement_ref_count2(base_fun_name_909, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     come_call_finalizer3(param_types_913,list$1voidphp_finalize, 0, 0, 0, 0, (void*)0);
     come_call_finalizer3(param_names_914,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
     come_call_finalizer3(param_default_parametors_915,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);

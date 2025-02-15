@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2592,7 +2593,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -4861,6 +4861,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
+        return (_Bool)0;
+    }
     return (_Bool)1;
 }
 
@@ -5887,6 +5890,9 @@ struct sType* __result274__;
     if(    self!=((void*)0)) {
         result_395->mGenerate=self->mGenerate;
     }
+    if(    self!=((void*)0)) {
+        result_395->mCreateVTable=self->mCreateVTable;
+    }
     __result274__ = gComeFunResultObject = __result_obj__ = result_395;
     come_call_finalizer3(result_395,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -5958,6 +5964,7 @@ unsigned int result_394;
     result_394+=int_get_hash_key(((int)self->mAttribute));
     result_394+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_394+=int_get_hash_key(((int)self->mGenerate));
+    result_394+=int_get_hash_key(((int)self->mCreateVTable));
     return result_394;
 }
 

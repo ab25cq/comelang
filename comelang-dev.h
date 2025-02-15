@@ -4869,19 +4869,16 @@ uniq string string::clone(char* self)
     return string(self);
 }
 
+/*
 uniq void char*::finalize(char* self)
 {
-    if(self == null) { return; }
-    
-    come_free(self);
 }
 
-uniq string string::clone(char* self)
+uniq string string::finalize(char* self)
 {
-    if(self == null) { return; }
-    
-    come_free(self);
 }
+*/
+
 //////////////////////////////
 /// base library(character code)
 //////////////////////////////

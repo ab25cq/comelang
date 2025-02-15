@@ -1493,6 +1493,7 @@ struct sType
     char* mAttribute;
     int mGenericsNumBefore;
     _Bool mGenerate;
+    _Bool mCreateVTable;
 };
 
 struct CVALUE
@@ -2609,7 +2610,6 @@ double double_clone(double self);
 float float_clone(float self);
 char* charp_clone(char* self);
 char* string_clone(char* self);
-void charp_finalize(char* self);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);
@@ -4981,6 +4981,9 @@ struct sType* __result255__;
     if(    self!=((void*)0)) {
         result_342->mGenerate=self->mGenerate;
     }
+    if(    self!=((void*)0)) {
+        result_342->mCreateVTable=self->mCreateVTable;
+    }
     __result255__ = gComeFunResultObject = __result_obj__ = result_342;
     come_call_finalizer3(result_342,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -5052,6 +5055,7 @@ unsigned int result_337;
     result_337+=int_get_hash_key(((int)self->mAttribute));
     result_337+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_337+=int_get_hash_key(((int)self->mGenerate));
+    result_337+=int_get_hash_key(((int)self->mCreateVTable));
     return result_337;
 }
 
@@ -5240,6 +5244,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -5865,7 +5872,7 @@ struct sNode* __result290__;
         header_368=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "24module.c", 208, "struct buffer*", (void*)0, (void*)0, (void*)0, (void*)0))));
         buffer_append_str(header_368,((char*)(__right_value325=xsprintf("module \%s\n",((char*)(__right_value324=string_to_string(type_name_357)))))));
         __right_value324 = come_decrement_ref_count2(__right_value324, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
-        come_call_finalizer3(__right_value325,charp_finalize, 0, 1, 0, 0, __result_obj__);
+        __right_value325 = come_decrement_ref_count2(__right_value325, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
         buffer_append_str(header_368,"{\n");
         buffer_append(header_368,source_head_362,source_tail_363-source_head_362);
         buffer_append_str(header_368,"\n}\n");
