@@ -89,6 +89,8 @@ class sNewNode extends sNodeBase
             string obj;
             if(type2->mAnyClass && type2->mAnyOriginalType) {
                 sType*% any_type = clone type2->mAnyOriginalType;
+                any_type->mPointerNum = 1;
+                any_type->mHeap = 1;
                 
                 string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
                 string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
@@ -173,6 +175,46 @@ class sNewNode extends sNodeBase
                 }
                 
                 come_value.type = clone type2;
+            }
+            else if(type2->mCreateVTable) {
+                sType*% any_type = clone type2;
+                any_type->mPointerNum = 1;
+                any_type->mHeap = 1;
+                
+                string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+                string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+                string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
+                string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
+                
+                if(info.funcs[finalizer_name]?? == null) {
+                    if(finalizer_name === "string_finalize" || finalizer_name === "charp_finalize") {
+                        finalizer_name = s"(void*)0";
+                    }
+                    else {
+                        (void*)create_finalizer_automatically(any_type, "finalize", info);
+                    }
+                }
+                if(info.funcs[cloner_name]?? == null) {
+                    var fun, name = create_cloner_automatically(any_type, "clone", info);
+                    cloner_name = name;
+                }
+                if(info.funcs[get_hash_key_name]?? == null) {
+                    var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
+                    get_hash_key_name = name;
+                }
+                if(info.funcs[equaler_name]?? == null) {
+                    var fun, name = create_equals_automatically(any_type, "equals", info);
+                    equaler_name = name;
+                }
+                
+                any_type->mPointerNum--;
+                string any_type_name = make_type_name_string(any_type);
+                
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
+                
+                any_type->mPointerNum++;
+                
+                come_value.type = clone any_type;
             }
             else {
                 char *finalizer_name = "(void*)0";
@@ -360,6 +402,49 @@ class sNewNode extends sNodeBase
                 }
                 
                 come_value.type = clone type2;
+            }
+            else if(type2->mCreateVTable) {
+                sType*% any_type = clone type2;
+                any_type->mPointerNum = 1;
+                any_type->mHeap = true;
+                
+                string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
+                string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
+                string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
+                string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
+                
+                if(info.funcs[finalizer_name]?? == null) {
+                    if(finalizer_name === "string_finalize" || finalizer_name === "charp_finalize") {
+                        finalizer_name = s"(void*)0";
+                    }
+                    else {
+                        (void*)create_finalizer_automatically(any_type, "finalize", info);
+                    }
+                }
+                if(info.funcs[cloner_name]?? == null) {
+                    var fun, name = create_cloner_automatically(any_type, "clone", info);
+                    cloner_name = name;
+                }
+                if(info.funcs[get_hash_key_name]?? == null) {
+                    var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
+                    get_hash_key_name = name;
+                }
+                if(info.funcs[equaler_name]?? == null) {
+                    var fun, name = create_equals_automatically(any_type, "equals", info);
+                    equaler_name = name;
+                }
+                
+                any_type->mPointerNum--;
+            
+                string any_type_name = make_type_name_string(any_type);
+                
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
+                
+                type2->mPointerNum--;
+                
+                any_type->mPointerNum++;
+                
+                come_value.type = clone any_type;
             }
             else {
                 char *finalizer_name = "(void*)0";

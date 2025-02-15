@@ -68,12 +68,9 @@ int main(int argc, char** argv)
     
     map<string~, sData~>*% uho = new map<string~, sData~>();
     
-    string~ aaa = new char~[64];
-    strcpy(aaa, "AAA");
+    uho[s"AAA"] = new sData~();
     
-    uho[aaa] = new sData~();
-    
-    printf("%s\n", uho[aaa].c);
+    printf("%s\n", uho[s"AAA"].c);
     
 /*
     sData3<sData~>*% data1 = new sData3<sData~>;
