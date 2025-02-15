@@ -93,6 +93,7 @@ class sNewNode extends sNodeBase
                 string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
                 string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
                 string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
+                string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
                 
                 if(info.funcs[finalizer_name]?? == null) {
                     (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -105,11 +106,15 @@ class sNewNode extends sNodeBase
                     var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
                     get_hash_key_name = name;
                 }
+                if(info.funcs[equaler_name]?? == null) {
+                    var fun, name = create_equals_automatically(any_type, "equals", info);
+                    equaler_name = name;
+                }
                 
                 any_type->mPointerNum--;
                 string any_type_name = make_type_name_string(any_type);
                 
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name);
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
                 
                 any_type->mPointerNum++;
                 
@@ -122,6 +127,7 @@ class sNewNode extends sNodeBase
                 string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
                 string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
                 string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
+                string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
                 
                 if(info.funcs[finalizer_name]?? == null) {
                     (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -134,11 +140,15 @@ class sNewNode extends sNodeBase
                     var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
                     get_hash_key_name = name;
                 }
+                if(info.funcs[equaler_name]?? == null) {
+                    var fun, name = create_equals_automatically(any_type, "equals", info);
+                    equaler_name = name;
+                }
                 
                 any_type->mPointerNum--;
                 string any_type_name = make_type_name_string(any_type);
                 
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name);
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
                 
                 any_type->mPointerNum++;
                 
@@ -158,7 +168,8 @@ class sNewNode extends sNodeBase
                 char *finalizer_name = "(void*)0";
                 char *cloner_name = "(void*)0";
                 char *get_hash_key_name = "(void*)0";
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name);
+                char *equaler_name = "(void*)0";
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
             }
             
             buf.append_str(obj);
@@ -254,6 +265,7 @@ class sNewNode extends sNodeBase
                 string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
                 string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
                 string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
+                string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
                 
                 if(info.funcs[finalizer_name]?? == null) {
                     (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -266,12 +278,16 @@ class sNewNode extends sNodeBase
                     var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
                     get_hash_key_name = name;
                 }
+                if(info.funcs[equaler_name]?? == null) {
+                    var fun, name = create_equals_automatically(any_type, "equals", info);
+                    equaler_name = name;
+                }
                 
                 any_type->mPointerNum--;
             
                 string any_type_name = make_type_name_string(any_type);
                 
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name);
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
                 
                 type2->mPointerNum--;
                 
@@ -288,6 +304,7 @@ class sNewNode extends sNodeBase
                 string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
                 string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
                 string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
+                string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
                 
                 if(info.funcs[finalizer_name]?? == null) {
                     (void*)create_finalizer_automatically(any_type, "finalize", info);
@@ -300,11 +317,15 @@ class sNewNode extends sNodeBase
                     var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
                     get_hash_key_name = name;
                 }
+                if(info.funcs[equaler_name]?? == null) {
+                    var fun, name = create_equals_automatically(any_type, "equals", info);
+                    equaler_name = name;
+                }
                 
                 any_type->mPointerNum--;
                 string any_type_name = make_type_name_string(any_type);
                 
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name);
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
                 
                 any_type->mPointerNum++;
                 
@@ -324,9 +345,9 @@ class sNewNode extends sNodeBase
                 char *finalizer_name = "(void*)0";
                 char *cloner_name = "(void*)0";
                 char *get_hash_key_name = "(void*)0";
+                char *equaler_name = "(void*)0";
                 
-                
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name);
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
             
                 type2->mHeap = true;
                 type2->mPointerNum++;
@@ -400,7 +421,7 @@ class sImplementsNode extends sNodeBase
         string buf2 = xsprintf("%s* _inf_obj_value%d;\n", type_name2, inf_num_stack);
         add_come_code_at_function_head(info, buf2);
         
-        add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0, (void*)0);\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
+        add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0, (void*)0, (void*)0);\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
         
         string c_value = increment_ref_count_object(come_value.type, come_value.c_value, info);
         add_come_code(info, "_inf_obj_value%d=%s;\n", inf_num_stack, c_value);

@@ -1032,55 +1032,66 @@ class sMethodCallNode extends sNodeBase
             
             
             CVALUE*% come_value2 = new CVALUE();
-            
-            come_value2.c_value = buf.to_string();
             come_value2.var = null;
             
-            bool generics_any_child = false;
-            sType*% obj_type2 = obj_type;
-            if(obj_type2->mNoSolvedGenericsType) {
-                obj_type2 = obj_type2->mNoSolvedGenericsType;
-                
-                foreach(it, obj_type2->mGenericsTypes) {
-                    if(it->mAnyOriginalType) {
-                        generics_any_child = true;
-                    }
-                }
+            if(obj_type->mAnyOriginalType && fun_name === "get_hash_key") {
+                come_value2.c_value = xsprintf("come_call_get_hash_key((void*)0, %s)", obj_value.c_value);
+                come_value2.type = new sType~("int");
+                come_value2.type->mUnsigned = true;
             }
-            
-            if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType) {
-                sType*% obj_type2 = obj_type->mNoSolvedGenericsType;
-                result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
-                
-                come_value2.type = clone result_type2;
-                come_value2.type->mStatic = false;
-                
-                if(result_type2->mHeap) {
-                    append_object_to_right_values2(come_value2, result_type2, info);
-                }
-            }
-            else if(generics_fun && generics_any_child) {
-                result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
-                
-                come_value2.type = clone result_type2;
-                come_value2.type->mStatic = false;
-                
-                if(result_type2->mHeap) {
-                    append_object_to_right_values2(come_value2, result_type2, info);
-                }
+            else if(obj_type->mAnyOriginalType && fun_name === "equals") {
+                come_value2.c_value = xsprintf("come_call_equals((void*)0, %s)", obj_value.c_value);
+                come_value2.type = new sType~("int");
+                come_value2.type->mUnsigned = true;
             }
             else {
-                come_value2.type = clone result_type2;
-                come_value2.type->mStatic = false;
+                come_value2.c_value = buf.to_string();
                 
-                if(result_type2->mHeap) {
-                    append_object_to_right_values2(come_value2, result_type2, info);
+                bool generics_any_child = false;
+                sType*% obj_type2 = obj_type;
+                if(obj_type2->mNoSolvedGenericsType) {
+                    obj_type2 = obj_type2->mNoSolvedGenericsType;
+                    
+                    foreach(it, obj_type2->mGenericsTypes) {
+                        if(it->mAnyOriginalType) {
+                            generics_any_child = true;
+                        }
+                    }
                 }
+                
+                if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType) {
+                    sType*% obj_type2 = obj_type->mNoSolvedGenericsType;
+                    result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
+                    
+                    come_value2.type = clone result_type2;
+                    come_value2.type->mStatic = false;
+                    
+                    if(result_type2->mHeap) {
+                        append_object_to_right_values2(come_value2, result_type2, info);
+                    }
+                }
+                else if(generics_fun && generics_any_child) {
+                    result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
+                    
+                    come_value2.type = clone result_type2;
+                    come_value2.type->mStatic = false;
+                    
+                    if(result_type2->mHeap) {
+                        append_object_to_right_values2(come_value2, result_type2, info);
+                    }
+                }
+                else {
+                    come_value2.type = clone result_type2;
+                    come_value2.type->mStatic = false;
+                    
+                    if(result_type2->mHeap) {
+                        append_object_to_right_values2(come_value2, result_type2, info);
+                    }
+                }
+            
+                come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
+                come_value2 = get_value_from_object(come_value2);
             }
-            
-            come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
-            
-            come_value2 = get_value_from_object(come_value2);
             
             add_come_last_code(info, "%s", come_value2.c_value);
             

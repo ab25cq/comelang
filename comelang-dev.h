@@ -35,6 +35,9 @@ no_output {
 #include "stdio.h"
 }
 no_output {
+#include "wchar.h"
+}
+no_output {
 #include "pico/stdlib.h"
 }
 no_output {
@@ -58,6 +61,7 @@ output {#include "string.h"}
 output {#include "stdlib.h"}
 output {#include "stdio.h"}
 output {#include "ctype.h"}
+output {#include "wchar.h"}
 output {#include "pico/stdlib.h"}
 output {#include "pico/time.h"}
 output {#include "hardware/irq.h"}
@@ -77,6 +81,7 @@ using C
 #include <errno.h>
 #include <assert.h>
 #include <ctype.h>
+#include <wchar.h>
 }
 
 #endif
@@ -335,6 +340,7 @@ struct sMemHeaderTiny
     void* finalizer_fun;
     void* cloner_fun;
     void* get_hash_key_fun;
+    void* equaler_fun;
 };
 
 struct sMemHeader
@@ -353,6 +359,7 @@ struct sMemHeader
     void* finalizer_fun;
     void* cloner_fun;
     void* get_hash_key_fun;
+    void* equaler_fun;
 };
 
 uniq sMemHeader* gAllocMem;
@@ -522,7 +529,7 @@ uniq void* alloc_from_pages(size_t size)
     return result;
 }
 
-uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, void* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0)
+uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, void* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0, void* equaler_fun=(void*)0)
 {
     if(gComeDebugLib) {
 #ifdef ENABLE_GC
@@ -562,6 +569,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->finalizer_fun = finalizer_fun;
         it->cloner_fun = cloner_fun;
         it->get_hash_key_fun = get_hash_key_fun;
+        it->equaler_fun = equaler_fun;
         
         if(gAllocMem) {
             gAllocMem->prev = it;
@@ -589,6 +597,7 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->finalizer_fun = finalizer_fun;
         it->cloner_fun = cloner_fun;
         it->get_hash_key_fun = get_hash_key_fun;
+        it->equaler_fun = equaler_fun;
         
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = NULL;
@@ -792,9 +801,53 @@ uniq void* come_get_cloner(void* mem)
     }
 }
 
-uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, char* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0)
+uniq void* come_get_hash_key(void* mem)
 {
-    char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name, finalizer_fun, cloner_fun, get_hash_key_fun);
+    if(gComeDebugLib) {
+        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+        }
+        
+        return it->get_hash_key_fun;
+    }
+    else {
+        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+        }
+        
+        return it->get_hash_key_fun;
+    }
+}
+
+uniq void* come_get_equaler(void* mem)
+{
+    if(gComeDebugLib) {
+        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+        }
+        
+        return it->equaler_fun;
+    }
+    else {
+        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+        }
+        
+        return it->equaler_fun;
+    }
+}
+
+uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="", void* finalizer_fun=(void*)0, char* cloner_fun=(void*)0, void* get_hash_key_fun=(void*)0, void* equaler_fun=(void*)0)
+{
+    char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name, finalizer_fun, cloner_fun, get_hash_key_fun, equaler_fun);
     
     size_t* ref_count = (size_t*)mem;
 
@@ -829,7 +882,7 @@ uniq void come_free(void* mem)
     come_free_mem_of_heap_pool((char*)ref_count);
 }
 
-uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_name=null, void* finalizer_fun=(void*)0, void* cloner_fun=(void*)0)
+uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_name=null)
 {
     if(!block) {
         return null;
@@ -840,9 +893,13 @@ uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_n
     size_t* size_p = (size_t*)(mem + sizeof(size_t));
 
     size_t size = *size_p - sizeof(size_t) - sizeof(size_t);
+    
+    void* finalizer_fun = come_get_finalizer(block);
+    void* cloner_fun = come_get_cloner(block);
+    void* get_hash_key_fun = come_get_hash_key(block);
+    void* equaler_fun = come_get_equaler(block);
 
-    //void* result = come_calloc(1, size, sname, sline);
-    void* result = come_calloc(1, size, sname, sline, class_name, finalizer_fun, cloner_fun, (void*)0);
+    void* result = come_calloc(1, size, sname, sline, class_name, finalizer_fun, cloner_fun, get_hash_key_fun, equaler_fun);
 
     memcpy(result, block, size);
     
@@ -1130,6 +1187,50 @@ uniq void* come_call_cloner(void* fun, void* mem)
     }
     
     return NULL;
+}
+
+uniq unsigned int come_call_get_hash_key(void* fun, void* mem) 
+{
+    if(mem == NULL) {
+        return 0;
+    }
+    
+    void* fun2 = come_get_hash_key(mem);
+    
+    if(fun) {
+        unsigned int (*cloner)(void*) = fun;
+        
+        return cloner(mem);
+    }
+    else if(fun2) {
+        unsigned int (*cloner)(void*) = fun2;
+        
+        return cloner(mem);
+    }
+    
+    return 0;
+}
+
+uniq unsigned int come_call_equals(void* fun, void* mem) 
+{
+    if(mem == NULL) {
+        return 0;
+    }
+    
+    void* fun2 = come_get_equaler(mem);
+    
+    if(fun) {
+        unsigned int (*cloner)(void*) = fun;
+        
+        return cloner(mem);
+    }
+    else if(fun2) {
+        unsigned int (*cloner)(void*) = fun2;
+        
+        return cloner(mem);
+    }
+    
+    return 0;
 }
 
 uniq string __builtin_string(char* str)
@@ -2591,7 +2692,7 @@ impl map <T, T2>
         return result.to_string();
     }
     
-    generate T2 at(map<T, T2>* self, T& key, T2 default_value) {
+    T2 at(map<T, T2>* self, T& key, T2 default_value) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2619,7 +2720,7 @@ impl map <T, T2>
 
         return default_value;
     }
-    generate map<T,T2>* remove(map<T, T2>* self, T& key) {
+    map<T,T2>* remove(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2702,7 +2803,7 @@ impl map <T, T2>
         return self == null || self.key_list == null || self.key_list.it == null;
     }
     
-    generate void rehash(map<T,T2>* self) {
+    void rehash(map<T,T2>* self) {
         int size = self.size * 10;
         T&* keys = borrow gc_inc(new T[size]);
         T2&* items = borrow gc_inc(new T2[size]);
@@ -2755,7 +2856,7 @@ impl map <T, T2>
         self.len = len;
     }
     
-    generate map<T,T2>* insert(map<T,T2>* self, T key, T2 item) {
+    map<T,T2>* insert(map<T,T2>* self, T key, T2 item) {
         if(self.len*10 >= self.size) {
             self.rehash();
         }
@@ -2832,7 +2933,7 @@ impl map <T, T2>
         
         return self;
     }
-    generate map<T,T2>* put(map<T,T2>* self, T key, T2 item) {
+    map<T,T2>* put(map<T,T2>* self, T key, T2 item) {
         if(self.len*2 >= self.size) {
             self.rehash();
         }
@@ -2909,7 +3010,7 @@ impl map <T, T2>
         
         return self;
     }
-    generate T2?? operator_load_element(map<T, T2>* self, T& key) {
+    T2?? operator_load_element(map<T, T2>* self, T& key) {
         T2` default_value;
         memset(&default_value, 0, sizeof(T2));
         
@@ -2941,7 +3042,7 @@ impl map <T, T2>
         return default_value;
     }
     
-    generate void operator_store_element(map<T, T2>* self, T key, T2 item) {
+    void operator_store_element(map<T, T2>* self, T key, T2 item) {
         self.insert(key, item);
     }
     
@@ -3016,7 +3117,7 @@ impl map <T, T2>
         return !(left.operator_equals(right);
     }
     
-    generate bool find(map<T, T2>* self, T& key) {
+    bool find(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         int it = hash;
 
@@ -4440,9 +4541,29 @@ uniq bool char*::equals(char* self, char* right)
     return strcmp(self, right) == 0;
 }
 
+uniq bool string::equals(char* self, char* right) 
+{
+    if(self == null && right == null) {
+        return true;
+    }
+    else if(self == null) {
+        return false;
+    }
+    else if(right == null) {
+        return false;
+    }
+    
+    return strcmp(self, right) == 0;
+}
+
 uniq bool void*::equals(void* self, void* right) 
 {
     return self == right;
+}
+
+uniq bool bool*::equals(bool* self, bool* right) 
+{
+    return *self == *right;
 }
 
 uniq bool string::operator_equals(char* self, char* right) 
@@ -4748,6 +4869,19 @@ uniq string string::clone(char* self)
     return string(self);
 }
 
+uniq void char*::finalize(char* self)
+{
+    if(self == null) { return; }
+    
+    come_free(self);
+}
+
+uniq string string::clone(char* self)
+{
+    if(self == null) { return; }
+    
+    come_free(self);
+}
 //////////////////////////////
 /// base library(character code)
 //////////////////////////////
@@ -6176,6 +6310,57 @@ uniq int matchpattern(regex_t* pattern, const char* text, int* matchlength)
 
   *matchlength = pre;
   return 0;
+}
+
+uniq bool wchar_t::equals(wchar_t left, wchar_t right)
+{
+    return left == right;
+}
+
+uniq bool wchar_t*::equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) == 0;
+}
+
+uniq bool wchar_t::operator_equals(wchar_t left, wchar_t right)
+{
+    return left == right;
+}
+
+uniq bool wchar_t::operator_not_equals(wchar_t left, wchar_t right)
+{
+    return left != right;
+}
+
+uniq bool wchar_t*::operator_equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) == 0;
+}
+
+uniq bool wchar_t*::operator_not_equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) != 0;
+}
+
+uniq unsigned int wchar_t::get_hash_key(wchar_t value)
+{
+    return value;
+}
+
+uniq unsigned int wchar_t*::get_hash_key(wchar_t* value)
+{
+    unsigned int result = 0;
+    wchar_t* p = value;
+    while(*p) {
+        result += *p;
+        p++;
+    }
+    return result;
+}
+
+uniq string wchar_t::to_string(wchar_t wc)
+{
+    return xsprintf("%ls", wc);
 }
 
 

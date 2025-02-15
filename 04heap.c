@@ -832,9 +832,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
         type2->mHeap = true;
         string type_name = make_type_name_string(type2);
         
-        string finalizer_name = create_method_name(type2, false@no_poiner_name, "finalize", info);
-        string cloner_name = create_method_name(type2, false@no_poiner_name, "clone", info);
-        result = xsprintf("(%s)come_memdup(%s, \"%s\", %d, \"%s\", \"%s\", \"%s\")", type_name, c_value, info.sname, info.sline, type_name, finalizer_name, cloner_name);
+        result = xsprintf("(%s)come_memdup(%s, \"%s\", %d, \"%s\")", type_name, c_value, info.sname, info.sline, type_name);
         if(gComeDebug) {
             result = append_stackframe(result, result_type, info);
         }
