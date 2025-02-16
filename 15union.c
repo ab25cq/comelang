@@ -11,7 +11,7 @@ void output_union(sClass* klass, sInfo* info)
     
     string name = klass.mName;
     
-    buffer*% buf = new buffer();
+    buffer*% buf = new buffer~~();
     
     buf.append_format("union %s\n{\n", klass.mName);
     
@@ -29,8 +29,8 @@ void output_union(sClass* klass, sInfo* info)
         buf.append_format("} %s;\n", klass->mAttribute);
     }
     
-    if(info.struct_definition[name]?? == null) {
-        info.struct_definition.insert(name, buf);
+    if(info.struct_definition[string(name)]?? == null) {
+        info.struct_definition.insert(string(name), buf);
     }
 }
 
@@ -69,7 +69,7 @@ sNode*% parse_union(string type_name, sInfo* info)
 {
     sClass* klass;
     if(info.classes.at(type_name, null) == null) {
-        info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
+        info.classes.insert(string(type_name), new sClass~(name:string(type_name), union_:true));
         
         sType*% type = new sType~(type_name);
         
@@ -164,7 +164,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
         
         sClass* klass;
         if(info.classes.at(type_name, null) == null) {
-            info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
+            info.classes.insert(string(type_name), new sClass~(name:string(type_name), union_:true));
             sType*% type = new sType~(type_name);
             info.types.insert(type_name, clone type);
             
@@ -230,7 +230,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
         
         char* source_tail = info.p;
         
-        buffer*% header = new buffer();
+        buffer*% header = new buffer~~();
         header.append_str("union ");
         header.append(source_head, source_tail - source_head);
         

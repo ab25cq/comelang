@@ -608,7 +608,7 @@ sNode*% create_exception_throw(sNode*% expression_node, sInfo* info)
     char* p = info.p;
     char* head = info.head;
     
-    var buf = new buffer();
+    var buf = new buffer~~();
     
     buf.append_format("{ return none(Err); }");
     
@@ -665,7 +665,7 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     char* p = info.p;
     char* head = info.head;
     
-    var buf = new buffer();
+    var buf = new buffer~~();
     
     buf.append_str("puts(Err), exit(0)");
     

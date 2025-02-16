@@ -274,7 +274,7 @@ struct sVarTable;
 
 struct sVarTable 
 {
-    map<string, sVar*%>*% mVars;
+    map<string~, sVar~>*% mVars;
     bool mGlobal;
     struct sVarTable* mParent;
     int mID;
@@ -337,14 +337,14 @@ struct sInfo
     
     int block_level;
 
-    map<string, sFun*%>*% funcs;
-    map<string, sGenericsFun*%>*% generics_funcs;
-    map<string, sClass*%>*% classes;
-    map<string, sClassModule*%>*% modules;
-    map<string, sType*%>*% types;
-    map<string, sClass*%>*% generics_classes;
-    map<string, buffer*%>*% struct_definition;
-    map<string, buffer*%>*% previous_struct_definition;
+    map<string~, sFun~>*% funcs;
+    map<string~, sGenericsFun~>*% generics_funcs;
+    map<string~, sClass~>*% classes;
+    map<string~, sClassModule~>*% modules;
+    map<string~, sType~>*% types;
+    map<string~, sClass~>*% generics_classes;
+    map<string~, buffer~>*% struct_definition;
+    map<string~, buffer~>*% previous_struct_definition;
     
     sModule*% module;
     
@@ -400,7 +400,7 @@ struct sInfo
     sType*% function_result_type;
     bool in_class;
     
-    map<string,string>*% module_params;
+    map<string~,string~>*% module_params;
     
     bool constructor_;
     sClass* defining_class;
@@ -425,7 +425,7 @@ struct sInfo
     
     map<string, int>*% outputed_class;
     
-    map<string, string>*% uniq_definition;
+    map<string~, string~>*% uniq_definition;
     bool in_top_level;
     bool remove_comment;
     int sline_real;
@@ -461,14 +461,14 @@ module sCurrentNodeModule
     {
         info->current_stack_num++;
         string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
-        sClass*% current_stack = new sClass(name: class_name, struct_:true);
+        sClass*% current_stack = new sClass~(name: class_name, struct_:true);
             
         sVarTable* vtable = info->lv_table;
         
         while(vtable) {
             foreach(it, vtable.mVars) {
                 char* key = it;
-                sVar* value = vtable.mVars[key];
+                sVar* value = vtable.mVars[string(key)];
                 
                 sType*% type2 = clone value.mType;
                 
@@ -555,7 +555,7 @@ module sCurrentNodeModule
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("&__current_stack%d__", info->current_stack_num);
-        come_value.type = new sType(class_name);
+        come_value.type = new sType~(class_name);
         come_value.var = null;
         
         add_come_last_code(info, "%s;\n", come_value.c_value);

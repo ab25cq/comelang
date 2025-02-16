@@ -343,7 +343,7 @@ static bool linker(sInfo* info, list<string>* object_files)
         output_file_name = xnoextname(info.sname);
     }
     
-    var command = new buffer();
+    var command = new buffer~~();
     
     command.append_format("%s -o %s ", CC, output_file_name);
     
@@ -614,31 +614,31 @@ bool install_project(int argc, char** argv, char* prefix="/usr/local")
 
 static void init_classes(sInfo* info)
 {
-    info.classes.insert(string("int"), new sClass("int", number:true));
-    info.classes.insert(string("short"), new sClass("short", number:true));
-    info.classes.insert(string("long"), new sClass("long", number:true));
-    info.classes.insert(string("char"), new sClass("char", number:true));
-    info.classes.insert(string("bool"), new sClass("bool", number:true));
-    info.classes.insert(string("_Bool"), new sClass("_Bool", number:true));
-    info.classes.insert(string("void"), new sClass("void"));
-    info.classes.insert(string("float"), new sClass("float", float_:true));
-    info.classes.insert(string("double"), new sClass("double", float_:true));
-    info.classes.insert(string("_Float16"), new sClass("_Float16", float_:true));
-    info.classes.insert(string("lambda"), new sClass("lambda"));
-    info.classes.insert(string("__uint128_t"), new sClass("__uint128_t", number:true));
-    info.classes.insert(string("__int128"), new sClass("__int128", number:true));
+    info.classes.insert(string("int"), new sClass~("int", number:true));
+    info.classes.insert(string("short"), new sClass~("short", number:true));
+    info.classes.insert(string("long"), new sClass~("long", number:true));
+    info.classes.insert(string("char"), new sClass~("char", number:true));
+    info.classes.insert(string("bool"), new sClass~("bool", number:true));
+    info.classes.insert(string("_Bool"), new sClass~("_Bool", number:true));
+    info.classes.insert(string("void"), new sClass~("void"));
+    info.classes.insert(string("float"), new sClass~("float", float_:true));
+    info.classes.insert(string("double"), new sClass~("double", float_:true));
+    info.classes.insert(string("_Float16"), new sClass~("_Float16", float_:true));
+    info.classes.insert(string("lambda"), new sClass~("lambda"));
+    info.classes.insert(string("__uint128_t"), new sClass~("__uint128_t", number:true));
+    info.classes.insert(string("__int128"), new sClass~("__int128", number:true));
     for(int i=0; i<GENERICS_TYPE_MAX; i++) {
         string generics_type = xsprintf("generics_type%d", i);
-        info.classes.insert(generics_type, new sClass(generics_type, generics:true, generics_num:i));
+        info.classes.insert(generics_type, new sClass~(generics_type, generics:true, generics_num:i));
     }
     for(int i=0; i<METHOD_GENERICS_TYPE_MAX; i++) {
         string generics_type = xsprintf("mgenerics_type%d", i);
-        info.classes.insert(generics_type, new sClass(generics_type, method_generics:true, method_generics_num:i));
+        info.classes.insert(generics_type, new sClass~(generics_type, method_generics:true, method_generics_num:i));
     }
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
     if(is_mac == 0) { // Mac
-        info.classes.insert(string("__builtin_va_list"), new sClass("__builtin_va_list", number:true));
+        info.classes.insert(string("__builtin_va_list"), new sClass~("__builtin_va_list", number:true));
         
         string type_name = string("__builtin_va_list");
         
@@ -648,7 +648,7 @@ static void init_classes(sInfo* info)
         info.types.insert(string(type_name), type);
     }
     else { // Other
-        sClass*% klass = new sClass("__builtin_va_list", struct_:true);
+        sClass*% klass = new sClass~("__builtin_va_list", struct_:true);
         
         klass.mFields.push_back((string("v1"), new sType~("char*")));
         klass.mFields.push_back((string("v2"), new sType~("char*")));
@@ -725,12 +725,12 @@ void create_pico_version_header()
 
 module MEvalOptions<T, T2>
 {
-    var clang_option = new buffer();
-    var linker_option = new buffer();
-    var cpp_option = new buffer();
+    var clang_option = new buffer~~();
+    var linker_option = new buffer~~();
+    var cpp_option = new buffer~~();
     cpp_option.append_str("-U__GNUC__");
-    var files = new list<string>();
-    var object_files = new list<string>();
+    var files = new list<string>~~();
+    var object_files = new list<string>~~();
     bool output_object_file = false;
     bool output_cpp_file = false;
     bool output_source_file_flag = false;
@@ -772,7 +772,7 @@ module MEvalOptions<T, T2>
             output_object_file_flag = false;
             gComeOriginalSourcePosition = false;
             char* env = getenv("PICO_SDK_PATH");
-            cpp_option = new buffer();
+            cpp_option = new buffer~~();
             cpp_option.append_format(s" -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \{env}/src/rp2_common/hardware_sync/include \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__");
             create_pico_version_header();
             pico_cpp = true;
@@ -783,7 +783,7 @@ module MEvalOptions<T, T2>
             output_object_file_flag = false;
             gComeOriginalSourcePosition = false;
             char* env = getenv("IDF_PATH");
-            cpp_option = new buffer();
+            cpp_option = new buffer~~();
             cpp_option.append_format(s" -I\{getenv("HOME")}/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/xtensa-esp-elf/include -I\{env}/components/freertos/include -I\{env}/components/esp32/include -I\{env}/components/driver/include -I\{env}/components/lwip/include -I\{env}/components/freertos/FreeRTOS-Kernel/include -I\{env}/components/freertos/config/include/freertos -I\{env}/components/freertos/config/xtensa/include -I\{env}/components/xtensa/include -I\{env}/components/xtensa/esp32/include -I\{env}/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I\{env}/components/esp_hw_support/include -I\{env}/components/soc/esp32/include/ -I\{env}/components/esp_common/include/components $(find \{env}/components -type d -name include | grep esp_ | sed 's/^/ -I/g') -I\{env}/components/esp_common/include/ -I\{env}/components/soc/esp32/register/soc/ -I\{env}/components/soc/esp32/register -I\{env}/components/heap/include -I\{env}/components/hal/include -I\{env}/components/newlib/platform_include -D__M5STACK__", PREFIX);
         }
         else if(i + 1 < argc && argv[i] === "-target") {
@@ -950,23 +950,23 @@ int come_main(int argc, char** argv) version 2
         info.cpp_option = cpp_option.to_string();
         info.linker_option = linker_option.to_string();
         info.no_output_err = false;
-        info.funcs = new map<string, sFun*%>();
-        info.struct_definition = new map<string, buffer*%>();
-        info.uniq_definition = new map<string, string>();
-        info.previous_struct_definition = new map<string, buffer*%>();
-        info.generics_funcs = new map<string, sGenericsFun*%>();
-        info.classes = new map<string, sClass*%>();
-        info.modules = new map<string, sClassModule*%>();
-        info.types = new map<string, sType*%>();
+        info.funcs = new map<string~, sFun~>();
+        info.struct_definition = new map<string~, buffer~>();
+        info.uniq_definition = new map<string~, string~>();
+        info.previous_struct_definition = new map<string~, buffer~>();
+        info.generics_funcs = new map<string~, sGenericsFun~>();
+        info.classes = new map<string~, sClass~>();
+        info.modules = new map<string~, sClassModule~>();
+        info.types = new map<string~, sType~>();
         info.module = new sModule();
         info.right_value_objects = new list<sRightValueObject~>();
         info.stack = new list<CVALUE*%>();
         info.gv_table = new sVarTable(global:true, parent:null);
         sVarTable*% lv_table = new sVarTable(global:false, parent:null);
         info.lv_table = lv_table;
-        info.generics_type_names = new list<string>();
-        info.method_generics_type_names = new list<string>();
-        info.generics_classes = new map<string, sClass*%>();
+        info.generics_type_names = new list<string>~~();
+        info.method_generics_type_names = new list<string>~~();
+        info.generics_classes = new map<string~, sClass~>();
         info.verbose = verbose;
         info.output_header_file = true;
         info.outputed_class = new map<string, int>();
@@ -1072,23 +1072,23 @@ int come_main(int argc, char** argv) version 2
             info.cpp_option = cpp_option.to_string();
             info.linker_option = linker_option.to_string();
             info.no_output_err = false;
-            info.funcs = new map<string, sFun*%>();
-            info.struct_definition = new map<string, buffer*%>();
-            info.uniq_definition = new map<string, string>();
-            info.previous_struct_definition = new map<string, buffer*%>();
-            info.generics_funcs = new map<string, sGenericsFun*%>();
-            info.classes = new map<string, sClass*%>();
-            info.modules = new map<string, sClassModule*%>();
-            info.types = new map<string, sType*%>();
+            info.funcs = new map<string~, sFun~>();
+            info.struct_definition = new map<string~, buffer~>();
+            info.uniq_definition = new map<string~, string~>();
+            info.previous_struct_definition = new map<string~, buffer~>();
+            info.generics_funcs = new map<string~, sGenericsFun~>();
+            info.classes = new map<string~, sClass~>();
+            info.modules = new map<string~, sClassModule~>();
+            info.types = new map<string~, sType~>();
             info.module = new sModule();
             info.right_value_objects = new list<sRightValueObject~>();
             info.stack = new list<CVALUE*%>();
             info.gv_table = new sVarTable(global:true, parent:null);
             sVarTable*% lv_table = new sVarTable(global:false, parent:null);
             info.lv_table = lv_table;
-            info.generics_type_names = new list<string>();
-            info.method_generics_type_names = new list<string>();
-            info.generics_classes = new map<string, sClass*%>();
+            info.generics_type_names = new list<string>~~();
+            info.method_generics_type_names = new list<string>~~();
+            info.generics_classes = new map<string~, sClass~>();
             info.verbose = verbose;
             info.outputed_class = new map<string, int>();
             info.m5stack_cpp = m5stack_cpp;

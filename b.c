@@ -2,7 +2,8 @@
 
 int main(int argc, char** argv)
 {
-    puts(dynamic_typeof(s"AAA"));
+    int n = 0;
+    "AAA\nBBB\nCCC\n".split_char('\n').sublist(n, n+10).map { xsprintf("%d %s", ++n, it) }.join("\n").puts();
     
     return 0;
 }

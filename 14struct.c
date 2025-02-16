@@ -17,7 +17,7 @@ string get_none_generics_name(char* class_name)
 
 string create_generics_name(sType* generics_type, sInfo* info)
 {
-    buffer*% buf = new buffer();
+    buffer*% buf = new buffer~~();
     
     sClass* klass = generics_type->mClass;
     
@@ -59,7 +59,7 @@ void output_struct(sClass* klass, sInfo* info)
     
     string name = klass.mName;
     
-    buffer*% buf = new buffer();
+    buffer*% buf = new buffer~~();
         
     buf.append_format("struct %s\n{\n", klass.mName);
             
@@ -85,8 +85,8 @@ void output_struct(sClass* klass, sInfo* info)
         buf.append_format("} %s;\n", klass->mAttribute);
     }
             
-    if(info.struct_definition[name]?? == null && !existance_generics) {
-        info.struct_definition.insert(name, buf);
+    if(info.struct_definition[string(name)]?? == null && !existance_generics) {
+        info.struct_definition.insert(string(name), buf);
     }
 }
 
@@ -98,7 +98,7 @@ void output_struct_come_header(sClass* klass, sInfo* info)
     if(!klass->mOutputed2) {
         klass->mOutputed2 = true;
         
-        buffer*% buf = new buffer();
+        buffer*% buf = new buffer~~();
         
         if(klass.mParentClassName) {
             buf.append_format("struct %s extends %s\n{\n", klass.mName, klass.mParentClassName);
@@ -183,14 +183,14 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
     
     if(!info.classes.find(new_name)) 
     {
-        sClass* generics_class = info.generics_classes[type.mClass.mName]??;
+        sClass* generics_class = info.generics_classes[string(type.mClass.mName)]??;
         
         if(generics_class == null) {
             err_msg(info, "generics_class(%s) is null", type.mClass.mName);
             return false;
         }
         
-        info.classes.insert(string(new_name), new sClass(name:new_name, struct_:true));
+        info.classes.insert(string(new_name), new sClass~(name:new_name, struct_:true));
         
         sClass* new_class = info.classes.at(string(new_name), null);
         
@@ -215,7 +215,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
             type->mNoSolvedGenericsType = clone type;
             type->mNoSolvedGenericsType.mPointerNum = type->mPointerNum;
         }
-        type->mClass = info.classes[new_name]??;
+        type->mClass = info.classes[string(new_name)]??;
         type->mGenericsTypes.reset();
     }
     
@@ -279,7 +279,7 @@ class sStructNobodyNode extends sNodeBase
         string name = string(self.mName);
         sClass* klass = self.mClass;
         
-        info.previous_struct_definition.insert(name, xsprintf("struct %s;\n", name).to_buffer());
+        info.previous_struct_definition.insert(string(name), xsprintf("struct %s;\n", name).to_buffer());
     
         return true;
     }
@@ -350,13 +350,13 @@ class sClassNode extends sNodeBase
         }
         
         sType*% type = new sType~(name);
-        sType* override_ = info.types.at(name, null);
+        sType* override_ = info.types.at(string(name), null);
         if(override_) {
             if(override_->mTypedef) {
                 type->mTypedef = true;
             }
         }
-        info.types.insert(name, clone type);
+        info.types.insert(string(name), clone type);
         
         output_struct(klass, info);
         
@@ -376,7 +376,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
 {
     sClass* klass;
     if(info.classes.at(type_name, null) == null) {
-        info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
+        info.classes.insert(string(type_name), new sClass~(name:string(type_name), struct_:true));
         sType*% type = new sType~(type_name);
         sType* override_ = info.types.at(type_name, null);
         if(override_) {
@@ -487,7 +487,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
     
     if(parent_class) {
         klass->mParentClassName = clone parent_class->mName;
-        info.classes.insert(klass->mName, clone klass);
+        info.classes.insert(string(klass->mName), clone klass);
     }
     
     if(struct_attribute === "" && struct_attribute2 === "") {
@@ -514,7 +514,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
 string parse_struct_attribute(sInfo* info=info)
 {
     parse_sharp();
-    buffer*% result = new buffer();
+    buffer*% result = new buffer~~();
     while(1) {
         if(memcmp(info->p, "__attribute__", strlen("__attribute__")) == 0) {
             char* head = info.p;
@@ -551,7 +551,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             sClass* struct_class;
             if(info.classes.at(type_name, null) == null) {
-                info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
+                info.classes.insert(type_name, new sClass~(name:type_name, struct_:true));
                 struct_class = info.classes.at(type_name, null);
                 sType*% type = new sType~(type_name);
                 sType* override_ = info.types.at(type_name, null);
@@ -576,7 +576,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer();
+            buffer*% header = new buffer~~();
             header.append(source_head, source_tail - source_head);
             
             add_come_code_at_come_header(info, "%s", header.to_string());
@@ -609,16 +609,16 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             }
             
             sClass*% generics_class;
-            if(info.generics_classes.at(type_name, null) != null) {
+            if(info.generics_classes.at(string(type_name), null) != null) {
                 err_msg(info, "redifined generics struct(%s)", type_name);
                 exit(2);
             }
             else {
-                generics_class = new sClass(name:type_name, struct_:true);
+                generics_class = new sClass~(name:type_name, struct_:true);
             }
             
-            if(info.generics_classes.at(type_name, null) == null) {
-                info.generics_classes.insert(type_name, generics_class);
+            if(info.generics_classes.at(string(type_name), null) == null) {
+                info.generics_classes.insert(string(type_name), generics_class);
             }
             
             expected_next_character('{') ;
@@ -693,7 +693,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer();
+            buffer*% header = new buffer~~();
             header.append_str("struct ");
             header.append(source_head, source_tail - source_head);
             
@@ -704,7 +704,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         else {
             sClass* struct_class;
             if(info.classes.at(type_name, null) == null) {
-                info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
+                info.classes.insert(type_name, new sClass~(name:type_name, struct_:true));
                 
                 sType*% type = new sType~(type_name);
                 sType* override_ = info.types.at(type_name, null);
@@ -820,14 +820,14 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer();
+            buffer*% header = new buffer~~();
             header.append(source_head, source_tail - source_head);
             
             add_come_code_at_come_header(info, "%s;\n", header.to_string());
             
             if(parent_class) {
                 struct_class->mParentClassName = clone parent_class->mName;
-                info.classes.insert(struct_class->mName, clone struct_class);
+                info.classes.insert(string(struct_class->mName), clone struct_class);
             }
             
             if(struct_attribute === "" && struct_attribute2 === "") {
@@ -872,7 +872,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         while(parent_class2) {
             parent_classes.add(parent_class2);
             if(parent_class->mParentClassName) {
-                parent_class2 = info.classes[parent_class->mParentClassName]??;
+                parent_class2 = info.classes[string(parent_class->mParentClassName)]??;
             }
             else {
                 parent_class2 = null;
@@ -880,11 +880,11 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         }
         
         sClass*% struct_class;
-        if(info.classes.at(type_name, null) == null) {
-            struct_class = new sClass(name:type_name, struct_:true);
+        if(info.classes.at(string(type_name), null) == null) {
+            struct_class = new sClass~(name:type_name, struct_:true);
         }
         else {
-            struct_class = clone info.classes.at(type_name, null);
+            struct_class = clone info.classes.at(string(type_name), null);
         }
         
         sClass* defining_class = info.defining_class;
@@ -1072,7 +1072,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 
                 string module_name = parse_word();
                 
-                list<string>*% params = new list<string>();
+                list<string>*% params = new list<string>~~();
                 
                 if(*info->p == '<') {
                     info->p++;
@@ -1114,19 +1114,19 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 info.sname = string(module_name);
                 info.sline = 0;
                 
-                if(info.modules[module_name]?? == null) {
+                if(info.modules[string(module_name)]?? == null) {
                     err_msg(info, "module not found");
                     return null;
                 }
                 
-                sClassModule* module = info.modules[module_name];
+                sClassModule* module = info.modules[string(module_name)];
                 
                 if(module.mParams.length() != params.length()) {
                     err_msg(info, "invalid parametor number");
                     exit(1);
                 }
                 
-                info->module_params = new map<string,string>();
+                info->module_params = new map<string~,string~>();
                 
                 int i = 0;
                 foreach(it, module->mParams) {

@@ -1127,7 +1127,7 @@ sVar* get_variable_from_table(sVarTable* table, char* name)
     sVarTable* it = table;
 
     while(it) {
-        sVar* var_ = it.mVars[name]??;
+        sVar* var_ = it.mVars[string(name)]??;
 
         if(var_) {
             return var_;
@@ -1145,7 +1145,7 @@ void free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         return;
     }
     foreach(it, table->mVars) {
-        sVar* p = table->mVars[it]??;
+        sVar* p = table->mVars[string(it)]??;
         sType* type = p->mType;
         sClass* klass = type->mClass;
         
@@ -1234,7 +1234,7 @@ bool existance_free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         return true;
     }
     foreach(it, table->mVars) {
-        sVar* p = table->mVars[it]??;
+        sVar* p = table->mVars[string(it)]??;
         sType* type = p->mType;
         sClass* klass = type->mClass;
         

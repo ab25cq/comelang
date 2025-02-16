@@ -341,6 +341,8 @@ struct sMemHeaderTiny
     void* cloner_fun;
     void* get_hash_key_fun;
     void* equaler_fun;
+    char* sname;
+    int sline;
 };
 
 struct sMemHeader
@@ -467,6 +469,9 @@ uniq void come_heap_final()
         int n = 0;
         while(it) {
             n++;
+            if(it->class_name) {
+                printf("#%d %p (%s) %s %d\n", n, (char*)it + sizeof(sMemHeader) + sizeof(size_t) + sizeof(size_t), it->class_name, it->sname , it->sline);
+            }
             it = it->next;
         }
         if(n > 0) {
@@ -598,6 +603,9 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->cloner_fun = cloner_fun;
         it->get_hash_key_fun = get_hash_key_fun;
         it->equaler_fun = equaler_fun;
+        
+        it->sname = sname;
+        it->sline = sline;
         
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = NULL;
@@ -1173,17 +1181,54 @@ uniq void* come_call_cloner(void* fun, void* mem)
         return NULL;
     }
     
-    void* fun2 = come_get_cloner(mem);
+    void* finalizer_fun = come_get_finalizer(mem);
+    void* cloner_fun = come_get_cloner(mem);
+    void* get_hash_key_fun = come_get_hash_key(mem);
+    void* equaler_fun = come_get_equaler(mem);
     
+    void * mem2 = null;
     if(fun) {
         void* (*cloner)(void*) = fun;
         
-        return cloner(mem);
+        mem2 = cloner(mem);
     }
-    else if(fun2) {
-        void* (*cloner)(void*) = fun2;
+    else if(cloner_fun) {
+        void* (*cloner)(void*) = cloner_fun;
         
-        return cloner(mem);
+        mem2 = cloner(mem);
+    }
+        
+    if(mem2) {
+        if(gComeDebugLib) {
+            sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+            sMemHeader* it2 = (sMemHeader*)((char*)mem2 - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+            
+            it2->class_name = it->class_name;
+            it2->finalizer_fun = it->finalizer_fun;
+            it2->cloner_fun= it->cloner_fun;
+            it2->get_hash_key_fun = it->get_hash_key_fun;
+            it2->equaler_fun = it->equaler_fun;
+            
+            memcpy(it2->sname, it->sname, sizeof(char*)*COME_STACKFRAME_MAX);
+            memcpy(it2->sline, it->sline, sizeof(int)*COME_STACKFRAME_MAX);
+            memcpy(it2->id, it->id, sizeof(int)*COME_STACKFRAME_MAX);
+            
+            return mem2;
+        }
+        else {
+            sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+            sMemHeaderTiny* it2 = (sMemHeaderTiny*)((char*)mem2 - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+            
+            it2->class_name = it->class_name;
+            it2->finalizer_fun = it->finalizer_fun;
+            it2->cloner_fun= it->cloner_fun;
+            it2->get_hash_key_fun = it->get_hash_key_fun;
+            it2->equaler_fun = it->equaler_fun;
+            it2->sname = it->sname;
+            it2->sline = it->sline;
+            
+            return mem2;
+        }
     }
     
     return NULL;
@@ -1211,7 +1256,7 @@ uniq unsigned int come_call_get_hash_key(void* fun, void* mem)
     return 0;
 }
 
-uniq unsigned int come_call_equals(void* fun, void* mem) 
+uniq unsigned int come_call_equals(void* fun, void* mem, void* mem2) 
 {
     if(mem == NULL) {
         return 0;
@@ -1220,14 +1265,14 @@ uniq unsigned int come_call_equals(void* fun, void* mem)
     void* fun2 = come_get_equaler(mem);
     
     if(fun) {
-        unsigned int (*cloner)(void*) = fun;
+        unsigned int (*equaler)(void*, void*) = fun;
         
-        return cloner(mem);
+        return equaler(mem, mem2);
     }
     else if(fun2) {
-        unsigned int (*cloner)(void*) = fun2;
+        unsigned int (*equaler)(void*, void*) = fun2;
         
-        return cloner(mem);
+        return equaler(mem, mem2);
     }
     
     return 0;
@@ -1240,7 +1285,7 @@ uniq string __builtin_string(char* str)
     }
     int len = strlen(str) + 1;
     
-    char*% result = new char[len];
+    char*% result = new char~~[len];
 
     strncpy(result, str, len);
 
@@ -3545,7 +3590,7 @@ impl tuple5 <T, T2, T3, T4, T5>
 uniq buffer*% buffer*::initialize(buffer*% self) 
 {
     self.size = 128;
-    self.buf = new char[self.size];
+    self.buf = new char~~[self.size];
     self.buf[0] = '\0';
     self.len = 0;
 
@@ -3555,7 +3600,7 @@ uniq buffer*% buffer*::initialize(buffer*% self)
 uniq buffer*% buffer*::initialize_with_value(buffer*% self, char* mem, size_t size) 
 {
     self.size = 128;
-    self.buf = new char[self.size];
+    self.buf = new char~~[self.size];
     self.buf[0] = '\0';
     self.len = 0;
     
@@ -3578,7 +3623,7 @@ uniq buffer*% buffer*::clone(buffer* self)
     var result = new buffer;
     
     result.size = self.size;
-    result.buf = new char[self.size];
+    result.buf = new char~~[self.size];
     result.len = self.len;
     memcpy(result.buf, self.buf, self.len);
     
@@ -3617,11 +3662,11 @@ uniq buffer* buffer*::append(buffer* self, char* mem, size_t size)
         return self;
     }
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char[self.size];
+        char*% old_buf = new char~~[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3644,7 +3689,7 @@ uniq buffer* buffer*::append_char(buffer* self, char c)
         int old_len = self.len;
         
         int new_size = (self.size + 10 + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3666,11 +3711,11 @@ uniq buffer* buffer*::append_str(buffer* self, char* mem)
     
     int size = strlen(mem);
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char[self.size];
+        char*% old_buf = new char~~[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3703,11 +3748,11 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
     
     int size = strlen(mem);
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char[self.size];
+        char*% old_buf = new char~~[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3729,11 +3774,11 @@ uniq buffer* buffer*::append_nullterminated_str(buffer* self, char* mem)
     }
     int size = strlen(mem) + 1;
     if(self.len + size + 1 + 1 + 1 >= self.size) {
-        char*% old_buf = new char[self.size];
+        char*% old_buf = new char~~[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3756,11 +3801,11 @@ uniq buffer* buffer*::append_int(buffer* self, int value)
     int size = sizeof(int);
     
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char[self.size];
+        char*% old_buf = new char~~[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3779,11 +3824,11 @@ uniq buffer* buffer*::append_long(buffer* self, long value)
     int size = sizeof(long);
     
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char[self.size];
+        char*% old_buf = new char~~[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3806,11 +3851,11 @@ uniq buffer* buffer*::append_short(buffer* self, short value)
     int size = sizeof(short);
     
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char[self.size];
+        char*% old_buf = new char~~[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3834,7 +3879,7 @@ uniq buffer* buffer*::alignment(buffer* self)
     
     if(len >= self.size) {
         int new_size = (self.size + 1 + 1) * 2;
-        self.buf = new char[new_size];
+        self.buf = new char~~[new_size];
         self.size = new_size;
     }
 
@@ -3943,7 +3988,7 @@ uniq buffer*% double[]::to_buffer(double* self, size_t len)
 uniq string buffer*::printable(buffer* self)
 {
     int len = self.len;
-    string result = new char[len*2+1];
+    string result = new char~~[len*2+1];
 
     int n = 0;
     for(int i=0; i<len; i++) {
@@ -4644,7 +4689,7 @@ uniq string char*::operator_add(char* self, char* right)
     }
     int len = strlen(self) + strlen(right);
    
-    char*% result = new char[len+1];
+    char*% result = new char~~[len+1];
     
     strncpy(result, self, len+1);
     strncat(result, right, len+1);
@@ -4659,7 +4704,7 @@ uniq string string::operator_add(char* self, char* right)
     }
     int len = strlen(self) + strlen(right);
    
-    char*% result = new char[len+1];
+    char*% result = new char~~[len+1];
     
     strncpy(result, self, len+1);
     strncat(result, right, len+1);
@@ -4960,7 +5005,7 @@ uniq string char*::reverse(char* str)
         return string("");
     }
     int len = strlen(str);
-    char*% result = new char[len + 1];
+    char*% result = new char~~[len + 1];
 
     for(int i=0; i<len; i++) {
         result[i] = str[len-i-1];
@@ -5006,7 +5051,7 @@ uniq string string::operator_load_range_element(char* str, int head, int tail)
         return string("");
     }
 
-    string result = new char[tail-head+1];
+    string result = new char~~[tail-head+1];
 
     memcpy(result, str + head, tail-head);
     result[tail-head] = '\0';
@@ -5049,7 +5094,7 @@ uniq string char*::operator_load_range_element(char* str, int head, int tail)
         return string("");
     }
 
-    string result = new char[tail-head+1];
+    string result = new char~~[tail-head+1];
 
     memcpy(result, str + head, tail-head);
     result[tail-head] = '\0';
@@ -5092,7 +5137,7 @@ uniq string char*::substring(char* str, int head, int tail)
         return string("");
     }
 
-    string result = new char[tail-head+1];
+    string result = new char~~[tail-head+1];
 
     memcpy(result, str + head, tail-head);
     result[tail-head] = '\0';
@@ -5154,7 +5199,7 @@ uniq string char*::delete(char* str, int head, int tail)
         tail = len;
     }
     
-    char*% result = new char[len-(tail-head)+1];
+    char*% result = new char~~[len-(tail-head)+1];
     
     memcpy(result, str, head);
     memcpy(result + head, str + tail, len-tail);
@@ -5204,7 +5249,7 @@ uniq string int::xsprintf(int self, char* msg, ...)
 uniq string char*::printable(char* str)
 {
     int len = str.length();
-    string result = new char[len*2+1];
+    string result = new char~~[len*2+1];
 
     int n = 0;
     for(int i=0; i<len; i++) {

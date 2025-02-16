@@ -103,7 +103,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         string sname = info.sname;
         int sline = info.sline;
         
-        list<string>*% params = new list<string>();
+        list<string>*% params = new list<string>~~();
         
         if(*info->p == '<') {
             info->p++;
@@ -139,7 +139,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         char* source_head = info.p;
         char* source_tail = null;
         
-        var buf = new buffer();
+        var buf = new buffer~~();
         
         bool squort = false;
         bool dquort = false;
@@ -205,7 +205,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
             }
         }
         
-        buffer*% header = new buffer();
+        buffer*% header = new buffer~~();
         header.append_str(s"module \{type_name}\n");
         header.append_str("{\n");
         header.append(source_head, source_tail - source_head);
@@ -213,7 +213,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         
         add_come_code_at_come_header(info, "%s\n", header.to_string());
         
-        sClassModule*% module = new sClassModule(type_name, buf.to_string(), sname, sline, info);
+        sClassModule*% module = new sClassModule~(type_name, buf.to_string(), sname, sline, info);
         
         module.mParams = clone params;
         

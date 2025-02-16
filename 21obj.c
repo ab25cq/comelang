@@ -58,7 +58,7 @@ class sNewNode extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        buffer*% num_string = new buffer();
+        buffer*% num_string = new buffer~~();
         
         num_string.append_str("1");
         
@@ -118,7 +118,7 @@ class sNewNode extends sNodeBase
             
             add_come_code_at_function_head(info, "%s;\n", make_define_var(type3, var_name));
             
-            var buf = new buffer();
+            var buf = new buffer~~();
             
             buf.append_str("(");
             
@@ -463,7 +463,7 @@ class sImplementsNode extends sNodeBase
                     
                     method_name = create_method_name_using_class(klass2, false@no_pointer_name, name, info);
                     
-                    fun = info.funcs.at(method_name, null);
+                    fun = info.funcs.at(string(method_name), null);
                     
                     if(fun) {
                         break;

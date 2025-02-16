@@ -29,7 +29,7 @@ class sTypedefNode extends sNodeBase
         string type_name = string(self.mTypeName);
         
         if(type_name === "__darwin_va_list") {
-            info.classes.insert(string("__darwin_va_list"), new sClass("__darwin_va_list", number:true));
+            info.classes.insert(string("__darwin_va_list"), new sClass~("__darwin_va_list", number:true));
             
             sType*% type = new sType~("__darwin_va_list");
             type->mOriginalTypeName = string("__darwin_va_list");
@@ -43,7 +43,7 @@ class sTypedefNode extends sNodeBase
                 //if(info.struct_definition[type_name]?? == null) {
                 //if(type->mClass->mName !== type_name) {
                     if(!info->no_output_come_code2) {
-                        info.struct_definition.insert(type_name, "typedef __builtin_va_list __darwin_va_list;\n".to_buffer());
+                        info.struct_definition.insert(string(type_name), "typedef __builtin_va_list __darwin_va_list;\n".to_buffer());
                     }
                 //}
             }
@@ -66,7 +66,7 @@ class sTypedefNode extends sNodeBase
                     //if(info.struct_definition[type_name]?? == null) {
                     if(type->mClass->mName !== type_name) {
                         if(!info->no_output_come_code2) {
-                            info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name,in_header:true)).to_buffer());
+                            info.struct_definition.insert(string(type_name), xsprintf("typedef %s;\n", make_define_var(type, type_name,in_header:true)).to_buffer());
                         }
                     }
                     else {
@@ -74,7 +74,7 @@ class sTypedefNode extends sNodeBase
                         var_num++;
                         string type_name2 = type_name + var_num.to_string() + "COMELANG";
                         if(!info->no_output_come_code2) {
-                            info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                            info.struct_definition.insert(string(type_name2), xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                         }
                     }
                 }
@@ -95,7 +95,7 @@ class sTypedefNode extends sNodeBase
             else {
                 if(type->mClass->mName !== type_name) {
                     if(!info->no_output_come_code2) {
-                        info.struct_definition.insert(type_name, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                        info.struct_definition.insert(string(type_name), xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                     }
                 }
                 else {
@@ -103,7 +103,7 @@ class sTypedefNode extends sNodeBase
                     var_num++;
                     string type_name2 = type_name + var_num.to_string() + "COMELANG";
                     if(!info->no_output_come_code2) {
-                        info.struct_definition.insert(type_name2, xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
+                        info.struct_definition.insert(string(type_name2), xsprintf("typedef %s;\n", make_define_var(type, type_name, in_header:true)).to_buffer());
                     }
                 }
             }
@@ -153,7 +153,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer();
+            buffer*% header = new buffer~~();
             header.append_str("typedef ");
             header.append(source_head, source_tail - source_head);
             
@@ -170,7 +170,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
         else {
             char* source_tail = info.p;
             
-            buffer*% header = new buffer();
+            buffer*% header = new buffer~~();
             header.append_str("typedef ");
             header.append(source_head, source_tail - source_head);
             
@@ -228,7 +228,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer();
+            buffer*% header = new buffer~~();
             header.append_str("typedef ");
             header.append(head, source_tail - head);
             
@@ -245,7 +245,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         else {
             char* source_tail = info.p;
             
-            buffer*% header = new buffer();
+            buffer*% header = new buffer~~();
             header.append_str("typedef ");
             header.append(head, source_tail - head);
             

@@ -191,7 +191,7 @@ class sInlineAssembler extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        var buf = new buffer();
+        var buf = new buffer~~();
         char* p = source;
         
         while(*p != '(') {
@@ -550,7 +550,7 @@ class sFunCallNode extends sNodeBase
             }
             
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(var_->mCValueName);
             buf.append_str("(");
@@ -585,7 +585,7 @@ class sFunCallNode extends sNodeBase
             
             return true;
         }
-        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
+        sGenericsFun* generics_fun = info.generics_funcs.at(string(fun_name), null);
         bool method_generics = false;
         if(generics_fun) {
             method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
@@ -719,7 +719,7 @@ class sFunCallNode extends sNodeBase
                 come_params.push_back(come_value);
             }
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(fun_name);
             buf.append_str("(");
@@ -885,7 +885,7 @@ class sFunCallNode extends sNodeBase
                 result_type = come_value.type;
             }
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(fun_name);
             buf.append_str("(");
@@ -1002,7 +1002,7 @@ class sFunCallNode extends sNodeBase
                 result_type = come_value.type;
             }
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(fun_name);
             buf.append_str("(");
@@ -1208,7 +1208,7 @@ class sFunCallNode extends sNodeBase
             come_params.push_back(come_value);
             dec_stack_ptr(1, info);
             
-            buffer*% method_block2 = new buffer();
+            buffer*% method_block2 = new buffer~~();
             sType*% method_block_type = clone fun.mParamTypes[-1];
             
             string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
@@ -1229,7 +1229,7 @@ class sFunCallNode extends sNodeBase
             list<sType~>*% param_types = clone method_block_type->mParamTypes;
             list<string>* param_names = method_block_type->mParamNames;
             
-            buffer*% all_alhabet_sname = new buffer();
+            buffer*% all_alhabet_sname = new buffer~~();
             {
                 char* p = info->sname;
                 while(*p) {
@@ -1296,7 +1296,7 @@ class sFunCallNode extends sNodeBase
             
             CVALUE*% come_value2 = new CVALUE();
             
-            sFun* fun2 = info.funcs.at(method_block_name, null);
+            sFun* fun2 = info.funcs.at(string(method_block_name), null);
             
             if(fun2 == null) {
                 err_msg(info, "method block function not found(%s)", method_block_name);
@@ -1319,7 +1319,7 @@ class sFunCallNode extends sNodeBase
             info->current_stack_frame_struct = current_stack_frame_struct;
         }
         
-        buffer*% buf = new buffer();
+        buffer*% buf = new buffer~~();
         
         buf.append_str(fun_name);
         buf.append_str("(");
@@ -1400,7 +1400,7 @@ class sComeCallNode extends sNodeBase
         
         string var_name = xsprintf("__thread_info%d", thread_num);
         
-        sType*% type_ = clone info.types.at("pthread_t", null);
+        sType*% type_ = clone info.types.at(s"pthread_t", null);
         
         if(type_ == null) {
             err_msg(info, "pthread_t is not defined");
@@ -1445,7 +1445,7 @@ class sComeCallNode extends sNodeBase
         
         string fun_name = xsprintf("__thread_fun%d", thread_num);
         
-        buffer*% come_block2 = new buffer();
+        buffer*% come_block2 = new buffer~~();
         
         string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
         
@@ -1489,7 +1489,7 @@ class sComeCallNode extends sNodeBase
         
         come_params.add(current_stack_frame_value);
         
-        buffer*% buf = new buffer();
+        buffer*% buf = new buffer~~();
         
         string fun_name = s"pthread_create";
         
@@ -1515,7 +1515,7 @@ class sComeCallNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         come_value.c_value = buf.to_string();
         
-        sType*% type = clone info.types.at("pthread_t", null);
+        sType*% type = clone info.types.at(s"pthread_t", null);
         if(type == null) {
             err_msg(info, "pthread_t is not defined");
             return false;
@@ -1560,7 +1560,7 @@ class sComeJoinNode extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        var buf = new buffer();
+        var buf = new buffer~~();
         buf.append_str("pthread_join(");
         buf.append_str(come_value.c_value);
         buf.append_str(", 0)");
@@ -1726,7 +1726,7 @@ class sLambdaCall extends sNodeBase
             i++;
         }
         
-        buffer*% buf = new buffer();
+        buffer*% buf = new buffer~~();
         
         buf.append_str("(");
         buf.append_str(come_value.c_value);
@@ -1919,7 +1919,7 @@ sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
         
         char* tail = info.p;
         
-        method_block = new buffer();
+        method_block = new buffer~~();
         
         int len = tail - head;
         char*% mem = new char[len+1];
@@ -2121,7 +2121,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 buf = parse_word();
             }
             
-            if(!is_type_name(buf) && info.lv_table.mVars[buf]?? == null && info.gv_table.mVars[buf]?? == null && *info->p == '<') {
+            if(!is_type_name(buf) && info.lv_table.mVars[string(buf)]?? == null && info.gv_table.mVars[string(buf)]?? == null && *info->p == '<') {
                 int nest = 0;
                 while(*info->p) {
                     if(*info->p == '<') {
@@ -2241,7 +2241,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 
                 char* tail = info.p;
                 
-                come_block = new buffer();
+                come_block = new buffer~~();
                 
                 int len = tail - head;
                 char*% mem = new char[len+1];
@@ -2262,7 +2262,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 
                 char* tail = info.p;
                 
-                come_block = new buffer();
+                come_block = new buffer~~();
                 
                 int len = tail - head;
                 char*% mem = new char[len+1];
@@ -2399,7 +2399,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             return node;
         }
         else if(inline_asm) {
-            var buf2 = new buffer();
+            var buf2 = new buffer~~();
             
             if(*info->p != '(') {
                 string word = parse_word(); // volatile
@@ -2450,7 +2450,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             return new sInlineAssembler(buf2.to_string(), exps, info) implements sNode;
         }
         else if(fun_name_with_type_name) {
-            buffer*% fun_name = new buffer();
+            buffer*% fun_name = new buffer~~();
             
             fun_name.append_str(buf);
             
@@ -2495,7 +2495,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             info->p+=2;
             skip_spaces_and_lf();
             
-            buffer*% fun_name = new buffer();
+            buffer*% fun_name = new buffer~~();
             
             fun_name.append_str(buf);
             
@@ -2581,7 +2581,7 @@ sNode*% statment(sInfo* info=info)
 string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name;
-    buffer*% buf = new buffer();
+    buffer*% buf = new buffer~~();
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
         if(!obj_type->mClass->mStruct) {
@@ -2616,7 +2616,7 @@ string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name,
 string create_method_name_original_obj_type(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name;
-    buffer*% buf = new buffer();
+    buffer*% buf = new buffer~~();
     if(obj_type->mClass->mStruct) {
         struct_name = string(obj_type->mClass->mName);
     }
@@ -2642,7 +2642,7 @@ string create_method_name_original_obj_type(sType* obj_type, bool no_pointer_nam
 string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name;
-    buffer*% buf = new buffer();
+    buffer*% buf = new buffer~~();
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
         if(!obj_type->mClass->mStruct) {

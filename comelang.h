@@ -129,6 +129,7 @@ struct buffer
 uniq buffer*% buffer*::initialize(buffer*% self);
 uniq void buffer*::finalize(buffer* self);
 uniq buffer*% buffer*::clone(buffer* self);
+uniq bool buffer*::equals(buffer* left, buffer* right);
 uniq buffer* buffer*::append_str(buffer* self, char* mem);
 uniq buffer* buffer*::append(buffer* self, char* mem, size_t size);
 uniq string xsprintf(char* msg, ...);
@@ -160,6 +161,7 @@ uniq string char::to_string(char self);
 uniq string bool::to_string(bool self);
 uniq void* come_get_finalizer(void* mem);
 uniq void* come_get_cloner(void* mem);
+uniq bool string::equals(char* self, char* right);
 
 uniq void come_push_stackframe(char* sname, int sline, int id)
 {
@@ -341,6 +343,8 @@ struct sMemHeaderTiny
     void* cloner_fun;
     void* get_hash_key_fun;
     void* equaler_fun;
+    char* sname;
+    int sline;
 };
 
 struct sMemHeader
@@ -467,6 +471,9 @@ uniq void come_heap_final()
         int n = 0;
         while(it) {
             n++;
+            if(it->class_name) {
+                printf("#%d %p (%s) %s %d\n", n, (char*)it + sizeof(sMemHeader) + sizeof(size_t) + sizeof(size_t), it->class_name, it->sname , it->sline);
+            }
             it = it->next;
         }
         if(n > 0) {
@@ -598,6 +605,9 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         it->cloner_fun = cloner_fun;
         it->get_hash_key_fun = get_hash_key_fun;
         it->equaler_fun = equaler_fun;
+        
+        it->sname = sname;
+        it->sline = sline;
         
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = NULL;
@@ -1173,17 +1183,54 @@ uniq void* come_call_cloner(void* fun, void* mem)
         return NULL;
     }
     
-    void* fun2 = come_get_cloner(mem);
+    void* finalizer_fun = come_get_finalizer(mem);
+    void* cloner_fun = come_get_cloner(mem);
+    void* get_hash_key_fun = come_get_hash_key(mem);
+    void* equaler_fun = come_get_equaler(mem);
     
+    void * mem2 = null;
     if(fun) {
         void* (*cloner)(void*) = fun;
         
-        return cloner(mem);
+        mem2 = cloner(mem);
     }
-    else if(fun2) {
-        void* (*cloner)(void*) = fun2;
+    else if(cloner_fun) {
+        void* (*cloner)(void*) = cloner_fun;
         
-        return cloner(mem);
+        mem2 = cloner(mem);
+    }
+        
+    if(mem2) {
+        if(gComeDebugLib) {
+            sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+            sMemHeader* it2 = (sMemHeader*)((char*)mem2 - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+            
+            it2->class_name = it->class_name;
+            it2->finalizer_fun = it->finalizer_fun;
+            it2->cloner_fun= it->cloner_fun;
+            it2->get_hash_key_fun = it->get_hash_key_fun;
+            it2->equaler_fun = it->equaler_fun;
+            
+            memcpy(it2->sname, it->sname, sizeof(char*)*COME_STACKFRAME_MAX);
+            memcpy(it2->sline, it->sline, sizeof(int)*COME_STACKFRAME_MAX);
+            memcpy(it2->id, it->id, sizeof(int)*COME_STACKFRAME_MAX);
+            
+            return mem2;
+        }
+        else {
+            sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+            sMemHeaderTiny* it2 = (sMemHeaderTiny*)((char*)mem2 - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+            
+            it2->class_name = it->class_name;
+            it2->finalizer_fun = it->finalizer_fun;
+            it2->cloner_fun= it->cloner_fun;
+            it2->get_hash_key_fun = it->get_hash_key_fun;
+            it2->equaler_fun = it->equaler_fun;
+            it2->sname = it->sname;
+            it2->sline = it->sline;
+            
+            return mem2;
+        }
     }
     
     return NULL;
@@ -3585,6 +3632,15 @@ uniq buffer*% buffer*::clone(buffer* self)
     return result;
 }
 
+uniq bool buffer*::equals(buffer* left, buffer* right)
+{
+    if(left == null || right == null) {
+        return false;
+    }
+    
+    return left.to_string().equals(right.to_string());
+}
+
 uniq int buffer*::length(buffer* self) 
 {
     if(self == null) {
@@ -3864,7 +3920,7 @@ uniq int buffer*::compare(buffer* left, buffer* right)
 
 uniq buffer*% char*::to_buffer(char* self) 
 {
-    var result = new buffer.initialize();
+    var result = new buffer~~.initialize();
     
     if(self == null) {
         return result;
@@ -3891,14 +3947,14 @@ uniq unsigned char* buffer*::head_pointer(buffer* self)
 
 uniq buffer*% char[]::to_buffer(char* self, size_t len) 
 {
-    var result = new buffer();
+    var result = new buffer~~();
     result.append(self, sizeof(char)*len);
     return result;
 }
 
 uniq buffer*% char*[]::to_buffer(char** self, size_t len) 
 {
-    var result = new buffer();
+    var result = new buffer~~();
     for(int i=0; i<len; i++) {
         result.append(self[i], strlen(self[i]));
     }
@@ -3907,35 +3963,35 @@ uniq buffer*% char*[]::to_buffer(char** self, size_t len)
 
 uniq buffer*% short[]::to_buffer(short* self, size_t len) 
 {
-    var result = new buffer();
+    var result = new buffer~~();
     result.append((char*)self, sizeof(short)*len);
     return result;
 }
 
 uniq buffer*% int[]::to_buffer(int* self, size_t len) 
 {
-    var result = new buffer();
+    var result = new buffer~~();
     result.append((char*)self, sizeof(int)*len);
     return result;
 }
 
 uniq buffer*% long[]::to_buffer(long* self, size_t len) 
 {
-    var result = new buffer();
+    var result = new buffer~~();
     result.append((char*)self, sizeof(long)*len);
     return result;
 }
 
 uniq buffer*% float[]::to_buffer(float* self, size_t len) 
 {
-    var result = new buffer();
+    var result = new buffer~~();
     result.append((char*)self, sizeof(float)*len);
     return result;
 }
 
 uniq buffer*% double[]::to_buffer(double* self, size_t len) 
 {
-    var result = new buffer();
+    var result = new buffer~~();
     result.append((char*)self, sizeof(double)*len);
     return result;
 }
@@ -3971,7 +4027,7 @@ uniq string buffer*::printable(buffer* self)
 impl vector<T> 
 {
     buffer*% to_buffer(vector<T>* self) {
-        var result = new buffer();
+        var result = new buffer~~();
         foreach(it, self) {
             result.append((char*)&it, sizeof(T));
         }
@@ -3982,7 +4038,7 @@ impl vector<T>
 impl list <T>
 {
     buffer*% to_buffer(list<T>* self) {
-        var result = new buffer();
+        var result = new buffer~~();
         foreach(it, self) {
             result.append((char*)&it, sizeof(T));
         }
@@ -4003,7 +4059,7 @@ impl smart_pointer<T>
 {
     smart_pointer<T>*% initialize(smart_pointer<T>*% self, void* memory, int size)
     {
-        self.memory = new buffer();
+        self.memory = new buffer~~();
         
         self.memory.append(memory, sizeof(T)*size);
         
@@ -4289,7 +4345,7 @@ uniq smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
 impl vector<T> 
 {
     smart_pointer<T>*% to_pointer(vector<T>* self) {
-        var buf = new buffer();
+        var buf = new buffer~~();
         foreach(it, self) {
             buf.append((char*)&it, sizeof(T));
         }
@@ -4300,7 +4356,7 @@ impl vector<T>
 impl list <T>
 {
     smart_pointer<T>*% to_pointer(list<T>* self) {
-        var buf = new buffer();
+        var buf = new buffer~~();
         
         foreach(it, self) {
             buf.append((char*)&it, sizeof(T));
@@ -4316,49 +4372,49 @@ impl list <T>
 //////////////////////////////
 uniq smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     buf.append((char*)self, sizeof(char)*len);
     return new smart_pointer<char>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     buf.append((char*)self, sizeof(char*)*len);
     return new smart_pointer<char*>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     buf.append((char*)self, sizeof(short)*len);
     return new smart_pointer<short>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     buf.append((char*)self, sizeof(int)*len);
     return new smart_pointer<int>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     buf.append((char*)self, sizeof(long)*len);
     return new smart_pointer<long>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     buf.append((char*)self, sizeof(float)*len);
     return new smart_pointer<float>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     buf.append((char*)self, sizeof(double)*len);
     return new smart_pointer<double>.initialize_with_value(buf);
 }
@@ -4672,7 +4728,7 @@ uniq string char*::operator_mult(char* self, int right)
     if(self == null) {
         return string("");
     }
-    var buf = new buffer();
+    var buf = new buffer~~();
     
     for(int i=0; i<right; i++) {
         buf.append_str(self);
@@ -4686,7 +4742,7 @@ uniq string string::operator_mult(char* self, int right)
     if(self == null) {
         return string("");
     }
-    var buf = new buffer();
+    var buf = new buffer~~();
     
     for(int i=0; i<right; i++) {
         buf.append_str(self);
@@ -5172,7 +5228,7 @@ uniq list<string>*% char*::split_char(char* self, char c)
     
     auto result = new list<string>.initialize();
 
-    auto str = new buffer.initialize();
+    auto str = new buffer~~.initialize();
 
     for(int i=0; i<self.length(); i++) {
         if(self[i] == c) {
@@ -5232,7 +5288,7 @@ uniq string char*::sub_plain(char* self, char* str, char* replace)
         return string(self);
     }
 
-    auto result = new buffer.initialize();
+    auto result = new buffer~~.initialize();
     
     char* p = self;
     
@@ -5568,7 +5624,7 @@ uniq string FILE*::read(FILE* f)
     if(f == null) {
         return string("");
     }
-    buffer*% buf = new buffer.initialize();
+    buffer*% buf = new buffer~~.initialize();
     
     while(1) {
         char buf2[BUFSIZ];
@@ -5676,7 +5732,7 @@ uniq string char*::read(char* file_name)
         return string("");
     }
     
-    buffer*% buf = new buffer.initialize();
+    buffer*% buf = new buffer~~.initialize();
     
     while(1) {
         char buf2[BUFSIZ];

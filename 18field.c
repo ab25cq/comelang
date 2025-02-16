@@ -248,13 +248,13 @@ class sStoreFieldNode extends sNodeBase
         sType*% left_type2 = solve_generics(left_type, left_type, info);
         
         sClass* klass = left_type2->mClass;
-        klass = info.classes[klass->mName]??;
+        klass = info.classes[string(klass->mName)]??;
         
         sType*% field_type = null;
         int index = 0;
         string child_field_name = null;
         bool child_field_is_pointer = false;
-        klass = info.classes[klass->mName]??;
+        klass = info.classes[string(klass->mName)]??;
         
         if(klass->mFields == null) {
             err_msg(info, "%s fields are null", klass->mName);
@@ -685,13 +685,13 @@ class sLoadFieldNode extends sNodeBase
         sType*% left_type2 = solve_generics(left_type, left_type, info);
         
         sClass* klass = left_type2->mClass;
-        klass = info.classes[klass->mName]??;
+        klass = info.classes[string(klass->mName)]??;
         
         sType*% field_type = null;
         int index = 0;
         bool child_field_is_pointer = false;
         string child_field_name = null;
-        klass = info.classes[klass->mName]??;
+        klass = info.classes[string(klass->mName)]??;
         if(klass == null || klass->mFields == null) {
             err_msg(info, "invalid class %s", klass->mName);
             return false;
@@ -895,7 +895,7 @@ class sStoreArrayNode extends sNodeBase
                 }
             }
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(left_value.c_value);
             
@@ -1012,7 +1012,7 @@ class sLoadArrayNode extends sNodeBase
         if(!calling_fun) {
             CVALUE*% come_value = new CVALUE();
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(left_value.c_value);
             
@@ -1134,7 +1134,7 @@ class sLoadRangeArrayNode extends sNodeBase
         if(!calling_fun) {
             CVALUE*% come_value = new CVALUE();
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(left_value.c_value);
             

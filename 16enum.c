@@ -30,7 +30,7 @@ class sEnumNode extends sNodeBase
         string type_name = self.mTypeName;
         list<tup: string, sNode*%>* elements = self.mElements;
         
-        buffer*% buf = new buffer();
+        buffer*% buf = new buffer~~();
         
         if(type_name === "") {
             if(self.mTypeElements) {
@@ -109,18 +109,18 @@ class sEnumNode extends sNodeBase
         }
         else {
             if(output) {
-                if(info.struct_definition[type_name]?? == null || type_name === "") {
+                if(info.struct_definition[string(type_name)]?? == null || type_name === "") {
                     if(type_name === "") {
                         static int type_name_num = 0;
                         type_name_num++;
                         type_name = xsprintf("__enum_type_name_X%d", type_name_num);
                         if(!info->no_output_come_code2) {
-                            info.struct_definition.insert(type_name, buf);
+                            info.struct_definition.insert(string(type_name), buf);
                         }
                     }
                     else {
                         if(!info->no_output_come_code2) {
-                            info.struct_definition.insert(type_name, buf);
+                            info.struct_definition.insert(string(type_name), buf);
                         }
                     }
                 }
@@ -135,7 +135,7 @@ sNode*% parse_enum(string type_name, sInfo* info)
 {
     sClass*% klass;
     if(info.classes.at(type_name, null) == null) {
-        klass = new sClass(name:type_name, enum_:true);
+        klass = new sClass~(name:type_name, enum_:true);
         info.classes.insert(type_name, klass);
     }
     else {
@@ -243,7 +243,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             
             type_name = parse_word();
             
-            info.classes.insert(type_name, new sClass(name:type_name, enum_:true));
+            info.classes.insert(type_name, new sClass~(name:type_name, enum_:true));
             
             parse_struct_attribute();
             if(*info->p == ':') {
@@ -299,7 +299,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
         
         char* source_tail = info.p;
         
-        buffer*% header = new buffer();
+        buffer*% header = new buffer~~();
         header.append_str("enum ");
         header.append(source_head, source_tail - source_head);
         

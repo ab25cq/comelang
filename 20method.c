@@ -131,7 +131,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     come_params.push_back(come_value);
     dec_stack_ptr(1, info);
     
-    buffer*% method_block2 = new buffer();
+    buffer*% method_block2 = new buffer~~();
     sType*% method_block_type = clone fun.mParamTypes[-1];
     
     string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
@@ -152,7 +152,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     list<sType~>* param_types = method_block_type->mParamTypes;
     list<string>* param_names = method_block_type->mParamNames;
     
-    buffer*% all_alhabet_sname = new buffer();
+    buffer*% all_alhabet_sname = new buffer~~();
     {
         char* p = info->sname;
         while(*p) {
@@ -219,7 +219,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     CVALUE*% come_value2 = new CVALUE();
     
-    sFun* fun2 = info.funcs.at(method_block_name, null);
+    sFun* fun2 = info.funcs.at(string(method_block_name), null);
     
     if(fun2 == null) {
         err_msg(info, "method block function not found(%s)", method_block_name);
@@ -253,7 +253,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     }
 
     if(contained_method_generics_method_block) {
-        info.funcs.remove(method_block_name);
+        info.funcs.remove(string(method_block_name));
     }
     
     return true;
@@ -404,6 +404,17 @@ class sMethodCallNode extends sNodeBase
                             int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
                             
                             if(info->function_result_type) {
+                                bool generics_any_child = false;
+                                sType*% obj_type2 = obj_type;
+                                if(obj_type2->mNoSolvedGenericsType) {
+                                    obj_type2 = obj_type2->mNoSolvedGenericsType;
+                                    
+                                    foreach(it, obj_type2->mGenericsTypes) {
+                                        if(it->mAnyOriginalType) {
+                                            generics_any_child = true;
+                                        }
+                                    }
+                                }
                                 info.method_generics_types[method_generics_num] = clone info->function_result_type;
                             }
                         }
@@ -512,7 +523,7 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_format("%s->%s", obj_value.c_value, fun_name);
             buf.append_str("(");
@@ -567,7 +578,7 @@ class sMethodCallNode extends sNodeBase
                     klass = info.classes[klass->mParentClassName]??;
                     generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
                     
-                    fun = info.funcs.at(generics_fun_name, null);
+                    fun = info.funcs.at(string(generics_fun_name), null);
                     
                     if(fun) {
                         break;
@@ -597,7 +608,7 @@ class sMethodCallNode extends sNodeBase
                 for(int i=FUN_VERSION_MAX; i>=1; i--) {
                     string new_fun_name = xsprintf("%s_v%d", generics_fun_name, i);
                 
-                    fun = info.funcs[new_fun_name]??;
+                    fun = info.funcs[string(new_fun_name)]??;
                     
                     if(fun != null) {
                         generics_fun_name = string(new_fun_name);
@@ -611,17 +622,17 @@ class sMethodCallNode extends sNodeBase
                     if(obj_array_type && obj_array_type.mArrayNum.length() > 0) {
                         string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
                         
-                        fun = info.funcs.at(array_method_name, null);
+                        fun = info.funcs.at(string(array_method_name), null);
                         
                         if(fun) {
                             generics_fun_name = string(array_method_name);
                         }
                         else {
-                            fun = info.funcs.at(generics_fun_name, null);
+                            fun = info.funcs.at(string(generics_fun_name), null);
                             
                             if(fun == null) {
                                 generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
-                                fun = info.funcs.at(generics_fun_name, null);
+                                fun = info.funcs.at(string(generics_fun_name), null);
                                 if(fun == null) {
                                     err_msg(info, "function not found(%s) at method(%s)(Z1)\n", generics_fun_name, info.come_fun.mName);
                                     return true;
@@ -630,12 +641,12 @@ class sMethodCallNode extends sNodeBase
                         }
                     }
                     else {
-                        fun = info.funcs.at(generics_fun_name, null);
+                        fun = info.funcs.at(string(generics_fun_name), null);
                     
                         if(fun == null) {
                             generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
                             
-                            fun = info.funcs.at(generics_fun_name, null);
+                            fun = info.funcs.at(string(generics_fun_name), null);
                             
                             if(fun == null) {
                                 sClass* klass = obj_type->mClass;
@@ -643,7 +654,7 @@ class sMethodCallNode extends sNodeBase
                                     klass = info.classes[klass->mParentClassName]??;
                                     generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
                                     
-                                    fun = info.funcs.at(generics_fun_name, null);
+                                    fun = info.funcs.at(string(generics_fun_name), null);
                                     
                                     if(fun) {
                                         break;
@@ -665,7 +676,7 @@ class sMethodCallNode extends sNodeBase
                             }
                             if(fun == null) {
                                 string original_obj_type_fun_name = create_method_name_original_obj_type(obj_type, false@no_pointer_name, string(fun_name), info);
-                                fun = info.funcs.at(original_obj_type_fun_name, null);
+                                fun = info.funcs.at(string(original_obj_type_fun_name), null);
                                 
                                 if(fun) {
                                     generics_fun_name = original_obj_type_fun_name;
@@ -812,7 +823,7 @@ class sMethodCallNode extends sNodeBase
                 string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
                 if(generics_fun_name === array_method_name) {
                     if(fun_name === "to_pointer") {
-                        buffer*% buf = new buffer();
+                        buffer*% buf = new buffer~~();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -842,7 +853,7 @@ class sMethodCallNode extends sNodeBase
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "length") {
-                        buffer*% buf = new buffer();
+                        buffer*% buf = new buffer~~();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -871,7 +882,7 @@ class sMethodCallNode extends sNodeBase
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "to_buffer") {
-                        buffer*% buf = new buffer();
+                        buffer*% buf = new buffer~~();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -900,7 +911,7 @@ class sMethodCallNode extends sNodeBase
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "to_list") {
-                        buffer*% buf = new buffer();
+                        buffer*% buf = new buffer~~();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -929,7 +940,7 @@ class sMethodCallNode extends sNodeBase
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "to_vector") {
-                        buffer*% buf = new buffer();
+                        buffer*% buf = new buffer~~();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -1012,7 +1023,7 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
-            buffer*% buf = new buffer();
+            buffer*% buf = new buffer~~();
             
             buf.append_str(generics_fun_name);
             buf.append_str("(");
@@ -1098,7 +1109,7 @@ class sMethodCallNode extends sNodeBase
             info.stack.push_back(come_value2);
             
             if(is_contained_method_generics_types(obj_type, info) && generics_fun_name) {
-                info.funcs.remove(generics_fun_name);
+                info.funcs.remove(string(generics_fun_name));
             }
             
             delete info->method_generics_types;
@@ -1253,7 +1264,7 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
         
         char* tail = info.p;
         
-        method_block = new buffer();
+        method_block = new buffer~~();
         
         int len = tail - head;
         char*% mem = new char[len+1];

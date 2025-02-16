@@ -4,7 +4,7 @@ bool is_type_name(char* buf, sInfo* info=info)
 {
     sClass* klass = info.classes[buf]??;
     sType* type = info.types[buf]??;
-    sClass* generics_class = info.generics_classes[buf]??;
+    sClass* generics_class = info.generics_classes[string(buf)]??;
     bool generics_type_name = info.generics_type_names.contained(string(buf));
     bool mgenerics_type_name = info.method_generics_type_names.contained(string(buf));
     
@@ -93,7 +93,7 @@ bool parsecmp(char* str, sInfo* info=info)
 
 string parse_word(sInfo* info=info)
 {
-    var buf = new buffer();
+    var buf = new buffer~~();
     parse_sharp();
     
     while((*info->p >= 'a' && *info->p <= 'z') || (*info->p >= 'A' && *info->p <= 'Z') || *info->p == '_' || (*info->p >= '0' && *info->p <= '9') || (*info->p == '$'))
@@ -110,8 +110,8 @@ string parse_word(sInfo* info=info)
     
     string result = buf.to_string();
     
-    if(info->module_params && info->module_params[result]??) {
-        return string(info->module_params[result]);
+    if(info->module_params && info->module_params[string(result)]??) {
+        return string(info->module_params[string(result)]);
     }
     
     return result;
@@ -192,7 +192,7 @@ void parse_sharp(sInfo* info=info) version 5
             }
             else if(xisdigit(*info->p)) {
                 int line = 0;
-                buffer*% fname = new buffer();
+                buffer*% fname = new buffer~~();
     
                 while(xisdigit(*info->p)) {
                     line = line * 10 + (*info->p - '0');
@@ -322,8 +322,8 @@ bool is_contained_generics_class(sType* type, sInfo* info)
 list<sType~>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false)
 {
     var param_types = new list<sType~>();
-    var param_names = new list<string>();
-    var param_default_parametors = new list<string>();
+    var param_names = new list<string>~~();
+    var param_default_parametors = new list<string>~~();
     bool var_args = false;
     
     if(in_constructor_) {
@@ -811,7 +811,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             return false;
         }
         else {
-            var buf2 = new buffer();
+            var buf2 = new buffer~~();
             
             buf2.append_str(s"come_null_check(\{come_value.c_value}, \"\{info->sname}\", \{info->sline}, \{gComeDebugStackFrameID++})");
             
@@ -2470,7 +2470,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             info->p++;
             skip_spaces_and_lf();
             
-            if(info.generics_classes[type_name]?? == null)
+            if(info.generics_classes[string(type_name)]?? == null)
             {
                 return ((sType*%)null, (string)null, false);
             }
@@ -2545,14 +2545,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
-                    info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
+                    info.classes.insert(type_name, new sClass~(name:type_name, struct_:true));
                 }
             }
             if(union_) {
                 sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
-                    info.classes.insert(type_name, new sClass(name:type_name, union_:true));
+                    info.classes.insert(type_name, new sClass~(name:type_name, union_:true));
                 }
             }
             
