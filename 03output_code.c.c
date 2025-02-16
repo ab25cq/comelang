@@ -1044,6 +1044,14 @@ struct list$1tuple3$3sTypephcharphsNodephph
 };
 
 extern struct list$1voidph* gExceptionRightValueObjects;
+struct tuple4$4charphcharphcharphcharph
+{
+    char* v1;
+    char* v2;
+    char* v3;
+    char* v4;
+};
+
 // source head
 
 // header function
@@ -1909,6 +1917,7 @@ struct sNode* create_false_object(struct sInfo* info);
 struct sNode* string_node_v21(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v94(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* post_position_operator_v21(struct sNode* node, struct sInfo* info);
+struct tuple4$4charphcharphcharphcharph* create_vtable(struct sType* any_type, struct sInfo* info);
 struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v92(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v91(char* buf, char* head, int head_sline, struct sInfo* info);

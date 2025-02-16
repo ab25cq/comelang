@@ -1044,6 +1044,14 @@ struct list$1tuple3$3sTypephcharphsNodephph
 };
 
 extern struct list$1voidph* gExceptionRightValueObjects;
+struct tuple4$4charphcharphcharphcharph
+{
+    char* v1;
+    char* v2;
+    char* v3;
+    char* v4;
+};
+
 struct map$2charphvoidph
 {
     char** keys;
@@ -1927,6 +1935,7 @@ struct sNode* create_false_object(struct sInfo* info);
 struct sNode* string_node_v21(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v94(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* post_position_operator_v21(struct sNode* node, struct sInfo* info);
+struct tuple4$4charphcharphcharphcharph* create_vtable(struct sType* any_type, struct sInfo* info);
 struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v92(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v91(char* buf, char* head, int head_sline, struct sInfo* info);
@@ -3128,7 +3137,7 @@ char* __result44__;
         return __result43__;
     }
     len_100=strlen(str)+1;
-    result_101=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_100)), "./comelang.h", 1243, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+    result_101=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_100)), "./comelang.h", 1243, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
     strncpy(result_101,str,len_100);
     __result44__ = gComeFunResultObject = __result_obj__ = result_101;
     result_101 = come_decrement_ref_count2(result_101, (void*)0, (void*)0, 0, 1, 0, (void*)0);
@@ -3156,7 +3165,7 @@ char* __dec_obj1;
 struct buffer* __result45__;
     self->size=128;
     __dec_obj1=self->buf;
-    self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3548, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+    self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3548, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
     __dec_obj1 = come_decrement_ref_count2(__dec_obj1, (void*)0, (void*)0, 0,0,0, (void*)0);
     self->buf[0]=0;
     self->len=0;
@@ -3173,7 +3182,7 @@ char* __dec_obj2;
 struct buffer* __result46__;
     self->size=128;
     __dec_obj2=self->buf;
-    self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3558, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+    self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3558, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
     __dec_obj2 = come_decrement_ref_count2(__dec_obj2, (void*)0, (void*)0, 0,0,0, (void*)0);
     self->buf[0]=0;
     self->len=0;
@@ -3206,7 +3215,7 @@ struct buffer* __result48__;
     result_104=(struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "./comelang.h", 3578, "struct buffer*", (void*)0, (void*)0, (void*)0, (void*)0));
     result_104->size=self->size;
     __dec_obj3=result_104->buf;
-    result_104->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3581, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+    result_104->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3581, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
     __dec_obj3 = come_decrement_ref_count2(__dec_obj3, (void*)0, (void*)0, 0,0,0, (void*)0);
     result_104->len=self->len;
     memcpy(result_104->buf,self->buf,self->len);
@@ -3255,12 +3264,12 @@ struct buffer* __result50__;
         return __result49__;
     }
     if(    self->len+size+1+1>=self->size) {
-        old_buf_105=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3620, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        old_buf_105=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3620, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         memcpy(old_buf_105,self->buf,self->size);
         old_len_106=self->len;
         new_size_107=(self->size+size+1)*2;
         __dec_obj4=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_107)), "./comelang.h", 3624, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_107)), "./comelang.h", 3624, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj4 = come_decrement_ref_count2(__dec_obj4, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_105,old_len_106);
         self->buf[old_len_106]=0;
@@ -3295,7 +3304,7 @@ struct buffer* __result52__;
         old_len_109=self->len;
         new_size_110=(self->size+10+1)*2;
         __dec_obj5=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_110)), "./comelang.h", 3647, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_110)), "./comelang.h", 3647, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj5 = come_decrement_ref_count2(__dec_obj5, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_108,old_len_109);
         self->buf[old_len_109]=0;
@@ -3328,12 +3337,12 @@ struct buffer* __result54__;
     }
     size_111=strlen(mem);
     if(    self->len+size_111+1+1>=self->size) {
-        old_buf_112=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3669, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        old_buf_112=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3669, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         memcpy(old_buf_112,self->buf,self->size);
         old_len_113=self->len;
         new_size_114=(self->size+size_111+1)*2;
         __dec_obj6=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_114)), "./comelang.h", 3673, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_114)), "./comelang.h", 3673, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj6 = come_decrement_ref_count2(__dec_obj6, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_112,old_len_113);
         self->buf[old_len_113]=0;
@@ -3384,12 +3393,12 @@ result_116 = (void*)0;
     mem_118=(char*)come_increment_ref_count(__builtin_string(result_116));
     size_119=strlen(mem_118);
     if(    self->len+size_119+1+1>=self->size) {
-        old_buf_120=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3706, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        old_buf_120=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3706, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         memcpy(old_buf_120,self->buf,self->size);
         old_len_121=self->len;
         new_size_122=(self->size+size_119+1)*2;
         __dec_obj7=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_122)), "./comelang.h", 3710, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_122)), "./comelang.h", 3710, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj7 = come_decrement_ref_count2(__dec_obj7, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_120,old_len_121);
         self->buf[old_len_121]=0;
@@ -3428,12 +3437,12 @@ struct buffer* __result59__;
     }
     size_123=strlen(mem)+1;
     if(    self->len+size_123+1+1+1>=self->size) {
-        old_buf_124=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3732, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        old_buf_124=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3732, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         memcpy(old_buf_124,self->buf,self->size);
         old_len_125=self->len;
         new_size_126=(self->size+size_123+1)*2;
         __dec_obj8=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_126)), "./comelang.h", 3736, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_126)), "./comelang.h", 3736, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj8 = come_decrement_ref_count2(__dec_obj8, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_124,old_len_125);
         self->buf[old_len_125]=0;
@@ -3469,12 +3478,12 @@ struct buffer* __result61__;
     mem_127=&value;
     size_128=sizeof(int);
     if(    self->len+size_128+1+1>=self->size) {
-        old_buf_129=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3759, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        old_buf_129=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3759, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         memcpy(old_buf_129,self->buf,self->size);
         old_len_130=self->len;
         new_size_131=(self->size+size_128+1)*2;
         __dec_obj9=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_131)), "./comelang.h", 3763, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_131)), "./comelang.h", 3763, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj9 = come_decrement_ref_count2(__dec_obj9, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_129,old_len_130);
         self->buf[old_len_130]=0;
@@ -3503,12 +3512,12 @@ struct buffer* __result62__;
     mem_132=&value;
     size_133=sizeof(long);
     if(    self->len+size_133+1+1>=self->size) {
-        old_buf_134=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3782, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        old_buf_134=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3782, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         memcpy(old_buf_134,self->buf,self->size);
         old_len_135=self->len;
         new_size_136=(self->size+size_133+1)*2;
         __dec_obj10=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_136)), "./comelang.h", 3786, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_136)), "./comelang.h", 3786, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj10 = come_decrement_ref_count2(__dec_obj10, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_134,old_len_135);
         self->buf[old_len_135]=0;
@@ -3543,12 +3552,12 @@ struct buffer* __result64__;
     mem_137=&value;
     size_138=sizeof(short);
     if(    self->len+size_138+1+1>=self->size) {
-        old_buf_139=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3809, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        old_buf_139=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(self->size)), "./comelang.h", 3809, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         memcpy(old_buf_139,self->buf,self->size);
         old_len_140=self->len;
         new_size_141=(self->size+size_138+1)*2;
         __dec_obj11=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_141)), "./comelang.h", 3813, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_141)), "./comelang.h", 3813, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj11 = come_decrement_ref_count2(__dec_obj11, (void*)0, (void*)0, 0,0,0, (void*)0);
         memcpy(self->buf,old_buf_139,old_len_140);
         self->buf[old_len_140]=0;
@@ -3582,7 +3591,7 @@ struct buffer* __result66__;
     if(    len_142>=self->size) {
         new_size_143=(self->size+1+1)*2;
         __dec_obj12=self->buf;
-        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_143)), "./comelang.h", 3837, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+        self->buf=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(new_size_143)), "./comelang.h", 3837, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
         __dec_obj12 = come_decrement_ref_count2(__dec_obj12, (void*)0, (void*)0, 0,0,0, (void*)0);
         self->size=new_size_143;
     }
@@ -3766,7 +3775,7 @@ int i_157;
 unsigned char c_158;
 char* __result79__;
     len_154=self->len;
-    result_155=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_154*2+1)), "./comelang.h", 3946, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+    result_155=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_154*2+1)), "./comelang.h", 3946, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
     n_156=0;
     for(    i_157=0;    i_157<len_154;    i_157++    ){
         c_158=self->buf[i_157];
@@ -5157,7 +5166,7 @@ char* __result135__;
         return __result134__;
     }
     len_215=strlen(self)+strlen(right);
-    result_216=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_215+1)), "./comelang.h", 4647, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+    result_216=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_215+1)), "./comelang.h", 4647, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
     strncpy(result_216,self,len_215+1);
     strncat(result_216,right,len_215+1);
     __result135__ = gComeFunResultObject = __result_obj__ = result_216;
@@ -5181,7 +5190,7 @@ char* __result137__;
         return __result136__;
     }
     len_217=strlen(self)+strlen(right);
-    result_218=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_217+1)), "./comelang.h", 4662, "char", (void*)0, charp_clone, charp_get_hash_key, charp_equals));
+    result_218=(char*)come_increment_ref_count((char*)come_calloc(1, sizeof(char)*(1*(len_217+1)), "./comelang.h", 4662, "char", (void*)0, (void*)0, charp_get_hash_key, charp_equals));
     strncpy(result_218,self,len_217+1);
     strncat(result_218,right,len_217+1);
     __result137__ = gComeFunResultObject = __result_obj__ = result_218;

@@ -861,6 +861,7 @@ sNode*% create_false_object(sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 21;
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94;
 sNode*% post_position_operator(sNode*% node, sInfo* info) version 21;
+string, string, string, string create_vtable(sType*% any_type, sInfo* info=info);
 
 /////////////////////////////////////////////////////////////////////
 /// 22impl.c
