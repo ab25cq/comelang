@@ -1475,7 +1475,7 @@ void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protoc
 void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, int no_decrement, int no_free, int force_delete_, void* result_obj);
 void* come_call_cloner(void* fun, void* mem);
 unsigned int come_call_get_hash_key(void* fun, void* mem);
-unsigned int come_call_equals(void* fun, void* mem);
+unsigned int come_call_equals(void* fun, void* mem, void* mem2);
 char* __builtin_string(char* str);
 _Bool come_is_contained_element(void** array, int len, void* element);
 struct buffer* buffer_initialize(struct buffer* self);
@@ -3103,23 +3103,23 @@ memset(&cloner_96, 0, sizeof(unsigned int (*)(void*)));
     return 0;
 }
 
-unsigned int come_call_equals(void* fun, void* mem){
+unsigned int come_call_equals(void* fun, void* mem, void* mem2){
 void* fun2_97;
-unsigned int (*cloner_98)(void*);
-unsigned int (*cloner_99)(void*);
-memset(&cloner_98, 0, sizeof(unsigned int (*)(void*)));
-memset(&cloner_99, 0, sizeof(unsigned int (*)(void*)));
+unsigned int (*equaler_98)(void*,void*);
+unsigned int (*equaler_99)(void*,void*);
+memset(&equaler_98, 0, sizeof(unsigned int (*)(void*,void*)));
+memset(&equaler_99, 0, sizeof(unsigned int (*)(void*,void*)));
     if(    mem==((void*)0)) {
         return 0;
     }
     fun2_97=come_get_equaler(mem);
     if(    fun) {
-        cloner_98=fun;
-        return cloner_98(mem);
+        equaler_98=fun;
+        return equaler_98(mem,mem2);
     }
     else if(    fun2_97) {
-        cloner_99=fun2_97;
-        return cloner_99(mem);
+        equaler_99=fun2_97;
+        return equaler_99(mem,mem2);
     }
     return 0;
 }
@@ -7670,7 +7670,7 @@ static _Bool map$2charphvoidph_equals(struct map$2charphvoidph* left, struct map
     if(    !boolp_equals(left->item_existance,right->item_existance)) {
         return (_Bool)0;
     }
-    if(    !come_call_equals((void*)0, left->items)) {
+    if(    !come_call_equals((void*)0, left->items, right->items)) {
         return (_Bool)0;
     }
     if(    !int_equals(left->size,right->size)) {
@@ -7808,7 +7808,7 @@ static _Bool map$2charphvoidphp_equals(struct map$2charphvoidph* left, struct ma
     if(    !boolp_equals(left->item_existance,right->item_existance)) {
         return (_Bool)0;
     }
-    if(    !come_call_equals((void*)0, left->items)) {
+    if(    !come_call_equals((void*)0, left->items, right->items)) {
         return (_Bool)0;
     }
     if(    !int_equals(left->size,right->size)) {
@@ -8686,7 +8686,7 @@ static _Bool list$1voidph_equals(struct list$1voidph* left, struct list$1voidph*
 }
 
 static _Bool list_item$1voidph_equals(struct list_item$1voidph* left, struct list_item$1voidph* right){
-    if(    !come_call_equals((void*)0, left->item)) {
+    if(    !come_call_equals((void*)0, left->item, right->item)) {
         return (_Bool)0;
     }
     if(    !list_item$1voidph_equals(left->prev,right->prev)) {

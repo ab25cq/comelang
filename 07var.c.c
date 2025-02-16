@@ -1568,7 +1568,7 @@ void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protoc
 void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, int no_decrement, int no_free, int force_delete_, void* result_obj);
 void* come_call_cloner(void* fun, void* mem);
 unsigned int come_call_get_hash_key(void* fun, void* mem);
-unsigned int come_call_equals(void* fun, void* mem);
+unsigned int come_call_equals(void* fun, void* mem, void* mem2);
 char* __builtin_string(char* str);
 _Bool come_is_contained_element(void** array, int len, void* element);
 struct buffer* buffer_initialize(struct buffer* self);
@@ -5064,7 +5064,7 @@ struct list_item$1voidph* it2_320;
     it_319=left->head;
     it2_320=right->head;
     while(it_319!=((void*)0)) {
-        if(        !come_call_equals((void*)0, it_319->item)) {
+        if(        !come_call_equals((void*)0, it_319->item, it2_320->item)) {
             return (_Bool)0;
         }
         it_319=it_319->next;

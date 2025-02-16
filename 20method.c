@@ -1040,7 +1040,7 @@ class sMethodCallNode extends sNodeBase
                 come_value2.type->mUnsigned = true;
             }
             else if(obj_type->mAnyClass && fun_name === "equals") {
-                come_value2.c_value = xsprintf("come_call_equals((void*)0, %s)", obj_value.c_value);
+                come_value2.c_value = xsprintf("come_call_equals((void*)0, %s, %s)", obj_value.c_value, come_params[1].c_value);
                 come_value2.type = new sType~("int");
                 come_value2.type->mUnsigned = true;
             }

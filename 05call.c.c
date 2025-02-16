@@ -1645,7 +1645,7 @@ void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protoc
 void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, int no_decrement, int no_free, int force_delete_, void* result_obj);
 void* come_call_cloner(void* fun, void* mem);
 unsigned int come_call_get_hash_key(void* fun, void* mem);
-unsigned int come_call_equals(void* fun, void* mem);
+unsigned int come_call_equals(void* fun, void* mem, void* mem2);
 char* __builtin_string(char* str);
 _Bool come_is_contained_element(void** array, int len, void* element);
 struct buffer* buffer_initialize(struct buffer* self);
@@ -2112,8 +2112,8 @@ struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo*
 struct sNode* top_level_v92(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v91(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* static_assert_node(struct sNode* exp, struct sNode* exp2, struct sInfo* info);
-int poll(struct pollfd* anonymous_var_nameX1165, unsigned long  int anonymous_var_nameX1166, int anonymous_var_nameX1167);
-int ppoll(struct pollfd* anonymous_var_nameX1168, unsigned long  int anonymous_var_nameX1169, const struct timespec* anonymous_var_nameX1170, const struct __sigset_t* anonymous_var_nameX1171);
+int poll(struct pollfd* anonymous_var_nameX1171, unsigned long  int anonymous_var_nameX1172, int anonymous_var_nameX1173);
+int ppoll(struct pollfd* anonymous_var_nameX1174, unsigned long  int anonymous_var_nameX1175, const struct timespec* anonymous_var_nameX1176, const struct __sigset_t* anonymous_var_nameX1177);
 struct sReturnNode* sReturnNode_initialize(struct sReturnNode* self, struct sNode* value, char* value_source, struct sInfo* info);
 char* sReturnNode_kind(struct sReturnNode* self);
 _Bool sReturnNode_compile(struct sReturnNode* self, struct sInfo* info);
@@ -4439,7 +4439,7 @@ struct list_item$1voidph* it2_322;
     it_321=left->head;
     it2_322=right->head;
     while(it_321!=((void*)0)) {
-        if(        !come_call_equals((void*)0, it_321->item)) {
+        if(        !come_call_equals((void*)0, it_321->item, it2_322->item)) {
             return (_Bool)0;
         }
         it_321=it_321->next;

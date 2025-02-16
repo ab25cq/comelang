@@ -1211,7 +1211,7 @@ uniq unsigned int come_call_get_hash_key(void* fun, void* mem)
     return 0;
 }
 
-uniq unsigned int come_call_equals(void* fun, void* mem) 
+uniq unsigned int come_call_equals(void* fun, void* mem, void* mem2) 
 {
     if(mem == NULL) {
         return 0;
@@ -1220,14 +1220,14 @@ uniq unsigned int come_call_equals(void* fun, void* mem)
     void* fun2 = come_get_equaler(mem);
     
     if(fun) {
-        unsigned int (*cloner)(void*) = fun;
+        unsigned int (*equaler)(void*, void*) = fun;
         
-        return cloner(mem);
+        return equaler(mem, mem2);
     }
     else if(fun2) {
-        unsigned int (*cloner)(void*) = fun2;
+        unsigned int (*equaler)(void*, void*) = fun2;
         
-        return cloner(mem);
+        return equaler(mem, mem2);
     }
     
     return 0;
