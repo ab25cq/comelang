@@ -586,9 +586,17 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         }
         else if(left_type->mClass->mName === right_type2->mClass->mName && left_type->mPointerNum == right_type2->mPointerNum) {
         }
+        else if(left_type->mClass->mName === "void" && left_type->mPointerNum > 0 && left_type->mClass->mName === right_type2->mClass->mName && (left_type->mPointerNum != right_type2->mPointerNum || left_type->mHeap != right_type2->mHeap)) {
+        }
         else if(left_type->mClass->mName === right_type2->mClass->mName && (left_type->mPointerNum != right_type2->mPointerNum || left_type->mHeap != right_type2->mHeap)) {
             err_msg(info, "poinetr num err");
             puts(msg);
+            printf("left type class_name %s\n", left_type->mClass->mName);
+            printf("right type class_name %s\n", right_type2->mClass->mName);
+            printf("left type pointernum %d\n", left_type->mPointerNum);
+            printf("right type pointernum %d\n", right_type->mPointerNum);
+            printf("left type heap %d\n", left_type->mHeap);
+            printf("right type heap %d\n", right_type->mHeap);
             printf("(1)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
             printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
             exit(2);

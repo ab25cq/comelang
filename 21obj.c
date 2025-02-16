@@ -797,6 +797,19 @@ class sDynamicTypeOf extends sNodeBase
             
             info.stack.push_back(come_value2);
         }
+        else {
+            CVALUE*% come_value2 = new CVALUE();
+            
+            come_value2.c_value = xsprintf("__builtin_string(\"NOT HEAP OBJECT\")");
+            come_value2.type = new sType~("char*");
+            come_value2.var = null;
+            
+            add_come_last_code(info, "%s", come_value2.c_value);
+            
+            append_object_to_right_values2(come_value2, come_value2.type ,info);
+            
+            info.stack.push_back(come_value2);
+        }
         
         return true;
     }
