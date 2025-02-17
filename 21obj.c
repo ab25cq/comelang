@@ -164,7 +164,7 @@ class sNewNode extends sNodeBase
                 
                 come_value.type = clone type2;
             }
-            else if(type2->mCreateVTable) {
+            else if(type2->mCreateVTable || ((type2->mDynamic || type2->mClass->mDynamic) && type2->mPointerNum == 0)) {
                 sType*% any_type = clone type2;
                 any_type->mPointerNum = 1;
                 any_type->mHeap = 1;
@@ -319,7 +319,7 @@ class sNewNode extends sNodeBase
                 
                 come_value.type = clone type2;
             }
-            else if(type2->mCreateVTable) {
+            else if(type2->mCreateVTable || ((type2->mDynamic || type2->mClass->mDynamic) && type2->mPointerNum == 0)) {
                 sType*% any_type = clone type2;
                 any_type->mPointerNum = 1;
                 any_type->mHeap = true;

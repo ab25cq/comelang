@@ -528,6 +528,7 @@ struct sClass
     _Bool mNobodyStruct;
     char* mParentClassName;
     char* mAttribute;
+    _Bool mDynamic;
 };
 
 struct sNode
@@ -630,6 +631,7 @@ struct sType
     int mGenericsNumBefore;
     _Bool mGenerate;
     _Bool mCreateVTable;
+    _Bool mDynamic;
 };
 
 struct CVALUE
@@ -3801,6 +3803,9 @@ struct sType* __result246__;
     if(    self!=((void*)0)) {
         result_336->mCreateVTable=self->mCreateVTable;
     }
+    if(    self!=((void*)0)) {
+        result_336->mDynamic=self->mDynamic;
+    }
     __result246__ = gComeFunResultObject = __result_obj__ = result_336;
     come_call_finalizer3(result_336,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -4127,6 +4132,7 @@ unsigned int result_329;
     result_329+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_329+=int_get_hash_key(((int)self->mGenerate));
     result_329+=int_get_hash_key(((int)self->mCreateVTable));
+    result_329+=int_get_hash_key(((int)self->mDynamic));
     return result_329;
 }
 
@@ -4320,6 +4326,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
+        return (_Bool)0;
+    }
     return (_Bool)1;
 }
 
@@ -4376,6 +4385,9 @@ static _Bool sClass_equals(struct sClass* left, struct sClass* right){
         return (_Bool)0;
     }
     if(    !string_equals(left->mAttribute,right->mAttribute)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -5226,7 +5238,7 @@ struct sType* __dec_obj126;
 _Bool __result299__;
     info->current_stack_num++;
     class_name_388=(char*)come_increment_ref_count(xsprintf("__current_stack%d__",info->current_stack_num));
-    current_stack_389=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "common.h", 463, "struct sClass", sClass_finalize, sClass_clone, sClass_get_hash_key, sClass_equals)),class_name_388,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info));
+    current_stack_389=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "common.h", 465, "struct sClass", sClass_finalize, sClass_clone, sClass_get_hash_key, sClass_equals)),class_name_388,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info));
     vtable_392=info->lv_table;
     while(vtable_392) {
         for(        o2_saved_393=(struct map$2voidphvoidph*)come_increment_ref_count((vtable_392->mVars)),it_396=((char*)map$2voidphvoidphp_begin((o2_saved_393)));        !map$2voidphvoidphp_end((o2_saved_393));        it_396=((char*)map$2voidphvoidphp_next((o2_saved_393)))        ){
@@ -5236,7 +5248,7 @@ _Bool __result299__;
             come_call_finalizer3(__right_value334,(void*)0, 0, 1, 0, 0, (void*)0);
             type2_404=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, value_400->mType));
             type2_404->mPointerNum++;
-            item_405=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph**)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "common.h", 476, "struct tuple2$2charphsTypeph", tuple2$2charphsTypeph_finalize, tuple2$2charphsTypeph_clone, tuple2$2charphsTypeph_get_hash_key, tuple2$2charphsTypeph_equals)),(char*)come_increment_ref_count(__builtin_string(value_400->mCValueName)),(struct sType*)come_increment_ref_count(type2_404)));
+            item_405=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph**)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "common.h", 478, "struct tuple2$2charphsTypeph", tuple2$2charphsTypeph_finalize, tuple2$2charphsTypeph_clone, tuple2$2charphsTypeph_get_hash_key, tuple2$2charphsTypeph_equals)),(char*)come_increment_ref_count(__builtin_string(value_400->mCValueName)),(struct sType*)come_increment_ref_count(type2_404)));
             if(            value_400->mCValueName!=((void*)0)) {
                 if(                strcmp(value_400->mCValueName,"__list_values")==0) {
                 }
@@ -5251,7 +5263,7 @@ _Bool __result299__;
                     list$1sNodephp_reset(type3_408->mArrayNum);
                     type3_408->mPointerNum=1;
                     type3_408->mOriginIsArray=(_Bool)1;
-                    item2_411=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph**)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "common.h", 496, "struct tuple2$2charphsTypeph", tuple2$2charphsTypeph_finalize, tuple2$2charphsTypeph_clone, tuple2$2charphsTypeph_get_hash_key, tuple2$2charphsTypeph_equals)),(char*)come_increment_ref_count(__builtin_string(value_400->mCValueName)),(struct sType*)come_increment_ref_count(type3_408)));
+                    item2_411=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph**)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "common.h", 498, "struct tuple2$2charphsTypeph", tuple2$2charphsTypeph_finalize, tuple2$2charphsTypeph_clone, tuple2$2charphsTypeph_get_hash_key, tuple2$2charphsTypeph_equals)),(char*)come_increment_ref_count(__builtin_string(value_400->mCValueName)),(struct sType*)come_increment_ref_count(type3_408)));
                     list$1voidphp_push_back(current_stack_389->mFields,(struct tuple2$2charphsTypeph*)come_increment_ref_count(come_call_cloner(tuple2$2charphsTypeph_clone, item2_411)));
                     value_400->mType->mOriginIsArray=(_Bool)1;
                     come_call_finalizer3(type3_408,sType_finalize, 0, 0, 0, 0, (void*)0);
@@ -5278,7 +5290,7 @@ _Bool __result299__;
             value_462=((struct sVar*)((void*)(__right_value359=map$2voidphvoidphp_operator_load_element(vtable_392->mVars,key_461))));
             come_call_finalizer3(__right_value359,(void*)0, 0, 1, 0, 0, (void*)0);
             type2_463=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, value_462->mType));
-            item_464=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph**)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "common.h", 525, "struct tuple2$2charphsTypeph", tuple2$2charphsTypeph_finalize, tuple2$2charphsTypeph_clone, tuple2$2charphsTypeph_get_hash_key, tuple2$2charphsTypeph_equals)),(char*)come_increment_ref_count(value_462->mCValueName),(struct sType*)come_increment_ref_count(type2_463)));
+            item_464=(struct tuple2$2charphsTypeph*)come_increment_ref_count(tuple2$2charphsTypeph_initialize((struct tuple2$2charphsTypeph**)come_increment_ref_count((struct tuple2$2charphsTypeph*)come_calloc(1, sizeof(struct tuple2$2charphsTypeph)*(1), "common.h", 527, "struct tuple2$2charphsTypeph", tuple2$2charphsTypeph_finalize, tuple2$2charphsTypeph_clone, tuple2$2charphsTypeph_get_hash_key, tuple2$2charphsTypeph_equals)),(char*)come_increment_ref_count(value_462->mCValueName),(struct sType*)come_increment_ref_count(type2_463)));
             if(            value_462->mCValueName!=((void*)0)) {
                 if(                strcmp(value_462->mCValueName,"__list_values")==0) {
                 }
@@ -5303,12 +5315,12 @@ _Bool __result299__;
         come_call_finalizer3(o2_saved_459,map$2voidphvoidphp_finalize, 0, 0, 0, 0, (void*)0);
         vtable_392=vtable_392->mParent;
     }
-    come_value_465=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "common.h", 554, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
+    come_value_465=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "common.h", 556, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0))));
     __dec_obj125=come_value_465->c_value;
     come_value_465->c_value=(char*)come_increment_ref_count(xsprintf("&__current_stack%d__",info->current_stack_num));
     __dec_obj125 = come_decrement_ref_count2(__dec_obj125, (void*)0, (void*)0, 0,0,0, (void*)0);
     __dec_obj126=come_value_465->type;
-    come_value_465->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "common.h", 557, "struct sType", sType_finalize, sType_clone, sType_get_hash_key, sType_equals)),class_name_388,(_Bool)0,info));
+    come_value_465->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc(1, sizeof(struct sType)*(1), "common.h", 559, "struct sType", sType_finalize, sType_clone, sType_get_hash_key, sType_equals)),class_name_388,(_Bool)0,info));
     come_call_finalizer3(__dec_obj126,sType_finalize, 0, 0, 0, 0, (void*)0);
     come_value_465->var=((void*)0);
     add_come_last_code(info,"%s;\n",come_value_465->c_value);
@@ -5472,6 +5484,9 @@ struct sClass* __result267__;
         result_391->mAttribute=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->mAttribute));
         __dec_obj113 = come_decrement_ref_count2(__dec_obj113, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
+    if(    self!=((void*)0)) {
+        result_391->mDynamic=self->mDynamic;
+    }
     __result267__ = gComeFunResultObject = __result_obj__ = result_391;
     come_call_finalizer3(result_391,sClass_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -5499,6 +5514,7 @@ unsigned int result_390;
     result_390+=int_get_hash_key(((int)self->mNobodyStruct));
     result_390+=int_get_hash_key(((int)self->mParentClassName));
     result_390+=int_get_hash_key(((int)self->mAttribute));
+    result_390+=int_get_hash_key(((int)self->mDynamic));
     return result_390;
 }
 

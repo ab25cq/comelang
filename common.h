@@ -53,6 +53,7 @@ struct sClass
     string mParentClassName;
     
     string mAttribute;
+    bool mDynamic;
 };
 
 struct sInfo;
@@ -161,6 +162,7 @@ struct sType
     
     bool mGenerate;
     bool mCreateVTable;
+    bool mDynamic;
 };
 
 struct sVar;

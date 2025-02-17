@@ -60,6 +60,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool heap = type->mHeap;
         bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
+        bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
         
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
@@ -80,6 +81,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         }
         if(guard_) {
             result->mGuardValue = guard_;
+        }
+        if(dynamic_) {
+            result->mDynamic = dynamic_;
         }
         if(no_heap) {
             result->mNoHeap = true;
@@ -135,6 +139,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool exception_ = type->mException;
             bool generate_ = type->mGenerate;
             bool vtable = type->mCreateVTable;
+            bool dynamic_ = type->mClass->mDynamic || generics_type->mGenericsTypes[generics_number].mClass.mDynamic;
             
             result = clone generics_type->mGenericsTypes[generics_number];
             result.mGenericsNumBefore = generics_number;
@@ -153,6 +158,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             }
             if(guard_) {
                 result->mGuardValue = guard_;
+            }
+            if(dynamic_) {
+                result->mDynamic = dynamic_;
             }
             if(record_) {
                 result->mRecord = record_;
@@ -229,6 +237,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool exception_ = type->mException;
         bool generate_ = type->mGenerate;
         bool vtable = type->mCreateVTable;
+        bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
         
         result = clone info->method_generics_types[generics_number];
 
@@ -246,6 +255,9 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         }
         if(guard_) {
             result->mGuardValue = guard_ || result->mGuardValue;
+        }
+        if(dynamic_) {
+            result->mDynamic = dynamic_ || result->mDynamic;
         }
         if(no_heap) {
             result->mNoHeap = true;

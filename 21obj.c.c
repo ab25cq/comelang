@@ -528,6 +528,7 @@ struct sClass
     _Bool mNobodyStruct;
     char* mParentClassName;
     char* mAttribute;
+    _Bool mDynamic;
 };
 
 struct sNode
@@ -630,6 +631,7 @@ struct sType
     int mGenericsNumBefore;
     _Bool mGenerate;
     _Bool mCreateVTable;
+    _Bool mDynamic;
 };
 
 struct CVALUE
@@ -4217,7 +4219,7 @@ obj_448 = (void*)0;
             equaler_name_412 = come_decrement_ref_count2(equaler_name_412, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             any_type_name_413 = come_decrement_ref_count2(any_type_name_413, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
-        else if(        type2_383->mCreateVTable) {
+        else if(        type2_383->mCreateVTable||((type2_383->mDynamic||type2_383->mClass->mDynamic)&&type2_383->mPointerNum==0)) {
             any_type_414=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, type2_383));
             any_type_414->mPointerNum=1;
             any_type_414->mHeap=1;
@@ -4446,7 +4448,7 @@ obj_448 = (void*)0;
             equaler_name_459 = come_decrement_ref_count2(equaler_name_459, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             any_type_name_460 = come_decrement_ref_count2(any_type_name_460, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         }
-        else if(        type2_383->mCreateVTable) {
+        else if(        type2_383->mCreateVTable||((type2_383->mDynamic||type2_383->mClass->mDynamic)&&type2_383->mPointerNum==0)) {
             any_type_461=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, type2_383));
             any_type_461->mPointerNum=1;
             any_type_461->mHeap=(_Bool)1;
@@ -4794,6 +4796,9 @@ struct sType* __result252__;
     if(    self!=((void*)0)) {
         result_349->mCreateVTable=self->mCreateVTable;
     }
+    if(    self!=((void*)0)) {
+        result_349->mDynamic=self->mDynamic;
+    }
     __result252__ = gComeFunResultObject = __result_obj__ = result_349;
     come_call_finalizer3(result_349,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -4866,6 +4871,7 @@ unsigned int result_342;
     result_342+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_342+=int_get_hash_key(((int)self->mGenerate));
     result_342+=int_get_hash_key(((int)self->mCreateVTable));
+    result_342+=int_get_hash_key(((int)self->mDynamic));
     return result_342;
 }
 
@@ -5059,6 +5065,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
+        return (_Bool)0;
+    }
     return (_Bool)1;
 }
 
@@ -5115,6 +5124,9 @@ static _Bool sClass_equals(struct sClass* left, struct sClass* right){
         return (_Bool)0;
     }
     if(    !string_equals(left->mAttribute,right->mAttribute)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
         return (_Bool)0;
     }
     return (_Bool)1;

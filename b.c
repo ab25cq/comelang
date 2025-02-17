@@ -1,9 +1,14 @@
 #include <comelang.h>
 
+dynamic struct sData<T>
+{
+    T a;
+    T b;
+};
+
 int main(int argc, char** argv)
 {
-    int n = 0;
-    "AAA\nBBB\nCCC\n".split_char('\n').sublist(n, n+10).map { xsprintf("%d %s", ++n, it) }.join("\n").puts();
+    var data = new sData<int>;
     
     return 0;
 }

@@ -528,6 +528,7 @@ struct sClass
     _Bool mNobodyStruct;
     char* mParentClassName;
     char* mAttribute;
+    _Bool mDynamic;
 };
 
 struct sNode
@@ -630,6 +631,7 @@ struct sType
     int mGenericsNumBefore;
     _Bool mGenerate;
     _Bool mCreateVTable;
+    _Bool mDynamic;
 };
 
 struct CVALUE
@@ -4208,6 +4210,9 @@ struct sClass* __result270__;
         result_390->mAttribute=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->mAttribute));
         __dec_obj66 = come_decrement_ref_count2(__dec_obj66, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
+    if(    self!=((void*)0)) {
+        result_390->mDynamic=self->mDynamic;
+    }
     __result270__ = gComeFunResultObject = __result_obj__ = result_390;
     come_call_finalizer3(result_390,sClass_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -4235,6 +4240,7 @@ unsigned int result_387;
     result_387+=int_get_hash_key(((int)self->mNobodyStruct));
     result_387+=int_get_hash_key(((int)self->mParentClassName));
     result_387+=int_get_hash_key(((int)self->mAttribute));
+    result_387+=int_get_hash_key(((int)self->mDynamic));
     return result_387;
 }
 
@@ -4291,6 +4297,9 @@ static _Bool sClass_equals(struct sClass* left, struct sClass* right){
         return (_Bool)0;
     }
     if(    !string_equals(left->mAttribute,right->mAttribute)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -4680,6 +4689,9 @@ struct sType* __result281__;
     if(    self!=((void*)0)) {
         result_403->mCreateVTable=self->mCreateVTable;
     }
+    if(    self!=((void*)0)) {
+        result_403->mDynamic=self->mDynamic;
+    }
     __result281__ = gComeFunResultObject = __result_obj__ = result_403;
     come_call_finalizer3(result_403,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -4752,6 +4764,7 @@ unsigned int result_398;
     result_398+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_398+=int_get_hash_key(((int)self->mGenerate));
     result_398+=int_get_hash_key(((int)self->mCreateVTable));
+    result_398+=int_get_hash_key(((int)self->mDynamic));
     return result_398;
 }
 
@@ -4943,6 +4956,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
         return (_Bool)0;
     }
     return (_Bool)1;

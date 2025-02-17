@@ -528,6 +528,7 @@ struct sClass
     _Bool mNobodyStruct;
     char* mParentClassName;
     char* mAttribute;
+    _Bool mDynamic;
 };
 
 struct sNode
@@ -630,6 +631,7 @@ struct sType
     int mGenericsNumBefore;
     _Bool mGenerate;
     _Bool mCreateVTable;
+    _Bool mDynamic;
 };
 
 struct CVALUE
@@ -3426,6 +3428,9 @@ struct sType* __result244__;
     if(    self!=((void*)0)) {
         result_334->mCreateVTable=self->mCreateVTable;
     }
+    if(    self!=((void*)0)) {
+        result_334->mDynamic=self->mDynamic;
+    }
     __result244__ = gComeFunResultObject = __result_obj__ = result_334;
     come_call_finalizer3(result_334,sType_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -3752,6 +3757,7 @@ unsigned int result_327;
     result_327+=int_get_hash_key(((int)self->mGenericsNumBefore));
     result_327+=int_get_hash_key(((int)self->mGenerate));
     result_327+=int_get_hash_key(((int)self->mCreateVTable));
+    result_327+=int_get_hash_key(((int)self->mDynamic));
     return result_327;
 }
 
@@ -3945,6 +3951,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
     if(    !bool_equals(left->mCreateVTable,right->mCreateVTable)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
+        return (_Bool)0;
+    }
     return (_Bool)1;
 }
 
@@ -4001,6 +4010,9 @@ static _Bool sClass_equals(struct sClass* left, struct sClass* right){
         return (_Bool)0;
     }
     if(    !string_equals(left->mAttribute,right->mAttribute)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mDynamic,right->mDynamic)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -5277,6 +5289,9 @@ struct sClass* __result276__;
         result_409->mAttribute=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->mAttribute));
         __dec_obj105 = come_decrement_ref_count2(__dec_obj105, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
+    if(    self!=((void*)0)) {
+        result_409->mDynamic=self->mDynamic;
+    }
     __result276__ = gComeFunResultObject = __result_obj__ = result_409;
     come_call_finalizer3(result_409,sClass_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -5304,6 +5319,7 @@ unsigned int result_408;
     result_408+=int_get_hash_key(((int)self->mNobodyStruct));
     result_408+=int_get_hash_key(((int)self->mParentClassName));
     result_408+=int_get_hash_key(((int)self->mAttribute));
+    result_408+=int_get_hash_key(((int)self->mDynamic));
     return result_408;
 }
 

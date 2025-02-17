@@ -194,6 +194,8 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
         
         sClass* new_class = info.classes.at(string(new_name), null);
         
+        new_class->mDynamic = generics_class->mDynamic;
+        
         int i = 0;
         foreach(it, generics_class.mFields) {
             var name, type = it;
@@ -538,7 +540,13 @@ string parse_struct_attribute(sInfo* info=info)
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
 {
-    if(buf === "struct") {
+    bool dynamic_ = false;
+    string buf2;
+    if(buf === "dynamic") {
+        buf2 = parse_word();
+        dynamic_ = true;
+    }
+    if((dynamic_ && buf2 === "struct") || buf === "struct") {
         char* source_head = head;
         
         string struct_attribute = parse_struct_attribute();
@@ -686,6 +694,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 }
                 parse_sharp();
             }
+            
+            generics_class.mDynamic = dynamic_;
             
             parse_attribute();
             
@@ -841,11 +851,12 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             else {
                 struct_class->mAttribute = struct_attribute + " " + struct_attribute2;
             }
+            struct_class.mDynamic = dynamic_;
             
             return new sStructNode(string(type_name), struct_class, info) implements sNode;
         }
     }
-    else if(!gComeC && buf === "class") {
+    if(!gComeC && (dynamic_ && buf2 === "class") || buf === "class") {
         char* source_head = head;
         
         string type_name = parse_word();
@@ -886,6 +897,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         else {
             struct_class = clone info.classes.at(string(type_name), null);
         }
+        
+        struct_class->mDynamic = dynamic_;
         
         sClass* defining_class = info.defining_class;
         info.defining_class = struct_class;
