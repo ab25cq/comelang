@@ -23,7 +23,7 @@ class sInterfaceNode extends sNodeBase
         sClass* klass = self.klass;
         klass->mProtocol = true;
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_format("struct %s\n{\n", klass.mName);
         
@@ -59,10 +59,10 @@ sType*%, string parse_interface_function(sInfo* info)
     
     var param_types, param_names, param_default_parametors, var_args = parse_params(info);
     
-    param_types.insert(0, new sType~("void*"));
+    param_types.insert(0, new sType("void*"));
     param_names.insert(0, string("self"));
     
-    sType*% type = new sType~("lambda");
+    sType*% type = new sType("lambda");
     
     type->mParamTypes = clone param_types;
     type->mParamNames = clone param_names;
@@ -83,7 +83,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         
         sClass*% klass;
         if(info.classes.at(type_name, null) == null) {
-            klass = new sClass~(name:type_name, struct_:true, protocol_:true);
+            klass = new sClass(name:type_name, struct_:true, protocol_:true);
         }
         else {
             klass = clone info.classes.at(type_name, null);
@@ -95,21 +95,21 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         
         expected_next_character('{');
     
-        sType*% voidp = new sType~("void");
+        sType*% voidp = new sType("void");
         voidp->mPointerNum++;
         
         klass.mFields.push_back((string("_protocol_obj"), voidp));
         
-        sType*% finalizer = new sType~("lambda");
+        sType*% finalizer = new sType("lambda");
     
         finalizer->mParamTypes = [(clone voidp) ];
         finalizer->mParamNames = [string("self")];
         finalizer->mVarArgs = false;
-        finalizer->mResultType = new sType~("void");
+        finalizer->mResultType = new sType("void");
         
         klass.mFields.push_back((string("finalize"), finalizer));
         
-        sType*% cloner = new sType~("lambda");
+        sType*% cloner = new sType("lambda");
     
         cloner->mParamTypes = [(clone voidp) ];
         cloner->mParamNames = [string("self")];
@@ -143,7 +143,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         
         char* source_tail = info.p;
         
-        buffer*% header = new buffer~~();
+        buffer*% header = new buffer();
         header.append_str("interface ");
         header.append(source_head, source_tail - source_head);
         

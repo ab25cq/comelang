@@ -93,7 +93,7 @@ bool parsecmp(char* str, sInfo* info=info)
 
 string parse_word(sInfo* info=info)
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     parse_sharp();
     
     while((*info->p >= 'a' && *info->p <= 'z') || (*info->p >= 'A' && *info->p <= 'Z') || *info->p == '_' || (*info->p >= '0' && *info->p <= '9') || (*info->p == '$'))
@@ -192,7 +192,7 @@ void parse_sharp(sInfo* info=info) version 5
             }
             else if(xisdigit(*info->p)) {
                 int line = 0;
-                buffer*% fname = new buffer~~();
+                buffer*% fname = new buffer();
     
                 while(xisdigit(*info->p)) {
                     line = line * 10 + (*info->p - '0');
@@ -322,8 +322,8 @@ bool is_contained_generics_class(sType* type, sInfo* info)
 list<sType~>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false)
 {
     var param_types = new list<sType~>();
-    var param_names = new list<string>~~();
-    var param_default_parametors = new list<string>~~();
+    var param_names = new list<string>();
+    var param_default_parametors = new list<string>();
     bool var_args = false;
     
     if(in_constructor_) {
@@ -811,7 +811,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             return false;
         }
         else {
-            var buf2 = new buffer~~();
+            var buf2 = new buffer();
             
             buf2.append_str(s"come_null_check(\{come_value.c_value}, \"\{info->sname}\", \{info->sline}, \{gComeDebugStackFrameID++})");
             
@@ -2017,7 +2017,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 pointer_num++;
             }
             
-            type = new sType~(type_name);
+            type = new sType(type_name);
             
             type->mPointerNum = pointer_num;
         }
@@ -2035,7 +2035,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
             }
             
-            type = new sType~(type_name);
+            type = new sType(type_name);
         }
         else if(union_) {
             if(type_name === "") {
@@ -2061,7 +2061,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 pointer_num++;
             }
             
-            type = new sType~(type_name);
+            type = new sType(type_name);
             
             type->mPointerNum = pointer_num;
         }
@@ -2135,19 +2135,19 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
                 if(info.generics_type_names[i] === type_name) {
-                    result_type = new sType~(xsprintf("generics_type%d", i));
+                    result_type = new sType(xsprintf("generics_type%d", i));
                 }
             }
         }
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
                 if(info.method_generics_type_names[i] === type_name) {
-                    result_type = new sType~(xsprintf("mgenerics_type%d", i));
+                    result_type = new sType(xsprintf("mgenerics_type%d", i));
                 }
             }
         }
         else {
-            result_type = new sType~(type_name);
+            result_type = new sType(type_name);
         }
         
         result_type->mAtomic = result_type->mAtomic || atomic_;
@@ -2177,7 +2177,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         var param_types, param_names, param_default_parametors, var_args = parse_params(info);
         
-        type = new sType~("lambda");
+        type = new sType("lambda");
         
         type->mResultType = result_type;
         type->mParamTypes = param_types;
@@ -2210,19 +2210,19 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
                 if(info.generics_type_names[i] === type_name) {
-                    result_type = new sType~(xsprintf("generics_type%d", i));
+                    result_type = new sType(xsprintf("generics_type%d", i));
                 }
             }
         }
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
                 if(info.method_generics_type_names[i] === type_name) {
-                    result_type = new sType~(xsprintf("mgenerics_type%d", i));
+                    result_type = new sType(xsprintf("mgenerics_type%d", i));
                 }
             }
         }
         else {
-            result_type = new sType~(type_name);
+            result_type = new sType(type_name);
         }
         
         result_type->mConstant = result_type->mConstant || constant;
@@ -2283,7 +2283,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         var param_types, param_names, param_default_parametors, var_args = parse_params(info);
         
-        type = new sType~("lambda");
+        type = new sType("lambda");
         
         type->mResultType = clone result_type;
         type->mParamTypes = param_types;
@@ -2407,7 +2407,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
                 if(info.generics_type_names[i] === type_name) {
-                    type = new sType~(xsprintf("generics_type%d", i));
+                    type = new sType(xsprintf("generics_type%d", i));
                 }
             }
             
@@ -2438,7 +2438,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
                 if(info.method_generics_type_names[i] === type_name) {
-                    type = new sType~(xsprintf("mgenerics_type%d", i));
+                    type = new sType(xsprintf("mgenerics_type%d", i));
                 }
             }
             
@@ -2475,7 +2475,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 return ((sType*%)null, (string)null, false);
             }
             
-            type = new sType~(type_name);
+            type = new sType(type_name);
             
             while(true) {
                 var generics_type, var_name, err = parse_type(parse_multiple_type:false);
@@ -2545,18 +2545,18 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
-                    info.classes.insert(type_name, new sClass~(name:type_name, struct_:true));
+                    info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
                 }
             }
             if(union_) {
                 sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
-                    info.classes.insert(type_name, new sClass~(name:type_name, union_:true));
+                    info.classes.insert(type_name, new sClass(name:type_name, union_:true));
                 }
             }
             
-            type = new sType~(type_name);
+            type = new sType(type_name);
             
             type->mConstant = type->mConstant || constant;
             type->mAtomic = type->mAtomic || atomic_;
@@ -2723,7 +2723,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             int num_tuples = types.length();
             
-            type = new sType~(xsprintf("tuple%d", num_tuples));
+            type = new sType(xsprintf("tuple%d", num_tuples));
             type->mPointerNum++;
             type->mHeap = true;
             
@@ -2896,7 +2896,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     
     if(type->mChannel) {
         sType*% type_before = clone type;
-        type = new sType~("int");
+        type = new sType("int");
         type->mArrayNum = [ create_int_node(2@value, info) ];
         type->mChannelType = type_before;
         type->mChannel = true;
@@ -2905,22 +2905,22 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         sType*% type_before = clone type;
         type_before.mHeap = true;
         type_before.mPointerNum = 1;
-        type = new sType~("void");
+        type = new sType("void");
         type->mHeap = true;
         type->mPointerNum = 1;
         type->mAnyOriginalType = type_before;
         type->mAnyClass = true;
     }
     else if(type->mException) {
-        sType*% type2 = new sType~("tuple2");
-        type2->mGenericsTypes[0] = new sType~("generics_type0");
-        type2->mGenericsTypes[1] = new sType~("generics_type1");
+        sType*% type2 = new sType("tuple2");
+        type2->mGenericsTypes[0] = new sType("generics_type0");
+        type2->mGenericsTypes[1] = new sType("generics_type1");
         type2->mPointerNum = 1;
         type2->mHeap = true;
         
-        sType*% type3 = new sType~("tuple2");
+        sType*% type3 = new sType("tuple2");
         type3->mGenericsTypes[0] = type;
-        type3->mGenericsTypes[1] = new sType~("char*");
+        type3->mGenericsTypes[1] = new sType("char*");
         type3->mGenericsTypes[1].mHeap = true;
         
         sType*% type4 = solve_generics(type2,  type3, info);

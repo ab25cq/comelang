@@ -1362,6 +1362,7 @@ unsigned long  int wctype(const char* anonymous_var_nameX733);
 void come_push_stackframe(char* sname, int sline, int id);
 void come_pop_stackframe();
 void come_save_stackframe(char* sname, int sline);
+static unsigned int buffer_get_hash_key(struct buffer* self);
 void stackframe();
 char* come_get_stackframe();
 void* come_null_check(void* mem, char* sname, int sline, int id);
@@ -1422,7 +1423,6 @@ struct buffer* buffer_append_short(struct buffer* self, short value);
 struct buffer* buffer_alignment(struct buffer* self);
 int buffer_compare(struct buffer* left, struct buffer* right);
 struct buffer* charp_to_buffer(char* self);
-static unsigned int buffer_get_hash_key(struct buffer* self);
 char* buffer_to_string(struct buffer* self);
 unsigned char* buffer_head_pointer(struct buffer* self);
 struct buffer* charpa_to_buffer(char* self, unsigned long  int len);
@@ -1914,16 +1914,16 @@ static inline int __isspace(int _c){
 }
 
 // body function
-static void va_list_finalize(va_list self){
+static unsigned int buffer_get_hash_key(struct buffer* self){
+unsigned int result_1;
+    result_1=0;
+    result_1+=int_get_hash_key(((int)self->buf));
+    result_1+=int_get_hash_key(((int)self->len));
+    result_1+=int_get_hash_key(((int)self->size));
+    return result_1;
 }
 
-static unsigned int buffer_get_hash_key(struct buffer* self){
-unsigned int result_153;
-    result_153=0;
-    result_153+=int_get_hash_key(((int)self->buf));
-    result_153+=int_get_hash_key(((int)self->len));
-    result_153+=int_get_hash_key(((int)self->size));
-    return result_153;
+static void va_list_finalize(va_list self){
 }
 
 static struct smart_pointer$1char* smart_pointer$1charp_initialize_with_value(struct smart_pointer$1char* self, struct buffer* value){
@@ -4142,7 +4142,7 @@ struct sNode* __result240__;
         result_352->kind=self->kind;
     }
     __result240__ = gComeFunResultObject = __result_obj__ = result_352;
-    come_call_finalizer2((void*)0, result_352, result_352 ? ((struct sNode*)result_352)->finalize:(void*)0, result_352 ? ((struct sNode*)result_352)->_protocol_obj:(void*)0, 0, 0, 1, 0, (void*)0);
+    if(result_352) { result_352 = come_decrement_ref_count2(result_352, ((struct sNode*)result_352)->finalize, ((struct sNode*)result_352)->_protocol_obj, 0, 1, 0, (void*)0); } 
     gComeFunResultObject = (void*)0;
     return __result240__;
 }

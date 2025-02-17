@@ -42,7 +42,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93
         
         expected_next_character('{', info);
         
-        info->impl_type = new sType~(word);
+        info->impl_type = new sType(word);
         info->impl_type->mPointerNum = pointer_num;
         
         while(*info->p != '}') {
@@ -79,7 +79,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93
         
         char* source_tail = info.p;
         
-        buffer*% header = new buffer~~();
+        buffer*% header = new buffer();
         header.append(source_head, source_tail - source_head);
         
         add_come_code_at_come_header(info, "impl %s\n", header.to_string());

@@ -30,7 +30,7 @@ class sEnumNode extends sNodeBase
         string type_name = self.mTypeName;
         list<tup: string, sNode*%>* elements = self.mElements;
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         if(type_name === "") {
             if(self.mTypeElements) {
@@ -74,7 +74,7 @@ class sEnumNode extends sNodeBase
                     c_value = xsprintf("(%d)", n);
                 }
                 
-                add_variable_to_global_table_with_int_value(name, new sType~("int"), c_value, info);
+                add_variable_to_global_table_with_int_value(name, new sType("int"), c_value, info);
             }
             else {
                 node_compile(value).elif {
@@ -86,7 +86,7 @@ class sEnumNode extends sNodeBase
                 
                 string c_value = xsprintf("(%s)", right_value.c_value);
                 
-                add_variable_to_global_table_with_int_value(name, new sType~("int"), c_value, info);
+                add_variable_to_global_table_with_int_value(name, new sType("int"), c_value, info);
                 
                 buf.append_format("%s=(%s)", name, right_value.c_value);
                 
@@ -135,7 +135,7 @@ sNode*% parse_enum(string type_name, sInfo* info)
 {
     sClass*% klass;
     if(info.classes.at(type_name, null) == null) {
-        klass = new sClass~(name:type_name, enum_:true);
+        klass = new sClass(name:type_name, enum_:true);
         info.classes.insert(type_name, klass);
     }
     else {
@@ -243,7 +243,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             
             type_name = parse_word();
             
-            info.classes.insert(type_name, new sClass~(name:type_name, enum_:true));
+            info.classes.insert(type_name, new sClass(name:type_name, enum_:true));
             
             parse_struct_attribute();
             if(*info->p == ':') {
@@ -299,7 +299,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
         
         char* source_tail = info.p;
         
-        buffer*% header = new buffer~~();
+        buffer*% header = new buffer();
         header.append_str("enum ");
         header.append(source_head, source_tail - source_head);
         

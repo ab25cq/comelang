@@ -189,7 +189,7 @@ class sParenBlockNode extends sNodeBase
     {
         list<sNode*%>*% paren_block = self.paren_block;
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_str("({");
         
@@ -304,10 +304,10 @@ class sDerefferenceNode extends sNodeBase
                 
                 p = left_value.c_value;
                 
-                var buf = new buffer~~();
+                var buf = new buffer();
                 buf.append(p, p2 - p);
                 
-                var buf2 = new buffer~~();
+                var buf2 = new buffer();
                 buf2.append(p2, p + strlen(p) - p2);
                 
                 left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))%s", make_type_name_string(left_value.type, no_static:true)!, buf.to_string(), info->sname, info->sline, gComeDebugStackFrameID++, buf2.to_string());

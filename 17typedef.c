@@ -29,9 +29,9 @@ class sTypedefNode extends sNodeBase
         string type_name = string(self.mTypeName);
         
         if(type_name === "__darwin_va_list") {
-            info.classes.insert(string("__darwin_va_list"), new sClass~("__darwin_va_list", number:true));
+            info.classes.insert(string("__darwin_va_list"), new sClass("__darwin_va_list", number:true));
             
-            sType*% type = new sType~("__darwin_va_list");
+            sType*% type = new sType("__darwin_va_list");
             type->mOriginalTypeName = string("__darwin_va_list");
             
             type->mTypedef = true;
@@ -153,7 +153,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append_str("typedef ");
             header.append(source_head, source_tail - source_head);
             
@@ -170,7 +170,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 95
         else {
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append_str("typedef ");
             header.append(source_head, source_tail - source_head);
             
@@ -228,7 +228,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append_str("typedef ");
             header.append(head, source_tail - head);
             
@@ -245,7 +245,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         else {
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append_str("typedef ");
             header.append(head, source_tail - head);
             

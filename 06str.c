@@ -19,7 +19,7 @@ class sStrNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", self.value);
-        come_value.type = new sType~("char*");
+        come_value.type = new sType("char*");
         //come_value.type.mConstant = true;
         come_value.var = null;
         
@@ -53,12 +53,12 @@ class sBufferNode extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
-        sType*% type2 = new sType~("buffer");
+        sType*% type2 = new sType("buffer");
         type2->mPointerNum++;
         
-        sType*% any_type = new sType~("buffer");
+        sType*% any_type = new sType("buffer");
         any_type->mPointerNum = 1;
         any_type->mHeap = true;
         
@@ -66,7 +66,7 @@ class sBufferNode extends sNodeBase
         
         buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\", %s, %s, %s, %s), \"%s\", %ld)", info->sname, info->sline, finalizer_name, cloner_name, get_hash_key_name, equaler_name, value.to_string(), size);
         
-        sType*% type2 = new sType~("buffer*");
+        sType*% type2 = new sType("buffer*");
         type2->mHeap = true;
         
         come_value.c_value = buf.to_string();
@@ -102,7 +102,7 @@ class sSStringNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_str("xsprintf(\"");
         buf.append_str(self.value);
@@ -131,7 +131,7 @@ class sSStringNode extends sNodeBase
         
         buf.append_str(")");
         
-        sType*% type2 = new sType~("char*");
+        sType*% type2 = new sType("char*");
         type2->mHeap = true;
         
         come_value.c_value = buf.to_string();
@@ -167,7 +167,7 @@ class sCharNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%d", self.value);
-        come_value.type = new sType~("char");
+        come_value.type = new sType("char");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -203,7 +203,7 @@ class sWCharNode extends sNodeBase
         else {
             come_value.c_value = xsprintf("L'%lc'", self.value);
         }
-        come_value.type = new sType~("int");
+        come_value.type = new sType("int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -233,7 +233,7 @@ class sWStringNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("L\"%ls\"", self.value);
-        come_value.type = new sType~("int*");
+        come_value.type = new sType("int*");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -357,7 +357,7 @@ class sListNode extends sNodeBase
         
         add_come_code_at_function_head(info, "%s;\n", make_define_var(type_values, var_->mCValueName));
         
-        buffer*% source = new buffer~~();
+        buffer*% source = new buffer();
         
         source.append_str("(");
         
@@ -377,7 +377,7 @@ class sListNode extends sNodeBase
         
         //add_come_code(info, "%s", source.to_string());
         
-        sType*% list_type = new sType~("list");
+        sType*% list_type = new sType("list");
         list_type->mGenericsTypes.push_back((clone list_element_type));
         
         sType*% obj_type = clone list_type;
@@ -406,7 +406,7 @@ class sListNode extends sNodeBase
         
         CVALUE*% obj_value = new CVALUE();
         
-        buffer*% num_string = new buffer~~();
+        buffer*% num_string = new buffer();
         
         num_string.append_str("1");
         
@@ -455,7 +455,7 @@ class sListNode extends sNodeBase
         
         come_params.push_back(come_value3);
         
-        //buffer*% buf = new buffer~~();
+        //buffer*% buf = new buffer();
         
         source.append_str(generics_fun_name);
         source.append_str("(");
@@ -541,7 +541,7 @@ class sTupleNode extends sNodeBase
             n++;
         }
         
-        sType*% type = new sType~(xsprintf("tuple%d", tuple_types.length()));
+        sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
         
         foreach(it, tuple_types) {
             type->mGenericsTypes.push_back((clone it));
@@ -549,7 +549,7 @@ class sTupleNode extends sNodeBase
         
         CVALUE*% obj_value = new CVALUE();
         
-        buffer*% num_string = new buffer~~();
+        buffer*% num_string = new buffer();
         
         num_string.append_str("1");
         
@@ -616,7 +616,7 @@ class sTupleNode extends sNodeBase
             i++;
         }
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_str(generics_fun_name);
         buf.append_str("(");
@@ -685,7 +685,7 @@ class sSomeNode extends sNodeBase
             tuple_types.push_back(clone come_value.type);
         }
         
-        sType*% type = new sType~(xsprintf("tuple%d", tuple_types.length()));
+        sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
         
         foreach(it, tuple_types) {
             type->mGenericsTypes.push_back((clone it));
@@ -693,7 +693,7 @@ class sSomeNode extends sNodeBase
         
         CVALUE*% obj_value = new CVALUE();
         
-        buffer*% num_string = new buffer~~();
+        buffer*% num_string = new buffer();
         
         num_string.append_str("1");
         
@@ -756,7 +756,7 @@ class sSomeNode extends sNodeBase
             i++;
         }
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_str(generics_fun_name);
         buf.append_str("(");
@@ -810,7 +810,7 @@ class sNullReturnValue extends sNodeBase
         if(info.come_fun) {
             CVALUE*% come_value = new CVALUE();
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             static int num = 0;
             num++;
@@ -863,7 +863,7 @@ class sNullReturnValueOfException extends sNodeBase
         if(info.come_fun) {
             CVALUE*% come_value = new CVALUE();
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             static int num = 0;
             num++;
@@ -926,7 +926,7 @@ class sNullValue extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         static int num = 0;
         num++;
@@ -990,7 +990,7 @@ class sNoneNode extends sNodeBase
             tuple_types.push_back(clone come_value.type);
             
             if(i == 1) {
-                sType*% string_type = new sType~("char*");
+                sType*% string_type = new sType("char*");
                 string_type->mHeap = true;
                 check_assign_type(s"invalid none type", string_type, come_value.type, come_value);
             }
@@ -998,7 +998,7 @@ class sNoneNode extends sNodeBase
             i++;
         }
         
-        sType*% type = new sType~(xsprintf("tuple%d", tuple_types.length()));
+        sType*% type = new sType(xsprintf("tuple%d", tuple_types.length()));
         
         foreach(it, tuple_types) {
             type->mGenericsTypes.push_back((clone it));
@@ -1006,7 +1006,7 @@ class sNoneNode extends sNodeBase
         
         CVALUE*% obj_value = new CVALUE();
         
-        buffer*% num_string = new buffer~~();
+        buffer*% num_string = new buffer();
         
         num_string.append_str("1");
         
@@ -1069,7 +1069,7 @@ class sNoneNode extends sNodeBase
             i++;
         }
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_str(generics_fun_name);
         buf.append_str("(");
@@ -1253,7 +1253,7 @@ class sMapNode extends sNodeBase
         
         add_come_code_at_function_head(info, "%s;\n", make_define_var(element_type_values, var2_->mCValueName));
         
-        buffer*% source = new buffer~~();
+        buffer*% source = new buffer();
         
         source.append_str("(");
         
@@ -1278,7 +1278,7 @@ class sMapNode extends sNodeBase
             }
         }
         
-        sType*% map_type = new sType~("map");
+        sType*% map_type = new sType("map");
         map_type->mGenericsTypes.push_back((clone map_key_type));
         map_type->mGenericsTypes.push_back((clone map_element_type));
         
@@ -1308,7 +1308,7 @@ class sMapNode extends sNodeBase
         
         CVALUE*% obj_value = new CVALUE();
         
-        buffer*% num_string = new buffer~~();
+        buffer*% num_string = new buffer();
         
         num_string.append_str("1");
         
@@ -1365,7 +1365,7 @@ class sMapNode extends sNodeBase
         
         come_params.push_back(come_value4);
         
-        //buffer*% buf = new buffer~~();
+        //buffer*% buf = new buffer();
         
         source.append_str(generics_fun_name);
         source.append_str("(");
@@ -1414,7 +1414,7 @@ sNode*% expression_node(sInfo* info) version 96
         int sline = info->sline;
 
         list<sNode*%>*% exps = new list<sNode*%>();
-        buffer*% value = new buffer~~();
+        buffer*% value = new buffer();
         
         char* head_of_last_line = NULL;
         
@@ -1563,7 +1563,7 @@ sNode*% expression_node(sInfo* info) version 96
 
         int sline = info->sline;
 
-        buffer*% value = new buffer~~();
+        buffer*% value = new buffer();
 
         while(1) {
             if(*info->p == '"') {
@@ -1626,7 +1626,7 @@ sNode*% expression_node(sInfo* info) version 96
 
         int sline = info->sline;
 
-        buffer*% value = new buffer~~();
+        buffer*% value = new buffer();
 
         size_t size = 0;
         while(1) {
@@ -1762,7 +1762,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         int sline = info->sline;
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         while(true) {
             if(*info->p == '\\' && *(info->p+1) == '/') {
                 info->p++;
@@ -1842,7 +1842,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         int sline = info->sline;
         
-        buffer*% value = new buffer~~();
+        buffer*% value = new buffer();
         while(1) {
             if(*info->p == '"') {
                 info->p++;
@@ -2273,7 +2273,7 @@ sNode*% expression_node(sInfo* info) version 96
 
         int sline = info->sline;
 
-        buffer*% value = new buffer~~();
+        buffer*% value = new buffer();
 
         while(1) {
             if(*info->p == '"') {
@@ -2347,7 +2347,7 @@ sNode*% expression_node(sInfo* info) version 96
         int sline = info->sline;
 
         list<sNode*%>*% exps = new list<sNode*%>();
-        buffer*% value = new buffer~~();
+        buffer*% value = new buffer();
 
         while(1) {
             if(*info->p == '"') {
@@ -2514,7 +2514,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         char* p2 = info.p;
         
-        buffer*% first_element_source = new buffer~~();
+        buffer*% first_element_source = new buffer();
         
         first_element_source.append(p, p2 - p);
         first_element_source.append_char('\0');

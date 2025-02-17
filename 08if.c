@@ -66,7 +66,7 @@ class sIfNode extends sNodeBase
         
         string if_result_var_name = info.if_result_var_name;
         if(existance_of_result_value) {
-            sType*% if_result_type = new sType~("void*");
+            sType*% if_result_type = new sType("void*");
             
             static int var_num = 0;
             info->if_result_var_name = xsprintf("__if_result__%d", var_num++);
@@ -608,7 +608,7 @@ sNode*% create_exception_throw(sNode*% expression_node, sInfo* info)
     char* p = info.p;
     char* head = info.head;
     
-    var buf = new buffer~~();
+    var buf = new buffer();
     
     buf.append_format("{ return none(Err); }");
     
@@ -665,7 +665,7 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     char* p = info.p;
     char* head = info.head;
     
-    var buf = new buffer~~();
+    var buf = new buffer();
     
     buf.append_str("puts(Err), exit(0)");
     

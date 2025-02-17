@@ -2,7 +2,7 @@
 
 string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false)
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     
     char* class_name = type->mClass->mName;
     
@@ -151,7 +151,7 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
 
 string make_come_type_name_string(sType* type, sInfo* info=info)
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     
     char* class_name = type->mClass->mName;
     
@@ -202,7 +202,7 @@ void show_type(sType* type, sInfo* info)
 
 static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* info)
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     if(type->mResultType == null) {
         err_msg(info, "invalid lambda type");
         return string("");
@@ -271,7 +271,7 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info);
 
 string make_define_var(sType* type, char* name, bool in_header=false, sInfo* info=info)
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     
     sType*% type2 = clone type;
     if(type2->mArrayPointerType) {
@@ -396,7 +396,7 @@ sType*% get_no_solved_type(sType* type)
 string make_come_type_name_string_no_solved(sType* type, bool original_type_name=false, sInfo* info=info)
 {
     if(original_type_name && type->mOriginalTypeName && type->mOriginalTypeName !== "") {
-        var buf = new buffer~~();
+        var buf = new buffer();
         
         buf.append_str(type->mOriginalTypeName);
         for(int i=0; i<type->mOriginalTypeNamePointerNum; i++) {
@@ -411,7 +411,7 @@ string make_come_type_name_string_no_solved(sType* type, bool original_type_name
     else {
         sType*% no_solved_type = get_no_solved_type(type);
         
-        var buf = new buffer~~();
+        var buf = new buffer();
         
         char* class_name = no_solved_type->mClass->mName;
         
@@ -461,9 +461,9 @@ string make_define_var_no_solved(sType* type, char* name, bool in_header=false, 
 
 string output_function(sFun* fun, sInfo* info)
 {
-    var output = new buffer~~();
+    var output = new buffer();
     if(fun->mResultType->mResultType) {
-        var output2 = new buffer~~();
+        var output2 = new buffer();
         
         output2.append_str(fun->mName);
         output2.append_str("(");
@@ -643,10 +643,10 @@ string output_function(sFun* fun, sInfo* info)
 
 string header_function(sFun* fun, sInfo* info)
 {
-    var output = new buffer~~();
+    var output = new buffer();
     
     if(fun->mResultType->mResultType) {
-        var output2 = new buffer~~();
+        var output2 = new buffer();
         
         output2.append_str(fun->mName);
         output2.append_str("(");
@@ -796,7 +796,7 @@ string header_function(sFun* fun, sInfo* info)
 
 static string header_lambda(sType* lambda_type, string name, sInfo* info)
 {
-    var output = new buffer~~();
+    var output = new buffer();
     
     string result_type_str = make_type_name_string(lambda_type->mResultType, no_static:true);
     
@@ -880,11 +880,11 @@ int transpile(sInfo* info) version 3
 {
 /*
     var name = string("main");
-    var result_type = new sType~("int");
+    var result_type = new sType("int");
     var param_types = [new sType~("int"), new sType~("char**")];
     var param_names = [string("argc"), string("argv")];
-    var param_default_parametors = new list<string>~~();
-    var main_fun = new sFun~(name, result_type, param_types, param_names
+    var param_default_parametors = new list<string>();
+    var main_fun = new sFun(name, result_type, param_types, param_names
         , param_default_parametors, false@external, false@var_args
         , null@block, false@static_
         , string("int main(int argc, char** argv)")

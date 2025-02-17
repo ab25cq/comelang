@@ -17,7 +17,7 @@ string get_none_generics_name(char* class_name)
 
 string create_generics_name(sType* generics_type, sInfo* info)
 {
-    buffer*% buf = new buffer~~();
+    buffer*% buf = new buffer();
     
     sClass* klass = generics_type->mClass;
     
@@ -59,7 +59,7 @@ void output_struct(sClass* klass, sInfo* info)
     
     string name = klass.mName;
     
-    buffer*% buf = new buffer~~();
+    buffer*% buf = new buffer();
         
     buf.append_format("struct %s\n{\n", klass.mName);
             
@@ -98,7 +98,7 @@ void output_struct_come_header(sClass* klass, sInfo* info)
     if(!klass->mOutputed2) {
         klass->mOutputed2 = true;
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         if(klass.mParentClassName) {
             buf.append_format("struct %s extends %s\n{\n", klass.mName, klass.mParentClassName);
@@ -190,7 +190,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
             return false;
         }
         
-        info.classes.insert(string(new_name), new sClass~(name:new_name, struct_:true));
+        info.classes.insert(string(new_name), new sClass(name:new_name, struct_:true));
         
         sClass* new_class = info.classes.at(string(new_name), null);
         
@@ -351,7 +351,7 @@ class sClassNode extends sNodeBase
             klass2.mFields = clone klass.mFields;
         }
         
-        sType*% type = new sType~(name);
+        sType*% type = new sType(name);
         sType* override_ = info.types.at(string(name), null);
         if(override_) {
             if(override_->mTypedef) {
@@ -378,8 +378,8 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
 {
     sClass* klass;
     if(info.classes.at(type_name, null) == null) {
-        info.classes.insert(string(type_name), new sClass~(name:string(type_name), struct_:true));
-        sType*% type = new sType~(type_name);
+        info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
+        sType*% type = new sType(type_name);
         sType* override_ = info.types.at(type_name, null);
         if(override_) {
             if(override_->mTypedef) {
@@ -392,7 +392,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
     }
     else {
         klass = info.classes.at(type_name, null);
-        sType*% type = new sType~(type_name);
+        sType*% type = new sType(type_name);
         sType* override_ = info.types.at(type_name, null);
         if(override_) {
             if(override_->mTypedef) {
@@ -516,7 +516,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
 string parse_struct_attribute(sInfo* info=info)
 {
     parse_sharp();
-    buffer*% result = new buffer~~();
+    buffer*% result = new buffer();
     while(1) {
         if(memcmp(info->p, "__attribute__", strlen("__attribute__")) == 0) {
             char* head = info.p;
@@ -559,9 +559,9 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             sClass* struct_class;
             if(info.classes.at(type_name, null) == null) {
-                info.classes.insert(type_name, new sClass~(name:type_name, struct_:true));
+                info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
                 struct_class = info.classes.at(type_name, null);
-                sType*% type = new sType~(type_name);
+                sType*% type = new sType(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -572,7 +572,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             }
             else {
                 struct_class = info.classes.at(type_name, null);
-                sType*% type = new sType~(type_name);
+                sType*% type = new sType(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -584,7 +584,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append(source_head, source_tail - source_head);
             
             add_come_code_at_come_header(info, "%s", header.to_string());
@@ -622,7 +622,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 exit(2);
             }
             else {
-                generics_class = new sClass~(name:type_name, struct_:true);
+                generics_class = new sClass(name:type_name, struct_:true);
             }
             
             if(info.generics_classes.at(string(type_name), null) == null) {
@@ -703,7 +703,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append_str("struct ");
             header.append(source_head, source_tail - source_head);
             
@@ -714,9 +714,9 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         else {
             sClass* struct_class;
             if(info.classes.at(type_name, null) == null) {
-                info.classes.insert(type_name, new sClass~(name:type_name, struct_:true));
+                info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
                 
-                sType*% type = new sType~(type_name);
+                sType*% type = new sType(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -728,7 +728,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 struct_class = info.classes.at(type_name, null);
             }
             else {
-                sType*% type = new sType~(type_name);
+                sType*% type = new sType(type_name);
                 sType* override_ = info.types.at(type_name, null);
                 if(override_) {
                     if(override_->mTypedef) {
@@ -830,7 +830,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append(source_head, source_tail - source_head);
             
             add_come_code_at_come_header(info, "%s;\n", header.to_string());
@@ -892,7 +892,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         
         sClass*% struct_class;
         if(info.classes.at(string(type_name), null) == null) {
-            struct_class = new sClass~(name:type_name, struct_:true);
+            struct_class = new sClass(name:type_name, struct_:true);
         }
         else {
             struct_class = clone info.classes.at(string(type_name), null);
@@ -1051,7 +1051,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 
                 int pointer_num = 1;
         
-                info->impl_type = new sType~(type_name);
+                info->impl_type = new sType(type_name);
                 info->impl_type->mPointerNum = pointer_num;
                 
                 info->in_class = true;
@@ -1085,7 +1085,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 
                 string module_name = parse_word();
                 
-                list<string>*% params = new list<string>~~();
+                list<string>*% params = new list<string>();
                 
                 if(*info->p == '<') {
                     info->p++;

@@ -60,7 +60,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool heap = type->mHeap;
         bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
-        bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
+        //bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
         
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
@@ -82,9 +82,11 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         if(guard_) {
             result->mGuardValue = guard_;
         }
+/*
         if(dynamic_) {
             result->mDynamic = dynamic_;
         }
+*/
         if(no_heap) {
             result->mNoHeap = true;
             result->mHeap = false;
@@ -139,7 +141,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool exception_ = type->mException;
             bool generate_ = type->mGenerate;
             bool vtable = type->mCreateVTable;
-            bool dynamic_ = type->mClass->mDynamic || generics_type->mGenericsTypes[generics_number].mClass.mDynamic;
+            //bool dynamic_ = type->mClass->mDynamic || generics_type->mGenericsTypes[generics_number].mClass.mDynamic;
             
             result = clone generics_type->mGenericsTypes[generics_number];
             result.mGenericsNumBefore = generics_number;
@@ -159,9 +161,11 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             if(guard_) {
                 result->mGuardValue = guard_;
             }
+/*
             if(dynamic_) {
                 result->mDynamic = dynamic_;
             }
+*/
             if(record_) {
                 result->mRecord = record_;
             }
@@ -237,7 +241,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool exception_ = type->mException;
         bool generate_ = type->mGenerate;
         bool vtable = type->mCreateVTable;
-        bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
+        //bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
         
         result = clone info->method_generics_types[generics_number];
 
@@ -256,9 +260,11 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         if(guard_) {
             result->mGuardValue = guard_ || result->mGuardValue;
         }
+/*
         if(dynamic_) {
             result->mDynamic = dynamic_ || result->mDynamic;
         }
+*/
         if(no_heap) {
             result->mNoHeap = true;
             result->mHeap = false;
@@ -310,7 +316,7 @@ string append_object_to_right_values(char* obj, sType*% type, sInfo* info)
     if(info->no_output_come_code) {
         return string("");
     }
-    var new_value = new sRightValueObject~;
+    var new_value = new sRightValueObject;
     new_value.mType = type;
     new_value.mFreed = false;
     new_value.mID = gRightValueNum;
@@ -334,7 +340,7 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
     if(info->no_output_come_code) {
         return ;
     }
-    var new_value = new sRightValueObject~;
+    var new_value = new sRightValueObject;
     new_value.mType = type;
     new_value.mFreed = false;
     new_value.mID = gRightValueNum;
@@ -802,7 +808,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
             var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
             
             if(!err) {
-                return (new sType~("void"), string(""));
+                return (new sType("void"), string(""));
             }
             cloner = info->funcs[name]??;
         }

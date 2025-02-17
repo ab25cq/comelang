@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 15.0.1
+version 15.0.2
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+15.0.2 Type eraser generics collection finally complete.
 15.0.1 Type eraser generics collection finally complete.
 15.0.0 Type eraser generics collection finally complete.
 14.0.0 Type eraser generics collection finally complete.

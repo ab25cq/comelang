@@ -21,11 +21,11 @@ CVALUE*% CVALUE*::initialize(CVALUE*% self)
 
 sModule*% sModule*::initialize(sModule*% self)
 {
-    self.mSourceHead = new buffer~~();
-    self.mSource = new buffer~~();
+    self.mSourceHead = new buffer();
+    self.mSource = new buffer();
     self.mLastCode = null;
     self.mLastCode2 = null;
-    self.mHeader = new buffer~~();
+    self.mHeader = new buffer();
     
     return self;
 }
@@ -76,7 +76,7 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
         self.mClass = klass;
     }
     else {
-        sClass*% klass2 = new sClass~;
+        sClass*% klass2 = new sClass;
         klass2->mName = string(name);
         klass2->mDeclareSName = string(info->sname);
         
@@ -90,8 +90,8 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
     self.mGenericsTypes = new list<sType~>();
     self.mArrayNum = new list<sNode*%>();
     self.mOmitArrayNum = false;
-    self.mParamTypes = new list<sType~>~~();
-    self.mParamNames = new list<string~>~~();
+    self.mParamTypes = new list<sType~>();
+    self.mParamNames = new list<string~>();
     self.mVarArgs = false;
     self.mResultType = null;
     self.mUnsigned = false;
@@ -144,7 +144,7 @@ sClassModule*% sClassModule*::initialize(sClassModule*% self, char* name, string
 {
     self.mName = clone name;
     self.mText = clone text;
-    self.mParams = new list<string>~~();
+    self.mParams = new list<string>();
     self.mSName = string(sname);
     self.mSLine = sline;
     
@@ -165,7 +165,7 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
     self.mUniq = uniq_;
     self.mGenerate = generate_;
     
-    self.mLambdaType = new sType~("lambda");
+    self.mLambdaType = new sType("lambda");
     
     foreach(it, param_types) {
         self.mLambdaType.mParamTypes.push_back(clone it);
@@ -178,10 +178,10 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
     self.mLambdaType.mResultType = result_type;
     self.mLambdaType.mVarArgs = var_args;
     
-    self.mSource = new buffer~~();
-    self.mSourceHead = new buffer~~();
-    self.mSourceHead2 = new buffer~~();
-    self.mSourceDefer = new buffer~~();
+    self.mSource = new buffer();
+    self.mSourceHead = new buffer();
+    self.mSourceHead2 = new buffer();
+    self.mSourceDefer = new buffer();
     
     self.mBlock = block;
     

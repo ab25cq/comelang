@@ -258,7 +258,7 @@ sNode*% parse_global_variable(sInfo* info)
             
             char* tail = info.p;
             
-            var buf = new buffer~~();
+            var buf = new buffer();
             
             buf.append(head, tail - head);
             
@@ -304,7 +304,7 @@ sNode*% parse_global_variable(sInfo* info)
                 
                 char* tail = info.p;
                 
-                var buf = new buffer~~();
+                var buf = new buffer();
                 
                 buf.append(head, tail - head);
                 
@@ -350,7 +350,7 @@ sNode*% parse_global_variable(sInfo* info)
             skip_spaces_and_lf();
             
             if(*info->p == '{') {
-                buffer*% buf = new buffer~~();
+                buffer*% buf = new buffer();
                 
                 buf.append_char(*info->p);
                 info->p++;

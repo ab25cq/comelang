@@ -895,7 +895,7 @@ class sStoreArrayNode extends sNodeBase
                 }
             }
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(left_value.c_value);
             
@@ -1012,7 +1012,7 @@ class sLoadArrayNode extends sNodeBase
         if(!calling_fun) {
             CVALUE*% come_value = new CVALUE();
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(left_value.c_value);
             
@@ -1134,7 +1134,7 @@ class sLoadRangeArrayNode extends sNodeBase
         if(!calling_fun) {
             CVALUE*% come_value = new CVALUE();
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(left_value.c_value);
             

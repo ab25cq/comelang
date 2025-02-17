@@ -191,7 +191,7 @@ class sInlineAssembler extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        var buf = new buffer~~();
+        var buf = new buffer();
         char* p = source;
         
         while(*p != '(') {
@@ -249,7 +249,7 @@ class sInlineAssembler extends sNodeBase
         }
         
         come_value.c_value = "__asm " + buf.to_string();
-        come_value.type = new sType~("void");
+        come_value.type = new sType("void");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -282,7 +282,7 @@ class sLineNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%d", info->sline);
-        come_value.type = new sType~("int");
+        come_value.type = new sType("int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -310,7 +310,7 @@ class sSNameNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", info->sname);
-        come_value.type = new sType~("char*");
+        come_value.type = new sType("char*");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -338,7 +338,7 @@ class sFuncNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", info->come_fun->mName);
-        come_value.type = new sType~("char*");
+        come_value.type = new sType("char*");
         //come_value.type.mConstant = true;
         come_value.var = null;
         
@@ -395,7 +395,7 @@ class sCallerFuncNode extends sNodeBase
         else {
             come_value.c_value = xsprintf("\"\"");
         }
-        come_value.type = new sType~("char*");
+        come_value.type = new sType("char*");
         //come_value.type.mConstant = true;
         come_value.var = null;
         
@@ -419,7 +419,7 @@ class sCallerLineNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%d", info->caller_line);
-        come_value.type = new sType~("int");
+        come_value.type = new sType("int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -447,7 +447,7 @@ class sCallerSNameNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", info->caller_sname);
-        come_value.type = new sType~("char*");
+        come_value.type = new sType("char*");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -550,7 +550,7 @@ class sFunCallNode extends sNodeBase
             }
             
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(var_->mCValueName);
             buf.append_str("(");
@@ -719,7 +719,7 @@ class sFunCallNode extends sNodeBase
                 come_params.push_back(come_value);
             }
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(fun_name);
             buf.append_str("(");
@@ -740,66 +740,66 @@ class sFunCallNode extends sNodeBase
             come_value.c_value = buf.to_string();
             
             if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__builtin_ffs") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__builtin_ffsl") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__builtin_ffsll") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__builtin_bswap16") {
-                come_value.type = new sType~("short");
+                come_value.type = new sType("short");
             }
             else if(fun_name === "__builtin_bswap32") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__builtin_bswap64") {
-                come_value.type = new sType~("long");
+                come_value.type = new sType("long");
             }
             else if(fun_name === "__builtin_constant_p") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__builtin_expect") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__builtin___memset_chk") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin_object_size") {
-                come_value.type = new sType~("long");
+                come_value.type = new sType("long");
             }
             else if(fun_name === "__builtin___memcpy_chk") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin___strncpy_chk") {
-                come_value.type = new sType~("char");
+                come_value.type = new sType("char");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin___strncat_chk") {
-                come_value.type = new sType~("char");
+                come_value.type = new sType("char");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin_strrchr") {
-                come_value.type = new sType~("char");
+                come_value.type = new sType("char");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin___vsnprintf_chk") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__builtin_clz") {
-                come_value.type = new sType~("int");
+                come_value.type = new sType("int");
             }
             else if(fun_name === "__c11_atomic_thread_fence") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__c11_atomic_signal_fence") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__c11_atomic_exchange") {
                 come_value.type = clone come_params[1].type;
@@ -811,7 +811,7 @@ class sFunCallNode extends sNodeBase
                 come_value.type = clone come_params[2].type;
             }
             else if(fun_name === "__c11_atomic_store") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__c11_atomic_load") {
                 come_value.type = clone come_params[0].type;
@@ -833,28 +833,28 @@ class sFunCallNode extends sNodeBase
                 come_value.type = clone come_params[1].type;
             }
             else if(fun_name === "__dsb") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__isb") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__dmb") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__builtin_arm_cdp") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__builtin_arm_ldc") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__builtin_arm_stc") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__builtin_arm_stcl") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             else if(fun_name === "__builtin_arm_ldcl") {
-                come_value.type = new sType~("void");
+                come_value.type = new sType("void");
             }
             
             come_value.var = null;
@@ -885,7 +885,7 @@ class sFunCallNode extends sNodeBase
                 result_type = come_value.type;
             }
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(fun_name);
             buf.append_str("(");
@@ -1002,7 +1002,7 @@ class sFunCallNode extends sNodeBase
                 result_type = come_value.type;
             }
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(fun_name);
             buf.append_str("(");
@@ -1208,7 +1208,7 @@ class sFunCallNode extends sNodeBase
             come_params.push_back(come_value);
             dec_stack_ptr(1, info);
             
-            buffer*% method_block2 = new buffer~~();
+            buffer*% method_block2 = new buffer();
             sType*% method_block_type = clone fun.mParamTypes[-1];
             
             string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
@@ -1229,7 +1229,7 @@ class sFunCallNode extends sNodeBase
             list<sType~>*% param_types = clone method_block_type->mParamTypes;
             list<string>* param_names = method_block_type->mParamNames;
             
-            buffer*% all_alhabet_sname = new buffer~~();
+            buffer*% all_alhabet_sname = new buffer();
             {
                 char* p = info->sname;
                 while(*p) {
@@ -1319,7 +1319,7 @@ class sFunCallNode extends sNodeBase
             info->current_stack_frame_struct = current_stack_frame_struct;
         }
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_str(fun_name);
         buf.append_str("(");
@@ -1445,7 +1445,7 @@ class sComeCallNode extends sNodeBase
         
         string fun_name = xsprintf("__thread_fun%d", thread_num);
         
-        buffer*% come_block2 = new buffer~~();
+        buffer*% come_block2 = new buffer();
         
         string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
         
@@ -1489,7 +1489,7 @@ class sComeCallNode extends sNodeBase
         
         come_params.add(current_stack_frame_value);
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         string fun_name = s"pthread_create";
         
@@ -1560,14 +1560,14 @@ class sComeJoinNode extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        var buf = new buffer~~();
+        var buf = new buffer();
         buf.append_str("pthread_join(");
         buf.append_str(come_value.c_value);
         buf.append_str(", 0)");
         
         CVALUE*% come_value = new CVALUE();
         come_value.c_value = buf.to_string();
-        come_value.type = new sType~("void", info);
+        come_value.type = new sType("void", info);
         come_value.var = null;
         
         add_come_last_code(info, "%s", come_value.c_value);
@@ -1726,7 +1726,7 @@ class sLambdaCall extends sNodeBase
             i++;
         }
         
-        buffer*% buf = new buffer~~();
+        buffer*% buf = new buffer();
         
         buf.append_str("(");
         buf.append_str(come_value.c_value);
@@ -1919,7 +1919,7 @@ sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
         
         char* tail = info.p;
         
-        method_block = new buffer~~();
+        method_block = new buffer();
         
         int len = tail - head;
         char*% mem = new char[len+1];
@@ -2241,7 +2241,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 
                 char* tail = info.p;
                 
-                come_block = new buffer~~();
+                come_block = new buffer();
                 
                 int len = tail - head;
                 char*% mem = new char[len+1];
@@ -2262,7 +2262,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 
                 char* tail = info.p;
                 
-                come_block = new buffer~~();
+                come_block = new buffer();
                 
                 int len = tail - head;
                 char*% mem = new char[len+1];
@@ -2399,7 +2399,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             return node;
         }
         else if(inline_asm) {
-            var buf2 = new buffer~~();
+            var buf2 = new buffer();
             
             if(*info->p != '(') {
                 string word = parse_word(); // volatile
@@ -2450,7 +2450,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             return new sInlineAssembler(buf2.to_string(), exps, info) implements sNode;
         }
         else if(fun_name_with_type_name) {
-            buffer*% fun_name = new buffer~~();
+            buffer*% fun_name = new buffer();
             
             fun_name.append_str(buf);
             
@@ -2460,7 +2460,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 sClass* klass = info.classes[fun_name.to_string()]??;
                 
                 if(klass) {
-                    type = new sType~(buf);
+                    type = new sType(buf);
                 }
                 else {
                     err_msg(info, "null type(%s)", buf);
@@ -2495,7 +2495,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             info->p+=2;
             skip_spaces_and_lf();
             
-            buffer*% fun_name = new buffer~~();
+            buffer*% fun_name = new buffer();
             
             fun_name.append_str(buf);
             
@@ -2581,7 +2581,7 @@ sNode*% statment(sInfo* info=info)
 string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name;
-    buffer*% buf = new buffer~~();
+    buffer*% buf = new buffer();
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
         if(!obj_type->mClass->mStruct) {
@@ -2616,7 +2616,7 @@ string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name,
 string create_method_name_original_obj_type(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name;
-    buffer*% buf = new buffer~~();
+    buffer*% buf = new buffer();
     if(obj_type->mClass->mStruct) {
         struct_name = string(obj_type->mClass->mName);
     }
@@ -2642,7 +2642,7 @@ string create_method_name_original_obj_type(sType* obj_type, bool no_pointer_nam
 string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name;
-    buffer*% buf = new buffer~~();
+    buffer*% buf = new buffer();
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
         if(!obj_type->mClass->mStruct) {

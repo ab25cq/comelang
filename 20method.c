@@ -131,7 +131,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     come_params.push_back(come_value);
     dec_stack_ptr(1, info);
     
-    buffer*% method_block2 = new buffer~~();
+    buffer*% method_block2 = new buffer();
     sType*% method_block_type = clone fun.mParamTypes[-1];
     
     string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
@@ -152,7 +152,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     list<sType~>* param_types = method_block_type->mParamTypes;
     list<string>* param_names = method_block_type->mParamNames;
     
-    buffer*% all_alhabet_sname = new buffer~~();
+    buffer*% all_alhabet_sname = new buffer();
     {
         char* p = info->sname;
         while(*p) {
@@ -523,7 +523,7 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_format("%s->%s", obj_value.c_value, fun_name);
             buf.append_str("(");
@@ -823,7 +823,7 @@ class sMethodCallNode extends sNodeBase
                 string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
                 if(generics_fun_name === array_method_name) {
                     if(fun_name === "to_pointer") {
-                        buffer*% buf = new buffer~~();
+                        buffer*% buf = new buffer();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -847,13 +847,13 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType~("long");
+                        come_value.type = new sType("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "length") {
-                        buffer*% buf = new buffer~~();
+                        buffer*% buf = new buffer();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -876,13 +876,13 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType~("long");
+                        come_value.type = new sType("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "to_buffer") {
-                        buffer*% buf = new buffer~~();
+                        buffer*% buf = new buffer();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -905,13 +905,13 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType~("long");
+                        come_value.type = new sType("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "to_list") {
-                        buffer*% buf = new buffer~~();
+                        buffer*% buf = new buffer();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -934,13 +934,13 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType~("long");
+                        come_value.type = new sType("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
                     }
                     else if(fun_name === "to_vector") {
-                        buffer*% buf = new buffer~~();
+                        buffer*% buf = new buffer();
                         
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
@@ -963,7 +963,7 @@ class sMethodCallNode extends sNodeBase
                         
                         come_value.c_value = buf.to_string();
                         come_value.var = null;
-                        come_value.type = new sType~("long");
+                        come_value.type = new sType("long");
                         
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
@@ -1023,7 +1023,7 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
-            buffer*% buf = new buffer~~();
+            buffer*% buf = new buffer();
             
             buf.append_str(generics_fun_name);
             buf.append_str("(");
@@ -1047,12 +1047,12 @@ class sMethodCallNode extends sNodeBase
             
             if(obj_type->mAnyClass && fun_name === "get_hash_key") {
                 come_value2.c_value = xsprintf("come_call_get_hash_key((void*)0, %s)", obj_value.c_value);
-                come_value2.type = new sType~("int");
+                come_value2.type = new sType("int");
                 come_value2.type->mUnsigned = true;
             }
             else if(obj_type->mAnyClass && fun_name === "equals") {
                 come_value2.c_value = xsprintf("come_call_equals((void*)0, %s, %s)", obj_value.c_value, come_params[1].c_value);
-                come_value2.type = new sType~("int");
+                come_value2.type = new sType("int");
                 come_value2.type->mUnsigned = true;
             }
             else {
@@ -1264,7 +1264,7 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
         
         char* tail = info.p;
         
-        method_block = new buffer~~();
+        method_block = new buffer();
         
         int len = tail - head;
         char*% mem = new char[len+1];

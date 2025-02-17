@@ -39,7 +39,7 @@ class sLambdaNode extends sNodeBase
         sFun* come_fun = info.come_fun;
         info.come_fun = self.mFun;
         
-        sType*% result_type = new sType~("void*");
+        sType*% result_type = new sType("void*");
         
         if(!gComeC && !self.mFun.mNoResultType) {
             add_come_code_at_function_head(info, "%s=(void*)0;\n", make_define_var(result_type, "__result_obj__"));
@@ -97,7 +97,7 @@ class sFunNode extends sNodeBase
                 add_come_code(info, "    come_heap_init(%d, %d, %d);\n", gComeMalloc, gComeDebug, gComeGC);
             }
             
-            sType*% result_type = new sType~("void*");
+            sType*% result_type = new sType("void*");
             
             if(!gComeC && !self.mFun.mNoResultType) {
                 add_come_code_at_function_head(info, "%s=(void*)0;\n", make_define_var(result_type, "__result_obj__"));
@@ -220,7 +220,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
                 
                 string module_name = parse_word();
                 
-                list<string>*% params = new list<string>~~();
+                list<string>*% params = new list<string>();
                 
                 if(*info->p == '<') {
                     info->p++;
@@ -787,8 +787,8 @@ bool strmemcmp(char* p, char* p2)
 
 string,string parse_function_attribute(sInfo* info=info)
 {
-    buffer*% asm_fun_name = new buffer~~();
-    buffer*% result = new buffer~~();
+    buffer*% asm_fun_name = new buffer();
+    buffer*% result = new buffer();
     
     while(true) {
         if(strmemcmp(info->p, "__attribute__")) {
@@ -1207,7 +1207,7 @@ string,string parse_function_attribute(sInfo* info=info)
 
 string,string parse_attribute(sInfo* info=info)
 {
-    buffer*% asm_fun_name = new buffer~~();
+    buffer*% asm_fun_name = new buffer();
     string attribute = s"";
     
     while(true) {
@@ -1532,16 +1532,16 @@ int transpile(sInfo* info) version 5
     
     {
         var name = string("come_calloc");
-        var result_type = new sType~("void*");
+        var result_type = new sType("void*");
         var param_types = [new sType~("int"), new sType~("int"), new sType~("char*"), new sType~("int"), new sType~("char*"), new sType~("void*"), new sType~("void*"), new sType~("void*"), new sType~("void")];
         var param_names = [string("count"), string("size"), string("sname"), string("sline"), string("class_name"), string("finalizer_fun"), string("cloner_fun"), string("get_hash_key_fun"), string("equaler_fun")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(string("null"));
         param_default_parametors.push_back(string("0"));
         param_default_parametors.push_back(string("null"));
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void* come_calloc(int count, int size, char* sname, int sline, char* class_name, void* finalizer_fun, void* cloner_fun, void* get_hash_key_fun, void* equler_fun)")
@@ -1552,11 +1552,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("come_increment_ref_count");
-        var result_type = new sType~("void*");
+        var result_type = new sType("void*");
         var param_types = [new sType~("void*")];
         var param_names = [string("mem")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void* come_increment_ref_count(void* mem)")
@@ -1567,11 +1567,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("come_call_finalizer");
-        var result_type = new sType~("void");
+        var result_type = new sType("void");
         var param_types = [new sType~("void*"), new sType~("void*"), new sType~("void*"), new sType~("void*"), new sType~("int"), new sType~("int"), new sType~("int")];
         var param_names = [string("fun"), string("mem"), string("protocol_fun"), string("protocol_obj"), string("call_finalizer_only"), string("no_decrement"), string("no_free")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free)")
@@ -1582,11 +1582,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("come_decrement_ref_count");
-        var result_type = new sType~("void*");
+        var result_type = new sType("void*");
         var param_types = [new sType~("void*"), new sType~("void*"), new sType~("void*"), new sType~("bool"), new sType~("bool")];
         var param_names = [string("mem"), string("protocol_fun"), string("protocol_obj"), string("no_decrement"), string("no_free")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, _Bool no_decrement, _Bool no_free)")
@@ -1597,11 +1597,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("come_free_object");
-        var result_type = new sType~("void");
+        var result_type = new sType("void");
         var param_types = [new sType~("void*")];
         var param_names = [string("mem")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void come_free_object(void* mem)")
@@ -1612,15 +1612,15 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("come_memdup");
-        var result_type = new sType~("void*");
+        var result_type = new sType("void*");
         var param_types = [new sType~("void*"), new sType~("char*"), new sType~("int"), new sType~("char*")];
         var param_names = [string("block"), string("sname"), string("sline"), string("class_name")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(string("null"));
         param_default_parametors.push_back(string("0"));
         param_default_parametors.push_back(string("null"));
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void* come_memdup(void* block, char* sname, int sline, char* class_name)")
@@ -1631,11 +1631,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("memset");
-        var result_type = new sType~("void*");
+        var result_type = new sType("void*");
         var param_types = [new sType~("void*"), new sType~("int"), new sType~("long")];
         var param_names = [string("b"), string("c"), string("len")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void* memset(void* b, int c, size_t len)")
@@ -1646,11 +1646,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("__builtin_string");
-        var result_type = new sType~("char*");
+        var result_type = new sType("char*");
         var param_types = [new sType~("char*")];
         var param_names = [string("str")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("char* __builtin_string(char* str)")
@@ -1662,11 +1662,11 @@ int transpile(sInfo* info) version 5
 /*
     {
         var name = string("__builtin_bswap16");
-        var result_type = new sType~("short");
+        var result_type = new sType("short");
         var param_types = [new sType~("short")];
         var param_names = [string("x")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("short __builtin_bswap16(short x)")
@@ -1677,11 +1677,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("__builtin_bswap32");
-        var result_type = new sType~("int");
+        var result_type = new sType("int");
         var param_types = [new sType~("int")];
         var param_names = [string("x")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("int __builtin_bswap32(int x)")
@@ -1692,11 +1692,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("__builtin_bswap64");
-        var result_type = new sType~("long");
+        var result_type = new sType("long");
         var param_types = [new sType~("long")];
         var param_names = [string("x")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("long __builtin_bswap64(long x)")
@@ -1708,12 +1708,12 @@ int transpile(sInfo* info) version 5
 */
     {
         var name = string("come_heap_init");
-        var result_type = new sType~("void");
+        var result_type = new sType("void");
         var param_types = [new sType~("int"), new sType~("int"), new sType~("int")];
         var param_names = [s"come_malloc", s"come_debug", s"come_gc"];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("come_heap_init(int come_malloc, int come_debug, int come_gc)")
@@ -1724,11 +1724,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("come_heap_final");
-        var result_type = new sType~("void");
+        var result_type = new sType("void");
         var param_types = new list<sType~>();
-        var param_names = new list<string>~~();
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_names = new list<string>();
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void come_heap_final()")
@@ -1739,11 +1739,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("come_null_check");
-        var result_type = new sType~("void*");
+        var result_type = new sType("void*");
         var param_types = [new sType~("void*"), new sType~("char*"), new sType~("int"), new sType~("int")];
         var param_names = [string("mem"), string("sname"), string("sline"), string("id")];
-        var param_default_parametors = new list<string>~~();
-        var main_fun = new sFun~(name, result_type, param_types, param_names
+        var param_default_parametors = new list<string>();
+        var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void* come_null_check(void* mem, char* sname, int sline, int id)")
@@ -1754,11 +1754,11 @@ int transpile(sInfo* info) version 5
     }
     {
         var name = string("__builtin_va_start");
-        var result_type = new sType~("void");
+        var result_type = new sType("void");
         var param_types = new list<sType~>();
-        var param_names = new list<string>~~();
-        var param_default_parametors = new list<string>~~();
-        var fun = new sFun~(name, result_type, param_types, param_names
+        var param_names = new list<string>();
+        var param_default_parametors = new list<string>();
+        var fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, true@var_args
             , null@block, false@static_
             , string("void __builtin_va_start()")
@@ -1770,11 +1770,11 @@ int transpile(sInfo* info) version 5
 /*
     {
         var name = string("__builtin_va_arg");
-        var result_type = new sType~("void");
+        var result_type = new sType("void");
         var param_types = [new sType~("char*")];
         var param_names = [s"ap"];
         var param_default_parametors = [null, null];
-        var fun = new sFun~(name, result_type, param_types, param_names
+        var fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("void __builtin_va_va_arg(char* ap)")
@@ -1786,11 +1786,11 @@ int transpile(sInfo* info) version 5
 */
     {
         var name = string("__builtin_va_end");
-        var result_type = new sType~("void");
+        var result_type = new sType("void");
         var param_types = new list<sType~>();
-        var param_names = new list<string>~~();
-        var param_default_parametors = new list<string>~~();
-        var fun = new sFun~(name, result_type, param_types, param_names
+        var param_names = new list<string>();
+        var param_default_parametors = new list<string>();
+        var fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, true@var_args
             , null@block, false@static_
             , string("void __builtin_va_end()")
@@ -2117,7 +2117,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
             skip_spaces_and_lf();
             
             var param_types = new list<sType~>();
-            var param_names = new list<string>~~();
+            var param_names = new list<string>();
             
             if(*info->p == ')') {
                 info->p++;
@@ -2164,7 +2164,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                 skip_spaces_and_lf();
                 
                 var param_types2 = new list<sType~>();
-                var param_names2 = new list<string>~~();
+                var param_names2 = new list<string>();
                 
                 if(*info->p == ')') {
                     info->p++;
@@ -2206,7 +2206,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                 
                 char* header_tail = info.p;
                 
-                sType*% result_type2 = new sType~("lambda");
+                sType*% result_type2 = new sType("lambda");
                 
                 result_type2->mResultType = result_type;
                 result_type2->mParamTypes = clone param_types2;
@@ -2216,13 +2216,13 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                 
                 bool var_args = false;
                 
-                buffer*% header_buf = new buffer~~();
+                buffer*% header_buf = new buffer();
                 header_buf.append(header_head, header_tail - header_head);
                 header_buf.append_char('\0');
                 
-                var param_default_parametors = new list<string>~~();
+                var param_default_parametors = new list<string>();
                 
-                var fun = new sFun~(string(fun_name), result_type2
+                var fun = new sFun(string(fun_name), result_type2
                                     , param_types, param_names
                                     , param_default_parametors
                                     , true@external, var_args, null@block
@@ -2267,7 +2267,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
         
         char* source_tail = info.p;
         
-        buffer*% header = new buffer~~();
+        buffer*% header = new buffer();
         header.append(source_head, source_tail - source_head);
         
         //add_come_code_at_come_header(info, "%s %s;\n", buf, header.to_string());
@@ -2343,7 +2343,7 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     
     list<string>*% method_generics_type_names = info->method_generics_type_names;
     
-    info->method_generics_type_names = new list<string>~~();
+    info->method_generics_type_names = new list<string>();
     foreach(it, generics_fun->mMethodGenericsTypeNames) {
         info->method_generics_type_names.push_back(clone it);
     }
@@ -2367,7 +2367,7 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     result_type->mUniq = false;
     
     bool var_args = generics_fun.mVarArgs;
-    var fun = new sFun~(fun_name, result_type
+    var fun = new sFun(fun_name, result_type
                     , param_types
                     , param_names, param_default_parametors, false@external
                     , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_, false@generate_);
@@ -2452,7 +2452,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     
     list<string>*% method_generics_type_names = info->method_generics_type_names;
     
-    info->method_generics_type_names = new list<string>~~();
+    info->method_generics_type_names = new list<string>();
     foreach(it, generics_fun->mMethodGenericsTypeNames) {
         info->method_generics_type_names.push_back(clone it);
     }
@@ -2482,7 +2482,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     }
     
     bool var_args = generics_fun.mVarArgs;
-    var fun = new sFun~(fun_name, result_type
+    var fun = new sFun(fun_name, result_type
                     , clone param_types
                     , param_names, param_default_parametors, false@external
                     , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_, generate_);
@@ -2555,7 +2555,7 @@ sNode*% parse_function(sInfo* info)
         char* p = info.p;
         int sline = info.sline;
         
-        buffer*% buf2 = new buffer~~();
+        buffer*% buf2 = new buffer();
         while(xisalnum(*info->p) || *info->p == '_') {
             buf2.append_char(*info->p);
             info->p++;
@@ -2622,7 +2622,7 @@ sNode*% parse_function(sInfo* info)
         info.in_class = true;
     }
     
-    buffer*% header_buf = new buffer~~();
+    buffer*% header_buf = new buffer();
     
     header_buf.append(header_head, header_tail - header_head);
     header_buf.append_char('\0');
@@ -2658,7 +2658,7 @@ sNode*% parse_function(sInfo* info)
         result_type->mUniq = false;
         result_type->mGenerate = false;
         
-        var fun = new sFun~(string(fun_name), result_type, param_types, param_names
+        var fun = new sFun(string(fun_name), result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, var_args, block
                             , true@static_, header_buf.to_string(), string(""), info, false@inline_, false@uniq_, false@generate_);
@@ -2678,7 +2678,7 @@ sNode*% parse_function(sInfo* info)
         
         string block = skip_block(info);
         
-        var fun = new sGenericsFun~(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline);
+        var fun = new sGenericsFun(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline);
         
         string fun_name3 = xsprintf("%s_%s", none_generics_name, base_fun_name);
         
@@ -2692,7 +2692,7 @@ sNode*% parse_function(sInfo* info)
         
         string block = skip_block(info);
         
-        var fun = new sGenericsFun~(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline);
+        var fun = new sGenericsFun(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline);
         
         string fun_name3 = clone base_fun_name;
         
@@ -2708,7 +2708,7 @@ sNode*% parse_function(sInfo* info)
     else if(*info->p == '{') {
         char* source_tail = info.p -1;
         
-        buffer*% header = new buffer~~();
+        buffer*% header = new buffer();
         
         if(constructor_) {
             if(param_types.length() == 1) {
@@ -2817,7 +2817,7 @@ sNode*% parse_function(sInfo* info)
             fun_name = string(new_fun_name);
         }
         
-        var fun = new sFun~(string(fun_name), result_type, param_types
+        var fun = new sFun(string(fun_name), result_type, param_types
                                 , param_names
                                 , param_default_parametors
                                 , false@external, var_args, clone block
@@ -2850,7 +2850,7 @@ sNode*% parse_function(sInfo* info)
             
             char* source_tail = info.p;
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             header.append(source_head, source_tail - source_head);
             
             skip_spaces_and_lf();
@@ -2861,7 +2861,7 @@ sNode*% parse_function(sInfo* info)
             result_type->mInline = false;
             result_type->mGenerate = false;
             
-            var fun = new sFun~(string(fun_name), result_type
+            var fun = new sFun(string(fun_name), result_type
                                 , param_types, param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
@@ -2889,7 +2889,7 @@ sNode*% parse_function(sInfo* info)
                 fun_name = string(asm_fun);
             }
             
-            buffer*% header = new buffer~~();
+            buffer*% header = new buffer();
             if(*info->p == ';') {
                 info->p++;
                 char* source_tail = info.p;
@@ -2903,7 +2903,7 @@ sNode*% parse_function(sInfo* info)
             result_type->mInline = false;
             result_type->mGenerate = false;
             
-            var fun = new sFun~(string(fun_name), result_type, param_types
+            var fun = new sFun(string(fun_name), result_type, param_types
                                 , param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
@@ -3023,7 +3023,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         sClass* klass = type->mClass;
         
         if(type->mPointerNum > 0 && klass->mStruct || type->mAllocaValue) {
-            var source = new buffer~~();
+            var source = new buffer();
             
             source.append_char('{');
             
@@ -3072,7 +3072,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
             
             sBlock*% block = parse_block();
             
-            var result_type = new sType~("void");
+            var result_type = new sType("void");
             var name = clone real_fun_name;
             var self_type = clone type;
             self_type->mHeap = false;
@@ -3084,10 +3084,10 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
             }
             list<sType~>*% param_types = [self_type];
             var param_names = [string("self")];
-            var param_default_parametors = new list<string>~~();
+            var param_default_parametors = new list<string>();
             param_default_parametors.push_back(null);
             
-            buffer*% header_buf = new buffer~~();
+            buffer*% header_buf = new buffer();
             
             header_buf.append_str(make_come_type_name_string(result_type));
             header_buf.append_str(" ");
@@ -3115,7 +3115,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
             
             var fun2 = info.funcs[string(name)]??;
             if(fun2 == null || fun2.mExternal) {
-                var fun = new sFun~(name, result_type, param_types, param_names
+                var fun = new sFun(name, result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, false@var_args, block
                             , true@static_
@@ -3178,7 +3178,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
     sClass* klass = type->mClass;
     
     if(type->mPointerNum > 0 && !klass->mNumber) {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_char('{');
         
@@ -3218,7 +3218,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         
         sBlock*% block = parse_block();
         
-        var result_type = new sType~("bool");
+        var result_type = new sType("bool");
         var name = clone real_fun_name;
         var left_type = clone type;
         left_type->mHeap = false;
@@ -3226,11 +3226,11 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         right_type->mHeap = false;
         list<sType~>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -3258,7 +3258,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
@@ -3319,7 +3319,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
     sClass* klass = type->mClass;
     
     if(type->mPointerNum > 0 && !klass->mNumber) {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_char('{');
         
@@ -3379,7 +3379,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         
         sBlock*% block = parse_block();
         
-        var result_type = new sType~("bool");
+        var result_type = new sType("bool");
         var name = clone real_fun_name;
         var left_type = clone type;
         left_type->mHeap = false;
@@ -3387,11 +3387,11 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         right_type->mHeap = false;
         list<sType~>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -3419,7 +3419,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, false@var_args, block
                             , true@static_
@@ -3480,7 +3480,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
     sClass* klass = type->mClass;
     
     if(type->mPointerNum > 0 && !klass->mNumber) {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_char('{');
         
@@ -3537,7 +3537,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         
         sBlock*% block = parse_block();
         
-        var result_type = new sType~("bool");
+        var result_type = new sType("bool");
         var name = clone real_fun_name;
         var left_type = clone type;
         left_type->mHeap = false;
@@ -3545,11 +3545,11 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         right_type->mHeap = false;
         list<sType~>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -3577,7 +3577,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
@@ -3638,7 +3638,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
     sClass* klass = type->mClass;
     
     if(type->mPointerNum > 0 && !klass->mNumber) {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_char('{');
         
@@ -3680,7 +3680,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         
         sBlock*% block = parse_block();
         
-        var result_type = new sType~("bool");
+        var result_type = new sType("bool");
         var name = clone real_fun_name;
         var left_type = clone type;
         left_type->mHeap = false;
@@ -3688,11 +3688,11 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         right_type->mHeap = false;
         list<sType~>*% param_types = [left_type, right_type];
         var param_names = [string("left"), string("right")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -3720,7 +3720,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
@@ -3837,11 +3837,11 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     
     if(cloner == null && !type->mClass->mNumber && type->mPointerNum > 0)
     {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_str("{\n");
         source.append_str("if(self == (void*)0) { return (void*)0; }\n");
-        source.append_format("var result = new %s~;\n", make_type_name_string(type, no_pointer:true));
+        source.append_format("var result = new %s;\n", make_type_name_string(type, no_pointer:true));
         
         if(klass->mProtocol) {
             char* name = "_protocol_obj";
@@ -3920,10 +3920,10 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         self_type->mHeap = false;
         list<sType~>*% param_types = [self_type];
         var param_names = [string("self")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -3952,7 +3952,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         var fun2 = info.funcs[string(name)]??;
         
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
@@ -4017,10 +4017,10 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     sClass* klass = type->mClass;
     
     if(type->mPointerNum > 0 && !klass->mNumber) {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_str("{\n");
-        source.append_str("var result = new buffer~~();\n");
+        source.append_str("var result = new buffer();\n");
         
         source.append_format("result.append_str(\"%s {\");\n", klass->mName);
         
@@ -4078,17 +4078,17 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         
         sBlock*% block = parse_block();
         
-        var result_type = new sType~("char*");
+        var result_type = new sType("char*");
         result_type->mHeap = true;
         var name = clone real_fun_name;
         var self_type = clone type;
         self_type->mHeap = false;
         list<sType~>*% param_types = [self_type];
         var param_names = [string("self")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -4116,7 +4116,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, false@var_args, block
                             , true@static_
@@ -4226,10 +4226,10 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     }
     
     if(to_string_fun == null && type->mPointerNum > 0 && !klass->mNumber) {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_str("{\n");
-        source.append_str("var result = new buffer~~();\n");
+        source.append_str("var result = new buffer();\n");
         
         source.append_format("result.append_str(\"%s {\");\n", klass->mName);
         
@@ -4295,7 +4295,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         
         sBlock*% block = parse_block();
         
-        var result_type = new sType~("char*");
+        var result_type = new sType("char*");
         result_type->mHeap = true;
         var name = clone real_fun_name;
         var self_type = clone type;
@@ -4304,10 +4304,10 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         
         list<sType~>*% param_types = [self_type];
         var param_names = [string("self")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -4334,7 +4334,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, false@var_args, block
                             , true@static_
@@ -4444,7 +4444,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
     }
     
     if(get_hash_key_fun == null && type->mPointerNum > 0 && !klass->mNumber && !klass->mProtocol) {
-        var source = new buffer~~();
+        var source = new buffer();
         
         source.append_str("{\n");
         source.append_str("unsigned int result = 0;\n");
@@ -4481,17 +4481,17 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
         
         sBlock*% block = parse_block();
         
-        var result_type = new sType~("int");
+        var result_type = new sType("int");
         result_type->mUnsigned = true;
         var name = clone real_fun_name;
         var self_type = clone type;
         self_type->mHeap = false;
         list<sType~>*% param_types = [self_type];
         var param_names = [string("self")];
-        var param_default_parametors = new list<string>~~();
+        var param_default_parametors = new list<string>();
         param_default_parametors.push_back(null);
         
-        buffer*% header_buf = new buffer~~();
+        buffer*% header_buf = new buffer();
         
         header_buf.append_str(make_come_type_name_string(result_type));
         header_buf.append_str(" ");
@@ -4519,7 +4519,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
-            var fun = new sFun~(name, result_type, param_types, param_names
+            var fun = new sFun(name, result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, false@var_args, block
                             , true@static_
