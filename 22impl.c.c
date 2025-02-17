@@ -4142,7 +4142,7 @@ struct sNode* __result240__;
         result_352->kind=self->kind;
     }
     __result240__ = gComeFunResultObject = __result_obj__ = result_352;
-    if(result_352) { result_352 = come_decrement_ref_count2(result_352, ((struct sNode*)result_352)->finalize, ((struct sNode*)result_352)->_protocol_obj, 0, 1, 0, (void*)0); } 
+    come_call_finalizer2((void*)0, result_352, result_352 ? ((struct sNode*)result_352)->finalize:(void*)0, result_352 ? ((struct sNode*)result_352)->_protocol_obj:(void*)0, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result240__;
 }

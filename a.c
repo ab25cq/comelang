@@ -1,6 +1,6 @@
 #include <comelang.h>
 
-struct sData
+dynamic struct sData
 {
     int a;
     int b;
@@ -16,7 +16,7 @@ sData*% sData*::initialize(sData*% self)
     return self;
 }
 
-struct sData2
+dynamic struct sData2
 {
     int a;
     string b;
@@ -32,7 +32,7 @@ void sData2*::fun(sData2* self) {
     puts("sData2*::fun()");
 }
 
-struct sData3<T>
+dynamic struct sData3<T>
 {
     T a;
     T b;
@@ -52,41 +52,37 @@ struct sInfo
 
 int main(int argc, char** argv)
 {
-//    list<list<sData~>~>*% li3 = new list<list<sData~>~>();
-    
-/*
     list<sData~>*% li = new list<sData~>();
-    li.add(new sData~.initialize());
+    li.add(new sData { c:s"WIN" });
     
-    list<sData2~>*% li2 = new list<sData2*%~>();
-    li2.add(new sData2~ { b:s"WIN2" });
+    list<sData2~>*% li2 = new list<sData2~>();
+    li2.add(new sData2 { b:s"WIN2" });
     
     puts(li[0].c);
     
     puts(li2[0].b);
-*/
     
+/*
     map<string~, sData~>*% uho = new map<string~, sData~>();
     
-    uho[s"AAA"] = new sData~();
+    uho[s"AAA"] = new sData();
     
     printf("%s\n", uho[s"AAA"].c);
     
-/*
     sData3<sData~>*% data1 = new sData3<sData~>;
     
-    data1.fun(new sData~ { c:s"WIN" });
+    data1.fun(new sData { c:s"WIN" });
     
     sData3<sData2~>*% data2 = new sData3<sData2~>;
     
-    data2.fun(new sData2~ { b:s"WIN" });
+    data2.fun(new sData2 { b:s"WIN" });
     
     sInfo*% info = new sInfo;
     
     info.mGenericsTypes = new list<sData~>();
     
-    info.mGenericsTypes.add(new sData~ { c:s"AAA" });
-    info.mGenericsTypes.add(new sData~ { c:s"BBB" });
+    info.mGenericsTypes.add(new sData { c:s"AAA" });
+    info.mGenericsTypes.add(new sData { c:s"BBB" });
     
     puts(info.mGenericsTypes[0].c);
     

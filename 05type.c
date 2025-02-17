@@ -452,6 +452,15 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
 {
     sType*% right_type2 = clone right_type;
     
+/*
+    if(left_type->mAnyOriginalType) {
+        left_type = left_type->mAnyOriginalType;
+    }
+    if(right_type2->mAnyOriginalType) {
+        right_type2 = right_type2->mNoSolvedGenericsType;
+    }
+*/
+    
     sType* left_no_solved_generics_type = null;
     if(left_type->mNoSolvedGenericsType) {
         left_no_solved_generics_type = left_type->mNoSolvedGenericsType;

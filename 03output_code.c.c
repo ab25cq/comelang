@@ -1943,6 +1943,10 @@ static void list_item$1CVALUEphp_finalize(struct list_item$1CVALUEph* self);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
 static struct CVALUE* list$1CVALUEphp_operator_load_element(struct list$1CVALUEph* self, int position);
 static struct CVALUE* CVALUE_clone(struct CVALUE* self);
+static unsigned int CVALUE_get_hash_key(struct CVALUE* self);
+static _Bool CVALUE_equals(struct CVALUE* left, struct CVALUE* right);
+static _Bool sVar_equals(struct sVar* left, struct sVar* right);
+static _Bool sRightValueObject_equals(struct sRightValueObject* left, struct sRightValueObject* right);
 void transpiler_clear_last_code(struct sInfo* info);
 // uniq global variable
 // inline function
@@ -4661,7 +4665,7 @@ struct sNode* __result255__;
         result_378->kind=self->kind;
     }
     __result255__ = gComeFunResultObject = __result_obj__ = result_378;
-    if(result_378) { result_378 = come_decrement_ref_count2(result_378, ((struct sNode*)result_378)->finalize, ((struct sNode*)result_378)->_protocol_obj, 0, 1, 0, (void*)0); } 
+    come_call_finalizer2((void*)0, result_378, result_378 ? ((struct sNode*)result_378)->finalize:(void*)0, result_378 ? ((struct sNode*)result_378)->_protocol_obj:(void*)0, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result255__;
 }
@@ -6268,7 +6272,7 @@ static struct CVALUE* CVALUE_clone(struct CVALUE* self){
 void* __result_obj__=(void*)0;
 struct CVALUE* __result304__;
 void* __right_value443 = (void*)0;
-struct CVALUE* result_555;
+struct CVALUE* result_556;
 void* __right_value444 = (void*)0;
 char* __dec_obj96;
 void* __right_value445 = (void*)0;
@@ -6283,37 +6287,130 @@ struct CVALUE* __result305__;
         gComeFunResultObject = (void*)0;
         return __result304__;
     }
-    result_555=(struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "CVALUE_clone", 3, "struct CVALUE*", (void*)0, (void*)0, (void*)0, (void*)0));
+    result_556=(struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc(1, sizeof(struct CVALUE)*(1), "CVALUE_clone", 3, "struct CVALUE", CVALUE_finalize, CVALUE_clone, CVALUE_get_hash_key, CVALUE_equals));
     if(    self!=((void*)0)&&self->c_value!=((void*)0)) {
-        __dec_obj96=result_555->c_value;
-        result_555->c_value=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->c_value));
+        __dec_obj96=result_556->c_value;
+        result_556->c_value=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->c_value));
         __dec_obj96 = come_decrement_ref_count2(__dec_obj96, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
     if(    self!=((void*)0)&&self->type!=((void*)0)) {
-        __dec_obj97=result_555->type;
-        result_555->type=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, self->type));
+        __dec_obj97=result_556->type;
+        result_556->type=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, self->type));
         come_call_finalizer3(__dec_obj97,sType_finalize, 0, 0, 0, 0, (void*)0);
     }
     if(    self!=((void*)0)) {
-        result_555->var=self->var;
+        result_556->var=self->var;
     }
     if(    self!=((void*)0)) {
-        result_555->right_value_objects=self->right_value_objects;
+        result_556->right_value_objects=self->right_value_objects;
     }
     if(    self!=((void*)0)&&self->c_value_without_right_value_objects!=((void*)0)) {
-        __dec_obj98=result_555->c_value_without_right_value_objects;
-        result_555->c_value_without_right_value_objects=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->c_value_without_right_value_objects));
+        __dec_obj98=result_556->c_value_without_right_value_objects;
+        result_556->c_value_without_right_value_objects=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->c_value_without_right_value_objects));
         __dec_obj98 = come_decrement_ref_count2(__dec_obj98, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
     if(    self!=((void*)0)&&self->c_value_without_cast_object_value!=((void*)0)) {
-        __dec_obj99=result_555->c_value_without_cast_object_value;
-        result_555->c_value_without_cast_object_value=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->c_value_without_cast_object_value));
+        __dec_obj99=result_556->c_value_without_cast_object_value;
+        result_556->c_value_without_cast_object_value=(char*)come_increment_ref_count(come_call_cloner(string_clone, self->c_value_without_cast_object_value));
         __dec_obj99 = come_decrement_ref_count2(__dec_obj99, (void*)0, (void*)0, 0,0,0, (void*)0);
     }
-    __result305__ = gComeFunResultObject = __result_obj__ = result_555;
-    come_call_finalizer3(result_555,CVALUE_finalize, 0, 0, 1, 0, (void*)0);
+    __result305__ = gComeFunResultObject = __result_obj__ = result_556;
+    come_call_finalizer3(result_556,CVALUE_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result305__;
+}
+
+static unsigned int CVALUE_get_hash_key(struct CVALUE* self){
+unsigned int result_555;
+    result_555=0;
+    result_555+=int_get_hash_key(((int)self->c_value));
+    result_555+=int_get_hash_key(((int)self->type));
+    result_555+=int_get_hash_key(((int)self->var));
+    result_555+=int_get_hash_key(((int)self->right_value_objects));
+    result_555+=int_get_hash_key(((int)self->c_value_without_right_value_objects));
+    result_555+=int_get_hash_key(((int)self->c_value_without_cast_object_value));
+    return result_555;
+}
+
+static _Bool CVALUE_equals(struct CVALUE* left, struct CVALUE* right){
+    if(    !string_equals(left->c_value,right->c_value)) {
+        return (_Bool)0;
+    }
+    if(    !sType_equals(left->type,right->type)) {
+        return (_Bool)0;
+    }
+    if(    !sVar_equals(left->var,right->var)) {
+        return (_Bool)0;
+    }
+    if(    !sRightValueObject_equals(left->right_value_objects,right->right_value_objects)) {
+        return (_Bool)0;
+    }
+    if(    !string_equals(left->c_value_without_right_value_objects,right->c_value_without_right_value_objects)) {
+        return (_Bool)0;
+    }
+    if(    !string_equals(left->c_value_without_cast_object_value,right->c_value_without_cast_object_value)) {
+        return (_Bool)0;
+    }
+    return (_Bool)1;
+}
+
+static _Bool sVar_equals(struct sVar* left, struct sVar* right){
+    if(    !string_equals(left->mName,right->mName)) {
+        return (_Bool)0;
+    }
+    if(    !string_equals(left->mCValueName,right->mCValueName)) {
+        return (_Bool)0;
+    }
+    if(    !sType_equals(left->mType,right->mType)) {
+        return (_Bool)0;
+    }
+    if(    !int_equals(left->mBlockLevel,right->mBlockLevel)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mGlobal,right->mGlobal)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mAllocaValue,right->mAllocaValue)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mFunctionParam,right->mFunctionParam)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mNoFree,right->mNoFree)) {
+        return (_Bool)0;
+    }
+    if(    !string_equals(left->mFunName,right->mFunName)) {
+        return (_Bool)0;
+    }
+    return (_Bool)1;
+}
+
+static _Bool sRightValueObject_equals(struct sRightValueObject* left, struct sRightValueObject* right){
+    if(    !sType_equals(left->mType,right->mType)) {
+        return (_Bool)0;
+    }
+    if(    !string_equals(left->mVarName,right->mVarName)) {
+        return (_Bool)0;
+    }
+    if(    !string_equals(left->mFunName,right->mFunName)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mFreed,right->mFreed)) {
+        return (_Bool)0;
+    }
+    if(    !int_equals(left->mID,right->mID)) {
+        return (_Bool)0;
+    }
+    if(    !int_equals(left->mBlockLevel,right->mBlockLevel)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mStored,right->mStored)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mDecrementRefCount,right->mDecrementRefCount)) {
+        return (_Bool)0;
+    }
+    return (_Bool)1;
 }
 
 void transpiler_clear_last_code(struct sInfo* info){
