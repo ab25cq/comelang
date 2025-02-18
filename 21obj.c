@@ -294,6 +294,7 @@ class sNewNode extends sNodeBase
             }
             else if(generics_any_child) {
                 sType*% any_type = no_solved_type;
+                any_type->mTypeCheckingAnyOriginalType = any_type->mAnyOriginalType;
                 any_type->mAnyOriginalType = null;
                 any_type->mPointerNum = 1;
                 any_type->mHeap = true;

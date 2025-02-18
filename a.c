@@ -53,8 +53,9 @@ struct sInfo
 int main(int argc, char** argv)
 {
     list<sData~>*% li = new list<sData~>();
-    li.add(new sData { c:s"WIN" });
+    li.add(item:new sData2 { b:s"WIN" });
     
+/*
     list<sData2~>*% li2 = new list<sData2~>();
     li2.add(new sData2 { b:s"WIN2" });
     
@@ -62,7 +63,6 @@ int main(int argc, char** argv)
     
     puts(li2[0].b);
     
-/*
     map<string~, sData~>*% uho = new map<string~, sData~>();
     
     uho[s"AAA"] = new sData();

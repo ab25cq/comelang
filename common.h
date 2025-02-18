@@ -86,6 +86,7 @@ dynamic struct sType
     sType*% mNoSolvedGenericsType;
     sType*% mOriginalLoadVarType;
     sType*% mAnyOriginalType;
+    sType*% mTypeCheckingAnyOriginalType;
     
     bool mAnyClass;
     

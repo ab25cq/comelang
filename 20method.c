@@ -23,6 +23,7 @@ sType*% use_any_type(sType*% type)
 sType*% remove_any_type(sType*% type)
 {
     if(type->mAnyOriginalType) {
+        type->mTypeCheckingAnyOriginalType = type->mAnyOriginalType;
         type->mAnyOriginalType = null;
     }
     
@@ -716,7 +717,34 @@ class sMethodCallNode extends sNodeBase
                 else {
                     sType*% it2 = solve_generics(it, info.generics_type, info);
                     
-                    param_types.push_back(clone it2);
+                    sType*% no_solved_obj_type = obj_type->mNoSolvedGenericsType;
+                    sType*% it3 = solve_generics(it, no_solved_obj_type, info);
+                    
+                    sType*% any_type = use_any_type(it3);
+
+                    
+                    param_types.push_back(it2);
+                }
+            }
+            
+            list<sType~>*% type_checking_param_types = clone param_types; //new list<sType~>();
+            if(generics_fun) {
+                int n = 0;
+                foreach(it, generics_fun.mParamTypes) {
+                    if(it == null) {
+                    }
+                    else {
+                        sType*% no_solved_obj_type = obj_type->mNoSolvedGenericsType;
+                        sType*% it3 = solve_generics(it, no_solved_obj_type, info);
+                        
+                        sType*% any_type = use_any_type(it3);
+                        
+                        if(param_types[n].mClass.mName === "void" && param_types[n].mPointerNum == 1) {
+                            type_checking_param_types.replace(n, any_type);
+                        }
+                    }
+                    
+                    n++;
                 }
             }
             
@@ -751,7 +779,7 @@ class sMethodCallNode extends sNodeBase
                     dec_stack_ptr(1, info);
                     
                     if(param_types[n]??) {
-                        check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value);
+                        check_assign_type(s"\{fun_name} param num \{n} is assinged to", type_checking_param_types[n], come_value.type, come_value);
                     }
                     if(param_types[n]?? && param_types[n].mHeap && come_value.type.mHeap) {
                         std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -766,7 +794,7 @@ class sMethodCallNode extends sNodeBase
                 var label, node = it;
                 
                 if(i == 0) {
-                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], obj_value.type, obj_value);
+                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], obj_value.type, obj_value);
                     if(param_types[i].mHeap && obj_value.type.mHeap) {
                         std_move(param_types[i], obj_value.type, obj_value, no_delete_from_right_value_objects:true);
                     }
@@ -798,7 +826,7 @@ class sMethodCallNode extends sNodeBase
                     dec_stack_ptr(1, info);
                     
                     if(param_types[i]??) {
-                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
+                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], come_value.type, come_value);
                     }
                     if(param_types[i]?? && param_types[i].mHeap && come_value.type.mHeap) {
                         std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1000,7 +1028,7 @@ class sMethodCallNode extends sNodeBase
                 
                         CVALUE*% come_value = get_value_from_stack(-1, info);
                         if(param_types[i]) {
-                            check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
+                            check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], come_value.type, come_value);
                         }
                         if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
                             std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);

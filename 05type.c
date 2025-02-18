@@ -450,27 +450,19 @@ list<sType~>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, b
 
 bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=false, sInfo* info=info)
 {
+    sType*% left_type2 = clone left_type;
     sType*% right_type2 = clone right_type;
     
-/*
-    if(left_type->mAnyOriginalType) {
-        left_type = left_type->mAnyOriginalType;
-    }
-    if(right_type2->mAnyOriginalType) {
-        right_type2 = right_type2->mNoSolvedGenericsType;
-    }
-*/
-    
     sType* left_no_solved_generics_type = null;
-    if(left_type->mNoSolvedGenericsType) {
-        left_no_solved_generics_type = left_type->mNoSolvedGenericsType;
+    if(left_type2->mNoSolvedGenericsType) {
+        left_no_solved_generics_type = left_type2->mNoSolvedGenericsType;
     }
     sType* right_no_solved_generics_type = null;
     if(right_type2->mNoSolvedGenericsType) {
         right_no_solved_generics_type = right_type2->mNoSolvedGenericsType;
     }
     
-    sClass* left_class = left_type->mClass;
+    sClass* left_class = left_type2->mClass;
     sClass* right_class = right_type2->mClass;
     
     bool parent_class = false;
@@ -489,29 +481,29 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     }
     
     if(pointer_massive) {
-        if(left_type->mPointerNum > 0 && right_type->mPointerNum == 0) {
+        if(left_type2->mPointerNum > 0 && right_type->mPointerNum == 0) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
         }
-        else if(right_type->mPointerNum > 0 && left_type->mPointerNum == 0) {
+        else if(right_type->mPointerNum > 0 && left_type2->mPointerNum == 0) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
         }
-        else if(left_type->mPointerNum > 0 && right_type->mPointerNum > 0) {
-            if(left_type->mClass->mName === "void") {
+        else if(left_type2->mPointerNum > 0 && right_type->mPointerNum > 0) {
+            if(left_type2->mClass->mName === "void") {
             }
-            else if(left_type->mClass->mName !== right_type->mClass->mName) {
+            else if(left_type2->mClass->mName !== right_type->mClass->mName) {
                 if(print_err_msg) {
                     err_msg(info, "poinetr num err");
-                    printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                    printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                     exit(2);
                 }
@@ -520,8 +512,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     }
     
     if(left_no_solved_generics_type && right_no_solved_generics_type) {
-        if(strlen(left_type->mClass->mName) >= strlen("tuple") 
-            && memcmp(left_type->mClass->mName, "tuple", strlen("tuple")) == 0
+        if(strlen(left_type2->mClass->mName) >= strlen("tuple") 
+            && memcmp(left_type2->mClass->mName, "tuple", strlen("tuple")) == 0
             && !(strlen(right_type->mClass->mName) >= strlen("tuple") 
             && memcmp(right_type->mClass->mName, "tuple", strlen("tuple")) == 0)
             && (right_type->mClass->mName !== "void" && right_type->mPointerNum >= 1))
@@ -534,7 +526,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
         } 
 /*
-        else if(left_type->mAnyOriginalType && !right_type->mAnyOriginalType) {
+        else if(left_type2->mAnyOriginalType && !right_type->mAnyOriginalType) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
                 puts(msg);
@@ -544,7 +536,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         }
 */
 /*
-        else if(!left_type->mAnyOriginalType && right_type->mAnyOriginalType) {
+        else if(!left_type2->mAnyOriginalType && right_type->mAnyOriginalType) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
                 puts(msg);
@@ -553,60 +545,60 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
         }
 */
-        else if(right_type->mPointerNum == 0 && left_type->mPointerNum > 0) {
+        else if(right_type->mPointerNum == 0 && left_type2->mPointerNum > 0) {
         }
-        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
+        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mNumber && left_type2->mPointerNum == 0) {
             if(pointer_massive) {
                 if(print_err_msg) {
                     err_msg(info, "poinetr num err");
                     puts(msg);
-                    printf("(3)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                    printf("(3)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type2->mClass->mName);
                     printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                     exit(2);
                 }
             }
             else {
-                string left_type_name = make_type_name_string(left_type);
-                come_value.c_value = xsprintf("(%s)%s", left_type_name, come_value.c_value);
-                come_value.type = clone left_type;
+                string left_type3 = make_type_name_string(left_type2);
+                come_value.c_value = xsprintf("(%s)%s", left_type3, come_value.c_value);
+                come_value.type = clone left_type2;
                 come_value.var = null;
                 
-                right_type2 = clone left_type;
+                right_type2 = clone left_type2;
             }
         }
-        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mFloat && left_type->mPointerNum == 0) {
+        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mFloat && left_type2->mPointerNum == 0) {
             if(pointer_massive) {
                 if(print_err_msg) {
                     err_msg(info, "poinetr num err");
                     puts(msg);
-                    printf("(2)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                    printf("(2)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type2->mClass->mName);
                     printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                     exit(2);
                 }
             }
             else {
-                string left_type_name = make_type_name_string(left_type);
-                come_value.c_value = xsprintf("(%s)(long)%s", left_type_name, come_value.c_value);
-                come_value.type = clone left_type;
+                string left_type3 = make_type_name_string(left_type2);
+                come_value.c_value = xsprintf("(%s)(long)%s", left_type3, come_value.c_value);
+                come_value.type = clone left_type2;
                 come_value.var = null;
                 
-                right_type2 = clone left_type;
+                right_type2 = clone left_type2;
             }
         }
-        else if(left_type->mClass->mName === right_type2->mClass->mName && left_type->mPointerNum == right_type2->mPointerNum) {
+        else if(left_type2->mClass->mName === right_type2->mClass->mName && left_type2->mPointerNum == right_type2->mPointerNum) {
         }
-        else if(left_type->mClass->mName === "void" && left_type->mPointerNum > 0 && left_type->mClass->mName === right_type2->mClass->mName && (left_type->mPointerNum != right_type2->mPointerNum || left_type->mHeap != right_type2->mHeap)) {
+        else if(left_type2->mClass->mName === "void" && left_type2->mPointerNum > 0 && left_type2->mClass->mName === right_type2->mClass->mName && (left_type2->mPointerNum != right_type2->mPointerNum || left_type2->mHeap != right_type2->mHeap)) {
         }
-        else if(left_type->mClass->mName === right_type2->mClass->mName && (left_type->mPointerNum != right_type2->mPointerNum || left_type->mHeap != right_type2->mHeap)) {
+        else if(left_type2->mClass->mName === right_type2->mClass->mName && (left_type2->mPointerNum != right_type2->mPointerNum || left_type2->mHeap != right_type2->mHeap)) {
             err_msg(info, "poinetr num err");
             puts(msg);
-            printf("left type class_name %s\n", left_type->mClass->mName);
+            printf("left type class_name %s\n", left_type2->mClass->mName);
             printf("right type class_name %s\n", right_type2->mClass->mName);
-            printf("left type pointernum %d\n", left_type->mPointerNum);
+            printf("left type pointernum %d\n", left_type2->mPointerNum);
             printf("right type pointernum %d\n", right_type->mPointerNum);
-            printf("left type heap %d\n", left_type->mHeap);
+            printf("left type heap %d\n", left_type2->mHeap);
             printf("right type heap %d\n", right_type->mHeap);
-            printf("(1)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+            printf("(1)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type2->mClass->mName);
             printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
             exit(2);
         }
@@ -620,7 +612,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                     if(print_err_msg) {
                         err_msg(info, "generics type parametor number error");
                         puts(msg);
-                        printf("(4)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                        printf("(4)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type2->mClass->mName);
                         printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                         exit(2);
                     }
@@ -636,8 +628,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
         }
     }
-    else if(strlen(left_type->mClass->mName) >= strlen("tuple") 
-        && memcmp(left_type->mClass->mName, "tuple", strlen("tuple")) == 0
+    else if(strlen(left_type2->mClass->mName) >= strlen("tuple") 
+        && memcmp(left_type2->mClass->mName, "tuple", strlen("tuple")) == 0
         && !(strlen(right_type->mClass->mName) >= strlen("tuple") 
         && memcmp(right_type->mClass->mName, "tuple", strlen("tuple")) == 0)
         && (right_type->mClass->mName !== "void" && right_type->mPointerNum >= 1))
@@ -650,7 +642,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         }
     } 
 /*
-    else if(left_type->mAnyOriginalType && !right_type->mAnyOriginalType) {
+    else if(left_type2->mAnyOriginalType && !right_type->mAnyOriginalType) {
         if(print_err_msg) {
             err_msg(info, "poinetr num err");
             puts(msg);
@@ -658,7 +650,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             exit(2);
         }
     }
-    else if(!left_type->mAnyOriginalType && right_type->mAnyOriginalType) {
+    else if(!left_type2->mAnyOriginalType && right_type->mAnyOriginalType) {
         if(print_err_msg) {
             err_msg(info, "poinetr num err");
             puts(msg);
@@ -667,104 +659,104 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         }
     }
 */
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mNumber && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
                 puts(msg);
-                printf("(5)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                printf("(5)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type2->mClass->mName);
                 printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                 exit(2);
             }
         }
         else {
-            string left_type_name = make_type_name_string(left_type);
-            come_value.c_value = xsprintf("(%s)%s", left_type_name, come_value.c_value);
-            come_value.type = clone left_type;
+            string left_type3 = make_type_name_string(left_type2);
+            come_value.c_value = xsprintf("(%s)%s", left_type3, come_value.c_value);
+            come_value.type = clone left_type2;
             come_value.var = null;
             
-            right_type2 = clone left_type;
+            right_type2 = clone left_type2;
         }
     }
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mFloat && left_type->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mFloat && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
                 err_msg(info, "poinetr num err");
                 puts(msg);
-                printf("(6)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type->mClass->mName);
+                printf("(6)left type generics type parametor number is %d(%s)(%s)\n", left_no_solved_generics_type->mGenericsTypes.length(), left_no_solved_generics_type->mClass->mName, left_type2->mClass->mName);
                 printf("right type generics type parametor number is %d(%s)(%s)\n", right_no_solved_generics_type->mGenericsTypes.length(), right_no_solved_generics_type->mClass->mName, right_type2->mClass->mName);
                 exit(2);
             }
         }
         else {
-            string left_type_name = make_type_name_string(left_type);
-            come_value.c_value = xsprintf("(%s)(long)%s", left_type_name, come_value.c_value);
-            come_value.type = clone left_type;
+            string left_type3 = make_type_name_string(left_type2);
+            come_value.c_value = xsprintf("(%s)(long)%s", left_type3, come_value.c_value);
+            come_value.type = clone left_type2;
             come_value.var = null;
             
-            right_type2 = clone left_type;
+            right_type2 = clone left_type2;
         }
     }
-    else if(left_type->mHeap && !right_type2->mHeap && left_type->mPointerNum > 0 && right_type2->mPointerNum > 0 && right_type2->mClass->mName !== "void" && !info.in_generics_fun && !left_type->mMultipleTypes && !right_type->mMultipleTypes)
+    else if(left_type2->mHeap && !right_type2->mHeap && left_type2->mPointerNum > 0 && right_type2->mPointerNum > 0 && right_type2->mClass->mName !== "void" && !info.in_generics_fun && !left_type2->mMultipleTypes && !right_type->mMultipleTypes)
     {
         err_msg(info, "%s", msg);
         err_msg(info, "type error heap");
-        printf("left type is %s pointer num %d heap %d\n", left_type->mClass->mName, left_type->mPointerNum, left_type->mHeap);
+        printf("left type is %s pointer num %d heap %d\n", left_type2->mClass->mName, left_type2->mPointerNum, left_type2->mHeap);
         printf("right type is %s pointer num %d heap %d\n", right_type2->mClass->mName, right_type2->mPointerNum, right_type2->mHeap);
         exit(2);
     }
-    else if(parent_class && left_type->mPointerNum == 1 && right_type->mPointerNum == 1) {
-        come_value.c_value = xsprintf("(struct %s*)%s", left_type->mClass->mName, come_value.c_value);
-        come_value.type = clone left_type;
+    else if(parent_class && left_type2->mPointerNum == 1 && right_type->mPointerNum == 1) {
+        come_value.c_value = xsprintf("(struct %s*)%s", left_type2->mClass->mName, come_value.c_value);
+        come_value.type = clone left_type2;
         come_value.var = null;
         
-        right_type2 = clone left_type;
+        right_type2 = clone left_type2;
     }
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mNumber && left_type->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mNumber && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
         }
         else {
-            string left_type_name = make_type_name_string(left_type);
-            come_value.c_value = xsprintf("(%s)%s", left_type_name, come_value.c_value);
-            come_value.type = clone left_type;
+            string left_type3 = make_type_name_string(left_type2);
+            come_value.c_value = xsprintf("(%s)%s", left_type3, come_value.c_value);
+            come_value.type = clone left_type2;
             come_value.var = null;
             
-            right_type2 = clone left_type;
+            right_type2 = clone left_type2;
         }
     }
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mFloat && left_type->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mFloat && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
         }
         else {
-            string left_type_name = make_type_name_string(left_type);
-            come_value.c_value = xsprintf("(%s)(long)%s", left_type_name, come_value.c_value);
-            come_value.type = clone left_type;
+            string left_type3 = make_type_name_string(left_type2);
+            come_value.c_value = xsprintf("(%s)(long)%s", left_type3, come_value.c_value);
+            come_value.type = clone left_type2;
             come_value.var = null;
             
-            right_type2 = clone left_type;
+            right_type2 = clone left_type2;
         }
     }
     else if(check_no_pointer) {
-        if(left_type->mPointerNum > 0) {
+        if(left_type2->mPointerNum > 0) {
             if(right_type2->mPointerNum > 0) {
-                if(left_type->mClass->mName === "void" || right_type2->mClass->mName === "void") {
+                if(left_type2->mClass->mName === "void" || right_type2->mClass->mName === "void") {
                 }
-                else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+                else if(left_type2->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
                 }
-                else if(left_type->mClass->mName !== right_type2->mClass->mName) {
+                else if(left_type2->mClass->mName !== right_type2->mClass->mName) {
                     if(print_err_msg) {
                         err_msg(info, "type error1");
-                        printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                        printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                         printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                         exit(2);
                     }
@@ -776,7 +768,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             else {
                 if(print_err_msg) {
                     err_msg(info, "type error2");
-                    printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                    printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                     exit(2);
                 }
@@ -784,36 +776,36 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 return false;
             }
         }
-        else if(left_type->mPointerNum == 0 && right_type2->mPointerNum > 0) {
+        else if(left_type2->mPointerNum == 0 && right_type2->mPointerNum > 0) {
             if(print_err_msg) {
                 err_msg(info, "type error3");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
             return false;
         }
-        else if(left_type->mPointerNum > 0 && right_type2->mPointerNum == 0 && right_type2->mClass->mName === "lambda" && left_type->mClass->mName === "lambda") {
+        else if(left_type2->mPointerNum > 0 && right_type2->mPointerNum == 0 && right_type2->mClass->mName === "lambda" && left_type2->mClass->mName === "lambda") {
         }
-        else if(left_type->mClass->mName !== right_type2->mClass->mName) {
+        else if(left_type2->mClass->mName !== right_type2->mClass->mName) {
             if(print_err_msg) {
                 err_msg(info, "type error4");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
             return false;
         }
     }
-    else if(!left_type->mNullValue && right_type2->mNullValue) {
-        if(left_type->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
+    else if(!left_type2->mNullValue && right_type2->mNullValue) {
+        if(left_type2->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
         }
-        else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+        else if(left_type2->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
         }
         else if(right_type2->mClass->mName === "void" && right_type2->mPointerNum == 0) {
             if(print_err_msg) {
                 err_msg(info, "type error6");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
@@ -825,23 +817,23 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             buf2.append_str(s"come_null_check(\{come_value.c_value}, \"\{info->sname}\", \{info->sline}, \{gComeDebugStackFrameID++})");
             
             come_value.c_value = buf2.to_string();
-            come_value.type = clone left_type;
+            come_value.type = clone left_type2;
             come_value.var = null;
             
-            right_type2 = clone left_type;
+            right_type2 = clone left_type2;
         }
     }
-    else if(left_type->mClass.mName === "char" && left_type->mPointerNum == 1) {
+    else if(left_type2->mClass.mName === "char" && left_type2->mPointerNum == 1) {
         if(right_type2->mClass.mName === "char" && right_type2->mPointerNum == 1) {
         }
-        else if(left_type->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
+        else if(left_type2->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
         }
-        else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+        else if(left_type2->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
         }
         else if(right_type2->mClass->mName === "lambda") {
             if(print_err_msg) {
                 err_msg(info, "type error10");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
@@ -853,28 +845,28 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         else if(right_type2->mClass->mName === "void") {
             if(print_err_msg) {
                 err_msg(info, "type error11");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
             return false;
         }
-        else if(left_type->mClass->mName !== right_type2->mClass->mName && !(left_type->mPointerNum > 0 && right_type2->mPointerNum == 0)) {
+        else if(left_type2->mClass->mName !== right_type2->mClass->mName && !(left_type2->mPointerNum > 0 && right_type2->mPointerNum == 0)) {
             if(print_err_msg) {
                 err_msg(info, "type error12");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
             return false;
         }
     }
-    else if(left_type->mClass.mName === "void" && left_type->mPointerNum == 1) {
+    else if(left_type2->mClass.mName === "void" && left_type2->mPointerNum == 1) {
         if(right_type2->mClass.mName === "void" && right_type2->mPointerNum == 1) {
         }
-        else if(left_type->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
+        else if(left_type2->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
         }
-        else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+        else if(left_type2->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
         }
         else if(right_type2->mClass->mName === "lambda") {
         }
@@ -883,7 +875,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         else if(right_type2->mClass->mName === "void") {
             if(print_err_msg) {
                 err_msg(info, "type error13");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
@@ -892,7 +884,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         else if(right_type2->mPointerNum == 0) {
             if(pointer_massive) {
                 if(print_err_msg) {
-                    printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                    printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                     exit(2);
                 }
@@ -900,63 +892,63 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             else {
                 string tmp = xsprintf("/*a*/(void*)%s", come_value.c_value);
                 come_value.c_value = clone tmp;
-                come_value.type = clone left_type;
+                come_value.type = clone left_type2;
                 come_value.var = null;
                 
-                right_type2 = clone left_type;
+                right_type2 = clone left_type2;
             }
         }
     }
-    else if(left_type->mPointerNum > 0 || (left_type->mPointerNum == 0 && left_type->mClass->mStruct)) {
+    else if(left_type2->mPointerNum > 0 || (left_type2->mPointerNum == 0 && left_type2->mClass->mStruct)) {
         if(right_type2->mPointerNum > 0 || (right_type2->mPointerNum == 0 && right_type2->mClass->mStruct)) {
-            if(left_type->mClass->mName === "void" || right_type2->mClass->mName === "void") {
+            if(left_type2->mClass->mName === "void" || right_type2->mClass->mName === "void") {
             }
-            else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+            else if(left_type2->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
             }
-            else if(left_type->mClass->mName !== right_type2->mClass->mName) {
+            else if(left_type2->mClass->mName !== right_type2->mClass->mName) {
                 if(print_err_msg) {
                     puts(msg);
                     err_msg(info, "type error14");
-                    printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                    printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                     exit(2);
                 }
                 return false;
             }
-            else if(left_type->mPointerNum !== right_type2->mPointerNum) {
+            else if(left_type2->mPointerNum !== right_type2->mPointerNum) {
                 printf("%s %d: warning invalid pointer number\n", info->sname, info->sline);
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
             }
             else if(right_type2->mArrayNum.length() > 0) {
                 printf("%s %d: warning invalid pointer number\n", info->sname, info->sline);
-                printf("left type is %s pointer num %d array dimetion num %d\n", left_type->mClass->mName, left_type->mPointerNum, left_type->mArrayNum.length());
+                printf("left type is %s pointer num %d array dimetion num %d\n", left_type2->mClass->mName, left_type2->mPointerNum, left_type2->mArrayNum.length());
                 printf("right type is %s pointer num %d array dimetion num %d\n", right_type2->mClass->mName, right_type2->mPointerNum, right_type2->mArrayNum.length());
             }
         }
-        else if(left_type->mClass->mName === "void" || right_type2->mClass->mName === "void") {
+        else if(left_type2->mClass->mName === "void" || right_type2->mClass->mName === "void") {
         }
-        else if(left_type->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
+        else if(left_type2->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
         }
-        else if(left_type->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
+        else if(left_type2->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
         }
-        else if(left_type->mClass->mName === "lambda" && right_type2->mClass->mName === "lambda") {
+        else if(left_type2->mClass->mName === "lambda" && right_type2->mClass->mName === "lambda") {
         }
-        else if(left_type->mPointerNum > 0 && right_type2->mPointerNum == 0 && right_type2->mClass->mName === "lambda" && left_type->mClass->mName === "lambda") {
+        else if(left_type2->mPointerNum > 0 && right_type2->mPointerNum == 0 && right_type2->mClass->mName === "lambda" && left_type2->mClass->mName === "lambda") {
             if(print_err_msg) {
                 err_msg(info, "type error15");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
             
             return false;
         }
-        else if(left_type->mPointerNum > 0 && !(right_type2->mClass->mName === "lambda" && left_type->mClass->mName === "lambda") && right_type2->mPointerNum == 0) {
+        else if(left_type2->mPointerNum > 0 && !(right_type2->mClass->mName === "lambda" && left_type2->mClass->mName === "lambda") && right_type2->mPointerNum == 0) {
 /*
             if(print_err_msg) {
                 err_msg(info, "type error16");
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
@@ -964,20 +956,20 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
 */
             string tmp = xsprintf("/*b*/(void*)%s", come_value.c_value);
             come_value.c_value = clone tmp;
-            come_value.type = clone left_type;
+            come_value.type = clone left_type2;
             return true;
         }
         
-        if(left_type->mGenericsTypes.length() > 0) {
-            if(left_type->mGenericsTypes.length() != right_type2->mGenericsTypes.length()) {
+        if(left_type2->mGenericsTypes.length() > 0) {
+            if(left_type2->mGenericsTypes.length() != right_type2->mGenericsTypes.length()) {
                 err_msg(info, "generics type number error");
                 puts(msg);
-                printf("left type is %s pointer num %d\n", left_type->mClass->mName, left_type->mPointerNum);
+                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 exit(2);
             }
-            for(int i=0; i<left_type->mGenericsTypes.length(); i++) {
-                check_assign_type(msg, left_type->mGenericsTypes[i], right_type2->mGenericsTypes[i], come_value, check_no_pointer:false);
+            for(int i=0; i<left_type2->mGenericsTypes.length(); i++) {
+                check_assign_type(msg, left_type2->mGenericsTypes[i], right_type2->mGenericsTypes[i], come_value, check_no_pointer:false);
             }
         }
     }
