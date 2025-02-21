@@ -9,7 +9,7 @@ sh remove_all_build.sh
 git add .
 git commit 
 #git branch -M master
-#git remote add origin git@github.com:ab25cq/comelang.git
+git remote add origin git@github.com:ab25cq/comelang.git
 git push --force origin master
 
 
