@@ -26,6 +26,7 @@ sModule*% sModule*::initialize(sModule*% self)
     self.mLastCode = null;
     self.mLastCode2 = null;
     self.mHeader = new map<string~, string~>();
+    self.mHeaderStructs = new map<string~, string~>();
     
     return self;
 }
@@ -78,7 +79,6 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
     else {
         sClass*% klass2 = new sClass;
         klass2->mName = string(name);
-        klass2->mDeclareSName = string(info->sname);
         
         info.classes.insert(string(name), klass2);
         
@@ -134,8 +134,6 @@ sClass*% sClass*::initialize(sClass*% self, char* name, bool number=false, bool 
     self.mMethodGenericsNum = method_generics_num;
     
     self.mFields = new list<tup(string, sType*%)~>();
-    
-    self.mDeclareSName = string(info->sname);
     
     return self;
 };

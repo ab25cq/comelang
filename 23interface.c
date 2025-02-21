@@ -148,7 +148,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
         header.append(source_head, source_tail - source_head);
         
         string id = string(type_name);
-        add_come_code_at_come_header(info, id, "%s\n", header.to_string());
+        add_come_code_at_come_struct_header(info, id, "%s\n", header.to_string());
         
         return new sInterfaceNode(string(type_name), klass, output, info) implements sNode;
     }

@@ -235,7 +235,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 97
         header.append(source_head, source_tail - source_head);
         
         string id = string(type_name);
-        add_come_code_at_come_header(info, id, "%s;\n", header.to_string());
+        add_come_code_at_come_struct_header(info, id, "%s;\n", header.to_string());
         
         if(struct_attribute === "" && struct_attribute2 === "") {
         }

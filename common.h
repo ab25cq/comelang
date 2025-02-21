@@ -38,8 +38,6 @@ dynamic struct sClass
     
     list<tup(string, sType*%)~>*% mFields;
     
-    string mDeclareSName;
-    
     string mParentClassName;
     
     string mAttribute;
@@ -250,6 +248,7 @@ dynamic struct sModule
     string mLastCode2;
     
     map<string~, string~>*% mHeader;
+    map<string~, string~>*% mHeaderStructs;
 };
 
 struct sVarTable;
@@ -581,6 +580,7 @@ string create_generics_name(sType* generics_type, sInfo* info);
 void add_last_code_to_source(sInfo* info);
 void add_come_code_at_function_head(sInfo* info, char* code, ...);
 void add_come_code_at_come_header(sInfo* info, string id, const char* msg, ...);
+void add_come_code_at_come_struct_header(sInfo* info, string id, const char* msg, ...);
 void add_come_code_at_function_head2(sInfo* info, char* code, ...);
 void add_come_code(sInfo* info, const char* msg, ...);
 void add_come_last_code(sInfo* info, const char* msg, ...);

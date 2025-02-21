@@ -120,10 +120,8 @@ void output_struct_come_header(sClass* klass, sInfo* info)
         buf.append_format("} %s;\n", klass->mAttribute);
     }
     
-    if(klass.mDeclareSName === info->base_sname) {
-        string id = string(klass.mName);
-        add_come_code_at_come_header(info, id, "%s", buf.to_string());
-    }
+    string id = string(klass.mName);
+    add_come_code_at_come_struct_header(info, id, "%s", buf.to_string());
 }
 
 bool is_contained_generics_types(sType* type, sInfo* info)
@@ -583,8 +581,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             buffer*% header = new buffer();
             header.append(source_head, source_tail - source_head);
             
-            string id = string(type_name);
-            add_come_code_at_come_header(info, id, "%s", header.to_string());
+            string id = string(type_name) + ";";
+            add_come_code_at_come_struct_header(info, id, "%s", header.to_string());
             
             return new sStructNobodyNode(string(type_name), struct_class, info) implements sNode;
         }
@@ -705,7 +703,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             header.append(source_head, source_tail - source_head);
             
             string id = string(type_name);
-            add_come_code_at_come_header(info, id, "%s;\n", header.to_string());
+            add_come_code_at_come_struct_header(info, id, "%s;\n", header.to_string());
             
             return new sNothingNode(info) implements sNode;
         }
@@ -736,6 +734,11 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 info.types.insert(type_name, type);
                 
                 struct_class = info.classes.at(type_name, null);
+            }
+            
+            if(struct_class == null) {
+                printf("%s is not found\n", type_name);
+                exit(1);
             }
             
             sClass* parent_class = null;
@@ -832,7 +835,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             header.append(source_head, source_tail - source_head);
             
             string id = string(type_name);
-            add_come_code_at_come_header(info, id, "%s;\n", header.to_string());
+            add_come_code_at_come_struct_header(info, id, "%s;\n", header.to_string());
             
             if(parent_class) {
                 struct_class->mParentClassName = clone parent_class->mName;
@@ -861,7 +864,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         string type_name = parse_word();
         
         string id = string(type_name);
-        add_come_code_at_come_header(info, id, "struct %s;\n", type_name);
+        add_come_code_at_come_struct_header(info, id, "struct %s;\n", type_name);
         
         sClass* parent_class = null;
         if(parsecmp("extends")) {

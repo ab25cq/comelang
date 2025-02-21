@@ -234,7 +234,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
         static int n = 0;
         string anonymous_name = xsprintf("annymous_header_name_%d", n++);
         
-        add_come_code_at_come_header(info, anonymous_name, "%s\n", contents);
+        add_come_code_at_come_struct_header(info, anonymous_name, "%s\n", contents);
         
         return new sHeaderNode(contents, info) implements sNode;
     }

@@ -870,7 +870,30 @@ void add_come_code_at_come_header(sInfo* info, string id, const char* msg, ...)
         int len = vasprintf(&msg2, msg, args);
         va_end(args);
         
-        info.module.mHeader[string(id)] = xsprintf("%s", msg2);
+        if(info.module.mHeader[string(id)]?? == null) {
+            info.module.mHeader[string(id)] = xsprintf("%s", msg2);
+        }
+        
+        free(msg2);
+    }
+}
+
+void add_come_code_at_come_struct_header(sInfo* info, string id, const char* msg, ...)
+{
+    if(info->no_output_come_code) {
+        return;
+    }
+    if(info->sname_at_head === info->base_sname) {
+        char* msg2;
+    
+        va_list args;
+        va_start(args, msg);
+        int len = vasprintf(&msg2, msg, args);
+        va_end(args);
+        
+        if(info.module.mHeaderStructs[string(id)]?? == null) {
+            info.module.mHeaderStructs[string(id)] = xsprintf("%s", msg2);
+        }
         
         free(msg2);
     }
@@ -982,6 +1005,12 @@ bool output_header_file(sInfo* info)
         fprintf(f, "#ifndef __COMMON_H__\n");
         fprintf(f, "#define __COMMON_H__\n");
         fprintf(f, "#include <comelang.h>\n");
+    }
+    
+    foreach(it, info.module.mHeaderStructs) {
+        string item = info.module.mHeaderStructs[string(it)];
+        
+        fprintf(f, "%s", item);
     }
     
     foreach(it, info.module.mHeader) {

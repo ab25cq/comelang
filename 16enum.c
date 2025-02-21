@@ -306,11 +306,11 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
         if(type_name === "") {
             static int n = 0;
             string anonymous_name = xsprintf("enum_anonymous_%d", n++);
-            add_come_code_at_come_header(info, anonymous_name, "%s;\n", header.to_string());
+            add_come_code_at_come_struct_header(info, anonymous_name, "%s;\n", header.to_string());
         }
         else {
             string id = string(type_name);
-            add_come_code_at_come_header(info, id, "%s;\n", header.to_string());
+            add_come_code_at_come_struct_header(info, id, "%s;\n", header.to_string());
         }
         
         return new sEnumNode(type_name, elements, type_elements, info) implements sNode;
