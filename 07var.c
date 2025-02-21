@@ -41,7 +41,6 @@ class sStoreNode extends sNodeBase
             }
             
             var type = solve_generics(self.type, info->generics_type, info);
-            type->mFunctionParam = false;
             
             foreach(it, self.multiple_declare) {
                 var type, var_name, right_value = it;
@@ -53,7 +52,7 @@ class sStoreNode extends sNodeBase
                     
                     info.lv_table.mVars.remove(string(var_name));
                 }
-                add_variable_to_table(var_name, clone type, info);
+                add_variable_to_table(var_name, clone type, info, false@function_param);
                 
                 var_ = get_variable_from_table(info.lv_table, var_name);
                 
@@ -106,8 +105,7 @@ class sStoreNode extends sNodeBase
                     }
             
                     sType*% right_type2 = right_type.mGenericsTypes[i];
-                    right_type2->mFunctionParam = false;
-                    add_variable_to_table(it, clone right_type2, info);
+                    add_variable_to_table(it, clone right_type2, info, false@function_param);
                 }
                 
                 i++;
@@ -187,10 +185,8 @@ class sStoreNode extends sNodeBase
             }
             
             var type = solve_generics(self.type, info->generics_type, info);
-            type->mFunctionParam = false;
             
-            
-            add_variable_to_table(self.name, clone type, info);
+            add_variable_to_table(self.name, clone type, info, false@function_param);
         
             var_ = get_variable_from_table(info.lv_table, self.name);
             
@@ -265,8 +261,7 @@ class sStoreNode extends sNodeBase
             else {
                 var type = solve_generics(self.type, info->generics_type, info);
                 
-                type->mFunctionParam = false;
-                add_variable_to_table(self.name, clone type, info);
+                add_variable_to_table(self.name, clone type, info, false@function_param);
             }
             
             node_compile(self.right_value).elif {
@@ -282,8 +277,7 @@ class sStoreNode extends sNodeBase
             dec_stack_ptr(1, info);
             
             if(self.type == null) {
-                right_type->mFunctionParam = false;
-                add_variable_to_table(self.name, clone right_type, info);
+                add_variable_to_table(self.name, clone right_type, info, false@function_param);
             }
             else {
             }
@@ -1200,14 +1194,14 @@ sNode*% parse_struct_initializer(sInfo* info=info)
     return new sStructInitializer(initializer, info) implements sNode;
 }
 
-void add_variable_to_table(char* name, sType*% type, sInfo* info)
+void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_param)
 {
     sVar*% self = new sVar;
     
     self->mName = string(name);
     self->mType = clone type;
     
-    if(type->mFunctionParam) {
+    if(function_param) {
         self->mCValueName = string(name);
     }
     else {
@@ -1217,7 +1211,6 @@ void add_variable_to_table(char* name, sType*% type, sInfo* info)
     
     self->mBlockLevel = info->block_level;
     self->mAllocaValue = false;
-    self->mFunctionParam = false;
     self->mNoFree = false;
     if(info.come_fun) {
         self->mFunName = clone info.come_fun.mName;
@@ -1242,7 +1235,6 @@ void add_variable_to_global_table(char* name, sType*% type, sInfo* info)
     
     self->mBlockLevel = info->block_level;
     self->mAllocaValue = false;
-    self->mFunctionParam = false;
     self->mNoFree = false;
     
     info.gv_table.mVars.insert(string(name), self);
@@ -1261,7 +1253,6 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
     
     self->mBlockLevel = info->block_level;
     self->mAllocaValue = false;
-    self->mFunctionParam = false;
     self->mNoFree = false;
     
     info.gv_table.mVars.insert(string(name), self);

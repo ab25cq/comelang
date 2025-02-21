@@ -74,6 +74,7 @@ dynamic struct sType
     sType*% mNoSolvedGenericsType;
     sType*% mOriginalLoadVarType;
     sType*% mAnyOriginalType;
+    sType*% mChannelType;
     
     bool mAnyClass;
     
@@ -86,9 +87,6 @@ dynamic struct sType
     list<string>*% mParamNames;
     sType*% mResultType;
     bool mVarArgs;
-    
-    sNode*% mAlignas;
-    sType*% mChannelType;
     
     bool mUnsigned;
     bool mShort;
@@ -110,17 +108,18 @@ dynamic struct sType
     bool mNoCallingDestructor;
     bool mException;
     
+    sNode*% mSizeNum;
+    sNode*% mAlignas;
+    
     int mPointerNum;
     int mOriginalTypeNamePointerNum;
     int mOriginalTypeNameHeap;
     int mTypedefOriginalPointerNum;
-    sNode*% mSizeNum;
     int mFunctionPointerNum;
     
     string mOriginalTypeName;
     int mOriginalPointerNum;
     
-    bool mFunctionParam;
     bool mAllocaValue;
     
     bool mInline;
@@ -715,7 +714,7 @@ sNode*% parse_struct_initializer(sInfo* info=info);
 sNode*% parse_global_variable(sInfo* info);
 sNode*% load_var(string name, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 7;
-void add_variable_to_table(char* name, sType*% type, sInfo* info);
+void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_param);
 void add_variable_to_global_table(char* name, sType*% type, sInfo* info);
 void add_variable_to_global_table_with_int_value(char* name, sType*% type, char* c_value, sInfo* info);
 

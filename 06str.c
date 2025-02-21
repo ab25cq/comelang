@@ -351,7 +351,7 @@ class sListNode extends sNodeBase
         static int list_value_num = 0;
         string var_name = xsprintf("__list_values%d__", ++list_value_num);
         
-        add_variable_to_table(var_name, clone type_values, info);
+        add_variable_to_table(var_name, clone type_values, info, false@function_param);
         
         sVar* var_ = get_variable_from_table(info.lv_table, var_name);
         
@@ -1235,7 +1235,7 @@ class sMapNode extends sNodeBase
         
         string var_name = xsprintf("__map_keys%d__", ++map_value_num);
         
-        add_variable_to_table(var_name, clone key_type_values, info);
+        add_variable_to_table(var_name, clone key_type_values, info, false@function_param);
         
         sVar* var_ = get_variable_from_table(info.lv_table, var_name);
         
@@ -1247,7 +1247,7 @@ class sMapNode extends sNodeBase
         
         string var_name2 = xsprintf("__map_element%d__", map_value_num);
         
-        add_variable_to_table(var_name2, clone element_type_values, info);
+        add_variable_to_table(var_name2, clone element_type_values, info, false@function_param);
         
         sVar* var2_ = get_variable_from_table(info.lv_table, var_name2);
         

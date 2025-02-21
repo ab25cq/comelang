@@ -71,7 +71,7 @@ class sIfNode extends sNodeBase
             static int var_num = 0;
             info->if_result_var_name = xsprintf("__if_result__%d", var_num++);
             
-            add_variable_to_table(info->if_result_var_name, clone if_result_type, info);
+            add_variable_to_table(info->if_result_var_name, clone if_result_type, info, false@function_param);
             
             sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
             add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(var_->mType, var_->mCValueName));

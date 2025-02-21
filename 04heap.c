@@ -1263,12 +1263,7 @@ bool existance_free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
             return true;
         }
         else if(type->mHeap && p->mCValueName) {
-            if(type->mFunctionParam) {
-                return true;
-            }
-            else {
-                return true;
-            }
+            return true;
         }
         else if(klass->mStruct && p->mCValueName && type->mAllocaValue && !type->mNoCallingDestructor) {
             return true;

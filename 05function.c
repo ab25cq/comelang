@@ -473,9 +473,8 @@ int transpile_block(sBlock* block, list<sType~>* param_types, list<string>* para
         int i;
         foreach(name, param_names) {
             sType*% type = clone param_types[i];
-            type->mFunctionParam = true;
             type->mAllocaValue = false;
-            add_variable_to_table(name, clone type, info);
+            add_variable_to_table(name, clone type, info, true@function_param);
             i++;
         }
     }
@@ -2223,8 +2222,6 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     foreach(it, generics_fun->mParamTypes) {
         sType*% param_type = solve_generics(clone it, generics_type, info);
         
-        param_type->mFunctionParam = true;
-        
         param_types.add(clone param_type);
     }
     list<string>*% param_names = clone generics_fun->mParamNames;
@@ -2338,8 +2335,6 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     foreach(it, generics_fun->mParamTypes) {
         sType*% param_type = solve_method_generics(clone it, info);
         
-        param_type->mFunctionParam = true;
-
         param_types.add(clone param_type);
     }
     list<string>*% param_names = clone generics_fun->mParamNames;

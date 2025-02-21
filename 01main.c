@@ -111,8 +111,6 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
     self.mOriginalTypeName = string("");
     self.mOriginalPointerNum = 0;
     
-    self.mFunctionParam = false;
-    
     return self;
 }
 

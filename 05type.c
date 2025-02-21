@@ -390,8 +390,6 @@ list<sType~>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, b
             
             var param_type2 = solve_generics(param_type, info->generics_type, info);
             
-            param_type2->mFunctionParam = true;
-            
             param_types.push_back(clone param_type2);
             param_names.push_back(clone param_name);
             
