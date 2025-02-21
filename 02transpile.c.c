@@ -632,7 +632,6 @@ struct sVar
     int mBlockLevel;
     _Bool mGlobal;
     _Bool mAllocaValue;
-    _Bool mFunctionParam;
     _Bool mNoFree;
     char* mFunName;
 };

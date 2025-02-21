@@ -641,7 +641,6 @@ struct sVar
     int mBlockLevel;
     _Bool mGlobal;
     _Bool mAllocaValue;
-    _Bool mFunctionParam;
     _Bool mNoFree;
     char* mFunName;
 };
@@ -4151,9 +4150,6 @@ struct sVar* __result280__;
         result_411->mAllocaValue=self->mAllocaValue;
     }
     if(    self!=((void*)0)) {
-        result_411->mFunctionParam=self->mFunctionParam;
-    }
-    if(    self!=((void*)0)) {
         result_411->mNoFree=self->mNoFree;
     }
     if(    self!=((void*)0)&&self->mFunName!=((void*)0)) {
@@ -4418,7 +4414,6 @@ unsigned int result_404;
     result_404+=int_get_hash_key(((int)self->mBlockLevel));
     result_404+=int_get_hash_key(((int)self->mGlobal));
     result_404+=int_get_hash_key(((int)self->mAllocaValue));
-    result_404+=int_get_hash_key(((int)self->mFunctionParam));
     result_404+=int_get_hash_key(((int)self->mNoFree));
     result_404+=int_get_hash_key(((int)self->mFunName));
     return result_404;
@@ -4441,9 +4436,6 @@ static _Bool sVar_equals(struct sVar* left, struct sVar* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mAllocaValue,right->mAllocaValue)) {
-        return (_Bool)0;
-    }
-    if(    !bool_equals(left->mFunctionParam,right->mFunctionParam)) {
         return (_Bool)0;
     }
     if(    !bool_equals(left->mNoFree,right->mNoFree)) {

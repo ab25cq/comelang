@@ -170,7 +170,6 @@ dynamic struct sVar
 
     bool mGlobal;
     bool mAllocaValue;
-    bool mFunctionParam;
     bool mNoFree;
     
     string mFunName;
