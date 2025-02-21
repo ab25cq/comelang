@@ -540,9 +540,9 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
     }
     
     if(type->mNoSolvedGenericsType) {
-        bool alloca_value = type->mAllocaValue;
+        //bool alloca_value = type->mAllocaValue;
         type = type->mNoSolvedGenericsType;
-        type->mAllocaValue = alloca_value;
+        //type->mAllocaValue = alloca_value;
     }
 
     if(type->mPointerNum > 0 || type->mClass->mProtocol || type->mGenericsTypes.length() > 0 || (info->come_fun.mCloner && ret_value)) {

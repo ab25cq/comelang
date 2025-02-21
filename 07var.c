@@ -244,6 +244,9 @@ class sStoreNode extends sNodeBase
             
             if(!left_type->mClass->mNumber && left_type->mPointerNum == 0) {
                 var_->mType->mAllocaValue = true;
+                if(var_->mType->mNoSolvedGenericsType) {
+                    var_->mType->mNoSolvedGenericsType->mAllocaValue = true;
+                }
             }
         }
         else if(self.alloc) { // right_value != null

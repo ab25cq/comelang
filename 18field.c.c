@@ -665,7 +665,6 @@ struct sFun
     _Bool mUniq;
     _Bool mGenerate;
     _Bool mCloner;
-    char* mDeclareSName;
     _Bool mNoResultType;
     _Bool mDeclaredResultObject;
     char* mAttribute;
@@ -4584,9 +4583,6 @@ static _Bool sFun_equals(struct sFun* left, struct sFun* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mCloner,right->mCloner)) {
-        return (_Bool)0;
-    }
-    if(    !string_equals(left->mDeclareSName,right->mDeclareSName)) {
         return (_Bool)0;
     }
     if(    !bool_equals(left->mNoResultType,right->mNoResultType)) {

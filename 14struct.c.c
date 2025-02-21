@@ -665,7 +665,6 @@ struct sFun
     _Bool mUniq;
     _Bool mGenerate;
     _Bool mCloner;
-    char* mDeclareSName;
     _Bool mNoResultType;
     _Bool mDeclaredResultObject;
     char* mAttribute;
