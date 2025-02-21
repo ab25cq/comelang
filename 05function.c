@@ -2705,8 +2705,16 @@ sNode*% parse_function(sInfo* info)
         
         if(!result_type->mStatic) {
             if(!info->no_output_come_code) {
-                string id = string(fun_name);
-                add_come_code_at_come_header(info, id, "%s", header.to_string());
+                if(version > 0) {
+                    string new_fun_name = xsprintf("%s_v%d", string(fun_name), version);
+                    
+                    string id = string(new_fun_name);
+                    add_come_code_at_come_header(info, id, "%s", header.to_string());
+                }
+                else {
+                    string id = string(fun_name);
+                    add_come_code_at_come_header(info, id, "%s", header.to_string());
+                }
             }
         }
         
