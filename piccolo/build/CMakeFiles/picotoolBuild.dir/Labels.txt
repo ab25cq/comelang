@@ -1,0 +1,14 @@
+# Target labels
+ picotoolBuild
+# Source files and their labels
+/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolBuild
+/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolBuild.rule
+/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolBuild-complete.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-build.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-configure.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-download.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-install.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-mkdir.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-patch.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-test.rule
+/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-update.rule

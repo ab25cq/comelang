@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolBuild"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolBuild.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/CMakeFiles/picotoolBuild-complete.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-build.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-configure.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-download.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-install.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-mkdir.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-patch.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-test.rule"
+		},
+		{
+			"file" : "/Users/ab25cq/comelang/piccolo_os/build/picotool/src/picotoolBuild-stamp/picotoolBuild-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"picotoolBuild"
+		],
+		"name" : "picotoolBuild"
+	}
+}

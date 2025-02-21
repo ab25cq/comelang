@@ -1,0 +1,4 @@
+xtensa-esp32-elf-as -o hello_world.o hello_world.S
+xtensa-esp32-elf-ld -Ttext 0x40000000 -o hello_world.elf hello_world.o
+xtensa-esp32-elf-objcopy -O binary hello_world.elf hello_world.bin
+esptool.py --chip esp32 --port /dev/tty.usbserial-58650022921 --baud 115200 write_flash 0x1000 hello_world.bin
