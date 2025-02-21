@@ -12,7 +12,6 @@ class sGlobalVariable extends sNodeBase
         string self.array_initializer = array_initializer;
         
         list<tup: sType*%,string,string>*% self.multiple_declare = clone multiple_declare;
-        string self.mDeclareSName = string(info->sname);
     }
     
     string kind()
@@ -122,8 +121,6 @@ class sExternalGlobalVariable extends sNodeBase
         string self.name = string(name);
         
         list<tup: sType*%,string,string>*% self.multiple_declare = clone multiple_declare;
-        
-        string self.mDeclareSName = string(info->sname);
     }
     
     string kind()

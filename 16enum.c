@@ -9,7 +9,6 @@ class sEnumNode extends sNodeBase
         string self.mTypeName = string(type_name);
         list<tup: string, sNode*%>*% self.mElements = clone elements;
         
-        string self.mDeclareSName = string(info->sname);
         sType*% self.mTypeElements = type_elements;
     
         return self;
@@ -105,23 +104,19 @@ class sEnumNode extends sNodeBase
         }
         buf.append_format("};\n");
         
-        if(info.output_header_file && self.mDeclareSName !== info->base_sname) {
-        }
-        else {
-            if(output) {
-                if(info.struct_definition[string(type_name)]?? == null || type_name === "") {
-                    if(type_name === "") {
-                        static int type_name_num = 0;
-                        type_name_num++;
-                        type_name = xsprintf("__enum_type_name_X%d", type_name_num);
-                        if(!info->no_output_come_code2) {
-                            info.struct_definition.insert(string(type_name), buf);
-                        }
+        if(output) {
+            if(info.struct_definition[string(type_name)]?? == null || type_name === "") {
+                if(type_name === "") {
+                    static int type_name_num = 0;
+                    type_name_num++;
+                    type_name = xsprintf("__enum_type_name_X%d", type_name_num);
+                    if(!info->no_output_come_code2) {
+                        info.struct_definition.insert(string(type_name), buf);
                     }
-                    else {
-                        if(!info->no_output_come_code2) {
-                            info.struct_definition.insert(string(type_name), buf);
-                        }
+                }
+                else {
+                    if(!info->no_output_come_code2) {
+                        info.struct_definition.insert(string(type_name), buf);
                     }
                 }
             }
