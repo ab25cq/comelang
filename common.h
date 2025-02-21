@@ -563,7 +563,7 @@ sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* par
 void sVarTable*::finalize(sVarTable* self);
 sClass*% sClass*::initialize(sClass*% self, char* name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, sInfo* info=info);
 sClassModule*% sClassModule*::initialize(sClassModule*% self, char* name, string text, string sname, int sline, sInfo* info);
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType~>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string aaa, string declare_sname, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"");
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType~>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, string aaa, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"");
 string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false);
 string make_come_type_name_string(sType* type, sInfo* info=info);
 string make_come_type_name_string_no_solved(sType* type, bool original_type_name=false, sInfo* info=info);

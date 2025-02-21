@@ -1547,7 +1547,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
@@ -1561,7 +1560,6 @@ int transpile(sInfo* info) version 5
         var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
-            , string("")
             , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
@@ -1577,7 +1575,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
@@ -1592,7 +1589,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
@@ -1606,7 +1602,6 @@ int transpile(sInfo* info) version 5
         var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
-            , string("")
             , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
@@ -1626,7 +1621,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
@@ -1641,7 +1635,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
@@ -1655,7 +1648,6 @@ int transpile(sInfo* info) version 5
         var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
-            , string("")
             , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
@@ -1672,7 +1664,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
@@ -1686,7 +1677,6 @@ int transpile(sInfo* info) version 5
         var main_fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
-            , string("")
             , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
@@ -1702,7 +1692,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, false@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), main_fun);
@@ -1717,7 +1706,6 @@ int transpile(sInfo* info) version 5
             , param_default_parametors, true@external, true@var_args
             , null@block, false@static_
             , string("")
-            , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
         info.funcs.insert(string(name), fun);
@@ -1731,7 +1719,6 @@ int transpile(sInfo* info) version 5
         var fun = new sFun(name, result_type, param_types, param_names
             , param_default_parametors, true@external, true@var_args
             , null@block, false@static_
-            , string("")
             , string("")
             , info, false@inline_, false@uniq_, false@generate);
         
@@ -2160,7 +2147,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                                     , param_types, param_names
                                     , param_default_parametors
                                     , true@external, var_args, null@block
-                                    , false@static_, string(info->sname), string(""), info, false@inline_
+                                    , false@static_, string(""), info, false@inline_
                                     , false@uniq_, false@generate);
                 
                 var fun2 = info.funcs[string(fun_name)]??;
@@ -2302,7 +2289,7 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     var fun = new sFun(fun_name, result_type
                     , param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_, false@generate_);
+                    , var_args, block, true@static_, string(""), info, false@inline_, false@uniq_, false@generate_);
     
     info.funcs.insert(string(fun_name), fun);
     
@@ -2417,7 +2404,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     var fun = new sFun(fun_name, result_type
                     , clone param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, string(""), string(""), info, false@inline_, false@uniq_, generate_);
+                    , var_args, block, true@static_, string(""), info, false@inline_, false@uniq_, generate_);
     
     info.funcs.insert(string(fun_name), fun);
     
@@ -2589,7 +2576,7 @@ sNode*% parse_function(sInfo* info)
         var fun = new sFun(string(fun_name), result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, var_args, block
-                            , true@static_, string(""), string(""), info, false@inline_, false@uniq_, false@generate_);
+                            , true@static_, string(""), info, false@inline_, false@uniq_, false@generate_);
         
         var fun2 = info.funcs[string(fun_name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -2759,7 +2746,6 @@ sNode*% parse_function(sInfo* info)
                                 , param_default_parametors
                                 , false@external, var_args, clone block
                                 , static_fun@static_
-                                , string(info->sname)
                                 , string("")
                                 , info, inline_fun, uniq_fun, generate_fun, attribute);
     
@@ -2802,7 +2788,7 @@ sNode*% parse_function(sInfo* info)
                                 , param_types, param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
-                                , false@static_, string(info->sname), string(""), info, false@inline_
+                                , false@static_, string(""), info, false@inline_
                                 , false@uniq_, false@generate_, attribute);
             
             var fun2 = info.funcs[string(fun_name)]??;
@@ -2845,7 +2831,7 @@ sNode*% parse_function(sInfo* info)
                                 , param_names
                                 , param_default_parametors
                                 , true@external, var_args, null@block
-                                , false@static_, string(info->sname), string(""), info, false@inline_, false@uniq_
+                                , false@static_, string(""), info, false@inline_, false@uniq_
                                 , false@genereate_
                                 , attribute, fun_attribute);
             
@@ -3038,7 +3024,6 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
                             , false@external, false@var_args, block
                             , true@static_
                             , string("")
-                            , string("")
                             , info, false@inline_, false@uniq_, false@generate_);
                             
                 info.funcs.insert(string(name), fun);
@@ -3159,7 +3144,6 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
-                        , string("")
                             , string("")
                         , info, false@inline_, false@uniq_, true@genereate_);
                         
@@ -3300,7 +3284,6 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
                             , false@external, false@var_args, block
                             , true@static_
                             , string("")
-                            , string("")
                             , info, false@inline_, false@uniq_, true@gnereate_);
                             
             info.funcs.insert(string(name), fun);
@@ -3436,7 +3419,6 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
-                        , string("")
                             , string("")
                         , info, false@inline_, false@uniq_, false@generate_);
                         
@@ -3558,7 +3540,6 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
-                        , string("")
                             , string("")
                         , info, false@inline_, false@uniq_, false@genereate_);
                         
@@ -3769,7 +3750,6 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
                         , param_default_parametors
                         , false@external, false@var_args, block
                         , true@static_
-                        , string("")
                             , string("")
                         , info, false@inline_, false@uniq_, false@generate_);
                         
@@ -3912,7 +3892,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , param_default_parametors
                             , false@external, false@var_args, block
                             , true@static_
-                            , string("")
                             , string("")
                             , info, false@inline_, false@uniq_, true@generate_);
                             
@@ -4110,7 +4089,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , false@external, false@var_args, block
                             , true@static_
                             , string("")
-                            , string("")
                             , info, false@inline_, false@uniq_, false@generate_);
                             
             fun->mCloner = true;
@@ -4273,7 +4251,6 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
                             , param_default_parametors
                             , false@external, false@var_args, block
                             , true@static_
-                            , string("")
                             , string("")
                             , info, false@inline_, false@uniq_, true@generate_);
                             
