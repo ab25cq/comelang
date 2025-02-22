@@ -1,12 +1,13 @@
 #include <comelang.h>
 
-void fun()
+void fun(int a)
 {
+    printf("%d\n", a);
 }
 
 int main(int argc, char** argv)
 {
-    (int)fun();
+    fun(a:111);
     
     return 0;
 }
