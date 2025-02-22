@@ -208,7 +208,6 @@ dynamic struct sFun
     bool mCloner;
     
     bool mNoResultType;
-    bool mDeclaredResultObject;
     
     string mAttribute;
     string mFunAttribute;

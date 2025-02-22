@@ -657,7 +657,6 @@ struct sFun
     _Bool mGenerate;
     _Bool mCloner;
     _Bool mNoResultType;
-    _Bool mDeclaredResultObject;
     char* mAttribute;
     char* mFunAttribute;
 };
@@ -1214,7 +1213,6 @@ char* strchrnul(const char* anonymous_var_nameX452, int anonymous_var_nameX453);
 char* strcasestr(const char* anonymous_var_nameX454, const char* anonymous_var_nameX455);
 void* memrchr(const void* anonymous_var_nameX456, int anonymous_var_nameX457, unsigned long  int anonymous_var_nameX458);
 void* mempcpy(void* anonymous_var_nameX459, const void* anonymous_var_nameX460, unsigned long  int anonymous_var_nameX461);
-char* basename();
 char* setlocale(int anonymous_var_nameX462, const char* anonymous_var_nameX463);
 struct lconv* localeconv();
 struct __locale_struct* duplocale(struct __locale_struct* anonymous_var_nameX464);
@@ -2723,7 +2721,7 @@ static void vector$1charpp_finalize(struct vector$1charp* self){
 int i_218;
     if(    0) {
         for(        i_218=0;        i_218<self->len;        i_218++        ){
-            self->items[i_218] = come_decrement_ref_count2(self->items[i_218], (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->items[i_218] = come_decrement_ref_count2(self->items[i_218], (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self&&self->items) {
@@ -2887,7 +2885,7 @@ char* __dec_obj27;
             __dec_obj27 = come_decrement_ref_count2(__dec_obj27, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->item = come_decrement_ref_count2(self->item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->item = come_decrement_ref_count2(self->item, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
 }
@@ -2936,7 +2934,7 @@ struct list$1charph* __result173__;
     }
     self->len++;
     __result173__ = gComeFunResultObject = __result_obj__ = self;
-    item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     gComeFunResultObject = (void*)0;
     return __result173__;
 }
@@ -2948,9 +2946,9 @@ void* __right_value254 = (void*)0;
     if(    gComeOriginalSourcePosition) {
         if(        info->writing_source_file_position) {
             add_come_code(info,((char*)(__right_value254=xsprintf("# \%s \"\%s\"\n",((char*)(__right_value252=int_to_string(info->sline))),((char*)(__right_value253=string_to_string(info->sname)))))));
-            __right_value252 = come_decrement_ref_count2(__right_value252, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            __right_value253 = come_decrement_ref_count2(__right_value253, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            __right_value254 = come_decrement_ref_count2(__right_value254, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value252 = come_decrement_ref_count2(__right_value252, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (__right_value253 = come_decrement_ref_count2(__right_value253, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (__right_value254 = come_decrement_ref_count2(__right_value254, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             info->writing_source_file_position=(_Bool)0;
         }
     }
@@ -2974,7 +2972,7 @@ _Bool __result230__;
     __dec_obj31=info->sname;
     info->sname=(char*)come_increment_ref_count(__builtin_string(((char*)(__right_value256=node->sname(node->_protocol_obj)))));
     __dec_obj31 = come_decrement_ref_count2(__dec_obj31, (void*)0, (void*)0, 0,0,0, (void*)0);
-    __right_value256 = come_decrement_ref_count2(__right_value256, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    (__right_value256 = come_decrement_ref_count2(__right_value256, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     info->sline=node->sline(node->_protocol_obj);
     info->sline_real=node->sline_real(node->_protocol_obj);
     write_source_file_position_to_source(info);
@@ -2985,7 +2983,7 @@ _Bool __result230__;
     info->sline=sline_318;
     info->sline_real=sline_real_319;
     __result230__ = result_320;
-    sname_317 = come_decrement_ref_count2(sname_317, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (sname_317 = come_decrement_ref_count2(sname_317, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     return __result230__;
 }
 
@@ -3039,12 +3037,12 @@ memset(&__current_stack2__, 0, sizeof(struct __current_stack2__));
             __current_stack2__.info = &info;
             __current_stack2__.msg = &msg;
             ((char*)(__right_value273=charp_puts(((char*)(__right_value272=list$1charphp_join(((struct list$1charph*)(__right_value268=list$1charphp_map(((struct list$1charph*)(__right_value263=list$1charphp_sublist(((struct list$1charph*)(__right_value260=charp_split_char(((char*)(__right_value259=buffer_to_string(info->original_source))),10))),n_327,n_327+10))),&__current_stack2__,(void*)method_block2_02transpilec))),"\n"))))));
-            __right_value259 = come_decrement_ref_count2(__right_value259, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value259 = come_decrement_ref_count2(__right_value259, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             come_call_finalizer3(__right_value260,list$1charphp_finalize, 0, 1, 0, 0, (void*)0);
             come_call_finalizer3(__right_value263,list$1charphp_finalize, 0, 1, 0, 0, (void*)0);
             come_call_finalizer3(__right_value268,list$1charphp_finalize, 0, 1, 0, 0, (void*)0);
-            __right_value272 = come_decrement_ref_count2(__right_value272, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            __right_value273 = come_decrement_ref_count2(__right_value273, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value272 = come_decrement_ref_count2(__right_value272, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (__right_value273 = come_decrement_ref_count2(__right_value273, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
         free(msg2_321);
         come_call_finalizer3((&args_322),va_list_finalize, 1, 0, 0, 0, (void*)0);
@@ -3102,7 +3100,7 @@ struct list$1charph* __result236__;
         item_339=(char*)come_increment_ref_count(block(parent,it_338->item));
         list$1charphp_push_back(result_337,(char*)come_increment_ref_count(item_339));
         it_338=it_338->next;
-        item_339 = come_decrement_ref_count2(item_339, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (item_339 = come_decrement_ref_count2(item_339, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     __result236__ = gComeFunResultObject = __result_obj__ = result_337;
     come_call_finalizer3(result_337,list$1charphp_finalize, 0, 0, 1, 0, (void*)0);
@@ -3115,7 +3113,7 @@ void* __result_obj__=(void*)0;
 void* __right_value267 = (void*)0;
 char* __result237__;
     __result237__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value267=xsprintf("%d %s",++(*(parent->n_327)),it)));
-    __right_value267 = come_decrement_ref_count2(__right_value267, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    (__right_value267 = come_decrement_ref_count2(__right_value267, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, __result_obj__));
     gComeFunResultObject = (void*)0;
     return __result237__;
 }
@@ -3140,7 +3138,7 @@ char* __result244__;
     }
     __result244__ = gComeFunResultObject = __result_obj__ = ((char*)(__right_value271=buffer_to_string(buf_340)));
     come_call_finalizer3(buf_340,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    __right_value271 = come_decrement_ref_count2(__right_value271, (void*)0, (void*)0, 1, 0, 0, __result_obj__);
+    (__right_value271 = come_decrement_ref_count2(__right_value271, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, __result_obj__));
     gComeFunResultObject = (void*)0;
     return __result244__;
 }
@@ -3221,9 +3219,9 @@ void* __right_value275 = (void*)0;
 _Bool __result245__;
     output_file_name_347=(char*)come_increment_ref_count(xsprintf("%s.c",info->sname));
     charp_write(((char*)(__right_value275=__builtin_string("int main(int argc, char** argv) { return 0; }\n"))),output_file_name_347,(_Bool)0);
-    __right_value275 = come_decrement_ref_count2(__right_value275, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    (__right_value275 = come_decrement_ref_count2(__right_value275, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     __result245__ = (_Bool)1;
-    output_file_name_347 = come_decrement_ref_count2(output_file_name_347, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (output_file_name_347 = come_decrement_ref_count2(output_file_name_347, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     return __result245__;
 }
 
@@ -3233,9 +3231,9 @@ void* __right_value276 = (void*)0;
     input_file_name_348=(char*)come_increment_ref_count(info->sname);
     if(    input_file_name_348!=((void*)0)&&string_operator_not_equals(input_file_name_348,"")) {
         system(((char*)(__right_value276=xsprintf("%s %s.*",RM,input_file_name_348))));
-        __right_value276 = come_decrement_ref_count2(__right_value276, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value276 = come_decrement_ref_count2(__right_value276, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
-    input_file_name_348 = come_decrement_ref_count2(input_file_name_348, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (input_file_name_348 = come_decrement_ref_count2(input_file_name_348, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
 }
 
 static void clear_tmp_file_without_object_file(struct sInfo* info){
@@ -3244,9 +3242,9 @@ void* __right_value277 = (void*)0;
     input_file_name_349=(char*)come_increment_ref_count(info->sname);
     if(    input_file_name_349!=((void*)0)&&string_operator_not_equals(input_file_name_349,"")) {
         system(((char*)(__right_value277=xsprintf("%s %s.i* %s.c*",RM,input_file_name_349,input_file_name_349))));
-        __right_value277 = come_decrement_ref_count2(__right_value277, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value277 = come_decrement_ref_count2(__right_value277, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
-    input_file_name_349 = come_decrement_ref_count2(input_file_name_349, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (input_file_name_349 = come_decrement_ref_count2(input_file_name_349, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
 }
 
 static void clear_tmp_file_without_object_file_and_ccfile(struct sInfo* info){
@@ -3255,9 +3253,9 @@ void* __right_value278 = (void*)0;
     input_file_name_350=(char*)come_increment_ref_count(info->sname);
     if(    input_file_name_350!=((void*)0)&&string_operator_not_equals(input_file_name_350,"")) {
         system(((char*)(__right_value278=xsprintf("%s %s.i* %s.c.out",RM,input_file_name_350,input_file_name_350))));
-        __right_value278 = come_decrement_ref_count2(__right_value278, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value278 = come_decrement_ref_count2(__right_value278, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
-    input_file_name_350 = come_decrement_ref_count2(input_file_name_350, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (input_file_name_350 = come_decrement_ref_count2(input_file_name_350, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
 }
 
 static _Bool cpp(struct sInfo* info){
@@ -3356,7 +3354,7 @@ output_file_name_352 = (void*)0;
     is_pico_359=info->pico_cpp;
     if(    is_android_356==0) {
         cmd3_360=(char*)come_increment_ref_count(xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value281=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
-        __right_value281 = come_decrement_ref_count2(__right_value281, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value281 = come_decrement_ref_count2(__right_value281, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         if(        info->verbose) {
             puts(cmd3_360);
         }
@@ -3370,12 +3368,12 @@ output_file_name_352 = (void*)0;
             printf("cpp failed\n");
             exit(2);
         }
-        cmd3_360 = come_decrement_ref_count2(cmd3_360, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        command2_362 = come_decrement_ref_count2(command2_362, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (cmd3_360 = come_decrement_ref_count2(cmd3_360, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (command2_362 = come_decrement_ref_count2(command2_362, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     else if(    is_m5stack_358) {
         cmd2_363=(char*)come_increment_ref_count(xsprintf("xtensa-esp-elf-cpp -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__M5STACK__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value284=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
-        __right_value284 = come_decrement_ref_count2(__right_value284, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value284 = come_decrement_ref_count2(__right_value284, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         if(        info->verbose) {
             puts(cmd2_363);
         }
@@ -3389,12 +3387,12 @@ output_file_name_352 = (void*)0;
             puts(command2_365);
         }
         (void)system(command2_365);
-        cmd2_363 = come_decrement_ref_count2(cmd2_363, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        command2_365 = come_decrement_ref_count2(command2_365, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (cmd2_363 = come_decrement_ref_count2(cmd2_363, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (command2_365 = come_decrement_ref_count2(command2_365, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     else if(    is_pico_359) {
         cmd2_366=(char*)come_increment_ref_count(xsprintf("arm-none-eabi-gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__PICO__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value287=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
-        __right_value287 = come_decrement_ref_count2(__right_value287, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value287 = come_decrement_ref_count2(__right_value287, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         if(        info->verbose) {
             puts(cmd2_366);
         }
@@ -3408,12 +3406,12 @@ output_file_name_352 = (void*)0;
             puts(command2_368);
         }
         (void)system(command2_368);
-        cmd2_366 = come_decrement_ref_count2(cmd2_366, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        command2_368 = come_decrement_ref_count2(command2_368, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (cmd2_366 = come_decrement_ref_count2(cmd2_366, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (command2_368 = come_decrement_ref_count2(command2_368, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     else if(    is_mac_355==0) {
         cmd2_369=(char*)come_increment_ref_count(xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value290=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
-        __right_value290 = come_decrement_ref_count2(__right_value290, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value290 = come_decrement_ref_count2(__right_value290, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         if(        info->verbose) {
             puts(cmd2_369);
         }
@@ -3427,17 +3425,17 @@ output_file_name_352 = (void*)0;
             puts(command2_371);
         }
         (void)system(command2_371);
-        cmd2_369 = come_decrement_ref_count2(cmd2_369, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        command2_371 = come_decrement_ref_count2(command2_371, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (cmd2_369 = come_decrement_ref_count2(cmd2_369, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (command2_371 = come_decrement_ref_count2(command2_371, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     else {
         cmd3_372=(char*)come_increment_ref_count(xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value293=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
-        __right_value293 = come_decrement_ref_count2(__right_value293, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value293 = come_decrement_ref_count2(__right_value293, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         if(        is_debian_357==0) {
             __dec_obj35=cmd3_372;
             cmd3_372=(char*)come_increment_ref_count(xsprintf("cpp %s -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value295=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
             __dec_obj35 = come_decrement_ref_count2(__dec_obj35, (void*)0, (void*)0, 0,0,0, (void*)0);
-            __right_value295 = come_decrement_ref_count2(__right_value295, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value295 = come_decrement_ref_count2(__right_value295, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
         if(        info->verbose) {
             puts(cmd3_372);
@@ -3450,12 +3448,12 @@ output_file_name_352 = (void*)0;
         (void)system(command2_374);
         if(        rc_373!=0) {
             cmd4_375=(char*)come_increment_ref_count(xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value298=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
-            __right_value298 = come_decrement_ref_count2(__right_value298, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value298 = come_decrement_ref_count2(__right_value298, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             if(            is_debian_357==0) {
                 __dec_obj36=cmd4_375;
                 cmd4_375=(char*)come_increment_ref_count(xsprintf("cpp %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_353)?(((char*)(__right_value300=__builtin_string(" -include common.h ")))):("")),input_file_name_351,output_file_name_352,output_file_name_352));
                 __dec_obj36 = come_decrement_ref_count2(__dec_obj36, (void*)0, (void*)0, 0,0,0, (void*)0);
-                __right_value300 = come_decrement_ref_count2(__right_value300, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value300 = come_decrement_ref_count2(__right_value300, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             command_376=(char*)come_increment_ref_count(xsprintf("%s -o %s -c %s %s >> %s.out 2>&1",CC,output_file_name_352,input_file_name_351,info->clang_option,input_file_name_351));
             if(            info->verbose) {
@@ -3480,16 +3478,16 @@ output_file_name_352 = (void*)0;
                 puts(command2_378);
             }
             (void)system(command2_378);
-            cmd4_375 = come_decrement_ref_count2(cmd4_375, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-            command_376 = come_decrement_ref_count2(command_376, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-            command2_378 = come_decrement_ref_count2(command2_378, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (cmd4_375 = come_decrement_ref_count2(cmd4_375, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (command_376 = come_decrement_ref_count2(command_376, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (command2_378 = come_decrement_ref_count2(command2_378, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
-        cmd3_372 = come_decrement_ref_count2(cmd3_372, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        command2_374 = come_decrement_ref_count2(command2_374, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (cmd3_372 = come_decrement_ref_count2(cmd3_372, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (command2_374 = come_decrement_ref_count2(command2_374, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     __result246__ = (_Bool)1;
-    input_file_name_351 = come_decrement_ref_count2(input_file_name_351, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    output_file_name_352 = come_decrement_ref_count2(output_file_name_352, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (input_file_name_351 = come_decrement_ref_count2(input_file_name_351, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (output_file_name_352 = come_decrement_ref_count2(output_file_name_352, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     return __result246__;
 }
 
@@ -3544,16 +3542,16 @@ output_file_name_380 = (void*)0;
             }
             (void)system(command2_384);
             exit(2);
-            command2_384 = come_decrement_ref_count2(command2_384, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (command2_384 = come_decrement_ref_count2(command2_384, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    !output_object_file) {
         list$1charphp_insert(object_files,0,(char*)come_increment_ref_count(__builtin_string(output_file_name_380)));
     }
     __result249__ = (_Bool)1;
-    input_file_name_379 = come_decrement_ref_count2(input_file_name_379, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    output_file_name_380 = come_decrement_ref_count2(output_file_name_380, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    command_381 = come_decrement_ref_count2(command_381, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (input_file_name_379 = come_decrement_ref_count2(input_file_name_379, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (output_file_name_380 = come_decrement_ref_count2(output_file_name_380, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (command_381 = come_decrement_ref_count2(command_381, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     return __result249__;
 }
 
@@ -3587,11 +3585,11 @@ default_value_387 = (void*)0;
         for(        i_386=0;        i_386<position-len_385;        i_386++        ){
             memset(&default_value_387,0,sizeof(char*));
             list$1charphp_push_back(self,(char*)come_increment_ref_count(default_value_387));
-            default_value_387 = come_decrement_ref_count2(default_value_387, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (default_value_387 = come_decrement_ref_count2(default_value_387, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
         list$1charphp_push_back(self,(char*)come_increment_ref_count(item));
         __result247__ = gComeFunResultObject = __result_obj__ = self;
-        item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         gComeFunResultObject = (void*)0;
         return __result247__;
     }
@@ -3637,7 +3635,7 @@ default_value_387 = (void*)0;
         }
     }
     __result248__ = gComeFunResultObject = __result_obj__ = self;
-    item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     gComeFunResultObject = (void*)0;
     return __result248__;
 }
@@ -3699,8 +3697,8 @@ _Bool __result251__;
     command_394=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "02transpile.c", 346, "struct buffer", buffer_finalize, buffer_clone, buffer_get_hash_key, buffer_equals))));
     buffer_append_format(command_394,"%s -o %s ",CC,output_file_name_393);
     buffer_append_str(command_394,((char*)(__right_value320=charp_operator_add(" ",((char*)(__right_value319=string_operator_add(info->linker_option," ")))))));
-    __right_value319 = come_decrement_ref_count2(__right_value319, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value320 = come_decrement_ref_count2(__right_value320, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    (__right_value319 = come_decrement_ref_count2(__right_value319, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value320 = come_decrement_ref_count2(__right_value320, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     for(    o2_saved_395=(object_files),it_396=list$1charphp_begin((o2_saved_395));    !list$1charphp_end((o2_saved_395));    it_396=list$1charphp_next((o2_saved_395))    ){
         buffer_append_format(command_394,"%s ",it_396);
     }
@@ -3713,13 +3711,13 @@ _Bool __result251__;
     if(    rc_399==0) {
         buffer_append_str(command_394," -L. -L/usr/local/lib ");
     }
-    cmd_398 = come_decrement_ref_count2(cmd_398, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (cmd_398 = come_decrement_ref_count2(cmd_398, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     cmd_400=(char*)come_increment_ref_count(xsprintf("ls %s/lib 1> /dev/null 2>/dev/null",getenv("HOME")));
     rc_401=system(cmd_400);
     if(    rc_401==0) {
         buffer_append_format(command_394," -L%s/lib ",getenv("HOME"));
     }
-    cmd_400 = come_decrement_ref_count2(cmd_400, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (cmd_400 = come_decrement_ref_count2(cmd_400, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     cmd_402=(char*)come_increment_ref_count(xsprintf("ls %s/lib 1> /dev/null 2>/dev/null","/usr/local/"));
     rc_403=system(cmd_402);
     if(    rc_403==0) {
@@ -3753,42 +3751,42 @@ _Bool __result251__;
         }
     }
     str_407=(char*)come_increment_ref_count(charp_operator_add(((char*)(__right_value324=xsprintf("gcc"))),((char*)(__right_value326=charp_substring(((char*)(__right_value325=buffer_to_string(command_394))),strlen(CC),-1)))));
-    __right_value324 = come_decrement_ref_count2(__right_value324, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value325 = come_decrement_ref_count2(__right_value325, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value326 = come_decrement_ref_count2(__right_value326, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    (__right_value324 = come_decrement_ref_count2(__right_value324, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value325 = come_decrement_ref_count2(__right_value325, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value326 = come_decrement_ref_count2(__right_value326, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     if(    info->verbose) {
         puts(((char*)(__right_value328=buffer_to_string(command_394))));
-        __right_value328 = come_decrement_ref_count2(__right_value328, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value328 = come_decrement_ref_count2(__right_value328, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     Value_408=system(((char*)(__right_value329=buffer_to_string(command_394))));
-    if(    (_if_conditional1=(Value_408)),    (__right_value329 = come_decrement_ref_count2(__right_value329, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+    if(    (_if_conditional1=(Value_408)),    (__right_value329 = come_decrement_ref_count2(__right_value329, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
     _if_conditional1) {
         str_409=(char*)come_increment_ref_count(charp_operator_add(((char*)(__right_value330=xsprintf("gcc"))),((char*)(__right_value332=charp_substring(((char*)(__right_value331=buffer_to_string(command_394))),strlen(CC),-1)))));
-        __right_value330 = come_decrement_ref_count2(__right_value330, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        __right_value331 = come_decrement_ref_count2(__right_value331, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        __right_value332 = come_decrement_ref_count2(__right_value332, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value330 = come_decrement_ref_count2(__right_value330, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (__right_value331 = come_decrement_ref_count2(__right_value331, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (__right_value332 = come_decrement_ref_count2(__right_value332, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         Value_410=system(str_409);
         if(        Value_410) {
             printf("%s %d: %s is faild\n",CC,info->sname,info->sline);
             __result250__ = (_Bool)0;
-            str_409 = come_decrement_ref_count2(str_409, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-            output_file_name_393 = come_decrement_ref_count2(output_file_name_393, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (str_409 = come_decrement_ref_count2(str_409, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (output_file_name_393 = come_decrement_ref_count2(output_file_name_393, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             come_call_finalizer3(command_394,buffer_finalize, 0, 0, 0, 0, (void*)0);
-            cmd_402 = come_decrement_ref_count2(cmd_402, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-            str_407 = come_decrement_ref_count2(str_407, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (cmd_402 = come_decrement_ref_count2(cmd_402, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (str_407 = come_decrement_ref_count2(str_407, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             return __result250__;
         }
         else {
         }
-        str_409 = come_decrement_ref_count2(str_409, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (str_409 = come_decrement_ref_count2(str_409, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     else {
     }
     __result251__ = (_Bool)1;
-    output_file_name_393 = come_decrement_ref_count2(output_file_name_393, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (output_file_name_393 = come_decrement_ref_count2(output_file_name_393, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     come_call_finalizer3(command_394,buffer_finalize, 0, 0, 0, 0, (void*)0);
-    cmd_402 = come_decrement_ref_count2(cmd_402, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    str_407 = come_decrement_ref_count2(str_407, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (cmd_402 = come_decrement_ref_count2(cmd_402, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (str_407 = come_decrement_ref_count2(str_407, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     return __result251__;
 }
 
@@ -3849,8 +3847,8 @@ void* __right_value374 = (void*)0;
 _Bool __result252__;
     project_name_411=(char*)come_increment_ref_count(__builtin_string(argv[2]));
     project_name_debug_412=(char*)come_increment_ref_count(string_operator_add(((char*)(__right_value335=__builtin_string(argv[2]))),((char*)(__right_value336=__builtin_string("-debug")))));
-    __right_value335 = come_decrement_ref_count2(__right_value335, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value336 = come_decrement_ref_count2(__right_value336, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    (__right_value335 = come_decrement_ref_count2(__right_value335, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value336 = come_decrement_ref_count2(__right_value336, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     cc_413=(char*)come_increment_ref_count(__builtin_string("comelang"));
     install_414=(char*)come_increment_ref_count(__builtin_string("install"));
     libs_415=(char*)come_increment_ref_count(__builtin_string("-lpcre"));
@@ -3859,52 +3857,52 @@ _Bool __result252__;
     cflags_418=(char*)come_increment_ref_count(__builtin_string(" -common-header -O2 "));
     cflags_debug_419=(char*)come_increment_ref_count(__builtin_string(" -common-header -gdwarf-4 -cg "));
     Value_420=system(((char*)(__right_value346=xsprintf("mkdir \%s",((char*)(__right_value345=string_to_string(project_name_411)))))));
-    if(    (_if_conditional2=(Value_420<0)),    (__right_value345 = come_decrement_ref_count2(__right_value345, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-    (__right_value346 = come_decrement_ref_count2(__right_value346, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+    if(    (_if_conditional2=(Value_420<0)),    (__right_value345 = come_decrement_ref_count2(__right_value345, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
+    (__right_value346 = come_decrement_ref_count2(__right_value346, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
     _if_conditional2) {
         (come_push_stackframe("02transpile.c", 437, 0),__exception_result_var_b1=die("mkdir error"), come_pop_stackframe(), __exception_result_var_b1);
     }
     else {
     }
     charp_write(((char*)(__right_value372=xsprintf("\#########################################\n\# istalled directories\n\#########################################\nexec_prefix=${prefix}\nbindir=${exec_prefix}/bin\ndatadir=${datarootdir}\nmandir=${datarootdir}/man\nsharedstatedir=${prefix}/\%s\nsysconfdir=${prefix}/etc/\%s\nincludedir=${prefix}/include/\%s\ndatarootdir=${prefix}/share/\%s\ndocdir=${datarootdir}/doc\nlibdir=${exec_prefix}/lib\n\n\#########################################\n\# environmnet variables\n\#########################################\nCC=\%s\nINSTALL=\%s\nCFLAGS=\%s\nCFLAGS_DEBUG=\%s\nLIBS=\%s\nOS=\%s\nDESTDIR=\%s\nSRCS=$(wildcard *.c)\nSINGLE_SRCS=$(filter-out %%.c.c, $(SRCS))\nOBJS=$(SINGLE_SRCS:.c=.o)\nDEBUG_OBJS=$(SINGLE_SRCS:.c=.debug.o)\nTARGET=\%s\nTARGET_DEBUG=\%s\n\n\#########################################\n\# main\n\#########################################\nall: $(TARGET)\n\n$(TARGET): $(OBJS)\n\t$(CC) $(CFLAGS) $^ -o $@\n\n$(TARGET_DEBUG): $(DEBUG_OBJS)\n\t$(CC) $(CFLAGS_DEBUG) $^ -o $@\n\n%%.o: %%.c\n\t$(CC) $(CFLAGS) -c $< -o $@\n\n%%.debug.o: %%.c\n\t$(CC) $(CFLAGS_DEBUG) -c $< -o $@\n\n\#########################################\n\# header\n\#########################################\n\nheader: common.h\n\ncommon.h: $(SINGLE_SRCS)\n\tcomelang header -common-header $(SINGLE_SRCS)\n\n\#########################################\n\# install\n\#########################################\ninstall:\n\tmkdir -p \"$(DESTDIR)/bin\"\n\t$(INSTALL) -m 755 ./\%s \"$(DESTDIR)/bin\"\n\tmkdir -p \"$(DESTDIR)/include\"\n\tmkdir -p \"$(DESTDIR)/lib\"\n\tmkdir -p \"$(DESTDIR)/share/doc/\%s\"\n\t$(INSTALL) -m 644 README.md \"$(DESTDIR)/share/doc/\%s/README.md\"\n\n\#########################################\n\# clean\n\#########################################\nclean:\n\trm -fR *.o *.c.i *.c.out *.c.c \%s *.log *.out common.h \%s tmp-common-header.c\n\n\#########################################\n\# uninstall\n\#########################################\nuninstall:\n\trm -f \"$(DESTDIR)\"/bin/\%s\n\trm -f \"$(DESTDIR)/share/doc/\%s/README.md\"\n\nrun: \%s\n\trm -f *.log\n\t./\%s\n\ncompile: \%s\n\ndebug: \%s\n\trm -f *.log\n\t./\%s\n",((char*)(__right_value347=string_to_string(project_name_411))),((char*)(__right_value348=string_to_string(project_name_411))),((char*)(__right_value349=string_to_string(project_name_411))),((char*)(__right_value350=string_to_string(project_name_411))),((char*)(__right_value351=string_to_string(cc_413))),((char*)(__right_value352=string_to_string(install_414))),((char*)(__right_value353=string_to_string(cflags_418))),((char*)(__right_value354=string_to_string(cflags_debug_419))),((char*)(__right_value355=string_to_string(libs_415))),((char*)(__right_value356=string_to_string(os_416))),((char*)(__right_value357=string_to_string(prefix_417))),((char*)(__right_value358=string_to_string(project_name_411))),((char*)(__right_value359=string_to_string(project_name_debug_412))),((char*)(__right_value360=string_to_string(project_name_411))),((char*)(__right_value361=string_to_string(project_name_411))),((char*)(__right_value362=string_to_string(project_name_411))),((char*)(__right_value363=string_to_string(project_name_411))),((char*)(__right_value364=string_to_string(project_name_debug_412))),((char*)(__right_value365=string_to_string(project_name_411))),((char*)(__right_value366=string_to_string(project_name_411))),((char*)(__right_value367=string_to_string(project_name_411))),((char*)(__right_value368=string_to_string(project_name_411))),((char*)(__right_value369=string_to_string(project_name_411))),((char*)(__right_value370=string_to_string(project_name_debug_412))),((char*)(__right_value371=string_to_string(project_name_debug_412)))))),((char*)(__right_value374=xsprintf("\%s/Makefile",((char*)(__right_value373=string_to_string(project_name_411)))))),(_Bool)0);
-    __right_value347 = come_decrement_ref_count2(__right_value347, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value348 = come_decrement_ref_count2(__right_value348, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value349 = come_decrement_ref_count2(__right_value349, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value350 = come_decrement_ref_count2(__right_value350, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value351 = come_decrement_ref_count2(__right_value351, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value352 = come_decrement_ref_count2(__right_value352, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value353 = come_decrement_ref_count2(__right_value353, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value354 = come_decrement_ref_count2(__right_value354, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value355 = come_decrement_ref_count2(__right_value355, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value356 = come_decrement_ref_count2(__right_value356, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value357 = come_decrement_ref_count2(__right_value357, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value358 = come_decrement_ref_count2(__right_value358, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value359 = come_decrement_ref_count2(__right_value359, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value360 = come_decrement_ref_count2(__right_value360, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value361 = come_decrement_ref_count2(__right_value361, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value362 = come_decrement_ref_count2(__right_value362, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value363 = come_decrement_ref_count2(__right_value363, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value364 = come_decrement_ref_count2(__right_value364, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value365 = come_decrement_ref_count2(__right_value365, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value366 = come_decrement_ref_count2(__right_value366, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value367 = come_decrement_ref_count2(__right_value367, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value368 = come_decrement_ref_count2(__right_value368, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value369 = come_decrement_ref_count2(__right_value369, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value370 = come_decrement_ref_count2(__right_value370, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value371 = come_decrement_ref_count2(__right_value371, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value372 = come_decrement_ref_count2(__right_value372, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value373 = come_decrement_ref_count2(__right_value373, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-    __right_value374 = come_decrement_ref_count2(__right_value374, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+    (__right_value347 = come_decrement_ref_count2(__right_value347, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value348 = come_decrement_ref_count2(__right_value348, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value349 = come_decrement_ref_count2(__right_value349, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value350 = come_decrement_ref_count2(__right_value350, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value351 = come_decrement_ref_count2(__right_value351, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value352 = come_decrement_ref_count2(__right_value352, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value353 = come_decrement_ref_count2(__right_value353, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value354 = come_decrement_ref_count2(__right_value354, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value355 = come_decrement_ref_count2(__right_value355, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value356 = come_decrement_ref_count2(__right_value356, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value357 = come_decrement_ref_count2(__right_value357, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value358 = come_decrement_ref_count2(__right_value358, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value359 = come_decrement_ref_count2(__right_value359, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value360 = come_decrement_ref_count2(__right_value360, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value361 = come_decrement_ref_count2(__right_value361, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value362 = come_decrement_ref_count2(__right_value362, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value363 = come_decrement_ref_count2(__right_value363, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value364 = come_decrement_ref_count2(__right_value364, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value365 = come_decrement_ref_count2(__right_value365, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value366 = come_decrement_ref_count2(__right_value366, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value367 = come_decrement_ref_count2(__right_value367, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value368 = come_decrement_ref_count2(__right_value368, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value369 = come_decrement_ref_count2(__right_value369, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value370 = come_decrement_ref_count2(__right_value370, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value371 = come_decrement_ref_count2(__right_value371, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value372 = come_decrement_ref_count2(__right_value372, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value373 = come_decrement_ref_count2(__right_value373, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (__right_value374 = come_decrement_ref_count2(__right_value374, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     __result252__ = (_Bool)1;
-    project_name_411 = come_decrement_ref_count2(project_name_411, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    project_name_debug_412 = come_decrement_ref_count2(project_name_debug_412, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    cc_413 = come_decrement_ref_count2(cc_413, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    install_414 = come_decrement_ref_count2(install_414, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    libs_415 = come_decrement_ref_count2(libs_415, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    os_416 = come_decrement_ref_count2(os_416, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    prefix_417 = come_decrement_ref_count2(prefix_417, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    cflags_418 = come_decrement_ref_count2(cflags_418, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-    cflags_debug_419 = come_decrement_ref_count2(cflags_debug_419, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (project_name_411 = come_decrement_ref_count2(project_name_411, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (project_name_debug_412 = come_decrement_ref_count2(project_name_debug_412, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (cc_413 = come_decrement_ref_count2(cc_413, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (install_414 = come_decrement_ref_count2(install_414, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (libs_415 = come_decrement_ref_count2(libs_415, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (os_416 = come_decrement_ref_count2(os_416, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (prefix_417 = come_decrement_ref_count2(prefix_417, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (cflags_418 = come_decrement_ref_count2(cflags_418, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    (cflags_debug_419 = come_decrement_ref_count2(cflags_debug_419, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     return __result252__;
 }
 
@@ -4020,8 +4018,8 @@ int Value_432;
 _Bool _if_conditional3;
 _Bool __exception_result_var_b10;
     Value_432=system(((char*)(__right_value376=xsprintf("make install DESTDIR=\%s",((char*)(__right_value375=charp_to_string(prefix)))))));
-    if(    (_if_conditional3=(Value_432<0)),    (__right_value375 = come_decrement_ref_count2(__right_value375, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-    (__right_value376 = come_decrement_ref_count2(__right_value376, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+    if(    (_if_conditional3=(Value_432<0)),    (__right_value375 = come_decrement_ref_count2(__right_value375, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
+    (__right_value376 = come_decrement_ref_count2(__right_value376, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
     _if_conditional3) {
         (come_push_stackframe("02transpile.c", 609, 9),__exception_result_var_b10=die("system"), come_pop_stackframe(), __exception_result_var_b10);
     }
@@ -4137,12 +4135,12 @@ void* __right_value511 = (void*)0;
     for(    i_491=0;    i_491<12;    i_491++    ){
         generics_type_492=(char*)come_increment_ref_count(xsprintf("generics_type%d",i_491));
         map$2voidphvoidphp_insert(info->classes,(char*)come_increment_ref_count(generics_type_492),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "02transpile.c", 632, "struct sClass", sClass_finalize, sClass_clone, sClass_get_hash_key, sClass_equals)),generics_type_492,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,i_491,-1,(_Bool)0,info)));
-        generics_type_492 = come_decrement_ref_count2(generics_type_492, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (generics_type_492 = come_decrement_ref_count2(generics_type_492, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     for(    i_493=0;    i_493<7;    i_493++    ){
         generics_type_494=(char*)come_increment_ref_count(xsprintf("mgenerics_type%d",i_493));
         map$2voidphvoidphp_insert(info->classes,(char*)come_increment_ref_count(generics_type_494),(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc(1, sizeof(struct sClass)*(1), "02transpile.c", 636, "struct sClass", sClass_finalize, sClass_clone, sClass_get_hash_key, sClass_equals)),generics_type_494,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,(_Bool)0,(_Bool)0,-1,i_493,(_Bool)0,info)));
-        generics_type_494 = come_decrement_ref_count2(generics_type_494, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (generics_type_494 = come_decrement_ref_count2(generics_type_494, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     is_mac_495=system("uname -a | grep Darwin 1> /dev/null 2>/dev/null");
     if(    is_mac_495==0) {
@@ -4153,7 +4151,7 @@ void* __right_value511 = (void*)0;
         type_497->mOriginalTypeName=(char*)come_increment_ref_count(__builtin_string("__builtin_va_list"));
         __dec_obj95 = come_decrement_ref_count2(__dec_obj95, (void*)0, (void*)0, 0,0,0, (void*)0);
         map$2voidphvoidphp_insert(info->types,(char*)come_increment_ref_count(__builtin_string(type_name_496)),(struct sType*)come_increment_ref_count(type_497));
-        type_name_496 = come_decrement_ref_count2(type_name_496, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (type_name_496 = come_decrement_ref_count2(type_name_496, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         come_call_finalizer3(type_497,sType_finalize, 0, 0, 0, 0, (void*)0);
     }
     else {
@@ -4185,7 +4183,7 @@ struct map$2voidphvoidph* __result274__;
             if(            come_call_equals((void*)0, self->keys[it_451], key)) {
                 if(                1) {
                     list$1voidpp_remove(self->key_list,self->keys[it_451]);
-                    come_call_finalizer3(self->keys[it_451], (void*)0, 0, 0, 0, 0, (void*)0);
+                    come_call_finalizer3(self->keys[it_451],(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
                     self->keys[it_451]=(void*)come_increment_ref_count(key);
                 }
                 else {
@@ -4193,7 +4191,7 @@ struct map$2voidphvoidph* __result274__;
                     self->keys[it_451]=key;
                 }
                 if(                1) {
-                    come_call_finalizer3(self->items[it_451], (void*)0, 0, 0, 0, 0, (void*)0);
+                    come_call_finalizer3(self->items[it_451],(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
                     self->items[it_451]=(void*)come_increment_ref_count(item);
                 }
                 else {
@@ -4239,8 +4237,8 @@ struct map$2voidphvoidph* __result274__;
         list$1voidpp_push_back(self->key_list,key);
     }
     __result274__ = gComeFunResultObject = __result_obj__ = self;
-    come_call_finalizer3(key, (void*)0, 0, 0, 0, 0, (void*)0);
-    come_call_finalizer3(item, (void*)0, 0, 0, 0, 0, (void*)0);
+    come_call_finalizer3(key,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
+    come_call_finalizer3(item,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result274__;
 }
@@ -4272,7 +4270,7 @@ default_value_449 = (void*)0;
     for(    it_440=map$2voidphvoidphp_begin(self);    !map$2voidphvoidphp_end(self);    it_440=map$2voidphvoidphp_next(self)    ){
         memset(&default_value_443,0,sizeof(void*));
         it2_444=((void*)(__right_value380=map$2voidphvoidphp_at(self,it_440,default_value_443)));
-        come_call_finalizer3(__right_value380,(void*)0, 0, 1, 0, 0, (void*)0);
+        come_call_finalizer3(__right_value380,(void*)0, 0/*alloca value*/, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
         hash_447=come_call_get_hash_key((void*)0, ((void*)it_440))%size_433;
         n_448=hash_447;
         while((_Bool)1) {
@@ -4291,14 +4289,14 @@ default_value_449 = (void*)0;
                 item_existance_436[n_448]=(_Bool)1;
                 keys_434[n_448]=it_440;
                 items_435[n_448]=((void*)(__right_value381=map$2voidphvoidphp_at(self,it_440,default_value_449)));
-                come_call_finalizer3(__right_value381,(void*)0, 0, 1, 0, 0, (void*)0);
+                come_call_finalizer3(__right_value381,(void*)0, 0/*alloca value*/, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
                 len_437++;
                 break;
             }
         }
     }
     come_free((char*)self->items);
-    self->item_existance = come_decrement_ref_count2(self->item_existance, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (self->item_existance = come_decrement_ref_count2(self->item_existance, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     come_free((char*)self->keys);
     self->keys=keys_434;
     self->items=items_435;
@@ -4379,7 +4377,7 @@ void* __result262__;
         if(        self->item_existance[it_446]) {
             if(            come_call_equals((void*)0, self->keys[it_446], key)) {
                 __result259__ = gComeFunResultObject = __result_obj__ = self->items[it_446];
-                come_call_finalizer3(default_value, (void*)0, 0, 0, 0, 0, (void*)0);
+                come_call_finalizer3(default_value,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
                 gComeFunResultObject = (void*)0;
                 return __result259__;
             }
@@ -4389,20 +4387,20 @@ void* __result262__;
             }
             else if(            it_446==hash_445) {
                 __result260__ = gComeFunResultObject = __result_obj__ = default_value;
-                come_call_finalizer3(default_value, (void*)0, 0, 0, 1, 0, (void*)0);
+                come_call_finalizer3(default_value,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_ */, (void*)0);
                 gComeFunResultObject = (void*)0;
                 return __result260__;
             }
         }
         else {
             __result261__ = gComeFunResultObject = __result_obj__ = default_value;
-            come_call_finalizer3(default_value, (void*)0, 0, 0, 1, 0, (void*)0);
+            come_call_finalizer3(default_value,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_ */, (void*)0);
             gComeFunResultObject = (void*)0;
             return __result261__;
         }
     }
     __result262__ = gComeFunResultObject = __result_obj__ = default_value;
-    come_call_finalizer3(default_value, (void*)0, 0, 0, 1, 0, (void*)0);
+    come_call_finalizer3(default_value,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_ */, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result262__;
 }
@@ -4677,7 +4675,7 @@ char* __dec_obj50;
             __dec_obj46 = come_decrement_ref_count2(__dec_obj46, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mName = come_decrement_ref_count2(self->mName, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mName = come_decrement_ref_count2(self->mName, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->mFields!=((void*)0)) {
@@ -4695,7 +4693,7 @@ char* __dec_obj50;
             __dec_obj49 = come_decrement_ref_count2(__dec_obj49, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mParentClassName = come_decrement_ref_count2(self->mParentClassName, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mParentClassName = come_decrement_ref_count2(self->mParentClassName, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->mAttribute!=((void*)0)) {
@@ -4704,7 +4702,7 @@ char* __dec_obj50;
             __dec_obj50 = come_decrement_ref_count2(__dec_obj50, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mAttribute = come_decrement_ref_count2(self->mAttribute, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mAttribute = come_decrement_ref_count2(self->mAttribute, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
 }
@@ -4728,7 +4726,7 @@ void* __dec_obj48;
             come_call_finalizer3(__dec_obj48,(void*)0, 0, 0, 1, 0, (void*)0);
         }
         else {
-            come_call_finalizer3(self->item, (void*)0, 0, 0, 0, 0, (void*)0);
+            come_call_finalizer3(self->item,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
         }
     }
 }
@@ -5003,7 +5001,7 @@ struct list$1voidph* __result278__;
     }
     self->len++;
     __result278__ = gComeFunResultObject = __result_obj__ = self;
-    come_call_finalizer3(item, (void*)0, 0, 0, 0, 0, (void*)0);
+    come_call_finalizer3(item,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result278__;
 }
@@ -5111,7 +5109,7 @@ char* __dec_obj73;
             if(__dec_obj68) { __dec_obj68 = come_decrement_ref_count2(__dec_obj68, ((struct sNode*)__dec_obj68)->finalize, ((struct sNode*)__dec_obj68)->_protocol_obj, 0,0,0, (void*)0); };
         }
         else {
-            if(self->mSizeNum) { self->mSizeNum = come_decrement_ref_count2(self->mSizeNum, ((struct sNode*)self->mSizeNum)->finalize, ((struct sNode*)self->mSizeNum)->_protocol_obj, 0, 0, 0, (void*)0); } 
+            ((self->mSizeNum) ? self->mSizeNum = come_decrement_ref_count2(self->mSizeNum, ((struct sNode*)self->mSizeNum)->finalize, ((struct sNode*)self->mSizeNum)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,0/*force_delete*/, (void*)0):0);
         }
     }
     if(    self!=((void*)0)&&self->mAlignas!=((void*)0)) {
@@ -5120,7 +5118,7 @@ char* __dec_obj73;
             if(__dec_obj69) { __dec_obj69 = come_decrement_ref_count2(__dec_obj69, ((struct sNode*)__dec_obj69)->finalize, ((struct sNode*)__dec_obj69)->_protocol_obj, 0,0,0, (void*)0); };
         }
         else {
-            if(self->mAlignas) { self->mAlignas = come_decrement_ref_count2(self->mAlignas, ((struct sNode*)self->mAlignas)->finalize, ((struct sNode*)self->mAlignas)->_protocol_obj, 0, 0, 0, (void*)0); } 
+            ((self->mAlignas) ? self->mAlignas = come_decrement_ref_count2(self->mAlignas, ((struct sNode*)self->mAlignas)->finalize, ((struct sNode*)self->mAlignas)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,0/*force_delete*/, (void*)0):0);
         }
     }
     if(    self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)) {
@@ -5129,7 +5127,7 @@ char* __dec_obj73;
             __dec_obj70 = come_decrement_ref_count2(__dec_obj70, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mOriginalTypeName = come_decrement_ref_count2(self->mOriginalTypeName, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mOriginalTypeName = come_decrement_ref_count2(self->mOriginalTypeName, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->mAsmName!=((void*)0)) {
@@ -5138,7 +5136,7 @@ char* __dec_obj73;
             __dec_obj71 = come_decrement_ref_count2(__dec_obj71, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mAsmName = come_decrement_ref_count2(self->mAsmName, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mAsmName = come_decrement_ref_count2(self->mAsmName, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->mTupleName!=((void*)0)) {
@@ -5147,7 +5145,7 @@ char* __dec_obj73;
             __dec_obj72 = come_decrement_ref_count2(__dec_obj72, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mTupleName = come_decrement_ref_count2(self->mTupleName, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mTupleName = come_decrement_ref_count2(self->mTupleName, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->mAttribute!=((void*)0)) {
@@ -5156,7 +5154,7 @@ char* __dec_obj73;
             __dec_obj73 = come_decrement_ref_count2(__dec_obj73, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mAttribute = come_decrement_ref_count2(self->mAttribute, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mAttribute = come_decrement_ref_count2(self->mAttribute, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
 }
@@ -5180,7 +5178,7 @@ struct sNode* __dec_obj64;
             if(__dec_obj64) { __dec_obj64 = come_decrement_ref_count2(__dec_obj64, ((struct sNode*)__dec_obj64)->finalize, ((struct sNode*)__dec_obj64)->_protocol_obj, 0,0,0, (void*)0); };
         }
         else {
-            if(self->item) { self->item = come_decrement_ref_count2(self->item, ((struct sNode*)self->item)->finalize, ((struct sNode*)self->item)->_protocol_obj, 0, 0, 0, (void*)0); } 
+            ((self->item) ? self->item = come_decrement_ref_count2(self->item, ((struct sNode*)self->item)->finalize, ((struct sNode*)self->item)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,0/*force_delete*/, (void*)0):0);
         }
     }
 }
@@ -5817,7 +5815,7 @@ struct list$1sNodeph* __result284__;
     }
     self->len++;
     __result284__ = gComeFunResultObject = __result_obj__ = self;
-    if(item) { item = come_decrement_ref_count2(item, ((struct sNode*)item)->finalize, ((struct sNode*)item)->_protocol_obj, 0, 0, 0, (void*)0); } 
+    ((item) ? item = come_decrement_ref_count2(item, ((struct sNode*)item)->finalize, ((struct sNode*)item)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,0/*force_delete*/, (void*)0):0);
     gComeFunResultObject = (void*)0;
     return __result284__;
 }
@@ -5862,7 +5860,7 @@ struct sNode* __result286__;
         result_515->kind=self->kind;
     }
     __result286__ = gComeFunResultObject = __result_obj__ = result_515;
-    if(result_515) { result_515 = come_decrement_ref_count2(result_515, ((struct sNode*)result_515)->finalize, ((struct sNode*)result_515)->_protocol_obj, 0, 1, 0, (void*)0); } 
+    ((result_515) ? result_515 = come_decrement_ref_count2(result_515, ((struct sNode*)result_515)->finalize, ((struct sNode*)result_515)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,0/*force_delete*/, (void*)0):0);
     gComeFunResultObject = (void*)0;
     return __result286__;
 }
@@ -5937,7 +5935,7 @@ struct list$1charph* __result289__;
     }
     self->len++;
     __result289__ = gComeFunResultObject = __result_obj__ = self;
-    item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (item = come_decrement_ref_count2(item, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     gComeFunResultObject = (void*)0;
     return __result289__;
 }
@@ -5986,7 +5984,7 @@ struct list$1voidph* __result292__;
     }
     self->len++;
     __result292__ = gComeFunResultObject = __result_obj__ = self;
-    come_call_finalizer3(item, (void*)0, 0, 0, 0, 0, (void*)0);
+    come_call_finalizer3(item,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result292__;
 }
@@ -6000,7 +5998,7 @@ struct sType* __dec_obj100;
             __dec_obj99 = come_decrement_ref_count2(__dec_obj99, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->v1 = come_decrement_ref_count2(self->v1, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->v1 = come_decrement_ref_count2(self->v1, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->v2!=((void*)0)) {
@@ -6077,7 +6075,7 @@ struct tuple2$2charphsTypeph* __result295__;
     come_call_finalizer3(__dec_obj104,sType_finalize, 0, 0, 0, 0, (void*)0);
     __result295__ = gComeFunResultObject = __result_obj__ = self;
     come_call_finalizer3(self,tuple2$2charphsTypephp_finalize, 0, 0, 1, 0, (void*)0);
-    v1 = come_decrement_ref_count2(v1, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (v1 = come_decrement_ref_count2(v1, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     come_call_finalizer3(v2,sType_finalize, 0, 0, 0, 0, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result295__;
@@ -6092,7 +6090,7 @@ struct sType* __dec_obj106;
             __dec_obj105 = come_decrement_ref_count2(__dec_obj105, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->v1 = come_decrement_ref_count2(self->v1, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->v1 = come_decrement_ref_count2(self->v1, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->v2!=((void*)0)) {
@@ -6130,7 +6128,7 @@ void* __right_value521 = (void*)0;
 void* __right_value522 = (void*)0;
     if(    getenv("PICO_SDK_PATH")) {
         Value_527=(char*)come_increment_ref_count(charp_read((((char*)(__right_value512=charp_operator_add(getenv("PICO_SDK_PATH"),"/pico_sdk_version.cmake"))))));
-        if(        (_if_conditional4=(Value_527)),        (__right_value512 = come_decrement_ref_count2(__right_value512, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        if(        (_if_conditional4=(Value_527)),        (__right_value512 = come_decrement_ref_count2(__right_value512, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
         _if_conditional4) {
             version_major_528=0;
             p_529=strstr(Value_527,"set(PICO_SDK_VERSION_MAJOR");
@@ -6169,25 +6167,25 @@ void* __right_value522 = (void*)0;
                 }
             }
             version_string_534=(char*)come_increment_ref_count(xsprintf("\%s.\%s.\%s",((char*)(__right_value514=int_to_string(version_major_528))),((char*)(__right_value515=int_to_string(version_miner_530))),((char*)(__right_value516=int_to_string(version_revision_532)))));
-            __right_value514 = come_decrement_ref_count2(__right_value514, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            __right_value515 = come_decrement_ref_count2(__right_value515, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            __right_value516 = come_decrement_ref_count2(__right_value516, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value514 = come_decrement_ref_count2(__right_value514, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (__right_value515 = come_decrement_ref_count2(__right_value515, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (__right_value516 = come_decrement_ref_count2(__right_value516, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             Value_535=system("mkdir -p pico");
             if(            !Value_535) {
                 charp_write(((char*)(__right_value522=xsprintf("\#ifndef _PICO_VERSION_H\n\#define _PICO_VERSION_H\n\n\#define PICO_SDK_VERSION_MAJOR \%s\n\#define PICO_SDK_VERSION_MINOR \%s\n\#define PICO_SDK_VERSION_REVISION \%s\n\#define PICO_SDK_VERSION_STRING \"\%s\"\n\n\#endif\n",((char*)(__right_value518=int_to_string(version_major_528))),((char*)(__right_value519=int_to_string(version_miner_530))),((char*)(__right_value520=int_to_string(version_revision_532))),((char*)(__right_value521=string_to_string(version_string_534)))))),"pico/version.h",(_Bool)0);
-                __right_value518 = come_decrement_ref_count2(__right_value518, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value519 = come_decrement_ref_count2(__right_value519, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value520 = come_decrement_ref_count2(__right_value520, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value521 = come_decrement_ref_count2(__right_value521, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value522 = come_decrement_ref_count2(__right_value522, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value518 = come_decrement_ref_count2(__right_value518, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value519 = come_decrement_ref_count2(__right_value519, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value520 = come_decrement_ref_count2(__right_value520, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value521 = come_decrement_ref_count2(__right_value521, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value522 = come_decrement_ref_count2(__right_value522, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else {
             }
-            version_string_534 = come_decrement_ref_count2(version_string_534, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (version_string_534 = come_decrement_ref_count2(version_string_534, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
         else {
         }
-        Value_527 = come_decrement_ref_count2(Value_527, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (Value_527 = come_decrement_ref_count2(Value_527, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     (void)system("touch pico_config_extra_headers.h");
     (void)system("touch pico_config_platform_headers.h");
@@ -6663,8 +6661,8 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            charp_operator_equals(argv[i_554],"-e")&&i_554+1<argc) {
                 buffer_append_str(linker_option_539,((char*)(__right_value537=xsprintf("-e \%s",((char*)(__right_value536=charp_to_string(argv[i_554+1])))))));
-                __right_value536 = come_decrement_ref_count2(__right_value536, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value537 = come_decrement_ref_count2(__right_value537, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value536 = come_decrement_ref_count2(__right_value536, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value537 = come_decrement_ref_count2(__right_value537, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_554++;
             }
             else if(            charp_operator_equals(argv[i_554],"-str")) {
@@ -6676,7 +6674,7 @@ memset(&info_639, 0, sizeof(struct sInfo));
             else if(            charp_operator_equals(argv[i_554],"-gc")) {
                 gComeGC=(_Bool)1;
                 buffer_append_format(cpp_option_540,((char*)(__right_value538=xsprintf(" -DENABLE_GC "))));
-                __right_value538 = come_decrement_ref_count2(__right_value538, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value538 = come_decrement_ref_count2(__right_value538, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-gcc")) {
                 gcc_compiler_553=(_Bool)1;
@@ -6691,9 +6689,9 @@ memset(&info_639, 0, sizeof(struct sInfo));
                 cpp_option_540=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "02transpile.c", 773, "struct buffer", buffer_finalize, buffer_clone, buffer_get_hash_key, buffer_equals))));
                 come_call_finalizer3(__dec_obj108,buffer_finalize, 0, 0, 0, 0, (void*)0);
                 buffer_append_format(cpp_option_540,((char*)(__right_value543=xsprintf(" -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \%s/src/rp2_common/hardware_sync/include \$(find \%s -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__",((char*)(__right_value541=charp_to_string(env_556))),((char*)(__right_value542=charp_to_string(env_556)))))));
-                __right_value541 = come_decrement_ref_count2(__right_value541, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value542 = come_decrement_ref_count2(__right_value542, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value543 = come_decrement_ref_count2(__right_value543, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value541 = come_decrement_ref_count2(__right_value541, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value542 = come_decrement_ref_count2(__right_value542, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value543 = come_decrement_ref_count2(__right_value543, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 create_pico_version_header();
                 pico_cpp_552=(_Bool)1;
             }
@@ -6707,39 +6705,39 @@ memset(&info_639, 0, sizeof(struct sInfo));
                 cpp_option_540=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "02transpile.c", 784, "struct buffer", buffer_finalize, buffer_clone, buffer_get_hash_key, buffer_equals))));
                 come_call_finalizer3(__dec_obj109,buffer_finalize, 0, 0, 0, 0, (void*)0);
                 buffer_append_format(cpp_option_540,((char*)(__right_value567=xsprintf(" -I\%s/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/xtensa-esp-elf/include -I\%s/components/freertos/include -I\%s/components/esp32/include -I\%s/components/driver/include -I\%s/components/lwip/include -I\%s/components/freertos/FreeRTOS-Kernel/include -I\%s/components/freertos/config/include/freertos -I\%s/components/freertos/config/xtensa/include -I\%s/components/xtensa/include -I\%s/components/xtensa/esp32/include -I\%s/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I\%s/components/esp_hw_support/include -I\%s/components/soc/esp32/include/ -I\%s/components/esp_common/include/components $(find \%s/components -type d -name include | grep esp_ | sed 's/^/ -I/g') -I\%s/components/esp_common/include/ -I\%s/components/soc/esp32/register/soc/ -I\%s/components/soc/esp32/register -I\%s/components/heap/include -I\%s/components/hal/include -I\%s/components/newlib/platform_include -D__M5STACK__",((char*)(__right_value546=charp_to_string(getenv("HOME")))),((char*)(__right_value547=charp_to_string(env_557))),((char*)(__right_value548=charp_to_string(env_557))),((char*)(__right_value549=charp_to_string(env_557))),((char*)(__right_value550=charp_to_string(env_557))),((char*)(__right_value551=charp_to_string(env_557))),((char*)(__right_value552=charp_to_string(env_557))),((char*)(__right_value553=charp_to_string(env_557))),((char*)(__right_value554=charp_to_string(env_557))),((char*)(__right_value555=charp_to_string(env_557))),((char*)(__right_value556=charp_to_string(env_557))),((char*)(__right_value557=charp_to_string(env_557))),((char*)(__right_value558=charp_to_string(env_557))),((char*)(__right_value559=charp_to_string(env_557))),((char*)(__right_value560=charp_to_string(env_557))),((char*)(__right_value561=charp_to_string(env_557))),((char*)(__right_value562=charp_to_string(env_557))),((char*)(__right_value563=charp_to_string(env_557))),((char*)(__right_value564=charp_to_string(env_557))),((char*)(__right_value565=charp_to_string(env_557))),((char*)(__right_value566=charp_to_string(env_557)))))),"/usr/local/");
-                __right_value546 = come_decrement_ref_count2(__right_value546, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value547 = come_decrement_ref_count2(__right_value547, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value548 = come_decrement_ref_count2(__right_value548, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value549 = come_decrement_ref_count2(__right_value549, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value550 = come_decrement_ref_count2(__right_value550, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value551 = come_decrement_ref_count2(__right_value551, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value552 = come_decrement_ref_count2(__right_value552, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value553 = come_decrement_ref_count2(__right_value553, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value554 = come_decrement_ref_count2(__right_value554, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value555 = come_decrement_ref_count2(__right_value555, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value556 = come_decrement_ref_count2(__right_value556, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value557 = come_decrement_ref_count2(__right_value557, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value558 = come_decrement_ref_count2(__right_value558, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value559 = come_decrement_ref_count2(__right_value559, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value560 = come_decrement_ref_count2(__right_value560, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value561 = come_decrement_ref_count2(__right_value561, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value562 = come_decrement_ref_count2(__right_value562, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value563 = come_decrement_ref_count2(__right_value563, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value564 = come_decrement_ref_count2(__right_value564, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value565 = come_decrement_ref_count2(__right_value565, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value566 = come_decrement_ref_count2(__right_value566, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value567 = come_decrement_ref_count2(__right_value567, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value546 = come_decrement_ref_count2(__right_value546, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value547 = come_decrement_ref_count2(__right_value547, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value548 = come_decrement_ref_count2(__right_value548, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value549 = come_decrement_ref_count2(__right_value549, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value550 = come_decrement_ref_count2(__right_value550, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value551 = come_decrement_ref_count2(__right_value551, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value552 = come_decrement_ref_count2(__right_value552, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value553 = come_decrement_ref_count2(__right_value553, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value554 = come_decrement_ref_count2(__right_value554, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value555 = come_decrement_ref_count2(__right_value555, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value556 = come_decrement_ref_count2(__right_value556, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value557 = come_decrement_ref_count2(__right_value557, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value558 = come_decrement_ref_count2(__right_value558, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value559 = come_decrement_ref_count2(__right_value559, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value560 = come_decrement_ref_count2(__right_value560, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value561 = come_decrement_ref_count2(__right_value561, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value562 = come_decrement_ref_count2(__right_value562, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value563 = come_decrement_ref_count2(__right_value563, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value564 = come_decrement_ref_count2(__right_value564, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value565 = come_decrement_ref_count2(__right_value565, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value566 = come_decrement_ref_count2(__right_value566, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value567 = come_decrement_ref_count2(__right_value567, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            i_554+1<argc&&charp_operator_equals(argv[i_554],"-target")) {
                 buffer_append_str(clang_option_538,((char*)(__right_value569=xsprintf("-target \%s",((char*)(__right_value568=charp_to_string(argv[i_554+1])))))));
-                __right_value568 = come_decrement_ref_count2(__right_value568, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value569 = come_decrement_ref_count2(__right_value569, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value568 = come_decrement_ref_count2(__right_value568, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value569 = come_decrement_ref_count2(__right_value569, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_554++;
             }
             else if(            i_554+1<argc&&charp_operator_equals(argv[i_554],"-T")) {
                 buffer_append_str(clang_option_538,((char*)(__right_value571=xsprintf(" -T \%s ",((char*)(__right_value570=charp_to_string(argv[i_554+1])))))));
-                __right_value570 = come_decrement_ref_count2(__right_value570, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value571 = come_decrement_ref_count2(__right_value571, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value570 = come_decrement_ref_count2(__right_value570, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value571 = come_decrement_ref_count2(__right_value571, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_554++;
             }
             else if(            charp_operator_equals(argv[i_554],"-net")) {
@@ -6751,74 +6749,74 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            charp_operator_equals(argv[i_554],"-C")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value573=xsprintf("\%s ",((char*)(__right_value572=charp_to_string(argv[i_554])))))));
-                __right_value572 = come_decrement_ref_count2(__right_value572, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value573 = come_decrement_ref_count2(__right_value573, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value572 = come_decrement_ref_count2(__right_value572, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value573 = come_decrement_ref_count2(__right_value573, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-M")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value575=xsprintf("\%s ",((char*)(__right_value574=charp_to_string(argv[i_554])))))));
-                __right_value574 = come_decrement_ref_count2(__right_value574, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value575 = come_decrement_ref_count2(__right_value575, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value574 = come_decrement_ref_count2(__right_value574, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value575 = come_decrement_ref_count2(__right_value575, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-MM")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value577=xsprintf("\%s ",((char*)(__right_value576=charp_to_string(argv[i_554])))))));
-                __right_value576 = come_decrement_ref_count2(__right_value576, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value577 = come_decrement_ref_count2(__right_value577, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value576 = come_decrement_ref_count2(__right_value576, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value577 = come_decrement_ref_count2(__right_value577, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-dM")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value579=xsprintf("\%s ",((char*)(__right_value578=charp_to_string(argv[i_554])))))));
-                __right_value578 = come_decrement_ref_count2(__right_value578, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value579 = come_decrement_ref_count2(__right_value579, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value578 = come_decrement_ref_count2(__right_value578, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value579 = come_decrement_ref_count2(__right_value579, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-dD")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value581=xsprintf("\%s ",((char*)(__right_value580=charp_to_string(argv[i_554])))))));
-                __right_value580 = come_decrement_ref_count2(__right_value580, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value581 = come_decrement_ref_count2(__right_value581, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value580 = come_decrement_ref_count2(__right_value580, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value581 = come_decrement_ref_count2(__right_value581, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-H")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value583=xsprintf("\%s ",((char*)(__right_value582=charp_to_string(argv[i_554])))))));
-                __right_value582 = come_decrement_ref_count2(__right_value582, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value583 = come_decrement_ref_count2(__right_value583, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value582 = come_decrement_ref_count2(__right_value582, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value583 = come_decrement_ref_count2(__right_value583, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-P")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value585=xsprintf("\%s ",((char*)(__right_value584=charp_to_string(argv[i_554])))))));
-                __right_value584 = come_decrement_ref_count2(__right_value584, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value585 = come_decrement_ref_count2(__right_value585, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value584 = come_decrement_ref_count2(__right_value584, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value585 = come_decrement_ref_count2(__right_value585, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-nostdinc")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value587=xsprintf("\%s ",((char*)(__right_value586=charp_to_string(argv[i_554])))))));
-                __right_value586 = come_decrement_ref_count2(__right_value586, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value587 = come_decrement_ref_count2(__right_value587, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value586 = come_decrement_ref_count2(__right_value586, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value587 = come_decrement_ref_count2(__right_value587, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-CC")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value589=xsprintf("\%s ",((char*)(__right_value588=charp_to_string(argv[i_554])))))));
-                __right_value588 = come_decrement_ref_count2(__right_value588, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value589 = come_decrement_ref_count2(__right_value589, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value588 = come_decrement_ref_count2(__right_value588, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value589 = come_decrement_ref_count2(__right_value589, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            i_554+1<argc&&charp_operator_equals(argv[i_554],"-target")) {
                 buffer_append_str(clang_option_538,((char*)(__right_value591=xsprintf("-target \%s",((char*)(__right_value590=charp_to_string(argv[i_554+1])))))));
-                __right_value590 = come_decrement_ref_count2(__right_value590, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value591 = come_decrement_ref_count2(__right_value591, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value590 = come_decrement_ref_count2(__right_value590, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value591 = come_decrement_ref_count2(__right_value591, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_554++;
             }
             else if(            i_554+1<argc&&charp_operator_equals(argv[i_554],"-include")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value593=xsprintf("-iclude \%s",((char*)(__right_value592=charp_to_string(argv[i_554+1])))))));
-                __right_value592 = come_decrement_ref_count2(__right_value592, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value593 = come_decrement_ref_count2(__right_value593, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value592 = come_decrement_ref_count2(__right_value592, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value593 = come_decrement_ref_count2(__right_value593, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_554++;
             }
             else if(            i_554+1<argc&&charp_operator_equals(argv[i_554],"-isystem")) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value595=xsprintf("-isystem \%s",((char*)(__right_value594=charp_to_string(argv[i_554+1])))))));
-                __right_value594 = come_decrement_ref_count2(__right_value594, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value595 = come_decrement_ref_count2(__right_value595, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value594 = come_decrement_ref_count2(__right_value594, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value595 = come_decrement_ref_count2(__right_value595, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 buffer_append_str(clang_option_538,((char*)(__right_value597=xsprintf("-isystem \%s",((char*)(__right_value596=charp_to_string(argv[i_554+1])))))));
-                __right_value596 = come_decrement_ref_count2(__right_value596, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value597 = come_decrement_ref_count2(__right_value597, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value596 = come_decrement_ref_count2(__right_value596, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value597 = come_decrement_ref_count2(__right_value597, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_554++;
             }
             else if(            i_554+1<argc&&charp_operator_equals(argv[i_554],"-T")) {
                 buffer_append_str(clang_option_538,((char*)(__right_value599=xsprintf(" -T \%s ",((char*)(__right_value598=charp_to_string(argv[i_554+1])))))));
-                __right_value598 = come_decrement_ref_count2(__right_value598, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value599 = come_decrement_ref_count2(__right_value599, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value598 = come_decrement_ref_count2(__right_value598, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value599 = come_decrement_ref_count2(__right_value599, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_554++;
             }
             else if(            charp_operator_equals(argv[i_554],"-common-header")) {
@@ -6827,30 +6825,30 @@ memset(&info_639, 0, sizeof(struct sInfo));
             else if(            charp_operator_equals(argv[i_554],"-original-position")) {
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(            (_elif_conditional1=(string_operator_equals(((char*)(__right_value600=charp_operator_load_range_element(argv[i_554],0,2))),"-O"))),            (__right_value600 = come_decrement_ref_count2(__right_value600, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+            else if(            (_elif_conditional1=(string_operator_equals(((char*)(__right_value600=charp_operator_load_range_element(argv[i_554],0,2))),"-O"))),            (__right_value600 = come_decrement_ref_count2(__right_value600, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
             _elif_conditional1) {
                 buffer_append_str(clang_option_538,((char*)(__right_value602=xsprintf(" \%s ",((char*)(__right_value601=charp_to_string(argv[i_554])))))));
-                __right_value601 = come_decrement_ref_count2(__right_value601, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value602 = come_decrement_ref_count2(__right_value602, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value601 = come_decrement_ref_count2(__right_value601, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value602 = come_decrement_ref_count2(__right_value602, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 come_debug_549=(_Bool)0;
             }
-            else if(            (_elif_conditional2=(string_operator_equals(((char*)(__right_value603=charp_operator_load_range_element(argv[i_554],0,2))),"-D"))),            (__right_value603 = come_decrement_ref_count2(__right_value603, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+            else if(            (_elif_conditional2=(string_operator_equals(((char*)(__right_value603=charp_operator_load_range_element(argv[i_554],0,2))),"-D"))),            (__right_value603 = come_decrement_ref_count2(__right_value603, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
             _elif_conditional2) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value605=xsprintf(" \%s ",((char*)(__right_value604=charp_to_string(argv[i_554])))))));
-                __right_value604 = come_decrement_ref_count2(__right_value604, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value605 = come_decrement_ref_count2(__right_value605, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value604 = come_decrement_ref_count2(__right_value604, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value605 = come_decrement_ref_count2(__right_value605, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 buffer_append_str(clang_option_538,((char*)(__right_value607=xsprintf(" \%s ",((char*)(__right_value606=charp_to_string(argv[i_554])))))));
-                __right_value606 = come_decrement_ref_count2(__right_value606, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value607 = come_decrement_ref_count2(__right_value607, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value606 = come_decrement_ref_count2(__right_value606, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value607 = come_decrement_ref_count2(__right_value607, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
-            else if(            (_elif_conditional3=(string_operator_equals(((char*)(__right_value608=charp_operator_load_range_element(argv[i_554],0,2))),"-U"))),            (__right_value608 = come_decrement_ref_count2(__right_value608, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+            else if(            (_elif_conditional3=(string_operator_equals(((char*)(__right_value608=charp_operator_load_range_element(argv[i_554],0,2))),"-U"))),            (__right_value608 = come_decrement_ref_count2(__right_value608, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
             _elif_conditional3) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value610=xsprintf(" \%s ",((char*)(__right_value609=charp_to_string(argv[i_554])))))));
-                __right_value609 = come_decrement_ref_count2(__right_value609, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value610 = come_decrement_ref_count2(__right_value610, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value609 = come_decrement_ref_count2(__right_value609, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value610 = come_decrement_ref_count2(__right_value610, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 buffer_append_str(clang_option_538,((char*)(__right_value612=xsprintf(" \%s ",((char*)(__right_value611=charp_to_string(argv[i_554])))))));
-                __right_value611 = come_decrement_ref_count2(__right_value611, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value612 = come_decrement_ref_count2(__right_value612, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value611 = come_decrement_ref_count2(__right_value611, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value612 = come_decrement_ref_count2(__right_value612, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-g")) {
                 buffer_append_str(clang_option_538,"-g ");
@@ -6862,8 +6860,8 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            strlen(argv[i_554])>=2&&memcmp(argv[i_554],"-I",strlen("-I"))==0) {
                 buffer_append_str(cpp_option_540,((char*)(__right_value614=charp_operator_add(" ",((char*)(__right_value613=charp_operator_add(argv[i_554]," ")))))));
-                __right_value613 = come_decrement_ref_count2(__right_value613, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value614 = come_decrement_ref_count2(__right_value614, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value613 = come_decrement_ref_count2(__right_value613, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value614 = come_decrement_ref_count2(__right_value614, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_554],"-gdwarf-4")) {
                 buffer_append_str(clang_option_538,"-gdwarf-4 ");
@@ -6880,7 +6878,7 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            argv[i_554][0]==45) {
                 buffer_append_str(clang_option_538,((char*)(__right_value615=charp_operator_add(argv[i_554]," "))));
-                __right_value615 = come_decrement_ref_count2(__right_value615, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value615 = come_decrement_ref_count2(__right_value615, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            strlen(argv[i_554])>2&&memcmp(argv[i_554]+strlen(argv[i_554])-2,".o",2)==0) {
                 list$1charphp_push_back(object_files_542,(char*)come_increment_ref_count(__builtin_string(argv[i_554])));
@@ -6893,14 +6891,14 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else {
                 buffer_append_str(clang_option_538,((char*)(__right_value619=charp_operator_add(argv[i_554]," "))));
-                __right_value619 = come_decrement_ref_count2(__right_value619, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value619 = come_decrement_ref_count2(__right_value619, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
-            ext_name_555 = come_decrement_ref_count2(ext_name_555, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (ext_name_555 = come_decrement_ref_count2(ext_name_555, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
         gComeDebug=come_debug_549;
         gComeMalloc=come_malloc_550;
         Value_558=system(((char*)(__right_value620=xsprintf("%s %s",RM,output_file_name_547))));
-        if(        (_if_conditional5=(Value_558<0)),        (__right_value620 = come_decrement_ref_count2(__right_value620, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        if(        (_if_conditional5=(Value_558<0)),        (__right_value620 = come_decrement_ref_count2(__right_value620, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
         _if_conditional5) {
             (come_push_stackframe("02transpile.c", 925, 10),__exception_result_var_b11=die("rm"), come_pop_stackframe(), __exception_result_var_b11);
         }
@@ -6915,10 +6913,10 @@ memset(&info_639, 0, sizeof(struct sInfo));
         }
         tmp_file_560=(char*)come_increment_ref_count(__builtin_string("tmp-common-header.c"));
         Value_561=system(((char*)(__right_value625=xsprintf("cat \%s > \%s",((char*)(__right_value623=string_to_string(((char*)(__right_value622=list$1charphp_join(files_541," ")))))),((char*)(__right_value624=string_to_string(tmp_file_560)))))));
-        if(        (_if_conditional6=(Value_561<0)),        (__right_value622 = come_decrement_ref_count2(__right_value622, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value623 = come_decrement_ref_count2(__right_value623, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value624 = come_decrement_ref_count2(__right_value624, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
-        (__right_value625 = come_decrement_ref_count2(__right_value625, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+        if(        (_if_conditional6=(Value_561<0)),        (__right_value622 = come_decrement_ref_count2(__right_value622, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
+        (__right_value623 = come_decrement_ref_count2(__right_value623, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
+        (__right_value624 = come_decrement_ref_count2(__right_value624, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
+        (__right_value625 = come_decrement_ref_count2(__right_value625, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
         _if_conditional6) {
             (come_push_stackframe("02transpile.c", 938, 12),__exception_result_var_b13=die("cat"), come_pop_stackframe(), __exception_result_var_b13);
         }
@@ -7004,7 +7002,7 @@ memset(&info_639, 0, sizeof(struct sInfo));
         if(        !Value_596) {
             printf("%s %d: transpile failed\n",info_562.sname,info_562.sline);
             system(((char*)(__right_value691=xsprintf("%s %s*",RM,tmp_file_560))));
-            __right_value691 = come_decrement_ref_count2(__right_value691, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value691 = come_decrement_ref_count2(__right_value691, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             exit(2);
         }
         else {
@@ -7012,13 +7010,13 @@ memset(&info_639, 0, sizeof(struct sInfo));
         __dec_obj153=info_562.original_source;
         info_562.original_source=(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value693=charp_read(((char*)(__right_value692=xsprintf("%s",tmp_file_560))))))));
         come_call_finalizer3(__dec_obj153,buffer_finalize, 0, 0, 0, 0, (void*)0);
-        __right_value692 = come_decrement_ref_count2(__right_value692, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        __right_value693 = come_decrement_ref_count2(__right_value693, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value692 = come_decrement_ref_count2(__right_value692, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (__right_value693 = come_decrement_ref_count2(__right_value693, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         __dec_obj154=info_562.source;
         info_562.source=(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value696=charp_read(((char*)(__right_value695=xsprintf("%s.i",tmp_file_560))))))));
         come_call_finalizer3(__dec_obj154,buffer_finalize, 0, 0, 0, 0, (void*)0);
-        __right_value695 = come_decrement_ref_count2(__right_value695, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        __right_value696 = come_decrement_ref_count2(__right_value696, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+        (__right_value695 = come_decrement_ref_count2(__right_value695, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (__right_value696 = come_decrement_ref_count2(__right_value696, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         info_562.p=info_562.source->buf;
         info_562.head=info_562.source->buf;
         Value_597=output_cpp_file_544;
@@ -7028,7 +7026,7 @@ memset(&info_639, 0, sizeof(struct sInfo));
             if(            !Value_598) {
                 printf("%s %d: output source file faield\n",info_562.sname,info_562.sline);
                 system(((char*)(__right_value698=xsprintf("%s %s*",RM,tmp_file_560))));
-                __right_value698 = come_decrement_ref_count2(__right_value698, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value698 = come_decrement_ref_count2(__right_value698, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 exit(2);
             }
             else {
@@ -7037,15 +7035,15 @@ memset(&info_639, 0, sizeof(struct sInfo));
         else {
         }
         system(((char*)(__right_value699=xsprintf("%s %s*",RM,tmp_file_560))));
-        __right_value699 = come_decrement_ref_count2(__right_value699, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-        output_file_name_str_537 = come_decrement_ref_count2(output_file_name_str_537, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (__right_value699 = come_decrement_ref_count2(__right_value699, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (output_file_name_str_537 = come_decrement_ref_count2(output_file_name_str_537, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         come_call_finalizer3(clang_option_538,buffer_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(linker_option_539,buffer_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(cpp_option_540,buffer_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(files_541,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(object_files_542,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
-        output_file_name_547 = come_decrement_ref_count2(output_file_name_547, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        tmp_file_560 = come_decrement_ref_count2(tmp_file_560, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (output_file_name_547 = come_decrement_ref_count2(output_file_name_547, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+        (tmp_file_560 = come_decrement_ref_count2(tmp_file_560, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         come_call_finalizer3((&info_562),sInfo_finalize, 1, 0, 0, 0, (void*)0);
         come_call_finalizer3(lv_table_594,sVarTable_finalize, 0, 0, 0, 0, (void*)0);
     }
@@ -7146,8 +7144,8 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            charp_operator_equals(argv[i_625],"-e")&&i_625+1<argc) {
                 buffer_append_str(linker_option_610,((char*)(__right_value713=xsprintf("-e \%s",((char*)(__right_value712=charp_to_string(argv[i_625+1])))))));
-                __right_value712 = come_decrement_ref_count2(__right_value712, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value713 = come_decrement_ref_count2(__right_value713, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value712 = come_decrement_ref_count2(__right_value712, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value713 = come_decrement_ref_count2(__right_value713, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_625++;
             }
             else if(            charp_operator_equals(argv[i_625],"-str")) {
@@ -7159,7 +7157,7 @@ memset(&info_639, 0, sizeof(struct sInfo));
             else if(            charp_operator_equals(argv[i_625],"-gc")) {
                 gComeGC=(_Bool)1;
                 buffer_append_format(cpp_option_611,((char*)(__right_value714=xsprintf(" -DENABLE_GC "))));
-                __right_value714 = come_decrement_ref_count2(__right_value714, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value714 = come_decrement_ref_count2(__right_value714, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-gcc")) {
                 gcc_compiler_624=(_Bool)1;
@@ -7174,9 +7172,9 @@ memset(&info_639, 0, sizeof(struct sInfo));
                 cpp_option_611=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "02transpile.c", 773, "struct buffer", buffer_finalize, buffer_clone, buffer_get_hash_key, buffer_equals))));
                 come_call_finalizer3(__dec_obj191,buffer_finalize, 0, 0, 0, 0, (void*)0);
                 buffer_append_format(cpp_option_611,((char*)(__right_value719=xsprintf(" -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \%s/src/rp2_common/hardware_sync/include \$(find \%s -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__",((char*)(__right_value717=charp_to_string(env_627))),((char*)(__right_value718=charp_to_string(env_627)))))));
-                __right_value717 = come_decrement_ref_count2(__right_value717, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value718 = come_decrement_ref_count2(__right_value718, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value719 = come_decrement_ref_count2(__right_value719, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value717 = come_decrement_ref_count2(__right_value717, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value718 = come_decrement_ref_count2(__right_value718, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value719 = come_decrement_ref_count2(__right_value719, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 create_pico_version_header();
                 pico_cpp_623=(_Bool)1;
             }
@@ -7190,39 +7188,39 @@ memset(&info_639, 0, sizeof(struct sInfo));
                 cpp_option_611=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc(1, sizeof(struct buffer)*(1), "02transpile.c", 784, "struct buffer", buffer_finalize, buffer_clone, buffer_get_hash_key, buffer_equals))));
                 come_call_finalizer3(__dec_obj192,buffer_finalize, 0, 0, 0, 0, (void*)0);
                 buffer_append_format(cpp_option_611,((char*)(__right_value743=xsprintf(" -I\%s/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/xtensa-esp-elf/include -I\%s/components/freertos/include -I\%s/components/esp32/include -I\%s/components/driver/include -I\%s/components/lwip/include -I\%s/components/freertos/FreeRTOS-Kernel/include -I\%s/components/freertos/config/include/freertos -I\%s/components/freertos/config/xtensa/include -I\%s/components/xtensa/include -I\%s/components/xtensa/esp32/include -I\%s/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I\%s/components/esp_hw_support/include -I\%s/components/soc/esp32/include/ -I\%s/components/esp_common/include/components $(find \%s/components -type d -name include | grep esp_ | sed 's/^/ -I/g') -I\%s/components/esp_common/include/ -I\%s/components/soc/esp32/register/soc/ -I\%s/components/soc/esp32/register -I\%s/components/heap/include -I\%s/components/hal/include -I\%s/components/newlib/platform_include -D__M5STACK__",((char*)(__right_value722=charp_to_string(getenv("HOME")))),((char*)(__right_value723=charp_to_string(env_628))),((char*)(__right_value724=charp_to_string(env_628))),((char*)(__right_value725=charp_to_string(env_628))),((char*)(__right_value726=charp_to_string(env_628))),((char*)(__right_value727=charp_to_string(env_628))),((char*)(__right_value728=charp_to_string(env_628))),((char*)(__right_value729=charp_to_string(env_628))),((char*)(__right_value730=charp_to_string(env_628))),((char*)(__right_value731=charp_to_string(env_628))),((char*)(__right_value732=charp_to_string(env_628))),((char*)(__right_value733=charp_to_string(env_628))),((char*)(__right_value734=charp_to_string(env_628))),((char*)(__right_value735=charp_to_string(env_628))),((char*)(__right_value736=charp_to_string(env_628))),((char*)(__right_value737=charp_to_string(env_628))),((char*)(__right_value738=charp_to_string(env_628))),((char*)(__right_value739=charp_to_string(env_628))),((char*)(__right_value740=charp_to_string(env_628))),((char*)(__right_value741=charp_to_string(env_628))),((char*)(__right_value742=charp_to_string(env_628)))))),"/usr/local/");
-                __right_value722 = come_decrement_ref_count2(__right_value722, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value723 = come_decrement_ref_count2(__right_value723, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value724 = come_decrement_ref_count2(__right_value724, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value725 = come_decrement_ref_count2(__right_value725, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value726 = come_decrement_ref_count2(__right_value726, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value727 = come_decrement_ref_count2(__right_value727, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value728 = come_decrement_ref_count2(__right_value728, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value729 = come_decrement_ref_count2(__right_value729, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value730 = come_decrement_ref_count2(__right_value730, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value731 = come_decrement_ref_count2(__right_value731, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value732 = come_decrement_ref_count2(__right_value732, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value733 = come_decrement_ref_count2(__right_value733, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value734 = come_decrement_ref_count2(__right_value734, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value735 = come_decrement_ref_count2(__right_value735, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value736 = come_decrement_ref_count2(__right_value736, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value737 = come_decrement_ref_count2(__right_value737, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value738 = come_decrement_ref_count2(__right_value738, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value739 = come_decrement_ref_count2(__right_value739, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value740 = come_decrement_ref_count2(__right_value740, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value741 = come_decrement_ref_count2(__right_value741, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value742 = come_decrement_ref_count2(__right_value742, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value743 = come_decrement_ref_count2(__right_value743, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value722 = come_decrement_ref_count2(__right_value722, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value723 = come_decrement_ref_count2(__right_value723, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value724 = come_decrement_ref_count2(__right_value724, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value725 = come_decrement_ref_count2(__right_value725, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value726 = come_decrement_ref_count2(__right_value726, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value727 = come_decrement_ref_count2(__right_value727, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value728 = come_decrement_ref_count2(__right_value728, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value729 = come_decrement_ref_count2(__right_value729, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value730 = come_decrement_ref_count2(__right_value730, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value731 = come_decrement_ref_count2(__right_value731, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value732 = come_decrement_ref_count2(__right_value732, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value733 = come_decrement_ref_count2(__right_value733, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value734 = come_decrement_ref_count2(__right_value734, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value735 = come_decrement_ref_count2(__right_value735, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value736 = come_decrement_ref_count2(__right_value736, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value737 = come_decrement_ref_count2(__right_value737, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value738 = come_decrement_ref_count2(__right_value738, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value739 = come_decrement_ref_count2(__right_value739, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value740 = come_decrement_ref_count2(__right_value740, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value741 = come_decrement_ref_count2(__right_value741, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value742 = come_decrement_ref_count2(__right_value742, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value743 = come_decrement_ref_count2(__right_value743, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            i_625+1<argc&&charp_operator_equals(argv[i_625],"-target")) {
                 buffer_append_str(clang_option_609,((char*)(__right_value745=xsprintf("-target \%s",((char*)(__right_value744=charp_to_string(argv[i_625+1])))))));
-                __right_value744 = come_decrement_ref_count2(__right_value744, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value745 = come_decrement_ref_count2(__right_value745, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value744 = come_decrement_ref_count2(__right_value744, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value745 = come_decrement_ref_count2(__right_value745, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_625++;
             }
             else if(            i_625+1<argc&&charp_operator_equals(argv[i_625],"-T")) {
                 buffer_append_str(clang_option_609,((char*)(__right_value747=xsprintf(" -T \%s ",((char*)(__right_value746=charp_to_string(argv[i_625+1])))))));
-                __right_value746 = come_decrement_ref_count2(__right_value746, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value747 = come_decrement_ref_count2(__right_value747, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value746 = come_decrement_ref_count2(__right_value746, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value747 = come_decrement_ref_count2(__right_value747, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_625++;
             }
             else if(            charp_operator_equals(argv[i_625],"-net")) {
@@ -7234,74 +7232,74 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            charp_operator_equals(argv[i_625],"-C")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value749=xsprintf("\%s ",((char*)(__right_value748=charp_to_string(argv[i_625])))))));
-                __right_value748 = come_decrement_ref_count2(__right_value748, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value749 = come_decrement_ref_count2(__right_value749, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value748 = come_decrement_ref_count2(__right_value748, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value749 = come_decrement_ref_count2(__right_value749, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-M")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value751=xsprintf("\%s ",((char*)(__right_value750=charp_to_string(argv[i_625])))))));
-                __right_value750 = come_decrement_ref_count2(__right_value750, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value751 = come_decrement_ref_count2(__right_value751, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value750 = come_decrement_ref_count2(__right_value750, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value751 = come_decrement_ref_count2(__right_value751, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-MM")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value753=xsprintf("\%s ",((char*)(__right_value752=charp_to_string(argv[i_625])))))));
-                __right_value752 = come_decrement_ref_count2(__right_value752, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value753 = come_decrement_ref_count2(__right_value753, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value752 = come_decrement_ref_count2(__right_value752, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value753 = come_decrement_ref_count2(__right_value753, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-dM")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value755=xsprintf("\%s ",((char*)(__right_value754=charp_to_string(argv[i_625])))))));
-                __right_value754 = come_decrement_ref_count2(__right_value754, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value755 = come_decrement_ref_count2(__right_value755, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value754 = come_decrement_ref_count2(__right_value754, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value755 = come_decrement_ref_count2(__right_value755, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-dD")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value757=xsprintf("\%s ",((char*)(__right_value756=charp_to_string(argv[i_625])))))));
-                __right_value756 = come_decrement_ref_count2(__right_value756, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value757 = come_decrement_ref_count2(__right_value757, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value756 = come_decrement_ref_count2(__right_value756, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value757 = come_decrement_ref_count2(__right_value757, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-H")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value759=xsprintf("\%s ",((char*)(__right_value758=charp_to_string(argv[i_625])))))));
-                __right_value758 = come_decrement_ref_count2(__right_value758, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value759 = come_decrement_ref_count2(__right_value759, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value758 = come_decrement_ref_count2(__right_value758, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value759 = come_decrement_ref_count2(__right_value759, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-P")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value761=xsprintf("\%s ",((char*)(__right_value760=charp_to_string(argv[i_625])))))));
-                __right_value760 = come_decrement_ref_count2(__right_value760, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value761 = come_decrement_ref_count2(__right_value761, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value760 = come_decrement_ref_count2(__right_value760, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value761 = come_decrement_ref_count2(__right_value761, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-nostdinc")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value763=xsprintf("\%s ",((char*)(__right_value762=charp_to_string(argv[i_625])))))));
-                __right_value762 = come_decrement_ref_count2(__right_value762, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value763 = come_decrement_ref_count2(__right_value763, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value762 = come_decrement_ref_count2(__right_value762, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value763 = come_decrement_ref_count2(__right_value763, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-CC")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value765=xsprintf("\%s ",((char*)(__right_value764=charp_to_string(argv[i_625])))))));
-                __right_value764 = come_decrement_ref_count2(__right_value764, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value765 = come_decrement_ref_count2(__right_value765, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value764 = come_decrement_ref_count2(__right_value764, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value765 = come_decrement_ref_count2(__right_value765, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            i_625+1<argc&&charp_operator_equals(argv[i_625],"-target")) {
                 buffer_append_str(clang_option_609,((char*)(__right_value767=xsprintf("-target \%s",((char*)(__right_value766=charp_to_string(argv[i_625+1])))))));
-                __right_value766 = come_decrement_ref_count2(__right_value766, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value767 = come_decrement_ref_count2(__right_value767, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value766 = come_decrement_ref_count2(__right_value766, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value767 = come_decrement_ref_count2(__right_value767, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_625++;
             }
             else if(            i_625+1<argc&&charp_operator_equals(argv[i_625],"-include")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value769=xsprintf("-iclude \%s",((char*)(__right_value768=charp_to_string(argv[i_625+1])))))));
-                __right_value768 = come_decrement_ref_count2(__right_value768, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value769 = come_decrement_ref_count2(__right_value769, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value768 = come_decrement_ref_count2(__right_value768, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value769 = come_decrement_ref_count2(__right_value769, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_625++;
             }
             else if(            i_625+1<argc&&charp_operator_equals(argv[i_625],"-isystem")) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value771=xsprintf("-isystem \%s",((char*)(__right_value770=charp_to_string(argv[i_625+1])))))));
-                __right_value770 = come_decrement_ref_count2(__right_value770, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value771 = come_decrement_ref_count2(__right_value771, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value770 = come_decrement_ref_count2(__right_value770, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value771 = come_decrement_ref_count2(__right_value771, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 buffer_append_str(clang_option_609,((char*)(__right_value773=xsprintf("-isystem \%s",((char*)(__right_value772=charp_to_string(argv[i_625+1])))))));
-                __right_value772 = come_decrement_ref_count2(__right_value772, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value773 = come_decrement_ref_count2(__right_value773, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value772 = come_decrement_ref_count2(__right_value772, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value773 = come_decrement_ref_count2(__right_value773, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_625++;
             }
             else if(            i_625+1<argc&&charp_operator_equals(argv[i_625],"-T")) {
                 buffer_append_str(clang_option_609,((char*)(__right_value775=xsprintf(" -T \%s ",((char*)(__right_value774=charp_to_string(argv[i_625+1])))))));
-                __right_value774 = come_decrement_ref_count2(__right_value774, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value775 = come_decrement_ref_count2(__right_value775, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value774 = come_decrement_ref_count2(__right_value774, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value775 = come_decrement_ref_count2(__right_value775, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 i_625++;
             }
             else if(            charp_operator_equals(argv[i_625],"-common-header")) {
@@ -7310,30 +7308,30 @@ memset(&info_639, 0, sizeof(struct sInfo));
             else if(            charp_operator_equals(argv[i_625],"-original-position")) {
                 gComeOriginalSourcePosition=(_Bool)0;
             }
-            else if(            (_elif_conditional4=(string_operator_equals(((char*)(__right_value776=charp_operator_load_range_element(argv[i_625],0,2))),"-O"))),            (__right_value776 = come_decrement_ref_count2(__right_value776, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+            else if(            (_elif_conditional4=(string_operator_equals(((char*)(__right_value776=charp_operator_load_range_element(argv[i_625],0,2))),"-O"))),            (__right_value776 = come_decrement_ref_count2(__right_value776, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
             _elif_conditional4) {
                 buffer_append_str(clang_option_609,((char*)(__right_value778=xsprintf(" \%s ",((char*)(__right_value777=charp_to_string(argv[i_625])))))));
-                __right_value777 = come_decrement_ref_count2(__right_value777, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value778 = come_decrement_ref_count2(__right_value778, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value777 = come_decrement_ref_count2(__right_value777, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value778 = come_decrement_ref_count2(__right_value778, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 come_debug_620=(_Bool)0;
             }
-            else if(            (_elif_conditional5=(string_operator_equals(((char*)(__right_value779=charp_operator_load_range_element(argv[i_625],0,2))),"-D"))),            (__right_value779 = come_decrement_ref_count2(__right_value779, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+            else if(            (_elif_conditional5=(string_operator_equals(((char*)(__right_value779=charp_operator_load_range_element(argv[i_625],0,2))),"-D"))),            (__right_value779 = come_decrement_ref_count2(__right_value779, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
             _elif_conditional5) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value781=xsprintf(" \%s ",((char*)(__right_value780=charp_to_string(argv[i_625])))))));
-                __right_value780 = come_decrement_ref_count2(__right_value780, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value781 = come_decrement_ref_count2(__right_value781, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value780 = come_decrement_ref_count2(__right_value780, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value781 = come_decrement_ref_count2(__right_value781, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 buffer_append_str(clang_option_609,((char*)(__right_value783=xsprintf(" \%s ",((char*)(__right_value782=charp_to_string(argv[i_625])))))));
-                __right_value782 = come_decrement_ref_count2(__right_value782, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value783 = come_decrement_ref_count2(__right_value783, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value782 = come_decrement_ref_count2(__right_value782, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value783 = come_decrement_ref_count2(__right_value783, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
-            else if(            (_elif_conditional6=(string_operator_equals(((char*)(__right_value784=charp_operator_load_range_element(argv[i_625],0,2))),"-U"))),            (__right_value784 = come_decrement_ref_count2(__right_value784, (void*)0, (void*)0, 1, 0, 0, (void*)0)),
+            else if(            (_elif_conditional6=(string_operator_equals(((char*)(__right_value784=charp_operator_load_range_element(argv[i_625],0,2))),"-U"))),            (__right_value784 = come_decrement_ref_count2(__right_value784, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
             _elif_conditional6) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value786=xsprintf(" \%s ",((char*)(__right_value785=charp_to_string(argv[i_625])))))));
-                __right_value785 = come_decrement_ref_count2(__right_value785, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value786 = come_decrement_ref_count2(__right_value786, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value785 = come_decrement_ref_count2(__right_value785, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value786 = come_decrement_ref_count2(__right_value786, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 buffer_append_str(clang_option_609,((char*)(__right_value788=xsprintf(" \%s ",((char*)(__right_value787=charp_to_string(argv[i_625])))))));
-                __right_value787 = come_decrement_ref_count2(__right_value787, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value788 = come_decrement_ref_count2(__right_value788, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value787 = come_decrement_ref_count2(__right_value787, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value788 = come_decrement_ref_count2(__right_value788, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-g")) {
                 buffer_append_str(clang_option_609,"-g ");
@@ -7345,8 +7343,8 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            strlen(argv[i_625])>=2&&memcmp(argv[i_625],"-I",strlen("-I"))==0) {
                 buffer_append_str(cpp_option_611,((char*)(__right_value790=charp_operator_add(" ",((char*)(__right_value789=charp_operator_add(argv[i_625]," ")))))));
-                __right_value789 = come_decrement_ref_count2(__right_value789, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-                __right_value790 = come_decrement_ref_count2(__right_value790, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value789 = come_decrement_ref_count2(__right_value789, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+                (__right_value790 = come_decrement_ref_count2(__right_value790, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            charp_operator_equals(argv[i_625],"-gdwarf-4")) {
                 buffer_append_str(clang_option_609,"-gdwarf-4 ");
@@ -7363,7 +7361,7 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else if(            argv[i_625][0]==45) {
                 buffer_append_str(clang_option_609,((char*)(__right_value791=charp_operator_add(argv[i_625]," "))));
-                __right_value791 = come_decrement_ref_count2(__right_value791, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value791 = come_decrement_ref_count2(__right_value791, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
             else if(            strlen(argv[i_625])>2&&memcmp(argv[i_625]+strlen(argv[i_625])-2,".o",2)==0) {
                 list$1charphp_push_back(object_files_613,(char*)come_increment_ref_count(__builtin_string(argv[i_625])));
@@ -7376,9 +7374,9 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             else {
                 buffer_append_str(clang_option_609,((char*)(__right_value795=charp_operator_add(argv[i_625]," "))));
-                __right_value795 = come_decrement_ref_count2(__right_value795, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+                (__right_value795 = come_decrement_ref_count2(__right_value795, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }
-            ext_name_626 = come_decrement_ref_count2(ext_name_626, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (ext_name_626 = come_decrement_ref_count2(ext_name_626, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
         gComeDebug=come_debug_620;
         gComeMalloc=come_malloc_621;
@@ -7470,13 +7468,13 @@ memset(&info_639, 0, sizeof(struct sInfo));
             __dec_obj212=info_631.original_source;
             info_631.original_source=(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value833=charp_read(((char*)(__right_value832=xsprintf("%s",it_630))))))));
             come_call_finalizer3(__dec_obj212,buffer_finalize, 0, 0, 0, 0, (void*)0);
-            __right_value832 = come_decrement_ref_count2(__right_value832, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            __right_value833 = come_decrement_ref_count2(__right_value833, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value832 = come_decrement_ref_count2(__right_value832, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (__right_value833 = come_decrement_ref_count2(__right_value833, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             __dec_obj213=info_631.source;
             info_631.source=(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value836=charp_read(((char*)(__right_value835=xsprintf("%s.i",it_630))))))));
             come_call_finalizer3(__dec_obj213,buffer_finalize, 0, 0, 0, 0, (void*)0);
-            __right_value835 = come_decrement_ref_count2(__right_value835, (void*)0, (void*)0, 1, 0, 0, (void*)0);
-            __right_value836 = come_decrement_ref_count2(__right_value836, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value835 = come_decrement_ref_count2(__right_value835, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            (__right_value836 = come_decrement_ref_count2(__right_value836, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             info_631.p=info_631.source->buf;
             info_631.head=info_631.source->buf;
             if(            output_file_name_618) {
@@ -7539,7 +7537,7 @@ memset(&info_639, 0, sizeof(struct sInfo));
             __dec_obj216=info_639.sname;
             info_639.sname=(char*)come_increment_ref_count(come_call_cloner(string_clone, ((char*)(__right_value839=list$1charphp_operator_load_element(files_612,0)))));
             __dec_obj216 = come_decrement_ref_count2(__dec_obj216, (void*)0, (void*)0, 0,0,0, (void*)0);
-            __right_value839 = come_decrement_ref_count2(__right_value839, (void*)0, (void*)0, 1, 0, 0, (void*)0);
+            (__right_value839 = come_decrement_ref_count2(__right_value839, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             __dec_obj217=info_639.clang_option;
             info_639.clang_option=(char*)come_increment_ref_count(buffer_to_string(clang_option_609));
             __dec_obj217 = come_decrement_ref_count2(__dec_obj217, (void*)0, (void*)0, 0,0,0, (void*)0);
@@ -7571,13 +7569,13 @@ memset(&info_639, 0, sizeof(struct sInfo));
             }
             come_call_finalizer3((&info_639),sInfo_finalize, 1, 0, 0, 0, (void*)0);
         }
-        output_file_name_str_608 = come_decrement_ref_count2(output_file_name_str_608, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (output_file_name_str_608 = come_decrement_ref_count2(output_file_name_str_608, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         come_call_finalizer3(clang_option_609,buffer_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(linker_option_610,buffer_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(cpp_option_611,buffer_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(files_612,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
         come_call_finalizer3(object_files_613,list$1charphp_finalize, 0, 0, 0, 0, (void*)0);
-        output_file_name_618 = come_decrement_ref_count2(output_file_name_618, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (output_file_name_618 = come_decrement_ref_count2(output_file_name_618, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     return 0;
 }
@@ -7588,7 +7586,7 @@ int i_564;
     for(    i_563=0;    i_563<self->size;    i_563++    ){
         if(        self->item_existance[i_563]) {
             if(            1) {
-                come_call_finalizer3(self->items[i_563], (void*)0, 0, 0, 0, 0, (void*)0);
+                come_call_finalizer3(self->items[i_563],(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
             }
         }
     }
@@ -7596,13 +7594,13 @@ int i_564;
     for(    i_564=0;    i_564<self->size;    i_564++    ){
         if(        self->item_existance[i_564]) {
             if(            1) {
-                come_call_finalizer3(self->keys[i_564], (void*)0, 0, 0, 0, 0, (void*)0);
+                come_call_finalizer3(self->keys[i_564],(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
             }
         }
     }
     come_free((char*)self->keys);
     come_call_finalizer3(self->key_list,list$1voidpp_finalize, 0, 0, 0, 0, (void*)0);
-    self->item_existance = come_decrement_ref_count2(self->item_existance, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (self->item_existance = come_decrement_ref_count2(self->item_existance, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
 }
 
 static void list$1voidpp_finalize(struct list$1voidp* self){
@@ -7911,7 +7909,7 @@ struct map$2voidphvoidph* __dec_obj131;
             __dec_obj128 = come_decrement_ref_count2(__dec_obj128, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mLastCode = come_decrement_ref_count2(self->mLastCode, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mLastCode = come_decrement_ref_count2(self->mLastCode, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->mLastCode2!=((void*)0)) {
@@ -7920,7 +7918,7 @@ struct map$2voidphvoidph* __dec_obj131;
             __dec_obj129 = come_decrement_ref_count2(__dec_obj129, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->mLastCode2 = come_decrement_ref_count2(self->mLastCode2, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->mLastCode2 = come_decrement_ref_count2(self->mLastCode2, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->mHeader!=((void*)0)) {
@@ -8066,7 +8064,7 @@ default_value_582 = (void*)0;
         memset(&default_value_582,0,sizeof(void*));
         it2_583=(char*)come_increment_ref_count(map$2voidphvoidphp_at(self,it_581,((char*)default_value_582)));
         map$2voidphvoidphp_put(result_580,it_581,(char*)come_increment_ref_count(come_call_cloner(string_clone, it2_583)));
-        come_call_finalizer3(it2_583, (void*)0, 0, 0, 0, 0, (void*)0);
+        come_call_finalizer3(it2_583,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
     }
     __result307__ = gComeFunResultObject = __result_obj__ = result_580;
     come_call_finalizer3(result_580,map$2voidphvoidphp_finalize, 0, 0, 1, 0, (void*)0);
@@ -8090,7 +8088,7 @@ struct map$2voidphvoidph* __result306__;
         if(        self->item_existance[it_585]) {
             if(            come_call_equals((void*)0, self->keys[it_585], key)) {
                 if(                1) {
-                    come_call_finalizer3(self->keys[it_585], (void*)0, 0, 0, 0, 0, (void*)0);
+                    come_call_finalizer3(self->keys[it_585],(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
                     list$1voidpp_remove(self->key_list,self->keys[it_585]);
                     self->keys[it_585]=(void*)come_increment_ref_count(key);
                 }
@@ -8099,7 +8097,7 @@ struct map$2voidphvoidph* __result306__;
                     self->keys[it_585]=key;
                 }
                 if(                1) {
-                    come_call_finalizer3(self->items[it_585], (void*)0, 0, 0, 0, 0, (void*)0);
+                    come_call_finalizer3(self->items[it_585],(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
                     self->items[it_585]=(void*)come_increment_ref_count(item);
                 }
                 else {
@@ -8145,8 +8143,8 @@ struct map$2voidphvoidph* __result306__;
         list$1voidpp_push_back(self->key_list,key);
     }
     __result306__ = gComeFunResultObject = __result_obj__ = self;
-    come_call_finalizer3(key, (void*)0, 0, 0, 0, 0, (void*)0);
-    come_call_finalizer3(item, (void*)0, 0, 0, 0, 0, (void*)0);
+    come_call_finalizer3(key,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
+    come_call_finalizer3(item,(void*)0, 0/*alloca value*/, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_ */, (void*)0);
     gComeFunResultObject = (void*)0;
     return __result306__;
 }
@@ -8198,7 +8196,7 @@ char* __dec_obj145;
             __dec_obj142 = come_decrement_ref_count2(__dec_obj142, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->c_value = come_decrement_ref_count2(self->c_value, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->c_value = come_decrement_ref_count2(self->c_value, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->type!=((void*)0)) {
@@ -8216,7 +8214,7 @@ char* __dec_obj145;
             __dec_obj144 = come_decrement_ref_count2(__dec_obj144, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->c_value_without_right_value_objects = come_decrement_ref_count2(self->c_value_without_right_value_objects, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->c_value_without_right_value_objects = come_decrement_ref_count2(self->c_value_without_right_value_objects, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->c_value_without_cast_object_value!=((void*)0)) {
@@ -8225,7 +8223,7 @@ char* __dec_obj145;
             __dec_obj145 = come_decrement_ref_count2(__dec_obj145, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->c_value_without_cast_object_value = come_decrement_ref_count2(self->c_value_without_cast_object_value, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->c_value_without_cast_object_value = come_decrement_ref_count2(self->c_value_without_cast_object_value, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
 }
@@ -8361,7 +8359,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj157 = come_decrement_ref_count2(__dec_obj157, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->sname = come_decrement_ref_count2(self->sname, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->sname = come_decrement_ref_count2(self->sname, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->sname_at_head!=((void*)0)) {
@@ -8370,7 +8368,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj158 = come_decrement_ref_count2(__dec_obj158, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->sname_at_head = come_decrement_ref_count2(self->sname_at_head, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->sname_at_head = come_decrement_ref_count2(self->sname_at_head, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->base_sname!=((void*)0)) {
@@ -8379,7 +8377,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj159 = come_decrement_ref_count2(__dec_obj159, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->base_sname = come_decrement_ref_count2(self->base_sname, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->base_sname = come_decrement_ref_count2(self->base_sname, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->err_line!=((void*)0)) {
@@ -8388,7 +8386,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj160 = come_decrement_ref_count2(__dec_obj160, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->err_line = come_decrement_ref_count2(self->err_line, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->err_line = come_decrement_ref_count2(self->err_line, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->clang_option!=((void*)0)) {
@@ -8397,7 +8395,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj161 = come_decrement_ref_count2(__dec_obj161, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->clang_option = come_decrement_ref_count2(self->clang_option, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->clang_option = come_decrement_ref_count2(self->clang_option, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->cpp_option!=((void*)0)) {
@@ -8406,7 +8404,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj162 = come_decrement_ref_count2(__dec_obj162, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->cpp_option = come_decrement_ref_count2(self->cpp_option, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->cpp_option = come_decrement_ref_count2(self->cpp_option, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->linker_option!=((void*)0)) {
@@ -8415,7 +8413,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj163 = come_decrement_ref_count2(__dec_obj163, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->linker_option = come_decrement_ref_count2(self->linker_option, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->linker_option = come_decrement_ref_count2(self->linker_option, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->funcs!=((void*)0)) {
@@ -8604,7 +8602,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj184 = come_decrement_ref_count2(__dec_obj184, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->output_file_name = come_decrement_ref_count2(self->output_file_name, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->output_file_name = come_decrement_ref_count2(self->output_file_name, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->function_result_type!=((void*)0)) {
@@ -8631,7 +8629,7 @@ struct map$2voidphvoidph* __dec_obj189;
             __dec_obj187 = come_decrement_ref_count2(__dec_obj187, (void*)0, (void*)0, 0,0,0, (void*)0);
         }
         else {
-            self->if_result_var_name = come_decrement_ref_count2(self->if_result_var_name, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (self->if_result_var_name = come_decrement_ref_count2(self->if_result_var_name, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
     }
     if(    self!=((void*)0)&&self->match_it_var!=((void*)0)) {
@@ -8678,7 +8676,7 @@ default_value_642 = (void*)0;
     }
     memset(&default_value_642,0,sizeof(char*));
     __result313__ = gComeFunResultObject = __result_obj__ = default_value_642;
-    default_value_642 = come_decrement_ref_count2(default_value_642, (void*)0, (void*)0, 0, 1, 0, (void*)0);
+    (default_value_642 = come_decrement_ref_count2(default_value_642, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_*/, (void*)0));
     gComeFunResultObject = (void*)0;
     return __result313__;
 }
