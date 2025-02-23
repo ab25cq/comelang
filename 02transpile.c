@@ -405,8 +405,6 @@ static bool linker(sInfo* info, list<string>* object_files)
             command.append_str(" -lssl `mysql_config --cflags --libs`");
         }
     }
-        string str = s"gcc" + command.to_string().substring(strlen(CC), -1);
-        
     
     if(info.verbose) puts(command.to_string());
     system(command.to_string()).if {
