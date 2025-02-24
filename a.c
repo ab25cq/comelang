@@ -9,18 +9,24 @@ exception int fun(int a)
 
 exception int fun2(int a)
 {
-    printf("in fun2 a %d\n", a);
+    printf("in fun2 %d\n", a);
     
-    fun(a).exception_throw;
+    int b = fun(a).rescue {
+        222
+    }
     
-    return 1;
+    printf("b %d\n", b);
+    
+    return none(s"ERR2");
 }
 
 int main(int argc, char** argv)
 {
-    int b = fun2(a:111);
+    int c = fun2(a:111).rescue {
+        333
+    }
     
-    printf("b %d\n", b);
+    printf("c %d\n", c);
     
     return 0;
 }

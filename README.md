@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 16.0.0
+version 16.0.1
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+16.0.1 Exception really complete
 16.0.0 Exception complete
 15.0.5 Refactoring
 15.0.4 Type eraser generics collection finally complete.
@@ -3226,7 +3227,7 @@ exception int fun2(int a)
 {
     printf("in fun2 a %d\n", a);
     
-    fun(a).exception_throw;
+    fun(a);
     
     return 1;
 }
@@ -3239,6 +3240,12 @@ int main(int argc, char** argv)
     
     return 0;
 }
+```
+
+```
+in fun 111
+in fun2 a 111
+ERR
 ```
 
 # Pattern Matching
