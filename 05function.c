@@ -621,8 +621,8 @@ int expected_next_character(char c, sInfo* info=info)
     parse_sharp();
     if(*info->p != c) {
         if(!info.no_output_err) {
-            err_msg(info, "expected next charaster is %c, but %c, caller %s %d\n", c, *info->p, info->caller_sname, info->caller_line);
-            exit(2);
+            err_msg("expected next charaster is %c, but %c, caller %s %d\n", c, *info->p, info->caller_sname, info->caller_line);
+            exit(1);
         }
     }
     

@@ -858,6 +858,7 @@ struct sInfo
     _Bool m5stack_cpp;
     _Bool pico_cpp;
     _Bool gcc_compiler;
+    _Bool in_exception_value;
 };
 
 struct tuple2$2sTypephcharph
@@ -1690,7 +1691,7 @@ struct sNodeBase* sNodeBase_initialize(struct sNodeBase* self, struct sInfo* inf
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main_v2(int argc, char** argv);
-void err_msg(struct sInfo* info, char* msg, ...);
+int err_msg(struct sInfo* info, char* msg, ...);
 _Bool sNodeBase_terminated(struct sNodeBase* self);
 int transpile_v2(struct sInfo* info);
 _Bool output_source_file_v2(struct sInfo* info);
@@ -7196,8 +7197,8 @@ int expected_next_character(char c, struct sInfo* info){
     parse_sharp_v5(info);
     if(    *info->p!=c) {
         if(        !info->no_output_err) {
-            err_msg(info,"expected next charaster is %c, but %c, caller %s %d\n",c,*info->p,info->caller_sname,info->caller_line);
-            exit(2);
+            err_msg("expected next charaster is %c, but %c, caller %s %d\n",c,*info->p,info->caller_sname,info->caller_line);
+            exit(1);
         }
     }
     info->p++;

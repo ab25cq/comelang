@@ -1,13 +1,26 @@
 #include <comelang.h>
 
-void fun(int a)
+exception int fun(int a)
 {
-    printf("%d\n", a);
+    printf("in fun %d\n", a);
+    
+    return none(s"Err");
+}
+
+exception int fun2(int a)
+{
+    printf("in fun2 a %d\n", a);
+    
+    fun(a).exception_throw;
+    
+    return 1;
 }
 
 int main(int argc, char** argv)
 {
-    fun(a:111);
+    int b = fun2(a:111);
+    
+    printf("b %d\n", b);
     
     return 0;
 }

@@ -444,11 +444,12 @@ class sAndStatmentNode extends sNodeBase
 
 class sMultipleNode extends sNodeBase
 {
-    new(list<sNode*%>*% multiple_node, sInfo* info=info)
+    new(list<sNode*%>*% multiple_node, bool in_rescue=false, sInfo* info=info)
     {
         self.super();
     
         list<sNode*%>*% self.multiple_node = clone multiple_node;
+        bool self.in_rescue = in_rescue;
     }
     
     bool terminated()
@@ -463,6 +464,8 @@ class sMultipleNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        bool in_exception_value = info.in_exception_value;
+        info.in_exception_value = true;
         list<sNode*%>*% multiple_node = self.multiple_node;
         
         CVALUE*% come_value = null
@@ -482,6 +485,8 @@ class sMultipleNode extends sNodeBase
         if(come_value) {
             info.stack.push_back(come_value);
         }
+        
+        info.in_exception_value = in_exception_value;
         
         return true;
     }

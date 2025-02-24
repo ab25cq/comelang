@@ -858,6 +858,7 @@ struct sInfo
     _Bool m5stack_cpp;
     _Bool pico_cpp;
     _Bool gcc_compiler;
+    _Bool in_exception_value;
 };
 
 struct tuple2$2sTypephcharph
@@ -1646,7 +1647,7 @@ char* wchar_t_to_string(unsigned int wc);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main_v2(int argc, char** argv);
-void err_msg(struct sInfo* info, char* msg, ...);
+int err_msg(struct sInfo* info, char* msg, ...);
 int transpile_v2(struct sInfo* info);
 _Bool output_source_file_v2(struct sInfo* info);
 char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static);

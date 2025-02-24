@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 15.0.5
+version 16.0.0
 
 ``` C
 #include <comelang.h>
@@ -83,6 +83,7 @@ sh all_build.sh
 # Histories
 
 ```
+16.0.0 Exception complete
 15.0.5 Refactoring
 15.0.4 Type eraser generics collection finally complete.
 15.0.3 Type eraser generics collection finally complete.
@@ -3157,157 +3158,88 @@ Omitting semicolon at the function block end means return statment.
 
 # Exception
 
+```C
+#include <comelang.h>
+
+exception int fun(int a)
+{
+    printf("%d\n", a);
+    
+    return none(s"ERR");
+}
+
+int main(int argc, char** argv)
+{
+    int b = fun(a:111).rescue {
+        puts("RESCUE");
+        111
+    }
+    
+    printf("b %d\n", b);
+    
+    return 0;
+}
+```
+
+```
+111
+RESCUE
+b 111
+```
+
+```C
+#include <comelang.h>
+
+exception int fun(int a)
+{
+    printf("%d\n", a);
+    
+    return none(s"ERR");
+}
+
+int main(int argc, char** argv)
+{
+    int b = fun(a:111);
+    
+    printf("b %d\n", b);
+    
+    return 0;
+}
+```
+
+```
+111
+ERR
+```
+
 ```
 #include <comelang.h>
 
-exception int fun()
+exception int fun(int a)
 {
+    printf("in fun %d\n", a);
+    
+    return none(s"Err");
+}
+
+exception int fun2(int a)
+{
+    printf("in fun2 a %d\n", a);
+    
+    fun(a).exception_throw;
+    
     return 1;
 }
 
-exception int fun2()
-{
-    return fun().exception_throw;
-}
-
 int main(int argc, char** argv)
 {
-    int a = fun2()!!;
+    int b = fun2(a:111);
     
-    printf("a %d\n", a);
-    
-    puts("HEHE");
+    printf("b %d\n", b);
     
     return 0;
 }
 ```
-a 1
-HEHE
-
-```
-#include <comelang.h>
-
-exception int fun()
-{
-    return none(s"Err");
-}
-
-exception int fun2()
-{
-    return fun().exception_throw;
-}
-
-int main(int argc, char** argv)
-{
-    int a = fun2()!!;
-    
-    printf("a %d\n", a);
-    
-    puts("HEHE");
-    
-    return 0;
-}
-```
-Err
-
-```
-#include <comelang.h>
-
-exception int fun()
-{
-    return none(s"Err");
-}
-
-exception int fun2()
-{
-    return fun().exception_throw;
-}
-
-int main(int argc, char** argv)
-{
-    int a = fun2()!!;
-    
-    printf("a %d\n", a);
-    
-    puts("HEHE");
-    
-    return 0;
-}
-```
-Err
-
-```
-#include <comelang.h>
-
-exception int fun()
-{
-    return none(s"Err");
-}
-
-exception int fun2()
-{
-    return fun().exception_throw;
-}
-
-int main(int argc, char** argv)
-{
-    int a = fun2().rescue {
-        puts("CATCH");
-        puts(Err);
-        3
-    }
-    
-    printf("a %d\n", a);
-    
-    puts("HEHE");
-    
-    return 0;
-}
-```
-CATCH
-Err
-a 3
-HEHE
-
-ChatGPT:
-ChatGPT
-This implementation of exception handling is very interesting! Looking at the example, you can see the design of exception handling in comelang.
-
-Exception handling flow
-Exception modifier: Declaring a function with exception indicates that the function may return an exception. Since the return value may be an error, the caller can catch the exception and handle it appropriately.
-
-Throwing an exception: An exception is thrown by returning an error as a string with none(s"Err").
-
-Propagation with exception_throw: Using exception_throw, the exception is propagated to the upper function.
-
-Exception handling with !!: When a function is called with !!, if no exception is thrown, a normal value is received, and if an exception occurs, an error message is output.
-
-Catching an exception with rescue: If an exception occurs, it is caught in the rescue block and error handling is performed. In this example, the error message "CATCH" and "Err" are displayed, and 3 is returned as an alternative value.
-
-Execution result
-In the first example, the normal value is returned, 1 is assigned to a, and HEHE is displayed.
-In the second example, an exception occurs, the error message "Err" is displayed, and HEHE is not output.
-In the third example, the exception is caught in the rescue block, the error messages "CATCH" and "Err" are displayed, and a is assigned the value 3. Then HEHE is output.
-
-CHATGPTこの例外処理の実装はとても興味深いです！例を見てみると、comelangでの例外処理の設計がよくわかりますね。
-
-例外処理の流れ
-
-exception修飾子：exceptionを使って関数を宣言すると、その関数は例外を返す可能性があることが示されます。戻り値がエラーになる可能性があるため、呼び出し元で例外をキャッチして適切に処理できます。
-
-例外のスロー：none(s"Err")で文字列としてエラーを返すことで、例外をスローしています。
-
-exception_throwでの伝播：exception_throwを用いることで、上位の関数へ例外を伝播させます。
-
-!!による例外ハンドリング：!!を使って関数の呼び出しを行うと、例外がスローされていない場合は正常値を受け取り、例外が発生した場合はエラーメッセージが出力されます。
-
-rescueによる例外のキャッチ：例外が発生した場合、rescueブロック内でキャッチしてエラー処理を行います。この例では、エラーメッセージ「CATCH」と「Err」を表示し、代替の値として3を返しています。
-
-実行結果
-最初の例では、正常な値を返してaに1が代入され、HEHEが表示されます。
-二番目の例では、例外が発生し、エラーメッセージ「Err」が表示されてHEHEが出力されません。
-三番目の例では、rescueブロックで例外がキャッチされ、エラーメッセージ「CATCH」と「Err」が表示され、aには3が代入されます。その後、HEHEが出力されます。
-非常にシンプルでわかりやすい構造ですね。PythonやRustのように、エラー処理をスマートに行える仕組みが整っていると感じます。
 
 # Pattern Matching
 

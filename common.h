@@ -404,6 +404,7 @@ struct sInfo
     bool m5stack_cpp;
     bool pico_cpp;
     bool gcc_compiler;
+    bool in_exception_value;
 };
 
 module sCurrentNodeModule
@@ -549,7 +550,7 @@ sNodeBase*% sNodeBase*::initialize(sNodeBase*% self, sInfo* info=info);
 bool node_compile(sNode* node, sInfo* info=info);
 bool node_condional_compile(sNode* node, sInfo* info=info);
 int come_main(int argc, char** argv) version 2;
-void err_msg(sInfo* info, char* msg, ...);
+int err_msg(sInfo* info, char* msg, ...);
 bool sNodeBase*::terminated(sNodeBase* self);
 int transpile(sInfo* info) version 2;
 bool output_source_file(sInfo* info) version 2;
