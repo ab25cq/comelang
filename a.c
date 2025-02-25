@@ -1,32 +1,26 @@
 #include <comelang.h>
 
-exception int fun(int a)
+class sData
 {
-    printf("in fun %d\n", a);
+    int a;
+    string b;
+    string c;
     
-    return none(s"Err");
-}
-
-exception int fun2(int a)
-{
-    printf("in fun2 %d\n", a);
-    
-    int b = fun(a).rescue {
-        222
+    exception int show()
+    {
+        puts("sData");
+        
+        return none(s"ERR");
     }
-    
-    printf("b %d\n", b);
-    
-    return none(s"ERR2");
-}
+};
 
 int main(int argc, char** argv)
 {
-    int c = fun2(a:111).rescue {
-        333
-    }
+    var data = new sData { a:111, b:s"AAA", c:s"BBB" };
     
-    printf("c %d\n", c);
+    data.show().rescue {
+        puts("RESCUE");
+    }
     
     return 0;
 }

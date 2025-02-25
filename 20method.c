@@ -703,6 +703,34 @@ class sMethodCallNode extends sNodeBase
             }
             
             sType*% result_type = clone fun->mResultType;
+            
+            if(info.come_fun.mResultType.mException && result_type.mException && !info.in_exception_value) {
+                //err_msg(info, "require exception_throw or rescue");
+                //return true;
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = true;
+                sNode*% new_node = create_exception_throw((clone self) implements sNode, info);
+                
+                node_compile(new_node, info).elif {
+                    return false;
+                }
+                info.in_exception_value = in_exception_value;
+                
+                return true;
+            }
+            else if(result_type.mException && !info.in_exception_value) {
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = true;
+                sNode*% new_node = create_exception_value((clone self) implements sNode, info);
+                
+                node_compile(new_node, info).elif {
+                    return false;
+                }
+                info.in_exception_value = in_exception_value;
+                
+                return true;
+            }
+            
             result_type->mStatic = false;
 
             //sType*% result_type2 = solve_generics(result_type, obj_type2, info);
