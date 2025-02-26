@@ -50,8 +50,9 @@ class sIfNode extends sNodeBase
         }
         
         if(info.comma_instead_of_semicolon) {
-            err_msg(info, "In conditional operator comelang can't use if statment");
-            return false;
+            err_msg(info, "In conditional operator comelang can't use if statment").rescue {
+                return true;
+            }
         }
         
         sBlock* else_block = self.mElseBlock;

@@ -54,7 +54,7 @@ bool node_compile(sNode* node, sInfo* info=info)
     return result;
 }
 
-int err_msg(sInfo* info, char* msg, ...)
+exception int err_msg(sInfo* info, char* msg, ...)
 {
     if(!info.no_output_err) {
         char* msg2;
@@ -80,25 +80,20 @@ int err_msg(sInfo* info, char* msg, ...)
         if(last_lf) {
             int col = info.p - last_lf;
         
-            buf.append_format("%s %d(real %d)(block %d) %d: %s\n", info.sname, info.sline, info.sline_real, info.sline_block, col, msg2);
+            buf.append_format("%s %d(real %d)(block %d) %d: %s", info.sname, info.sline, info.sline_real, info.sline_block, col, msg2);
         }
         else {
             int col = info.p - info.head;
         
-            buf.append_format("%s %d(real %d)(block %d) %d: %s\n", info.sname, info.sline, info.sline_real, info.sline_block, col, msg2);
+            buf.append_format("%s %d(real %d)(block %d) %d: %s", info.sname, info.sline, info.sline_real, info.sline_block, col, msg2);
         }
         
         info.err_num++;
-        
-        if(info.come_fun) {
-            int n = info->sline-5;
-            buf.append_str(info.original_source.to_string().split_char('\n').sublist(n, n+10).map { xsprintf("%d %s", ++n, it) }.join("\n"));
-        }
 
         free(msg2);
         
-        puts(buf.to_string());
-        exit(1);
+        printf(buf.to_string());
+        return none(s"compile error");
     }
     
     return 0;

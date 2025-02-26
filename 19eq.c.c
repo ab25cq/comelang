@@ -861,6 +861,12 @@ struct sInfo
     _Bool in_exception_value;
 };
 
+struct tuple2$2intcharph
+{
+    int v1;
+    char* v2;
+};
+
 struct tuple2$2sTypephcharph
 {
     struct sType* v1;
@@ -899,6 +905,12 @@ struct tuple3$3sTypephcharphbool
     struct sType* v1;
     char* v2;
     _Bool v3;
+};
+
+struct tuple2$2boolcharph
+{
+    _Bool v1;
+    char* v2;
 };
 
 struct tuple2$2charphcharph
@@ -1774,7 +1786,7 @@ struct sNodeBase* sNodeBase_initialize(struct sNodeBase* self, struct sInfo* inf
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main_v2(int argc, char** argv);
-int err_msg(struct sInfo* info, char* msg, ...);
+struct tuple2$2intcharph* err_msg(struct sInfo* info, char* msg, ...);
 _Bool sNodeBase_terminated(struct sNodeBase* self);
 int transpile_v2(struct sInfo* info);
 _Bool output_source_file_v2(struct sInfo* info);
@@ -1848,7 +1860,7 @@ void skip_pointer_attribute(struct sInfo* info);
 void skip_paren(struct sInfo* info);
 struct sNode* parse_normal_block(_Bool clang, _Bool comma, struct sInfo* info);
 struct sNode* parse_comma_block(struct sInfo* info);
-_Bool check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, _Bool pointer_massive, struct sInfo* info);
+struct tuple2$2boolcharph* check_assign_type(char* msg, struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, _Bool check_no_pointer, _Bool print_err_msg, _Bool pointer_massive, struct sInfo* info);
 void cast_type(struct sType* left_type, struct sType* right_type, struct CVALUE* come_value, struct sInfo* info);
 struct tuple2$2charphcharph* parse_attribute(struct sInfo* info, _Bool parse_function_attribute);
 struct sNode* get_number(_Bool minus, struct sInfo* info);

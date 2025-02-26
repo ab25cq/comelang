@@ -215,13 +215,16 @@ class sNewNode extends sNodeBase
                 }
                 
                 if(left_type == null) {
-                    err_msg(info, "field %s is not defined", name);
-                    return false;
+                    err_msg(info, "field %s is not defined", name).rescue {
+                        return true;
+                    }
                 }
                 
                 sType*% right_type = come_value2.type;
                 
-                check_assign_type(s"\{name} is assining to", left_type, right_type, come_value2);
+                check_assign_type(s"\{name} is assining to", left_type, right_type, come_value2).rescue {
+                    return true;
+                }
                 
                 right_type = come_value2.type;
                 

@@ -510,7 +510,9 @@ class sMethodCallNode extends sNodeBase
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     
-                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", lambda_type.mParamTypes[i-1], come_value.type, come_value);
+                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", lambda_type.mParamTypes[i-1], come_value.type, come_value).rescue {
+                        return true;
+                    }
                     if(lambda_type.mParamTypes[i-1].mHeap && come_value.type.mHeap) 
                     {
                         std_move(lambda_type.mParamTypes[i-1], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -634,8 +636,9 @@ class sMethodCallNode extends sNodeBase
                                 generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
                                 fun = info.funcs.at(string(generics_fun_name), null);
                                 if(fun == null) {
-                                    err_msg(info, "function not found(%s) at method(%s)(Z1)\n", generics_fun_name, info.come_fun.mName);
-                                    return true;
+                                    err_msg(info, "function not found(%s) at method(%s)(Z1)\n", generics_fun_name, info.come_fun.mName).rescue {
+                                        return true;
+                                    }
                                 }
                             }
                         }
@@ -684,29 +687,30 @@ class sMethodCallNode extends sNodeBase
                             }
                             
                             if(fun == null) {
-                                err_msg(info, "function not found(%s) at method(%s)(Z2n)\n", generics_fun_name, info.come_fun.mName);
-                                return true;
+                                err_msg(info, "function not found(%s) at method(%s)(Z2n)\n", generics_fun_name, info.come_fun.mName).rescue {
+                                    return true;
+                                }
                             }
                         }
                     }
                 }
             }
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(ZY)\n", generics_fun_name, info.come_fun.mName);
-                return true;
+                err_msg(info, "function not found(%s) at method(%s)(ZY)\n", generics_fun_name, info.come_fun.mName).rescue {
+                    return true;
+                }
             }
             
             
             if(fun.mParamTypes.length() == 0) {
-                err_msg(info, "Method require function parametor");
-                return true;
+                err_msg(info, "Method require function parametor").rescue {
+                    return true;
+                }
             }
             
             sType*% result_type = clone fun->mResultType;
             
             if(info.come_fun.mResultType.mException && result_type.mException && !info.in_exception_value) {
-                //err_msg(info, "require exception_throw or rescue");
-                //return true;
                 bool in_exception_value = info.in_exception_value;
                 info.in_exception_value = true;
                 sNode*% new_node = create_exception_throw((clone self) implements sNode, info);
@@ -806,7 +810,10 @@ class sMethodCallNode extends sNodeBase
                     dec_stack_ptr(1, info);
                     
                     if(param_types[n]??) {
-                        check_assign_type(s"\{fun_name} param num \{n} is assinged to", type_checking_param_types[n], come_value.type, come_value);
+                        check_assign_type(s"\{fun_name} param num \{n} is assinged to", type_checking_param_types[n], come_value.type, come_value).rescue 
+                        {
+                            return true;
+                        }
                     }
                     if(param_types[n]?? && param_types[n].mHeap && come_value.type.mHeap) {
                         std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -821,13 +828,17 @@ class sMethodCallNode extends sNodeBase
                 var label, node = it;
                 
                 if(i == 0) {
-                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], obj_value.type, obj_value);
+                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], obj_value.type, obj_value).rescue
+                    {
+                        return true;
+                    }
                     if(param_types[i].mHeap && obj_value.type.mHeap) {
                         std_move(param_types[i], obj_value.type, obj_value, no_delete_from_right_value_objects:true);
                     }
                     else if(param_types[i].mHeap && !obj_value.type.mHeap && !gComeGC) {
-                        err_msg(info, "require heap parametor(%s)", fun.mParamNames[i]);
-                        exit(2);
+                        err_msg(info, "require heap parametor(%s)", fun.mParamNames[i]).rescue {
+                            return true;
+                        }
                     }
                     come_params.replace(i, obj_value);
                     
@@ -853,7 +864,10 @@ class sMethodCallNode extends sNodeBase
                     dec_stack_ptr(1, info);
                     
                     if(param_types[i]??) {
-                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], come_value.type, come_value);
+                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], come_value.type, come_value).rescue 
+                        {
+                            return true;
+                        }
                     }
                     if(param_types[i]?? && param_types[i].mHeap && come_value.type.mHeap) {
                         std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -883,8 +897,9 @@ class sMethodCallNode extends sNodeBase
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
                             node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                                exit(1);
+                                err_msg(info, "invalid array num").rescue {
+                                    return true;
+                                }
                             }
                             
                             CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -913,8 +928,9 @@ class sMethodCallNode extends sNodeBase
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
                             node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                                exit(1);
+                                err_msg(info, "invalid array num").rescue {
+                                    return true;
+                                }
                             }
                             
                             CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -942,8 +958,9 @@ class sMethodCallNode extends sNodeBase
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
                             node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                                exit(1);
+                                err_msg(info, "invalid array num").rescue {
+                                    return true;
+                                }
                             }
                             
                             CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -971,8 +988,9 @@ class sMethodCallNode extends sNodeBase
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
                             node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                                exit(1);
+                                err_msg(info, "invalid array num").rescue {
+                                    return true;
+                                }
                             }
                             
                             CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -1000,8 +1018,9 @@ class sMethodCallNode extends sNodeBase
                         int i=0;
                         foreach(it, obj_array_type.mArrayNum) {
                             node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                                exit(1);
+                                err_msg(info, "invalid array num").rescue {
+                                    return true;
+                                }
                             }
                             
                             CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -1055,7 +1074,9 @@ class sMethodCallNode extends sNodeBase
                 
                         CVALUE*% come_value = get_value_from_stack(-1, info);
                         if(param_types[i]) {
-                            check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], come_value.type, come_value);
+                            check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], come_value.type, come_value).rescue {
+                                return true;
+                            }
                         }
                         if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
                             std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1065,8 +1086,9 @@ class sMethodCallNode extends sNodeBase
                     }
                     else {
                         if(come_params[i]?? == null) {
-                            err_msg(info, "require parametor(%s) %d", fun.mName,i);
-                            return false;
+                            err_msg(info, "require parametor(%s) %d", fun.mName,i).rescue {
+                                return true;
+                            }
                         }
                     }
                 }

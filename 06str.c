@@ -334,7 +334,9 @@ class sListNode extends sNodeBase
             dec_stack_ptr(1, info);
             
             if(list_element_type) {
-                check_assign_type(s"invalid list element type", list_element_type, come_value.type, come_value);
+                check_assign_type(s"invalid list element type", list_element_type, come_value.type, come_value).rescue {
+                    return true;
+                }
             }
             
             params.push_back(come_value);
@@ -394,8 +396,9 @@ class sListNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(1)\n", generics_fun_name, info.come_fun.mName);
-                return true;
+                err_msg(info, "function not found(%s) at method(%s)(1)\n", generics_fun_name, info.come_fun.mName).rescue {
+                    return true;
+                }
             }
         }
             
@@ -589,8 +592,9 @@ class sTupleNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName);
-                return true;
+                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName).rescue {
+                    return true;
+                }
             }
         }
             
@@ -729,8 +733,9 @@ class sSomeNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName);
-                return true;
+                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName).rescue {
+                    return true;
+                }
             }
         }
             
@@ -881,8 +886,9 @@ class sNullReturnValueOfException extends sNodeBase
             sType*% left_type = clone result_type2->mGenericsTypes[0]??;
             
             if(left_type == null || result_type2.mClass.mName !== "tuple2") {
-                err_msg(info, "function is not exception type");
-                return false;
+                err_msg(info, "function is not exception type").rescue {
+                    return true;
+                }
             }
             
             add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_name));
@@ -992,7 +998,9 @@ class sNoneNode extends sNodeBase
             if(i == 1) {
                 sType*% string_type = new sType("char*");
                 string_type->mHeap = true;
-                check_assign_type(s"invalid none type", string_type, come_value.type, come_value);
+                check_assign_type(s"invalid none type", string_type, come_value.type, come_value).rescue {
+                    return true;
+                }
             }
             
             i++;
@@ -1042,8 +1050,9 @@ class sNoneNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName);
-                return true;
+                err_msg(info, "function not found(%s) at method(%s)(2)\n", generics_fun_name, info.come_fun.mName).rescue {
+                    return true;
+                }
             }
         }
             
@@ -1172,7 +1181,9 @@ class sMapNode extends sNodeBase
                 dec_stack_ptr(1, info);
                 
                 if(map_key_type) {
-                    check_assign_type(s"invalid map key type", map_key_type, come_value.type, come_value);
+                    check_assign_type(s"invalid map key type", map_key_type, come_value.type, come_value).rescue {
+                        return true;
+                    }
                 }
                 
                 key_params.push_back(come_value);
@@ -1204,7 +1215,9 @@ class sMapNode extends sNodeBase
                 dec_stack_ptr(1, info);
                 
                 if(map_element_type) {
-                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
+                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2).rescue {
+                        return true;
+                    }
                 }
                 
                 element_params.push_back(come_value2);
@@ -1219,7 +1232,9 @@ class sMapNode extends sNodeBase
                 dec_stack_ptr(1, info);
                 
                 if(map_element_type) {
-                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
+                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2).rescue {
+                        return true;
+                    }
                 }
                 
                 element_params.push_back(come_value2);
@@ -1296,8 +1311,9 @@ class sMapNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(3)\n", generics_fun_name, info.come_fun.mName);
-                return true;
+                err_msg(info, "function not found(%s) at method(%s)(3)\n", generics_fun_name, info.come_fun.mName).rescue {
+                    return true;
+                }
             }
         }
             

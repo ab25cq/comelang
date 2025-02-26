@@ -78,7 +78,9 @@ class sReturnNode extends sNodeBase
                 
                 if(!info.come_fun.mNoResultType) {
                     if(!gComeC || !(strlen(result_type2->mClass->mName) > strlen("tuple") && memcmp(result_type2->mClass->mName, "tuple", strlen("tuple")) == 0)) {
-                        check_assign_type("result type", result_type2, come_value_type, come_value);
+                        check_assign_type("result type", result_type2, come_value_type, come_value).rescue {
+                            return true;
+                        }
                     }
                     
                     add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type2, var_name));
@@ -511,8 +513,9 @@ class sFunCallNode extends sNodeBase
             sType* lambda_type = var_->mType;
             
             if(lambda_type->mClass->mName !== "lambda") {
-                err_msg(info, "%s is not lambda, can't call", fun_name);
-                return false;
+                err_msg(info, "%s is not lambda, can't call", fun_name).rescue {
+                    return true;
+                }
             }
             
             sType*% result_type = clone lambda_type->mResultType;
@@ -521,8 +524,9 @@ class sFunCallNode extends sNodeBase
             list<CVALUE*%>*% come_params = new list<CVALUE*%>();
             
             if(lambda_type.mParamTypes.length() != params.length() && !lambda_type.mVarArgs) {
-                err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, lambda_type.mParamTypes.length(), params.length());
-                return false;
+                err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, lambda_type.mParamTypes.length(), params.length()).rescue {
+                    return true;
+                }
             }
             
             int i = 0;
@@ -537,7 +541,10 @@ class sFunCallNode extends sNodeBase
                 if(lambda_type.mVarArgs && lambda_type.mParamTypes[i] == null) {
                 }
                 else {
-                    check_assign_type(s"\{fun_name} calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value);
+                    check_assign_type(s"\{fun_name} calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value).rescue {
+                        return true;
+                    }
+                    
                     if(lambda_type.mParamTypes[i].mHeap && come_value.type.mHeap) {
                         std_move(lambda_type.mParamTypes[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
                     }
@@ -961,8 +968,9 @@ class sFunCallNode extends sNodeBase
                 }
                 
                 if(fun_name === info.come_fun.mName) {
-                    err_msg(info, "invalid inherit");
-                    return false;
+                    err_msg(info, "invalid inherit").rescue {
+                        return true;
+                    }
                 }
             }
         }
@@ -1035,8 +1043,6 @@ class sFunCallNode extends sNodeBase
         result_type->mStatic = false;
 
         if(info.come_fun.mResultType.mException && result_type.mException && !info.in_exception_value) {
-            //err_msg(info, "require exception_throw or rescue");
-            //return true;
             bool in_exception_value = info.in_exception_value;
             info.in_exception_value = true;
             sNode*% new_node = create_exception_throw((clone self) implements sNode, info);
@@ -1098,7 +1104,9 @@ class sFunCallNode extends sNodeBase
                 }
                 
                 if(param_types[n]??) {
-                    check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value);
+                    check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value).rescue {
+                        return true;
+                    }
                 }
                 if(param_types[n]?? && param_types[n].mHeap && come_value.type.mHeap) {
                     std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1152,7 +1160,9 @@ class sFunCallNode extends sNodeBase
                 }
                 
                 if(param_types[i]??) {
-                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
+                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value).rescue {
+                        return true;
+                    }
                 }
                 if(param_types[i]?? && param_types[i].mHeap && come_value.type.mHeap) {
                     std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1201,7 +1211,9 @@ class sFunCallNode extends sNodeBase
             
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     if(param_types[i]) {
-                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
+                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value).rescue {
+                            return true;
+                        }
                     }
                     if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
                         std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1211,8 +1223,9 @@ class sFunCallNode extends sNodeBase
                 }
                 else {
                     if(come_params[i]?? == null) {
-                        err_msg(info, "require parametor(%s)(1) %d", fun.mName,i);
-                        return false;
+                        err_msg(info, "require parametor(%s)(1) %d", fun.mName,i).rescue {
+                            return true;
+                        }
                     }
                 }
             }
@@ -1220,8 +1233,9 @@ class sFunCallNode extends sNodeBase
         
         if(fun.mParamTypes.length() - (method_block?2:0)!= come_params.length() && !fun.mVarArgs && fun_name !== "__builtin_va_start" && fun_name !== "__builtin_va_end") 
         {
-            err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, fun.mParamTypes.length(), params.length());
-            return false;
+            err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, fun.mParamTypes.length(), params.length()).rescue {
+                return true;
+            }
         }
         
         if(method_block) {
@@ -1247,8 +1261,9 @@ class sFunCallNode extends sNodeBase
             info->num_method_block++;
             
             if(method_block_type.mClass.mName !== "lambda") {
-                err_msg(info, "This function does not have method block(%s)", fun_name);
-                return false;
+                err_msg(info, "This function does not have method block(%s)", fun_name).rescue {
+                    return true;
+                }
             }
             
             sType*% result_type = clone method_block_type->mResultType;
@@ -1326,8 +1341,9 @@ class sFunCallNode extends sNodeBase
             sFun* fun2 = info.funcs.at(string(method_block_name), null);
             
             if(fun2 == null) {
-                err_msg(info, "method block function not found(%s)", method_block_name);
-                return true;
+                err_msg(info, "method block function not found(%s)", method_block_name).rescue {
+                    return true;
+                }
             }
             
             sType* method_block_type2 = fun2.mLambdaType;
@@ -1430,8 +1446,9 @@ class sComeCallNode extends sNodeBase
         sType*% type_ = clone info.types.at(s"pthread_t", null);
         
         if(type_ == null) {
-            err_msg(info, "pthread_t is not defined");
-            return false;
+            err_msg(info, "pthread_t is not defined").rescue {
+                return true;
+            }
         }
         
         sNode*% var_node = store_var(var_name, null@multiple_assign, null@multiple_declare, type_@type, true@alloc, null@right_value, info);
@@ -1544,8 +1561,9 @@ class sComeCallNode extends sNodeBase
         
         sType*% type = clone info.types.at(s"pthread_t", null);
         if(type == null) {
-            err_msg(info, "pthread_t is not defined");
-            return false;
+            err_msg(info, "pthread_t is not defined").rescue {
+                return true;
+            }
         }
         come_value.type = type;
         come_value.var = null;
@@ -1715,8 +1733,9 @@ class sLambdaCall extends sNodeBase
         sType* lambda_type = come_value.type;
         
         if(lambda_type->mResultType == null) {
-            err_msg(info, "invalid lambda type");
-            return false;
+            err_msg(info, "invalid lambda type").rescue {
+                return true;
+            }
         }
         
         sType*% result_type = clone lambda_type->mResultType;
@@ -1725,7 +1744,9 @@ class sLambdaCall extends sNodeBase
         list<CVALUE*%>*% come_params = new list<CVALUE*%>();
         
         if(lambda_type.mParamTypes.length() != params.length() && !lambda_type.mVarArgs) {
-            err_msg(info, "invalid param number. function param number is %d. caller param number is %d", lambda_type.mParamTypes.length(), params.length());
+            err_msg(info, "invalid param number. function param number is %d. caller param number is %d", lambda_type.mParamTypes.length(), params.length()).rescue {
+                return true;
+            }
             return false;
         }
         
@@ -1741,7 +1762,9 @@ class sLambdaCall extends sNodeBase
             if(lambda_type.mVarArgs && lambda_type.mParamTypes[i]?? == null) {
             }
             else {
-                check_assign_type(s"calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value);
+                check_assign_type(s"calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value).rescue {
+                    return true;
+                }
                 if(lambda_type.mParamTypes[i].mHeap && come_value.type.mHeap) {
                     std_move(lambda_type.mParamTypes[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
                 }

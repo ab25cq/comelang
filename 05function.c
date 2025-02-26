@@ -528,10 +528,8 @@ int transpile_block(sBlock* block, list<sType~>* param_types, list<string>* para
                         if(var_) {
                             CVALUE*% come_value3 = new CVALUE;
                             if(var_->mType->mClass === "void" && var_->mType->mPointerNum == 1) {
-                                if(!check_assign_type("invalid if result value", var_->mType, clone come_value.type, come_value3, pointer_massive:true, info)) 
-                                {
-                                    err_msg(info, "invalid if result value");
-                                    exit(2);
+                                check_assign_type("invalid if result value", var_->mType, clone come_value.type, come_value3, pointer_massive:true, info).rescue {
+                                    return true;
                                 }
                             }
                             

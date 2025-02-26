@@ -111,7 +111,9 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
     if(operator_fun) {
         CVALUE*% come_value = new CVALUE();
         string left_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[0], left_value.type, left_value);
+        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[0], left_value.type, left_value).rescue {
+            return true;
+        }
         if(operator_fun.mParamTypes[0].mHeap && left_value.type.mHeap) {
             std_move(operator_fun.mParamTypes[0], left_value.type, left_value, no_delete_from_right_value_objects:true);
             left_value2 = xsprintf("%s", left_value.c_value);
@@ -120,7 +122,9 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
             left_value2 = clone left_value.c_value;
         }
         string middle_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[1], middle_value.type, middle_value);
+        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[1], middle_value.type, middle_value).rescue {
+            return true;
+        }
         if(operator_fun.mParamTypes[1].mHeap && middle_value.type.mHeap) {
             std_move(operator_fun.mParamTypes[1], middle_value.type, middle_value, no_delete_from_right_value_objects:true);
             middle_value2 = xsprintf("%s", middle_value.c_value);
@@ -129,7 +133,9 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
             middle_value2 = clone middle_value.c_value;
         }
         string right_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[2], right_value.type, right_value);
+        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[2], right_value.type, right_value).rescue {
+            return true;
+        }
         if(operator_fun.mParamTypes[2].mHeap && right_value.type.mHeap) {
             std_move(operator_fun.mParamTypes[2], right_value.type, right_value, no_delete_from_right_value_objects:true);
             right_value2 = xsprintf("%s", right_value.c_value);
@@ -257,8 +263,9 @@ class sStoreFieldNode extends sNodeBase
         klass = info.classes[string(klass->mName)]??;
         
         if(klass->mFields == null) {
-            err_msg(info, "%s fields are null", klass->mName);
-            return false;
+            err_msg(info, "%s fields are null", klass->mName).rescue {
+                return true;
+            }
         }
         
         foreach(field, klass->mFields) {
@@ -305,14 +312,17 @@ class sStoreFieldNode extends sNodeBase
             }
             
             if(index == klass->mFields.length() || field_type == null) {
-                err_msg(info, "field not found(%s) in %s(1)", name, klass->mName);
-                return false;
+                err_msg(info, "field not found(%s) in %s(1)", name, klass->mName).rescue {
+                    return true;
+                }
             }
         }
         
         CVALUE*% come_value = new CVALUE();
         
-        check_assign_type(s"\{name} is assigned to", field_type, right_type, right_value);
+        check_assign_type(s"\{name} is assigned to", field_type, right_type, right_value).rescue {
+            return true;
+        }
         
         right_type = clone right_value.type;
         
@@ -322,8 +332,10 @@ class sStoreFieldNode extends sNodeBase
             }
             else {
                 if(!gComeGC) {
-                    err_msg(info, "require right value as heap object(%s)(1)", name);
-                    printf("right type is %s pointer num %d heap %d\n", right_value.type->mClass->mName, right_value.type->mPointerNum, right_value.type->mHeap);
+                    err_msg(info, "require right value as heap object(%s)(1)", name).rescue {
+                        printf("right type is %s pointer num %d heap %d\n", right_value.type->mClass->mName, right_value.type->mPointerNum, right_value.type->mHeap);
+                        return true;
+                    }
                     return false;
                 }
             }
@@ -381,8 +393,9 @@ class sStoreFieldNode extends sNodeBase
                 }
             }
             else {
-                err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum);
-                return false;
+                err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum).rescue {
+                    return true;
+                }
             }
         }
         else if(field_type->mHeap && field_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mClass->mName === "void") 
@@ -434,8 +447,10 @@ class sStoreFieldNode extends sNodeBase
                 }
             }
             else {
-                err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum);
-                return false;
+                err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum).rescue
+                {
+                    return true;
+                }
             }
         }
         else if(field_type->mChannel && new_channel) {
@@ -483,8 +498,9 @@ class sStoreFieldNode extends sNodeBase
                 }
             }
             else {
-                err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum);
-                return false;
+                err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum).rescue {
+                    return true;
+                }
             }
         }
         
@@ -538,16 +554,18 @@ class sNullCheckNode extends sNodeBase
                     method_name = name;
                 }
                 else {
-                    err_msg(info, "require expect implementation(%s)", left_value.type.mClass.mName);
-                    exit(1);
+                    err_msg(info, "require expect implementation(%s)", left_value.type.mClass.mName).rescue {
+                        return true;
+                    }
                 }
             }
             
             sFun* fun = info.funcs[method_name]??;
             
             if(fun == null) {
-                err_msg(info, "function not found(%s)", method_name);
-                return true;
+                err_msg(info, "function not found(%s)", method_name).rescue {
+                    return true;
+                }
             }
             
             sType*% type = solve_generics(fun.mResultType, left_value.type, info);
@@ -693,8 +711,9 @@ class sLoadFieldNode extends sNodeBase
         string child_field_name = null;
         klass = info.classes[string(klass->mName)]??;
         if(klass == null || klass->mFields == null) {
-            err_msg(info, "invalid class %s", klass->mName);
-            return false;
+            err_msg(info, "invalid class %s", klass->mName).rescue {
+                return true;
+            }
         }
         foreach(field, klass->mFields) {
             var field_name, field_type2 = field;
@@ -740,8 +759,9 @@ class sLoadFieldNode extends sNodeBase
             }
             
             if(index == klass->mFields.length()) {
-                err_msg(info, "field not found(%s) in %s(2)", name, klass->mName);
-                return false;
+                err_msg(info, "field not found(%s) in %s(2)", name, klass->mName).rescue {
+                    return true;
+                }
             }
         }
         
@@ -783,8 +803,9 @@ class sLoadFieldNode extends sNodeBase
         come_value.var = null;
         
         if(field_type == null) {
-            err_msg(info, "no field(%s)\n", name);
-            return false;
+            err_msg(info, "no field(%s)\n", name).rescue {
+                return true;
+            }
         }
         
         if(come_value.type->mArrayNum.length() == 1) {
@@ -905,7 +926,9 @@ class sStoreArrayNode extends sNodeBase
             
             string left_value_code = buf.to_string();
             
-            check_assign_type(s"array is assinged to", left_type, right_type, right_value);
+            check_assign_type(s"array is assinged to", left_type, right_type, right_value).rescue {
+                return true;
+            }
             if(left_type->mHeap && right_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0) 
             {
                 if(left_value.type->mPointerNum >= 1) {
@@ -919,8 +942,10 @@ class sStoreArrayNode extends sNodeBase
                     come_value.c_value = xsprintf("%s=%s", left_value_code, right_value.c_value);
                 }
                 else {
-                    err_msg(info, "Invalid left_type. The name is %s. The pointer num is %d.(1)", left_value_code, left_value.type->mPointerNum);
-                    return false;
+                    err_msg(info, "Invalid left_type. The name is %s. The pointer num is %d.(1)", left_value_code, left_value.type->mPointerNum).rescue 
+                    {
+                        return true;
+                    }
                 }
             }
             else {
@@ -931,8 +956,9 @@ class sStoreArrayNode extends sNodeBase
                     come_value.c_value = xsprintf("%s=%s", left_value_code, right_value.c_value);
                 }
                 else {
-                    err_msg(info, "Invalid left_type. The name is %s. The pointer num is %d.(2)", left_value_code, left_value.type->mPointerNum);
-                    return false;
+                    err_msg(info, "Invalid left_type. The name is %s. The pointer num is %d.(2)", left_value_code, left_value.type->mPointerNum).rescue {
+                        return true;
+                    }
                 }
             }
             sType*% result_type = clone left_type;
