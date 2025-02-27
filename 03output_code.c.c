@@ -654,8 +654,6 @@ struct sFun
     struct list$1charph* mParamDefaultParametors;
     struct sType* mLambdaType;
     struct sBlock* mBlock;
-    _Bool mExternal;
-    _Bool mVarArgs;
     struct buffer* mSource;
     struct buffer* mSourceHead;
     struct buffer* mSourceHead2;
@@ -664,6 +662,8 @@ struct sFun
     _Bool mInline;
     _Bool mUniq;
     _Bool mGenerate;
+    _Bool mExternal;
+    _Bool mVarArgs;
     _Bool mCloner;
     _Bool mNoResultType;
     char* mAttribute;

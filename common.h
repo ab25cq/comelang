@@ -19,6 +19,9 @@ extern int gComeDebugStackFrameID;
 
 struct sType;
 struct sClass;
+struct sInfo;
+struct sVar;
+struct sRightValueObject;
 
 dynamic struct sClass 
 {
@@ -43,8 +46,6 @@ dynamic struct sClass
     string mAttribute;
     bool mDynamic;
 };
-
-struct sInfo;
 
 interface sNode 
 {
@@ -83,7 +84,8 @@ dynamic struct sType
     list<sNode*%>*% mArrayNum;
     bool mOmitArrayNum;
     
-    list<sType~>*% mParamTypes; // lambda
+    //// lambda ///
+    list<sType~>*% mParamTypes;
     list<string>*% mParamNames;
     sType*% mResultType;
     bool mVarArgs;
@@ -144,10 +146,6 @@ dynamic struct sType
     bool mDynamic;
 };
 
-struct sVar;
-
-struct sRightValueObject;
-
 struct CVALUE 
 {
     string c_value;
@@ -192,9 +190,6 @@ dynamic struct sFun
     
     sBlock*% mBlock;
     
-    bool mExternal;
-    bool mVarArgs;
-    
     buffer*% mSource;
     buffer*% mSourceHead;
     buffer*% mSourceHead2;
@@ -204,9 +199,9 @@ dynamic struct sFun
     bool mInline;
     bool mUniq;
     bool mGenerate;
-    
+    bool mExternal;
+    bool mVarArgs;
     bool mCloner;
-    
     bool mNoResultType;
     
     string mAttribute;

@@ -654,8 +654,6 @@ struct sFun
     struct list$1charph* mParamDefaultParametors;
     struct sType* mLambdaType;
     struct sBlock* mBlock;
-    _Bool mExternal;
-    _Bool mVarArgs;
     struct buffer* mSource;
     struct buffer* mSourceHead;
     struct buffer* mSourceHead2;
@@ -664,6 +662,8 @@ struct sFun
     _Bool mInline;
     _Bool mUniq;
     _Bool mGenerate;
+    _Bool mExternal;
+    _Bool mVarArgs;
     _Bool mCloner;
     _Bool mNoResultType;
     char* mAttribute;
@@ -4587,12 +4587,6 @@ static _Bool sFun_equals(struct sFun* left, struct sFun* right){
     if(    !sBlock_equals(left->mBlock,right->mBlock)) {
         return (_Bool)0;
     }
-    if(    !bool_equals(left->mExternal,right->mExternal)) {
-        return (_Bool)0;
-    }
-    if(    !bool_equals(left->mVarArgs,right->mVarArgs)) {
-        return (_Bool)0;
-    }
     if(    !buffer_equals(left->mSource,right->mSource)) {
         return (_Bool)0;
     }
@@ -4615,6 +4609,12 @@ static _Bool sFun_equals(struct sFun* left, struct sFun* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGenerate,right->mGenerate)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mExternal,right->mExternal)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mVarArgs,right->mVarArgs)) {
         return (_Bool)0;
     }
     if(    !bool_equals(left->mCloner,right->mCloner)) {

@@ -654,8 +654,6 @@ struct sFun
     struct list$1charph* mParamDefaultParametors;
     struct sType* mLambdaType;
     struct sBlock* mBlock;
-    _Bool mExternal;
-    _Bool mVarArgs;
     struct buffer* mSource;
     struct buffer* mSourceHead;
     struct buffer* mSourceHead2;
@@ -664,6 +662,8 @@ struct sFun
     _Bool mInline;
     _Bool mUniq;
     _Bool mGenerate;
+    _Bool mExternal;
+    _Bool mVarArgs;
     _Bool mCloner;
     _Bool mNoResultType;
     char* mAttribute;
@@ -4178,7 +4178,7 @@ _Bool __result290__;
         output_struct(new_class_426,info);
     }
     else {
-        if(        type->mNoSolvedGenericsType==((void*)0)) {
+        if(        type->mNoSolvedGenericsType==((void*)0)&&list$1voidphp_length(type->mGenericsTypes)>0) {
             __dec_obj93=type->mNoSolvedGenericsType;
             type->mNoSolvedGenericsType=(struct sType*)come_increment_ref_count(come_call_cloner(sType_clone, type));
             come_call_finalizer3(__dec_obj93,sType_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);

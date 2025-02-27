@@ -613,7 +613,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                     
                     if(field_type->mHeap && field_type->mPointerNum > 0) {
                         string obj = xsprintf("(((%s)%s).%s)", make_type_name_string(type), c_value, name);
-                        free_object(field_type, obj, no_decrement, no_free, info);
+                        free_object(clone field_type, obj, no_decrement, no_free, info);
                     }
                 }
             }
@@ -624,7 +624,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                     
                     if(field_type->mHeap && field_type->mPointerNum > 0) {
                         string obj = xsprintf("(((%s)%s)->%s)", make_type_name_string(type), c_value, name);
-                        free_object(field_type, obj, no_decrement, no_free, info);
+                        free_object(clone field_type, obj, no_decrement, no_free, info);
                     }
                 }
             }
@@ -1022,7 +1022,7 @@ void free_right_value_objects(sInfo* info, bool comma=false)
                     type = solve_generics(type2, info->generics_type, info);
                 }
 
-                free_object(type, it->mVarName, !it->mDecrementRefCount@no_decrement, false@no_free, info, comma:comma, force_delete_:false);
+                free_object(clone type, it->mVarName, !it->mDecrementRefCount@no_decrement, false@no_free, info, comma:comma, force_delete_:false);
                 
                 
                 it->mFreed = true;
@@ -1067,10 +1067,12 @@ void free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         }
         else if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
         {
-            free_object(type, p->mCValueName, false@no_decrement, true@no_free, info, false, true);
+            sType*% type2 = clone type;
+            free_object(type2, p->mCValueName, false@no_decrement, true@no_free, info, false, true);
         }
         else if(type->mHeap && p->mCValueName) {
-            free_object(type, p->mCValueName, false@no_decrement, false@no_free, info);
+            sType*% type2 = clone type;
+            free_object(type2, p->mCValueName, false@no_decrement, false@no_free, info);
         }
         else if(klass->mStruct && p->mCValueName && type->mAllocaValue && !type->mNoCallingDestructor) {
             string c_value = xsprintf("(&%s)", p->mCValueName);

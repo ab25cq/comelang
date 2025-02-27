@@ -581,7 +581,7 @@ int transpile_block(sBlock* block, list<sType~>* param_types, list<string>* para
         
         if(info->match_it_var && block_level == 0) {
             foreach(it, info->match_it_var) {
-                free_object(it->mType, it->mCValueName, false@no_decrement, false@no_free, info);
+                free_object(clone it->mType, it->mCValueName, false@no_decrement, false@no_free, info);
             }
             info->match_it_var = null
         }

@@ -29,7 +29,7 @@ class sStoreNode extends sNodeBase
             sVar* var_ = info.lv_table.mVars[string(self.name)]??;
             if(var_) {
                 if(var_->mType->mHeap) {
-                    free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                    free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
                 }
                 
                 info.lv_table.mVars.remove(string(self.name));
@@ -48,7 +48,7 @@ class sStoreNode extends sNodeBase
                 var_ = info.lv_table.mVars[string(var_name)]??;
                 if(var_) {
                     if(var_->mType->mHeap) {
-                        free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                        free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
                     }
                     
                     info.lv_table.mVars.remove(string(var_name));
@@ -100,7 +100,7 @@ class sStoreNode extends sNodeBase
                     sVar*% var_ = info.lv_table.mVars[string(it)]??;
                     if(var_) {
                         if(var_->mType->mHeap) {
-                            free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                            free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
                         }
                         
                         info.lv_table.mVars.remove(string(it));
@@ -177,7 +177,7 @@ class sStoreNode extends sNodeBase
             sVar* var_ = info.lv_table.mVars[string(self.name)]??;
             if(var_) {
                 if(var_->mType->mHeap) {
-                    free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                    free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
                 }
                 
                 info.lv_table.mVars.remove(string(self.name));
@@ -259,7 +259,7 @@ class sStoreNode extends sNodeBase
             sVar* var_ = info.lv_table.mVars[string(self.name)]??;
             if(var_) {
                 if(var_->mType->mHeap) {
-                    free_object(var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
+                    free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
                 }
                 
                 info.lv_table.mVars.remove(string(self.name));

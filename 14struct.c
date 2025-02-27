@@ -208,7 +208,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
         output_struct(new_class, info);
     }
     else { 
-        if(type->mNoSolvedGenericsType == null) {
+        if(type->mNoSolvedGenericsType == null && type->mGenericsTypes.length() > 0) {
             type->mNoSolvedGenericsType = clone type;
             type->mNoSolvedGenericsType.mPointerNum = type->mPointerNum;
         }

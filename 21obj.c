@@ -1076,7 +1076,7 @@ class sDeleteNode extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        free_object(come_value.type, come_value.c_value, false@no_decrement, false@no_free, info);
+        free_object(clone come_value.type, come_value.c_value, false@no_decrement, false@no_free, info);
         
         return true;
     }
