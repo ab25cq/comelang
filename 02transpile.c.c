@@ -655,7 +655,6 @@ struct sFun
     _Bool mGenerate;
     _Bool mExternal;
     _Bool mVarArgs;
-    _Bool mCloner;
     _Bool mNoResultType;
     char* mAttribute;
     char* mFunAttribute;

@@ -201,7 +201,6 @@ dynamic struct sFun
     bool mGenerate;
     bool mExternal;
     bool mVarArgs;
-    bool mCloner;
     bool mNoResultType;
     
     string mAttribute;

@@ -530,7 +530,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
         //type->mAllocaValue = alloca_value;
     }
 
-    if(type->mPointerNum > 0 || type->mClass->mProtocol || type->mGenericsTypes.length() > 0) // || (info->come_fun.mCloner && ret_value)) {
+    if(type->mPointerNum > 0 || type->mClass->mProtocol || type->mGenericsTypes.length() > 0) 
     {
         string c_value = string(obj);
         

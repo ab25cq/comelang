@@ -664,7 +664,6 @@ struct sFun
     _Bool mGenerate;
     _Bool mExternal;
     _Bool mVarArgs;
-    _Bool mCloner;
     _Bool mNoResultType;
     char* mAttribute;
     char* mFunAttribute;
@@ -4615,9 +4614,6 @@ static _Bool sFun_equals(struct sFun* left, struct sFun* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mVarArgs,right->mVarArgs)) {
-        return (_Bool)0;
-    }
-    if(    !bool_equals(left->mCloner,right->mCloner)) {
         return (_Bool)0;
     }
     if(    !bool_equals(left->mNoResultType,right->mNoResultType)) {

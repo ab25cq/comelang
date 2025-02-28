@@ -3726,8 +3726,6 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
                         , true@static_
                         , info, false@inline_, false@uniq_, false@generate_);
                         
-            fun->mCloner = true;
-            
             info.funcs.insert(string(name), fun);
             
             sNode*% node = new sFunNode(fun, info) implements sNode;
@@ -3867,8 +3865,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , true@static_
                             , info, false@inline_, false@uniq_, true@generate_);
                             
-            fun->mCloner = true;
-            
             info.funcs.insert(string(name), fun);
             
             cloner = fun;
@@ -4062,8 +4058,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , true@static_
                             , info, false@inline_, false@uniq_, false@generate_);
                             
-            fun->mCloner = true;
-            
             info.funcs.insert(string(name), fun);
             
             to_string_fun = fun;
@@ -4224,8 +4218,6 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
                             , true@static_
                             , info, false@inline_, false@uniq_, true@generate_);
                             
-            fun->mCloner = true;
-            
             info.funcs.insert(string(name), fun);
             
             get_hash_key_fun = fun;
