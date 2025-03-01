@@ -1484,7 +1484,7 @@ impl list <T>
         return self;
     }
     
-    string to_string(list<T>* self)
+    generate string to_string(list<T>* self)
     {
         buffer*% result = new buffer();
         
@@ -2559,7 +2559,7 @@ impl vector<T>
     vector<T>*% sort(vector<T>* self)  {
         return self.quick_sort(0, self.length()-1, int lambda(T& left, T& right) { return left.compare(right); });
     }
-    string to_string(vector<T>* self)
+    generate string to_string(vector<T>* self)
     {
         buffer*% result = new buffer();
         
@@ -2711,7 +2711,7 @@ impl map <T, T2>
         return result;
     }
     
-    string to_string(map<T,T2>* self)
+    generate string to_string(map<T,T2>* self)
     {
         buffer*% result = new buffer();
         
@@ -3307,7 +3307,7 @@ impl tuple1 <T>
         return !left.operator_equals(right);
     }
     
-    string to_string(tuple1<T>* self)
+    generate string to_string(tuple1<T>* self)
     {
         return "(" + self.v1.to_string() + ")";
     }
@@ -3338,7 +3338,7 @@ impl tuple2 <T, T2>
         return clone self.v1;
     }
     
-    string to_string(tuple2<T, T2>* self)
+    generate string to_string(tuple2<T, T2>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + ")";
     }
@@ -3397,7 +3397,7 @@ impl tuple3 <T, T2, T3>
         return new tuple2<T, T2>.initialize(self.v1, self.v2);
     }
     
-    string to_string(tuple3<T, T2, T3>* self)
+    generate string to_string(tuple3<T, T2, T3>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + ")";
     }
@@ -3463,7 +3463,7 @@ impl tuple4 <T, T2, T3, T4>
         return new tuple3<T, T2, T3>.initialize(self.v1, self.v2, self.v3);
     }
     
-    string to_string(tuple4<T, T2, T3, T4>* self)
+    generate string to_string(tuple4<T, T2, T3, T4>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + ")";
     }
@@ -3537,7 +3537,7 @@ impl tuple5 <T, T2, T3, T4, T5>
         return new tuple4<T, T2, T3, T4>.initialize(self.v1, self.v2, self.v3, self.v4);
     }
     
-    string to_string(tuple5<T, T2, T3, T4, T5>* self)
+    generate string to_string(tuple5<T, T2, T3, T4, T5>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + "," + self.v5.to_string() + ")";
     }
