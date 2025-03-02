@@ -164,8 +164,6 @@ dynamic struct sVar
     string mCValueName;
     sType*% mType;
 
-    int mBlockLevel;
-
     bool mGlobal;
     bool mAllocaValue;
     bool mNoFree;
@@ -248,7 +246,6 @@ dynamic struct sVarTable
     map<string~, sVar~>*% mVars;
     bool mGlobal;
     struct sVarTable* mParent;
-    int mID;
 };
 
 struct sBlock

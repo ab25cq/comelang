@@ -36,8 +36,6 @@ sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* par
     self.mVars = new map<string~, sVar~>();
     self.mGlobal = global;
     self.mParent = parent;
-    static int id = 0;
-    self.mID = ++id;
     
     return self;
 }

@@ -638,7 +638,6 @@ struct sVar
     char* mName;
     char* mCValueName;
     struct sType* mType;
-    int mBlockLevel;
     _Bool mGlobal;
     _Bool mAllocaValue;
     _Bool mNoFree;
@@ -721,7 +720,6 @@ struct sVarTable
     struct map$2voidphvoidph* mVars;
     _Bool mGlobal;
     struct sVarTable* mParent;
-    int mID;
 };
 
 struct sBlock
@@ -1318,6 +1316,7 @@ char* strchrnul(const char* anonymous_var_nameX452, int anonymous_var_nameX453);
 char* strcasestr(const char* anonymous_var_nameX454, const char* anonymous_var_nameX455);
 void* memrchr(const void* anonymous_var_nameX456, int anonymous_var_nameX457, unsigned long  int anonymous_var_nameX458);
 void* mempcpy(void* anonymous_var_nameX459, const void* anonymous_var_nameX460, unsigned long  int anonymous_var_nameX461);
+char* basename();
 char* setlocale(int anonymous_var_nameX462, const char* anonymous_var_nameX463);
 struct lconv* localeconv();
 struct __locale_struct* duplocale(struct __locale_struct* anonymous_var_nameX464);
@@ -5782,9 +5781,6 @@ struct sVarTable* __result324__;
     if(    self!=((void*)0)) {
         result_440->mParent=self->mParent;
     }
-    if(    self!=((void*)0)) {
-        result_440->mID=self->mID;
-    }
     __result324__ = gComeFunResultObject = __result_obj__ = result_440;
     come_call_finalizer3(result_440,sVarTable_finalize, 0, 0, 1, 0, (void*)0);
     gComeFunResultObject = (void*)0;
@@ -5797,7 +5793,6 @@ unsigned int result_425;
     result_425+=int_get_hash_key(((int)self->mVars));
     result_425+=int_get_hash_key(((int)self->mGlobal));
     result_425+=int_get_hash_key(((int)self->mParent));
-    result_425+=int_get_hash_key(((int)self->mID));
     return result_425;
 }
 
@@ -5809,9 +5804,6 @@ static _Bool sVarTable_equals(struct sVarTable* left, struct sVarTable* right){
         return (_Bool)0;
     }
     if(    !sVarTable_equals(left->mParent,right->mParent)) {
-        return (_Bool)0;
-    }
-    if(    !int_equals(left->mID,right->mID)) {
         return (_Bool)0;
     }
     return (_Bool)1;
@@ -6589,9 +6581,6 @@ struct sVar* __result322__;
         come_call_finalizer3(__dec_obj152,sType_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);
     }
     if(    self!=((void*)0)) {
-        result_494->mBlockLevel=self->mBlockLevel;
-    }
-    if(    self!=((void*)0)) {
         result_494->mGlobal=self->mGlobal;
     }
     if(    self!=((void*)0)) {
@@ -6660,7 +6649,6 @@ unsigned int result_493;
     result_493+=int_get_hash_key(((int)self->mName));
     result_493+=int_get_hash_key(((int)self->mCValueName));
     result_493+=int_get_hash_key(((int)self->mType));
-    result_493+=int_get_hash_key(((int)self->mBlockLevel));
     result_493+=int_get_hash_key(((int)self->mGlobal));
     result_493+=int_get_hash_key(((int)self->mAllocaValue));
     result_493+=int_get_hash_key(((int)self->mNoFree));
@@ -6676,9 +6664,6 @@ static _Bool sVar_equals(struct sVar* left, struct sVar* right){
         return (_Bool)0;
     }
     if(    !sType_equals(left->mType,right->mType)) {
-        return (_Bool)0;
-    }
-    if(    !int_equals(left->mBlockLevel,right->mBlockLevel)) {
         return (_Bool)0;
     }
     if(    !bool_equals(left->mGlobal,right->mGlobal)) {

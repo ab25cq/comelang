@@ -1248,7 +1248,6 @@ void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_
         self->mCValueName = xsprintf("%s_%d", name, n++);
     }
     
-    self->mBlockLevel = info->block_level;
     self->mAllocaValue = false;
     self->mNoFree = false;
     if(info.come_fun) {
@@ -1272,7 +1271,6 @@ void add_variable_to_global_table(char* name, sType*% type, sInfo* info)
     
     self->mCValueName = string(name);
     
-    self->mBlockLevel = info->block_level;
     self->mAllocaValue = false;
     self->mNoFree = false;
     
@@ -1290,7 +1288,6 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
     
     self->mCValueName = string(c_value);
     
-    self->mBlockLevel = info->block_level;
     self->mAllocaValue = false;
     self->mNoFree = false;
     
