@@ -87,7 +87,6 @@ sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* inf
     self.mOriginalLoadVarType = null;
     self.mGenericsTypes = new list<sType~>();
     self.mArrayNum = new list<sNode*%>();
-    self.mOmitArrayNum = false;
     self.mParamTypes = new list<sType~>();
     self.mParamNames = new list<string~>();
     self.mVarArgs = false;

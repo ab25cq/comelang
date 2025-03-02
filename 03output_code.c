@@ -309,20 +309,6 @@ string make_define_var(sType* type, char* name, bool in_header=false, sInfo* inf
             buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
     }
-    else if(type2->mOmitArrayNum) {
-        var type_str = make_type_name_string(type2, in_header);
-        
-        buf.append_str(type_str);
-        
-        buf.append_str(" ");
-        buf.append_str(name);
-        
-        buf.append_str("[]");
-        
-        if(type2->mAsmName != null && type2->mAsmName !== "") {
-            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
-        }
-    }
     else if(type2->mArrayNum.length() > 0) {
         var type_str = make_type_name_string(type2, in_header);
         

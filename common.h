@@ -72,23 +72,21 @@ dynamic struct sType
 {
     sClass* mClass;
     
-    sType*% mNoSolvedGenericsType;
     sType*% mOriginalLoadVarType;
-    sType*% mAnyOriginalType;
     sType*% mChannelType;
     
-    bool mAnyClass;
-    
     list<sType~>*% mGenericsTypes;
+    sType*% mNoSolvedGenericsType;
     
-    list<sNode*%>*% mArrayNum;
-    bool mOmitArrayNum;
+    bool mAnyClass;
+    sType*% mAnyOriginalType;
     
-    //// lambda ///
-    list<sType~>*% mParamTypes;
-    list<string>*% mParamNames;
-    sType*% mResultType;
-    bool mVarArgs;
+    sNode*% mSizeNum;
+    sNode*% mAlignas;
+    string mTupleName;
+    string mAttribute;
+    
+    bool mAllocaValue;
     
     bool mUnsigned;
     bool mShort;
@@ -109,9 +107,22 @@ dynamic struct sType
     bool mNoHeap;
     bool mNoCallingDestructor;
     bool mException;
+    bool mGenerate;
+    bool mCreateVTable;
+    bool mDynamic;
     
-    sNode*% mSizeNum;
-    sNode*% mAlignas;
+    bool mInline;
+    bool mNullValue;
+    bool mGuardValue;
+    
+    string mAsmName;
+    
+    bool mTypedef;
+    
+    bool mMultipleTypes;
+    bool mOriginIsArray;
+    
+    list<sNode*%>*% mArrayNum;
     
     int mPointerNum;
     int mOriginalTypeNamePointerNum;
@@ -122,28 +133,16 @@ dynamic struct sType
     string mOriginalTypeName;
     int mOriginalPointerNum;
     
-    bool mAllocaValue;
-    
-    bool mInline;
-    bool mNullValue;
-    bool mGuardValue;
-    
-    string mAsmName;
     bool mArrayPointerType;
+    
     bool mLambdaArray;
     int mLambdaArrayNum;
     
-    bool mTypedef;
-    
-    bool mMultipleTypes;
-    bool mOriginIsArray;
-    
-    string mTupleName;
-    string mAttribute;
-    
-    bool mGenerate;
-    bool mCreateVTable;
-    bool mDynamic;
+    //// lambda ///
+    list<sType~>*% mParamTypes;
+    list<string>*% mParamNames;
+    sType*% mResultType;
+    bool mVarArgs;
 };
 
 struct CVALUE 

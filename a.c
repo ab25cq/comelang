@@ -1,5 +1,5 @@
 
-void fun(int* a)
+void fun(int a)
 {
 }
 
