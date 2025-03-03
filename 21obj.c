@@ -1076,7 +1076,9 @@ class sDeleteNode extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        free_object(clone come_value.type, come_value.c_value, false@no_decrement, false@no_free, info);
+        if(come_value.type.mPointerNum > 0) {
+            free_object(clone come_value.type, come_value.c_value, false@no_decrement, false@no_free, info);
+        }
         
         return true;
     }
@@ -1109,14 +1111,16 @@ class sBorrowNode extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        come_value.type.mHeap = false;
-        
-        struct sRightValueObject* right_value_objects = come_value.right_value_objects;
-        if(right_value_objects) {
-             int right_value_id = right_value_objects.mID;
+        if(come_value.type.mPointerNum > 0) {
+            come_value.type.mHeap = false;
             
-            if(right_value_id != -1) {
-                remove_object_from_right_values(right_value_id, info);
+            struct sRightValueObject* right_value_objects = come_value.right_value_objects;
+            if(right_value_objects) {
+                 int right_value_id = right_value_objects.mID;
+                
+                if(right_value_id != -1) {
+                    remove_object_from_right_values(right_value_id, info);
+                }
             }
         }
         
@@ -1253,7 +1257,9 @@ class sDummyHeapNode extends sNodeBase
         CVALUE*% come_value = get_value_from_stack(-1, info);
         dec_stack_ptr(1, info);
         
-        come_value.type.mHeap = true;
+        if(come_value.type.mPointerNum > 0) {
+            come_value.type.mHeap = true;
+        }
         
         info.stack.push_back(come_value);
         
@@ -1288,7 +1294,7 @@ class sGCIncNode extends sNodeBase
         
         sType* type = come_value.type;
         
-        if(come_value.type.mHeap) {
+        if(come_value.type.mHeap && come_value.type.mPointerNum > 0) {
             string type_name = make_type_name_string(type);
             come_value.c_value = increment_ref_count_object(come_value.type, come_value.c_value, info);
         }
@@ -1326,7 +1332,9 @@ class sGCDecNode extends sNodeBase
         
         sType* type = come_value.type;
         
-        decrement_ref_count_object(type, come_value.c_value, info);
+        if(come_value.type.mHeap && come_value.type.mPointerNum > 0) {
+            decrement_ref_count_object(type, come_value.c_value, info);
+        }
         
         info.stack.push_back(come_value);
         
@@ -1452,7 +1460,9 @@ class sGCDecNoFreeNode extends sNodeBase
         
         sType* type = come_value.type;
         
-        decrement_ref_count_object(type, come_value.c_value, info, no_free:true);
+        if(type->mHeap && type->mPointerNum > 0) {
+            decrement_ref_count_object(type, come_value.c_value, info, no_free:true);
+        }
         
         info.stack.push_back(come_value);
         
