@@ -1348,7 +1348,7 @@ impl list <T>
         self.len = 0;
         
         for(int i=0; i<num_value; i++) {
-            self.push_back(values[i]);
+            self.push_back(dummy_heap values[i]);
         }
 
         return self;
@@ -1369,7 +1369,12 @@ impl list <T>
 
         list_item<T>* it = self.head;
         while(it != null) {
-            result.add(clone it.item);
+            if(isheap(T)) {
+                result.add(clone it.item);
+            }
+            else {
+                result.add(dummy_heap dupe it.item);
+            }
 
             it = it.next;
         }
@@ -1578,7 +1583,7 @@ impl list <T>
             i++;
         };
 
-        return default_value;
+        return dummy_heap default_value;
     }
 
     int length(list<T>* self)
@@ -2011,12 +2016,22 @@ impl list <T>
                 }
                 else if(compare(it.item, it2.item) <= 0) 
                 {
-                    result.push_back(dupe it.item);
+                    if(isheap(T)) {
+                        result.push_back(clone it.item);
+                    }
+                    else {
+                        result.push_back(dummy_heap dupe it.item);
+                    }
 
                     it = it.next;
                 }
                 else {
-                    result.push_back(dupe it2.item);
+                    if(isheap(T)) {
+                        result.push_back(clone it2.item);
+                    }
+                    else {
+                        result.push_back(dummy_heap dupe it2.item);
+                    }
 
 
                     it2 = it2.next;
@@ -2026,7 +2041,12 @@ impl list <T>
             if(it == null) {
                 if(it2 != null) {
                     while(it2 != null) {
-                        result.push_back(dupe it2.item);
+                        if(isheap(T)) {
+                            result.push_back(clone it2.item);
+                        }
+                        else {
+                            result.push_back(dummy_heap dupe it2.item);
+                        }
 
                         it2 = it2.next;
                     }
@@ -2036,7 +2056,12 @@ impl list <T>
             else if(it2 == null) {
                 if(it != null) {
                     while(it != null) {
-                        result.push_back(dupe it.item);
+                        if(isheap(T)) {
+                            result.push_back(clone it2.item);
+                        }
+                        else {
+                            result.push_back(dummy_heap dupe it.item);
+                        }
 
                         it = it.next;
                     }
@@ -2071,7 +2096,12 @@ impl list <T>
             it = it.next.next;
 
             if(it.next == null) {
-                list1.push_back(dupe it.item);
+                if(isheap(T)) {
+                    list1.push_back(clone it.item);
+                }
+                else {
+                    list1.push_back(dummy_heap dupe it.item);
+                }
                 break;
             }
         }
@@ -2243,7 +2273,9 @@ impl vector<T>
         self.len = num_value;
         self.items = borrow new T[self.size];
         
-        memcpy(self.items, values, sizeof(T)*self.len);
+        for(int i=0; i<num_value; i++) {
+            self.add(dummy_heap values[i]);
+        }
         
         return self;
     }
@@ -2262,7 +2294,12 @@ impl vector<T>
         
         for(int i=0; i<self.len; i++) 
         {
-            result.items[i] = borrow dupe self.items[i];
+            if(isheap(T)) {
+                result.items[i] = borrow clone self.items[i];
+            }
+            else {
+                result.items[i] = borrow dupe self.items[i];
+            }
         }
 
         return result;
@@ -2318,7 +2355,6 @@ impl vector<T>
         }
 
         return true;
-        return left.equals(right);
     }
     bool operator_not_equals(vector<T>* left, vector<T>* right) {
         return !left.operator_equals(right);
@@ -2661,7 +2697,7 @@ impl map <T, T2>
         self.key_list = new list<T&>();
         
         for(int i=0; i<num_keys; i++) {
-            self.insert(keys\[i], values[i]);
+            self.insert(dummy_heap keys\[i], dummy_heap values[i]);
         }
 
         return self;
@@ -2700,12 +2736,23 @@ impl map <T, T2>
         result.key_list = new list<T&>();
 
         for(var it = self.begin(); !self.end(); it = self.next()) {
-            T2&` default_value;
+            T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             
             var it2 = self.at(it, default_value);
 
-            result.put(dupe it, dupe it2);
+            if(isheap(T) && isheap(T2)) {
+                result.put(clone it, clone it2);
+            }
+            else if(isheap(T)) {
+                result.put(clone it, dummy_heap dupe it2);
+            }
+            else if(isheap(T2)) {
+                result.put(dummy_heap dupe it, clone it2);
+            }
+            else {
+                result.put(dummy_heap dupe it, dummy_heap dupe it2);
+            }
         }
 
         return result;
@@ -2719,7 +2766,7 @@ impl map <T, T2>
         
         list_item<T&>* it = self.key_list.head;
         while(it) {
-            T2&` default_value;
+            T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = self.at(it.item, default_value);
             
@@ -2748,7 +2795,7 @@ impl map <T, T2>
             {
                 if(self.keys\[it].equals(key))
                 {
-                    return self.items\[it];
+                    return dummy_heap self.items\[it];
                 }
 
                 it++;
@@ -2859,7 +2906,7 @@ impl map <T, T2>
         int len = 0;
 
         for(var it = self.begin(); !self.end(); it = self.next()) {
-            T2&` default_value;
+            T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = self.at(it, default_value);
             unsigned int hash = ((T)it).get_hash_key() % size;
@@ -2882,7 +2929,7 @@ impl map <T, T2>
                 else {
                     item_existance[n] = true;
                     keys\[n] = it;
-                    T2& default_value;
+                    T2 default_value;
                     items\[n] = self.at(it, default_value);
 
                     len++;
@@ -3103,12 +3150,12 @@ impl map <T, T2>
         bool result = true;
         for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
         {
-            T&` default_value;
+            T` default_value;
             memset(&default_value, 0, sizeof(T));
             T& it2 = right.key_list.item(n, default_value);
             
             if(it.equals(it2)) {
-                T2&` default_value2;
+                T2` default_value2;
                 memset(&default_value2, 0, sizeof(T2));
                 T2& item = left.at(it, default_value2);
                 T2& item2 = right.at(it2, default_value2);
@@ -3136,12 +3183,12 @@ impl map <T, T2>
         bool result = true;
         for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
         {
-            T&` default_value;
+            T` default_value;
             memset(&default_value, 0, sizeof(T));
             T& it2 = right.key_list.item(n, default_value);
             
             if(it === it2) {
-                T2&` default_value2;
+                T2` default_value2;
                 memset(&default_value2, 0, sizeof(T2));
                 T2& item = left.at(it, default_value2);
                 T2& item2 = right.at(it2, default_value2);
@@ -3198,22 +3245,44 @@ impl map <T, T2>
         int n = 0;
         for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
         {
-            T2&` default_value;
+            T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = left.at(it, default_value);
             
-            result.insert(dupe it, dupe it2);
+            if(isheap(T) && isheap(T2)) {
+                result.insert(clone it, clone it2);
+            }
+            else if(isheap(T)) {
+                result.insert(clone it, dummy_heap dupe it2);
+            }
+            else if(isheap(T2)) {
+                result.insert(dummy_heap dupe it, clone it2);
+            }
+            else {
+                result.insert(dummy_heap dupe it, dummy_heap dupe it2);
+            }
             n++;
         }
 
         n=0;
         for(var it = right.key_list.begin(); !right.key_list.end(); it = right.key_list.next())
         {
-            T2&` default_value;
+            T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = left.at(it, default_value);
             
-            result.insert(dupe it, dupe it2);
+            if(isheap(T) && isheap(T2)) {
+                result.insert(clone it, clone it2);
+            }
+            else if(isheap(T)) {
+                result.insert(clone it, dummy_heap dupe it2);
+            }
+            else if(isheap(T2)) {
+                result.insert(dummy_heap dupe it, clone it2);
+            }
+            else {
+                result.insert(dummy_heap dupe it, dummy_heap dupe it2);
+            }
             n++;
         }
 
@@ -3226,12 +3295,23 @@ impl map <T, T2>
             int n = 0;
             for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
             {
-                T2&` default_value;
+                T2` default_value;
                 memset(&default_value, 0, sizeof(T2));
                 
                 T2& it2 = left.at(it, default_value);
                 
-                result.insert(dupe it, dupe it2);
+                if(isheap(T) && isheap(T2)) {
+                    result.insert(clone it, clone it2);
+                }
+                else if(isheap(T)) {
+                    result.insert(clone it, dummy_heap dupe it2);
+                }
+                else if(isheap(T2)) {
+                    result.insert(dummy_heap dupe it, clone it2);
+                }
+                else {
+                    result.insert(dummy_heap dupe it, dummy_heap dupe it2);
+                }
                 n++;
             }
         }
@@ -3242,7 +3322,12 @@ impl map <T, T2>
         var result = new list<T>();
         
         for(var it = self.key_list.begin(); !self.key_list.end(); it = self.key_list.next()) {
-            result.push_back(dupe it);
+            if(isheap(T)) {
+                result.push_back(clone it);
+            }
+            else {
+                result.push_back(dummy_heap dupe it);
+            }
         }
         
         return result;
@@ -3252,12 +3337,17 @@ impl map <T, T2>
         var result = new list<T2>();
         
         for(var it = self.key_list.begin(); !self.key_list.end(); it = self.key_list.next()) { 
-            T2&` default_value;
+            T2` default_value;
             memset(&default_value, 0, sizeof(T2));
         
             var it2 = self.at(it, default_value);
             
-            result.push_back(dupe it2);
+            if(isheap(T2)) {
+                result.push_back(clone it2);
+            }
+            else {
+                result.push_back(dummy_heap dupe it2);
+            }
         }
         
         return result;

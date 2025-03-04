@@ -134,7 +134,7 @@ sNode*% parse_enum(string type_name, sInfo* info)
         info.classes.insert(type_name, klass);
     }
     else {
-        klass = clone info.classes.at(type_name, null);
+        klass = info.classes.at(type_name, null);
     }
     
     parse_struct_attribute();

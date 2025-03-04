@@ -317,4 +317,3 @@ ZVALUE*% ZVALUE*::initialize(ZVALUE*% self, int kind, int int_value=0, wstring s
     
     return self;
 }
-

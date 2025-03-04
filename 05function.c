@@ -472,7 +472,7 @@ int transpile_block(sBlock* block, list<sType~>* param_types, list<string>* para
     if(param_types && param_names) {
         int i;
         foreach(name, param_names) {
-            sType*% type = clone param_types[i];
+            sType*% type = param_types[i];
             type->mAllocaValue = false;
             add_variable_to_table(name, clone type, info, true@function_param);
             i++;
@@ -2216,6 +2216,7 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     
     sType*% result_type = solve_generics(generics_fun->mResultType, generics_type, info);
     
+    
     list<sType~>*% param_types = new list<sType~>();
     foreach(it, generics_fun->mParamTypes) {
         sType*% param_type = solve_generics(clone it, generics_type, info);
@@ -2520,7 +2521,6 @@ sNode*% parse_function(sInfo* info)
     if(info.in_class && base_fun_name === "initialize") {
         info.in_class = true;
     }
-    
     
     int version = 0;
     if(parsecmp("version")) {

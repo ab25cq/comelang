@@ -374,7 +374,7 @@ class sMethodCallNode extends sNodeBase
                         int n = 0;
                         foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
                             if(it.mClass.mMethodGenerics) {
-                                int method_generics_num = it.mMethodGenericsNum;
+                                int method_generics_num = it.mClass.mMethodGenericsNum;
                                 info.method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
                             }
                             n++;
@@ -401,7 +401,7 @@ class sMethodCallNode extends sNodeBase
                             }
                         }
                         if(generics_fun.mResultType.mClass.mMethodGenerics) {
-                            int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
+                            int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
                             
                             if(info->function_result_type) {
                                 bool generics_any_child = false;
@@ -421,7 +421,7 @@ class sMethodCallNode extends sNodeBase
                         n = 0;
                         foreach(it, generics_fun.mParamTypes) {
                             if(it.mClass.mMethodGenerics) {
-                                int method_generics_num = it.mMethodGenericsNum;
+                                int method_generics_num = it.mClass.mMethodGenericsNum;
                                 if(n < come_params.length()) {
                                     info.method_generics_types[method_generics_num] = clone come_params[n]??.type;
                                 }
@@ -451,7 +451,7 @@ class sMethodCallNode extends sNodeBase
                             }
                         }
                         if(generics_fun.mResultType.mClass.mMethodGenerics) {
-                            int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
+                            int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
                             
                             if(info->function_result_type) {
                                 info.method_generics_types[method_generics_num] = clone info->function_result_type;
@@ -460,7 +460,7 @@ class sMethodCallNode extends sNodeBase
                         int n = 0;
                         foreach(it, generics_fun.mParamTypes) {
                             if(it.mClass.mMethodGenerics) {
-                                int method_generics_num = it.mMethodGenericsNum;
+                                int method_generics_num = it.mClass.mMethodGenericsNum;
                                 if(n < come_params.length()) {
                                     info.method_generics_types[method_generics_num] = clone come_params[n]??.type;
                                 }

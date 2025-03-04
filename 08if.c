@@ -742,7 +742,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             }
     
             /// else ///
-            if(!xisalpha(*info->p)) {
+            if(!(xisalpha(*info->p) || *info->p == '_')) {
                 break;
             }
             parse_sharp();
@@ -919,7 +919,7 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
         }
 
         /// else ///
-        if(!xisalpha(*info->p)) {
+        if(!(xisalpha(*info->p) || *info->p == '_')) {
             break;
         }
         parse_sharp();
@@ -1007,7 +1007,7 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
         }
 
         /// else ///
-        if(!xisalpha(*info->p)) {
+        if(!(xisalpha(*info->p) || *info->p == '_')) {
             break;
         }
         parse_sharp();
@@ -1095,7 +1095,7 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
         }
 
         /// else ///
-        if(!xisalpha(*info->p)) {
+        if(!(xisalpha(*info->p) || *info->p == '_')) {
             break;
         }
         parse_sharp();

@@ -246,21 +246,20 @@ class sStoreFieldNode extends sNodeBase
         
         CVALUE*% right_value = get_value_from_stack(-1, info);
         sType* right_type = right_value.type;
-        
         dec_stack_ptr(1, info);
         
         sType* left_type = left_value.type;
         
-        sType*% left_type2 = solve_generics(left_type, left_type, info);
+        sType* left_type2 = left_type
         
-        sClass* klass = left_type2->mClass;
-        klass = info.classes[string(klass->mName)]??;
+//        sType*% left_type2 = solve_generics(left_type, left_type, info);
+        
+        sClass*% klass = info.classes[left_type2->mClass->mName];
         
         sType*% field_type = null;
         int index = 0;
         string child_field_name = null;
         bool child_field_is_pointer = false;
-        klass = info.classes[string(klass->mName)]??;
         
         if(klass->mFields == null) {
             err_msg(info, "%s fields are null", klass->mName).rescue {
@@ -286,21 +285,23 @@ class sStoreFieldNode extends sNodeBase
                 
                 sClass* klass2 = field_type2->mClass;
                 
-                foreach(field2, klass2->mFields) {
-                    var field_name2, field_type3 = field2;
-                    
-                    if(field_name2 === name) {
-                        child_field_name = string(field_name);
-                        if(field_type2->mPointerNum > 0) {
-                            child_field_is_pointer = true;
+                if(klass2->mUnion) {
+                    foreach(field2, klass2->mFields) {
+                        var field_name2, field_type3 = field2;
+                        
+                        if(field_name2 === name) {
+                            child_field_name = string(field_name);
+                            if(field_type2->mPointerNum > 0) {
+                                child_field_is_pointer = true;
+                            }
+                            field_type = clone field_type3;
+                            break;
                         }
-                        field_type = clone field_type3;
+                    }
+                    
+                    if(child_field_name) {
                         break;
                     }
-                }
-                
-                if(child_field_name) {
-                    break;
                 }
                 
                 if(field_name === name) {
@@ -320,7 +321,9 @@ class sStoreFieldNode extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         
-        check_assign_type(s"\{name} is assigned to", field_type, right_type, right_value).rescue {
+        right_type = clone right_value.type;
+        
+        check_assign_type(s"\{name} is assigned to(1)", field_type, right_type, right_value).rescue {
             return true;
         }
         
@@ -733,21 +736,23 @@ class sLoadFieldNode extends sNodeBase
                 
                 sClass* klass2 = field_type2->mClass;
                 
-                foreach(field2, klass2->mFields) {
-                    var field_name2, field_type3 = field2;
-                    
-                    if(field_name2 === name) {
-                        child_field_name = string(field_name);
-                        if(field_type2->mPointerNum > 0) {
-                            child_field_is_pointer = true;
+                if(klass2->mUnion) {
+                    foreach(field2, klass2->mFields) {
+                        var field_name2, field_type3 = field2;
+                        
+                        if(field_name2 === name) {
+                            child_field_name = string(field_name);
+                            if(field_type2->mPointerNum > 0) {
+                                child_field_is_pointer = true;
+                            }
+                            field_type = clone field_type3;
+                            break;
                         }
-                        field_type = clone field_type3;
+                    }
+                    
+                    if(child_field_name) {
                         break;
                     }
-                }
-                
-                if(child_field_name) {
-                    break;
                 }
                 
                 if(field_name === name) {
@@ -926,7 +931,7 @@ class sStoreArrayNode extends sNodeBase
             
             string left_value_code = buf.to_string();
             
-            check_assign_type(s"array is assinged to", left_type, right_type, right_value).rescue {
+            check_assign_type(s"array is assinged to(2)", left_type, right_type, right_value).rescue {
                 return true;
             }
             if(left_type->mHeap && right_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0) 

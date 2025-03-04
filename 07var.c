@@ -297,9 +297,9 @@ class sStoreNode extends sNodeBase
             var_type->mStatic = false;
             
             if(!array_initializer && !struct_initializer && !var_->mType->mStatic && !var_type->mConstant && var_type->mArrayNum.length() == 0) {
-                if(var_type->mNumber) {
+                if(var_type->mClass->mNumber) {
                 }
-                else if((var_type->mStruct || var_type->mUnion || var_type->mEnum) || var_type->mPointerNum > 0) {
+                else if((var_type->mClass->mStruct || var_type->mClass->mUnion || var_type->mClass->mEnum) || var_type->mPointerNum > 0) {
                 }
                 else {
                     add_come_code_at_function_head2(info, "memset(&%s, 0, sizeof(%s));\n", var_->mCValueName, make_type_name_string(var_type, no_static:true));
@@ -368,7 +368,7 @@ class sStoreNode extends sNodeBase
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
                 come_value.type = new sType("void");
-                come_value.mPointerNum = 1;
+                come_value.type.mPointerNum = 1;
                 come_value.var = var_;
                 
                 info.stack.push_back(come_value);
@@ -603,7 +603,7 @@ class sStoreNode extends sNodeBase
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
                 come_value.type = new sType("void");
-                come_value.mPointerNum = 1;
+                come_value.type.mPointerNum = 1;
                 come_value.var = var_;
                 
                 info.stack.push_back(come_value);

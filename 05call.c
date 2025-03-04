@@ -631,7 +631,7 @@ class sFunCallNode extends sNodeBase
                     int n = 0;
                     foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
                         if(it.mClass.mMethodGenerics) {
-                            int method_generics_num = it.mMethodGenericsNum;
+                            int method_generics_num = it.mClass.mMethodGenericsNum;
                             method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
                         }
                         n++;
@@ -656,7 +656,7 @@ class sFunCallNode extends sNodeBase
                 }
                 
                 if(generics_fun.mResultType.mClass.mMethodGenerics) {
-                    int method_generics_num = generics_fun.mResultType.mMethodGenericsNum;
+                    int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
         
                     if(info->function_result_type) {
                         method_generics_types[method_generics_num] = clone info->function_result_type;
@@ -665,7 +665,7 @@ class sFunCallNode extends sNodeBase
                 int n = 0;
                 foreach(it, generics_fun.mParamTypes) {
                     if(it.mClass.mMethodGenerics) {
-                        int method_generics_num = it.mMethodGenericsNum;
+                        int method_generics_num = it.mClass.mMethodGenericsNum;
                         if(n < come_params.length()) {
                             method_generics_types[method_generics_num] = clone come_params[n]??.type;
                         }
@@ -2628,6 +2628,55 @@ sNode*% statment(sInfo* info=info)
     return node;
 }
 
+string get_none_generics_name(char* class_name)
+{
+    char* p = class_name;
+    while(*p) {
+        if(*p == '$') {
+            return string(class_name).substring(0, p -class_name);
+        }
+        else {
+            p++;
+        }
+    }
+    
+    return string(class_name);
+}
+
+string create_generics_name(sType* generics_type, sInfo* info)
+{
+    buffer*% buf = new buffer();
+    
+    sClass* klass = generics_type->mClass;
+    
+    char* class_name = klass->mName;
+    
+    buf.append_str(class_name);
+    
+    if(generics_type->mGenericsTypes.length() > 0) {
+        buf.append_char('$');
+        buf.append_char(generics_type->mGenericsTypes.length()+'0');
+        
+        for(int i=0; i<generics_type->mGenericsTypes.length(); i++) {
+            sType* type = generics_type->mGenericsTypes[i];
+            string type_name = create_generics_name(type, info);
+            
+            buf.append_str(type_name);
+
+            buf.append_char('$');
+            for(int i=0; i<type->mPointerNum; i++) {
+                buf.append_char('p');
+            }
+        
+            if(type->mHeap) {
+                buf.append_str("h");
+            }
+        }
+    }
+    
+    return buf.to_string();
+}
+
 string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name;
@@ -2635,17 +2684,23 @@ string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name,
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
         if(!obj_type->mClass->mStruct) {
+            if(obj_type->mGenericsTypes.length() > 0 && obj_type->mOriginalTypeNamePointerNum > 0) {
+                buf.append_str("$");
+            }
             for(int i=0; i<obj_type->mOriginalTypeNamePointerNum; i++)
             {
                 buf.append_str("p");
             }
         }
     }
-    else if(obj_type->mClass->mStruct) {
+    else if(obj_type->mClass->mStruct || obj_type->mClass->mProtocol) {
         struct_name = string(obj_type->mClass->mName);
     }
     else {
         struct_name = create_generics_name(obj_type, info);
+        if(obj_type->mGenericsTypes.length() > 0 && obj_type->mPointerNum > 0) {
+            buf.append_str("$");
+        }
         for(int i=0; i<obj_type->mPointerNum; i++)
         {
             buf.append_str("p");
@@ -2667,11 +2722,14 @@ string create_method_name_original_obj_type(sType* obj_type, bool no_pointer_nam
 {
     string struct_name;
     buffer*% buf = new buffer();
-    if(obj_type->mClass->mStruct) {
+    if(obj_type->mClass->mStruct || obj_type->mClass->mProtocol) {
         struct_name = string(obj_type->mClass->mName);
     }
     else {
         struct_name = create_generics_name(obj_type, info);
+        if(obj_type->mGenericsTypes.length() > 0 && obj_type->mPointerNum > 0) {
+            buf.append_str("$");
+        }
         for(int i=0; i<obj_type->mPointerNum; i++)
         {
             buf.append_str("p");
@@ -2696,17 +2754,23 @@ string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_n
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
         if(!obj_type->mClass->mStruct) {
+            if(obj_type->mGenericsTypes.length() > 0 && obj_type->mOriginalTypeNamePointerNum > 0) {
+                buf.append_str("$");
+            }
             for(int i=0; i<obj_type->mOriginalTypeNamePointerNum; i++)
             {
                 buf.append_str("p");
             }
         }
     }
-    else if(obj_type->mClass->mStruct) {
+    else if(obj_type->mClass->mStruct || obj_type->mClass->mProtocol) {
         struct_name = string(obj_type->mClass->mName);
     }
     else {
         struct_name = create_generics_name(obj_type, info);
+        if(obj_type->mGenericsTypes.length() > 0 && obj_type->mPointerNum > 0) {
+            buf.append_str("$");
+        }
         for(int i=0; i<obj_type->mPointerNum; i++)
         {
             buf.append_str("p");
@@ -2736,6 +2800,7 @@ string create_method_name_using_class(sClass* obj_class, bool no_pointer_name, c
     
     return xsprintf("%s_%s", struct_name, fun_name);
 }
+
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 1
 {

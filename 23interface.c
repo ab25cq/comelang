@@ -20,14 +20,13 @@ class sInterfaceNode extends sNodeBase
     bool compile(sInfo* info)
     {
         string name = string(self.name);
-        sClass* klass = self.klass;
+        sClass*% klass = self.klass;
         klass->mProtocol = true;
         
         buffer*% buf = new buffer();
         
         buf.append_format("struct %s\n{\n", klass.mName);
         
-    //    klass= info.classes[klass->mName];
         foreach(it, klass.mFields) {
             var name, type = it;
             
@@ -40,7 +39,7 @@ class sInterfaceNode extends sNodeBase
         
         if(self.mOutput) {
             info.struct_definition.insert(string(name), buf);
-            info.classes.insert(string(name), clone klass);
+            info.classes.insert(string(name), klass);
         }
         
         return true;
@@ -86,7 +85,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
             klass = new sClass(name:type_name, struct_:true, protocol_:true);
         }
         else {
-            klass = clone info.classes.at(type_name, null);
+            klass = info.classes.at(type_name, null);
             
             if(klass->mFields.length() > 0) {
                 output = false;

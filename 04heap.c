@@ -493,11 +493,11 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         else {
             if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
-                string str = s"if(\{name}) { \{name} = come_decrement_ref_count2(\{name}, ((\{type_name})\{name})->finalize, ((\{type_name})\{name})->_protocol_obj, 0,0,0, (void*)0); }";
+                string str = s"if(\{name}) { \{name} = come_decrement_ref_count2(\{name}, ((\{type_name})\{name})->finalize, ((\{type_name})\{name})->_protocol_obj, 0,\{no_free ? 1:0},0, (void*)0); }";
                 add_come_last_code2(info, str);
             }
             else {
-                string str = xsprintf("%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, 0,0,0, (void*)0)", name, name);
+                string str = xsprintf(s"%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, 0,\{no_free ? 1:0},0, (void*)0)", name, name);
                 add_come_last_code2(info, str);
             }
         }

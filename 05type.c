@@ -537,7 +537,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
         } 
         else if(right_type->mPointerNum == 0 && left_type2->mPointerNum > 0) {
         }
-        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mNumber && left_type2->mPointerNum == 0) {
+        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mNumber && left_type2->mPointerNum == 0) {
             if(pointer_massive) {
                 if(print_err_msg) {
                     printf("%s %d %s\n", info->sname, info->sline, msg);
@@ -558,7 +558,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 right_type2 = clone left_type2;
             }
         }
-        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mFloat && left_type2->mPointerNum == 0) {
+        else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mFloat && left_type2->mPointerNum == 0) {
             if(pointer_massive) {
                 if(print_err_msg) {
                     printf("%s %d %s\n", info->sname, info->sline, msg);
@@ -645,7 +645,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
             return none(s"ERR");
         }
     } 
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mNumber && left_type2->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mNumber && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
                 printf("%s %d %s\n", info->sname, info->sline, msg);
@@ -666,7 +666,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
             right_type2 = clone left_type2;
         }
     }
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mFloat && left_type2->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mFloat && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
                 printf("%s %d %s\n", info->sname, info->sline, msg);
@@ -704,7 +704,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
         
         right_type2 = clone left_type2;
     }
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mNumber && left_type2->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mNumber && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
                 printf("%s %d %s\n", info->sname, info->sline, msg);
@@ -725,7 +725,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
             right_type2 = clone left_type2;
         }
     }
-    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mFloat && left_type2->mPointerNum == 0) {
+    else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mFloat && left_type2->mPointerNum == 0) {
         if(pointer_massive) {
             if(print_err_msg) {
                 printf("%s %d %s\n", info->sname, info->sline, msg);
@@ -744,6 +744,18 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
             come_value.var = null;
             
             right_type2 = clone left_type2;
+        }
+    }
+    else if(left_type2->mClass->mName === right_type2->mClass->mName && left_type2->mPointerNum > 0 && right_type2->mPointerNum > 0 && !right_type2->mAllocaValue && !left_type->mAnyClass && !right_type2->mAnyClass)
+    {
+        if(left_type2->mHeap && !right_type2->mHeap) {
+            printf("%s %d %s\n", info->sname, info->sline, msg);
+            printf("left type is %s pointer num %d heap %d\n", left_type2->mClass->mName, left_type2->mPointerNum, left_type2->mHeap);
+            printf("right type is %s pointer num %d heap %d\n", right_type2->mClass->mName, right_type2->mPointerNum, right_type2->mHeap);
+                    
+            info->err_num++;
+            
+            return none(s"ERR");
         }
     }
     else if(check_no_pointer) {
@@ -1613,7 +1625,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 char* p = info.p;
                 int sline = info.sline;
                 
-                if(!xisalpha(*info->p)) {
+                if(!(xisalpha(*info->p) || *info->p == '_')) {
                     info.p = p;
                     info.sline = sline;
                     
@@ -1644,7 +1656,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     else if(type_name === "long") {
                         p = info.p;
                         sline = info.sline;
-                        if(xisalpha(*info->p)) {
+                        if(xisalpha(*info->p) || *info->p == '_') {
                             long_long = true;
                             type_name = parse_word();
                         }

@@ -1,53 +1,5 @@
 #include "common.h"
 
-string get_none_generics_name(char* class_name)
-{
-    char* p = class_name;
-    while(*p) {
-        if(*p == '$') {
-            return string(class_name).substring(0, p -class_name);
-        }
-        else {
-            p++;
-        }
-    }
-    
-    return string(class_name);
-}
-
-string create_generics_name(sType* generics_type, sInfo* info)
-{
-    buffer*% buf = new buffer();
-    
-    sClass* klass = generics_type->mClass;
-    
-    char* class_name = klass->mName;
-    
-    buf.append_str(class_name);
-    
-    if(generics_type->mGenericsTypes.length() > 0) {
-        buf.append_char('$');
-        buf.append_char(generics_type->mGenericsTypes.length()+'0');
-        
-        for(int i=0; i<generics_type->mGenericsTypes.length(); i++) {
-            sType* type = generics_type->mGenericsTypes[i];
-            string type_name = create_generics_name(type, info);
-            
-            buf.append_str(type_name);
-
-            for(int i=0; i<type->mPointerNum; i++) {
-                buf.append_char('p');
-            }
-        
-            if(type->mHeap) {
-                buf.append_str("h");
-            }
-        }
-    }
-    
-    return buf.to_string();
-}
-
 void output_struct(sClass* klass, sInfo* info)
 {
     if(info->no_output_come_code) {
