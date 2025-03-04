@@ -63,18 +63,10 @@ class sReturnNode extends sNodeBase
                 add_come_code(info, "return %s;\n", come_value.c_value);
             }
             else {
-                static int num_result = 0;
+                static int result_num = 0;
+                result_num++;
                 
-                string var_name = xsprintf("__result%d__", ++num_result);
-                int num_result_stack = num_result;
-/*
-                if(come_value_type->mHeap && result_type2->mHeap && result_type2->mPointerNum > 0 && come_value_type->mPointerNum > 0)
-                {
-                    std_move(result_type2, come_value_type, come_value);
-                
-                    append_object_to_right_values2(come_value, come_value_type, info, true@decrement_ref_count);
-                }
-*/
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type2, s"__result_obj__\{result_num}"));
                 
                 if(!info.come_fun.mNoResultType) {
                     if(!gComeC || !(strlen(result_type2->mClass->mName) > strlen("tuple") && memcmp(result_type2->mClass->mName, "tuple", strlen("tuple")) == 0)) {
@@ -83,12 +75,15 @@ class sReturnNode extends sNodeBase
                         }
                     }
                     
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type2, var_name));
-                    add_come_code(info, "%s = gComeFunResultObject = __result_obj__ = %s;\n", var_name, come_value.c_value);
+                    if(result_type2.mHeap) {
+                        add_come_code(info, s"__result_obj__\{result_num} = come_increment_ref_count(%s);\n", come_value.c_value);
+                    }
+                    else {
+                        add_come_code(info, s"__result_obj__\{result_num} = %s;\n", come_value.c_value);
+                    }
                 }
                 else {
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(result_type2, var_name));
-                    add_come_code(info, "%s = %s;\n", var_name, come_value.c_value);
+                    add_come_code(info, s"__result_obj__\{result_num} = %s;\n", come_value.c_value);
                 }
                 add_last_code_to_source(info);
         
@@ -115,7 +110,11 @@ class sReturnNode extends sNodeBase
                     add_come_code(info, "gComeFunResultObject = (void*)0;\n");
                 }
                 
-                add_come_code(info, "return __result%d__;\n", num_result_stack);
+                if(result_type2.mHeap) {
+                    free_object(result_type2, s"__result_obj__\{result_num}", false@no_decrement, true@no_free, info@info);
+                }
+                
+                add_come_code(info, s"return __result_obj__\{result_num};\n");
             }
         }
         else {

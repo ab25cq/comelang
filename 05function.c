@@ -39,12 +39,6 @@ class sLambdaNode extends sNodeBase
         sFun* come_fun = info.come_fun;
         info.come_fun = self.mFun;
         
-        sType*% result_type = new sType("void*");
-        
-        if(!gComeC && !self.mFun.mNoResultType) {
-            add_come_code_at_function_head(info, "%s=(void*)0;\n", make_define_var(result_type, "__result_obj__"));
-        }
-        
         int block_level = info->block_level;
         info->block_level = 0;
         
@@ -95,12 +89,6 @@ class sFunNode extends sNodeBase
         if(self.mFun.mBlock) {
             if(!gComeC && info.come_fun.mName === "main") {
                 add_come_code(info, "    come_heap_init(%d, %d, %d);\n", gComeMalloc, gComeDebug, gComeGC);
-            }
-            
-            sType*% result_type = new sType("void*");
-            
-            if(!gComeC && !self.mFun.mNoResultType) {
-                add_come_code_at_function_head(info, "%s=(void*)0;\n", make_define_var(result_type, "__result_obj__"));
             }
             
             int block_level = info->block_level;

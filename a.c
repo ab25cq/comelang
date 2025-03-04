@@ -1,23 +1,27 @@
 #include <comelang.h>
 
-class sMethodNode
+struct sData2
 {
-    new() {
-        list<string>*% self.methods = new list<string>();
-    }
-    
-    bool compile() {
-        self.methods.each {
-            puts(it);
-        }
-    }
+    string a;
 };
+
+struct sData
+{
+    sData2*% data;
+};
+
+string fun()
+{
+    var data = new sData { data:new sData2 { a: s"ABC" } };
+    
+    return data.data.a;
+}
 
 int main(int argc, char** argv)
 {
-    sMethodNode*% method = new sMethodNode();
+    puts(fun());
     
-    method.compile();
+    string a = "AAA";
     
     return 0;
 }
