@@ -30,7 +30,6 @@ int main(int argc, char** argv)
     
     initialize_modules();
     
-/*
     /// parse ///
     buffer*% command_buffer = info.command.to_buffer();
     info.p = command_buffer.buf;
@@ -78,7 +77,6 @@ int main(int argc, char** argv)
     }
     
     finalize_modules();
-*/
     
     return 0;
 }

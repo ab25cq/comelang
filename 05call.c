@@ -106,10 +106,6 @@ class sReturnNode extends sNodeBase
                     add_come_code(info, xsprintf("come_heap_final();\n"));
                 }
                 
-                if(!info.come_fun.mNoResultType) {
-                    add_come_code(info, "gComeFunResultObject = (void*)0;\n");
-                }
-                
                 if(result_type2.mHeap) {
                     free_object(result_type2, s"__result_obj__\{result_num}", false@no_decrement, true@no_free, info@info);
                 }

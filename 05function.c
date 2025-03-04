@@ -2932,7 +2932,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
                 
                 if(field_type->mHeap) {
                     char source2[1024];
-                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s != ((void*)0)) { if(self.%s == gComeFunResultObject) { gc_dec_nofree(self.%s); } else { delete borrow self.%s; }}\n", name, name, name,name);
+                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s != ((void*)0)) { delete borrow self.%s; }\n", name, name, name,name);
                     
                     source.append_str(source2);
                 }
