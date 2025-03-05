@@ -79,7 +79,7 @@ class sStaticAssert extends sNodeBase {
         CVALUE*% come_value3 = new CVALUE();
         
         come_value3.c_value = xsprintf("_Static_assert(%s, %s)", come_value.c_value, come_value2.c_value);
-        come_value3.type = new sType("void");
+        come_value3.type = new sType(s"void");
         come_value3.var = null;
         
         add_come_last_code(info, "%s", come_value2.c_value);

@@ -1,0 +1,107 @@
+01main.c:    sClass* klass = info.classes[string(name2)]??;
+01main.c:        info.classes.insert(string(name), klass2);
+01main.c:        self.mClass = info.classes[string(name)]??;
+02transpile.c:    info.classes.insert(string("int"), new sClass(s"int", number:true));
+02transpile.c:    info.classes.insert(string("short"), new sClass(s"short", number:true));
+02transpile.c:    info.classes.insert(string("long"), new sClass(s"long", number:true));
+02transpile.c:    info.classes.insert(string("char"), new sClass(s"char", number:true));
+02transpile.c:    info.classes.insert(string("bool"), new sClass(s"bool", number:true));
+02transpile.c:    info.classes.insert(string("_Bool"), new sClass(s"_Bool", number:true));
+02transpile.c:    info.classes.insert(string("void"), new sClass(s"void"));
+02transpile.c:    info.classes.insert(string("float"), new sClass(s"float", float_:true));
+02transpile.c:    info.classes.insert(string("double"), new sClass(s"double", float_:true));
+02transpile.c:    info.classes.insert(string("_Float16"), new sClass(s"_Float16", float_:true));
+02transpile.c:    info.classes.insert(string("lambda"), new sClass(s"lambda"));
+02transpile.c:    info.classes.insert(string("__uint128_t"), new sClass(s"__uint128_t", number:true));
+02transpile.c:    info.classes.insert(string("__int128"), new sClass(s"__int128", number:true));
+02transpile.c:        info.classes.insert(generics_type, new sClass(generics_type, generics:true, generics_num:i));
+02transpile.c:        info.classes.insert(generics_type, new sClass(generics_type, method_generics:true, method_generics_num:i));
+02transpile.c:        info.classes.insert(string("__builtin_va_list"), new sClass(s"__builtin_va_list", number:true));
+02transpile.c:        info.classes.insert(string("__builtin_va_list"), klass);
+02transpile.c:        info.classes = new map<string~, sClass~>();
+02transpile.c:            info.classes = new map<string~, sClass~>();
+04heap.c:                //klass = info.classes[klass->mName];
+04heap.c:                //klass = info.classes[klass->mName];
+05call.c:            method_block_type.mParamTypes[0].mClass = info.classes[class_name]??;
+05call.c:            info->current_stack_frame_struct = info.classes[class_name]??;
+05call.c:        info->current_stack_frame_struct = info.classes[class_name]??;
+05call.c:                sClass* klass = info.classes[fun_name.to_string()]??;
+05function.c:            klass = info.classes[klass->mName]??;
+05function.c:            klass = info.classes[klass->mName]??;
+05function.c:            klass = info.classes[klass->mName]??;
+05function.c:            klass = info.classes[klass->mName]??;
+05function.c:            klass = info.classes[klass->mName]??;
+05function.c:            klass = info.classes[klass->mName]??;
+05function.c:            klass = info.classes[klass->mName]??;
+05function.c:        klass = info.classes[klass->mName]??;
+05function.c:        klass = info.classes[klass->mName]??;
+05function.c:        klass = info.classes[klass->mName]??;
+05type.c:    sClass* klass = info.classes[buf]??;
+05type.c:                right_class = info.classes[right_class->mParentClassName]??;
+05type.c:            result_type->mClass = info.classes[result_type->mClass->mName];
+05type.c:            result_type->mClass = info.classes[result_type->mClass->mName];
+05type.c:            type->mClass = info.classes[type->mClass->mName];
+05type.c:                sClass* klass = info.classes[type_name]??;
+05type.c:                    info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
+05type.c:                sClass* klass = info.classes[type_name]??;
+05type.c:                    info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
+14struct.c:    if(!info.classes.find(new_name)) 
+14struct.c:        info.classes.insert(string(new_name), new sClass(name:new_name, struct_:true));
+14struct.c:        sClass* new_class = info.classes.at(string(new_name), null);
+14struct.c:        type->mClass = info.classes[string(new_name)]??;
+14struct.c:        if(info.classes.at(name, null) == null) {
+14struct.c:            info.classes.insert(name, clone klass);
+14struct.c:        else if(info.classes.at(name, null).mFields.length() == 0 && klass->mFields.length() > 0) {
+14struct.c:            sClass* klass2 = info.classes.at(name, null);
+14struct.c:    if(info.classes.at(type_name, null) == null) {
+14struct.c:        info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
+14struct.c:        klass = info.classes.at(type_name, null);
+14struct.c:        klass = info.classes.at(type_name, null);
+14struct.c:        parent_class = info.classes[parent_class_name]??;
+14struct.c:        info.classes.insert(string(klass->mName), clone klass);
+14struct.c:            if(info.classes.at(type_name, null) == null) {
+14struct.c:                info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
+14struct.c:                struct_class = info.classes.at(type_name, null);
+14struct.c:                struct_class = info.classes.at(type_name, null);
+14struct.c:            if(info.classes.at(type_name, null) == null) {
+14struct.c:                info.classes.insert(type_name, new sClass(name:string(type_name), struct_:true));
+14struct.c:                struct_class = info.classes.at(type_name, null);
+14struct.c:                struct_class = info.classes.at(type_name, null);
+14struct.c:                parent_class = info.classes[parent_class_name]??;
+14struct.c:            sClass* klass2 = info.classes.at(type_name, null);
+14struct.c:                info.classes.insert(string(struct_class->mName), clone struct_class);
+14struct.c:            parent_class = info.classes[parent_class_name]??;
+14struct.c:                parent_class2 = info.classes[string(parent_class->mParentClassName)]??;
+14struct.c:        if(info.classes.at(string(type_name), null) == null) {
+14struct.c:            struct_class = info.classes.at(string(type_name), null);
+14struct.c:        if(info.classes.at(type_name, null) == null) {
+14struct.c:            info.classes.insert(type_name, clone struct_class);
+14struct.c:        else if(info.classes.at(type_name, null).mFields.length() == 0 && struct_class->mFields.length() > 0) {
+14struct.c:            sClass* klass2 = info.classes.at(type_name, null);
+14struct.c:            info.classes.insert(type_name, clone klass2);
+15union.c:    if(info.classes.at(type_name, null) == null) {
+15union.c:        info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
+15union.c:        klass = info.classes.at(type_name, null);
+15union.c:        klass = info.classes.at(type_name, null);
+15union.c:        if(info.classes.at(type_name, null) == null) {
+15union.c:            info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
+15union.c:            klass = info.classes.at(type_name, null);
+15union.c:            klass = info.classes.at(type_name, null);
+16enum.c:    if(info.classes.at(type_name, null) == null) {
+16enum.c:        info.classes.insert(type_name, klass);
+16enum.c:        klass = info.classes.at(type_name, null);
+16enum.c:            if(type_name == null || info.classes.at(type_name, null) == null) {
+16enum.c:            info.classes.insert(type_name, new sClass(name:type_name, enum_:true));
+17typedef.c:            info.classes.insert(string("__darwin_va_list"), new sClass(s"__darwin_va_list", number:true));
+18field.c:        sClass*% klass = info.classes[left_type2->mClass->mName];
+18field.c:        klass = info.classes[string(klass->mName)]??;
+18field.c:        klass = info.classes[string(klass->mName)]??;
+20method.c:    method_block_type.mParamTypes[0].mClass = info.classes[class_name]??;
+20method.c:    info->current_stack_frame_struct = info.classes[class_name]??;
+20method.c:                while(info.classes[klass->mParentClassName]??) {
+20method.c:                    klass = info.classes[klass->mParentClassName]??;
+20method.c:                                while(info.classes[klass->mParentClassName]??) {
+20method.c:                                    klass = info.classes[klass->mParentClassName]??;
+23interface.c:            info.classes.insert(string(name), klass);
+23interface.c:        if(info.classes.at(type_name, null) == null) {
+23interface.c:            klass = info.classes.at(type_name, null);

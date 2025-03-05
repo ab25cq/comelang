@@ -19,7 +19,7 @@ class sStrNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", self.value);
-        come_value.type = new sType("char*");
+        come_value.type = new sType(s"char*");
         //come_value.type.mConstant = true;
         come_value.var = null;
         
@@ -55,10 +55,10 @@ class sBufferNode extends sNodeBase
         
         buffer*% buf = new buffer();
         
-        sType*% type2 = new sType("buffer");
+        sType*% type2 = new sType(s"buffer");
         type2->mPointerNum++;
         
-        sType*% any_type = new sType("buffer");
+        sType*% any_type = new sType(s"buffer");
         any_type->mPointerNum = 1;
         any_type->mHeap = true;
         
@@ -66,7 +66,7 @@ class sBufferNode extends sNodeBase
         
         buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\", %s, %s, %s, %s), \"%s\", %ld)", info->sname, info->sline, finalizer_name, cloner_name, get_hash_key_name, equaler_name, value.to_string(), size);
         
-        sType*% type2 = new sType("buffer*");
+        sType*% type2 = new sType(s"buffer*");
         type2->mHeap = true;
         
         come_value.c_value = buf.to_string();
@@ -131,7 +131,7 @@ class sSStringNode extends sNodeBase
         
         buf.append_str(")");
         
-        sType*% type2 = new sType("char*");
+        sType*% type2 = new sType(s"char*");
         type2->mHeap = true;
         
         come_value.c_value = buf.to_string();
@@ -167,7 +167,7 @@ class sCharNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%d", self.value);
-        come_value.type = new sType("char");
+        come_value.type = new sType(s"char");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -203,7 +203,7 @@ class sWCharNode extends sNodeBase
         else {
             come_value.c_value = xsprintf("L'%lc'", self.value);
         }
-        come_value.type = new sType("int");
+        come_value.type = new sType(s"int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -233,7 +233,7 @@ class sWStringNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("L\"%ls\"", self.value);
-        come_value.type = new sType("int*");
+        come_value.type = new sType(s"int*");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -379,7 +379,7 @@ class sListNode extends sNodeBase
         
         //add_come_code(info, "%s", source.to_string());
         
-        sType*% list_type = new sType("list");
+        sType*% list_type = new sType(s"list");
         list_type->mGenericsTypes.push_back((clone list_element_type));
         
         sType*% obj_type = clone list_type;
@@ -996,7 +996,7 @@ class sNoneNode extends sNodeBase
             tuple_types.push_back(clone come_value.type);
             
             if(i == 1) {
-                sType*% string_type = new sType("char*");
+                sType*% string_type = new sType(s"char*");
                 string_type->mHeap = true;
                 check_assign_type(s"invalid none type", string_type, come_value.type, come_value).rescue {
                     return true;
@@ -1293,7 +1293,7 @@ class sMapNode extends sNodeBase
             }
         }
         
-        sType*% map_type = new sType("map");
+        sType*% map_type = new sType(s"map");
         map_type->mGenericsTypes.push_back((clone map_key_type));
         map_type->mGenericsTypes.push_back((clone map_element_type));
         

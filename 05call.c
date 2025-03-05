@@ -246,7 +246,7 @@ class sInlineAssembler extends sNodeBase
         }
         
         come_value.c_value = "__asm " + buf.to_string();
-        come_value.type = new sType("void");
+        come_value.type = new sType(s"void");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -279,7 +279,7 @@ class sLineNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%d", info->sline);
-        come_value.type = new sType("int");
+        come_value.type = new sType(s"int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -307,7 +307,7 @@ class sSNameNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", info->sname);
-        come_value.type = new sType("char*");
+        come_value.type = new sType(s"char*");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -335,7 +335,7 @@ class sFuncNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", info->come_fun->mName);
-        come_value.type = new sType("char*");
+        come_value.type = new sType(s"char*");
         //come_value.type.mConstant = true;
         come_value.var = null;
         
@@ -392,7 +392,7 @@ class sCallerFuncNode extends sNodeBase
         else {
             come_value.c_value = xsprintf("\"\"");
         }
-        come_value.type = new sType("char*");
+        come_value.type = new sType(s"char*");
         //come_value.type.mConstant = true;
         come_value.var = null;
         
@@ -416,7 +416,7 @@ class sCallerLineNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("%d", info->caller_line);
-        come_value.type = new sType("int");
+        come_value.type = new sType(s"int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -444,7 +444,7 @@ class sCallerSNameNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("\"%s\"", info->caller_sname);
-        come_value.type = new sType("char*");
+        come_value.type = new sType(s"char*");
         come_value.var = null;
         
         info.stack.push_back(come_value);
@@ -742,66 +742,66 @@ class sFunCallNode extends sNodeBase
             come_value.c_value = buf.to_string();
             
             if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__builtin_ffs") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__builtin_ffsl") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__builtin_ffsll") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__builtin_bswap16") {
-                come_value.type = new sType("short");
+                come_value.type = new sType(s"short");
             }
             else if(fun_name === "__builtin_bswap32") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__builtin_bswap64") {
-                come_value.type = new sType("long");
+                come_value.type = new sType(s"long");
             }
             else if(fun_name === "__builtin_constant_p") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__builtin_expect") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__builtin___memset_chk") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin_object_size") {
-                come_value.type = new sType("long");
+                come_value.type = new sType(s"long");
             }
             else if(fun_name === "__builtin___memcpy_chk") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin___strncpy_chk") {
-                come_value.type = new sType("char");
+                come_value.type = new sType(s"char");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin___strncat_chk") {
-                come_value.type = new sType("char");
+                come_value.type = new sType(s"char");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin_strrchr") {
-                come_value.type = new sType("char");
+                come_value.type = new sType(s"char");
                 come_value.type.mPointerNum = 1;
             }
             else if(fun_name === "__builtin___vsnprintf_chk") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__builtin_clz") {
-                come_value.type = new sType("int");
+                come_value.type = new sType(s"int");
             }
             else if(fun_name === "__c11_atomic_thread_fence") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__c11_atomic_signal_fence") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__c11_atomic_exchange") {
                 come_value.type = clone come_params[1].type;
@@ -813,7 +813,7 @@ class sFunCallNode extends sNodeBase
                 come_value.type = clone come_params[2].type;
             }
             else if(fun_name === "__c11_atomic_store") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__c11_atomic_load") {
                 come_value.type = clone come_params[0].type;
@@ -835,28 +835,28 @@ class sFunCallNode extends sNodeBase
                 come_value.type = clone come_params[1].type;
             }
             else if(fun_name === "__dsb") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__isb") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__dmb") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__builtin_arm_cdp") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__builtin_arm_ldc") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__builtin_arm_stc") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__builtin_arm_stcl") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             else if(fun_name === "__builtin_arm_ldcl") {
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
             }
             
             come_value.var = null;
@@ -1607,7 +1607,7 @@ class sComeJoinNode extends sNodeBase
         
         CVALUE*% come_value = new CVALUE();
         come_value.c_value = buf.to_string();
-        come_value.type = new sType("void", info);
+        come_value.type = new sType(s"void", info);
         come_value.var = null;
         
         add_come_last_code(info, "%s", come_value.c_value);
@@ -2505,7 +2505,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 sClass* klass = info.classes[fun_name.to_string()]??;
                 
                 if(klass) {
-                    type = new sType(buf);
+                    type = new sType(string(buf));
                 }
                 else {
                     err_msg(info, "null type(%s)", buf);

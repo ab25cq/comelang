@@ -45,7 +45,7 @@ void sVarTable*::finalize(sVarTable* self)
     delete self.mVars;
 }
 
-sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* info=info)
+sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* info=info)
 {
     int pointer_num = 0;
     char* p = name;
@@ -158,7 +158,7 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
     self.mUniq = uniq_;
     self.mGenerate = generate_;
     
-    self.mLambdaType = new sType("lambda");
+    self.mLambdaType = new sType(s"lambda");
     
     foreach(it, param_types) {
         self.mLambdaType.mParamTypes.push_back(clone it);

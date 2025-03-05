@@ -850,7 +850,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             struct_class = new sClass(name:type_name, struct_:true);
         }
         else {
-            struct_class = clone info.classes.at(string(type_name), null);
+            struct_class = info.classes.at(string(type_name), null);
         }
         
         struct_class->mDynamic = dynamic_;

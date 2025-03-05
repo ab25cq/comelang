@@ -216,7 +216,7 @@ class sNullNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("((void*)0)");
-        come_value.type = new sType("void*");
+        come_value.type = new sType(s"void*");
         come_value.var = null;
         
         add_come_last_code(info, "%s", come_value.c_value);
@@ -249,7 +249,7 @@ class sNilNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = xsprintf("((void*)0)");
-        come_value.type = new sType("void*");
+        come_value.type = new sType(s"void*");
         come_value.type->mNullValue = true;
         come_value.var = null;
         
@@ -382,7 +382,7 @@ class sSubNode extends sNodeBase
         if(!calling_fun) {
             sType*% result_type = clone left_value.type;
             if(left_value.type->mPointerNum > 0 && right_value.type->mPointerNum > 0) {
-                result_type = new sType("long");
+                result_type = new sType(s"long");
             }
             
             CVALUE*% come_value = new CVALUE();

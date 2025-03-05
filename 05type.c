@@ -2036,7 +2036,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 pointer_num++;
             }
             
-            type = new sType(type_name);
+            type = new sType(string(type_name));
             
             type->mPointerNum = pointer_num;
         }
@@ -2054,7 +2054,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
             }
             
-            type = new sType(type_name);
+            type = new sType(string(type_name));
         }
         else if(union_) {
             if(type_name === "") {
@@ -2080,7 +2080,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 pointer_num++;
             }
             
-            type = new sType(type_name);
+            type = new sType(string(type_name));
             
             type->mPointerNum = pointer_num;
         }
@@ -2166,7 +2166,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
         }
         else {
-            result_type = new sType(type_name);
+            result_type = new sType(string(type_name));
         }
         
         result_type->mAtomic = result_type->mAtomic || atomic_;
@@ -2196,7 +2196,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         var param_types, param_names, param_default_parametors, var_args = parse_params(info);
         
-        type = new sType("lambda");
+        type = new sType(s"lambda");
         
         type->mResultType = result_type;
         type->mParamTypes = param_types;
@@ -2241,7 +2241,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
         }
         else {
-            result_type = new sType(type_name);
+            result_type = new sType(string(type_name));
         }
         
         result_type->mConstant = result_type->mConstant || constant;
@@ -2302,7 +2302,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         var param_types, param_names, param_default_parametors, var_args = parse_params(info);
         
-        type = new sType("lambda");
+        type = new sType(s"lambda");
         
         type->mResultType = clone result_type;
         type->mParamTypes = param_types;
@@ -2494,7 +2494,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 return ((sType*%)null, (string)null, false);
             }
             
-            type = new sType(type_name);
+            type = new sType(string(type_name));
             
             while(true) {
                 var generics_type, var_name, err = parse_type(parse_multiple_type:false);
@@ -2564,18 +2564,18 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
-                    info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
+                    info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
                 }
             }
             if(union_) {
                 sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
-                    info.classes.insert(type_name, new sClass(name:type_name, union_:true));
+                    info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
                 }
             }
             
-            type = new sType(type_name);
+            type = new sType(string(type_name));
             
             type->mConstant = type->mConstant || constant;
             type->mAtomic = type->mAtomic || atomic_;
@@ -2915,7 +2915,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     
     if(type->mChannel) {
         sType*% type_before = clone type;
-        type = new sType("int");
+        type = new sType(s"int");
         type->mArrayNum = [ create_int_node(2@value, info) ];
         type->mChannelType = type_before;
         type->mChannel = true;
@@ -2924,22 +2924,22 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         sType*% type_before = clone type;
         type_before.mHeap = true;
         type_before.mPointerNum = 1;
-        type = new sType("void");
+        type = new sType(s"void");
         type->mHeap = true;
         type->mPointerNum = 1;
         type->mAnyOriginalType = type_before;
         type->mAnyClass = true;
     }
     else if(type->mException) {
-        sType*% type2 = new sType("tuple2");
-        type2->mGenericsTypes[0] = new sType("generics_type0");
-        type2->mGenericsTypes[1] = new sType("generics_type1");
+        sType*% type2 = new sType(s"tuple2");
+        type2->mGenericsTypes[0] = new sType(s"generics_type0");
+        type2->mGenericsTypes[1] = new sType(s"generics_type1");
         type2->mPointerNum = 1;
         type2->mHeap = true;
         
-        sType*% type3 = new sType("tuple2");
+        sType*% type3 = new sType(s"tuple2");
         type3->mGenericsTypes[0] = type;
-        type3->mGenericsTypes[1] = new sType("char*");
+        type3->mGenericsTypes[1] = new sType(s"char*");
         type3->mGenericsTypes[1].mHeap = true;
         
         sType*% type4 = solve_generics(type2,  type3, info);

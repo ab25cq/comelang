@@ -545,7 +545,7 @@ bool sNodeBase*::terminated(sNodeBase* self);
 int transpile(sInfo* info) version 2;
 bool output_source_file(sInfo* info) version 2;
 sModule*% sModule*::initialize(sModule*% self);
-sType*% sType*::initialize(sType*% self, char* name, bool heap=false, sInfo* info=info);
+sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* info=info);
 sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent);
 void sVarTable*::finalize(sVarTable* self);
 sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, sInfo* info=info);

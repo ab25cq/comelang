@@ -367,7 +367,7 @@ class sStoreNode extends sNodeBase
                 
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
                 come_value.type.mPointerNum = 1;
                 come_value.var = var_;
                 
@@ -602,7 +602,7 @@ class sStoreNode extends sNodeBase
             else if(left_type->mChannel && new_channel) {
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
-                come_value.type = new sType("void");
+                come_value.type = new sType(s"void");
                 come_value.type.mPointerNum = 1;
                 come_value.var = var_;
                 
@@ -719,7 +719,7 @@ class sWriteChannelNode extends sNodeBase
         
         come_value2.c_value = xsprintf("if(write(%s[1], __channel_buf%d, sizeof(%s)) < 0) { puts(\"channel write error\"); exit(2); }", come_value.c_value, var_num, make_type_name_string(channel_type));
         
-        come_value2.type = new sType("void");
+        come_value2.type = new sType(s"void");
         come_value2.type->mPointerNum = 1;
         come_value2.var = null;
         
@@ -1154,7 +1154,7 @@ class sStructInitializer extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         
         come_value.c_value = buf.to_string();
-        come_value.type = new sType("void*");
+        come_value.type = new sType(s"void*");
         come_value.var = null;
         
         info.stack.push_back(come_value);

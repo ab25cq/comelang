@@ -73,7 +73,7 @@ class sEnumNode extends sNodeBase
                     c_value = xsprintf("(%d)", n);
                 }
                 
-                add_variable_to_global_table_with_int_value(name, new sType("int"), c_value, info);
+                add_variable_to_global_table_with_int_value(name, new sType(s"int"), c_value, info);
             }
             else {
                 node_compile(value).elif {
@@ -85,7 +85,7 @@ class sEnumNode extends sNodeBase
                 
                 string c_value = xsprintf("(%s)", right_value.c_value);
                 
-                add_variable_to_global_table_with_int_value(name, new sType("int"), c_value, info);
+                add_variable_to_global_table_with_int_value(name, new sType(s"int"), c_value, info);
                 
                 buf.append_format("%s=(%s)", name, right_value.c_value);
                 
@@ -130,8 +130,8 @@ sNode*% parse_enum(string type_name, sInfo* info)
 {
     sClass*% klass;
     if(info.classes.at(type_name, null) == null) {
-        klass = new sClass(name:type_name, enum_:true);
-        info.classes.insert(type_name, klass);
+        klass = new sClass(name:string(type_name), enum_:true);
+        info.classes.insert(string(type_name), klass);
     }
     else {
         klass = info.classes.at(type_name, null);
@@ -238,7 +238,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 96
             
             type_name = parse_word();
             
-            info.classes.insert(type_name, new sClass(name:type_name, enum_:true));
+            info.classes.insert(string(type_name), new sClass(name:string(type_name), enum_:true));
             
             parse_struct_attribute();
             if(*info->p == ':') {
