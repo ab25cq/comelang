@@ -824,58 +824,6 @@ uniq void come_print_heap_info(void* mem)
     }
 }
 
-uniq char* come_get_sname(void* mem)
-{
-    if(gComeDebugLib) {
-        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
-        
-        if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            return NULL;
-            /*
-            printf("invalid heap object(%p)(3)\n", it);
-            exit(2);
-            */
-        }
-        
-        return it->sname;
-    }
-    else {
-        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
-        
-        if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            return NULL;
-        }
-        
-        return it->sname;
-    }
-}
-
-uniq int come_get_sline(void* mem)
-{
-    if(gComeDebugLib) {
-        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
-        
-        if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            return 0;
-            /*
-            printf("invalid heap object(%p)(3)\n", it);
-            exit(2);
-            */
-        }
-        
-        return it->sline;
-    }
-    else {
-        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
-        
-        if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            return 0;
-        }
-        
-        return it->sline;
-    }
-}
-
 uniq void* come_get_cloner(void* mem)
 {
     if(gComeDebugLib) {
