@@ -16,6 +16,9 @@ void std_move(sType* left_type, sType* right_type, CVALUE* right_value, sInfo* i
     }
     if(right_value.c_value_without_right_value_objects) {
         right_value.c_value = right_value.c_value_without_right_value_objects;
+        if(gComeDebug) {
+            right_value.c_value = append_stackframe(right_value.c_value, right_value.type, info);
+        }
     }
     right_value.c_value = increment_ref_count_object(right_value.type, right_value.c_value, info);
 }

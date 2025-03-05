@@ -27,7 +27,7 @@ class sTypedefNode extends sNodeBase
         string type_name = string(self.mTypeName);
         
         if(type_name === "__darwin_va_list") {
-            info.classes.insert(string("__darwin_va_list"), new sClass("__darwin_va_list", number:true));
+            info.classes.insert(string("__darwin_va_list"), new sClass(s"__darwin_va_list", number:true));
             
             sType*% type = new sType("__darwin_va_list");
             type->mOriginalTypeName = string("__darwin_va_list");

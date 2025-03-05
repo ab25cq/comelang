@@ -555,16 +555,21 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         
         come_push_stackframe(sname, sline, 0);
 
-        
         if(gNumComeStackFrame < COME_STACKFRAME_MAX) {
-            memcpy(it.sname, gComeStackFrameSName, sizeof(char*)*gNumComeStackFrame);
-            memcpy(it.sline, gComeStackFrameSLine, sizeof(int)*gNumComeStackFrame);
-            memcpy(it.id, gComeStackFrameID, sizeof(int)*gNumComeStackFrame);
+            int i;
+            for(i=0; i<gNumComeStackFrame; i++) {
+                it.sname[i] = gComeStackFrameSName[i];
+                it.sline[i] = gComeStackFrameSLine[i];
+                it.id[i] = gComeStackFrameID[i];
+            }
         }
         else {
-            memcpy(it.sname, gComeStackFrameSName + gNumComeStackFrame - COME_STACKFRAME_MAX -1, sizeof(char*)*COME_STACKFRAME_MAX);
-            memcpy(it.sline, gComeStackFrameSLine + gNumComeStackFrame - COME_STACKFRAME_MAX -1, sizeof(int)*COME_STACKFRAME_MAX);
-            memcpy(it.id, gComeStackFrameID + gNumComeStackFrame - COME_STACKFRAME_MAX -1, sizeof(int)*COME_STACKFRAME_MAX);
+            int i;
+            for(i=0; i<COME_STACKFRAME_MAX; i++) {
+                it.sname[i] = gComeStackFrameSName[gNumComeStackFrame -1 - i];
+                it.sline[i] = gComeStackFrameSLine[gNumComeStackFrame -1 - i];
+                it.id[i] = gComeStackFrameID[gNumComeStackFrame -1 - i];
+            }
         }
         
         come_pop_stackframe();
@@ -786,6 +791,88 @@ uniq void* come_get_finalizer(void* mem)
         }
         
         return it->finalizer_fun;
+    }
+}
+
+uniq void come_print_heap_info(void* mem)
+{
+    if(gComeDebugLib) {
+        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return;
+        }
+        
+        printf("%p ", mem);
+        if(it->class_name) {
+            printf("(%s): ", it->class_name);
+        }
+        for(int i=0; i<COME_STACKFRAME_MAX; i++) {
+            if(it->sname[i]) {
+                printf("%s %d #%d, ", it->sname[i], it->sline[i], it->id[i]);
+            }
+        }
+        puts("");
+    }
+    else {
+        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return;
+        }
+        printf("%p (%s) %s %d\n", mem, it->class_name, it->sname , it->sline);
+    }
+}
+
+uniq char* come_get_sname(void* mem)
+{
+    if(gComeDebugLib) {
+        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+            /*
+            printf("invalid heap object(%p)(3)\n", it);
+            exit(2);
+            */
+        }
+        
+        return it->sname;
+    }
+    else {
+        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return NULL;
+        }
+        
+        return it->sname;
+    }
+}
+
+uniq int come_get_sline(void* mem)
+{
+    if(gComeDebugLib) {
+        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return 0;
+            /*
+            printf("invalid heap object(%p)(3)\n", it);
+            exit(2);
+            */
+        }
+        
+        return it->sline;
+    }
+    else {
+        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return 0;
+        }
+        
+        return it->sline;
     }
 }
 
@@ -1035,6 +1122,7 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
         
         size_t count = *ref_count;
         if(!no_free && (count <= 0 || force_delete_)) {
+    
             if(mem) {
                 void* fun2 = come_get_finalizer(mem);
                 if(fun) {

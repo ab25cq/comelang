@@ -662,7 +662,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         else {
             sClass* struct_class;
             if(info.classes.at(type_name, null) == null) {
-                info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
+                info.classes.insert(type_name, new sClass(name:string(type_name), struct_:true));
                 
                 sType*% type = new sType(type_name);
                 sType* override_ = info.types.at(type_name, null);

@@ -613,19 +613,19 @@ bool install_project(int argc, char** argv, char* prefix="/usr/local")
 
 static void init_classes(sInfo* info)
 {
-    info.classes.insert(string("int"), new sClass("int", number:true));
-    info.classes.insert(string("short"), new sClass("short", number:true));
-    info.classes.insert(string("long"), new sClass("long", number:true));
-    info.classes.insert(string("char"), new sClass("char", number:true));
-    info.classes.insert(string("bool"), new sClass("bool", number:true));
-    info.classes.insert(string("_Bool"), new sClass("_Bool", number:true));
-    info.classes.insert(string("void"), new sClass("void"));
-    info.classes.insert(string("float"), new sClass("float", float_:true));
-    info.classes.insert(string("double"), new sClass("double", float_:true));
-    info.classes.insert(string("_Float16"), new sClass("_Float16", float_:true));
-    info.classes.insert(string("lambda"), new sClass("lambda"));
-    info.classes.insert(string("__uint128_t"), new sClass("__uint128_t", number:true));
-    info.classes.insert(string("__int128"), new sClass("__int128", number:true));
+    info.classes.insert(string("int"), new sClass(s"int", number:true));
+    info.classes.insert(string("short"), new sClass(s"short", number:true));
+    info.classes.insert(string("long"), new sClass(s"long", number:true));
+    info.classes.insert(string("char"), new sClass(s"char", number:true));
+    info.classes.insert(string("bool"), new sClass(s"bool", number:true));
+    info.classes.insert(string("_Bool"), new sClass(s"_Bool", number:true));
+    info.classes.insert(string("void"), new sClass(s"void"));
+    info.classes.insert(string("float"), new sClass(s"float", float_:true));
+    info.classes.insert(string("double"), new sClass(s"double", float_:true));
+    info.classes.insert(string("_Float16"), new sClass(s"_Float16", float_:true));
+    info.classes.insert(string("lambda"), new sClass(s"lambda"));
+    info.classes.insert(string("__uint128_t"), new sClass(s"__uint128_t", number:true));
+    info.classes.insert(string("__int128"), new sClass(s"__int128", number:true));
     for(int i=0; i<GENERICS_TYPE_MAX; i++) {
         string generics_type = xsprintf("generics_type%d", i);
         info.classes.insert(generics_type, new sClass(generics_type, generics:true, generics_num:i));
@@ -637,7 +637,7 @@ static void init_classes(sInfo* info)
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
     if(is_mac == 0) { // Mac
-        info.classes.insert(string("__builtin_va_list"), new sClass("__builtin_va_list", number:true));
+        info.classes.insert(string("__builtin_va_list"), new sClass(s"__builtin_va_list", number:true));
         
         string type_name = string("__builtin_va_list");
         
@@ -647,7 +647,7 @@ static void init_classes(sInfo* info)
         info.types.insert(string(type_name), type);
     }
     else { // Other
-        sClass*% klass = new sClass("__builtin_va_list", struct_:true);
+        sClass*% klass = new sClass(s"__builtin_va_list", struct_:true);
         
         klass.mFields.push_back((string("v1"), new sType("char*")));
         klass.mFields.push_back((string("v2"), new sType("char*")));

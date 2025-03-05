@@ -1,27 +1,27 @@
 #include <comelang.h>
 
-struct sData2
-{
-    string a;
-};
+struct sData;
 
-struct sData
+void fun(sData* a)
 {
-    sData2*% data;
-};
-
-string fun()
-{
-    var data = new sData { data:new sData2 { a: s"ABC" } };
-    
-    return data.data.a;
 }
+
+class sData
+{
+    new() {
+        string self.str = s"ABC";
+    }
+    
+    void show() {
+        puts(self.str);
+    }
+};
 
 int main(int argc, char** argv)
 {
-    puts(fun());
+    var data = new sData();
     
-    string a = "AAA";
+    data.show();
     
     return 0;
 }

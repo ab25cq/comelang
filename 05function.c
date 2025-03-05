@@ -2128,7 +2128,9 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                     info.funcs.insert(string(fun_name), fun);
                 }
                 
-                return new sFunNode(fun, info) implements sNode;
+                sNode*% result = new sFunNode(fun, info) implements sNode;
+                
+                return result;
             }
             else {
                 err_msg(info, "require (");
@@ -2727,7 +2729,8 @@ sNode*% parse_function(sInfo* info)
             }
         }
     
-        return new sFunNode(fun, info) implements sNode;
+        sNode*% result = new sFunNode(fun, info) implements sNode;
+        return result;
     }
     else if(xisalpha(*info->p) || *info->p == '_' || *info->p == ';') {
         if(version > 0) {
@@ -2771,7 +2774,9 @@ sNode*% parse_function(sInfo* info)
                 }
             }
             
-            return new sFunNode(fun, info) implements sNode;
+    
+            sNode*% result = new sFunNode(fun, info) implements sNode;
+            return result;
         }
         else {
             var asm_fun, fun_attribute = parse_function_attribute();
@@ -2815,7 +2820,8 @@ sNode*% parse_function(sInfo* info)
                 }
             }
             
-            return new sFunNode(fun, info) implements sNode;
+            sNode*% result = new sFunNode(fun, info) implements sNode;
+            return result;
         }
     }
     else {
