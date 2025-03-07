@@ -37,9 +37,9 @@ void output_struct(sClass* klass, sInfo* info)
         buf.append_format("} %s;\n", klass->mAttribute);
     }
             
-    if(info.struct_definition[string(name)]?? == null && !existance_generics) {
+    //if(info.struct_definition[string(name)]?? == null && !existance_generics) {
         info.struct_definition.insert(string(name), buf);
-    }
+    //}
 }
 
 void output_struct_come_header(sClass* klass, sInfo* info)
@@ -173,7 +173,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
 
 class sStructNode extends sNodeBase
 {
-    new(string name, sClass* klass, sInfo* info)
+    new(string name, sClass*% klass, sInfo* info)
     {
         self.super();
     
@@ -320,31 +320,23 @@ class sClassNode extends sNodeBase
 
 sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
 {
-    sClass* klass;
+    sClass*% klass;
     if(info.classes.at(type_name, null) == null) {
-        info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
-        sType*% type = new sType(type_name);
-        sType* override_ = info.types.at(type_name, null);
-        if(override_) {
-            if(override_->mTypedef) {
-                type->mTypedef = true;
-            }
-        }
-        info.types.insert(type_name, clone type);
-        
-        klass = info.classes.at(type_name, null);
+        klass = new sClass(name:string(type_name), struct_:true);
+        info.classes.insert(string(type_name), klass);
     }
     else {
         klass = info.classes.at(type_name, null);
-        sType*% type = new sType(type_name);
-        sType* override_ = info.types.at(type_name, null);
-        if(override_) {
-            if(override_->mTypedef) {
-                type->mTypedef = true;
-            }
-        }
-        info.types.insert(type_name, clone type);
     }
+    
+    sType*% type = new sType(type_name);
+    sType* override_ = info.types.at(type_name, null);
+    if(override_) {
+        if(override_->mTypedef) {
+            type->mTypedef = true;
+        }
+    }
+    info.types.insert(type_name, clone type);
     
     sClass* parent_class = null;
     if(parsecmp("extends")) {
@@ -646,38 +638,23 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             return new sNothingNode(info) implements sNode;
         }
         else {
-            sClass* struct_class;
+            sClass*% struct_class;
             if(info.classes.at(type_name, null) == null) {
-                info.classes.insert(type_name, new sClass(name:string(type_name), struct_:true));
-                
-                sType*% type = new sType(type_name);
-                sType* override_ = info.types.at(type_name, null);
-                if(override_) {
-                    if(override_->mTypedef) {
-                        type->mTypedef = true;
-                    }
-                }
-                info.types.insert(type_name, type);
-                
-                struct_class = info.classes.at(type_name, null);
+                struct_class = new sClass(name:string(type_name), struct_:true);
+                info.classes.insert(string(type_name), struct_class);
             }
             else {
-                sType*% type = new sType(type_name);
-                sType* override_ = info.types.at(type_name, null);
-                if(override_) {
-                    if(override_->mTypedef) {
-                        type->mTypedef = true;
-                    }
-                }
-                info.types.insert(type_name, type);
-                
                 struct_class = info.classes.at(type_name, null);
             }
             
-            if(struct_class == null) {
-                printf("%s is not found\n", type_name);
-                exit(1);
+            sType*% type = new sType(type_name);
+            sType* override_ = info.types.at(type_name, null);
+            if(override_) {
+                if(override_->mTypedef) {
+                    type->mTypedef = true;
+                }
             }
+            info.types.insert(type_name, type);
             
             sClass* parent_class = null;
             if(parsecmp("extends")) {
@@ -765,8 +742,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             info.generics_type_names.reset();
             
-            sClass* klass2 = info.classes.at(type_name, null);
-            
             char* source_tail = info.p;
             
             buffer*% header = new buffer();
@@ -774,11 +749,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             string id = string(type_name);
             add_come_code_at_come_struct_header(info, id, "%s;\n", header.to_string());
-            
-            if(parent_class) {
-                struct_class->mParentClassName = clone parent_class->mName;
-                info.classes.insert(string(struct_class->mName), clone struct_class);
-            }
             
             if(struct_attribute === "" && struct_attribute2 === "") {
             }
