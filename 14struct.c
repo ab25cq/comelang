@@ -130,7 +130,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
     
     if(!info.classes.find(new_name)) 
     {
-        sClass* generics_class = info.generics_classes[string(type.mClass.mName)]??;
+        sClass*% generics_class = info.generics_classes[string(type.mClass.mName)]??;
         
         if(generics_class == null) {
             err_msg(info, "generics_class(%s) is null", type.mClass.mName);
@@ -563,18 +563,14 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 }
             }
             
-            sClass*% generics_class;
             if(info.generics_classes.at(string(type_name), null) != null) {
-                err_msg(info, "redifined generics struct(%s)", type_name);
+                err_msg(info, "redefined generics struct(%s)", type_name);
                 exit(2);
             }
-            else {
-                generics_class = new sClass(name:type_name, struct_:true);
-            }
             
-            if(info.generics_classes.at(string(type_name), null) == null) {
-                info.generics_classes.insert(string(type_name), generics_class);
-            }
+            sClass*% generics_class = new sClass(name:type_name, struct_:true);
+            
+            info.generics_classes.insert(string(type_name), generics_class);
             
             expected_next_character('{') ;
             
@@ -630,7 +626,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                     info->p++;
                     skip_spaces_and_lf();
                 }
-                //expected_next_character(';') ;
                 
                 parse_sharp();
                 
