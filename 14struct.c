@@ -204,12 +204,11 @@ class sStructNode extends sNodeBase
 
 class sStructNobodyNode extends sNodeBase
 {
-    new(string name, sClass* klass, sInfo* info)
+    new(string name, sInfo* info)
     {
         self.super();
     
-        string self.mName = string(name);
-        sClass*% self.mClass = clone klass;
+        string self.mName = name;
     }
     
     bool terminated()
@@ -224,8 +223,7 @@ class sStructNobodyNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        string name = string(self.mName);
-        sClass* klass = self.mClass;
+        string name = self.mName;
         
         info.previous_struct_definition.insert(string(name), xsprintf("struct %s;\n", name).to_buffer());
     
@@ -503,30 +501,23 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             info->p++;
             skip_spaces_and_lf();
             
-            sClass* struct_class;
+            sClass*% struct_class;
             if(info.classes.at(type_name, null) == null) {
+                struct_class = new sClass(name:string(type_name), struct_:true);
+                
                 info.classes.insert(type_name, new sClass(name:type_name, struct_:true));
-                struct_class = info.classes.at(type_name, null);
-                sType*% type = new sType(type_name);
-                sType* override_ = info.types.at(type_name, null);
-                if(override_) {
-                    if(override_->mTypedef) {
-                        type->mTypedef = true;
-                    }
-                }
-                info.types.insert(type_name, type);
             }
             else {
                 struct_class = info.classes.at(type_name, null);
-                sType*% type = new sType(type_name);
-                sType* override_ = info.types.at(type_name, null);
-                if(override_) {
-                    if(override_->mTypedef) {
-                        type->mTypedef = true;
-                    }
-                }
-                info.types.insert(type_name, type);
             }
+            sType*% type = new sType(type_name);
+            sType* override_ = info.types.at(type_name, null);
+            if(override_) {
+                if(override_->mTypedef) {
+                    type->mTypedef = true;
+                }
+            }
+            info.types.insert(type_name, type);
             
             char* source_tail = info.p;
             
@@ -536,7 +527,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             string id = string(type_name) + ";";
             add_come_code_at_come_struct_header(info, id, "%s", header.to_string());
             
-            return new sStructNobodyNode(string(type_name), struct_class, info) implements sNode;
+            return new sStructNobodyNode(string(type_name), info) implements sNode;
         }
         else if(*info->p == '<') {
             info.generics_type_names.reset();
