@@ -37,9 +37,9 @@ void output_struct(sClass* klass, sInfo* info)
         buf.append_format("} %s;\n", klass->mAttribute);
     }
             
-    //if(info.struct_definition[string(name)]?? == null && !existance_generics) {
+    if(info.struct_definition[string(name)]?? == null && !existance_generics) {
         info.struct_definition.insert(string(name), buf);
-    //}
+    }
 }
 
 void output_struct_come_header(sClass* klass, sInfo* info)
@@ -173,7 +173,7 @@ bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
 
 class sStructNode extends sNodeBase
 {
-    new(string name, sClass*% klass, sInfo* info)
+    new(string name, sClass* klass, sInfo* info)
     {
         self.super();
     
@@ -327,6 +327,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
     }
     else {
         klass = info.classes.at(type_name, null);
+        klass.mFields.reset();
     }
     
     sType*% type = new sType(type_name);
@@ -645,6 +646,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             }
             else {
                 struct_class = info.classes.at(type_name, null);
+                struct_class.mFields.reset();
             }
             
             sType*% type = new sType(type_name);
