@@ -269,7 +269,7 @@ class sMatchNode extends sNodeBase
             assert(var_ != null);
         
             if(info->match_it_var == null) {
-                info->match_it_var = new list<sVar~>();
+                info->match_it_var = new list<sVar*%>();
             }
             info->match_it_var.add(clone var_);
         }
@@ -493,7 +493,7 @@ class sMultipleNode extends sNodeBase
     }
 };
 
-list<sRightValueObject~>*% gExceptionRightValueObjects = (void*)0;
+list<sRightValueObject*%>*% gExceptionRightValueObjects = (void*)0;
 
 class sSaveRightValueObjects extends sNodeBase
 {
@@ -515,7 +515,7 @@ class sSaveRightValueObjects extends sNodeBase
     bool compile(sInfo* info)
     {
         gExceptionRightValueObjects = info.right_value_objects;
-        info.right_value_objects = new list<sRightValueObject~>();
+        info.right_value_objects = new list<sRightValueObject*%>();
         
         return true;
     }

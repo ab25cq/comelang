@@ -25,15 +25,15 @@ sModule*% sModule*::initialize(sModule*% self)
     self.mSource = new buffer();
     self.mLastCode = null;
     self.mLastCode2 = null;
-    self.mHeader = new map<string~, string~>();
-    self.mHeaderStructs = new map<string~, string~>();
+    self.mHeader = new map<string, string>();
+    self.mHeaderStructs = new map<string, string>();
     
     return self;
 }
 
 sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent)
 {
-    self.mVars = new map<string~, sVar~>();
+    self.mVars = new map<string, sVar*%>();
     self.mGlobal = global;
     self.mParent = parent;
     
@@ -85,10 +85,10 @@ sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* in
     
     self.mNoSolvedGenericsType = null;
     self.mOriginalLoadVarType = null;
-    self.mGenericsTypes = new list<sType~>();
+    self.mGenericsTypes = new list<sType*%>();
     self.mArrayNum = new list<sNode*%>();
-    self.mParamTypes = new list<sType~>();
-    self.mParamNames = new list<string~>();
+    self.mParamTypes = new list<sType*%>();
+    self.mParamNames = new list<string>();
     self.mVarArgs = false;
     self.mResultType = null;
     self.mUnsigned = false;
@@ -128,7 +128,7 @@ sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool
     self.mGenericsNum = generics_num;
     self.mMethodGenericsNum = method_generics_num;
     
-    self.mFields = new list<tup(string, sType*%)~>();
+    self.mFields = new list<tup: string, sType*%>();
     
     return self;
 };
@@ -144,7 +144,7 @@ sClassModule*% sClassModule*::initialize(sClassModule*% self, char* name, string
     return self;
 };
 
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType~>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_, string attribute=s"", string fun_attribute=s"")
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_, string attribute=s"", string fun_attribute=s"")
 {
     self.mName = name;
     self.mResultType = result_type;

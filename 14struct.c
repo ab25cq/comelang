@@ -1052,7 +1052,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                     exit(1);
                 }
                 
-                info->module_params = new map<string~,string~>();
+                info->module_params = new map<string,string>();
                 
                 int i = 0;
                 foreach(it, module->mParams) {

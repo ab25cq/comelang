@@ -97,12 +97,12 @@ string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo*
     return (clone fun_name2, generics_fun);
 }
 
-string,sGenericsFun* make_method_generics_function(string fun_name, list<sType~>*% method_generics_types, sInfo* info)
+string,sGenericsFun* make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info)
 {
     static int num_method_generics = 0;
     string fun_name3 = xsprintf("%s_method_generics%d", fun_name, num_method_generics++);
     
-    list<sType~>*% method_generics_types_before = info.method_generics_types;
+    list<sType*%>*% method_generics_types_before = info.method_generics_types;
     info->method_generics_types= method_generics_types;
     
     sGenericsFun* generics_fun = info.generics_funcs.at(fun_name, null);
@@ -149,7 +149,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     sType*% result_type = clone method_block_type->mResultType;
     result_type->mStatic = false;
-    list<sType~>* param_types = method_block_type->mParamTypes;
+    list<sType*%>* param_types = method_block_type->mParamTypes;
     list<string>* param_names = method_block_type->mParamNames;
     
     buffer*% all_alhabet_sname = new buffer();
@@ -263,7 +263,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
 class sMethodCallNode extends sNodeBase
 {
     new(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline
-        , list<sType~>* method_generics_types, bool no_infference_method_generics, bool recursive, sInfo* info)
+        , list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, sInfo* info)
     {
         self.super();
         
@@ -272,7 +272,7 @@ class sMethodCallNode extends sNodeBase
         list<tup: string,sNode*%>*% self.params = clone params;
         buffer*% self.method_block = clone method_block;
         int self.method_block_sline = method_block_sline;
-        list<sType~>*% self.method_generics_types = clone method_generics_types;
+        list<sType*%>*% self.method_generics_types = clone method_generics_types;
         bool self.no_infference_method_generics = no_infference_method_generics;
         bool self.recursive = recursive;
         sFun* self.fun = null;
@@ -301,11 +301,11 @@ class sMethodCallNode extends sNodeBase
         buffer*% method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
         bool no_infference_method_generics = self.no_infference_method_generics;
-        list<sType~>*% method_generics_types = self.method_generics_types;
+        list<sType*%>*% method_generics_types = self.method_generics_types;
         bool recursive = self.recursive;
         
         
-        list<sType~>*% method_generics_types_before = null;
+        list<sType*%>*% method_generics_types_before = null;
         method_generics_types_before = info->method_generics_types;
         info->method_generics_types = clone self.method_generics_types;
         
@@ -740,7 +740,7 @@ class sMethodCallNode extends sNodeBase
             //sType*% result_type2 = solve_generics(result_type, obj_type2, info);
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
             
-            list<sType~>*% param_types = new list<sType~>();
+            list<sType*%>*% param_types = new list<sType*%>();
             foreach(it, fun.mParamTypes) {
                 if(it == null) {
                     param_types.push_back(clone it);
@@ -758,7 +758,7 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
-            list<sType~>*% type_checking_param_types = clone param_types; //new list<sType~>();
+            list<sType*%>*% type_checking_param_types = clone param_types; //new list<sType*%>();
             if(generics_fun) {
                 int n = 0;
                 foreach(it, generics_fun.mParamTypes) {
@@ -1199,7 +1199,7 @@ class sMethodCallNode extends sNodeBase
     }
 };
 
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType~>* method_generics_types, sInfo* info)
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info)
 {
     sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, info) implements sNode;
     
@@ -1241,7 +1241,7 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
         info->sline = sline;
     }
     
-    list<sType~>*% method_generics_types = new list<sType~>();
+    list<sType*%>*% method_generics_types = new list<sType*%>();
     if(parse_method_generics_type && *info->p == '<') {
         info->p++;
         skip_spaces_and_lf();

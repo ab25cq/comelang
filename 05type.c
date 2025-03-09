@@ -319,9 +319,9 @@ bool is_contained_generics_class(sType* type, sInfo* info)
     return false;
 }
 
-list<sType~>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false)
+list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false)
 {
-    var param_types = new list<sType~>();
+    var param_types = new list<sType*%>();
     var param_names = new list<string>();
     var param_default_parametors = new list<string>();
     bool var_args = false;
@@ -385,7 +385,7 @@ list<sType~>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, b
             
             if(!err) {
                 printf("%s %d: failed to function parametor\n", info->sname, info->sline);
-                return ((list<sType~>*)null, (list<string>*)null, (list<string>*)null, false);
+                return ((list<sType*%>*)null, (list<string>*)null, (list<string>*)null, false);
             }
             
             var param_type2 = solve_generics(param_type, info->generics_type, info);
@@ -2718,7 +2718,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         
         if(parse_multiple_type && *info->p == ',') {
-            list<sType~>*% types = new list<sType~>();
+            list<sType*%>*% types = new list<sType*%>();
             
             types.push_back(clone type);
             
