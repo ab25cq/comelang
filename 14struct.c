@@ -809,15 +809,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             }
         }
         
-        sClass*% struct_class;
-        if(info.classes.at(string(type_name), null) == null) {
-            struct_class = new sClass(name:type_name, struct_:true);
-        }
-        else {
-            //struct_class = info.classes.at(string(type_name), null);
-            struct_class = new sClass(name:type_name, struct_:true);
-            //struct
-        }
+        sClass*% struct_class = new sClass(name:type_name, struct_:true);
         
         if(parent_class) {
             struct_class->mParentClassName = clone parent_class->mName;
@@ -830,17 +822,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         
         if(info.classes.at(type_name, null) == null) {
             info.classes.insert(type_name, clone struct_class);
-            
         }
-        /*
-        else if(info.classes.at(type_name, null).mFields.length() == 0 && struct_class->mFields.length() > 0) {
-            sClass* klass2 = info.classes.at(type_name, null);
-            
-            foreach(it, struct_class.mFields) {
-                klass2.mFields.add(clone it);
-            }
-        }
-        */
         foreach(parent, parent_classes.reverse()) {
             foreach(it, parent.mFields) {
                 struct_class->mFields.add(clone it);
