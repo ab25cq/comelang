@@ -3679,6 +3679,16 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
             }
         }
         
+        string user_real_fun_name = create_method_name(type, false@no_pointer_name, "user_clone", info);
+        sFun* user_cloner = info->funcs[user_real_fun_name]??
+        
+        if(user_cloner) {
+            char source2[1024];
+            snprintf(source2, 1024, "if(self != ((void*)0)) { %s(result, self); }\n", user_real_fun_name);
+            
+            source.append_str(source2);
+        }
+        
         source.append_format("return result;");
         source.append_char('}');
         

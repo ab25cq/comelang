@@ -291,7 +291,7 @@ class sClassNode extends sNodeBase
             info.classes.insert(name, clone klass);
         }
         else if(info.classes.at(name, null).mFields.length() == 0 && klass->mFields.length() > 0) {
-            sClass* klass2 = info.classes.at(name, null);
+            sClass*% klass2 = info.classes.at(name, null);
             klass2.mFields = clone klass.mFields;
         }
         
@@ -768,7 +768,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             return new sStructNode(string(type_name), struct_class, info) implements sNode;
         }
     }
-    if(!gComeC && (dynamic_ && buf2 === "class") || buf === "class") {
+    else if(!gComeC && (dynamic_ && buf2 === "class") || buf === "class") {
         char* source_head = head;
         
         string type_name = parse_word();
@@ -811,15 +811,16 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             struct_class = info.classes.at(string(type_name), null);
         }
         
+        if(parent_class) {
+            struct_class->mParentClassName = clone parent_class->mName;
+        }
+        
         struct_class->mDynamic = dynamic_;
         
         sClass* defining_class = info.defining_class;
         info.defining_class = struct_class;
         
         if(info.classes.at(type_name, null) == null) {
-            if(parent_class) {
-                struct_class->mParentClassName = clone parent_class->mName;
-            }
             info.classes.insert(type_name, clone struct_class);
             
             foreach(parent, parent_classes.reverse()) {
@@ -830,11 +831,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         }
         else if(info.classes.at(type_name, null).mFields.length() == 0 && struct_class->mFields.length() > 0) {
             sClass* klass2 = info.classes.at(type_name, null);
-            
-            if(parent_class) {
-                klass2->mParentClassName = clone parent_class->mName;
-            }
-            info.classes.insert(type_name, clone klass2);
             
             foreach(parent, parent_classes.reverse()) {
                 foreach(it, parent.mFields) {

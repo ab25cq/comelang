@@ -248,13 +248,13 @@ class sStoreFieldNode extends sNodeBase
         sType* right_type = right_value.type;
         dec_stack_ptr(1, info);
         
-        sType* left_type = left_value.type;
+        sType*% left_type = left_value.type;
         
-        sType* left_type2 = left_type
+        sType*% left_type3 = left_type
         
 //        sType*% left_type2 = solve_generics(left_type, left_type, info);
         
-        sClass*% klass = info.classes[left_type2->mClass->mName];
+        sClass*% klass = info.classes[left_type3->mClass->mName];
         
         sType*% field_type = null;
         int index = 0;
