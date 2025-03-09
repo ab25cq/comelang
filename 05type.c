@@ -328,14 +328,14 @@ list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, 
     
     if(in_constructor_) {
         param_names.add(s"self");
-        sType*% type_ = clone info->impl_type;
+        sType*% type_ = clone info->class_type;
         type_->mHeap = true;
         param_types.add(type_);
         param_default_parametors.add(null);
     }
     else if(info.in_class) {
         param_names.add(s"self");
-        param_types.add(clone info->impl_type);
+        param_types.add(clone info->class_type);
         param_default_parametors.add(null);
     }
     

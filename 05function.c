@@ -121,7 +121,6 @@ sBlock*% sBlock*::initialize(sBlock*% self, sInfo* info)
 
 sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type, list<string>* generics_type_names, list<string>* method_generics_type_names, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool var_args, string block, sInfo* info, string generics_sname, int generics_sline)
 {
-    self.mImplType = clone impl_type;
     self.mGenericsTypeNames = clone generics_type_names;
     self.mMethodGenericsTypeNames = clone method_generics_type_names;
     
@@ -2416,7 +2415,7 @@ sNode*% parse_function(sInfo* info)
     
     if(info.in_class && memcmp(info.p, "new(", 4) == 0) {
         parse_word();
-        result_type = clone info.impl_type;
+        result_type = clone info.class_type;
         result_type.mHeap = true;
 //        result_type.mExtern = true;
         constructor_ = true;
@@ -2477,7 +2476,7 @@ sNode*% parse_function(sInfo* info)
     char*% base_fun_name = null;
     if(constructor_) {
         base_fun_name = string("initialize");
-        fun_name = create_method_name(info->impl_type, false@no_pointer_name, base_fun_name, info);
+        fun_name = create_method_name(info->class_type, false@no_pointer_name, base_fun_name, info);
     }
     else if(method_definition) {
         var obj_type, name, err = parse_type();
@@ -2497,6 +2496,11 @@ sNode*% parse_function(sInfo* info)
         base_fun_name = parse_word();
     
         fun_name = create_method_name(info->impl_type, false@no_pointer_name, base_fun_name, info);
+    }
+    else if(info->class_type) {
+        base_fun_name = parse_word();
+    
+        fun_name = create_method_name(info->class_type, false@no_pointer_name, base_fun_name, info);
     }
     else {
         fun_name = parse_word();
@@ -2597,11 +2601,11 @@ sNode*% parse_function(sInfo* info)
         
         if(constructor_) {
             if(param_types.length() == 1) {
-                string name = clone info.impl_type->mClass->mName;
+                string name = clone info.class_type->mClass->mName;
                 header.append_format("extern %s*%% %s*::initialize(%s*%% self);\n", name, name, name);
             }
             else {
-                string name = clone info.impl_type->mClass->mName;
+                string name = clone info.class_type->mClass->mName;
                 header.append_format("extern %s*%% %s*::initialize(%s*%% self, ", name, name, name);
                 
                 for(int i=1; i<param_types.length(); i++) {
@@ -2624,14 +2628,14 @@ sNode*% parse_function(sInfo* info)
                 header.append_str(");\n");
             }
         }
-        else if(info.in_class && info.impl_type) {
+        else if(info.in_class && info.class_type) {
             if(param_types.length() == 1) {
-                string impl_name = clone info.impl_type->mClass->mName;
+                string impl_name = clone info.class_type->mClass->mName;
                 string result_type_name = make_come_type_name_string_no_solved(result_type);
                 header.append_format("extern %s %s*::%s(%s* self);\n", result_type_name, impl_name, base_fun_name, impl_name);
             }
             else {
-                string impl_name = clone info.impl_type->mClass->mName;
+                string impl_name = clone info.class_type->mClass->mName;
                 string result_type_name = make_come_type_name_string_no_solved(result_type);
                 header.append_format("extern %s %s*::%s(%s* self, ", result_type_name, impl_name, base_fun_name, impl_name);
                 

@@ -62,6 +62,9 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93
             }
             parse_sharp(info);
             
+            sType*% impl_type = info->impl_type;
+            info->impl_type = null;
+            
             if(node != null) {
                 node_compile(node).elif {
                     err_msg(info, "compiling is faield(Y)");
@@ -69,6 +72,8 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 93
                 }
             }
             parse_sharp(info);
+            
+            info->impl_type = impl_type;
             
             skip_spaces_and_lf();
         }

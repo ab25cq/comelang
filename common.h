@@ -23,7 +23,7 @@ struct sInfo;
 struct sVar;
 struct sRightValueObject;
 
-dynamic struct sClass 
+struct sClass 
 {
     bool mStruct;
     bool mFloat;
@@ -68,7 +68,7 @@ int sNodeBase*::sline(sNodeBase* self, sInfo* info);
 string sNodeBase*::sname(sNodeBase* self, sInfo* info);
 int sNodeBase*::sline_real(sNodeBase* self, sInfo* info);
 
-dynamic struct sType
+struct sType
 {
     sClass* mClass;
     
@@ -157,7 +157,7 @@ struct CVALUE
 
 CVALUE*% CVALUE*::initialize(CVALUE*% self);
 
-dynamic struct sVar 
+struct sVar 
 {
     string mName;
     string mCValueName;
@@ -174,7 +174,7 @@ struct sVarTable;
 
 struct sBlock;
 
-dynamic struct sFun
+struct sFun
 {
     string mName;
     
@@ -204,7 +204,7 @@ dynamic struct sFun
     string mFunAttribute;
 };
 
-dynamic struct sGenericsFun
+struct sGenericsFun
 {
     sType*% mImplType;
     list<string>*% mGenericsTypeNames;
@@ -227,7 +227,7 @@ dynamic struct sGenericsFun
     int mGenericsSLine;
 };
 
-dynamic struct sModule
+struct sModule
 {
     buffer*% mSourceHead;
     buffer*% mSource;
@@ -240,7 +240,7 @@ dynamic struct sModule
 
 struct sVarTable;
 
-dynamic struct sVarTable 
+struct sVarTable 
 {
     map<string, sVar*%>*% mVars;
     bool mGlobal;
@@ -254,7 +254,7 @@ struct sBlock
     bool mOmitSemicolon;
 };
 
-dynamic struct sRightValueObject 
+struct sRightValueObject 
 {
     sType*% mType;
     string mVarName;
@@ -266,7 +266,7 @@ dynamic struct sRightValueObject
     bool mDecrementRefCount;
 };
 
-dynamic struct sClassModule
+struct sClassModule
 {
     string mName;
     string mText;
@@ -337,6 +337,7 @@ struct sInfo
     list<string>*% generics_type_names;
     list<string>*% method_generics_type_names;
     sType*% impl_type;
+    sType*% class_type;
     
     int current_stack_num;
     int num_method_block;

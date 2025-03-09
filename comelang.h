@@ -119,7 +119,7 @@ uniq void* wildcard;
 //////////////////////////////
 /// exception
 //////////////////////////////
-dynamic struct buffer 
+struct buffer 
 {
     char*% buf;
     int len;
