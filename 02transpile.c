@@ -168,14 +168,14 @@ static bool cpp(sInfo* info)
         }
     }
     
-    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac ?
-    int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null"); // Android?
-    int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null"); // Debian?
+    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
+    int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null") == 0;
+    int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null") == 0;
     int is_m5stack = info.m5stack_cpp; // M5Stack?
     int is_pico = info.pico_cpp; // PICO?
     
     /// Android ///
-    if(is_android == 0) {
+    if(is_android) {
         string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", (info.remove_comment ? "": " -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
         if(info.verbose) puts(cmd3);
@@ -187,7 +187,7 @@ static bool cpp(sInfo* info)
         (void)system(command2);
         
         if(rc != 0) {
-            printf("cpp failed\n");
+            printf("cpp failed(%s)\n", command2);
             exit(2);
         }
     }
@@ -197,6 +197,11 @@ static bool cpp(sInfo* info)
         if(info.verbose) puts(cmd2);
         
         int rc = system(cmd2);
+        
+        string command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
         
         if(rc != 0) {
             printf("failed to cpp(2) (%s)\n", cmd2);
@@ -213,6 +218,11 @@ static bool cpp(sInfo* info)
         
         if(info.verbose) puts(cmd2);
         
+        string command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
+        
         int rc = system(cmd2);
         
         if(rc != 0) {
@@ -226,10 +236,15 @@ static bool cpp(sInfo* info)
         (void)system(command2);
     }
     /// Mac ///
-    else if(is_mac == 0) {
+    else if(is_mac) {
         string cmd2 = xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         
         if(info.verbose) puts(cmd2);
+        
+        string command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
         
         int rc = system(cmd2);
         
@@ -247,7 +262,7 @@ static bool cpp(sInfo* info)
     else {
         string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
 
-        if(is_debian == 0) {
+        if(is_debian) {
             cmd3 = xsprintf("cpp %s -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "": " -C", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
         }
 
@@ -262,31 +277,19 @@ static bool cpp(sInfo* info)
         if(rc != 0) {
             string cmd4 = xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
 
-            if(is_debian == 0) {
+            if(is_debian) {
                 cmd4 = xsprintf("cpp %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-            }
-            
-            var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
-    
-            if(info.verbose) puts(cmd4);
-            int rc = system(cmd4);
-    
-            if(rc != 0) {
-                command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", "gcc", output_file_name, input_file_name, info.clang_option, input_file_name);
-        
-                if(info.verbose) puts(cmd4);
-                rc = system(cmd4);
-                
-                if(rc != 0) {
-                    printf("failed to cpp(2) (%s)\n", cmd4);
-                    exit(5);
-                }
             }
             
             var command2 = xsprintf("grep error\\: %s.cpp.out", output_file_name);
             
             if(info.verbose) puts(command2);
             (void)system(command2);
+            
+            if(rc != 0) {
+                printf("failed to cpp(2) (%s)\n", cmd4);
+                exit(5);
+            }
         }
     }
     
@@ -317,7 +320,7 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
         int rc = system(command);
         
         if(rc != 0) {
-            printf("%s %d: %s is faild\n", info->sname, info->sline, CC);
+            printf("%s is faild\n", CC);
             
             var command2 = xsprintf("grep error\\: %s.out", input_file_name);
             
@@ -354,8 +357,8 @@ static bool linker(sInfo* info, list<string>* object_files)
         command.append_format("%s ", it);
     }
     
-    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null"); // Mac?
-    if(is_mac == 0) {
+    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
+    if(is_mac) {
         command.append_str(" -L/opt/homebrew/opt/pcre/lib -L/opt/homebrew/opt/openssl/lib -L/opt/homebrew/opt/boehmgc/lib -L/opt/homebrew/opt/mysql/lib -L/opt/homebrew/opt/zstd/lib ");
     }
     
@@ -389,17 +392,17 @@ static bool linker(sInfo* info, list<string>* object_files)
         command.append_str(" -lpthread ");
     }
     if(gComeNet) {
-        int is_apline = system("which apk 1> /dev/null 2>/dev/null");
-        int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null");
-        int is_android = system("uname -a | grep Android 1>/dev/null 2>/dev/null");
+        int is_apline = system("which apk 1> /dev/null 2>/dev/null") == 0;
+        int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null") == 0;
+        int is_android = system("uname -a | grep Android 1>/dev/null 2>/dev/null") == 0;
         
-        if(is_android == 0) { // is Android
+        if(is_android) { // is Android
             command.append_str(" -lssl -I/data/data/com.termux/files/usr/include/mariadb -lmariadb");
         }
-        else if(is_apline == 0 || is_debian == 0) { // Alpine | Debian
+        else if(is_apline || is_debian) { // Alpine | Debian
             command.append_str(" -lssl -I/usr/include/mariadb -L/usr/lib -lmariadb");
         }
-        else if(is_mac == 0) {
+        else if(is_mac) {
             command.append_format(" -lssl `mysql_config --cflags --libs`");
         }
         else { // Ohter
@@ -412,7 +415,7 @@ static bool linker(sInfo* info, list<string>* object_files)
         string str = s"gcc" + command.to_string().substring(strlen(CC), -1);
         
         system(str).if { 
-            printf("%s %d: %s is faild\n", CC, info->sname, info->sline);
+            printf("%s is failed\n", CC);
             return false;
         }
     }
@@ -980,7 +983,7 @@ int come_main(int argc, char** argv) version 2
         clear_tmp_file(&info);
         
         cpp(&info).elif {
-            printf("%s %d: transpile failed\n", info.sname, info.sline);
+            printf("transpile failed\n");
             system(xsprintf("%s %s*", RM, tmp_file));
             exit(2);
         }
@@ -994,7 +997,7 @@ int come_main(int argc, char** argv) version 2
             transpile(&info)
             
             output_header_file(&info).elif {
-                printf("%s %d: output source file faield\n", info->sname, info->sline);
+                printf("output source file failed\n");
                 system(xsprintf("%s %s*", RM, tmp_file));
                 exit(2);
             }
@@ -1097,7 +1100,7 @@ int come_main(int argc, char** argv) version 2
             clear_tmp_file(&info);
             
             cpp(&info).elif {
-                printf("%s %d: transpile failed\n", info.sname, info.sline);
+                printf("transpile failed\n");
                 exit(2);
             }
             
@@ -1117,7 +1120,7 @@ int come_main(int argc, char** argv) version 2
                 transpile(&info);
                 
                 output_source_file(&info).elif {
-                    printf("%s %d: output source file faield\n", info->sname, info->sline);
+                    printf("output source file faield\n");
                     exit(2);
                 }
                 
@@ -1129,7 +1132,7 @@ int come_main(int argc, char** argv) version 2
                 else {
                     output_object_file_flag.if {
                         compile(&info, output_object_file, object_files).elif {
-                            printf("%s %d: compile faield\n", info.sname, info.sline);
+                            printf("compile faield\n");
                             exit(27);
                         }
                     }
@@ -1168,7 +1171,7 @@ int come_main(int argc, char** argv) version 2
             
             if(output_object_file_flag) {
                 linker(&info, object_files).elif {
-                    printf("%s %d: linker faield\n", info.sname, info.sline);
+                    printf("linker faield\n");
                     exit(13);
                 }
             }

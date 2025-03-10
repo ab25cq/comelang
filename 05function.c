@@ -1516,6 +1516,7 @@ int transpile(sInfo* info) version 5
     skip_spaces_and_lf();
     parse_sharp();
     
+/*
     {
         var name = string("come_calloc");
         var result_type = new sType(s"void*");
@@ -1669,6 +1670,7 @@ int transpile(sInfo* info) version 5
         
         info.funcs.insert(string(name), main_fun);
     }
+*/
     {
         var name = string("__builtin_va_start");
         var result_type = new sType(s"void");

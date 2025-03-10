@@ -290,12 +290,7 @@ class sClassNode extends sNodeBase
         if(info.classes.at(name, null) == null) {
             info.classes.insert(name, clone klass);
         }
-/*
-        else if(klass->mFields.length() > 0) {
-            sClass*% klass2 = info.classes.at(name, null);
-            klass2.mFields = clone klass.mFields;
-        }
-*/
+        
         if(info.classes.at(name, null) && info.classes.at(name, null).mFields.length() == 0) {
             sClass*% klass2 = info.classes.at(name, null);
             klass2.mFields = clone klass.mFields;
@@ -487,7 +482,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
     string buf2;
     if(buf === "dynamic") {
         buf2 = parse_word();
-        //dynamic_ = true;
+        dynamic_ = true;
     }
     if((dynamic_ && buf2 === "struct") || buf === "struct") {
         char* source_head = head;
@@ -627,7 +622,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 parse_sharp();
             }
             
-            //generics_class.mDynamic = dynamic_;
+            generics_class.mDynamic = dynamic_;
             
             parse_attribute();
             
@@ -769,7 +764,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             else {
                 struct_class->mAttribute = struct_attribute + " " + struct_attribute2;
             }
-            //struct_class.mDynamic = dynamic_;
+            struct_class.mDynamic = dynamic_;
             
             return new sStructNode(string(type_name), struct_class, info) implements sNode;
         }
@@ -815,7 +810,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             struct_class->mParentClassName = clone parent_class->mName;
         }
         
-        //struct_class->mDynamic = dynamic_;
+        struct_class->mDynamic = dynamic_;
         
         sClass* defining_class = info.defining_class;
         info.defining_class = struct_class;

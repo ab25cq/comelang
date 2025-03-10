@@ -3904,7 +3904,7 @@ struct sNode* __result_obj__288;
         id_392=(char*)come_increment_ref_count(__builtin_string(type_name_374));
         add_come_code_at_come_header(info,id_392,"%s\n",((char*)(__right_value311=buffer_to_string(header_391))));
         (__right_value311 = come_decrement_ref_count2(__right_value311, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
-        module_393=(struct sClassModule*)come_increment_ref_count(sClassModule_initialize((struct sClassModule*)come_increment_ref_count((struct sClassModule*)come_calloc(1, sizeof(struct sClassModule)*(1), "24module.c", 215, "struct sClassModule*", (void*)0, (void*)0, (void*)0, (void*)0)),type_name_374,(char*)come_increment_ref_count(buffer_to_string(buf_385)),(char*)come_increment_ref_count(sname_375),sline_376,info));
+        module_393=(struct sClassModule*)come_increment_ref_count(sClassModule_initialize((struct sClassModule*)come_increment_ref_count((struct sClassModule*)come_calloc(1, sizeof(struct sClassModule)*(1), "24module.c", 215, "struct sClassModule*", (void*)0, (void*)0, (void*)0, (void*)0)),(char*)come_increment_ref_count(type_name_374),(char*)come_increment_ref_count(buffer_to_string(buf_385)),(char*)come_increment_ref_count(sname_375),sline_376,info));
         __dec_obj40=module_393->mParams;
         module_393->mParams=(struct list$1char$ph*)come_increment_ref_count(come_call_cloner(list$1char$ph$p_clone, params_377));
         come_call_finalizer3(__dec_obj40,list$1char$ph_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);
