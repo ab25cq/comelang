@@ -1,0 +1,1 @@
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -g -O3 -DNDEBUG -Wl,--build-id=none -L/opt/homebrew/opt/binutils/lib --specs=nosys.specs -nostartfiles -Wl,--script=/Users/ab25cq/pico-sdk/src/rp2040/boot_stage2/boot_stage2.ld -Wl,-Map=bs2_default.elf.map CMakeFiles/bs2_default.dir/compile_time_choice.S.o -o bs2_default.elf

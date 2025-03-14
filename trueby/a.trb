@@ -1,0 +1,23 @@
+native class Kernel {
+    def puts(str:String);
+}
+
+native class String {
+    def sub(regex:String, string:String):String;
+    def gsub(regex:Regex, string:String):String;
+}
+
+native class Integer {
+    def times();
+}
+
+a := 123
+puts(a->String);
+
+b := "ABC"
+puts(b)
+
+li:Array<String> = ["AAA","BBB","CCC"];
+
+puts(li->String);
+

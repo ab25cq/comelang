@@ -1,0 +1,14 @@
+# Target labels
+ picotool-populate
+# Source files and their labels
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles/picotool-populate
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles/picotool-populate.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/CMakeFiles/picotool-populate-complete.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-build.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-configure.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-download.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-install.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-mkdir.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-test.rule
+/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update.rule
