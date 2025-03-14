@@ -52,9 +52,9 @@ static inline UW get_primask( void )
 }
 
 /* 割込み禁止マクロ */
-#define	DI(intsts)	(intsts=get_primask(), set_primask(1))
+#define DI(intsts) (intsts=get_primask(), set_primask(1))
 
 /* 割込み許可マクロ */
-#define	EI(intsts)	(set_primask(intsts))
+#define EI(intsts) (set_primask(intsts))
 
 #endif  /* STYLIB_H *
