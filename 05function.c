@@ -2305,6 +2305,12 @@ sNode*% parse_function(sInfo* info)
         version = n;
     }
     
+    var asm_fun, fun_attribute = parse_function_attribute();
+    
+    if(asm_fun !== "") {
+        fun_name = string(asm_fun);
+    }
+    
     bool in_top_level = info.in_top_level;
     info.in_top_level = false;
     
@@ -2410,7 +2416,7 @@ sNode*% parse_function(sInfo* info)
                                 , param_default_parametors
                                 , false@external, var_args, clone block
                                 , static_fun@static_
-                                , info, inline_fun, uniq_fun, generate_fun, attribute);
+                                , info, inline_fun, uniq_fun, generate_fun, attribute, fun_attribute);
         
         
         if(info.output_header_file) {
@@ -2453,7 +2459,7 @@ sNode*% parse_function(sInfo* info)
                                 , param_default_parametors
                                 , true@external, var_args, null@block
                                 , false@static_, info, false@inline_
-                                , false@uniq_, false@generate_, attribute);
+                                , false@uniq_, false@generate_, attribute, fun_attribute);
             
             var fun2 = info.funcs[string(fun_name)]??;
             if(fun2 == null || fun2.mExternal) {
@@ -2471,11 +2477,13 @@ sNode*% parse_function(sInfo* info)
             return new sFunNode(fun, info) implements sNode;
         }
         else {
-            var asm_fun, fun_attribute = parse_function_attribute();
+            var asm_fun, fun_attribute2 = parse_function_attribute();
             
             if(asm_fun !== "") {
                 fun_name = string(asm_fun);
             }
+
+            fun_attribute = fun_attribute + fun_attribute2;
             
             result_type->mStatic = false;
             result_type->mUniq = false;

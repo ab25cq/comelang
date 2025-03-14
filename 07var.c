@@ -209,7 +209,14 @@ class sStoreNode extends sNodeBase
                 add_come_code_at_function_head2(info, "memset(%s, 0, sizeof(int)*2);\n", var_->mCValueName);
             }
             else if(left_type->mArrayNum.length() > 0) {
-                add_come_code(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                /*
+                if(left_type->mAttribute) {
+                    add_come_code(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
+                }
+                else {
+                */
+                    add_come_code(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                //}
                 
                 add_come_code(info, "memset(&%s, 0, sizeof(%s)", var_->mCValueName, make_type_name_string(left_type, no_static:true));
                 
@@ -225,7 +232,14 @@ class sStoreNode extends sNodeBase
                 add_come_code(info, ");\n");
             }
             else {
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                /*
+                if(left_type->mAttribute) {
+                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
+                }
+                else {
+                */
+                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                //}
                 
                 if(left_type->mPointerNum > 0) {
                     add_come_code_at_function_head2(info, "%s = (void*)0;\n", var_->mCValueName);
@@ -306,7 +320,14 @@ class sStoreNode extends sNodeBase
             
             if(array_initializer) {
                 sVar* var_ = info.lv_table.mVars[string(self.name)]??;
-                add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                /*
+                if(var_->mType->mAttribute) {
+                    add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
+                }
+                else {
+                */
+                    add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                //}
                 
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = string("");
@@ -316,7 +337,14 @@ class sStoreNode extends sNodeBase
             }
             else if(struct_initializer) {
                 sVar* var_ = info.lv_table.mVars[string(self.name)]??;
-                add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                /*
+                if(var_->mType->mAttribute) {
+                    add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
+                }
+                else {
+                */
+                    add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                //}
                 
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = string("");
@@ -329,7 +357,14 @@ class sStoreNode extends sNodeBase
                     return true;
                 }
                 
-                add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
+                /*
+                if(left_type->mAttribute) {
+                    add_come_code(info, "%s %s=%s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute, right_value.c_value);
+                }
+                else {
+                */
+                    add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
+                //}
                 
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = string("");
@@ -345,7 +380,14 @@ class sStoreNode extends sNodeBase
                 
                 std_move(left_type, right_type, right_value);
                 
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                /*
+                if(left_type->mAttribute) {
+                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
+                }
+                else {
+                */
+                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                //}
                 
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
@@ -379,7 +421,14 @@ class sStoreNode extends sNodeBase
                 
                 //decrement_ref_count_object(left_type, var_->mCValueName, info);
                 
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                /*
+                if(left_type->mAttribute) {
+                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
+                }
+                else {
+                */
+                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                //}
                 
                 CVALUE*% come_value = new CVALUE();
                 
@@ -407,7 +456,14 @@ class sStoreNode extends sNodeBase
                     }
                 }
                 
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                /*
+                if(left_type->mAttribute) {
+                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
+                }
+                else {
+                */
+                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
+                //}
                 
                 CVALUE*% come_value = new CVALUE();
                 

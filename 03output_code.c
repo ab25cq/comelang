@@ -223,6 +223,10 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         
         buf.append_str(")");
         
+        if(type->mAttribute) {
+            buf.append_str(" " + type->mAttribute);
+        }
+        
         return make_lambda_type_name_string(type->mResultType, buf.to_string(), info);
     }
     else {
@@ -259,6 +263,10 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         }
         
         buf.append_str(")");
+        
+        if(type->mAttribute) {
+            buf.append_str(" " + type->mAttribute);
+        }
         
         return buf.to_string();
     }
@@ -514,9 +522,11 @@ string output_function(sFun* fun, sInfo* info)
         
         string str = make_lambda_type_name_string(fun->mResultType, output2.to_string(), info);
         
+/*
         if(fun->mAttribute !== "") {
             output.append_str(s"\{fun->mAttribute} ");
         }
+*/
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -527,6 +537,7 @@ string output_function(sFun* fun, sInfo* info)
         output.append_str(str);
         
         info.module.mSourceHead.append_str(output.to_string());
+        // when declaring outputs function attribute
         /*
         if(fun->mFunAttribute !== "") {
             info.module.mSourceHead.append_str(s" \{fun->mFunAttribute};\n");
@@ -542,9 +553,11 @@ string output_function(sFun* fun, sInfo* info)
         
         string result_type_str = make_type_name_string(base_result_type, no_static:true);
         
+/*
         if(fun->mAttribute !== "") {
             output.append_str(s"\{fun->mAttribute} ");
         }
+*/
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -600,9 +613,11 @@ string output_function(sFun* fun, sInfo* info)
     else {
         string result_type_str = make_type_name_string(fun->mResultType, no_static:true);
         
+/*
         if(fun->mAttribute !== "") {
             output.append_str(s"\{fun->mAttribute} ");
         }
+*/
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -647,12 +662,6 @@ string output_function(sFun* fun, sInfo* info)
         //}
     }
     
-    /*
-    if(fun->mFunAttribute !== "") {
-        output.append_str(s" \{fun->mFunAttribute} ");
-    }
-    */
-    
     output.append_str("{\n");
     
     output.append_str(fun->mSourceHead.to_string());
@@ -690,9 +699,6 @@ string header_function(sFun* fun, sInfo* info)
         
         string str = make_lambda_type_name_string(fun->mResultType, output2.to_string(), info);
         
-        if(fun->mAttribute !== "") {
-            output.append_str(s"\{fun->mAttribute} ");
-        }
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -700,14 +706,11 @@ string header_function(sFun* fun, sInfo* info)
             output.append_str("inline ");
         }
         output.append_str(str);
-        /*
         if(fun->mFunAttribute !== "") {
-            output.append_str(s" \{fun->mFunAttribute};\n");
+            output.append_str(s" \{fun->mFunAttribute} ");
         }
-        else {
-        */
-            output.append_str(";\n");
-        //}
+        
+        output.append_str(";\n");
     }
     else if(fun->mResultType->mArrayNum.length() > 0) {
         sType*% base_result_type = fun->mResultType;
@@ -715,9 +718,6 @@ string header_function(sFun* fun, sInfo* info)
         
         string result_type_str = make_type_name_string(base_result_type, no_static:true);
         
-        if(fun->mAttribute !== "") {
-            output.append_str(s"\{fun->mAttribute} ");
-        }
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -756,22 +756,15 @@ string header_function(sFun* fun, sInfo* info)
         }
         CVALUE*% cvalue = get_value_from_stack(-1, info);
         
-        /*
-        if(fun->mFunAttribute !== "") {
-            output.append_format("))[%s]", cvalue.c_value);
-            output.append_str(s" \{fun->mFunAttribute};\n");
+        output.append_format("))[%s]", cvalue.c_value);
+        if(fun->mAttribute !== "") {
+            output.append_str(s"\{fun->mAttribute} ");
         }
-        else {
-        */
-            output.append_format("))[%s];\n", cvalue.c_value);
-        //}
+        output.append_format(";\n");
     }
     else {
         string result_type_str = make_type_name_string(fun->mResultType, no_static:true);
         
-        if(fun->mAttribute !== "") {
-            output.append_str(s"\{fun->mAttribute} ");
-        }
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -803,14 +796,12 @@ string header_function(sFun* fun, sInfo* info)
             i++;
         }
         
-        /*
         if(fun->mFunAttribute !== "") {
             output.append_str(s") \{fun->mFunAttribute};\n");
         }
         else {
-        */
             output.append_str(");\n");
-        //}
+        }
     }
     
     return output.to_string();
@@ -846,7 +837,12 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
         i++;
     }
     
-    output.append_str(");\n");
+    if(lambda_type->mAttribute) {
+        output.append_str(" " + lambda_type->mAttribute + ");\n");
+    }
+    else {
+        output.append_str(");\n");
+    }
     
     return output.to_string();
 }
