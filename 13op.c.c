@@ -204,7 +204,7 @@ struct sHeapPage
     int mSizePages;
     char* mTop;
     int mCurrentPages;
-    struct sMemHeaderTiny* mFreeMem[(2*1024*1024)];
+    struct sMemHeaderTiny* mFreeMem[4096];
 };
 
 extern struct sHeapPage gHeapPages;

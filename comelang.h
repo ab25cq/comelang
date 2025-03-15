@@ -377,9 +377,9 @@ uniq int gNumFree = 0;
 #define ALLOCATED_MAGIC_NUM 177783
 
 #if defined(__MAC__) || defined(__LINUX__) || defined(__ANDROID__)
-#define HEAP_POOL_PAGE_SIZE (2 * 1024 * 1024)
+#define HEAP_POOL_PAGE_SIZE 4096 //(2 * 1024 * 1024)
 #else
-#define HEAP_POOL_PAGE_SIZE 1024*2*2
+#define HEAP_POOL_PAGE_SIZE 4096
 #endif
 #define INIT_PAGE_PAGE_SIZE 4
 #define NEW_ALLOC_SIZE 2

@@ -204,7 +204,7 @@ struct sHeapPage
     int mSizePages;
     char* mTop;
     int mCurrentPages;
-    struct sMemHeaderTiny* mFreeMem[(2*1024*1024)];
+    struct sMemHeaderTiny* mFreeMem[4096];
 };
 
 extern struct sHeapPage gHeapPages;
@@ -2238,11 +2238,11 @@ int i_3;
     gHeapPages.mSizePages=4;
     gHeapPages.mPages=calloc(1,sizeof(char**)*gHeapPages.mSizePages);
     for(    i_3=0;    i_3<gHeapPages.mSizePages;    i_3++    ){
-        gHeapPages.mPages[i_3]=calloc(1,sizeof(char)*(2*1024*1024));
+        gHeapPages.mPages[i_3]=calloc(1,sizeof(char)*4096);
     }
     gHeapPages.mTop=gHeapPages.mPages[0];
     gHeapPages.mCurrentPages=0;
-    memset(gHeapPages.mFreeMem,0,sizeof(struct sMemHeaderTiny*)*(2*1024*1024));
+    memset(gHeapPages.mFreeMem,0,sizeof(struct sMemHeaderTiny*)*4096);
     gAllocMem=((void*)0);
 }
 
@@ -2310,14 +2310,14 @@ char** new_pages_14;
 int i_15;
 void* __result_obj__4;
     result_11=((void*)0);
-    if(    size<(2*1024*1024)) {
+    if(    size<4096) {
         if(        gHeapPages.mFreeMem[size]) {
             result_11=gHeapPages.mFreeMem[size];
             gHeapPages.mFreeMem[size]=gHeapPages.mFreeMem[size]->free_next;
             memset(result_11,0,size);
         }
         if(        result_11==((void*)0)) {
-            free_area_12=gHeapPages.mPages[gHeapPages.mCurrentPages]+(2*1024*1024)-gHeapPages.mTop;
+            free_area_12=gHeapPages.mPages[gHeapPages.mCurrentPages]+4096-gHeapPages.mTop;
             if(            size>=free_area_12) {
                 gHeapPages.mCurrentPages++;
                 if(                gHeapPages.mCurrentPages==gHeapPages.mSizePages) {
@@ -2328,7 +2328,7 @@ void* __result_obj__4;
                         new_pages_14[i_15]=gHeapPages.mPages[i_15];
                     }
                     for(                    ;                    i_15<new_size_pages_13;                    i_15++                    ){
-                        new_pages_14[i_15]=calloc(1,sizeof(char)*(2*1024*1024));
+                        new_pages_14[i_15]=calloc(1,sizeof(char)*4096);
                     }
                     free(gHeapPages.mPages);
                     gHeapPages.mPages=new_pages_14;
@@ -2455,7 +2455,7 @@ unsigned long  int size_29;
                 }
             }
             size_25=it_22->size;
-            if(            size_25<(2*1024*1024)) {
+            if(            size_25<4096) {
                 if(                gHeapPages.mFreeMem[size_25]==((void*)0)) {
                     it_22->free_next=((void*)0);
                     gHeapPages.mFreeMem[size_25]=(struct sMemHeaderTiny*)it_22;
@@ -2493,7 +2493,7 @@ unsigned long  int size_29;
                 }
             }
             size_29=it_26->size;
-            if(            size_29<(2*1024*1024)) {
+            if(            size_29<4096) {
                 if(                gHeapPages.mFreeMem[size_29]==((void*)0)) {
                     it_26->free_next=((void*)0);
                     gHeapPages.mFreeMem[size_29]=it_26;
