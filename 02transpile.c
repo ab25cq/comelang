@@ -108,8 +108,10 @@ static bool cpp(sInfo* info)
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
     int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null") == 0;
     int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null") == 0;
+    int is_linux = 1;
     int is_m5stack = info.m5stack_cpp; // M5Stack?
     int is_pico = info.pico_cpp; // PICO?
+    int is_emb = info.emb_cpp; // EMBBEDED
     
     /// Android ///
     if(is_android) {
@@ -195,8 +197,38 @@ static bool cpp(sInfo* info)
         if(info.verbose) puts(command2);
         (void)system(command2);
     }
-    /// Other ///
-    else {
+    /// EMBBEDED ///
+    else if(is_emb) {
+        string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+
+        if(info.verbose) puts(cmd3);
+        int rc = system(cmd3);
+        
+        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
+        
+        if(rc != 0) {
+            string cmd4 = xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+
+            if(is_debian) {
+                cmd4 = xsprintf("cpp %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            }
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            if(rc != 0) {
+                printf("failed to cpp(2) (%s)\n", cmd4);
+                exit(5);
+            }
+        }
+    }
+    /// __LINUX__ ///
+    else if(is_linux) {
         string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
 
         if(is_debian) {
@@ -681,6 +713,7 @@ module MEvalOptions<T, T2>
     bool come_malloc = false;
     bool m5stack_cpp = false;
     bool pico_cpp = false;
+    bool emb_cpp = false;
     bool gcc_compiler = false;
     for(int i=T; i<argc; i++) {
         string ext_name = xextname(argv[i]);
@@ -716,6 +749,12 @@ module MEvalOptions<T, T2>
             cpp_option.append_format(s" -I $PICO_SDK_PATH/src/common/pico_stdlib_headers/include/ -I$PICO_SDK_PATH/src/common/pico_base_headers/include/ -I \{env}/src/rp2_common/hardware_sync/include \$(find \{env} -type d -name include | sed 's/^/ -I/g') -I$PICO_SDK_PATH/src/boards/include -I$PICO_SDK_PATH/src/rp2040/pico_platform/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_regs/include/ -I$PICO_SDK_PATH/src/rp2040/hardware_structs/include -I$PICO_SDK_PATH/src/rp2350/hardware_structs/include/ -I build/generated/pico_base/ -D__PICO__");
             create_pico_version_header();
             pico_cpp = true;
+        }
+        else if(argv[i] === "-emb") {
+            output_source_file_flag = true;
+            output_object_file_flag = false;
+            gComeOriginalSourcePosition = false;
+            emb_cpp = true;
         }
         else if(argv[i] === "-m5stack") {
             m5stack_cpp = true;
@@ -1027,6 +1066,7 @@ int come_main(int argc, char** argv)
             info.verbose = verbose;
             info.m5stack_cpp = m5stack_cpp;
             info.pico_cpp = pico_cpp;
+            info.emb_cpp = emb_cpp;
             info.gcc_compiler = gcc_compiler;
             
             init_classes(&info);

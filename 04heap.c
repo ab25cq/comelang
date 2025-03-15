@@ -496,11 +496,11 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         else {
             if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
-                string str = s"if(\{name}) { \{name} = come_decrement_ref_count2(\{name}, ((\{type_name})\{name})->finalize, ((\{type_name})\{name})->_protocol_obj, 0,\{no_free ? 1:0},0, (void*)0); }";
+                string str = s"if(\{name}) { \{name} = come_decrement_ref_count(\{name}, ((\{type_name})\{name})->finalize, ((\{type_name})\{name})->_protocol_obj, 0 /* no_decrement */,\{no_free ? 1:0}/* no_free */,0 /*force_delete*/, (void*)0); }";
                 add_come_last_code2(info, str);
             }
             else {
-                string str = xsprintf(s"%s = come_decrement_ref_count2(%s, (void*)0, (void*)0, 0,\{no_free ? 1:0},0, (void*)0)", name, name);
+                string str = xsprintf(s"%s = come_decrement_ref_count(%s, (void*)0, (void*)0, 0/* no_decrement */,\{no_free ? 1:0}/* no_free */,0/*force_delete*/, (void*)0)", name, name);
                 add_come_last_code2(info, str);
             }
         }
@@ -600,12 +600,12 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
                 if(c_value) {
-                    add_come_code(info, s"come_call_finalizer2(\{fun_name2}, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize :(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj :(void*)0, \{type->mAllocaValue?1:0}, \{no_decrement?1:0}, \{no_free?1:0}, \{force_delete_?1:0}, (void*)0)\{(comma ? ",\n":";\n")}");
+                    add_come_code(info, s"come_call_finalizer2(\{fun_name2}, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize :(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj :(void*)0, \{type->mAllocaValue?1:0} /*alloca value */, \{no_decrement?1:0}/* no_decrement */, \{no_free?1:0}/* no_free */, \{force_delete_?1:0} /* force_delete */, (void*)0)\{(comma ? ",\n":";\n")}");
                 }
             }
             else {
                 if(c_value) {
-                    add_come_code(info, s"come_call_finalizer3(\{c_value},\{fun_name2}, \{type->mAllocaValue?1:0}, \{no_decrement?1:0}, \{no_free?1:0}, \{force_delete_?1:0}, (void*)0)\{(comma ? ",\n":";\n")}");
+                    add_come_code(info, s"come_call_finalizer3(\{c_value},\{fun_name2}, \{type->mAllocaValue?1:0}/* alloca value */, \{no_decrement?1:0}/* no_decrement */, \{no_free?1:0}/* no_free */, \{force_delete_?1:0}/* force_delete */ , (void*)0)\{(comma ? ",\n":";\n")}");
                 }
             }
         }
@@ -651,12 +651,12 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                 else if(klass->mProtocol && type->mPointerNum == 1) {
                     if(c_value) {
                         string type_name = make_type_name_string(type);
-                        add_come_code(info, s"((\{c_value}) ? \{c_value} = come_decrement_ref_count2(\{c_value}, ((\{type_name})\{c_value})->finalize, ((\{type_name})\{c_value})->_protocol_obj, \{no_decrement?1:0}/* no_decrement */, \{no_free?1:0}/*no_free*/,\{force_delete_?1:0}/*force_delete*/, (void*)0):(void*)0)\{(comma ? ",\n":";\n")}");
+                        add_come_code(info, s"((\{c_value}) ? \{c_value} = come_decrement_ref_count(\{c_value}, ((\{type_name})\{c_value})->finalize, ((\{type_name})\{c_value})->_protocol_obj, \{no_decrement?1:0}/* no_decrement */, \{no_free?1:0}/*no_free*/,\{force_delete_?1:0}/*force_delete*/, (void*)0):(void*)0)\{(comma ? ",\n":";\n")}");
                     }
                 }
                 else {
                     if(c_value) {
-                        add_come_code(info, s"(\{c_value} = come_decrement_ref_count2(\{c_value}, (void*)0, (void*)0, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free*/, \{force_delete_?1:0}/* force_delete_*/, (void*)0))\{(comma ? ",\n" : ";\n")}");
+                        add_come_code(info, s"(\{c_value} = come_decrement_ref_count(\{c_value}, (void*)0, (void*)0, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free*/, \{force_delete_?1:0}/* force_delete_*/, (void*)0))\{(comma ? ",\n" : ";\n")}");
                     }
                 }
             }

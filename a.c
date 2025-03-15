@@ -1,18 +1,13 @@
-void (*const vector_tbl[])() __attribute__((section(".vector"))) = {
-    (void*)0,
-    (void*)0,
-};
+#include <comelang.h>
 
-int gVar __attribute__((section(".my_vector")));
-
-int fun() __attribute__((section(".my_vector")))
+int fun(char* aaa)
 {
-    return 0;
+    var a  = new list<int>();
+    return 1;
 }
 
-
 int main(int argc, char** argv) {
-    static int a __attribute__((section(".vector"))) = 1;
+    fun("AAA");
     return 0;
 }
 

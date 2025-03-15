@@ -376,7 +376,11 @@ uniq int gNumFree = 0;
 
 #define ALLOCATED_MAGIC_NUM 177783
 
-#define HEAP_POOL_PAGE_SIZE 2048*2
+#if defined(__MAC__) || defined(__LINUX__) || defined(__ANDROID__)
+#define HEAP_POOL_PAGE_SIZE (2 * 1024 * 1024)
+#else
+#define HEAP_POOL_PAGE_SIZE 1024*2*2
+#endif
 #define INIT_PAGE_PAGE_SIZE 4
 #define NEW_ALLOC_SIZE 2
 
@@ -973,34 +977,7 @@ uniq void* come_print_ref_count(void* mem)
     return mem;
 }
 
-uniq void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, bool force_delete_)
-{
-    if(mem == NULL) {
-        return NULL;
-    }
-    
-    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-    
-    if(!no_decrement) {
-        (*ref_count)--;
-    }
-    
-    size_t count = *ref_count;
-    if(!no_free && (count <= 0 || force_delete_)) {
-        if(protocol_obj && protocol_fun) {
-            void (*finalizer)(void*) = protocol_fun;
-            finalizer(protocol_obj);
-            
-            come_free_object(protocol_obj);
-        }
-        come_free_object(mem);
-        return NULL;
-    }
-    
-    return mem;
-}
-
-uniq void* come_decrement_ref_count2(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, bool force_delete_, void* result_obj)
+uniq void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, bool force_delete_, void* result_obj)
 {
     if(result_obj) {
         if(mem == result_obj) {
