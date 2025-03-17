@@ -27,12 +27,6 @@ fi
 (cd sd; rm -rf build)
 (cd pcre; rm -rf build)
 
-if [ -e webweb2/Makefile ]
-then
-    (cd webweb2; comelang clean)
-    (cd webweb2/cgi-bin; make clean)
-fi
-
 if [ -e viw/Makefile ]
 then
     (cd viw; comelang clean)
@@ -58,12 +52,9 @@ then
     (cd shsh; make clean)
 fi
 
-if [ -e webweb2/dbdb/Makefile ]
+if [ -e dbdb/Makefile ]
 then
-    (cd webweb2/dbdb; make clean)
+    (cd dbdb; make clean)
 fi
 
-if [ -e webweb2/dbdb-client/Makefile ]
-then
-    (cd webweb2/dbdb-client; make clean)
-fi
+
