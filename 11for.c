@@ -137,7 +137,10 @@ class sForNode extends sNodeBase
                 
                 add_last_code_to_source_with_comma(info);
                 
+                bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+                info.comma_instead_of_semicolon = true;
                 free_right_value_objects(info, comma:true);
+                info.comma_instead_of_semicolon = comma_instead_of_semicolon;
                 
                 add_come_code(info, "_for_condtionalA%d;", num_for_conditionalA_stack);
             }
@@ -174,7 +177,10 @@ class sForNode extends sNodeBase
                 
                 CVALUE*% conditional_value3 = get_value_from_stack(-1, info);
             
+                bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+                info.comma_instead_of_semicolon = true;
                 free_right_value_objects(info, comma:true);
+                info.comma_instead_of_semicolon = comma_instead_of_semicolon;
                 
                 add_come_code(info, "0");
             }

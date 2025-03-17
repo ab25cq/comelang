@@ -7,7 +7,7 @@ int fun(char* aaa)
 }
 
 int main(int argc, char** argv) {
-    fun("AAA");
+    fun(s"AAA");
     return 0;
 }
 
