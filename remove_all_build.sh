@@ -57,4 +57,9 @@ then
     (cd dbdb; make clean)
 fi
 
+if [ -e dbdb/client/Makefile ]
+then
+    (cd dbdb/client; make clean)
+fi
+
 
