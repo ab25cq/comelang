@@ -86,6 +86,8 @@ class sReturnNode extends sNodeBase
                 }
                 add_last_code_to_source(info);
         
+                //info.comma_instead_of_semicolon = false;
+                //info.without_semicolon = false;
                 free_objects_on_return(come_fun.mBlock, info, come_value.var, false@top_block);
                 free_right_value_objects(info);
 

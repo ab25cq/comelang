@@ -65,6 +65,7 @@ class sForNode extends sNodeBase
         
         CVALUE*% conditional_value = null;
         if(expression_node) {
+            bool without_semicolon = info.without_semicolon;
             info.without_semicolon = true;
             bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
             info.comma_instead_of_semicolon = true;
@@ -72,6 +73,7 @@ class sForNode extends sNodeBase
                 return false;
             }
             info.comma_instead_of_semicolon = comma_instead_of_semicolon;
+            info.without_semicolon = without_semicolon;
             
             bool normal_if = true;
             if(existance_free_right_value_objects(info)) {
@@ -83,7 +85,6 @@ class sForNode extends sNodeBase
                 add_come_code(info, "%s;", conditional_value.c_value);
             }
             else {
-                info.without_semicolon = false;
                 add_last_code_to_source_with_comma(info);
                 
                 conditional_value = get_value_from_stack(-1, info);
@@ -105,13 +106,14 @@ class sForNode extends sNodeBase
     
         CVALUE*% conditional_value2 = null;
         if(expression_node2) {
+            bool without_semicolon = info.without_semicolon;
             info.without_semicolon = true;
             bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
             info.comma_instead_of_semicolon = true;
             node_compile(expression_node2).elif {
                 return false;
             }
-            info.without_semicolon = false;
+            info.without_semicolon = without_semicolon;
             info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
             bool normal_if = true;
@@ -148,13 +150,14 @@ class sForNode extends sNodeBase
         
         CVALUE*% conditional_value3;
         if(expression_node3) {
+            bool without_semicolon = info.without_semicolon;
             bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
             info.comma_instead_of_semicolon = true;
             info.without_semicolon = true;
             node_compile(expression_node3).elif {
                 return false;
             }
-            info.without_semicolon = false;
+            info.without_semicolon = without_semicolon;
             info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
             bool normal_if = true;

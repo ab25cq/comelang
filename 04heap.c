@@ -399,12 +399,14 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
     string name = xsprintf("__dec_obj%d", ++dec_num);
     add_come_code_at_function_head(info, "%s;\n", make_define_var(type, name));
     
-    if(info.comma_instead_of_semicolon) {
+//    if(info.comma_instead_of_semicolon || info.without_semicolon) {
         add_come_code(info, "%s=%s,\n", name, obj);
+/*
     }
     else {
         add_come_code(info, "%s=%s;\n", name, obj);
     }
+*/
     
     obj = name;
     bool no_decrement = false;
@@ -478,7 +480,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
         if(finalizer != null || (finalizer == null && type->mClass.mName === "void" && type->mPointerNum == 1)) {
             if(type->mClass.mName === "void") {
                 if(c_value) {
-                    add_come_last_code2(info, s"come_call_finalizer3(\{c_value},(void*)0, \{type->mAllocaValue?1:0}/*alloca value*/, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free*/, \{force_delete_?1:0}/* force_delete_*/, (void*)0)");
+                    add_come_last_code2(info, s"/*a*/ come_call_finalizer3(\{c_value},(void*)0, \{type->mAllocaValue?1:0}/*alloca value*/, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free*/, \{force_delete_?1:0}/* force_delete_*/, (void*)0)");
                 }
             }
             else if(klass->mProtocol && type->mPointerNum == 1) {
@@ -489,14 +491,14 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
             }
             else {
                 if(c_value) {
-                    add_come_last_code2(info, s"come_call_finalizer3(\{c_value},\{fun_name2}, \{type->mAllocaValue?1:0}/* alloca value */, \{no_decrement?1:0}/* no decrement */, \{no_free?1:0}/* no_free */, \{force_delete_?1:0}/* force_delete_ */, (void*)0)");
+                    add_come_last_code2(info, s"/*b*/ come_call_finalizer3(\{c_value},\{fun_name2}, \{type->mAllocaValue?1:0}/* alloca value */, \{no_decrement?1:0}/* no decrement */, \{no_free?1:0}/* no_free */, \{force_delete_?1:0}/* force_delete_ */, (void*)0)");
                 }
             }
         }
         else {
             if(klass->mProtocol && type->mPointerNum == 1) {
                 string type_name = make_type_name_string(type);
-                string str = s"if(\{name}) { \{name} = come_decrement_ref_count(\{name}, ((\{type_name})\{name})->finalize, ((\{type_name})\{name})->_protocol_obj, 0 /* no_decrement */,\{no_free ? 1:0}/* no_free */,0 /*force_delete*/, (void*)0); }";
+                string str = s"(\{name} ? \{name} = come_decrement_ref_count(\{name}, ((\{type_name})\{name})->finalize, ((\{type_name})\{name})->_protocol_obj, 0 /* no_decrement */,\{no_free ? 1:0}/* no_free */,0 /*force_delete*/, (void*)0) :0)";
                 add_come_last_code2(info, str);
             }
             else {
@@ -523,7 +525,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
 
     sType* type_before = type;
 
-    if(info.comma_instead_of_semicolon) {
+    if(info.comma_instead_of_semicolon || info.without_semicolon) {
         comma = true;
     }
     
@@ -605,7 +607,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             }
             else {
                 if(c_value) {
-                    add_come_code(info, s"come_call_finalizer3(\{c_value},\{fun_name2}, \{type->mAllocaValue?1:0}/* alloca value */, \{no_decrement?1:0}/* no_decrement */, \{no_free?1:0}/* no_free */, \{force_delete_?1:0}/* force_delete */ , (void*)0)\{(comma ? ",\n":";\n")}");
+                    add_come_code(info, s"/*c*/ come_call_finalizer3(\{c_value},\{fun_name2}, \{type->mAllocaValue?1:0}/* alloca value */, \{no_decrement?1:0}/* no_decrement */, \{no_free?1:0}/* no_free */, \{force_delete_?1:0}/* force_delete */ , (void*)0)\{(comma ? ",\n":";\n")}");
                 }
             }
         }
@@ -644,7 +646,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                     }
                     else {
                         if(c_value) {
-                            add_come_code(info, s"come_call_finalizer3(\{c_value},(void*)0, \{type->mAllocaValue?1:0}/*alloca value*/, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free*/, \{force_delete_?1:0}/* force_delete_ */, (void*)0)\{(comma ? ",\n":";\n")}");
+                            add_come_code(info, s"/*d*/ come_call_finalizer3(\{c_value},(void*)0, \{type->mAllocaValue?1:0}/*alloca value*/, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free*/, \{force_delete_?1:0}/* force_delete_ */, (void*)0)\{(comma ? ",\n":";\n")}");
                         }
                     }
                 }
@@ -1007,7 +1009,7 @@ void free_right_value_objects(sInfo* info, bool comma=false)
         return;
     }
     
-    if(info.comma_instead_of_semicolon) {
+    if(info.comma_instead_of_semicolon || info.without_semicolon) {
         comma = true;
     }
     

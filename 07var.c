@@ -419,16 +419,7 @@ class sStoreNode extends sNodeBase
                     return true;
                 }
                 
-                //decrement_ref_count_object(left_type, var_->mCValueName, info);
-                
-                /*
-                if(left_type->mAttribute) {
-                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
-                }
-                else {
-                */
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                //}
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
                 
                 CVALUE*% come_value = new CVALUE();
                 

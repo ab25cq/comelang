@@ -88,11 +88,12 @@ class sIfNode extends sNodeBase
     
         bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
+        bool without_semicolon = info.without_semicolon;
         info.without_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.without_semicolon = false;
+        info.without_semicolon = without_semicolon;
         info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
     
         sBlock* if_block = self.mIfBlock;
@@ -149,11 +150,12 @@ class sIfNode extends sNodeBase
                 
                 bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
                 info.comma_instead_of_semicolon = true;
+                bool without_semicolon = info.without_semicolon;
                 info.without_semicolon = true;
                 node_compile(expression_node2).elif {
                     return false;
                 }
-                info.without_semicolon = false;
+                info.without_semicolon = without_semicolon;
                 info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
                 
                 sBlock* elif_node_block = self.mElifBlocks[i];
@@ -348,11 +350,12 @@ class sOrStatmentNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
     
+        bool without_semicolon = info.without_semicolon;
         info.without_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.without_semicolon = false;
+        info.without_semicolon = without_semicolon;
         
     
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
@@ -403,11 +406,12 @@ class sAndStatmentNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
     
+        bool without_semicolon = info.without_semicolon;
         info.without_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.without_semicolon = false;
+        info.without_semicolon = without_semicolon;
         
     
         CVALUE*% conditional_value = get_value_from_stack(-1, info);

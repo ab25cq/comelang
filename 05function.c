@@ -1953,6 +1953,8 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     info->caller_sname = info->sname;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
+    bool without_semicolon = info->without_semicolon;
+    info->without_semicolon = false;
     
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -2057,6 +2059,7 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     info->caller_line = caller_line;
     info->caller_sname = caller_sname;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
+    info->without_semicolon = without_semicolon;
     
     return (string(fun_name), true);
 }
