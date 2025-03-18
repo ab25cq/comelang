@@ -246,7 +246,7 @@ int parse_cmp(char* str, char* str2)
 int, bool run(char* source);
 string expand_env(string value)
 {
-    var p = value.to_buffer().to_pointer();
+    var p = value.to_buffer().head_pointer();
     var result = new buffer();
     
     while(*p) {
