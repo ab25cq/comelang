@@ -530,7 +530,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
             right_type2 = clone left_type2;
         }
     }
-    else if(left_type2->mClass->mName === right_type2->mClass->mName && left_type2->mPointerNum > 0 && right_type2->mPointerNum > 0 && !right_type2->mAllocaValue && !left_type->mAnyClass && !right_type2->mAnyClass)
+    else if(left_type2->mClass->mName === right_type2->mClass->mName && left_type2->mPointerNum > 0 && right_type2->mPointerNum > 0 && !right_type2->mAllocaValue)
     {
         if(left_type2->mHeap && !right_type2->mHeap) {
             printf("%s %d %s\n", info->sname, info->sline, msg);
@@ -1973,7 +1973,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum = pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
-        result_type->mAnyClass = result_type->mAnyClass || any_class;
         result_type->mCreateVTable = result_type->mCreateVTable || vtable;
         
         var_name = parse_word();
@@ -2048,7 +2047,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum += pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
-        result_type->mAnyClass = result_type->mAnyClass || any_class;
         result_type->mCreateVTable = result_type->mCreateVTable || vtable;
         
         if(xisalnum(*info.p) || *info->p == '_') {
@@ -2202,7 +2200,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mAnyClass = type->mAnyClass || any_class;
             type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
@@ -2233,7 +2230,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mAnyClass = type->mAnyClass || any_class;
             type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
@@ -2264,7 +2260,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mAnyClass = type->mAnyClass || any_class;
             type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
@@ -2336,7 +2331,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mAnyClass = type->mAnyClass || any_class;
             type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
             
@@ -2380,7 +2374,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mAnyClass = type->mAnyClass || any_class;
             type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
@@ -2477,15 +2470,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mNoSolvedGenericsType.mCreateVTable = true;
                 }
             }
-            else if(*info->p == '~') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                type->mAnyClass = true;
-                if(type->mNoSolvedGenericsType) {
-                    type->mNoSolvedGenericsType.mAnyClass = true;
-                }
-            }
             else if(gComePthread && *info->p == '@') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2564,15 +2548,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     type->mCreateVTable = true;
                     if(type->mNoSolvedGenericsType) {
                         type->mNoSolvedGenericsType.mCreateVTable = true;
-                    }
-                }
-                else if(*info->p == '~') {
-                    info->p++;
-                    skip_spaces_and_lf();
-                    
-                    type->mAnyClass = true;
-                    if(type->mNoSolvedGenericsType) {
-                        type->mNoSolvedGenericsType.mAnyClass = true;
                     }
                 }
                 else if(gComePthread && *info->p == '@') {
@@ -2702,16 +2677,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mArrayNum = [ create_int_node(2@value, info) ];
         type->mChannelType = type_before;
         type->mChannel = true;
-    }
-    else if(type->mAnyClass && !type->mClass->mProtocol) {
-        sType*% type_before = clone type;
-        type_before.mHeap = true;
-        type_before.mPointerNum = 1;
-        type = new sType(s"void");
-        type->mHeap = true;
-        type->mPointerNum = 1;
-        type->mAnyOriginalType = type_before;
-        type->mAnyClass = true;
     }
     else if(type->mException) {
         sType*% type2 = new sType(s"tuple2");

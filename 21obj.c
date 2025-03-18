@@ -74,18 +74,6 @@ class sNewNode extends sNodeBase
         
         sType*% type2 = solve_generics(type, info->generics_type, info);
         
-        bool generics_any_child = false;
-        sType*% no_solved_type = null;
-        if(type2->mNoSolvedGenericsType) {
-            no_solved_type = type2->mNoSolvedGenericsType;
-            
-            foreach(it, no_solved_type->mGenericsTypes) {
-                if(it->mAnyOriginalType) {
-                    generics_any_child = true;
-                }
-            }
-        }
-        
     /*
         if(type->mArrayNum.length() > 0) {
             type2->mPointerNum--;
@@ -109,10 +97,6 @@ class sNewNode extends sNodeBase
                 type3->mNoSolvedGenericsType.mPointerNum++;
             }
             
-            if(type3->mAnyOriginalType) {
-                type3 = type3->mAnyOriginalType;
-            }
-            
             string type_name3 = make_type_name_string(type3);
             
             add_come_code_at_function_head(info, "%s;\n", make_define_var(type3, var_name));
@@ -121,71 +105,7 @@ class sNewNode extends sNodeBase
             
             buf.append_str("(");
             
-            string obj;
-            if(type2->mAnyClass && type2->mAnyOriginalType) {
-                sType*% any_type = clone type2->mAnyOriginalType;
-                any_type->mPointerNum = 1;
-                any_type->mHeap = 1;
-                
-                var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-                
-                any_type->mPointerNum--;
-                string any_type_name = make_type_name_string(any_type);
-                
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-                
-                any_type->mPointerNum++;
-                
-                come_value.type = clone any_type;
-            }
-            else if(generics_any_child) {
-                sType*% any_type = no_solved_type;
-                any_type->mPointerNum = true;
-                
-                var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-                
-                any_type->mPointerNum--;
-                string any_type_name = make_type_name_string(any_type);
-                
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-                
-                any_type->mPointerNum++;
-                
-//                come_value.type = clone any_type;
-            
-                type2->mHeap = true;
-                type2->mPointerNum++;
-                
-                if(type2->mNoSolvedGenericsType) {
-                    type2->mNoSolvedGenericsType->mPointerNum++;
-                    type2->mNoSolvedGenericsType->mHeap = true;
-                }
-                
-                come_value.type = clone type2;
-            }
-            else if(type2->mCreateVTable || (type2->mClass->mDynamic && type2->mPointerNum == 0)) {
-                sType*% any_type = clone type2;
-                any_type->mPointerNum = 1;
-                any_type->mHeap = 1;
-                
-                var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-                
-                any_type->mPointerNum--;
-                string any_type_name = make_type_name_string(any_type);
-                
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-                
-                any_type->mPointerNum++;
-                
-                come_value.type = clone any_type;
-            }
-            else {
-                char *finalizer_name = "(void*)0";
-                char *cloner_name = "(void*)0";
-                char *get_hash_key_name = "(void*)0";
-                char *equaler_name = "(void*)0";
-                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-            }
+            string obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
             
             buf.append_str(obj);
             buf.append_str(",");
@@ -273,90 +193,17 @@ class sNewNode extends sNodeBase
             
             string type_name3 = make_type_name_string(type3);
             
-            string obj;
-            if(type2->mAnyClass && type2->mAnyOriginalType) {
-                sType*% any_type = clone type2->mAnyOriginalType;
-                any_type->mPointerNum = 1;
-                any_type->mHeap = true;
-                
-                var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-                
-                any_type->mPointerNum--;
+            come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
             
-                string any_type_name = make_type_name_string(any_type);
+            type2->mHeap = true;
+            type2->mPointerNum++;
                 
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-                
-                type2->mPointerNum--;
-                
-                any_type->mPointerNum++;
-                
-                come_value.type = clone any_type;
+            if(type2->mNoSolvedGenericsType) {
+                type2->mNoSolvedGenericsType->mPointerNum++;
+                type2->mNoSolvedGenericsType->mHeap = true;
             }
-            else if(generics_any_child) {
-                sType*% any_type = no_solved_type;
-                any_type->mAnyOriginalType = null;
-                any_type->mPointerNum = 1;
-                any_type->mHeap = true;
-                
-                var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-                
-                any_type->mPointerNum--;
-                string any_type_name = make_type_name_string(any_type);
-                
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-                
-                any_type->mPointerNum++;
-                
-                //come_value.type = clone any_type;
             
-                type2->mHeap = true;
-                type2->mPointerNum++;
-                
-                if(type2->mNoSolvedGenericsType) {
-                    type2->mNoSolvedGenericsType->mPointerNum++;
-                    type2->mNoSolvedGenericsType->mHeap = true;
-                }
-                
-                come_value.type = clone type2;
-            }
-            else if(type2->mCreateVTable || (type2->mClass->mDynamic && type2->mPointerNum == 0)) {
-                sType*% any_type = clone type2;
-                any_type->mPointerNum = 1;
-                any_type->mHeap = true;
-                
-                var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-                
-                any_type->mPointerNum--;
-            
-                string any_type_name = make_type_name_string(any_type);
-                
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", any_type_name, any_type_name, num_string.to_string(), info.sname, info.sline, any_type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-                
-                type2->mPointerNum--;
-                
-                any_type->mPointerNum++;
-                
-                come_value.type = clone any_type;
-            }
-            else {
-                char *finalizer_name = "(void*)0";
-                char *cloner_name = "(void*)0";
-                char *get_hash_key_name = "(void*)0";
-                char *equaler_name = "(void*)0";
-                
-                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-            
-                type2->mHeap = true;
-                type2->mPointerNum++;
-                
-                if(type2->mNoSolvedGenericsType) {
-                    type2->mNoSolvedGenericsType->mPointerNum++;
-                    type2->mNoSolvedGenericsType->mHeap = true;
-                }
-                
-                come_value.type = clone type2;
-            }
+            come_value.type = clone type2;
             come_value.var = null;
             
             append_object_to_right_values2(come_value, type2 ,info);
@@ -418,7 +265,7 @@ class sImplementsNode extends sNodeBase
         string buf2 = xsprintf("%s* _inf_obj_value%d;\n", type_name2, inf_num_stack);
         add_come_code_at_function_head(info, buf2);
         
-        add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0, (void*)0, (void*)0);\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
+        add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
         
         string c_value = increment_ref_count_object(come_value.type, come_value.c_value, info);
         add_come_code(info, "_inf_obj_value%d=%s;\n", inf_num_stack, c_value);
@@ -497,44 +344,6 @@ class sImplementsNode extends sNodeBase
         return true;
     }
 };
-
-/*
-class sAppendAnyFlagNode extends sNodeBase
-{
-    new(sNode*% obj_exp, sInfo* info)
-    {
-        self.super();
-        
-        sNode*% self.obj_exp = clone obj_exp;
-    }
-    
-    string kind()
-    {
-        return string("sAppendAnyFlagNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode*% obj_exp = clone self.obj_exp;
-        
-        node_compile(obj_exp).elif {
-            return false;
-        }
-        
-        CVALUE*% come_value = get_value_from_stack(-1, info);
-        
-        sType*% original_type = come_value.type;
-        
-        come_value.type = new sType(s"void*");
-        come_value.type.mAnyOriginalType = original_type;
-        come_value.type.mAnyClass = true;
-        
-        info.stack.push_back(come_value);
-        
-        return true;
-    }
-};
-*/
 
 class sTrueNode extends sNodeBase
 {

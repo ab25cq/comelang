@@ -63,7 +63,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool heap = type->mHeap;
         bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
-        //bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
         
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
@@ -139,7 +138,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool exception_ = type->mException;
             bool generate_ = type->mGenerate;
             bool vtable = type->mCreateVTable;
-            //bool dynamic_ = type->mClass->mDynamic || generics_type->mGenericsTypes[generics_number].mClass.mDynamic;
             
             result = clone generics_type->mGenericsTypes[generics_number];
 
@@ -233,7 +231,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool exception_ = type->mException;
         bool generate_ = type->mGenerate;
         bool vtable = type->mCreateVTable;
-        //bool dynamic_ = type->mClass->mDynamic || info->method_generics_types[generics_number].mClass.mDynamic;
         
         result = clone info->method_generics_types[generics_number];
 
@@ -637,20 +634,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
             
             /// free memory ///
             if(!type->mAllocaValue) {
-                if(type->mAnyClass) {
-                    if(klass->mProtocol && type->mPointerNum == 1) {
-                        string type_name = make_type_name_string(type);
-                        if(c_value) {
-                            add_come_code(info, s"come_call_finalizer2((void*)0, \{c_value}, \{c_value} ? ((\{type_name})\{c_value})->finalize :(void*)0, \{c_value} ? ((\{type_name})\{c_value})->_protocol_obj :(void*)0, \{type->mAllocaValue?1:0}/*alloca value*/, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free */, \{force_delete_?1:0}/* force_delete_*/, (void*)0)\{(comma ? ",\n":";\n")}");
-                        }
-                    }
-                    else {
-                        if(c_value) {
-                            add_come_code(info, s"/*d*/ come_call_finalizer3(\{c_value},(void*)0, \{type->mAllocaValue?1:0}/*alloca value*/, \{no_decrement?1:0}/* no_decrement*/, \{no_free?1:0}/* no_free*/, \{force_delete_?1:0}/* force_delete_ */, (void*)0)\{(comma ? ",\n":";\n")}");
-                        }
-                    }
-                }
-                else if(klass->mProtocol && type->mPointerNum == 1) {
+                if(klass->mProtocol && type->mPointerNum == 1) {
                     if(c_value) {
                         string type_name = make_type_name_string(type);
                         add_come_code(info, s"((\{c_value}) ? \{c_value} = come_decrement_ref_count(\{c_value}, ((\{type_name})\{c_value})->finalize, ((\{type_name})\{c_value})->_protocol_obj, \{no_decrement?1:0}/* no_decrement */, \{no_free?1:0}/*no_free*/,\{force_delete_?1:0}/*force_delete*/, (void*)0):(void*)0)\{(comma ? ",\n":";\n")}");
@@ -744,10 +728,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     }
 
     /// call cloner ///
-    if(type->mAnyOriginalType) {
-        result = xsprintf("come_call_cloner((void*)0, %s)", c_value);
-    }
-    else if(cloner != null) {
+    if(cloner != null) {
         result_type = cloner->mResultType;
         result_type = solve_generics(result_type, type, info);
         

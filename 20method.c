@@ -5,93 +5,31 @@ class sCurrentNode extends sNodeBase
     include sCurrentNodeModule;
 };
 
-sType*% use_any_type(sType*% type)
-{
-    if(type->mAnyOriginalType) {
-        type = type->mAnyOriginalType;
-    }
-    
-    int i = 0;
-    foreach(it, type->mGenericsTypes) {
-        type->mGenericsTypes[i] = use_any_type(clone it);
-        i++;
-    }
-    
-    return type;
-}
-
-sType*% remove_any_type(sType*% type)
-{
-    if(type->mAnyOriginalType) {
-        type->mAnyOriginalType = null;
-    }
-    
-    if(type->mNoSolvedGenericsType) {
-        type->mNoSolvedGenericsType.mAnyOriginalType = null;
-    }
-    
-    int i = 0;
-    foreach(it, type->mGenericsTypes) {
-        type->mGenericsTypes[i] = remove_any_type(clone it);
-        i++;
-    }
-    
-    return type;
-}
-
 string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string none_generics_name = get_none_generics_name(type.mClass.mName);
     string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info, array_equal_pointer);
     string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
     
+    sType*% no_solved_type = clone type;
+    
     sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
     
-    bool generics_any_child = false;
-    sType*% no_solved_type = clone type;
-    if(type->mNoSolvedGenericsType) {
-        no_solved_type = type->mNoSolvedGenericsType;
-        
-        foreach(it, no_solved_type->mGenericsTypes) {
-            if(it->mAnyOriginalType) {
-                generics_any_child = true;
-            }
-        }
-    }
-    
     if(generics_fun) {
-        if(generics_fun->mResultType->mGenerate && (type->mAnyOriginalType || generics_any_child)) {
-            sType*% type2 = use_any_type(clone no_solved_type);
-            
-            sType*% type_before = clone type;
+        sType*% type2 = no_solved_type;
+        
+        sType*% type_before = clone type;
 
-            fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, array_equal_pointer);
-            
-            var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
-            
-            if(!err) {
-                err_msg(info, "%s not found", fun_name3);
-                return (string(""), null);
-            }
-            
-            type = type_before;
+        fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, array_equal_pointer);
+        
+        var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
+        
+        if(!err) {
+            err_msg(info, "%s not found", fun_name3);
+            return (string(""), null);
         }
-        else {
-            sType*% type2 = remove_any_type(clone no_solved_type);
-            
-            sType*% type_before = clone type;
-
-            fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, array_equal_pointer);
-            
-            var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
-            
-            if(!err) {
-                err_msg(info, "%s not found", fun_name3);
-                return (string(""), null);
-            }
-            
-            type = type_before;
-        }
+        
+        type = type_before;
     }
     
     return (clone fun_name2, generics_fun);
@@ -401,17 +339,6 @@ class sMethodCallNode extends sNodeBase
                             int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
                             
                             if(info->function_result_type) {
-                                bool generics_any_child = false;
-                                sType*% obj_type2 = obj_type;
-                                if(obj_type2->mNoSolvedGenericsType) {
-                                    obj_type2 = obj_type2->mNoSolvedGenericsType;
-                                    
-                                    foreach(it, obj_type2->mGenericsTypes) {
-                                        if(it->mAnyOriginalType) {
-                                            generics_any_child = true;
-                                        }
-                                    }
-                                }
                                 info.method_generics_types[method_generics_num] = clone info->function_result_type;
                             }
                         }
@@ -746,9 +673,6 @@ class sMethodCallNode extends sNodeBase
                     sType*% no_solved_obj_type = obj_type->mNoSolvedGenericsType;
                     sType*% it3 = solve_generics(it, no_solved_obj_type, info);
                     
-                    sType*% any_type = use_any_type(it3);
-
-                    
                     param_types.push_back(it2);
                 }
             }
@@ -762,12 +686,6 @@ class sMethodCallNode extends sNodeBase
                     else {
                         sType*% no_solved_obj_type = obj_type->mNoSolvedGenericsType;
                         sType*% it3 = solve_generics(it, no_solved_obj_type, info);
-                        
-                        sType*% any_type = use_any_type(it3);
-                        
-                        if(param_types[n].mClass.mName === "void" && param_types[n].mPointerNum == 1) {
-                            type_checking_param_types.replace(n, any_type);
-                        }
                     }
                     
                     n++;
@@ -1001,35 +919,6 @@ class sMethodCallNode extends sNodeBase
                         come_params.replace(1, come_value);
                         params.push_back((s"len", null));
                     }
-                    else if(fun_name === "to_vector") {
-                        buffer*% buf = new buffer();
-                        
-                        int i=0;
-                        foreach(it, obj_array_type.mArrayNum) {
-                            node_compile(it).elif {
-                                err_msg(info, "invalid array num").rescue {
-                                    return true;
-                                }
-                            }
-                            
-                            CVALUE*% come_value = get_value_from_stack(-1, info);
-                        
-                            buf.append_format("%s", come_value.c_value);
-                            if(i != obj_array_type.mArrayNum.length()-1) {
-                                buf.append_str("*");
-                            }
-                            i++;
-                        }
-                        
-                        CVALUE*% come_value = new CVALUE();
-                        
-                        come_value.c_value = buf.to_string();
-                        come_value.var = null;
-                        come_value.type = new sType(s"long");
-                        
-                        come_params.replace(1, come_value);
-                        params.push_back((s"len", null));
-                    }
                 }
             }
             
@@ -1109,64 +998,16 @@ class sMethodCallNode extends sNodeBase
             CVALUE*% come_value2 = new CVALUE();
             come_value2.var = null;
             
-            if(obj_type->mAnyClass && fun_name === "get_hash_key") {
-                come_value2.c_value = xsprintf("come_call_get_hash_key((void*)0, %s)", obj_value.c_value);
-                come_value2.type = new sType(s"int");
-                come_value2.type->mUnsigned = true;
-            }
-            else if(obj_type->mAnyClass && fun_name === "equals") {
-                come_value2.c_value = xsprintf("come_call_equals((void*)0, %s, %s)", obj_value.c_value, come_params[1].c_value);
-                come_value2.type = new sType(s"int");
-                come_value2.type->mUnsigned = true;
-            }
-            else {
-                come_value2.c_value = buf.to_string();
-                
-                bool generics_any_child = false;
-                sType*% obj_type2 = obj_type;
-                if(obj_type2->mNoSolvedGenericsType) {
-                    obj_type2 = obj_type2->mNoSolvedGenericsType;
-                    
-                    foreach(it, obj_type2->mGenericsTypes) {
-                        if(it->mAnyOriginalType) {
-                            generics_any_child = true;
-                        }
-                    }
-                }
-                
-                if(result_type2->mAnyOriginalType && generics_fun && obj_type->mNoSolvedGenericsType) {
-                    sType*% obj_type2 = obj_type->mNoSolvedGenericsType;
-                    result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
-                    
-                    come_value2.type = clone result_type2;
-                    come_value2.type->mStatic = false;
-                    
-                    if(result_type2->mHeap) {
-                        append_object_to_right_values2(come_value2, result_type2, info);
-                    }
-                }
-                else if(generics_fun && generics_any_child) {
-                    result_type2 = solve_generics(generics_fun->mResultType, obj_type2, info);
-                    
-                    come_value2.type = clone result_type2;
-                    come_value2.type->mStatic = false;
-                    
-                    if(result_type2->mHeap) {
-                        append_object_to_right_values2(come_value2, result_type2, info);
-                    }
-                }
-                else {
-                    come_value2.type = clone result_type2;
-                    come_value2.type->mStatic = false;
-                    
-                    if(result_type2->mHeap) {
-                        append_object_to_right_values2(come_value2, result_type2, info);
-                    }
-                }
+            come_value2.c_value = buf.to_string();
             
-                come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
-                come_value2 = get_value_from_object(come_value2);
+            come_value2.type = clone result_type2;
+            come_value2.type->mStatic = false;
+            
+            if(result_type2->mHeap) {
+                append_object_to_right_values2(come_value2, result_type2, info);
             }
+        
+            come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
             
             add_come_last_code(info, "%s", come_value2.c_value);
             

@@ -64,7 +64,7 @@ class sBufferNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\", %s, %s, %s, %s), \"%s\", %ld)", info->sname, info->sline, finalizer_name, cloner_name, get_hash_key_name, equaler_name, value.to_string(), size);
+        buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\"), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
         
         sType*% type2 = new sType(s"buffer*");
         type2->mHeap = true;
@@ -421,7 +421,7 @@ class sListNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -563,7 +563,7 @@ class sTupleNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -703,7 +703,7 @@ class sSomeNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(type2);
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0, (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -1019,7 +1019,7 @@ class sNoneNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(type2);
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", (void*)0, (void*)0, (void*)0, (void*)0)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;
@@ -1329,7 +1329,7 @@ class sMapNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\", %s, %s, %s, %s)", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name, finalizer_name, cloner_name, get_hash_key_name, equaler_name);
+        obj_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         
         sType*% type3 = clone type2;
         type3->mPointerNum++;

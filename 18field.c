@@ -21,51 +21,17 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
         generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            bool generics_any_child = false;
             sType*% no_solved_type = clone type;
             if(type->mNoSolvedGenericsType) {
                 no_solved_type = type->mNoSolvedGenericsType;
-                
-                foreach(it, no_solved_type->mGenericsTypes) {
-                    if(it->mAnyOriginalType) {
-                        generics_any_child = true;
-                    }
-                }
             }
-            foreach(it, type->mGenericsTypes) {
-                if(it->mAnyOriginalType) {
-                    generics_any_child = true;
-                }
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
+                exit(1);
             }
-            if(generics_fun->mResultType->mGenerate && (type->mAnyOriginalType || generics_any_child)) {
-                sType*% type2 = use_any_type(clone type);
-                
-                sType*% type_before = clone type;
-    
-                fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, true@array_equal_pointer);
-                
-                var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
-                
-                if(!err) {
-                    err_msg(info, "%s not found", fun_name3);
-                    exit(1);
-                }
-                
-                operator_fun = info->funcs[name]??;
-                
-                fun_name2 = name;
-                
-                type = type_before;
-            }
-            else {
-                var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
-                
-                if(!err) {
-                    exit(1);
-                }
-                
-                operator_fun = info->funcs[name]??;
-            }
+            
+            operator_fun = info->funcs[name]??;
         }
         else {
             operator_fun = info->funcs[fun_name2]??;
@@ -152,15 +118,7 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
         
         sType*% obj_type = generics_type;
         
-        if(result_type2->mAnyOriginalType && generics_fun) {
-            result_type2 = solve_generics(generics_fun->mResultType, obj_type, info);
-            
-            come_value.type = clone result_type2;
-            come_value.type->mStatic = false;
-        }
-        else {
-            come_value.type = clone result_type2;
-        }
+        come_value.type = clone result_type2;
         
         come_value.var = null;
         
@@ -175,8 +133,6 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
 */
         
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
-        
-        come_value = get_value_from_object(come_value);
         
         add_come_last_code(info, "%s", come_value.c_value);
         
@@ -220,9 +176,6 @@ class sStoreFieldNode extends sNodeBase
         
         if(left_type2.mNoSolvedGenericsType) {
             left_type2 = left_type2.mNoSolvedGenericsType;
-        }
-        if(left_type2.mAnyOriginalType) {
-            left_type2 = left_type2.mAnyOriginalType;
         }
         if(left_type2.mClass.mName === "tuple1" || left_type2.mClass.mName === "tuple2" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple4" || left_type2.mClass.mName === "tuple5")
         {
@@ -679,9 +632,6 @@ class sLoadFieldNode extends sNodeBase
         
         if(left_type2.mNoSolvedGenericsType) {
             left_type2 = left_type2.mNoSolvedGenericsType;
-        }
-        if(left_type2.mAnyOriginalType) {
-            left_type2 = left_type2.mAnyOriginalType;
         }
         if(left_type2.mClass.mName === "tuple1" || left_type2.mClass.mName === "tuple2" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple4" || left_type2.mClass.mName === "tuple5")
         {

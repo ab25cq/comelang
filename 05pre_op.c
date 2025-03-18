@@ -99,23 +99,13 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         
         come_value.var = null;
         
-        if(type3->mAnyOriginalType && generics_fun) {
-            type3 = solve_generics(generics_fun->mResultType, type, info);
-            
-            come_value.type = clone type3;
-            come_value.type->mStatic = false;
-        }
-        else {
-            come_value.type = clone type3;
-        }
+        come_value.type = clone type3;
         
         if(type3->mHeap) {
             append_object_to_right_values2(come_value, type3, info);
         }
         
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
-        
-        come_value = get_value_from_object(come_value);
         
         add_come_last_code(info, "%s", come_value.c_value);
         

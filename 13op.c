@@ -28,53 +28,17 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         generics_fun = info.generics_funcs.at(fun_name3, null);
         
         if(generics_fun) {
-            bool generics_any_child = false;
             sType*% no_solved_type = clone type;
             if(type->mNoSolvedGenericsType) {
                 no_solved_type = type->mNoSolvedGenericsType;
-                
-                foreach(it, no_solved_type->mGenericsTypes) {
-                    if(it->mAnyOriginalType) {
-                        generics_any_child = true;
-                    }
-                }
             }
-            foreach(it, type->mGenericsTypes) {
-                if(it->mAnyOriginalType) {
-                    generics_any_child = true;
-                }
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
+                return false;
             }
-            if(generics_fun->mResultType->mGenerate && (type->mAnyOriginalType || generics_any_child)) {
-                sType*% type2 = use_any_type(clone type);
-                
-                sType*% type_before = clone type;
-    
-                fun_name2 = create_method_name(type2, false@no_pointer_name, fun_name, info, true@array_equal_pointer);
-                
-                var name, err = create_generics_fun(string(fun_name2), generics_fun, type2, info);
-                
-                if(!err) {
-                    err_msg(info, "%s not found", fun_name3);
-                    return (string(""), null);
-                }
-                
-                operator_fun = info->funcs[name]??;
-                
-                fun_name2 = name;
-                
-                type = type_before;
-            }
-            else {
-                //var name, gfun = make_generics_function(obj_type, string(fun_name), info);
-                var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
-                
-                if(!err) {
-                    return false;
-                }
-                
-                operator_fun = info->funcs[name]??;
-                //operator_fun = info->funcs[fun_name2]??;
-            }
+            
+            operator_fun = info->funcs[name]??;
         }
         else {
             if(fun_name === "operator_equals") {
@@ -165,15 +129,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         sType*% obj_type = generics_type;
         
         come_value.var = null;
-        if(result_type->mAnyOriginalType && generics_fun) {
-            type3 = solve_generics(generics_fun->mResultType, obj_type, info);
-            
-            come_value.type = clone type3;
-            come_value.type->mStatic = false;
-        }
-        else {
-            come_value.type = clone type3;
-        }
+        come_value.type = clone type3;
         
         if(type3->mHeap) {
             append_object_to_right_values2(come_value, type3, info);
@@ -188,8 +144,6 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
         
         add_come_last_code(info, "%s", come_value.c_value);
-        
-        come_value = get_value_from_object(come_value);
         
         info.stack.push_back(come_value);
     

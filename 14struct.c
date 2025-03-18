@@ -479,13 +479,7 @@ string parse_struct_attribute(sInfo* info=info)
 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
 {
-    bool dynamic_ = false;
-    string buf2;
-    if(buf === "dynamic") {
-        buf2 = parse_word();
-        dynamic_ = true;
-    }
-    if((dynamic_ && buf2 === "struct") || buf === "struct") {
+    if(buf === "struct") {
         char* source_head = head;
         
         string struct_attribute = parse_struct_attribute();
@@ -622,8 +616,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 }
                 parse_sharp();
             }
-            
-            generics_class.mDynamic = dynamic_;
             
             parse_attribute();
             
@@ -765,12 +757,11 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             else {
                 struct_class->mAttribute = struct_attribute + " " + struct_attribute2;
             }
-            struct_class.mDynamic = dynamic_;
             
             return new sStructNode(string(type_name), struct_class, info) implements sNode;
         }
     }
-    else if(!gComeC && (dynamic_ && buf2 === "class") || buf === "class") {
+    else if(!gComeC && buf === "class") {
         char* source_head = head;
         
         string type_name = parse_word();
@@ -810,8 +801,6 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         if(parent_class) {
             struct_class->mParentClassName = clone parent_class->mName;
         }
-        
-        struct_class->mDynamic = dynamic_;
         
         sClass* defining_class = info.defining_class;
         info.defining_class = struct_class;

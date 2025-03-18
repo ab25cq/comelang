@@ -1383,8 +1383,6 @@ class sFunCallNode extends sNodeBase
             come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type, no_static:true)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
-        come_value = get_value_from_object(come_value);
-        
         add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);
