@@ -107,9 +107,6 @@ struct sType
     bool mNoHeap;
     bool mNoCallingDestructor;
     bool mException;
-    bool mGenerate;
-    bool mCreateVTable;
-    bool mDynamic;
     
     bool mInline;
     bool mNullValue;

@@ -235,39 +235,8 @@ uniq void* come_range_check(void* mem, void* begin, void* end, char* sname, int 
     return mem;
 }
 
-uniq bool bool::expect(bool self, void* parent, void (*block)(void* parent)) 
-{
-    if(!self) {
-        block(parent);
-        stackframe();
-        exit(1);
-    }
-    
-    return self;
-}
-
 uniq bool bool::value(bool self)
 {
-    return self;
-}
-
-uniq int int::catch(int self, void* parent, void (*block)(void* parent))
-{
-    if(self < 0) {
-        block(parent);
-    }
-    
-    return self;
-}
-
-uniq int int::expect(int self, void* parent, void (*block)(void* parent)) 
-{
-    if(self < 0) {
-        block(parent);
-        stackframe();
-        exit(1);
-    }
-    
     return self;
 }
 
@@ -291,15 +260,6 @@ uniq bool bool::except(bool self, void* parent, void (*block)(void* parent))
         block(parent);
     }
 
-    return self;
-}
-
-uniq bool bool::catch(bool self, void* parent, void (*block)(void* parent))
-{
-    if(!self) {
-        block(parent);
-    }
-   
     return self;
 }
 
@@ -1104,7 +1064,7 @@ uniq string __builtin_string(char* str)
     }
     int len = strlen(str) + 1;
     
-    char*% result = new char~~[len];
+    char*% result = new char[len];
 
     strncpy(result, str, len);
 
@@ -1306,7 +1266,7 @@ impl list <T>
         return self;
     }
     
-    generate string to_string(list<T>* self)
+    string to_string(list<T>* self)
     {
         buffer*% result = new buffer();
         
@@ -2184,7 +2144,7 @@ impl map <T, T2>
         return result;
     }
     
-    generate string to_string(map<T,T2>* self)
+    string to_string(map<T,T2>* self)
     {
         buffer*% result = new buffer();
         
@@ -2797,12 +2757,6 @@ impl tuple1 <T>
         return self;
     }
     
-    void catch(tuple1<T>* self, void* parent, void (*block)(void* parent))
-    {
-        if(!self.v1) {
-            block(parent);
-        }
-    }
     bool equals(tuple1<T>* self, tuple1<T>* right)
     {
         if(!self.v1.equals(right.v1)) {
@@ -2823,7 +2777,7 @@ impl tuple1 <T>
         return !left.operator_equals(right);
     }
     
-    generate string to_string(tuple1<T>* self)
+    string to_string(tuple1<T>* self)
     {
         return "(" + self.v1.to_string() + ")";
     }
@@ -2845,16 +2799,7 @@ impl tuple2 <T, T2>
         return self;
     }
     
-    T catch(tuple2<T, T2>* self, void* parent, void (*block)(void* parent))
-    {
-        if(!self.v2) {
-            block(parent);
-        }
-        
-        return clone self.v1;
-    }
-    
-    generate string to_string(tuple2<T, T2>* self)
+    string to_string(tuple2<T, T2>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + ")";
     }
@@ -2904,16 +2849,7 @@ impl tuple3 <T, T2, T3>
         return self;
     }
     
-    tuple2<T,T2>*% catch(tuple3<T, T2, T3>* self, void* parent, void (*block)(void* parent))
-    {
-        if(!self.v3) {
-            block(parent);
-        }
-        
-        return new tuple2<T, T2>.initialize(self.v1, self.v2);
-    }
-    
-    generate string to_string(tuple3<T, T2, T3>* self)
+    string to_string(tuple3<T, T2, T3>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + ")";
     }
@@ -2970,16 +2906,7 @@ impl tuple4 <T, T2, T3, T4>
         return self;
     }
     
-    tuple3<T,T2,T3>*% catch(tuple4<T, T2, T3, T4>* self, void* parent, void (*block)(void* parent))
-    {
-        if(!self.v4) {
-            block(parent);
-        }
-        
-        return new tuple3<T, T2, T3>.initialize(self.v1, self.v2, self.v3);
-    }
-    
-    generate string to_string(tuple4<T, T2, T3, T4>* self)
+    string to_string(tuple4<T, T2, T3, T4>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + ")";
     }
@@ -3044,16 +2971,7 @@ impl tuple5 <T, T2, T3, T4, T5>
         return self;
     }
     
-    tuple4<T,T2,T3,T4>*% catch(tuple5<T, T2, T3, T4, T5>* self, void* parent, void (*block)(void* parent))
-    {
-        if(!self.v5) {
-            block(parent);
-        }
-        
-        return new tuple4<T, T2, T3, T4>.initialize(self.v1, self.v2, self.v3, self.v4);
-    }
-    
-    generate string to_string(tuple5<T, T2, T3, T4, T5>* self)
+    string to_string(tuple5<T, T2, T3, T4, T5>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + "," + self.v5.to_string() + ")";
     }
@@ -3108,7 +3026,7 @@ impl tuple5 <T, T2, T3, T4, T5>
 uniq buffer*% buffer*::initialize(buffer*% self) 
 {
     self.size = 128;
-    self.buf = new char~~[self.size];
+    self.buf = new char[self.size];
     self.buf[0] = '\0';
     self.len = 0;
 
@@ -3118,7 +3036,7 @@ uniq buffer*% buffer*::initialize(buffer*% self)
 uniq buffer*% buffer*::initialize_with_value(buffer*% self, char* mem, size_t size) 
 {
     self.size = 128;
-    self.buf = new char~~[self.size];
+    self.buf = new char[self.size];
     self.buf[0] = '\0';
     self.len = 0;
     
@@ -3141,7 +3059,7 @@ uniq buffer*% buffer*::clone(buffer* self)
     var result = new buffer;
     
     result.size = self.size;
-    result.buf = new char~~[self.size];
+    result.buf = new char[self.size];
     result.len = self.len;
     memcpy(result.buf, self.buf, self.len);
     
@@ -3189,11 +3107,11 @@ uniq buffer* buffer*::append(buffer* self, char* mem, size_t size)
         return self;
     }
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char~~[self.size];
+        char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3216,7 +3134,7 @@ uniq buffer* buffer*::append_char(buffer* self, char c)
         int old_len = self.len;
         
         int new_size = (self.size + 10 + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3238,11 +3156,11 @@ uniq buffer* buffer*::append_str(buffer* self, char* mem)
     
     int size = strlen(mem);
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char~~[self.size];
+        char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3275,11 +3193,11 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
     
     int size = strlen(mem);
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char~~[self.size];
+        char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3301,11 +3219,11 @@ uniq buffer* buffer*::append_nullterminated_str(buffer* self, char* mem)
     }
     int size = strlen(mem) + 1;
     if(self.len + size + 1 + 1 + 1 >= self.size) {
-        char*% old_buf = new char~~[self.size];
+        char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3328,11 +3246,11 @@ uniq buffer* buffer*::append_int(buffer* self, int value)
     int size = sizeof(int);
     
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char~~[self.size];
+        char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3351,11 +3269,11 @@ uniq buffer* buffer*::append_long(buffer* self, long value)
     int size = sizeof(long);
     
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char~~[self.size];
+        char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3378,11 +3296,11 @@ uniq buffer* buffer*::append_short(buffer* self, short value)
     int size = sizeof(short);
     
     if(self.len + size + 1 + 1 >= self.size) {
-        char*% old_buf = new char~~[self.size];
+        char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
         int old_len = self.len;
         int new_size = (self.size + size + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
         self.buf[old_len] = '\0';
         self.size = new_size;
@@ -3406,7 +3324,7 @@ uniq buffer* buffer*::alignment(buffer* self)
     
     if(len >= self.size) {
         int new_size = (self.size + 1 + 1) * 2;
-        self.buf = new char~~[new_size];
+        self.buf = new char[new_size];
         self.size = new_size;
     }
 
@@ -3436,7 +3354,7 @@ uniq int buffer*::compare(buffer* left, buffer* right)
 
 uniq buffer*% char*::to_buffer(char* self) 
 {
-    var result = new buffer~~.initialize();
+    var result = new buffer.initialize();
     
     if(self == null) {
         return result;
@@ -3463,14 +3381,14 @@ uniq unsigned char* buffer*::head_pointer(buffer* self)
 
 uniq buffer*% char[]::to_buffer(char* self, size_t len) 
 {
-    var result = new buffer~~();
+    var result = new buffer();
     result.append(self, sizeof(char)*len);
     return result;
 }
 
 uniq buffer*% char*[]::to_buffer(char** self, size_t len) 
 {
-    var result = new buffer~~();
+    var result = new buffer();
     for(int i=0; i<len; i++) {
         result.append(self[i], strlen(self[i]));
     }
@@ -3479,35 +3397,35 @@ uniq buffer*% char*[]::to_buffer(char** self, size_t len)
 
 uniq buffer*% short[]::to_buffer(short* self, size_t len) 
 {
-    var result = new buffer~~();
+    var result = new buffer();
     result.append((char*)self, sizeof(short)*len);
     return result;
 }
 
 uniq buffer*% int[]::to_buffer(int* self, size_t len) 
 {
-    var result = new buffer~~();
+    var result = new buffer();
     result.append((char*)self, sizeof(int)*len);
     return result;
 }
 
 uniq buffer*% long[]::to_buffer(long* self, size_t len) 
 {
-    var result = new buffer~~();
+    var result = new buffer();
     result.append((char*)self, sizeof(long)*len);
     return result;
 }
 
 uniq buffer*% float[]::to_buffer(float* self, size_t len) 
 {
-    var result = new buffer~~();
+    var result = new buffer();
     result.append((char*)self, sizeof(float)*len);
     return result;
 }
 
 uniq buffer*% double[]::to_buffer(double* self, size_t len) 
 {
-    var result = new buffer~~();
+    var result = new buffer();
     result.append((char*)self, sizeof(double)*len);
     return result;
 }
@@ -3515,7 +3433,7 @@ uniq buffer*% double[]::to_buffer(double* self, size_t len)
 uniq string buffer*::printable(buffer* self)
 {
     int len = self.len;
-    string result = new char~~[len*2+1];
+    string result = new char[len*2+1];
 
     int n = 0;
     for(int i=0; i<len; i++) {
@@ -3543,7 +3461,7 @@ uniq string buffer*::printable(buffer* self)
 impl list <T>
 {
     buffer*% to_buffer(list<T>* self) {
-        var result = new buffer~~();
+        var result = new buffer();
         foreach(it, self) {
             result.append((char*)&it, sizeof(T));
         }
@@ -3564,7 +3482,7 @@ impl smart_pointer<T>
 {
     smart_pointer<T>*% initialize(smart_pointer<T>*% self, void* memory, int size)
     {
-        self.memory = new buffer~~();
+        self.memory = new buffer();
         
         self.memory.append(memory, sizeof(T)*size);
         
@@ -3850,7 +3768,7 @@ uniq smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
 impl list <T>
 {
     smart_pointer<T>*% to_pointer(list<T>* self) {
-        var buf = new buffer~~();
+        var buf = new buffer();
         
         foreach(it, self) {
             buf.append((char*)&it, sizeof(T));
@@ -3866,49 +3784,49 @@ impl list <T>
 //////////////////////////////
 uniq smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) 
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     buf.append((char*)self, sizeof(char)*len);
     return new smart_pointer<char>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<char*>*% char*[]::to_pointer(char** self, size_t len) 
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     buf.append((char*)self, sizeof(char*)*len);
     return new smart_pointer<char*>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) 
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     buf.append((char*)self, sizeof(short)*len);
     return new smart_pointer<short>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) 
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     buf.append((char*)self, sizeof(int)*len);
     return new smart_pointer<int>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) 
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     buf.append((char*)self, sizeof(long)*len);
     return new smart_pointer<long>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) 
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     buf.append((char*)self, sizeof(float)*len);
     return new smart_pointer<float>.initialize_with_value(buf);
 }
 
 uniq smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) 
 {
-    var buf = new buffer~~();
+    var buf = new buffer();
     buf.append((char*)self, sizeof(double)*len);
     return new smart_pointer<double>.initialize_with_value(buf);
 }
@@ -4159,7 +4077,7 @@ uniq string char*::operator_add(char* self, char* right)
     }
     int len = strlen(self) + strlen(right);
    
-    char*% result = new char~~[len+1];
+    char*% result = new char[len+1];
     
     strncpy(result, self, len+1);
     strncat(result, right, len+1);
@@ -4174,7 +4092,7 @@ uniq string string::operator_add(char* self, char* right)
     }
     int len = strlen(self) + strlen(right);
    
-    char*% result = new char~~[len+1];
+    char*% result = new char[len+1];
     
     strncpy(result, self, len+1);
     strncat(result, right, len+1);
@@ -4187,7 +4105,7 @@ uniq string char*::operator_mult(char* self, int right)
     if(self == null) {
         return string("");
     }
-    var buf = new buffer~~();
+    var buf = new buffer();
     
     for(int i=0; i<right; i++) {
         buf.append_str(self);
@@ -4201,7 +4119,7 @@ uniq string string::operator_mult(char* self, int right)
     if(self == null) {
         return string("");
     }
-    var buf = new buffer~~();
+    var buf = new buffer();
     
     for(int i=0; i<right; i++) {
         buf.append_str(self);
@@ -4384,16 +4302,6 @@ uniq string string::clone(char* self)
     return string(self);
 }
 
-/*
-uniq void char*::finalize(char* self)
-{
-}
-
-uniq string string::finalize(char* self)
-{
-}
-*/
-
 //////////////////////////////
 /// base library(character code)
 //////////////////////////////
@@ -4475,7 +4383,7 @@ uniq string char*::reverse(char* str)
         return string("");
     }
     int len = strlen(str);
-    char*% result = new char~~[len + 1];
+    char*% result = new char[len + 1];
 
     for(int i=0; i<len; i++) {
         result[i] = str[len-i-1];
@@ -4521,7 +4429,7 @@ uniq string string::operator_load_range_element(char* str, int head, int tail)
         return string("");
     }
 
-    string result = new char~~[tail-head+1];
+    string result = new char[tail-head+1];
 
     memcpy(result, str + head, tail-head);
     result[tail-head] = '\0';
@@ -4564,7 +4472,7 @@ uniq string char*::operator_load_range_element(char* str, int head, int tail)
         return string("");
     }
 
-    string result = new char~~[tail-head+1];
+    string result = new char[tail-head+1];
 
     memcpy(result, str + head, tail-head);
     result[tail-head] = '\0';
@@ -4607,7 +4515,7 @@ uniq string char*::substring(char* str, int head, int tail)
         return string("");
     }
 
-    string result = new char~~[tail-head+1];
+    string result = new char[tail-head+1];
 
     memcpy(result, str + head, tail-head);
     result[tail-head] = '\0';
@@ -4669,7 +4577,7 @@ uniq string char*::delete(char* str, int head, int tail)
         tail = len;
     }
     
-    char*% result = new char~~[len-(tail-head)+1];
+    char*% result = new char[len-(tail-head)+1];
     
     memcpy(result, str, head);
     memcpy(result + head, str + tail, len-tail);
@@ -4687,7 +4595,7 @@ uniq list<string>*% char*::split_char(char* self, char c)
     
     auto result = new list<string>.initialize();
 
-    auto str = new buffer~~.initialize();
+    auto str = new buffer.initialize();
 
     for(int i=0; i<self.length(); i++) {
         if(self[i] == c) {
@@ -4719,7 +4627,7 @@ uniq string int::xsprintf(int self, char* msg, ...)
 uniq string char*::printable(char* str)
 {
     int len = str.length();
-    string result = new char~~[len*2+1];
+    string result = new char[len*2+1];
 
     int n = 0;
     for(int i=0; i<len; i++) {
@@ -4747,7 +4655,7 @@ uniq string char*::sub_plain(char* self, char* str, char* replace)
         return string(self);
     }
 
-    auto result = new buffer~~.initialize();
+    auto result = new buffer.initialize();
     
     char* p = self;
     
@@ -5083,7 +4991,7 @@ uniq string FILE*::read(FILE* f)
     if(f == null) {
         return string("");
     }
-    buffer*% buf = new buffer~~.initialize();
+    buffer*% buf = new buffer.initialize();
     
     while(1) {
         char buf2[BUFSIZ];
@@ -5191,7 +5099,7 @@ uniq string char*::read(char* file_name)
         return string("");
     }
     
-    buffer*% buf = new buffer~~.initialize();
+    buffer*% buf = new buffer.initialize();
     
     while(1) {
         char buf2[BUFSIZ];
@@ -5235,24 +5143,6 @@ uniq list<string>*% FILE*::readlines(FILE* f)
     }
     
     return result;
-}
-
-uniq int fopen_block(const char* path, const char* mode, void* parent, void (*block)(void* parent, FILE* f))
-{
-    if(path == null || mode == null) {
-        return -1;
-    }
-    FILE* f = fopen(path, mode);
-    
-    if(f) {
-        block(parent, f);
-        
-        fclose(f);
-        
-        return 0;
-    }
-    
-    return -1;
 }
 
 //////////////////////////////
@@ -5304,16 +5194,6 @@ uniq int int::printf(int self, char* msg)
     return self;
 }
 
-//////////////////////////////
-/// loop
-//////////////////////////////
-uniq void int::times(int self, void* parent, void (*block)(void* parent, int it))
-{
-    for(int i = 0; i < self; i++) {
-        block(parent, i);
-    }
-}
-
 #undef assert
 
 uniq record int assert(int exp) version 2
@@ -5325,503 +5205,6 @@ uniq record int assert(int exp) version 2
         stackframe();
         exit(2);
     }
-}
-
-//////////////////////////////
-/// regex
-//////////////////////////////
-/*
- *
- * Mini regex-module inspired by Rob Pike's regex code described in:
- *
- * http://www.cs.princeton.edu/courses/archive/spr09/cos333/beautiful.html
- *
- *
- *
- * Supports:
- * ---------
- *   '.'        Dot, matches any character
- *   '^'        Start anchor, matches beginning of string
- *   '$'        End anchor, matches end of string
- *   '*'        Asterisk, match zero or more (greedy)
- *   '+'        Plus, match one or more (greedy)
- *   '?'        Question, match zero or one (non-greedy)
- *   '[abc]'    Character class, match if one of {'a', 'b', 'c'}
- *   '[^abc]'   Inverted class, match if NOT one of {'a', 'b', 'c'} -- NOTE: feature is currently broken!
- *   '[a-zA-Z]' Character ranges, the character set of the ranges { a-z | A-Z }
- *   '\s'       Whitespace, \t \f \r \n \v and spaces
- *   '\S'       Non-whitespace
- *   '\w'       Alphanumeric, [a-zA-Z0-9_]
- *   '\W'       Non-alphanumeric
- *   '\d'       Digits, [0-9]
- *   '\D'       Non-digits
- *
- *
- */
-
-
-
-#ifndef RE_DOT_MATCHES_NEWLINE
-/* Define to 0 if you DON'T want '.' to match '\r' + '\n' */
-#define RE_DOT_MATCHES_NEWLINE 1
-#endif
-
-typedef struct regex_t* re_t;
-
-re_t re_compile(const char* pattern);
-int re_matchp(re_t pattern, const char* text, int* matchlength);
-int re_match(const char* pattern, const char* text, int* matchlength);
-
-
-/* Definitions: */
-
-#define MAX_REGEXP_OBJECTS      30    /* Max number of regex symbols in expression. */
-#define MAX_CHAR_CLASS_LEN      40    /* Max length of character-class buffer in.   */
-
-
-enum { UNUSED, DOT, BEGIN, END, QUESTIONMARK, STAR, PLUS, CHAR, CHAR_CLASS, INV_CHAR_CLASS, DIGIT, NOT_DIGIT, ALPHA, NOT_ALPHA, WHITESPACE, NOT_WHITESPACE, /* BRANCH */ };
-
-typedef struct regex_t
-{
-  unsigned char  type;   /* CHAR, STAR, etc.                      */
-  union
-  {
-    unsigned char  ch;   /*      the character itself             */
-    unsigned char* ccl;  /*  OR  a pointer to characters in class */
-  } u;
-} regex_t;
-
-
-
-/* Private function declarations: */
-uniq int matchpattern(regex_t* pattern, const char* text, int* matchlength);
-uniq int matchcharclass(char c, const char* str);
-uniq int matchstar(regex_t p, regex_t* pattern, const char* text, int* matchlength);
-uniq int matchplus(regex_t p, regex_t* pattern, const char* text, int* matchlength);
-uniq int matchone(regex_t p, char c);
-uniq int matchdigit(char c);
-uniq int matchalpha(char c);
-uniq int matchwhitespace(char c);
-uniq int matchmetachar(char c, const char* str);
-uniq int matchrange(char c, const char* str);
-uniq int matchdot(char c);
-uniq int ismetachar(char c);
-
-
-uniq int re_match(const char* pattern, const char* text, int* matchlength)
-{
-  return re_matchp(re_compile(pattern), text, matchlength);
-}
-
-uniq int re_matchp(re_t pattern, const char* text, int* matchlength)
-{
-  *matchlength = 0;
-  if (pattern != 0)
-  {
-    if (pattern[0].type == BEGIN)
-    {
-      return ((matchpattern(&pattern[1], text, matchlength)) ? 0 : -1);
-    }
-    else
-    {
-      int idx = -1;
-
-      do
-      {
-        idx += 1;
-
-        if (matchpattern(pattern, text, matchlength))
-        {
-          if (text[0] == '\0')
-            return -1;
-
-          return idx;
-        }
-      }
-      while (*text++ != '\0');
-    }
-  }
-  return -1;
-}
-
-uniq re_t re_compile(const char* pattern)
-{
-  /* The sizes of the two static arrays below substantiates the static RAM usage of this module.
-     MAX_REGEXP_OBJECTS is the max number of symbols in the expression.
-     MAX_CHAR_CLASS_LEN determines the size of buffer for chars in all char-classes in the expression. */
-  static regex_t re_compiled[MAX_REGEXP_OBJECTS];
-  static unsigned char ccl_buf[MAX_CHAR_CLASS_LEN];
-  int ccl_bufidx = 1;
-
-  char c;     /* current char in pattern   */
-  int i = 0;  /* index into pattern        */
-  int j = 0;  /* index into re_compiled    */
-
-  while (pattern[i] != '\0' && (j+1 < MAX_REGEXP_OBJECTS))
-  {
-    c = pattern[i];
-
-    switch (c)
-    {
-      /* Meta-characters: */
-      case '^': {    re_compiled[j].type = BEGIN;           } break;
-      case '$': {    re_compiled[j].type = END;             } break;
-      case '.': {    re_compiled[j].type = DOT;             } break;
-      case '*': {    re_compiled[j].type = STAR;            } break;
-      case '+': {    re_compiled[j].type = PLUS;            } break;
-      case '?': {    re_compiled[j].type = QUESTIONMARK;    } break;
-/*    case '|': {    re_compiled[j].type = BRANCH;          } break; <-- not working properly */
-
-      /* Escaped character-classes (\s \w ...): */
-      case '\\':
-      {
-        if (pattern[i+1] != '\0')
-        {
-          /* Skip the escape-char '\\' */
-          i += 1;
-          /* ... and check the next */
-          switch (pattern[i])
-          {
-            /* Meta-character: */
-            case 'd': {    re_compiled[j].type = DIGIT;            } break;
-            case 'D': {    re_compiled[j].type = NOT_DIGIT;        } break;
-            case 'w': {    re_compiled[j].type = ALPHA;            } break;
-            case 'W': {    re_compiled[j].type = NOT_ALPHA;        } break;
-            case 's': {    re_compiled[j].type = WHITESPACE;       } break;
-            case 'S': {    re_compiled[j].type = NOT_WHITESPACE;   } break;
-
-            /* Escaped character, e.g. '.' or '$' */
-            default:
-            {
-              re_compiled[j].type = CHAR;
-              re_compiled[j].u.ch = pattern[i];
-            } break;
-          }
-        }
-        /* '\\' as last char in pattern -> invalid regular expression. */
-/*
-        else
-        {
-          re_compiled[j].type = CHAR;
-          re_compiled[j].ch = pattern[i];
-        }
-*/
-      } break;
-
-      /* Character class: */
-      case '[':
-      {
-        /* Remember where the char-buffer starts. */
-        int buf_begin = ccl_bufidx;
-
-        /* Look-ahead to determine if negated */
-        if (pattern[i+1] == '^')
-        {
-          re_compiled[j].type = INV_CHAR_CLASS;
-          i += 1; /* Increment i to avoid including '^' in the char-buffer */
-          if (pattern[i+1] == 0) /* incomplete pattern, missing non-zero char after '^' */
-          {
-            return (re_t)0;
-          }
-        }
-        else
-        {
-          re_compiled[j].type = CHAR_CLASS;
-        }
-
-        /* Copy characters inside [..] to buffer */
-        while (    (pattern[++i] != ']')
-                && (pattern[i]   != '\0')) /* Missing ] */
-        {
-          if (pattern[i] == '\\')
-          {
-            if (ccl_bufidx >= MAX_CHAR_CLASS_LEN - 1)
-            {
-              //fputs("exceeded internal buffer!\n", stderr);
-              return (re_t)0;
-            }
-            if (pattern[i+1] == 0) /* incomplete pattern, missing non-zero char after '\\' */
-            {
-              return (re_t)0;
-            }
-            ccl_buf[ccl_bufidx++] = pattern[i++];
-          }
-          else if (ccl_bufidx >= MAX_CHAR_CLASS_LEN)
-          {
-              //fputs("exceeded internal buffer!\n", stderr);
-              return (re_t)0;
-          }
-          ccl_buf[ccl_bufidx++] = pattern[i];
-        }
-        if (ccl_bufidx >= MAX_CHAR_CLASS_LEN)
-        {
-            /* Catches cases such as [00000000000000000000000000000000000000][ */
-            //fputs("exceeded internal buffer!\n", stderr);
-            return (re_t)0;
-        }
-        /* Null-terminate string end */
-        ccl_buf[ccl_bufidx++] = 0;
-        re_compiled[j].u.ccl = &ccl_buf[buf_begin];
-      } break;
-
-      /* Other characters: */
-      default:
-      {
-        re_compiled[j].type = CHAR;
-        re_compiled[j].u.ch = c;
-      } break;
-    }
-    /* no buffer-out-of-bounds access on invalid patterns - see https://github.com/kokke/tiny-regex-c/commit/1a279e04014b70b0695fba559a7c05d55e6ee90b */
-    if (pattern[i] == 0)
-    {
-      return (re_t) 0;
-    }
-
-    i += 1;
-    j += 1;
-  }
-  /* 'UNUSED' is a sentinel used to indicate end-of-pattern */
-  re_compiled[j].type = UNUSED;
-
-  return (re_t) re_compiled;
-}
-
-uniq void re_print(regex_t* pattern)
-{
-  const char* types[] = { "UNUSED", "DOT", "BEGIN", "END", "QUESTIONMARK", "STAR", "PLUS", "CHAR", "CHAR_CLASS", "INV_CHAR_CLASS", "DIGIT", "NOT_DIGIT", "ALPHA", "NOT_ALPHA", "WHITESPACE", "NOT_WHITESPACE", "BRANCH" };
-
-  int i;
-  int j;
-  char c;
-  for (i = 0; i < MAX_REGEXP_OBJECTS; ++i)
-  {
-    if (pattern[i].type == UNUSED)
-    {
-      break;
-    }
-
-    printf("type: %s", types[pattern[i].type]);
-    if (pattern[i].type == CHAR_CLASS || pattern[i].type == INV_CHAR_CLASS)
-    {
-      printf(" [");
-      for (j = 0; j < MAX_CHAR_CLASS_LEN; ++j)
-      {
-        c = pattern[i].u.ccl[j];
-        if ((c == '\0') || (c == ']'))
-        {
-          break;
-        }
-        printf("%c", c);
-      }
-      printf("]");
-    }
-    else if (pattern[i].type == CHAR)
-    {
-      printf(" '%c'", pattern[i].u.ch);
-    }
-    printf("\n");
-  }
-}
-
-uniq int matchdigit(char c)
-{
-  return isdigit(c);
-}
-uniq int matchalpha(char c)
-{
-  return isalpha(c);
-}
-uniq int matchwhitespace(char c)
-{
-  return isspace(c);
-}
-uniq int matchalphanum(char c)
-{
-  return ((c == '_') || matchalpha(c) || matchdigit(c));
-}
-uniq int matchrange(char c, const char* str)
-{
-  return (    (c != '-')
-           && (str[0] != '\0')
-           && (str[0] != '-')
-           && (str[1] == '-')
-           && (str[2] != '\0')
-           && (    (c >= str[0])
-                && (c <= str[2])));
-}
-uniq int matchdot(char c)
-{
-#if defined(RE_DOT_MATCHES_NEWLINE) && (RE_DOT_MATCHES_NEWLINE == 1)
-  (void)c;
-  return 1;
-#else
-  return c != '\n' && c != '\r';
-#endif
-}
-uniq int ismetachar(char c)
-{
-  return ((c == 's') || (c == 'S') || (c == 'w') || (c == 'W') || (c == 'd') || (c == 'D'));
-}
-
-uniq int matchmetachar(char c, const char* str)
-{
-  switch (str[0])
-  {
-    case 'd': return  matchdigit(c);
-    case 'D': return !matchdigit(c);
-    case 'w': return  matchalphanum(c);
-    case 'W': return !matchalphanum(c);
-    case 's': return  matchwhitespace(c);
-    case 'S': return !matchwhitespace(c);
-    default:  return (c == str[0]);
-  }
-}
-
-uniq int matchcharclass(char c, const char* str)
-{
-  do
-  {
-    if (matchrange(c, str))
-    {
-      return 1;
-    }
-    else if (str[0] == '\\')
-    {
-      /* Escape-char: increment str-ptr and match on next char */
-      str += 1;
-      if (matchmetachar(c, str))
-      {
-        return 1;
-      }
-      else if ((c == str[0]) && !ismetachar(c))
-      {
-        return 1;
-      }
-    }
-    else if (c == str[0])
-    {
-      if (c == '-')
-      {
-        return ((str[-1] == '\0') || (str[1] == '\0'));
-      }
-      else
-      {
-        return 1;
-      }
-    }
-  }
-  while (*str++ != '\0');
-
-  return 0;
-}
-
-uniq int matchone(regex_t p, char c)
-{
-  switch (p.type)
-  {
-    case DOT:            return matchdot(c);
-    case CHAR_CLASS:     return  matchcharclass(c, (const char*)p.u.ccl);
-    case INV_CHAR_CLASS: return !matchcharclass(c, (const char*)p.u.ccl);
-    case DIGIT:          return  matchdigit(c);
-    case NOT_DIGIT:      return !matchdigit(c);
-    case ALPHA:          return  matchalphanum(c);
-    case NOT_ALPHA:      return !matchalphanum(c);
-    case WHITESPACE:     return  matchwhitespace(c);
-    case NOT_WHITESPACE: return !matchwhitespace(c);
-    default:             return  (p.u.ch == c);
-  }
-}
-
-uniq int matchstar(regex_t p, regex_t* pattern, const char* text, int* matchlength)
-{
-  int prelen = *matchlength;
-  const char* prepoint = text;
-  while ((text[0] != '\0') && matchone(p, *text))
-  {
-    text++;
-    (*matchlength)++;
-  }
-  while (text >= prepoint)
-  {
-    if (matchpattern(pattern, text--, matchlength))
-      return 1;
-    (*matchlength)--;
-  }
-
-  *matchlength = prelen;
-  return 0;
-}
-
-uniq int matchplus(regex_t p, regex_t* pattern, const char* text, int* matchlength)
-{
-  const char* prepoint = text;
-  while ((text[0] != '\0') && matchone(p, *text))
-  {
-    text++;
-    (*matchlength)++;
-  }
-  while (text > prepoint)
-  {
-    if (matchpattern(pattern, text--, matchlength))
-      return 1;
-    (*matchlength)--;
-  }
-
-  return 0;
-}
-
-uniq int matchquestion(regex_t p, regex_t* pattern, const char* text, int* matchlength)
-{
-  if (p.type == UNUSED)
-    return 1;
-  if (matchpattern(pattern, text, matchlength))
-      return 1;
-  if (*text && matchone(p, *text++))
-  {
-    if (matchpattern(pattern, text, matchlength))
-    {
-      (*matchlength)++;
-      return 1;
-    }
-  }
-  return 0;
-}
-
-
-/* Iterative matching */
-uniq int matchpattern(regex_t* pattern, const char* text, int* matchlength)
-{
-  int pre = *matchlength;
-  do
-  {
-    if ((pattern[0].type == UNUSED) || (pattern[1].type == QUESTIONMARK))
-    {
-      return matchquestion(pattern[0], &pattern[2], text, matchlength);
-    }
-    else if (pattern[1].type == STAR)
-    {
-      return matchstar(pattern[0], &pattern[2], text, matchlength);
-    }
-    else if (pattern[1].type == PLUS)
-    {
-      return matchplus(pattern[0], &pattern[2], text, matchlength);
-    }
-    else if ((pattern[0].type == END) && pattern[1].type == UNUSED)
-    {
-      return (text[0] == '\0');
-    }
-/*  Branching is not working properly
-    else if (pattern[1].type == BRANCH)
-    {
-      return (matchpattern(pattern, text) || matchpattern(&pattern[2], text));
-    }
-*/
-  (*matchlength)++;
-  }
-  while ((text[0] != '\0') && matchone(*pattern++, *text++));
-
-  *matchlength = pre;
-  return 0;
 }
 
 uniq bool wchar_t::equals(wchar_t left, wchar_t right)

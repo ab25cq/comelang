@@ -1,13 +1,12 @@
 #include <comelang.h>
 
-int fun(char* aaa)
+int*?? fun()
 {
-    var a  = new list<int>();
-    return 1;
+    return null;
 }
 
 int main(int argc, char** argv) {
-    fun(s"AAA");
+    fun();
     return 0;
 }
 

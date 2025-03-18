@@ -2135,17 +2135,11 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     result_type->mStatic = false;
     result_type->mUniq = false;
     
-    bool generate_ = false;
-    if(result_type->mGenerate) {
-        result_type->mGenerate = false;
-        generate_ = true;
-    }
-    
     bool var_args = generics_fun.mVarArgs;
     var fun = new sFun(fun_name, result_type
                     , clone param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, info, false@inline_, false@uniq_, generate_);
+                    , var_args, block, true@static_, info, false@inline_, false@uniq_, false@generate_);
     
     info.funcs.insert(string(fun_name), fun);
     
@@ -2328,7 +2322,6 @@ sNode*% parse_function(sInfo* info)
         result_type->mInline = false;
         result_type->mStatic = false;
         result_type->mUniq = false;
-        result_type->mGenerate = false;
         
         var fun = new sFun(string(fun_name), result_type, param_types, param_names
                             , param_default_parametors
@@ -2406,12 +2399,10 @@ sNode*% parse_function(sInfo* info)
             result_type->mStatic = false;
             uniq_fun = true;
         }
-        bool generate_fun = false;
         if(result_type->mUniq) {
             result_type->mUniq = false;
             result_type->mInline = false;
             result_type->mStatic = false;
-            generate_fun = true;
         }
         
         var fun = new sFun(string(fun_name), result_type, param_types
@@ -2419,7 +2410,7 @@ sNode*% parse_function(sInfo* info)
                                 , param_default_parametors
                                 , false@external, var_args, clone block
                                 , static_fun@static_
-                                , info, inline_fun, uniq_fun, generate_fun, attribute, fun_attribute);
+                                , info, inline_fun, uniq_fun, false@generate_fun, attribute, fun_attribute);
         
         
         if(info.output_header_file) {
@@ -2455,7 +2446,6 @@ sNode*% parse_function(sInfo* info)
             result_type->mStatic = false;
             result_type->mUniq = false;
             result_type->mInline = false;
-            result_type->mGenerate = false;
             
             var fun = new sFun(string(fun_name), result_type
                                 , param_types, param_names
@@ -2491,7 +2481,6 @@ sNode*% parse_function(sInfo* info)
             result_type->mStatic = false;
             result_type->mUniq = false;
             result_type->mInline = false;
-            result_type->mGenerate = false;
             
             var fun = new sFun(string(fun_name), result_type, param_types
                                 , param_names
@@ -2682,7 +2671,6 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
             result_type->mStatic = false;
             result_type->mUniq = false;
             result_type->mInline = false;
-            result_type->mGenerate = false;
             
             var fun2 = info.funcs[string(name)]??;
             if(fun2 == null || fun2.mExternal) {
@@ -2802,7 +2790,6 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
-        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -2940,7 +2927,6 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
-        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3075,7 +3061,6 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
-        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3195,7 +3180,6 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
-        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3413,7 +3397,6 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
-        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         
@@ -3553,7 +3536,6 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
-        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {
@@ -3906,7 +3888,6 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
         result_type->mStatic = false;
         result_type->mUniq = false;
         result_type->mInline = false;
-        result_type->mGenerate = false;
         
         var fun2 = info.funcs[string(name)]??;
         if(fun2 == null || fun2.mExternal) {

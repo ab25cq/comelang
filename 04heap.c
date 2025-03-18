@@ -67,17 +67,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
         bool null_value = type->mNullValue;
-        bool generate_ = type->mGenerate;
-        bool vtable = type->mCreateVTable;
         
         result = clone info->method_generics_types[generics_number];
 
-        if(generate_) {
-            result->mGenerate = generate_;
-        }
-        if(vtable) {
-            result->mCreateVTable = vtable;
-        }
         if(heap) {
             result->mHeap = heap;
         }
@@ -136,17 +128,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool record_ = type->mRecord;
             bool multiple_types = type->mMultipleTypes;
             bool exception_ = type->mException;
-            bool generate_ = type->mGenerate;
-            bool vtable = type->mCreateVTable;
             
             result = clone generics_type->mGenericsTypes[generics_number];
 
-            if(vtable) {
-                result->mCreateVTable = vtable;
-            }
-            if(generate_) {
-                result->mGenerate = generate_;
-            }
             if(heap) {
                 result->mHeap = heap;
             }
@@ -229,17 +213,9 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool no_calling_destructor = type->mNoCallingDestructor;
         bool null_value = type->mNullValue;
         bool exception_ = type->mException;
-        bool generate_ = type->mGenerate;
-        bool vtable = type->mCreateVTable;
         
         result = clone info->method_generics_types[generics_number];
 
-        if(vtable) {
-            result->mCreateVTable = vtable;
-        }
-        if(generate_) {
-            result->mGenerate = generate_;
-        }
         if(heap) {
             result->mHeap = heap || result->mHeap;
         }

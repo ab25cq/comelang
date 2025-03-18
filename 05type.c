@@ -43,7 +43,6 @@ bool is_type_name(char* buf, sInfo* info=info)
         || buf === "_Atomic"
         || ((buf === "__attribute" || buf === "__attribute__") && *info->p == '(')
         || (buf === "immutable")
-        || (buf === "generate")
         || (buf === "mutable")
         || (buf === "tup" && (*info->p == ':' || *info->p == '('))
         || (info.in_top_level && buf === "exception") 
@@ -1025,7 +1024,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool inline_ = false;
     bool uniq_ = false;
     bool tuple_ = false;
-    bool generate_ = false;
     
     sNode*% alignas_ = null;
     
@@ -1165,11 +1163,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else if(type_name === "volatile") {
             volatile_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "generate") {
-            generate_ = true;
             
             type_name = parse_word();
         }
@@ -1959,7 +1952,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
-        result_type->mGenerate = generate_;
         result_type->mRecord = result_type->mRecord || record_;
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
@@ -1973,7 +1965,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum = pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
-        result_type->mCreateVTable = result_type->mCreateVTable || vtable;
         
         var_name = parse_word();
         
@@ -2033,7 +2024,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
         result_type->mVolatile = volatile_;
-        result_type->mGenerate = generate_;
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
         result_type->mRecord = result_type->mRecord || record_;
@@ -2047,7 +2037,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum += pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
-        result_type->mCreateVTable = result_type->mCreateVTable || vtable;
         
         if(xisalnum(*info.p) || *info->p == '_') {
             var_name = parse_word();
@@ -2186,7 +2175,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2200,7 +2188,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         else if(info.generics_type_names.contained(type_name)) {
@@ -2216,7 +2203,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2230,7 +2216,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         else if(info.method_generics_type_names.contained(type_name)) {
@@ -2246,7 +2231,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2260,7 +2244,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         else if(*info->p == '<') {
@@ -2317,7 +2300,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2331,7 +2313,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
             
             type_name = type->mClass->mName;
@@ -2360,7 +2341,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
             type->mVolatile = volatile_;
-            type->mGenerate = generate_;
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
@@ -2374,7 +2354,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
-            type->mCreateVTable = type->mCreateVTable || vtable;
             type->mTupleName = tuple_name;
         }
         
@@ -2464,11 +2443,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 skip_spaces_and_lf();
                 
                 skip_pointer_attribute();
-                
-                type->mCreateVTable = true;
-                if(type->mNoSolvedGenericsType) {
-                    type->mNoSolvedGenericsType.mCreateVTable = true;
-                }
             }
             else if(gComePthread && *info->p == '@') {
                 info->p++;
@@ -2544,11 +2518,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                     skip_spaces_and_lf();
                     
                     skip_pointer_attribute();
-                    
-                    type->mCreateVTable = true;
-                    if(type->mNoSolvedGenericsType) {
-                        type->mNoSolvedGenericsType.mCreateVTable = true;
-                    }
                 }
                 else if(gComePthread && *info->p == '@') {
                     info->p++;

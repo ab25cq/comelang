@@ -203,7 +203,9 @@ bool vm(sInfo* info) version 10
             
             switch(obj.kind) {
                 case kStrValue: {
-                    var result2 = str_method(fun_name, obj, params, codes, info).catch {
+                    var result2,err = str_method(fun_name, obj, params, codes, info);
+                    
+                    if(!err) {
                         exit(1);
                     }
                     
