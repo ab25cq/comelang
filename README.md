@@ -238,9 +238,9 @@ POSIXには準拠していませんが、C言語と互換性があります。�
 
 # Libraries
 
-The grammar library includes list, vector, map, tuple, buffer, and string. 
+The grammar library includes list, map, tuple, buffer, and string. 
 
-ライブラリにはlist, vector, map, tuple, buffer, stringがあります。
+ライブラリにはlist, map, tuple, buffer, stringがあります。
 
 # list
 
@@ -461,7 +461,7 @@ ABC\nDEF\nGHI\n will be output. Method block arguments are stored in it, it2, an
 ABC\nDEF\nGHI\nが出力されます。メソッドブロックはit,it2,it3にメソッドブロックの引数が格納されます。この場合itは各要素が入っています。foreachと違い、break, continue, returnは実行できません。returnするとメソッドブロックから脱出するだけです。
 
 ```C
-T& item(list<T>* self, int position, T default_value) 
+T item(list<T>* self, int position, T default_value) 
 ```
 
 ```C
@@ -611,7 +611,7 @@ list<T>*% sublist(list<T>* self, int begin, int tail)
 
 
 ```C
-T&?? operator_load_element(list<T>* self, int position) 
+T?? operator_load_element(list<T>* self, int position) 
 ```
 
 ```C
@@ -638,7 +638,7 @@ If the index is not found, null check will result in a dynamic error if ?? is no
 ```
 
 ```C
-T& operator_store_element(list<T>* self, int position, T item) 
+void operator_store_element(list<T>* self, int position, T item) 
 ```
 
 ```C
@@ -939,15 +939,7 @@ map<T,T2>* insert(map<T,T2>* self, T key, T2 item)
 ```
 
 ```C
-map<T,T2>* insert2(map<T,T2>* self, T key, T2 item) 
-```
-
-Same as insert. I think it was used with clone. This is because if you only insert it, it will cause an infinite loop.
-
-insertと同じです。cloneで使用していたと思います。insertだけだと無限ループするためでした。
-
-```C
-T2&?? operator_load_element(map<T, T2>* self, T& key) 
+T2?? operator_load_element(map<T, T2>* self, T& key) 
 ```
 
 ```
@@ -972,7 +964,7 @@ If the key is not found, null check will result in a dynamic error if ?? is not 
 ```
 
 ```C
-T2 operator_store_element(map<T, T2>* self, T key, T2 item) 
+void operator_store_element(map<T, T2>* self, T key, T2 item) 
 ```
 
 ```
@@ -1083,33 +1075,6 @@ tupleは5つまで定義されてます。
     tu.to_string().puts(); // (1,2,3,ABC,DEF)
 ```
 
-I think tuple has catch and can be used for simple exception handling.
-
-tupleにはcatchがあり簡易的な例外処理として使えると思います。
-
-```
-int, bool div(int a, int b)
-{
-    if(b == 0) {
-        return (0, false);
-    }
-    
-    return (a/b, true);
-}
-
-int main(int argc, char* argv)
-{
-    int value = div(1,0).catch {
-        puts("0 divition");   // // Enter here because we are dividing by 0. 0で割っているため、ここに入る
-        exit(1);
-    }
-    
-    printf("value %d\n", value);
-    
-    return 0;
-}
-```
-
 int, bool have the same meaning as tuple2<int, bool>*%. Used to return multiple values. When you want to store multiple values in each variable, you can use var a,b = div(1,1); Int is placed in a and bool is placed in b.
 
 To access the element, use v1 etc.
@@ -1153,176 +1118,6 @@ int main(int argc, char** argv)
     
     return 0;
 }
-```
-
-# vector
-
-Comparing with list, the random access with index is faster.
-
-listと違いランダムアクセス（indexによるアクセスが速いです。)
-
-```C
-vector<T>*% initialize(vector<T>*% self);
-```
-
-```C
-vector<T>*% clone(vector<T>* self);
-```
-
-```C
-void finalize(vector<T>* self);
-```
-
-```
-vector<T>*% operator_add(vector<T>* left, vector<T>* right);
-```
-
-```C
-    var v = new vector<int>();
-    v.add(1).add(2).add(3);
-    
-    var v2 = new vector<int>();
-    v2.add(4).add(5).add(6);
-    
-    var v3 = v + v2;
-    
-    foreach(it, v3) {
-        it.printf("%d\n");  //1\n2\n3\n4\n5\n6\n
-    }
-```
-
-```
-vector<T>*% operator_mult(vector<T>* left, vector<T>* right);
-```
-
-
-```C
-    var v = new vector<int>();
-    v.add(1).add(2).add(3);
-    
-    var v2 = v * 2;
-    
-    foreach(it, v3) {
-        it.printf("%d\n");  //1\n2\n3\n1\n2\n3\n
-    }
-```
-
-```C
-    bool operator_equals(vector<T>* left, vector<T>* right);
-```
-
-```C
-    var v = new vector<int>();
-    v.add(1).add(2).add(3);
-    
-    var v2 = new vector<int>();
-    v2.add(4).add(5).add(6);
-    
-    v === v2; // false
-```
-
-```C
-bool operator_not_equals(vector<T>* left, vector<T>* right);
-```
-
-```C
-    var v = new vector<int>();
-    v.add(1).add(2).add(3);
-    
-    var v2 = new vector<int>();
-    v2.add(4).add(5).add(6);
-    
-    v !== v2; // true
-```
-
-```C
-void operator_store_element(vector<T>* self, int index, T item);
-```
-
-```C
-    var v = new vector<int>();
-    v.add(1).add(2).add(3);
-    
-    v[0] = 7;
-    
-    foreach(it, v3) {
-        it.printf("%d\n");  //7\n2\n3\n
-    }
-```
-
-```C
-    T&?? operator_load_element(vector<T>* self, int index);
-```
-
-```C
-    var v = new vector<int>();
-    v.add(1).add(2).add(3);
-    
-    v[0].printf("%d\n"); // 1
-```
-    
-```C
-    vector<T>* push_back(vector<T>* self, T item);
-```
-    
-```C
-    vector<T>* add(vector<T>* self, T item);
-```
-
-```C
-T& item(vector<T>* self, int index, T default_value);
-```
-
-```C
-bool equals(vector<T>* left, vector<T>* right);
-````
-
-```C
-void replace(vector<T>* self, int index, T value);
-```
-
-```C
-int find(vector<T>* self, T& item, int default_value);
-```
-
-```C
-int length(vector<T>* self);
-```
-
-```C
-void reset(vector<T>* self);
-```
-
-```C
-T& begin(vector<T>* self);
-```
-
-```C
-T& next(vector<T>* self);
-```
-
-```C
-bool end(vector<T>* self);
-```
-
-```C
-void delete_back(vector<T>* self);
-```
-
-```C
-vector<T>*% quick_sort(vector<T>* self, int left, int right, int (*compare_)(T&, T&));
-```
-
-```C
-vector<T>*% sort_with_lambda(vector<T>* self, int (*compare_)(T&, T&));
-```
-
-```C
-list<T>*% to_list(vector<T>* self);
-```
-
-```C
-vector<T>*% sort(vector<T>* self) ;
 ```
 
 # buffer
@@ -1930,16 +1725,6 @@ list<string>*% FILE*::readlines(FILE* f);
 ```
 
 ```C
-int fopen_block(const char* path, const char* mode, void* parent, void (*block)(void* parent, FILE* f));
-```
-
-
-I forgot. do not use. Just fclose automatically after the block is released.
-
-
-忘れた。使わない。ブロックが出た後自動的にfcloseするだけ。
-
-```C
 int string::write(char* self, char* file_name, bool append=false);
 int char*::write(char* self, char* file_name, bool append=false) ;
 
@@ -1960,18 +1745,6 @@ It is also good to use true@append and annotations.
 
 append:falseだと追記なし。append:falseはパラメーターラベル。ソースファイルが見やすい。
 true@appendとアノテーションを使うのもいい。
-
-```C
-void int::times(int self, void* parent, void (*block)(void* parent, int it));
-```
-
-```
-    3.times { puts("HO!"); } // HO!HO!HO!
-```
-
-I just want to write shocking code in Ruby.
-
-Rubyで衝撃を受けたコードを書きたいだけ。
 
 # Default parameters, parameter labels
 
@@ -2147,7 +1920,7 @@ int main(int argc, char** argv)
 }
 ```
 
-# Protocol, interface
+# Interface
 
 ``` C
 #include <comelang.h>
@@ -2217,120 +1990,6 @@ int main(int argc, char** argv)
 
 ```
 
-# Null checking
-
-``` C
-> vin a.c
-#include <stdio.h>
-
-int main(int argc, char** argv)
-{
-    int* b = null;
-    
-    printf("null check %p\n", b!);
-    
-    return 0;
-}
-> comleang2 a.c
-> ./a
-b.c 7: null check
-```
-
-``` C
-> vin a.c
-#include <stdio.h>
-
-void fun(int* b)
-{
-}
-
-int main(int argc, char** argv)
-{
-    int*? b = nil;
-    
-    fun(b);
-    
-    return 0;
-}
-> comleang2 a.c
-> ./a
-a.c 11: null check
-```
-
-``` C
-> vin a.c
-#include <stdio.h>
-
-void fun(int*? b)
-{
-}
-
-int main(int argc, char** argv)
-{
-    int*? b = nil;
-    
-    fun(b);
-    
-    return 0;
-}
-> comleang2 a.c
-> ./a
-(no called checking null)
-```
-
-``` C
-> vin a.c
-#include <stdio.h>
-
-int main(int argc, char** argv)
-{
-    puts(nil);
-    
-    return 0;
-}
-> comleang2 a.c
-> ./a
-a.c 5: null check
-```
-
-nil can be assigned to a variable marked with ?. When assigned to a variable without ?, it is dynamically checked to see if it is null. (Does not cause segmentation fault)
-Cast if you don't want to cause a check.
-
-nilは?をつけた変数に代入できます。?がついていない変数に代入される時nullかどうか動的にチェックされます。(セグメンテーションフォルトを起こさない）
-
-``` C
-> vin a.c
-#include <stdio.h>
-
-int main(int argc, char** argv)
-{
-    char*? b = nil;
-    
-    puts(b??);
-    
-    return 0;
-}
-> comleang2 a.c
-> ./a
-Segmantion fault
-```
-
-If you do not want to cause a check, please add ??
-
-チェックを起こしたくない場合は??をつけてください。
-
-```
-    char*? a = nil;
-    
-    puts(a);        /// -cg displays stack frames. If -cg is not specified, display the source file name and line number.-cgをつけているとスタックフレームを表示する。-cgをつけてない場合はソースファイル名と行番号を表示する
-    
-    puts((char*)a);  // segmentation fault. セグメンテーションフォルト
-```
-
-Null can be assigned to any variable. If you want to check whether it is null or not, please add !.
-
-nullはすべての変数に代入できます。nullかどうかをチェックしたい場合は!をつけてください。
-
 # Null guard
 
 ```
@@ -2362,7 +2021,6 @@ int main()
 ```
 
 m is null
-
 
 # Using C
 
@@ -2641,30 +2299,6 @@ no ouput
     r".".rescue { null }.if { "AAA".scan(Value).to_string().puts(); }
 ```
 A,A,A
-
-# smart pointer
-
-```C
-> vin a.c
-#include <comelang.h>
-
-int main(int argc, char** argv)
-{
-    var p = s"ABC".to_buffer().to_pointer();
-    
-    printf("%c\n", *p);
-    
-    p+=4;
-    
-    printf("%c\n", *p);
-    
-    return 0;
-}
-> comelang a.c
-> ./a
-A
-a.c 9: out of range of smart pointer(2)
-```
 
 # stackfame
 
@@ -3510,50 +3144,4 @@ int main(int argc, char** argv)
     return 0;
 }
 ```
-
-# Collection without generating code multiple times
-
-```
-#include <comelang.h>
-
-dynamic struct sData
-{
-    int a;
-    string b;
-};
-
-int main(int argc, char** argv)
-{
-    list<sData~>*% li = new list<sData~>();
-    
-    li.add(new sData { b:s"ABC" });
-    
-    puts(li[0].b);
-    
-    return 0;
-}
-```
-
-
-# afterword
-
-LLVM-C++, LLVM-C, Cトランスパイラと、このコンパイラは実は３作目なんですが、ようやく満足のいくヒープシステムが作れました。
-
-この言語のライブラリにはRubyっぽい文字列ライブラリもあります。
-
-結局僕はRubyが好きだったのでしょう。好きすぎてRubyっぽいシェル、RubyっぽいJava、Rubyっぽいコンパイラと３作もRubyっぽいものを作ってしまいました。
-
-まあ、プログラミングを楽しんでください。社会生活も楽しんでください。社会生活を犠牲にするほどはプログラミングはしないでください。
-
-それさえ気をつければプログラミングは思い通りに動いた時に最高の瞬間を与えてくれるでしょう。
-
-This is actually my third compiler, including LLVM-C++, LLVM-C, and the C transpiler, but I was finally able to create a heap system that I was satisfied with.
-
-This language also has a Ruby-like string library.
-
-I guess I liked Ruby after all. I love it so much that I've created three Ruby-like products: a Ruby-like shell, a Ruby-like Java, and a Ruby-like compiler.
-
-Well, have fun programming. Enjoy your social life too. Don't program so much that you sacrifice your social life.
-
-If you are careful about this, programming will give you the best moments when it works as you want.
 
