@@ -4879,5 +4879,11 @@ uniq string wchar_t::to_string(wchar_t wc)
     return xsprintf("%ls", wc);
 }
 
+uniq void int::times(int self, void* parent, void (*block)(void* parent, int it))
+{
+    for(int i = 0; i < self; i++) {
+        block(parent, i);
+    }
+}
 
 #endif
