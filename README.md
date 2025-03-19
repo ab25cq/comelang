@@ -1341,15 +1341,6 @@ static inline list<double>*% double[]::to_list(double* self, size_t len) ;
 ```
 
 ```C
-static inline smart_pointer<char>*% char[]::to_pointer(char* self, size_t len) ;
-static inline smart_pointer<short>*% short[]::to_pointer(short* self, size_t len) ;
-static inline smart_pointer<int>*% int[]::to_pointer(int* self, size_t len) ;
-static inline smart_pointer<long>*% long[]::to_pointer(long* self, size_t len) ;
-static inline smart_pointer<float>*% float[]::to_pointer(float* self, size_t len) ;
-static inline smart_pointer<double>*% double[]::to_pointer(double* self, size_t len) ;
-```
-
-```C
     int a[3] = { 3, 2, 1 };
     
     var p = a.to_pointer();
@@ -1375,140 +1366,6 @@ static inline size_t double[]::length(double* self, size_t len) ;
     int a[3] = { 3, 2, 1 };
     
     printf("%d\n", a.length());
-```
-
-# smart_pointer
-
-A memory-safe pointer. Out-of-bounds accesses will not cause a segmentation fault and will display a stack trace. If you want to display the stack trace, you need to compile with the -cg option. If there is no -cg option, the source file name and line number will be displayed and the program will crash.
-
-メモリセーフなポインタです。範囲外アクセスはsegmentaition faultをおこさずスタックトレースを表示します。スタックトレースを表示したい場合-cgオプションでのコンパイルが必要です。-cgオプションがない場合はソースファイル名と行番号を表示して落ちます。
-
-
-```C
-struct smart_pointer<T> {
-    buffer*% memory;
-    T* p;
-};
-```
-
-```C
-static inline smart_pointer<char>*% buffer*::to_pointer(buffer* self)
-```
-
-```
-    var p = "ABCDEFG".to_buffer().to_pointer();
-    
-    printf("%c\n", *p);   // A
-    p++;
-    printf("%c\n", *p);   // B
-    p+=2;
-    printf("%c\n", *p);   // B
-    
-    p+=999;               // -cgオプションでコンパイルしていた場合スタックフレームを表示して落ちる。-cgオプションがない場合はソースファイル名と行番号を出力して落ちる
-                          // When compiling with the -cg option, the stack frame is displayed and crashes. If there is no -cg option, output the source file name and line number and crash.
-```
-
-```C
-static inline smart_pointer<bool>*% buffer*::to_pointer(buffer* self)
-static inline smart_pointer<char>*% buffer*::to_char_pointer(buffer* self)
-static inline smart_pointer<short>*% buffer*::to_short_pointer(buffer* self)
-static inline smart_pointer<int>*% buffer*::to_int_pointer(buffer* self)
-static inline smart_pointer<long>*% buffer*::to_long_pointer(buffer* self)
-```
-
-Create a pointer for each type name.
-
-各型名のポインタを作成します。
-
-```
-    var buf = new buffer();
-    
-    buf.append_int(1);
-    buf.append_int(2);
-    buf.append_int(3);
-    
-    var p = buf.to_int_pointer();
-    
-    printf("%d\n", *p); // 1
-    p++;
-    printf("%d\n", *p); // 2
-    p++;
-    printf("%d\n", *p); // 3
-    p++; // 範囲外。落ちるがセグメンテーションフォルトは起こさない。ソースの位置を表示する
-         // Out of range. It crashes but does not cause a segmentation fault. Show source location
-```
-
-```C
-smart_pointer<T>*% initialize(smart_pointer<T>*% self, void* memory, int size)
-smart_pointer<T>*% operator_add(smart_pointer<T>* self, int value)
-smart_pointer<T>*% operator_sub(smart_pointer<T>* self, int value)
-T operator_derefference(smart_pointer<T>* self)
-smart_pointer<T>* operator_plus_plus(smart_pointer<T>* self)
-smart_pointer<T>* operator_minus_minus(smart_pointer<T>* self)
-smart_pointer<T>* operator_plus_equal(smart_pointer<T>* self, int value)
-smart_pointer<T>* operator_minus_equal(smart_pointer<T>* self, int value)
-```
-
-```
-static inline smart_pointer<char>*% char[]::to_pointer(char* self, size_t len);
-static inline smart_pointer<short>*% short[]::to_pointer(short* self, size_t len);
-static inline smart_pointer<int>*% int[]::to_pointer(int* self, size_t len);
-static inline smart_pointer<long>*% long[]::to_pointer(long* self, size_t len);
-static inline smart_pointer<float>*% float[]::to_pointer(float* self, size_t len);
-static inline smart_pointer<double>*% double[]::to_pointer(double* self, size_t len);
-```
-
-```C
-   int a[3] = { 1, 2, 3 };
-   
-   var p = a.to_pointer();
-   
-   printf("%d\n", *p);  // 1
-   p++;
-   printf("%d\n", *p);  // 2
-   
-   p += 6;              // don't segmentaion fault. print out err
-```
-
-```C
-bool as_bool(smart_pointer<T>* self)
-```
-
-Extracts memory as bool.
-
-メモリーをboolとして取り出します。
-
-```C
-char as_char(smart_pointer<T>* self)
-```
-
-Extracts memory as char.
-
-メモリーをcharとして取り出します。
-
-```
-    var p = "ABCDEFG".to_buffer().to_pointer();
-    
-    p.as_char(); // A
-```
-
-```C
-short as_short(smart_pointer<T>* self)
-```
-
-```
-    var p = "ABCDEFG".to_buffer().to_pointer();
-    
-    p.as_shart(); // バイト列ABをshortとして表した値
-                  // Value representing byte string AB as short
-```
-
-```C
-int as_int(smart_pointer<T>* self)
-long as_long(smart_pointer<T>* self)
-float as_float(smart_pointer<T>* self)
-double as_double(smart_pointer<T>* self)
-string to_string(smart_pointer<T>* self)
 ```
 
 # string 
@@ -1990,38 +1847,6 @@ int main(int argc, char** argv)
 }
 
 ```
-
-# Null guard
-
-```
-char*?? fun()
-{
-    return null;
-}
-
-int main()
-{
-    char* m = fun();
-    return 0;
-}
-```
-
-Null checker ocurrs runtime error
-
-```
-char*?? fun()
-{
-    return null;
-}
-
-int main()
-{
-    char* m = fun()??;
-    return 0;
-}
-```
-
-m is null
 
 # Using C
 
