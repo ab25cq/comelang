@@ -596,33 +596,6 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
             return false;
         }
     }
-    else if(!left_type2->mNullValue && right_type2->mNullValue) {
-        if(left_type2->mClass->mName === "__builtin_va_list" || right_type2->mClass->mName === "__builtin_va_list") {
-        }
-        else if(left_type2->mClass->mName === "va_list" || right_type2->mClass->mName === "va_list") {
-        }
-        else if(right_type2->mClass->mName === "void" && right_type2->mPointerNum == 0) {
-            if(print_err_msg) {
-                printf("%s %d %s\n", info->sname, info->sline, msg);
-                printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
-                printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
-                info->err_num++;
-                return none(s"ERR");
-            }
-            return false;
-        }
-        else {
-            var buf2 = new buffer();
-            
-            buf2.append_str(s"come_null_check(\{come_value.c_value}, \"\{info->sname}\", \{info->sline}, \{gComeDebugStackFrameID++})");
-            
-            come_value.c_value = buf2.to_string();
-            come_value.type = clone left_type2;
-            come_value.var = null;
-            
-            right_type2 = clone left_type2;
-        }
-    }
     else if(left_type2->mClass.mName === "char" && left_type2->mPointerNum == 1) {
         if(right_type2->mClass.mName === "char" && right_type2->mPointerNum == 1) {
         }

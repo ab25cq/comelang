@@ -1379,10 +1379,6 @@ class sFunCallNode extends sNodeBase
             }
         }
         
-        if(!self.guard_break && result_type.mGuardValue && result_type->mPointerNum > 0) {
-            come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type, no_static:true)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
-        }
-        
         add_come_last_code(info, "%s", come_value.c_value);
         
         info.stack.push_back(come_value);

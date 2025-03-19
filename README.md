@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 22.0.0
+version 23.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+23.0.0 Fixed the bug of list::sort
 22.0.0 Remove smart_pointer, no genarete collection, vector, nil, more faster compiler
 21.0.0 comelang really complete. Refactoring repeated.
 20.0.2 Refactoring

@@ -126,12 +126,6 @@ bool operator_overload_fun2(sType* type, char* fun_name, CVALUE* left_value, CVA
             append_object_to_right_values2(come_value, result_type2, info);
         }
         
-/*
-        if(result_type2.mGuardValue && result_type2->mPointerNum > 0) {
-            come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(result_type2)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
-        }
-*/
-        
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
         
         add_come_last_code(info, "%s", come_value.c_value);
@@ -184,10 +178,6 @@ class sStoreFieldNode extends sNodeBase
                     name = xsprintf("v%d", i+1);
                 }
             }
-        }
-        
-        if(gComeDebug && left_value.type.mPointerNum > 0) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
         node_compile(right).elif {
@@ -539,7 +529,7 @@ class sNullCheckNode extends sNodeBase
         else if(left_value.type->mPointerNum > 0) {
             CVALUE*% come_value = new CVALUE();
             
-            come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
+            come_value.c_value = left_value.c_value;
             come_value.type = clone left_value.type;
             come_value.var = null;
             
@@ -640,10 +630,6 @@ class sLoadFieldNode extends sNodeBase
                     name = xsprintf("v%d", i+1);
                 }
             }
-        }
-        
-        if(gComeDebug && left_value.type.mPointerNum > 0) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
         }
         
         sType* left_type = left_value.type;
@@ -806,10 +792,6 @@ class sStoreArrayNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        if(gComeDebug && left_value.type.mPointerNum > 0) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
-        }
-        
         sType* left_type = left_value.type;
         
         list<CVALUE*%>*% array_num = new list<CVALUE*%>();
@@ -950,10 +932,6 @@ class sLoadArrayNode extends sNodeBase
         }
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
-        
-        if(gComeDebug && left_value.type.mPointerNum > 0 && !self.mBreakGuard) {
-            left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type,no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
-        }
         
         sType*% left_type = clone left_value.type;
         

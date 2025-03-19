@@ -135,12 +135,6 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
             append_object_to_right_values2(come_value, type3, info);
         }
         
-/*
-        if(!break_guard && type3.mGuardValue && type3.mPointerNum > 0) {
-            come_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(type3, no_static:true)!, come_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
-        }
-*/
-        
         come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
         
         add_come_last_code(info, "%s", come_value.c_value);

@@ -274,7 +274,7 @@ void ViWin*::fileCompetion(ViWin* self, Vi* nvi)
     auto words2 = new list<string>.initialize();
     
     foreach(it, words) {
-        if(strcmp(word, "") == 0 || strstr(it, word) == it) {
+        if(strcmp(word, "") != 0 && strstr(it, word) == it) {
             words2.push_back(clone it);
         }
     }

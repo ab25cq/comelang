@@ -268,41 +268,6 @@ class sDerefferenceNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-/*
-        if(gComeDebug) {
-            if(value.kind() !== "sExpEqualNode") {
-                left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))", make_type_name_string(left_value.type, no_static:true)!, left_value.c_value, info->sname, info->sline, gComeDebugStackFrameID++);
-            }
-            else {
-                char* p = left_value.c_value;
-                char* p2 = null;
-                while(*p) {
-                    if(*p == '=' && *(p+1) != '>') {
-                        p2 = p;
-                        break;
-                    }
-                    else {
-                        p++;
-                    }
-                }
-                
-                if(p2 == null) {
-                    err_msg(info, "unexpected error in debugging to dereffrence and to assign");
-                    exit(2);
-                }
-                
-                p = left_value.c_value;
-                
-                var buf = new buffer();
-                buf.append(p, p2 - p);
-                
-                var buf2 = new buffer();
-                buf2.append(p2, p + strlen(p) - p2);
-                
-                left_value.c_value = xsprintf("((%s)come_null_check(%s, \"%s\", %d, %d))%s", make_type_name_string(left_value.type, no_static:true)!, buf.to_string(), info->sname, info->sline, gComeDebugStackFrameID++, buf2.to_string());
-            }
-        }
-*/
         
         sType*% type = left_value.type;
         

@@ -1827,7 +1827,7 @@ impl list <T>
                 if(it != null) {
                     while(it != null) {
                         if(isheap(T)) {
-                            result.push_back(clone it2.item);
+                            result.push_back(clone it.item);
                         }
                         else {
                             result.push_back(dummy_heap dupe it.item);
