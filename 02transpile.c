@@ -112,6 +112,7 @@ static bool cpp(sInfo* info)
     int is_m5stack = info.m5stack_cpp; // M5Stack?
     int is_pico = info.pico_cpp; // PICO?
     int is_emb = info.emb_cpp; // EMBBEDED
+    int is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi'") == 0;
     
     /// Android ///
     if(is_android) {
@@ -227,7 +228,32 @@ static bool cpp(sInfo* info)
             }
         }
     }
-    /// __LINUX__ ///
+    /// __RASPIBERRY_PI__ ///
+    else if(is_raspi) {
+        string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+
+        if(info.verbose) puts(cmd3);
+        int rc = system(cmd3);
+        
+        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+        
+        if(info.verbose) puts(command2);
+        (void)system(command2);
+        
+        if(rc != 0) {
+            string cmd4 = xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            if(rc != 0) {
+                printf("failed to cpp(2) (%s)\n", cmd4);
+                exit(5);
+            }
+        }
+    }
     else if(is_linux) {
         string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
 
@@ -482,7 +508,7 @@ install:
 \# clean
 \#########################################
 clean:
-\trm -fR *.o *.c.i *.c.out *.c.c \{project_name} *.log *.out common.h \{project_name_debug} tmp-common-header.c
+\trm -fR *.o *.c.i *.c.out *.c.c \{project_name} *.log *.out common.h \{project_name_debug} tmp-common-header.c tmp-common-header.*
 
 \#########################################
 \# uninstall

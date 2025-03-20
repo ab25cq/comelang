@@ -86,6 +86,7 @@ using C
 
 #endif
 
+/*
 #ifdef ENABLE_GC
 using C
 {
@@ -96,25 +97,17 @@ using C
 #endif
 }
 #endif
+*/
 
 using comelang;
-
-#define COME_STACKFRAME_MAX 16
-#define COME_STACKFRAME_MAX_GLOBAL 128
 
 typedef void*% any;
 typedef char*% string;
 
-uniq char* gComeStackFrameSName[COME_STACKFRAME_MAX_GLOBAL];
-uniq int gComeStackFrameSLine[COME_STACKFRAME_MAX_GLOBAL];
-uniq int gComeStackFrameID[COME_STACKFRAME_MAX_GLOBAL];
-uniq int gNumComeStackFrame = 0;
-
-uniq char* gComeStackFrameBuffer = NULL;
-
 //////////////////////////////
 /// exception
 //////////////////////////////
+
 struct buffer 
 {
     char*% buf;
@@ -156,6 +149,16 @@ uniq string short::to_string(short self);
 uniq string char::to_string(char self);
 uniq string bool::to_string(bool self);
 uniq bool string::equals(char* self, char* right);
+
+#define COME_STACKFRAME_MAX 16
+#define COME_STACKFRAME_MAX_GLOBAL 128
+
+uniq char* gComeStackFrameSName[COME_STACKFRAME_MAX_GLOBAL];
+uniq int gComeStackFrameSLine[COME_STACKFRAME_MAX_GLOBAL];
+uniq int gComeStackFrameID[COME_STACKFRAME_MAX_GLOBAL];
+uniq int gNumComeStackFrame = 0;
+
+uniq char* gComeStackFrameBuffer = NULL;
 
 uniq void come_push_stackframe(char* sname, int sline, int id)
 {
@@ -199,68 +202,6 @@ uniq void stackframe()
 uniq string come_get_stackframe()
 {
     return string(gComeStackFrameBuffer);
-}
-
-uniq void* come_null_check(void* mem, char* sname, int sline, int id)
-{
-    if(mem == null) {
-        printf("%s %d #%d: null check error\n", sname, sline, id);
-        stackframe();
-        exit(2);
-    }
-    
-    return mem;
-}
-
-uniq void* come_range_check(void* mem, void* begin, void* end, char* sname, int sline)
-{
-    if(mem == null) {
-        printf("%s %d: null check error\n", sname, sline);
-        stackframe();
-        exit(2);
-    }
-    
-    if(mem < begin) {
-        printf("%s %d: range check error\n", sname, sline);
-        stackframe();
-        exit(2);
-    }
-    
-    if(mem >= end) {
-        printf("%s %d: range check error\n", sname, sline);
-        stackframe();
-        exit(2);
-    }
-    
-    return mem;
-}
-
-uniq bool bool::value(bool self)
-{
-    return self;
-}
-
-uniq int int::value(int self)
-{
-    return self;
-}
-
-uniq int int::except(int self, void* parent, void (*block)(void* parent))
-{
-    if(self < 0) {
-        block(parent);
-    }
-
-    return self;
-}
-
-uniq bool bool::except(bool self, void* parent, void (*block)(void* parent))
-{
-    if(!self) {
-        block(parent);
-    }
-
-    return self;
 }
 
 uniq void xassert(char* msg, bool test)
@@ -331,6 +272,7 @@ uniq int gNumFree = 0;
 #else
 #define HEAP_POOL_PAGE_SIZE 4096
 #endif
+
 #define INIT_PAGE_PAGE_SIZE 4
 #define NEW_ALLOC_SIZE 2
 
@@ -353,6 +295,7 @@ uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
     gComeDebugLib = come_debug
     gComeGCLib = come_gc;
     
+/*
 #ifdef ENABLE_GC
     if(gComeGCLib) {
         GC_init();
@@ -360,6 +303,7 @@ uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
         GC_enable_incremental();
     }
 #endif
+*/
     
     gComeStackFrameBuffer = NULL;
     memset(gComeStackFrameSName, 0, sizeof(char*)*COME_STACKFRAME_MAX_GLOBAL);
@@ -388,9 +332,11 @@ uniq void come_heap_final()
     }
     
     if(gComeGCLib) {
+/*
 #ifdef ENABLE_GC
         //GC_gcollect();
 #endif
+*/
     }
     else if(gComeDebugLib) {
         sMemHeader* it = gAllocMem;
@@ -489,12 +435,14 @@ uniq void* alloc_from_pages(size_t size)
 uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="")
 {
     if(gComeDebugLib) {
+/*
 #ifdef ENABLE_GC
         void* result = GC_malloc(size + sizeof(sMemHeader));
         memset(result, 0, size + sizeof(sMemHeader));
 #else
+*/
         void* result = alloc_from_pages(size + sizeof(sMemHeader));
-#endif
+//#endif
         
         sMemHeader* it = result;
         
@@ -540,12 +488,14 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
         return (char*)result + sizeof(sMemHeader);
     }
     else {
+/*
 #ifdef ENABLE_GC
         void* result = GC_malloc(size + sizeof(sMemHeaderTiny));
         memset(result, 0, size + sizeof(sMemHeaderTiny));
 #else
+*/
         void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
-#endif
+//#endif
         
         sMemHeaderTiny* it = result;
         
@@ -591,12 +541,6 @@ uniq void come_free_mem_of_heap_pool(void* mem)
             sMemHeader* prev_it = it->prev;
             sMemHeader* next_it = it->next;
             
-/*
-            if(it->class_name) {
-                free(it->class_name);
-            }
-*/
-            
             if(gAllocMem == it) {
                 gAllocMem = next_it;
                 
@@ -639,12 +583,6 @@ uniq void come_free_mem_of_heap_pool(void* mem)
             }
             
             it->allocated = 0;
-            
-/*
-            if(it->class_name) {
-                free(it->class_name);
-            }
-*/
             
             sMemHeaderTiny* prev_it = it->prev;
             sMemHeaderTiny* next_it = it->next;
@@ -710,7 +648,6 @@ uniq char* come_dynamic_typeof(void* mem)
     }
 }
 
-
 uniq void come_print_heap_info(void* mem)
 {
     if(gComeDebugLib) {
@@ -754,17 +691,6 @@ uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0,
     *size2 = size*count + sizeof(size_t) + sizeof(size_t);
     
     return mem + sizeof(size_t) + sizeof(size_t);
-}
-
-uniq void come_free_object(void* mem)
-{
-    if(mem == NULL) {
-        return;
-    }
-    
-    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-    
-    come_free_mem_of_heap_pool((char*)ref_count);
 }
 
 uniq void come_free(void* mem)
@@ -846,9 +772,9 @@ uniq void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protoco
             void (*finalizer)(void*) = protocol_fun;
             finalizer(protocol_obj);
             
-            come_free_object(protocol_obj);
+            come_free(protocol_obj);
         }
-        come_free_object(mem);
+        come_free(mem);
         return NULL;
     }
     
@@ -886,14 +812,14 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
-                        come_free_object(protocol_obj);
+                        come_free(protocol_obj);
                     }
                     if(fun) {
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
                 }
-                come_free_object(mem);
+                come_free(mem);
             }
         }
     }
@@ -934,14 +860,14 @@ uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* p
                     if(protocol_obj && protocol_fun) {
                         void (*finalizer)(void*) = protocol_fun;
                         finalizer(protocol_obj);
-                        come_free_object(protocol_obj);
+                        come_free(protocol_obj);
                     }
                     if(fun) {
                         void (*finalizer)(void*) = fun;
                         finalizer(mem);
                     }
                 }
-                come_free_object(mem);
+                come_free(mem);
             }
         }
     }
@@ -980,81 +906,10 @@ uniq void come_call_finalizer3(void* mem, void* fun, int call_finalizer_only, in
                     void (*finalizer)(void*) = fun;
                     finalizer(mem);
                 }
-                come_free_object(mem);
+                come_free(mem);
             }
         }
     }
-}
-
-uniq void* come_call_cloner(void* fun, void* mem) 
-{
-    if(mem == NULL) {
-        return NULL;
-    }
-    
-    void * mem2 = null;
-    if(fun) {
-        void* (*cloner)(void*) = fun;
-        
-        mem2 = cloner(mem);
-    }
-        
-    if(mem2) {
-        if(gComeDebugLib) {
-            sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
-            sMemHeader* it2 = (sMemHeader*)((char*)mem2 - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
-            
-            it2->class_name = it->class_name;
-            
-            memcpy(it2->sname, it->sname, sizeof(char*)*COME_STACKFRAME_MAX);
-            memcpy(it2->sline, it->sline, sizeof(int)*COME_STACKFRAME_MAX);
-            memcpy(it2->id, it->id, sizeof(int)*COME_STACKFRAME_MAX);
-            
-            return mem2;
-        }
-        else {
-            sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
-            sMemHeaderTiny* it2 = (sMemHeaderTiny*)((char*)mem2 - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
-            
-            it2->class_name = it->class_name;
-            it2->sname = it->sname;
-            it2->sline = it->sline;
-            
-            return mem2;
-        }
-    }
-    
-    return NULL;
-}
-
-uniq unsigned int come_call_get_hash_key(void* fun, void* mem) 
-{
-    if(mem == NULL) {
-        return 0;
-    }
-    
-    if(fun) {
-        unsigned int (*cloner)(void*) = fun;
-        
-        return cloner(mem);
-    }
-    
-    return 0;
-}
-
-uniq unsigned int come_call_equals(void* fun, void* mem, void* mem2) 
-{
-    if(mem == NULL) {
-        return 0;
-    }
-    
-    if(fun) {
-        unsigned int (*equaler)(void*, void*) = fun;
-        
-        return equaler(mem, mem2);
-    }
-    
-    return 0;
 }
 
 uniq string __builtin_string(char* str)
@@ -1071,16 +926,39 @@ uniq string __builtin_string(char* str)
     return result;
 }
 
-uniq bool come_is_contained_element(void** array, int len, void* element)
+uniq void come_push_stackframe(char* sname, int sline, int id) version 2
 {
-    bool found = false;
-    for(int i=0; i<len; i++) {
-        if(array[i] == element) {
-            found = true;
-            break;
-        }
-    }
-    return found;
+    inherit(sname, sline, id);
+}
+
+uniq void come_pop_stackframe() version 2
+{
+    inherit();
+}
+
+uniq void come_save_stackframe(char* sname, int sline) version 2
+{
+    inherit(sname, sline);
+}
+
+uniq void stackframe() version 2
+{
+    inherit();
+}
+
+uniq string come_get_stackframe() version 2
+{
+    return inherit();
+}
+
+uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="") version 2
+{
+    return inherit(count, size, sname, sline, class_name);
+}
+
+uniq void come_free(void* mem) version 2
+{
+    inherit(mem);
 }
 
 //////////////////////////////

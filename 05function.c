@@ -1889,11 +1889,10 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
                                     , false@static_, info, false@inline_
                                     , false@uniq_, false@generate);
                 
-                var fun2 = info.funcs[string(fun_name)]??;
-                if(fun2 == null || fun2.mExternal) {
-        
+                //var fun2 = info.funcs[string(fun_name)]??;
+                //if(fun2 == null || fun2.mExternal) {
                     info.funcs.insert(string(fun_name), fun);
-                }
+                //}
                 
                 sNode*% result = new sFunNode(fun, info) implements sNode;
                 
@@ -2329,9 +2328,9 @@ sNode*% parse_function(sInfo* info)
                             , true@static_, info, false@inline_, false@uniq_, false@generate_);
         
         var fun2 = info.funcs[string(fun_name)]??;
-        if(fun2 == null || fun2.mExternal) {
+        //if(fun2 == null || fun2.mExternal) {
             info.funcs.insert(string(fun_name), fun);
-        }
+        //}
         
         return new sLambdaNode(fun, info) implements sNode;
     }
@@ -2425,10 +2424,10 @@ sNode*% parse_function(sInfo* info)
             info.funcs.insert(string(fun_name), fun);
         }
         else {
-            var fun2 = info.funcs[string(fun_name)]??;
-            if(fun2 == null || fun2.mExternal) {
+            //var fun2 = info.funcs[string(fun_name)]??;
+            //if(fun2 == null || fun2.mExternal) {
                 info.funcs.insert(string(fun_name), fun);
-            }
+            //}
         }
     
         return new sFunNode(fun, info) implements sNode;
@@ -2454,10 +2453,10 @@ sNode*% parse_function(sInfo* info)
                                 , false@static_, info, false@inline_
                                 , false@uniq_, false@generate_, attribute, fun_attribute);
             
-            var fun2 = info.funcs[string(fun_name)]??;
-            if(fun2 == null || fun2.mExternal) {
+            //var fun2 = info.funcs[string(fun_name)]??;
+            //if(fun2 == null || fun2.mExternal) {
                 info.funcs.insert(string(fun_name), fun);
-            }
+            //}
             
             if(info.output_header_file) {
                 if(!result_type->mStatic && !info->no_output_come_code) {
@@ -2490,11 +2489,10 @@ sNode*% parse_function(sInfo* info)
                                 , false@genereate_
                                 , attribute, fun_attribute);
             
-            var fun2 = info.funcs[string(fun_name)]??;
-            if(fun2 == null || fun2.mExternal) {
-    
+            //var fun2 = info.funcs[string(fun_name)]??;
+            //if(fun2 == null || fun2.mExternal) {
                 info.funcs.insert(string(fun_name), fun);
-            }
+            //}
             
             if(info.output_header_file) {
                 if(!result_type->mStatic && !info->no_output_come_code) {

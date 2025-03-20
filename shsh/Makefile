@@ -71,7 +71,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.o *.c.i *.c.out *.c.c shsh *.log *.out common.h shsh-debug tmp-common*.txt
+	rm -fR *.o *.c.i *.c.out *.c.c shsh *.log *.out common.h shsh-debug tmp-common*.txt tmp-common-header*
 
 #########################################
 # uninstall

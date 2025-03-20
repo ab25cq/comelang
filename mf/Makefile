@@ -71,7 +71,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.o *.c.i *.c.out *.c.c mf *.log *.out common.h mf-debug tmp-common*.txt
+	rm -fR *.o *.c.i *.c.out *.c.c mf *.log *.out common.h mf-debug tmp-common*.txt tmp-common-header*
 
 #########################################
 # uninstall

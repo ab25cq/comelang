@@ -33,6 +33,7 @@ struct come_regex
     pcre* re;
 };
 
+/*
 #ifdef ENABLE_GC
 uniq void come_regex_finalizer(void *obj, void *client_data) 
 {
@@ -42,6 +43,7 @@ uniq void come_regex_finalizer(void *obj, void *client_data)
     }
 }
 #endif
+*/
 
 uniq wstring __builtin_wstring(char* str)
 {
@@ -67,7 +69,7 @@ uniq int wchar_t*::length(wchar_t* str)
     return wcslen(str);
 }
 
-static inline int wstring::length(wchar_t* str)
+uniq int wstring::length(wchar_t* str)
 {
     return wchar_t*::length(str);
 }
@@ -97,9 +99,11 @@ uniq exception come_regex*% come_regex*::initialize(come_regex*% self, char* str
         return none(s"regex error \{str}");
     }
     
+/*
 #ifdef ENABLE_GC
     GC_REGISTER_FINALIZER(self, come_regex_finalizer, NULL, NULL, NULL);
 #endif
+*/
 
     return self;
 }
@@ -2254,204 +2258,204 @@ uniq size_t xwcslen(wchar_t* wstr)
 #define wcslen(o) xwcslen(o)
 #endif
 
-static inline wstring wstring::substring(wchar_t* str, int head, int tail) 
+uniq wstring wstring::substring(wchar_t* str, int head, int tail) 
 {
     return wchar_t*::substring(str, head, tail);
 }
 
-static inline int string::index_count(char* str, char* search_str, int count=1, int default_value=-1)
+uniq int string::index_count(char* str, char* search_str, int count=1, int default_value=-1)
 {
     return char*::index_count(str, search_str, count, default_value);
 }
 
-static inline int string::index_regex_count(char* self, come_regex* reg, int count=1, int default_value=-1)
+uniq int string::index_regex_count(char* self, come_regex* reg, int count=1, int default_value=-1)
 {
     return char*::index_regex_count(self, reg, count, default_value);
 }
 
-static inline int string::rindex(char* str, char* search_str, int default_value=-1) 
+uniq int string::rindex(char* str, char* search_str, int default_value=-1) 
 {
     return char*::rindex(str, search_str, default_value);
 }
 
-static inline int string::rindex_regex(char* self, come_regex* reg, int default_value=-1)
+uniq int string::rindex_regex(char* self, come_regex* reg, int default_value=-1)
 {
     return char*::rindex_regex(self, reg, default_value);
 }
 
-static inline int string::rindex_count(char* str, char* search_str, int count=1, int default_value=-1)
+uniq int string::rindex_count(char* str, char* search_str, int count=1, int default_value=-1)
 {
     return char*::rindex_count(str, search_str, count, default_value);
 }
 
-static inline list<string>*% string::scan_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+uniq list<string>*% string::scan_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
     return char*::scan_block(self, reg, parent, block);
 }
 
-static inline list<string>*% string::scan_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+uniq list<string>*% string::scan_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
     return char*::scan_block_count(self, reg, count, parent, block);
 }
 
-static inline list<string>*% string::split_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+uniq list<string>*% string::split_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
     return char*::split_block(self, reg, parent, block);
 }
 
-static inline list<string>*% string::split_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+uniq list<string>*% string::split_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
     return char*::split_block_count(self, reg, count, parent, block);
 }
 
-static inline list<string>*% string::scan_group_strings(char* self, come_regex* reg, list<string>* group_strings, int* num_group_string_in_regex)
+uniq list<string>*% string::scan_group_strings(char* self, come_regex* reg, list<string>* group_strings, int* num_group_string_in_regex)
 {
     return char*::scan_group_strings(self, reg, group_strings, num_group_string_in_regex);
 }
 
-static inline string string::strip(char* self)
+uniq string string::strip(char* self)
 {
     return char*::strip(self);
 }
 
-static inline wstring string::to_wstring(char* str)
+uniq wstring string::to_wstring(char* str)
 {
     return char*::to_wstring(str);
 }
 
-static inline string wstring::to_string(wchar_t* wstr)
+uniq string wstring::to_string(wchar_t* wstr)
 {
     return wchar_t*::to_string(wstr);
 }
 
-static inline wstring int::to_wstring(int self)
+uniq wstring int::to_wstring(int self)
 {
     return xsprintf("%d", self).to_wstring();
 }
 
-static inline wstring wstring::delete(wchar_t* str, int head, int tail)
+uniq wstring wstring::delete(wchar_t* str, int head, int tail)
 {
     return wchar_t*::delete(str, head, tail);
 }
 
-static inline int wstring::index(wchar_t* str, wchar_t* search_str, int default_value=1)
+uniq int wstring::index(wchar_t* str, wchar_t* search_str, int default_value=1)
 {
     return wchar_t*::index(str, search_str, default_value);
 }
 
-static inline int wstring::rindex(wchar_t* str, wchar_t* search_str, int default_value=-1)
+uniq int wstring::rindex(wchar_t* str, wchar_t* search_str, int default_value=-1)
 {
     return wchar_t*::rindex(str, search_str, default_value);
 }
 
-static inline wstring wstring::reverse(wchar_t* str)
+uniq wstring wstring::reverse(wchar_t* str)
 {
     return wchar_t*::reverse(str);
 }
 
-static inline wstring wstring::multiply(wchar_t* str, int n)
+uniq wstring wstring::multiply(wchar_t* str, int n)
 {
     return wchar_t*::multiply(str, n);
 }
 
-static inline wstring wstring::printable(wchar_t* str)
+uniq wstring wstring::printable(wchar_t* str)
 {
     return wchar_t*::printable(str);
 }
 
-static inline unsigned int wstring::get_hash_key(wchar_t* value)
+uniq unsigned int wstring::get_hash_key(wchar_t* value)
 {
     return wchar_t*::get_hash_key(value);
 }
 
-static inline bool string::match_group_strings(char* self, come_regex* reg, int count, list<string>* group_strings)
+uniq bool string::match_group_strings(char* self, come_regex* reg, int count, list<string>* group_strings)
 {
     return char*::match_group_strings(self, reg, count, group_strings);
 }
 
-static inline int string::index(char* str, char* search_str, int default_value=-1)
+uniq int string::index(char* str, char* search_str, int default_value=-1)
 {
     return char*::index(str, search_str, default_value);
 }
 
-static inline int string::index_regex(char* self, come_regex* reg, int default_value=-1)
+uniq int string::index_regex(char* self, come_regex* reg, int default_value=-1)
 {
     return char*::index_regex(self, reg, default_value);
 }
 
-static inline string string::replace(char* self, int index, char c)
+uniq string string::replace(char* self, int index, char c)
 {
     return char*::replace(self, index, c);
 }
 
-static inline string string::multiply(char* str, int n)
+uniq string string::multiply(char* str, int n)
 {
     return char*::multiply(str, n);
 }
 
-static inline string string::sub(char* self, come_regex* reg, char* replace)
+uniq string string::sub(char* self, come_regex* reg, char* replace)
 {
     return char*::sub(self, reg, replace);
 }
 
-static inline string string::sub_count(char* self, come_regex* reg, char* replace, int count=1)
+uniq string string::sub_count(char* self, come_regex* reg, char* replace, int count=1)
 {
     return char*::sub_count(self, reg, replace, count);
 }
 
-static inline list<string>*% string::split_str(char* self, char* str)
+uniq list<string>*% string::split_str(char* self, char* str)
 {
     return char*::split_str(self, str);
 }
 
-static inline list<string>*% string::scan(char* self, come_regex* reg)
+uniq list<string>*% string::scan(char* self, come_regex* reg)
 {
     return char*::scan(self, reg);
 }
 
-static inline list<string>*% string::split(char* self, come_regex* reg)
+uniq list<string>*% string::split(char* self, come_regex* reg)
 {
     return char*::split(self, reg);
 }
 
-static inline bool string::match(char* self, come_regex* reg)
+uniq bool string::match(char* self, come_regex* reg)
 {
     return char*::match(self, reg);
 }
 
-static inline list<string>*% string::split_maxsplit(char* self, come_regex* reg, int maxsplit)
+uniq list<string>*% string::split_maxsplit(char* self, come_regex* reg, int maxsplit)
 {
     return char*::split_maxsplit(self, reg, maxsplit);
 }
 
-static inline int string::rindex_regex_count(char* self, come_regex* reg, int count=1, int default_value=-1)
+uniq int string::rindex_regex_count(char* self, come_regex* reg, int count=1, int default_value=-1)
 {
     return char*::rindex_regex_count(self, reg, count, default_value);
 }
 
-static inline bool string::match_count(char* self, come_regex* reg, int count=1)
+uniq bool string::match_count(char* self, come_regex* reg, int count=1)
 {
     return char*::match_count(self, reg, count);
 }
 
-static inline string string::sub_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+uniq string string::sub_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
     return char*::sub_block(self, reg, parent, block);
 }
 
-static inline string string::sub_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+uniq string string::sub_block_count(char* self, come_regex* reg, int count, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
     return char*::sub_block_count(self, reg, count, parent, block);
 }
 
 bool come_regex*::operator_equals(come_regex* left, come_regex* right);
 
-static inline wstring string::to_wstring(char* str)
+uniq wstring string::to_wstring(char* str)
 {
     return char*::to_wstring(str);
 }
 
-static inline string char*::chomp(char* str)
+uniq string char*::chomp(char* str)
 {
     return string::chomp(str);
 }

@@ -105,7 +105,13 @@ class sNewNode extends sNodeBase
             
             buf.append_str("(");
             
-            string obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+            string obj;
+            if(info.funcs["come_calloc_v2"]) {
+                obj = xsprintf("%s = (%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+            }
+            else {
+                obj = xsprintf("%s = (%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+            }
             
             buf.append_str(obj);
             buf.append_str(",");
@@ -193,7 +199,12 @@ class sNewNode extends sNodeBase
             
             string type_name3 = make_type_name_string(type3);
             
-            come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+            if(info.funcs["come_calloc_v2"]) {
+                come_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+            }
+            else {
+                come_value.c_value = xsprintf("(%s*)come_calloc(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
+            }
             
             type2->mHeap = true;
             type2->mPointerNum++;
@@ -265,7 +276,12 @@ class sImplementsNode extends sNodeBase
         string buf2 = xsprintf("%s* _inf_obj_value%d;\n", type_name2, inf_num_stack);
         add_come_code_at_function_head(info, buf2);
         
-        add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
+        if(info.funcs["come_calloc_v2"]) {
+            add_come_code(info, "_inf_value%d=(%s*)come_calloc_v2(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
+        }
+        else {
+            add_come_code(info, "_inf_value%d=(%s*)come_calloc(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
+        }
         
         string c_value = increment_ref_count_object(come_value.type, come_value.c_value, info);
         add_come_code(info, "_inf_obj_value%d=%s;\n", inf_num_stack, c_value);
