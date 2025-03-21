@@ -2936,5 +2936,14 @@ int main(int argc, char** argv)
 }
 ```
 
+スレッド間のデータのやり取りはグローバル変数やローカル変数で行わず全てチャネル経由で行ってください。
+グローバル変数やローカル変数でやり取りするとデータの競合が起こります。
+もしグローバル変数やローカル変数でやり取りする場合ミューテックスを使ってください。
+コンパイラ側では禁止しませんが、みんな、大人ですし、わかりますよね。
+
+When exchanging data between threads, do not use global or local variables, but rather use channels.
+Exchanging data using global or local variables will result in data conflicts.
+If you do use global or local variables, use a mutex.
+The compiler will not prohibit this, but we're all adults, so we know what to do.
  
 
