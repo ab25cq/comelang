@@ -1611,7 +1611,7 @@ a.c 16
 ~/comelang #
 ```
 
-If there is a memory leak, 1 memory leaks ... will be output even if no options are specified. If you want to debug, add -cg and run it again to display the type name and source line number. However, the display is a little difficult to see.
+If there is a memory leak, 1 memory leaks ... will be output even if no options are specified. If you want to debug, add -cg and run it again to display the type name and source line number. 
 
 # class
 
