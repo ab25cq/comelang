@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 23.0.1
+version 24.0.0
 
 ``` C
 #include <comelang.h>
@@ -49,7 +49,7 @@ Comelang outputs c source with standard C libraries only. So you can use this fo
 
 sh fast_build.sh will automatically install the necessary packages.
 
-Supports Linux, MacOS (Darwin), termux (Android) userland (Android), and raspberry pi.
+Supports Linux, MacOS (Darwin), termux (Android) userland (Android), and raspberry pi(pico).
 
 sh fast_build.shとすると自動的に必要なパッケージがインストールされます。
 
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+24.0.0 Myabe complete. After my works, refactoring or more gets speed.
 23.0.2 Fixed some bugs. More speed. More Power.
 23.0.1 Refactoring
 23.0.0 Fixed the bug of list::sort
@@ -614,7 +615,7 @@ list<T>*% sublist(list<T>* self, int begin, int tail)
 
 
 ```C
-T?? operator_load_element(list<T>* self, int position) 
+T operator_load_element(list<T>* self, int position) 
 ```
 
 ```C
@@ -625,20 +626,9 @@ T?? operator_load_element(list<T>* self, int position)
     printf("%d\n", li[-9999]); // 0
 ```
 
-If the index is not found, null check will result in a dynamic error if ?? is not added. Only if the item is a pointer.
+If the index is not found, 0 clear value returned.
 
-アイテムが見つからない場合??をつけないとnull checkが動的エラーとなります。アイテムがポインタの場合だけです。
-
-```
-    var li = ["AAA","BBB","CCC"];
-    var item = li[5]; // runtime error
-```
-
-
-```
-    var li = ["AAA","BBB","CCC"];
-    var item = li[5]??; // item is null
-```
+もしインデックスが見つからないなら0clearされた値が返されます。
 
 ```C
 void operator_store_element(list<T>* self, int position, T item) 
@@ -741,10 +731,6 @@ Executes an expression on each element and returns a list of results. Type inffe
 各要素に式を実行して、その結果のリストを返します。templateはmapだけ型推論します。
 
 ```C
-template<R> list<R>*% map2(list<T>* self, void* parent, R (*block)(void*, T&))
-```
-
-```C
 list<T>*% reverse(list<T>* self) 
 ```
 
@@ -769,7 +755,7 @@ list<T>*% filter(list<T>* self, void* parent, bool (*block)(void*, T&))
 ```
 
 ```C
-    [1,2,3,4,5].filter { return it > 2 };  // [3,4,5]
+    [1,2,3,4,5].filter { it > 2 };  // [3,4,5]
 ```
 
 ```C
@@ -872,7 +858,7 @@ All elements and keys must implement to_string(). All basic types of comelang ha
 すべての要素とキーにto_string()が実装されている必要があります。comelangの基本的な型はすべてto_string()が実装されてます。
 
 ```C
-T2& at(map<T, T2>* self, T& key, T2 default_value) 
+T2 at(map<T, T2>* self, T& key, T2 default_value) 
 ```
 
 ```
@@ -942,7 +928,7 @@ map<T,T2>* insert(map<T,T2>* self, T key, T2 item)
 ```
 
 ```C
-T2?? operator_load_element(map<T, T2>* self, T& key) 
+T2 operator_load_element(map<T, T2>* self, T& key) 
 ```
 
 ```
@@ -951,20 +937,9 @@ T2?? operator_load_element(map<T, T2>* self, T& key)
     item.to_string().puts(); // 1
 ```
 
-If the key is not found, null check will result in a dynamic error if ?? is not added. Only if the item is a pointer.
+If the key is not found, zero clear value is returned.
 
-キーが見つからない場合??をつけないとnull checkが動的エラーとなります。アイテムがポインタの場合だけです。
-
-```
-    var ma = [1:"AAA",2:"BBB",3:"CCC"];
-    var item = ma[4]; // runtime error
-```
-
-
-```
-    var ma = [1:"AAA",2:"BBB",3:"CCC"];
-    var item = ma[4]??; // item is null
-```
+キーが見つからない場合0クリアされた値が返されます。
 
 ```C
 void operator_store_element(map<T, T2>* self, T key, T2 item) 
@@ -1149,14 +1124,13 @@ int main(int argc, char** argv)
     buf2.append_int(2);
     buf2.append_int(3);
     
-    var p = buf2.to_int_pointer();
+    int* p = buf2.head_pointer();
     
     printf("%d\n", *p);  // 1
     p++;
     printf("%d\n", *p);  // 2
     p++;
     printf("%d\n", *p);  // 3
-    p++;
     
     return 0;
 }
@@ -1340,19 +1314,6 @@ static inline list<double>*% double[]::to_list(double* self, size_t len) ;
     a.to_list().sort().each {
         printf("%d\n", it);
     }
-```
-
-```C
-    int a[3] = { 3, 2, 1 };
-    
-    var p = a.to_pointer();
-    
-    printf("%d\n", *p);
-    p++;
-    printf("%d\n", *p);
-    p++;
-    printf("%d\n", *p);
-    p++;
 ```
 
 ```C
@@ -2431,7 +2392,7 @@ int main(int argc, char** argv)
 }
 ```
 
-# User finalize
+# User finalize, User clone
 
 ```
 #include <comelang.h>
@@ -2460,6 +2421,8 @@ int main(int argc, char** argv)
 user_finalize is for use to non-memory management routine at finalize.
 
 This is no memory leak.
+
+user_clone is similer.
 
 # uniq
 
@@ -2972,4 +2935,6 @@ int main(int argc, char** argv)
     return 0;
 }
 ```
+
+ 
 
