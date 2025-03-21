@@ -802,6 +802,7 @@ struct sInfo
     _Bool emb_cpp;
     _Bool gcc_compiler;
     _Bool in_exception_value;
+    _Bool in_method_block;
 };
 
 struct tuple2$2int$char$ph

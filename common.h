@@ -394,6 +394,7 @@ struct sInfo
     bool emb_cpp;
     bool gcc_compiler;
     bool in_exception_value;
+    bool in_method_block;
 };
 
 module sCurrentNodeModule
@@ -500,11 +501,21 @@ module sCurrentNodeModule
                     {
                     }
                     else {
-                        if(type2->mClass->mName === "lambda") {
-                            add_come_code(info, "__current_stack%d__.%s = %s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                        if(value->mFunName === info.come_fun.mName) {
+                            if(type2->mClass->mName === "lambda") {
+                                add_come_code(info, "__current_stack%d__.%s = %s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                            }
+                            else {
+                                add_come_code(info, "__current_stack%d__.%s = &%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                            }
                         }
                         else {
-                            add_come_code(info, "__current_stack%d__.%s = &%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                            if(type2->mClass->mName === "lambda") {
+                                add_come_code(info, "__current_stack%d__.%s = parent->%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                            }
+                            else {
+                                add_come_code(info, "__current_stack%d__.%s = parent->%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                            }
                         }
                     }
                 }

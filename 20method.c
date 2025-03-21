@@ -102,6 +102,8 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         }
     }
     
+    int num_method_block = info->num_method_block;
+    
     method_block2.append_format("%s method_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string());
     
     int i = 0;
@@ -138,21 +140,25 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     char* p = info.p;
     char* head = info.head;
     int sline = info.sline;
-    //sVarTable* lv_table = info.lv_table;
+//    sVarTable* lv_table = info.lv_table;
     
     info.source = method_block2;
     info.p = info.source.buf;
     info.head = info.source.buf;
     info.sline = method_block_sline;
-    //sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:null);
+//    sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:info.lv_table);
+//    info.lv_table = lv_table_method_block;
    
     sNode*% node = parse_function(info);
     
+    bool in_method_block = info.in_method_block;
+    info.in_method_block = true;
     node_compile(node).elif {
         return false;
     }
+    info.in_method_block = in_method_block;
     
-    char*% method_block_name = xsprintf("method_block%d_%s", info->num_method_block, all_alhabet_sname.to_string());
+    char*% method_block_name = xsprintf("method_block%d_%s", num_method_block, all_alhabet_sname.to_string());
     
     CVALUE*% come_value2 = new CVALUE();
     
@@ -192,6 +198,8 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     if(contained_method_generics_method_block) {
         info.funcs.remove(string(method_block_name));
     }
+    
+//    info->lv_table = lv_table;
     
     return true;
 }

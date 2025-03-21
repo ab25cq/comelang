@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+23.0.2 Fixed some bugs. More speed. More Power.
 23.0.1 Refactoring
 23.0.0 Fixed the bug of list::sort
 22.0.0 Remove smart_pointer, no genarete collection, vector, nil, more faster compiler

@@ -1244,6 +1244,8 @@ class sFunCallNode extends sNodeBase
             
             info->num_method_block++;
             
+            int num_method_block = info->num_method_block;
+            
             if(method_block_type.mClass.mName !== "lambda") {
                 err_msg(info, "This function does not have method block(%s)", fun_name).rescue {
                     return true;
@@ -1268,7 +1270,7 @@ class sFunCallNode extends sNodeBase
                 }
             }
             
-            method_block2.append_format("%s fun_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string());
+            method_block2.append_format("%s fun_block%d_%s(", make_type_name_string(result_type), num_method_block, all_alhabet_sname.to_string());
             
             i = 0;
             foreach(it, param_types) {
@@ -1318,7 +1320,7 @@ class sFunCallNode extends sNodeBase
                 return false;
             }
             
-            char*% method_block_name = xsprintf("fun_block%d_%s", info->num_method_block, all_alhabet_sname.to_string());
+            char*% method_block_name = xsprintf("fun_block%d_%s", num_method_block, all_alhabet_sname.to_string());
             
             CVALUE*% come_value2 = new CVALUE();
             
@@ -1484,17 +1486,28 @@ class sComeCallNode extends sNodeBase
         info.p = info.source.buf;
         info.head = info.source.buf;
         info.sline = come_block_sline;
+        
+//        sVarTable* lv_table = info.lv_table;
+//        sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:info.lv_table);
+//        info.lv_table = lv_table_method_block;
        
         sNode*% node = parse_function(info);
         
+        bool in_method_block = info.in_method_block;
+        info.in_method_block = true;
         node_compile(node).elif {
             return false;
         }
+        info.in_method_block = in_method_block;
         
         info.source = source3;
         info.p = p;
         info.head = head;
         info.sline = sline;
+//        info.lv_table = lv_table;
+        
+//        sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:info.lv_table);
+//        info.lv_table = lv_table_method_block;
         
         info->current_stack_frame_struct = current_stack_frame_struct;
         
