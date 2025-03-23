@@ -449,6 +449,7 @@ struct sType
     _Bool mRestrict;
     _Bool mImmutable;
     _Bool mHeap;
+    _Bool mDefferRightValue;
     _Bool mChannel;
     _Bool mNoHeap;
     _Bool mNoCallingDestructor;
@@ -518,6 +519,7 @@ struct sFun
     _Bool mExternal;
     _Bool mVarArgs;
     _Bool mNoResultType;
+    _Bool mConstFun;
     char* mAttribute;
     char* mFunAttribute;
 };
@@ -538,6 +540,7 @@ struct sGenericsFun
     _Bool mGenerate;
     char* mGenericsSName;
     int mGenericsSLine;
+    _Bool mConstFun;
 };
 
 struct map$2char$phchar$ph
@@ -1606,9 +1609,9 @@ struct sType* sType_initialize(struct sType* self, char* name, _Bool heap, struc
 struct sVarTable* sVarTable_initialize(struct sVarTable* self, _Bool global, struct sVarTable* parent);
 struct sClass* sClass_initialize(struct sClass* self, char* name, _Bool number, _Bool union_, _Bool generics, _Bool method_generics, _Bool protocol_, _Bool struct_, _Bool float_, int generics_num, int method_generics_num, _Bool enum_, struct sInfo* info);
 struct sClassModule* sClassModule_initialize(struct sClassModule* self, char* name, char* text, char* sname, int sline, struct sInfo* info);
-struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute);
+struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute, _Bool const_fun);
 void sVarTable_finalize(struct sVarTable* self);
-struct sGenericsFun* sGenericsFun_initialize(struct sGenericsFun* self, struct sType* impl_type, struct list$1char$ph* generics_type_names, struct list$1char$ph* method_generics_type_names, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool var_args, char* block, struct sInfo* info, char* generics_sname, int generics_sline);
+struct sGenericsFun* sGenericsFun_initialize(struct sGenericsFun* self, struct sType* impl_type, struct list$1char$ph* generics_type_names, struct list$1char$ph* method_generics_type_names, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool var_args, char* block, struct sInfo* info, char* generics_sname, int generics_sline, _Bool const_fun);
 struct tuple2$2int$char$ph* err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
@@ -1655,8 +1658,7 @@ void free_object(struct sType* type, char* obj, _Bool no_decrement, _Bool no_fre
 struct tuple2$2sType$phchar$ph* clone_object(struct sType* type, char* obj, struct sInfo* info);
 void free_right_value_objects(struct sInfo* info, _Bool comma);
 void free_objects(struct sVarTable* table, struct sVar* ret_value, struct sInfo* info);
-char* append_object_to_right_values(char* obj, struct sType* type, struct sInfo* info);
-void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count);
+void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value);
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 char* increment_ref_count_object(struct sType* type, char* obj, struct sInfo* info);
 void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* info, _Bool force_delete_, _Bool no_free);
@@ -2885,6 +2887,9 @@ struct sType* __result_obj__181;
         result_252->mHeap=self->mHeap;
     }
     if(    self!=((void*)0)) {
+        result_252->mDefferRightValue=self->mDefferRightValue;
+    }
+    if(    self!=((void*)0)) {
         result_252->mChannel=self->mChannel;
     }
     if(    self!=((void*)0)) {
@@ -2907,7 +2912,7 @@ struct sType* __result_obj__181;
     }
     if(    self!=((void*)0)&&self->mAsmName!=((void*)0)) {
         __dec_obj29=result_252->mAsmName,
-        result_252->mAsmName=(char*)come_increment_ref_count((char*)come_memdup(self->mAsmName, "sType_clone", 38, "char*"));
+        result_252->mAsmName=(char*)come_increment_ref_count((char*)come_memdup(self->mAsmName, "sType_clone", 39, "char*"));
         __dec_obj29 = come_decrement_ref_count(__dec_obj29, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
     }
     if(    self!=((void*)0)) {
@@ -2941,7 +2946,7 @@ struct sType* __result_obj__181;
     }
     if(    self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)) {
         __dec_obj34=result_252->mOriginalTypeName,
-        result_252->mOriginalTypeName=(char*)come_increment_ref_count((char*)come_memdup(self->mOriginalTypeName, "sType_clone", 48, "char*"));
+        result_252->mOriginalTypeName=(char*)come_increment_ref_count((char*)come_memdup(self->mOriginalTypeName, "sType_clone", 49, "char*"));
         __dec_obj34 = come_decrement_ref_count(__dec_obj34, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
     }
     if(    self!=((void*)0)) {
@@ -3526,6 +3531,9 @@ static _Bool sFun_equals(struct sFun* left, struct sFun* right){
     if(    !bool_equals(left->mNoResultType,right->mNoResultType)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mConstFun,right->mConstFun)) {
+        return (_Bool)0;
+    }
     if(    !string_equals(left->mAttribute,right->mAttribute)) {
         return (_Bool)0;
     }
@@ -3615,6 +3623,9 @@ static _Bool sType_equals(struct sType* left, struct sType* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mHeap,right->mHeap)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mDefferRightValue,right->mDefferRightValue)) {
         return (_Bool)0;
     }
     if(    !bool_equals(left->mChannel,right->mChannel)) {
@@ -4101,6 +4112,9 @@ static _Bool sGenericsFun_equals(struct sGenericsFun* left, struct sGenericsFun*
     if(    !int_equals(left->mGenericsSLine,right->mGenericsSLine)) {
         return (_Bool)0;
     }
+    if(    !bool_equals(left->mConstFun,right->mConstFun)) {
+        return (_Bool)0;
+    }
     return (_Bool)1;
 }
 
@@ -4339,7 +4353,7 @@ right_value2_325 = (void*)0;
         /*b*/ come_call_finalizer3(__dec_obj54,sType_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);
         come_value_315->var=((void*)0);
         if(        result_type2_329->mHeap) {
-            append_object_to_right_values2(come_value_315,(struct sType*)come_increment_ref_count(result_type2_329),info,(_Bool)0);
+            append_object_to_right_values2(come_value_315,(struct sType*)come_increment_ref_count(result_type2_329),info,(_Bool)0,((void*)0),((void*)0));
         }
         __dec_obj55=come_value_315->c_value,
         come_value_315->c_value=(char*)come_increment_ref_count(append_stackframe(come_value_315->c_value,come_value_315->type,info));

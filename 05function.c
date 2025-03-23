@@ -2026,11 +2026,13 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     result_type->mStatic = false;
     result_type->mUniq = false;
     
+    bool const_fun = generics_fun->mConstFun;
+    
     bool var_args = generics_fun.mVarArgs;
     var fun = new sFun(fun_name, result_type
                     , param_types
                     , param_names, param_default_parametors, false@external
-                    , var_args, block, true@static_, info, false@inline_, false@uniq_, false@generate_);
+                    , var_args, block, true@static_, info, false@inline_, false@uniq_, false@generate_, const_fun:const_fun);
     
     info.funcs.insert(string(fun_name), fun);
     
@@ -2286,6 +2288,8 @@ sNode*% parse_function(sInfo* info)
         info.in_class = true;
     }
     
+    bool const_fun = false;
+    
     int version = 0;
     if(parsecmp("version")) {
         info->p += strlen("version");
@@ -2325,7 +2329,7 @@ sNode*% parse_function(sInfo* info)
         var fun = new sFun(string(fun_name), result_type, param_types, param_names
                             , param_default_parametors
                             , false@external, var_args, block
-                            , true@static_, info, false@inline_, false@uniq_, false@generate_);
+                            , true@static_, info, false@inline_, false@uniq_, false@generate_, const_fun:const_fun);
         
         var fun2 = info.funcs[string(fun_name)]??;
         //if(fun2 == null || fun2.mExternal) {
@@ -2342,7 +2346,7 @@ sNode*% parse_function(sInfo* info)
         
         string block = skip_block(info);
         
-        var fun = new sGenericsFun(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline);
+        var fun = new sGenericsFun(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline, const_fun:const_fun);
         
         string fun_name3 = xsprintf("%s_%s", none_generics_name, base_fun_name);
         
@@ -2356,7 +2360,7 @@ sNode*% parse_function(sInfo* info)
         
         string block = skip_block(info);
         
-        var fun = new sGenericsFun(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline);
+        var fun = new sGenericsFun(info.impl_type, clone info.generics_type_names, clone info.method_generics_type_names, string(fun_name), result_type, param_types, param_names, param_default_parametors, var_args, block, info, string(generics_sname), generics_sline, const_fun:const_fun);
         
         if(method_definition) {
             info.generics_funcs.insert(string(fun_name), fun);
@@ -2409,7 +2413,7 @@ sNode*% parse_function(sInfo* info)
                                 , param_default_parametors
                                 , false@external, var_args, clone block
                                 , static_fun@static_
-                                , info, inline_fun, uniq_fun, false@generate_fun, attribute, fun_attribute);
+                                , info, inline_fun, uniq_fun, false@generate_fun, attribute, fun_attribute, const_fun:const_fun);
         
         
         if(info.output_header_file) {
@@ -2451,7 +2455,7 @@ sNode*% parse_function(sInfo* info)
                                 , param_default_parametors
                                 , true@external, var_args, null@block
                                 , false@static_, info, false@inline_
-                                , false@uniq_, false@generate_, attribute, fun_attribute);
+                                , false@uniq_, false@generate_, attribute, fun_attribute, const_fun:const_fun);
             
             //var fun2 = info.funcs[string(fun_name)]??;
             //if(fun2 == null || fun2.mExternal) {
@@ -2487,7 +2491,7 @@ sNode*% parse_function(sInfo* info)
                                 , true@external, var_args, null@block
                                 , false@static_, info, false@inline_, false@uniq_
                                 , false@genereate_
-                                , attribute, fun_attribute);
+                                , attribute, fun_attribute, const_fun:const_fun);
             
             //var fun2 = info.funcs[string(fun_name)]??;
             //if(fun2 == null || fun2.mExternal) {

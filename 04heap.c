@@ -61,6 +61,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool immutable_ = type->mImmutable;
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
+        bool deffer_right_value = type->mDefferRightValue;
         bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
         
@@ -75,6 +76,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         }
         if(guard_) {
             result->mGuardValue = guard_;
+        }
+        if(deffer_right_value) {
+            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
         }
         if(no_heap) {
             result->mNoHeap = true;
@@ -120,6 +124,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool immutable_ = type->mImmutable;
             int pointer_num = type->mPointerNum;
             bool heap = type->mHeap;
+            bool deffer_right_value = type->mDefferRightValue;
             bool guard_ = type->mGuardValue;
             
             bool no_heap = type->mNoHeap;
@@ -133,6 +138,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
 
             if(heap) {
                 result->mHeap = heap;
+            }
+            if(deffer_right_value) {
+                result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
             }
             if(exception_) {
                 result->mException = exception_;
@@ -207,6 +215,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool immutable_ = type->mImmutable;
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
+        bool deffer_right_value = type->mDefferRightValue;
         bool guard_ = type->mGuardValue;
         
         bool no_heap = type->mNoHeap;
@@ -216,6 +225,9 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         
         result = clone info->method_generics_types[generics_number];
 
+        if(deffer_right_value) {
+            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
+        }
         if(heap) {
             result->mHeap = heap || result->mHeap;
         }
@@ -268,31 +280,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
 
 int gRightValueNum = 0;
 
-string append_object_to_right_values(char* obj, sType*% type, sInfo* info)
-{
-    if(gComeGC || gComeC) {
-        return string(obj);
-    }
-    if(info->no_output_come_code) {
-        return string("");
-    }
-    var new_value = new sRightValueObject;
-    new_value.mType = type;
-    new_value.mFreed = false;
-    new_value.mID = gRightValueNum;
-    new_value.mVarName = xsprintf("__right_value%d", gRightValueNum++);
-    new_value.mFunName = info->come_fun->mName;
-    new_value.mBlockLevel = info->block_level;
-    
-    info.right_value_objects.push_back(new_value);
-    
-    string buf = xsprintf("void* __right_value%d = (void*)0;\n", gRightValueNum-1);
-    add_come_code_at_function_head(info, buf);
-    
-    return xsprintf("((%s)(%s=%s))", make_type_name_string(type, false@in_header, true@array_cast_pointer), new_value->mVarName, obj)!;
-}
-
-void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false)
+void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null)
 {
     if(gComeGC || gComeC) {
         return ;
@@ -300,24 +288,42 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
     if(info->no_output_come_code) {
         return ;
     }
-    var new_value = new sRightValueObject;
-    new_value.mType = type;
-    new_value.mFreed = false;
-    new_value.mID = gRightValueNum;
-    new_value.mVarName = xsprintf("__right_value%d", gRightValueNum++);
-    new_value.mFunName = info->come_fun->mName;
-    new_value.mBlockLevel = info->block_level;
-    new_value.mDecrementRefCount = decrement_ref_count;
-    
-    info.right_value_objects.push_back(new_value);
-    
-    string buf = xsprintf("void* __right_value%d = (void*)0;\n", gRightValueNum-1);
-    add_come_code_at_function_head(info, buf);
-    
-    
-    come_value.c_value_without_right_value_objects = clone come_value.c_value;
-    come_value.c_value = xsprintf("((%s)(%s=%s))", make_type_name_string(type, false@in_header, true@array_cast_pointer), new_value->mVarName, come_value.c_value)!;
-    come_value.right_value_objects = new_value;
+    if(type->mDefferRightValue && obj_value) {
+        static int var_num = 0;
+        var_num++;
+        string var_name = s"__deffer_right_value\{var_num}";
+        add_variable_to_table(var_name, clone obj_type, info, false@function_param);
+        sVar* var_ = get_variable_from_table(info.lv_table, var_name);
+        
+        string buf = xsprintf("%s %s = (void*)0;\n", make_type_name_string(obj_type), var_->mCValueName);
+        add_come_code_at_function_head(info, buf);
+        
+        add_come_code(info, "%s=%s;\n", var_->mCValueName, obj_value);
+        
+        come_value.c_value_without_right_value_objects = clone come_value.c_value;
+        come_value.c_value = come_value.c_value;
+        come_value.right_value_objects = null;
+    }
+    else {
+        var new_value = new sRightValueObject;
+        new_value.mType = type;
+        new_value.mFreed = false;
+        new_value.mID = gRightValueNum;
+        new_value.mVarName = xsprintf("__right_value%d", gRightValueNum++);
+        new_value.mFunName = info->come_fun->mName;
+        new_value.mBlockLevel = info->block_level;
+        new_value.mDecrementRefCount = decrement_ref_count;
+        
+        info.right_value_objects.push_back(new_value);
+        
+        string buf = xsprintf("void* __right_value%d = (void*)0;\n", gRightValueNum-1);
+        add_come_code_at_function_head(info, buf);
+        
+        
+        come_value.c_value_without_right_value_objects = clone come_value.c_value;
+        come_value.c_value = xsprintf("((%s)(%s=%s))", make_type_name_string(type, false@in_header, true@array_cast_pointer), new_value->mVarName, come_value.c_value)!;
+        come_value.right_value_objects = new_value;
+    }
 }
 
 void remove_object_from_right_values(int right_value_num, sInfo* info)

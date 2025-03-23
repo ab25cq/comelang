@@ -1408,6 +1408,16 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
          
          return new sGCDecNoFreeNode(node, info) implements sNode;
     }
+    else if(!gComeC && buf === "lock" && *info->p == '(') {
+         info->p++;
+         skip_spaces_and_lf();
+         
+         sNode*% node = expression();
+         
+         expected_next_character(')');
+         
+         return new sGCDecNoFreeNode(node, info) implements sNode;
+    }
     else if(!gComeC && buf === "isheap" && *info->p == '(') {
         info->p++;
         skip_spaces_and_lf();

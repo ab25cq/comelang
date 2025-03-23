@@ -1563,7 +1563,8 @@ class sComeCallNode extends sNodeBase
         return true;
     }
 };
-
+        
+        
 class sComeJoinNode extends sNodeBase
 {
     new(sNode*% node, sInfo* info) {
@@ -2306,7 +2307,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 come_block.append_str("{");
                 come_block.append_str(mem);
                 come_block.append_str("; }");
-                come_block.append_str("}");
+                come_block.append_str("return (void*)0;\n}");
                 come_block.append_str("\n");
             }
             

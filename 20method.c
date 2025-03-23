@@ -622,6 +622,13 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
+/*
+            if(obj_type->mConstant && !fun->mConstFun) {
+                err_msg(info, "function is not const method(%s) at method(%s)", generics_fun_name, info.come_fun.mName).rescue {
+                    return true;
+                }
+            }
+*/
             
             if(fun.mParamTypes.length() == 0) {
                 err_msg(info, "Method require function parametor").rescue {
@@ -797,6 +804,7 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
+/*
             sType* obj_array_type = obj_type->mOriginalLoadVarType;
             if(obj_array_type && obj_array_type.mArrayNum.length() > 0) {
                 string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
@@ -920,6 +928,7 @@ class sMethodCallNode extends sNodeBase
                     }
                 }
             }
+*/
             
             if(params.length() < fun.mParamTypes.length()+(method_block?-2:0))
             {
@@ -981,15 +990,41 @@ class sMethodCallNode extends sNodeBase
             buf.append_str("(");
             
             
-            int j = 0;
-            foreach(it, come_params) {
-                buf.append_str(it.c_value);
+            string saved_obj_value = null
+            if(result_type2->mDefferRightValue) {
+                static int var_num = 0;
+                string var_name = s"__save_obj_value\{var_num++}";
+                add_come_code(info, "%s=%s;\n", make_define_var(obj_type, var_name), obj_value.c_value);
                 
-                if(j != come_params.length()-1) {
-                    buf.append_str(",");
+                saved_obj_value = var_name;
+                
+                int j = 0;
+                foreach(it, come_params) {
+                    if(j == 0) {
+                        buf.append_str(saved_obj_value);
+                    }
+                    else {
+                        buf.append_str(it.c_value);
+                    }
+                    
+                    if(j != come_params.length()-1) {
+                        buf.append_str(",");
+                    }
+                    
+                    j++;
                 }
-                
-                j++;
+            }
+            else {
+                int j = 0;
+                foreach(it, come_params) {
+                    buf.append_str(it.c_value);
+                    
+                    if(j != come_params.length()-1) {
+                        buf.append_str(",");
+                    }
+                    
+                    j++;
+                }
             }
             buf.append_str(")");
             
@@ -1003,7 +1038,7 @@ class sMethodCallNode extends sNodeBase
             come_value2.type->mStatic = false;
             
             if(result_type2->mHeap) {
-                append_object_to_right_values2(come_value2, result_type2, info);
+                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value);
             }
         
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);

@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 24.0.0
+version 25.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+25.0.0 Mutex added.
 24.0.0 Myabe complete. After my works, refactoring or more gets speed.
 23.0.2 Fixed some bugs. More speed. More Power.
 23.0.1 Refactoring
@@ -2947,3 +2948,36 @@ If you do use global or local variables, use a mutex.
 The compiler will not prohibit this, but we're all adults, so we know what to do.
  
 
+```
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+int main(int argc,char** argv)
+{
+    var li = new come_mutex<list<int>*%>([1,2,3]);
+    
+    var thread2 = come {
+        li.sync() {
+            it.to_string().puts();
+        }
+        sleep(1);
+        li.sync() {
+            it.to_string().puts();
+        }
+    }
+    
+    var thread = come {
+        li.sync() {
+            it.add(4);
+        }
+        li.sync() {
+            it.add(5);
+        }
+    }
+    
+    come_join(thread);
+    come_join(thread2);
+    
+    return 0;
+}
+```

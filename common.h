@@ -103,6 +103,7 @@ struct sType
     bool mRestrict;
     bool mImmutable;
     bool mHeap;
+    bool mDefferRightValue;
     bool mChannel;
     bool mNoHeap;
     bool mNoCallingDestructor;
@@ -196,6 +197,7 @@ struct sFun
     bool mExternal;
     bool mVarArgs;
     bool mNoResultType;
+    bool mConstFun;
     
     string mAttribute;
     string mFunAttribute;
@@ -222,6 +224,7 @@ struct sGenericsFun
     
     string mGenericsSName;
     int mGenericsSLine;
+    bool mConstFun;
 };
 
 struct sModule
@@ -547,9 +550,9 @@ sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* in
 sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent);
 sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, sInfo* info=info);
 sClassModule*% sClassModule*::initialize(sClassModule*% self, string name, string text, string sname, int sline, sInfo* info);
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"");
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"", bool const_fun=false);
 void sVarTable*::finalize(sVarTable* self);
-sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type, list<string>* generics_type_names, list<string>* method_generics_type_names, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool var_args, string block, sInfo* info, string generics_sname, int generics_sline);
+sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type, list<string>* generics_type_names, list<string>* method_generics_type_names, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool var_args, string block, sInfo* info, string generics_sname, int generics_sline, bool const_fun=false);
 
 /////////////////////////////////////////////////////////////////////
 /// 02transpile.c ///
@@ -608,8 +611,8 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
 sType*%, string clone_object(sType* type, char* obj, sInfo* info);
 void free_right_value_objects(sInfo* info, bool comma=false);
 void free_objects(sVarTable* table, sVar* ret_value, sInfo* info);
-string append_object_to_right_values(char* obj, sType*% type, sInfo* info);
-void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false);
+void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null);
+        
 void remove_object_from_right_values(int right_value_num, sInfo* info);
 string increment_ref_count_object(sType* type, char* obj, sInfo* info);
 void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_delete_=false, bool no_free=false);

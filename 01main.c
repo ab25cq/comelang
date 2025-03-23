@@ -136,7 +136,7 @@ sClassModule*% sClassModule*::initialize(sClassModule*% self, string name, strin
     return self;
 };
 
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_, string attribute=s"", string fun_attribute=s"")
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_, string attribute=s"", string fun_attribute=s"", bool const_fun=false)
 {
     self.mName = name;
     self.mResultType = result_type;
@@ -148,6 +148,7 @@ sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sTy
     self.mStatic = static_;
     self.mInline = inline_;
     self.mUniq = uniq_;
+    self.mConstFun = const_fun;
     self.mGenerate = generate_;
     
     self.mLambdaType = new sType(s"lambda");
@@ -209,7 +210,7 @@ string sNodeBase*::sname(sNodeBase* self, sInfo* info)
     return string(self.sname);
 }
 
-sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type, list<string>* generics_type_names, list<string>* method_generics_type_names, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool var_args, string block, sInfo* info, string generics_sname, int generics_sline)
+sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type, list<string>* generics_type_names, list<string>* method_generics_type_names, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool var_args, string block, sInfo* info, string generics_sname, int generics_sline, bool const_fun=false)
 {
     self.mGenericsTypeNames = clone generics_type_names;
     self.mMethodGenericsTypeNames = clone method_generics_type_names;
@@ -226,6 +227,7 @@ sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type,
     
     self.mGenericsSName = string(generics_sname);
     self.mGenericsSLine = generics_sline;
+    self.mConstFun = const_fun;
     
     return self;
 }
