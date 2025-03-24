@@ -29,8 +29,10 @@ impl come_mutex<T>
         block(parent, self.value);
         pthread_mutex_unlock(&self.mutex);
     }
-    void lock(come_mutex<T>* self) {
+    T lock(come_mutex<T>* self) {
         pthread_mutex_lock(&self.mutex);
+        
+        reteurn self.value;
     }
     void unlock(come_mutex<T>* self) {
         pthread_mutex_unlock(&self.mutex);
