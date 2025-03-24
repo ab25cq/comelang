@@ -8,12 +8,16 @@ int main(int argc,char** argv)
     var thread2 = come {
         sleep(3);
         
-        li.lock().to_string().puts();
+        var it = li.lock();
+        
+        it.to_string().puts();
+        
+        li.unlock();
     }
     
     var thread = come {
-        li.lock.add(4);
-        li.lock.add(5);
+        li.lock().add(4);
+        li.lock().add(5);
     }
     
     come_join(thread);

@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 25.0.2
+version 25.0.3
 
 ``` C
 #include <comelang.h>
@@ -85,7 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
-25.0.2 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
+25.0.3 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
 25.0.1 Mutex lock unlock added.
 25.0.0 Mutex added.
 24.0.0 Myabe complete. After my works, refactoring or more gets speed.
@@ -2762,10 +2762,10 @@ struct sData
 
 int main(int argc, char** argv)
 {
-    var data = sData { a:123, b:234 };
+    var data = new sData { a:123, b:234 };
     
     data.case {
-        (Value === sData { a:wildcard, b:234 }) {
+        (Value === new sData { a:wildcard, b:234 }) {
             puts("MATCH");
         }
         else {
@@ -2823,9 +2823,9 @@ struct sData
 
 int main(int argc, char** argv)
 {
-    var data = sData { a:123, b:234 };
+    var data = new sData { a:123, b:234 };
     
-    data.to_string().puts(); // sData {a:123,b:234}
+    data.to_string().puts(); // new sData {a:123,b:234}
     
     return 0;
 }
@@ -2842,17 +2842,17 @@ struct sData<T>
 
 int main(int argc, char** argv)
 {
-    var data = sData<int> { a:123, b:234 };
+    var data = new sData<int> { a:123, b:234 };
     
     data.case {
-        (Value === sData<int>(a:wildcard, b:234) {
+        (Value === new sData<int>(a:wildcard, b:234) {
             puts("MATCH");
         }
         else {
             puts("NO MATCH");
         }
     }
-    data.to_string().puts(); // sData {a:123,b:234}
+    data.to_string().puts(); // new sData {a:123,b:234}
     
     return 0;
 }
@@ -3028,12 +3028,12 @@ int main(int argc,char** argv)
     var thread2 = come {
         sleep(3);
         
-        li.lock().to_string().puts();
+        li.lock().to_string().puts();  // on_drop call unlock()
     }
     
     var thread = come {
-        li.lock.add(4);
-        li.lock.add(5);
+        li.lock().add(4); // on_drop call unlock()
+        li.lock().add(5); // on_drop call unlock()
     }
     
     come_join(thread);
@@ -3044,5 +3044,53 @@ int main(int argc,char** argv)
 ```
 
 # on_drop
+
+```
+#include <unistd.h>
+#include <pthread.h>
+#include <poll.h>
+
+using comelang-pthread;
+
+struct come_mutex<T>
+{
+    T value;
+    pthread_mutex_t mutex;
+    bool lock;
+};
+
+impl come_mutex<T>
+{
+    come_mutex<T>*% initialize(come_mutex<T>*% self, T value) {
+        pthread_mutex_init(&self.mutex, NULL).if {
+            perror("Failed to initialize mutex");
+            exit(EXIT_FAILURE);
+        }
+        self.value = value;
+        return self;
+    }
+    
+    void sync(come_mutex<T>* self, void* parent, void (*block)(void* parent, T it)) {
+        pthread_mutex_lock(&self.mutex);
+        block(parent, self.value);
+        pthread_mutex_unlock(&self.mutex);
+    }
+    T~ lock(come_mutex<T>* self) {
+        pthread_mutex_lock(&self.mutex);
+        self.lock = true;
+        
+        return self.value;
+    }
+    void unlock(come_mutex<T>* self) {
+        if(self.lock) {
+            pthread_mutex_unlock(&self.mutex);
+        }
+    }
+    
+    void on_drop(come_mutex<T>* self) {
+        self.unlock();
+    }
+}
+```
 
 25.0.1 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
