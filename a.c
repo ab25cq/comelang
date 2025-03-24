@@ -6,13 +6,12 @@ int main(int argc,char** argv)
     var li = new come_mutex<list<int>*%>([1,2,3]);
     
     var thread2 = come {
-        li.sync() {
-            it.to_string().puts();
-        }
-        sleep(1);
-        li.sync() {
-            it.to_string().puts();
-        }
+        sleep(3);
+        var it = li.lock();
+        
+        it.to_string().puts();
+        
+        li.unlock();
     }
     
     var thread = come {
