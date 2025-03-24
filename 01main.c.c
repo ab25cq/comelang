@@ -599,6 +599,9 @@ struct sRightValueObject
     int mBlockLevel;
     _Bool mStored;
     _Bool mDecrementRefCount;
+    struct sType* mObjType;
+    char* mObjValue;
+    _Bool mNoFree;
 };
 
 struct sClassModule
@@ -1506,6 +1509,7 @@ char* FILE_read(struct _IO_FILE* f);
 int FILE_write(struct _IO_FILE* f, char* str);
 int FILE_fclose(struct _IO_FILE* f);
 struct _IO_FILE* FILE_fprintf(struct _IO_FILE* f, const char* msg, ...);
+void FILE_on_drop(struct _IO_FILE* self);
 int charp_write(char* self, char* file_name, _Bool append);
 char* charp_read(char* file_name);
 struct list$1char$ph* FILE_readlines(struct _IO_FILE* f);
@@ -5097,6 +5101,12 @@ memset(&args_221, 0, sizeof(va_list));
     return __result_obj__149;
 }
 
+void FILE_on_drop(struct _IO_FILE* self){
+    if(    self) {
+        fclose(self);
+    }
+}
+
 int charp_write(char* self, char* file_name, _Bool append){
 struct _IO_FILE* f_223;
 int result_224;
@@ -5154,7 +5164,7 @@ char* __result_obj__153;
         (__result_obj__151 = come_decrement_ref_count(__result_obj__151, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_*/, (void*)0));
         return __result_obj__151;
     }
-    buf_227=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "./comelang.h", 4601, "struct buffer*"))));
+    buf_227=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "./comelang.h", 4605, "struct buffer*"))));
     while(1) {
         char buf2_228[1024];
         memset(&buf2_228, 0, sizeof(char)        *(1024)        );
@@ -5188,7 +5198,7 @@ struct list$1char$ph* result_232;
 struct list$1char$ph* __result_obj__154;
 void* __right_value179 = (void*)0;
 struct list$1char$ph* __result_obj__155;
-    result_232=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "./comelang.h", 4628, "struct list$1char$ph*"))));
+    result_232=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "./comelang.h", 4632, "struct list$1char$ph*"))));
     if(    f==((void*)0)) {
         __result_obj__154 = (struct list$1char$ph*)come_increment_ref_count(result_232);
         /*c*/ come_call_finalizer3(result_232,list$1char$ph$p_finalize, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, 0/* force_delete */ , (void*)0);
@@ -5379,6 +5389,12 @@ static void sRightValueObject_finalize(struct sRightValueObject* self){
     }
     if(    self!=((void*)0)&&self->mFunName!=((void*)0)) {
         (self->mFunName = come_decrement_ref_count(self->mFunName, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+    }
+    if(    self!=((void*)0)&&self->mObjType!=((void*)0)) {
+        /*c*/ come_call_finalizer3(self->mObjType,sType_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
+    }
+    if(    self!=((void*)0)&&self->mObjValue!=((void*)0)) {
+        (self->mObjValue = come_decrement_ref_count(self->mObjValue, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
 }
 

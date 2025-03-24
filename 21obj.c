@@ -181,7 +181,7 @@ class sNewNode extends sNodeBase
             come_value.type = clone type2;
             come_value.var = null;
             
-            append_object_to_right_values2(come_value, type2 ,info);
+            append_object_to_right_values2(come_value, type2, info);
             
             add_come_last_code(info, "%s", come_value.c_value);
             

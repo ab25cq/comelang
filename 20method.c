@@ -1040,6 +1040,9 @@ class sMethodCallNode extends sNodeBase
             if(result_type2->mHeap) {
                 append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value);
             }
+            else if(saved_obj_value) {
+                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value);
+            }
         
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
             

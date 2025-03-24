@@ -4531,7 +4531,7 @@ uniq int FILE*::fclose(FILE* f)
     return result;
 }
 
-uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
+uniq FILE*~ FILE*::fprintf(FILE* f, const char* msg, ...)
 {
     if(f == null || msg == null) {
         return f;
@@ -4552,6 +4552,10 @@ uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
     return f;
 }
 
+uniq void FILE*::on_drop(FILE* self)
+{
+    if(self) fclose(self);
+}
 
 uniq int char*::write(char* self, char* file_name, bool append=false) 
 {

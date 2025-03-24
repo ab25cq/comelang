@@ -599,6 +599,9 @@ struct sRightValueObject
     int mBlockLevel;
     _Bool mStored;
     _Bool mDecrementRefCount;
+    struct sType* mObjType;
+    char* mObjValue;
+    _Bool mNoFree;
 };
 
 struct sClassModule
@@ -1634,6 +1637,7 @@ char* FILE_read(struct _IO_FILE* f);
 int FILE_write(struct _IO_FILE* f, char* str);
 int FILE_fclose(struct _IO_FILE* f);
 struct _IO_FILE* FILE_fprintf(struct _IO_FILE* f, const char* msg, ...);
+void FILE_on_drop(struct _IO_FILE* self);
 int charp_write(char* self, char* file_name, _Bool append);
 char* charp_read(char* file_name);
 struct list$1char$ph* FILE_readlines(struct _IO_FILE* f);

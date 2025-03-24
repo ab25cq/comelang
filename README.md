@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 25.0.1
+version 25.0.2
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+25.0.2 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
 25.0.1 Mutex lock unlock added.
 25.0.0 Mutex added.
 24.0.0 Myabe complete. After my works, refactoring or more gets speed.
@@ -3015,3 +3016,33 @@ int main(int argc,char** argv)
     return 0;
 }
 ```
+
+```
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+int main(int argc,char** argv)
+{
+    var li = new come_mutex<list<int>*%>([1,2,3]);
+    
+    var thread2 = come {
+        sleep(3);
+        
+        li.lock().to_string().puts();
+    }
+    
+    var thread = come {
+        li.lock.add(4);
+        li.lock.add(5);
+    }
+    
+    come_join(thread);
+    come_join(thread2);
+    
+    return 0;
+}
+```
+
+# on_drop
+
+25.0.1 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.

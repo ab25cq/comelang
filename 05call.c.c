@@ -599,6 +599,9 @@ struct sRightValueObject
     int mBlockLevel;
     _Bool mStored;
     _Bool mDecrementRefCount;
+    struct sType* mObjType;
+    char* mObjValue;
+    _Bool mNoFree;
 };
 
 struct sClassModule
@@ -1687,6 +1690,7 @@ char* FILE_read(struct _IO_FILE* f);
 int FILE_write(struct _IO_FILE* f, char* str);
 int FILE_fclose(struct _IO_FILE* f);
 struct _IO_FILE* FILE_fprintf(struct _IO_FILE* f, const char* msg, ...);
+void FILE_on_drop(struct _IO_FILE* self);
 int charp_write(char* self, char* file_name, _Bool append);
 char* charp_read(char* file_name);
 struct list$1char$ph* FILE_readlines(struct _IO_FILE* f);
@@ -4053,7 +4057,7 @@ struct sType* __dec_obj62;
 _Bool __result_obj__236;
     info->current_stack_num++;
     class_name_307=(char*)come_increment_ref_count(xsprintf("__current_stack%d__",info->current_stack_num));
-    current_stack_308=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "common.h", 428, "struct sClass*")),(char*)come_increment_ref_count(class_name_307),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info));
+    current_stack_308=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "common.h", 432, "struct sClass*")),(char*)come_increment_ref_count(class_name_307),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,info));
     vtable_309=info->lv_table;
     while(vtable_309) {
         for(        o2_saved_310=(struct map$2char$phsVar$ph*)come_increment_ref_count((vtable_309->mVars)),it_313=map$2char$phsVar$ph_begin((o2_saved_310));        !map$2char$phsVar$ph_end((o2_saved_310));        it_313=map$2char$phsVar$ph_next((o2_saved_310))        ){
@@ -4063,7 +4067,7 @@ _Bool __result_obj__236;
             /*c*/ come_call_finalizer3(__right_value279,sVar_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
             type2_321=(struct sType*)come_increment_ref_count(sType_clone(value_317->mType));
             type2_321->mPointerNum++;
-            item_322=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "common.h", 441, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value_317->mCValueName)),(struct sType*)come_increment_ref_count(type2_321)));
+            item_322=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "common.h", 445, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value_317->mCValueName)),(struct sType*)come_increment_ref_count(type2_321)));
             if(            value_317->mCValueName!=((void*)0)) {
                 if(                strcmp(value_317->mCValueName,"__list_values")==0) {
                 }
@@ -4078,7 +4082,7 @@ _Bool __result_obj__236;
                     list$1sNode$ph_reset(type3_333->mArrayNum);
                     type3_333->mPointerNum=1;
                     type3_333->mOriginIsArray=(_Bool)1;
-                    item2_336=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "common.h", 461, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value_317->mCValueName)),(struct sType*)come_increment_ref_count(type3_333)));
+                    item2_336=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "common.h", 465, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value_317->mCValueName)),(struct sType*)come_increment_ref_count(type3_333)));
                     list$1tuple2$2char$phsType$ph$ph_push_back(current_stack_308->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_clone(item2_336)));
                     value_317->mType->mOriginIsArray=(_Bool)1;
                     /*c*/ come_call_finalizer3(type3_333,sType_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
@@ -4105,7 +4109,7 @@ _Bool __result_obj__236;
             value_388=((struct sVar*)(__right_value301=map$2char$phsVar$ph$p_operator_load_element(vtable_309->mVars,key_387)));
             /*c*/ come_call_finalizer3(__right_value301,sVar_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
             type2_389=(struct sType*)come_increment_ref_count(sType_clone(value_388->mType));
-            item_390=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "common.h", 490, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(value_388->mCValueName),(struct sType*)come_increment_ref_count(type2_389)));
+            item_390=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "common.h", 494, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(value_388->mCValueName),(struct sType*)come_increment_ref_count(type2_389)));
             if(            value_388->mCValueName!=((void*)0)) {
                 if(                strcmp(value_388->mCValueName,"__list_values")==0) {
                 }
@@ -4140,12 +4144,12 @@ _Bool __result_obj__236;
         /*c*/ come_call_finalizer3(o2_saved_385,map$2char$phsVar$ph$p_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
         vtable_309=vtable_309->mParent;
     }
-    come_value_391=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "common.h", 529, "struct CVALUE*"))));
+    come_value_391=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "common.h", 533, "struct CVALUE*"))));
     __dec_obj61=come_value_391->c_value,
     come_value_391->c_value=(char*)come_increment_ref_count(xsprintf("&__current_stack%d__",info->current_stack_num));
     __dec_obj61 = come_decrement_ref_count(__dec_obj61, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
     __dec_obj62=come_value_391->type,
-    come_value_391->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "common.h", 532, "struct sType*")),(char*)come_increment_ref_count(class_name_307),(_Bool)0,info));
+    come_value_391->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "common.h", 536, "struct sType*")),(char*)come_increment_ref_count(class_name_307),(_Bool)0,info));
     /*b*/ come_call_finalizer3(__dec_obj62,sType_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);
     come_value_391->var=((void*)0);
     add_come_last_code(info,"%s;\n",come_value_391->c_value);

@@ -264,6 +264,10 @@ struct sRightValueObject
     int mBlockLevel;
     bool mStored;
     bool mDecrementRefCount;
+    
+    sType*% mObjType;
+    string mObjValue;
+    bool mNoFree;
 };
 
 struct sClassModule

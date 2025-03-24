@@ -11,6 +11,7 @@ struct come_mutex<T>
 {
     T value;
     pthread_mutex_t mutex;
+    bool lock;
 };
 
 impl come_mutex<T>
@@ -29,13 +30,20 @@ impl come_mutex<T>
         block(parent, self.value);
         pthread_mutex_unlock(&self.mutex);
     }
-    T lock(come_mutex<T>* self) {
+    T~ lock(come_mutex<T>* self) {
         pthread_mutex_lock(&self.mutex);
+        self.lock = true;
         
         return self.value;
     }
     void unlock(come_mutex<T>* self) {
-        pthread_mutex_unlock(&self.mutex);
+        if(self.lock) {
+            pthread_mutex_unlock(&self.mutex);
+        }
+    }
+    
+    void on_drop(come_mutex<T>* self) {
+        self.unlock();
     }
 }
 

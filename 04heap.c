@@ -288,34 +288,28 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
     if(info->no_output_come_code) {
         return ;
     }
-    if(type->mDefferRightValue && obj_value) {
-        static int var_num = 0;
-        var_num++;
-        string var_name = s"__deffer_right_value\{var_num}";
-        add_variable_to_table(var_name, clone obj_type, info, false@function_param);
-        sVar* var_ = get_variable_from_table(info.lv_table, var_name);
+    
+    var new_value = new sRightValueObject;
+    new_value.mType = type;
+    new_value.mFreed = false;
+    new_value.mID = gRightValueNum;
+    new_value.mVarName = xsprintf("__right_value%d", gRightValueNum++);
+    new_value.mFunName = info->come_fun->mName;
+    new_value.mBlockLevel = info->block_level;
+    new_value.mDecrementRefCount = decrement_ref_count;
+    
+    if(obj_value) {
+        new_value.mObjType = obj_type;
+        new_value.mObjValue = string(obj_value);
         
-        string buf = xsprintf("%s %s = (void*)0;\n", make_type_name_string(obj_type), var_->mCValueName);
-        add_come_code_at_function_head(info, buf);
-        
-        add_come_code(info, "%s=%s;\n", var_->mCValueName, obj_value);
-        
-        come_value.c_value_without_right_value_objects = clone come_value.c_value;
-        come_value.c_value = come_value.c_value;
-        come_value.right_value_objects = null;
+        if(!type->mHeap) {
+            new_value.mNoFree = true;
+        }
     }
-    else {
-        var new_value = new sRightValueObject;
-        new_value.mType = type;
-        new_value.mFreed = false;
-        new_value.mID = gRightValueNum;
-        new_value.mVarName = xsprintf("__right_value%d", gRightValueNum++);
-        new_value.mFunName = info->come_fun->mName;
-        new_value.mBlockLevel = info->block_level;
-        new_value.mDecrementRefCount = decrement_ref_count;
-        
-        info.right_value_objects.push_back(new_value);
-        
+    
+    info.right_value_objects.push_back(new_value);
+    
+    if(type->mPointerNum > 0) {
         string buf = xsprintf("void* __right_value%d = (void*)0;\n", gRightValueNum-1);
         add_come_code_at_function_head(info, buf);
         
@@ -739,6 +733,77 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     return (result_type, result);
 }
 
+void drop_object(sType* type, char* obj, sInfo* info=info)
+{
+    if(gComeC) {
+        return;
+    }
+    if(info->no_output_come_code) {
+        return ;
+    }
+
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
+    }
+
+    if(type->mClass->mStruct || type->mGenericsTypes.length() > 0) 
+    {
+        string c_value = string(obj);
+        
+        char* fun_name = "on_drop";
+        
+        sType*% type2 = clone type;
+        type2->mHeap = false;
+        
+        string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
+        
+        sFun* dropper = NULL;
+        if(type->mGenericsTypes.length() > 0) {
+            dropper = info->funcs[fun_name2]??;
+            
+            if(dropper == NULL) {
+                string none_generics_name = get_none_generics_name(type2.mClass.mName);
+                
+                string generics_fun_name = xsprintf("%s_%s", none_generics_name, fun_name);
+                sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
+                
+                if(generics_fun) {
+                    var name, err = create_generics_fun(fun_name2, generics_fun, type, info);
+                    
+                    if(!err) {
+                        printf("%s %d: can't create generics dropper\n", info->sname, info->sline);
+                        exit(2);
+                    }
+                    dropper = info->funcs[name]??;
+                }
+            }
+        }
+        else {
+            int i;
+            for(i=FUN_VERSION_MAX-1; i>=1; i--) {
+                string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
+                dropper = info->funcs[new_fun_name]??;
+                
+                if(dropper) {
+                    fun_name2 = string(new_fun_name);
+                    break;
+                }
+            }
+            
+            if(dropper == NULL) {
+                dropper = info->funcs[fun_name2]??;
+            }
+        }
+
+        /// call dropper ///
+        if(dropper != null) {
+            if(c_value) {
+                add_come_code(info, s"\{fun_name2}(\{c_value});\n");
+            }
+        }
+    }
+}
+
 bool create_equals_method(sType* type, sInfo* info)
 {
     if(type->mNoSolvedGenericsType) {
@@ -983,6 +1048,17 @@ void free_right_value_objects(sInfo* info, bool comma=false)
     foreach(it, right_value_objects) {
         if(it && !it->mFreed) {
             if(it->mFunName === info->come_fun->mName && it->mBlockLevel == info->block_level && !it->mStored) {
+                if(it->mObjType) {
+                    drop_object(it->mObjType, it->mObjValue);
+                }
+            }
+        }
+        
+        n++;
+    }
+    foreach(it, right_value_objects) {
+        if(it && !it->mFreed) {
+            if(it->mFunName === info->come_fun->mName && it->mBlockLevel == info->block_level && !it->mStored && !it->mNoFree) {
                 sType*% type = it->mType;
                 
                 sType*% type2 = clone type;
@@ -990,9 +1066,8 @@ void free_right_value_objects(sInfo* info, bool comma=false)
                 if(info->generics_type) {
                     type = solve_generics(type2, info->generics_type, info);
                 }
-
-                free_object(clone type, it->mVarName, !it->mDecrementRefCount@no_decrement, false@no_free, info, comma:comma, force_delete_:false);
                 
+                free_object(clone type, it->mVarName, !it->mDecrementRefCount@no_decrement, false@no_free, info, comma:comma, force_delete_:false);
                 
                 it->mFreed = true;
                 free_right_value = true;

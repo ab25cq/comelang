@@ -7,20 +7,13 @@ int main(int argc,char** argv)
     
     var thread2 = come {
         sleep(3);
-        var it = li.lock();
         
-        it.to_string().puts();
-        
-        li.unlock();
+        li.lock().to_string().puts();
     }
     
     var thread = come {
-        li.sync() {
-            it.add(4);
-        }
-        li.sync() {
-            it.add(5);
-        }
+        li.lock.add(4);
+        li.lock.add(5);
     }
     
     come_join(thread);
