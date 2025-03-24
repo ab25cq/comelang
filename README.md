@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 25.0.0
+version 25.0.1
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+25.0.1 Mutex lock unlock added.
 25.0.0 Mutex added.
 24.0.0 Myabe complete. After my works, refactoring or more gets speed.
 23.0.2 Fixed some bugs. More speed. More Power.
