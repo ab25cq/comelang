@@ -4531,7 +4531,7 @@ uniq int FILE*::fclose(FILE* f)
     return result;
 }
 
-uniq FILE*~ FILE*::fprintf(FILE* f, const char* msg, ...)
+uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
 {
     if(f == null || msg == null) {
         return f;
