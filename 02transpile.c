@@ -118,7 +118,9 @@ static bool cpp(sInfo* info)
     if(f) {
         fclose(f);
         is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi' > /dev/null 2> /dev/null ") == 0;
-        _32bit = system(" lscpu | grep armv7l > /dev/null 2> /dev/null ") == 0;
+        if(is_raspi) {
+            _32bit = system(" lscpu | grep armv7l > /dev/null 2> /dev/null ") == 0;
+        }
     }
     else {
         is_raspi = 0;
