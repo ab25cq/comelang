@@ -112,7 +112,25 @@ static bool cpp(sInfo* info)
     int is_m5stack = info.m5stack_cpp; // M5Stack?
     int is_pico = info.pico_cpp; // PICO?
     int is_emb = info.emb_cpp; // EMBBEDED
-    int is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi' > /dev/null 2> /dev/null ") == 0;
+    bool _32bit = false;
+    FILE* f = fopen("/proc/cpuinfo", "r");
+    int is_raspi;
+    if(f) {
+        fclose(f);
+        is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi' > /dev/null 2> /dev/null ") == 0;
+        _32bit = system(" lscpu | grep armv7l > /dev/null 2> /dev/null ") == 0;
+    }
+    else {
+        is_raspi = 0;
+    }
+    
+    if(is_pico || is_m5stack) {
+        _32bit = true;
+    }
+    
+    if(_32bit) {
+        info.cpp_option = info.cpp_option + s" -D__32BIT_CPU__ ";
+    }
     
     /// Android ///
     if(is_android) {
@@ -305,10 +323,14 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
     if(is_mac) {
+/*
 #ifdef __MAC__
         setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
 #endif
-        info.clang_option = info.clang_option + s" -fsanitize=address,undefined,leak ";
+*/
+        if(gComeDebug) {
+            info.clang_option = info.clang_option + s" -fsanitize=address,undefined ";
+        }
     }
     
     var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
@@ -353,6 +375,16 @@ static bool linker(sInfo* info, list<string>* object_files)
     var command = new buffer();
     
     command.append_format("%s -o %s ", CC, output_file_name);
+    
+    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
+    if(is_mac) {
+/*
+#ifdef __MAC__
+        setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
+#endif
+*/
+        info.linker_option = info.clang_option + s" -fsanitize=address,undefined ";
+    }
     
     command.append_str(" " + info.linker_option +" ");
     

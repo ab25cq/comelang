@@ -5,7 +5,7 @@ DESTDIR=/usr/local
 CFLAGS_OPT=
 CC=clang
 INSTALL=/usr/bin/install -c
-CFLAGS=-DPREFIX="\"${DESTDIR}/\""  -I/usr/local/include -gdwarf-4 $(CFLAGS_OPT) -g
+CFLAGS=-DPREFIX="\"${DESTDIR}/\""  -I/usr/local/include $(CFLAGS_OPT)
 LIBS= -lutil -ldl -lm -lrt
 
 #########################################

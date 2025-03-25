@@ -385,6 +385,12 @@ uniq void come_heap_final()
 uniq void* alloc_from_pages(size_t size)
 {
     void* result = null;
+#ifdef __32BIT_CPU__
+    size = (size + 3 & ~0x3);
+#else
+    size = (size + 7 & ~0x7);
+#endif
+    
     if(size < HEAP_POOL_PAGE_SIZE) {
         if(gHeapPages.mFreeMem[size]) {
             result = gHeapPages.mFreeMem[size];
