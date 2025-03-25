@@ -112,7 +112,7 @@ static bool cpp(sInfo* info)
     int is_m5stack = info.m5stack_cpp; // M5Stack?
     int is_pico = info.pico_cpp; // PICO?
     int is_emb = info.emb_cpp; // EMBBEDED
-    int is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi'") == 0;
+    int is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi' > /dev/null 2> /dev/null ") == 0;
     
     /// Android ///
     if(is_android) {
@@ -301,6 +301,14 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     }
     else {
         output_file_name = info.sname + ".o";
+    }
+    
+    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
+    if(is_mac) {
+#ifdef __MAC__
+        setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
+#endif
+        info.clang_option = info.clang_option + s" -fsanitize=address,undefined,leak ";
     }
     
     var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
