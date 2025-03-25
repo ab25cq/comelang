@@ -322,15 +322,13 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     }
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
-    if(is_mac) {
+    if(gComeDebug && CC === "clang") {
 /*
 #ifdef __MAC__
         setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
 #endif
 */
-        if(gComeDebug) {
-            info.clang_option = info.clang_option + s" -fsanitize=address,undefined ";
-        }
+        info.clang_option = info.clang_option + s" -fsanitize=address,undefined -g ";
     }
     
     var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
@@ -377,13 +375,13 @@ static bool linker(sInfo* info, list<string>* object_files)
     command.append_format("%s -o %s ", CC, output_file_name);
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
-    if(is_mac) {
 /*
 #ifdef __MAC__
         setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
 #endif
 */
-        info.linker_option = info.clang_option + s" -fsanitize=address,undefined ";
+    if(gComeDebug && CC === "clang") {
+        info.linker_option = info.clang_option + s" -fsanitize=address,undefined -g ";
     }
     
     command.append_str(" " + info.linker_option +" ");
@@ -469,7 +467,7 @@ bool new_project(int argc, char** argv)
     string os = string("linux");
     string prefix = string("/usr/local/");
     string cflags = string(" -common-header -O2 ");
-    string cflags_debug = string(" -common-header -gdwarf-4 -cg ");
+    string cflags_debug = string(" -common-header -gdwarf-4 -cg -g ");
     
     system(s"mkdir \{project_name}").less {
         die("mkdir error");

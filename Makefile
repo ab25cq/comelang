@@ -310,7 +310,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang libcomelang.a libcomelang-str.a libcomelang-net.a libcomelang-gc.a libcomelang-str-gc.a libcomelang-net-gc.a libcomelang-pthread.a libcomelang-pthread-gc.a *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind
+	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 
