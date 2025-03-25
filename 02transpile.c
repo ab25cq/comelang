@@ -582,6 +582,16 @@ bool run_project(int argc, char** argv)
         }
     }
     
+#ifdef __MAC__
+    system("make compile -j$(sysctl -n hw.logicalcpu)").less {
+        die("system");
+    }
+#else
+    system("make compile -j$(nproc)").less {
+        die("system");
+    }
+#endif
+    
     system("make run").less {
         die("system");
     }
@@ -608,9 +618,16 @@ bool compile_project(int argc, char** argv)
             die("system");
         }
     }
-    system("make compile").less {
+    
+#ifdef __MAC__
+    system("make compile -j$(sysctl -n hw.logicalcpu)").less {
         die("system");
     }
+#else
+    system("make compile -j$(nproc)").less {
+        die("system");
+    }
+#endif
     
     return true;
 }
@@ -625,9 +642,16 @@ bool debug_run_project(int argc, char** argv)
             die("system");
         }
     }
-    system("make debug").less {
+    
+#ifdef __MAC__
+    system("make debug -j$(sysctl -n hw.logicalcpu)").less {
         die("system");
     }
+#else
+    system("make debug -j$(nproc)").less {
+        die("system");
+    }
+#endif
     
     return true;
 }
