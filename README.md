@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 25.0.3
+version 26.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+26.0.0 heap alignment bug fiexed.
 25.0.3 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
 25.0.1 Mutex lock unlock added.
 25.0.0 Mutex added.
