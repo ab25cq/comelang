@@ -26,6 +26,7 @@ fi
 (cd minux2; rm -rf build)
 (cd sd; rm -rf build)
 (cd pcre; rm -rf build)
+(cd minux3; make clean)
 
 if [ -e viw/Makefile ]
 then
