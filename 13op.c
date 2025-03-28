@@ -1,6 +1,6 @@
 #include "common.h"
 
-bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVALUE* right_value, bool break_guard, sInfo* info)
+bool operator_overload_fun(sType* type, char* fun_name, sNode*% left_node, sNode*% right_node, CVALUE*% left_value, CVALUE*% right_value, bool break_guard, sInfo* info)
 {
     sType*% generics_type = clone type;
     if(generics_type->mNoSolvedGenericsType) {
@@ -38,7 +38,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
                 return false;
             }
             
-            operator_fun = info->funcs[name]??;
+            operator_fun = info->funcs[name];
         }
         else {
             if(fun_name === "operator_equals") {
@@ -54,7 +54,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
                 operator_fun = fun2;
             }
             else {
-                operator_fun = info->funcs[fun_name2]??;
+                operator_fun = info->funcs[fun_name2];
             }
         }
     }
@@ -64,7 +64,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         int i;
         for(i=FUN_VERSION_MAX-1; i>=1; i--) {
             string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
-            operator_fun = info->funcs[new_fun_name]??;
+            operator_fun = info->funcs[new_fun_name];
             
             if(operator_fun) {
                 fun_name2 = string(new_fun_name);
@@ -73,7 +73,7 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
         }
         
         if(operator_fun == NULL) {
-            operator_fun = info->funcs[fun_name2]??;
+            operator_fun = info->funcs[fun_name2];
             sType*% obj_type = solve_generics(type, info.generics_type, info);
             if(operator_fun == NULL) {
                 if(fun_name === "operator_equals") {
@@ -95,53 +95,17 @@ bool operator_overload_fun(sType* type, char* fun_name, CVALUE* left_value, CVAL
     bool result = false;
     
     if(operator_fun && (type->mGenericsTypes.length() > 0 || (left_value.type.mClass.mName === right_value.type.mClass.mName && left_value.type.mPointerNum == right_value.type.mPointerNum) || fun_name === "operator_mult")) {
-        CVALUE*% come_value = new CVALUE();
-        string left_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[0], left_value.type, left_value).rescue {
-            return true;
+        sNode*% obj = left_node;
+        list<tup: string, sNode*%>*% params =  new list<tup: string, sNode*%>();
+        
+        params.add((null, left_node));
+        params.add((null, right_node));
+        
+        sNode*% node = create_method_call(fun_name, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, break_guard, info);
+        
+        node_compile(node).if {
+            result = true;
         }
-        if(operator_fun.mParamTypes[0].mHeap && left_value.type.mHeap) {
-            std_move(operator_fun.mParamTypes[0], left_value.type, left_value, no_delete_from_right_value_objects:true);
-            left_value2 = xsprintf("%s", left_value.c_value);
-        }
-        else {
-            left_value2 = clone left_value.c_value;
-        }
-        string right_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[1], right_value.type, right_value).rescue {
-            return true;
-        }
-        if(operator_fun.mParamTypes[1].mHeap && right_value.type.mHeap) {
-            std_move(operator_fun.mParamTypes[1], right_value.type, right_value, no_delete_from_right_value_objects:true);
-            right_value2 = xsprintf("%s", right_value.c_value);
-        }
-        else {
-            right_value2 = clone right_value.c_value;
-        }
-        
-        sType*% type2 = clone operator_fun->mResultType;
-        
-        sType*% type3 = solve_generics(type2, generics_type, info);
-        
-        come_value.c_value = s"\{fun_name2}(\{left_value2},\{right_value2})";
-        
-        sType*% result_type = type2;
-        sType*% obj_type = generics_type;
-        
-        come_value.var = null;
-        come_value.type = clone type3;
-        
-        if(type3->mHeap) {
-            append_object_to_right_values2(come_value, type3, info);
-        }
-        
-        come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
-    
-        result = true;
     }
     
     return result;
@@ -228,7 +192,7 @@ class sAddNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -236,7 +200,7 @@ class sAddNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -252,7 +216,7 @@ class sAddNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -296,7 +260,7 @@ class sSubNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -304,7 +268,7 @@ class sSubNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -320,7 +284,7 @@ class sSubNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -364,7 +328,7 @@ class sMultNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -372,7 +336,7 @@ class sMultNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -388,7 +352,7 @@ class sMultNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -427,7 +391,7 @@ class sDivNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -435,7 +399,7 @@ class sDivNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -451,7 +415,7 @@ class sDivNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -490,7 +454,7 @@ class sModNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -498,7 +462,7 @@ class sModNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -514,7 +478,7 @@ class sModNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -554,7 +518,7 @@ class sLShiftNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -562,7 +526,7 @@ class sLShiftNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -578,7 +542,7 @@ class sLShiftNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -617,7 +581,7 @@ class sRShiftNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -625,7 +589,7 @@ class sRShiftNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -641,7 +605,7 @@ class sRShiftNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -680,7 +644,7 @@ class sGtEqNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -688,7 +652,7 @@ class sGtEqNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -704,7 +668,7 @@ class sGtEqNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -742,7 +706,7 @@ class sLtEqNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -750,7 +714,7 @@ class sLtEqNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -766,7 +730,7 @@ class sLtEqNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -804,7 +768,7 @@ class sLtNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -812,7 +776,7 @@ class sLtNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -828,7 +792,7 @@ class sLtNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -866,7 +830,7 @@ class sGtNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -874,7 +838,7 @@ class sGtNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -890,7 +854,7 @@ class sGtNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -1026,7 +990,7 @@ class sEq2Node extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -1034,7 +998,7 @@ class sEq2Node extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -1051,7 +1015,7 @@ class sEq2Node extends sNodeBase
         }
         else {
 
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -1089,7 +1053,7 @@ class sNotEq2Node extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -1097,7 +1061,7 @@ class sNotEq2Node extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -1113,7 +1077,7 @@ class sNotEq2Node extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -1151,7 +1115,7 @@ class sAndNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -1159,7 +1123,7 @@ class sAndNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -1175,7 +1139,7 @@ class sAndNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         
@@ -1215,7 +1179,7 @@ class sXOrNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -1223,7 +1187,7 @@ class sXOrNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -1239,7 +1203,7 @@ class sXOrNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {
@@ -1278,7 +1242,7 @@ class sOrNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -1286,7 +1250,7 @@ class sOrNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -1302,7 +1266,7 @@ class sOrNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         
@@ -1342,7 +1306,7 @@ class sAndAndNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -1350,7 +1314,7 @@ class sAndAndNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -1366,7 +1330,7 @@ class sAndAndNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         
@@ -1405,7 +1369,7 @@ class sOrOrNode extends sNodeBase
     bool compile(sInfo* info)
     {
         /// compile expression ///
-        sNode* left_node = self.mLeft;
+        sNode*% left_node = self.mLeft;
     
         node_compile(left_node).elif {
             return false;
@@ -1413,7 +1377,7 @@ class sOrOrNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sNode* right_node = self.mRight;
+        sNode*% right_node = self.mRight;
     
         node_compile(right_node).elif {
             return false;
@@ -1429,7 +1393,7 @@ class sOrOrNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, right_value, false@break_guard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left_node, right_node, left_value, right_value, false@break_guard, info);
         }
         
         if(!calling_fun) {

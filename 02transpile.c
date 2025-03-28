@@ -1219,7 +1219,7 @@ int come_main(int argc, char** argv)
             
             memset(&info, 0, sizeof(sInfo));
             
-            info.sname = clone files[0]??;
+            info.sname = clone files[0];
             info.clang_option = clang_option.to_string();
             info.linker_option = linker_option.to_string();
             info.verbose = verbose;

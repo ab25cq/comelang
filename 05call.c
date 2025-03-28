@@ -609,12 +609,12 @@ class sFunCallNode extends sNodeBase
                         return false;
                     }
                     info->no_output_come_code = no_output_come_code;
-                    CVALUE* method_block_node = come_params[-1]??;
+                    CVALUE* method_block_node = come_params[-1];
                     
                     sType*% method_block_lambda_type = clone method_block_node.type;
                     sType*% method_block_result_type = clone info.come_method_block_function_result_type;
                     
-                    sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
+                    sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1];
                     sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
                     
                     if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
@@ -659,7 +659,7 @@ class sFunCallNode extends sNodeBase
                     if(it.mClass.mMethodGenerics) {
                         int method_generics_num = it.mClass.mMethodGenericsNum;
                         if(n < come_params.length()) {
-                            method_generics_types[method_generics_num] = clone come_params[n]??.type;
+                            method_generics_types[method_generics_num] = clone come_params[n].type;
                         }
                     }
                     n++;
@@ -944,7 +944,7 @@ class sFunCallNode extends sNodeBase
             for(i=version-1; i>=1; i--) {
                 string new_fun_name = xsprintf("%s_v%d", real_fun_name, i);
                 
-                if(info.funcs[new_fun_name]??) {
+                if(info.funcs[new_fun_name]) {
                     fun_name = string(new_fun_name);
                     break;
                 }
@@ -953,7 +953,7 @@ class sFunCallNode extends sNodeBase
             if(i==0) {
                 string new_fun_name = xsprintf("%s", real_fun_name);
                 
-                if(info.funcs[new_fun_name]??) {
+                if(info.funcs[new_fun_name]) {
                     fun_name = string(new_fun_name);
                 }
                 
@@ -968,7 +968,7 @@ class sFunCallNode extends sNodeBase
             for(int i=FUN_VERSION_MAX; i>=1; i--) {
                 string new_fun_name = xsprintf("%s_v%d", fun_name, i);
             
-                if(info.funcs[new_fun_name]??) {
+                if(info.funcs[new_fun_name]) {
                     fun_name = string(new_fun_name);
                     break;
                 }
@@ -1091,12 +1091,12 @@ class sFunCallNode extends sNodeBase
                     n++;
                 }
                 
-                if(param_types[n]??) {
+                if(param_types[n]) {
                     check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value).rescue {
                         return true;
                     }
                 }
-                if(param_types[n]?? && param_types[n].mHeap && come_value.type.mHeap) {
+                if(param_types[n] && param_types[n].mHeap && come_value.type.mHeap) {
                     std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
                 }
                 
@@ -1116,7 +1116,7 @@ class sFunCallNode extends sNodeBase
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
                 while(true) {
-                    if(come_params[i]?? == null) {
+                    if(come_params[i] == null) {
                         break;
                     }
                     else {
@@ -1137,7 +1137,7 @@ class sFunCallNode extends sNodeBase
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
                 while(true) {
-                    if(come_params[i]?? == null) {
+                    if(come_params[i] == null) {
                         break;
                     }
                     else {
@@ -1145,12 +1145,12 @@ class sFunCallNode extends sNodeBase
                     }
                 }
                 
-                if(param_types[i]??) {
+                if(param_types[i]) {
                     check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value).rescue {
                         return true;
                     }
                 }
-                if(param_types[i]?? && param_types[i].mHeap && come_value.type.mHeap) {
+                if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
                     std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
                 }
                 
@@ -1160,7 +1160,7 @@ class sFunCallNode extends sNodeBase
         }
         
         while(true) {
-            if(come_params[i]?? == null) {
+            if(come_params[i] == null) {
                 break;
             }
             else {
@@ -1171,10 +1171,10 @@ class sFunCallNode extends sNodeBase
         if(params.length() < fun.mParamTypes.length())
         {
             for(; i<fun.mParamTypes.length()-(method_block?2:0); i++) {
-                string default_param = clone fun.mParamDefaultParametors[i]??;
+                string default_param = clone fun.mParamDefaultParametors[i];
                 char* param_name = fun.mParamNames[i];
                 
-                if(default_param && default_param !== "" && come_params[i]?? == null) {
+                if(default_param && default_param !== "" && come_params[i] == null) {
                     buffer*% source = info.source;
                     char* p = info.p;
                     char* head = info.head;
@@ -1207,7 +1207,7 @@ class sFunCallNode extends sNodeBase
                     come_params.replace(i, come_value);
                 }
                 else {
-                    if(come_params[i]?? == null) {
+                    if(come_params[i] == null) {
                         err_msg(info, "require parametor(%s)(1) %d", fun.mName,i).rescue {
                             return true;
                         }
@@ -1238,9 +1238,9 @@ class sFunCallNode extends sNodeBase
             
             string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
             
-            method_block_type.mParamTypes[0].mClass = info.classes[class_name]??;
+            method_block_type.mParamTypes[0].mClass = info.classes[class_name];
             sClass* current_stack_frame_struct = info.current_stack_frame_struct;
-            info->current_stack_frame_struct = info.classes[class_name]??;
+            info->current_stack_frame_struct = info.classes[class_name];
             
             info->num_method_block++;
             
@@ -1475,7 +1475,7 @@ class sComeCallNode extends sNodeBase
         come_block2.append_str(come_block.to_string());
                         
         sClass* current_stack_frame_struct = info.current_stack_frame_struct;
-        info->current_stack_frame_struct = info.classes[class_name]??;
+        info->current_stack_frame_struct = info.classes[class_name];
         
         buffer*% source3 = info.source;
         char* p = info.p;
@@ -1745,7 +1745,7 @@ class sLambdaCall extends sNodeBase
             }
             
             CVALUE*% come_value = get_value_from_stack(-1, info);
-            if(lambda_type.mVarArgs && lambda_type.mParamTypes[i]?? == null) {
+            if(lambda_type.mVarArgs && lambda_type.mParamTypes[i] == null) {
             }
             else {
                 check_assign_type(s"calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value).rescue {
@@ -1935,13 +1935,6 @@ sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
     
     info->va_arg = _va_arg;
     
-    bool guard_break = false;
-    if(*info->p == '?' && *(info->p+1) == '?') {
-        info->p += 2;
-        skip_spaces_and_lf();
-        guard_break = true;
-    }
-    
     parse_sharp();
     
     buffer*% method_block = null;
@@ -1967,9 +1960,25 @@ sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
     
     parse_sharp();
     
-    sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
+    bool guard_break = false;
+    sNode*% node;
+    if(*info->p == '?' && *(info->p+1) == '?') {
+        info->p += 2;
+        skip_spaces_and_lf();
+        
+        node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
+        
+        node = create_guard_break_method_call(node, info);
+        
+        node = post_position_operator(node, info);
+    }
+    else {
+        node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
+        
+        node = post_position_operator(node, info);
+    }
     
-    node = post_position_operator(node, info);
+    parse_sharp();
     
     return node;
 }
@@ -2156,7 +2165,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 buf = parse_word();
             }
             
-            if(!is_type_name(buf) && info.lv_table.mVars[string(buf)]?? == null && info.gv_table.mVars[string(buf)]?? == null && *info->p == '<') {
+            if(!is_type_name(buf) && info.lv_table.mVars[string(buf)] == null && info.gv_table.mVars[string(buf)] == null && *info->p == '<') {
                 int nest = 0;
                 while(*info->p) {
                     if(*info->p == '<') {
@@ -2489,10 +2498,10 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             fun_name.append_str(buf);
             
-            sType*% type = clone info.types[fun_name.to_string()]??;
+            sType*% type = clone info.types[fun_name.to_string()];
             
             if(type == null) {
-                sClass* klass = info.classes[fun_name.to_string()]??;
+                sClass* klass = info.classes[fun_name.to_string()];
                 
                 if(klass) {
                     type = new sType(string(buf));

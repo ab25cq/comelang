@@ -31,10 +31,10 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
                 exit(1);
             }
             
-            operator_fun = info->funcs[name]??;
+            operator_fun = info->funcs[name];
         }
         else {
-            operator_fun = info->funcs[fun_name2]??;
+            operator_fun = info->funcs[fun_name2];
         }
     }
     else {
@@ -43,7 +43,7 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
         int i;
         for(i=FUN_VERSION_MAX-1; i>=1; i--) {
             string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
-            operator_fun = info->funcs[new_fun_name]??;
+            operator_fun = info->funcs[new_fun_name];
             
             if(operator_fun) {
                 fun_name2 = string(new_fun_name);
@@ -52,7 +52,7 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
         }
         
         if(operator_fun == NULL) {
-            operator_fun = info->funcs[fun_name2]??;
+            operator_fun = info->funcs[fun_name2];
         }
     }
     
@@ -503,7 +503,7 @@ class sNullCheckNode extends sNodeBase
                 }
             }
             
-            sFun* fun = info.funcs[method_name]??;
+            sFun* fun = info.funcs[method_name];
             
             if(fun == null) {
                 err_msg(info, "function not found(%s)", method_name).rescue {
@@ -637,13 +637,13 @@ class sLoadFieldNode extends sNodeBase
         sType*% left_type2 = solve_generics(left_type, left_type, info);
         
         sClass* klass = left_type2->mClass;
-        klass = info.classes[string(klass->mName)]??;
+        klass = info.classes[string(klass->mName)];
         
         sType*% field_type = null;
         int index = 0;
         bool child_field_is_pointer = false;
         string child_field_name = null;
-        klass = info.classes[string(klass->mName)]??;
+        klass = info.classes[string(klass->mName)];
         if(klass == null || klass->mFields == null) {
             err_msg(info, "invalid class %s", klass->mName).rescue {
                 return true;
@@ -924,7 +924,7 @@ class sLoadArrayNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sNode* left = self.mLeft;
+        sNode*% left = self.mLeft;
         list<sNode*%>* array_num_nodes = self.mArrayNum;
         
         node_compile(left).elif {
@@ -955,7 +955,7 @@ class sLoadArrayNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun(type, fun_name, left_value, array_num[0], self.mBreakGuard, info);
+            calling_fun = operator_overload_fun(type, fun_name, left, array_num_nodes[0], left_value, array_num[0], self.mBreakGuard, info);
         }
         
         if(!calling_fun) {

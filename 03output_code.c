@@ -467,7 +467,7 @@ string make_come_header_function(sFun* fun, string base_fun_name, sType*% impl_t
     for(int i=0; i<fun.mParamTypes.length(); i++) {
         var param_type = fun.mParamTypes[i];
         var param_name = fun.mParamNames[i];
-        var default_parametor = fun.mParamDefaultParametors[i]??;
+        var default_parametor = fun.mParamDefaultParametors[i];
         
         if(default_parametor) {
             header.append_format("%s %s=%s", make_come_type_name_string_no_solved(param_type), param_name, default_parametor);
@@ -888,7 +888,7 @@ void add_come_code_at_come_header(sInfo* info, string id, const char* msg, ...)
         int len = vasprintf(&msg2, msg, args);
         va_end(args);
         
-        if(info.module.mHeader[string(id)]?? == null) {
+        if(info.module.mHeader[string(id)] == null) {
             info.module.mHeader[string(id)] = xsprintf("%s", msg2);
         }
         
@@ -909,7 +909,7 @@ void add_come_code_at_come_struct_header(sInfo* info, string id, const char* msg
         int len = vasprintf(&msg2, msg, args);
         va_end(args);
         
-        if(info.module.mHeaderStructs[string(id)]?? == null) {
+        if(info.module.mHeaderStructs[string(id)] == null) {
             info.module.mHeaderStructs[string(id)] = xsprintf("%s", msg2);
         }
         
@@ -919,7 +919,7 @@ void add_come_code_at_come_struct_header(sInfo* info, string id, const char* msg
 
 bool output_source_file(sInfo* info)
 {
-    sFun* main_fun = info->funcs[s"main"]??;
+    sFun* main_fun = info->funcs[s"main"];
     bool main_module = false;
     if(main_fun) {
         if(!main_fun->mExternal) {
@@ -950,7 +950,7 @@ bool output_source_file(sInfo* info)
     
     fprintf(f, "// header function\n");
     foreach(it, info.funcs) {
-        sFun* it2 = info.funcs[string(it)]??;
+        sFun* it2 = info.funcs[string(it)];
         
         string header = header_function(it2, info);
         
@@ -971,7 +971,7 @@ bool output_source_file(sInfo* info)
     
     fprintf(f, "// inline function\n");
     foreach(it, info.funcs) {
-        sFun* it2 = info.funcs[string(it)]??;
+        sFun* it2 = info.funcs[string(it)];
         
         if(it2->mInline) {
             string output = output_function(it2, info);
@@ -983,7 +983,7 @@ bool output_source_file(sInfo* info)
     
     fprintf(f, "// body function\n");
     foreach(it, info.funcs) {
-        sFun* it2 = info.funcs[string(it)]??;
+        sFun* it2 = info.funcs[string(it)];
         int n = it2->mSourceHead.to_string().length() + it2->mSourceHead2.to_string().length() + it2->mSource.to_string().length();
         
         if(it2->mExternal) {
@@ -1158,7 +1158,7 @@ CVALUE*% get_value_from_stack(int offset, sInfo* info)
 {
     info.module.mLastCode = null;
 //    info.module.mLastCode2 = null;
-    CVALUE*% result = clone info.stack[offset]??;
+    CVALUE*% result = clone info.stack[offset];
     
     if(result == null) {
         err_msg(info, "invalid stack value");

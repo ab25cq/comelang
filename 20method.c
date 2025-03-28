@@ -73,9 +73,9 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
     
-    method_block_type.mParamTypes[0].mClass = info.classes[class_name]??;
+    method_block_type.mParamTypes[0].mClass = info.classes[class_name];
     sClass* current_stack_frame_struct = info.current_stack_frame_struct;
-    info->current_stack_frame_struct = info.classes[class_name]??;
+    info->current_stack_frame_struct = info.classes[class_name];
     
     info->num_method_block++;
     
@@ -208,7 +208,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
 class sMethodCallNode extends sNodeBase
 {
     new(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline
-        , list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, sInfo* info)
+        , list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, bool guard_break, sInfo* info)
     {
         self.super();
         
@@ -221,6 +221,7 @@ class sMethodCallNode extends sNodeBase
         bool self.no_infference_method_generics = no_infference_method_generics;
         bool self.recursive = recursive;
         sFun* self.fun = null;
+        bool self.guard_break = guard_break;
     }
     
     bool terminated()
@@ -294,12 +295,12 @@ class sMethodCallNode extends sNodeBase
                             return false;
                         }
                         info->no_output_come_code = no_output_come_code;
-                        CVALUE* method_block_node = come_params[-1]??;
+                        CVALUE* method_block_node = come_params[-1];
                         
                         sType*% method_block_lambda_type = clone method_block_node.type;
                         sType*% method_block_result_type = clone info.come_method_block_function_result_type;
                         
-                        sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
+                        sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1];
                         sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
                         
                         if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
@@ -346,7 +347,7 @@ class sMethodCallNode extends sNodeBase
                             if(it.mClass.mMethodGenerics) {
                                 int method_generics_num = it.mClass.mMethodGenericsNum;
                                 if(n < come_params.length()) {
-                                    info.method_generics_types[method_generics_num] = clone come_params[n]??.type;
+                                    info.method_generics_types[method_generics_num] = clone come_params[n].type;
                                 }
                             }
                             n++;
@@ -384,7 +385,7 @@ class sMethodCallNode extends sNodeBase
                             if(it.mClass.mMethodGenerics) {
                                 int method_generics_num = it.mClass.mMethodGenericsNum;
                                 if(n < come_params.length()) {
-                                    info.method_generics_types[method_generics_num] = clone come_params[n]??.type;
+                                    info.method_generics_types[method_generics_num] = clone come_params[n].type;
                                 }
                             }
                             n++;
@@ -497,8 +498,8 @@ class sMethodCallNode extends sNodeBase
                 fun_name = create_non_method_name(obj_type, false@no_pointer_name, info.come_fun.mName, info);
                 
                 sClass* klass = obj_type->mClass;
-                while(info.classes[klass->mParentClassName]??) {
-                    klass = info.classes[klass->mParentClassName]??;
+                while(info.classes[klass->mParentClassName]) {
+                    klass = info.classes[klass->mParentClassName];
                     generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
                     
                     fun = info.funcs.at(string(generics_fun_name), null);
@@ -531,7 +532,7 @@ class sMethodCallNode extends sNodeBase
                 for(int i=FUN_VERSION_MAX; i>=1; i--) {
                     string new_fun_name = xsprintf("%s_v%d", generics_fun_name, i);
                 
-                    fun = info.funcs[string(new_fun_name)]??;
+                    fun = info.funcs[string(new_fun_name)];
                     
                     if(fun != null) {
                         generics_fun_name = string(new_fun_name);
@@ -574,8 +575,8 @@ class sMethodCallNode extends sNodeBase
                             
                             if(fun == null) {
                                 sClass* klass = obj_type->mClass;
-                                while(info.classes[klass->mParentClassName]??) {
-                                    klass = info.classes[klass->mParentClassName]??;
+                                while(info.classes[klass->mParentClassName]) {
+                                    klass = info.classes[klass->mParentClassName];
                                     generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
                                     
                                     fun = info.funcs.at(string(generics_fun_name), null);
@@ -727,13 +728,13 @@ class sMethodCallNode extends sNodeBase
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     
-                    if(param_types[n]??) {
+                    if(param_types[n]) {
                         check_assign_type(s"\{fun_name} param num \{n} is assinged to", type_checking_param_types[n], come_value.type, come_value).rescue 
                         {
                             return true;
                         }
                     }
-                    if(param_types[n]?? && param_types[n].mHeap && come_value.type.mHeap) {
+                    if(param_types[n] && param_types[n].mHeap && come_value.type.mHeap) {
                         std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
                     }
                     
@@ -766,7 +767,7 @@ class sMethodCallNode extends sNodeBase
                 }
                 else {
                     while(true) {
-                        if(come_params[i]?? == null) {
+                        if(come_params[i] == null) {
                             break;
                         }
                         else {
@@ -780,13 +781,13 @@ class sMethodCallNode extends sNodeBase
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     
-                    if(param_types[i]??) {
+                    if(param_types[i]) {
                         check_assign_type(s"\{fun_name} param num \{i} is assinged to", type_checking_param_types[i], come_value.type, come_value).rescue 
                         {
                             return true;
                         }
                     }
-                    if(param_types[i]?? && param_types[i].mHeap && come_value.type.mHeap) {
+                    if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
                         std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
                     }
                     
@@ -796,7 +797,7 @@ class sMethodCallNode extends sNodeBase
             }
             
             while(true) {
-                if(come_params[i]?? == null) {
+                if(come_params[i] == null) {
                     break;
                 }
                 else {
@@ -933,10 +934,10 @@ class sMethodCallNode extends sNodeBase
             if(params.length() < fun.mParamTypes.length()+(method_block?-2:0))
             {
                 for(; i<fun.mParamTypes.length()+(method_block?-2:0); i++) {
-                    string default_param = clone fun.mParamDefaultParametors[i]??;
+                    string default_param = clone fun.mParamDefaultParametors[i];
                     char* param_name = fun.mParamNames[i];
                     
-                    if(default_param && default_param !== "" && come_params[i]?? == null) {
+                    if(default_param && default_param !== "" && come_params[i] == null) {
                         buffer*% source = info.source;
                         char* p = info.p;
                         char* head = info.head;
@@ -969,7 +970,7 @@ class sMethodCallNode extends sNodeBase
                         come_params.replace(i, come_value);
                     }
                     else {
-                        if(come_params[i]?? == null) {
+                        if(come_params[i] == null) {
                             err_msg(info, "require parametor(%s) %d", fun.mName,i).rescue {
                                 return true;
                             }
@@ -1064,9 +1065,13 @@ class sMethodCallNode extends sNodeBase
     }
 };
 
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info)
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool guard_break, sInfo* info)
 {
-    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, info) implements sNode;
+    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, guard_break, info) implements sNode;
+        
+    if(guard_break) {
+        node = create_guard_break_method_call(node, info);
+    }
     
     node = post_position_operator(node, info);
     
@@ -1219,11 +1224,33 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     
     parse_sharp();
     
+    bool guard_break = false;
+    if(*info->p == '?' && *(info->p+1) == '?') {
+        info->p += 2;
+        skip_spaces_and_lf();
+        guard_break = true;
+    }
+    
     parse_sharp();
     
-    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, info) implements sNode;
-    
-    node = post_position_operator(node, info);
+    sNode*% node;
+    if(*info->p == '?' && *(info->p+1) == '?') {
+        info->p += 2;
+        skip_spaces_and_lf();
+        
+        parse_sharp();
+        
+        node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, guard_break, info) implements sNode;
+        
+        node = create_guard_break_method_call(node, info);
+        
+        node = post_position_operator(node, info);
+    }
+    else {
+        node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, guard_break, info) implements sNode;
+        
+        node = post_position_operator(node, info);
+    }
     
     return node;
 }

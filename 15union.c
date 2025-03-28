@@ -29,7 +29,7 @@ void output_union(sClass* klass, sInfo* info)
         buf.append_format("} %s;\n", klass->mAttribute);
     }
     
-    if(info.struct_definition[string(name)]?? == null) {
+    if(info.struct_definition[string(name)] == null) {
         info.struct_definition.insert(string(name), buf);
     }
 }

@@ -8,7 +8,7 @@ then
     make DESTDIR=$HOME CFLAGS_OPT="-O2" comelang && make DESTDIR=$HOME install
 elif uname -a | grep Darwin
 then
-    make CFLAGS_OPT="-O2" comelang -j$(sysctl -n hw.logicalcpu) && sudo make install
+    make CFLAGS_OPT="-O2 -g" comelang -j$(sysctl -n hw.logicalcpu) && sudo make install
 else
-    make CFLAGS_OPT="-O2" comelang -j$(nproc) && sudo make install
+    make CFLAGS_OPT="-O2 -g" comelang -j$(nproc) && sudo make install
 fi

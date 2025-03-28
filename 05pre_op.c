@@ -35,8 +35,8 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
                 return false;
             }
             
-            operator_fun = info->funcs[name]??;
-            //operator_fun = info->funcs[fun_name2]??;
+            operator_fun = info->funcs[name];
+            //operator_fun = info->funcs[fun_name2];
         }
         else {
             if(fun_name === "operator_equals") {
@@ -52,7 +52,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
                 operator_fun = fun2;
             }
             else {
-                operator_fun = info->funcs[fun_name2]??;
+                operator_fun = info->funcs[fun_name2];
             }
         }
     }
@@ -62,7 +62,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         int i;
         for(i=FUN_VERSION_MAX-1; i>=1; i--) {
             string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
-            operator_fun = info->funcs[new_fun_name]??;
+            operator_fun = info->funcs[new_fun_name];
             
             if(operator_fun) {
                 fun_name2 = string(new_fun_name);
@@ -71,7 +71,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         }
         
         if(operator_fun == NULL) {
-            operator_fun = info->funcs[fun_name2]??;
+            operator_fun = info->funcs[fun_name2];
         }
     }
     
@@ -83,6 +83,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[0], left_value.type, left_value).rescue {
             return true;
         }
+        
         if(operator_fun.mParamTypes[0].mHeap && left_value.type.mHeap) {
             std_move(operator_fun.mParamTypes[0], left_value.type, left_value, no_delete_from_right_value_objects:true);
             left_value2 = xsprintf("%s", left_value.c_value);

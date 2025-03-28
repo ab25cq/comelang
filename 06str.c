@@ -120,7 +120,7 @@ class sSStringNode extends sNodeBase
                 list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
                 params.add((s"self", clone it));
                 
-                sNode*% node = create_method_call("to_string", obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
+                sNode*% node = create_method_call("to_string", obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
                 
                 node_compile(node).elif {
                     return false;
@@ -280,7 +280,7 @@ class sRegexNode extends sNodeBase
         params.add((s"dollar_endonly", create_false_object(info)));
         params.add((s"ungreedy", create_false_object(info)));
         
-        sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, info);
+        sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, guard_break:false, info);
         
         node_compile(node, info).elif {
             return false;
@@ -321,7 +321,7 @@ class sListNode extends sNodeBase
                 list<tup:string,sNode*%>*% params = new list<tup: string, sNode*%>();
                 params.add((s"self", value_node));
                 params.add((s"position", create_int_node(n, info)));
-                sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
+                sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
                 exp = create_nullable_node(exp);
                 
                 node_compile(exp).elif {
@@ -899,9 +899,9 @@ class sNullReturnValueOfException extends sNodeBase
                 result_type2 = result_type2->mNoSolvedGenericsType;
             }
             
-            sType*% left_type = clone result_type2->mGenericsTypes[0]??;
+            sType*% left_type = clone result_type2->mGenericsTypes[0];
             
-            if(left_type == null || result_type2.mClass.mName !== "tuple2") {
+            if(left_type == null && !result_type2.mException) {
                 err_msg(info, "function is not exception type").rescue {
                     return true;
                 }
@@ -1171,14 +1171,14 @@ class sMapNode extends sNodeBase
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", value_node));
-                    exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
+                    exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
                 }
                 
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp));
                     params.add((s"position", create_int_node(i, info)));
-                    exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
+                    exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
                     exp = create_nullable_node(exp);
                 }
                 
@@ -1215,14 +1215,14 @@ class sMapNode extends sNodeBase
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", value_node));
-                    exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
+                    exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
                 }
                 
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp2));
                     params.add((s"position", create_int_node(i, info)));
-                    exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
+                    exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
                     exp2 = create_nullable_node(exp2);
                 }
                 node_compile(exp2).elif {
@@ -1863,7 +1863,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
-        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
+        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, guard_break:false, info);
         
         if(!catch_exception) {
             node = create_exception_value(clone node, info);
@@ -2030,7 +2030,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
-        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
+        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, guard_break:false, info);
         
         if(!catch_exception) {
             node = create_exception_value(clone node, info);

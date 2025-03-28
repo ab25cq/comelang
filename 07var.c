@@ -26,7 +26,7 @@ class sStoreNode extends sNodeBase
     bool compile(sInfo* info)
     {
         if(self.multiple_declare) {
-            sVar* var_ = info.lv_table.mVars[string(self.name)]??;
+            sVar* var_ = info.lv_table.mVars[string(self.name)];
             if(var_) {
                 if(var_->mType->mHeap) {
                     free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -45,7 +45,7 @@ class sStoreNode extends sNodeBase
             
             foreach(it, self.multiple_declare) {
                 var type, var_name, right_value = it;
-                var_ = info.lv_table.mVars[string(var_name)]??;
+                var_ = info.lv_table.mVars[string(var_name)];
                 if(var_) {
                     if(var_->mType->mHeap) {
                         free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -95,7 +95,7 @@ class sStoreNode extends sNodeBase
             int i = 0;
             foreach(it, self.multiple_assign) {
                 if(i < right_type.mGenericsTypes.length()) {
-                    sVar*% var_ = info.lv_table.mVars[string(it)]??;
+                    sVar*% var_ = info.lv_table.mVars[string(it)];
                     if(var_) {
                         if(var_->mType->mHeap) {
                             free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -172,7 +172,7 @@ class sStoreNode extends sNodeBase
             }
         }
         else if(self.right_value == null) { // assert(self.alloc == true)
-            sVar* var_ = info.lv_table.mVars[string(self.name)]??;
+            sVar* var_ = info.lv_table.mVars[string(self.name)];
             if(var_) {
                 if(var_->mType->mHeap) {
                     free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -267,7 +267,7 @@ class sStoreNode extends sNodeBase
             }
         }
         else if(self.alloc) { // right_value != null
-            sVar* var_ = info.lv_table.mVars[string(self.name)]??;
+            sVar* var_ = info.lv_table.mVars[string(self.name)];
             if(var_) {
                 if(var_->mType->mHeap) {
                     free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -319,7 +319,7 @@ class sStoreNode extends sNodeBase
             sType*% left_type = clone var_->mType;
             
             if(array_initializer) {
-                sVar* var_ = info.lv_table.mVars[string(self.name)]??;
+                sVar* var_ = info.lv_table.mVars[string(self.name)];
                 /*
                 if(var_->mType->mAttribute) {
                     add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
@@ -336,7 +336,7 @@ class sStoreNode extends sNodeBase
                 transpiler_clear_last_code(info);
             }
             else if(struct_initializer) {
-                sVar* var_ = info.lv_table.mVars[string(self.name)]??;
+                sVar* var_ = info.lv_table.mVars[string(self.name)];
                 /*
                 if(var_->mType->mAttribute) {
                     add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
@@ -479,7 +479,7 @@ class sStoreNode extends sNodeBase
             
             sClass* current_stack_frame_struct = info->current_stack_frame_struct;
             
-            if(current_stack_frame_struct && info.lv_table.mVars[string(self.name)]?? == null) {
+            if(current_stack_frame_struct && info.lv_table.mVars[string(self.name)] == null) {
                 sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
                 
                 if(parent_var != null) {
@@ -853,7 +853,7 @@ class sLoadNode extends sNodeBase
     {
         sClass* current_stack_frame_struct = info->current_stack_frame_struct;
         
-        if(current_stack_frame_struct && info.lv_table.mVars[string(self.name)]?? == null) {
+        if(current_stack_frame_struct && info.lv_table.mVars[string(self.name)] == null) {
             sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
             
             if(parent_var != null) {
@@ -887,7 +887,7 @@ class sLoadNode extends sNodeBase
             var_ = get_variable_from_table(info.gv_table, self.name);
             
             if(var_ == null) {
-                sFun* fun = info.funcs[string(self.name)]??;
+                sFun* fun = info.funcs[string(self.name)];
                 
                 if(fun) {
                     CVALUE*% come_value = new CVALUE();
@@ -960,7 +960,7 @@ class sFunLoadNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sFun* fun = info.funcs[string(self.name)]??;
+        sFun* fun = info.funcs[string(self.name)];
         
         if(fun == null) {
             err_msg(info, "fun not found(%s) at loading variable", self.name).rescue {
@@ -1393,7 +1393,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     }
     
     parse_sharp();
-    sFun* fun = info.funcs[string(buf)]??;
+    sFun* fun = info.funcs[string(buf)];
     
     if((!gComeC && buf === "var") || buf === "auto") {
         parse_sharp();
@@ -1597,7 +1597,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         info.sline_real = sline_real;
         return node;
     }
-    else if(!is_type_name_flag || info.funcs[string(buf)]??) {
+    else if(!is_type_name_flag || info.funcs[string(buf)]) {
         sNode*% node = new sLoadNode(string(buf)@name, info) implements sNode;
         
         node = post_position_operator(node, info);

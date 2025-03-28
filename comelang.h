@@ -1571,7 +1571,7 @@ impl list <T>
     void operator_store_element(list<T>* self, int position, T item) {
         self.replace(position, item);
     }
-    T?? operator_load_element(list<T>* self, int position) {
+    T operator_load_element(list<T>* self, int position) {
         if(position < 0) {
             position += self.len;
         }
@@ -2367,7 +2367,7 @@ impl map <T, T2>
         
         return self;
     }
-    T2?? operator_load_element(map<T, T2>* self, T& key) {
+    T2 operator_load_element(map<T, T2>* self, T& key) {
         T2` default_value;
         memset(&default_value, 0, sizeof(T2));
         

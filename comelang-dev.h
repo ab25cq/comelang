@@ -385,6 +385,12 @@ uniq void come_heap_final()
 uniq void* alloc_from_pages(size_t size)
 {
     void* result = null;
+#ifdef __32BIT_CPU__
+    size = (size + 3 & ~0x3);
+#else
+    size = (size + 7 & ~0x7);
+#endif
+    
     if(size < HEAP_POOL_PAGE_SIZE) {
         if(gHeapPages.mFreeMem[size]) {
             result = gHeapPages.mFreeMem[size];
@@ -959,6 +965,286 @@ uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0,
 uniq void come_free(void* mem) version 2
 {
     inherit(mem);
+}
+
+//////////////////////////////
+// tuple
+//////////////////////////////
+struct tuple1<T>
+{
+    T v1;
+};
+
+impl tuple1 <T>
+{
+    tuple1<T>*% initialize(tuple1<T>*% self, T v1)
+    {
+        self.v1 = v1;
+        
+        return self;
+    }
+    
+    bool equals(tuple1<T>* self, tuple1<T>* right)
+    {
+        if(!self.v1.equals(right.v1)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_equals(tuple1<T>* self, tuple1<T>* right) 
+    {
+        if(!(self.v1 === right.v1)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_not_equals(tuple1<T>* left, tuple1<T>* right) {
+        return !left.operator_equals(right);
+    }
+    
+    string to_string(tuple1<T>* self)
+    {
+        return "(" + self.v1.to_string() + ")";
+    }
+}
+
+struct tuple2<T, T2>
+{
+    T v1;
+    T2 v2;
+};
+
+impl tuple2 <T, T2>
+{
+    tuple2<T, T2>*% initialize(tuple2<T, T2>*% self, T v1, T2 v2)
+    {
+        self.v1 = v1;
+        self.v2 = v2;
+        
+        return self;
+    }
+    
+    string to_string(tuple2<T, T2>* self)
+    {
+        return "(" + self.v1.to_string() + "," + self.v2.to_string() + ")";
+    }
+    bool equals(tuple2<T,T2>* self, tuple2<T,T2>* right)
+    {
+        if(!self.v1.equals(right.v1)) {
+            return false;
+        }
+        if(!self.v2.equals(right.v2)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_equals(tuple2<T,T2>* self, tuple2<T,T2>* right) 
+    {
+        if(!(self.v1 === right.v1)) {
+            return false;
+        }
+        if(!(self.v2 === right.v2)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_not_equals(tuple2<T,T2>* left, tuple2<T,T2>* right) {
+        return !left.operator_equals(right);
+    }
+}
+
+
+struct tuple3<T, T2, T3>
+{
+    T v1;
+    T2 v2;
+    T3 v3;
+};
+
+impl tuple3 <T, T2, T3>
+{
+    tuple3<T, T2, T3>*% initialize(tuple3<T, T2, T3>*% self, T v1, T2 v2, T3 v3)
+    {
+        self.v1 = v1;
+        self.v2 = v2;
+        self.v3 = v3;
+        
+        return self;
+    }
+    
+    string to_string(tuple3<T, T2, T3>* self)
+    {
+        return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + ")";
+    }
+    bool equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right)
+    {
+        if(!self.v1.equals(right.v1)) {
+            return false;
+        }
+        if(!self.v2.equals(right.v2)) {
+            return false;
+        }
+        if(!self.v3.equals(right.v3)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right) 
+    {
+        if(!(self.v1 === right.v1)) {
+            return false;
+        }
+        if(!(self.v2 === right.v2)) {
+            return false;
+        }
+        if(!(self.v3 === right.v3)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_not_equals(tuple3<T,T2,T3>* left, tuple3<T,T2,T3>* right) {
+        return !left.operator_equals(right);
+    }
+}
+
+struct tuple4<T, T2, T3, T4>
+{
+    T v1;
+    T2 v2;
+    T3 v3;
+    T4 v4;
+};
+
+impl tuple4 <T, T2, T3, T4>
+{
+    tuple4<T, T2, T3, T4>*% initialize(tuple4<T, T2, T3, T4>*% self, T v1, T2 v2, T3 v3, T4 v4)
+    {
+        self.v1 = v1;
+        self.v2 = v2;
+        self.v3 = v3;
+        self.v4 = v4;
+        
+        return self;
+    }
+    
+    string to_string(tuple4<T, T2, T3, T4>* self)
+    {
+        return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + ")";
+    }
+    bool equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right)
+    {
+        if(!self.v1.equals(right.v1)) {
+            return false;
+        }
+        if(!self.v2.equals(right.v2)) {
+            return false;
+        }
+        if(!self.v3.equals(right.v3)) {
+            return false;
+        }
+        if(!self.v4.equals(right.v4)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right) 
+    {
+        if(!(self.v1 === right.v1)) {
+            return false;
+        }
+        if(!(self.v2 === right.v2)) {
+            return false;
+        }
+        if(!(self.v3 === right.v3)) {
+            return false;
+        }
+        if(!(self.v4 === right.v4)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_not_equals(tuple4<T,T2,T3,T4>* left, tuple4<T,T2,T3,T4>* right) {
+        return !left.operator_equals(right);
+    }
+}
+
+struct tuple5<T, T2, T3, T4, T5>
+{
+    T v1;
+    T2 v2;
+    T3 v3;
+    T4 v4;
+    T5 v5;
+};
+
+impl tuple5 <T, T2, T3, T4, T5>
+{
+    tuple5<T, T2, T3, T4, T5>*% initialize(tuple5<T, T2, T3, T4, T5>*% self, T v1, T2 v2, T3 v3, T4 v4, T5 v5)
+    {
+        self.v1 = v1;
+        self.v2 = v2;
+        self.v3 = v3;
+        self.v4 = v4;
+        self.v5 = v5;
+        
+        return self;
+    }
+    
+    string to_string(tuple5<T, T2, T3, T4, T5>* self)
+    {
+        return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + "," + self.v5.to_string() + ")";
+    }
+    bool equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right)
+    {
+        if(!self.v1.equals(right.v1)) {
+            return false;
+        }
+        if(!self.v2.equals(right.v2)) {
+            return false;
+        }
+        if(!self.v3.equals(right.v3)) {
+            return false;
+        }
+        if(!self.v4.equals(right.v4)) {
+            return false;
+        }
+        if(!self.v5.equals(right.v5)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right) 
+    {
+        if(!(self.v1 === right.v1)) {
+            return false;
+        }
+        if(!(self.v2 === right.v2)) {
+            return false;
+        }
+        if(!(self.v3 === right.v3)) {
+            return false;
+        }
+        if(!(self.v4 === right.v4)) {
+            return false;
+        }
+        if(!(self.v5 === right.v5)) {
+            return false;
+        }
+        
+        return true;
+    }
+    bool operator_not_equals(tuple5<T,T2,T3,T4,T5>* left, tuple5<T,T2,T3,T4,T5>* right) {
+        return !left.operator_equals(right);
+    }
 }
 
 //////////////////////////////
@@ -1565,7 +1851,7 @@ impl list <T>
     void operator_store_element(list<T>* self, int position, T item) {
         self.replace(position, item);
     }
-    T?? operator_load_element(list<T>* self, int position) {
+    T operator_load_element(list<T>* self, int position) {
         if(position < 0) {
             position += self.len;
         }
@@ -1580,9 +1866,7 @@ impl list <T>
             i++;
         };
 
-        T` default_value;
-        memset(&default_value, 0, sizeof(T));
-        return default_value;
+        return none(s"index invalid");
     }
     list<T>*% operator_load_range_element(list<T>* self, int begin, int tail) {
         list<T>*% result = new list<T>.initialize();
@@ -2361,10 +2645,7 @@ impl map <T, T2>
         
         return self;
     }
-    T2?? operator_load_element(map<T, T2>* self, T& key) {
-        T2` default_value;
-        memset(&default_value, 0, sizeof(T2));
-        
+    exception T2 operator_load_element(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
         
@@ -2382,15 +2663,15 @@ impl map <T, T2>
                     it = 0;
                 }
                 else if(it == hash) {
-                    return default_value;
+                    return none(s"invalid index");
                 }
             }
             else {
-                return default_value;
+                return none(s"invalid index");
             }
         }
 
-        return default_value;
+        return none(s"invalid index");
     }
     
     void operator_store_element(map<T, T2>* self, T key, T2 item) {
@@ -2608,286 +2889,6 @@ impl map <T, T2>
         }
         
         return result;
-    }
-}
-
-//////////////////////////////
-// tuple
-//////////////////////////////
-struct tuple1<T>
-{
-    T v1;
-};
-
-impl tuple1 <T>
-{
-    tuple1<T>*% initialize(tuple1<T>*% self, T v1)
-    {
-        self.v1 = v1;
-        
-        return self;
-    }
-    
-    bool equals(tuple1<T>* self, tuple1<T>* right)
-    {
-        if(!self.v1.equals(right.v1)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_equals(tuple1<T>* self, tuple1<T>* right) 
-    {
-        if(!(self.v1 === right.v1)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_not_equals(tuple1<T>* left, tuple1<T>* right) {
-        return !left.operator_equals(right);
-    }
-    
-    string to_string(tuple1<T>* self)
-    {
-        return "(" + self.v1.to_string() + ")";
-    }
-}
-
-struct tuple2<T, T2>
-{
-    T v1;
-    T2 v2;
-};
-
-impl tuple2 <T, T2>
-{
-    tuple2<T, T2>*% initialize(tuple2<T, T2>*% self, T v1, T2 v2)
-    {
-        self.v1 = v1;
-        self.v2 = v2;
-        
-        return self;
-    }
-    
-    string to_string(tuple2<T, T2>* self)
-    {
-        return "(" + self.v1.to_string() + "," + self.v2.to_string() + ")";
-    }
-    bool equals(tuple2<T,T2>* self, tuple2<T,T2>* right)
-    {
-        if(!self.v1.equals(right.v1)) {
-            return false;
-        }
-        if(!self.v2.equals(right.v2)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_equals(tuple2<T,T2>* self, tuple2<T,T2>* right) 
-    {
-        if(!(self.v1 === right.v1)) {
-            return false;
-        }
-        if(!(self.v2 === right.v2)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_not_equals(tuple2<T,T2>* left, tuple2<T,T2>* right) {
-        return !left.operator_equals(right);
-    }
-}
-
-
-struct tuple3<T, T2, T3>
-{
-    T v1;
-    T2 v2;
-    T3 v3;
-};
-
-impl tuple3 <T, T2, T3>
-{
-    tuple3<T, T2, T3>*% initialize(tuple3<T, T2, T3>*% self, T v1, T2 v2, T3 v3)
-    {
-        self.v1 = v1;
-        self.v2 = v2;
-        self.v3 = v3;
-        
-        return self;
-    }
-    
-    string to_string(tuple3<T, T2, T3>* self)
-    {
-        return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + ")";
-    }
-    bool equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right)
-    {
-        if(!self.v1.equals(right.v1)) {
-            return false;
-        }
-        if(!self.v2.equals(right.v2)) {
-            return false;
-        }
-        if(!self.v3.equals(right.v3)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right) 
-    {
-        if(!(self.v1 === right.v1)) {
-            return false;
-        }
-        if(!(self.v2 === right.v2)) {
-            return false;
-        }
-        if(!(self.v3 === right.v3)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_not_equals(tuple3<T,T2,T3>* left, tuple3<T,T2,T3>* right) {
-        return !left.operator_equals(right);
-    }
-}
-
-struct tuple4<T, T2, T3, T4>
-{
-    T v1;
-    T2 v2;
-    T3 v3;
-    T4 v4;
-};
-
-impl tuple4 <T, T2, T3, T4>
-{
-    tuple4<T, T2, T3, T4>*% initialize(tuple4<T, T2, T3, T4>*% self, T v1, T2 v2, T3 v3, T4 v4)
-    {
-        self.v1 = v1;
-        self.v2 = v2;
-        self.v3 = v3;
-        self.v4 = v4;
-        
-        return self;
-    }
-    
-    string to_string(tuple4<T, T2, T3, T4>* self)
-    {
-        return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + ")";
-    }
-    bool equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right)
-    {
-        if(!self.v1.equals(right.v1)) {
-            return false;
-        }
-        if(!self.v2.equals(right.v2)) {
-            return false;
-        }
-        if(!self.v3.equals(right.v3)) {
-            return false;
-        }
-        if(!self.v4.equals(right.v4)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right) 
-    {
-        if(!(self.v1 === right.v1)) {
-            return false;
-        }
-        if(!(self.v2 === right.v2)) {
-            return false;
-        }
-        if(!(self.v3 === right.v3)) {
-            return false;
-        }
-        if(!(self.v4 === right.v4)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_not_equals(tuple4<T,T2,T3,T4>* left, tuple4<T,T2,T3,T4>* right) {
-        return !left.operator_equals(right);
-    }
-}
-
-struct tuple5<T, T2, T3, T4, T5>
-{
-    T v1;
-    T2 v2;
-    T3 v3;
-    T4 v4;
-    T5 v5;
-};
-
-impl tuple5 <T, T2, T3, T4, T5>
-{
-    tuple5<T, T2, T3, T4, T5>*% initialize(tuple5<T, T2, T3, T4, T5>*% self, T v1, T2 v2, T3 v3, T4 v4, T5 v5)
-    {
-        self.v1 = v1;
-        self.v2 = v2;
-        self.v3 = v3;
-        self.v4 = v4;
-        self.v5 = v5;
-        
-        return self;
-    }
-    
-    string to_string(tuple5<T, T2, T3, T4, T5>* self)
-    {
-        return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + "," + self.v5.to_string() + ")";
-    }
-    bool equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right)
-    {
-        if(!self.v1.equals(right.v1)) {
-            return false;
-        }
-        if(!self.v2.equals(right.v2)) {
-            return false;
-        }
-        if(!self.v3.equals(right.v3)) {
-            return false;
-        }
-        if(!self.v4.equals(right.v4)) {
-            return false;
-        }
-        if(!self.v5.equals(right.v5)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right) 
-    {
-        if(!(self.v1 === right.v1)) {
-            return false;
-        }
-        if(!(self.v2 === right.v2)) {
-            return false;
-        }
-        if(!(self.v3 === right.v3)) {
-            return false;
-        }
-        if(!(self.v4 === right.v4)) {
-            return false;
-        }
-        if(!(self.v5 === right.v5)) {
-            return false;
-        }
-        
-        return true;
-    }
-    bool operator_not_equals(tuple5<T,T2,T3,T4,T5>* left, tuple5<T,T2,T3,T4,T5>* right) {
-        return !left.operator_equals(right);
     }
 }
 
@@ -4552,6 +4553,10 @@ uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
     return f;
 }
 
+uniq void FILE*::on_drop(FILE* self)
+{
+    if(self) fclose(self);
+}
 
 uniq int char*::write(char* self, char* file_name, bool append=false) 
 {

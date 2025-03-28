@@ -7,7 +7,7 @@ string, string, string, string create_vtable(sType*% any_type, sInfo* info=info)
     string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
     string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
     
-    if(info.funcs[finalizer_name]?? == null) {
+    if(info.funcs[finalizer_name] == null) {
         if(any_type->mClass->mNumber) {
             finalizer_name = s"(void*)0";
         }
@@ -15,7 +15,7 @@ string, string, string, string create_vtable(sType*% any_type, sInfo* info=info)
             (void*)create_finalizer_automatically(any_type, "finalize", info);
         }
     }
-    if(info.funcs[cloner_name]?? == null) {
+    if(info.funcs[cloner_name] == null) {
         if(any_type->mClass->mNumber) {
             cloner_name = s"(void*)0";
         }
@@ -24,11 +24,11 @@ string, string, string, string create_vtable(sType*% any_type, sInfo* info=info)
             cloner_name = name;
         }
     }
-    if(info.funcs[get_hash_key_name]?? == null) {
+    if(info.funcs[get_hash_key_name] == null) {
         var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
         get_hash_key_name = name;
     }
-    if(info.funcs[equaler_name]?? == null) {
+    if(info.funcs[equaler_name] == null) {
         var fun, name = create_equals_automatically(any_type, "equals", info);
         equaler_name = name;
     }
@@ -321,8 +321,8 @@ class sImplementsNode extends sNodeBase
             
             if(fun == null) {
                 sClass* klass2 = info->classes[type->mClass->mName];
-                while(info->classes[klass2->mParentClassName]??) {
-                    klass2 = info->classes[klass2->mParentClassName]??;
+                while(info->classes[klass2->mParentClassName]) {
+                    klass2 = info->classes[klass2->mParentClassName];
                     
                     method_name = create_method_name_using_class(klass2, false@no_pointer_name, name, info);
                     

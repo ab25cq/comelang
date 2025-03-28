@@ -80,7 +80,7 @@ string parse_word(sInfo* info=info)
     
     string result = buf.to_string();
     
-    if(info->module_params && info->module_params[string(result)]??) {
+    if(info->module_params && info->module_params[string(result)]) {
         return string(info->module_params[string(result)]);
     }
     

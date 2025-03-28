@@ -2,9 +2,9 @@
 
 bool is_type_name(char* buf, sInfo* info=info)
 {
-    sClass* klass = info.classes[buf]??;
-    sType* type = info.types[buf]??;
-    sClass* generics_class = info.generics_classes[string(buf)]??;
+    sClass* klass = info.classes[buf];
+    sType* type = info.types[buf];
+    sClass* generics_class = info.generics_classes[string(buf)];
     bool generics_type_name = info.generics_type_names.contained(string(buf));
     bool mgenerics_type_name = info.method_generics_type_names.contained(string(buf));
     
@@ -213,6 +213,10 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
     sClass* left_class = left_type2->mClass;
     sClass* right_class = right_type2->mClass;
     
+    if(left_class->mGenerics || left_class->mMethodGenerics) {
+        return true;
+    }
+    
     bool parent_class = false;
     if(left_class->mName !== right_class->mName) {
         while(left_class && right_class) {
@@ -220,7 +224,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 parent_class = true;
             }
             if(right_class->mParentClassName) {
-                right_class = info.classes[right_class->mParentClassName]??;
+                right_class = info.classes[right_class->mParentClassName];
             }
             else {
                 right_class = null;
@@ -265,7 +269,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     flag_ = true;
                 }
                 if(klass->mParentClassName) {
-                    klass = info.classes[klass->mParentClassName]??;
+                    klass = info.classes[klass->mParentClassName];
                 }
                 else {
                     klass = null;
@@ -1890,8 +1894,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     }
     else if(lambda_flag) {
         sType*% result_type;
-        if(info.types[type_name]??) {
-            result_type = clone info.types[type_name]??;
+        if(info.types[type_name]) {
+            result_type = clone info.types[type_name];
             result_type->mClass = info.classes[result_type->mClass->mName];
         }
         else if(info.generics_type_names.contained(type_name)) {
@@ -1962,8 +1966,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         skip_pointer_attribute();
         
         sType*% result_type;
-        if(info.types[type_name]??) {
-            result_type = clone info.types[type_name]??;
+        if(info.types[type_name]) {
+            result_type = clone info.types[type_name];
             result_type->mClass = info.classes[result_type->mClass->mName];
             //type.mOriginalTypeName = string(type_name);
         }
@@ -2129,8 +2133,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
     }
     else {
-        if(info.types[type_name]??) {
-            type = clone info.types[type_name]??;
+        if(info.types[type_name]) {
+            type = clone info.types[type_name];
             type->mTypedefOriginalPointerNum = type->mPointerNum;
             type->mClass = info.classes[type->mClass->mName];
             type.mOriginalTypeName = string(type_name);
@@ -2221,7 +2225,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             info->p++;
             skip_spaces_and_lf();
             
-            if(info.generics_classes[string(type_name)]?? == null)
+            if(info.generics_classes[string(type_name)] == null)
             {
                 return ((sType*%)null, (string)null, false);
             }
@@ -2291,14 +2295,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else {
             if(struct_) {
-                sClass* klass = info.classes[type_name]??;
+                sClass* klass = info.classes[type_name];
                 
                 if(klass == null && *info->p != '<') {
                     info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
                 }
             }
             if(union_) {
-                sClass* klass = info.classes[type_name]??;
+                sClass* klass = info.classes[type_name];
                 
                 if(klass == null && *info->p != '<') {
                     info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
@@ -2631,6 +2635,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mChannel = true;
     }
     else if(type->mException) {
+        if(type->mClass->mGenerics || type->mClass->mMethodGenerics) {
+            err_msg(info, "Exception can't gets generics or method generics");
+            exit(4);
+        }
+        
         sType*% type2 = new sType(s"tuple2");
         type2->mGenericsTypes[0] = new sType(s"generics_type0");
         type2->mGenericsTypes[1] = new sType(s"generics_type1");

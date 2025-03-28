@@ -40,7 +40,7 @@ class sIfNode extends sNodeBase
                 existance_of_result_value = false;
             }
             for(int i=0; i<self.mElifNum; i++) {
-                if(!self.mElifBlocks[i]??.mOmitSemicolon) {
+                if(!self.mElifBlocks[i].mOmitSemicolon) {
                     existance_of_result_value = false;
                 }
             }
@@ -582,6 +582,63 @@ sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
     return new sMultipleNode(multiple_node) implements sNode;
 }
 
+sNode*% create_guard_break_method_call(sNode*% expression_node, sInfo* info)
+{
+    string sname = clone info->sname;
+    int sline = info->sline;
+    
+    parse_sharp();
+    
+    static int var_num = 0;
+    var_num++;
+    
+    int var_num_stack = var_num;
+    
+    var multiple_assign = [s"come_exception_var_\{var_num_stack}", s"Err" ];
+    
+    sNode*% get_return_value = store_var(s"var", multiple_assign, null@multiple_declare
+                                        , null@type, true@alloc, expression_node, info);
+        
+    buffer*% source = info.source;
+    char* p = info.p;
+    char* head = info.head;
+        
+    var buf = new buffer();
+        
+    buf.append_str("{ (void*)0 }");
+        
+    info.source = buf;
+    info.p = info.source.buf;
+    info.head = info.source.buf;
+    info.sline = sline;
+    
+    sBlock*% if_block = parse_block();
+    
+    info.p = p;
+    info.source = source;
+    info.head = head;
+    
+    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
+    int elif_num = 0;
+
+    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
+
+    sBlock*% else_block = new sBlock(info);
+    else_block.mOmitSemicolon = true;
+    else_block.mNodes.push_back(create_load_var(s"come_exception_var_\{var_num_stack}"));
+    
+    sNode*% expression_node2 = create_load_var(s"Err");
+
+    sNode*% if_node = new sIfNode(expression_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode;
+    
+    sNode*% save_right_value_objects = new sSaveRightValueObjects() implements sNode;
+    sNode*% restore_right_value_objects = new sRestoreRightValueObjects() implements sNode;
+    
+    list<sNode*%>*% multiple_node = [get_return_value, if_node];
+    
+    return new sMultipleNode(multiple_node) implements sNode;
+}
+
 sNode*% create_exception_throw(sNode*% expression_node, sInfo* info)
 {
     string sname = clone info->sname;
@@ -667,7 +724,7 @@ sNode*% create_exception_value(sNode*% expression_node, sInfo* info)
     
     var buf = new buffer();
     
-    buf.append_str("puts(Err), exit(0)");
+    buf.append_str("puts(Err), exit(2)");
     
     info.source = buf;
     info.p = info.source.buf;
