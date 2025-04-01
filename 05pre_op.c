@@ -1,6 +1,6 @@
 #include "common.h"
 
-bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value, sInfo* info)
+bool operator_overload_fun_self(sType* type, char* fun_name, sNode*% node, CVALUE* left_value, sInfo* info)
 {
     sType*% generics_type = clone type;
     if(generics_type->mNoSolvedGenericsType) {
@@ -35,8 +35,8 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
                 return false;
             }
             
-            operator_fun = info->funcs[name];
-            //operator_fun = info->funcs[fun_name2];
+            operator_fun = info->funcs[name]??;
+            //operator_fun = info->funcs[fun_name2]??;
         }
         else {
             if(fun_name === "operator_equals") {
@@ -52,7 +52,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
                 operator_fun = fun2;
             }
             else {
-                operator_fun = info->funcs[fun_name2];
+                operator_fun = info->funcs[fun_name2]??;
             }
         }
     }
@@ -62,7 +62,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         int i;
         for(i=FUN_VERSION_MAX-1; i>=1; i--) {
             string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
-            operator_fun = info->funcs[new_fun_name];
+            operator_fun = info->funcs[new_fun_name]??;
             
             if(operator_fun) {
                 fun_name2 = string(new_fun_name);
@@ -71,48 +71,23 @@ bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value,
         }
         
         if(operator_fun == NULL) {
-            operator_fun = info->funcs[fun_name2];
+            operator_fun = info->funcs[fun_name2]??;
         }
     }
     
     bool result = false;
     
     if(operator_fun) {
-        CVALUE*% come_value = new CVALUE();
-        string left_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[0], left_value.type, left_value).rescue {
-            return true;
+        sNode*% obj = node;
+        list<tup: string, sNode*%>*% params =  new list<tup: string, sNode*%>();
+        
+        params.add((null, obj));
+        
+        sNode*% node = create_method_call(fun_name2, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, false@break_guard, info);
+        
+        node_compile(node).if {
+            result = true;
         }
-        
-        if(operator_fun.mParamTypes[0].mHeap && left_value.type.mHeap) {
-            std_move(operator_fun.mParamTypes[0], left_value.type, left_value, no_delete_from_right_value_objects:true);
-            left_value2 = xsprintf("%s", left_value.c_value);
-        }
-        else {
-            left_value2 = clone left_value.c_value;
-        }
-        
-        come_value.c_value = xsprintf("%s(%s)", fun_name2, left_value2);
-        
-        sType*% type2 = clone operator_fun->mResultType;
-        
-        sType*% type3 = solve_generics(type2, generics_type, info);
-        
-        come_value.var = null;
-        
-        come_value.type = clone type3;
-        
-        if(type3->mHeap) {
-            append_object_to_right_values2(come_value, type3, info);
-        }
-        
-        come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
-    
-        result = true;
     }
     
     return result;
@@ -261,7 +236,7 @@ class sDerefferenceNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sNode* value = self.value;
+        sNode*% value = self.value;
         
         if(!node_compile(value)) {
             return false;
@@ -279,7 +254,7 @@ class sDerefferenceNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun_self(type, fun_name, left_value, info);
+            calling_fun = operator_overload_fun_self(type, fun_name, value, left_value, info);
         }
         
         if(!calling_fun) {
@@ -520,7 +495,7 @@ class sMinusMinusNode2 extends sNodeBase
 
 class sNormalBlock extends sNodeBase
 {
-    new(sBlock* block, bool clang, bool comma, sInfo* info)
+    new(sBlock* block, bool clang, bool comma, sInfo* info, bool if_result=false)
     {
         self.super();
         
@@ -683,7 +658,7 @@ class sCastNode extends sNodeBase
     }
 }
 
-sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info)
+sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info, bool if_result=false)
 {
     int sline_real = info.sline_real;
     info.sline_real = info.sline;
@@ -691,7 +666,7 @@ sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info)
     
     info.sline_real = sline_real;
     
-    return new sNormalBlock(block, clang, comma, info) implements sNode;
+    return new sNormalBlock(block, clang, comma, info, if_result:if_result) implements sNode;
 }
 
 sNode*% craete_logical_denial(sNode*% node, sInfo* info)

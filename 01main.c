@@ -56,8 +56,8 @@ sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* in
     
     string name2 = string(name).substring(0, -pointer_num-1);
     
-    sClass* klass = info.classes[string(name2)];
-    sClass* generics_class = info.generics_classes[name2];
+    sClass* klass = info.classes[string(name2)]??;
+    sClass* generics_class = info.generics_classes[name2]??;
     
     if(klass == null && generics_class == null) {
         printf("%s %d: class not found(%s)(1)\n", info->sname, info->sline, name2);
@@ -72,7 +72,7 @@ sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* in
         
         info.classes.insert(string(name), klass2);
         
-        self.mClass = info.classes[string(name)];
+        self.mClass = info.classes[string(name)]??;
     }
     
     self.mNoSolvedGenericsType = null;

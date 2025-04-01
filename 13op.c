@@ -38,7 +38,7 @@ bool operator_overload_fun(sType* type, char* fun_name, sNode*% left_node, sNode
                 return false;
             }
             
-            operator_fun = info->funcs[name];
+            operator_fun = info->funcs[name]??;
         }
         else {
             if(fun_name === "operator_equals") {
@@ -54,7 +54,7 @@ bool operator_overload_fun(sType* type, char* fun_name, sNode*% left_node, sNode
                 operator_fun = fun2;
             }
             else {
-                operator_fun = info->funcs[fun_name2];
+                operator_fun = info->funcs[fun_name2]??;
             }
         }
     }
@@ -64,7 +64,7 @@ bool operator_overload_fun(sType* type, char* fun_name, sNode*% left_node, sNode
         int i;
         for(i=FUN_VERSION_MAX-1; i>=1; i--) {
             string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
-            operator_fun = info->funcs[new_fun_name];
+            operator_fun = info->funcs[new_fun_name]??;
             
             if(operator_fun) {
                 fun_name2 = string(new_fun_name);
@@ -73,7 +73,7 @@ bool operator_overload_fun(sType* type, char* fun_name, sNode*% left_node, sNode
         }
         
         if(operator_fun == NULL) {
-            operator_fun = info->funcs[fun_name2];
+            operator_fun = info->funcs[fun_name2]??;
             sType*% obj_type = solve_generics(type, info.generics_type, info);
             if(operator_fun == NULL) {
                 if(fun_name === "operator_equals") {

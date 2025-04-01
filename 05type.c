@@ -2,9 +2,9 @@
 
 bool is_type_name(char* buf, sInfo* info=info)
 {
-    sClass* klass = info.classes[buf];
-    sType* type = info.types[buf];
-    sClass* generics_class = info.generics_classes[string(buf)];
+    sClass* klass = info.classes[buf]??;
+    sType* type = info.types[buf]??;
+    sClass* generics_class = info.generics_classes[string(buf)]??;
     bool generics_type_name = info.generics_type_names.contained(string(buf));
     bool mgenerics_type_name = info.method_generics_type_names.contained(string(buf));
     
@@ -196,7 +196,7 @@ list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, 
     return (param_types, param_names, param_default_parametors, var_args);
 }
 
-exception bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=true, sInfo* info=info)
+bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=true, sInfo* info=info)
 {
     sType*% left_type2 = clone left_type;
     sType*% right_type2 = clone right_type;
@@ -213,10 +213,6 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
     sClass* left_class = left_type2->mClass;
     sClass* right_class = right_type2->mClass;
     
-    if(left_class->mGenerics || left_class->mMethodGenerics) {
-        return true;
-    }
-    
     bool parent_class = false;
     if(left_class->mName !== right_class->mName) {
         while(left_class && right_class) {
@@ -224,7 +220,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 parent_class = true;
             }
             if(right_class->mParentClassName) {
-                right_class = info.classes[right_class->mParentClassName];
+                right_class = info.classes[right_class->mParentClassName]??;
             }
             else {
                 right_class = null;
@@ -243,7 +239,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 
                 info->err_num++;
                 
-                return none(s"ERR");
+                return false;
             }
         }
         else if(left_type2->mPointerNum == 0 && right_type->mPointerNum > 0) {
@@ -258,7 +254,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 
                 info->err_num++;
                 
-                return none(s"ERR");
+                return false;
             }
         }
         else if(left_type2->mPointerNum > 0 && right_type->mPointerNum > 0) {
@@ -269,7 +265,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     flag_ = true;
                 }
                 if(klass->mParentClassName) {
-                    klass = info.classes[klass->mParentClassName];
+                    klass = info.classes[klass->mParentClassName]??;
                 }
                 else {
                     klass = null;
@@ -300,7 +296,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 
                     info->err_num++;
                     
-                    return none(s"ERR");
+                    return false;
                 }
             }
         }
@@ -319,7 +315,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
             
                 info->err_num++;
                 
-                return none(s"ERR");
+                return false;
             }
         } 
         else if(right_type->mPointerNum == 0 && left_type2->mPointerNum > 0) {
@@ -333,7 +329,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     
                     info->err_num++;
                     
-                    return none(s"ERR");
+                    return false;
                 }
             }
             else {
@@ -354,7 +350,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     
                     info->err_num++;
                     
-                    return none(s"ERR");
+                    return false;
                 }
             }
             else {
@@ -383,7 +379,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     
             info->err_num++;
             
-            return none(s"ERR");
+            return false;
         }
         else if(left_no_solved_generics_type->mGenericsTypes.length() > 0) {
             if((left_no_solved_generics_type->mClass->mName === "void" && left_no_solved_generics_type->mPointerNum > 0 && right_no_solved_generics_type->mPointerNum > 0) || (right_no_solved_generics_type->mClass->mName === "void" && right_no_solved_generics_type->mPointerNum > 0 && left_no_solved_generics_type->mPointerNum > 0)) 
@@ -399,21 +395,17 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                                 
                         info->err_num++;
                         
-                        return none(s"ERR");
+                        return false;
                     }
                     
                     return false;
                 }
                 
                 for(int i=0; i<left_no_solved_generics_type->mGenericsTypes.length(); i++) {
-                    check_assign_type(msg, left_no_solved_generics_type->mGenericsTypes[i], right_no_solved_generics_type->mGenericsTypes[i], come_value, check_no_pointer:false).rescue {
-                        return none(s"ERR");
-                    }
+                    check_assign_type(msg, left_no_solved_generics_type->mGenericsTypes[i], right_no_solved_generics_type->mGenericsTypes[i], come_value, check_no_pointer:false);
                 }
                 
-                check_assign_type(msg, left_no_solved_generics_type, right_no_solved_generics_type, come_value).rescue {
-                    return none(s"ERR");
-                }
+                check_assign_type(msg, left_no_solved_generics_type, right_no_solved_generics_type, come_value);
             }
         }
     }
@@ -429,7 +421,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     
             info->err_num++;
             
-            return none(s"ERR");
+            return false;
         }
     } 
     else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mNumber && left_type2->mPointerNum == 0) {
@@ -441,7 +433,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                         
                 info->err_num++;
                 
-                return none(s"ERR");
+                return false;
             }
         }
         else {
@@ -462,7 +454,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                         
                 info->err_num++;
                 
-                return none(s"ERR");
+                return false;
             }
         }
         else {
@@ -482,7 +474,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 
         info->err_num++;
         
-        return none(s"ERR");
+        return false;
     }
     else if(parent_class && left_type2->mPointerNum == 1 && right_type->mPointerNum == 1) {
         come_value.c_value = xsprintf("(struct %s*)%s", left_type2->mClass->mName, come_value.c_value);
@@ -500,7 +492,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                         
                 info->err_num++;
                 
-                return none(s"ERR");
+                return false;
             }
         }
         else {
@@ -521,7 +513,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                         
                 info->err_num++;
                 
-                return none(s"ERR");
+                return false;
             }
         }
         else {
@@ -542,7 +534,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     
             info->err_num++;
             
-            return none(s"ERR");
+            return false;
         }
     }
     else if(check_no_pointer) {
@@ -558,7 +550,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                         printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                         printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                         info->err_num++;
-                        return none(s"ERR");
+                        return false;
                     }
                     return false;
                 }
@@ -571,7 +563,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                     info->err_num++;
-                    return none(s"ERR");
+                    return false;
                 }
                 
                 return false;
@@ -583,7 +575,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             return false;
         }
@@ -595,7 +587,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             return false;
         }
@@ -613,7 +605,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             
             return false;
@@ -626,7 +618,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             return false;
         }
@@ -636,7 +628,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             return false;
         }
@@ -658,7 +650,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             return false;
         }
@@ -669,7 +661,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                     info->err_num++;
-                    return none(s"ERR");
+                    return false;
                 }
             }
             else {
@@ -694,7 +686,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                     printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                     printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                     info->err_num++;
-                    return none(s"ERR");
+                    return false;
                 }
                 return false;
             }
@@ -723,7 +715,7 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             
             return false;
@@ -742,12 +734,10 @@ exception bool check_assign_type(char* msg, sType* left_type, sType* right_type,
                 printf("right type is %s pointer num %d\n", right_type2->mClass->mName, right_type2->mPointerNum);
                 
                 info->err_num++;
-                return none(s"ERR");
+                return false;
             }
             for(int i=0; i<left_type2->mGenericsTypes.length(); i++) {
-                check_assign_type(msg, left_type2->mGenericsTypes[i], right_type2->mGenericsTypes[i], come_value, check_no_pointer:false).rescue {
-                    return none(s"ERR");
-                }
+                check_assign_type(msg, left_type2->mGenericsTypes[i], right_type2->mGenericsTypes[i], come_value, check_no_pointer:false);
             }
         }
     }
@@ -1894,9 +1884,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     }
     else if(lambda_flag) {
         sType*% result_type;
-        if(info.types[type_name]) {
-            result_type = clone info.types[type_name];
-            result_type->mClass = info.classes[result_type->mClass->mName];
+        if(info.types[type_name]??) {
+            result_type = clone info.types[type_name]??;
+            result_type->mClass = info.classes[result_type->mClass->mName]??;
         }
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
@@ -1966,9 +1956,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         skip_pointer_attribute();
         
         sType*% result_type;
-        if(info.types[type_name]) {
-            result_type = clone info.types[type_name];
-            result_type->mClass = info.classes[result_type->mClass->mName];
+        if(info.types[type_name]??) {
+            result_type = clone info.types[type_name]??;
+            result_type->mClass = info.classes[result_type->mClass->mName]??;
             //type.mOriginalTypeName = string(type_name);
         }
         else if(info.generics_type_names.contained(type_name)) {
@@ -2133,10 +2123,10 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
     }
     else {
-        if(info.types[type_name]) {
-            type = clone info.types[type_name];
+        if(info.types[type_name]??) {
+            type = clone info.types[type_name]??;
             type->mTypedefOriginalPointerNum = type->mPointerNum;
-            type->mClass = info.classes[type->mClass->mName];
+            type->mClass = info.classes[type->mClass->mName]??;
             type.mOriginalTypeName = string(type_name);
             type.mOriginalTypeNamePointerNum = pointer_num;
             type.mOriginalTypeNameHeap = heap;
@@ -2225,7 +2215,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             info->p++;
             skip_spaces_and_lf();
             
-            if(info.generics_classes[string(type_name)] == null)
+            if(info.generics_classes[string(type_name)]?? == null)
             {
                 return ((sType*%)null, (string)null, false);
             }
@@ -2257,7 +2247,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
             }
             
-            if(is_contained_generics_class(type, info)) {
+            if(exception_) {
+            }
+            else if(is_contained_generics_class(type, info)) {
                 type = solve_generics(type, info.generics_type, info);
             }
             else {
@@ -2295,14 +2287,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else {
             if(struct_) {
-                sClass* klass = info.classes[type_name];
+                sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
                     info.classes.insert(string(type_name), new sClass(name:string(type_name), struct_:true));
                 }
             }
             if(union_) {
-                sClass* klass = info.classes[type_name];
+                sClass* klass = info.classes[type_name]??;
                 
                 if(klass == null && *info->p != '<') {
                     info.classes.insert(string(type_name), new sClass(name:string(type_name), union_:true));
@@ -2520,7 +2512,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
             }
             
-            if(is_contained_generics_class(type, info)) {
+            if(exception_) {
+            }
+            else if(is_contained_generics_class(type, info)) {
                 type = solve_generics(type, info.generics_type, info);
             }
             else {
@@ -2635,11 +2629,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mChannel = true;
     }
     else if(type->mException) {
-        if(type->mClass->mGenerics || type->mClass->mMethodGenerics) {
-            err_msg(info, "Exception can't gets generics or method generics");
-            exit(4);
-        }
-        
         sType*% type2 = new sType(s"tuple2");
         type2->mGenericsTypes[0] = new sType(s"generics_type0");
         type2->mGenericsTypes[1] = new sType(s"generics_type1");
@@ -2648,13 +2637,16 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         sType*% type3 = new sType(s"tuple2");
         type3->mGenericsTypes[0] = type;
-        type3->mGenericsTypes[1] = new sType(s"char*");
-        type3->mGenericsTypes[1].mHeap = true;
+        type3->mGenericsTypes[1] = new sType(s"bool");
         
         sType*% type4 = solve_generics(type2,  type3, info);
         
         type4->mException = true;
         type4->mUniq = type->mUniq;
+        
+        if(type->mClass->mGenerics || type->mClass->mMethodGenerics) {
+            type4->mExceptionGenericsType = true;
+        }
         
         return (type4, var_name, true);
     }

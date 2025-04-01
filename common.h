@@ -141,6 +141,8 @@ struct sType
     list<string>*% mParamNames;
     sType*% mResultType;
     bool mVarArgs;
+    
+    bool mExceptionGenericsType;
 };
 
 struct CVALUE 
@@ -164,6 +166,8 @@ struct sVar
     bool mGlobal;
     bool mAllocaValue;
     bool mNoFree;
+    
+    bool mComma;
     
     string mFunName;
 };
@@ -333,6 +337,7 @@ struct sInfo
     sVarTable*% gv_table;
     
     bool comma_instead_of_semicolon;
+    bool comma_instead_of_semicolon_for_exception;
     bool no_comma;
     bool no_assign;
     bool no_label;
@@ -402,6 +407,8 @@ struct sInfo
     bool gcc_compiler;
     bool in_exception_value;
     bool in_method_block;
+    
+    bool prohibits_output_last_code;
 };
 
 module sCurrentNodeModule
@@ -561,7 +568,7 @@ sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type,
 /////////////////////////////////////////////////////////////////////
 /// 02transpile.c ///
 /////////////////////////////////////////////////////////////////////
-exception int err_msg(sInfo* info, char* msg, ...);
+int err_msg(sInfo* info, char* msg, ...);
 int expected_next_character(char c, sInfo* info=info);;
 bool node_compile(sNode* node, sInfo* info=info);
 bool node_condional_compile(sNode* node, sInfo* info=info);
@@ -606,7 +613,7 @@ string append_stackframe(char* c_value, sType* type, sInfo* info);
 bool create_equals_method(sType* type, sInfo* info);
 bool create_operator_equals_method(sType* type, sInfo* info);
 bool create_operator_not_equals_method(sType* type, sInfo* info);
-sType*% solve_generics(sType* type, sType* generics_type, sInfo* info, bool skip_exception=false);
+sType*% solve_generics(sType* type, sType* generics_type, sInfo* info);
 sVar* get_variable_from_table(sVarTable* table, char* name);
 void free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
 void free_objects_of_match_lv_tables(sInfo* info);
@@ -631,7 +638,7 @@ string,sGenericsFun* make_method_generics_function(string fun_name, list<sType*%
 sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info);
 sNode*% post_position_operator(sNode*% node, sInfo* info);
 bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sInfo* info);
-bool operator_overload_fun_self(sType* type, char* fun_name, CVALUE* left_value, sInfo* info);
+bool operator_overload_fun_self(sType* type, char* fun_name, sNode*% node, CVALUE* left_value, sInfo* info);
 bool strmemcmp(char* p, char* p2);
 void caller_begin(sInfo* info=info);
 void caller_end(sInfo* info=info);
@@ -640,9 +647,9 @@ tup: sType*%,string,bool backtrace_parse_type(bool parse_variable_name=false,sIn
 void transpile_toplevel(bool block=false, sInfo* info=info);
 void skip_pointer_attribute(sInfo* info=info);
 void skip_paren(sInfo* info);
-sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info);
+sNode*% parse_normal_block(bool clang=false, bool comma=false, sInfo* info=info, bool if_result=false);
 sNode*% parse_comma_block(sInfo* info=info);
-exception bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=true, sInfo* info=info);
+bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=true, sInfo* info=info);
 void cast_type(sType* left_type, sType* right_type, CVALUE* come_value, sInfo* info=info);
 string,string parse_attribute(sInfo* info=info,bool parse_function_attribute=false);
 sNode*% get_number(bool minus, sInfo* info);
@@ -709,25 +716,22 @@ sNode*% parse_none(sInfo* info);
 bool is_inner_calling(sNode* node, sInfo* info);
 sNode*% post_position_operator(sNode*% node, sInfo* info) version 07;
 sNode*% expression_node(sInfo* info=info) version 95;
-sNode*% store_var(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info);
+sNode*% store_var(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, bool comma=false);
 sNode*% create_load_var(char* var_name, sInfo* info=info);
 sNode*% parse_array_initializer(sInfo* info=info);
 sNode*% parse_struct_initializer(sInfo* info=info);
 sNode*% parse_global_variable(sInfo* info);
 sNode*% load_var(string name, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 7;
-void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_param);
+void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_param, bool comma=false);
 void add_variable_to_global_table(char* name, sType*% type, sInfo* info);
 void add_variable_to_global_table_with_int_value(char* name, sType*% type, char* c_value, sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
-extern list<sRightValueObject*%>*% gExceptionRightValueObjects;
 sNode*% parse_match(sNode*% expression_node, sInfo* info);
 
-sNode*% create_exception_throw(sNode*% expression_node, sInfo* info);
-sNode*% create_exception_value(sNode*% expression_node, sInfo* info);
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;
 sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info);
@@ -805,9 +809,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 sNode*% create_nullable_node(sNode* left, sInfo* info=info);
 sNode*% load_field(sNode*% left, string name, sInfo* info=info);
-bool compiletime_get_exception_value(sInfo* info);
 sNode*% store_field(sNode* left, sNode*% right, string name, sInfo* info);
-sNode*% exception_get_value(sNode*% node, sInfo* info);
 
 sNode*% post_position_operator(sNode*% node, sInfo* info) version 99;
 sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 18;

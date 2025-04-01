@@ -60,7 +60,7 @@ void ViWin*::inputRewritetMode(ViWin* self, Vi* nvi)
     else if(key == 9) {
         auto str = self.texts.item(self.scroll+self.cursorY, null).substring(0, self.cursorX);
 
-        new come_regex("^$|^[ ]+$").rescue { null }.if {
+        new come_regex("^$|^[ ]+$").if {
             if(str.to_string().match(Value)) {
                 self.insertText2(wstring("    "));
             }
@@ -204,17 +204,8 @@ int Vi*::main_loop(Vi* self) version 19
             self.activeWin.clearInputedKey();
         }
 
-//        self.activeWin.makeTmpFile();
-//        self.wins.each {
-//            it.makeTmpFile();
-//        }
         self.activeWin.input(self);
     }
     
-//    self.wins.each {
-//        it.deleteTmpFile();
-//    }
-//    self.activeWin.saveCursorPosition(self.activeWin.fileName);
-
     return 0;
 }

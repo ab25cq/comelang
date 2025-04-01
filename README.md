@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 26.0.0
+version 30.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+30.0.0 Remove exception. If my concentrate will continue, rescue method call implement for convinient returning tuple2 function. Allmost project the end.
 26.0.0 heap alignment bug fiexed.
 25.0.3 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
 25.0.1 Mutex lock unlock added.
@@ -2495,97 +2496,6 @@ with -net option to comandline.
 
 Omitting semicolon at the function block end means return statment.
 
-# Exception
-
-```C
-#include <comelang.h>
-
-exception int fun(int a)
-{
-    printf("%d\n", a);
-    
-    return none(s"ERR");
-}
-
-int main(int argc, char** argv)
-{
-    int b = fun(a:111).rescue {
-        puts("RESCUE");
-        111
-    }
-    
-    printf("b %d\n", b);
-    
-    return 0;
-}
-```
-
-```
-111
-RESCUE
-b 111
-```
-
-```C
-#include <comelang.h>
-
-exception int fun(int a)
-{
-    printf("%d\n", a);
-    
-    return none(s"ERR");
-}
-
-int main(int argc, char** argv)
-{
-    int b = fun(a:111);
-    
-    printf("b %d\n", b);
-    
-    return 0;
-}
-```
-
-```
-111
-ERR
-```
-
-```
-#include <comelang.h>
-
-exception int fun(int a)
-{
-    printf("in fun %d\n", a);
-    
-    return none(s"Err");
-}
-
-exception int fun2(int a)
-{
-    printf("in fun2 a %d\n", a);
-    
-    fun(a);
-    
-    return 1;
-}
-
-int main(int argc, char** argv)
-{
-    int b = fun2(a:111);
-    
-    printf("b %d\n", b);
-    
-    return 0;
-}
-```
-
-```
-in fun 111
-in fun2 a 111
-ERR
-```
-
 # Pattern Matching
 
 ```C
@@ -3095,3 +3005,29 @@ impl come_mutex<T>
 ```
 
 25.0.1 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
+
+```
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+int main(int argc,char** argv)
+{
+    var li = new come_mutex<list<int>*%>([1,2,3]);
+    
+    var thread2 = come {
+        sleep(3);
+        
+        li.lock().to_string().puts();  // on_drop call unlock()
+    }
+    
+    var thread = come {
+        li.lock().add(4); // on_drop call unlock()
+        li.lock().add(5); // on_drop call unlock()
+    }
+    
+    come_join(thread);
+    come_join(thread2);
+    
+    return 0;
+}
+```

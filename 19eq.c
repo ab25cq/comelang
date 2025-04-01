@@ -17,7 +17,7 @@ class sPlusPlusNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sNode* left = self.mLeft;
+        sNode*% left = self.mLeft;
         
         node_compile(left).elif {
             return false;
@@ -34,7 +34,7 @@ class sPlusPlusNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun_self(type, fun_name, left_value, info);
+            calling_fun = operator_overload_fun_self(type, fun_name, left, left_value, info);
         }
         
         if(!calling_fun) {
@@ -70,7 +70,7 @@ class sMinusMinusNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sNode* left = self.mLeft;
+        sNode*% left = self.mLeft;
         
         node_compile(left).elif {
             return false;
@@ -87,7 +87,7 @@ class sMinusMinusNode extends sNodeBase
             calling_fun = false;
         }
         else {
-            calling_fun = operator_overload_fun_self(type, fun_name, left_value, info);
+            calling_fun = operator_overload_fun_self(type, fun_name, left, left_value, info);
         }
         
         if(!calling_fun) {

@@ -74,7 +74,7 @@ uniq int wstring::length(wchar_t* str)
     return wchar_t*::length(str);
 }
 
-uniq exception come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
+uniq come_regex*% come_regex*::initialize(come_regex*% self, char* str, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
 {
     const char* err;
     int erro_ofs;
@@ -96,7 +96,7 @@ uniq exception come_regex*% come_regex*::initialize(come_regex*% self, char* str
     self.re = pcre_compile(str, options, &err, &erro_ofs, NULL);
 
     if(self.re == null) {
-        return none(s"regex error \{str}");
+        return null;
     }
     
 /*
@@ -118,14 +118,14 @@ uniq void come_regex*::finalize(come_regex* reg)
     }
 }
 
-uniq exception come_regex*% char*::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
+uniq come_regex*% char*::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
 {
-    return new come_regex(self, ignore_case, multiline, global, extended, dotall, anchored, dollar_endonly, ungreedy).exception_throw;
+    return new come_regex(self, ignore_case, multiline, global, extended, dotall, anchored, dollar_endonly, ungreedy);
 }
 
-uniq exception come_regex*% string::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
+uniq come_regex*% string::to_regex(char* self, bool ignore_case=false, bool multiline=false, bool global=false, bool extended=false, bool dotall=false, bool anchored=false, bool dollar_endonly=false, bool ungreedy=false)
 {
-    return new come_regex(self, ignore_case, multiline, global, extended, dotall, anchored, dollar_endonly, ungreedy).exception_throw;
+    return new come_regex(self, ignore_case, multiline, global, extended, dotall, anchored, dollar_endonly, ungreedy);
 }
 
 uniq come_regex*% come_regex*::clone(come_regex* reg)

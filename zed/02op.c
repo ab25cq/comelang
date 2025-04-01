@@ -180,8 +180,8 @@ bool vm(sInfo* info) version 2
                 info->stack.push_back(new ZVALUE(kind: kMapValue, map_value:value));
             }
             else if(left_value.kind == kListValue && right_value.kind == kListValue) {
-                list<ZVALUE*%>* lvalue = left_value.listValue;
-                list<ZVALUE*%>* rvalue = right_value.listValue;
+                list<ZVALUE*%>*% lvalue = left_value.listValue;
+                list<ZVALUE*%>*% rvalue = right_value.listValue;
                 
                 list<ZVALUE*%>*% value = lvalue + rvalue;
                 

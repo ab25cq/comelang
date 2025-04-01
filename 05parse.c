@@ -1,6 +1,6 @@
 #include "common.h"
 
-exception int err_msg(sInfo* info, char* msg, ...)
+int err_msg(sInfo* info, char* msg, ...)
 {
     if(!info.no_output_err) {
         char* msg2;
@@ -39,7 +39,7 @@ exception int err_msg(sInfo* info, char* msg, ...)
         free(msg2);
         
         printf(buf.to_string() + "\n");
-        return none(s"compile error");
+        return 0;
     }
     
     return 0;
@@ -80,8 +80,10 @@ string parse_word(sInfo* info=info)
     
     string result = buf.to_string();
     
-    if(info->module_params && info->module_params[string(result)]) {
-        return string(info->module_params[string(result)]);
+    if(info->module_params) {
+        if(info->module_params[string(result)]??) {
+            return string(info->module_params[string(result)]);
+        }
     }
     
     return result;

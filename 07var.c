@@ -2,7 +2,7 @@
 
 class sStoreNode extends sNodeBase
 {
-    new(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, string attribute=s"")
+    new(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, string attribute=s"", bool comma=false)
     {
         self.super();
         
@@ -16,6 +16,7 @@ class sStoreNode extends sNodeBase
         list<tup: sType*%,string,sNode*%>*% self.multiple_declare;
         self.multiple_declare = dupe multiple_declare;
         string self.attribute = attribute;
+        bool self.comma = comma;
     }
     
     string kind()
@@ -26,7 +27,7 @@ class sStoreNode extends sNodeBase
     bool compile(sInfo* info)
     {
         if(self.multiple_declare) {
-            sVar* var_ = info.lv_table.mVars[string(self.name)];
+            sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
             if(var_) {
                 if(var_->mType->mHeap) {
                     free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -36,16 +37,14 @@ class sStoreNode extends sNodeBase
             }
             
             if(self.type == null) {
-                err_msg(info, "Require concrete variable type(%s)", self.name).rescue {
-                    return true;
-                }
+                err_msg(info, "Require concrete variable type(%s)", self.name);
             }
             
             var type = solve_generics(self.type, info->generics_type, info);
             
             foreach(it, self.multiple_declare) {
                 var type, var_name, right_value = it;
-                var_ = info.lv_table.mVars[string(var_name)];
+                var_ = info.lv_table.mVars.at(string(var_name), null);
                 if(var_) {
                     if(var_->mType->mHeap) {
                         free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -53,14 +52,12 @@ class sStoreNode extends sNodeBase
                     
                     info.lv_table.mVars.remove(string(var_name));
                 }
-                add_variable_to_table(var_name, clone type, info, false@function_param);
+                add_variable_to_table(var_name, clone type, info, false@function_param, comma:self.comma);
                 
                 var_ = get_variable_from_table(info.lv_table, var_name);
                 
                 if(var_ == null) {
-                    err_msg(info, "var not found(%s)(ZY) at definition of variable", it).rescue {
-                        return true;
-                    }
+                    err_msg(info, "var not found(%s)(ZY) at definition of variable", it);
                 }
                 
                 sType*% left_type = clone var_->mType;
@@ -80,6 +77,8 @@ class sStoreNode extends sNodeBase
             }
         }
         else if(self.multiple_assign) {
+            buffer*% buf = new buffer();
+            
             node_compile(self.right_value).elif {
                 return false;
             }
@@ -95,7 +94,7 @@ class sStoreNode extends sNodeBase
             int i = 0;
             foreach(it, self.multiple_assign) {
                 if(i < right_type.mGenericsTypes.length()) {
-                    sVar*% var_ = info.lv_table.mVars[string(it)];
+                    sVar*% var_ = info.lv_table.mVars.at(string(it), null);
                     if(var_) {
                         if(var_->mType->mHeap) {
                             free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -105,7 +104,7 @@ class sStoreNode extends sNodeBase
                     }
             
                     sType*% right_type2 = right_type.mGenericsTypes[i];
-                    add_variable_to_table(it, clone right_type2, info, false@function_param);
+                    add_variable_to_table(it, clone right_type2, info, false@function_param, comma:self.comma);
                 }
                 
                 i++;
@@ -115,7 +114,11 @@ class sStoreNode extends sNodeBase
             string multiple_var_name = xsprintf("multiple_assign_var%d", ++num_multiple_var);
             add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(right_value.type, multiple_var_name));
             
-            if(info->comma_instead_of_semicolon) {
+            
+            if(info->prohibits_output_last_code) {
+                buf.append_format("%s=%s", multiple_var_name, right_value.c_value);
+            }
+            else if(info->comma_instead_of_semicolon) {
                 add_come_code(info, "%s=%s,\n", multiple_var_name, right_value.c_value);
             }
             else {
@@ -144,9 +147,7 @@ class sStoreNode extends sNodeBase
                     
                     CVALUE*% come_value = new CVALUE();
                     
-                    check_assign_type(s"\{self.name} is assining to}", left_type, right_type2, come_value).rescue {
-                        return true;
-                    }
+                    check_assign_type(s"\{self.name} is assining to}", left_type, right_type2, come_value);
                     
                     if(right_type2->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type2->mPointerNum > 0)
                     {
@@ -160,7 +161,11 @@ class sStoreNode extends sNodeBase
                     come_value.var = var_;
                     
                     add_come_code_at_function_head(info, "%s=0;\n", make_define_var(left_type, var_->mCValueName));
-                    if(info->comma_instead_of_semicolon) {
+                    
+                    if(info->prohibits_output_last_code) {
+                        buf.append_format("%s,\n", come_value.c_value);
+                    }
+                    else if(info->comma_instead_of_semicolon) {
                         add_come_code(info, "%s,\n", come_value.c_value);
                     }
                     else {
@@ -170,9 +175,17 @@ class sStoreNode extends sNodeBase
                 
                 i++;
             }
+            
+            if(buf.to_string() !== "") {
+                CVALUE*% come_value = new CVALUE();
+                
+                come_value.c_value = buf.to_string();
+                
+                info.stack.add(come_value);
+            }
         }
         else if(self.right_value == null) { // assert(self.alloc == true)
-            sVar* var_ = info.lv_table.mVars[string(self.name)];
+            sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
             if(var_) {
                 if(var_->mType->mHeap) {
                     free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -182,14 +195,12 @@ class sStoreNode extends sNodeBase
             }
             
             if(self.type == null) {
-                err_msg(info, "Require concrete variable type(%s)", self.name).rescue {
-                    return true;
-                }
+                err_msg(info, "Require concrete variable type(%s)", self.name);
             }
             
             var type = solve_generics(self.type, info->generics_type, info);
             
-            add_variable_to_table(self.name, clone type, info, false@function_param);
+            add_variable_to_table(self.name, clone type, info, false@function_param, comma:self.comma);
         
             var_ = get_variable_from_table(info.lv_table, self.name);
             
@@ -197,9 +208,7 @@ class sStoreNode extends sNodeBase
                 var_ = get_variable_from_table(info.gv_table, self.name);
                 
                 if(var_ == null) {
-                    err_msg(info, "var not found(%s)(Y) at definition of variable", self.name).rescue {
-                        return true;
-                    }
+                    err_msg(info, "var not found(%s)(Y) at definition of variable", self.name);
                 }
             }
             
@@ -267,7 +276,7 @@ class sStoreNode extends sNodeBase
             }
         }
         else if(self.alloc) { // right_value != null
-            sVar* var_ = info.lv_table.mVars[string(self.name)];
+            sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
             if(var_) {
                 if(var_->mType->mHeap) {
                     free_object(clone var_->mType, var_->mCValueName, false@no_decrement, false@no_free, info);
@@ -281,7 +290,7 @@ class sStoreNode extends sNodeBase
             else {
                 var type = solve_generics(self.type, info->generics_type, info);
                 
-                add_variable_to_table(self.name, clone type, info, false@function_param);
+                add_variable_to_table(self.name, clone type, info, false@function_param, comma:self.comma);
             }
             
             node_compile(self.right_value).elif {
@@ -296,7 +305,7 @@ class sStoreNode extends sNodeBase
             sType* right_type = right_value.type;
             
             if(self.type == null) {
-                add_variable_to_table(self.name, clone right_type, info, false@function_param);
+                add_variable_to_table(self.name, clone right_type, info, false@function_param, comma:self.comma);
             }
             else {
             }
@@ -319,7 +328,7 @@ class sStoreNode extends sNodeBase
             sType*% left_type = clone var_->mType;
             
             if(array_initializer) {
-                sVar* var_ = info.lv_table.mVars[string(self.name)];
+                sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
                 /*
                 if(var_->mType->mAttribute) {
                     add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
@@ -336,7 +345,7 @@ class sStoreNode extends sNodeBase
                 transpiler_clear_last_code(info);
             }
             else if(struct_initializer) {
-                sVar* var_ = info.lv_table.mVars[string(self.name)];
+                sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
                 /*
                 if(var_->mType->mAttribute) {
                     add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
@@ -353,9 +362,7 @@ class sStoreNode extends sNodeBase
                 transpiler_clear_last_code(info);
             }
             else if(var_->mType->mStatic || var_->mType->mConstant) {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 /*
                 if(left_type->mAttribute) {
@@ -374,9 +381,7 @@ class sStoreNode extends sNodeBase
             }
             else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
             {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 std_move(left_type, right_type, right_value);
                 
@@ -415,9 +420,7 @@ class sStoreNode extends sNodeBase
             }
             else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
             {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
                 
@@ -432,9 +435,7 @@ class sStoreNode extends sNodeBase
                 add_come_last_code(info, "%s", come_value.c_value);
             }
             else {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
                 {
@@ -442,9 +443,7 @@ class sStoreNode extends sNodeBase
                 }
                 
                 if(left_type->mHeap && !right_value.type->mHeap) {
-                    err_msg(info, "require right value as heap object(%s)", self.name).rescue {
-                        return true;
-                    }
+                    err_msg(info, "require right value as heap object(%s)", self.name);
                 }
                 
                 /*
@@ -479,7 +478,7 @@ class sStoreNode extends sNodeBase
             
             sClass* current_stack_frame_struct = info->current_stack_frame_struct;
             
-            if(current_stack_frame_struct && info.lv_table.mVars[string(self.name)] == null) {
+            if(current_stack_frame_struct && info.lv_table.mVars.at(string(self.name), null) == null) {
                 sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
                 
                 if(parent_var != null) {
@@ -487,9 +486,7 @@ class sStoreNode extends sNodeBase
                         sType* left_type = parent_var->mType;
                         
                         if(left_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mHeap && left_type->mHeap) {
-                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value).rescue {
-                                return true;
-                            }
+                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
                             
                             string c_value = xsprintf("*(parent->%s)", parent_var->mCValueName);
                             
@@ -515,9 +512,7 @@ class sStoreNode extends sNodeBase
                         }
                         else if(left_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mHeap) 
                         {
-                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value).rescue {
-                                return true;
-                            }
+                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
                             
                             string c_value = xsprintf("*(parent->%s)", parent_var->mCValueName);
                             decrement_ref_count_object(parent_var->mType, c_value, info);
@@ -540,14 +535,10 @@ class sStoreNode extends sNodeBase
                             return true;
                         }
                         else {
-                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value).rescue {
-                                return true;
-                            }
+                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
                             
                             if(left_type->mHeap && !right_value.type->mHeap) {
-                                err_msg(info, "require right value as heap object(%s)", self.name).rescue {
-                                    return true;
-                                }
+                                err_msg(info, "require right value as heap object(%s)", self.name);
                             }
                             
                             CVALUE*% come_value = new CVALUE();
@@ -577,9 +568,7 @@ class sStoreNode extends sNodeBase
                 var_ = get_variable_from_table(info.gv_table, self.name);
                 
                 if(var_ == null) {
-                    err_msg(info, "var not found(%s)(X) at storing variable", self.name).rescue {
-                        return true;
-                    }
+                    err_msg(info, "var not found(%s)(X) at storing variable", self.name);
                 }
             }
             
@@ -590,9 +579,7 @@ class sStoreNode extends sNodeBase
             sType*% left_type = clone var_->mType;
             
             if((var_->mType->mStatic || var_->mType->mConstant) && !var_->mGlobal) {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 CVALUE*% come_value = new CVALUE();
                 
@@ -606,9 +593,7 @@ class sStoreNode extends sNodeBase
             }
             else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
             {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 decrement_ref_count_object(left_type, var_->mCValueName, info);
                 std_move(left_type, right_type, right_value);
@@ -625,9 +610,7 @@ class sStoreNode extends sNodeBase
             }
             else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
             {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 decrement_ref_count_object(left_type, var_->mCValueName, info);
                 
@@ -653,14 +636,10 @@ class sStoreNode extends sNodeBase
                 add_come_last_code(info, "%s", come_value.c_value);
             }
             else {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
                 if(left_type->mHeap && !right_value.type->mHeap) {
-                    err_msg(info, "require right value as heap object(%s)", self.name).rescue {
-                        return true;
-                    }
+                    err_msg(info, "require right value as heap object(%s)", self.name);
                 }
                 
                 CVALUE*% come_value = new CVALUE();
@@ -742,9 +721,7 @@ class sWriteChannelNode extends sNodeBase
         var_num++;
         
         if(right_value.type->mHeap) {
-            err_msg(info, "channel can't get heap type").rescue {
-                return true;
-            }
+            err_msg(info, "channel can't get heap type");
         }
     
         buffer*% buf = new buffer();
@@ -799,9 +776,7 @@ class sReadChannelNode extends sNodeBase
         sType*% var_type = clone come_value.type;
         
         if(!var_type->mChannel) {
-            err_msg(info, "require right type is channel").rescue {
-                return true;
-            }
+            err_msg(info, "require right type is channel");
         }
         
         sType*% channel_type = var_type->mChannelType;
@@ -826,9 +801,9 @@ class sReadChannelNode extends sNodeBase
     
 };
 
-sNode*% store_var(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info)
+sNode*% store_var(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, bool comma=false)
 {
-    return new sStoreNode(name, multiple_assign, multiple_declare, type, alloc, right_value, info) implements sNode;
+    return new sStoreNode(name, multiple_assign, multiple_declare, type, alloc, right_value, info, comma:comma) implements sNode;
 }
 
 class sLoadNode extends sNodeBase
@@ -853,7 +828,7 @@ class sLoadNode extends sNodeBase
     {
         sClass* current_stack_frame_struct = info->current_stack_frame_struct;
         
-        if(current_stack_frame_struct && info.lv_table.mVars[string(self.name)] == null) {
+        if(current_stack_frame_struct && info.lv_table.mVars.at(string(self.name), null) == null) {
             sVar* parent_var = get_variable_from_table(info.lv_table->mParent, self.name);
             
             if(parent_var != null) {
@@ -887,7 +862,7 @@ class sLoadNode extends sNodeBase
             var_ = get_variable_from_table(info.gv_table, self.name);
             
             if(var_ == null) {
-                sFun* fun = info.funcs[string(self.name)];
+                sFun* fun = info.funcs[string(self.name)]??;
                 
                 if(fun) {
                     CVALUE*% come_value = new CVALUE();
@@ -901,9 +876,7 @@ class sLoadNode extends sNodeBase
                     return true;
                 }
                 else {
-                    err_msg(info, "var not found(%s)(Z) at loading variable", self.name).rescue {
-                        return true;
-                    }
+                    err_msg(info, "var not found(%s)(Z) at loading variable", self.name);
                 }
             }
         }
@@ -960,12 +933,10 @@ class sFunLoadNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sFun* fun = info.funcs[string(self.name)];
+        sFun* fun = info.funcs[string(self.name)]??;
         
         if(fun == null) {
-            err_msg(info, "fun not found(%s) at loading variable", self.name).rescue {
-                return true;
-            }
+            err_msg(info, "fun not found(%s) at loading variable", self.name);
         }
         else {
             CVALUE*% come_value = new CVALUE();
@@ -1248,7 +1219,7 @@ sNode*% parse_struct_initializer(sInfo* info=info)
     return new sStructInitializer(initializer, info) implements sNode;
 }
 
-void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_param)
+void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_param, bool comma=false)
 {
     sVar*% self = new sVar;
     
@@ -1271,6 +1242,8 @@ void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_
     else {
         self->mFunName = null;
     }
+    
+    self->mComma = comma;
     
     info.lv_table.mVars.insert(string(name), self);
 }
@@ -1393,7 +1366,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     }
     
     parse_sharp();
-    sFun* fun = info.funcs[string(buf)];
+    sFun* fun = info.funcs[string(buf)]??;
     
     if((!gComeC && buf === "var") || buf === "auto") {
         parse_sharp();
@@ -1597,7 +1570,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         info.sline_real = sline_real;
         return node;
     }
-    else if(!is_type_name_flag || info.funcs[string(buf)]) {
+    else if(!is_type_name_flag || info.funcs[string(buf)]??) {
         sNode*% node = new sLoadNode(string(buf)@name, info) implements sNode;
         
         node = post_position_operator(node, info);

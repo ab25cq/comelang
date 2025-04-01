@@ -1,9 +1,12 @@
 #include <comelang.h>
-#include <comelang-pthread.h>
 
 int main(int argc,char** argv)
 {
-    fopen("AAA", "w").fprintf("AAA\n").fprintf("BBB\n");
+    int a = {
+        1 + 1
+    };
+    
+    printf("%d\n", a);
     
     return 0;
 }

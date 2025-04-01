@@ -7,7 +7,7 @@ string, string, string, string create_vtable(sType*% any_type, sInfo* info=info)
     string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
     string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
     
-    if(info.funcs[finalizer_name] == null) {
+    if(info.funcs[finalizer_name]?? == null) {
         if(any_type->mClass->mNumber) {
             finalizer_name = s"(void*)0";
         }
@@ -15,7 +15,7 @@ string, string, string, string create_vtable(sType*% any_type, sInfo* info=info)
             (void*)create_finalizer_automatically(any_type, "finalize", info);
         }
     }
-    if(info.funcs[cloner_name] == null) {
+    if(info.funcs[cloner_name]?? == null) {
         if(any_type->mClass->mNumber) {
             cloner_name = s"(void*)0";
         }
@@ -24,11 +24,11 @@ string, string, string, string create_vtable(sType*% any_type, sInfo* info=info)
             cloner_name = name;
         }
     }
-    if(info.funcs[get_hash_key_name] == null) {
+    if(info.funcs[get_hash_key_name]?? == null) {
         var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
         get_hash_key_name = name;
     }
-    if(info.funcs[equaler_name] == null) {
+    if(info.funcs[equaler_name]?? == null) {
         var fun, name = create_equals_automatically(any_type, "equals", info);
         equaler_name = name;
     }
@@ -106,7 +106,7 @@ class sNewNode extends sNodeBase
             buf.append_str("(");
             
             string obj;
-            if(info.funcs["come_calloc_v2"]) {
+            if(info.funcs["come_calloc_v2"]??) {
                 obj = xsprintf("%s = (%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", var_name, type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
             }
             else {
@@ -139,16 +139,12 @@ class sNewNode extends sNodeBase
                 }
                 
                 if(left_type == null) {
-                    err_msg(info, "field %s is not defined", name).rescue {
-                        return true;
-                    }
+                    err_msg(info, "field %s is not defined", name);
                 }
                 
                 sType*% right_type = come_value2.type;
                 
-                check_assign_type(s"\{name} is assining to", left_type, right_type, come_value2).rescue {
-                    return true;
-                }
+                check_assign_type(s"\{name} is assining to", left_type, right_type, come_value2);
                 
                 right_type = come_value2.type;
                 
@@ -199,7 +195,7 @@ class sNewNode extends sNodeBase
             
             string type_name3 = make_type_name_string(type3);
             
-            if(info.funcs["come_calloc_v2"]) {
+            if(info.funcs["come_calloc_v2"]??) {
                 come_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name3);
             }
             else {
@@ -276,7 +272,7 @@ class sImplementsNode extends sNodeBase
         string buf2 = xsprintf("%s* _inf_obj_value%d;\n", type_name2, inf_num_stack);
         add_come_code_at_function_head(info, buf2);
         
-        if(info.funcs["come_calloc_v2"]) {
+        if(info.funcs["come_calloc_v2"]??) {
             add_come_code(info, "_inf_value%d=(%s*)come_calloc_v2(1, sizeof(%s), \"%s\", %d, \"%s\");\n", inf_num_stack, type_name, type_name, info.sname, info.sline, type_name);
         }
         else {
@@ -320,9 +316,9 @@ class sImplementsNode extends sNodeBase
             }
             
             if(fun == null) {
-                sClass* klass2 = info->classes[type->mClass->mName];
-                while(info->classes[klass2->mParentClassName]) {
-                    klass2 = info->classes[klass2->mParentClassName];
+                sClass* klass2 = info->classes[type->mClass->mName]??;
+                while(info->classes[klass2->mParentClassName]??) {
+                    klass2 = info->classes[klass2->mParentClassName]??;
                     
                     method_name = create_method_name_using_class(klass2, false@no_pointer_name, name, info);
                     

@@ -23,14 +23,13 @@ class sSwitchNode extends sNodeBase
     bool compile(sInfo* info)
     {
         if(info.comma_instead_of_semicolon) {
-            err_msg(info, "In conditional operator comelang can't use switch statment").rescue {
-                return true;
-            }
+            err_msg(info, "In conditional operator comelang can't use switch statment");
         }
         
         sBlock* block = self.mBlock;
         
         /// compile expression ///
+        add_come_code(info, "switch (");
         sNode* expression_node = self.mExpressionNode;
         bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
@@ -43,7 +42,7 @@ class sSwitchNode extends sNodeBase
         
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
         
-        add_come_code(info, "switch (%s) {\n", conditional_value.c_value);
+        add_come_code(info, "%s) {\n", conditional_value.c_value);
     
         transpile_block(block, null, null, info, false, true);
     

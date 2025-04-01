@@ -33,6 +33,22 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         return result;
     }
     
+    if(type->mExceptionGenericsType) {
+        sType*% no_solved_type = result->mNoSolvedGenericsType;
+        no_solved_type->mException = true;
+
+        sType*% generics_type2_ = clone generics_type;
+        sType*% type3 = new sType(s"char*");
+        type3.mHeap = true;
+        generics_type2_.mGenericsTypes.add(type3);
+        
+        sType*% result = solve_generics(no_solved_type, generics_type2_, info);
+        
+        result->mException = true;
+        
+        return result;
+    }
+    
     sClass* klass = type->mClass;
 
     if(klass->mName === "lambda") {
@@ -315,7 +331,7 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
         
         
         come_value.c_value_without_right_value_objects = clone come_value.c_value;
-        come_value.c_value = xsprintf("((%s)(%s=%s))", make_type_name_string(type, false@in_header, true@array_cast_pointer), new_value->mVarName, come_value.c_value)!;
+        come_value.c_value = xsprintf("((%s)(%s=%s))", make_type_name_string(type, false@in_header, true@array_cast_pointer), new_value->mVarName, come_value.c_value);
         come_value.right_value_objects = new_value;
     }
 }
@@ -410,7 +426,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
                 string none_generics_name = get_none_generics_name(type2.mClass.mName);
                 
                 string generics_fun_name = xsprintf("%s_%s", none_generics_name, fun_name);
-                sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name];
+                sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
                 
                 if(generics_fun) {
                     var name, err = create_generics_fun(fun_name2, generics_fun, type, info);
@@ -530,7 +546,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
                 string none_generics_name = get_none_generics_name(type2.mClass.mName);
                 
                 string generics_fun_name = xsprintf("%s_%s", none_generics_name, fun_name);
-                sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name];
+                sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
                 
                 if(generics_fun) {
                     var name, err = create_generics_fun(fun_name2, generics_fun, type, info);
@@ -764,7 +780,7 @@ void drop_object(sType* type, char* obj, sInfo* info=info)
                 string none_generics_name = get_none_generics_name(type2.mClass.mName);
                 
                 string generics_fun_name = xsprintf("%s_%s", none_generics_name, fun_name);
-                sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name];
+                sGenericsFun* generics_fun = info->generics_funcs[generics_fun_name]??;
                 
                 if(generics_fun) {
                     var name, err = create_generics_fun(fun_name2, generics_fun, type, info);
@@ -1082,7 +1098,7 @@ sVar* get_variable_from_table(sVarTable* table, char* name)
     sVarTable* it = table;
 
     while(it) {
-        sVar* var_ = it.mVars[string(name)];
+        sVar* var_ = it.mVars[string(name)]??;
 
         if(var_) {
             return var_;
@@ -1103,25 +1119,26 @@ void free_objects(sVarTable* table, sVar* ret_value, sInfo* info)
         sVar* p = table->mVars[string(it)];
         sType* type = p->mType;
         sClass* klass = type->mClass;
+        bool comma = p->mComma;
         
         if(type->mChannel) {
-            add_come_code(info, "(%s[0]) ? close(%s[0]):0;\n", p->mCValueName, p->mCValueName);
-            add_come_code(info, "(%s[1]) ? close(%s[1]):0;\n", p->mCValueName, p->mCValueName);
+            add_come_code(info, "(%s[0]) ? close(%s[0]):0;\n", p->mCValueName, p->mCValueName, comma:comma);
+            add_come_code(info, "(%s[1]) ? close(%s[1]):0;\n", p->mCValueName, p->mCValueName, comma:comma);
         }
         else if(ret_value != null && p->mCValueName != null && p->mCValueName === ret_value->mCValueName && type->mHeap) 
         {
             sType*% type2 = clone type;
-            free_object(type2, p->mCValueName, false@no_decrement, true@no_free, info, false, true);
+            free_object(type2, p->mCValueName, false@no_decrement, true@no_free, info, false, true, comma:comma);
         }
         else if(type->mHeap && p->mCValueName) {
             sType*% type2 = clone type;
-            free_object(type2, p->mCValueName, false@no_decrement, false@no_free, info);
+            free_object(type2, p->mCValueName, false@no_decrement, false@no_free, info, comma:comma);
         }
         else if(klass->mStruct && p->mCValueName && type->mAllocaValue && !type->mNoCallingDestructor) {
             string c_value = xsprintf("(&%s)", p->mCValueName);
             sType*% type2 = clone type;
             type2->mPointerNum++;
-            free_object(type2, c_value, false@no_decrement, false@no_free, info);
+            free_object(type2, c_value, false@no_decrement, false@no_free, info, comma:comma);
         }
     }
 }
@@ -1170,7 +1187,7 @@ string append_stackframe(char* c_value, sType* type, sInfo* info)
 {
     if(type->mClass->mName === "void" && type->mPointerNum == 0) {
         if(gComeDebug || type->mRecord) {
-            if(info.funcs["come_push_stack_frame_v2"]) {
+            if(info.funcs["come_push_stack_frame_v2"]??) {
                 return s"(come_push_stackframe_v2(\"\{info.sname}\", \{info.sline},\{gComeDebugStackFrameID++}),\{c_value},come_pop_stackframe_v2())";
             }
             else {
@@ -1184,7 +1201,7 @@ string append_stackframe(char* c_value, sType* type, sInfo* info)
         
         string var_name = xsprintf("__exception_result_var_b%d", n);
         add_come_code_at_function_head(info, "%s;\n", make_define_var(type, var_name));
-        if(info.funcs["come_push_stack_frame_v2"]) {
+        if(info.funcs["come_push_stack_frame_v2"]??) {
             return s"(come_push_stackframe_v2(\"\{info.sname}\", \{info.sline}, \{gComeDebugStackFrameID++}),\{var_name}=\{c_value}, come_pop_stackframe_v2(), \{var_name})";
         }
         else {

@@ -152,18 +152,20 @@ string make_come_type_name_string(sType* type, sInfo* info=info)
 {
     var buf = new buffer();
     
-    char* class_name = type->mClass->mName;
+    sType*% type2 = clone type;
+    
+    char* class_name = type2->mClass->mName;
     
     buf.append_str(class_name);
     
-    if(type->mGenericsTypes.length() > 0) {
+    if(type2->mGenericsTypes.length() > 0) {
         buf.append_str("<");
-        for(int i=0; i<type->mGenericsTypes.length(); i++) {
-            sType* gtype = type->mGenericsTypes[i];
+        for(int i=0; i<type2->mGenericsTypes.length(); i++) {
+            sType* gtype = type2->mGenericsTypes[i];
             
             buf.append_str(make_come_type_name_string(gtype));
             
-            if(i != type->mGenericsTypes.length() -1) {
+            if(i != type2->mGenericsTypes.length() -1) {
                 buf.append_str(",");
             }
         }
@@ -172,23 +174,23 @@ string make_come_type_name_string(sType* type, sInfo* info=info)
     }
     
     if(class_name !== "lambda") {
-        for(int i=0; i<type->mPointerNum; i++) {
+        for(int i=0; i<type2->mPointerNum; i++) {
             buf.append_str("*");
         }
     }
     
-    if(type->mArrayNum.length() > 0) {
-        for(int i=0; i<type->mArrayNum.length(); i++) {
+    if(type2->mArrayNum.length() > 0) {
+        for(int i=0; i<type2->mArrayNum.length(); i++) {
             buf.append_str("[]");
         }
     }
     
-    if(type->mHeap) {
+    if(type2->mHeap) {
         buf.append_str("%");
     }
     
-    if(type->mAttribute) {
-        buf.append_str(" " + type->mAttribute);
+    if(type2->mAttribute) {
+        buf.append_str(" " + type2->mAttribute);
     }
     
     return buf.to_string();
@@ -590,7 +592,7 @@ string output_function(sFun* fun, sInfo* info)
             i++;
         }
         
-        sNode* node = fun->mResultType->mArrayNum[0];
+        sNode* node = fun->mResultType->mArrayNum[0]??;
         
         if(!node_compile(node)) {
             err_msg(info, "invalid array number");
@@ -749,7 +751,7 @@ string header_function(sFun* fun, sInfo* info)
             i++;
         }
         
-        sNode* node = fun->mResultType->mArrayNum[0];
+        sNode* node = fun->mResultType->mArrayNum[0]??;
         if(!node_compile(node)) {
             err_msg(info, "invalid array number");
             return string("");
@@ -888,7 +890,7 @@ void add_come_code_at_come_header(sInfo* info, string id, const char* msg, ...)
         int len = vasprintf(&msg2, msg, args);
         va_end(args);
         
-        if(info.module.mHeader[string(id)] == null) {
+        if(info.module.mHeader[string(id)]?? == null) {
             info.module.mHeader[string(id)] = xsprintf("%s", msg2);
         }
         
@@ -909,7 +911,7 @@ void add_come_code_at_come_struct_header(sInfo* info, string id, const char* msg
         int len = vasprintf(&msg2, msg, args);
         va_end(args);
         
-        if(info.module.mHeaderStructs[string(id)] == null) {
+        if(info.module.mHeaderStructs[string(id)]?? == null) {
             info.module.mHeaderStructs[string(id)] = xsprintf("%s", msg2);
         }
         
@@ -919,7 +921,7 @@ void add_come_code_at_come_struct_header(sInfo* info, string id, const char* msg
 
 bool output_source_file(sInfo* info)
 {
-    sFun* main_fun = info->funcs[s"main"];
+    sFun* main_fun = info->funcs[s"main"]??;
     bool main_module = false;
     if(main_fun) {
         if(!main_fun->mExternal) {
@@ -935,13 +937,13 @@ bool output_source_file(sInfo* info)
     
     fprintf(f, "/// previous struct definition ///\n");
     foreach(it, info.previous_struct_definition) {
-        buffer* buf = info.previous_struct_definition[string(it)];
+        buffer* buf = info.previous_struct_definition[string(it)]??;
         fprintf(f, "%s\n", buf.to_string());
     }
     
     fprintf(f, "/// struct definition ///\n");
     foreach(it, info.struct_definition) {
-        buffer* buf = info.struct_definition[string(it)];
+        buffer* buf = info.struct_definition[string(it)]??;
         fprintf(f, "%s\n", buf.to_string());
     }
     
@@ -964,7 +966,7 @@ bool output_source_file(sInfo* info)
     fprintf(f, "// uniq global variable\n");
     if(main_module) {
         foreach(it, info.uniq_definition) {
-            char* str = info.uniq_definition[string(it)];
+            char* str = info.uniq_definition[string(it)]??;
             fprintf(f, "%s\n", str);
         }
     }
@@ -1082,6 +1084,9 @@ void add_come_code_at_function_head2(sInfo* info, char* code, ...)
 
 void add_last_code_to_source(sInfo* info)
 {
+    if(info->prohibits_output_last_code) {
+        return;
+    }
     if(info->no_output_come_code) {
         return;
     }
@@ -1102,6 +1107,9 @@ void add_last_code_to_source(sInfo* info)
 
 void add_last_code_to_source_with_comma(sInfo* info)
 {
+    if(info->prohibits_output_last_code) {
+        return;
+    }
     if(info->no_output_come_code) {
         return;
     }

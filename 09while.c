@@ -23,9 +23,7 @@ class sWhileNode extends sNodeBase
     bool compile(sInfo* info)
     {
         if(info.comma_instead_of_semicolon) {
-            err_msg(info, "In conditional operator comelang can't use while statment").rescue {
-                return true;
-            }
+            err_msg(info, "In conditional operator comelang can't use while statment");
         }
         
         bool in_loop = info.in_loop;
@@ -33,6 +31,8 @@ class sWhileNode extends sNodeBase
     
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
+        
+        add_come_code(info, "while(");
     
         bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
@@ -58,7 +58,7 @@ class sWhileNode extends sNodeBase
         
         if(normal_if) {
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            add_come_code(info, "while(%s) {\n", conditional_value.c_value);
+            add_come_code(info, "%s) {\n", conditional_value.c_value);
         }
         else {
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
@@ -66,7 +66,7 @@ class sWhileNode extends sNodeBase
             add_come_code_at_function_head(info, "_Bool _while_condtional%d;\n", ++num_while_condtional);
             int num_while_conditional_stack = num_while_condtional;
             
-            add_come_code(info, "while((_while_condtional%d=(%s)),", num_while_condtional, conditional_value.c_value);
+            add_come_code(info, "(_while_condtional%d=(%s)),", num_while_condtional, conditional_value.c_value);
             add_last_code_to_source_with_comma(info);
             
             free_right_value_objects(info, comma:true);

@@ -35,14 +35,6 @@ class sReturnNode extends sNodeBase
                 result_type3 = result_type2;
             }
             
-            if(result_type->mException) {
-                if(self.value.kind() === "sNoneNode") {
-                }
-                else {
-                    self.value = create_some(self.value, info);
-                }
-            }
-            
             node_compile(self.value).elif {
                 return false;
             }
@@ -69,9 +61,7 @@ class sReturnNode extends sNodeBase
                 
                 if(!info.come_fun.mNoResultType) {
                     if(!gComeC || !(strlen(result_type2->mClass->mName) > strlen("tuple") && memcmp(result_type2->mClass->mName, "tuple", strlen("tuple")) == 0)) {
-                        check_assign_type("result type", result_type2, come_value_type, come_value).rescue {
-                            return true;
-                        }
+                        check_assign_type("result type", result_type2, come_value_type, come_value);
                     }
                     
                     if(result_type2.mHeap) {
@@ -507,9 +497,7 @@ class sFunCallNode extends sNodeBase
             sType* lambda_type = var_->mType;
             
             if(lambda_type->mClass->mName !== "lambda") {
-                err_msg(info, "%s is not lambda, can't call", fun_name).rescue {
-                    return true;
-                }
+                err_msg(info, "%s is not lambda, can't call", fun_name);
             }
             
             sType*% result_type = clone lambda_type->mResultType;
@@ -518,26 +506,28 @@ class sFunCallNode extends sNodeBase
             list<CVALUE*%>*% come_params = new list<CVALUE*%>();
             
             if(lambda_type.mParamTypes.length() != params.length() && !lambda_type.mVarArgs) {
-                err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, lambda_type.mParamTypes.length(), params.length()).rescue {
-                    return true;
-                }
+                err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, lambda_type.mParamTypes.length(), params.length());
             }
             
             int i = 0;
             foreach(it, params) {
                 var label, node = it;
                 
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
+                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
-                if(lambda_type.mVarArgs && lambda_type.mParamTypes[i] == null) {
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
+                
+                if(lambda_type.mVarArgs && lambda_type.mParamTypes[i]?? == null) {
                 }
                 else {
-                    check_assign_type(s"\{fun_name} calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value).rescue {
-                        return true;
-                    }
+                    check_assign_type(s"\{fun_name} calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value);
                     
                     if(lambda_type.mParamTypes[i].mHeap && come_value.type.mHeap) {
                         std_move(lambda_type.mParamTypes[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -614,7 +604,7 @@ class sFunCallNode extends sNodeBase
                     sType*% method_block_lambda_type = clone method_block_node.type;
                     sType*% method_block_result_type = clone info.come_method_block_function_result_type;
                     
-                    sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1];
+                    sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1]??;
                     sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
                     
                     if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
@@ -625,7 +615,7 @@ class sFunCallNode extends sNodeBase
                     foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
                         if(it.mClass.mMethodGenerics) {
                             int method_generics_num = it.mClass.mMethodGenericsNum;
-                            method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
+                            method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n]??;
                         }
                         n++;
                     }
@@ -638,11 +628,16 @@ class sFunCallNode extends sNodeBase
                 foreach(it, params) {
                     var label, node = it;
                     
+                    bool in_exception_value = info.in_exception_value;
+                    info.in_exception_value = false;
                     node_compile(node).elif {
                         return false;
                     }
+                    info.in_exception_value = in_exception_value;
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
+                    
+                    come_value.type = solve_generics(come_value.type, info->generics_type, info);
                     
                     come_params.add(come_value);
                 }
@@ -708,11 +703,16 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
+                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
                 
                 come_params.push_back(come_value);
             }
@@ -871,11 +871,16 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
+                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
                 
                 come_params.add(come_value);
                 
@@ -944,7 +949,7 @@ class sFunCallNode extends sNodeBase
             for(i=version-1; i>=1; i--) {
                 string new_fun_name = xsprintf("%s_v%d", real_fun_name, i);
                 
-                if(info.funcs[new_fun_name]) {
+                if(info.funcs[new_fun_name]??) {
                     fun_name = string(new_fun_name);
                     break;
                 }
@@ -953,14 +958,12 @@ class sFunCallNode extends sNodeBase
             if(i==0) {
                 string new_fun_name = xsprintf("%s", real_fun_name);
                 
-                if(info.funcs[new_fun_name]) {
+                if(info.funcs[new_fun_name]??) {
                     fun_name = string(new_fun_name);
                 }
                 
                 if(fun_name === info.come_fun.mName) {
-                    err_msg(info, "invalid inherit").rescue {
-                        return true;
-                    }
+                    err_msg(info, "invalid inherit");
                 }
             }
         }
@@ -968,7 +971,7 @@ class sFunCallNode extends sNodeBase
             for(int i=FUN_VERSION_MAX; i>=1; i--) {
                 string new_fun_name = xsprintf("%s_v%d", fun_name, i);
             
-                if(info.funcs[new_fun_name]) {
+                if(info.funcs[new_fun_name]??) {
                     fun_name = string(new_fun_name);
                     break;
                 }
@@ -988,11 +991,16 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
+                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
                 
                 come_params.add(come_value);
                 
@@ -1030,31 +1038,6 @@ class sFunCallNode extends sNodeBase
         
         sType*% result_type = clone fun.mResultType;
         result_type->mStatic = false;
-
-        if(info.come_fun.mResultType.mException && result_type.mException && !info.in_exception_value) {
-            bool in_exception_value = info.in_exception_value;
-            info.in_exception_value = true;
-            sNode*% new_node = create_exception_throw((clone self) implements sNode, info);
-            
-            node_compile(new_node, info).elif {
-                return false;
-            }
-            info.in_exception_value = in_exception_value;
-            
-            return true;
-        }
-        else if(result_type.mException && !info.in_exception_value) {
-            bool in_exception_value = info.in_exception_value;
-            info.in_exception_value = true;
-            sNode*% new_node = create_exception_value((clone self) implements sNode, info);
-            
-            node_compile(new_node, info).elif {
-                return false;
-            }
-            info.in_exception_value = in_exception_value;
-            
-            return true;
-        }
         
         list<sType*%>*% param_types = new list<sType*%>();
         foreach(it, fun.mParamTypes) {
@@ -1076,11 +1059,16 @@ class sFunCallNode extends sNodeBase
             if(fun.mVarArgs || fun_name === "__builtin_va_start") {
             }
             else if(label) {
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
+                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
                 
                 int n = 0;
                 foreach(it, fun.mParamNames) {
@@ -1092,9 +1080,7 @@ class sFunCallNode extends sNodeBase
                 }
                 
                 if(param_types[n]) {
-                    check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value).rescue {
-                        return true;
-                    }
+                    check_assign_type(s"\{fun_name} param num \{n} is assinged to", param_types[n], come_value.type, come_value);
                 }
                 if(param_types[n] && param_types[n].mHeap && come_value.type.mHeap) {
                     std_move(param_types[n], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1109,11 +1095,16 @@ class sFunCallNode extends sNodeBase
             var label, node = it;
             
             if(fun.mVarArgs || fun_name === "__builtin_va_start") {
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
+                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
                 
                 while(true) {
                     if(come_params[i] == null) {
@@ -1130,11 +1121,16 @@ class sFunCallNode extends sNodeBase
             else if(label) {
             }
             else {
+                bool in_exception_value = info.in_exception_value;
+                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
+                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
                 
                 while(true) {
                     if(come_params[i] == null) {
@@ -1146,9 +1142,7 @@ class sFunCallNode extends sNodeBase
                 }
                 
                 if(param_types[i]) {
-                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value).rescue {
-                        return true;
-                    }
+                    check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
                 }
                 if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
                     std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1186,9 +1180,12 @@ class sFunCallNode extends sNodeBase
                     
                     sNode*% node = expression();
                     
+                    bool in_exception_value = info.in_exception_value;
+                    info.in_exception_value = false;
                     node_compile(node).elif {
                         return false;
                     }
+                    info.in_exception_value = in_exception_value;
                     
                     info.source = source;
                     info.p = p;
@@ -1196,10 +1193,11 @@ class sFunCallNode extends sNodeBase
                     info.sline = sline;
             
                     CVALUE*% come_value = get_value_from_stack(-1, info);
+                    
+                    come_value.type = solve_generics(come_value.type, info->generics_type, info);
+                    
                     if(param_types[i]) {
-                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value).rescue {
-                            return true;
-                        }
+                        check_assign_type(s"\{fun_name} param num \{i} is assinged to", param_types[i], come_value.type, come_value);
                     }
                     if(param_types[i] && param_types[i].mHeap && come_value.type.mHeap) {
                         std_move(param_types[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
@@ -1208,9 +1206,7 @@ class sFunCallNode extends sNodeBase
                 }
                 else {
                     if(come_params[i] == null) {
-                        err_msg(info, "require parametor(%s)(1) %d", fun.mName,i).rescue {
-                            return true;
-                        }
+                        err_msg(info, "require parametor(%s)(1) %d", fun.mName,i);
                     }
                 }
             }
@@ -1218,9 +1214,7 @@ class sFunCallNode extends sNodeBase
         
         if(fun.mParamTypes.length() - (method_block?2:0)!= come_params.length() && !fun.mVarArgs && fun_name !== "__builtin_va_start" && fun_name !== "__builtin_va_end") 
         {
-            err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, fun.mParamTypes.length(), params.length()).rescue {
-                return true;
-            }
+            err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, fun.mParamTypes.length(), params.length());
         }
         
         if(method_block) {
@@ -1231,25 +1225,24 @@ class sFunCallNode extends sNodeBase
             }
             
             CVALUE*% come_value = get_value_from_stack(-1, info);
+            come_value.type = solve_generics(come_value.type, info->generics_type, info);
             come_params.push_back(come_value);
             
             buffer*% method_block2 = new buffer();
-            sType*% method_block_type = clone fun.mParamTypes[-1];
+            sType*% method_block_type = clone fun.mParamTypes[-1]??;
             
             string class_name = xsprintf("__current_stack%d__", info->current_stack_num);
             
-            method_block_type.mParamTypes[0].mClass = info.classes[class_name];
+            method_block_type.mParamTypes[0].mClass = info.classes[class_name]??;
             sClass* current_stack_frame_struct = info.current_stack_frame_struct;
-            info->current_stack_frame_struct = info.classes[class_name];
+            info->current_stack_frame_struct = info.classes[class_name]??;
             
             info->num_method_block++;
             
             int num_method_block = info->num_method_block;
             
             if(method_block_type.mClass.mName !== "lambda") {
-                err_msg(info, "This function does not have method block(%s)", fun_name).rescue {
-                    return true;
-                }
+                err_msg(info, "This function does not have method block(%s)", fun_name);
             }
             
             sType*% result_type = clone method_block_type->mResultType;
@@ -1316,9 +1309,12 @@ class sFunCallNode extends sNodeBase
            
             sNode*% node = parse_function(info);
             
+            bool in_exception_value = info.in_exception_value;
+            info.in_exception_value = false;
             node_compile(node).elif {
                 return false;
             }
+            info.in_exception_value = in_exception_value;
             
             char*% method_block_name = xsprintf("fun_block%d_%s", num_method_block, all_alhabet_sname.to_string());
             
@@ -1327,9 +1323,7 @@ class sFunCallNode extends sNodeBase
             sFun* fun2 = info.funcs.at(string(method_block_name), null);
             
             if(fun2 == null) {
-                err_msg(info, "method block function not found(%s)", method_block_name).rescue {
-                    return true;
-                }
+                err_msg(info, "method block function not found(%s)", method_block_name);
             }
             
             sType* method_block_type2 = fun2.mLambdaType;
@@ -1370,7 +1364,7 @@ class sFunCallNode extends sNodeBase
         come_value.type = clone result_type;
         come_value.type->mStatic = false;
         come_value.var = null;
-        
+            
         if(fun.mResultType->mHeap) {
             append_object_to_right_values2(come_value, result_type, info);
         }
@@ -1426,9 +1420,7 @@ class sComeCallNode extends sNodeBase
         sType*% type_ = clone info.types.at(s"pthread_t", null);
         
         if(type_ == null) {
-            err_msg(info, "pthread_t is not defined").rescue {
-                return true;
-            }
+            err_msg(info, "pthread_t is not defined");
         }
         
         sNode*% var_node = store_var(var_name, null@multiple_assign, null@multiple_declare, type_@type, true@alloc, null@right_value, info);
@@ -1454,6 +1446,8 @@ class sComeCallNode extends sNodeBase
         
         come_value = get_value_from_stack(-1, info);
         
+        come_value.type = solve_generics(come_value.type, info->generics_type, info);
+        
         come_params.push_back(come_value);
         
         sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
@@ -1475,7 +1469,7 @@ class sComeCallNode extends sNodeBase
         come_block2.append_str(come_block.to_string());
                         
         sClass* current_stack_frame_struct = info.current_stack_frame_struct;
-        info->current_stack_frame_struct = info.classes[class_name];
+        info->current_stack_frame_struct = info.classes[class_name]??;
         
         buffer*% source3 = info.source;
         char* p = info.p;
@@ -1549,9 +1543,7 @@ class sComeCallNode extends sNodeBase
         
         sType*% type = clone info.types.at(s"pthread_t", null);
         if(type == null) {
-            err_msg(info, "pthread_t is not defined").rescue {
-                return true;
-            }
+            err_msg(info, "pthread_t is not defined");
         }
         come_value.type = type;
         come_value.var = null;
@@ -1719,9 +1711,7 @@ class sLambdaCall extends sNodeBase
         sType* lambda_type = come_value.type;
         
         if(lambda_type->mResultType == null) {
-            err_msg(info, "invalid lambda type").rescue {
-                return true;
-            }
+            err_msg(info, "invalid lambda type");
         }
         
         sType*% result_type = clone lambda_type->mResultType;
@@ -1730,9 +1720,7 @@ class sLambdaCall extends sNodeBase
         list<CVALUE*%>*% come_params = new list<CVALUE*%>();
         
         if(lambda_type.mParamTypes.length() != params.length() && !lambda_type.mVarArgs) {
-            err_msg(info, "invalid param number. function param number is %d. caller param number is %d", lambda_type.mParamTypes.length(), params.length()).rescue {
-                return true;
-            }
+            err_msg(info, "invalid param number. function param number is %d. caller param number is %d", lambda_type.mParamTypes.length(), params.length());
             return false;
         }
         
@@ -1745,12 +1733,12 @@ class sLambdaCall extends sNodeBase
             }
             
             CVALUE*% come_value = get_value_from_stack(-1, info);
-            if(lambda_type.mVarArgs && lambda_type.mParamTypes[i] == null) {
+            
+            come_value.type = solve_generics(come_value.type, info->generics_type, info);
+            if(lambda_type.mVarArgs && lambda_type.mParamTypes[i]?? == null) {
             }
             else {
-                check_assign_type(s"calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"calling param #\{i}", lambda_type.mParamTypes[i], come_value.type, come_value);
                 if(lambda_type.mParamTypes[i].mHeap && come_value.type.mHeap) {
                     std_move(lambda_type.mParamTypes[i], come_value.type, come_value, no_delete_from_right_value_objects:true);
                 }
@@ -1966,9 +1954,9 @@ sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
         info->p += 2;
         skip_spaces_and_lf();
         
-        node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
+        guard_break = true;
         
-        node = create_guard_break_method_call(node, info);
+        node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
         
         node = post_position_operator(node, info);
     }
@@ -2165,7 +2153,7 @@ sNode*% expression_node(sInfo* info=info) version 97
                 buf = parse_word();
             }
             
-            if(!is_type_name(buf) && info.lv_table.mVars[string(buf)] == null && info.gv_table.mVars[string(buf)] == null && *info->p == '<') {
+            if(!is_type_name(buf) && info.lv_table.mVars[string(buf)]?? == null && info.gv_table.mVars[string(buf)]?? == null && *info->p == '<') {
                 int nest = 0;
                 while(*info->p) {
                     if(*info->p == '<') {
@@ -2387,18 +2375,6 @@ sNode*% expression_node(sInfo* info=info) version 97
             return new sComePollNode(vars, blocks, else_block, time_out, info) implements sNode;
         }
 #endif
-        else if(!gComeC && buf === "none" && *info->p == '(') {
-            sNode*% node = parse_none(info);
-            
-            info.sline_real = sline_real;
-            return node;
-        }
-        else if(!gComeC && buf === "some" && *info->p == '(') {
-            sNode*% node = parse_some(info);
-            
-            info.sline_real = sline_real;
-            return node;
-        }
         else if(buf === "__func__" || buf === "__FUNCTION__") {
             info.sline_real = sline_real;
             return new sFuncNode(info) implements sNode;
@@ -2498,10 +2474,10 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             fun_name.append_str(buf);
             
-            sType*% type = clone info.types[fun_name.to_string()];
+            sType*% type = clone info.types[fun_name.to_string()]??;
             
             if(type == null) {
-                sClass* klass = info.classes[fun_name.to_string()];
+                sClass* klass = info.classes[fun_name.to_string()]??;
                 
                 if(klass) {
                     type = new sType(string(buf));

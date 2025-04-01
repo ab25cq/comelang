@@ -64,7 +64,7 @@ class sBufferNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        if(info.funcs["come_calloc_v2"]) {
+        if(info.funcs["come_calloc_v2"]??) {
             buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc_v2(1, sizeof(struct buffer), \"%s\", %d, \"buffer\"), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
         }
         else {
@@ -337,9 +337,7 @@ class sListNode extends sNodeBase
             CVALUE*% come_value = get_value_from_stack(-1, info);
             
             if(list_element_type) {
-                check_assign_type(s"invalid list element type", list_element_type, come_value.type, come_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"invalid list element type", list_element_type, come_value.type, come_value);
             }
             
             params.push_back(come_value);
@@ -399,9 +397,7 @@ class sListNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(1)", generics_fun_name, info.come_fun.mName).rescue {
-                    return true;
-                }
+                err_msg(info, "function not found(%s) at method(%s)(1)", generics_fun_name, info.come_fun.mName);
             }
         }
             
@@ -426,7 +422,7 @@ class sListNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        if(info.funcs["come_calloc_v2"]) {
+        if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
         else {
@@ -573,7 +569,7 @@ class sTupleNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        if(info.funcs["come_calloc_v2"]) {
+        if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
         else {
@@ -604,9 +600,7 @@ class sTupleNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName).rescue {
-                    return true;
-                }
+                err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName);
             }
         }
             
@@ -718,7 +712,7 @@ class sSomeNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(type2);
         
-        if(info.funcs["come_calloc_v2"]) {
+        if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
         else {
@@ -749,9 +743,7 @@ class sSomeNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName).rescue {
-                    return true;
-                }
+                err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName);
             }
         }
             
@@ -902,9 +894,7 @@ class sNullReturnValueOfException extends sNodeBase
             sType*% left_type = clone result_type2->mGenericsTypes[0];
             
             if(left_type == null && !result_type2.mException) {
-                err_msg(info, "function is not exception type").rescue {
-                    return true;
-                }
+                err_msg(info, "function is not exception type");
             }
             
             add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_name));
@@ -1013,9 +1003,7 @@ class sNoneNode extends sNodeBase
             if(i == 1) {
                 sType*% string_type = new sType(s"char*");
                 string_type->mHeap = true;
-                check_assign_type(s"invalid none type", string_type, come_value.type, come_value).rescue {
-                    return true;
-                }
+                check_assign_type(s"invalid none type", string_type, come_value.type, come_value);
             }
             
             i++;
@@ -1039,7 +1027,7 @@ class sNoneNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(type2);
         
-        if(info.funcs["come_calloc_v2"]) {
+        if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
         else {
@@ -1070,9 +1058,7 @@ class sNoneNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName).rescue {
-                    return true;
-                }
+                err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName);
             }
         }
             
@@ -1199,9 +1185,7 @@ class sMapNode extends sNodeBase
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
                 if(map_key_type) {
-                    check_assign_type(s"invalid map key type", map_key_type, come_value.type, come_value).rescue {
-                        return true;
-                    }
+                    check_assign_type(s"invalid map key type", map_key_type, come_value.type, come_value);
                 }
                 
                 key_params.push_back(come_value);
@@ -1232,9 +1216,7 @@ class sMapNode extends sNodeBase
                 CVALUE*% come_value2 = get_value_from_stack(-1, info);
                 
                 if(map_element_type) {
-                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2).rescue {
-                        return true;
-                    }
+                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
                 }
                 
                 element_params.push_back(come_value2);
@@ -1248,9 +1230,7 @@ class sMapNode extends sNodeBase
                 CVALUE*% come_value2 = get_value_from_stack(-1, info);
                 
                 if(map_element_type) {
-                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2).rescue {
-                        return true;
-                    }
+                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
                 }
                 
                 element_params.push_back(come_value2);
@@ -1327,9 +1307,7 @@ class sMapNode extends sNodeBase
             fun = info.funcs.at(generics_fun_name, null);
             
             if(fun == null) {
-                err_msg(info, "function not found(%s) at method(%s)(3)", generics_fun_name, info.come_fun.mName).rescue {
-                    return true;
-                }
+                err_msg(info, "function not found(%s) at method(%s)(3)", generics_fun_name, info.come_fun.mName);
             }
         }
             
@@ -1354,7 +1332,7 @@ class sMapNode extends sNodeBase
         
         var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
-        if(info.funcs["come_calloc_v2"]) {
+        if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
         else {
@@ -1838,11 +1816,6 @@ sNode*% expression_node(sInfo* info) version 96
         
         skip_spaces_and_lf();
         
-        bool catch_exception = false;
-        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, "!!", strlen("!!")) == 0) {
-            catch_exception = true;
-        }
-        
         sNode*% obj = new sStrNode(buf.to_string(), sline, info) implements sNode;
         
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
@@ -1864,10 +1837,6 @@ sNode*% expression_node(sInfo* info) version 96
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
         sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, guard_break:false, info);
-        
-        if(!catch_exception) {
-            node = create_exception_value(clone node, info);
-        }
         
         info.sline_real = sline_real;
         return node;
@@ -2005,11 +1974,6 @@ sNode*% expression_node(sInfo* info) version 96
         
         skip_spaces_and_lf();
         
-        bool catch_exception = false;
-        if(strncmp(info->p, ".rescue", strlen(".rescue")) == 0 || strncmp(info->p, ".exception_throw", strlen(".exception_throw")) == 0 || strncmp(info->p, ".exception_value", strlen(".exception_value")) == 0 || strncmp(info->p, "!!", strlen("!!")) == 0) {
-            catch_exception = true;
-        }
-        
         sNode*% obj = new sStrNode(value.to_string(), sline, info) implements sNode;
         
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
@@ -2031,10 +1995,6 @@ sNode*% expression_node(sInfo* info) version 96
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
         sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, guard_break:false, info);
-        
-        if(!catch_exception) {
-            node = create_exception_value(clone node, info);
-        }
         
         info.sline_real = sline_real;
         return node;

@@ -284,8 +284,11 @@ void ViWin*::gotoFunctionTop(ViWin* self, Vi* nvi)
 {
     int it2 = 0;
     foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
-        if((it.to_string().match(/^{/))
-            || (it.to_string().match(/^[a-zA-Z].*{$/)))
+        come_regex*% reg = /^{/;
+        come_regex*% reg2 = /^[a-zA-Z].*{$/;
+        
+        if(it.to_string().match(reg)
+            || it.to_string().match(reg2))
         {
             self.saveReturnPoint();
 
@@ -304,10 +307,16 @@ void ViWin*::gotoMethodTop(ViWin* self, Vi* nvi)
 {
     int it2 = 0;
     foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
-        if((it.to_string().match(/^ +{/))
-            || (it.to_string().match(/^ +[a-zA-Z].*{$/))
-            || (it.to_string().match(/^{/))
-            || (it.to_string().match(/^[a-zA-Z].*{$/)))
+        come_regex*% reg = /^ +{/;
+        come_regex*% reg2 = /^ +[a-zA-Z].*{$/;
+        come_regex*% reg3 = /^{/;
+        come_regex*% reg4 = /^[a-zA-Z].*{$/;
+        
+        if(reg && reg2 && reg3 && reg4 && 
+            ((it.to_string().match(reg))
+            || (it.to_string().match(reg2))
+            || (it.to_string().match(reg3))
+            || (it.to_string().match(reg4))))
         {
             self.saveReturnPoint();
 
@@ -365,7 +374,6 @@ Vi*% Vi*::initialize(Vi*% self) version 11
             case 'm':
             case 'M':
                 self.activeWin.gotoMethodTop(self);
-                //self.activeWin.centeringCursor();
                 self.activeWin.saveInputedKeyOnTheMovingCursor();
                 break;
         }
