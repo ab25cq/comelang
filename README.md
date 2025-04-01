@@ -2078,19 +2078,19 @@ int main()
 ```
 
 ```
-    /193(#)#"00~|{}|{/.rescue { /* Catch invalid regex */ }
+    /193(#)#"00~|{}|{/.elif { /* Catch invalid regex */ }
 ```
 
 r"" is also regex string.
 
 ```
-    r"((((((((".rescue { null }.if { "AAA".scan(Value).to_string().puts(); }
+    r"((((((((".if { "AAA".scan(Value).to_string().puts(); }
 ```
 
 no ouput
 
 ```
-    r".".rescue { null }.if { "AAA".scan(Value).to_string().puts(); }
+    r".".if { "AAA".scan(Value).to_string().puts(); }
 ```
 A,A,A
 
