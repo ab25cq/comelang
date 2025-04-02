@@ -2705,13 +2705,6 @@ impl tuple2 <T, T2>
     bool operator_not_equals(tuple2<T,T2>* left, tuple2<T,T2>* right) {
         return !left.operator_equals(right);
     }
-    
-    T rescue(tuple2<T,T2>* self) {
-        if(self.v2) {
-        }
-        
-        return self.v1;
-    }
 }
 
 

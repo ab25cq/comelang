@@ -768,7 +768,6 @@ struct sInfo
     struct sVarTable* lv_table;
     struct sVarTable* gv_table;
     _Bool comma_instead_of_semicolon;
-    _Bool comma_instead_of_semicolon_for_exception;
     _Bool no_comma;
     _Bool no_assign;
     _Bool no_label;

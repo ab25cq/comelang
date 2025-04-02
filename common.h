@@ -337,7 +337,6 @@ struct sInfo
     sVarTable*% gv_table;
     
     bool comma_instead_of_semicolon;
-    bool comma_instead_of_semicolon_for_exception;
     bool no_comma;
     bool no_assign;
     bool no_label;
