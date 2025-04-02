@@ -5,7 +5,7 @@
 int main(int argc, char** argv)
 {
     int n = 0;
-    client_socket(port:3336) {
+    client_socket(port:3366) {
         char* messages[] = { 
             "CREATE DATABASE testdb", 
             "use testdb", 

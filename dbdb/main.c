@@ -1189,7 +1189,7 @@ int main() {
     sInfo info;
     info.current_db_name = null;
     
-    server_socket(port:3336, reuse:true) {
+    server_socket(port:3366, reuse:true) {
         char data[1024] = {0};
         int size = read(it, data, 1023);
         if(size <= 0) {
