@@ -1259,11 +1259,9 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 }
             }
             
-            bool break_guard = false;
             if(*info->p == '?' && *(info->p+1) == '?') {
                 info->p+=2;
                 skip_spaces_and_lf();
-                break_guard = true;
             }
             
             if(!info.no_assign && *info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>') {
@@ -1279,7 +1277,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 node = new sStoreArrayNode(node, right_node, array_num, quote, info) implements sNode;
             }
             else {
-                node = new sLoadArrayNode(node, array_num, quote, break_guard, info) implements sNode;
+                node = new sLoadArrayNode(node, array_num, quote, false@break_guard, info) implements sNode;
             }
         }
         else if(*info->p == '?' && *(info->p+1) == '?') {
@@ -1336,7 +1334,10 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 
                 node = new sStoreFieldNode(node, right_node, field_name, info) implements sNode;
             }
-            else if(!gComeC && (*info->p == '(' || *info->p == '{' || parse_method_generics_type || (*info->p == '-' && *(info->p+1) == '>' && *(info->p+2) == '('))) {
+            else if(field_name === "expect") {
+                node = parse_expect_method_call(clone node, info);
+            }
+            else if(!gComeC && (*info->p == '(' || *info->p == '{' || parse_method_generics_type)) {
                 if(field_name === "if") 
                 {
                     node = parse_if_method_call(clone node, info);
@@ -1349,6 +1350,9 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 }
                 else if(field_name === "less") {
                     node = parse_less_method_call(clone node, info);
+                }
+                else if(field_name === "rescue") {
+                    node = parse_rescue_method_call(clone node, info);
                 }
                 else {
                     node = parse_method_call(clone node, field_name, info);

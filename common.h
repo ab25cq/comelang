@@ -728,6 +728,8 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 /////////////////////////////////////////////////////////////////////
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
+sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info);
+sNode*% parse_expect_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_match(sNode*% expression_node, sInfo* info);
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;

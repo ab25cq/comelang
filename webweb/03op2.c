@@ -15,10 +15,10 @@ class sMultNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -47,10 +47,10 @@ class sDivNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -79,10 +79,10 @@ class sModNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -111,10 +111,10 @@ class sEqNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -143,10 +143,10 @@ class sNotEqNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -175,10 +175,10 @@ class sGTEqNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -207,10 +207,10 @@ class sLTEqNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -239,10 +239,10 @@ class sGTNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -271,10 +271,10 @@ class sLTNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -361,10 +361,10 @@ class sAndAndNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -390,10 +390,10 @@ class sOrOrNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         

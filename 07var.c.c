@@ -1758,6 +1758,7 @@ struct sNode* parse_some(struct sInfo* info);
 struct sNode* parse_none(struct sInfo* info);
 struct sNode* parse_global_variable(struct sInfo* info);
 struct sNode* load_var(char* name, struct sInfo* info);
+struct sNode* parse_expect_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_match(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v8(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* parse_if_method_call(struct sNode* expression_node, struct sInfo* info);

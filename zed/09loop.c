@@ -26,7 +26,7 @@ class sWhileNode
         list<int>* breaks_before = info.breaks;
         info.breaks = new list<int>();
         
-        if(!while_exp.compile->(info)) {
+        if(!while_exp.compile(info)) {
             return false;
         }
         

@@ -15,10 +15,10 @@ class sAddNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         
@@ -47,10 +47,10 @@ class sSubNode
     
     bool compile(sInfo* info)
     {
-        if(!self.left.compile->(info)) {
+        if(!self.left.compile(info)) {
             return false;
         }
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         

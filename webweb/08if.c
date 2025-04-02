@@ -3,7 +3,7 @@ bool compile_block(sNodeBlock& block, sInfo* info)
 {
     list<sNode*%>* v = block;
     foreach(it, v) {
-        if(!it.compile->(info)) {
+        if(!it.compile(info)) {
             return false;
         }
         
@@ -40,7 +40,7 @@ class sIfNode
         
         list<int>*% end_points = new list<int>();
         
-        if(!if_exp.compile->(info)) {
+        if(!if_exp.compile(info)) {
             return false;
         }
         
@@ -69,7 +69,7 @@ class sIfNode
             sNode* elif_exp = elif_exps[i];
             list<sNode*%>* elif_block = elif_blocks[i];
             
-            if(!elif_exp.compile->(info)) {
+            if(!elif_exp.compile(info)) {
                 return false;
             }
             

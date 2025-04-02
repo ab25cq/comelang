@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 30.0.0
+version 31.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+31.0.0 New exception coming with simple way. It's simple and convinient. Well, I can feel this projects the end. If I can, more make simplify self host codes.
 30.0.0 Remove exception. If my concentrate will continue, rescue method call implement for convinient returning tuple2 function. Allmost project the end.
 26.0.0 heap alignment bug fiexed.
 25.0.3 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
@@ -3031,3 +3032,86 @@ int main(int argc,char** argv)
     return 0;
 }
 ```
+
+# Exception
+
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return (3, false);
+}
+
+int main(int argc,char** argv)
+{
+    int a = fun().expect;
+    
+    printf("a %d\n", a);
+    
+    return 0;
+}
+```
+exited.
+
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return (3, true);
+}
+
+int main(int argc,char** argv)
+{
+    int a = fun().expect;
+    
+    printf("a %d\n", a);
+    
+    return 0;
+}
+```
+a 3
+
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return (3, false);
+}
+
+int main(int argc,char** argv)
+{
+    int a = fun().rescue {
+        5
+    }
+    
+    printf("a %d\n", a);
+    
+    return 0;
+}
+```
+a 5
+
+
+```
+#include <comelang.h>
+
+exception int fun()
+{
+    return (3, true);
+}
+
+int main(int argc,char** argv)
+{
+    int a = fun().rescue {
+        5
+    }
+    
+    printf("a %d\n", a);
+    
+    return 0;
+}
+```
+a 3

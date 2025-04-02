@@ -22,14 +22,14 @@ class sFunNode
         sNode* obj = self.obj;
         sNodeBlock& block = self.block;
         
-        if(!obj.compile->(info)) {
+        if(!obj.compile(info)) {
             return false;
         }
         
         for(int i=0; i<params.length(); i++) {
             sNode* node = params[i];
             
-            if(!node.compile->(info)) {
+            if(!node.compile(info)) {
                 return false;
             }
         }
@@ -203,7 +203,9 @@ bool vm(sInfo* info) version 10
             
             switch(obj.kind) {
                 case kStrValue: {
-                    var result2 = str_method(fun_name, obj, params, codes, info).catch {
+                    var result2,err = str_method(fun_name, obj, params, codes, info);
+                    
+                    if(!err) {
                         exit(1);
                     }
                     

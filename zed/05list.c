@@ -19,7 +19,7 @@ class sListNode
         for(int i=0; i<list_.length(); i++) {
             sNode* node = list_[i];
             
-            if(!node.compile->(info)) {
+            if(!node.compile(info)) {
                 return false;
             }
         }
@@ -54,11 +54,11 @@ class sMapNode
         foreach(it, value) {
             var key, item = it;
             
-            if(!key.compile->(info)) {
+            if(!key.compile(info)) {
                 return false;
             }
             
-            if(!item.compile->(info)) {
+            if(!item.compile(info)) {
                 return false;
             }
         }

@@ -16,7 +16,7 @@ class sPrintNode
     {
         sNode* print_exp = self.print_exp;
         
-        if(!print_exp.compile->(info)) {
+        if(!print_exp.compile(info)) {
             return false;
         }
         

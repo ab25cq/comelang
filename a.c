@@ -2,16 +2,14 @@
 
 exception int fun()
 {
-    return (0, false);
+    return (3, false);
 }
 
 int main(int argc,char** argv)
 {
-    int a = fun().rescue {
-        1
-    };
+    int a = fun().expect;
     
-    printf("a %d\n");
+    printf("a %d\n", a);
     
     return 0;
 }

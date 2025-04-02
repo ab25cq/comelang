@@ -12,7 +12,7 @@ interface sNode
 
 unsigned int sNode*::get_hash_key(sNode* self)
 {
-    return self.id->();
+    return self.id();
 }
 
 bool sNode*::equals(sNode* self, sNode* right)

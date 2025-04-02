@@ -46,7 +46,7 @@ bool vm(sInfo* info) version 6
             info->op++;
             
             
-            value.to_string().to_regex(global:global, ignore_case:ignore_case).rescue { null }.if {
+            value.to_string().to_regex(global:global, ignore_case:ignore_case).if {
                 info->stack.push_back(new ZVALUE(kind: kRegexValue, regex_value:Value));
             }
             else {

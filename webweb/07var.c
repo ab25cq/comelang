@@ -10,7 +10,7 @@ class sStoreNode
     
     bool compile(sInfo* info)
     {
-        if(!self.right.compile->(info)) {
+        if(!self.right.compile(info)) {
             return false;
         }
         info.codes.append_int(OP_STORE);
@@ -72,7 +72,7 @@ class sLoadElementNode
     {
         sNode* index = self.index;
         
-        if(!index.compile->(info)) {
+        if(!index.compile(info)) {
             return false;
         }
         
@@ -107,13 +107,13 @@ class sStoreElementNode
     {
         sNode* index = self.index;
         
-        if(!index.compile->(info)) {
+        if(!index.compile(info)) {
             return false;
         }
         
         sNode* right = self.right;
         
-        if(!right.compile->(info)) {
+        if(!right.compile(info)) {
             return false;
         }
         

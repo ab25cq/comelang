@@ -1707,6 +1707,7 @@ struct sNode* string_node_v7(char* buf, char* head, int head_sline, struct sInfo
 void add_variable_to_table(char* name, struct sType* type, struct sInfo* info, _Bool function_param, _Bool comma);
 void add_variable_to_global_table(char* name, struct sType* type, struct sInfo* info);
 void add_variable_to_global_table_with_int_value(char* name, struct sType* type, char* c_value, struct sInfo* info);
+struct sNode* parse_expect_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_match(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v8(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* parse_if_method_call(struct sNode* expression_node, struct sInfo* info);

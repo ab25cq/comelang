@@ -48,7 +48,7 @@ int main(int argc, char** argv)
     
     /// compile ///
     foreach(it, info.nodes) {
-        if(!it.compile->(&info)) {
+        if(!it.compile(&info)) {
             fprintf(stderr, "compile error\n");
             return 1;
         }
