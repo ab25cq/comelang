@@ -27,6 +27,7 @@ fi
 (cd sd; rm -rf build)
 (cd pcre; rm -rf build)
 (cd minux3; make clean)
+(cd webweb; sh clean_build.sh)
 
 if [ -e viw/Makefile ]
 then
