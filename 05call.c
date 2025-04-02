@@ -2623,6 +2623,9 @@ string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name,
     buffer*% buf = new buffer();
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
+        if(struct_name === "_Bool" ) {
+            struct_name = s"bool";
+        }
         if(!obj_type->mClass->mStruct) {
             if(obj_type->mGenericsTypes.length() > 0 && obj_type->mOriginalTypeNamePointerNum > 0) {
                 buf.append_str("$");
@@ -2635,6 +2638,9 @@ string create_method_name(sType* obj_type, bool no_pointer_name, char* fun_name,
     }
     else if(obj_type->mClass->mStruct || obj_type->mClass->mProtocol) {
         struct_name = string(obj_type->mClass->mName);
+        if(struct_name === "_Bool" ) {
+            struct_name = s"bool";
+        }
     }
     else {
         struct_name = create_generics_name(obj_type, info);
@@ -2664,6 +2670,9 @@ string create_method_name_original_obj_type(sType* obj_type, bool no_pointer_nam
     buffer*% buf = new buffer();
     if(obj_type->mClass->mStruct || obj_type->mClass->mProtocol) {
         struct_name = string(obj_type->mClass->mName);
+        if(struct_name === "_Bool" ) {
+            struct_name = s"bool";
+        }
     }
     else {
         struct_name = create_generics_name(obj_type, info);
@@ -2693,6 +2702,9 @@ string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_n
     buffer*% buf = new buffer();
     if(obj_type->mOriginalTypeName !== "") {
         struct_name = string(obj_type->mOriginalTypeName);
+        if(struct_name === "_Bool" ) {
+            struct_name = s"bool";
+        }
         if(!obj_type->mClass->mStruct) {
             if(obj_type->mGenericsTypes.length() > 0 && obj_type->mOriginalTypeNamePointerNum > 0) {
                 buf.append_str("$");
@@ -2705,6 +2717,9 @@ string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_n
     }
     else if(obj_type->mClass->mStruct || obj_type->mClass->mProtocol) {
         struct_name = string(obj_type->mClass->mName);
+        if(struct_name === "_Bool" ) {
+            struct_name = s"bool";
+        }
     }
     else {
         struct_name = create_generics_name(obj_type, info);
@@ -2737,6 +2752,9 @@ string create_non_method_name(sType* obj_type, bool no_pointer_name, char* fun_n
 string create_method_name_using_class(sClass* obj_class, bool no_pointer_name, char* fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string struct_name = string(obj_class->mName);
+    if(struct_name === "_Bool" ) {
+        struct_name = s"bool";
+    }
     
     return xsprintf("%s_%s", struct_name, fun_name);
 }

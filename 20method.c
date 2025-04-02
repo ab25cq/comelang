@@ -601,7 +601,7 @@ class sMethodCallNode extends sNodeBase
                             if(fun == null && fun_name === "equals") {
                                 var fun2, real_fun_name = create_equals_automatically(obj_type, fun_name, info);
                                 
-                                fun = fun2;
+                                fun = info.funcs[real_fun_name];
                                 generics_fun_name = real_fun_name;
                             }
                             if(fun == null) {

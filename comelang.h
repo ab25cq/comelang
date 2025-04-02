@@ -125,6 +125,7 @@ uniq string xsprintf(char* msg, ...);
 uniq string char*::to_string(char* self);
 uniq string int::to_string(int self);
 uniq unsigned int bool::get_hash_key(bool value);
+uniq unsigned int _Bool::get_hash_key(bool value);
 uniq unsigned int char::get_hash_key(char value);
 uniq unsigned int short::get_hash_key(short int value);
 uniq unsigned int int::get_hash_key(int value);
@@ -148,6 +149,7 @@ uniq string int::to_string(int self);
 uniq string short::to_string(short self);
 uniq string char::to_string(char self);
 uniq string bool::to_string(bool self);
+uniq string _Bool::to_string(bool self);
 uniq bool string::equals(char* self, char* right);
 
 #define COME_STACKFRAME_MAX 16
@@ -3392,6 +3394,11 @@ uniq bool bool::equals(bool self, bool right)
     return self == right;
 }
 
+uniq bool _Bool::equals(_Bool self, _Bool right) 
+{
+    return self == right;
+}
+
 uniq bool char::equals(char self, char right) 
 {
     return self == right;
@@ -3432,6 +3439,11 @@ uniq bool bool::operator_equals(bool self, bool right)
     return self == right;
 }
 
+uniq bool _Bool::operator_equals(bool self, bool right)
+{
+    return self == right;
+}
+
 uniq bool char::operator_equals(char self, char right)
 {
     return self == right;
@@ -3453,6 +3465,11 @@ uniq bool long::operator_equals(long self, long right)
 }
 
 uniq bool bool::operator_not_equals(bool self, bool right)
+{
+    return !(self == right);
+}
+
+uniq bool _Bool::operator_not_equals(bool self, bool right)
 {
     return !(self == right);
 }
@@ -3696,6 +3713,11 @@ uniq unsigned int bool::get_hash_key(bool value)
     return (((int)value).get_hash_key());
 }
 
+uniq unsigned int _Bool::get_hash_key(bool value)
+{
+    return (((int)value).get_hash_key());
+}
+
 uniq unsigned int char::get_hash_key(char value)
 {
     return value;
@@ -3768,6 +3790,11 @@ uniq unsigned int void*::get_hash_key(void* value)
 /// base library(clone)
 //////////////////////////////
 uniq bool bool::clone(bool self)
+{
+    return self;
+}
+
+uniq bool _Bool::clone(bool self)
 {
     return self;
 }
@@ -4281,6 +4308,16 @@ uniq string bool::to_string(bool self)
     }
 }
 
+uniq string _Bool::to_string(bool self)
+{
+    if(self) {
+        return string("true");
+    }
+    else {
+        return string("false");
+    }
+}
+
 uniq string char::to_string(char self)
 {
     return xsprintf("%c", self);
@@ -4336,6 +4373,24 @@ uniq string char*::to_string(char* self)
 /// base library(compare)
 //////////////////////////////
 uniq int bool::compare(bool left, bool right)
+{
+    if(!left && right) {
+        return -1;
+    }
+    else if(left && right) {
+        return 0;
+    }
+    else if(!left && !right) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+    
+    return 0;
+}
+
+uniq int _Bool::compare(bool left, bool right)
 {
     if(!left && right) {
         return -1;
