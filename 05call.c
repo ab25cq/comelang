@@ -513,12 +513,9 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
-                bool in_exception_value = info.in_exception_value;
-                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
-                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
@@ -628,12 +625,9 @@ class sFunCallNode extends sNodeBase
                 foreach(it, params) {
                     var label, node = it;
                     
-                    bool in_exception_value = info.in_exception_value;
-                    info.in_exception_value = false;
                     node_compile(node).elif {
                         return false;
                     }
-                    info.in_exception_value = in_exception_value;
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     
@@ -703,12 +697,9 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
-                bool in_exception_value = info.in_exception_value;
-                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
-                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
@@ -871,12 +862,9 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
-                bool in_exception_value = info.in_exception_value;
-                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
-                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
@@ -991,12 +979,9 @@ class sFunCallNode extends sNodeBase
             foreach(it, params) {
                 var label, node = it;
                 
-                bool in_exception_value = info.in_exception_value;
-                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
-                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
@@ -1059,12 +1044,9 @@ class sFunCallNode extends sNodeBase
             if(fun.mVarArgs || fun_name === "__builtin_va_start") {
             }
             else if(label) {
-                bool in_exception_value = info.in_exception_value;
-                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
-                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
@@ -1095,12 +1077,9 @@ class sFunCallNode extends sNodeBase
             var label, node = it;
             
             if(fun.mVarArgs || fun_name === "__builtin_va_start") {
-                bool in_exception_value = info.in_exception_value;
-                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
-                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
@@ -1121,12 +1100,9 @@ class sFunCallNode extends sNodeBase
             else if(label) {
             }
             else {
-                bool in_exception_value = info.in_exception_value;
-                info.in_exception_value = false;
                 node_compile(node).elif {
                     return false;
                 }
-                info.in_exception_value = in_exception_value;
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
@@ -1180,12 +1156,9 @@ class sFunCallNode extends sNodeBase
                     
                     sNode*% node = expression();
                     
-                    bool in_exception_value = info.in_exception_value;
-                    info.in_exception_value = false;
                     node_compile(node).elif {
                         return false;
                     }
-                    info.in_exception_value = in_exception_value;
                     
                     info.source = source;
                     info.p = p;
@@ -1309,12 +1282,9 @@ class sFunCallNode extends sNodeBase
            
             sNode*% node = parse_function(info);
             
-            bool in_exception_value = info.in_exception_value;
-            info.in_exception_value = false;
             node_compile(node).elif {
                 return false;
             }
-            info.in_exception_value = in_exception_value;
             
             char*% method_block_name = xsprintf("fun_block%d_%s", num_method_block, all_alhabet_sname.to_string());
             

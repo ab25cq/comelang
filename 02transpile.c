@@ -587,7 +587,7 @@ bool run_project(int argc, char** argv)
         die("system");
     }
 #else
-    system("make compile -j$(nproc)").less {
+    system("make compile -j$(($(nproc)/2))").less {
         die("system");
     }
 #endif
@@ -624,7 +624,7 @@ bool compile_project(int argc, char** argv)
         die("system");
     }
 #else
-    system("make compile -j$(nproc)").less {
+    system("make compile -j$(($(nproc)/2))").less {
         die("system");
     }
 #endif
@@ -648,7 +648,7 @@ bool debug_run_project(int argc, char** argv)
         die("system");
     }
 #else
-    system("make debug -j$(nproc)").less {
+    system("make debug -j$(($(nproc)/2))").less {
         die("system");
     }
 #endif

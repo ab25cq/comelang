@@ -818,7 +818,6 @@ struct sInfo
     _Bool pico_cpp;
     _Bool emb_cpp;
     _Bool gcc_compiler;
-    _Bool in_exception_value;
     _Bool in_method_block;
     _Bool prohibits_output_last_code;
 };

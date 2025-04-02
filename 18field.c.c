@@ -818,7 +818,6 @@ struct sInfo
     _Bool pico_cpp;
     _Bool emb_cpp;
     _Bool gcc_compiler;
-    _Bool in_exception_value;
     _Bool in_method_block;
     _Bool prohibits_output_last_code;
 };
@@ -7488,7 +7487,7 @@ struct sNode* __result_obj__307;
                 /*c*/ come_call_finalizer3(__right_value536,sStoreFieldNode_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
                 ((right_node_579) ? right_node_579 = come_decrement_ref_count(right_node_579, ((struct sNode*)right_node_579)->finalize, ((struct sNode*)right_node_579)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,0/*force_delete*/, (void*)0):(void*)0);
             }
-            else if(            !gComeC&&(*info->p==40||*info->p==123||string_operator_equals(field_name_574,"exception_throw")||string_operator_equals(field_name_574,"exception_value")||parse_method_generics_type_575||(*info->p==45&&*(info->p+1)==62&&*(info->p+2)==40))) {
+            else if(            !gComeC&&(*info->p==40||*info->p==123||parse_method_generics_type_575||(*info->p==45&&*(info->p+1)==62&&*(info->p+2)==40))) {
                 if(                string_operator_equals(field_name_574,"if")) {
                     __dec_obj178=node,
                     node=(struct sNode*)come_increment_ref_count(parse_if_method_call((struct sNode*)come_increment_ref_count(sNode_clone(node)),info));
@@ -7516,8 +7515,8 @@ struct sNode* __result_obj__307;
                 }
             }
             else {
-                _inf_value8=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "18field.c", 1359, "struct sNode");
-                _inf_obj_value8=(struct sLoadFieldNode*)come_increment_ref_count(((struct sLoadFieldNode*)(__right_value549=sLoadFieldNode_initialize((struct sLoadFieldNode*)come_increment_ref_count((struct sLoadFieldNode*)come_calloc_v2(1, sizeof(struct sLoadFieldNode)*(1), "18field.c", 1359, "struct sLoadFieldNode*")),node,(char*)come_increment_ref_count(field_name_574),info))));
+                _inf_value8=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "18field.c", 1358, "struct sNode");
+                _inf_obj_value8=(struct sLoadFieldNode*)come_increment_ref_count(((struct sLoadFieldNode*)(__right_value549=sLoadFieldNode_initialize((struct sLoadFieldNode*)come_increment_ref_count((struct sLoadFieldNode*)come_calloc_v2(1, sizeof(struct sLoadFieldNode)*(1), "18field.c", 1358, "struct sLoadFieldNode*")),node,(char*)come_increment_ref_count(field_name_574),info))));
                 _inf_value8->_protocol_obj=_inf_obj_value8;
                 _inf_value8->finalize=(void*)sLoadFieldNode_finalize;
                 _inf_value8->clone=(void*)sLoadFieldNode_clone;

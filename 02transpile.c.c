@@ -809,7 +809,6 @@ struct sInfo
     _Bool pico_cpp;
     _Bool emb_cpp;
     _Bool gcc_compiler;
-    _Bool in_exception_value;
     _Bool in_method_block;
     _Bool prohibits_output_last_code;
 };
@@ -3342,7 +3341,7 @@ _Bool __exception_result_var_b4;
         else {
         }
     }
-    Value_339=system("make compile -j$(nproc)");
+    Value_339=system("make compile -j$(($(nproc)/2))");
     if(    Value_339<0) {
         (come_push_stackframe("02transpile.c", 591, 2),__exception_result_var_b3=die("system"), come_pop_stackframe(), __exception_result_var_b3);
     }
@@ -3387,7 +3386,7 @@ _Bool __exception_result_var_b7;
         else {
         }
     }
-    Value_344=system("make compile -j$(nproc)");
+    Value_344=system("make compile -j$(($(nproc)/2))");
     if(    Value_344<0) {
         (come_push_stackframe("02transpile.c", 628, 6),__exception_result_var_b7=die("system"), come_pop_stackframe(), __exception_result_var_b7);
     }
@@ -3414,7 +3413,7 @@ _Bool __exception_result_var_b9;
         else {
         }
     }
-    Value_347=system("make debug -j$(nproc)");
+    Value_347=system("make debug -j$(($(nproc)/2))");
     if(    Value_347<0) {
         (come_push_stackframe("02transpile.c", 652, 8),__exception_result_var_b9=die("system"), come_pop_stackframe(), __exception_result_var_b9);
     }

@@ -327,12 +327,9 @@ class sMethodCallNode extends sNodeBase
                                 i++;
                             }
                             else {
-                                bool in_exception_value = info.in_exception_value;
-                                info.in_exception_value = false;
                                 node_compile(node).elif {
                                     return false;
                                 }
-                                info.in_exception_value = in_exception_value;
                                 
                                 CVALUE*% come_value = get_value_from_stack(-1, info);
                                 come_value.type = solve_generics(come_value.type, info->generics_type, info);
@@ -369,12 +366,9 @@ class sMethodCallNode extends sNodeBase
                                 i++;
                             }
                             else {
-                                bool in_exception_value = info.in_exception_value;
-                                info.in_exception_value = false;
                                 node_compile(node).elif {
                                     return false;
                                 }
-                                info.in_exception_value = in_exception_value;
                                 
                                 CVALUE*% come_value = get_value_from_stack(-1, info);
                                 come_value.type = solve_generics(come_value.type, info->generics_type, info);
@@ -435,12 +429,9 @@ class sMethodCallNode extends sNodeBase
                     i++;
                 }
                 else {
-                    bool in_exception_value = info.in_exception_value;
-                    info.in_exception_value = false;
                     node_compile(node).elif {
                         return false;
                     }
-                    info.in_exception_value = in_exception_value;
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     
@@ -705,12 +696,9 @@ class sMethodCallNode extends sNodeBase
                         n++;
                     }
                     
-                    bool in_exception_value = info.in_exception_value;
-                    info.in_exception_value = false;
                     node_compile(node).elif {
                         return false;
                     }
-                    info.in_exception_value = in_exception_value;
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     
@@ -755,12 +743,9 @@ class sMethodCallNode extends sNodeBase
                         }
                     }
 
-                    bool in_exception_value = info.in_exception_value;
-                    info.in_exception_value = false;
                     node_compile(node).elif {
                         return false;
                     }
-                    info.in_exception_value = in_exception_value;
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
                     
@@ -923,12 +908,9 @@ class sMethodCallNode extends sNodeBase
                         
                         sNode*% node = expression();
                         
-                        bool in_exception_value = info.in_exception_value;
-                        info.in_exception_value = false;
                         node_compile(node).elif {
                             return false;
                         }
-                        info.in_exception_value = in_exception_value;
                         
                         info.source = source;
                         info.p = p;

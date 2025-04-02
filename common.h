@@ -404,7 +404,6 @@ struct sInfo
     bool pico_cpp;
     bool emb_cpp;
     bool gcc_compiler;
-    bool in_exception_value;
     bool in_method_block;
     
     bool prohibits_output_last_code;
