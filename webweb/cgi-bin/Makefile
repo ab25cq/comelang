@@ -25,4 +25,4 @@ pet.cgi: pet.c
 	comelang -o pet.cgi pet.c -g
 
 clean:
-	rm -f *.cgi
+	rm -f *.cgi food
