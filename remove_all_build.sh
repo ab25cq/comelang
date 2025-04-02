@@ -28,6 +28,7 @@ fi
 (cd pcre; rm -rf build)
 (cd minux3; make clean)
 (cd webweb; sh clean_build.sh)
+(cd webweb/cgi-bin; make clean)
 
 if [ -e viw/Makefile ]
 then
