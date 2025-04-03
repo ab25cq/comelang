@@ -85,7 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
-31.0.0 New exception coming with simple way. It's simple and convinient. Well, I can feel this projects the end. If I can, more make simplify self host codes.
+31.0.0 New exception coming with simply way. It's simple and convinient. Well, I can feel this projects the end. If I can, more make simplify self host codes.
 30.0.0 Remove exception. If my concentrate will continue, rescue method call implement for convinient returning tuple2 function. Allmost project the end.
 26.0.0 heap alignment bug fiexed.
 25.0.3 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
@@ -732,9 +732,9 @@ template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
     ["1","2","3"].map { atoi(it) }  // [1,2,3]
 ```
 
-Executes an expression on each element and returns a list of results. Type infference only list::map
+Executes an expression on each element and returns a list of results. 
 
-各要素に式を実行して、その結果のリストを返します。templateはmapだけ型推論します。
+各要素に式を実行して、その結果のリストを返します。
 
 ```C
 list<T>*% reverse(list<T>* self) 
@@ -859,9 +859,9 @@ string to_string(map<T,T2>* self)
     ["AAA":1, "BBB":2, "CCC":3].to_string().puts();   // [AAA:1,BBB:2,CCC:3]
 ```
 
-All elements and keys must implement to_string(). All basic types of comelang have to_string() implemented.
+All elements and keys must implement to_string(). All basic types of comelang have to_string() implemented. Struct will automatically define to_string method.
 
-すべての要素とキーにto_string()が実装されている必要があります。comelangの基本的な型はすべてto_string()が実装されてます。
+すべての要素とキーにto_string()が実装されている必要があります。comelangの基本的な型はすべてto_string()が実装されてます。to_stringは構造体の場合自動的に定義されます。
 
 ```C
 T2 at(map<T, T2>* self, T& key, T2 default_value) 
@@ -1300,7 +1300,7 @@ static inline buffer*% double[]::to_buffer(double* self, size_t len) ;
 ```C
     char a[4] = { 'A', 'B', 'C', '\0' };
     
-    var buf = a.to_buffer();
+    var buf = a.to_buffer(4);
     
     puts(buf.to_string()); // ABC
 ```
@@ -1317,7 +1317,7 @@ static inline list<double>*% double[]::to_list(double* self, size_t len) ;
 ```C
     int a[3] = { 3, 2, 1 };
     
-    a.to_list().sort().each {
+    a.to_list(3).sort().each {
         printf("%d\n", it);
     }
 ```
@@ -1334,7 +1334,7 @@ static inline size_t double[]::length(double* self, size_t len) ;
 ```C
     int a[3] = { 3, 2, 1 };
     
-    printf("%d\n", a.length());
+    printf("%d\n", a.length(3));
 ```
 
 # string 
@@ -1822,7 +1822,7 @@ int main(int argc, char** argv)
 ``` C
     int main(int argc, char** argv)
     {
-        using c { int a = (1,2); }     // no error. It's comman operator and brace
+        using c { int a = (1,2); }     // no error. It's comma operator and blace
         
         int a = (1,2);  // error. It's tuple
         
@@ -1894,7 +1894,7 @@ CCC
 }
 ```
 
-It's useless because of cpp. Don't use.
+if head of charactor is '#', require quote.
 
 # method block
 
@@ -1916,7 +1916,7 @@ int main(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-    ["1", "2", "3"].map { return atoi(it); }.filter { return it > 1}.each { printf("%d\n",it); }
+    ["1", "2", "3"].map { atoi(it) }.filter { it > 1 }.each { it. printf("%d\n"); }
     
     return 0;
 }

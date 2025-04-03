@@ -288,8 +288,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
                     memcpy(buf, head, tail-head);
                     buf[tail-head] = '\0';
                     
-                    info->p++; // }
-                    skip_spaces_and_lf();
+                    expected_next_character('}');
                     
                     sNode*% node = create_return_node(value, string(buf));
                     
@@ -2399,7 +2398,7 @@ sNode*% parse_function(sInfo* info)
             fun_name = string(new_fun_name);
         }
         
-        sBlock*% block = parse_block(in_function:true, info, false, constructor_);
+        sBlock*% block = parse_block(in_function:true, info, no_block_level:false, return_self_at_last:constructor_);
         
         bool static_fun = false;
         if(result_type->mStatic) {

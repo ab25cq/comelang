@@ -1053,7 +1053,6 @@ int come_main(int argc, char** argv)
             exit(2);
         }
         
-        info.original_source = xsprintf("%s", tmp_file).read().to_buffer();
         info.source = xsprintf("%s.i", tmp_file).read().to_buffer();
         info.p = info.source.buf;
         info.head = info.source.buf;
@@ -1168,7 +1167,6 @@ int come_main(int argc, char** argv)
                 exit(2);
             }
             
-            info.original_source = xsprintf("%s", it).read().to_buffer();
             info.source = xsprintf("%s.i", it).read().to_buffer();
             info.p = info.source.buf;
             info.head = info.source.buf;

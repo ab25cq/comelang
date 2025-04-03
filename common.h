@@ -287,14 +287,12 @@ struct sInfo
 {
     char* p;
     char* head;
-    buffer*% original_source;
     buffer*% source;
     string sname;
     string sname_at_head;
     string base_sname;
     int sline;
     int err_num;
-    string err_line;
     string clang_option;
     string cpp_option;
     string linker_option;

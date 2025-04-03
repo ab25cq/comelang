@@ -1,15 +1,30 @@
 #include <comelang.h>
 
-exception int fun()
+struct sData
 {
-    return (3, false);
-}
+    string a;
+    string b;
+};
 
 int main(int argc,char** argv)
 {
-    int a = fun().expect;
+    sData*% a = if(true) {
+        string b = if(true) {
+            s"ABC"
+        }
+        else {
+            s"DEF"
+        }
+        
+        puts(b);
+        
+        new sData { a:s"AAA", b:s"BBB" }
+    }
+    else {
+        new sData { a:s"BBB", b:s"CCC" }
+    }
     
-    printf("a %d\n", a);
+    puts(a.a);
     
     return 0;
 }
