@@ -1494,10 +1494,30 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
         info.sline = sline;
     }
     
+    /// uniq class ///
+    bool uniq_class = false;
+    if(buf === "uniq") {
+        char* p = info.p;
+        info.p = head;
+        
+        (void)parse_word();
+        
+        if(xisalpha(*info->p) || *info->p == '_') {
+            string buf2 = parse_word();
+            
+            if(buf2 === "class") {
+                uniq_class = true;
+            }
+        }
+        
+        info.p = p;
+        info.sline = sline;
+    }
+    
     /// backtrace ///
     bool define_function_pointer_result_function = false;
     bool define_variable_between_brace = false;
-    if(is_type_name_flag)
+    if(is_type_name_flag && !uniq_class)
     {
         char* p = info.p;
         info.p = head;
@@ -1536,7 +1556,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
     
     /// backtrace ///
     bool define_function_flag = false;
-    if(is_type_name_flag && !define_function_pointer_result_function && buf !== "__typeof__")
+    if(is_type_name_flag && !define_function_pointer_result_function && buf !== "__typeof__" && !uniq_class)
     {
         char* p = info.p;
         info.p = head;
@@ -1598,7 +1618,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
     
     /// backtrace ///
     bool define_variable = true;
-    if(is_type_name_flag && !define_function_pointer_result_function)
+    if(is_type_name_flag && !define_function_pointer_result_function && !uniq_class)
     {
         char* p = info.p;
         info.p = head;
@@ -1722,7 +1742,15 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
         info.sline = sline;
     }
     
-    if(buf === "template") {
+    if(uniq_class) {
+        info.p = head;
+        info.sline = sline;
+        
+        string buf2 = parse_word();
+     
+        return inherit(buf2, head, head_sline, info);
+    }
+    else if(buf === "template") {
         string word = parse_word();
         
         if(*info->p == '<') {
@@ -2425,6 +2453,9 @@ sNode*% parse_function(sInfo* info)
             result_type->mUniq = false;
             result_type->mInline = false;
             result_type->mStatic = false;
+        }
+        if(info.defining_class && info.defining_class.mUniq) {
+            uniq_fun = true;
         }
         
         var fun = new sFun(string(fun_name), result_type, param_types

@@ -761,7 +761,15 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             return new sStructNode(string(type_name), struct_class, info) implements sNode;
         }
     }
-    else if(!gComeC && buf === "class") {
+    else if(!gComeC && ((buf === "uniq" && info.p.substring(0, strlen("class")) === "class")
+        || buf === "class") )
+    {
+        bool uniq_class = false;
+        if(buf === "uniq")  {
+            parse_word();
+            uniq_class = true;
+        }
+        
         char* source_head = head;
         
         string type_name = parse_word();
@@ -796,7 +804,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             }
         }
         
-        sClass*% struct_class = new sClass(name:type_name, struct_:true);
+        sClass*% struct_class = new sClass(name:type_name, struct_:true, uniq_:uniq_class);
         
         if(parent_class) {
             struct_class->mParentClassName = clone parent_class->mName;

@@ -1,10 +1,5 @@
 #include <comelang.h>
-
-struct sData
-{
-    string a;
-    string b;
-};
+#include "b.h"
 
 int main(int argc,char** argv)
 {
@@ -25,6 +20,8 @@ int main(int argc,char** argv)
     }
     
     puts(a.a);
+    
+    puts(fun());
     
     return 0;
 }

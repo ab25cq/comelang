@@ -33,6 +33,7 @@ struct sClass
     bool mEnum;
     bool mProtocol;
     bool mNumber;
+    bool mUniq;
     
     string mName;
     
@@ -555,7 +556,7 @@ sNodeBase*% sNodeBase*::initialize(sNodeBase*% self, sInfo* info=info);
 sModule*% sModule*::initialize(sModule*% self);
 sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* info=info);
 sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent);
-sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, sInfo* info=info);
+sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, bool uniq_=false, sInfo* info=info);
 sClassModule*% sClassModule*::initialize(sClassModule*% self, string name, string text, string sname, int sline, sInfo* info);
 sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"", bool const_fun=false);
 void sVarTable*::finalize(sVarTable* self);

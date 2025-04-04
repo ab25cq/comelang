@@ -6,11 +6,6 @@ int main(int argc, char** argv)
     return come_main(argc, argv);
 }
 
-CVALUE*% CVALUE*::initialize(CVALUE*% self)
-{
-    return self;
-}
-
 sModule*% sModule*::initialize(sModule*% self)
 {
     self.mSourceHead = new buffer();
@@ -20,6 +15,11 @@ sModule*% sModule*::initialize(sModule*% self)
     self.mHeader = new map<string, string>();
     self.mHeaderStructs = new map<string, string>();
     
+    return self;
+}
+
+CVALUE*% CVALUE*::initialize(CVALUE*% self)
+{
     return self;
 }
 
@@ -103,7 +103,7 @@ sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* in
     return self;
 }
 
-sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, sInfo* info=info)
+sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, bool uniq_=false, sInfo* info=info)
 {
     self.mNumber = number;
     self.mStruct = struct_;
@@ -114,6 +114,7 @@ sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool
     self.mProtocol = protocol_;
     self.mFloat = float_;
     self.mEnum = enum_;
+    self.mUniq = uniq_;
     
     self.mName = string(name);
     

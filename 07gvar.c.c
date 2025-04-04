@@ -361,6 +361,7 @@ struct sClass
     _Bool mEnum;
     _Bool mProtocol;
     _Bool mNumber;
+    _Bool mUniq;
     char* mName;
     int mGenericsNum;
     int mMethodGenericsNum;
@@ -1581,7 +1582,7 @@ struct sNodeBase* sNodeBase_initialize(struct sNodeBase* self, struct sInfo* inf
 struct sModule* sModule_initialize(struct sModule* self);
 struct sType* sType_initialize(struct sType* self, char* name, _Bool heap, struct sInfo* info);
 struct sVarTable* sVarTable_initialize(struct sVarTable* self, _Bool global, struct sVarTable* parent);
-struct sClass* sClass_initialize(struct sClass* self, char* name, _Bool number, _Bool union_, _Bool generics, _Bool method_generics, _Bool protocol_, _Bool struct_, _Bool float_, int generics_num, int method_generics_num, _Bool enum_, struct sInfo* info);
+struct sClass* sClass_initialize(struct sClass* self, char* name, _Bool number, _Bool union_, _Bool generics, _Bool method_generics, _Bool protocol_, _Bool struct_, _Bool float_, int generics_num, int method_generics_num, _Bool enum_, _Bool uniq_, struct sInfo* info);
 struct sClassModule* sClassModule_initialize(struct sClassModule* self, char* name, char* text, char* sname, int sline, struct sInfo* info);
 struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute, _Bool const_fun);
 void sVarTable_finalize(struct sVarTable* self);
@@ -5141,6 +5142,9 @@ static _Bool sClass_equals(struct sClass* left, struct sClass* right){
         return (_Bool)0;
     }
     if(    !bool_equals(left->mNumber,right->mNumber)) {
+        return (_Bool)0;
+    }
+    if(    !bool_equals(left->mUniq,right->mUniq)) {
         return (_Bool)0;
     }
     if(    !string_equals(left->mName,right->mName)) {

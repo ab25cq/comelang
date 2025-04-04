@@ -1,12 +1,9 @@
 #include <comelang.h>
+#include "b.h"
 
-int main(int argc,char** argv)
+string fun()
 {
-    int a = {
-        1 + 1
-    };
+    var data = new sData{ a:s"OTHER MODULE", b:s"BBB" };
     
-    printf("%d\n", a);
-    
-    return 0;
+    return data.a;
 }
