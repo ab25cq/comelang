@@ -113,7 +113,7 @@ class sFunNode extends sNodeBase
 
 sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_self_at_last=false, bool in_function=false)
 {
-    var result = new sBlock(info);
+    var result = new sBlock();
     
     int sline_top = info.sline_top;
     info.sline_top = info.sline;

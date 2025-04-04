@@ -6,37 +6,6 @@ int main(int argc, char** argv)
     return come_main(argc, argv);
 }
 
-sModule*% sModule*::initialize(sModule*% self)
-{
-    self.mSourceHead = new buffer();
-    self.mSource = new buffer();
-    self.mLastCode = null;
-    self.mLastCode2 = null;
-    self.mHeader = new map<string, string>();
-    self.mHeaderStructs = new map<string, string>();
-    
-    return self;
-}
-
-CVALUE*% CVALUE*::initialize(CVALUE*% self)
-{
-    return self;
-}
-
-sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent)
-{
-    self.mVars = new map<string, sVar*%>();
-    self.mGlobal = global;
-    self.mParent = parent;
-    
-    return self;
-}
-
-void sVarTable*::finalize(sVarTable* self)
-{
-    delete self.mVars;
-}
-
 sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* info=info)
 {
     int pointer_num = 0;
@@ -122,17 +91,6 @@ sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool
     self.mMethodGenericsNum = method_generics_num;
     
     self.mFields = new list<tup: string, sType*%>();
-    
-    return self;
-};
-
-sClassModule*% sClassModule*::initialize(sClassModule*% self, string name, string text, string sname, int sline, sInfo* info)
-{
-    self.mName = clone name;
-    self.mText = clone text;
-    self.mParams = new list<string>();
-    self.mSName = string(sname);
-    self.mSLine = sline;
     
     return self;
 };
@@ -229,13 +187,6 @@ sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type,
     self.mGenericsSName = string(generics_sname);
     self.mGenericsSLine = generics_sline;
     self.mConstFun = const_fun;
-    
-    return self;
-}
-
-sBlock*% sBlock*::initialize(sBlock*% self, sInfo* info)
-{
-    self.mNodes = new list<sNode*%>();
     
     return self;
 }

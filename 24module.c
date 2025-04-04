@@ -213,7 +213,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91
             add_come_code_at_come_header(info, id, "%s\n", header.to_string());
         }
         
-        sClassModule*% module = new sClassModule(type_name, buf.to_string(), sname, sline, info);
+        sClassModule*% module = new sClassModule(type_name, buf.to_string(), sname, sline);
         
         module.mParams = clone params;
         

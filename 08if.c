@@ -610,7 +610,7 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
     }
     
     if(else_block == null) {
-        else_block = new sBlock(info);
+        else_block = new sBlock();
         else_block.mOmitSemicolon = true;
         
         else_block.mNodes.push_back(create_load_var("Value"));
@@ -695,7 +695,7 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
     };
     
     if(else_block == null) {
-        else_block = new sBlock(info);
+        else_block = new sBlock();
         else_block.mOmitSemicolon = true;
         
         else_block.mNodes.push_back(create_load_var("Value"));
@@ -783,7 +783,7 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
     };
     
     if(else_block == null) {
-        else_block = new sBlock(info);
+        else_block = new sBlock();
         else_block.mOmitSemicolon = true;
         
         else_block.mNodes.push_back(create_load_var("Value"));
@@ -871,7 +871,7 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
     };
     
     if(else_block == null) {
-        else_block = new sBlock(info);
+        else_block = new sBlock();
         else_block.mOmitSemicolon = true;
         
         else_block.mNodes.push_back(create_load_var("Value"));
@@ -960,7 +960,7 @@ sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
     };
     
     if(else_block == null) {
-        else_block = new sBlock(info);
+        else_block = new sBlock();
         else_block.mOmitSemicolon = true;
         
         sNode*% node = load_field(value_node, s"v1");
@@ -1070,7 +1070,7 @@ sNode*% parse_expect_method_call(sNode*% expression_node, sInfo* info)
     };
     
     if(else_block == null) {
-        else_block = new sBlock(info);
+        else_block = new sBlock();
         else_block.mOmitSemicolon = true;
         
         sNode*% node = load_field(value_node, s"v1");

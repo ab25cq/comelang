@@ -58,17 +58,6 @@ interface sNode
     string kind();
 };
 
-struct sNodeBase
-{
-    int sline;
-    string sname;
-    int sline_real;
-};
-
-int sNodeBase*::sline(sNodeBase* self, sInfo* info);
-string sNodeBase*::sname(sNodeBase* self, sInfo* info);
-int sNodeBase*::sline_real(sNodeBase* self, sInfo* info);
-
 struct sType
 {
     sClass* mClass;
@@ -146,7 +135,7 @@ struct sType
     bool mExceptionGenericsType;
 };
 
-struct CVALUE 
+uniq class CVALUE 
 {
     string c_value;
     sType*% type;
@@ -154,9 +143,10 @@ struct CVALUE
     sRightValueObject* right_value_objects;
     string c_value_without_right_value_objects;
     string c_value_without_cast_object_value;
+    
+    new() {
+    }
 };
-
-CVALUE*% CVALUE*::initialize(CVALUE*% self);
 
 struct sVar 
 {
@@ -232,7 +222,7 @@ struct sGenericsFun
     bool mConstFun;
 };
 
-struct sModule
+uniq class sModule
 {
     buffer*% mSourceHead;
     buffer*% mSource;
@@ -241,22 +231,47 @@ struct sModule
     
     map<string, string>*% mHeader;
     map<string, string>*% mHeaderStructs;
+    
+    new() {
+        self.mSourceHead = new buffer();
+        self.mSource = new buffer();
+        self.mLastCode = null;
+        self.mLastCode2 = null;
+        self.mHeader = new map<string, string>();
+        self.mHeaderStructs = new map<string, string>();
+    }
 };
 
 struct sVarTable;
 
-struct sVarTable 
+uniq class sVarTable 
 {
     map<string, sVar*%>*% mVars;
     bool mGlobal;
     struct sVarTable* mParent;
+
+    new(bool global, sVarTable* parent)
+    {
+        self.mVars = new map<string, sVar*%>();
+        self.mGlobal = global;
+        self.mParent = parent;
+    }
+
+    void finalize()
+    {
+        delete self.mVars;
+    }
 };
 
-struct sBlock
+uniq class sBlock
 {
     list<sNode*%>*% mNodes;
     sVarTable*% mVarTable;
     bool mOmitSemicolon;
+
+    new() {
+        self.mNodes = new list<sNode*%>();
+    }
 };
 
 struct sRightValueObject 
@@ -275,13 +290,22 @@ struct sRightValueObject
     bool mNoFree;
 };
 
-struct sClassModule
+uniq class sClassModule
 {
     string mName;
     string mText;
     list<string>*% mParams;
     string mSName;
     int mSLine;
+    
+    new(string name, string text, string sname, int sline)
+    {
+        self.mName = clone name;
+        self.mText = clone text;
+        self.mParams = new list<string>();
+        self.mSName = string(sname);
+        self.mSLine = sline;
+    }
 };
 
 struct sInfo
@@ -406,6 +430,30 @@ struct sInfo
     bool in_method_block;
     
     bool prohibits_output_last_code;
+};
+
+uniq class sNodeBase
+{
+    new(sInfo* info=info) {
+        int self.sline = info.sline;
+        string self.sname = string(info.sname);
+        int self.sline_real = info.sline_real;
+    }
+    int sline(sInfo* info=info) {
+        return self.sline;
+    }
+    
+    int sline_real(sInfo* info=info) {
+        return self.sline_real;
+    }
+    
+    bool terminated() {
+        return false;
+    }
+    
+    string sname(sInfo* info=info) {
+        return string(self.sname);
+    }
 };
 
 module sCurrentNodeModule
@@ -552,15 +600,10 @@ module sCurrentNodeModule
 /////////////////////////////////////////////////////////////////////
 /// 01main.c ///
 /////////////////////////////////////////////////////////////////////
-sNodeBase*% sNodeBase*::initialize(sNodeBase*% self, sInfo* info=info);
-sModule*% sModule*::initialize(sModule*% self);
 sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* info=info);
-sVarTable*% sVarTable*::initialize(sVarTable*% self, bool global, sVarTable* parent);
-sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, bool uniq_=false, sInfo* info=info);
-sClassModule*% sClassModule*::initialize(sClassModule*% self, string name, string text, string sname, int sline, sInfo* info);
 sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"", bool const_fun=false);
-void sVarTable*::finalize(sVarTable* self);
 sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type, list<string>* generics_type_names, list<string>* method_generics_type_names, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool var_args, string block, sInfo* info, string generics_sname, int generics_sline, bool const_fun=false);
+sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, bool uniq_=false, sInfo* info=info);
 
 /////////////////////////////////////////////////////////////////////
 /// 02transpile.c ///
@@ -570,7 +613,6 @@ int expected_next_character(char c, sInfo* info=info);;
 bool node_compile(sNode* node, sInfo* info=info);
 bool node_condional_compile(sNode* node, sInfo* info=info);
 int come_main(int argc, char** argv);
-bool sNodeBase*::terminated(sNodeBase* self);
 string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false);
 string make_come_type_name_string(sType* type, sInfo* info=info);
 string make_come_type_name_string_no_solved(sType* type, bool original_type_name=false, sInfo* info=info);
@@ -670,7 +712,6 @@ bool parsecmp(char* str, sInfo* info=info);
 string parse_word(sInfo* info=info);
 string backtrace_parse_word(sInfo* info=info);
 void skip_spaces_and_lf(sInfo* info=info);
-sBlock*% sBlock*::initialize(sBlock*% self, sInfo* info);
 string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info);
 
 sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);

@@ -2312,7 +2312,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             
             list<sNode*%>*% vars = new list<sNode*%>();
             list<sBlock*%>*% blocks = new list<sBlock*%>();
-            sBlock*% else_block = new sBlock(info);
+            sBlock*% else_block = new sBlock();
             while(1) {
                 if(memcmp(info->p, "else", strlen("else")) == 0) {
                     info->p += strlen("else");

@@ -816,6 +816,9 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
         if(info.classes.at(type_name, null) == null) {
             info.classes.insert(type_name, clone struct_class);
         }
+        else {
+            info.classes[type_name].mUniq = uniq_class;
+        }
         foreach(parent, parent_classes.reverse()) {
             foreach(it, parent.mFields) {
                 struct_class->mFields.add(clone it);
