@@ -70,63 +70,27 @@ bool operator_overload_fun2(sType* type, char* fun_name, sNode*% left_node, sNod
     sClass* klass = type->mClass;
     char* class_name = klass->mName;
     
-    var fun_name2, operator_fun,generics_fun = get_operator_function(type, fun_name);
+    sFun* operator_fun = null;
+    string fun_name2 = null;
+    sGenericsFun* generics_fun = null;
+    
+    var fun_name2, operator_fun, generics_fun = get_operator_function(type, fun_name);
     
     bool result = false;
     
     if(operator_fun) {
-        CVALUE*% come_value = new CVALUE();
-        string left_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[0], left_value.type, left_value);
-        if(operator_fun.mParamTypes[0].mHeap && left_value.type.mHeap) {
-            std_move(operator_fun.mParamTypes[0], left_value.type, left_value, no_delete_from_right_value_objects:true);
-            left_value2 = xsprintf("%s", left_value.c_value);
+        sNode*% obj = left_node;
+        list<tup: string, sNode*%>*% params =  new list<tup: string, sNode*%>();
+        
+        params.add((null, left_node));
+        params.add((null, middle_node));
+        params.add((null, right_node));
+        
+        sNode*% node = create_method_call(fun_name, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, false@break_guard, info);
+        
+        node_compile(node).if {
+            result = true;
         }
-        else {
-            left_value2 = clone left_value.c_value;
-        }
-        string middle_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[1], middle_value.type, middle_value);
-        if(operator_fun.mParamTypes[1].mHeap && middle_value.type.mHeap) {
-            std_move(operator_fun.mParamTypes[1], middle_value.type, middle_value, no_delete_from_right_value_objects:true);
-            middle_value2 = xsprintf("%s", middle_value.c_value);
-        }
-        else {
-            middle_value2 = clone middle_value.c_value;
-        }
-        string right_value2;
-        check_assign_type(s"\{fun_name2} is assigned to", operator_fun.mParamTypes[2], right_value.type, right_value);
-        if(operator_fun.mParamTypes[2].mHeap && right_value.type.mHeap) {
-            std_move(operator_fun.mParamTypes[2], right_value.type, right_value, no_delete_from_right_value_objects:true);
-            right_value2 = xsprintf("%s", right_value.c_value);
-        }
-        else {
-            right_value2 = clone right_value.c_value;
-        }
-        
-        come_value.c_value = s"\{fun_name2}(\{left_value2},\{middle_value2},\{right_value2})";
-        
-        sType*% result_type1 = clone operator_fun->mResultType;
-        
-        sType*% result_type2 = solve_generics(result_type1, generics_type, info);
-        
-        sType*% obj_type = generics_type;
-        
-        come_value.type = clone result_type2;
-        
-        come_value.var = null;
-        
-        if(result_type2->mHeap) {
-            append_object_to_right_values2(come_value, result_type2, info);
-        }
-        
-        come_value.c_value = append_stackframe(come_value.c_value, come_value.type, info);
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
-        
-        result = true;
     }
     
     return result;
