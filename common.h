@@ -22,6 +22,18 @@ struct sClass;
 struct sInfo;
 struct sVar;
 struct sRightValueObject;
+struct sVarTable;
+struct sBlock;
+
+interface sNode 
+{
+    bool compile(sInfo* info);
+    int sline();
+    int sline_real();
+    string sname();
+    bool terminated();
+    string kind();
+};
 
 struct sClass 
 {
@@ -46,16 +58,6 @@ struct sClass
     
     string mAttribute;
     bool mDynamic;
-};
-
-interface sNode 
-{
-    bool compile(sInfo* info);
-    int sline();
-    int sline_real();
-    string sname();
-    bool terminated();
-    string kind();
 };
 
 struct sType
@@ -135,19 +137,6 @@ struct sType
     bool mExceptionGenericsType;
 };
 
-uniq class CVALUE 
-{
-    string c_value;
-    sType*% type;
-    sVar* var;
-    sRightValueObject* right_value_objects;
-    string c_value_without_right_value_objects;
-    string c_value_without_cast_object_value;
-    
-    new() {
-    }
-};
-
 struct sVar 
 {
     string mName;
@@ -163,10 +152,6 @@ struct sVar
     string mFunName;
 };
 
-struct sVarTable;
-
-struct sBlock;
-
 struct sFun
 {
     string mName;
@@ -179,6 +164,10 @@ struct sFun
     sType*% mLambdaType;
     
     sBlock*% mBlock;
+    string mTextBlock;
+    
+    string mTextBlockSName;
+    int mTextBlockSline;
     
     buffer*% mSource;
     buffer*% mSourceHead;
@@ -196,6 +185,8 @@ struct sFun
     
     string mAttribute;
     string mFunAttribute;
+    
+    bool mGenericsFun;
 };
 
 struct sGenericsFun
@@ -222,6 +213,19 @@ struct sGenericsFun
     bool mConstFun;
 };
 
+uniq class CVALUE 
+{
+    string c_value;
+    sType*% type;
+    sVar* var;
+    sRightValueObject* right_value_objects;
+    string c_value_without_right_value_objects;
+    string c_value_without_cast_object_value;
+    
+    new() {
+    }
+};
+
 uniq class sModule
 {
     buffer*% mSourceHead;
@@ -241,8 +245,6 @@ uniq class sModule
         self.mHeaderStructs = new map<string, string>();
     }
 };
-
-struct sVarTable;
 
 uniq class sVarTable 
 {
@@ -334,6 +336,7 @@ struct sInfo
     int block_level;
 
     map<string, sFun*%>*% funcs;
+    map<string, sFun*%>*% uniq_funcs;
     map<string, sGenericsFun*%>*% generics_funcs;
     map<string, sClass*%>*% classes;
     map<string, sClassModule*%>*% modules;
@@ -434,10 +437,14 @@ struct sInfo
 
 uniq class sNodeBase
 {
+    int sline;
+    string sname;
+    int sline_real;
+    
     new(sInfo* info=info) {
-        int self.sline = info.sline;
-        string self.sname = string(info.sname);
-        int self.sline_real = info.sline_real;
+        self.sline = info.sline;
+        self.sname = string(info.sname);
+        self.sline_real = info.sline_real;
     }
     int sline(sInfo* info=info) {
         return self.sline;
@@ -601,7 +608,7 @@ module sCurrentNodeModule
 /// 01main.c ///
 /////////////////////////////////////////////////////////////////////
 sType*% sType*::initialize(sType*% self, string name, bool heap=false, sInfo* info=info);
-sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"", bool const_fun=false);
+sFun*% sFun*::initialize(sFun*% self, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"", bool const_fun=false, string text_block=null, string generics_sname=null, int generics_sline=0);
 sGenericsFun*% sGenericsFun*::initialize(sGenericsFun*% self, sType*% impl_type, list<string>* generics_type_names, list<string>* method_generics_type_names, string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>*% param_default_parametors, bool var_args, string block, sInfo* info, string generics_sname, int generics_sline, bool const_fun=false);
 sClass*% sClass*::initialize(sClass*% self, string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, bool uniq_=false, sInfo* info=info);
 
@@ -670,6 +677,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
 /////////////////////////////////////////////////////////////////////
 /// 05function.c ///
 /////////////////////////////////////////////////////////////////////
+sFun*% compile_uniq_function(sFun* fun, sInfo* info=info);
 sNode*% cast_node(sType*% type, sNode*% node, sInfo* info=info);
 sNode*% reffence_node(sNode*% value, sInfo* info);
 sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info);
@@ -705,7 +713,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
 sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo* info);
 sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInfo* info);
-string skip_block(sInfo* info=info);
+string skip_block(sInfo* info=info, bool return_self_at_last=false);
 bool is_contained_generics_class(sType* type, sInfo* info);
 bool is_type_name(char* buf, sInfo* info=info);
 bool parsecmp(char* str, sInfo* info=info);

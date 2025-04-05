@@ -548,7 +548,7 @@ void arrange_stack(sInfo* info, int top)
     }
 }
 
-string skip_block(sInfo* info=info)
+string skip_block(sInfo* info=info, bool return_self_at_last=false)
 {
     char* head = info.p;
     if(*info->p == '{') {
@@ -679,13 +679,20 @@ string skip_block(sInfo* info=info)
     
     char* tail = info.p;
     
-    char*% buf = new char[tail-head+1];
-    memcpy(buf, head, tail-head);
-    buf[tail-head] = '\0';
+    buffer*% buf = new buffer();
+    
+    buf.append(head, tail-head-1);
+    
+    if(return_self_at_last) {
+        buf.append_str("return self; }");
+    }
+    else {
+        buf.append_str("}");
+    }
     
     skip_spaces_and_lf();
     
-    return string(buf);
+    return buf.to_string();
 }
 
 string,string parse_function_attribute(sInfo* info=info)
@@ -2067,6 +2074,8 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
                     , param_types
                     , param_names, param_default_parametors, false@external
                     , var_args, block, true@static_, info, false@inline_, false@uniq_, false@generate_, const_fun:const_fun);
+                    
+    fun->mGenericsFun = true;
     
     info.funcs.insert(string(fun_name), fun);
     
@@ -2188,6 +2197,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
                     , clone param_types
                     , param_names, param_default_parametors, false@external
                     , var_args, block, true@static_, info, false@inline_, false@uniq_, false@generate_);
+    fun->mGenericsFun = true;
     
     info.funcs.insert(string(fun_name), fun);
     
@@ -2426,8 +2436,6 @@ sNode*% parse_function(sInfo* info)
             fun_name = string(new_fun_name);
         }
         
-        sBlock*% block = parse_block(in_function:true, info, no_block_level:false, return_self_at_last:constructor_);
-        
         bool static_fun = false;
         if(result_type->mStatic) {
             result_type->mStatic = false;
@@ -2458,33 +2466,73 @@ sNode*% parse_function(sInfo* info)
             uniq_fun = true;
         }
         
-        var fun = new sFun(string(fun_name), result_type, param_types
-                                , param_names
-                                , param_default_parametors
-                                , false@external, var_args, clone block
-                                , static_fun@static_
-                                , info, inline_fun, uniq_fun, false@generate_fun, attribute, fun_attribute, const_fun:const_fun);
-        
-        
-        if(info.output_header_file) {
-            if(!result_type->mStatic && !info->no_output_come_code) {
-                string header = make_come_header_function(fun, base_fun_name@base_fun_name, obj_type2@impl_type, version, info);
-                string id = string(fun_name);
-                add_come_code_at_come_header(info, id, "%s", header);
+        if(uniq_fun) {
+            string generics_sname = string(info.sname);
+            int generics_sline = info.sline;
+            
+            string block = skip_block(info, return_self_at_last:constructor_);
+            
+            var fun = new sFun(string(fun_name), result_type, param_types
+                                    , param_names
+                                    , param_default_parametors
+                                    , false@external, var_args, null
+                                    , static_fun@static_
+                                    , info, inline_fun, uniq_fun, false@generate_fun, attribute, fun_attribute
+                                    , const_fun:const_fun, text_block:block, generics_sname:generics_sname, generics_sline:generics_sline);
+            
+            if(info.output_header_file) {
+                if(!result_type->mStatic && !info->no_output_come_code) {
+                    string header = make_come_header_function(fun, base_fun_name@base_fun_name, obj_type2@impl_type, version, info);
+                    string id = string(fun_name);
+                    add_come_code_at_come_header(info, id, "%s", header);
+                }
             }
-        }
-    
-        if(info.in_class) {
-            info.funcs.insert(string(fun_name), fun);
+        
+            if(info.in_class) {
+                info.funcs.insert(string(fun_name), fun);
+                info.uniq_funcs.insert(string(fun_name), fun);
+            }
+            else {
+                //var fun2 = info.funcs[string(fun_name)];
+                //if(fun2 == null || fun2.mExternal) {
+                    info.funcs.insert(string(fun_name), fun);
+                    info.uniq_funcs.insert(string(fun_name), fun);
+                //}
+            }
+        
+            return new sFunNode(fun, info) implements sNode;
         }
         else {
-            //var fun2 = info.funcs[string(fun_name)];
-            //if(fun2 == null || fun2.mExternal) {
+            sBlock*% block = parse_block(in_function:true, info, no_block_level:false, return_self_at_last:constructor_);
+            
+            var fun = new sFun(string(fun_name), result_type, param_types
+                                    , param_names
+                                    , param_default_parametors
+                                    , false@external, var_args, clone block
+                                    , static_fun@static_
+                                    , info, inline_fun, uniq_fun, false@generate_fun, attribute, fun_attribute, const_fun:const_fun);
+            
+            
+            if(info.output_header_file) {
+                if(!result_type->mStatic && !info->no_output_come_code) {
+                    string header = make_come_header_function(fun, base_fun_name@base_fun_name, obj_type2@impl_type, version, info);
+                    string id = string(fun_name);
+                    add_come_code_at_come_header(info, id, "%s", header);
+                }
+            }
+        
+            if(info.in_class) {
                 info.funcs.insert(string(fun_name), fun);
-            //}
+            }
+            else {
+                //var fun2 = info.funcs[string(fun_name)];
+                //if(fun2 == null || fun2.mExternal) {
+                    info.funcs.insert(string(fun_name), fun);
+                //}
+            }
+        
+            return new sFunNode(fun, info) implements sNode;
         }
-    
-        return new sFunNode(fun, info) implements sNode;
     }
     else if(xisalpha(*info->p) || *info->p == '_' || *info->p == ';') {
         if(version > 0) {
@@ -2731,6 +2779,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
                             , false@external, false@var_args, block
                             , true@static_
                             , info, false@inline_, false@uniq_, false@generate_);
+                fun->mGenericsFun = true;
                             
                 info.funcs.insert(string(name), fun);
                 
@@ -2850,6 +2899,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
                         , false@external, false@var_args, block
                         , true@static_
                         , info, false@inline_, false@uniq_, true@genereate_);
+            fun->mGenericsFun = true;
                         
             info.funcs.insert(string(name), fun);
         
@@ -2987,6 +3037,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
                             , false@external, false@var_args, block
                             , true@static_
                             , info, false@inline_, false@uniq_, true@gnereate_);
+            fun->mGenericsFun = true;
                             
             info.funcs.insert(string(name), fun);
         
@@ -3121,6 +3172,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
                         , false@external, false@var_args, block
                         , true@static_
                         , info, false@inline_, false@uniq_, false@generate_);
+            fun->mGenericsFun = true;
                         
             info.funcs.insert(string(name), fun);
         
@@ -3240,6 +3292,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
                         , false@external, false@var_args, block
                         , true@static_
                         , info, false@inline_, false@uniq_, false@genereate_);
+            fun->mGenericsFun = true;
                         
             info.funcs.insert(string(name), fun);
         
@@ -3458,6 +3511,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
                         , false@external, false@var_args, block
                         , true@static_
                         , info, false@inline_, false@uniq_, false@generate_);
+            fun->mGenericsFun = true;
                         
             info.funcs.insert(string(name), fun);
             
@@ -3596,6 +3650,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , false@external, false@var_args, block
                             , true@static_
                             , info, false@inline_, false@uniq_, true@generate_);
+            fun->mGenericsFun = true;
                             
             info.funcs.insert(string(name), fun);
             
@@ -3789,6 +3844,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
                             , false@external, false@var_args, block
                             , true@static_
                             , info, false@inline_, false@uniq_, false@generate_);
+            fun->mGenericsFun = true;
                             
             info.funcs.insert(string(name), fun);
             
@@ -3948,6 +4004,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
                             , false@external, false@var_args, block
                             , true@static_
                             , info, false@inline_, false@uniq_, true@generate_);
+            fun->mGenericsFun = true;
                             
             info.funcs.insert(string(name), fun);
             
@@ -3982,3 +4039,87 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
     return (get_hash_key_fun, real_fun_name);
 }
 
+sFun*% compile_uniq_function(sFun* fun, sInfo* info=info)
+{
+    sFun* caller_fun = info->caller_fun;
+    info->caller_fun = info->come_fun;
+    int caller_line = info->caller_line;
+    info->caller_line = info->sline;
+    char* caller_sname = info->caller_sname;
+    info->caller_sname = info->sname;
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info->comma_instead_of_semicolon = false;
+    bool without_semicolon = info->without_semicolon;
+    info->without_semicolon = false;
+    
+    string last_code = info.module.mLastCode;
+    info.module.mLastCode = null;
+    string last_code2 = info.module.mLastCode2;
+    info.module.mLastCode2 = null;
+    
+    string sname_top = string(info->sname);
+    int sline_top = info->sline;
+    
+    sType*% result_type = fun->mResultType;
+    
+    list<sType*%>*% param_types = new list<sType*%>();
+    foreach(it, fun->mParamTypes) {
+        param_types.add(clone it);
+    }
+    list<string>*% param_names = clone fun->mParamNames;
+    
+    var param_default_parametors = clone fun->mParamDefaultParametors;
+    
+    char* p = info.p;
+    int sline = info.sline;
+    string sname = info.sname;
+    char* head = info.head;
+    buffer*% source = info.source;
+    
+    info.source = fun.mTextBlock.to_buffer();
+    info.p = info.source.buf;
+    info.head = info.source.buf;
+    
+    info.sline = fun->mTextBlockSline;
+    info.sname = fun->mTextBlockSName;
+    
+    sBlock*% block = parse_block(in_function:true);
+    
+    info.head = head;
+    info.source = source;
+    info.p = p;
+    info.sline = sline;
+    info.sname = sname;
+    
+    result_type->mInline = false;
+    result_type->mStatic = false;
+    result_type->mUniq = false;
+    
+    bool const_fun = fun->mConstFun;
+    
+    bool var_args = fun.mVarArgs;
+    var fun2 = new sFun(fun->mName, result_type
+                    , param_types
+                    , param_names, param_default_parametors, false@external
+                    , var_args, block, false@static_, info, false@inline_, true@uniq_, false@generate_, const_fun:const_fun);
+    
+    sNode*% node = new sFunNode(fun2, info) implements sNode;
+    
+    node_compile(node).elif {
+        return null;
+    }
+    
+    info->sname = string(sname_top);
+    info->sline = sline_top;
+    
+    info.module.mLastCode = last_code;
+    info.module.mLastCode2 = last_code2;
+    
+    info->caller_fun = caller_fun;
+    info->caller_line = caller_line;
+    info->caller_sname = caller_sname;
+    info->comma_instead_of_semicolon = comma_instead_of_semicolon;
+    info->without_semicolon = without_semicolon;
+    
+    return fun2;
+}

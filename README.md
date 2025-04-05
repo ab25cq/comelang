@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 31.0.0
+version 31.0.1
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+31.0.1 uniq class
 31.0.0 New exception coming with simply way. It's simple and convinient. Well, I can feel this projects the end. If I can, more make simplify self host codes.
 30.0.0 Remove exception. If my concentrate will continue, rescue method call implement for convinient returning tuple2 function. Allmost project the end.
 26.0.0 heap alignment bug fiexed.

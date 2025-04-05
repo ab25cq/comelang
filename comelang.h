@@ -3058,7 +3058,7 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
         return self;
     }
     
-    va_list args;
+    va_list` args;
     va_start(args, msg);
     char* result;
     int len = vasprintf(&result, msg, args);
@@ -4060,7 +4060,7 @@ uniq string xsprintf(char* msg, ...)
     if(msg == null) {
         return string("");
     }
-    va_list args;
+    va_list` args;
     va_start(args, msg);
     char* result;
     int len = vasprintf(&result, msg, args);
@@ -4599,7 +4599,7 @@ uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
     }
     char msg2[1024*2*2*2];
 
-    va_list args;
+    va_list` args;
     va_start(args, msg);
     vsnprintf(msg2, 1024*2*2*2, msg, args);
     va_end(args);
@@ -4739,7 +4739,7 @@ uniq string char*::printf(char* self, ...)
     }
     char* msg2;
 
-    va_list args;
+    va_list` args;
     va_start(args, self);
     vasprintf(&msg2,self,args);
     va_end(args);

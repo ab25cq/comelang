@@ -929,6 +929,15 @@ bool output_source_file(sInfo* info)
         }
     }
     
+    if(main_module) {
+        foreach(it, info.uniq_funcs) {
+            sFun* it2 = info.uniq_funcs[string(it)];
+            sFun*% new_fun = compile_uniq_function(it2, info);
+            
+            info.funcs.put(string(it), new_fun);
+        }
+    }
+    
     /// go ///
     string output_file_name = xsprintf("%s.c", info.sname);
     
@@ -959,7 +968,7 @@ bool output_source_file(sInfo* info)
         if(it2->mInline) {
         }
         else if(it !== "__builtin_va_start" && it !== "__builtin_va_end") {
-            fprintf(f, "%s", header, it);
+            fprintf(f, "%s", header);
         }
     }
     
@@ -986,7 +995,6 @@ bool output_source_file(sInfo* info)
     fprintf(f, "// body function\n");
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[string(it)];
-        int n = it2->mSourceHead.to_string().length() + it2->mSourceHead2.to_string().length() + it2->mSource.to_string().length();
         
         if(it2->mExternal) {
         }
@@ -1002,6 +1010,83 @@ bool output_source_file(sInfo* info)
             fprintf(f, "\n");
         }
     }
+    
+/*
+    fprintf(f, "// body function\n");
+    foreach(it, info.funcs) {
+        sFun* it2 = info.funcs[string(it)];
+        
+        if(it2->mExternal) {
+        }
+        else if(main_module && it2->mUniq) {
+        }
+        else if(!main_module && it2->mUniq) {
+        }
+        else if(it2->mInline) {
+        }
+        else if(it2->mGenericsFun) {
+        }
+        else {
+            string output = output_function(it2, info);
+            
+            fprintf(f, "%s", output);
+            
+            fprintf(f, "\n");
+        }
+    }
+    fprintf(f, "// header generics function\n");
+    foreach(it, info.funcs) {
+        sFun* it2 = info.funcs[string(it)];
+        
+        if(it2->mExternal) {
+        }
+        else if(main_module && it2->mUniq) {
+        }
+        else if(!main_module && it2->mUniq) {
+        }
+        else if(it2->mInline) {
+        }
+        else if(it2->mGenericsFun) {
+            string header = header_function(it2, info);
+            
+            fprintf(f, "%s", header);
+            
+            fprintf(f, "\n");
+        }
+        else {
+        }
+    }
+    fprintf(f, "// generics function\n");
+    foreach(it, info.funcs) {
+        sFun* it2 = info.funcs[string(it)];
+        
+        if(it2->mExternal) {
+        }
+        else if(main_module && it2->mUniq) {
+        }
+        else if(!main_module && it2->mUniq) {
+        }
+        else if(it2->mInline) {
+        }
+        else if(it2->mGenericsFun) {
+            string output = output_function(it2, info);
+            
+            fprintf(f, "%s", output);
+            
+            fprintf(f, "\n");
+        }
+        else {
+        }
+    }
+    fprintf(f, "// uniq function\n");
+    foreach(it, uniq_funcs) {
+        string output = output_function(it, info);
+        
+        fprintf(f, "%s", output);
+        
+        fprintf(f, "\n");
+    }
+*/
     
     fclose(f);
     

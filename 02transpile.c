@@ -1018,6 +1018,7 @@ int come_main(int argc, char** argv)
         info.linker_option = linker_option.to_string();
         info.no_output_err = false;
         info.funcs = new map<string, sFun*%>();
+        info.uniq_funcs = new map<string, sFun*%>();
         info.struct_definition = new map<string, buffer*%>();
         info.uniq_definition = new map<string, string>();
         info.previous_struct_definition = new map<string, buffer*%>();
@@ -1136,6 +1137,7 @@ int come_main(int argc, char** argv)
             info.linker_option = linker_option.to_string();
             info.no_output_err = false;
             info.funcs = new map<string, sFun*%>();
+            info.uniq_funcs = new map<string, sFun*%>();
             info.struct_definition = new map<string, buffer*%>();
             info.uniq_definition = new map<string, string>();
             info.previous_struct_definition = new map<string, buffer*%>();
