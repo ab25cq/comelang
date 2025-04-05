@@ -35,7 +35,6 @@ interface sNode
     string kind();
 };
 
-
 uniq class sClass 
 {
     bool mStruct;
@@ -758,13 +757,9 @@ module sCurrentNodeModule
 };
 
 /////////////////////////////////////////////////////////////////////
-/// 01main.c ///
-/////////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////////
 /// 02transpile.c ///
 /////////////////////////////////////////////////////////////////////
-int err_msg(sInfo* info, char* msg, ...);
+exception int err_msg(sInfo* info, char* msg, ...);
 int expected_next_character(char c, sInfo* info=info);;
 bool node_compile(sNode* node, sInfo* info=info);
 bool node_condional_compile(sNode* node, sInfo* info=info);

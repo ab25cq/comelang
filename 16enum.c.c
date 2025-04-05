@@ -826,6 +826,12 @@ struct sNodeBase
     int sline_real;
 };
 
+struct tuple2$2int$bool$
+{
+    int v1;
+    _Bool v2;
+};
+
 struct tuple2$2sType$phchar$ph
 {
     struct sType* v1;
@@ -1526,7 +1532,7 @@ int sNodeBase_sline(struct sNodeBase* self, struct sInfo* info);
 int sNodeBase_sline_real(struct sNodeBase* self, struct sInfo* info);
 _Bool sNodeBase_terminated(struct sNodeBase* self);
 char* sNodeBase_sname(struct sNodeBase* self, struct sInfo* info);
-int err_msg(struct sInfo* info, char* msg, ...);
+struct tuple2$2int$bool$* err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);

@@ -6,7 +6,6 @@ int main(int argc, char** argv)
     return come_main(argc, argv);
 }
 
-
 bool strmemcmp(char* p, char* p2)
 {
     bool terminated = false;

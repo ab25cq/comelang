@@ -4123,3 +4123,230 @@ sFun*% compile_uniq_function(sFun* fun, sInfo* info=info)
     
     return fun2;
 }
+
+bool create_equals_method(sType* type, sInfo* info)
+{
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
+    }
+    string result = null
+    var stack_saved = info.stack;
+    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    
+    sClass* klass = type->mClass;
+    
+    char* class_name = klass->mName;
+
+    char* fun_name = "equals";
+    
+    sType*% type2 = clone type;
+    type2->mHeap = false;
+    
+    sFun* cloner = NULL;
+    string fun_name2;
+    if(type->mGenericsTypes.length() > 0) {
+        string none_generics_name = get_none_generics_name(type.mClass.mName);
+        
+        sType*% obj_type = solve_generics(type, info.generics_type, info);
+        
+        fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
+        string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
+        
+        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
+        
+        if(generics_fun) {
+            var name,err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+        
+            if(!err) {
+                return false;
+            }
+            else {
+                cloner = info->funcs[name];
+            }
+        }
+        else {
+            cloner = info->funcs[fun_name2];
+        }
+    }
+    else {
+        fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
+        
+        int i;
+        for(i=FUN_VERSION_MAX-1; i>=1; i--) {
+            string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
+            cloner = info->funcs[new_fun_name];
+            
+            if(cloner) {
+                fun_name2 = string(new_fun_name);
+                break;
+            }
+        }
+        
+        if(cloner == NULL) {
+            cloner = info->funcs[fun_name2];
+        }
+    }
+    
+    if(cloner == NULL && !type->mClass->mProtocol && !type->mClass->mNumber)
+    {
+        var fun,new_fun_name = create_equals_automatically(type, fun_name, info);
+        
+        fun_name2 = new_fun_name;
+        cloner = fun;
+    }
+
+    info.right_value_objects = dummy_heap right_value_objects;
+    info.stack = stack_saved;
+    
+    return true;
+}
+
+bool create_operator_equals_method(sType* type, sInfo* info)
+{
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
+    }
+    string result = null
+    var stack_saved = info.stack;
+    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    
+    sClass* klass = type->mClass;
+    
+    char* class_name = klass->mName;
+
+    char* fun_name = "operator_equals";
+    
+    sType*% type2 = clone type;
+    type2->mHeap = false;
+    
+    sFun* cloner = NULL;
+    string fun_name2;
+    if(type->mGenericsTypes.length() > 0) {
+        string none_generics_name = get_none_generics_name(type.mClass.mName);
+        
+        sType*% obj_type = solve_generics(type, info.generics_type, info);
+        
+        fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
+        string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
+        
+        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
+        
+        if(generics_fun) {
+            var name,err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
+                return false;
+            }
+            cloner = info->funcs[name];
+        }
+        else {
+            cloner = info->funcs[fun_name2];
+        }
+    }
+    else {
+        fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
+        
+        int i;
+        for(i=FUN_VERSION_MAX-1; i>=1; i--) {
+            string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
+            cloner = info->funcs[new_fun_name];
+            
+            if(cloner) {
+                fun_name2 = string(new_fun_name);
+                break;
+            }
+        }
+        
+        if(cloner == NULL) {
+            cloner = info->funcs[fun_name2];
+        }
+    }
+    
+    if(cloner == NULL && !type->mClass->mProtocol && !type->mClass->mNumber)
+    {
+        var fun,new_fun_name = create_operator_equals_automatically(type, fun_name, info);
+        
+        fun_name2 = new_fun_name;
+        cloner = fun;
+    }
+
+    info.right_value_objects = dummy_heap right_value_objects;
+    info.stack = stack_saved;
+    
+    return true;
+}
+
+bool create_operator_not_equals_method(sType* type, sInfo* info)
+{
+    if(type->mNoSolvedGenericsType) {
+        type = type->mNoSolvedGenericsType;
+    }
+    string result = null
+    var stack_saved = info.stack;
+    list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
+    
+    sClass* klass = type->mClass;
+    
+    char* class_name = klass->mName;
+
+    char* fun_name = "operator_not_equals";
+    
+    sType*% type2 = clone type;
+    type2->mHeap = false;
+    
+    sFun* cloner = NULL;
+    string fun_name2;
+    if(type->mGenericsTypes.length() > 0) {
+        string none_generics_name = get_none_generics_name(type.mClass.mName);
+        
+        sType*% obj_type = solve_generics(type, info.generics_type, info);
+        
+        fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
+        string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
+        
+        sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
+        
+        if(generics_fun) {
+            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
+            
+            if(!err) {
+                return false;
+            }
+            cloner = info->funcs[name];
+        }
+        else {
+            cloner = info->funcs[fun_name2];
+        }
+    }
+    else {
+        fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
+        
+        int i;
+        for(i=FUN_VERSION_MAX-1; i>=1; i--) {
+            string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
+            cloner = info->funcs[new_fun_name];
+            
+            if(cloner) {
+                fun_name2 = string(new_fun_name);
+                break;
+            }
+        }
+        
+        if(cloner == NULL) {
+            cloner = info->funcs[fun_name2];
+        }
+    }
+    
+    if(cloner == NULL && !type->mClass->mProtocol && !type->mClass->mNumber)
+    {
+        var fun,new_fun_name = create_operator_not_equals_automatically(type, fun_name, info);
+        
+        fun_name2 = new_fun_name;
+        cloner = fun;
+    }
+
+    info.right_value_objects = dummy_heap right_value_objects;
+    info.stack = stack_saved;
+    
+    return true;
+}

@@ -826,6 +826,12 @@ struct sNodeBase
     int sline_real;
 };
 
+struct tuple2$2int$bool$
+{
+    int v1;
+    _Bool v2;
+};
+
 struct tuple2$2sType$phchar$ph
 {
     struct sType* v1;
@@ -1294,7 +1300,7 @@ int iswctype(unsigned int anonymous_var_nameX729, unsigned long  int anonymous_v
 unsigned int towlower(unsigned int anonymous_var_nameX731);
 unsigned int towupper(unsigned int anonymous_var_nameX732);
 unsigned long  int wctype(const char* anonymous_var_nameX733);
-int err_msg(struct sInfo* info, char* msg, ...);
+struct tuple2$2int$bool$* err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);

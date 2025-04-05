@@ -7,6 +7,11 @@ uniq int fun(int a, int b)
 
 int main(int argc,char** argv)
 {
+    a = 1;
+    b = 2;
+    
+    fun(s"AAA", s"BBB");
     
     return 0;
 }
+

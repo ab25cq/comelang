@@ -826,6 +826,12 @@ struct sNodeBase
     int sline_real;
 };
 
+struct tuple2$2int$bool$
+{
+    int v1;
+    _Bool v2;
+};
+
 struct tuple2$2sType$phchar$ph
 {
     struct sType* v1;
@@ -1510,7 +1516,7 @@ int sNodeBase_sline(struct sNodeBase* self, struct sInfo* info);
 int sNodeBase_sline_real(struct sNodeBase* self, struct sInfo* info);
 _Bool sNodeBase_terminated(struct sNodeBase* self);
 char* sNodeBase_sname(struct sNodeBase* self, struct sInfo* info);
-int err_msg(struct sInfo* info, char* msg, ...);
+struct tuple2$2int$bool$* err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
@@ -1707,6 +1713,7 @@ struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo*
 static struct list$1char$ph* list$1char$ph_reset(struct list$1char$ph* self);
 static void list_item$1char$ph$p_finalize(struct list_item$1char$ph* self);
 static struct list$1char$ph* list$1char$ph_push_back(struct list$1char$ph* self, char* item);
+static void tuple2$2int$bool$$p_finalize(struct tuple2$2int$bool$* self);
 static void sType_finalize(struct sType* self);
 static void list$1sType$ph$p_finalize(struct list$1sType$ph* self);
 static void list_item$1sType$ph$p_finalize(struct list_item$1sType$ph* self);
@@ -1727,29 +1734,31 @@ char* word_1;
 void* __right_value1 = (void*)0;
 char* generics_name_4;
 void* __right_value5 = (void*)0;
-int pointer_num_8;
 void* __right_value6 = (void*)0;
+int pointer_num_8;
 void* __right_value7 = (void*)0;
+void* __right_value8 = (void*)0;
 struct sType* __dec_obj4;
 char* head_15;
-void* __right_value8 = (void*)0;
-char* buf_16;
 void* __right_value9 = (void*)0;
+char* buf_16;
+void* __right_value10 = (void*)0;
 struct sNode* node_17;
 struct sType* impl_type_18;
 struct sType* __dec_obj5;
 _Bool Value_19;
+void* __right_value11 = (void*)0;
 struct sType* __dec_obj6;
 struct sType* __dec_obj7;
 char* source_tail_20;
-void* __right_value10 = (void*)0;
-void* __right_value11 = (void*)0;
-struct buffer* header_21;
 void* __right_value12 = (void*)0;
-char* anonymous_name_23;
 void* __right_value13 = (void*)0;
-struct sNode* __result_obj__3;
+struct buffer* header_21;
 void* __right_value14 = (void*)0;
+char* anonymous_name_23;
+void* __right_value15 = (void*)0;
+struct sNode* __result_obj__3;
+void* __right_value16 = (void*)0;
 struct sNode* __result_obj__4;
     if(    !gComeC&&charp_operator_equals(buf,"impl")) {
         source_head_0=info->p;
@@ -1772,7 +1781,8 @@ struct sNode* __result_obj__4;
                     break;
                 }
                 else {
-                    err_msg(info,"invalid character on impl (%c)",*info->p);
+                    ((struct tuple2$2int$bool$*)(__right_value6=err_msg(info,"invalid character on impl (%c)",*info->p)));
+                    /*c*/ come_call_finalizer3(__right_value6,tuple2$2int$bool$$p_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
                     exit(2);
                 }
                 (generics_name_4 = come_decrement_ref_count(generics_name_4, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
@@ -1808,7 +1818,8 @@ struct sNode* __result_obj__4;
             if(            node_17!=((void*)0)) {
                 Value_19=node_compile(node_17,info);
                 if(                !Value_19) {
-                    err_msg(info,"compiling is faield(Y)");
+                    ((struct tuple2$2int$bool$*)(__right_value11=err_msg(info,"compiling is faield(Y)")));
+                    /*c*/ come_call_finalizer3(__right_value11,tuple2$2int$bool$$p_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
                     exit(2);
                 }
                 else {
@@ -1834,8 +1845,8 @@ struct sNode* __result_obj__4;
         if(        info->output_header_file) {
             static int n_22=0;
             anonymous_name_23=(char*)come_increment_ref_count(xsprintf("annymous_impl_name_%d",n_22++));
-            add_come_code_at_come_header(info,anonymous_name_23,"impl %s\n",((char*)(__right_value13=buffer_to_string(header_21))));
-            (__right_value13 = come_decrement_ref_count(__right_value13, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
+            add_come_code_at_come_header(info,anonymous_name_23,"impl %s\n",((char*)(__right_value15=buffer_to_string(header_21))));
+            (__right_value15 = come_decrement_ref_count(__right_value15, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             (anonymous_name_23 = come_decrement_ref_count(anonymous_name_23, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         }
         __result_obj__3 = (struct sNode*)come_increment_ref_count((struct sNode*)((void*)0));
@@ -1846,8 +1857,8 @@ struct sNode* __result_obj__4;
         (word_1 = come_decrement_ref_count(word_1, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         /*c*/ come_call_finalizer3(header_21,buffer_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
     }
-    __result_obj__4 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value14=top_level_v92(buf,head,head_sline,info))));
-    ((__right_value14) ? __right_value14 = come_decrement_ref_count(__right_value14, ((struct sNode*)__right_value14)->finalize, ((struct sNode*)__right_value14)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,0/*force_delete*/, (void*)0):(void*)0);
+    __result_obj__4 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value16=top_level_v92(buf,head,head_sline,info))));
+    ((__right_value16) ? __right_value16 = come_decrement_ref_count(__right_value16, ((struct sNode*)__right_value16)->finalize, ((struct sNode*)__right_value16)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,0/*force_delete*/, (void*)0):(void*)0);
     ((__result_obj__4) ? __result_obj__4 = come_decrement_ref_count(__result_obj__4, ((struct sNode*)__result_obj__4)->finalize, ((struct sNode*)__result_obj__4)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,0/*force_delete*/, (void*)0):(void*)0);
     return __result_obj__4;
 }
@@ -1920,6 +1931,9 @@ struct list$1char$ph* __result_obj__2;
     __result_obj__2 = self;
     (item = come_decrement_ref_count(item, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     return __result_obj__2;
+}
+
+static void tuple2$2int$bool$$p_finalize(struct tuple2$2int$bool$* self){
 }
 
 static void sType_finalize(struct sType* self){

@@ -58,6 +58,7 @@ class sStoreNode extends sNodeBase
                 
                 if(var_ == null) {
                     err_msg(info, "var not found(%s)(ZY) at definition of variable", it);
+                    return true;
                 }
                 
                 sType*% left_type = clone var_->mType;
@@ -209,6 +210,7 @@ class sStoreNode extends sNodeBase
                 
                 if(var_ == null) {
                     err_msg(info, "var not found(%s)(Y) at definition of variable", self.name);
+                    return true;
                 }
             }
             
@@ -569,6 +571,7 @@ class sStoreNode extends sNodeBase
                 
                 if(var_ == null) {
                     err_msg(info, "var not found(%s)(X) at storing variable", self.name);
+                    return true;
                 }
             }
             
@@ -877,6 +880,7 @@ class sLoadNode extends sNodeBase
                 }
                 else {
                     err_msg(info, "var not found(%s)(Z) at loading variable", self.name);
+                    return true;
                 }
             }
         }
