@@ -310,7 +310,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind
+	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 
