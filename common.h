@@ -57,7 +57,6 @@ uniq class sClass
     string mParentClassName;
     
     string mAttribute;
-    bool mDynamic;
     
     new(string name, bool number=false, bool union_=false, bool generics=false, bool method_generics=false, bool protocol_=false, bool struct_=false, bool float_=false, int generics_num=-1, int method_generics_num=-1, bool enum_=false, bool uniq_=false, sInfo* info=info)
     {
@@ -90,9 +89,6 @@ uniq class sType
     
     list<sType*%>*% mGenericsTypes;
     sType*% mNoSolvedGenericsType;
-    
-    bool mAnyClass;
-    sType*% mAnyOriginalType;
     
     sNode*% mSizeNum;
     sNode*% mAlignas;
