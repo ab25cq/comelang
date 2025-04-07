@@ -810,7 +810,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
 sType*%, string clone_object(sType* type, char* obj, sInfo* info);
 void free_right_value_objects(sInfo* info, bool comma=false);
 void free_objects(sVarTable* table, sVar* ret_value, sInfo* info);
-void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null);
+void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null);
         
 void remove_object_from_right_values(int right_value_num, sInfo* info);
 string increment_ref_count_object(sType* type, char* obj, sInfo* info);

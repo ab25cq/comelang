@@ -283,7 +283,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
 
 int gRightValueNum = 0;
 
-void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null)
+void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null)
 {
     if(gComeGC || gComeC) {
         return ;
@@ -301,9 +301,9 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
     new_value.mBlockLevel = info->block_level;
     new_value.mDecrementRefCount = decrement_ref_count;
     
-    if(obj_value) {
+    if(obj_type) {
         new_value.mObjType = obj_type;
-        new_value.mObjValue = string(obj_value);
+        new_value.mObjValue = string(new_value.mVarName);
         
         if(!type->mHeap) {
             new_value.mNoFree = true;

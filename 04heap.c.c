@@ -1734,7 +1734,7 @@ struct sType* solve_method_generics(struct sType* type, struct sInfo* info);
 static void list$1sType$ph$p_operator_store_element(struct list$1sType$ph* self, int position, struct sType* item);
 static struct list$1sType$ph* list$1sType$ph_replace(struct list$1sType$ph* self, int position, struct sType* item);
 static void list$1sType$ph_operator_store_element(struct list$1sType$ph* self, int position, struct sType* item);
-void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value);
+void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type);
 static struct list$1sRightValueObject$ph* list$1sRightValueObject$ph_push_back(struct list$1sRightValueObject$ph* self, struct sRightValueObject* item);
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 static struct list$1sRightValueObject$ph* list$1sRightValueObject$ph_delete(struct list$1sRightValueObject$ph* self, int head, int tail);
@@ -3196,7 +3196,7 @@ static void list$1sType$ph_operator_store_element(struct list$1sType$ph* self, i
     /*c*/ come_call_finalizer3(item,sType_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
 }
 
-void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value){
+void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type){
 void* __right_value68 = (void*)0;
 struct sRightValueObject* new_value_113;
 struct sType* __dec_obj39;
@@ -3237,12 +3237,12 @@ char* __dec_obj48;
     __dec_obj41 = come_decrement_ref_count(__dec_obj41, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
     new_value_113->mBlockLevel=info->block_level;
     new_value_113->mDecrementRefCount=decrement_ref_count;
-    if(    obj_value) {
+    if(    obj_type) {
         __dec_obj42=new_value_113->mObjType,
         new_value_113->mObjType=(struct sType*)come_increment_ref_count(obj_type);
         /*b*/ come_call_finalizer3(__dec_obj42,sType_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);
         __dec_obj43=new_value_113->mObjValue,
-        new_value_113->mObjValue=(char*)come_increment_ref_count(__builtin_string(obj_value));
+        new_value_113->mObjValue=(char*)come_increment_ref_count(__builtin_string(new_value_113->mVarName));
         __dec_obj43 = come_decrement_ref_count(__dec_obj43, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
         if(        !type->mHeap) {
             new_value_113->mNoFree=(_Bool)1;

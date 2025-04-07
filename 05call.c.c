@@ -1738,7 +1738,7 @@ void free_object(struct sType* type, char* obj, _Bool no_decrement, _Bool no_fre
 struct tuple2$2sType$phchar$ph* clone_object(struct sType* type, char* obj, struct sInfo* info);
 void free_right_value_objects(struct sInfo* info, _Bool comma);
 void free_objects(struct sVarTable* table, struct sVar* ret_value, struct sInfo* info);
-void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value);
+void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type);
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 char* increment_ref_count_object(struct sType* type, char* obj, struct sInfo* info);
 void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* info, _Bool force_delete_, _Bool no_free);
@@ -5823,7 +5823,7 @@ memset(&i_311, 0, sizeof(int));
         come_value_215->type->mStatic=(_Bool)0;
         come_value_215->var=((void*)0);
         if(        lambda_type_185->mResultType->mHeap) {
-            append_object_to_right_values2(come_value_215,(struct sType*)come_increment_ref_count(lambda_type_185->mResultType),info,(_Bool)0,((void*)0),((void*)0));
+            append_object_to_right_values2(come_value_215,(struct sType*)come_increment_ref_count(lambda_type_185->mResultType),info,(_Bool)0,((void*)0));
         }
         add_come_last_code(info,"%s",come_value_215->c_value);
         list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_215));
@@ -6874,7 +6874,7 @@ memset(&i_311, 0, sizeof(int));
     come_value_422->type->mImmutable=(_Bool)0;
     come_value_422->var=((void*)0);
     if(    fun_322->mResultType->mHeap) {
-        append_object_to_right_values2(come_value_422,(struct sType*)come_increment_ref_count(result_type_337),info,(_Bool)0,((void*)0),((void*)0));
+        append_object_to_right_values2(come_value_422,(struct sType*)come_increment_ref_count(result_type_337),info,(_Bool)0,((void*)0));
     }
     if(    string_operator_not_equals(info->come_fun->mName,"come_alloc_mem_from_heap_pool")&&string_operator_not_equals(info->come_fun->mName,"come_calloc")&&string_operator_not_equals(info->come_fun->mName,"come_calloc_v2")&&string_operator_not_equals(info->come_fun->mName,"come_free_mem_of_heap_pool")&&string_operator_not_equals(info->come_fun->mName,"come_free")&&string_operator_not_equals(info->come_fun->mName,"come_free_v2")) {
         if(        string_operator_not_equals(fun_name_180,"come_alloc_mem_from_heap_pool")&&string_operator_not_equals(fun_name_180,"null_check")&&string_operator_not_equals(fun_name_180,"come_push_stackframe")&&string_operator_not_equals(fun_name_180,"come_push_stackframe_v2")&&string_operator_not_equals(fun_name_180,"come_pop_stackframe")&&string_operator_not_equals(fun_name_180,"come_pop_stackframe_v2")) {
@@ -9058,7 +9058,7 @@ _Bool __result_obj__230;
     come_value2_510->c_value=(char*)come_increment_ref_count(buffer_to_string(buf_506));
     __dec_obj179 = come_decrement_ref_count(__dec_obj179, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
     if(    lambda_type_496->mResultType->mHeap) {
-        append_object_to_right_values2(come_value2_510,(struct sType*)come_increment_ref_count(lambda_type_496->mResultType),info,(_Bool)0,((void*)0),((void*)0));
+        append_object_to_right_values2(come_value2_510,(struct sType*)come_increment_ref_count(lambda_type_496->mResultType),info,(_Bool)0,((void*)0));
     }
     __dec_obj180=come_value2_510->type,
     come_value2_510->type=(struct sType*)come_increment_ref_count(sType_clone(result_type_497));

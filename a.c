@@ -1,4 +1,5 @@
 #include <comelang.h>
+#include <comelang-pthread.h>
 
 struct sData<T>
 {
@@ -19,36 +20,11 @@ impl sData<T>
     }
 }
 
-class sData2
-{
-    int a;
-    int b;
-    
-    new() {
-        self.a = 111;
-        self.b = 222;
-    }
-    
-    immutable void fun() {
-        printf("%d %d\n", self.a, self.b);
-    }
-}
-
 int main(int argc,char** argv)
 {
-    immutable sData<int> data;
+    come_mutex<sData<int>*%>*% data = new come_mutex<sData<int>*%>(new sData<int>());
     
-    (&data).fun();
-    
-    val data2 = new sData2();
-    
-    data2.fun();
-    
-    immutable list<int>*% data3 = [1,2,3];
-    
-    data3.add(4);
-    
-    puts(data3.to_string());
+    data.a = 3333;
     
     return 0;
 }

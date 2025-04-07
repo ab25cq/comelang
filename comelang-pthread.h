@@ -133,7 +133,7 @@ impl come_mutex<T>
         block(parent, self.value);
         pthread_mutex_unlock(&self.mutex);
     }
-    T~ lock(come_mutex<T>* self) {
+    T lock(come_mutex<T>* self) {
         pthread_mutex_lock(&self.mutex);
         self.lock = true;
         
@@ -145,6 +145,9 @@ impl come_mutex<T>
         }
     }
     
+    void on_drop(come_mutex<T>* self) {
+        self.unlock();
+    }
     void on_drop(come_mutex<T>* self) {
         self.unlock();
     }

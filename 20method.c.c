@@ -1588,7 +1588,7 @@ void free_object(struct sType* type, char* obj, _Bool no_decrement, _Bool no_fre
 struct tuple2$2sType$phchar$ph* clone_object(struct sType* type, char* obj, struct sInfo* info);
 void free_right_value_objects(struct sInfo* info, _Bool comma);
 void free_objects(struct sVarTable* table, struct sVar* ret_value, struct sInfo* info);
-void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value);
+void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type);
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 char* increment_ref_count_object(struct sType* type, char* obj, struct sInfo* info);
 void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* info, _Bool force_delete_, _Bool no_free);
@@ -5887,7 +5887,7 @@ _Bool __result_obj__168;
             return __result_obj__147;
         }
         if(        result_type2_316->mHeap) {
-            append_object_to_right_values2(come_value2_315,(struct sType*)come_increment_ref_count(result_type2_316),info,(_Bool)0,((void*)0),((void*)0));
+            append_object_to_right_values2(come_value2_315,(struct sType*)come_increment_ref_count(result_type2_316),info,(_Bool)0,((void*)0));
         }
         add_come_last_code(info,"%s",come_value2_315->c_value);
         list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value2_315));
@@ -6439,7 +6439,7 @@ _Bool __result_obj__168;
         come_value2_405->type->mStatic=(_Bool)0;
         come_value2_405->type->mImmutable=(_Bool)0;
         if(        result_type2_346->mHeap) {
-            append_object_to_right_values2(come_value2_405,(struct sType*)come_increment_ref_count(result_type2_346),info,(_Bool)0,(struct sType*)come_increment_ref_count(obj_type_220),((void*)0));
+            append_object_to_right_values2(come_value2_405,(struct sType*)come_increment_ref_count(result_type2_346),info,(_Bool)0,(struct sType*)come_increment_ref_count(obj_type_220));
         }
         __dec_obj100=come_value2_405->c_value,
         come_value2_405->c_value=(char*)come_increment_ref_count(append_stackframe(come_value2_405->c_value,come_value2_405->type,info));
