@@ -77,7 +77,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool immutable_ = type->mImmutable;
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
-        bool deffer_right_value = type->mDefferRightValue;
         bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
         
@@ -92,9 +91,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         }
         if(guard_) {
             result->mGuardValue = guard_;
-        }
-        if(deffer_right_value) {
-            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
         }
         if(no_heap) {
             result->mNoHeap = true;
@@ -140,7 +136,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             bool immutable_ = type->mImmutable;
             int pointer_num = type->mPointerNum;
             bool heap = type->mHeap;
-            bool deffer_right_value = type->mDefferRightValue;
             bool guard_ = type->mGuardValue;
             
             bool no_heap = type->mNoHeap;
@@ -154,9 +149,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
 
             if(heap) {
                 result->mHeap = heap;
-            }
-            if(deffer_right_value) {
-                result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
             }
             if(exception_) {
                 result->mException = exception_;
@@ -230,7 +222,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool immutable_ = type->mImmutable;
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
-        bool deffer_right_value = type->mDefferRightValue;
         bool guard_ = type->mGuardValue;
         
         bool no_heap = type->mNoHeap;
@@ -240,9 +231,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         
         result = clone info->method_generics_types[generics_number];
 
-        if(deffer_right_value) {
-            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
-        }
         if(heap) {
             result->mHeap = heap || result->mHeap;
         }

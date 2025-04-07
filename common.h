@@ -112,7 +112,6 @@ uniq class sType
     bool mRestrict;
     bool mImmutable;
     bool mHeap;
-    bool mDefferRightValue;
     bool mChannel;
     bool mNoHeap;
     bool mNoCallingDestructor;

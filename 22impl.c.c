@@ -440,7 +440,6 @@ struct sType
     _Bool mRestrict;
     _Bool mImmutable;
     _Bool mHeap;
-    _Bool mDefferRightValue;
     _Bool mChannel;
     _Bool mNoHeap;
     _Bool mNoCallingDestructor;

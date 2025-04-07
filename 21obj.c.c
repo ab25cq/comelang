@@ -440,7 +440,6 @@ struct sType
     _Bool mRestrict;
     _Bool mImmutable;
     _Bool mHeap;
-    _Bool mDefferRightValue;
     _Bool mChannel;
     _Bool mNoHeap;
     _Bool mNoCallingDestructor;
@@ -3047,9 +3046,6 @@ struct sType* __result_obj__28;
         result_24->mHeap=self->mHeap;
     }
     if(    self!=((void*)0)) {
-        result_24->mDefferRightValue=self->mDefferRightValue;
-    }
-    if(    self!=((void*)0)) {
         result_24->mChannel=self->mChannel;
     }
     if(    self!=((void*)0)) {
@@ -3072,7 +3068,7 @@ struct sType* __result_obj__28;
     }
     if(    self!=((void*)0)&&self->mAsmName!=((void*)0)) {
         __dec_obj25=result_24->mAsmName,
-        result_24->mAsmName=(char*)come_increment_ref_count((char*)come_memdup(self->mAsmName, "sType_clone", 37, "char*"));
+        result_24->mAsmName=(char*)come_increment_ref_count((char*)come_memdup(self->mAsmName, "sType_clone", 36, "char*"));
         __dec_obj25 = come_decrement_ref_count(__dec_obj25, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
     }
     if(    self!=((void*)0)) {
@@ -3106,7 +3102,7 @@ struct sType* __result_obj__28;
     }
     if(    self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)) {
         __dec_obj30=result_24->mOriginalTypeName,
-        result_24->mOriginalTypeName=(char*)come_increment_ref_count((char*)come_memdup(self->mOriginalTypeName, "sType_clone", 47, "char*"));
+        result_24->mOriginalTypeName=(char*)come_increment_ref_count((char*)come_memdup(self->mOriginalTypeName, "sType_clone", 46, "char*"));
         __dec_obj30 = come_decrement_ref_count(__dec_obj30, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
     }
     if(    self!=((void*)0)) {
