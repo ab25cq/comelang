@@ -2,7 +2,7 @@
 
 class sStoreNode extends sNodeBase
 {
-    new(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, string attribute=s"", bool comma=false)
+    new(string name, list<string>*% multiple_assign, list<tup: sType*%, string, sNode*%>*% multiple_declare, sType*% type, bool alloc, sNode*% right_value, sInfo* info, string attribute=s"", bool comma=false, bool val_=false)
     {
         self.super();
         
@@ -17,6 +17,7 @@ class sStoreNode extends sNodeBase
         self.multiple_declare = dupe multiple_declare;
         string self.attribute = attribute;
         bool self.comma = comma;
+        bool self.val_ = val_;
     }
     
     string kind()
@@ -307,6 +308,9 @@ class sStoreNode extends sNodeBase
             sType* right_type = right_value.type;
             
             if(self.type == null) {
+                if(self.val_) {
+                    right_type->mImmutable = true;
+                }
                 add_variable_to_table(self.name, clone right_type, info, false@function_param, comma:self.comma);
             }
             else {
@@ -487,6 +491,11 @@ class sStoreNode extends sNodeBase
                     if(parent_var->mFunName !== info.come_fun.mName) {
                         sType* left_type = parent_var->mType;
                         
+                        if(left_type->mImmutable) {
+                            err_msg(info, "Immutable object can't change");
+                            return true;
+                        }
+                        
                         if(left_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mHeap && left_type->mHeap) {
                             check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
                             
@@ -580,6 +589,11 @@ class sStoreNode extends sNodeBase
             }
             
             sType*% left_type = clone var_->mType;
+            
+            if(left_type->mImmutable) {
+                err_msg(info, "Immutable object can't change");
+                return true;
+            }
             
             if((var_->mType->mStatic || var_->mType->mConstant) && !var_->mGlobal) {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
@@ -1372,7 +1386,11 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     parse_sharp();
     sFun* fun = info.funcs[string(buf)]??;
     
-    if((!gComeC && buf === "var") || buf === "auto") {
+    if((!gComeC && (buf === "var" || buf === "val")) || buf === "auto") {
+        bool val_ = false;
+        if(buf === "val") {
+            val_ = true;
+        }
         parse_sharp();
         var buf2 = parse_word();
         parse_sharp();
@@ -1410,7 +1428,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             right_value = post_position_operator(right_value, info);
             parse_sharp();
             
-            sNode*% node = new sStoreNode(string(buf2)@name, multiple_assign, null@multiple_declare, null@type, true@alloc, right_value, info) implements sNode;
+            sNode*% node = new sStoreNode(string(buf2)@name, multiple_assign, null@multiple_declare, null@type, true@alloc, right_value, info, val_:val_) implements sNode;
             info.sline_real = sline_real;
             return node;
         }

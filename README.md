@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 31.0.1
+version 31.1.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+31.1.0 immutable attribute
 31.0.1 uniq class
 31.0.0 New exception coming with simply way. It's simple and convinient. Well, I can feel this projects the end. If I can, more make simplify self host codes.
 30.0.0 Remove exception. If my concentrate will continue, rescue method call implement for convinient returning tuple2 function. Allmost project the end.
@@ -3116,3 +3117,65 @@ int main(int argc,char** argv)
 }
 ```
 a 3
+
+
+# Immutable
+
+```C
+#include <comelang.h>
+
+struct sData<T>
+{
+    T a;
+    T b;
+};
+
+impl sData<T>
+{
+    sData<T>*% initialize(sData<T>*% self) {
+        self.a = 111;
+        self.b = 222;
+        
+        return self;
+    }
+    immutable void fun(sData<T>* self) {
+        printf("%d %d\n", self.a, self.b);
+    }
+}
+
+class sData2
+{
+    int a;
+    int b;
+    
+    new() {
+        self.a = 111;
+        self.b = 222;
+    }
+    
+    immutable void fun() {
+        printf("%d %d\n", self.a, self.b);
+    }
+}
+
+int main(int argc,char** argv)
+{
+    immutable sData<int> data;
+    
+    (&data).fun();
+    
+    val data2 = new sData2();
+    
+    data2.fun();
+    
+    return 0;
+}
+```
+
+immutable put on the head of function definition.
+immutable prohibits the storing fields an the storing array index.
+immutable prohibits the storing variable of self.
+
+immutable convenients for the paralle processing programing.
+
+mutable is default.

@@ -418,6 +418,13 @@ class sMethodCallNode extends sNodeBase
             sType*% result_type = clone lambda_type->mResultType;
             result_type->mStatic = false;
             
+            if(obj_type->mImmutable) {
+                if(!result_type->mImmutable) {
+                    err_msg(info, "Immutable object can't call mutable method(%s)", fun_name);
+                    return true;
+                }
+            }
+            
             list<CVALUE*%>*% come_params = new list<CVALUE*%>();
             
             int i = 0;
@@ -477,6 +484,7 @@ class sMethodCallNode extends sNodeBase
             
             come_value2.type = clone result_type2;
             come_value2.type->mStatic = false;
+            come_value2.type->mImmutable = false;
             come_value2.var = null;
             
             if(self.guard_break && !result_type2->mException) {
@@ -639,6 +647,13 @@ class sMethodCallNode extends sNodeBase
             result_type = solve_generics(result_type, info->generics_type, info);
             
             result_type->mStatic = false;
+            
+            if(obj_type->mImmutable) {
+                if(!result_type->mImmutable) {
+                    err_msg(info, "Immutable object can't call mutable method(%s)", fun_name);
+                    return true;
+                }
+            }
 
             //sType*% result_type2 = solve_generics(result_type, obj_type2, info);
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
@@ -967,6 +982,7 @@ class sMethodCallNode extends sNodeBase
             
             come_value2.type = clone result_type2;
             come_value2.type->mStatic = false;
+            come_value2.type->mImmutable = false;
             
             if(result_type2->mHeap) {
                 append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type);

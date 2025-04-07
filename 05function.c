@@ -2345,6 +2345,14 @@ sNode*% parse_function(sInfo* info)
         info.in_class = true;
     }
     
+    if(result_type->mImmutable) {
+        if(method_definition || info->impl_type || info.class_type) {
+            if(param_types.length() > 0) {
+                param_types[0].mImmutable = true;
+            }
+        }
+    }
+    
     bool const_fun = false;
     
     int version = 0;

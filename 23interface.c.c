@@ -508,6 +508,7 @@ struct sFun
     char* mAttribute;
     char* mFunAttribute;
     _Bool mGenericsFun;
+    _Bool mImmutable;
 };
 
 struct sGenericsFun
@@ -1509,7 +1510,7 @@ char* wchar_t_to_string(unsigned int wc);
 void int_times(int self, void* parent, void (*block)(void*,int));
 struct sClass* sClass_initialize(struct sClass* self, char* name, _Bool number, _Bool union_, _Bool generics, _Bool method_generics, _Bool protocol_, _Bool struct_, _Bool float_, int generics_num, int method_generics_num, _Bool enum_, _Bool uniq_, struct sInfo* info);
 struct sType* sType_initialize(struct sType* self, char* name, _Bool heap, struct sInfo* info);
-struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute, _Bool const_fun, char* text_block, char* generics_sname, int generics_sline);
+struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute, _Bool const_fun, char* text_block, char* generics_sname, int generics_sline, _Bool immutable_);
 struct sGenericsFun* sGenericsFun_initialize(struct sGenericsFun* self, struct sType* impl_type, struct list$1char$ph* generics_type_names, struct list$1char$ph* method_generics_type_names, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool var_args, char* block, struct sInfo* info, char* generics_sname, int generics_sline, _Bool const_fun);
 struct CVALUE* CVALUE_initialize(struct CVALUE* self);
 struct sModule* sModule_initialize(struct sModule* self);
@@ -2982,9 +2983,9 @@ void* __right_value64 = (void*)0;
 default_value_61 = (void*)0;
 default_value_67 = (void*)0;
     size_51=self->size*10;
-    keys_52=(char**)come_increment_ref_count(((char**)(__right_value60=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_51)), "./comelang.h", 2167, "char**"))));
-    items_53=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value61=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_51)), "./comelang.h", 2168, "struct buffer**"))));
-    item_existance_54=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value62=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_51)), "./comelang.h", 2169, "_Bool*"))));
+    keys_52=(char**)come_increment_ref_count(((char**)(__right_value60=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_51)), "./comelang.h", 2153, "char**"))));
+    items_53=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value61=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_51)), "./comelang.h", 2154, "struct buffer**"))));
+    item_existance_54=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value62=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_51)), "./comelang.h", 2155, "_Bool*"))));
     len_55=0;
     for(    it_58=map$2char$phbuffer$ph_begin(self);    !map$2char$phbuffer$ph_end(self);    it_58=map$2char$phbuffer$ph_next(self)    ){
         memset(&default_value_61,0,sizeof(struct buffer*));
@@ -3462,9 +3463,9 @@ void* __right_value73 = (void*)0;
 default_value_105 = (void*)0;
 default_value_111 = (void*)0;
     size_95=self->size*10;
-    keys_96=(char**)come_increment_ref_count(((char**)(__right_value69=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_95)), "./comelang.h", 2167, "char**"))));
-    items_97=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value70=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_95)), "./comelang.h", 2168, "struct sClass**"))));
-    item_existance_98=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value71=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_95)), "./comelang.h", 2169, "_Bool*"))));
+    keys_96=(char**)come_increment_ref_count(((char**)(__right_value69=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_95)), "./comelang.h", 2153, "char**"))));
+    items_97=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value70=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_95)), "./comelang.h", 2154, "struct sClass**"))));
+    item_existance_98=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value71=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_95)), "./comelang.h", 2155, "_Bool*"))));
     len_99=0;
     for(    it_102=map$2char$phsClass$ph_begin(self);    !map$2char$phsClass$ph_end(self);    it_102=map$2char$phsClass$ph_next(self)    ){
         memset(&default_value_105,0,sizeof(struct sClass*));

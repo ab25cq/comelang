@@ -138,6 +138,11 @@ class sStoreFieldNode extends sNodeBase
             }
         }
         
+        if(left_type2->mImmutable) {
+            err_msg(info, "Immutable object can't change the fields");
+            return true;
+        }
+        
         node_compile(right).elif {
             return false;
         }
@@ -727,6 +732,11 @@ class sStoreArrayNode extends sNodeBase
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
         sType* left_type = left_value.type;
+        
+        if(left_type->mImmutable) {
+            err_msg(info, "Immutable object can't change the elements");
+            return true;
+        }
         
         list<CVALUE*%>*% array_num = new list<CVALUE*%>();
         

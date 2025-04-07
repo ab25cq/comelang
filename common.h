@@ -268,7 +268,9 @@ uniq class sFun
     
     bool mGenericsFun;
     
-    new(string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"", bool const_fun=false, string text_block=null, string generics_sname=null, int generics_sline=0)
+    bool mImmutable;
+    
+    new(string name, sType*% result_type, list<sType*%>*% param_types, list<string>*% param_names, list<string>%* param_default_parametors, bool external, bool var_args, sBlock*% block, bool static_, sInfo* info, bool inline_, bool uniq_=false, bool generate_=false, string attribute=s"", string fun_attribute=s"", bool const_fun=false, string text_block=null, string generics_sname=null, int generics_sline=0, bool immutable_=false)
     {
         self.mName = name;
         self.mResultType = result_type;
@@ -313,6 +315,7 @@ uniq class sFun
         
         self.mAttribute = attribute;
         self.mFunAttribute = fun_attribute;
+        self.mImmutable = immutable_;
     }
 };
 

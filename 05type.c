@@ -213,6 +213,15 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     sClass* left_class = left_type2->mClass;
     sClass* right_class = right_type2->mClass;
     
+/*
+    if(left_type->mImmutable)  {
+        if(!right_type->mImmutable) {
+            err_msg(info, "Require right type to immutable");
+            return false;
+        }
+    }
+*/
+    
     bool parent_class = false;
     if(left_class->mName !== right_class->mName) {
         while(left_class && right_class) {
@@ -991,6 +1000,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool inline_ = false;
     bool uniq_ = false;
     bool tuple_ = false;
+    bool immutable_ = false;
     
     sNode*% alignas_ = null;
     
@@ -1094,6 +1104,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else if(type_name === "const") {
             constant = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "immutable") {
+            immutable_ = true;
             
             type_name = parse_word();
         }
@@ -1899,6 +1914,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         result_type->mAtomic = result_type->mAtomic || atomic_;
         result_type->mConstant = result_type->mConstant || constant;
+        result_type->mImmutable = result_type->mImmutable || immutable_;
         result_type->mAlignas = alignas_;
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
@@ -1970,6 +1986,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         
         result_type->mConstant = result_type->mConstant || constant;
+        result_type->mImmutable = result_type->mImmutable || immutable_;
         result_type->mAtomic = result_type->mAtomic || atomic_;
         result_type->mAlignas = alignas_;
         result_type->mRegister = register_;
@@ -2121,6 +2138,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type.mOriginalTypeNameHeap = heap;
             
             type->mConstant = type->mConstant || constant;
+            type->mImmutable = type->mImmutable || immutable_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2149,6 +2167,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             
             type->mConstant = type->mConstant || constant;
+            type->mImmutable = type->mImmutable || immutable_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2177,6 +2196,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             
             type->mConstant = type->mConstant || constant;
+            type->mImmutable = type->mImmutable || immutable_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2248,6 +2268,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
             
             type->mConstant = type->mConstant || constant;
+            type->mImmutable = type->mImmutable || immutable_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2289,6 +2310,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type = new sType(string(type_name));
             
             type->mConstant = type->mConstant || constant;
+            type->mImmutable = type->mImmutable || immutable_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
