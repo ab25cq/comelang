@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 31.2.0
+version 32.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+32.0.0 mutex lock, and unlock finally bellow rule.
 31.1.0 immutable attribute
 31.0.1 uniq class
 31.0.0 New exception coming with simply way. It's simple and convinient. Well, I can feel this projects the end. If I can, more make simplify self host codes.
@@ -3354,6 +3355,49 @@ int main(int argc,char** argv)
     //data3.add(4);
     
     puts(data3.to_string());
+    
+    return 0;
+}
+
+```
+
+finally this is comming.
+
+```
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+struct sData<T>
+{
+    T a;
+    T b;
+};
+
+impl sData<T>
+{
+    sData<T>*% initialize(sData<T>*% self) {
+        self.a = 111;
+        self.b = 222;
+        
+        return self;
+    }
+    immutable void fun(sData<T>* self) {
+        printf("%d %d\n", self.a, self.b);
+    }
+}
+
+int main(int argc,char** argv)
+{
+    come_mutex<sData<int>*%>*% data = new come_mutex<sData<int>*%>(new sData<int>());
+    
+    data.lock().a = 444;  // automaticaly unlock
+    
+    sData<int>*% data2 = data.lock();
+    
+    data2.a = 3333;
+    
+    
+    // cope out , unlock, automatically
     
     return 0;
 }

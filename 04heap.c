@@ -295,7 +295,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
 
 int gRightValueNum = 0;
 
-void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null)
+void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null, sVar* obj_var=null)
 {
     if(gComeGC || gComeC) {
         return ;
@@ -316,6 +316,7 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
     if(obj_value) {
         new_value.mObjType = obj_type;
         new_value.mObjValue = string(obj_value);
+        new_value.mObjVar = obj_var;
         
         if(!type->mHeap) {
             new_value.mNoFree = true;
@@ -506,6 +507,9 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
     }
     if(info->no_output_come_code) {
         return ;
+    }
+    if(type->mDefferRightValue) {
+        on_drop_object(type, obj, info, comma);
     }
     var stack_saved = info.stack;
     list<sRightValueObject*%>* right_value_objects = info.right_value_objects;
@@ -843,6 +847,9 @@ void free_right_value_objects(sInfo* info, bool comma=false)
             if(it->mFunName === info->come_fun->mName && it->mBlockLevel == info->block_level && !it->mStored) {
                 if(it->mObjType) {
                     on_drop_object(it->mObjType, it->mObjValue, info, comma);
+                    sVar* var_ = it->mObjVar;
+                    
+                    var_->mCValueName = null;
                 }
             }
         }

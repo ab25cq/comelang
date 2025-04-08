@@ -853,18 +853,27 @@ class sMethodCallNode extends sNodeBase
             
             
             string saved_obj_value = null
+            sVar* saved_var = null;
             if(result_type2->mDefferRightValue) {
-                static int var_num = 0;
-                string var_name = s"__save_obj_value\{var_num++}";
-                add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(obj_type, var_name));
+                static int n = 0;
+                n++;
+                string var_name = s"deffer_right_value\{n}";
+                sType*% type = clone obj_type;
+                type->mDefferRightValue = true;
+                
+                add_variable_to_table(var_name, type, info, false@function_param, info.comma_instead_of_semicolon@comma);
+                
+                sVar* var_ = get_variable_from_table(info->lv_table, var_name);
+                
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(type, var_->mCValueName));
                 if(info.comma_instead_of_semicolon) {
-                    add_come_code(info, "%s=%s,", var_name, obj_value.c_value);
+                    add_come_code(info, "%s=%s,", var_->mCValueName, obj_value.c_value);
                 }
                 else {
-                    add_come_code(info, "%s=%s;\n", var_name, obj_value.c_value);
+                    add_come_code(info, "%s=%s;\n", var_->mCValueName, obj_value.c_value);
                 }
-                
-                saved_obj_value = var_name;
+                saved_obj_value = var_->mCValueName;
+                saved_var = var_;
                 
                 int j = 0;
                 foreach(it, come_params) {
@@ -907,10 +916,10 @@ class sMethodCallNode extends sNodeBase
             come_value2.type->mImmutable = false;
             
             if(result_type2->mHeap) {
-                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value);
+                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
             }
             else if(saved_obj_value) {
-                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value);
+                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
             }
         
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);

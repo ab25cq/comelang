@@ -24,11 +24,13 @@ int main(int argc,char** argv)
 {
     come_mutex<sData<int>*%>*% data = new come_mutex<sData<int>*%>(new sData<int>());
     
-    data.a = 3333;
+    data.unlock().a = 444;  // automatically unlock
     
-    if(data.a == 3333) {
-        puts("AAA");
-    }
+    sData<int>*% data2 = data.lock();
+    
+    data2.a = 3333;
+    
+    // auto matically unlock
     
     return 0;
 }
