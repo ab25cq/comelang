@@ -81,7 +81,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     if(method_block_type.mClass.mName !== "lambda") {
         err_msg(info, "This function does not have method block(%s)", fun_name);
-        return false;
+        return true;
     }
     
     sType*% result_type = clone method_block_type->mResultType;
@@ -619,7 +619,7 @@ class sMethodCallNode extends sNodeBase
             
             if(self.guard_break && !result_type2->mException) {
                 err_msg(info, "Invalid guard break");
-                return false;
+                return true;
             }
             
             if(result_type2->mHeap) {
@@ -645,6 +645,7 @@ class sMethodCallNode extends sNodeBase
             
             if(fun.mParamTypes.length() == 0) {
                 err_msg(info, "Method require function parametor");
+                return true;
             }
             
             sType*% result_type = clone fun->mResultType;
@@ -746,6 +747,7 @@ class sMethodCallNode extends sNodeBase
                     }
                     else if(param_types[i].mHeap && !obj_value.type.mHeap && !gComeGC) {
                         err_msg(info, "require heap parametor(%s)", fun.mParamNames[i]);
+                        return true;
                     }
                     come_params.replace(i, obj_value);
                     
@@ -832,6 +834,7 @@ class sMethodCallNode extends sNodeBase
                     else {
                         if(come_params[i] == null) {
                             err_msg(info, "require parametor(%s) %d", fun.mName,i);
+                            return true;
                         }
                     }
                 }

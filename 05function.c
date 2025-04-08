@@ -220,7 +220,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
                 
                 if(module.mParams.length() != params.length()) {
                     err_msg(info, "invalid parametor number");
-                    exit(1);
+                    return null;
                 }
                 
                 info->module_params = new map<string,string>();
@@ -245,7 +245,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
             
             if(node == null) {
                 err_msg(info, "Invalid expression");
-                exit(1);
+                return null;
             }
             
             result.mNodes.push_back(node);
@@ -336,7 +336,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
             
             if(node == null) {
                 err_msg(info, "Invalid expression");
-                exit(1);
+                return null;
             }
             
             parse_sharp();
@@ -375,7 +375,7 @@ sBlock*% parse_block(sInfo* info=info, bool no_block_level=false, bool return_se
         
         if(node == null) {
             err_msg(info, "Invalid expression");
-            exit(1);
+            return null;
         }
         
         result.mNodes.push_back(node);
@@ -675,6 +675,7 @@ string skip_block(sInfo* info=info, bool return_self_at_last=false)
     }
     else {
         err_msg(info, "Require block. This is %c", *info->p);
+        exit(1);
     }
     
     char* tail = info.p;

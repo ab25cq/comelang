@@ -24,6 +24,7 @@ class sWhileNode extends sNodeBase
     {
         if(info.comma_instead_of_semicolon) {
             err_msg(info, "In conditional operator comelang can't use while statment");
+            return true;
         }
         
         bool in_loop = info.in_loop;

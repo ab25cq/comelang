@@ -1915,12 +1915,13 @@ conditional_value3_110 = (void*)0;
     if(    info->comma_instead_of_semicolon) {
         ((struct tuple2$2int$bool$*)(__right_value81=err_msg(info,"In conditional operator comelang can't use for statment")));
         /*c*/ come_call_finalizer3(__right_value81,tuple2$2int$bool$$p_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
+        return (_Bool)1;
     }
     in_loop_89=info->in_loop;
     info->in_loop=(_Bool)1;
     block_90=self->mBlock;
     lv_table_91=info->lv_table;
-    for_var_table_92=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "11for.c", 56, "struct sVarTable*")),(_Bool)0,lv_table_91));
+    for_var_table_92=(struct sVarTable*)come_increment_ref_count(sVarTable_initialize((struct sVarTable*)come_increment_ref_count((struct sVarTable*)come_calloc_v2(1, sizeof(struct sVarTable)*(1), "11for.c", 57, "struct sVarTable*")),(_Bool)0,lv_table_91));
     info->lv_table=for_var_table_92;
     add_come_code(info,"for(");
     expression_node_93=self->mExpressionNode;
@@ -3656,8 +3657,8 @@ expression_node3_120 = (void*)0;
         expected_next_character(41,info);
         parse_sharp_v5(info);
         block_121=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
-        _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "11for.c", 244, "struct sNode");
-        _inf_obj_value1=(struct sForNode*)come_increment_ref_count(((struct sForNode*)(__right_value95=sForNode_initialize((struct sForNode*)come_increment_ref_count((struct sForNode*)come_calloc_v2(1, sizeof(struct sForNode)*(1), "11for.c", 244, "struct sForNode*")),(struct sNode*)come_increment_ref_count(expression_node_118),(struct sNode*)come_increment_ref_count(expression_node2_119),(struct sNode*)come_increment_ref_count(expression_node3_120),block_121,info))));
+        _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "11for.c", 245, "struct sNode");
+        _inf_obj_value1=(struct sForNode*)come_increment_ref_count(((struct sForNode*)(__right_value95=sForNode_initialize((struct sForNode*)come_increment_ref_count((struct sForNode*)come_calloc_v2(1, sizeof(struct sForNode)*(1), "11for.c", 245, "struct sForNode*")),(struct sNode*)come_increment_ref_count(expression_node_118),(struct sNode*)come_increment_ref_count(expression_node2_119),(struct sNode*)come_increment_ref_count(expression_node3_120),block_121,info))));
         _inf_value1->_protocol_obj=_inf_obj_value1;
         _inf_value1->finalize=(void*)sForNode_finalize;
         _inf_value1->clone=(void*)sForNode_clone;

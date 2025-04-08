@@ -2139,7 +2139,7 @@ int nest_21;
         }
         else if(        *info->p==0) {
             err_msg(info,"invalid the source end. require )");
-            break;
+            exit(1);
         }
         else {
             info->p++;

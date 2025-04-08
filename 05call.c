@@ -498,6 +498,7 @@ class sFunCallNode extends sNodeBase
             
             if(lambda_type->mClass->mName !== "lambda") {
                 err_msg(info, "%s is not lambda, can't call", fun_name);
+                return true;
             }
             
             sType*% result_type = clone lambda_type->mResultType;
@@ -507,6 +508,7 @@ class sFunCallNode extends sNodeBase
             
             if(lambda_type.mParamTypes.length() != params.length() && !lambda_type.mVarArgs) {
                 err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, lambda_type.mParamTypes.length(), params.length());
+                return true;
             }
             
             int i = 0;
@@ -952,6 +954,7 @@ class sFunCallNode extends sNodeBase
                 
                 if(fun_name === info.come_fun.mName) {
                     err_msg(info, "invalid inherit");
+                    return true;
                 }
             }
         }
@@ -1180,6 +1183,7 @@ class sFunCallNode extends sNodeBase
                 else {
                     if(come_params[i] == null) {
                         err_msg(info, "require parametor(%s)(1) %d", fun.mName,i);
+                        return true;
                     }
                 }
             }
@@ -1188,6 +1192,7 @@ class sFunCallNode extends sNodeBase
         if(fun.mParamTypes.length() - (method_block?2:0)!= come_params.length() && !fun.mVarArgs && fun_name !== "__builtin_va_start" && fun_name !== "__builtin_va_end") 
         {
             err_msg(info, "invalid param number(%s). function param number is %d. caller param number is %d", fun_name, fun.mParamTypes.length(), params.length());
+            return true;
         }
         
         if(method_block) {
@@ -1216,6 +1221,7 @@ class sFunCallNode extends sNodeBase
             
             if(method_block_type.mClass.mName !== "lambda") {
                 err_msg(info, "This function does not have method block(%s)", fun_name);
+                return true;
             }
             
             sType*% result_type = clone method_block_type->mResultType;
@@ -1294,6 +1300,7 @@ class sFunCallNode extends sNodeBase
             
             if(fun2 == null) {
                 err_msg(info, "method block function not found(%s)", method_block_name);
+                return true;
             }
             
             sType* method_block_type2 = fun2.mLambdaType;
@@ -1392,6 +1399,7 @@ class sComeCallNode extends sNodeBase
         
         if(type_ == null) {
             err_msg(info, "pthread_t is not defined");
+            return true;
         }
         
         sNode*% var_node = store_var(var_name, null@multiple_assign, null@multiple_declare, type_@type, true@alloc, null@right_value, info);
@@ -1683,6 +1691,7 @@ class sLambdaCall extends sNodeBase
         
         if(lambda_type->mResultType == null) {
             err_msg(info, "invalid lambda type");
+            return true;
         }
         
         sType*% result_type = clone lambda_type->mResultType;
@@ -1692,7 +1701,7 @@ class sLambdaCall extends sNodeBase
         
         if(lambda_type.mParamTypes.length() != params.length() && !lambda_type.mVarArgs) {
             err_msg(info, "invalid param number. function param number is %d. caller param number is %d", lambda_type.mParamTypes.length(), params.length());
-            return false;
+            return true;
         }
         
         int i = 0;

@@ -39,6 +39,7 @@ class sStoreNode extends sNodeBase
             
             if(self.type == null) {
                 err_msg(info, "Require concrete variable type(%s)", self.name);
+                return true;
             }
             
             var type = solve_generics(self.type, info->generics_type, info);
@@ -198,6 +199,7 @@ class sStoreNode extends sNodeBase
             
             if(self.type == null) {
                 err_msg(info, "Require concrete variable type(%s)", self.name);
+                return true;
             }
             
             var type = solve_generics(self.type, info->generics_type, info);
@@ -235,7 +237,7 @@ class sStoreNode extends sNodeBase
                 foreach(it, left_type->mArrayNum) {
                     node_compile(it).elif {
                         err_msg(info, "invalid array num");
-                        exit(1);
+                        return true;
                     }
                     
                     CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -450,6 +452,7 @@ class sStoreNode extends sNodeBase
                 
                 if(left_type->mHeap && !right_value.type->mHeap) {
                     err_msg(info, "require right value as heap object(%s)", self.name);
+                    return true;
                 }
                 
                 /*
@@ -550,6 +553,7 @@ class sStoreNode extends sNodeBase
                             
                             if(left_type->mHeap && !right_value.type->mHeap) {
                                 err_msg(info, "require right value as heap object(%s)", self.name);
+                                return true;
                             }
                             
                             CVALUE*% come_value = new CVALUE();
@@ -657,6 +661,7 @@ class sStoreNode extends sNodeBase
                 
                 if(left_type->mHeap && !right_value.type->mHeap) {
                     err_msg(info, "require right value as heap object(%s)", self.name);
+                    return true;
                 }
                 
                 CVALUE*% come_value = new CVALUE();
@@ -739,6 +744,7 @@ class sWriteChannelNode extends sNodeBase
         
         if(right_value.type->mHeap) {
             err_msg(info, "channel can't get heap type");
+            return true;
         }
     
         buffer*% buf = new buffer();
@@ -794,6 +800,7 @@ class sReadChannelNode extends sNodeBase
         
         if(!var_type->mChannel) {
             err_msg(info, "require right type is channel");
+            return true;
         }
         
         sType*% channel_type = var_type->mChannelType;
@@ -975,6 +982,7 @@ class sFunLoadNode extends sNodeBase
         
         if(fun == null) {
             err_msg(info, "fun not found(%s) at loading variable", self.name);
+            return true;
         }
         else {
             CVALUE*% come_value = new CVALUE();

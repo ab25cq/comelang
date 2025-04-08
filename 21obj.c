@@ -140,6 +140,7 @@ class sNewNode extends sNodeBase
                 
                 if(left_type == null) {
                     err_msg(info, "field %s is not defined", name);
+                    return true;
                 }
                 
                 sType*% right_type = come_value2.type;
@@ -1320,7 +1321,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 }
                 else {
                     err_msg(info, "invalid character(21) %c", *info->p);
-                    return null;
+                    exit(2);
                 }
                 
                 if(*info->p == ',') {
@@ -1334,7 +1335,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 }
                 else {
                     err_msg(info, "invalid character(30) %c", *info->p);
-                    return null;
+                    exit(2);
                 }
             }
             return new sNewNode(type, initializer, info) implements sNode;

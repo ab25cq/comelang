@@ -1841,6 +1841,7 @@ int num_while_conditional_stack_99;
     if(    info->comma_instead_of_semicolon) {
         ((struct tuple2$2int$bool$*)(__right_value79=err_msg(info,"In conditional operator comelang can't use while statment")));
         /*c*/ come_call_finalizer3(__right_value79,tuple2$2int$bool$$p_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
+        return (_Bool)1;
     }
     in_loop_89=info->in_loop;
     info->in_loop=(_Bool)1;
@@ -3416,14 +3417,14 @@ struct sNode* __result_obj__55;
 void* __right_value92 = (void*)0;
 struct sNode* __result_obj__56;
     if(    charp_operator_equals(buf,"while")) {
-        sname_100=(char*)come_increment_ref_count((char*)come_memdup(info->sname, "09while.c", 91, "char*"));
+        sname_100=(char*)come_increment_ref_count((char*)come_memdup(info->sname, "09while.c", 92, "char*"));
         sline_101=info->sline;
         expected_next_character(40,info);
         expression_node_102=(struct sNode*)come_increment_ref_count(expression_v13(info));
         expected_next_character(41,info);
         block_103=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
-        _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "09while.c", 103, "struct sNode");
-        _inf_obj_value1=(struct sWhileNode*)come_increment_ref_count(((struct sWhileNode*)(__right_value86=sWhileNode_initialize((struct sWhileNode*)come_increment_ref_count((struct sWhileNode*)come_calloc_v2(1, sizeof(struct sWhileNode)*(1), "09while.c", 103, "struct sWhileNode*")),(struct sNode*)come_increment_ref_count(expression_node_102),block_103,info))));
+        _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "09while.c", 104, "struct sNode");
+        _inf_obj_value1=(struct sWhileNode*)come_increment_ref_count(((struct sWhileNode*)(__right_value86=sWhileNode_initialize((struct sWhileNode*)come_increment_ref_count((struct sWhileNode*)come_calloc_v2(1, sizeof(struct sWhileNode)*(1), "09while.c", 104, "struct sWhileNode*")),(struct sNode*)come_increment_ref_count(expression_node_102),block_103,info))));
         _inf_value1->_protocol_obj=_inf_obj_value1;
         _inf_value1->finalize=(void*)sWhileNode_finalize;
         _inf_value1->clone=(void*)sWhileNode_clone;

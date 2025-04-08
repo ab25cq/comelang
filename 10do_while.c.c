@@ -1841,6 +1841,7 @@ int num_while_conditional_stack_99;
     if(    info->comma_instead_of_semicolon) {
         ((struct tuple2$2int$bool$*)(__right_value79=err_msg(info,"In conditional operator comelang can't use do while statment")));
         /*c*/ come_call_finalizer3(__right_value79,tuple2$2int$bool$$p_finalize, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
+        return (_Bool)1;
     }
     in_loop_89=info->in_loop;
     info->in_loop=(_Bool)1;
@@ -3418,7 +3419,7 @@ struct sNode* __result_obj__55;
 void* __right_value94 = (void*)0;
 struct sNode* __result_obj__56;
     if(    charp_operator_equals(buf,"do")) {
-        sname_100=(char*)come_increment_ref_count((char*)come_memdup(info->sname, "10do_while.c", 90, "char*"));
+        sname_100=(char*)come_increment_ref_count((char*)come_memdup(info->sname, "10do_while.c", 91, "char*"));
         sline_101=info->sline;
         block_102=(struct sBlock*)come_increment_ref_count(parse_block(info,(_Bool)0,(_Bool)0,(_Bool)0));
         buf2_103=(char*)come_increment_ref_count(parse_word(info));
@@ -3430,8 +3431,8 @@ struct sNode* __result_obj__56;
         expected_next_character(40,info);
         expression_node_104=(struct sNode*)come_increment_ref_count(expression_v13(info));
         expected_next_character(41,info);
-        _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "10do_while.c", 109, "struct sNode");
-        _inf_obj_value1=(struct sDoWhileNode*)come_increment_ref_count(((struct sDoWhileNode*)(__right_value88=sDoWhileNode_initialize((struct sDoWhileNode*)come_increment_ref_count((struct sDoWhileNode*)come_calloc_v2(1, sizeof(struct sDoWhileNode)*(1), "10do_while.c", 109, "struct sDoWhileNode*")),(struct sNode*)come_increment_ref_count(expression_node_104),block_102,info))));
+        _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "10do_while.c", 110, "struct sNode");
+        _inf_obj_value1=(struct sDoWhileNode*)come_increment_ref_count(((struct sDoWhileNode*)(__right_value88=sDoWhileNode_initialize((struct sDoWhileNode*)come_increment_ref_count((struct sDoWhileNode*)come_calloc_v2(1, sizeof(struct sDoWhileNode)*(1), "10do_while.c", 110, "struct sDoWhileNode*")),(struct sNode*)come_increment_ref_count(expression_node_104),block_102,info))));
         _inf_value1->_protocol_obj=_inf_obj_value1;
         _inf_value1->finalize=(void*)sDoWhileNode_finalize;
         _inf_value1->clone=(void*)sDoWhileNode_clone;

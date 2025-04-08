@@ -167,6 +167,7 @@ class sStoreFieldNode extends sNodeBase
         
         if(klass->mFields == null) {
             err_msg(info, "%s fields are null", klass->mName);
+            return true;
         }
         
         foreach(field, klass->mFields) {
@@ -216,7 +217,12 @@ class sStoreFieldNode extends sNodeBase
             
             if(index == klass->mFields.length() || field_type == null) {
                 err_msg(info, "field not found(%s) in %s(1)", name, klass->mName);
+                return true;
             }
+        }
+        
+        if(field_type == null) {
+            return true;
         }
         
         CVALUE*% come_value = new CVALUE();
@@ -234,7 +240,7 @@ class sStoreFieldNode extends sNodeBase
             else {
                 if(!gComeGC) {
                     err_msg(info, "require right value as heap object(%s)(1)", name);
-                    return false;
+                    return true;
                 }
             }
         }
@@ -292,6 +298,7 @@ class sStoreFieldNode extends sNodeBase
             }
             else {
                 err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum);
+                return true;
             }
         }
         else if(field_type->mHeap && field_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mClass->mName === "void") 
@@ -344,6 +351,7 @@ class sStoreFieldNode extends sNodeBase
             }
             else {
                 err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum);
+                return true;
             }
         }
         else if(field_type->mChannel && new_channel) {
@@ -392,6 +400,7 @@ class sStoreFieldNode extends sNodeBase
             }
             else {
                 err_msg(info, "Invalid left_type. The field name is %s. The pointer num is %d.", name, left_value.type->mPointerNum);
+                return true;
             }
         }
         
@@ -445,6 +454,7 @@ class sNullCheckNode extends sNodeBase
                 }
                 else {
                     err_msg(info, "require expect implementation(%s)", left_value.type.mClass.mName);
+                    return true;
                 }
             }
             
@@ -452,6 +462,7 @@ class sNullCheckNode extends sNodeBase
             
             if(fun == null) {
                 err_msg(info, "function not found(%s)", method_name);
+                return true;
             }
             
             sType*% type = solve_generics(fun.mResultType, left_value.type, info);
@@ -589,6 +600,7 @@ class sLoadFieldNode extends sNodeBase
         klass = info.classes[string(klass->mName)]??;
         if(klass == null || klass->mFields == null) {
             err_msg(info, "invalid class %s", klass->mName);
+            return true;
         }
         foreach(field, klass->mFields) {
             var field_name, field_type2 = field;
@@ -637,6 +649,7 @@ class sLoadFieldNode extends sNodeBase
             
             if(index == klass->mFields.length()) {
                 err_msg(info, "field not found(%s) in %s(2)", name, klass->mName);
+                return true;
             }
         }
         
@@ -681,6 +694,7 @@ class sLoadFieldNode extends sNodeBase
         
         if(field_type == null) {
             err_msg(info, "no field(%s)", name);
+            return true;
         }
         
         if(come_value.type->mArrayNum.length() == 1) {
@@ -815,6 +829,7 @@ class sStoreArrayNode extends sNodeBase
                 }
                 else {
                     err_msg(info, "Invalid left_type. The name is %s. The pointer num is %d.(1)", left_value_code, left_value.type->mPointerNum);
+                    return true;
                 }
             }
             else {
@@ -826,6 +841,7 @@ class sStoreArrayNode extends sNodeBase
                 }
                 else {
                     err_msg(info, "Invalid left_type. The name is %s. The pointer num is %d.(2)", left_value_code, left_value.type->mPointerNum);
+                    return true;
                 }
             }
             sType*% result_type = clone left_type;

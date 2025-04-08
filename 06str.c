@@ -398,6 +398,7 @@ class sListNode extends sNodeBase
             
             if(fun == null) {
                 err_msg(info, "function not found(%s) at method(%s)(1)", generics_fun_name, info.come_fun.mName);
+                return true;
             }
         }
             
@@ -601,6 +602,7 @@ class sTupleNode extends sNodeBase
             
             if(fun == null) {
                 err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName);
+                return true;
             }
         }
             
@@ -744,6 +746,7 @@ class sSomeNode extends sNodeBase
             
             if(fun == null) {
                 err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName);
+                return true;
             }
         }
             
@@ -895,6 +898,7 @@ class sNullReturnValueOfException extends sNodeBase
             
             if(left_type == null && !result_type2.mException) {
                 err_msg(info, "function is not exception type");
+                return true;
             }
             
             add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_name));
@@ -1059,6 +1063,7 @@ class sNoneNode extends sNodeBase
             
             if(fun == null) {
                 err_msg(info, "function not found(%s) at method(%s)(2)", generics_fun_name, info.come_fun.mName);
+                return true;
             }
         }
             
@@ -1308,6 +1313,7 @@ class sMapNode extends sNodeBase
             
             if(fun == null) {
                 err_msg(info, "function not found(%s) at method(%s)(3)", generics_fun_name, info.come_fun.mName);
+                return true;
             }
         }
             
@@ -2110,6 +2116,7 @@ sNode*% expression_node(sInfo* info) version 96
 
         if(*info->p != '\'') {
             err_msg(info, "close \' to make character value");
+            exit(1);
         }
         else {
             info->p++;
@@ -2227,6 +2234,7 @@ sNode*% expression_node(sInfo* info) version 96
                 if(size > MB_LEN_MAX) {
                     err_msg(info, "invalid utf-8 character. MB_LEN_MAX");
                     info->err_num++;
+                    exit(2);
                 }
                 else {
                     memcpy(str, info->p, size);
@@ -2236,6 +2244,7 @@ sNode*% expression_node(sInfo* info) version 96
                         perror("mbtowc");
                         err_msg(info, "invalid utf-8 character. mbtowc");
                         info->err_num++;
+                        exit(2);
                     }
                     else {
                         info->p += size;
@@ -2252,6 +2261,7 @@ sNode*% expression_node(sInfo* info) version 96
         if(*info->p != '\'') {
             err_msg(info, "close \' to make character value");
             info->err_num++;
+            exit(2);
         }
         else {
             info->p++;

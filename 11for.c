@@ -45,6 +45,7 @@ class sForNode extends sNodeBase
     {
         if(info.comma_instead_of_semicolon) {
             err_msg(info, "In conditional operator comelang can't use for statment");
+            return true;
         }
         
         bool in_loop = info.in_loop;

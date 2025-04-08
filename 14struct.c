@@ -351,7 +351,7 @@ sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info)
         
         if(parent_class == null) {
             err_msg(info, "invalid class name(%s)", parent_class_name);
-            return null;
+            exit(1);
         }
     }
     
@@ -662,7 +662,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 
                 if(parent_class == null) {
                     err_msg(info, "invalid class name(%s)", parent_class_name);
-                    return null;
+                    exit(1);
                 }
             }
             
@@ -787,7 +787,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
             
             if(parent_class == null) {
                 err_msg(info, "invalid class name(%s)", parent_class_name);
-                return null;
+                exit(1);
             }
         }
         
@@ -1021,7 +1021,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98
                 
                 if(info.modules[string(module_name)]?? == null) {
                     err_msg(info, "module not found");
-                    return null;
+                    exit(1);
                 }
                 
                 sClassModule* module = info.modules[string(module_name)]??;

@@ -25,11 +25,6 @@ impl come_mutex<T>
         return self;
     }
     
-    void sync(come_mutex<T>* self, void* parent, void (*block)(void* parent, T it)) {
-        mutex_enter_blocking(&self.mutex);
-        block(parent, self.value);
-        mutex_exit(&self.mutex);
-    }
     T~ lock(come_mutex<T>* self) {
         mutex_enter_blocking(&self.mutex);
         self.lock = true;
@@ -45,6 +40,11 @@ impl come_mutex<T>
     void on_drop(come_mutex<T>* self) {
         self.unlock();
     }
+/*
+    T~ on_load(come_mutex<T>* self) {
+        return self.lock();
+    }
+*/
 }
 
 uniq mutex_t gComeHeapMutex = MUTEX_INITIALIZER;
@@ -128,11 +128,6 @@ impl come_mutex<T>
         return self;
     }
     
-    void sync(come_mutex<T>* self, void* parent, void (*block)(void* parent, T it)) {
-        pthread_mutex_lock(&self.mutex);
-        block(parent, self.value);
-        pthread_mutex_unlock(&self.mutex);
-    }
     T~ lock(come_mutex<T>* self) {
         pthread_mutex_lock(&self.mutex);
         self.lock = true;
@@ -148,9 +143,11 @@ impl come_mutex<T>
     void on_drop(come_mutex<T>* self) {
         self.unlock();
     }
+/*
     T~ on_load(come_mutex<T>* self) {
         return self.lock();
     }
+*/
 }
 
 uniq pthread_mutex_t gComeHeapMutex = PTHREAD_MUTEX_INITIALIZER;
