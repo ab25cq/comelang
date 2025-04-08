@@ -1020,7 +1020,9 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type_name = parse_word();
         }
         else if(type_name === "_Atomic") {
-            expected_next_character('(');
+            if(*info->p == '(') {
+                expected_next_character('(');
+            }
             type_name = parse_word();
             atomic_ = true;
         }
@@ -1657,7 +1659,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         tuple_name = parse_word();
     }
     
-    if(atomic_) {
+    if(atomic_ && *info->p == ')') {
         expected_next_character(')');
     }
     

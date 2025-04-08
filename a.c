@@ -1,37 +1,8 @@
-#include <comelang.h>
-#include <comelang-pthread.h>
+#include <stdatomic.h>
 
-struct sData<T>
-{
-    T a;
-    T b;
-};
+_Atomic int counter = 0;
 
-impl sData<T>
-{
-    sData<T>*% initialize(sData<T>*% self) {
-        self.a = 111;
-        self.b = 222;
-        
-        return self;
-    }
-    immutable void fun(sData<T>* self) {
-        printf("%d %d\n", self.a, self.b);
-    }
-}
-
-int main(int argc,char** argv)
-{
-    come_mutex<sData<int>*%>*% data = new come_mutex<sData<int>*%>(new sData<int>());
-    
-    data.unlock().a = 444;  // automatically unlock
-    
-    sData<int>*% data2 = data.lock();
-    
-    data2.a = 3333;
-    
-    // auto matically unlock
-    
+int main(int argc, char** argv) {
+    atomic_fetch_add(&counter, 1);
     return 0;
 }
-

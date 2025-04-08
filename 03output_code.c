@@ -21,7 +21,8 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str("static ");
     }
     if(type->mAtomic) {
-        buf.append_str("_Atomic(");
+        buf.append_str("_Atomic ");
+        //buf.append_str("_Atomic(");
     }
     
     if(type->mConstant) {
@@ -138,7 +139,7 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str("restrict");
     }
     if(type->mAtomic) {
-        buf.append_str(")");
+        //buf.append_str(")");
     }
     
     if(type->mAttribute) {

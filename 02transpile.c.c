@@ -2180,7 +2180,7 @@ memset(&is_raspi_20, 0, sizeof(int));
         (command2_35 = come_decrement_ref_count(command2_35, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
     }
     else if(    is_emb_17) {
-        cmd3_36=(char*)come_increment_ref_count(xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_9)?(((char*)(__right_value30=__builtin_string(" -include common.h ")))):("")),input_file_name_7,output_file_name_8,output_file_name_8));
+        cmd3_36=(char*)come_increment_ref_count(xsprintf("clang -E %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",(((info->remove_comment)?(""):(" -C"))),info->cpp_option,getenv("HOME"),"/usr/local/","/usr/local/",((exist_common_h_9)?(((char*)(__right_value30=__builtin_string(" -include common.h ")))):("")),input_file_name_7,output_file_name_8,output_file_name_8));
         (__right_value30 = come_decrement_ref_count(__right_value30, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
         if(        info->verbose) {
             puts(cmd3_36);
@@ -2192,11 +2192,11 @@ memset(&is_raspi_20, 0, sizeof(int));
         }
         (void)system(command2_38);
         if(        rc_37!=0) {
-            cmd4_39=(char*)come_increment_ref_count(xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_9)?(((char*)(__right_value33=__builtin_string(" -include common.h ")))):("")),input_file_name_7,output_file_name_8,output_file_name_8));
+            cmd4_39=(char*)come_increment_ref_count(xsprintf("clang -E %s -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_9)?(((char*)(__right_value33=__builtin_string(" -include common.h ")))):("")),input_file_name_7,output_file_name_8,output_file_name_8));
             (__right_value33 = come_decrement_ref_count(__right_value33, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             if(            is_debian_13) {
                 __dec_obj6=cmd4_39,
-                cmd4_39=(char*)come_increment_ref_count(xsprintf("cpp %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_9)?(((char*)(__right_value35=__builtin_string(" -include common.h ")))):("")),input_file_name_7,output_file_name_8,output_file_name_8));
+                cmd4_39=(char*)come_increment_ref_count(xsprintf("clang -E %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h_9)?(((char*)(__right_value35=__builtin_string(" -include common.h ")))):("")),input_file_name_7,output_file_name_8,output_file_name_8));
                 __dec_obj6 = come_decrement_ref_count(__dec_obj6, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
                 (__right_value35 = come_decrement_ref_count(__right_value35, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
             }

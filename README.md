@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 32.0.0
+version 32.0.1
 
 ``` C
 #include <comelang.h>
@@ -85,7 +85,8 @@ sh all_build.sh
 # Histories
 
 ```
-32.0.0 mutex lock, and unlock finally bellow rule.
+32.0.1 _Atomic support.
+32.0.0 mutex lock, and unlock finally bellow spec.
 31.1.0 immutable attribute
 31.0.1 uniq class
 31.0.0 New exception coming with simply way. It's simple and convinient. Well, I can feel this projects the end. If I can, more make simplify self host codes.
