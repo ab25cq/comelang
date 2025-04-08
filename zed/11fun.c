@@ -341,7 +341,7 @@ bool vm(sInfo* info) version 10
                     }
                     else if(fun_name === "map") {
                         if(params.length() == 0) {
-                            list<ZVALUE*%>*% list1 = obj.listValue.map2<ZVALUE*%> {
+                            list<ZVALUE*%>*% list1 = obj.listValue.map<ZVALUE*%> {
                                 using unsafe;
                                 
                                 ZVALUE*% var_value = clone it;

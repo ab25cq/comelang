@@ -26,6 +26,10 @@ int main(int argc,char** argv)
     
     data.a = 3333;
     
+    if(data.a == 3333) {
+        puts("AAA");
+    }
+    
     return 0;
 }
 

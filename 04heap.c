@@ -79,6 +79,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool heap = type->mHeap;
         bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
+        bool deffer_right_value = type->mDefferRightValue;
         
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
@@ -91,6 +92,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         }
         if(guard_) {
             result->mGuardValue = guard_;
+        }
+        if(deffer_right_value) {
+            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
         }
         if(no_heap) {
             result->mNoHeap = true;
@@ -137,6 +141,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             int pointer_num = type->mPointerNum;
             bool heap = type->mHeap;
             bool guard_ = type->mGuardValue;
+            bool deffer_right_value = type->mDefferRightValue;
             
             bool no_heap = type->mNoHeap;
             bool no_calling_destructor = type->mNoCallingDestructor;
@@ -152,6 +157,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             }
             if(exception_) {
                 result->mException = exception_;
+            }
+            if(deffer_right_value) {
+                result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
             }
             if(guard_) {
                 result->mGuardValue = guard_;
@@ -223,6 +231,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
         bool guard_ = type->mGuardValue;
+        bool deffer_right_value = type->mDefferRightValue;
         
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
@@ -233,6 +242,9 @@ sType*% solve_method_generics(sType* type, sInfo* info)
 
         if(heap) {
             result->mHeap = heap || result->mHeap;
+        }
+        if(deffer_right_value) {
+            result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
         }
         if(exception_) {
             result->mException = exception_;
@@ -283,7 +295,7 @@ sType*% solve_method_generics(sType* type, sInfo* info)
 
 int gRightValueNum = 0;
 
-void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null)
+void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null)
 {
     if(gComeGC || gComeC) {
         return ;
@@ -301,9 +313,9 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
     new_value.mBlockLevel = info->block_level;
     new_value.mDecrementRefCount = decrement_ref_count;
     
-    if(obj_type) {
+    if(obj_value) {
         new_value.mObjType = obj_type;
-        new_value.mObjValue = string(new_value.mVarName);
+        new_value.mObjValue = string(obj_value);
         
         if(!type->mHeap) {
             new_value.mNoFree = true;
@@ -735,7 +747,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     return (result_type, result);
 }
 
-void drop_object(sType* type, char* obj, sInfo* info=info)
+void on_drop_object(sType* type, char* obj, sInfo* info=info, bool comma=false)
 {
     if(gComeC) {
         return;
@@ -800,11 +812,17 @@ void drop_object(sType* type, char* obj, sInfo* info=info)
         /// call dropper ///
         if(dropper != null) {
             if(c_value) {
-                add_come_code(info, s"\{fun_name2}(\{c_value});\n");
+                if(comma) {
+                    add_come_code(info, s"\{fun_name2}(\{c_value}),");
+                }
+                else {
+                    add_come_code(info, s"\{fun_name2}(\{c_value});\n");
+                }
             }
         }
     }
 }
+
 
 void free_right_value_objects(sInfo* info, bool comma=false)
 {
@@ -824,7 +842,7 @@ void free_right_value_objects(sInfo* info, bool comma=false)
         if(it && !it->mFreed) {
             if(it->mFunName === info->come_fun->mName && it->mBlockLevel == info->block_level && !it->mStored) {
                 if(it->mObjType) {
-                    drop_object(it->mObjType, it->mObjValue);
+                    on_drop_object(it->mObjType, it->mObjValue, info, comma);
                 }
             }
         }

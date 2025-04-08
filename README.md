@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 31.1.0
+version 31.2.0
 
 ``` C
 #include <comelang.h>
@@ -2957,7 +2957,7 @@ int main(int argc,char** argv)
 }
 ```
 
-# on_drop
+# on_drop, on_load
 
 ```
 #include <unistd.h>
@@ -3007,7 +3007,45 @@ impl come_mutex<T>
 }
 ```
 
+
 25.0.1 on_drop implemeted. See comelang-pthread.h. If not binded, right_value object called on_drop method.
+
+```
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+struct sData<T>
+{
+    T a;
+    T b;
+};
+
+impl sData<T>
+{
+    sData<T>*% initialize(sData<T>*% self) {
+        self.a = 111;
+        self.b = 222;
+        
+        return self;
+    }
+    immutable void fun(sData<T>* self) {
+        printf("%d %d\n", self.a, self.b);
+    }
+}
+
+int main(int argc,char** argv)
+{
+    come_mutex<sData<int>*%>*% data = new come_mutex<sData<int>*%>(new sData<int>());
+    
+    data.a = 3333;
+    
+    if(data.a == 3333) {
+        puts("AAA");
+    }
+    
+    return 0;
+}
+```
 
 ```
 #include <comelang.h>
@@ -3020,12 +3058,12 @@ int main(int argc,char** argv)
     var thread2 = come {
         sleep(3);
         
-        li.lock().to_string().puts();  // on_drop call unlock()
+        li.to_string().puts();  // on_drop call unlock()
     }
     
     var thread = come {
-        li.lock().add(4); // on_drop call unlock()
-        li.lock().add(5); // on_drop call unlock()
+        li.add(4); // on_drop call unlock()
+        li.ck().add(5); // on_drop call unlock()
     }
     
     come_join(thread);
@@ -3034,6 +3072,90 @@ int main(int argc,char** argv)
     return 0;
 }
 ```
+
+```
+struct come_mutex<T>
+{
+    T value;
+    mutex_t mutex;
+    bool lock;
+};
+
+#define MUTEX_INITIALIZER (mutex_t){ .locked = false, .core = NULL }
+
+impl come_mutex<T>
+{
+    come_mutex<T>*% initialize(come_mutex<T>*% self, T value) {
+        mutex_init(&self.mutex);
+        self.value = value;
+        return self;
+    }
+    
+    void sync(come_mutex<T>* self, void* parent, void (*block)(void* parent, T it)) {
+        mutex_enter_blocking(&self.mutex);
+        block(parent, self.value);
+        mutex_exit(&self.mutex);
+    }
+    T~ lock(come_mutex<T>* self) {
+        mutex_enter_blocking(&self.mutex);
+        self.lock = true;
+        
+        return self.value;
+    }
+    void unlock(come_mutex<T>* self) {
+        if(self.lock) {
+            mutex_exit(&self.mutex);
+        }
+    }
+    
+    void on_drop(come_mutex<T>* self) {
+        self.unlock();
+    }
+    T~ on_load(come_mutex<T>* self) {
+        return self.lock();
+    }
+}
+```
+
+31.2.0 on_load implemeted.
+
+```
+#include <comelang.h>
+#include <comelang-pthread.h>
+
+struct sData<T>
+{
+    T a;
+    T b;
+};
+
+impl sData<T>
+{
+    sData<T>*% initialize(sData<T>*% self) {
+        self.a = 111;
+        self.b = 222;
+        
+        return self;
+    }
+    immutable void fun(sData<T>* self) {
+        printf("%d %d\n", self.a, self.b);
+    }
+}
+
+int main(int argc,char** argv)
+{
+    come_mutex<sData<int>*%>*% data = new come_mutex<sData<int>*%>(new sData<int>());
+    
+    data.a = 3333; // lock and unlock automatically
+    
+    if(data.a == 3333) { // lock and unlock automatically
+        puts("AAA");
+    }
+    
+    return 0;
+}
+```
+
 
 # Exception
 

@@ -204,11 +204,140 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     return true;
 }
 
+string, sFun*,sGenericsFun* get_method(char* fun_name, sType*% obj_type, sInfo* info) 
+{
+    string generics_fun_name = null;
+    sFun* fun = null;
+    sGenericsFun* generics_fun = null;
+    
+    if(fun_name === "super") {
+        fun_name = create_non_method_name(obj_type, false@no_pointer_name, info.come_fun.mName, info);
+        
+        sClass* klass = obj_type->mClass;
+        while(info.classes[klass->mParentClassName]??) {
+            klass = info.classes[klass->mParentClassName]??;
+            generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
+            
+            fun = info.funcs.at(string(generics_fun_name), null);
+            
+            if(fun) {
+                break;
+            }
+        }
+        
+    }
+    else {
+        if(obj_type && obj_type.mNoSolvedGenericsType && obj_type.mNoSolvedGenericsType.mGenericsTypes.length() > 0) {
+            var name, gfun = make_generics_function(obj_type, string(fun_name), info);
+            generics_fun_name = name;
+            generics_fun = gfun;
+        }
+        else if(info.method_generics_types.length() > 0) {
+            string none_generics_name = get_none_generics_name(obj_type.mClass.mName);
+            string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
+            var name, gfun = make_method_generics_function(string(fun_name3), info.method_generics_types, info);
+            generics_fun_name = name;
+            generics_fun = gfun;
+        }
+        else {
+            var name, gfun = make_generics_function(obj_type, string(fun_name), info);
+            generics_fun_name = name;
+            generics_fun = gfun;
+        }
+        
+        for(int i=FUN_VERSION_MAX; i>=1; i--) {
+            string new_fun_name = xsprintf("%s_v%d", generics_fun_name, i);
+        
+            fun = info.funcs[string(new_fun_name)]??;
+            
+            if(fun != null) {
+                generics_fun_name = string(new_fun_name);
+                break;
+            }
+        }
+        
+        if(fun == null) {
+            sType* obj_array_type = obj_type->mOriginalLoadVarType;
+            
+            if(obj_array_type && obj_array_type.mArrayNum.length() > 0) {
+                string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
+                
+                fun = info.funcs.at(string(array_method_name), null);
+                
+                if(fun) {
+                    generics_fun_name = string(array_method_name);
+                }
+                else {
+                    fun = info.funcs.at(string(generics_fun_name), null);
+                    
+                    if(fun == null) {
+                        generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
+                        fun = info.funcs.at(string(generics_fun_name), null);
+                        if(fun == null) {
+                            return ((string)null, (sFun*)null, (sGenericsFun*)null);
+                        }
+                    }
+                }
+            }
+            else {
+                fun = info.funcs.at(string(generics_fun_name), null);
+            
+                if(fun == null) {
+                    generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
+                    
+                    fun = info.funcs.at(string(generics_fun_name), null);
+                    
+                    if(fun == null) {
+                        sClass* klass = obj_type->mClass;
+                        while(info.classes[klass->mParentClassName]??) {
+                            klass = info.classes[klass->mParentClassName]??;
+                            generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
+                            
+                            fun = info.funcs.at(string(generics_fun_name), null);
+                            
+                            if(fun) {
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if(fun == null && fun_name === "to_string") {
+                        var fun2, real_fun_name = create_to_string_automatically(obj_type, fun_name, info);
+                        
+                        fun = fun2;
+                        generics_fun_name = real_fun_name;
+                    }
+                    if(fun == null && fun_name === "equals") {
+                        var fun2, real_fun_name = create_equals_automatically(obj_type, fun_name, info);
+                        
+                        fun = info.funcs[real_fun_name];
+                        generics_fun_name = real_fun_name;
+                    }
+                    if(fun == null) {
+                        string original_obj_type_fun_name = create_method_name_original_obj_type(obj_type, false@no_pointer_name, string(fun_name), info);
+                        fun = info.funcs.at(string(original_obj_type_fun_name), null);
+                        
+                        if(fun) {
+                            generics_fun_name = original_obj_type_fun_name;
+                        }
+                    }
+                    
+                    if(fun == null) {
+                        return (generics_fun_name, (sFun*)null, (sGenericsFun*)null);
+                    }
+                }
+            }
+        }
+    }
+    
+    return (generics_fun_name, fun, generics_fun);
+}
+
 
 class sMethodCallNode extends sNodeBase
 {
     new(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline
-        , list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, bool guard_break, sInfo* info)
+        , list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, bool guard_break, sInfo* info, bool no_err=false)
     {
         self.super();
         
@@ -222,6 +351,7 @@ class sMethodCallNode extends sNodeBase
         bool self.recursive = recursive;
         sFun* self.fun = null;
         bool self.guard_break = guard_break;
+        bool self.no_err = no_err;
     }
     
     bool terminated()
@@ -269,7 +399,7 @@ class sMethodCallNode extends sNodeBase
             bool no_output_come_code = info->no_output_come_code;
             info->no_output_come_code = true;
             
-            sType*% type = obj_type;
+            sType*% type = clone obj_type;
             
             string none_generics_name = get_none_generics_name(type.mClass.mName);
             string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
@@ -281,7 +411,7 @@ class sMethodCallNode extends sNodeBase
                 bool method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
                 
                 if(method_generics && info->method_generics_types.length() == 0) {
-                    var name, gfun = make_generics_function(obj_type, string(fun_name), info);
+                    var name, gfun = make_generics_function(type, string(fun_name), info);
                     
                     string generics_fun_name = name;
                     
@@ -506,137 +636,12 @@ class sMethodCallNode extends sNodeBase
             info.calling_fun = null;
         }
         else {
-            sGenericsFun* generics_fun = null;
-            string generics_fun_name = null;
-            sFun* fun = null;
-            if(fun_name === "super") {
-                fun_name = create_non_method_name(obj_type, false@no_pointer_name, info.come_fun.mName, info);
-                
-                sClass* klass = obj_type->mClass;
-                while(info.classes[klass->mParentClassName]??) {
-                    klass = info.classes[klass->mParentClassName]??;
-                    generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
-                    
-                    fun = info.funcs.at(string(generics_fun_name), null);
-                    
-                    if(fun) {
-                        break;
-                    }
-                }
-                
-            }
-            else {
-                if(obj_type && obj_type.mNoSolvedGenericsType && obj_type.mNoSolvedGenericsType.mGenericsTypes.length() > 0) {
-                    var name, gfun = make_generics_function(obj_type, string(fun_name), info);
-                    generics_fun_name = name;
-                    generics_fun = gfun;
-                }
-                else if(info.method_generics_types.length() > 0) {
-                    string none_generics_name = get_none_generics_name(obj_type.mClass.mName);
-                    string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
-                    var name, gfun = make_method_generics_function(string(fun_name3), info.method_generics_types, info);
-                    generics_fun_name = name;
-                    generics_fun = gfun;
-                }
-                else {
-                    var name, gfun = make_generics_function(obj_type, string(fun_name), info);
-                    generics_fun_name = name;
-                    generics_fun = gfun;
-                }
-                
-                for(int i=FUN_VERSION_MAX; i>=1; i--) {
-                    string new_fun_name = xsprintf("%s_v%d", generics_fun_name, i);
-                
-                    fun = info.funcs[string(new_fun_name)]??;
-                    
-                    if(fun != null) {
-                        generics_fun_name = string(new_fun_name);
-                        break;
-                    }
-                }
-                
-                if(fun == null) {
-                    sType* obj_array_type = obj_type->mOriginalLoadVarType;
-                    
-                    if(obj_array_type && obj_array_type.mArrayNum.length() > 0) {
-                        string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
-                        
-                        fun = info.funcs.at(string(array_method_name), null);
-                        
-                        if(fun) {
-                            generics_fun_name = string(array_method_name);
-                        }
-                        else {
-                            fun = info.funcs.at(string(generics_fun_name), null);
-                            
-                            if(fun == null) {
-                                generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
-                                fun = info.funcs.at(string(generics_fun_name), null);
-                                if(fun == null) {
-                                    err_msg(info, "function not found(%s) at method(%s)(Z1)", generics_fun_name, info.come_fun.mName);
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        fun = info.funcs.at(string(generics_fun_name), null);
-                    
-                        if(fun == null) {
-                            generics_fun_name = create_method_name(obj_type, false@no_pointer_name, string(fun_name), info);
-                            
-                            fun = info.funcs.at(string(generics_fun_name), null);
-                            
-                            if(fun == null) {
-                                sClass* klass = obj_type->mClass;
-                                while(info.classes[klass->mParentClassName]??) {
-                                    klass = info.classes[klass->mParentClassName]??;
-                                    generics_fun_name = create_method_name_using_class(klass, false@no_pointer_name, fun_name, info);
-                                    
-                                    fun = info.funcs.at(string(generics_fun_name), null);
-                                    
-                                    if(fun) {
-                                        break;
-                                    }
-                                }
-                            }
-                            
-                            if(fun == null && fun_name === "to_string") {
-                                var fun2, real_fun_name = create_to_string_automatically(obj_type, fun_name, info);
-                                
-                                fun = fun2;
-                                generics_fun_name = real_fun_name;
-                            }
-                            if(fun == null && fun_name === "equals") {
-                                var fun2, real_fun_name = create_equals_automatically(obj_type, fun_name, info);
-                                
-                                fun = info.funcs[real_fun_name];
-                                generics_fun_name = real_fun_name;
-                            }
-                            if(fun == null) {
-                                string original_obj_type_fun_name = create_method_name_original_obj_type(obj_type, false@no_pointer_name, string(fun_name), info);
-                                fun = info.funcs.at(string(original_obj_type_fun_name), null);
-                                
-                                if(fun) {
-                                    generics_fun_name = original_obj_type_fun_name;
-                                }
-                            }
-                            
-                            if(fun == null) {
-                                err_msg(info, "function not found(%s) at method(%s)(Z2n)", generics_fun_name, info.come_fun.mName);
-                            }
-                        }
-                    }
-                }
-            }
+            var generics_fun_name, fun, generics_fun = get_method(fun_name, obj_type, info);
+            
             if(fun == null) {
                 err_msg(info, "function not found(%s) at method(%s)(ZY)", generics_fun_name, info.come_fun.mName);
+                return true;
             }
-            
-/*
-            if(obj_type->mConstant && !fun->mConstFun) {
-                err_msg(info, "function is not const method(%s) at method(%s)", generics_fun_name, info.come_fun.mName);
-            }
-*/
             
             if(fun.mParamTypes.length() == 0) {
                 err_msg(info, "Method require function parametor");
@@ -787,124 +792,6 @@ class sMethodCallNode extends sNodeBase
                 }
             }
             
-/*
-            sType* obj_array_type = obj_type->mOriginalLoadVarType;
-            if(obj_array_type && obj_array_type.mArrayNum.length() > 0) {
-                string array_method_name = create_method_name(obj_array_type, false@no_pointer_name, fun_name, info, false@array_equal_pointer);
-                if(generics_fun_name === array_method_name) {
-                    if(fun_name === "to_pointer") {
-                        buffer*% buf = new buffer();
-                        
-                        int i=0;
-                        foreach(it, obj_array_type.mArrayNum) {
-                            node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                            }
-                            
-                            CVALUE*% come_value = get_value_from_stack(-1, info);
-                        
-                            buf.append_format("%s", come_value.c_value);
-                            if(i != obj_array_type.mArrayNum.length()-1) {
-                                buf.append_str("*");
-                            }
-                            
-                            i++;
-                        }
-                        
-                        CVALUE*% come_value = new CVALUE();
-                        
-                        come_value.c_value = buf.to_string();
-                        come_value.var = null;
-                        come_value.type = new sType(s"long");
-                        
-                        come_params.replace(1, come_value);
-                        params.push_back((s"len", null));
-                    }
-                    else if(fun_name === "length") {
-                        buffer*% buf = new buffer();
-                        
-                        int i=0;
-                        foreach(it, obj_array_type.mArrayNum) {
-                            node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                            }
-                            
-                            CVALUE*% come_value = get_value_from_stack(-1, info);
-                        
-                            buf.append_format("%s", come_value.c_value);
-                            if(i != obj_array_type.mArrayNum.length()-1) {
-                                buf.append_str("*");
-                            }
-                            i++;
-                        }
-                        
-                        CVALUE*% come_value = new CVALUE();
-                        
-                        come_value.c_value = buf.to_string();
-                        come_value.var = null;
-                        come_value.type = new sType(s"long");
-                        
-                        come_params.replace(1, come_value);
-                        params.push_back((s"len", null));
-                    }
-                    else if(fun_name === "to_buffer") {
-                        buffer*% buf = new buffer();
-                        
-                        int i=0;
-                        foreach(it, obj_array_type.mArrayNum) {
-                            node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                            }
-                            
-                            CVALUE*% come_value = get_value_from_stack(-1, info);
-                        
-                            buf.append_format("%s", come_value.c_value);
-                            if(i != obj_array_type.mArrayNum.length()-1) {
-                                buf.append_str("*");
-                            }
-                            i++;
-                        }
-                        
-                        CVALUE*% come_value = new CVALUE();
-                        
-                        come_value.c_value = buf.to_string();
-                        come_value.var = null;
-                        come_value.type = new sType(s"long");
-                        
-                        come_params.replace(1, come_value);
-                        params.push_back((s"len", null));
-                    }
-                    else if(fun_name === "to_list") {
-                        buffer*% buf = new buffer();
-                        
-                        int i=0;
-                        foreach(it, obj_array_type.mArrayNum) {
-                            node_compile(it).elif {
-                                err_msg(info, "invalid array num");
-                            }
-                            
-                            CVALUE*% come_value = get_value_from_stack(-1, info);
-                        
-                            buf.append_format("%s", come_value.c_value);
-                            if(i != obj_array_type.mArrayNum.length()-1) {
-                                buf.append_str("*");
-                            }
-                            i++;
-                        }
-                        
-                        CVALUE*% come_value = new CVALUE();
-                        
-                        come_value.c_value = buf.to_string();
-                        come_value.var = null;
-                        come_value.type = new sType(s"long");
-                        
-                        come_params.replace(1, come_value);
-                        params.push_back((s"len", null));
-                    }
-                }
-            }
-*/
-            
             if(params.length() < fun.mParamTypes.length()+(method_block?-2:0))
             {
                 for(; i<fun.mParamTypes.length()+(method_block?-2:0); i++) {
@@ -962,15 +849,47 @@ class sMethodCallNode extends sNodeBase
             buf.append_str("(");
             
             
-            int j = 0;
-            foreach(it, come_params) {
-                buf.append_str(it.c_value);
-                
-                if(j != come_params.length()-1) {
-                    buf.append_str(",");
+            string saved_obj_value = null
+            if(result_type2->mDefferRightValue) {
+                static int var_num = 0;
+                string var_name = s"__save_obj_value\{var_num++}";
+                add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(obj_type, var_name));
+                if(info.comma_instead_of_semicolon) {
+                    add_come_code(info, "%s=%s,", var_name, obj_value.c_value);
+                }
+                else {
+                    add_come_code(info, "%s=%s;\n", var_name, obj_value.c_value);
                 }
                 
-                j++;
+                saved_obj_value = var_name;
+                
+                int j = 0;
+                foreach(it, come_params) {
+                    if(j == 0) {
+                        buf.append_str(saved_obj_value);
+                    }
+                    else {
+                        buf.append_str(it.c_value);
+                    }
+                    
+                    if(j != come_params.length()-1) {
+                        buf.append_str(",");
+                    }
+                    
+                    j++;
+                }
+            }
+            else {
+                int j = 0;
+                foreach(it, come_params) {
+                    buf.append_str(it.c_value);
+                    
+                    if(j != come_params.length()-1) {
+                        buf.append_str(",");
+                    }
+                    
+                    j++;
+                }
             }
             buf.append_str(")");
             
@@ -985,7 +904,10 @@ class sMethodCallNode extends sNodeBase
             come_value2.type->mImmutable = false;
             
             if(result_type2->mHeap) {
-                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type);
+                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value);
+            }
+            else if(saved_obj_value) {
+                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value);
             }
         
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
@@ -1008,11 +930,13 @@ class sMethodCallNode extends sNodeBase
     }
 };
 
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool guard_break, sInfo* info)
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool guard_break, sInfo* info, bool no_err=false)
 {
-    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, guard_break, info) implements sNode;
+    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, guard_break, info, no_err) implements sNode;
         
-    node = post_position_operator(node, info);
+    if(!no_err) {
+        node = post_position_operator(node, info);
+    }
     
     return node;
 }

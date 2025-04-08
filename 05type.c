@@ -1612,6 +1612,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool channel = false;
     bool any_class = false;
     bool vtable = false;
+    bool deffer_ = false;
     while(1) {
         if(*info->p == '*') {
             info->p++;
@@ -1620,6 +1621,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             skip_pointer_attribute();
             
             pointer_num++;
+        }
+        else if(*info->p == '~') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            skip_pointer_attribute();
+            
+            deffer_ = true;
         }
         else if(*info->p == '%') {
             info->p++;
@@ -1932,6 +1941,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum = pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
+        result_type->mDefferRightValue = result_type->mDefferRightValue || deffer_;
         
         var_name = parse_word();
         
@@ -2005,6 +2015,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mPointerNum += pointer_num;
         result_type->mHeap = result_type->mHeap || heap;
         result_type->mChannel = result_type->mChannel || channel;
+        result_type->mDefferRightValue = result_type->mDefferRightValue || deffer_;
         
         if(xisalnum(*info.p) || *info->p == '_') {
             var_name = parse_word();
@@ -2157,6 +2168,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         else if(info.generics_type_names.contained(type_name)) {
@@ -2186,6 +2198,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         else if(info.method_generics_type_names.contained(type_name)) {
@@ -2215,6 +2228,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         else if(*info->p == '<') {
@@ -2287,6 +2301,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
             
             type_name = type->mClass->mName;
@@ -2329,6 +2344,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mPointerNum += pointer_num;
             type->mHeap = type->mHeap || heap;
             type->mChannel = type->mChannel || channel;
+            type->mDefferRightValue = type->mDefferRightValue || deffer_;
             type->mTupleName = tuple_name;
         }
         
@@ -2353,6 +2369,17 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type->mHeap = true;
                 if(type->mNoSolvedGenericsType) {
                     type->mNoSolvedGenericsType.mHeap = true;
+                }
+            }
+            else if(*info->p == '~') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                skip_pointer_attribute();
+                
+                type->mDefferRightValue = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mDefferRightValue = true;
                 }
             }
             else if(*info->p == '&') {
@@ -2411,6 +2438,17 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type->mHeap = true;
                 if(type->mNoSolvedGenericsType) {
                     type->mNoSolvedGenericsType.mHeap = true;
+                }
+            }
+            else if(*info->p == '~') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                skip_pointer_attribute();
+                
+                type->mDefferRightValue = true;
+                if(type->mNoSolvedGenericsType) {
+                    type->mNoSolvedGenericsType.mDefferRightValue = true;
                 }
             }
             else if(gComePthread && *info->p == '@') {

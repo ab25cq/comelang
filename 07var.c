@@ -830,6 +830,7 @@ class sLoadNode extends sNodeBase
         self.super();
         
         string self.name = string(name);
+        bool self.on_load_calling = false;
     }
     
     string kind()
@@ -914,6 +915,23 @@ class sLoadNode extends sNodeBase
             come_value.type->mOriginalTypeNamePointerNum = come_value.type->mPointerNum;
         }
         
+        if(!self.on_load_calling && self.name !== "self") {
+            self.on_load_calling = true;
+            
+            var fun_name, fun, generics_fun = get_method("on_load"@fun_name, come_value.type, info);
+            
+            if(fun) {
+                get_value_from_stack(-1, info);
+                
+                var params = [((string)null, (clone self) implements sNode)];
+                sNode*% node = create_method_call(s"on_load", (clone self) implements sNode, params, null@method_block, 0@method_block_sline, null@method_generics_types, false@guard_break, info);
+                
+                node_compile(node).elif {
+                    return false;
+                }
+            }
+        }
+        
         return true;
     }
 };
@@ -932,7 +950,9 @@ bool is_inner_calling(sNode* node, sInfo* info)
 
 sNode*% create_load_var(char* var_name, sInfo* info=info)
 {
-    return new sLoadNode(string(var_name), info) implements sNode;
+    sNode*% node = new sLoadNode(string(var_name), info) implements sNode;
+    
+    return node;
 }
 
 class sFunLoadNode extends sNodeBase
@@ -1594,15 +1614,16 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     }
     else if(!is_type_name_flag || info.funcs[string(buf)]??) {
         sNode*% node = new sLoadNode(string(buf)@name, info) implements sNode;
-        
+    
         node = post_position_operator(node, info);
         
         info.sline_real = sline_real;
+        
         return node;
     }
     else if(!is_type_name_flag) {
         sNode*% node = new sLoadNode(string(buf)@name, info) implements sNode;
-        
+    
         node = post_position_operator(node, info);
         
         info.sline_real = sline_real;
@@ -1639,6 +1660,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             
             if(*info->p == '=' && *(info->p+1) != '>' && info->no_assign) {
                 sNode*% node = new sLoadNode(name@name, info) implements sNode;
+                
                 info.sline_real = sline_real;
                 return node;
             }
