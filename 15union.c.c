@@ -876,6 +876,8 @@ extern _Bool gComeNet;
 extern _Bool gComeMalloc;
 extern _Bool gCommonHeader;
 extern int gComeDebugStackFrameID;
+extern _Bool gCompilingMac;
+
 struct sNode
 {
     void* _protocol_obj;

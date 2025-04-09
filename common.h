@@ -16,6 +16,7 @@ extern bool gComeNet;
 extern bool gComeMalloc;
 extern bool gCommonHeader;
 extern int gComeDebugStackFrameID;
+uniq bool gCompilingMac = false;
 
 struct sType;
 struct sClass;

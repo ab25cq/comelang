@@ -668,6 +668,17 @@ class sFunCallNode extends sNodeBase
         }
         
         /// builtin ///
+        if(gCompilingMac) {
+            if(fun_name === "___isoc23_strtoll") {
+                fun_name = s"strtoll";
+            }
+            else if(fun_name === "___isoc23_strtoul") {
+                fun_name = s"strtoul";
+            }
+            else if(fun_name === "___isoc23_strtoull") {
+                fun_name = s"strtoull";
+            }
+        }
         if(fun_name === "__builtin_memmove" || fun_name === "__builtin_memset" || fun_name === "__builtin_ffs" 
             || fun_name === "__builtin_ffsl" || fun_name === "__builtin_ffsll" 
             || fun_name === "__builtin_bswap16" || fun_name === "__builtin_bswap32" || fun_name === "__builtin_bswap64" 
