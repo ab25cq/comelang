@@ -1467,7 +1467,62 @@ int transpile(sInfo* info)
         
         info.funcs.insert(string(name), fun);
     }
-    
+    {
+            var name = string("strtol");
+        var result_type = new sType(s"long");
+        var param_types = [new sType(s"char*"), new sType(s"char**"), new sType(s"int")];
+        var param_names = [s"arg1", s"arg2", s"arg3"];
+        var param_default_parametors = [(string)null, (string)null, (string)null];
+        var fun = new sFun(name, result_type, param_types, param_names
+            , param_default_parametors, true@external, true@var_args
+            , null@block, false@static_
+            , info, false@inline_, false@uniq_, false@generate);
+        
+        info.funcs.insert(string(name), fun);
+    }
+    {
+        var name = string("strtoul");
+        var result_type = new sType(s"long");
+        result_type->mUnsigned = true;
+        var param_types = [new sType(s"char*"), new sType(s"char**"), new sType(s"int")];
+        var param_names = [s"arg1", s"arg2", s"arg3"];
+        var param_default_parametors = [(string)null, (string)null, (string)null];
+        var fun = new sFun(name, result_type, param_types, param_names
+            , param_default_parametors, true@external, true@var_args
+            , null@block, false@static_
+            , info, false@inline_, false@uniq_, false@generate);
+        
+        info.funcs.insert(string(name), fun);
+    }
+    {
+        var name = string("strtoull");
+        var result_type = new sType(s"long");
+        result_type->mUnsigned = true;
+        result_type->mLong = true;
+        var param_types = [new sType(s"char*"), new sType(s"char**"), new sType(s"int")];
+        var param_names = [s"arg1", s"arg2", s"arg3"];
+        var param_default_parametors = [(string)null, (string)null, (string)null];
+        var fun = new sFun(name, result_type, param_types, param_names
+            , param_default_parametors, true@external, true@var_args
+            , null@block, false@static_
+            , info, false@inline_, false@uniq_, false@generate);
+        
+        info.funcs.insert(string(name), fun);
+    }
+    {
+        var name = string("strtoll");
+        var result_type = new sType(s"long");
+        result_type->mLong = true;
+        var param_types = [new sType(s"char*"), new sType(s"char**"), new sType(s"int")];
+        var param_names = [s"arg1", s"arg2", s"arg3"];
+        var param_default_parametors = [(string)null, (string)null, (string)null];
+        var fun = new sFun(name, result_type, param_types, param_names
+            , param_default_parametors, true@external, true@var_args
+            , null@block, false@static_
+            , info, false@inline_, false@uniq_, false@generate);
+        
+        info.funcs.insert(string(name), fun);
+    }
     transpile_toplevel();
     
     return 0;
