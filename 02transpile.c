@@ -333,6 +333,10 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
         info.clang_option = info.clang_option + s" -fsanitize=address,undefined -g ";
     }
     
+    if(is_mac) {
+        info.clang_option = info.clang_option + " -std=gnu17 "
+    }
+    
     var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
     
     if(info.verbose) puts(command);
