@@ -389,6 +389,9 @@ static bool linker(sInfo* info, list<string>* object_files)
     if(gComeDebug && CC === "clang") {
         info.linker_option = info.clang_option + s" -fsanitize=address,undefined -g ";
     }
+    if(is_mac) {
+        info.linker_option = info.clang_option + s" -std=gnu17 "
+    }
     
     command.append_str(" " + info.linker_option +" ");
     
