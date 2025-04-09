@@ -106,7 +106,6 @@ static bool cpp(sInfo* info)
     }
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
-    gCompilingMac = is_mac;
     int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null") == 0;
     int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null") == 0;
     int is_linux = 1;

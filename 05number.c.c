@@ -876,8 +876,6 @@ extern _Bool gComeNet;
 extern _Bool gComeMalloc;
 extern _Bool gCommonHeader;
 extern int gComeDebugStackFrameID;
-extern _Bool gCompilingMac;
-
 struct sNode
 {
     void* _protocol_obj;
@@ -3314,7 +3312,7 @@ memset(&lont_33, 0, sizeof(long));
                 if(                *info->p==76||*info->p==108) {
                     info->p++;
                     skip_spaces_and_lf(info);
-                    value2_23=__isoc23_strtoull(buf_17,((void*)0),0);
+                    value2_23=strtoull(buf_17,((void*)0),0);
                     _inf_value5=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 334, "struct sNode");
                     _inf_obj_value5=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value81=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 334, "struct sULongNode*")),value2_23,info))));
                     _inf_value5->_protocol_obj=_inf_obj_value5;
@@ -3333,7 +3331,7 @@ memset(&lont_33, 0, sizeof(long));
                     return __result_obj__32;
                 }
                 else {
-                    value_26=__isoc23_strtoull(buf_17,((void*)0),0);
+                    value_26=strtoull(buf_17,((void*)0),0);
                     _inf_value6=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 338, "struct sNode");
                     _inf_obj_value6=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value86=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 338, "struct sULongNode*")),value_26,info))));
                     _inf_value6->_protocol_obj=_inf_obj_value6;
@@ -3353,7 +3351,7 @@ memset(&lont_33, 0, sizeof(long));
                 }
             }
             else {
-                value_27=__isoc23_strtoul(buf_17,((void*)0),0);
+                value_27=strtoul(buf_17,((void*)0),0);
                 _inf_value7=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 343, "struct sNode");
                 _inf_obj_value7=(struct sUIntNode*)come_increment_ref_count(((struct sUIntNode*)(__right_value89=sUIntNode_initialize((struct sUIntNode*)come_increment_ref_count((struct sUIntNode*)come_calloc_v2(1, sizeof(struct sUIntNode)*(1), "05number.c", 343, "struct sUIntNode*")),value_27,info))));
                 _inf_value7->_protocol_obj=_inf_obj_value7;
@@ -3378,7 +3376,7 @@ memset(&lont_33, 0, sizeof(long));
             if(            *info->p==76||*info->p==108) {
                 info->p++;
                 skip_spaces_and_lf(info);
-                value_29=__isoc23_strtoull(buf_17,((void*)0),0);
+                value_29=strtoull(buf_17,((void*)0),0);
                 _inf_value8=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 357, "struct sNode");
                 _inf_obj_value8=(struct sLongNode*)come_increment_ref_count(((struct sLongNode*)(__right_value94=sLongNode_initialize((struct sLongNode*)come_increment_ref_count((struct sLongNode*)come_calloc_v2(1, sizeof(struct sLongNode)*(1), "05number.c", 357, "struct sLongNode*")),value_29,info))));
                 _inf_value8->_protocol_obj=_inf_obj_value8;
@@ -3399,7 +3397,7 @@ memset(&lont_33, 0, sizeof(long));
             else if(            *info->p==85||*info->p==117) {
                 info->p++;
                 skip_spaces_and_lf(info);
-                value_31=__isoc23_strtoull(buf_17,((void*)0),0);
+                value_31=strtoull(buf_17,((void*)0),0);
                 _inf_value9=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 366, "struct sNode");
                 _inf_obj_value9=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value99=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 366, "struct sULongNode*")),value_31,info))));
                 _inf_value9->_protocol_obj=_inf_obj_value9;
@@ -3418,7 +3416,7 @@ memset(&lont_33, 0, sizeof(long));
                 return __result_obj__40;
             }
             else {
-                value_32=__isoc23_strtoull(buf_17,((void*)0),0);
+                value_32=strtoull(buf_17,((void*)0),0);
                 _inf_value10=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 370, "struct sNode");
                 _inf_obj_value10=(struct sLongNode*)come_increment_ref_count(((struct sLongNode*)(__right_value102=sLongNode_initialize((struct sLongNode*)come_increment_ref_count((struct sLongNode*)come_calloc_v2(1, sizeof(struct sLongNode)*(1), "05number.c", 370, "struct sLongNode*")),value_32,info))));
                 _inf_value10->_protocol_obj=_inf_obj_value10;
@@ -3438,7 +3436,7 @@ memset(&lont_33, 0, sizeof(long));
             }
         }
         else {
-            value_34=__isoc23_strtoll(buf_17,((void*)0),0);
+            value_34=strtoll(buf_17,((void*)0),0);
             _inf_value11=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 375, "struct sNode");
             _inf_obj_value11=(struct sIntNode*)come_increment_ref_count(((struct sIntNode*)(__right_value105=sIntNode_initialize((struct sIntNode*)come_increment_ref_count((struct sIntNode*)come_calloc_v2(1, sizeof(struct sIntNode)*(1), "05number.c", 375, "struct sIntNode*")),value_34,info))));
             _inf_value11->_protocol_obj=_inf_obj_value11;
@@ -3760,7 +3758,7 @@ struct sNode* __result_obj__58;
             if(            *info->p==76||*info->p==108) {
                 info->p++;
                 skip_spaces_and_lf(info);
-                value_38=__isoc23_strtoull(buf_36,((void*)0),0);
+                value_38=strtoull(buf_36,((void*)0),0);
                 if(                minus) {
                     _inf_value12=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 431, "struct sNode");
                     _inf_obj_value12=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value110=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 431, "struct sULongNode*")),-value_38,info))));
@@ -3799,7 +3797,7 @@ struct sNode* __result_obj__58;
                 }
             }
             else {
-                value_39=__isoc23_strtoull(buf_36,((void*)0),0);
+                value_39=strtoull(buf_36,((void*)0),0);
                 if(                minus) {
                     _inf_value14=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 441, "struct sNode");
                     _inf_obj_value14=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value116=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 441, "struct sULongNode*")),-value_39,info))));
@@ -3839,7 +3837,7 @@ struct sNode* __result_obj__58;
             }
         }
         else {
-            value_40=__isoc23_strtoull(buf_36,((void*)0),0);
+            value_40=strtoull(buf_36,((void*)0),0);
             if(            minus) {
                 _inf_value16=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 452, "struct sNode");
                 _inf_obj_value16=(struct sUIntNode*)come_increment_ref_count(((struct sUIntNode*)(__right_value122=sUIntNode_initialize((struct sUIntNode*)come_increment_ref_count((struct sUIntNode*)come_calloc_v2(1, sizeof(struct sUIntNode)*(1), "05number.c", 452, "struct sUIntNode*")),-value_40,info))));
@@ -3884,7 +3882,7 @@ struct sNode* __result_obj__58;
         if(        *info->p==76||*info->p==108) {
             info->p++;
             skip_spaces_and_lf(info);
-            value_41=__isoc23_strtoull(buf_36,((void*)0),0);
+            value_41=strtoull(buf_36,((void*)0),0);
             if(            minus) {
                 _inf_value18=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 470, "struct sNode");
                 _inf_obj_value18=(struct sLongNode*)come_increment_ref_count(((struct sLongNode*)(__right_value128=sLongNode_initialize((struct sLongNode*)come_increment_ref_count((struct sLongNode*)come_calloc_v2(1, sizeof(struct sLongNode)*(1), "05number.c", 470, "struct sLongNode*")),-value_41,info))));
@@ -3925,7 +3923,7 @@ struct sNode* __result_obj__58;
         else if(        *info->p==85||*info->p==117) {
             info->p++;
             skip_spaces_and_lf(info);
-            value_42=__isoc23_strtoull(buf_36,((void*)0),0);
+            value_42=strtoull(buf_36,((void*)0),0);
             if(            minus) {
                 _inf_value20=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 483, "struct sNode");
                 _inf_obj_value20=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value134=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 483, "struct sULongNode*")),-value_42,info))));
@@ -3964,7 +3962,7 @@ struct sNode* __result_obj__58;
             }
         }
         else {
-            value_43=__isoc23_strtoull(buf_36,((void*)0),0);
+            value_43=strtoull(buf_36,((void*)0),0);
             if(            minus) {
                 _inf_value22=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 492, "struct sNode");
                 _inf_obj_value22=(struct sLongNode*)come_increment_ref_count(((struct sLongNode*)(__right_value140=sLongNode_initialize((struct sLongNode*)come_increment_ref_count((struct sLongNode*)come_calloc_v2(1, sizeof(struct sLongNode)*(1), "05number.c", 492, "struct sLongNode*")),-value_43,info))));
@@ -4004,7 +4002,7 @@ struct sNode* __result_obj__58;
         }
     }
     else {
-        value_44=__isoc23_strtoll(buf_36,((void*)0),0);
+        value_44=strtoll(buf_36,((void*)0),0);
         if(        minus) {
             _inf_value24=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 502, "struct sNode");
             _inf_obj_value24=(struct sIntNode*)come_increment_ref_count(((struct sIntNode*)(__right_value146=sIntNode_initialize((struct sIntNode*)come_increment_ref_count((struct sIntNode*)come_calloc_v2(1, sizeof(struct sIntNode)*(1), "05number.c", 502, "struct sIntNode*")),-value_44,info))));
@@ -4135,7 +4133,7 @@ struct sNode* __result_obj__66;
             if(            *info->p==76||*info->p==108) {
                 info->p++;
                 skip_spaces_and_lf(info);
-                value_48=__isoc23_strtoull(buf_46,((void*)0),0);
+                value_48=strtoull(buf_46,((void*)0),0);
                 _inf_value26=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 559, "struct sNode");
                 _inf_obj_value26=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value153=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 559, "struct sULongNode*")),value_48,info))));
                 _inf_value26->_protocol_obj=_inf_obj_value26;
@@ -4154,7 +4152,7 @@ struct sNode* __result_obj__66;
                 return __result_obj__59;
             }
             else {
-                value_49=__isoc23_strtoull(buf_46,((void*)0),0);
+                value_49=strtoull(buf_46,((void*)0),0);
                 _inf_value27=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 563, "struct sNode");
                 _inf_obj_value27=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value156=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 563, "struct sULongNode*")),value_49,info))));
                 _inf_value27->_protocol_obj=_inf_obj_value27;
@@ -4174,7 +4172,7 @@ struct sNode* __result_obj__66;
             }
         }
         else {
-            value_50=__isoc23_strtoul(buf_46,((void*)0),0);
+            value_50=strtoul(buf_46,((void*)0),0);
             _inf_value28=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 568, "struct sNode");
             _inf_obj_value28=(struct sUIntNode*)come_increment_ref_count(((struct sUIntNode*)(__right_value159=sUIntNode_initialize((struct sUIntNode*)come_increment_ref_count((struct sUIntNode*)come_calloc_v2(1, sizeof(struct sUIntNode)*(1), "05number.c", 568, "struct sUIntNode*")),value_50,info))));
             _inf_value28->_protocol_obj=_inf_obj_value28;
@@ -4199,7 +4197,7 @@ struct sNode* __result_obj__66;
         if(        *info->p==76||*info->p==108) {
             info->p++;
             skip_spaces_and_lf(info);
-            value_51=__isoc23_strtoull(buf_46,((void*)0),0);
+            value_51=strtoull(buf_46,((void*)0),0);
             _inf_value29=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 581, "struct sNode");
             _inf_obj_value29=(struct sLongNode*)come_increment_ref_count(((struct sLongNode*)(__right_value162=sLongNode_initialize((struct sLongNode*)come_increment_ref_count((struct sLongNode*)come_calloc_v2(1, sizeof(struct sLongNode)*(1), "05number.c", 581, "struct sLongNode*")),value_51,info))));
             _inf_value29->_protocol_obj=_inf_obj_value29;
@@ -4220,7 +4218,7 @@ struct sNode* __result_obj__66;
         else if(        *info->p==85||*info->p==117) {
             info->p++;
             skip_spaces_and_lf(info);
-            value_52=__isoc23_strtoull(buf_46,((void*)0),0);
+            value_52=strtoull(buf_46,((void*)0),0);
             _inf_value30=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 589, "struct sNode");
             _inf_obj_value30=(struct sULongNode*)come_increment_ref_count(((struct sULongNode*)(__right_value165=sULongNode_initialize((struct sULongNode*)come_increment_ref_count((struct sULongNode*)come_calloc_v2(1, sizeof(struct sULongNode)*(1), "05number.c", 589, "struct sULongNode*")),value_52,info))));
             _inf_value30->_protocol_obj=_inf_obj_value30;
@@ -4239,7 +4237,7 @@ struct sNode* __result_obj__66;
             return __result_obj__63;
         }
         else {
-            value_53=__isoc23_strtoull(buf_46,((void*)0),0);
+            value_53=strtoull(buf_46,((void*)0),0);
             _inf_value31=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 593, "struct sNode");
             _inf_obj_value31=(struct sLongNode*)come_increment_ref_count(((struct sLongNode*)(__right_value168=sLongNode_initialize((struct sLongNode*)come_increment_ref_count((struct sLongNode*)come_calloc_v2(1, sizeof(struct sLongNode)*(1), "05number.c", 593, "struct sLongNode*")),value_53,info))));
             _inf_value31->_protocol_obj=_inf_obj_value31;
@@ -4259,7 +4257,7 @@ struct sNode* __result_obj__66;
         }
     }
     else {
-        value_54=__isoc23_strtoull(buf_46,((void*)0),0);
+        value_54=strtoull(buf_46,((void*)0),0);
         _inf_value32=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05number.c", 598, "struct sNode");
         _inf_obj_value32=(struct sIntNode*)come_increment_ref_count(((struct sIntNode*)(__right_value171=sIntNode_initialize((struct sIntNode*)come_increment_ref_count((struct sIntNode*)come_calloc_v2(1, sizeof(struct sIntNode)*(1), "05number.c", 598, "struct sIntNode*")),value_54,info))));
         _inf_value32->_protocol_obj=_inf_obj_value32;

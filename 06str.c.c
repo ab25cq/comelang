@@ -876,8 +876,6 @@ extern _Bool gComeNet;
 extern _Bool gComeMalloc;
 extern _Bool gCommonHeader;
 extern int gComeDebugStackFrameID;
-extern _Bool gCompilingMac;
-
 struct sNode
 {
     void* _protocol_obj;
@@ -8488,7 +8486,7 @@ memset(&size_440, 0, sizeof(int));
                             info->p++;
                             strncat(buf_427,buf2_428,128);
                         }
-                        n_429=__isoc23_strtoll(buf_427,((void*)0),0);
+                        n_429=strtoll(buf_427,((void*)0),0);
                         c_424=n_429;
                     }
                     break;
@@ -8595,7 +8593,7 @@ memset(&size_440, 0, sizeof(int));
                             info->p++;
                             strncat(buf_436,buf2_437,128);
                         }
-                        n_438=__isoc23_strtoll(buf_436,((void*)0),0);
+                        n_438=strtoll(buf_436,((void*)0),0);
                         c_432=n_438;
                     }
                     break;
