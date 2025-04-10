@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 32.0.2
+version 32.1.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+32.1.0 foreach is no macro
 32.0.2 xv6
 32.0.1 _Atomic support.
 32.0.0 mutex lock, and unlock finally bellow spec.
@@ -287,6 +288,8 @@ foreach is implemented as a macro.
 li.each { puts(it); }としても全てのリストの要素にアクセスできますが、break, continu, returnが使えません。foreachを使った方が効率的にもいいです。foreachは第一引数が要素が入った変数の名前、第二引数がリストとなります。
 
 foreachはマクロで実装されてます。
+
+version 32.1.0 foreach is no macro.
 
 ```C
 #define foreach(o1, o2) for(var o2_saved = (o2), var o1 = (o2_saved).begin(); !(o2_saved).end(); o1 = (o2_saved).next())
