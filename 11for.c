@@ -85,14 +85,8 @@ class sForNode extends sNodeBase
             }
             else {
                 add_last_code_to_source_with_comma(info);
-                
                 conditional_value = get_value_from_stack(-1, info);
-            
-                bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-                info.comma_instead_of_semicolon = true;
                 free_right_value_objects(info, comma:true);
-                info.comma_instead_of_semicolon = comma_instead_of_semicolon;
-                
                 add_come_code(info, "0;");
             }
         }
@@ -132,15 +126,9 @@ class sForNode extends sNodeBase
                 
                 conditional_value2 = get_value_from_stack(-1, info);
                 
-                add_come_code(info, "(_for_condtionalA%d=(%s)), ", num_for_condtionalA, conditional_value2.c_value);
-                
+                add_come_code(info, "(_for_condtionalA%d=(%s)), ", num_for_conditionalA_stack, conditional_value2.c_value);
                 add_last_code_to_source_with_comma(info);
-                
-                bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-                info.comma_instead_of_semicolon = true;
                 free_right_value_objects(info, comma:true);
-                info.comma_instead_of_semicolon = comma_instead_of_semicolon;
-                
                 add_come_code(info, "_for_condtionalA%d;", num_for_conditionalA_stack);
             }
         }
@@ -175,12 +163,7 @@ class sForNode extends sNodeBase
                 add_last_code_to_source_with_comma(info);
                 
                 CVALUE*% conditional_value3 = get_value_from_stack(-1, info);
-            
-                bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-                info.comma_instead_of_semicolon = true;
                 free_right_value_objects(info, comma:true);
-                info.comma_instead_of_semicolon = comma_instead_of_semicolon;
-                
                 add_come_code(info, "0");
             }
         }

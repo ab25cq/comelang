@@ -49,8 +49,6 @@ class sReturnNode extends sNodeBase
                 add_come_code(info, "return %s;\n", come_value.c_value);
             }
             else if(info.come_fun.mName !== "main" && info.come_fun.mNoResultType && !existance_free_objects_on_return(come_fun->mBlock, info, come_value.var, false@top_block) && !existance_free_right_value_objects(info)) {
-                //add_last_code_to_source(info);
-                
                 add_come_code(info, "return %s;\n", come_value.c_value);
             }
             else {

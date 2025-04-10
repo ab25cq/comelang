@@ -58,12 +58,6 @@ class sIfNode extends sNodeBase
         int elif_num = self.mElifNum;
         bool guard_ = self.mGuard;
         
-/*
-        sVarTable* lv_table = info->lv_table;
-        sVarTable*% for_var_table = new sVarTable(global:false, parent:lv_table);
-        info->lv_table = for_var_table;
-*/
-        
         string if_result_var_name = info.if_result_var_name;
         if(existance_of_result_value) {
             sType*% if_result_type = new sType(s"void*");
@@ -104,15 +98,6 @@ class sIfNode extends sNodeBase
         
         if(normal_if) {
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            
-            if(guard_) {
-                sVar* var_ = conditional_value.var;
-                
-                if(var_) {
-                    var_->mType->mGuardValue = false;
-                }
-            }
-            
             add_come_code(info, "%s) {\n", conditional_value.c_value);
         }
         else {
@@ -122,16 +107,7 @@ class sIfNode extends sNodeBase
             
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
             
-            if(guard_) {
-                sVar* var_ = conditional_value.var;
-                
-                if(var_) {
-                    var_->mType->mGuardValue = false;
-                }
-            }
-            
-            add_come_code(info, "(_if_conditional%d=(%s)),", num_if_conditional, conditional_value.c_value);
-            
+            add_come_code(info, "(_if_conditional%d=(%s)),", num_if_conditional_stack, conditional_value.c_value);
             free_right_value_objects(info, comma:true);
             add_come_code(info, "_if_conditional%d) {\n", num_if_conditional_stack);
         }
@@ -177,7 +153,7 @@ class sIfNode extends sNodeBase
                     add_come_code_at_function_head(info, "_Bool _elif_conditional%d;\n", ++num_elif_conditional);
                     int num_elif_conditional_stack = num_elif_conditional;
         
-                    add_come_code(info, "(_elif_conditional%d=(%s)),", num_elif_conditional, conditional_value.c_value);
+                    add_come_code(info, "(_elif_conditional%d=(%s)),", num_elif_conditional_stack, conditional_value.c_value);
                     free_right_value_objects(info, comma:true);
                     add_come_code(info, "_elif_conditional%d) {\n", num_elif_conditional_stack);
                 }
@@ -363,9 +339,9 @@ class sOrStatmentNode extends sNodeBase
         
         static int num_or_conditional = 0;
         add_come_code_at_function_head(info, "_Bool _or_conditional%d;\n", ++num_or_conditional);
-        
-        add_come_code(info, "if((_or_conditional%d=(%s)),", num_or_conditional, conditional_value.c_value);
         int num_or_conditional_stack = num_or_conditional;
+        
+        add_come_code(info, "if((_or_conditional%d=(%s)),", num_or_conditional_stack, conditional_value.c_value);
         add_last_code_to_source_with_comma(info);
         free_right_value_objects(info, comma:true);
         add_come_code(info, "_or_conditional%d == 0) {\n", num_or_conditional_stack);
@@ -419,9 +395,9 @@ class sAndStatmentNode extends sNodeBase
         
         static int num_and_conditional = 0;
         add_come_code_at_function_head(info, "_Bool _and_conditional%d;\n", ++num_and_conditional);
-        
-        add_come_code(info, "if((_and_conditional%d=(%s)),", num_and_conditional, conditional_value.c_value);
         int num_and_conditional_stack = num_and_conditional;
+        
+        add_come_code(info, "if((_and_conditional%d=(%s)),", num_and_conditional_stack, conditional_value.c_value);
         add_last_code_to_source_with_comma(info);
         free_right_value_objects(info, comma:true);
         add_come_code(info, "_and_conditional%d != 0) {\n", num_and_conditional_stack);
