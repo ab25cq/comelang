@@ -52,6 +52,22 @@ bool node_compile(sNode* node, sInfo* info=info)
     return result;
 }
 
+void transpile_conditional_with_free_right_object_value(sInfo* info=info)
+{
+    add_last_code_to_source_with_comma(info);
+    
+    CVALUE*% conditional_value = get_value_from_stack(-1, info);
+    
+    static int num_condtional = 0;
+    add_come_code_at_function_head(info, "_Bool _condtional_value%d;\n", ++num_condtional);
+    int num_condtional_stack = num_condtional;
+    
+    add_come_code(info, "(_condtional_value%d=(%s)),", num_condtional_stack, conditional_value.c_value);
+    add_last_code_to_source_with_comma(info);
+    free_right_value_objects(info, comma:true);
+    add_come_code(info, "_condtional_value%d != 0", num_condtional_stack);
+}
+
 static void clear_tmp_file(sInfo* info)
 {
     string input_file_name = info.sname;

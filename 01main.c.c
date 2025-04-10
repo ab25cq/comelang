@@ -1982,6 +1982,7 @@ unsigned int* fgetws_unlocked(unsigned int* __ws, int __n, struct _IO_FILE* __st
 int fputws_unlocked(const unsigned int* __ws, struct _IO_FILE* __stream);
 unsigned long  int wcsftime(unsigned int* __s, unsigned long  int __maxsize, const unsigned int* __format, const struct tm* __tp);
 unsigned long  int wcsftime_l(unsigned int* __s, unsigned long  int __maxsize, const unsigned int* __format, const struct tm* __tp, struct __locale_struct* __loc);
+void transpile_conditional_with_free_right_object_value(struct sInfo* info);
 struct tuple2$2int$bool$* err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
