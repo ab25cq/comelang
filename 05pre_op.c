@@ -684,6 +684,11 @@ sNode*% reffence_node(sNode*% value, sInfo* info)
     return new sRefferenceNode(value, info) implements sNode;
 }
 
+sNode*% reverse_node(sNode*% value, sInfo* info)
+{
+    return new sReverseNode(value, info) implements sNode;
+}
+
 sNode*% pre_position_operator(sInfo* info=info)
 {
     skip_spaces_and_lf();

@@ -3400,6 +3400,8 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode2 = null;
     bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
     info->comma_instead_of_semicolon = false;
+    bool without_semicolon = info->without_semicolon;
+    info->without_semicolon = false;
     
     sClass* current_stack_frame_struct = info->current_stack_frame_struct;
     info->current_stack_frame_struct = null;
@@ -3606,6 +3608,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     info.module.mLastCode = last_code;
     info.module.mLastCode2 = last_code2;
     info->comma_instead_of_semicolon = comma_instead_of_semicolon;
+    info->without_semicolon = without_semicolon;
     
     return (cloner, real_fun_name);
 }

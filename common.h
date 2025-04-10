@@ -824,6 +824,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_
 /////////////////////////////////////////////////////////////////////
 /// 05function.c ///
 /////////////////////////////////////////////////////////////////////
+sNode*% reverse_node(sNode*% value, sInfo* info);
 sFun*% compile_uniq_function(sFun* fun, sInfo* info=info);
 sNode*% cast_node(sType*% type, sNode*% node, sInfo* info=info);
 sNode*% reffence_node(sNode*% value, sInfo* info);

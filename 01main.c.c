@@ -2033,6 +2033,7 @@ void append_object_to_right_values2(struct CVALUE* come_value, struct sType* typ
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 char* increment_ref_count_object(struct sType* type, char* obj, struct sInfo* info);
 void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* info, _Bool force_delete_, _Bool no_free);
+struct sNode* reverse_node(struct sNode* value, struct sInfo* info);
 struct sFun* compile_uniq_function(struct sFun* fun, struct sInfo* info);
 struct sNode* cast_node(struct sType* type, struct sNode* node, struct sInfo* info);
 struct sNode* reffence_node(struct sNode* value, struct sInfo* info);
@@ -7684,10 +7685,10 @@ void* __right_value218 = (void*)0;
 void* __right_value219 = (void*)0;
 void* __right_value220 = (void*)0;
 struct sType* __dec_obj33;
-struct list$1sType$ph* o2_saved_310;
+struct list$1sType$ph* _foreach_var_name1_310;
 struct sType* it_313;
 void* __right_value261 = (void*)0;
-struct list$1char$ph* o2_saved_336;
+struct list$1char$ph* _foreach_var_name2_336;
 char* it_337;
 void* __right_value262 = (void*)0;
 struct sType* __dec_obj60;
@@ -7734,14 +7735,14 @@ struct sFun* __result_obj__220;
     __dec_obj33=self->mLambdaType,
     self->mLambdaType=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "common.h", 290, "struct sType*")),(char*)come_increment_ref_count(xsprintf("lambda")),(_Bool)0,info));
     /*b*/ come_call_finalizer3(__dec_obj33,sType_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);
-    for(    o2_saved_310=(struct list$1sType$ph*)come_increment_ref_count((param_types)),it_313=list$1sType$ph_begin((o2_saved_310));    !list$1sType$ph_end((o2_saved_310));    it_313=list$1sType$ph_next((o2_saved_310))    ){
+    for(    _foreach_var_name1_310=(struct list$1sType$ph*)come_increment_ref_count(param_types),    it_313=list$1sType$ph_begin(_foreach_var_name1_310);    !list$1sType$ph_end(_foreach_var_name1_310);    it_313=list$1sType$ph_next(_foreach_var_name1_310)    ){
         list$1sType$ph_push_back(self->mLambdaType->mParamTypes,(struct sType*)come_increment_ref_count(sType_clone(it_313)));
     }
-    /*c*/ come_call_finalizer3(o2_saved_310,list$1sType$ph$p_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
-    for(    o2_saved_336=(struct list$1char$ph*)come_increment_ref_count((param_names)),it_337=list$1char$ph_begin((o2_saved_336));    !list$1char$ph_end((o2_saved_336));    it_337=list$1char$ph_next((o2_saved_336))    ){
+    /*c*/ come_call_finalizer3(_foreach_var_name1_310,list$1sType$ph$p_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
+    for(    _foreach_var_name2_336=(struct list$1char$ph*)come_increment_ref_count(param_names),    it_337=list$1char$ph_begin(_foreach_var_name2_336);    !list$1char$ph_end(_foreach_var_name2_336);    it_337=list$1char$ph_next(_foreach_var_name2_336)    ){
         list$1char$ph_push_back(self->mLambdaType->mParamNames,(char*)come_increment_ref_count((char*)come_memdup(it_337, "common.h", 297, "char*")));
     }
-    /*c*/ come_call_finalizer3(o2_saved_336,list$1char$ph$p_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
+    /*c*/ come_call_finalizer3(_foreach_var_name2_336,list$1char$ph$p_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
     __dec_obj60=self->mLambdaType->mResultType,
     self->mLambdaType->mResultType=(struct sType*)come_increment_ref_count(result_type);
     /*b*/ come_call_finalizer3(__dec_obj60,sType_finalize, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, 0/* force_delete_ */, (void*)0);

@@ -1,8 +1,12 @@
-#include <stdatomic.h>
-
-_Atomic int counter = 0;
+#include <comelang.h>
 
 int main(int argc, char** argv) {
-    atomic_fetch_add(&counter, 1);
+    map<char*,int>*% m = ["AAA":1, "BBB":2];
+    
+/*
+    foreach(it, m) {
+        printf("%s\n", it);
+    }
+*/
     return 0;
 }

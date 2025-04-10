@@ -62,8 +62,6 @@ class sBufferNode extends sNodeBase
         any_type->mPointerNum = 1;
         any_type->mHeap = true;
         
-        var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-        
         if(info.funcs["come_calloc_v2"]??) {
             buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc_v2(1, sizeof(struct buffer), \"%s\", %d, \"buffer\"), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
         }
@@ -421,8 +419,6 @@ class sListNode extends sNodeBase
         any_type->mPointerNum = 1;
         any_type->mHeap = true;
         
-        var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-        
         if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
@@ -568,8 +564,6 @@ class sTupleNode extends sNodeBase
         any_type->mPointerNum = 1;
         any_type->mHeap = true;
         
-        var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
-        
         if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
@@ -711,8 +705,6 @@ class sSomeNode extends sNodeBase
         sType*% type2 = solve_generics(type, type, info);
         
         string type_name = make_type_name_string(type2, array_cast_pointer:true);
-        
-        var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(type2);
         
         if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
@@ -1029,8 +1021,6 @@ class sNoneNode extends sNodeBase
         
         string type_name = make_type_name_string(type2, array_cast_pointer:true);
         
-        var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(type2);
-        
         if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
         }
@@ -1335,8 +1325,6 @@ class sMapNode extends sNodeBase
         sType*% any_type = type2;
         any_type->mPointerNum = 1;
         any_type->mHeap = true;
-        
-        var finalizer_name, cloner_name, get_hash_key_name, equaler_name = create_vtable(any_type);
         
         if(info.funcs["come_calloc_v2"]??) {
             obj_value.c_value = xsprintf("(%s*)come_calloc_v2(1, sizeof(%s)*(%s), \"%s\", %d, \"%s\")", type_name, type_name, num_string.to_string(), info.sname, info.sline, type_name);
