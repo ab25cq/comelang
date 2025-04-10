@@ -1647,8 +1647,7 @@ impl list <T>
         return !left.operator_equals(right);
     }
     bool contained(list<T>* self, T& item) {
-        for(var it = self.begin(); !self.end(); it = self.next())
-        {
+        foreach(it, self) {
             if(it.equals(item)) {
                 return true;
             }
@@ -1874,7 +1873,7 @@ impl list <T>
         buffer*% buf = new buffer();
         
         int n = 0;
-        for(var it = self.begin(); !self.end(); it = self.next()) {
+        foreach(it, self) {
             buf.append_str(it);
             
             if(n < self.length()-1) {
@@ -1887,8 +1886,6 @@ impl list <T>
         return buf.to_string();
     }
 }
-
-//#define foreach(o1, o2) for(var o2_saved = (o2), var o1 = (o2_saved).begin(); !(o2_saved).end(); o1 = (o2_saved).next())
 
 //////////////////////////////
 // map
@@ -1986,7 +1983,7 @@ impl map <T, T2>
         
         result.key_list = new list<T&>();
 
-        for(var it = self.begin(); !self.end(); it = self.next()) {
+        foreach(it, self) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             
@@ -2156,7 +2153,7 @@ impl map <T, T2>
 
         int len = 0;
 
-        for(var it = self.begin(); !self.end(); it = self.next()) {
+        foreach(it, self) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = self.at(it, default_value);
@@ -2265,8 +2262,7 @@ impl map <T, T2>
         }
         
         bool same_key_exist = false;
-        for(var it2 = self.key_list.begin(); !self.key_list.end(); it2 = self.key_list.next())
-        {
+        foreach(it2, self.key_list) {
             if(it2.equals(key)) {
                 same_key_exist = true;
             }
@@ -2342,8 +2338,7 @@ impl map <T, T2>
         }
         
         bool same_key_exist = false;
-        for(var it2 = self.key_list.begin(); !self.key_list.end(); it2 = self.key_list.next())
-        {
+        foreach(it2, self.key_list) {
             if(it2.equals(key)) {
                 same_key_exist = true;
             }
@@ -2399,8 +2394,7 @@ impl map <T, T2>
 
         int n = 0;
         bool result = true;
-        for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
-        {
+        foreach(it, left.key_list) {
             T` default_value;
             memset(&default_value, 0, sizeof(T));
             T& it2 = right.key_list.item(n, default_value);
@@ -2432,8 +2426,7 @@ impl map <T, T2>
 
         int n = 0;
         bool result = true;
-        for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
-        {
+        foreach(it, left.key_list) {
             T` default_value;
             memset(&default_value, 0, sizeof(T));
             T& it2 = right.key_list.item(n, default_value);
@@ -2494,8 +2487,7 @@ impl map <T, T2>
         map<T,T2>*% result = new map<T,T2>();
 
         int n = 0;
-        for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
-        {
+        foreach(it, left.key_list) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = left.at(it, default_value);
@@ -2516,8 +2508,7 @@ impl map <T, T2>
         }
 
         n=0;
-        for(var it = right.key_list.begin(); !right.key_list.end(); it = right.key_list.next())
-        {
+        foreach(it, right.key_list) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = left.at(it, default_value);
@@ -2544,8 +2535,7 @@ impl map <T, T2>
 
         for(int i=0; i<right; i++ ) {
             int n = 0;
-            for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next())
-            {
+            foreach(it, left.key_list) {
                 T2` default_value;
                 memset(&default_value, 0, sizeof(T2));
                 
@@ -2572,7 +2562,7 @@ impl map <T, T2>
     immutable list<T>*% keys(map<T, T2>* self) {
         var result = new list<T>();
         
-        for(var it = self.key_list.begin(); !self.key_list.end(); it = self.key_list.next()) {
+        foreach(it, self.key_list) {
             if(isheap(T)) {
                 result.push_back(clone it);
             }
@@ -2587,7 +2577,7 @@ impl map <T, T2>
     immutable list<T2>*% values(map<T, T2>* self) {
         var result = new list<T2>();
         
-        for(var it = self.key_list.begin(); !self.key_list.end(); it = self.key_list.next()) { 
+        foreach(it, self.key_list) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
         

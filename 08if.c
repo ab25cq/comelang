@@ -88,8 +88,6 @@ class sIfNode extends sNodeBase
         }
         info.without_semicolon = without_semicolon;
         info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
-    
-        sBlock* if_block = self.mIfBlock;
         
         bool normal_if = true;
         if(existance_free_right_value_objects(info)) {
@@ -98,19 +96,16 @@ class sIfNode extends sNodeBase
         
         if(normal_if) {
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            add_come_code(info, "%s) {\n", conditional_value.c_value);
+            add_come_code(info, "%s", conditional_value.c_value);
         }
         else {
-            static int num_if_conditional = 0;
-            add_come_code_at_function_head(info, "_Bool _if_conditional%d;\n", ++num_if_conditional);
-            int num_if_conditional_stack = num_if_conditional;
-            
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            
-            add_come_code(info, "(_if_conditional%d=(%s)),", num_if_conditional_stack, conditional_value.c_value);
-            free_right_value_objects(info, comma:true);
-            add_come_code(info, "_if_conditional%d) {\n", num_if_conditional_stack);
+            transpile_conditional_with_free_right_object_value(conditional_value);
         }
+        
+        add_come_code(info, ") {\n");
+    
+        sBlock* if_block = self.mIfBlock;
     
         transpile_block(if_block, null, null, info, if_result:existance_of_result_value);
         
@@ -132,9 +127,6 @@ class sIfNode extends sNodeBase
                 }
                 info.without_semicolon = without_semicolon;
                 info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
-                
-                sBlock* elif_node_block = self.mElifBlocks[i];
-                
         
                 bool normal_if = true;
                 if(existance_free_right_value_objects(info)) {
@@ -143,20 +135,15 @@ class sIfNode extends sNodeBase
                 
                 if(normal_if) {
                     CVALUE*% conditional_value = get_value_from_stack(-1, info);
-    
-                    add_come_code(info, "%s) {\n", conditional_value.c_value);
+                    add_come_code(info, "%s", conditional_value.c_value);
                 }
                 else {
                     CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                    
-                    static int num_elif_conditional = 0;
-                    add_come_code_at_function_head(info, "_Bool _elif_conditional%d;\n", ++num_elif_conditional);
-                    int num_elif_conditional_stack = num_elif_conditional;
-        
-                    add_come_code(info, "(_elif_conditional%d=(%s)),", num_elif_conditional_stack, conditional_value.c_value);
-                    free_right_value_objects(info, comma:true);
-                    add_come_code(info, "_elif_conditional%d) {\n", num_elif_conditional_stack);
+                    transpile_conditional_with_free_right_object_value(conditional_value);
                 }
+                add_come_code(info, ") {\n");
+                
+                sBlock* elif_node_block = self.mElifBlocks[i];
                 
                 transpile_block(elif_node_block, null, null, info, if_result:existance_of_result_value);
                 
@@ -324,6 +311,8 @@ class sOrStatmentNode extends sNodeBase
     {
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
+        
+        add_come_code(info, "if(");
     
         bool without_semicolon = info.without_semicolon;
         info.without_semicolon = true;
@@ -331,23 +320,13 @@ class sOrStatmentNode extends sNodeBase
             return false;
         }
         info.without_semicolon = without_semicolon;
-        
     
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
-    
+        transpile_conditional_with_free_right_object_value(conditional_value);
+        
+        add_come_code(info, ") {\n");
         sBlock* if_block = self.mIfBlock;
-        
-        static int num_or_conditional = 0;
-        add_come_code_at_function_head(info, "_Bool _or_conditional%d;\n", ++num_or_conditional);
-        int num_or_conditional_stack = num_or_conditional;
-        
-        add_come_code(info, "if((_or_conditional%d=(%s)),", num_or_conditional_stack, conditional_value.c_value);
-        add_last_code_to_source_with_comma(info);
-        free_right_value_objects(info, comma:true);
-        add_come_code(info, "_or_conditional%d == 0) {\n", num_or_conditional_stack);
-    
         transpile_block(if_block, null, null, info);
-        
         add_come_code(info, "}\n");
         
         transpiler_clear_last_code(info);
@@ -380,6 +359,8 @@ class sAndStatmentNode extends sNodeBase
     {
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
+        
+        add_come_code(info, "if(");
     
         bool without_semicolon = info.without_semicolon;
         info.without_semicolon = true;
@@ -388,22 +369,13 @@ class sAndStatmentNode extends sNodeBase
         }
         info.without_semicolon = without_semicolon;
         
-    
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
+        transpile_conditional_with_free_right_object_value(conditional_value);
+        
+        add_come_code(info, ") {\n");
     
         sBlock* if_block = self.mIfBlock;
-        
-        static int num_and_conditional = 0;
-        add_come_code_at_function_head(info, "_Bool _and_conditional%d;\n", ++num_and_conditional);
-        int num_and_conditional_stack = num_and_conditional;
-        
-        add_come_code(info, "if((_and_conditional%d=(%s)),", num_and_conditional_stack, conditional_value.c_value);
-        add_last_code_to_source_with_comma(info);
-        free_right_value_objects(info, comma:true);
-        add_come_code(info, "_and_conditional%d != 0) {\n", num_and_conditional_stack);
-    
         transpile_block(if_block, null, null, info);
-        
         add_come_code(info, "}\n");
         
         transpiler_clear_last_code(info);

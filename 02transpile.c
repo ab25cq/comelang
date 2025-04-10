@@ -8,6 +8,7 @@ bool gComePthread = false;
 bool gCommonHeader = false;
 bool gComeMalloc = false;
 bool gComeDebug = false;
+bool gComeDebug2 = false;
 bool gComeOriginalSourcePosition = true;
 int gComeDebugStackFrameID = 0;
 
@@ -52,20 +53,18 @@ bool node_compile(sNode* node, sInfo* info=info)
     return result;
 }
 
-void transpile_conditional_with_free_right_object_value(sInfo* info=info)
+void transpile_conditional_with_free_right_object_value(CVALUE*% conditional_value, sInfo* info=info)
 {
     add_last_code_to_source_with_comma(info);
     
-    CVALUE*% conditional_value = get_value_from_stack(-1, info);
-    
     static int num_condtional = 0;
-    add_come_code_at_function_head(info, "_Bool _condtional_value%d;\n", ++num_condtional);
+    add_come_code_at_function_head(info, "_Bool _condtional_value_X%d;\n", ++num_condtional);
     int num_condtional_stack = num_condtional;
     
-    add_come_code(info, "(_condtional_value%d=(%s)),", num_condtional_stack, conditional_value.c_value);
+    add_come_code(info, "(_condtional_value_X%d=(%s)),", num_condtional_stack, conditional_value.c_value);
     add_last_code_to_source_with_comma(info);
     free_right_value_objects(info, comma:true);
-    add_come_code(info, "_condtional_value%d != 0", num_condtional_stack);
+    add_come_code(info, "_condtional_value_X%d", num_condtional_stack);
 }
 
 static void clear_tmp_file(sInfo* info)
@@ -340,7 +339,7 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     }
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
-    if(gComeDebug && CC === "clang") {
+    if(gComeDebug2 && CC === "clang") {
 /*
 #ifdef __MAC__
         setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
@@ -402,7 +401,7 @@ static bool linker(sInfo* info, list<string>* object_files)
         setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
 #endif
 */
-    if(gComeDebug && CC === "clang") {
+    if(gComeDebug2 && CC === "clang") {
         info.linker_option = info.clang_option + s" -fsanitize=address,undefined -g ";
     }
     if(is_mac) {
@@ -823,6 +822,7 @@ module MEvalOptions<T, T2>
     string output_file_name = T2;
     bool verbose = false;
     bool come_debug = false;
+    bool come_debug2 = false;
     bool come_malloc = false;
     bool m5stack_cpp = false;
     bool pico_cpp = false;
@@ -891,6 +891,10 @@ module MEvalOptions<T, T2>
         }
         else if(argv[i] === "-cg") {
             come_debug = true;
+            clang_option.append_str("-g ");
+        }
+        else if(argv[i] === "-cg2") {
+            come_debug2 = true;
             clang_option.append_str("-g ");
         }
         else if(argv[i] === "-C") {
@@ -1001,6 +1005,7 @@ module MEvalOptions<T, T2>
 #endif
         
     gComeDebug = come_debug;
+    gComeDebug2 = come_debug2;
     gComeMalloc = come_malloc;
 }
 

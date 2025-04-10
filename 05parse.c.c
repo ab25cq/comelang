@@ -2198,7 +2198,7 @@ int sNodeBase_sline(struct sNodeBase* self, struct sInfo* info);
 int sNodeBase_sline_real(struct sNodeBase* self, struct sInfo* info);
 _Bool sNodeBase_terminated(struct sNodeBase* self);
 char* sNodeBase_sname(struct sNodeBase* self, struct sInfo* info);
-void transpile_conditional_with_free_right_object_value(struct sInfo* info);
+void transpile_conditional_with_free_right_object_value(struct CVALUE* condtional_value, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main(int argc, char** argv);
@@ -2439,21 +2439,21 @@ void* __right_value4 = (void*)0;
 int __result_obj__1;
 msg2_0 = (void*)0;
 memset(&args_1, 0, sizeof(va_list));
-    if(    !info->no_output_err) {
+    if(    !info->no_output_err    ) {
         __builtin_va_start(args_1,msg);
         vasprintf(&msg2_0,msg,args_1);
         __builtin_va_end(args_1);
         p_2=info->p;
         last_lf_3=((void*)0);
-        while(        p_2>=info->head) {
-            if(            *p_2==10) {
+        while(        p_2>=info->head        ) {
+            if(            *p_2==10            ) {
                 last_lf_3=p_2;
                 break;
             }
             p_2--;
         }
         buf_4=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05parse.c", 24, "struct buffer*"))));
-        if(        last_lf_3) {
+        if(        last_lf_3        ) {
             col_5=info->p-last_lf_3;
             buffer_append_format(buf_4,"%s %d(real %d)(block %d) %d: %s",info->sname,info->sline,info->sline_real,info->sline_block,col_5,msg2_0);
         }
@@ -2482,8 +2482,8 @@ static void va_list_finalize(va_list self){
 
 int expected_next_character(char c, struct sInfo* info){
     parse_sharp_v5(info);
-    if(    *info->p!=c) {
-        if(        !info->no_output_err) {
+    if(    *info->p!=c    ) {
+        if(        !info->no_output_err        ) {
             err_msg(info,"expected next charaster is %c, but %c, caller %s %d",c,*info->p,info->caller_sname,info->caller_line);
             exit(1);
         }
@@ -2498,7 +2498,7 @@ void* __right_value5 = (void*)0;
 void* __right_value6 = (void*)0;
 struct buffer* buf_7;
 void* __right_value7 = (void*)0;
-_Bool _if_conditional1;
+_Bool _condtional_value_X1;
 void* __right_value8 = (void*)0;
 char* __result_obj__2;
 void* __right_value9 = (void*)0;
@@ -2506,7 +2506,7 @@ char* result_8;
 void* __right_value10 = (void*)0;
 void* __right_value11 = (void*)0;
 void* __right_value12 = (void*)0;
-_Bool _if_conditional2;
+_Bool _condtional_value_X2;
 void* __right_value13 = (void*)0;
 void* __right_value14 = (void*)0;
 void* __right_value15 = (void*)0;
@@ -2515,13 +2515,13 @@ char* __result_obj__11;
 char* __result_obj__12;
     buf_7=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05parse.c", 66, "struct buffer*"))));
     parse_sharp_v5(info);
-    while(    (*info->p>=97&&*info->p<=122)||(*info->p>=65&&*info->p<=90)||*info->p==95||(*info->p>=48&&*info->p<=57)||(*info->p==36)) {
+    while(    (*info->p>=97&&*info->p<=122)||(*info->p>=65&&*info->p<=90)||*info->p==95||(*info->p>=48&&*info->p<=57)||(*info->p==36)    ) {
         buffer_append_char(buf_7,*info->p);
         info->p++;
     }
     skip_spaces_and_lf(info);
-    if(    (_if_conditional1=(string_length(((char*)(__right_value7=buffer_to_string(buf_7))))==0)),    (__right_value7 = come_decrement_ref_count(__right_value7, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
-    _if_conditional1) {
+    if(    (_condtional_value_X1=(string_length(((char*)(__right_value7=buffer_to_string(buf_7))))==0)),    (__right_value7 = come_decrement_ref_count(__right_value7, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
+    _condtional_value_X1    ) {
         err_msg(info,"unexpected character(%c), expected word character, caller %s %d",*info->p,info->caller_sname,info->caller_line);
         __result_obj__2 = (char*)come_increment_ref_count(((char*)(__right_value8=__builtin_string(""))));
         /*c*/ come_call_finalizer3(buf_7,buffer_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
@@ -2530,11 +2530,11 @@ char* __result_obj__12;
         return __result_obj__2;
     }
     result_8=(char*)come_increment_ref_count(buffer_to_string(buf_7));
-    if(    info->module_params) {
-        if(        (_if_conditional2=(((char*)(__right_value12=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value11=__builtin_string(result_8)))))))),        (__right_value10 = come_decrement_ref_count(__right_value10, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
+    if(    info->module_params    ) {
+        if(        (_condtional_value_X2=(((char*)(__right_value12=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value11=__builtin_string(result_8)))))))),        (__right_value10 = come_decrement_ref_count(__right_value10, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
         (__right_value11 = come_decrement_ref_count(__right_value11, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
         (__right_value12 = come_decrement_ref_count(__right_value12, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0)),
-        _if_conditional2) {
+        _condtional_value_X2        ) {
             __result_obj__11 = (char*)come_increment_ref_count(((char*)(__right_value16=__builtin_string(((char*)(__right_value15=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value14=__builtin_string(result_8))))))))));
             /*c*/ come_call_finalizer3(buf_7,buffer_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
             (result_8 = come_decrement_ref_count(result_8, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
@@ -2565,19 +2565,19 @@ default_value_9 = (void*)0;
     memset(&default_value_9,0,sizeof(char*));
     hash_10=string_get_hash_key(((char*)key))%self->size;
     it_11=hash_10;
-    while(    (_Bool)1) {
-        if(        self->item_existance[it_11]) {
-            if(            string_equals(self->keys[it_11],key)) {
+    while(    (_Bool)1    ) {
+        if(        self->item_existance[it_11]        ) {
+            if(            string_equals(self->keys[it_11],key)            ) {
                 __result_obj__3 = (char*)come_increment_ref_count(self->items[it_11]);
                 (default_value_9 = come_decrement_ref_count(default_value_9, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 (__result_obj__3 = come_decrement_ref_count(__result_obj__3, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_*/, (void*)0));
                 return __result_obj__3;
             }
             it_11++;
-            if(            it_11>=self->size) {
+            if(            it_11>=self->size            ) {
                 it_11=0;
             }
-            else if(            it_11==hash_10) {
+            else if(            it_11==hash_10            ) {
                 __result_obj__4 = (char*)come_increment_ref_count(default_value_9);
                 (default_value_9 = come_decrement_ref_count(default_value_9, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 1/* force_delete_*/, (void*)0));
                 (__result_obj__4 = come_decrement_ref_count(__result_obj__4, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_*/, (void*)0));
@@ -2609,19 +2609,19 @@ default_value_12 = (void*)0;
     memset(&default_value_12,0,sizeof(char*));
     hash_13=string_get_hash_key(((char*)key))%self->size;
     it_14=hash_13;
-    while(    (_Bool)1) {
-        if(        self->item_existance[it_14]) {
-            if(            string_equals(self->keys[it_14],key)) {
+    while(    (_Bool)1    ) {
+        if(        self->item_existance[it_14]        ) {
+            if(            string_equals(self->keys[it_14],key)            ) {
                 __result_obj__7 = (char*)come_increment_ref_count(self->items[it_14]);
                 (default_value_12 = come_decrement_ref_count(default_value_12, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, 0/* force_delete_*/, (void*)0));
                 (__result_obj__7 = come_decrement_ref_count(__result_obj__7, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_*/, (void*)0));
                 return __result_obj__7;
             }
             it_14++;
-            if(            it_14>=self->size) {
+            if(            it_14>=self->size            ) {
                 it_14=0;
             }
-            else if(            it_14==hash_13) {
+            else if(            it_14==hash_13            ) {
                 __result_obj__8 = (char*)come_increment_ref_count(default_value_12);
                 (default_value_12 = come_decrement_ref_count(default_value_12, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 1/* force_delete_*/, (void*)0));
                 (__result_obj__8 = come_decrement_ref_count(__result_obj__8, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, 0/* force_delete_*/, (void*)0));
@@ -2653,7 +2653,7 @@ char* __result_obj__13;
 buf_17 = (void*)0;
     p_15=info->p;
     sline_16=info->sline;
-    if(    xisalpha(*info->p)||*info->p==95) {
+    if(    xisalpha(*info->p)||*info->p==95    ) {
         __dec_obj1=buf_17,
         buf_17=(char*)come_increment_ref_count(parse_word(info));
         __dec_obj1 = come_decrement_ref_count(__dec_obj1, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */,0/*force_delete*/, (void*)0);
@@ -2672,11 +2672,11 @@ buf_17 = (void*)0;
 }
 
 void skip_spaces_and_lf(struct sInfo* info){
-    while(    (_Bool)1) {
-        if(        *info->p==32||*info->p==9) {
+    while(    (_Bool)1    ) {
+        if(        *info->p==32||*info->p==9        ) {
             info->p++;
         }
-        else if(        *info->p==10) {
+        else if(        *info->p==10        ) {
             info->p++;
             info->sline++;
         }
@@ -2688,11 +2688,11 @@ void skip_spaces_and_lf(struct sInfo* info){
 }
 
 void skip_spaces_and_lf2(struct sInfo* info){
-    while(    (_Bool)1) {
-        if(        *info->p==32||*info->p==9) {
+    while(    (_Bool)1    ) {
+        if(        *info->p==32||*info->p==9        ) {
             info->p++;
         }
-        else if(        *info->p==10) {
+        else if(        *info->p==10        ) {
             info->p++;
             info->sline++;
         }
@@ -2710,14 +2710,14 @@ struct buffer* fname_19;
 void* __right_value21 = (void*)0;
 char* __dec_obj3;
 int nest_20;
-    while(    1) {
-        if(        *info->p==35) {
+    while(    1    ) {
+        if(        *info->p==35        ) {
             skip_spaces_and_lf2(info);
             info->p++;
             skip_spaces_and_lf2(info);
-            if(            strmemcmp(info->p,"pragma")) {
-                while(                *info->p) {
-                    if(                    *info->p==10) {
+            if(            strmemcmp(info->p,"pragma")            ) {
+                while(                *info->p                ) {
+                    if(                    *info->p==10                    ) {
                         skip_spaces_and_lf2(info);
                         break;
                     }
@@ -2726,21 +2726,21 @@ int nest_20;
                     }
                 }
             }
-            else if(            xisdigit(*info->p)) {
+            else if(            xisdigit(*info->p)            ) {
                 line_18=0;
                 fname_19=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05parse.c", 167, "struct buffer*"))));
-                while(                xisdigit(*info->p)) {
+                while(                xisdigit(*info->p)                ) {
                     line_18=line_18*10+(*info->p-48);
                     info->p++;
                 }
                 skip_spaces_and_lf2(info);
-                if(                *info->p==34) {
+                if(                *info->p==34                ) {
                     info->p++;
-                    while(                    *info->p!=34) {
+                    while(                    *info->p!=34                    ) {
                         buffer_append_char(fname_19,*info->p);
                         info->p++;
                     }
-                    while(                    *info->p!=10) {
+                    while(                    *info->p!=10                    ) {
                         info->p++;
                     }
                     info->p++;
@@ -2752,34 +2752,34 @@ int nest_20;
                 skip_spaces_and_lf2(info);
                 /*c*/ come_call_finalizer3(fname_19,buffer_finalize, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, 0/* force_delete */ , (void*)0);
             }
-            else if(            *info->p==34) {
+            else if(            *info->p==34            ) {
                 info->p++;
-                while(                *info->p!=34) {
+                while(                *info->p!=34                ) {
                     info->p++;
                 }
-                while(                *info->p!=10) {
+                while(                *info->p!=10                ) {
                     info->p++;
                 }
                 info->p++;
             }
             skip_spaces_and_lf2(info);
         }
-        else if(        *info->p==47&&*(info->p+1)==42) {
+        else if(        *info->p==47&&*(info->p+1)==42        ) {
             nest_20=0;
-            while(            1) {
-                if(                *info->p==47&&*(info->p+1)==42) {
+            while(            1            ) {
+                if(                *info->p==47&&*(info->p+1)==42                ) {
                     info->p+=2;
                     nest_20++;
                 }
-                else if(                *info->p==42&&*(info->p+1)==47) {
+                else if(                *info->p==42&&*(info->p+1)==47                ) {
                     info->p+=2;
                     nest_20--;
-                    if(                    nest_20==0) {
+                    if(                    nest_20==0                    ) {
                         skip_spaces_and_lf2(info);
                         break;
                     }
                 }
-                else if(                *info->p==10) {
+                else if(                *info->p==10                ) {
                     info->p++;
                     info->sline++;
                 }
@@ -2788,16 +2788,16 @@ int nest_20;
                 }
             }
         }
-        else if(        *info->p==47&&*(info->p+1)==47) {
+        else if(        *info->p==47&&*(info->p+1)==47        ) {
             info->p+=2;
-            while(            1) {
-                if(                *info->p==10) {
+            while(            1            ) {
+                if(                *info->p==10                ) {
                     info->p++;
                     info->sline++;
                     skip_spaces_and_lf2(info);
                     break;
                 }
-                else if(                *info->p==0) {
+                else if(                *info->p==0                ) {
                     break;
                 }
                 else {
@@ -2805,7 +2805,7 @@ int nest_20;
                 }
             }
         }
-        else if(        strmemcmp(info->p,"__extension__")) {
+        else if(        strmemcmp(info->p,"__extension__")        ) {
             info->p+=strlen("__extension__");
             skip_spaces_and_lf2(info);
         }
@@ -2818,21 +2818,21 @@ int nest_20;
 void skip_paren(struct sInfo* info){
 int nest_21;
     nest_21=0;
-    while(    (_Bool)1) {
-        if(        *info->p==40) {
+    while(    (_Bool)1    ) {
+        if(        *info->p==40        ) {
             info->p++;
             skip_spaces_and_lf(info);
             nest_21++;
         }
-        else if(        *info->p==41) {
+        else if(        *info->p==41        ) {
             info->p++;
             skip_spaces_and_lf(info);
             nest_21--;
-            if(            nest_21==0) {
+            if(            nest_21==0            ) {
                 break;
             }
         }
-        else if(        *info->p==0) {
+        else if(        *info->p==0        ) {
             err_msg(info,"invalid the source end. require )");
             exit(1);
         }

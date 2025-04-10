@@ -81,14 +81,14 @@ class sForNode extends sNodeBase
             
             if(normal_if) {
                 conditional_value = get_value_from_stack(-1, info);
-                add_come_code(info, "%s;", conditional_value.c_value);
+                add_come_code(info, "%s", conditional_value.c_value);
             }
             else {
-                add_last_code_to_source_with_comma(info);
-                conditional_value = get_value_from_stack(-1, info);
-                free_right_value_objects(info, comma:true);
-                add_come_code(info, "0;");
+                CVALUE*% conditional_value = get_value_from_stack(-1, info);
+                transpile_conditional_with_free_right_object_value(conditional_value);
             }
+            
+            add_come_code(info, ";");
         }
         else {
             add_come_code(info, ";");
@@ -97,7 +97,6 @@ class sForNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node2 = self.mExpressionNode2;
     
-        CVALUE*% conditional_value2 = null;
         if(expression_node2) {
             bool without_semicolon = info.without_semicolon;
             info.without_semicolon = true;
@@ -115,22 +114,16 @@ class sForNode extends sNodeBase
             }
             
             if(normal_if) {
-                conditional_value2 = get_value_from_stack(-1, info);
+                CVALUE*% conditional_value = get_value_from_stack(-1, info);
                 
-                add_come_code(info, "%s;", conditional_value2.c_value);
+                add_come_code(info, "%s", conditional_value.c_value);
             }
             else {
-                static int num_for_condtionalA = 0;
-                add_come_code_at_function_head(info, "_Bool _for_condtionalA%d;\n", ++num_for_condtionalA);
-                int num_for_conditionalA_stack = num_for_condtionalA;
-                
-                conditional_value2 = get_value_from_stack(-1, info);
-                
-                add_come_code(info, "(_for_condtionalA%d=(%s)), ", num_for_conditionalA_stack, conditional_value2.c_value);
-                add_last_code_to_source_with_comma(info);
-                free_right_value_objects(info, comma:true);
-                add_come_code(info, "_for_condtionalA%d;", num_for_conditionalA_stack);
+                CVALUE*% conditional_value = get_value_from_stack(-1, info);
+                transpile_conditional_with_free_right_object_value(conditional_value);
             }
+            
+            add_come_code(info, ";");
         }
         else {
             add_come_code(info, ";");
@@ -156,15 +149,12 @@ class sForNode extends sNodeBase
             }
             
             if(normal_if) {
-                CVALUE*% conditional_value3 = get_value_from_stack(-1, info);
-                add_come_code(info, "%s", conditional_value3.c_value);
+                CVALUE*% conditional_value = get_value_from_stack(-1, info);
+                add_come_code(info, "%s", conditional_value.c_value);
             }
             else {
-                add_last_code_to_source_with_comma(info);
-                
-                CVALUE*% conditional_value3 = get_value_from_stack(-1, info);
-                free_right_value_objects(info, comma:true);
-                add_come_code(info, "0");
+                CVALUE*% conditional_value = get_value_from_stack(-1, info);
+                transpile_conditional_with_free_right_object_value(conditional_value);
             }
         }
         

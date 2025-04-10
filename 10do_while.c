@@ -54,22 +54,17 @@ class sDoWhileNode extends sNodeBase
             normal_if = false;
         }
         
+        add_come_code(info, "} while(");
+        
         if(normal_if) {
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            add_come_code(info, "} while(%s);\n", conditional_value.c_value);
+            add_come_code(info, "%s", conditional_value.c_value);
         }
         else {
             CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            
-            static int num_while_condtional = 0;
-            add_come_code_at_function_head(info, "_Bool _do_while_condtional%d;\n", ++num_while_condtional);
-            int num_while_conditional_stack = num_while_condtional;
-        
-            add_come_code(info, "} while((_do_while_condtional%d=(%s)),", num_while_conditional_stack, conditional_value.c_value);
-            add_last_code_to_source_with_comma(info);
-            free_right_value_objects(info, comma:true);
-            add_come_code(info, "_do_while_condtional%d);\n", num_while_conditional_stack);
+            transpile_conditional_with_free_right_object_value(conditional_value);
         }
+        add_come_code(info, ");\n");
         
         transpiler_clear_last_code(info);
         
