@@ -81,12 +81,9 @@ class sIfNode extends sNodeBase
     
         bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
-        bool without_semicolon = info.without_semicolon;
-        info.without_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.without_semicolon = without_semicolon;
         info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
         
         bool normal_if = true;
@@ -120,12 +117,9 @@ class sIfNode extends sNodeBase
                 
                 bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
                 info.comma_instead_of_semicolon = true;
-                bool without_semicolon = info.without_semicolon;
-                info.without_semicolon = true;
                 node_compile(expression_node2).elif {
                     return false;
                 }
-                info.without_semicolon = without_semicolon;
                 info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
         
                 bool normal_if = true;
@@ -314,12 +308,12 @@ class sOrStatmentNode extends sNodeBase
         
         add_come_code(info, "if(");
     
-        bool without_semicolon = info.without_semicolon;
-        info.without_semicolon = true;
+        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+        info.comma_instead_of_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.without_semicolon = without_semicolon;
+        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
     
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
         transpile_conditional_with_free_right_object_value(conditional_value);
@@ -362,12 +356,12 @@ class sAndStatmentNode extends sNodeBase
         
         add_come_code(info, "if(");
     
-        bool without_semicolon = info.without_semicolon;
-        info.without_semicolon = true;
+        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
+        info.comma_instead_of_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.without_semicolon = without_semicolon;
+        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
         
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
         transpile_conditional_with_free_right_object_value(conditional_value);

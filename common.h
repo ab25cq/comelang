@@ -545,7 +545,6 @@ struct sInfo
     int num_source_files;
     int max_source_files;
     
-    bool without_semicolon;
     bool writing_source_file_position;
     
     sType*% function_result_type;
@@ -812,7 +811,7 @@ sVar* get_variable_from_table(sVarTable* table, char* name);
 void free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
 void free_objects_of_match_lv_tables(sInfo* info);
 void free_objects_on_break(sInfo* info);
-void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false, bool force_delete_=false);
+void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false);
 sType*%, string clone_object(sType* type, char* obj, sInfo* info);
 void free_right_value_objects(sInfo* info, bool comma=false);
 void free_objects(sVarTable* table, sVar* ret_value, sInfo* info);
@@ -820,7 +819,7 @@ void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* inf
         
 void remove_object_from_right_values(int right_value_num, sInfo* info);
 string increment_ref_count_object(sType* type, char* obj, sInfo* info);
-void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool force_delete_=false, bool no_free=false);
+void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool no_free=false);
 
 /////////////////////////////////////////////////////////////////////
 /// 05function.c ///

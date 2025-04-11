@@ -8,7 +8,6 @@ bool gComePthread = false;
 bool gCommonHeader = false;
 bool gComeMalloc = false;
 bool gComeDebug = false;
-bool gComeDebug2 = false;
 bool gComeOriginalSourcePosition = true;
 int gComeDebugStackFrameID = 0;
 
@@ -339,14 +338,6 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     }
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
-    if(gComeDebug2 && CC === "clang") {
-/*
-#ifdef __MAC__
-        setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
-#endif
-*/
-        info.clang_option = info.clang_option + s" -fsanitize=address,undefined -g ";
-    }
     
     if(is_mac) {
         info.clang_option = info.clang_option + " -std=gnu17 "
@@ -401,9 +392,6 @@ static bool linker(sInfo* info, list<string>* object_files)
         setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
 #endif
 */
-    if(gComeDebug2 && CC === "clang") {
-        info.linker_option = info.clang_option + s" -fsanitize=address,undefined -g ";
-    }
     if(is_mac) {
         info.linker_option = info.clang_option + s" -std=gnu17 "
     }
@@ -822,7 +810,6 @@ module MEvalOptions<T, T2>
     string output_file_name = T2;
     bool verbose = false;
     bool come_debug = false;
-    bool come_debug2 = false;
     bool come_malloc = false;
     bool m5stack_cpp = false;
     bool pico_cpp = false;
@@ -894,8 +881,8 @@ module MEvalOptions<T, T2>
             clang_option.append_str("-g ");
         }
         else if(argv[i] === "-cg2") {
-            come_debug2 = true;
-            clang_option.append_str("-g ");
+            clang_option.append_str(" -fsanitize=address,undefined -g ");
+            linker_option.append_str(" -fsanitize=address,undefined -g ");
         }
         else if(argv[i] === "-C") {
             cpp_option.append_str(s"\{argv[i]} ");
@@ -1005,7 +992,6 @@ module MEvalOptions<T, T2>
 #endif
         
     gComeDebug = come_debug;
-    gComeDebug2 = come_debug2;
     gComeMalloc = come_malloc;
 }
 
