@@ -791,7 +791,7 @@ uniq void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protoco
     return mem;
 }
 
-uniq void come_call_finalizer2(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, void* result_obj)
+uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* protocol_obj, int call_finalizer_only, int no_decrement, int no_free, void* result_obj)
 {
     if(result_obj) {
         if(mem == result_obj) {
