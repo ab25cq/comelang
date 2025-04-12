@@ -118,12 +118,14 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         else if(i == 1) {
             string param_name = xsprintf("it");
             
-            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
+            method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:false));
+            //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
         }
         else {
             string param_name = xsprintf("it%d", i);
             
-            method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
+            method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:false));
+            //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
         }
         
         if(i != param_types.length() - 1) {

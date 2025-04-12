@@ -1254,12 +1254,14 @@ class sFunCallNode extends sNodeBase
                 else if(i == 1) {
                     string param_name = xsprintf("it");
                     
-                    method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
+                    method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:true));
+                    //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
                 }
                 else {
                     string param_name = xsprintf("it%d", i);
                     
-                    method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
+                    method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:true));
+                    //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
                 }
                 
                 if(i != param_types.length() - 1) {

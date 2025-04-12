@@ -41,7 +41,8 @@ class sGlobalVariable extends sNodeBase
                         }
                         else {
                         */
-                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
+                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, original_type_name:true));
+                            //add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
                         //}
                     }
                 }
@@ -92,7 +93,8 @@ class sGlobalVariable extends sNodeBase
                         }
                         else {
                         */
-                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
+                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, original_type_name:true));
+                            //add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
                         //}
                     }
                 }
@@ -135,7 +137,8 @@ class sGlobalVariable extends sNodeBase
                         }
                         else {
                         */
-                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
+                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, original_type_name:true));
+                            //add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
                         //}
                     }
                 }
@@ -172,7 +175,8 @@ class sGlobalVariable extends sNodeBase
                         }
                         else {
                         */
-                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
+                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, original_type_name:true));
+                            //add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
                         //}
                     }
                 }
@@ -240,7 +244,8 @@ class sExternalGlobalVariable extends sNodeBase
                         }
                         else {
                         */
-                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
+                            add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, original_type_name:true));
+                            //add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
                         //}
                     }
                 }
@@ -267,7 +272,8 @@ class sExternalGlobalVariable extends sNodeBase
                     }
                     else {
                     */
-                        add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
+                        add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, original_type_name:true));
+                        //add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var_no_solved(type, name, original_type_name:true));
                     //}
                 }
             }

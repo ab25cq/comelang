@@ -767,12 +767,11 @@ bool node_condional_compile(sNode* node, sInfo* info=info);
 int come_main(int argc, char** argv);
 string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false);
 string make_come_type_name_string(sType* type, sInfo* info=info);
-string make_come_type_name_string_no_solved(sType* type, bool original_type_name=false, sInfo* info=info);
+string make_come_type_name_string(sType* type, sInfo* info=info, bool original_type_name=false);
 
 /////////////////////////////////////////////////////////////////////
 /// 03output_code.c ///
 /////////////////////////////////////////////////////////////////////
-string make_define_var_no_solved(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info);
 string header_function(sFun* fun, sInfo* info);
 bool output_source_file(sInfo* info);
 string make_come_header_function(sFun* fun, string base_fun_name, sType*% impl_type=null, int version_=-1, sInfo* info=info);
@@ -789,7 +788,7 @@ void add_come_last_code2(sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(sInfo* info);
 void dec_stack_ptr(int value=1, sInfo* info=info);
 CVALUE*% get_value_from_stack(int offset, sInfo* info);
-string make_define_var(sType* type, char* name, bool in_header=false, sInfo* info=info);
+string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info);
 void transpiler_clear_last_code(sInfo* info);
 bool output_header_file(sInfo* info);
 
