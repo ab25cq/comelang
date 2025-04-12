@@ -2256,7 +2256,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool comma);
@@ -2657,7 +2657,7 @@ _Bool __result_obj__75;
             map$2char$phsType$ph_insert(info->types,(char*)come_increment_ref_count(__builtin_string(type_name_136)),(struct sType*)come_increment_ref_count(sType_clone(type_135)));
             if(            string_operator_not_equals(type_135->mClass->mName,type_name_136)            ) {
                 if(                !info->no_output_come_code2                ) {
-                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name_136)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value88=xsprintf("typedef %s;\n",((char*)(__right_value87=make_define_var(type_135,type_name_136,(_Bool)1,(_Bool)0,info)))))))));
+                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name_136)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value88=xsprintf("typedef %s;\n",((char*)(__right_value87=make_define_var(type_135,type_name_136,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
                     (__right_value87 = come_decrement_ref_count(__right_value87, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                     (__right_value88 = come_decrement_ref_count(__right_value88, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 }
@@ -2673,7 +2673,7 @@ _Bool __result_obj__75;
                 (__right_value94 = come_decrement_ref_count(__right_value94, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__right_value95 = come_decrement_ref_count(__right_value95, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 if(                !info->no_output_come_code2                ) {
-                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2_138)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value99=xsprintf("typedef %s;\n",((char*)(__right_value98=make_define_var(type_135,type_name_136,(_Bool)1,(_Bool)0,info)))))))));
+                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2_138)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value99=xsprintf("typedef %s;\n",((char*)(__right_value98=make_define_var(type_135,type_name_136,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
                     (__right_value98 = come_decrement_ref_count(__right_value98, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                     (__right_value99 = come_decrement_ref_count(__right_value99, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 }
@@ -2695,7 +2695,7 @@ _Bool __result_obj__75;
         map$2char$phsType$ph_insert(info->types,(char*)come_increment_ref_count(__builtin_string(type_name_39)),(struct sType*)come_increment_ref_count(sType_clone(type_139)));
         if(        string_operator_not_equals(type_139->mClass->mName,type_name_39)        ) {
             if(            !info->no_output_come_code2            ) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name_39)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value107=xsprintf("typedef %s;\n",((char*)(__right_value106=make_define_var(type_139,type_name_39,(_Bool)1,(_Bool)0,info)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name_39)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value107=xsprintf("typedef %s;\n",((char*)(__right_value106=make_define_var(type_139,type_name_39,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
                 (__right_value106 = come_decrement_ref_count(__right_value106, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__right_value107 = come_decrement_ref_count(__right_value107, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             }
@@ -2711,7 +2711,7 @@ _Bool __result_obj__75;
             (__right_value113 = come_decrement_ref_count(__right_value113, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             (__right_value114 = come_decrement_ref_count(__right_value114, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             if(            !info->no_output_come_code2            ) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2_141)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value118=xsprintf("typedef %s;\n",((char*)(__right_value117=make_define_var(type_139,type_name_39,(_Bool)1,(_Bool)0,info)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2_141)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value118=xsprintf("typedef %s;\n",((char*)(__right_value117=make_define_var(type_139,type_name_39,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
                 (__right_value117 = come_decrement_ref_count(__right_value117, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__right_value118 = come_decrement_ref_count(__right_value118, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             }

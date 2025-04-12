@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 35.0.0
+version 36.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+36.0.0 template remove type infference, list::map require type. [1,2,3].map<string>{ xsprintf("%d", it }
 35.0.0 foreach is macro. Refactoring. complete project, maybe.
 32.1.0 foreach is no macro
 32.0.2 xv6

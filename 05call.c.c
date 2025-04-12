@@ -2387,7 +2387,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool comma);
@@ -2910,7 +2910,7 @@ void* __right_value62 = (void*)0;
         else {
             static int result_num_36=0;
             result_num_36++;
-            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value47=make_define_var(result_type2_31,((char*)(__right_value46=xsprintf("__result_obj__\%s",((char*)(__right_value45=int_to_string(result_num_36)))))),(_Bool)0,(_Bool)0,info))));
+            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value47=make_define_var(result_type2_31,((char*)(__right_value46=xsprintf("__result_obj__\%s",((char*)(__right_value45=int_to_string(result_num_36)))))),(_Bool)0,(_Bool)0,info,(_Bool)0))));
             (__right_value45 = come_decrement_ref_count(__right_value45, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             (__right_value46 = come_decrement_ref_count(__right_value46, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             (__right_value47 = come_decrement_ref_count(__right_value47, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -6155,19 +6155,19 @@ memset(&i_236, 0, sizeof(int));
             param_type_335=it_334;
             if(            i_287==0            ) {
                 param_name_336=(char*)come_increment_ref_count(xsprintf("parent"));
-                buffer_append_format(method_block2_315,"%s",((char*)(__right_value424=make_define_var(param_type_335,param_name_336,(_Bool)0,(_Bool)0,info))));
+                buffer_append_format(method_block2_315,"%s",((char*)(__right_value424=make_define_var(param_type_335,param_name_336,(_Bool)0,(_Bool)0,info,(_Bool)0))));
                 (__right_value424 = come_decrement_ref_count(__right_value424, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (param_name_336 = come_decrement_ref_count(param_name_336, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             }
             else if(            i_287==1            ) {
                 param_name_337=(char*)come_increment_ref_count(xsprintf("it"));
-                buffer_append_format(method_block2_315,"%s",((char*)(__right_value426=make_define_var(param_type_335,param_name_337,(_Bool)0,(_Bool)1,info))));
+                buffer_append_format(method_block2_315,"%s",((char*)(__right_value426=make_define_var(param_type_335,param_name_337,(_Bool)0,(_Bool)1,info,(_Bool)0))));
                 (__right_value426 = come_decrement_ref_count(__right_value426, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (param_name_337 = come_decrement_ref_count(param_name_337, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             }
             else {
                 param_name_338=(char*)come_increment_ref_count(xsprintf("it%d",i_287));
-                buffer_append_format(method_block2_315,"%s",((char*)(__right_value428=make_define_var(param_type_335,param_name_338,(_Bool)0,(_Bool)1,info))));
+                buffer_append_format(method_block2_315,"%s",((char*)(__right_value428=make_define_var(param_type_335,param_name_338,(_Bool)0,(_Bool)1,info,(_Bool)0))));
                 (__right_value428 = come_decrement_ref_count(__right_value428, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (param_name_338 = come_decrement_ref_count(param_name_338, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             }

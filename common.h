@@ -764,7 +764,6 @@ bool node_compile(sNode* node, sInfo* info=info);
 bool node_condional_compile(sNode* node, sInfo* info=info);
 int come_main(int argc, char** argv);
 string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false);
-string make_come_type_name_string(sType* type, sInfo* info=info);
 string make_come_type_name_string(sType* type, sInfo* info=info, bool original_type_name=false);
 
 /////////////////////////////////////////////////////////////////////
@@ -786,7 +785,7 @@ void add_come_last_code2(sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(sInfo* info);
 void dec_stack_ptr(int value=1, sInfo* info=info);
 CVALUE*% get_value_from_stack(int offset, sInfo* info);
-string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info);
+string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info, bool come_type=false);
 void transpiler_clear_last_code(sInfo* info);
 bool output_header_file(sInfo* info);
 

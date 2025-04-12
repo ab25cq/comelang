@@ -2232,7 +2232,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_load_object(struct sType* type, char* obj, struct sInfo* info);
@@ -4274,7 +4274,7 @@ memset(&i_166, 0, sizeof(int));
     klass_138=type->mClass;
     static int dec_num_139=0;
     name_140=(char*)come_increment_ref_count(xsprintf("__dec_obj%d",++dec_num_139));
-    add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value78=make_define_var(type,name_140,(_Bool)0,(_Bool)0,info))));
+    add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value78=make_define_var(type,name_140,(_Bool)0,(_Bool)0,info,(_Bool)0))));
     (__right_value78 = come_decrement_ref_count(__right_value78, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
     add_come_code(info,"%s=%s,\n",name_140,obj);
     obj=name_140;
@@ -5941,7 +5941,7 @@ char* __result_obj__97;
         static int n_292=0;
         ++n_292;
         var_name_293=(char*)come_increment_ref_count(xsprintf("__exception_result_var_b%d",n_292));
-        add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value260=make_define_var(type,var_name_293,(_Bool)0,(_Bool)0,info))));
+        add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value260=make_define_var(type,var_name_293,(_Bool)0,(_Bool)0,info,(_Bool)0))));
         (__right_value260 = come_decrement_ref_count(__right_value260, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         if(        (_condtional_value_X2=(((struct sFun*)(__right_value261=map$2char$phsFun$ph_operator_load_element(info->funcs,"come_push_stack_frame_v2"))))),        come_call_finalizer(sFun_finalize, __right_value261, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0),
         _condtional_value_X2        ) {

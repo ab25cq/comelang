@@ -309,7 +309,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
 
 static string header_lambda(sType* lambda_type, string name, sInfo* info);
 
-string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info)
+string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info, bool come_type=false)
 {
     var buf = new buffer();
     
@@ -336,7 +336,13 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         
         CVALUE*% come_value = get_value_from_stack(-1, info);
     
-        var type_str = make_type_name_string(type2, in_header);
+        string type_str;
+        if(come_type) {
+            type_str = make_come_type_name_string(type2);
+        }
+        else {
+            type_str = make_type_name_string(type2, in_header);
+        }
         buf.append_format("%s ", type_str);
         buf.append_format("%s:%s", name, come_value.c_value);
         
@@ -349,7 +355,13 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         }
     }
     else if(type2->mArrayNum.length() > 0) {
-        var type_str = make_type_name_string(type2, in_header);
+        string type_str;
+        if(come_type) {
+            type_str = make_come_type_name_string(type2);
+        }
+        else {
+            type_str = make_type_name_string(type2, in_header);
+        }
         
         buf.append_str(type_str);
         
@@ -375,7 +387,13 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         }
     }
     else {
-        var type_str = make_type_name_string(type2, in_header);
+        string type_str;
+        if(come_type) {
+            type_str = make_come_type_name_string(type2);
+        }
+        else {
+            type_str = make_type_name_string(type2, in_header);
+        }
         
         if(type_str === "") {
             return string("");

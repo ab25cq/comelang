@@ -114,14 +114,16 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         else if(i == 1) {
             string param_name = xsprintf("it");
             
-            method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:false));
-            //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
+            sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
+            
+            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:false, come_type:true));
         }
         else {
             string param_name = xsprintf("it%d", i);
             
-            method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:false));
-            //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:false));
+            sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
+            
+            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:false, come_type:true));
         }
         
         if(i != param_types.length() - 1) {
@@ -138,14 +140,11 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     char* p = info.p;
     char* head = info.head;
     int sline = info.sline;
-//    sVarTable* lv_table = info.lv_table;
     
     info.source = method_block2;
     info.p = info.source.buf;
     info.head = info.source.buf;
     info.sline = method_block_sline;
-//    sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:info.lv_table);
-//    info.lv_table = lv_table_method_block;
    
     sNode*% node = parse_function(info);
     
@@ -183,6 +182,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     info->current_stack_frame_struct = current_stack_frame_struct;
     info->come_method_block_function_result_type = clone info->function_result_type;
     
+/*
     bool contained_method_generics_method_block = false;
     foreach(it, param_types) {
         if(is_contained_method_generics_types(it, info)) {
@@ -196,8 +196,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     if(contained_method_generics_method_block) {
         info.funcs.remove(string(method_block_name));
     }
-    
-//    info->lv_table = lv_table;
+*/
     
     return true;
 }
@@ -377,6 +376,7 @@ class sMethodCallNode extends sNodeBase
         list<sType*%>*% method_generics_types = self.method_generics_types;
         bool recursive = self.recursive;
         
+        bool no_infference_method_generics = self.no_infference_method_generics;
         list<sType*%>*% method_generics_types_before = null;
         method_generics_types_before = info->method_generics_types;
         info->method_generics_types = clone self.method_generics_types;
@@ -388,7 +388,6 @@ class sMethodCallNode extends sNodeBase
         CVALUE*% obj_value = get_value_from_stack(-1, info);
         
         sType*% obj_type = clone obj_value.type;
-        
         
         sClass* klass = obj_type.mClass;
         
@@ -521,9 +520,6 @@ class sMethodCallNode extends sNodeBase
                 }
             }
 
-            //sType*% result_type2 = solve_generics(result_type, obj_type2, info);
-            sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
-            
             list<sType*%>*% param_types = new list<sType*%>();
             foreach(it, fun.mParamTypes) {
                 if(it == null) {
@@ -714,7 +710,7 @@ class sMethodCallNode extends sNodeBase
             
             string saved_obj_value = null
             sVar* saved_var = null;
-            if(result_type2->mDefferRightValue) {
+            if(result_type->mDefferRightValue) {
                 static int n = 0;
                 n++;
                 string var_name = s"deffer_right_value\{n}";
@@ -771,15 +767,15 @@ class sMethodCallNode extends sNodeBase
             
             come_value2.c_value = buf.to_string();
             
-            come_value2.type = clone result_type2;
+            come_value2.type = clone result_type;
             come_value2.type->mStatic = false;
             come_value2.type->mImmutable = false;
             
-            if(result_type2->mHeap) {
-                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
+            if(result_type->mHeap) {
+                append_object_to_right_values2(come_value2, result_type, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
             }
             else if(saved_obj_value) {
-                append_object_to_right_values2(come_value2, result_type2, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
+                append_object_to_right_values2(come_value2, result_type, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
             }
         
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
