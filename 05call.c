@@ -244,11 +244,6 @@ class sInlineAssembler extends sNodeBase
     }
 };
 
-class sCurrentNode2 extends sNodeBase
-{
-    include sCurrentNodeModule;
-};
-
 class sLineNode extends sNodeBase
 {
     new(sInfo* info)
@@ -1194,7 +1189,7 @@ class sFunCallNode extends sNodeBase
         }
         
         if(method_block) {
-            sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
+            sNode*% current_stack_frame_node = new sCurrentNode(info) implements sNode;
             
             node_compile(current_stack_frame_node).elif {
                 return false;
@@ -1439,7 +1434,7 @@ class sComeCallNode extends sNodeBase
         
         come_params.push_back(come_value);
         
-        sNode*% current_stack_frame_node = new sCurrentNode2(info) implements sNode;
+        sNode*% current_stack_frame_node = new sCurrentNode(info) implements sNode;
         
         node_compile(current_stack_frame_node).elif {
             return false;

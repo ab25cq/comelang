@@ -398,15 +398,6 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
     return buf.to_string();
 }
 
-/*
-string make_define_var_no_solved(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info)
-{
-    string type_name = make_come_type_name_string(type, original_type_name:original_type_name);
-    
-    return xsprintf("%s %s", type_name, name);
-}
-*/
-
 string make_come_header_function(sFun* fun, string base_fun_name, sType*% impl_type=null, int version_=-1, sInfo* info=info)
 {
     buffer*% header = new buffer();

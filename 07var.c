@@ -943,18 +943,6 @@ class sLoadNode extends sNodeBase
     }
 };
         
-bool is_inner_calling(sNode* node, sInfo* info)
-{
-    if(node.kind() === "sLoadNode") {
-        sLoadNode* load_node = (sLoadNode*)(node->_protocol_obj);
-        if(load_node.name === "self") {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
 sNode*% create_load_var(char* var_name, sInfo* info=info)
 {
     sNode*% node = new sLoadNode(string(var_name), info) implements sNode;

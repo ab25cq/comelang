@@ -1370,6 +1370,13 @@ struct sNodeBase
     int sline_real;
 };
 
+struct sCurrentNode
+{
+    int sline;
+    char* sname;
+    int sline_real;
+};
+
 struct tuple2$2int$bool$
 {
     int v1;
@@ -2261,6 +2268,11 @@ int sNodeBase_sline(struct sNodeBase* self, struct sInfo* info);
 int sNodeBase_sline_real(struct sNodeBase* self, struct sInfo* info);
 _Bool sNodeBase_terminated(struct sNodeBase* self);
 char* sNodeBase_sname(struct sNodeBase* self, struct sInfo* info);
+struct sCurrentNode* sCurrentNode_initialize(struct sCurrentNode* self, struct sInfo* info);
+int sCurrentNode_sline(struct sCurrentNode* self, struct sInfo* info);
+char* sCurrentNode_sname(struct sCurrentNode* self, struct sInfo* info);
+char* sCurrentNode_kind(struct sCurrentNode* self);
+_Bool sCurrentNode_compile(struct sCurrentNode* self, struct sInfo* info);
 void transpile_conditional_with_free_right_object_value(struct CVALUE* condtional_value, struct sInfo* info);
 struct tuple2$2int$bool$* err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);

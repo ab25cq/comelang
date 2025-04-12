@@ -1,10 +1,5 @@
 #include "common.h"
 
-class sCurrentNode extends sNodeBase
-{
-    include sCurrentNodeModule;
-};
-
 string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true)
 {
     string none_generics_name = get_none_generics_name(type.mClass.mName);

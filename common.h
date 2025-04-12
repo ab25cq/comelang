@@ -615,7 +615,7 @@ uniq class sNodeBase
     }
 };
 
-module sCurrentNodeModule
+uniq class sCurrentNode extends sNodeBase
 {
     new(sInfo* info)
     {
