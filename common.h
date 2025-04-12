@@ -834,7 +834,6 @@ sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info)
 sNode*% post_position_operator(sNode*% node, sInfo* info);
 bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sInfo* info);
 bool operator_overload_fun_self(sType* type, char* fun_name, sNode*% node, CVALUE* left_value, sInfo* info);
-bool strmemcmp(char* p, char* p2);
 void caller_begin(sInfo* info=info);
 void caller_end(sInfo* info=info);
 sNode*% craete_logical_denial(sNode*% node, sInfo* info);
@@ -864,7 +863,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
 string skip_block(sInfo* info=info, bool return_self_at_last=false);
 bool is_contained_generics_class(sType* type, sInfo* info);
 bool is_type_name(char* buf, sInfo* info=info);
-bool parsecmp(char* str, sInfo* info=info);
+bool parsecmp(char* p2, sInfo* info=info)
 string parse_word(sInfo* info=info);
 string backtrace_parse_word(sInfo* info=info);
 void skip_spaces_and_lf(sInfo* info=info);

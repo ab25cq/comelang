@@ -97,7 +97,7 @@ list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, 
         char* p = info.p;
         int sline = info.sline;
         
-        if(strmemcmp(info.p, "void")) {
+        if(parsecmp("void")) {
             info.p += strlen("void");
             skip_spaces_and_lf();
             
@@ -111,7 +111,7 @@ list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, 
     }
     
     if(void_param) {
-        if(strmemcmp(info.p, "void")) {
+        if(parsecmp("void")) {
             info.p += strlen("void");
             skip_spaces_and_lf();
             
@@ -176,7 +176,7 @@ list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, 
                 info->p++;
                 skip_spaces_and_lf();
                 
-                if(strmemcmp(info->p, "...")) {
+                if(parsecmp("...")) {
                     info->p += strlen("...");
                     skip_spaces_and_lf();
                     var_args = true;

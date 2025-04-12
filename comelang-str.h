@@ -1,7 +1,7 @@
 #ifndef COMELANG_STR_H
 #define COMELANG_STR_H
 
-using comelang-str;
+using comelang_str;
 
 #include <pcre.h>
 

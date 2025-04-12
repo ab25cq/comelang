@@ -108,7 +108,7 @@ uniq void come_free(void* mem) version 2
 #include <pthread.h>
 #include <poll.h>
 
-using comelang-pthread;
+using comelang_pthread;
 
 struct come_mutex<T>
 {

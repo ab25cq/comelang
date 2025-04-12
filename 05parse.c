@@ -1,5 +1,19 @@
 #include "common.h"
 
+bool parsecmp(char* p2, sInfo* info=info)
+{
+    bool terminated = false;
+    char* p3  = info->p;
+    for(int i=0; i<strlen(p2); i++) {
+        if(*p3 == '\0') {
+            return false;
+        }
+        p3++;
+    }
+    unsigned char c = *(info->p+strlen(p2));
+    return memcmp(info->p, p2, strlen(p2)) == 0 && (ispunct(c) || c == ' ' || c == '\t' || c == '\n') && c != '_';
+}
+
 int err_msg(sInfo* info, char* msg, ...)
 {
     if(!info.no_output_err) {
@@ -151,7 +165,7 @@ void parse_sharp(sInfo* info=info) version 5
             info->p++;
             skip_spaces_and_lf2();
             
-            if(strmemcmp(info->p, "pragma")) {
+            if(parsecmp("pragma")) {
                 while(*info->p) {
                     if(*info->p == '\n') {
                         skip_spaces_and_lf2();
@@ -250,19 +264,7 @@ void parse_sharp(sInfo* info=info) version 5
                 }
             }
         }
-/*
-        else if(!info.parsing_struct && strmemcmp(info.p, "__attribute__")) {
-            info->p += strlen("__attribute__");
-            skip_spaces_and_lf2();
-            skip_paren(info);
-        }
-        else if(!info.parsing_struct && strmemcmp(info.p, "__attribute")) {
-            info->p += strlen("__attribute");
-            skip_spaces_and_lf2();
-            skip_paren(info);
-        }
-*/
-        else if(strmemcmp(info.p, "__extension__")) {
+        else if(parsecmp("__extension__")) {
             info->p += strlen("__extension__");
             skip_spaces_and_lf2();
         }

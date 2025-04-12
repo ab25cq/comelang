@@ -2257,7 +2257,6 @@ struct sNode* create_return_node(struct sNode* value, char* value_source, struct
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
 _Bool create_method_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sInfo* info);
 _Bool operator_overload_fun_self(struct sType* type, char* fun_name, struct sNode* node, struct CVALUE* left_value, struct sInfo* info);
-_Bool strmemcmp(char* p, char* p2);
 void caller_begin(struct sInfo* info);
 void caller_end(struct sInfo* info);
 struct sNode* craete_logical_denial(struct sNode* node, struct sInfo* info);
@@ -2280,7 +2279,7 @@ struct tuple2$2sFun$pchar$ph* create_operator_not_equals_automatically(struct sT
 struct tuple2$2sFun$pchar$ph* create_not_equals_automatically(struct sType* type, char* fun_name, struct sInfo* info);
 struct tuple2$2sFun$pchar$ph* create_get_hash_key_automatically(struct sType* type, char* fun_name, struct sInfo* info);
 char* skip_block(struct sInfo* info, _Bool return_self_at_last);
-_Bool parsecmp(char* str, struct sInfo* info);
+_Bool parsecmp(char* p2, struct sInfo* info);
 char* parse_word(struct sInfo* info);
 char* backtrace_parse_word(struct sInfo* info);
 void skip_spaces_and_lf(struct sInfo* info);
@@ -3023,7 +3022,7 @@ struct tuple4$4list$1sType$ph$phlist$1char$ph$phlist$1char$ph$phbool$* __result_
     {
         p_65=info->p;
         sline_66=info->sline;
-        if(        strmemcmp(info->p,"void")        ) {
+        if(        parsecmp("void",info)        ) {
             info->p+=strlen("void");
             skip_spaces_and_lf(info);
             if(            *info->p==41            ) {
@@ -3034,7 +3033,7 @@ struct tuple4$4list$1sType$ph$phlist$1char$ph$phlist$1char$ph$phbool$* __result_
         info->sline=sline_66;
     }
     if(    void_param_64    ) {
-        if(        strmemcmp(info->p,"void")        ) {
+        if(        parsecmp("void",info)        ) {
             info->p+=strlen("void");
             skip_spaces_and_lf(info);
             if(            *info->p==41            ) {
@@ -3095,7 +3094,7 @@ struct tuple4$4list$1sType$ph$phlist$1char$ph$phlist$1char$ph$phbool$* __result_
             if(            *info->p==44            ) {
                 info->p++;
                 skip_spaces_and_lf(info);
-                if(                strmemcmp(info->p,"...")                ) {
+                if(                parsecmp("...",info)                ) {
                     info->p+=strlen("...");
                     skip_spaces_and_lf(info);
                     var_args_39=(_Bool)1;

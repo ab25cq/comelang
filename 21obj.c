@@ -1448,35 +1448,35 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         return new sIsPointer(type2, info) implements sNode;
     }
     else if(buf === "using") {
-        if(parsecmp("comelang")) {
-            info->p += strlen("comelang");
-            skip_spaces_and_lf();
-            
-            gComeC = false;
-        
-            return create_nothing_node();
-        }
-        else if(parsecmp("comelang-str")) {
-            info->p += strlen("comelang-str");
+        if(parsecmp("comelang_str")) {
+            info->p += strlen("comelang_str");
             skip_spaces_and_lf();
             
             gComeStr = true;
         
             return create_nothing_node();
         }
-        else if(parsecmp("comelang-pthread")) {
-            info->p += strlen("comelang-pthread");
+        else if(parsecmp("comelang_pthread")) {
+            info->p += strlen("comelang_pthread");
             skip_spaces_and_lf();
             
             gComePthread = true;
         
             return create_nothing_node();
         }
-        else if(parsecmp("comelang-net")) {
-            info->p += strlen("comelang-net");
+        else if(parsecmp("comelang_net")) {
+            info->p += strlen("comelang_net");
             skip_spaces_and_lf();
             
             gComeNet = true;
+        
+            return create_nothing_node();
+        }
+        else if(parsecmp("comelang")) {
+            info->p += strlen("comelang");
+            skip_spaces_and_lf();
+            
+            gComeC = false;
         
             return create_nothing_node();
         }
@@ -1847,35 +1847,35 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 94
 {
    if(buf === "using") {
-        if(parsecmp("comelang")) {
-            info->p += strlen("comelang");
-            skip_spaces_and_lf();
-            
-            gComeC = false;
-        }
-        else if(parsecmp("comelang-str")) {
-            info->p += strlen("comelang-str");
+        if(parsecmp("comelang_str")) {
+            info->p += strlen("comelang_str");
             skip_spaces_and_lf();
             
             gComeStr = true;
         
             return create_nothing_node();
         }
-        else if(parsecmp("comelang-pthread")) {
-            info->p += strlen("comelang-pthread");
+        else if(parsecmp("comelang_pthread")) {
+            info->p += strlen("comelang_pthread");
             skip_spaces_and_lf();
             
             gComePthread = true;
         
             return create_nothing_node();
         }
-        else if(parsecmp("comelang-net")) {
-            info->p += strlen("comelang-net");
+        else if(parsecmp("comelang_net")) {
+            info->p += strlen("comelang_net");
             skip_spaces_and_lf();
             
             gComeNet = true;
         
             return create_nothing_node();
+        }
+        else if(parsecmp("comelang")) {
+            info->p += strlen("comelang");
+            skip_spaces_and_lf();
+            
+            gComeC = false;
         }
         else if(parsecmp("c") || parsecmp("C")) {
             info->p += strlen("c");

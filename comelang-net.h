@@ -22,7 +22,7 @@ using c
 #endif
 }
 
-using comelang-net;
+using comelang_net;
 
 typedef int socket_fd;
 

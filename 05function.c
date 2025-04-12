@@ -702,7 +702,7 @@ string,string parse_function_attribute(sInfo* info=info)
     buffer*% result = new buffer();
     
     while(true) {
-        if(strmemcmp(info->p, "__attribute__")) {
+        if(parsecmp("__attribute__")) {
             char* head = info.p;
             info->p += strlen("__attribute__");
             skip_spaces_and_lf();
@@ -734,7 +734,7 @@ string,string parse_function_attribute(sInfo* info=info)
             
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__declspec")) {
+        else if(parsecmp("__declspec")) {
             char* head = info.p;
             
             info->p += strlen("__declspec");
@@ -767,7 +767,7 @@ string,string parse_function_attribute(sInfo* info=info)
             
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "_Noreturn")) {
+        else if(parsecmp("_Noreturn")) {
             char* head = info.p;
             
             info->p += strlen("_Noreturn");
@@ -776,7 +776,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__noreturn")) {
+        else if(parsecmp("__noreturn")) {
             char* head = info.p;
             
             info->p += strlen("__noreturn");
@@ -785,7 +785,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__asm__")) {
+        else if(parsecmp("__asm__")) {
             info->p += strlen("__asm__");
             skip_spaces_and_lf();
             
@@ -829,7 +829,7 @@ string,string parse_function_attribute(sInfo* info=info)
 
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__attribute_pure__")) {
+        else if(parsecmp("__attribute_pure__")) {
             char* head = info.p; 
             
             info->p += strlen("__attribute_pure__");
@@ -838,7 +838,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__malloc_like")) {
+        else if(parsecmp("__malloc_like")) {
             char* head = info.p; 
             
             info->p += strlen("__malloc_like");
@@ -847,7 +847,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__result_use_check")) {
+        else if(parsecmp("__result_use_check")) {
             char* head = info.p; 
             
             info->p += strlen("__result_use_check");
@@ -856,7 +856,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__alloc_size2")) {
+        else if(parsecmp("__alloc_size2")) {
             char* head = info.p; 
             
             info->p += strlen("__alloc_size2");
@@ -891,7 +891,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__alloc_size")) {
+        else if(parsecmp("__alloc_size")) {
             char* head = info.p;
             
             info->p += strlen("__alloc_size");
@@ -926,7 +926,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__nonnull")) {
+        else if(parsecmp("__nonnull")) {
             char* head = info.p;
             
             info->p += strlen("__nonnull");
@@ -961,7 +961,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "_Nonnull")) {
+        else if(parsecmp("_Nonnull")) {
             char* head = info.p;
             
             info->p += strlen("_Nonnull");
@@ -996,7 +996,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__alloc_align")) {
+        else if(parsecmp("__alloc_align")) {
             char* head = info.p;
             
             info->p += strlen("__alloc_align");
@@ -1031,7 +1031,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__attribute_malloc__")) {
+        else if(parsecmp("__attribute_malloc__")) {
             char* head = info.p;
             
             info->p += strlen("__attribute_malloc__");
@@ -1040,7 +1040,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__attr_dealloc_fclose")) {
+        else if(parsecmp("__attr_dealloc_fclose")) {
             char* head = info.p;
             
             info->p += strlen("__attr_dealloc_fclose");
@@ -1049,7 +1049,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__wur")) {
+        else if(parsecmp("__wur")) {
             char* head = info.p;
             
             info->p += strlen("__wur");
@@ -1058,7 +1058,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__pure2")) {
+        else if(parsecmp("__pure2")) {
             char* head = info.p;
             
             info->p += strlen("__pure2");
@@ -1067,7 +1067,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__pure")) {
+        else if(parsecmp("__pure")) {
             char* head = info.p;
             
             info->p += strlen("__pure");
@@ -1076,7 +1076,7 @@ string,string parse_function_attribute(sInfo* info=info)
             char* tail = info.p;
             result.append(head, tail-head);
         }
-        else if(strmemcmp(info->p, "__asm")) {
+        else if(parsecmp("__asm")) {
             char* head = info.p;
             
             info->p += strlen("__asm");
@@ -1122,19 +1122,19 @@ string,string parse_attribute(sInfo* info=info)
     string attribute = s"";
     
     while(true) {
-        if(strmemcmp(info->p, "__attribute_pure__")) {
+        if(parsecmp("__attribute_pure__")) {
             info->p += strlen("__attribute_pure__");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__malloc_like")) {
+        else if(parsecmp("__malloc_like")) {
             info->p += strlen("__malloc_like");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__result_use_check")) {
+        else if(parsecmp("__result_use_check")) {
             info->p += strlen("__result_use_check");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__alloc_size2")) {
+        else if(parsecmp("__alloc_size2")) {
             info->p += strlen("__alloc_size2");
             skip_spaces_and_lf();
             
@@ -1164,7 +1164,7 @@ string,string parse_attribute(sInfo* info=info)
                 }
             }
         }
-        else if(strmemcmp(info->p, "__alloc_size")) {
+        else if(parsecmp("__alloc_size")) {
             info->p += strlen("__alloc_size");
             skip_spaces_and_lf();
             
@@ -1194,7 +1194,7 @@ string,string parse_attribute(sInfo* info=info)
                 }
             }
         }
-        else if(strmemcmp(info->p, "__nonnull")) {
+        else if(parsecmp("__nonnull")) {
             info->p += strlen("__nonnull");
             skip_spaces_and_lf();
             
@@ -1224,7 +1224,7 @@ string,string parse_attribute(sInfo* info=info)
                 }
             }
         }
-        else if(strmemcmp(info->p, "_Nonnull")) {
+        else if(parsecmp("_Nonnull")) {
             info->p += strlen("_Nonnull");
             skip_spaces_and_lf();
             
@@ -1254,7 +1254,7 @@ string,string parse_attribute(sInfo* info=info)
                 }
             }
         }
-        else if(strmemcmp(info->p, "__alloc_align")) {
+        else if(parsecmp("__alloc_align")) {
             info->p += strlen("__alloc_align");
             skip_spaces_and_lf();
             
@@ -1284,34 +1284,34 @@ string,string parse_attribute(sInfo* info=info)
                 }
             }
         }
-        else if(strmemcmp(info->p, "__attribute_malloc__")) {
+        else if(parsecmp("__attribute_malloc__")) {
             info->p += strlen("__attribute_malloc__");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__attr_dealloc_fclose")) {
+        else if(parsecmp("__attr_dealloc_fclose")) {
             info->p += strlen("__attr_dealloc_fclose");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__wur")) {
+        else if(parsecmp("__wur")) {
             info->p += strlen("__wur");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__pure2")) {
+        else if(parsecmp("__pure2")) {
             info->p += strlen("__pure2");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__pure")) {
+        else if(parsecmp("__pure")) {
             info->p += strlen("__pure");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__noreturn")) {
+        else if(parsecmp("__noreturn")) {
             info->p += strlen("__noreturn");
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__attribute__")) {
+        else if(parsecmp("__attribute__")) {
             attribute = parse_struct_attribute();
         }
-        else if(strmemcmp(info->p, "__asm__")) {
+        else if(parsecmp("__asm__")) {
             info->p += strlen("__asm__");
             skip_spaces_and_lf();
             
@@ -1355,7 +1355,7 @@ string,string parse_attribute(sInfo* info=info)
 
             skip_spaces_and_lf();
         }
-        else if(strmemcmp(info->p, "__asm")) {
+        else if(parsecmp("__asm")) {
             info->p += strlen("__asm");
             skip_spaces_and_lf();
 

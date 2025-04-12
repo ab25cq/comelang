@@ -2457,7 +2457,6 @@ struct sNode* create_return_node(struct sNode* value, char* value_source, struct
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
 _Bool create_method_generics_fun(char* fun_name, struct sGenericsFun* generics_fun, struct sInfo* info);
 _Bool operator_overload_fun_self(struct sType* type, char* fun_name, struct sNode* node, struct CVALUE* left_value, struct sInfo* info);
-_Bool strmemcmp(char* p, char* p2);
 void caller_begin(struct sInfo* info);
 void caller_end(struct sInfo* info);
 struct sNode* craete_logical_denial(struct sNode* node, struct sInfo* info);
@@ -2487,7 +2486,7 @@ struct tuple2$2sFun$pchar$ph* create_get_hash_key_automatically(struct sType* ty
 char* skip_block(struct sInfo* info, _Bool return_self_at_last);
 _Bool is_contained_generics_class(struct sType* type, struct sInfo* info);
 _Bool is_type_name(char* buf, struct sInfo* info);
-_Bool parsecmp(char* str, struct sInfo* info);
+_Bool parsecmp(char* p2, struct sInfo* info);
 char* parse_word(struct sInfo* info);
 char* backtrace_parse_word(struct sInfo* info);
 void skip_spaces_and_lf(struct sInfo* info);
@@ -7520,37 +7519,37 @@ exp_336 = (void*)0;
         come_call_finalizer(sType_finalize, type2_283, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
     else if(    charp_operator_equals(buf,"using")    ) {
-        if(        parsecmp("comelang",info)        ) {
-            info->p+=strlen("comelang");
+        if(        parsecmp("comelang_str",info)        ) {
+            info->p+=strlen("comelang_str");
             skip_spaces_and_lf(info);
-            gComeC=(_Bool)0;
+            gComeStr=(_Bool)1;
             __result_obj__200 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value481=create_nothing_node(info))));
             ((__right_value481) ? __right_value481 = come_decrement_ref_count(__right_value481, ((struct sNode*)__right_value481)->finalize, ((struct sNode*)__right_value481)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__200) ? __result_obj__200 = come_decrement_ref_count(__result_obj__200, ((struct sNode*)__result_obj__200)->finalize, ((struct sNode*)__result_obj__200)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__200;
         }
-        else if(        parsecmp("comelang-str",info)        ) {
-            info->p+=strlen("comelang-str");
+        else if(        parsecmp("comelang_pthread",info)        ) {
+            info->p+=strlen("comelang_pthread");
             skip_spaces_and_lf(info);
-            gComeStr=(_Bool)1;
+            gComePthread=(_Bool)1;
             __result_obj__201 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value482=create_nothing_node(info))));
             ((__right_value482) ? __right_value482 = come_decrement_ref_count(__right_value482, ((struct sNode*)__right_value482)->finalize, ((struct sNode*)__right_value482)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__201) ? __result_obj__201 = come_decrement_ref_count(__result_obj__201, ((struct sNode*)__result_obj__201)->finalize, ((struct sNode*)__result_obj__201)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__201;
         }
-        else if(        parsecmp("comelang-pthread",info)        ) {
-            info->p+=strlen("comelang-pthread");
+        else if(        parsecmp("comelang_net",info)        ) {
+            info->p+=strlen("comelang_net");
             skip_spaces_and_lf(info);
-            gComePthread=(_Bool)1;
+            gComeNet=(_Bool)1;
             __result_obj__202 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value483=create_nothing_node(info))));
             ((__right_value483) ? __right_value483 = come_decrement_ref_count(__right_value483, ((struct sNode*)__right_value483)->finalize, ((struct sNode*)__right_value483)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__202) ? __result_obj__202 = come_decrement_ref_count(__result_obj__202, ((struct sNode*)__result_obj__202)->finalize, ((struct sNode*)__result_obj__202)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__202;
         }
-        else if(        parsecmp("comelang-net",info)        ) {
-            info->p+=strlen("comelang-net");
+        else if(        parsecmp("comelang",info)        ) {
+            info->p+=strlen("comelang");
             skip_spaces_and_lf(info);
-            gComeNet=(_Bool)1;
+            gComeC=(_Bool)0;
             __result_obj__203 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value484=create_nothing_node(info))));
             ((__right_value484) ? __right_value484 = come_decrement_ref_count(__right_value484, ((struct sNode*)__right_value484)->finalize, ((struct sNode*)__right_value484)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__203) ? __result_obj__203 = come_decrement_ref_count(__result_obj__203, ((struct sNode*)__result_obj__203)->finalize, ((struct sNode*)__result_obj__203)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
@@ -9056,13 +9055,8 @@ struct sNode* __result_obj__247;
 void* __right_value590 = (void*)0;
 struct sNode* __result_obj__248;
     if(    charp_operator_equals(buf,"using")    ) {
-        if(        parsecmp("comelang",info)        ) {
-            info->p+=strlen("comelang");
-            skip_spaces_and_lf(info);
-            gComeC=(_Bool)0;
-        }
-        else if(        parsecmp("comelang-str",info)        ) {
-            info->p+=strlen("comelang-str");
+        if(        parsecmp("comelang_str",info)        ) {
+            info->p+=strlen("comelang_str");
             skip_spaces_and_lf(info);
             gComeStr=(_Bool)1;
             __result_obj__244 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value585=create_nothing_node(info))));
@@ -9070,8 +9064,8 @@ struct sNode* __result_obj__248;
             ((__result_obj__244) ? __result_obj__244 = come_decrement_ref_count(__result_obj__244, ((struct sNode*)__result_obj__244)->finalize, ((struct sNode*)__result_obj__244)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__244;
         }
-        else if(        parsecmp("comelang-pthread",info)        ) {
-            info->p+=strlen("comelang-pthread");
+        else if(        parsecmp("comelang_pthread",info)        ) {
+            info->p+=strlen("comelang_pthread");
             skip_spaces_and_lf(info);
             gComePthread=(_Bool)1;
             __result_obj__245 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value586=create_nothing_node(info))));
@@ -9079,14 +9073,19 @@ struct sNode* __result_obj__248;
             ((__result_obj__245) ? __result_obj__245 = come_decrement_ref_count(__result_obj__245, ((struct sNode*)__result_obj__245)->finalize, ((struct sNode*)__result_obj__245)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__245;
         }
-        else if(        parsecmp("comelang-net",info)        ) {
-            info->p+=strlen("comelang-net");
+        else if(        parsecmp("comelang_net",info)        ) {
+            info->p+=strlen("comelang_net");
             skip_spaces_and_lf(info);
             gComeNet=(_Bool)1;
             __result_obj__246 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value587=create_nothing_node(info))));
             ((__right_value587) ? __right_value587 = come_decrement_ref_count(__right_value587, ((struct sNode*)__right_value587)->finalize, ((struct sNode*)__right_value587)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__246) ? __result_obj__246 = come_decrement_ref_count(__result_obj__246, ((struct sNode*)__result_obj__246)->finalize, ((struct sNode*)__result_obj__246)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__246;
+        }
+        else if(        parsecmp("comelang",info)        ) {
+            info->p+=strlen("comelang");
+            skip_spaces_and_lf(info);
+            gComeC=(_Bool)0;
         }
         else if(        parsecmp("c",info)||parsecmp("C",info)        ) {
             info->p+=strlen("c");

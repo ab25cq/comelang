@@ -2275,7 +2275,6 @@ struct tuple2$2char$phsGenericsFun$p* make_method_generics_function(char* fun_na
 struct sNode* create_return_node(struct sNode* value, char* value_source, struct sInfo* info);
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
 _Bool operator_overload_fun_self(struct sType* type, char* fun_name, struct sNode* node, struct CVALUE* left_value, struct sInfo* info);
-_Bool strmemcmp(char* p, char* p2);
 void caller_begin(struct sInfo* info);
 void caller_end(struct sInfo* info);
 struct sNode* craete_logical_denial(struct sNode* node, struct sInfo* info);
@@ -2294,7 +2293,7 @@ struct tuple4$4list$1sType$ph$phlist$1char$ph$phlist$1char$ph$phbool$* parse_par
 struct tuple2$2sFun$pchar$ph* create_pthread_fun(struct sType* type, char* fun_name, struct sInfo* info);
 _Bool is_contained_generics_class(struct sType* type, struct sInfo* info);
 _Bool is_type_name(char* buf, struct sInfo* info);
-_Bool parsecmp(char* str, struct sInfo* info);
+_Bool parsecmp(char* p2, struct sInfo* info);
 char* parse_word(struct sInfo* info);
 char* backtrace_parse_word(struct sInfo* info);
 void skip_spaces_and_lf(struct sInfo* info);
@@ -6395,7 +6394,7 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
     asm_fun_name_221=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05function.c", 701, "struct buffer*"))));
     result_222=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05function.c", 702, "struct buffer*"))));
     while(    (_Bool)1    ) {
-        if(        strmemcmp(info->p,"__attribute__")        ) {
+        if(        parsecmp("__attribute__",info)        ) {
             head_223=info->p;
             info->p+=strlen("__attribute__");
             skip_spaces_and_lf(info);
@@ -6422,7 +6421,7 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             tail_225=info->p;
             buffer_append(result_222,head_223,tail_225-head_223);
         }
-        else if(        strmemcmp(info->p,"__declspec")        ) {
+        else if(        parsecmp("__declspec",info)        ) {
             head_226=info->p;
             info->p+=strlen("__declspec");
             skip_spaces_and_lf(info);
@@ -6449,21 +6448,21 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             tail_228=info->p;
             buffer_append(result_222,head_226,tail_228-head_226);
         }
-        else if(        strmemcmp(info->p,"_Noreturn")        ) {
+        else if(        parsecmp("_Noreturn",info)        ) {
             head_229=info->p;
             info->p+=strlen("_Noreturn");
             skip_spaces_and_lf(info);
             tail_230=info->p;
             buffer_append(result_222,head_229,tail_230-head_229);
         }
-        else if(        strmemcmp(info->p,"__noreturn")        ) {
+        else if(        parsecmp("__noreturn",info)        ) {
             head_231=info->p;
             info->p+=strlen("__noreturn");
             skip_spaces_and_lf(info);
             tail_232=info->p;
             buffer_append(result_222,head_231,tail_232-head_231);
         }
-        else if(        strmemcmp(info->p,"__asm__")        ) {
+        else if(        parsecmp("__asm__",info)        ) {
             info->p+=strlen("__asm__");
             skip_spaces_and_lf(info);
             if(            memcmp(info->p,"__ASMNAME",strlen("__ASMNAME"))==0            ) {
@@ -6501,28 +6500,28 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             }
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__attribute_pure__")        ) {
+        else if(        parsecmp("__attribute_pure__",info)        ) {
             head_236=info->p;
             info->p+=strlen("__attribute_pure__");
             skip_spaces_and_lf(info);
             tail_237=info->p;
             buffer_append(result_222,head_236,tail_237-head_236);
         }
-        else if(        strmemcmp(info->p,"__malloc_like")        ) {
+        else if(        parsecmp("__malloc_like",info)        ) {
             head_238=info->p;
             info->p+=strlen("__malloc_like");
             skip_spaces_and_lf(info);
             tail_239=info->p;
             buffer_append(result_222,head_238,tail_239-head_238);
         }
-        else if(        strmemcmp(info->p,"__result_use_check")        ) {
+        else if(        parsecmp("__result_use_check",info)        ) {
             head_240=info->p;
             info->p+=strlen("__result_use_check");
             skip_spaces_and_lf(info);
             tail_241=info->p;
             buffer_append(result_222,head_240,tail_241-head_240);
         }
-        else if(        strmemcmp(info->p,"__alloc_size2")        ) {
+        else if(        parsecmp("__alloc_size2",info)        ) {
             head_242=info->p;
             info->p+=strlen("__alloc_size2");
             skip_spaces_and_lf(info);
@@ -6553,7 +6552,7 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             tail_244=info->p;
             buffer_append(result_222,head_242,tail_244-head_242);
         }
-        else if(        strmemcmp(info->p,"__alloc_size")        ) {
+        else if(        parsecmp("__alloc_size",info)        ) {
             head_245=info->p;
             info->p+=strlen("__alloc_size");
             skip_spaces_and_lf(info);
@@ -6584,7 +6583,7 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             tail_247=info->p;
             buffer_append(result_222,head_245,tail_247-head_245);
         }
-        else if(        strmemcmp(info->p,"__nonnull")        ) {
+        else if(        parsecmp("__nonnull",info)        ) {
             head_248=info->p;
             info->p+=strlen("__nonnull");
             skip_spaces_and_lf(info);
@@ -6615,7 +6614,7 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             tail_250=info->p;
             buffer_append(result_222,head_248,tail_250-head_248);
         }
-        else if(        strmemcmp(info->p,"_Nonnull")        ) {
+        else if(        parsecmp("_Nonnull",info)        ) {
             head_251=info->p;
             info->p+=strlen("_Nonnull");
             skip_spaces_and_lf(info);
@@ -6646,7 +6645,7 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             tail_253=info->p;
             buffer_append(result_222,head_251,tail_253-head_251);
         }
-        else if(        strmemcmp(info->p,"__alloc_align")        ) {
+        else if(        parsecmp("__alloc_align",info)        ) {
             head_254=info->p;
             info->p+=strlen("__alloc_align");
             skip_spaces_and_lf(info);
@@ -6677,42 +6676,42 @@ struct tuple2$2char$phchar$ph* __result_obj__95;
             tail_256=info->p;
             buffer_append(result_222,head_254,tail_256-head_254);
         }
-        else if(        strmemcmp(info->p,"__attribute_malloc__")        ) {
+        else if(        parsecmp("__attribute_malloc__",info)        ) {
             head_257=info->p;
             info->p+=strlen("__attribute_malloc__");
             skip_spaces_and_lf(info);
             tail_258=info->p;
             buffer_append(result_222,head_257,tail_258-head_257);
         }
-        else if(        strmemcmp(info->p,"__attr_dealloc_fclose")        ) {
+        else if(        parsecmp("__attr_dealloc_fclose",info)        ) {
             head_259=info->p;
             info->p+=strlen("__attr_dealloc_fclose");
             skip_spaces_and_lf(info);
             tail_260=info->p;
             buffer_append(result_222,head_259,tail_260-head_259);
         }
-        else if(        strmemcmp(info->p,"__wur")        ) {
+        else if(        parsecmp("__wur",info)        ) {
             head_261=info->p;
             info->p+=strlen("__wur");
             skip_spaces_and_lf(info);
             tail_262=info->p;
             buffer_append(result_222,head_261,tail_262-head_261);
         }
-        else if(        strmemcmp(info->p,"__pure2")        ) {
+        else if(        parsecmp("__pure2",info)        ) {
             head_263=info->p;
             info->p+=strlen("__pure2");
             skip_spaces_and_lf(info);
             tail_264=info->p;
             buffer_append(result_222,head_263,tail_264-head_263);
         }
-        else if(        strmemcmp(info->p,"__pure")        ) {
+        else if(        parsecmp("__pure",info)        ) {
             head_265=info->p;
             info->p+=strlen("__pure");
             skip_spaces_and_lf(info);
             tail_266=info->p;
             buffer_append(result_222,head_265,tail_266-head_265);
         }
-        else if(        strmemcmp(info->p,"__asm")        ) {
+        else if(        parsecmp("__asm",info)        ) {
             head_267=info->p;
             info->p+=strlen("__asm");
             skip_spaces_and_lf(info);
@@ -6802,19 +6801,19 @@ struct tuple2$2char$phchar$ph* __result_obj__96;
     asm_fun_name_270=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05function.c", 1121, "struct buffer*"))));
     attribute_271=(char*)come_increment_ref_count(xsprintf(""));
     while(    (_Bool)1    ) {
-        if(        strmemcmp(info->p,"__attribute_pure__")        ) {
+        if(        parsecmp("__attribute_pure__",info)        ) {
             info->p+=strlen("__attribute_pure__");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__malloc_like")        ) {
+        else if(        parsecmp("__malloc_like",info)        ) {
             info->p+=strlen("__malloc_like");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__result_use_check")        ) {
+        else if(        parsecmp("__result_use_check",info)        ) {
             info->p+=strlen("__result_use_check");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__alloc_size2")        ) {
+        else if(        parsecmp("__alloc_size2",info)        ) {
             info->p+=strlen("__alloc_size2");
             skip_spaces_and_lf(info);
             if(            *info->p==40            ) {
@@ -6842,7 +6841,7 @@ struct tuple2$2char$phchar$ph* __result_obj__96;
                 }
             }
         }
-        else if(        strmemcmp(info->p,"__alloc_size")        ) {
+        else if(        parsecmp("__alloc_size",info)        ) {
             info->p+=strlen("__alloc_size");
             skip_spaces_and_lf(info);
             if(            *info->p==40            ) {
@@ -6870,7 +6869,7 @@ struct tuple2$2char$phchar$ph* __result_obj__96;
                 }
             }
         }
-        else if(        strmemcmp(info->p,"__nonnull")        ) {
+        else if(        parsecmp("__nonnull",info)        ) {
             info->p+=strlen("__nonnull");
             skip_spaces_and_lf(info);
             if(            *info->p==40            ) {
@@ -6898,7 +6897,7 @@ struct tuple2$2char$phchar$ph* __result_obj__96;
                 }
             }
         }
-        else if(        strmemcmp(info->p,"_Nonnull")        ) {
+        else if(        parsecmp("_Nonnull",info)        ) {
             info->p+=strlen("_Nonnull");
             skip_spaces_and_lf(info);
             if(            *info->p==40            ) {
@@ -6926,7 +6925,7 @@ struct tuple2$2char$phchar$ph* __result_obj__96;
                 }
             }
         }
-        else if(        strmemcmp(info->p,"__alloc_align")        ) {
+        else if(        parsecmp("__alloc_align",info)        ) {
             info->p+=strlen("__alloc_align");
             skip_spaces_and_lf(info);
             if(            *info->p==40            ) {
@@ -6954,36 +6953,36 @@ struct tuple2$2char$phchar$ph* __result_obj__96;
                 }
             }
         }
-        else if(        strmemcmp(info->p,"__attribute_malloc__")        ) {
+        else if(        parsecmp("__attribute_malloc__",info)        ) {
             info->p+=strlen("__attribute_malloc__");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__attr_dealloc_fclose")        ) {
+        else if(        parsecmp("__attr_dealloc_fclose",info)        ) {
             info->p+=strlen("__attr_dealloc_fclose");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__wur")        ) {
+        else if(        parsecmp("__wur",info)        ) {
             info->p+=strlen("__wur");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__pure2")        ) {
+        else if(        parsecmp("__pure2",info)        ) {
             info->p+=strlen("__pure2");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__pure")        ) {
+        else if(        parsecmp("__pure",info)        ) {
             info->p+=strlen("__pure");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__noreturn")        ) {
+        else if(        parsecmp("__noreturn",info)        ) {
             info->p+=strlen("__noreturn");
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__attribute__")        ) {
+        else if(        parsecmp("__attribute__",info)        ) {
             __dec_obj70=attribute_271,
             attribute_271=(char*)come_increment_ref_count(parse_struct_attribute(info));
             __dec_obj70 = come_decrement_ref_count(__dec_obj70, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
         }
-        else if(        strmemcmp(info->p,"__asm__")        ) {
+        else if(        parsecmp("__asm__",info)        ) {
             info->p+=strlen("__asm__");
             skip_spaces_and_lf(info);
             if(            memcmp(info->p,"__ASMNAME",strlen("__ASMNAME"))==0            ) {
@@ -7021,7 +7020,7 @@ struct tuple2$2char$phchar$ph* __result_obj__96;
             }
             skip_spaces_and_lf(info);
         }
-        else if(        strmemcmp(info->p,"__asm")        ) {
+        else if(        parsecmp("__asm",info)        ) {
             info->p+=strlen("__asm");
             skip_spaces_and_lf(info);
             if(            *info->p==40            ) {

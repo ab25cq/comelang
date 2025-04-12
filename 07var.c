@@ -1403,7 +1403,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         var type, name, err = parse_type(parse_variable_name:false);
         parse_sharp();
         
-        if(err && strmemcmp(info->p, "self")) {
+        if(err && parsecmp("self")) {
             attr_define = true;
         }
         
