@@ -1099,25 +1099,10 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     
     parse_sharp();
     
-    sNode*% node;
-    if(*info->p == '?' && *(info->p+1) == '?') {
-        info->p += 2;
-        skip_spaces_and_lf();
-        
-        parse_sharp();
-        
-        bool guard_break = true;
-        
-        node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, guard_break, info) implements sNode;
-        
-        node = post_position_operator(node, info);
-    }
-    else {
-        bool guard_break = false;
-        node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, guard_break, info) implements sNode;
-        
-        node = post_position_operator(node, info);
-    }
+    bool guard_break = false;
+    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, guard_break, info) implements sNode;
+    
+    node = post_position_operator(node, info);
     
     return node;
 }

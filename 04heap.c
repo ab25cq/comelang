@@ -815,7 +815,6 @@ void on_drop_object(sType* type, char* obj, sInfo* info=info, bool comma=false)
     }
 }
 
-
 void free_right_value_objects(sInfo* info, bool comma=false)
 {
     if(gComeGC || gComeC) {

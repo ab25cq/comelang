@@ -1,41 +1,5 @@
 #include "common.h"
 
-string, string, string, string create_vtable(sType*% any_type, sInfo* info=info)
-{
-    string finalizer_name = create_method_name(any_type, false@no_poiner_name, "finalize", info);
-    string cloner_name = create_method_name(any_type, false@no_poiner_name, "clone", info);
-    string get_hash_key_name = create_method_name(any_type, false@no_poiner_name, "get_hash_key", info);
-    string equaler_name = create_method_name(any_type, false@no_poiner_name, "equals", info);
-    
-    if(info.funcs[finalizer_name]?? == null) {
-        if(any_type->mClass->mNumber) {
-            finalizer_name = s"(void*)0";
-        }
-        else {
-            (void*)create_finalizer_automatically(any_type, "finalize", info);
-        }
-    }
-    if(info.funcs[cloner_name]?? == null) {
-        if(any_type->mClass->mNumber) {
-            cloner_name = s"(void*)0";
-        }
-        else {
-            var fun, name = create_cloner_automatically(any_type, "clone", info);
-            cloner_name = name;
-        }
-    }
-    if(info.funcs[get_hash_key_name]?? == null) {
-        var fun, name = create_get_hash_key_automatically(any_type, "get_hash_key", info);
-        get_hash_key_name = name;
-    }
-    if(info.funcs[equaler_name]?? == null) {
-        var fun, name = create_equals_automatically(any_type, "equals", info);
-        equaler_name = name;
-    }
-    
-    return (finalizer_name, cloner_name, get_hash_key_name, equaler_name);
-}
-
 class sNewNode extends sNodeBase
 {
     new(sType*% type, list<tup: string, sNode*%>*% initializer, sInfo* info)
@@ -1940,14 +1904,6 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
         
         return new sImplementsNode(node, inf_type, info) implements sNode;
     }
-/*
-    else if(*info->p == '~') {
-        info->p ++;
-        skip_spaces_and_lf();
-        
-        return new sAppendAnyFlagNode(node, info) implements sNode;
-    }
-*/
     else if(*info->p == '@') {
         info->p++;
         while(xisalnum(*info->p) || *info->p == '_') {

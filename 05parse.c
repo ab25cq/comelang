@@ -11,7 +11,7 @@ bool parsecmp(char* p2, sInfo* info=info)
         p3++;
     }
     unsigned char c = *(info->p+strlen(p2));
-    return memcmp(info->p, p2, strlen(p2)) == 0 && (ispunct(c) || c == ' ' || c == '\t' || c == '\n') && c != '_';
+    return memcmp(info->p, p2, strlen(p2)) == 0 && (xispunct(c) || c == ' ' || c == '\t' || c == '\n') && c != '_';
 }
 
 int err_msg(sInfo* info, char* msg, ...)

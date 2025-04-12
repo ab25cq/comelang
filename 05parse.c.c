@@ -2119,6 +2119,7 @@ _Bool xisdigit(char c);
 _Bool xisalnum(char c);
 _Bool xisascii(char c);
 _Bool xiswascii(unsigned int c);
+_Bool xispunct(char c);
 int string_length(char* str);
 int charp_length(char* str);
 char* charp_reverse(char* str);
@@ -2433,7 +2434,7 @@ unsigned char c_3;
         p3_1++;
     }
     c_3=*(info->p+strlen(p2));
-    return memcmp(info->p,p2,strlen(p2))==0&&(((*__ctype_b_loc())[(int)((c_3))]&(unsigned short int)(((((10)<8)?(((1<<(10))<<8)):(((1<<(10))>>8))))))||c_3==32||c_3==9||c_3==10)&&c_3!=95;
+    return memcmp(info->p,p2,strlen(p2))==0&&(xispunct(c_3)||c_3==32||c_3==9||c_3==10)&&c_3!=95;
 }
 
 int err_msg(struct sInfo* info, char* msg, ...){

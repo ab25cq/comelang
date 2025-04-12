@@ -2145,6 +2145,7 @@ _Bool xisdigit(char c);
 _Bool xisalnum(char c);
 _Bool xisascii(char c);
 _Bool xiswascii(unsigned int c);
+_Bool xispunct(char c);
 int string_length(char* str);
 int charp_length(char* str);
 char* charp_reverse(char* str);
@@ -2738,7 +2739,7 @@ struct sHeaderNode* __result_obj__10;
     ((struct sNodeBase*)(__right_value17=sNodeBase_initialize((struct sNodeBase*)come_increment_ref_count((struct sNodeBase*)self),info)));
     come_call_finalizer(sNodeBase_finalize, __right_value17, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
     __dec_obj10=self->contents,
-    self->contents=(char*)come_increment_ref_count((char*)come_memdup(contents, "24module.c", 30, "char*"));
+    self->contents=(char*)come_increment_ref_count((char*)come_memdup(contents, "24module.c", 29, "char*"));
     __dec_obj10 = come_decrement_ref_count(__dec_obj10, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __result_obj__10 = (struct sHeaderNode*)come_increment_ref_count(self);
     come_call_finalizer(sHeaderNode_finalize, self, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
@@ -2847,12 +2848,12 @@ _Bool __result_obj__17;
     else {
     }
     come_value2_22=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
-    come_value3_23=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "24module.c", 77, "struct CVALUE*"))));
+    come_value3_23=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "24module.c", 76, "struct CVALUE*"))));
     __dec_obj13=come_value3_23->c_value,
     come_value3_23->c_value=(char*)come_increment_ref_count(xsprintf("_Static_assert(%s, %s)",come_value_15->c_value,come_value2_22->c_value));
     __dec_obj13 = come_decrement_ref_count(__dec_obj13, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __dec_obj14=come_value3_23->type,
-    come_value3_23->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "24module.c", 80, "struct sType*")),(char*)come_increment_ref_count(xsprintf("void")),(_Bool)0,info));
+    come_value3_23->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "24module.c", 79, "struct sType*")),(char*)come_increment_ref_count(xsprintf("void")),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj14,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value3_23->var=((void*)0);
     add_come_last_code(info,"%s",come_value2_22->c_value);
@@ -2978,8 +2979,8 @@ struct sNode* _inf_value1;
 struct sStaticAssert* _inf_obj_value1;
 void* __right_value37 = (void*)0;
 struct sNode* __result_obj__22;
-    _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 91, "struct sNode");
-    _inf_obj_value1=(struct sStaticAssert*)come_increment_ref_count(((struct sStaticAssert*)(__right_value31=sStaticAssert_initialize((struct sStaticAssert*)come_increment_ref_count((struct sStaticAssert*)come_calloc_v2(1, sizeof(struct sStaticAssert)*(1), "24module.c", 91, "struct sStaticAssert*")),(struct sNode*)come_increment_ref_count(exp),(struct sNode*)come_increment_ref_count(exp2),info))));
+    _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 90, "struct sNode");
+    _inf_obj_value1=(struct sStaticAssert*)come_increment_ref_count(((struct sStaticAssert*)(__right_value31=sStaticAssert_initialize((struct sStaticAssert*)come_increment_ref_count((struct sStaticAssert*)come_calloc_v2(1, sizeof(struct sStaticAssert)*(1), "24module.c", 90, "struct sStaticAssert*")),(struct sNode*)come_increment_ref_count(exp),(struct sNode*)come_increment_ref_count(exp2),info))));
     _inf_value1->_protocol_obj=_inf_obj_value1;
     _inf_value1->finalize=(void*)sStaticAssert_finalize;
     _inf_value1->clone=(void*)sStaticAssert_clone;
@@ -3185,7 +3186,7 @@ struct sNode* __result_obj__54;
         type_name_26=(char*)come_increment_ref_count(parse_word(info));
         sname_27=(char*)come_increment_ref_count(info->sname);
         sline_28=info->sline;
-        params_29=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "24module.c", 102, "struct list$1char$ph*"))));
+        params_29=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph_initialize((struct list$1char$ph*)come_increment_ref_count((struct list$1char$ph*)come_calloc_v2(1, sizeof(struct list$1char$ph)*(1), "24module.c", 101, "struct list$1char$ph*"))));
         if(        *info->p==60        ) {
             info->p++;
             skip_spaces_and_lf(info);
@@ -3218,7 +3219,7 @@ struct sNode* __result_obj__54;
         expected_next_character(123,info);
         source_head_31=info->p;
         source_tail_32=((void*)0);
-        buf_33=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "24module.c", 138, "struct buffer*"))));
+        buf_33=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "24module.c", 137, "struct buffer*"))));
         squort_34=(_Bool)0;
         dquort_35=(_Bool)0;
         nest_36=1;
@@ -3281,7 +3282,7 @@ struct sNode* __result_obj__54;
             }
         }
         if(        info->output_header_file        ) {
-            header_37=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "24module.c", 205, "struct buffer*"))));
+            header_37=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "24module.c", 204, "struct buffer*"))));
             buffer_append_str(header_37,((char*)(__right_value50=xsprintf("module \%s\n",((char*)(__right_value49=string_to_string(type_name_26)))))));
             (__right_value49 = come_decrement_ref_count(__right_value49, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             (__right_value50 = come_decrement_ref_count(__right_value50, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -3294,14 +3295,14 @@ struct sNode* __result_obj__54;
             come_call_finalizer(buffer_finalize, header_37, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (id_38 = come_decrement_ref_count(id_38, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
         }
-        module_39=(struct sClassModule*)come_increment_ref_count(sClassModule_initialize((struct sClassModule*)come_increment_ref_count((struct sClassModule*)come_calloc_v2(1, sizeof(struct sClassModule)*(1), "24module.c", 216, "struct sClassModule*")),(char*)come_increment_ref_count(type_name_26),(char*)come_increment_ref_count(buffer_to_string(buf_33)),(char*)come_increment_ref_count(sname_27),sline_28));
+        module_39=(struct sClassModule*)come_increment_ref_count(sClassModule_initialize((struct sClassModule*)come_increment_ref_count((struct sClassModule*)come_calloc_v2(1, sizeof(struct sClassModule)*(1), "24module.c", 215, "struct sClassModule*")),(char*)come_increment_ref_count(type_name_26),(char*)come_increment_ref_count(buffer_to_string(buf_33)),(char*)come_increment_ref_count(sname_27),sline_28));
         __dec_obj18=module_39->mParams,
         module_39->mParams=(struct list$1char$ph*)come_increment_ref_count(list$1char$ph$p_clone(params_29));
         come_call_finalizer(list$1char$ph_finalize, __dec_obj18,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
         map$2char$phsClassModule$ph_operator_store_element(info->modules,(char*)come_increment_ref_count(__builtin_string(type_name_26)),(struct sClassModule*)come_increment_ref_count(module_39));
         (__right_value57 = come_decrement_ref_count(__right_value57, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        _inf_value2=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 222, "struct sNode");
-        _inf_obj_value2=(struct sModuleNode*)come_increment_ref_count(((struct sModuleNode*)(__right_value69=sModuleNode_initialize((struct sModuleNode*)come_increment_ref_count((struct sModuleNode*)come_calloc_v2(1, sizeof(struct sModuleNode)*(1), "24module.c", 222, "struct sModuleNode*")),(char*)come_increment_ref_count(__builtin_string(type_name_26)),(struct sClassModule*)come_increment_ref_count(module_39),info))));
+        _inf_value2=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 221, "struct sNode");
+        _inf_obj_value2=(struct sModuleNode*)come_increment_ref_count(((struct sModuleNode*)(__right_value69=sModuleNode_initialize((struct sModuleNode*)come_increment_ref_count((struct sModuleNode*)come_calloc_v2(1, sizeof(struct sModuleNode)*(1), "24module.c", 221, "struct sModuleNode*")),(char*)come_increment_ref_count(__builtin_string(type_name_26)),(struct sClassModule*)come_increment_ref_count(module_39),info))));
         _inf_value2->_protocol_obj=_inf_obj_value2;
         _inf_value2->finalize=(void*)sModuleNode_finalize;
         _inf_value2->clone=(void*)sModuleNode_clone;
@@ -3337,8 +3338,8 @@ struct sNode* __result_obj__54;
         static int n_88=0;
         anonymous_name_89=(char*)come_increment_ref_count(xsprintf("annymous_header_name_%d",n_88++));
         add_come_code_at_come_struct_header(info,anonymous_name_89,"%s\n",contents_87);
-        _inf_value3=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 240, "struct sNode");
-        _inf_obj_value3=(struct sHeaderNode*)come_increment_ref_count(((struct sHeaderNode*)(__right_value79=sHeaderNode_initialize((struct sHeaderNode*)come_increment_ref_count((struct sHeaderNode*)come_calloc_v2(1, sizeof(struct sHeaderNode)*(1), "24module.c", 240, "struct sHeaderNode*")),(char*)come_increment_ref_count(contents_87),info))));
+        _inf_value3=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 239, "struct sNode");
+        _inf_obj_value3=(struct sHeaderNode*)come_increment_ref_count(((struct sHeaderNode*)(__right_value79=sHeaderNode_initialize((struct sHeaderNode*)come_increment_ref_count((struct sHeaderNode*)come_calloc_v2(1, sizeof(struct sHeaderNode)*(1), "24module.c", 239, "struct sHeaderNode*")),(char*)come_increment_ref_count(contents_87),info))));
         _inf_value3->_protocol_obj=_inf_obj_value3;
         _inf_value3->finalize=(void*)sHeaderNode_finalize;
         _inf_value3->clone=(void*)sHeaderNode_clone;
@@ -3368,8 +3369,8 @@ struct sNode* __result_obj__54;
         }
         contents_93=(char*)come_increment_ref_count(charp_substring(block_text_91,1,p_92-(block_text_91+strlen(block_text_91))-1));
         add_come_code(info,"%s\n",contents_93);
-        _inf_value4=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 255, "struct sNode");
-        _inf_obj_value4=(struct sHeaderNode*)come_increment_ref_count(((struct sHeaderNode*)(__right_value87=sHeaderNode_initialize((struct sHeaderNode*)come_increment_ref_count((struct sHeaderNode*)come_calloc_v2(1, sizeof(struct sHeaderNode)*(1), "24module.c", 255, "struct sHeaderNode*")),(char*)come_increment_ref_count(contents_93),info))));
+        _inf_value4=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 254, "struct sNode");
+        _inf_obj_value4=(struct sHeaderNode*)come_increment_ref_count(((struct sHeaderNode*)(__right_value87=sHeaderNode_initialize((struct sHeaderNode*)come_increment_ref_count((struct sHeaderNode*)come_calloc_v2(1, sizeof(struct sHeaderNode)*(1), "24module.c", 254, "struct sHeaderNode*")),(char*)come_increment_ref_count(contents_93),info))));
         _inf_value4->_protocol_obj=_inf_obj_value4;
         _inf_value4->finalize=(void*)sHeaderNode_finalize;
         _inf_value4->clone=(void*)sHeaderNode_clone;
@@ -3428,8 +3429,8 @@ struct sNode* __result_obj__54;
         }
         info->no_output_come_code=no_output_come_code_94;
         info->no_output_come_code2=no_output_come_code2_95;
-        _inf_value5=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 304, "struct sNode");
-        _inf_obj_value5=(struct sHeaderNode*)come_increment_ref_count(((struct sHeaderNode*)(__right_value93=sHeaderNode_initialize((struct sHeaderNode*)come_increment_ref_count((struct sHeaderNode*)come_calloc_v2(1, sizeof(struct sHeaderNode)*(1), "24module.c", 304, "struct sHeaderNode*")),(char*)come_increment_ref_count(xsprintf("")),info))));
+        _inf_value5=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 303, "struct sNode");
+        _inf_obj_value5=(struct sHeaderNode*)come_increment_ref_count(((struct sHeaderNode*)(__right_value93=sHeaderNode_initialize((struct sHeaderNode*)come_increment_ref_count((struct sHeaderNode*)come_calloc_v2(1, sizeof(struct sHeaderNode)*(1), "24module.c", 303, "struct sHeaderNode*")),(char*)come_increment_ref_count(xsprintf("")),info))));
         _inf_value5->_protocol_obj=_inf_obj_value5;
         _inf_value5->finalize=(void*)sHeaderNode_finalize;
         _inf_value5->clone=(void*)sHeaderNode_clone;
@@ -3454,8 +3455,8 @@ struct sNode* __result_obj__54;
         expected_next_character(44,info);
         exp2_103=(struct sNode*)come_increment_ref_count(expression_v13(info));
         expected_next_character(41,info);
-        _inf_value6=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 320, "struct sNode");
-        _inf_obj_value6=(struct sStaticAssert*)come_increment_ref_count(((struct sStaticAssert*)(__right_value98=sStaticAssert_initialize((struct sStaticAssert*)come_increment_ref_count((struct sStaticAssert*)come_calloc_v2(1, sizeof(struct sStaticAssert)*(1), "24module.c", 320, "struct sStaticAssert*")),(struct sNode*)come_increment_ref_count(exp_102),(struct sNode*)come_increment_ref_count(exp2_103),info))));
+        _inf_value6=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "24module.c", 319, "struct sNode");
+        _inf_obj_value6=(struct sStaticAssert*)come_increment_ref_count(((struct sStaticAssert*)(__right_value98=sStaticAssert_initialize((struct sStaticAssert*)come_increment_ref_count((struct sStaticAssert*)come_calloc_v2(1, sizeof(struct sStaticAssert)*(1), "24module.c", 319, "struct sStaticAssert*")),(struct sNode*)come_increment_ref_count(exp_102),(struct sNode*)come_increment_ref_count(exp2_103),info))));
         _inf_value6->_protocol_obj=_inf_obj_value6;
         _inf_value6->finalize=(void*)sStaticAssert_finalize;
         _inf_value6->clone=(void*)sStaticAssert_clone;

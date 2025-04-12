@@ -3800,6 +3800,10 @@ uniq bool xiswascii(wchar_t c)
     return result;
 }
 
+uniq bool xispunct(char c) {
+    return (c >= '!' && c <= '/') || (c >= ':' && c <= '@') || (c >= '[' && c <= '`') || (c >= '{' && c <= '~');
+ }
+
 //////////////////////////////
 /// base library(simple string library)
 //////////////////////////////

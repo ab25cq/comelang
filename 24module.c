@@ -1,4 +1,3 @@
-
 #include "common.h"
 
 class sModuleNode extends sNodeBase {
