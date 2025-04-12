@@ -1388,27 +1388,6 @@ struct tuple2$2sType$phchar$ph
     char* v2;
 };
 
-struct tuple2$2char$phsNode$ph
-{
-    char* v1;
-    struct sNode* v2;
-};
-
-struct list_item$1tuple2$2char$phsNode$ph$ph
-{
-    struct tuple2$2char$phsNode$ph* item;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* prev;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* next;
-};
-
-struct list$1tuple2$2char$phsNode$ph$ph
-{
-    struct list_item$1tuple2$2char$phsNode$ph$ph* head;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* tail;
-    int len;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* it;
-};
-
 struct tuple2$2char$phsGenericsFun$p
 {
     char* v1;
@@ -1475,6 +1454,27 @@ struct tuple3$3char$phsFun$psGenericsFun$p
     char* v1;
     struct sFun* v2;
     struct sGenericsFun* v3;
+};
+
+struct tuple2$2char$phsNode$ph
+{
+    char* v1;
+    struct sNode* v2;
+};
+
+struct list_item$1tuple2$2char$phsNode$ph$ph
+{
+    struct tuple2$2char$phsNode$ph* item;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* prev;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* next;
+};
+
+struct list$1tuple2$2char$phsNode$ph$ph
+{
+    struct list_item$1tuple2$2char$phsNode$ph$ph* head;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* tail;
+    int len;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* it;
 };
 
 struct tuple4$4char$phchar$phchar$phchar$ph
@@ -2453,7 +2453,7 @@ void free_object(struct sType* type, char* obj, _Bool no_decrement, _Bool no_fre
 struct tuple2$2sType$phchar$ph* clone_object(struct sType* type, char* obj, struct sInfo* info);
 void free_right_value_objects(struct sInfo* info, _Bool comma);
 void free_objects(struct sVarTable* table, struct sVar* ret_value, struct sInfo* info);
-void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value, struct sVar* obj_var);
+void append_object_to_right_values(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value, struct sVar* obj_var);
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 char* increment_ref_count_object(struct sType* type, char* obj, struct sInfo* info);
 void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* info, _Bool no_free);
@@ -2461,7 +2461,6 @@ struct sNode* reverse_node(struct sNode* value, struct sInfo* info);
 struct sFun* compile_uniq_function(struct sFun* fun, struct sInfo* info);
 struct sNode* cast_node(struct sType* type, struct sNode* node, struct sInfo* info);
 struct sNode* reffence_node(struct sNode* value, struct sInfo* info);
-struct sNode* craete_fun_call(char* fun_name, struct list$1tuple2$2char$phsNode$ph$ph* params, _Bool guard_break, struct list$1sType$ph* method_generics_types, struct buffer* method_block, int method_block_sline, struct sInfo* info);
 struct tuple2$2char$phsGenericsFun$p* make_method_generics_function(char* fun_name, struct list$1sType$ph* method_generics_types, struct sInfo* info);
 struct sNode* create_return_node(struct sNode* value, char* value_source, struct sInfo* info);
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
@@ -2585,7 +2584,7 @@ struct sNode* post_position_operator_v99(struct sNode* node, struct sInfo* info)
 struct sNode* parse_method_call_v18(struct sNode* obj, char* fun_name, struct sInfo* info);
 struct sNode* post_position_operator_v19(struct sNode* node, struct sInfo* info);
 struct tuple3$3char$phsFun$psGenericsFun$p* get_method(char* fun_name, struct sType* obj_type, struct sInfo* info);
-struct sNode* create_method_call(char* fun_name, struct sNode* obj, struct list$1tuple2$2char$phsNode$ph$ph* params, struct buffer* method_block, int method_block_sline, struct list$1sType$ph* method_generics_types, _Bool guard_break, struct sInfo* info, _Bool no_err);
+struct sNode* create_method_call(char* fun_name, struct sNode* obj, struct list$1tuple2$2char$phsNode$ph$ph* params, struct buffer* method_block, int method_block_sline, struct list$1sType$ph* method_generics_types, struct sInfo* info, _Bool no_err);
 struct sNode* create_guard_break_method_call(struct sNode* expression_node, struct sInfo* info);
 _Bool compile_method_block(struct buffer* method_block, struct list$1CVALUE$ph* come_params, struct sFun* fun, char* fun_name, int method_block_sline, struct sInfo* info, _Bool no_create_current_stack);
 struct tuple2$2char$phsGenericsFun$p* make_generics_function(struct sType* type, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
@@ -3091,7 +3090,7 @@ obj_55 = (void*)0;
         come_value_35->type=(struct sType*)come_increment_ref_count(sType_clone(type2_45));
         come_call_finalizer(sType_finalize, __dec_obj31,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
         come_value_35->var=((void*)0);
-        append_object_to_right_values2(come_value_35,(struct sType*)come_increment_ref_count(type2_45),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
+        append_object_to_right_values(come_value_35,(struct sType*)come_increment_ref_count(type2_45),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
         add_come_last_code(info,"%s",come_value_35->c_value);
         list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_35));
         (var_name_51 = come_decrement_ref_count(var_name_51, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -3132,7 +3131,7 @@ obj_55 = (void*)0;
         come_value_35->type=(struct sType*)come_increment_ref_count(sType_clone(type2_45));
         come_call_finalizer(sType_finalize, __dec_obj37,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
         come_value_35->var=((void*)0);
-        append_object_to_right_values2(come_value_35,(struct sType*)come_increment_ref_count(type2_45),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
+        append_object_to_right_values(come_value_35,(struct sType*)come_increment_ref_count(type2_45),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
         add_come_last_code(info,"%s",come_value_35->c_value);
         list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_35));
         come_call_finalizer(sType_finalize, type3_90, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -4497,7 +4496,7 @@ _Bool __result_obj__70;
     come_call_finalizer(sType_finalize, __dec_obj44,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value2_98->type->mPointerNum++;
     come_value2_98->var=((void*)0);
-    append_object_to_right_values2(come_value2_98,(struct sType*)come_increment_ref_count(type3_134),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
+    append_object_to_right_values(come_value2_98,(struct sType*)come_increment_ref_count(type3_134),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
     add_come_last_code(info,"%s",come_value2_98->c_value);
     list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value2_98));
     __result_obj__70 = (_Bool)1;
@@ -5349,7 +5348,7 @@ _Bool __result_obj__101;
         come_call_finalizer(sType_finalize, __dec_obj67,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
         come_value2_161->var=((void*)0);
         add_come_last_code(info,"%s",come_value2_161->c_value);
-        append_object_to_right_values2(come_value2_161,(struct sType*)come_increment_ref_count(come_value2_161->type),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
+        append_object_to_right_values(come_value2_161,(struct sType*)come_increment_ref_count(come_value2_161->type),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
         list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value2_161));
         come_call_finalizer(CVALUE_finalize, come_value2_161, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
@@ -6032,7 +6031,7 @@ _Bool __result_obj__133;
         come_call_finalizer(sType_finalize, __dec_obj90,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
         come_value_198->type->mHeap=(_Bool)1;
         come_value_198->var=((void*)0);
-        append_object_to_right_values2(come_value_198,(struct sType*)come_increment_ref_count(left_type_197),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
+        append_object_to_right_values(come_value_198,(struct sType*)come_increment_ref_count(left_type_197),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
         list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_198));
         come_call_finalizer(CVALUE_finalize, come_value_198, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         come_call_finalizer(sType_finalize, result_type_199, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -6135,7 +6134,7 @@ _Bool __result_obj__136;
         come_call_finalizer(sType_finalize, __dec_obj93,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
         come_value_205->type->mHeap=(_Bool)1;
         come_value_205->var=((void*)0);
-        append_object_to_right_values2(come_value_205,(struct sType*)come_increment_ref_count(left_type_204),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
+        append_object_to_right_values(come_value_205,(struct sType*)come_increment_ref_count(left_type_204),info,(_Bool)0,((void*)0),((void*)0),((void*)0));
         list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_205));
         come_call_finalizer(CVALUE_finalize, come_value_205, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         come_call_finalizer(sType_finalize, result_type_206, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);

@@ -1388,27 +1388,6 @@ struct tuple2$2sType$phchar$ph
     char* v2;
 };
 
-struct tuple2$2char$phsNode$ph
-{
-    char* v1;
-    struct sNode* v2;
-};
-
-struct list_item$1tuple2$2char$phsNode$ph$ph
-{
-    struct tuple2$2char$phsNode$ph* item;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* prev;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* next;
-};
-
-struct list$1tuple2$2char$phsNode$ph$ph
-{
-    struct list_item$1tuple2$2char$phsNode$ph$ph* head;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* tail;
-    int len;
-    struct list_item$1tuple2$2char$phsNode$ph$ph* it;
-};
-
 struct tuple2$2char$phsGenericsFun$p
 {
     char* v1;
@@ -1475,6 +1454,27 @@ struct tuple3$3char$phsFun$psGenericsFun$p
     char* v1;
     struct sFun* v2;
     struct sGenericsFun* v3;
+};
+
+struct tuple2$2char$phsNode$ph
+{
+    char* v1;
+    struct sNode* v2;
+};
+
+struct list_item$1tuple2$2char$phsNode$ph$ph
+{
+    struct tuple2$2char$phsNode$ph* item;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* prev;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* next;
+};
+
+struct list$1tuple2$2char$phsNode$ph$ph
+{
+    struct list_item$1tuple2$2char$phsNode$ph$ph* head;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* tail;
+    int len;
+    struct list_item$1tuple2$2char$phsNode$ph$ph* it;
 };
 
 struct tuple4$4char$phchar$phchar$phchar$ph
@@ -2367,12 +2367,11 @@ void free_object(struct sType* type, char* obj, _Bool no_decrement, _Bool no_fre
 struct tuple2$2sType$phchar$ph* clone_object(struct sType* type, char* obj, struct sInfo* info);
 void free_right_value_objects(struct sInfo* info, _Bool comma);
 void free_objects(struct sVarTable* table, struct sVar* ret_value, struct sInfo* info);
-void append_object_to_right_values2(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value, struct sVar* obj_var);
+void append_object_to_right_values(struct CVALUE* come_value, struct sType* type, struct sInfo* info, _Bool decrement_ref_count, struct sType* obj_type, char* obj_value, struct sVar* obj_var);
 void remove_object_from_right_values(int right_value_num, struct sInfo* info);
 char* increment_ref_count_object(struct sType* type, char* obj, struct sInfo* info);
 void decrement_ref_count_object(struct sType* type, char* obj, struct sInfo* info, _Bool no_free);
 struct sFun* compile_uniq_function(struct sFun* fun, struct sInfo* info);
-struct sNode* craete_fun_call(char* fun_name, struct list$1tuple2$2char$phsNode$ph$ph* params, _Bool guard_break, struct list$1sType$ph* method_generics_types, struct buffer* method_block, int method_block_sline, struct sInfo* info);
 struct tuple2$2char$phsGenericsFun$p* make_method_generics_function(char* fun_name, struct list$1sType$ph* method_generics_types, struct sInfo* info);
 struct sNode* create_return_node(struct sNode* value, char* value_source, struct sInfo* info);
 struct sNode* post_position_operator(struct sNode* node, struct sInfo* info);
@@ -2492,7 +2491,7 @@ struct sNode* post_position_operator_v99(struct sNode* node, struct sInfo* info)
 struct sNode* parse_method_call_v18(struct sNode* obj, char* fun_name, struct sInfo* info);
 struct sNode* post_position_operator_v19(struct sNode* node, struct sInfo* info);
 struct tuple3$3char$phsFun$psGenericsFun$p* get_method(char* fun_name, struct sType* obj_type, struct sInfo* info);
-struct sNode* create_method_call(char* fun_name, struct sNode* obj, struct list$1tuple2$2char$phsNode$ph$ph* params, struct buffer* method_block, int method_block_sline, struct list$1sType$ph* method_generics_types, _Bool guard_break, struct sInfo* info, _Bool no_err);
+struct sNode* create_method_call(char* fun_name, struct sNode* obj, struct list$1tuple2$2char$phsNode$ph$ph* params, struct buffer* method_block, int method_block_sline, struct list$1sType$ph* method_generics_types, struct sInfo* info, _Bool no_err);
 struct sNode* create_guard_break_method_call(struct sNode* expression_node, struct sInfo* info);
 _Bool compile_method_block(struct buffer* method_block, struct list$1CVALUE$ph* come_params, struct sFun* fun, char* fun_name, int method_block_sline, struct sInfo* info, _Bool no_create_current_stack);
 struct tuple2$2char$phsGenericsFun$p* make_generics_function(struct sType* type, char* fun_name, struct sInfo* info, _Bool array_equal_pointer);
@@ -2845,7 +2844,7 @@ memset(&i_56, 0, sizeof(int));
         obj_59=(struct sNode*)come_increment_ref_count(node);
         params_60=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(list$1tuple2$2char$phsNode$ph$ph_initialize((struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count((struct list$1tuple2$2char$phsNode$ph$ph*)come_calloc_v2(1, sizeof(struct list$1tuple2$2char$phsNode$ph$ph)*(1), "05pre_op.c", 82, "struct list$1tuple2$2char$phsNode$ph$ph*"))));
         list$1tuple2$2char$phsNode$ph$ph_add(params_60,(struct tuple2$2void$psNode$ph*)come_increment_ref_count(tuple2$2void$psNode$ph_initialize((struct tuple2$2void$psNode$ph**)come_increment_ref_count((struct tuple2$2void$psNode$ph*)come_calloc_v2(1, sizeof(struct tuple2$2void$psNode$ph)*(1), "05pre_op.c", 84, "struct tuple2$2void$psNode$ph")),((void*)0),(struct sNode*)come_increment_ref_count(obj_59))));
-        node_66=(struct sNode*)come_increment_ref_count(create_method_call(fun_name2_33,(struct sNode*)come_increment_ref_count(obj_59),(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(params_60),((void*)0),0,((void*)0),(_Bool)0,info,(_Bool)0));
+        node_66=(struct sNode*)come_increment_ref_count(create_method_call(fun_name2_33,(struct sNode*)come_increment_ref_count(obj_59),(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(params_60),((void*)0),0,((void*)0),info,(_Bool)0));
         Value_67=node_compile(node_66,info);
         if(        Value_67        ) {
             result_58=(_Bool)1;

@@ -445,13 +445,12 @@ class sCallerSNameNode extends sNodeBase
 
 class sFunCallNode extends sNodeBase
 {
-    new(char* fun_name, list<tup:string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
+    new(char* fun_name, list<tup:string,sNode*%>* params, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
     {
         self.super();
         
         string self.fun_name = string(fun_name);
         list<tup: string,sNode*%>*% self.params = clone params;
-        bool self.guard_break = guard_break;
         list<sType*%>*% self.method_generics_types = method_generics_types;
         buffer*% self.method_block = method_block;
         int self.method_block_sline = method_block_sline;
@@ -556,7 +555,7 @@ class sFunCallNode extends sNodeBase
             come_value.var = null;
             
             if(lambda_type->mResultType.mHeap) {
-                append_object_to_right_values2(come_value, lambda_type->mResultType, info);
+                append_object_to_right_values(come_value, lambda_type->mResultType, info);
             }
             
             add_come_last_code(info, "%s", come_value.c_value);
@@ -1219,6 +1218,7 @@ class sFunCallNode extends sNodeBase
             
             sType*% result_type = clone method_block_type->mResultType;
             result_type->mStatic = false;
+            sType*% result_type2 = solve_generics(result_type, info->generics_type, info);
             list<sType*%>*% param_types = clone method_block_type->mParamTypes;
             list<string>* param_names = method_block_type->mParamNames;
             
@@ -1235,7 +1235,7 @@ class sFunCallNode extends sNodeBase
                 }
             }
             
-            method_block2.append_format("%s fun_block%d_%s(", make_type_name_string(result_type), num_method_block, all_alhabet_sname.to_string());
+            method_block2.append_format("%s fun_block%d_%s(", make_come_type_name_string(result_type2), num_method_block, all_alhabet_sname.to_string());
             
             i = 0;
             foreach(it, param_types) {
@@ -1244,19 +1244,21 @@ class sFunCallNode extends sNodeBase
                 if(i == 0) {
                     string param_name = xsprintf("parent");
                     
-                    method_block2.append_format("%s", make_define_var(param_type, param_name));
+                    method_block2.append_format("%s", make_define_var(param_type, param_name, come_type:true));
                 }
                 else if(i == 1) {
                     string param_name = xsprintf("it");
                     
-                    method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:true));
-                    //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
+                    sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
+                    
+                    method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:true, come_type:true));
                 }
                 else {
                     string param_name = xsprintf("it%d", i);
                     
-                    method_block2.append_format("%s", make_define_var(param_type, param_name, original_type_name:true));
-                    //method_block2.append_format("%s", make_define_var_no_solved(param_type, param_name, original_type_name:true));
+                    sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
+                    
+                    method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:true, come_type:true));
                 }
                 
                 if(i != param_types.length() - 1) {
@@ -1273,13 +1275,11 @@ class sFunCallNode extends sNodeBase
             char* p = info.p;
             char* head = info.head;
             int sline = info.sline;
-            //sVarTable* lv_table = info.lv_table;
             
             info.source = method_block2;
             info.p = info.source.buf;
             info.head = info.source.buf;
             info.sline = method_block_sline;
-            //sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:null);
            
             sNode*% node = parse_function(info);
             
@@ -1349,7 +1349,7 @@ class sFunCallNode extends sNodeBase
         come_value.var = null;
             
         if(fun.mResultType->mHeap) {
-            append_object_to_right_values2(come_value, result_type, info);
+            append_object_to_right_values(come_value, result_type, info);
         }
         
         if(info.come_fun.mName !== "come_alloc_mem_from_heap_pool" && info.come_fun.mName !== "come_calloc" && info.come_fun.mName !== "come_calloc_v2" && info.come_fun.mName !== "come_free_mem_of_heap_pool" && info.come_fun.mName !== "come_free" && info.come_fun.mName !== "come_free_v2") 
@@ -1464,10 +1464,6 @@ class sComeCallNode extends sNodeBase
         info.p = info.source.buf;
         info.head = info.source.buf;
         info.sline = come_block_sline;
-        
-//        sVarTable* lv_table = info.lv_table;
-//        sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:info.lv_table);
-//        info.lv_table = lv_table_method_block;
        
         sNode*% node = parse_function(info);
         
@@ -1482,10 +1478,6 @@ class sComeCallNode extends sNodeBase
         info.p = p;
         info.head = head;
         info.sline = sline;
-//        info.lv_table = lv_table;
-        
-//        sVarTable*% lv_table_method_block = new sVarTable(global:false, parent:info.lv_table);
-//        info.lv_table = lv_table_method_block;
         
         info->current_stack_frame_struct = current_stack_frame_struct;
         
@@ -1657,15 +1649,6 @@ class sComePollNode extends sNodeBase
 };
 #endif
 
-sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info)
-{
-    sNode*% node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
-    
-    node = post_position_operator(node, info);
-    
-    return node;
-}
-
 class sLambdaCall extends sNodeBase
 {
     new(sNode*% node, list<tup: string,sNode*%>* params, sInfo* info)
@@ -1757,7 +1740,7 @@ class sLambdaCall extends sNodeBase
         come_value2.c_value = buf.to_string();
         
         if(lambda_type->mResultType.mHeap) {
-            append_object_to_right_values2(come_value2, lambda_type->mResultType, info);
+            append_object_to_right_values(come_value2, lambda_type->mResultType, info);
         }
         
         come_value2.type = clone result_type;
@@ -1933,23 +1916,9 @@ sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
     
     parse_sharp();
     
-    bool guard_break = false;
-    sNode*% node;
-    if(*info->p == '?' && *(info->p+1) == '?') {
-        info->p += 2;
-        skip_spaces_and_lf();
+    sNode*% node = new sFunCallNode(fun_name, params, method_generics_types, method_block, method_block_sline, info) implements sNode;
         
-        guard_break = true;
-        
-        node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
-        
-        node = post_position_operator(node, info);
-    }
-    else {
-        node = new sFunCallNode(fun_name, params, guard_break, method_generics_types, method_block, method_block_sline, info) implements sNode;
-        
-        node = post_position_operator(node, info);
-    }
+    node = post_position_operator(node, info);
     
     parse_sharp();
     

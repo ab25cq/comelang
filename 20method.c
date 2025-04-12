@@ -100,7 +100,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     int num_method_block = info->num_method_block;
     
-    method_block2.append_format("%s method_block%d_%s(", make_come_type_name_string(result_type2), info->num_method_block, all_alhabet_sname.to_string());
+    method_block2.append_format("%s method_block%d_%s(", make_come_type_name_string(result_type2), num_method_block, all_alhabet_sname.to_string());
     
     int i = 0;
     foreach(it, param_types) {
@@ -109,21 +109,21 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         if(i == 0) {
             string param_name = xsprintf("parent");
             
-            method_block2.append_format("%s", make_define_var(param_type, param_name));
+            method_block2.append_format("%s", make_define_var(param_type, param_name, come_type:true));
         }
         else if(i == 1) {
             string param_name = xsprintf("it");
             
             sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
             
-            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:false, come_type:true));
+            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:true, come_type:true));
         }
         else {
             string param_name = xsprintf("it%d", i);
             
             sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
             
-            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:false, come_type:true));
+            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:true, come_type:true));
         }
         
         if(i != param_types.length() - 1) {
@@ -182,22 +182,6 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     info->current_stack_frame_struct = current_stack_frame_struct;
     info->come_method_block_function_result_type = clone info->function_result_type;
     
-/*
-    bool contained_method_generics_method_block = false;
-    foreach(it, param_types) {
-        if(is_contained_method_generics_types(it, info)) {
-            contained_method_generics_method_block = true;
-        }
-    }
-    if(is_contained_method_generics_types(result_type, info)) {
-        contained_method_generics_method_block = true;
-    }
-
-    if(contained_method_generics_method_block) {
-        info.funcs.remove(string(method_block_name));
-    }
-*/
-    
     return true;
 }
 
@@ -221,7 +205,6 @@ string, sFun*,sGenericsFun* get_method(char* fun_name, sType*% obj_type, sInfo* 
                 break;
             }
         }
-        
     }
     else {
         if(obj_type && obj_type.mNoSolvedGenericsType && obj_type.mNoSolvedGenericsType.mGenericsTypes.length() > 0) {
@@ -334,7 +317,7 @@ string, sFun*,sGenericsFun* get_method(char* fun_name, sType*% obj_type, sInfo* 
 class sMethodCallNode extends sNodeBase
 {
     new(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline
-        , list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, bool guard_break, sInfo* info, bool no_err=false)
+        , list<sType*%>* method_generics_types, bool no_infference_method_generics, bool recursive, sInfo* info, bool no_err=false)
     {
         self.super();
         
@@ -347,7 +330,6 @@ class sMethodCallNode extends sNodeBase
         bool self.no_infference_method_generics = no_infference_method_generics;
         bool self.recursive = recursive;
         sFun* self.fun = null;
-        bool self.guard_break = guard_break;
         bool self.no_err = no_err;
     }
     
@@ -375,10 +357,9 @@ class sMethodCallNode extends sNodeBase
         int method_block_sline = self.method_block_sline;
         list<sType*%>*% method_generics_types = self.method_generics_types;
         bool recursive = self.recursive;
-        
         bool no_infference_method_generics = self.no_infference_method_generics;
-        list<sType*%>*% method_generics_types_before = null;
-        method_generics_types_before = info->method_generics_types;
+        
+        list<sType*%>*% method_generics_types = info->method_generics_types;
         info->method_generics_types = clone self.method_generics_types;
         
         node_compile(obj).elif {
@@ -388,6 +369,143 @@ class sMethodCallNode extends sNodeBase
         CVALUE*% obj_value = get_value_from_stack(-1, info);
         
         sType*% obj_type = clone obj_value.type;
+        
+        /// dirty works for list::map ///
+        if(!no_infference_method_generics)
+        {
+            bool no_output_come_code = info->no_output_come_code;
+            info->no_output_come_code = true;
+            
+            sType*% type = clone obj_type;
+            
+            string none_generics_name = get_none_generics_name(type.mClass.mName);
+            string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
+            string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
+            
+            sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
+            
+            if(generics_fun) {
+                bool method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
+                
+                if(method_generics && info->method_generics_types.length() == 0) {
+                    var name, gfun = make_generics_function(type, string(fun_name), info);
+                    
+                    string generics_fun_name = name;
+                    
+                    sFun* fun = info.funcs.at(generics_fun_name, null);
+                    
+                    list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+                    if(method_block) {
+                        bool no_output_come_code = info->no_output_come_code;
+                        info->no_output_come_code = true;
+                        if(!compile_method_block(method_block, come_params, fun, fun_name3, method_block_sline, info, true)) {
+                            return false;
+                        }
+                        info->no_output_come_code = no_output_come_code;
+                        CVALUE* method_block_node = come_params[-1];
+                        
+                        sType*% method_block_lambda_type = clone method_block_node.type;
+                        sType*% method_block_result_type = clone info.come_method_block_function_result_type;
+                        
+                        sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1];
+                        sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
+                        
+                        if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
+                            int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
+                            info.method_generics_types[method_generics_num] = clone method_block_result_type;
+                        }
+                        int n = 0;
+                        foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
+                            if(it.mClass.mMethodGenerics) {
+                                int method_generics_num = it.mClass.mMethodGenericsNum;
+                                info.method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
+                            }
+                            n++;
+                        }
+                        
+                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            
+                        int i = 0;
+                        foreach(it, params) {
+                            var label, node = it;
+                            
+                            if(i == 0) {
+                                come_params.push_back(obj_value);
+                                i++;
+                            }
+                            else {
+                                node_compile(node).elif {
+                                    return false;
+                                }
+                                
+                                CVALUE*% come_value = get_value_from_stack(-1, info);
+                                come_value.type = solve_generics(come_value.type, info->generics_type, info);
+                                come_params.push_back(come_value);
+                            }
+                        }
+                        if(generics_fun.mResultType.mClass.mMethodGenerics) {
+                            int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
+                            
+                            if(info->function_result_type) {
+                                info.method_generics_types[method_generics_num] = clone info->function_result_type;
+                            }
+                        }
+                        n = 0;
+                        foreach(it, generics_fun.mParamTypes) {
+                            if(it.mClass.mMethodGenerics) {
+                                int method_generics_num = it.mClass.mMethodGenericsNum;
+                                if(n < come_params.length()) {
+                                    info.method_generics_types[method_generics_num] = clone come_params[n].type;
+                                }
+                            }
+                            n++;
+                        }
+                    }
+                    else {
+                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            
+                        int i = 0;
+                        foreach(it, params) {
+                            var label, node = it;
+                            
+                            if(i == 0) {
+                                come_params.push_back(obj_value);
+                                i++;
+                            }
+                            else {
+                                node_compile(node).elif {
+                                    return false;
+                                }
+                                
+                                CVALUE*% come_value = get_value_from_stack(-1, info);
+                                come_value.type = solve_generics(come_value.type, info->generics_type, info);
+                                come_params.push_back(come_value);
+                            }
+                        }
+                        if(generics_fun.mResultType.mClass.mMethodGenerics) {
+                            int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
+                            
+                            if(info->function_result_type) {
+                                info.method_generics_types[method_generics_num] = clone info->function_result_type;
+                            }
+                        }
+                        int n = 0;
+                        foreach(it, generics_fun.mParamTypes) {
+                            if(it.mClass.mMethodGenerics) {
+                                int method_generics_num = it.mClass.mMethodGenericsNum;
+                                if(n < come_params.length()) {
+                                    info.method_generics_types[method_generics_num] = clone come_params[n].type;
+                                }
+                            }
+                            n++;
+                        }
+                    }
+                    
+                    info.funcs.remove(generics_fun_name);
+                }
+            }
+            info->no_output_come_code = no_output_come_code;
+        }
         
         sClass* klass = obj_type.mClass;
         
@@ -476,13 +594,8 @@ class sMethodCallNode extends sNodeBase
             come_value2.type->mImmutable = false;
             come_value2.var = null;
             
-            if(self.guard_break && !result_type2->mException) {
-                err_msg(info, "Invalid guard break");
-                return true;
-            }
-            
             if(result_type2->mHeap) {
-                append_object_to_right_values2(come_value2, result_type2, info);
+                append_object_to_right_values(come_value2, result_type2, info);
             }
             
             add_come_last_code(info, "%s", come_value2.c_value);
@@ -490,7 +603,7 @@ class sMethodCallNode extends sNodeBase
             info.stack.push_back(come_value2);
             
             delete info->method_generics_types;
-            info->method_generics_types = method_generics_types_before;
+            info->method_generics_types = method_generics_types;
             
             info.calling_fun = null;
         }
@@ -707,7 +820,6 @@ class sMethodCallNode extends sNodeBase
             buf.append_str(generics_fun_name);
             buf.append_str("(");
             
-            
             string saved_obj_value = null
             sVar* saved_var = null;
             if(result_type->mDefferRightValue) {
@@ -772,10 +884,10 @@ class sMethodCallNode extends sNodeBase
             come_value2.type->mImmutable = false;
             
             if(result_type->mHeap) {
-                append_object_to_right_values2(come_value2, result_type, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
+                append_object_to_right_values(come_value2, result_type, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
             }
             else if(saved_obj_value) {
-                append_object_to_right_values2(come_value2, result_type, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
+                append_object_to_right_values(come_value2, result_type, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);
             }
         
             come_value2.c_value = append_stackframe(come_value2.c_value, come_value2.type, info);
@@ -784,12 +896,8 @@ class sMethodCallNode extends sNodeBase
             
             info.stack.push_back(come_value2);
             
-            if(is_contained_method_generics_types(obj_type, info) && generics_fun_name) {
-                info.funcs.remove(string(generics_fun_name));
-            }
-            
             delete info->method_generics_types;
-            info->method_generics_types = method_generics_types_before;
+            info->method_generics_types = method_generics_types;
             
             info.calling_fun = fun;
         }
@@ -798,9 +906,9 @@ class sMethodCallNode extends sNodeBase
     }
 };
 
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool guard_break, sInfo* info, bool no_err=false)
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info, bool no_err=false)
 {
-    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, guard_break, info, no_err) implements sNode;
+    sNode*% node = new sMethodCallNode(fun_name, obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:true, false@recursive, info, no_err) implements sNode;
         
     if(!no_err) {
         node = post_position_operator(node, info);
@@ -955,8 +1063,7 @@ sNode*% parse_method_call(sNode*% obj, string fun_name, sInfo* info) version 20
     
     parse_sharp();
     
-    bool guard_break = false;
-    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, guard_break, info) implements sNode;
+    sNode*% node = new sMethodCallNode(fun_name, clone obj, params, method_block, method_block_sline, method_generics_types, no_infference_method_generics:false, recursive:true, info) implements sNode;
     
     node = post_position_operator(node, info);
     

@@ -927,12 +927,35 @@ bool output_source_file(sInfo* info)
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[string(it)];
         
-        string header = header_function(it2, info);
-        
-        if(it2->mInline) {
+        bool contained_method_generics = false;
+        foreach(it3, it2->mParamTypes) {
+            sType*% type = clone it3;
+            
+            if(type->mNoSolvedGenericsType) {
+                type = type->mNoSolvedGenericsType;
+            }
+            if(is_contained_method_generics_types(type, info)) {
+                contained_method_generics = true;
+            }
         }
-        else if(it !== "__builtin_va_start" && it !== "__builtin_va_end") {
-            fprintf(f, "%s", header);
+        sType*% result_type = it2->mResultType;
+        
+        if(result_type->mNoSolvedGenericsType) {
+            result_type = result_type->mNoSolvedGenericsType;
+        }
+        
+        if(is_contained_method_generics_types(result_type, info)) {
+            contained_method_generics = true;
+        }
+
+        if(!contained_method_generics) {
+            string header = header_function(it2, info);
+            
+            if(it2->mInline) {
+            }
+            else if(it !== "__builtin_va_start" && it !== "__builtin_va_end") {
+                fprintf(f, "%s", header);
+            }
         }
     }
     
@@ -960,18 +983,41 @@ bool output_source_file(sInfo* info)
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[string(it)];
         
-        if(it2->mExternal) {
-        }
-        else if(!main_module && it2->mUniq) {
-        }
-        else if(it2->mInline) {
-        }
-        else {
-            string output = output_function(it2, info);
+        bool contained_method_generics = false;
+        foreach(it3, it2->mParamTypes) {
+            sType*% type = clone it3;
             
-            fprintf(f, "%s", output);
-            
-            fprintf(f, "\n");
+            if(type->mNoSolvedGenericsType) {
+                type = type->mNoSolvedGenericsType;
+            }
+            if(is_contained_method_generics_types(type, info)) {
+                contained_method_generics = true;
+            }
+        }
+        sType*% result_type = it2->mResultType;
+        
+        if(result_type->mNoSolvedGenericsType) {
+            result_type = result_type->mNoSolvedGenericsType;
+        }
+        
+        if(is_contained_method_generics_types(result_type, info)) {
+            contained_method_generics = true;
+        }
+
+        if(!contained_method_generics) {
+            if(it2->mExternal) {
+            }
+            else if(!main_module && it2->mUniq) {
+            }
+            else if(it2->mInline) {
+            }
+            else {
+                string output = output_function(it2, info);
+                
+                fprintf(f, "%s", output);
+                
+                fprintf(f, "\n");
+            }
         }
     }
     

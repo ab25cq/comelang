@@ -811,7 +811,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
 sType*%, string clone_object(sType* type, char* obj, sInfo* info);
 void free_right_value_objects(sInfo* info, bool comma=false);
 void free_objects(sVarTable* table, sVar* ret_value, sInfo* info);
-void append_object_to_right_values2(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null, sVar* obj_var=null);
+void append_object_to_right_values(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null, sVar* obj_var=null);
         
 void remove_object_from_right_values(int right_value_num, sInfo* info);
 string increment_ref_count_object(sType* type, char* obj, sInfo* info);
@@ -824,7 +824,6 @@ sNode*% reverse_node(sNode*% value, sInfo* info);
 sFun*% compile_uniq_function(sFun* fun, sInfo* info=info);
 sNode*% cast_node(sType*% type, sNode*% node, sInfo* info=info);
 sNode*% reffence_node(sNode*% value, sInfo* info);
-sNode*% craete_fun_call(char* fun_name, list<tup: string,sNode*%>* params, bool guard_break, list<sType*%>*% method_generics_types, buffer*% method_block, int method_block_sline, sInfo* info);
 string,sGenericsFun* make_method_generics_function(string fun_name, list<sType*%>*% method_generics_types, sInfo* info);
 sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info);
 sNode*% post_position_operator(sNode*% node, sInfo* info);
@@ -1014,7 +1013,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 19;
 /// 20method.c
 /////////////////////////////////////////////////////////////////////
 string, sFun*,sGenericsFun* get_method(char* fun_name, sType*% obj_type, sInfo* info);
-sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, bool guard_break, sInfo* info, bool no_err=false);
+sNode*% create_method_call(char* fun_name,sNode*% obj, list<tup: string,sNode*%>*% params, buffer* method_block, int method_block_sline, list<sType*%>* method_generics_types, sInfo* info, bool no_err=false);
 sNode*% create_guard_break_method_call(sNode*% expression_node, sInfo* info);
 bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sFun* fun, char* fun_name, int method_block_sline, sInfo* info, bool no_create_current_stack=false) ;
 string,sGenericsFun* make_generics_function(sType* type, string fun_name, sInfo* info, bool array_equal_pointer=true);

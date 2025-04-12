@@ -931,7 +931,7 @@ class sLoadNode extends sNodeBase
                 get_value_from_stack(-1, info);
                 
                 var params = [((string)null, (clone self) implements sNode)];
-                sNode*% node = create_method_call(s"on_load", (clone self) implements sNode, params, null@method_block, 0@method_block_sline, null@method_generics_types, false@guard_break, info);
+                sNode*% node = create_method_call(s"on_load", (clone self) implements sNode, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 
                 node_compile(node).elif {
                     return false;

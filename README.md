@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 36.0.0
+version 37.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+37.0.0 type infference come again. 
 36.0.0 template remove type infference, list::map require type. [1,2,3].map<string>{ xsprintf("%d", it }
 35.0.0 foreach is macro. Refactoring. complete project, maybe.
 32.1.0 foreach is no macro
@@ -221,7 +222,7 @@ sh all_build.sh
 3.0.0 Method generics is complete. Type infference is enabled.
 2.2.2 struct initializer.
 2.2.0 [1,2,3].map<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map { it.to_string() }.each { puts(it); }
-2.1.0 [1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map2<string> { it.to_string() }.each { puts(it); }
+2.1.0 [1,2,3].map2<string> { return it.to_string(); }.each { puts(it); } <=> [1,2,3].map { it.to_string() }.each { puts(it); }
 2.0.1 an embbeded string bug fiexed.
 2.0.0 Release
 ```
@@ -737,7 +738,7 @@ template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
 ```
 
 ```C
-    ["1","2","3"].map<int> { atoi(it) }  // [1,2,3]
+    ["1","2","3"].map { atoi(it) }  // [1,2,3]
 ```
 
 Executes an expression on each element and returns a list of results. 
@@ -1924,7 +1925,7 @@ int main(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-    ["1", "2", "3"].map<int> { atoi(it) }.filter { it > 1 }.each { it. printf("%d\n"); }
+    ["1", "2", "3"].map { atoi(it) }.filter { it > 1 }.each { it. printf("%d\n"); }
     
     return 0;
 }
@@ -2176,7 +2177,7 @@ type inference is no works.
 
 int main(int argc, char** argv)
 {
-    [1,2,3].map<string> { it.to_string() }.each { puts(it); }
+    [1,2,3].map { it.to_string() }.each { puts(it); }
     
     return 0;
 }
@@ -2499,8 +2500,8 @@ with -net option to comandline.
 # Omit return statment
 
 ```C
-[1,2,3].map<string> { return it.to_string(); }.each { puts(it); } 
-    <=> [1,2,3].map<string> { it.to_string() }.each { puts(it); ]
+[1,2,3].map { return it.to_string(); }.each { puts(it); } 
+    <=> [1,2,3].map { it.to_string() }.each { puts(it); ]
 ```
 
 Omitting semicolon at the function block end means return statment.

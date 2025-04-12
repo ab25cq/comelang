@@ -83,7 +83,7 @@ bool operator_overload_fun_self(sType* type, char* fun_name, sNode*% node, CVALU
         
         params.add((null, obj));
         
-        sNode*% node = create_method_call(fun_name2, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, false@break_guard, info);
+        sNode*% node = create_method_call(fun_name2, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
         
         node_compile(node).if {
             result = true;

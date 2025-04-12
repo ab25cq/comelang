@@ -86,7 +86,7 @@ bool operator_overload_fun2(sType* type, char* fun_name, sNode*% left_node, sNod
         params.add((null, middle_node));
         params.add((null, right_node));
         
-        sNode*% node = create_method_call(fun_name, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, false@break_guard, info);
+        sNode*% node = create_method_call(fun_name, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
         
         node_compile(node).if {
             result = true;
@@ -414,136 +414,6 @@ class sStoreFieldNode extends sNodeBase
         return true;
     }
 };
-
-class sNullCheckNode extends sNodeBase
-{
-    new(sNode* left, bool only_null_checker, sInfo* info)
-    {
-        self.super();
-    
-        sNode*% self.mLeft = clone left;
-        bool self.mOnlyNullCecker = only_null_checker;
-        
-        return self;
-    }
-    
-    string kind()
-    {
-        return string("sNullCheckNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode* left = self.mLeft;
-        
-        node_compile(left).elif {
-            return false;
-        }
-        
-        CVALUE*% left_value = get_value_from_stack(-1, info);
-        
-        if(!self.mOnlyNullCecker && left_value.type.mNoSolvedGenericsType && left_value.type.mNoSolvedGenericsType.mClass && left_value.type.mNoSolvedGenericsType.mClass.mName === "optional") {
-            string method_name = create_method_name(left_value.type, false@no_pointer_name, "expect", info);
-            
-            if(info.funcs.at(method_name, null) == null) {
-                sType* obj_type = left_value.type.mNoSolvedGenericsType;
-                if(obj_type.mGenericsTypes.length() > 0) {
-                    sType* obj_type2 = left_value.type;
-                    var name,generics_fun = make_generics_function(obj_type2, string("expect"), info);
-                    method_name = name;
-                }
-                else {
-                    err_msg(info, "require expect implementation(%s)", left_value.type.mClass.mName);
-                    return true;
-                }
-            }
-            
-            sFun* fun = info.funcs[method_name]??;
-            
-            if(fun == null) {
-                err_msg(info, "function not found(%s)", method_name);
-                return true;
-            }
-            
-            sType*% type = solve_generics(fun.mResultType, left_value.type, info);
-            
-            CVALUE*% come_value = new CVALUE();
-            
-            come_value.c_value = xsprintf("%s(%s)", method_name, left_value.c_value);
-            come_value.type = clone type;
-            come_value.var = null;
-            
-            info.stack.push_back(come_value);
-            
-            add_come_last_code(info, "%s", come_value.c_value);
-        }
-        else if(!gComeDebug) {
-            info.stack.push_back(left_value);
-        }
-        else if(left_value.type->mPointerNum > 0) {
-            CVALUE*% come_value = new CVALUE();
-            
-            come_value.c_value = left_value.c_value;
-            come_value.type = clone left_value.type;
-            come_value.var = null;
-            
-            info.stack.push_back(come_value);
-            
-            add_come_last_code(info, "%s", come_value.c_value);
-        }
-        else {
-            info.stack.push_back(left_value);
-        }
-    
-        return true;
-    }
-};
-
-class sNullableNode extends sNodeBase
-{
-    new(sNode* left, sInfo* info)
-    {
-        self.super();
-    
-        sNode*% self.mLeft = clone left;
-    }
-    
-    string kind()
-    {
-        return string("sNullableNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        sNode* left = self.mLeft;
-        
-        node_compile(left).elif {
-            return false;
-        }
-        
-        CVALUE*% left_value = get_value_from_stack(-1, info);
-        
-        if(left_value.type->mPointerNum > 0 && left_value.type->mNullValue) {
-            CVALUE*% come_value = clone left_value;
-            
-            come_value.type->mNullValue = false;
-            
-            info.stack.push_back(come_value);
-            
-            add_come_last_code(info, "%s", come_value.c_value);
-        }
-        else {
-            info.stack.push_back(left_value);
-        }
-    
-        return true;
-    }
-};
-
-sNode*% create_nullable_node(sNode* left, sInfo* info=info)
-{
-    return new sNullableNode(left, info) implements sNode;
-}
 
 class sLoadFieldNode extends sNodeBase
 {

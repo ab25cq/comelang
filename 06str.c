@@ -76,7 +76,7 @@ class sBufferNode extends sNodeBase
         come_value.type = clone type2;
         come_value.var = null;
         
-        append_object_to_right_values2(come_value, type2,info);
+        append_object_to_right_values(come_value, type2,info);
         
         info.stack.push_back(come_value);
         
@@ -118,7 +118,7 @@ class sSStringNode extends sNodeBase
                 list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
                 params.add((s"self", clone it));
                 
-                sNode*% node = create_method_call("to_string", obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
+                sNode*% node = create_method_call("to_string", obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 
                 node_compile(node).elif {
                     return false;
@@ -140,7 +140,7 @@ class sSStringNode extends sNodeBase
         come_value.type = clone type2;
         come_value.var = null;
         
-        append_object_to_right_values2(come_value, type2,info);
+        append_object_to_right_values(come_value, type2,info);
         
         info.stack.push_back(come_value);
         
@@ -278,7 +278,7 @@ class sRegexNode extends sNodeBase
         params.add((s"dollar_endonly", create_false_object(info)));
         params.add((s"ungreedy", create_false_object(info)));
         
-        sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, guard_break:false, info);
+        sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, info);
         
         node_compile(node, info).elif {
             return false;
@@ -319,8 +319,7 @@ class sListNode extends sNodeBase
                 list<tup:string,sNode*%>*% params = new list<tup: string, sNode*%>();
                 params.add((s"self", value_node));
                 params.add((s"position", create_int_node(n, info)));
-                sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
-                exp = create_nullable_node(exp);
+                sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 
                 node_compile(exp).elif {
                     return false;
@@ -434,7 +433,7 @@ class sListNode extends sNodeBase
         obj_value.type->mPointerNum ++;
         obj_value.var = null;
         
-        append_object_to_right_values2(obj_value, type3 ,info);
+        append_object_to_right_values(obj_value, type3 ,info);
             
         list<CVALUE*%>*% come_params = new list<CVALUE*%>();
         
@@ -486,7 +485,7 @@ class sListNode extends sNodeBase
         come_value4.var = null;
         
         if(result_type->mHeap) {
-            append_object_to_right_values2(come_value4, result_type, info);
+            append_object_to_right_values(come_value4, result_type, info);
         }
         
         info.stack.push_back(come_value4);
@@ -579,7 +578,7 @@ class sTupleNode extends sNodeBase
         obj_value.type->mPointerNum ++;
         obj_value.var = null;
         
-        append_object_to_right_values2(obj_value, type3 ,info);
+        append_object_to_right_values(obj_value, type3 ,info);
         
         sType*% obj_type = clone type2;
         char* fun_name = "initialize";
@@ -648,7 +647,7 @@ class sTupleNode extends sNodeBase
         come_value2.var = null;
         
         if(result_type->mHeap) {
-            append_object_to_right_values2(come_value2, result_type, info);
+            append_object_to_right_values(come_value2, result_type, info);
         }
         
         add_come_last_code(info, "%s", come_value2.c_value);
@@ -695,15 +694,14 @@ class sMapNode extends sNodeBase
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", value_node));
-                    exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
+                    exp = create_method_call(s"keys", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp));
                     params.add((s"position", create_int_node(i, info)));
-                    exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
-                    exp = create_nullable_node(exp);
+                    exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
                 node_compile(exp).elif {
@@ -737,15 +735,14 @@ class sMapNode extends sNodeBase
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", value_node));
-                    exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
+                    exp2 = create_method_call(s"values", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp2));
                     params.add((s"position", create_int_node(i, info)));
-                    exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, guard_break:false, info);
-                    exp2 = create_nullable_node(exp2);
+                    exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 node_compile(exp2).elif {
                     return false;
@@ -884,7 +881,7 @@ class sMapNode extends sNodeBase
         obj_value.type->mPointerNum ++;
         obj_value.var = null;
         
-        append_object_to_right_values2(obj_value, type3 ,info);
+        append_object_to_right_values(obj_value, type3 ,info);
             
         list<CVALUE*%>*% come_params = new list<CVALUE*%>();
         
@@ -943,7 +940,7 @@ class sMapNode extends sNodeBase
         come_value5.var = null;
         
         if(result_type->mHeap) {
-            append_object_to_right_values2(come_value5, result_type, info);
+            append_object_to_right_values(come_value5, result_type, info);
         }
         
         add_come_last_code(info, "%s", come_value5.c_value);
@@ -1373,7 +1370,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
-        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, guard_break:false, info);
+        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
         
         info.sline_real = sline_real;
         return node;
@@ -1531,7 +1528,7 @@ sNode*% expression_node(sInfo* info) version 96
         
         list<sType*%>*% method_generics_types = new list<sType*%>();
         
-        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, guard_break:false, info);
+        sNode*% node = create_method_call("to_regex", obj, params, method_block, method_block_sline, method_generics_types, info);
         
         info.sline_real = sline_real;
         return node;

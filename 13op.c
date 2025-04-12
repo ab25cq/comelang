@@ -101,7 +101,7 @@ bool operator_overload_fun(sType* type, char* fun_name, sNode*% left_node, sNode
         params.add((null, left_node));
         params.add((null, right_node));
         
-        sNode*% node = create_method_call(fun_name, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, break_guard, info);
+        sNode*% node = create_method_call(fun_name, obj, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
         
         node_compile(node).if {
             result = true;
@@ -143,35 +143,6 @@ sNode*% create_null_node(sInfo* info=info)
 {
     return new sNullNode(info) implements sNode;
 }
-
-class sNilNode extends sNodeBase
-{
-    new(sInfo* info)
-    {
-        self.super();
-    }
-    
-    string kind()
-    {
-        return string("sNilNode");
-    }
-    
-    bool compile(sInfo* info)
-    {
-        CVALUE*% come_value = new CVALUE();
-        
-        come_value.c_value = xsprintf("((void*)0)");
-        come_value.type = new sType(s"void*");
-        come_value.type->mNullValue = true;
-        come_value.var = null;
-        
-        add_come_last_code(info, "%s", come_value.c_value);
-        
-        info.stack.push_back(come_value);
-    
-        return true;
-    }
-};
 
 class sAddNode extends sNodeBase
 {
@@ -2250,9 +2221,6 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 {
     if(!gComeC && buf === "null") {
         return new sNullNode(info) implements sNode;
-    }
-    else if(!gComeC && buf === "nil") {
-        return new sNilNode(info) implements sNode;
     }
     
     return inherit(buf, head,head_sline, info);
