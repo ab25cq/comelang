@@ -736,7 +736,7 @@ template<R> list<R>*% map(list<T>* self, void* parent, R (*block)(void*, T&))
 ```
 
 ```C
-    ["1","2","3"].map { atoi(it) }  // [1,2,3]
+    ["1","2","3"].map<int> { atoi(it) }  // [1,2,3]
 ```
 
 Executes an expression on each element and returns a list of results. 
@@ -1923,7 +1923,7 @@ int main(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-    ["1", "2", "3"].map { atoi(it) }.filter { it > 1 }.each { it. printf("%d\n"); }
+    ["1", "2", "3"].map<int> { atoi(it) }.filter { it > 1 }.each { it. printf("%d\n"); }
     
     return 0;
 }
@@ -2168,14 +2168,14 @@ int main(int argc, char** argv)
 }
 ```
 
-type inference is enabled.
+type inference is no works.
 
 ```C
 #include <comelang.h>
 
 int main(int argc, char** argv)
 {
-    [1,2,3].map { it.to_string() }.each { puts(it); }
+    [1,2,3].map<string> { it.to_string() }.each { puts(it); }
     
     return 0;
 }
@@ -2498,8 +2498,8 @@ with -net option to comandline.
 # Omit return statment
 
 ```C
-[1,2,3].map{ return it.to_string(); }.each { puts(it); } 
-    <=> [1,2,3].map { it.to_string() }.each { puts(it); ]
+[1,2,3].map<string> { return it.to_string(); }.each { puts(it); } 
+    <=> [1,2,3].map<string> { it.to_string() }.each { puts(it); ]
 ```
 
 Omitting semicolon at the function block end means return statment.

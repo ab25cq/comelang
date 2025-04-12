@@ -18,7 +18,7 @@ libdir=${exec_prefix}/lib
 #########################################
 CC=comelang
 INSTALL=install
-CFLAGS= -common-header -O2 -str
+CFLAGS= -common-header -O2 -str -g -s
 CFLAGS_DEBUG= -common-header -gdwarf-4 -cg -str
 LIBS=-lpcre
 OS=linux

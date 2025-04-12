@@ -81,6 +81,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     sType*% result_type = clone method_block_type->mResultType;
     result_type->mStatic = false;
+    sType*% result_type2 = solve_generics(result_type, info->generics_type, info);
     list<sType*%>* param_types = method_block_type->mParamTypes;
     list<string>* param_names = method_block_type->mParamNames;
     
@@ -99,7 +100,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     int num_method_block = info->num_method_block;
     
-    method_block2.append_format("%s method_block%d_%s(", make_type_name_string(result_type), info->num_method_block, all_alhabet_sname.to_string());
+    method_block2.append_format("%s method_block%d_%s(", make_come_type_name_string(result_type2), info->num_method_block, all_alhabet_sname.to_string());
     
     int i = 0;
     foreach(it, param_types) {
@@ -373,10 +374,8 @@ class sMethodCallNode extends sNodeBase
         sNode*% obj = self.obj;
         buffer*% method_block = self.method_block;
         int method_block_sline = self.method_block_sline;
-        bool no_infference_method_generics = self.no_infference_method_generics;
         list<sType*%>*% method_generics_types = self.method_generics_types;
         bool recursive = self.recursive;
-        
         
         list<sType*%>*% method_generics_types_before = null;
         method_generics_types_before = info->method_generics_types;
@@ -390,142 +389,6 @@ class sMethodCallNode extends sNodeBase
         
         sType*% obj_type = clone obj_value.type;
         
-        /// dirty works for list::map ///
-        if(!no_infference_method_generics)
-        {
-            bool no_output_come_code = info->no_output_come_code;
-            info->no_output_come_code = true;
-            
-            sType*% type = clone obj_type;
-            
-            string none_generics_name = get_none_generics_name(type.mClass.mName);
-            string fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
-            string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
-            
-            sGenericsFun* generics_fun = info.generics_funcs.at(fun_name3, null);
-            
-            if(generics_fun) {
-                bool method_generics = generics_fun.mMethodGenericsTypeNames.length() > 0;
-                
-                if(method_generics && info->method_generics_types.length() == 0) {
-                    var name, gfun = make_generics_function(type, string(fun_name), info);
-                    
-                    string generics_fun_name = name;
-                    
-                    sFun* fun = info.funcs.at(generics_fun_name, null);
-                    
-                    list<CVALUE*%>*% come_params = new list<CVALUE*%>();
-                    if(method_block) {
-                        bool no_output_come_code = info->no_output_come_code;
-                        info->no_output_come_code = true;
-                        if(!compile_method_block(method_block, come_params, fun, fun_name3, method_block_sline, info, true)) {
-                            return false;
-                        }
-                        info->no_output_come_code = no_output_come_code;
-                        CVALUE* method_block_node = come_params[-1];
-                        
-                        sType*% method_block_lambda_type = clone method_block_node.type;
-                        sType*% method_block_result_type = clone info.come_method_block_function_result_type;
-                        
-                        sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1];
-                        sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
-                        
-                        if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
-                            int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
-                            info.method_generics_types[method_generics_num] = clone method_block_result_type;
-                        }
-                        int n = 0;
-                        foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
-                            if(it.mClass.mMethodGenerics) {
-                                int method_generics_num = it.mClass.mMethodGenericsNum;
-                                info.method_generics_types[method_generics_num] = clone method_block_lambda_type.mParamTypes[n];
-                            }
-                            n++;
-                        }
-                        
-                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
-            
-                        int i = 0;
-                        foreach(it, params) {
-                            var label, node = it;
-                            
-                            if(i == 0) {
-                                come_params.push_back(obj_value);
-                                i++;
-                            }
-                            else {
-                                node_compile(node).elif {
-                                    return false;
-                                }
-                                
-                                CVALUE*% come_value = get_value_from_stack(-1, info);
-                                come_value.type = solve_generics(come_value.type, info->generics_type, info);
-                                come_params.push_back(come_value);
-                            }
-                        }
-                        if(generics_fun.mResultType.mClass.mMethodGenerics) {
-                            int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
-                            
-                            if(info->function_result_type) {
-                                info.method_generics_types[method_generics_num] = clone info->function_result_type;
-                            }
-                        }
-                        n = 0;
-                        foreach(it, generics_fun.mParamTypes) {
-                            if(it.mClass.mMethodGenerics) {
-                                int method_generics_num = it.mClass.mMethodGenericsNum;
-                                if(n < come_params.length()) {
-                                    info.method_generics_types[method_generics_num] = clone come_params[n].type;
-                                }
-                            }
-                            n++;
-                        }
-                    }
-                    else {
-                        list<CVALUE*%>*% come_params = new list<CVALUE*%>();
-            
-                        int i = 0;
-                        foreach(it, params) {
-                            var label, node = it;
-                            
-                            if(i == 0) {
-                                come_params.push_back(obj_value);
-                                i++;
-                            }
-                            else {
-                                node_compile(node).elif {
-                                    return false;
-                                }
-                                
-                                CVALUE*% come_value = get_value_from_stack(-1, info);
-                                come_value.type = solve_generics(come_value.type, info->generics_type, info);
-                                come_params.push_back(come_value);
-                            }
-                        }
-                        if(generics_fun.mResultType.mClass.mMethodGenerics) {
-                            int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
-                            
-                            if(info->function_result_type) {
-                                info.method_generics_types[method_generics_num] = clone info->function_result_type;
-                            }
-                        }
-                        int n = 0;
-                        foreach(it, generics_fun.mParamTypes) {
-                            if(it.mClass.mMethodGenerics) {
-                                int method_generics_num = it.mClass.mMethodGenericsNum;
-                                if(n < come_params.length()) {
-                                    info.method_generics_types[method_generics_num] = clone come_params[n].type;
-                                }
-                            }
-                            n++;
-                        }
-                    }
-                    
-                    info.funcs.remove(generics_fun_name);
-                }
-            }
-            info->no_output_come_code = no_output_come_code;
-        }
         
         sClass* klass = obj_type.mClass;
         

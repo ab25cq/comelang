@@ -2668,10 +2668,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type4->mException = true;
         type4->mUniq = type->mUniq;
         
-        if(type->mClass->mGenerics || type->mClass->mMethodGenerics) {
-            type4->mExceptionGenericsType = true;
-        }
-        
         return (type4, var_name, true);
     }
     

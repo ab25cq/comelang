@@ -33,22 +33,6 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         return result;
     }
     
-    if(type->mExceptionGenericsType) {
-        sType*% no_solved_type = result->mNoSolvedGenericsType;
-        no_solved_type->mException = true;
-
-        sType*% generics_type2_ = clone generics_type;
-        sType*% type3 = new sType(s"char*");
-        type3.mHeap = true;
-        generics_type2_.mGenericsTypes.add(type3);
-        
-        sType*% result = solve_generics(no_solved_type, generics_type2_, info);
-        
-        result->mException = true;
-        
-        return result;
-    }
-    
     sClass* klass = type->mClass;
 
     if(klass->mName === "lambda") {
@@ -86,9 +70,9 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         bool null_value = type->mNullValue;
         
         result = clone info->method_generics_types[generics_number];
-
+        
         if(heap) {
-            result->mHeap = heap;
+            result->mHeap = result->mHeap || heap;
         }
         if(guard_) {
             result->mGuardValue = guard_;
@@ -153,7 +137,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
             result = clone generics_type->mGenericsTypes[generics_number];
 
             if(heap) {
-                result->mHeap = heap;
+                result->mHeap = result->mHeap || heap;
             }
             if(exception_) {
                 result->mException = exception_;

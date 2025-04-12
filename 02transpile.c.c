@@ -1003,7 +1003,6 @@ struct sType
     struct list$1char$ph* mParamNames;
     struct sType* mResultType;
     _Bool mVarArgs;
-    _Bool mExceptionGenericsType;
     _Bool mDefferRightValue;
 };
 

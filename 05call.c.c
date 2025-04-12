@@ -1012,7 +1012,6 @@ struct sType
     struct list$1char$ph* mParamNames;
     struct sType* mResultType;
     _Bool mVarArgs;
-    _Bool mExceptionGenericsType;
     _Bool mDefferRightValue;
 };
 
@@ -3242,9 +3241,6 @@ struct sType* __result_obj__18;
     }
     if(    self!=((void*)0)    ) {
         result_8->mVarArgs=self->mVarArgs;
-    }
-    if(    self!=((void*)0)    ) {
-        result_8->mExceptionGenericsType=self->mExceptionGenericsType;
     }
     if(    self!=((void*)0)    ) {
         result_8->mDefferRightValue=self->mDefferRightValue;

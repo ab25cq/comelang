@@ -150,8 +150,6 @@ uniq class sType
     sType*% mResultType;
     bool mVarArgs;
     
-    bool mExceptionGenericsType;
-    
     bool mDefferRightValue;
     
     new(string name, bool heap=false, sInfo* info=info)

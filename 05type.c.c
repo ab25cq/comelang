@@ -1012,7 +1012,6 @@ struct sType
     struct list$1char$ph* mParamNames;
     struct sType* mResultType;
     _Bool mVarArgs;
-    _Bool mExceptionGenericsType;
     _Bool mDefferRightValue;
 };
 
@@ -3426,9 +3425,6 @@ struct sType* __result_obj__45;
     }
     if(    self!=((void*)0)    ) {
         result_44->mVarArgs=self->mVarArgs;
-    }
-    if(    self!=((void*)0)    ) {
-        result_44->mExceptionGenericsType=self->mExceptionGenericsType;
     }
     if(    self!=((void*)0)    ) {
         result_44->mDefferRightValue=self->mDefferRightValue;
@@ -7622,10 +7618,7 @@ list$1sNode$ph_initialize_with_values((struct list$1sNode$ph**)come_increment_re
         type4_342=(struct sType*)come_increment_ref_count(solve_generics(type2_335,type3_341,info));
         type4_342->mException=(_Bool)1;
         type4_342->mUniq=type_211->mUniq;
-        if(        type_211->mClass->mGenerics||type_211->mClass->mMethodGenerics        ) {
-            type4_342->mExceptionGenericsType=(_Bool)1;
-        }
-        __result_obj__138 = (struct tuple3$3sType$phchar$phbool$*)come_increment_ref_count(((struct tuple3$3sType$phchar$phbool$*)(__right_value426=tuple3$3sType$phchar$phbool$_initialize((struct tuple3$3sType$phchar$phbool$**)come_increment_ref_count((struct tuple3$3sType$phchar$phbool$*)come_calloc_v2(1, sizeof(struct tuple3$3sType$phchar$phbool$)*(1), "05type.c", 2675, "struct tuple3$3sType$phchar$phbool$")),(struct sType*)come_increment_ref_count(type4_342),(char*)come_increment_ref_count(var_name_212),(_Bool)1))));
+        __result_obj__138 = (struct tuple3$3sType$phchar$phbool$*)come_increment_ref_count(((struct tuple3$3sType$phchar$phbool$*)(__right_value426=tuple3$3sType$phchar$phbool$_initialize((struct tuple3$3sType$phchar$phbool$**)come_increment_ref_count((struct tuple3$3sType$phchar$phbool$*)come_calloc_v2(1, sizeof(struct tuple3$3sType$phchar$phbool$)*(1), "05type.c", 2671, "struct tuple3$3sType$phchar$phbool$")),(struct sType*)come_increment_ref_count(type4_342),(char*)come_increment_ref_count(var_name_212),(_Bool)1))));
         come_call_finalizer(sType_finalize, type2_335, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         come_call_finalizer(sType_finalize, type3_341, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         come_call_finalizer(sType_finalize, type4_342, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -7649,7 +7642,7 @@ list$1sNode$ph_initialize_with_values((struct list$1sNode$ph**)come_increment_re
         type_211->mAttribute=(char*)come_increment_ref_count(attribute_198);
         __dec_obj203 = come_decrement_ref_count(__dec_obj203, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
-    __result_obj__139 = (struct tuple3$3sType$phchar$phbool$*)come_increment_ref_count(((struct tuple3$3sType$phchar$phbool$*)(__right_value428=tuple3$3sType$phchar$phbool$_initialize((struct tuple3$3sType$phchar$phbool$**)come_increment_ref_count((struct tuple3$3sType$phchar$phbool$*)come_calloc_v2(1, sizeof(struct tuple3$3sType$phchar$phbool$)*(1), "05type.c", 2682, "struct tuple3$3sType$phchar$phbool$")),(struct sType*)come_increment_ref_count(type_211),(char*)come_increment_ref_count(var_name_212),(_Bool)1))));
+    __result_obj__139 = (struct tuple3$3sType$phchar$phbool$*)come_increment_ref_count(((struct tuple3$3sType$phchar$phbool$*)(__right_value428=tuple3$3sType$phchar$phbool$_initialize((struct tuple3$3sType$phchar$phbool$**)come_increment_ref_count((struct tuple3$3sType$phchar$phbool$*)come_calloc_v2(1, sizeof(struct tuple3$3sType$phchar$phbool$)*(1), "05type.c", 2678, "struct tuple3$3sType$phchar$phbool$")),(struct sType*)come_increment_ref_count(type_211),(char*)come_increment_ref_count(var_name_212),(_Bool)1))));
     (type_name_137 = come_decrement_ref_count(type_name_137, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     ((alignas__158) ? alignas__158 = come_decrement_ref_count(alignas__158, ((struct sNode*)alignas__158)->finalize, ((struct sNode*)alignas__158)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
     (attribute_198 = come_decrement_ref_count(attribute_198, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));

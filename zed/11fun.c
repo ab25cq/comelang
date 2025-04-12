@@ -373,7 +373,7 @@ bool vm(sInfo* info) version 10
                                     exit(1);
                                 }
                                 
-                                return clone info2->result_value;
+                                clone info2->result_value
                             }
                             
                             result = new ZVALUE(kind:kListValue, list_value:list1);
@@ -513,7 +513,6 @@ bool vm(sInfo* info) version 10
                         }
                     }
                     else if(fun_name === "sub_block") {
-puts("LLL");
                         if(params.length() == 1 && params[0].kind == kRegexValue) {
                             come_regex* param0 = params[0].regexValue;
                             

@@ -139,7 +139,7 @@ void initialize_modules() version 2
 
 void finalize_modules() version 2
 {
-//    delete gVars;
+    delete gVars;
 }
 
 bool vm(sInfo* info) version 7

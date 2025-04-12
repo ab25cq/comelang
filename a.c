@@ -1,12 +1,11 @@
 #include <comelang.h>
 
 int main(int argc, char** argv) {
-    map<char*,int>*% m = ["AAA":1, "BBB":2];
+    var li = [1,2,3];
     
-/*
-    foreach(it, m) {
-        printf("%s\n", it);
+    li.map<char*%> {
+        return s"AAA";
     }
-*/
+    
     return 0;
 }
