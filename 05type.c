@@ -53,16 +53,23 @@ bool is_type_name(char* buf, sInfo* info=info)
 
 bool is_contained_generics_class(sType* type, sInfo* info)
 {
-    foreach(it, type->mGenericsTypes) {
+    sType*% type2;
+    if(type->mNoSolvedGenericsType) {
+        type2 = type->mNoSolvedGenericsType;
+    }
+    else {
+        type2 = clone type;
+    }
+    foreach(it, type2->mGenericsTypes) {
         if(is_contained_generics_class(it, info)) {
             return true;
         }
     }
     
-    if(type->mClass->mGenerics) {
+    if(type2->mClass->mGenerics) {
         return true;
     }
-    if(type->mClass->mMethodGenerics) {
+    if(type2->mClass->mMethodGenerics) {
         return true;
     }
     

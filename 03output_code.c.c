@@ -2454,6 +2454,7 @@ static char* list$1char$ph_next(struct list$1char$ph* self);
 static struct list$1char$ph* list$1char$ph_push_back(struct list$1char$ph* self, char* item);
 static void map$2char$phchar$ph_operator_store_element(struct map$2char$phchar$ph* self, char* key, char* item);
 void add_come_code_at_come_struct_header(struct sInfo* info, char* id, const char* msg, ...);
+_Bool is_contained_generics_funcstion(struct sFun* fun, struct sInfo* info);
 _Bool output_source_file(struct sInfo* info);
 static struct sFun* map$2char$phsFun$ph$p_operator_load_element(struct map$2char$phsFun$ph* self, char* key);
 static void sFun_finalize(struct sFun* self);
@@ -5354,54 +5355,90 @@ memset(&args_222, 0, sizeof(va_list));
     (id = come_decrement_ref_count(id, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
 }
 
-_Bool output_source_file(struct sInfo* info){
+_Bool is_contained_generics_funcstion(struct sFun* fun, struct sInfo* info){
+struct list$1sType$ph* o2_saved_224;
+struct sType* it_225;
 void* __right_value194 = (void*)0;
+struct sType* type_226;
+struct sType* __dec_obj41;
+_Bool __result_obj__94;
+struct sType* result_type_227;
+struct sType* __dec_obj42;
+_Bool __result_obj__95;
+_Bool __result_obj__96;
+    for(    o2_saved_224=(struct list$1sType$ph*)come_increment_ref_count((fun->mParamTypes)),it_225=list$1sType$ph_begin((o2_saved_224))    ;    !list$1sType$ph_end((o2_saved_224))    ;    it_225=list$1sType$ph_next((o2_saved_224))    ){
+        type_226=(struct sType*)come_increment_ref_count(sType_clone(it_225));
+        if(        type_226->mNoSolvedGenericsType        ) {
+            __dec_obj41=type_226,
+            type_226=(struct sType*)come_increment_ref_count(type_226->mNoSolvedGenericsType);
+            come_call_finalizer(sType_finalize, __dec_obj41,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
+        }
+        if(        is_contained_generics_class(type_226,info)        ) {
+            __result_obj__94 = (_Bool)1;
+            come_call_finalizer(sType_finalize, type_226, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+            come_call_finalizer(list$1sType$ph$p_finalize, o2_saved_224, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+            return __result_obj__94;
+        }
+        come_call_finalizer(sType_finalize, type_226, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    }
+    come_call_finalizer(list$1sType$ph$p_finalize, o2_saved_224, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    result_type_227=(struct sType*)come_increment_ref_count(fun->mResultType);
+    if(    result_type_227->mNoSolvedGenericsType    ) {
+        __dec_obj42=result_type_227,
+        result_type_227=(struct sType*)come_increment_ref_count(result_type_227->mNoSolvedGenericsType);
+        come_call_finalizer(sType_finalize, __dec_obj42,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
+    }
+    if(    is_contained_generics_class(result_type_227,info)    ) {
+        __result_obj__95 = (_Bool)1;
+        come_call_finalizer(sType_finalize, result_type_227, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        return __result_obj__95;
+    }
+    __result_obj__96 = (_Bool)0;
+    come_call_finalizer(sType_finalize, result_type_227, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    return __result_obj__96;
+}
+
+_Bool output_source_file(struct sInfo* info){
 void* __right_value195 = (void*)0;
 void* __right_value196 = (void*)0;
-struct sFun* main_fun_224;
-_Bool main_module_231;
-struct map$2char$phsFun$ph* o2_saved_232;
-char* it_235;
 void* __right_value197 = (void*)0;
+struct sFun* main_fun_228;
+_Bool main_module_235;
+struct map$2char$phsFun$ph* o2_saved_236;
+char* it_239;
 void* __right_value198 = (void*)0;
 void* __right_value199 = (void*)0;
-struct sFun* it2_238;
 void* __right_value200 = (void*)0;
-struct sFun* new_fun_239;
-void* __right_value206 = (void*)0;
+struct sFun* it2_242;
+void* __right_value201 = (void*)0;
+struct sFun* new_fun_243;
 void* __right_value207 = (void*)0;
-char* output_file_name_259;
-struct _IO_FILE* f_260;
-_Bool __exception_result_var_b1;
-struct map$2char$phbuffer$ph* o2_saved_261;
-char* it_264;
 void* __right_value208 = (void*)0;
+char* output_file_name_263;
+struct _IO_FILE* f_264;
+_Bool __exception_result_var_b1;
+struct map$2char$phbuffer$ph* o2_saved_265;
+char* it_268;
 void* __right_value209 = (void*)0;
 void* __right_value210 = (void*)0;
-struct buffer* buf_267;
 void* __right_value211 = (void*)0;
-struct map$2char$phbuffer$ph* o2_saved_276;
-char* it_277;
+struct buffer* buf_271;
 void* __right_value212 = (void*)0;
+struct map$2char$phbuffer$ph* o2_saved_280;
+char* it_281;
 void* __right_value213 = (void*)0;
 void* __right_value214 = (void*)0;
-struct buffer* buf_278;
 void* __right_value215 = (void*)0;
+struct buffer* buf_282;
 void* __right_value216 = (void*)0;
-struct map$2char$phsFun$ph* o2_saved_279;
-char* it_280;
 void* __right_value217 = (void*)0;
+struct map$2char$phsFun$ph* o2_saved_283;
+char* it_284;
 void* __right_value218 = (void*)0;
 void* __right_value219 = (void*)0;
-struct sFun* it2_281;
-_Bool contained_method_generics_282;
-struct list$1sType$ph* o2_saved_283;
-struct sType* it3_284;
 void* __right_value220 = (void*)0;
-struct sType* type_285;
-struct sType* __dec_obj41;
-struct sType* result_type_286;
-struct sType* __dec_obj42;
+struct sFun* it2_285;
+_Bool contained_generics_286;
 void* __right_value221 = (void*)0;
 char* header_287;
 struct map$2char$phchar$ph* o2_saved_288;
@@ -5416,235 +5453,186 @@ void* __right_value225 = (void*)0;
 void* __right_value226 = (void*)0;
 void* __right_value227 = (void*)0;
 struct sFun* it2_295;
+_Bool contained_generics_296;
 void* __right_value228 = (void*)0;
-char* output_296;
-struct map$2char$phsFun$ph* o2_saved_297;
-char* it_298;
+char* output_297;
+struct map$2char$phsFun$ph* o2_saved_298;
+char* it_299;
 void* __right_value229 = (void*)0;
 void* __right_value230 = (void*)0;
 void* __right_value231 = (void*)0;
-struct sFun* it2_299;
-_Bool contained_method_generics_300;
-struct list$1sType$ph* o2_saved_301;
-struct sType* it3_302;
+struct sFun* it2_300;
+_Bool contained_generics_301;
 void* __right_value232 = (void*)0;
-struct sType* type_303;
-struct sType* __dec_obj43;
-struct sType* result_type_304;
-struct sType* __dec_obj44;
-void* __right_value233 = (void*)0;
-char* output_305;
-_Bool __result_obj__127;
-    main_fun_224=((struct sFun*)(__right_value196=map$2char$phsFun$ph_operator_load_element(info->funcs,((char*)(__right_value195=xsprintf("main"))))));
-    (__right_value194 = come_decrement_ref_count(__right_value194, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+char* output_302;
+_Bool __result_obj__130;
+    main_fun_228=((struct sFun*)(__right_value197=map$2char$phsFun$ph_operator_load_element(info->funcs,((char*)(__right_value196=xsprintf("main"))))));
     (__right_value195 = come_decrement_ref_count(__right_value195, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-    come_call_finalizer(sFun_finalize, __right_value196, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-    main_module_231=(_Bool)0;
-    if(    main_fun_224    ) {
-        if(        !main_fun_224->mExternal        ) {
-            main_module_231=(_Bool)1;
+    (__right_value196 = come_decrement_ref_count(__right_value196, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    come_call_finalizer(sFun_finalize, __right_value197, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+    main_module_235=(_Bool)0;
+    if(    main_fun_228    ) {
+        if(        !main_fun_228->mExternal        ) {
+            main_module_235=(_Bool)1;
         }
     }
-    if(    main_module_231    ) {
-        for(        o2_saved_232=(struct map$2char$phsFun$ph*)come_increment_ref_count((info->uniq_funcs)),it_235=map$2char$phsFun$ph_begin((o2_saved_232))        ;        !map$2char$phsFun$ph_end((o2_saved_232))        ;        it_235=map$2char$phsFun$ph_next((o2_saved_232))        ){
-            it2_238=((struct sFun*)(__right_value199=map$2char$phsFun$ph_operator_load_element(info->uniq_funcs,((char*)(__right_value198=__builtin_string(it_235))))));
-            (__right_value197 = come_decrement_ref_count(__right_value197, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    if(    main_module_235    ) {
+        for(        o2_saved_236=(struct map$2char$phsFun$ph*)come_increment_ref_count((info->uniq_funcs)),it_239=map$2char$phsFun$ph_begin((o2_saved_236))        ;        !map$2char$phsFun$ph_end((o2_saved_236))        ;        it_239=map$2char$phsFun$ph_next((o2_saved_236))        ){
+            it2_242=((struct sFun*)(__right_value200=map$2char$phsFun$ph_operator_load_element(info->uniq_funcs,((char*)(__right_value199=__builtin_string(it_239))))));
             (__right_value198 = come_decrement_ref_count(__right_value198, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            come_call_finalizer(sFun_finalize, __right_value199, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-            new_fun_239=(struct sFun*)come_increment_ref_count(compile_uniq_function(it2_238,info));
-            map$2char$phsFun$ph_put(info->funcs,(char*)come_increment_ref_count(__builtin_string(it_235)),(struct sFun*)come_increment_ref_count(new_fun_239));
-            come_call_finalizer(sFun_finalize, new_fun_239, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+            (__right_value199 = come_decrement_ref_count(__right_value199, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+            come_call_finalizer(sFun_finalize, __right_value200, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+            new_fun_243=(struct sFun*)come_increment_ref_count(compile_uniq_function(it2_242,info));
+            map$2char$phsFun$ph_put(info->funcs,(char*)come_increment_ref_count(__builtin_string(it_239)),(struct sFun*)come_increment_ref_count(new_fun_243));
+            come_call_finalizer(sFun_finalize, new_fun_243, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         }
-        come_call_finalizer(map$2char$phsFun$ph$p_finalize, o2_saved_232, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        come_call_finalizer(map$2char$phsFun$ph$p_finalize, o2_saved_236, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
-    output_file_name_259=(char*)come_increment_ref_count(xsprintf("%s.c",info->sname));
-    f_260=fopen(output_file_name_259,"w");
-    if(    f_260==((void*)0)    ) {
-        (come_push_stackframe("03output_code.c", 909, 0),__exception_result_var_b1=die("fopen"), come_pop_stackframe(), __exception_result_var_b1);
+    output_file_name_263=(char*)come_increment_ref_count(xsprintf("%s.c",info->sname));
+    f_264=fopen(output_file_name_263,"w");
+    if(    f_264==((void*)0)    ) {
+        (come_push_stackframe("03output_code.c", 934, 0),__exception_result_var_b1=die("fopen"), come_pop_stackframe(), __exception_result_var_b1);
     }
-    fprintf(f_260,"/// previous struct definition ///\n");
-    for(    o2_saved_261=(struct map$2char$phbuffer$ph*)come_increment_ref_count((info->previous_struct_definition)),it_264=map$2char$phbuffer$ph_begin((o2_saved_261))    ;    !map$2char$phbuffer$ph_end((o2_saved_261))    ;    it_264=map$2char$phbuffer$ph_next((o2_saved_261))    ){
-        buf_267=((struct buffer*)(__right_value210=map$2char$phbuffer$ph_operator_load_element(info->previous_struct_definition,((char*)(__right_value209=__builtin_string(it_264))))));
-        (__right_value208 = come_decrement_ref_count(__right_value208, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    fprintf(f_264,"/// previous struct definition ///\n");
+    for(    o2_saved_265=(struct map$2char$phbuffer$ph*)come_increment_ref_count((info->previous_struct_definition)),it_268=map$2char$phbuffer$ph_begin((o2_saved_265))    ;    !map$2char$phbuffer$ph_end((o2_saved_265))    ;    it_268=map$2char$phbuffer$ph_next((o2_saved_265))    ){
+        buf_271=((struct buffer*)(__right_value211=map$2char$phbuffer$ph_operator_load_element(info->previous_struct_definition,((char*)(__right_value210=__builtin_string(it_268))))));
         (__right_value209 = come_decrement_ref_count(__right_value209, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        come_call_finalizer(buffer_finalize, __right_value210, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-        fprintf(f_260,"%s\n",((char*)(__right_value211=buffer_to_string(buf_267))));
-        (__right_value211 = come_decrement_ref_count(__right_value211, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-    }
-    come_call_finalizer(map$2char$phbuffer$ph$p_finalize, o2_saved_261, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    fprintf(f_260,"/// struct definition ///\n");
-    for(    o2_saved_276=(struct map$2char$phbuffer$ph*)come_increment_ref_count((info->struct_definition)),it_277=map$2char$phbuffer$ph_begin((o2_saved_276))    ;    !map$2char$phbuffer$ph_end((o2_saved_276))    ;    it_277=map$2char$phbuffer$ph_next((o2_saved_276))    ){
-        buf_278=((struct buffer*)(__right_value214=map$2char$phbuffer$ph_operator_load_element(info->struct_definition,((char*)(__right_value213=__builtin_string(it_277))))));
+        (__right_value210 = come_decrement_ref_count(__right_value210, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        come_call_finalizer(buffer_finalize, __right_value211, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+        fprintf(f_264,"%s\n",((char*)(__right_value212=buffer_to_string(buf_271))));
         (__right_value212 = come_decrement_ref_count(__right_value212, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__right_value213 = come_decrement_ref_count(__right_value213, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        come_call_finalizer(buffer_finalize, __right_value214, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-        fprintf(f_260,"%s\n",((char*)(__right_value215=buffer_to_string(buf_278))));
-        (__right_value215 = come_decrement_ref_count(__right_value215, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
     }
-    come_call_finalizer(map$2char$phbuffer$ph$p_finalize, o2_saved_276, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    fprintf(f_260,"// source head\n");
-    fprintf(f_260,"%s\n",((char*)(__right_value216=buffer_to_string(info->module->mSourceHead))));
-    (__right_value216 = come_decrement_ref_count(__right_value216, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-    fprintf(f_260,"// header function\n");
-    for(    o2_saved_279=(struct map$2char$phsFun$ph*)come_increment_ref_count((info->funcs)),it_280=map$2char$phsFun$ph_begin((o2_saved_279))    ;    !map$2char$phsFun$ph_end((o2_saved_279))    ;    it_280=map$2char$phsFun$ph_next((o2_saved_279))    ){
-        it2_281=((struct sFun*)(__right_value219=map$2char$phsFun$ph_operator_load_element(info->funcs,((char*)(__right_value218=__builtin_string(it_280))))));
-        (__right_value217 = come_decrement_ref_count(__right_value217, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    come_call_finalizer(map$2char$phbuffer$ph$p_finalize, o2_saved_265, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    fprintf(f_264,"/// struct definition ///\n");
+    for(    o2_saved_280=(struct map$2char$phbuffer$ph*)come_increment_ref_count((info->struct_definition)),it_281=map$2char$phbuffer$ph_begin((o2_saved_280))    ;    !map$2char$phbuffer$ph_end((o2_saved_280))    ;    it_281=map$2char$phbuffer$ph_next((o2_saved_280))    ){
+        buf_282=((struct buffer*)(__right_value215=map$2char$phbuffer$ph_operator_load_element(info->struct_definition,((char*)(__right_value214=__builtin_string(it_281))))));
+        (__right_value213 = come_decrement_ref_count(__right_value213, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        (__right_value214 = come_decrement_ref_count(__right_value214, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        come_call_finalizer(buffer_finalize, __right_value215, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+        fprintf(f_264,"%s\n",((char*)(__right_value216=buffer_to_string(buf_282))));
+        (__right_value216 = come_decrement_ref_count(__right_value216, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    }
+    come_call_finalizer(map$2char$phbuffer$ph$p_finalize, o2_saved_280, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    fprintf(f_264,"// source head\n");
+    fprintf(f_264,"%s\n",((char*)(__right_value217=buffer_to_string(info->module->mSourceHead))));
+    (__right_value217 = come_decrement_ref_count(__right_value217, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    fprintf(f_264,"// header function\n");
+    for(    o2_saved_283=(struct map$2char$phsFun$ph*)come_increment_ref_count((info->funcs)),it_284=map$2char$phsFun$ph_begin((o2_saved_283))    ;    !map$2char$phsFun$ph_end((o2_saved_283))    ;    it_284=map$2char$phsFun$ph_next((o2_saved_283))    ){
+        it2_285=((struct sFun*)(__right_value220=map$2char$phsFun$ph_operator_load_element(info->funcs,((char*)(__right_value219=__builtin_string(it_284))))));
         (__right_value218 = come_decrement_ref_count(__right_value218, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        come_call_finalizer(sFun_finalize, __right_value219, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-        contained_method_generics_282=(_Bool)0;
-        for(        o2_saved_283=(struct list$1sType$ph*)come_increment_ref_count((it2_281->mParamTypes)),it3_284=list$1sType$ph_begin((o2_saved_283))        ;        !list$1sType$ph_end((o2_saved_283))        ;        it3_284=list$1sType$ph_next((o2_saved_283))        ){
-            type_285=(struct sType*)come_increment_ref_count(sType_clone(it3_284));
-            if(            type_285->mNoSolvedGenericsType            ) {
-                __dec_obj41=type_285,
-                type_285=(struct sType*)come_increment_ref_count(type_285->mNoSolvedGenericsType);
-                come_call_finalizer(sType_finalize, __dec_obj41,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
+        (__right_value219 = come_decrement_ref_count(__right_value219, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        come_call_finalizer(sFun_finalize, __right_value220, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+        contained_generics_286=is_contained_generics_funcstion(it2_285,info);
+        if(        !contained_generics_286        ) {
+            header_287=(char*)come_increment_ref_count(header_function(it2_285,info));
+            if(            it2_285->mInline            ) {
             }
-            if(            is_contained_method_generics_types(type_285,info)            ) {
-                contained_method_generics_282=(_Bool)1;
-            }
-            come_call_finalizer(sType_finalize, type_285, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-        }
-        come_call_finalizer(list$1sType$ph$p_finalize, o2_saved_283, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-        result_type_286=(struct sType*)come_increment_ref_count(it2_281->mResultType);
-        if(        result_type_286->mNoSolvedGenericsType        ) {
-            __dec_obj42=result_type_286,
-            result_type_286=(struct sType*)come_increment_ref_count(result_type_286->mNoSolvedGenericsType);
-            come_call_finalizer(sType_finalize, __dec_obj42,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
-        }
-        if(        is_contained_method_generics_types(result_type_286,info)        ) {
-            contained_method_generics_282=(_Bool)1;
-        }
-        if(        !contained_method_generics_282        ) {
-            header_287=(char*)come_increment_ref_count(header_function(it2_281,info));
-            if(            it2_281->mInline            ) {
-            }
-            else if(            string_operator_not_equals(it_280,"__builtin_va_start")&&string_operator_not_equals(it_280,"__builtin_va_end")            ) {
-                fprintf(f_260,"%s",header_287);
+            else if(            string_operator_not_equals(it_284,"__builtin_va_start")&&string_operator_not_equals(it_284,"__builtin_va_end")            ) {
+                fprintf(f_264,"%s",header_287);
             }
             (header_287 = come_decrement_ref_count(header_287, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
         }
-        come_call_finalizer(sType_finalize, result_type_286, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
-    come_call_finalizer(map$2char$phsFun$ph$p_finalize, o2_saved_279, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    fprintf(f_260,"// uniq global variable\n");
-    if(    main_module_231    ) {
+    come_call_finalizer(map$2char$phsFun$ph$p_finalize, o2_saved_283, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    fprintf(f_264,"// uniq global variable\n");
+    if(    main_module_235    ) {
         for(        o2_saved_288=(struct map$2char$phchar$ph*)come_increment_ref_count((info->uniq_definition)),it_289=map$2char$phchar$ph_begin((o2_saved_288))        ;        !map$2char$phchar$ph_end((o2_saved_288))        ;        it_289=map$2char$phchar$ph_next((o2_saved_288))        ){
             str_290=((char*)(__right_value224=map$2char$phchar$ph_operator_load_element(info->uniq_definition,((char*)(__right_value223=__builtin_string(it_289))))));
             (__right_value222 = come_decrement_ref_count(__right_value222, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             (__right_value223 = come_decrement_ref_count(__right_value223, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             (__right_value224 = come_decrement_ref_count(__right_value224, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            fprintf(f_260,"%s\n",str_290);
+            fprintf(f_264,"%s\n",str_290);
         }
         come_call_finalizer(map$2char$phchar$ph$p_finalize, o2_saved_288, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
-    fprintf(f_260,"// inline function\n");
+    fprintf(f_264,"// inline function\n");
     for(    o2_saved_293=(struct map$2char$phsFun$ph*)come_increment_ref_count((info->funcs)),it_294=map$2char$phsFun$ph_begin((o2_saved_293))    ;    !map$2char$phsFun$ph_end((o2_saved_293))    ;    it_294=map$2char$phsFun$ph_next((o2_saved_293))    ){
         it2_295=((struct sFun*)(__right_value227=map$2char$phsFun$ph_operator_load_element(info->funcs,((char*)(__right_value226=__builtin_string(it_294))))));
         (__right_value225 = come_decrement_ref_count(__right_value225, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         (__right_value226 = come_decrement_ref_count(__right_value226, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         come_call_finalizer(sFun_finalize, __right_value227, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-        if(        it2_295->mInline        ) {
-            output_296=(char*)come_increment_ref_count(output_function(it2_295,info));
-            fprintf(f_260,"%s",output_296);
-            (output_296 = come_decrement_ref_count(output_296, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+        contained_generics_296=is_contained_generics_funcstion(it2_295,info);
+        if(        contained_generics_296        ) {
+        }
+        else if(        it2_295->mInline        ) {
+            output_297=(char*)come_increment_ref_count(output_function(it2_295,info));
+            fprintf(f_264,"%s",output_297);
+            (output_297 = come_decrement_ref_count(output_297, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
         }
     }
     come_call_finalizer(map$2char$phsFun$ph$p_finalize, o2_saved_293, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    fprintf(f_260,"\n");
-    fprintf(f_260,"// body function\n");
-    for(    o2_saved_297=(struct map$2char$phsFun$ph*)come_increment_ref_count((info->funcs)),it_298=map$2char$phsFun$ph_begin((o2_saved_297))    ;    !map$2char$phsFun$ph_end((o2_saved_297))    ;    it_298=map$2char$phsFun$ph_next((o2_saved_297))    ){
-        it2_299=((struct sFun*)(__right_value231=map$2char$phsFun$ph_operator_load_element(info->funcs,((char*)(__right_value230=__builtin_string(it_298))))));
+    fprintf(f_264,"\n");
+    fprintf(f_264,"// body function\n");
+    for(    o2_saved_298=(struct map$2char$phsFun$ph*)come_increment_ref_count((info->funcs)),it_299=map$2char$phsFun$ph_begin((o2_saved_298))    ;    !map$2char$phsFun$ph_end((o2_saved_298))    ;    it_299=map$2char$phsFun$ph_next((o2_saved_298))    ){
+        it2_300=((struct sFun*)(__right_value231=map$2char$phsFun$ph_operator_load_element(info->funcs,((char*)(__right_value230=__builtin_string(it_299))))));
         (__right_value229 = come_decrement_ref_count(__right_value229, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         (__right_value230 = come_decrement_ref_count(__right_value230, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         come_call_finalizer(sFun_finalize, __right_value231, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-        contained_method_generics_300=(_Bool)0;
-        for(        o2_saved_301=(struct list$1sType$ph*)come_increment_ref_count((it2_299->mParamTypes)),it3_302=list$1sType$ph_begin((o2_saved_301))        ;        !list$1sType$ph_end((o2_saved_301))        ;        it3_302=list$1sType$ph_next((o2_saved_301))        ){
-            type_303=(struct sType*)come_increment_ref_count(sType_clone(it3_302));
-            if(            type_303->mNoSolvedGenericsType            ) {
-                __dec_obj43=type_303,
-                type_303=(struct sType*)come_increment_ref_count(type_303->mNoSolvedGenericsType);
-                come_call_finalizer(sType_finalize, __dec_obj43,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
-            }
-            if(            is_contained_method_generics_types(type_303,info)            ) {
-                contained_method_generics_300=(_Bool)1;
-            }
-            come_call_finalizer(sType_finalize, type_303, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        contained_generics_301=is_contained_generics_funcstion(it2_300,info);
+        if(        contained_generics_301        ) {
         }
-        come_call_finalizer(list$1sType$ph$p_finalize, o2_saved_301, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-        result_type_304=(struct sType*)come_increment_ref_count(it2_299->mResultType);
-        if(        result_type_304->mNoSolvedGenericsType        ) {
-            __dec_obj44=result_type_304,
-            result_type_304=(struct sType*)come_increment_ref_count(result_type_304->mNoSolvedGenericsType);
-            come_call_finalizer(sType_finalize, __dec_obj44,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
+        else if(        it2_300->mExternal        ) {
         }
-        if(        is_contained_method_generics_types(result_type_304,info)        ) {
-            contained_method_generics_300=(_Bool)1;
+        else if(        !main_module_235&&it2_300->mUniq        ) {
         }
-        if(        !contained_method_generics_300        ) {
-            if(            it2_299->mExternal            ) {
-            }
-            else if(            !main_module_231&&it2_299->mUniq            ) {
-            }
-            else if(            it2_299->mInline            ) {
-            }
-            else {
-                output_305=(char*)come_increment_ref_count(output_function(it2_299,info));
-                fprintf(f_260,"%s",output_305);
-                fprintf(f_260,"\n");
-                (output_305 = come_decrement_ref_count(output_305, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-            }
+        else if(        it2_300->mInline        ) {
         }
-        come_call_finalizer(sType_finalize, result_type_304, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        else {
+            output_302=(char*)come_increment_ref_count(output_function(it2_300,info));
+            fprintf(f_264,"%s",output_302);
+            fprintf(f_264,"\n");
+            (output_302 = come_decrement_ref_count(output_302, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+        }
     }
-    come_call_finalizer(map$2char$phsFun$ph$p_finalize, o2_saved_297, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    fclose(f_260);
-    __result_obj__127 = (_Bool)1;
-    (output_file_name_259 = come_decrement_ref_count(output_file_name_259, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-    return __result_obj__127;
+    come_call_finalizer(map$2char$phsFun$ph$p_finalize, o2_saved_298, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    fclose(f_264);
+    __result_obj__130 = (_Bool)1;
+    (output_file_name_263 = come_decrement_ref_count(output_file_name_263, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+    return __result_obj__130;
 }
 
 static struct sFun* map$2char$phsFun$ph$p_operator_load_element(struct map$2char$phsFun$ph* self, char* key){
-struct sFun* default_value_225;
-unsigned int hash_226;
-unsigned int it_227;
-struct sFun* __result_obj__94;
-struct sFun* __result_obj__95;
-struct sFun* __result_obj__96;
+struct sFun* default_value_229;
+unsigned int hash_230;
+unsigned int it_231;
 struct sFun* __result_obj__97;
-default_value_225 = (void*)0;
-    memset(&default_value_225,0,sizeof(struct sFun*));
-    hash_226=string_get_hash_key(((char*)key))%self->size;
-    it_227=hash_226;
+struct sFun* __result_obj__98;
+struct sFun* __result_obj__99;
+struct sFun* __result_obj__100;
+default_value_229 = (void*)0;
+    memset(&default_value_229,0,sizeof(struct sFun*));
+    hash_230=string_get_hash_key(((char*)key))%self->size;
+    it_231=hash_230;
     while(    (_Bool)1    ) {
-        if(        self->item_existance[it_227]        ) {
-            if(            string_equals(self->keys[it_227],key)            ) {
-                __result_obj__94 = (struct sFun*)come_increment_ref_count(self->items[it_227]);
-                come_call_finalizer(sFun_finalize, default_value_225, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-                come_call_finalizer(sFun_finalize, __result_obj__94, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__94;
+        if(        self->item_existance[it_231]        ) {
+            if(            string_equals(self->keys[it_231],key)            ) {
+                __result_obj__97 = (struct sFun*)come_increment_ref_count(self->items[it_231]);
+                come_call_finalizer(sFun_finalize, default_value_229, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(sFun_finalize, __result_obj__97, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__97;
             }
-            it_227++;
-            if(            it_227>=self->size            ) {
-                it_227=0;
+            it_231++;
+            if(            it_231>=self->size            ) {
+                it_231=0;
             }
-            else if(            it_227==hash_226            ) {
-                __result_obj__95 = (struct sFun*)come_increment_ref_count(default_value_225);
-                come_call_finalizer(sFun_finalize, default_value_225, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                come_call_finalizer(sFun_finalize, __result_obj__95, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__95;
+            else if(            it_231==hash_230            ) {
+                __result_obj__98 = (struct sFun*)come_increment_ref_count(default_value_229);
+                come_call_finalizer(sFun_finalize, default_value_229, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                come_call_finalizer(sFun_finalize, __result_obj__98, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__98;
             }
         }
         else {
-            __result_obj__96 = (struct sFun*)come_increment_ref_count(default_value_225);
-            come_call_finalizer(sFun_finalize, default_value_225, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            come_call_finalizer(sFun_finalize, __result_obj__96, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            return __result_obj__96;
+            __result_obj__99 = (struct sFun*)come_increment_ref_count(default_value_229);
+            come_call_finalizer(sFun_finalize, default_value_229, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            come_call_finalizer(sFun_finalize, __result_obj__99, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            return __result_obj__99;
         }
     }
-    __result_obj__97 = (struct sFun*)come_increment_ref_count(default_value_225);
-    come_call_finalizer(sFun_finalize, default_value_225, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(sFun_finalize, __result_obj__97, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__97;
+    __result_obj__100 = (struct sFun*)come_increment_ref_count(default_value_229);
+    come_call_finalizer(sFun_finalize, default_value_229, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    come_call_finalizer(sFun_finalize, __result_obj__100, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__100;
 }
 
 static void sFun_finalize(struct sFun* self){
@@ -5705,70 +5693,70 @@ static void sBlock_finalize(struct sBlock* self){
 }
 
 static struct sFun* map$2char$phsFun$ph_operator_load_element(struct map$2char$phsFun$ph* self, char* key){
-struct sFun* default_value_228;
-unsigned int hash_229;
-unsigned int it_230;
-struct sFun* __result_obj__98;
-struct sFun* __result_obj__99;
-struct sFun* __result_obj__100;
+struct sFun* default_value_232;
+unsigned int hash_233;
+unsigned int it_234;
 struct sFun* __result_obj__101;
-default_value_228 = (void*)0;
-    memset(&default_value_228,0,sizeof(struct sFun*));
-    hash_229=string_get_hash_key(((char*)key))%self->size;
-    it_230=hash_229;
+struct sFun* __result_obj__102;
+struct sFun* __result_obj__103;
+struct sFun* __result_obj__104;
+default_value_232 = (void*)0;
+    memset(&default_value_232,0,sizeof(struct sFun*));
+    hash_233=string_get_hash_key(((char*)key))%self->size;
+    it_234=hash_233;
     while(    (_Bool)1    ) {
-        if(        self->item_existance[it_230]        ) {
-            if(            string_equals(self->keys[it_230],key)            ) {
-                __result_obj__98 = (struct sFun*)come_increment_ref_count(self->items[it_230]);
-                come_call_finalizer(sFun_finalize, default_value_228, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-                come_call_finalizer(sFun_finalize, __result_obj__98, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__98;
+        if(        self->item_existance[it_234]        ) {
+            if(            string_equals(self->keys[it_234],key)            ) {
+                __result_obj__101 = (struct sFun*)come_increment_ref_count(self->items[it_234]);
+                come_call_finalizer(sFun_finalize, default_value_232, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(sFun_finalize, __result_obj__101, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__101;
             }
-            it_230++;
-            if(            it_230>=self->size            ) {
-                it_230=0;
+            it_234++;
+            if(            it_234>=self->size            ) {
+                it_234=0;
             }
-            else if(            it_230==hash_229            ) {
-                __result_obj__99 = (struct sFun*)come_increment_ref_count(default_value_228);
-                come_call_finalizer(sFun_finalize, default_value_228, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                come_call_finalizer(sFun_finalize, __result_obj__99, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__99;
+            else if(            it_234==hash_233            ) {
+                __result_obj__102 = (struct sFun*)come_increment_ref_count(default_value_232);
+                come_call_finalizer(sFun_finalize, default_value_232, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                come_call_finalizer(sFun_finalize, __result_obj__102, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__102;
             }
         }
         else {
-            __result_obj__100 = (struct sFun*)come_increment_ref_count(default_value_228);
-            come_call_finalizer(sFun_finalize, default_value_228, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            come_call_finalizer(sFun_finalize, __result_obj__100, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            return __result_obj__100;
+            __result_obj__103 = (struct sFun*)come_increment_ref_count(default_value_232);
+            come_call_finalizer(sFun_finalize, default_value_232, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            come_call_finalizer(sFun_finalize, __result_obj__103, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            return __result_obj__103;
         }
     }
-    __result_obj__101 = (struct sFun*)come_increment_ref_count(default_value_228);
-    come_call_finalizer(sFun_finalize, default_value_228, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(sFun_finalize, __result_obj__101, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__101;
+    __result_obj__104 = (struct sFun*)come_increment_ref_count(default_value_232);
+    come_call_finalizer(sFun_finalize, default_value_232, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    come_call_finalizer(sFun_finalize, __result_obj__104, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__104;
 }
 
 static char* map$2char$phsFun$ph_begin(struct map$2char$phsFun$ph* self){
-char* result_233;
-char* __result_obj__102;
-char* __result_obj__103;
-char* result_234;
-char* __result_obj__104;
-result_233 = (void*)0;
-result_234 = (void*)0;
+char* result_237;
+char* __result_obj__105;
+char* __result_obj__106;
+char* result_238;
+char* __result_obj__107;
+result_237 = (void*)0;
+result_238 = (void*)0;
     if(    self==((void*)0)    ) {
-        memset(&result_233,0,sizeof(char*));
-        __result_obj__102 = result_233;
-        return __result_obj__102;
+        memset(&result_237,0,sizeof(char*));
+        __result_obj__105 = result_237;
+        return __result_obj__105;
     }
     self->key_list->it=self->key_list->head;
     if(    self->key_list->it    ) {
-        __result_obj__103 = self->key_list->it->item;
-        return __result_obj__103;
+        __result_obj__106 = self->key_list->it->item;
+        return __result_obj__106;
     }
-    memset(&result_234,0,sizeof(char*));
-    __result_obj__104 = result_234;
-    return __result_obj__104;
+    memset(&result_238,0,sizeof(char*));
+    __result_obj__107 = result_238;
+    return __result_obj__107;
 }
 
 static _Bool map$2char$phsFun$ph_end(struct map$2char$phsFun$ph* self){
@@ -5776,224 +5764,224 @@ static _Bool map$2char$phsFun$ph_end(struct map$2char$phsFun$ph* self){
 }
 
 static char* map$2char$phsFun$ph_next(struct map$2char$phsFun$ph* self){
-char* result_236;
-char* __result_obj__105;
-char* __result_obj__106;
-char* result_237;
-char* __result_obj__107;
-result_236 = (void*)0;
-result_237 = (void*)0;
+char* result_240;
+char* __result_obj__108;
+char* __result_obj__109;
+char* result_241;
+char* __result_obj__110;
+result_240 = (void*)0;
+result_241 = (void*)0;
     if(    self==((void*)0)||self->key_list->it==((void*)0)    ) {
-        memset(&result_236,0,sizeof(char*));
-        __result_obj__105 = result_236;
-        return __result_obj__105;
+        memset(&result_240,0,sizeof(char*));
+        __result_obj__108 = result_240;
+        return __result_obj__108;
     }
     self->key_list->it=self->key_list->it->next;
     if(    self->key_list->it    ) {
-        __result_obj__106 = self->key_list->it->item;
-        return __result_obj__106;
+        __result_obj__109 = self->key_list->it->item;
+        return __result_obj__109;
     }
-    memset(&result_237,0,sizeof(char*));
-    __result_obj__107 = result_237;
-    return __result_obj__107;
+    memset(&result_241,0,sizeof(char*));
+    __result_obj__110 = result_241;
+    return __result_obj__110;
 }
 
 static struct map$2char$phsFun$ph* map$2char$phsFun$ph_put(struct map$2char$phsFun$ph* self, char* key, struct sFun* item){
-unsigned int hash_253;
-int it_254;
-_Bool same_key_exist_255;
-char* it2_256;
-struct map$2char$phsFun$ph* __result_obj__112;
+unsigned int hash_257;
+int it_258;
+_Bool same_key_exist_259;
+char* it2_260;
+struct map$2char$phsFun$ph* __result_obj__115;
     if(    self->len*2>=self->size    ) {
         map$2char$phsFun$ph_rehash(self);
     }
-    hash_253=string_get_hash_key(((char*)key))%self->size;
-    it_254=hash_253;
+    hash_257=string_get_hash_key(((char*)key))%self->size;
+    it_258=hash_257;
     while(    (_Bool)1    ) {
-        if(        self->item_existance[it_254]        ) {
-            if(            string_equals(self->keys[it_254],key)            ) {
+        if(        self->item_existance[it_258]        ) {
+            if(            string_equals(self->keys[it_258],key)            ) {
                 if(                1                ) {
-                    (self->keys[it_254] = come_decrement_ref_count(self->keys[it_254], (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-                    list$1char$ph_remove(self->key_list,self->keys[it_254]);
-                    self->keys[it_254]=(char*)come_increment_ref_count(key);
+                    (self->keys[it_258] = come_decrement_ref_count(self->keys[it_258], (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+                    list$1char$ph_remove(self->key_list,self->keys[it_258]);
+                    self->keys[it_258]=(char*)come_increment_ref_count(key);
                 }
                 else {
-                    list$1char$ph_remove(self->key_list,self->keys[it_254]);
-                    self->keys[it_254]=key;
+                    list$1char$ph_remove(self->key_list,self->keys[it_258]);
+                    self->keys[it_258]=key;
                 }
                 if(                1                ) {
-                    come_call_finalizer(sFun_finalize, self->items[it_254], (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-                    self->items[it_254]=(struct sFun*)come_increment_ref_count(item);
+                    come_call_finalizer(sFun_finalize, self->items[it_258], (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                    self->items[it_258]=(struct sFun*)come_increment_ref_count(item);
                 }
                 else {
-                    self->items[it_254]=item;
+                    self->items[it_258]=item;
                 }
                 break;
             }
-            it_254++;
-            if(            it_254>=self->size            ) {
-                it_254=0;
+            it_258++;
+            if(            it_258>=self->size            ) {
+                it_258=0;
             }
-            else if(            it_254==hash_253            ) {
+            else if(            it_258==hash_257            ) {
                 printf("unexpected error in map.insert\n");
                 stackframe_v2();
                 exit(2);
             }
         }
         else {
-            self->item_existance[it_254]=(_Bool)1;
+            self->item_existance[it_258]=(_Bool)1;
             if(            1            ) {
-                self->keys[it_254]=(char*)come_increment_ref_count(key);
+                self->keys[it_258]=(char*)come_increment_ref_count(key);
             }
             else {
-                self->keys[it_254]=key;
+                self->keys[it_258]=key;
             }
             if(            1            ) {
-                self->items[it_254]=(struct sFun*)come_increment_ref_count(item);
+                self->items[it_258]=(struct sFun*)come_increment_ref_count(item);
             }
             else {
-                self->items[it_254]=item;
+                self->items[it_258]=item;
             }
             self->len++;
             break;
         }
     }
-    same_key_exist_255=(_Bool)0;
-    for(    it2_256=list$1char$ph_begin(self->key_list)    ;    !list$1char$ph_end(self->key_list)    ;    it2_256=list$1char$ph_next(self->key_list)    ){
-        if(        string_equals(it2_256,key)        ) {
-            same_key_exist_255=(_Bool)1;
+    same_key_exist_259=(_Bool)0;
+    for(    it2_260=list$1char$ph_begin(self->key_list)    ;    !list$1char$ph_end(self->key_list)    ;    it2_260=list$1char$ph_next(self->key_list)    ){
+        if(        string_equals(it2_260,key)        ) {
+            same_key_exist_259=(_Bool)1;
         }
     }
-    if(    !same_key_exist_255    ) {
+    if(    !same_key_exist_259    ) {
         list$1char$ph_push_back(self->key_list,(char*)come_increment_ref_count(key));
     }
-    __result_obj__112 = self;
+    __result_obj__115 = self;
     (key = come_decrement_ref_count(key, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     come_call_finalizer(sFun_finalize, item, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    return __result_obj__112;
+    return __result_obj__115;
 }
 
 static void map$2char$phsFun$ph_rehash(struct map$2char$phsFun$ph* self){
-int size_240;
-void* __right_value201 = (void*)0;
-char** keys_241;
+int size_244;
 void* __right_value202 = (void*)0;
-struct sFun** items_242;
+char** keys_245;
 void* __right_value203 = (void*)0;
-_Bool* item_existance_243;
-int len_244;
-char* it_245;
-struct sFun* default_value_246;
+struct sFun** items_246;
 void* __right_value204 = (void*)0;
-struct sFun* it2_247;
-unsigned int hash_250;
-int n_251;
-struct sFun* default_value_252;
+_Bool* item_existance_247;
+int len_248;
+char* it_249;
+struct sFun* default_value_250;
 void* __right_value205 = (void*)0;
-default_value_246 = (void*)0;
-default_value_252 = (void*)0;
-    size_240=self->size*10;
-    keys_241=(char**)come_increment_ref_count(((char**)(__right_value201=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_240)), "./comelang.h", 2083, "char**"))));
-    items_242=(struct sFun**)come_increment_ref_count(((struct sFun**)(__right_value202=(struct sFun**)come_calloc_v2(1, sizeof(struct sFun*)*(1*(size_240)), "./comelang.h", 2084, "struct sFun**"))));
-    item_existance_243=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value203=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_240)), "./comelang.h", 2085, "_Bool*"))));
-    len_244=0;
-    for(    it_245=map$2char$phsFun$ph_begin(self)    ;    !map$2char$phsFun$ph_end(self)    ;    it_245=map$2char$phsFun$ph_next(self)    ){
-        memset(&default_value_246,0,sizeof(struct sFun*));
-        it2_247=((struct sFun*)(__right_value204=map$2char$phsFun$ph_at(self,it_245,(struct sFun*)come_increment_ref_count(default_value_246))));
-        come_call_finalizer(sFun_finalize, __right_value204, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-        hash_250=string_get_hash_key(((char*)it_245))%size_240;
-        n_251=hash_250;
+struct sFun* it2_251;
+unsigned int hash_254;
+int n_255;
+struct sFun* default_value_256;
+void* __right_value206 = (void*)0;
+default_value_250 = (void*)0;
+default_value_256 = (void*)0;
+    size_244=self->size*10;
+    keys_245=(char**)come_increment_ref_count(((char**)(__right_value202=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_244)), "./comelang.h", 2083, "char**"))));
+    items_246=(struct sFun**)come_increment_ref_count(((struct sFun**)(__right_value203=(struct sFun**)come_calloc_v2(1, sizeof(struct sFun*)*(1*(size_244)), "./comelang.h", 2084, "struct sFun**"))));
+    item_existance_247=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value204=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_244)), "./comelang.h", 2085, "_Bool*"))));
+    len_248=0;
+    for(    it_249=map$2char$phsFun$ph_begin(self)    ;    !map$2char$phsFun$ph_end(self)    ;    it_249=map$2char$phsFun$ph_next(self)    ){
+        memset(&default_value_250,0,sizeof(struct sFun*));
+        it2_251=((struct sFun*)(__right_value205=map$2char$phsFun$ph_at(self,it_249,(struct sFun*)come_increment_ref_count(default_value_250))));
+        come_call_finalizer(sFun_finalize, __right_value205, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+        hash_254=string_get_hash_key(((char*)it_249))%size_244;
+        n_255=hash_254;
         while(        (_Bool)1        ) {
-            if(            item_existance_243[n_251]            ) {
-                n_251++;
-                if(                n_251>=size_240                ) {
-                    n_251=0;
+            if(            item_existance_247[n_255]            ) {
+                n_255++;
+                if(                n_255>=size_244                ) {
+                    n_255=0;
                 }
-                else if(                n_251==hash_250                ) {
+                else if(                n_255==hash_254                ) {
                     printf("unexpected error in map.rehash(1)\n");
                     stackframe_v2();
                     exit(2);
                 }
             }
             else {
-                item_existance_243[n_251]=(_Bool)1;
-                keys_241[n_251]=it_245;
-                items_242[n_251]=((struct sFun*)(__right_value205=map$2char$phsFun$ph_at(self,it_245,(struct sFun*)come_increment_ref_count(default_value_252))));
-                come_call_finalizer(sFun_finalize, __right_value205, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-                len_244++;
-                come_call_finalizer(sFun_finalize, default_value_252, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                item_existance_247[n_255]=(_Bool)1;
+                keys_245[n_255]=it_249;
+                items_246[n_255]=((struct sFun*)(__right_value206=map$2char$phsFun$ph_at(self,it_249,(struct sFun*)come_increment_ref_count(default_value_256))));
+                come_call_finalizer(sFun_finalize, __right_value206, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+                len_248++;
+                come_call_finalizer(sFun_finalize, default_value_256, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                 break;
-                come_call_finalizer(sFun_finalize, default_value_252, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(sFun_finalize, default_value_256, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             }
         }
-        come_call_finalizer(sFun_finalize, default_value_246, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        come_call_finalizer(sFun_finalize, default_value_250, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
     come_free_v2((char*)self->items);
     (self->item_existance = come_decrement_ref_count(self->item_existance, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     come_free_v2((char*)self->keys);
-    self->keys=keys_241;
-    self->items=items_242;
-    self->item_existance=item_existance_243;
-    self->size=size_240;
-    self->len=len_244;
+    self->keys=keys_245;
+    self->items=items_246;
+    self->item_existance=item_existance_247;
+    self->size=size_244;
+    self->len=len_248;
 }
 
 static struct sFun* map$2char$phsFun$ph_at(struct map$2char$phsFun$ph* self, char* key, struct sFun* default_value){
-unsigned int hash_248;
-unsigned int it_249;
-struct sFun* __result_obj__108;
-struct sFun* __result_obj__109;
-struct sFun* __result_obj__110;
+unsigned int hash_252;
+unsigned int it_253;
 struct sFun* __result_obj__111;
-    hash_248=string_get_hash_key(((char*)key))%self->size;
-    it_249=hash_248;
+struct sFun* __result_obj__112;
+struct sFun* __result_obj__113;
+struct sFun* __result_obj__114;
+    hash_252=string_get_hash_key(((char*)key))%self->size;
+    it_253=hash_252;
     while(    (_Bool)1    ) {
-        if(        self->item_existance[it_249]        ) {
-            if(            string_equals(self->keys[it_249],key)            ) {
-                __result_obj__108 = (struct sFun*)come_increment_ref_count(self->items[it_249]);
+        if(        self->item_existance[it_253]        ) {
+            if(            string_equals(self->keys[it_253],key)            ) {
+                __result_obj__111 = (struct sFun*)come_increment_ref_count(self->items[it_253]);
                 come_call_finalizer(sFun_finalize, default_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-                come_call_finalizer(sFun_finalize, __result_obj__108, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__108;
+                come_call_finalizer(sFun_finalize, __result_obj__111, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__111;
             }
-            it_249++;
-            if(            it_249>=self->size            ) {
-                it_249=0;
+            it_253++;
+            if(            it_253>=self->size            ) {
+                it_253=0;
             }
-            else if(            it_249==hash_248            ) {
-                __result_obj__109 = (struct sFun*)come_increment_ref_count(default_value);
+            else if(            it_253==hash_252            ) {
+                __result_obj__112 = (struct sFun*)come_increment_ref_count(default_value);
                 come_call_finalizer(sFun_finalize, default_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                come_call_finalizer(sFun_finalize, __result_obj__109, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__109;
+                come_call_finalizer(sFun_finalize, __result_obj__112, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__112;
             }
         }
         else {
-            __result_obj__110 = (struct sFun*)come_increment_ref_count(default_value);
+            __result_obj__113 = (struct sFun*)come_increment_ref_count(default_value);
             come_call_finalizer(sFun_finalize, default_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            come_call_finalizer(sFun_finalize, __result_obj__110, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            return __result_obj__110;
+            come_call_finalizer(sFun_finalize, __result_obj__113, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            return __result_obj__113;
         }
     }
-    __result_obj__111 = (struct sFun*)come_increment_ref_count(default_value);
+    __result_obj__114 = (struct sFun*)come_increment_ref_count(default_value);
     come_call_finalizer(sFun_finalize, default_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(sFun_finalize, __result_obj__111, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__111;
+    come_call_finalizer(sFun_finalize, __result_obj__114, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__114;
 }
 
 static void map$2char$phsFun$ph$p_finalize(struct map$2char$phsFun$ph* self){
-int i_257;
-int i_258;
-    for(    i_257=0    ;    i_257<self->size    ;    i_257++    ){
-        if(        self->item_existance[i_257]        ) {
+int i_261;
+int i_262;
+    for(    i_261=0    ;    i_261<self->size    ;    i_261++    ){
+        if(        self->item_existance[i_261]        ) {
             if(            1            ) {
-                come_call_finalizer(sFun_finalize, self->items[i_257], (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(sFun_finalize, self->items[i_261], (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    i_258=0    ;    i_258<self->size    ;    i_258++    ){
-        if(        self->item_existance[i_258]        ) {
+    for(    i_262=0    ;    i_262<self->size    ;    i_262++    ){
+        if(        self->item_existance[i_262]        ) {
             if(            1            ) {
-                (self->keys[i_258] = come_decrement_ref_count(self->keys[i_258], (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+                (self->keys[i_262] = come_decrement_ref_count(self->keys[i_262], (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             }
         }
     }
@@ -6003,26 +5991,26 @@ int i_258;
 }
 
 static char* map$2char$phbuffer$ph_begin(struct map$2char$phbuffer$ph* self){
-char* result_262;
-char* __result_obj__113;
-char* __result_obj__114;
-char* result_263;
-char* __result_obj__115;
-result_262 = (void*)0;
-result_263 = (void*)0;
+char* result_266;
+char* __result_obj__116;
+char* __result_obj__117;
+char* result_267;
+char* __result_obj__118;
+result_266 = (void*)0;
+result_267 = (void*)0;
     if(    self==((void*)0)    ) {
-        memset(&result_262,0,sizeof(char*));
-        __result_obj__113 = result_262;
-        return __result_obj__113;
+        memset(&result_266,0,sizeof(char*));
+        __result_obj__116 = result_266;
+        return __result_obj__116;
     }
     self->key_list->it=self->key_list->head;
     if(    self->key_list->it    ) {
-        __result_obj__114 = self->key_list->it->item;
-        return __result_obj__114;
+        __result_obj__117 = self->key_list->it->item;
+        return __result_obj__117;
     }
-    memset(&result_263,0,sizeof(char*));
-    __result_obj__115 = result_263;
-    return __result_obj__115;
+    memset(&result_267,0,sizeof(char*));
+    __result_obj__118 = result_267;
+    return __result_obj__118;
 }
 
 static _Bool map$2char$phbuffer$ph_end(struct map$2char$phbuffer$ph* self){
@@ -6030,131 +6018,131 @@ static _Bool map$2char$phbuffer$ph_end(struct map$2char$phbuffer$ph* self){
 }
 
 static char* map$2char$phbuffer$ph_next(struct map$2char$phbuffer$ph* self){
-char* result_265;
-char* __result_obj__116;
-char* __result_obj__117;
-char* result_266;
-char* __result_obj__118;
-result_265 = (void*)0;
-result_266 = (void*)0;
+char* result_269;
+char* __result_obj__119;
+char* __result_obj__120;
+char* result_270;
+char* __result_obj__121;
+result_269 = (void*)0;
+result_270 = (void*)0;
     if(    self==((void*)0)||self->key_list->it==((void*)0)    ) {
-        memset(&result_265,0,sizeof(char*));
-        __result_obj__116 = result_265;
-        return __result_obj__116;
+        memset(&result_269,0,sizeof(char*));
+        __result_obj__119 = result_269;
+        return __result_obj__119;
     }
     self->key_list->it=self->key_list->it->next;
     if(    self->key_list->it    ) {
-        __result_obj__117 = self->key_list->it->item;
-        return __result_obj__117;
+        __result_obj__120 = self->key_list->it->item;
+        return __result_obj__120;
     }
-    memset(&result_266,0,sizeof(char*));
-    __result_obj__118 = result_266;
-    return __result_obj__118;
+    memset(&result_270,0,sizeof(char*));
+    __result_obj__121 = result_270;
+    return __result_obj__121;
 }
 
 static struct buffer* map$2char$phbuffer$ph$p_operator_load_element(struct map$2char$phbuffer$ph* self, char* key){
-struct buffer* default_value_268;
-unsigned int hash_269;
-unsigned int it_270;
-struct buffer* __result_obj__119;
-struct buffer* __result_obj__120;
-struct buffer* __result_obj__121;
+struct buffer* default_value_272;
+unsigned int hash_273;
+unsigned int it_274;
 struct buffer* __result_obj__122;
-default_value_268 = (void*)0;
-    memset(&default_value_268,0,sizeof(struct buffer*));
-    hash_269=string_get_hash_key(((char*)key))%self->size;
-    it_270=hash_269;
-    while(    (_Bool)1    ) {
-        if(        self->item_existance[it_270]        ) {
-            if(            string_equals(self->keys[it_270],key)            ) {
-                __result_obj__119 = (struct buffer*)come_increment_ref_count(self->items[it_270]);
-                come_call_finalizer(buffer_finalize, default_value_268, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-                come_call_finalizer(buffer_finalize, __result_obj__119, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__119;
-            }
-            it_270++;
-            if(            it_270>=self->size            ) {
-                it_270=0;
-            }
-            else if(            it_270==hash_269            ) {
-                __result_obj__120 = (struct buffer*)come_increment_ref_count(default_value_268);
-                come_call_finalizer(buffer_finalize, default_value_268, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                come_call_finalizer(buffer_finalize, __result_obj__120, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__120;
-            }
-        }
-        else {
-            __result_obj__121 = (struct buffer*)come_increment_ref_count(default_value_268);
-            come_call_finalizer(buffer_finalize, default_value_268, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            come_call_finalizer(buffer_finalize, __result_obj__121, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            return __result_obj__121;
-        }
-    }
-    __result_obj__122 = (struct buffer*)come_increment_ref_count(default_value_268);
-    come_call_finalizer(buffer_finalize, default_value_268, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(buffer_finalize, __result_obj__122, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__122;
-}
-
-static struct buffer* map$2char$phbuffer$ph_operator_load_element(struct map$2char$phbuffer$ph* self, char* key){
-struct buffer* default_value_271;
-unsigned int hash_272;
-unsigned int it_273;
 struct buffer* __result_obj__123;
 struct buffer* __result_obj__124;
 struct buffer* __result_obj__125;
-struct buffer* __result_obj__126;
-default_value_271 = (void*)0;
-    memset(&default_value_271,0,sizeof(struct buffer*));
-    hash_272=string_get_hash_key(((char*)key))%self->size;
-    it_273=hash_272;
+default_value_272 = (void*)0;
+    memset(&default_value_272,0,sizeof(struct buffer*));
+    hash_273=string_get_hash_key(((char*)key))%self->size;
+    it_274=hash_273;
     while(    (_Bool)1    ) {
-        if(        self->item_existance[it_273]        ) {
-            if(            string_equals(self->keys[it_273],key)            ) {
-                __result_obj__123 = (struct buffer*)come_increment_ref_count(self->items[it_273]);
-                come_call_finalizer(buffer_finalize, default_value_271, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        if(        self->item_existance[it_274]        ) {
+            if(            string_equals(self->keys[it_274],key)            ) {
+                __result_obj__122 = (struct buffer*)come_increment_ref_count(self->items[it_274]);
+                come_call_finalizer(buffer_finalize, default_value_272, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(buffer_finalize, __result_obj__122, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__122;
+            }
+            it_274++;
+            if(            it_274>=self->size            ) {
+                it_274=0;
+            }
+            else if(            it_274==hash_273            ) {
+                __result_obj__123 = (struct buffer*)come_increment_ref_count(default_value_272);
+                come_call_finalizer(buffer_finalize, default_value_272, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
                 come_call_finalizer(buffer_finalize, __result_obj__123, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
                 return __result_obj__123;
             }
-            it_273++;
-            if(            it_273>=self->size            ) {
-                it_273=0;
+        }
+        else {
+            __result_obj__124 = (struct buffer*)come_increment_ref_count(default_value_272);
+            come_call_finalizer(buffer_finalize, default_value_272, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            come_call_finalizer(buffer_finalize, __result_obj__124, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            return __result_obj__124;
+        }
+    }
+    __result_obj__125 = (struct buffer*)come_increment_ref_count(default_value_272);
+    come_call_finalizer(buffer_finalize, default_value_272, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    come_call_finalizer(buffer_finalize, __result_obj__125, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__125;
+}
+
+static struct buffer* map$2char$phbuffer$ph_operator_load_element(struct map$2char$phbuffer$ph* self, char* key){
+struct buffer* default_value_275;
+unsigned int hash_276;
+unsigned int it_277;
+struct buffer* __result_obj__126;
+struct buffer* __result_obj__127;
+struct buffer* __result_obj__128;
+struct buffer* __result_obj__129;
+default_value_275 = (void*)0;
+    memset(&default_value_275,0,sizeof(struct buffer*));
+    hash_276=string_get_hash_key(((char*)key))%self->size;
+    it_277=hash_276;
+    while(    (_Bool)1    ) {
+        if(        self->item_existance[it_277]        ) {
+            if(            string_equals(self->keys[it_277],key)            ) {
+                __result_obj__126 = (struct buffer*)come_increment_ref_count(self->items[it_277]);
+                come_call_finalizer(buffer_finalize, default_value_275, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(buffer_finalize, __result_obj__126, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__126;
             }
-            else if(            it_273==hash_272            ) {
-                __result_obj__124 = (struct buffer*)come_increment_ref_count(default_value_271);
-                come_call_finalizer(buffer_finalize, default_value_271, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                come_call_finalizer(buffer_finalize, __result_obj__124, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-                return __result_obj__124;
+            it_277++;
+            if(            it_277>=self->size            ) {
+                it_277=0;
+            }
+            else if(            it_277==hash_276            ) {
+                __result_obj__127 = (struct buffer*)come_increment_ref_count(default_value_275);
+                come_call_finalizer(buffer_finalize, default_value_275, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                come_call_finalizer(buffer_finalize, __result_obj__127, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+                return __result_obj__127;
             }
         }
         else {
-            __result_obj__125 = (struct buffer*)come_increment_ref_count(default_value_271);
-            come_call_finalizer(buffer_finalize, default_value_271, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            come_call_finalizer(buffer_finalize, __result_obj__125, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            return __result_obj__125;
+            __result_obj__128 = (struct buffer*)come_increment_ref_count(default_value_275);
+            come_call_finalizer(buffer_finalize, default_value_275, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            come_call_finalizer(buffer_finalize, __result_obj__128, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            return __result_obj__128;
         }
     }
-    __result_obj__126 = (struct buffer*)come_increment_ref_count(default_value_271);
-    come_call_finalizer(buffer_finalize, default_value_271, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(buffer_finalize, __result_obj__126, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__126;
+    __result_obj__129 = (struct buffer*)come_increment_ref_count(default_value_275);
+    come_call_finalizer(buffer_finalize, default_value_275, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    come_call_finalizer(buffer_finalize, __result_obj__129, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__129;
 }
 
 static void map$2char$phbuffer$ph$p_finalize(struct map$2char$phbuffer$ph* self){
-int i_274;
-int i_275;
-    for(    i_274=0    ;    i_274<self->size    ;    i_274++    ){
-        if(        self->item_existance[i_274]        ) {
+int i_278;
+int i_279;
+    for(    i_278=0    ;    i_278<self->size    ;    i_278++    ){
+        if(        self->item_existance[i_278]        ) {
             if(            1            ) {
-                come_call_finalizer(buffer_finalize, self->items[i_274], (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(buffer_finalize, self->items[i_278], (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             }
         }
     }
     come_free_v2((char*)self->items);
-    for(    i_275=0    ;    i_275<self->size    ;    i_275++    ){
-        if(        self->item_existance[i_275]        ) {
+    for(    i_279=0    ;    i_279<self->size    ;    i_279++    ){
+        if(        self->item_existance[i_279]        ) {
             if(            1            ) {
-                (self->keys[i_275] = come_decrement_ref_count(self->keys[i_275], (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+                (self->keys[i_279] = come_decrement_ref_count(self->keys[i_279], (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             }
         }
     }
@@ -6187,55 +6175,74 @@ int i_292;
 }
 
 _Bool output_header_file(struct sInfo* info){
-char* output_file_name_306;
-struct _IO_FILE* f_307;
-struct map$2char$phchar$ph* o2_saved_308;
-char* it_309;
+char* output_file_name_303;
+struct _IO_FILE* f_304;
+struct map$2char$phchar$ph* o2_saved_305;
+char* it_306;
+void* __right_value233 = (void*)0;
 void* __right_value234 = (void*)0;
 void* __right_value235 = (void*)0;
+char* item_307;
+struct map$2char$phchar$ph* o2_saved_308;
+char* it_309;
 void* __right_value236 = (void*)0;
-char* item_310;
-struct map$2char$phchar$ph* o2_saved_311;
-char* it_312;
 void* __right_value237 = (void*)0;
 void* __right_value238 = (void*)0;
-void* __right_value239 = (void*)0;
-char* item_313;
-_Bool __result_obj__128;
-    output_file_name_306=(char*)come_increment_ref_count(info->output_file_name);
-    f_307=fopen(output_file_name_306,"a");
+char* item_310;
+_Bool __result_obj__131;
+    output_file_name_303=(char*)come_increment_ref_count(info->output_file_name);
+    f_304=fopen(output_file_name_303,"a");
     if(    string_operator_equals(info->output_file_name,"common.h")    ) {
-        fprintf(f_307,"#ifndef __COMMON_H__\n");
-        fprintf(f_307,"#define __COMMON_H__\n");
-        fprintf(f_307,"#include <comelang.h>\n");
+        fprintf(f_304,"#ifndef __COMMON_H__\n");
+        fprintf(f_304,"#define __COMMON_H__\n");
+        fprintf(f_304,"#include <comelang.h>\n");
     }
-    for(    o2_saved_308=(struct map$2char$phchar$ph*)come_increment_ref_count((info->module->mHeaderStructs)),it_309=map$2char$phchar$ph_begin((o2_saved_308))    ;    !map$2char$phchar$ph_end((o2_saved_308))    ;    it_309=map$2char$phchar$ph_next((o2_saved_308))    ){
-        item_310=(char*)come_increment_ref_count(map$2char$phchar$ph_operator_load_element(info->module->mHeaderStructs,((char*)(__right_value235=__builtin_string(it_309)))));
+    for(    o2_saved_305=(struct map$2char$phchar$ph*)come_increment_ref_count((info->module->mHeaderStructs)),it_306=map$2char$phchar$ph_begin((o2_saved_305))    ;    !map$2char$phchar$ph_end((o2_saved_305))    ;    it_306=map$2char$phchar$ph_next((o2_saved_305))    ){
+        item_307=(char*)come_increment_ref_count(map$2char$phchar$ph_operator_load_element(info->module->mHeaderStructs,((char*)(__right_value234=__builtin_string(it_306)))));
+        (__right_value233 = come_decrement_ref_count(__right_value233, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         (__right_value234 = come_decrement_ref_count(__right_value234, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__right_value235 = come_decrement_ref_count(__right_value235, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        fprintf(f_307,"%s",item_310);
+        fprintf(f_304,"%s",item_307);
+        (item_307 = come_decrement_ref_count(item_307, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+    }
+    come_call_finalizer(map$2char$phchar$ph$p_finalize, o2_saved_305, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    for(    o2_saved_308=(struct map$2char$phchar$ph*)come_increment_ref_count((info->module->mHeader)),it_309=map$2char$phchar$ph_begin((o2_saved_308))    ;    !map$2char$phchar$ph_end((o2_saved_308))    ;    it_309=map$2char$phchar$ph_next((o2_saved_308))    ){
+        item_310=(char*)come_increment_ref_count(map$2char$phchar$ph_operator_load_element(info->module->mHeader,((char*)(__right_value237=__builtin_string(it_309)))));
+        (__right_value236 = come_decrement_ref_count(__right_value236, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        (__right_value237 = come_decrement_ref_count(__right_value237, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        fprintf(f_304,"%s",item_310);
         (item_310 = come_decrement_ref_count(item_310, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     }
     come_call_finalizer(map$2char$phchar$ph$p_finalize, o2_saved_308, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    for(    o2_saved_311=(struct map$2char$phchar$ph*)come_increment_ref_count((info->module->mHeader)),it_312=map$2char$phchar$ph_begin((o2_saved_311))    ;    !map$2char$phchar$ph_end((o2_saved_311))    ;    it_312=map$2char$phchar$ph_next((o2_saved_311))    ){
-        item_313=(char*)come_increment_ref_count(map$2char$phchar$ph_operator_load_element(info->module->mHeader,((char*)(__right_value238=__builtin_string(it_312)))));
-        (__right_value237 = come_decrement_ref_count(__right_value237, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__right_value238 = come_decrement_ref_count(__right_value238, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        fprintf(f_307,"%s",item_313);
-        (item_313 = come_decrement_ref_count(item_313, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-    }
-    come_call_finalizer(map$2char$phchar$ph$p_finalize, o2_saved_311, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    fprintf(f_307,"\n");
+    fprintf(f_304,"\n");
     if(    string_operator_equals(info->output_file_name,"common.h")    ) {
-        fprintf(f_307,"#endif\n");
+        fprintf(f_304,"#endif\n");
     }
-    fclose(f_307);
-    __result_obj__128 = (_Bool)1;
-    (output_file_name_306 = come_decrement_ref_count(output_file_name_306, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-    return __result_obj__128;
+    fclose(f_304);
+    __result_obj__131 = (_Bool)1;
+    (output_file_name_303 = come_decrement_ref_count(output_file_name_303, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
+    return __result_obj__131;
 }
 
 void add_come_code_at_function_head(struct sInfo* info, char* code, ...){
+char* msg2_311;
+va_list args_312;
+int len_313;
+msg2_311 = (void*)0;
+memset(&args_312, 0, sizeof(va_list));
+    if(    info->no_output_come_code    ) {
+        return;
+    }
+    __builtin_va_start(args_312,code);
+    len_313=vasprintf(&msg2_311,code,args_312);
+    __builtin_va_end(args_312);
+    if(    info->come_fun    ) {
+        buffer_append_str(info->come_fun->mSourceHead,msg2_311);
+    }
+    free(msg2_311);
+    come_call_finalizer(va_list_finalize, (&args_312), (void*)0, (void*)0, 1/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+}
+
+void add_come_code_at_function_head2(struct sInfo* info, char* code, ...){
 char* msg2_314;
 va_list args_315;
 int len_316;
@@ -6248,34 +6255,15 @@ memset(&args_315, 0, sizeof(va_list));
     len_316=vasprintf(&msg2_314,code,args_315);
     __builtin_va_end(args_315);
     if(    info->come_fun    ) {
-        buffer_append_str(info->come_fun->mSourceHead,msg2_314);
+        buffer_append_str(info->come_fun->mSourceHead2,msg2_314);
     }
     free(msg2_314);
     come_call_finalizer(va_list_finalize, (&args_315), (void*)0, (void*)0, 1/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
 }
 
-void add_come_code_at_function_head2(struct sInfo* info, char* code, ...){
-char* msg2_317;
-va_list args_318;
-int len_319;
-msg2_317 = (void*)0;
-memset(&args_318, 0, sizeof(va_list));
-    if(    info->no_output_come_code    ) {
-        return;
-    }
-    __builtin_va_start(args_318,code);
-    len_319=vasprintf(&msg2_317,code,args_318);
-    __builtin_va_end(args_318);
-    if(    info->come_fun    ) {
-        buffer_append_str(info->come_fun->mSourceHead2,msg2_317);
-    }
-    free(msg2_317);
-    come_call_finalizer(va_list_finalize, (&args_318), (void*)0, (void*)0, 1/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-}
-
 void add_last_code_to_source(struct sInfo* info){
-char* __dec_obj45;
-char* __dec_obj46;
+char* __dec_obj43;
+char* __dec_obj44;
     if(    info->prohibits_output_last_code    ) {
         return;
     }
@@ -6288,22 +6276,22 @@ char* __dec_obj46;
     else {
         if(        info->module->mLastCode        ) {
             add_come_code(info,"%s;\n",info->module->mLastCode);
-            __dec_obj45=info->module->mLastCode,
+            __dec_obj43=info->module->mLastCode,
             info->module->mLastCode=((void*)0);
-            __dec_obj45 = come_decrement_ref_count(__dec_obj45, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+            __dec_obj43 = come_decrement_ref_count(__dec_obj43, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
         }
         if(        info->module->mLastCode2        ) {
             add_come_code(info,"%s;\n",info->module->mLastCode2);
-            __dec_obj46=info->module->mLastCode2,
+            __dec_obj44=info->module->mLastCode2,
             info->module->mLastCode2=((void*)0);
-            __dec_obj46 = come_decrement_ref_count(__dec_obj46, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+            __dec_obj44 = come_decrement_ref_count(__dec_obj44, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
         }
     }
 }
 
 void add_last_code_to_source_with_comma(struct sInfo* info){
-char* __dec_obj47;
-char* __dec_obj48;
+char* __dec_obj45;
+char* __dec_obj46;
     if(    info->prohibits_output_last_code    ) {
         return;
     }
@@ -6312,24 +6300,45 @@ char* __dec_obj48;
     }
     if(    info->module->mLastCode    ) {
         add_come_code(info,"%s ,",info->module->mLastCode);
-        __dec_obj47=info->module->mLastCode,
+        __dec_obj45=info->module->mLastCode,
         info->module->mLastCode=((void*)0);
-        __dec_obj47 = come_decrement_ref_count(__dec_obj47, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+        __dec_obj45 = come_decrement_ref_count(__dec_obj45, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
     if(    info->module->mLastCode2    ) {
         add_come_code(info,"%s ,",info->module->mLastCode2);
-        __dec_obj48=info->module->mLastCode2,
+        __dec_obj46=info->module->mLastCode2,
         info->module->mLastCode2=((void*)0);
-        __dec_obj48 = come_decrement_ref_count(__dec_obj48, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+        __dec_obj46 = come_decrement_ref_count(__dec_obj46, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
 }
 
 void add_come_last_code(struct sInfo* info, const char* msg, ...){
+char* msg2_317;
+va_list args_318;
+int len_319;
+void* __right_value239 = (void*)0;
+char* __dec_obj47;
+msg2_317 = (void*)0;
+memset(&args_318, 0, sizeof(va_list));
+    if(    info->no_output_come_code    ) {
+        return;
+    }
+    __builtin_va_start(args_318,msg);
+    len_319=vasprintf(&msg2_317,msg,args_318);
+    __builtin_va_end(args_318);
+    __dec_obj47=info->module->mLastCode,
+    info->module->mLastCode=(char*)come_increment_ref_count(__builtin_string(msg2_317));
+    __dec_obj47 = come_decrement_ref_count(__dec_obj47, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+    free(msg2_317);
+    come_call_finalizer(va_list_finalize, (&args_318), (void*)0, (void*)0, 1/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+}
+
+void add_come_last_code2(struct sInfo* info, const char* msg, ...){
 char* msg2_320;
 va_list args_321;
 int len_322;
 void* __right_value240 = (void*)0;
-char* __dec_obj49;
+char* __dec_obj48;
 msg2_320 = (void*)0;
 memset(&args_321, 0, sizeof(va_list));
     if(    info->no_output_come_code    ) {
@@ -6338,32 +6347,11 @@ memset(&args_321, 0, sizeof(va_list));
     __builtin_va_start(args_321,msg);
     len_322=vasprintf(&msg2_320,msg,args_321);
     __builtin_va_end(args_321);
-    __dec_obj49=info->module->mLastCode,
-    info->module->mLastCode=(char*)come_increment_ref_count(__builtin_string(msg2_320));
-    __dec_obj49 = come_decrement_ref_count(__dec_obj49, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+    __dec_obj48=info->module->mLastCode2,
+    info->module->mLastCode2=(char*)come_increment_ref_count(__builtin_string(msg2_320));
+    __dec_obj48 = come_decrement_ref_count(__dec_obj48, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     free(msg2_320);
     come_call_finalizer(va_list_finalize, (&args_321), (void*)0, (void*)0, 1/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-}
-
-void add_come_last_code2(struct sInfo* info, const char* msg, ...){
-char* msg2_323;
-va_list args_324;
-int len_325;
-void* __right_value241 = (void*)0;
-char* __dec_obj50;
-msg2_323 = (void*)0;
-memset(&args_324, 0, sizeof(va_list));
-    if(    info->no_output_come_code    ) {
-        return;
-    }
-    __builtin_va_start(args_324,msg);
-    len_325=vasprintf(&msg2_323,msg,args_324);
-    __builtin_va_end(args_324);
-    __dec_obj50=info->module->mLastCode2,
-    info->module->mLastCode2=(char*)come_increment_ref_count(__builtin_string(msg2_323));
-    __dec_obj50 = come_decrement_ref_count(__dec_obj50, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
-    free(msg2_323);
-    come_call_finalizer(va_list_finalize, (&args_324), (void*)0, (void*)0, 1/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
 }
 
 void dec_stack_ptr(int value, struct sInfo* info){
@@ -6371,20 +6359,20 @@ void dec_stack_ptr(int value, struct sInfo* info){
 }
 
 static struct list$1CVALUE$ph* list$1CVALUE$ph_delete(struct list$1CVALUE$ph* self, int head, int tail){
-int tmp_326;
-struct list$1CVALUE$ph* __result_obj__129;
+int tmp_323;
+struct list$1CVALUE$ph* __result_obj__132;
+struct list_item$1CVALUE$ph* it_326;
+int i_327;
+struct list_item$1CVALUE$ph* prev_it_328;
 struct list_item$1CVALUE$ph* it_329;
 int i_330;
 struct list_item$1CVALUE$ph* prev_it_331;
 struct list_item$1CVALUE$ph* it_332;
-int i_333;
-struct list_item$1CVALUE$ph* prev_it_334;
-struct list_item$1CVALUE$ph* it_335;
-struct list_item$1CVALUE$ph* head_prev_it_336;
-struct list_item$1CVALUE$ph* tail_it_337;
-int i_338;
-struct list_item$1CVALUE$ph* prev_it_339;
-struct list$1CVALUE$ph* __result_obj__131;
+struct list_item$1CVALUE$ph* head_prev_it_333;
+struct list_item$1CVALUE$ph* tail_it_334;
+int i_335;
+struct list_item$1CVALUE$ph* prev_it_336;
+struct list$1CVALUE$ph* __result_obj__134;
     if(    head<0    ) {
         head+=self->len;
     }
@@ -6392,9 +6380,9 @@ struct list$1CVALUE$ph* __result_obj__131;
         tail+=self->len+1;
     }
     if(    head>tail    ) {
-        tmp_326=tail;
+        tmp_323=tail;
         tail=head;
-        head=tmp_326;
+        head=tmp_323;
     }
     if(    head<0    ) {
         head=0;
@@ -6403,105 +6391,105 @@ struct list$1CVALUE$ph* __result_obj__131;
         tail=self->len;
     }
     if(    head==tail    ) {
-        __result_obj__129 = self;
-        return __result_obj__129;
+        __result_obj__132 = self;
+        return __result_obj__132;
     }
     if(    head==0&&tail==self->len    ) {
         list$1CVALUE$ph_reset(self);
     }
     else if(    head==0    ) {
+        it_326=self->head;
+        i_327=0;
+        while(        it_326!=((void*)0)        ) {
+            if(            i_327<tail            ) {
+                prev_it_328=it_326;
+                it_326=it_326->next;
+                i_327++;
+                come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it_328, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                self->len--;
+            }
+            else if(            i_327==tail            ) {
+                self->head=it_326;
+                self->head->prev=((void*)0);
+                break;
+            }
+            else {
+                it_326=it_326->next;
+                i_327++;
+            }
+        }
+    }
+    else if(    tail==self->len    ) {
         it_329=self->head;
         i_330=0;
         while(        it_329!=((void*)0)        ) {
-            if(            i_330<tail            ) {
+            if(            i_330==head            ) {
+                self->tail=it_329->prev;
+                self->tail->next=((void*)0);
+            }
+            if(            i_330>=head            ) {
                 prev_it_331=it_329;
                 it_329=it_329->next;
                 i_330++;
                 come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it_331, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                 self->len--;
             }
-            else if(            i_330==tail            ) {
-                self->head=it_329;
-                self->head->prev=((void*)0);
-                break;
-            }
             else {
                 it_329=it_329->next;
                 i_330++;
             }
         }
     }
-    else if(    tail==self->len    ) {
-        it_332=self->head;
-        i_333=0;
-        while(        it_332!=((void*)0)        ) {
-            if(            i_333==head            ) {
-                self->tail=it_332->prev;
-                self->tail->next=((void*)0);
-            }
-            if(            i_333>=head            ) {
-                prev_it_334=it_332;
-                it_332=it_332->next;
-                i_333++;
-                come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it_334, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-                self->len--;
-            }
-            else {
-                it_332=it_332->next;
-                i_333++;
-            }
-        }
-    }
     else {
-        it_335=self->head;
-        head_prev_it_336=((void*)0);
-        tail_it_337=((void*)0);
-        i_338=0;
-        while(        it_335!=((void*)0)        ) {
-            if(            i_338==head            ) {
-                head_prev_it_336=it_335->prev;
+        it_332=self->head;
+        head_prev_it_333=((void*)0);
+        tail_it_334=((void*)0);
+        i_335=0;
+        while(        it_332!=((void*)0)        ) {
+            if(            i_335==head            ) {
+                head_prev_it_333=it_332->prev;
             }
-            if(            i_338==tail            ) {
-                tail_it_337=it_335;
+            if(            i_335==tail            ) {
+                tail_it_334=it_332;
             }
-            if(            i_338>=head&&i_338<tail            ) {
-                prev_it_339=it_335;
-                it_335=it_335->next;
-                i_338++;
-                come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it_339, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+            if(            i_335>=head&&i_335<tail            ) {
+                prev_it_336=it_332;
+                it_332=it_332->next;
+                i_335++;
+                come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it_336, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                 self->len--;
             }
             else {
-                it_335=it_335->next;
-                i_338++;
+                it_332=it_332->next;
+                i_335++;
             }
         }
-        if(        head_prev_it_336!=((void*)0)        ) {
-            head_prev_it_336->next=tail_it_337;
+        if(        head_prev_it_333!=((void*)0)        ) {
+            head_prev_it_333->next=tail_it_334;
         }
-        if(        tail_it_337!=((void*)0)        ) {
-            tail_it_337->prev=head_prev_it_336;
+        if(        tail_it_334!=((void*)0)        ) {
+            tail_it_334->prev=head_prev_it_333;
         }
     }
-    __result_obj__131 = self;
-    return __result_obj__131;
+    __result_obj__134 = self;
+    return __result_obj__134;
 }
 
 static struct list$1CVALUE$ph* list$1CVALUE$ph_reset(struct list$1CVALUE$ph* self){
-struct list_item$1CVALUE$ph* it_327;
-struct list_item$1CVALUE$ph* prev_it_328;
-struct list$1CVALUE$ph* __result_obj__130;
-    it_327=self->head;
-    while(    it_327!=((void*)0)    ) {
-        prev_it_328=it_327;
-        it_327=it_327->next;
-        come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it_328, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+struct list_item$1CVALUE$ph* it_324;
+struct list_item$1CVALUE$ph* prev_it_325;
+struct list$1CVALUE$ph* __result_obj__133;
+    it_324=self->head;
+    while(    it_324!=((void*)0)    ) {
+        prev_it_325=it_324;
+        it_324=it_324->next;
+        come_call_finalizer(list_item$1CVALUE$ph$p_finalize, prev_it_325, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
     self->head=((void*)0);
     self->tail=((void*)0);
     self->len=0;
-    __result_obj__130 = self;
-    return __result_obj__130;
+    __result_obj__133 = self;
+    return __result_obj__133;
 }
 
 static void list_item$1CVALUE$ph$p_finalize(struct list_item$1CVALUE$ph* self){
@@ -6511,35 +6499,63 @@ static void list_item$1CVALUE$ph$p_finalize(struct list_item$1CVALUE$ph* self){
 }
 
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info){
-char* __dec_obj51;
-void* __right_value242 = (void*)0;
+char* __dec_obj49;
+void* __right_value241 = (void*)0;
+void* __right_value247 = (void*)0;
+struct CVALUE* result_337;
 void* __right_value248 = (void*)0;
-struct CVALUE* result_340;
-void* __right_value249 = (void*)0;
-struct CVALUE* __result_obj__138;
-    __dec_obj51=info->module->mLastCode,
+struct CVALUE* __result_obj__141;
+    __dec_obj49=info->module->mLastCode,
     info->module->mLastCode=((void*)0);
-    __dec_obj51 = come_decrement_ref_count(__dec_obj51, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
-    result_340=(struct CVALUE*)come_increment_ref_count(CVALUE_clone(((struct CVALUE*)(__right_value242=list$1CVALUE$ph_operator_load_element(info->stack,offset)))));
-    come_call_finalizer(CVALUE_finalize, __right_value242, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-    if(    result_340==((void*)0)    ) {
-        ((struct tuple2$2int$bool$*)(__right_value249=err_msg(info,"invalid stack value")));
-        come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value249, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+    __dec_obj49 = come_decrement_ref_count(__dec_obj49, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+    result_337=(struct CVALUE*)come_increment_ref_count(CVALUE_clone(((struct CVALUE*)(__right_value241=list$1CVALUE$ph_operator_load_element(info->stack,offset)))));
+    come_call_finalizer(CVALUE_finalize, __right_value241, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+    if(    result_337==((void*)0)    ) {
+        ((struct tuple2$2int$bool$*)(__right_value248=err_msg(info,"invalid stack value")));
+        come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value248, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
         exit(2);
     }
     list$1CVALUE$ph_delete(info->stack,-1,-1);
-    __result_obj__138 = (struct CVALUE*)come_increment_ref_count(result_340);
-    come_call_finalizer(CVALUE_finalize, result_340, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(CVALUE_finalize, __result_obj__138, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__138;
+    __result_obj__141 = (struct CVALUE*)come_increment_ref_count(result_337);
+    come_call_finalizer(CVALUE_finalize, result_337, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    come_call_finalizer(CVALUE_finalize, __result_obj__141, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__141;
 }
 
 static struct CVALUE* list$1CVALUE$ph$p_operator_load_element(struct list$1CVALUE$ph* self, int position){
+struct list_item$1CVALUE$ph* it_338;
+int i_339;
+struct CVALUE* __result_obj__135;
+struct CVALUE* default_value_340;
+struct CVALUE* __result_obj__136;
+default_value_340 = (void*)0;
+    if(    position<0    ) {
+        position+=self->len;
+    }
+    it_338=self->head;
+    i_339=0;
+    while(    it_338!=((void*)0)    ) {
+        if(        position==i_339        ) {
+            __result_obj__135 = (struct CVALUE*)come_increment_ref_count(it_338->item);
+            come_call_finalizer(CVALUE_finalize, __result_obj__135, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            return __result_obj__135;
+        }
+        it_338=it_338->next;
+        i_339++;
+    }
+    memset(&default_value_340,0,sizeof(struct CVALUE*));
+    __result_obj__136 = (struct CVALUE*)come_increment_ref_count(default_value_340);
+    come_call_finalizer(CVALUE_finalize, default_value_340, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    come_call_finalizer(CVALUE_finalize, __result_obj__136, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__136;
+}
+
+static struct CVALUE* list$1CVALUE$ph_operator_load_element(struct list$1CVALUE$ph* self, int position){
 struct list_item$1CVALUE$ph* it_341;
 int i_342;
-struct CVALUE* __result_obj__132;
+struct CVALUE* __result_obj__137;
 struct CVALUE* default_value_343;
-struct CVALUE* __result_obj__133;
+struct CVALUE* __result_obj__138;
 default_value_343 = (void*)0;
     if(    position<0    ) {
         position+=self->len;
@@ -6548,107 +6564,79 @@ default_value_343 = (void*)0;
     i_342=0;
     while(    it_341!=((void*)0)    ) {
         if(        position==i_342        ) {
-            __result_obj__132 = (struct CVALUE*)come_increment_ref_count(it_341->item);
-            come_call_finalizer(CVALUE_finalize, __result_obj__132, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            return __result_obj__132;
+            __result_obj__137 = (struct CVALUE*)come_increment_ref_count(it_341->item);
+            come_call_finalizer(CVALUE_finalize, __result_obj__137, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+            return __result_obj__137;
         }
         it_341=it_341->next;
         i_342++;
     }
     memset(&default_value_343,0,sizeof(struct CVALUE*));
-    __result_obj__133 = (struct CVALUE*)come_increment_ref_count(default_value_343);
+    __result_obj__138 = (struct CVALUE*)come_increment_ref_count(default_value_343);
     come_call_finalizer(CVALUE_finalize, default_value_343, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(CVALUE_finalize, __result_obj__133, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__133;
-}
-
-static struct CVALUE* list$1CVALUE$ph_operator_load_element(struct list$1CVALUE$ph* self, int position){
-struct list_item$1CVALUE$ph* it_344;
-int i_345;
-struct CVALUE* __result_obj__134;
-struct CVALUE* default_value_346;
-struct CVALUE* __result_obj__135;
-default_value_346 = (void*)0;
-    if(    position<0    ) {
-        position+=self->len;
-    }
-    it_344=self->head;
-    i_345=0;
-    while(    it_344!=((void*)0)    ) {
-        if(        position==i_345        ) {
-            __result_obj__134 = (struct CVALUE*)come_increment_ref_count(it_344->item);
-            come_call_finalizer(CVALUE_finalize, __result_obj__134, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-            return __result_obj__134;
-        }
-        it_344=it_344->next;
-        i_345++;
-    }
-    memset(&default_value_346,0,sizeof(struct CVALUE*));
-    __result_obj__135 = (struct CVALUE*)come_increment_ref_count(default_value_346);
-    come_call_finalizer(CVALUE_finalize, default_value_346, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(CVALUE_finalize, __result_obj__135, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__135;
+    come_call_finalizer(CVALUE_finalize, __result_obj__138, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__138;
 }
 
 static struct CVALUE* CVALUE_clone(struct CVALUE* self){
-struct CVALUE* __result_obj__136;
+struct CVALUE* __result_obj__139;
+void* __right_value242 = (void*)0;
+struct CVALUE* result_344;
 void* __right_value243 = (void*)0;
-struct CVALUE* result_347;
+char* __dec_obj50;
 void* __right_value244 = (void*)0;
-char* __dec_obj52;
+struct sType* __dec_obj51;
 void* __right_value245 = (void*)0;
-struct sType* __dec_obj53;
+char* __dec_obj52;
 void* __right_value246 = (void*)0;
-char* __dec_obj54;
-void* __right_value247 = (void*)0;
-char* __dec_obj55;
-struct CVALUE* __result_obj__137;
+char* __dec_obj53;
+struct CVALUE* __result_obj__140;
     if(    self==(void*)0    ) {
-        __result_obj__136 = (void*)come_increment_ref_count((void*)0);
-        come_call_finalizer(CVALUE_finalize, __result_obj__136, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-        return __result_obj__136;
+        __result_obj__139 = (void*)come_increment_ref_count((void*)0);
+        come_call_finalizer(CVALUE_finalize, __result_obj__139, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+        return __result_obj__139;
     }
-    result_347=(struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "CVALUE_clone", 3, "struct CVALUE*"));
+    result_344=(struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "CVALUE_clone", 3, "struct CVALUE*"));
     if(    self!=((void*)0)&&self->c_value!=((void*)0)    ) {
-        __dec_obj52=result_347->c_value,
-        result_347->c_value=(char*)come_increment_ref_count((char*)come_memdup(self->c_value, "CVALUE_clone", 4, "char*"));
-        __dec_obj52 = come_decrement_ref_count(__dec_obj52, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+        __dec_obj50=result_344->c_value,
+        result_344->c_value=(char*)come_increment_ref_count((char*)come_memdup(self->c_value, "CVALUE_clone", 4, "char*"));
+        __dec_obj50 = come_decrement_ref_count(__dec_obj50, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
     if(    self!=((void*)0)&&self->type!=((void*)0)    ) {
-        __dec_obj53=result_347->type,
-        result_347->type=(struct sType*)come_increment_ref_count(sType_clone(self->type));
-        come_call_finalizer(sType_finalize, __dec_obj53,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
+        __dec_obj51=result_344->type,
+        result_344->type=(struct sType*)come_increment_ref_count(sType_clone(self->type));
+        come_call_finalizer(sType_finalize, __dec_obj51,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     }
     if(    self!=((void*)0)    ) {
-        result_347->var=self->var;
+        result_344->var=self->var;
     }
     if(    self!=((void*)0)    ) {
-        result_347->right_value_objects=self->right_value_objects;
+        result_344->right_value_objects=self->right_value_objects;
     }
     if(    self!=((void*)0)&&self->c_value_without_right_value_objects!=((void*)0)    ) {
-        __dec_obj54=result_347->c_value_without_right_value_objects,
-        result_347->c_value_without_right_value_objects=(char*)come_increment_ref_count((char*)come_memdup(self->c_value_without_right_value_objects, "CVALUE_clone", 8, "char*"));
-        __dec_obj54 = come_decrement_ref_count(__dec_obj54, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+        __dec_obj52=result_344->c_value_without_right_value_objects,
+        result_344->c_value_without_right_value_objects=(char*)come_increment_ref_count((char*)come_memdup(self->c_value_without_right_value_objects, "CVALUE_clone", 8, "char*"));
+        __dec_obj52 = come_decrement_ref_count(__dec_obj52, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
     if(    self!=((void*)0)&&self->c_value_without_cast_object_value!=((void*)0)    ) {
-        __dec_obj55=result_347->c_value_without_cast_object_value,
-        result_347->c_value_without_cast_object_value=(char*)come_increment_ref_count((char*)come_memdup(self->c_value_without_cast_object_value, "CVALUE_clone", 9, "char*"));
-        __dec_obj55 = come_decrement_ref_count(__dec_obj55, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+        __dec_obj53=result_344->c_value_without_cast_object_value,
+        result_344->c_value_without_cast_object_value=(char*)come_increment_ref_count((char*)come_memdup(self->c_value_without_cast_object_value, "CVALUE_clone", 9, "char*"));
+        __dec_obj53 = come_decrement_ref_count(__dec_obj53, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
-    __result_obj__137 = (struct CVALUE*)come_increment_ref_count(result_347);
-    come_call_finalizer(CVALUE_finalize, result_347, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    come_call_finalizer(CVALUE_finalize, __result_obj__137, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
-    return __result_obj__137;
+    __result_obj__140 = (struct CVALUE*)come_increment_ref_count(result_344);
+    come_call_finalizer(CVALUE_finalize, result_344, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    come_call_finalizer(CVALUE_finalize, __result_obj__140, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 1/* no_free */, (void*)0);
+    return __result_obj__140;
 }
 
 void transpiler_clear_last_code(struct sInfo* info){
-char* __dec_obj56;
-char* __dec_obj57;
-    __dec_obj56=info->module->mLastCode,
+char* __dec_obj54;
+char* __dec_obj55;
+    __dec_obj54=info->module->mLastCode,
     info->module->mLastCode=((void*)0);
-    __dec_obj56 = come_decrement_ref_count(__dec_obj56, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
-    __dec_obj57=info->module->mLastCode2,
+    __dec_obj54 = come_decrement_ref_count(__dec_obj54, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+    __dec_obj55=info->module->mLastCode2,
     info->module->mLastCode2=((void*)0);
-    __dec_obj57 = come_decrement_ref_count(__dec_obj57, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+    __dec_obj55 = come_decrement_ref_count(__dec_obj55, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
 }
 

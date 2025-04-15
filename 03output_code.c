@@ -883,6 +883,31 @@ void add_come_code_at_come_struct_header(sInfo* info, string id, const char* msg
     }
 }
 
+bool is_contained_generics_funcstion(sFun* fun, sInfo* info=info)
+{
+    foreach(it, fun->mParamTypes) {
+        sType*% type = clone it;
+        
+        if(type->mNoSolvedGenericsType) {
+            type = type->mNoSolvedGenericsType;
+        }
+        if(is_contained_generics_class(type, info)) {
+            return true;
+        }
+    }
+    sType*% result_type = fun->mResultType;
+    
+    if(result_type->mNoSolvedGenericsType) {
+        result_type = result_type->mNoSolvedGenericsType;
+    }
+    
+    if(is_contained_generics_class(result_type, info)) {
+        return true;
+    }
+    
+    return false;
+}
+
 bool output_source_file(sInfo* info)
 {
     sFun* main_fun = info->funcs[s"main"]??;
@@ -893,7 +918,7 @@ bool output_source_file(sInfo* info)
         }
     }
     
-    if(main_module) {
+    if(main_module) {   // uniq function is compiled the last
         foreach(it, info.uniq_funcs) {
             sFun* it2 = info.uniq_funcs[string(it)];
             sFun*% new_fun = compile_uniq_function(it2, info);
@@ -927,28 +952,9 @@ bool output_source_file(sInfo* info)
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[string(it)];
         
-        bool contained_method_generics = false;
-        foreach(it3, it2->mParamTypes) {
-            sType*% type = clone it3;
-            
-            if(type->mNoSolvedGenericsType) {
-                type = type->mNoSolvedGenericsType;
-            }
-            if(is_contained_method_generics_types(type, info)) {
-                contained_method_generics = true;
-            }
-        }
-        sType*% result_type = it2->mResultType;
-        
-        if(result_type->mNoSolvedGenericsType) {
-            result_type = result_type->mNoSolvedGenericsType;
-        }
-        
-        if(is_contained_method_generics_types(result_type, info)) {
-            contained_method_generics = true;
-        }
+        bool contained_generics = is_contained_generics_funcstion(it2);
 
-        if(!contained_method_generics) {
+        if(!contained_generics) {
             string header = header_function(it2, info);
             
             if(it2->mInline) {
@@ -970,8 +976,11 @@ bool output_source_file(sInfo* info)
     fprintf(f, "// inline function\n");
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[string(it)];
-        
-        if(it2->mInline) {
+        bool contained_generics = is_contained_generics_funcstion(it2);
+
+        if(contained_generics) {
+        }
+        else if(it2->mInline) {
             string output = output_function(it2, info);
             fprintf(f, "%s", output);
         }
@@ -983,41 +992,22 @@ bool output_source_file(sInfo* info)
     foreach(it, info.funcs) {
         sFun* it2 = info.funcs[string(it)];
         
-        bool contained_method_generics = false;
-        foreach(it3, it2->mParamTypes) {
-            sType*% type = clone it3;
-            
-            if(type->mNoSolvedGenericsType) {
-                type = type->mNoSolvedGenericsType;
-            }
-            if(is_contained_method_generics_types(type, info)) {
-                contained_method_generics = true;
-            }
-        }
-        sType*% result_type = it2->mResultType;
-        
-        if(result_type->mNoSolvedGenericsType) {
-            result_type = result_type->mNoSolvedGenericsType;
-        }
-        
-        if(is_contained_method_generics_types(result_type, info)) {
-            contained_method_generics = true;
-        }
+        bool contained_generics = is_contained_generics_funcstion(it2);
 
-        if(!contained_method_generics) {
-            if(it2->mExternal) {
-            }
-            else if(!main_module && it2->mUniq) {
-            }
-            else if(it2->mInline) {
-            }
-            else {
-                string output = output_function(it2, info);
-                
-                fprintf(f, "%s", output);
-                
-                fprintf(f, "\n");
-            }
+        if(contained_generics) {
+        }
+        else if(it2->mExternal) {
+        }
+        else if(!main_module && it2->mUniq) {
+        }
+        else if(it2->mInline) {
+        }
+        else {
+            string output = output_function(it2, info);
+            
+            fprintf(f, "%s", output);
+            
+            fprintf(f, "\n");
         }
     }
     

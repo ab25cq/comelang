@@ -19,7 +19,7 @@ void output_struct(sClass* klass, sInfo* info)
     foreach(it, klass.mFields) {
         var name, type = it;
             
-        if(is_contained_method_generics_types(type, info) || is_contained_generics_types(type, info)) {
+        if(is_contained_generics_class(type, info)) {
             existance_generics = true;
         }
         
@@ -75,54 +75,6 @@ void output_struct_come_header(sClass* klass, sInfo* info)
     
     string id = string(klass.mName);
     add_come_code_at_come_struct_header(info, id, "%s", buf.to_string());
-}
-
-bool is_contained_generics_types(sType* type, sInfo* info)
-{
-    sType* type2 = type->mNoSolvedGenericsType;
-    
-    if(type2 && is_contained_generics_types(type2, info)) {
-        return true;
-    }
-    
-    sClass* klass = type->mClass;
-    
-    if(klass->mGenerics) {
-        return true;
-    }
-    for(int i=0; i<type->mGenericsTypes.length(); i++) {
-        bool result = is_contained_generics_types(type->mGenericsTypes[i], info);
-        
-        if(result) {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-bool is_contained_method_generics_types(sType* type, sInfo* info)
-{
-    sType* type2 = type->mNoSolvedGenericsType;
-    
-    if(type2 && is_contained_method_generics_types(type2, info)) {
-        return true;
-    }
-    
-    sClass* klass = type->mClass;
-    
-    if(klass->mMethodGenerics) {
-        return true;
-    }
-    for(int i=0; i<type->mGenericsTypes.length(); i++) {
-        bool result = is_contained_method_generics_types(type->mGenericsTypes[i], info);
-        
-        if(result) {
-            return true;
-        }
-    }
-    
-    return false;
 }
 
 bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
