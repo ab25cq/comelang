@@ -1915,14 +1915,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
                 if(info.generics_type_names[i] === type_name) {
-                    result_type = new sType(xsprintf("generics_type%d", i));
+                    result_type = new sType(xsprintf("__generics_type%d", i));
                 }
             }
         }
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
                 if(info.method_generics_type_names[i] === type_name) {
-                    result_type = new sType(xsprintf("mgenerics_type%d", i));
+                    result_type = new sType(xsprintf("__mgenerics_type%d", i));
                 }
             }
         }
@@ -1989,14 +1989,14 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
                 if(info.generics_type_names[i] === type_name) {
-                    result_type = new sType(xsprintf("generics_type%d", i));
+                    result_type = new sType(xsprintf("__generics_type%d", i));
                 }
             }
         }
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
                 if(info.method_generics_type_names[i] === type_name) {
-                    result_type = new sType(xsprintf("mgenerics_type%d", i));
+                    result_type = new sType(xsprintf("__mgenerics_type%d", i));
                 }
             }
         }
@@ -2183,7 +2183,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.generics_type_names.contained(type_name)) {
             for(int i=0; i<info.generics_type_names.length(); i++) {
                 if(info.generics_type_names[i] === type_name) {
-                    type = new sType(xsprintf("generics_type%d", i));
+                    type = new sType(xsprintf("__generics_type%d", i));
                 }
             }
             
@@ -2213,7 +2213,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else if(info.method_generics_type_names.contained(type_name)) {
             for(int i=0; i<info.method_generics_type_names.length(); i++) {
                 if(info.method_generics_type_names[i] === type_name) {
-                    type = new sType(xsprintf("mgenerics_type%d", i));
+                    type = new sType(xsprintf("__mgenerics_type%d", i));
                 }
             }
             
@@ -2657,8 +2657,8 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     }
     else if(type->mException) {
         sType*% type2 = new sType(s"tuple2");
-        type2->mGenericsTypes[0] = new sType(s"generics_type0");
-        type2->mGenericsTypes[1] = new sType(s"generics_type1");
+        type2->mGenericsTypes[0] = new sType(s"__generics_type0");
+        type2->mGenericsTypes[1] = new sType(s"__generics_type1");
         type2->mPointerNum = 1;
         type2->mHeap = true;
         
