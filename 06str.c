@@ -402,7 +402,7 @@ class sListNode extends sNodeBase
         sType*% result_type = clone fun->mResultType;
         result_type->mStatic = false;
         
-        sType* type = list_type;
+        sType*% type = list_type;
         
         CVALUE*% obj_value = new CVALUE();
         
@@ -850,7 +850,7 @@ class sMapNode extends sNodeBase
         sType*% result_type = clone fun->mResultType;
         result_type->mStatic = false;
         
-        sType* type = map_type;
+        sType*% type = map_type;
         
         CVALUE*% obj_value = new CVALUE();
         

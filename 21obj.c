@@ -17,7 +17,7 @@ class sNewNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sType* type = self.type;
+        sType*% type = self.type;
         list<tup:string, sNode*%>*% initializer = self.initializer;
         
         CVALUE*% come_value = new CVALUE();
@@ -404,7 +404,7 @@ class sSizeOfNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sType* type = self.type;
+        sType*% type = self.type;
         
         CVALUE*% come_value = new CVALUE();
         
@@ -482,7 +482,7 @@ class sTypeOfNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sType* type = self.type;
+        sType*% type = self.type;
         
         CVALUE*% come_value = new CVALUE();
     
@@ -615,7 +615,7 @@ class sAlignOfNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sType* type = self.type;
+        sType*% type = self.type;
         
         CVALUE*% come_value = new CVALUE();
         
@@ -691,7 +691,7 @@ class sAlignOfNode2 extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sType* type = self.type;
+        sType*% type = self.type;
         
         CVALUE*% come_value = new CVALUE();
         
@@ -767,7 +767,7 @@ class sAlignAsNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        sType* type = self.type;
+        sType*% type = self.type;
         
         CVALUE*% come_value = new CVALUE();
         
@@ -1099,7 +1099,7 @@ class sGCDecNode extends sNodeBase
         
         CVALUE*% come_value = get_value_from_stack(-1, info);
         
-        sType* type = come_value.type;
+        sType*% type = come_value.type;
         
         if(come_value.type.mHeap && come_value.type.mPointerNum > 0) {
             decrement_ref_count_object(type, come_value.c_value, info);
@@ -1226,7 +1226,7 @@ class sGCDecNoFreeNode extends sNodeBase
         
         CVALUE*% come_value = get_value_from_stack(-1, info);
         
-        sType* type = come_value.type;
+        sType*% type = come_value.type;
         
         if(type->mHeap && type->mPointerNum > 0) {
             decrement_ref_count_object(type, come_value.c_value, info, no_free:true);

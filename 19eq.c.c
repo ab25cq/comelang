@@ -2702,7 +2702,7 @@ memset(&calling_fun_6, 0, sizeof(_Bool));
         calling_fun_6=(_Bool)0;
     }
     else {
-        calling_fun_6=operator_overload_fun_self(type_4,fun_name_5,(struct sNode*)come_increment_ref_count(left_1),left_value_3,info);
+        calling_fun_6=operator_overload_fun_self((struct sType*)come_increment_ref_count(type_4),fun_name_5,(struct sNode*)come_increment_ref_count(left_1),left_value_3,info);
     }
     if(    !calling_fun_6    ) {
         come_value_7=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "19eq.c", 41, "struct CVALUE*"))));
@@ -3531,7 +3531,7 @@ memset(&calling_fun_44, 0, sizeof(_Bool));
         calling_fun_44=(_Bool)0;
     }
     else {
-        calling_fun_44=operator_overload_fun_self(type_42,fun_name_43,(struct sNode*)come_increment_ref_count(left_39),left_value_41,info);
+        calling_fun_44=operator_overload_fun_self((struct sType*)come_increment_ref_count(type_42),fun_name_43,(struct sNode*)come_increment_ref_count(left_39),left_value_41,info);
     }
     if(    !calling_fun_44    ) {
         come_value_45=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "19eq.c", 94, "struct CVALUE*"))));

@@ -2276,9 +2276,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
             }
             
-            if(exception_) {
-            }
-            else if(is_contained_generics_class(type, info)) {
+            if(is_contained_generics_class(type, info)) {
                 type = solve_generics(type, info.generics_type, info);
             }
             else {
@@ -2543,9 +2541,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 }
             }
             
-            if(exception_) {
-            }
-            else if(is_contained_generics_class(type, info)) {
+            if(is_contained_generics_class(type, info)) {
                 type = solve_generics(type, info.generics_type, info);
             }
             else {

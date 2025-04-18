@@ -3507,6 +3507,8 @@ _Bool __result_obj__76;
             come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value24, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
             __result_obj__45 = (_Bool)0;
             come_call_finalizer(sClass_finalize, generics_class_78, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+            come_call_finalizer(sType_finalize, type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+            come_call_finalizer(sType_finalize, generics_type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (new_name_75 = come_decrement_ref_count(new_name_75, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             return __result_obj__45;
         }
@@ -3519,7 +3521,7 @@ _Bool __result_obj__76;
             multiple_assign_var3=it_109;
             name_110=(char*)come_increment_ref_count(multiple_assign_var3->v1);
             type_111=(struct sType*)come_increment_ref_count(multiple_assign_var3->v2);
-            new_type_112=(struct sType*)come_increment_ref_count(solve_generics(type_111,generics_type,info));
+            new_type_112=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(type_111),(struct sType*)come_increment_ref_count(generics_type),info));
             list$1tuple2$2char$phsType$ph$ph_push_back(new_class_106->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 103, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count((char*)come_memdup(name_110, "14struct.c", 103, "char*")),(struct sType*)come_increment_ref_count(sType_clone(new_type_112)))));
             (name_110 = come_decrement_ref_count(name_110, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             come_call_finalizer(sType_finalize, type_111, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -3549,6 +3551,8 @@ _Bool __result_obj__76;
         list$1sType$ph_reset(type->mGenericsTypes);
     }
     __result_obj__76 = (_Bool)1;
+    come_call_finalizer(sType_finalize, type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+    come_call_finalizer(sType_finalize, generics_type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     (new_name_75 = come_decrement_ref_count(new_name_75, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     return __result_obj__76;
 }

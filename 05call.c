@@ -1239,7 +1239,7 @@ class sFunCallNode extends sNodeBase
             
             i = 0;
             foreach(it, param_types) {
-                sType* param_type = it;
+                sType*% param_type = dummy_heap it;
                 
                 if(i == 0) {
                     string param_name = xsprintf("parent");

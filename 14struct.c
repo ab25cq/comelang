@@ -77,7 +77,7 @@ void output_struct_come_header(sClass* klass, sInfo* info)
     add_come_code_at_come_struct_header(info, id, "%s", buf.to_string());
 }
 
-bool output_generics_struct(sType* type, sType* generics_type, sInfo* info)
+bool output_generics_struct(sType*% type, sType*% generics_type, sInfo* info)
 {
     string new_name = create_generics_name(type, info);
     

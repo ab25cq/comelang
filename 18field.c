@@ -1,6 +1,6 @@
 #include "common.h"
 
-string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, sInfo* info=info)
+string, sFun*,sGenericsFun* get_operator_function(sType*% type, char* fun_name, sInfo* info=info)
 {
     string fun_name2 = null;
     sFun* operator_fun = null;
@@ -59,7 +59,7 @@ string, sFun*,sGenericsFun* get_operator_function(sType* type, char* fun_name, s
     return (fun_name2, operator_fun,generics_fun);
 }
 
-bool operator_overload_fun2(sType* type, char* fun_name, sNode*% left_node, sNode*% middle_node, sNode*% right_node, CVALUE* left_value, CVALUE* middle_value, CVALUE* right_value, sInfo* info)
+bool operator_overload_fun2(sType*% type, char* fun_name, sNode*% left_node, sNode*% middle_node, sNode*% right_node, CVALUE* left_value, CVALUE* middle_value, CVALUE* right_value, sInfo* info)
 {
     sType*% generics_type = clone type;
     
@@ -441,26 +441,29 @@ class sLoadFieldNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        
         sType*% left_type2 = left_value.type;
         
+        sType*% left_type3;
         if(left_type2.mNoSolvedGenericsType) {
-            left_type2 = left_type2.mNoSolvedGenericsType;
+            left_type3 = left_type2.mNoSolvedGenericsType;
         }
-        if(left_type2.mClass.mName === "tuple1" || left_type2.mClass.mName === "tuple2" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple3" || left_type2.mClass.mName === "tuple4" || left_type2.mClass.mName === "tuple5")
+        else {
+            left_type3 = left_type2;
+        }
+        if(left_type3.mClass.mName === "tuple1" || left_type3.mClass.mName === "tuple2" || left_type3.mClass.mName === "tuple3" || left_type3.mClass.mName === "tuple3" || left_type3.mClass.mName === "tuple4" || left_type3.mClass.mName === "tuple5")
         {
-            for(int i=0; i<left_type2.mGenericsTypes.length(); i++) {
-                if(name === left_type2.mGenericsTypes[i].mTupleName) {
+            for(int i=0; i<left_type3.mGenericsTypes.length(); i++) {
+                if(name === left_type3.mGenericsTypes[i].mTupleName) {
                     name = xsprintf("v%d", i+1);
                 }
             }
         }
         
-        sType* left_type = left_value.type;
+        sType*% left_type = left_value.type;
         
-        sType*% left_type2 = solve_generics(left_type, left_type, info);
+        sType*% left_type3 = solve_generics(left_type, left_type, info);
         
-        sClass* klass = left_type2->mClass;
+        sClass* klass = left_type3->mClass;
         klass = info.classes[string(klass->mName)]??;
         
         sType*% field_type = null;
@@ -615,7 +618,7 @@ class sStoreArrayNode extends sNodeBase
         
         CVALUE*% left_value = get_value_from_stack(-1, info);
         
-        sType* left_type = left_value.type;
+        sType*% left_type = left_value.type;
         
         if(left_type->mImmutable) {
             err_msg(info, "Immutable object can't change the elements");
@@ -842,7 +845,7 @@ class sLoadArrayNode extends sNodeBase
             come_value.type = clone result_type;
             come_value.var = null;
             
-            come_value.type = solve_generics(come_value.type, info->generics_type, info);
+            come_value.type = solve_generics(clone come_value.type, info->generics_type, info);
             
             info.stack.push_back(come_value);
             

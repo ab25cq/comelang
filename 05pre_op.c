@@ -1,6 +1,6 @@
 #include "common.h"
 
-bool operator_overload_fun_self(sType* type, char* fun_name, sNode*% node, CVALUE* left_value, sInfo* info)
+bool operator_overload_fun_self(sType*% type, char* fun_name, sNode*% node, CVALUE* left_value, sInfo* info)
 {
     sType*% generics_type = clone type;
     if(generics_type->mNoSolvedGenericsType) {

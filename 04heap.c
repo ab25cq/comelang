@@ -23,7 +23,7 @@ void std_move(sType* left_type, sType* right_type, CVALUE* right_value, sInfo* i
     right_value.c_value = increment_ref_count_object(right_value.type, right_value.c_value, info);
 }
 
-sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
+sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
 {
     sType*% result = clone type;
     if(generics_type == null) {
@@ -43,7 +43,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
         result.mParamTypes.reset();
 
         foreach(it, type->mParamTypes) {
-            sType*% new_param_type = solve_generics(it, generics_type, info);
+            sType*% new_param_type = solve_generics(dummy_heap it, generics_type, info);
 
             result.mParamTypes.push_back(new_param_type);
         }
@@ -180,7 +180,7 @@ sType*% solve_generics(sType* type, sType* generics_type, sInfo* info)
     else {
         result.mGenericsTypes.reset();
         foreach(it, type->mGenericsTypes) {
-            var type = solve_generics(it, generics_type, info);
+            var type = solve_generics(dummy_heap it, generics_type, info);
             result->mGenericsTypes.push_back(type);
         }
         
@@ -354,7 +354,7 @@ string increment_ref_count_object(sType* type, char* obj, sInfo* info)
     return xsprintf("(%s)come_increment_ref_count(%s)", type_name, obj);
 }
 
-void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool no_free=false)
+void decrement_ref_count_object(sType*% type, char* obj, sInfo* info, bool no_free=false)
 {
     if(gComeGC || gComeC) {
         return;
@@ -472,7 +472,7 @@ void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool no_fre
     info.stack = stack_saved;
 }
 
-void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false)
+void free_object(sType*% type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false)
 {
     if(gComeGC || gComeC) {
         return;
@@ -619,7 +619,7 @@ void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo*
     info.stack = stack_saved;
 }
 
-sType*%, string clone_object(sType* type, char* obj, sInfo* info)
+sType*%, string clone_object(sType*% type, char* obj, sInfo* info)
 {
     bool in_clone_object = info.in_clone_object;
     info.in_clone_object = true;
@@ -723,7 +723,7 @@ sType*%, string clone_object(sType* type, char* obj, sInfo* info)
     return (result_type, result);
 }
 
-void on_drop_object(sType* type, char* obj, sInfo* info=info, bool comma=false)
+void on_drop_object(sType*% type, char* obj, sInfo* info=info, bool comma=false)
 {
     if(gComeC) {
         return;

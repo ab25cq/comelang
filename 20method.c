@@ -104,7 +104,7 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     
     int i = 0;
     foreach(it, param_types) {
-        sType* param_type = it;
+        sType*% param_type = dummy_heap it;
         
         if(i == 0) {
             string param_name = xsprintf("parent");
@@ -639,10 +639,10 @@ class sMethodCallNode extends sNodeBase
                     param_types.push_back(clone it);
                 }
                 else {
-                    sType*% it2 = solve_generics(it, info.generics_type, info);
+                    sType*% it2 = solve_generics(dummy_heap it, info.generics_type, info);
                     
                     sType*% no_solved_obj_type = obj_type->mNoSolvedGenericsType;
-                    sType*% it3 = solve_generics(it, no_solved_obj_type, info);
+                    sType*% it3 = solve_generics(dummy_heap it, no_solved_obj_type, info);
                     
                     param_types.push_back(it2);
                 }
@@ -656,7 +656,7 @@ class sMethodCallNode extends sNodeBase
                     }
                     else {
                         sType*% no_solved_obj_type = obj_type->mNoSolvedGenericsType;
-                        sType*% it3 = solve_generics(it, no_solved_obj_type, info);
+                        sType*% it3 = solve_generics(dummy_heap it, no_solved_obj_type, info);
                     }
                     
                     n++;

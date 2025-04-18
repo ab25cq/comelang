@@ -2029,7 +2029,7 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 99
     return inherit(buf2, head, head_sline, info);
 }
 
-string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info)
+string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType*% generics_type, sInfo* info)
 {
     sFun* caller_fun = info->caller_fun;
     info->caller_fun = info->come_fun;
@@ -2676,7 +2676,7 @@ sNode*% parse_function(sInfo* info)
     return (sNode*%)null;
 }
 
-sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_finalizer_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -2756,7 +2756,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
         
         sType*% type2 = solve_generics(type, type, info);
         
-        type = borrow type2;
+        type = type2;
         
         sClass* klass = type->mClass;
         
@@ -2871,7 +2871,7 @@ sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* 
 }
 
 
-sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_equals_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -2888,7 +2888,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
     sClass* klass = type->mClass;
     
@@ -2989,7 +2989,7 @@ sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* inf
     return (equaler, real_fun_name);
 }
 
-sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_operator_not_equals_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -3006,7 +3006,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
     sClass* klass = type->mClass;
     
@@ -3127,7 +3127,7 @@ sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_nam
     return (equaler, real_fun_name);
 }
 
-sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_not_equals_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -3144,7 +3144,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
     sClass* klass = type->mClass;
     
@@ -3262,7 +3262,7 @@ sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo*
     return (equaler, real_fun_name);
 }
 
-sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_operator_equals_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -3279,7 +3279,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
     sClass* klass = type->mClass;
     
@@ -3382,7 +3382,7 @@ sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, s
     return (equaler, real_fun_name);
 }
 
-sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_cloner_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     if(type->mClass->mName === "void") {
         return ((sFun*)null, (string)null);
@@ -3402,7 +3402,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
 //    type->mHeap = true;
     
@@ -3603,7 +3603,7 @@ sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* inf
     return (cloner, real_fun_name);
 }
 
-sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_to_string_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -3620,7 +3620,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
     sClass* klass = type->mClass;
     
@@ -3742,7 +3742,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     return (cloner, real_fun_name);
 }
 
-sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_to_string_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -3761,7 +3761,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
     sClass* klass = type->mClass;
         
@@ -3936,7 +3936,7 @@ sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* 
     return (to_string_fun, real_fun_name);
 }
 
-sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInfo* info)
+sFun*,string create_get_hash_key_automatically(sType*% type, char* fun_name, sInfo* info)
 {
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -3953,7 +3953,7 @@ sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInf
     
     sType*% type2 = solve_generics(type, type, info);
     
-    type = borrow type2;
+    type = type2;
     
     sClass* klass = type->mClass;
     
@@ -4178,7 +4178,7 @@ sFun*% compile_uniq_function(sFun* fun, sInfo* info=info)
     return fun2;
 }
 
-bool create_equals_method(sType* type, sInfo* info)
+bool create_equals_method(sType*% type, sInfo* info)
 {
     if(type->mNoSolvedGenericsType) {
         type = type->mNoSolvedGenericsType;
@@ -4255,7 +4255,7 @@ bool create_equals_method(sType* type, sInfo* info)
     return true;
 }
 
-bool create_operator_equals_method(sType* type, sInfo* info)
+bool create_operator_equals_method(sType*% type, sInfo* info)
 {
     if(type->mNoSolvedGenericsType) {
         type = type->mNoSolvedGenericsType;
@@ -4330,7 +4330,7 @@ bool create_operator_equals_method(sType* type, sInfo* info)
     return true;
 }
 
-bool create_operator_not_equals_method(sType* type, sInfo* info)
+bool create_operator_not_equals_method(sType*% type, sInfo* info)
 {
     if(type->mNoSolvedGenericsType) {
         type = type->mNoSolvedGenericsType;

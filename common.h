@@ -792,30 +792,30 @@ bool output_header_file(sInfo* info);
 /////////////////////////////////////////////////////////////////////
 /// 04heap.c ///
 /////////////////////////////////////////////////////////////////////
-void on_drop_object(sType* type, char* obj, sInfo* info=info, bool comma=false);
+void on_drop_object(sType*% type, char* obj, sInfo* info=info, bool comma=false);
 void on_load_object(sType* type, char* obj, sInfo* info=info);
 sType*% solve_method_generics(sType* type, sInfo* info);
 bool existance_free_right_value_objects(sInfo* info);
 bool existance_free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
 void std_move(sType* left_type, sType* right_type, CVALUE* right_value, sInfo* info=info, bool no_delete_from_right_value_objects=false);
 string append_stackframe(char* c_value, sType* type, sInfo* info);
-bool create_equals_method(sType* type, sInfo* info);
-bool create_operator_equals_method(sType* type, sInfo* info);
-bool create_operator_not_equals_method(sType* type, sInfo* info);
-sType*% solve_generics(sType* type, sType* generics_type, sInfo* info);
+bool create_equals_method(sType*% type, sInfo* info);
+bool create_operator_equals_method(sType*% type, sInfo* info);
+bool create_operator_not_equals_method(sType*% type, sInfo* info);
+sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info);
 sVar* get_variable_from_table(sVarTable* table, char* name);
 void free_objects_on_return(sBlock* current_block, sInfo* info, sVar* ret_value, bool top_block);
 void free_objects_of_match_lv_tables(sInfo* info);
 void free_objects_on_break(sInfo* info);
-void free_object(sType* type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false);
-sType*%, string clone_object(sType* type, char* obj, sInfo* info);
+void free_object(sType*% type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false);
+sType*%, string clone_object(sType*% type, char* obj, sInfo* info);
 void free_right_value_objects(sInfo* info, bool comma=false);
 void free_objects(sVarTable* table, sVar* ret_value, sInfo* info);
 void append_object_to_right_values(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null, sVar* obj_var=null);
         
 void remove_object_from_right_values(int right_value_num, sInfo* info);
 string increment_ref_count_object(sType* type, char* obj, sInfo* info);
-void decrement_ref_count_object(sType* type, char* obj, sInfo* info, bool no_free=false);
+void decrement_ref_count_object(sType*% type, char* obj, sInfo* info, bool no_free=false);
 
 /////////////////////////////////////////////////////////////////////
 /// 05function.c ///
@@ -828,7 +828,7 @@ string,sGenericsFun* make_method_generics_function(string fun_name, list<sType*%
 sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info);
 sNode*% post_position_operator(sNode*% node, sInfo* info);
 bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sInfo* info);
-bool operator_overload_fun_self(sType* type, char* fun_name, sNode*% node, CVALUE* left_value, sInfo* info);
+bool operator_overload_fun_self(sType*% type, char* fun_name, sNode*% node, CVALUE* left_value, sInfo* info);
 void caller_begin(sInfo* info=info);
 void caller_end(sInfo* info=info);
 sNode*% craete_logical_denial(sNode*% node, sInfo* info);
@@ -846,15 +846,15 @@ sNode*% get_oct_number(sInfo* info);
 sNode*% get_hex_number(bool minus, sInfo* info);
 sNode*% create_int_node(int value, sInfo* info);
 list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false);
-sFun*,string create_pthread_fun(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_finalizer_automatically(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_to_string_automatically(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_cloner_automatically(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_equals_automatically(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_operator_equals_automatically(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_operator_not_equals_automatically(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_not_equals_automatically(sType* type, char* fun_name, sInfo* info);
-sFun*,string create_get_hash_key_automatically(sType* type, char* fun_name, sInfo* info);
+sFun*,string create_pthread_fun(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_finalizer_automatically(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_to_string_automatically(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_cloner_automatically(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_equals_automatically(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_operator_equals_automatically(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_operator_not_equals_automatically(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_not_equals_automatically(sType*% type, char* fun_name, sInfo* info);
+sFun*,string create_get_hash_key_automatically(sType*% type, char* fun_name, sInfo* info);
 string skip_block(sInfo* info=info, bool return_self_at_last=false);
 bool is_contained_generics_class(sType* type, sInfo* info);
 bool is_type_name(char* buf, sInfo* info=info);
@@ -862,7 +862,7 @@ bool parsecmp(char* p2, sInfo* info=info)
 string parse_word(sInfo* info=info);
 string backtrace_parse_word(sInfo* info=info);
 void skip_spaces_and_lf(sInfo* info=info);
-string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType* generics_type, sInfo* info);
+string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sType*% generics_type, sInfo* info);
 
 sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false, bool parse_multiple_type=true, bool in_function_parametor=false);
 tup: sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* info);
@@ -972,7 +972,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 sNode*% parse_struct(string type_name, string struct_attribute, sInfo* info);
 string get_none_generics_name(char* class_name);
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 98;
-bool output_generics_struct(sType* type, sType* generics_type, sInfo* info);
+bool output_generics_struct(sType*% type, sType*% generics_type, sInfo* info);
 void output_struct(sClass* klass, sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
