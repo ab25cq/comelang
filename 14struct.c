@@ -62,7 +62,6 @@ void output_struct_come_header(sClass* klass, sInfo* info)
         
         buf.append_str("    ");
         buf.append_str(make_define_var(type, name,original_type_name:true));
-        //buf.append_str(make_define_var_no_solved(type, name,original_type_name:true));
         buf.append_str(";\n");
     }
         

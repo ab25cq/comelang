@@ -277,8 +277,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
     return result;
 }
 
-int gRightValueNum = 0;
-
 void append_object_to_right_values(CVALUE* come_value, sType*% type, sInfo* info, bool decrement_ref_count=false, sType*% obj_type=null, char* obj_value=null, sVar* obj_var=null)
 {
     if(gComeGC || gComeC) {
@@ -291,8 +289,9 @@ void append_object_to_right_values(CVALUE* come_value, sType*% type, sInfo* info
     var new_value = new sRightValueObject;
     new_value.mType = type;
     new_value.mFreed = false;
-    new_value.mID = gRightValueNum;
-    new_value.mVarName = xsprintf("__right_value%d", gRightValueNum++);
+    static int right_value_num = 0;
+    new_value.mID = right_value_num;
+    new_value.mVarName = xsprintf("__right_value%d", right_value_num++);
     new_value.mFunName = info->come_fun->mName;
     new_value.mBlockLevel = info->block_level;
     new_value.mDecrementRefCount = decrement_ref_count;
@@ -310,7 +309,7 @@ void append_object_to_right_values(CVALUE* come_value, sType*% type, sInfo* info
     info.right_value_objects.push_back(new_value);
     
     if(type->mPointerNum > 0) {
-        string buf = xsprintf("void* __right_value%d = (void*)0;\n", gRightValueNum-1);
+        string buf = xsprintf("void* __right_value%d = (void*)0;\n", right_value_num-1);
         add_come_code_at_function_head(info, buf);
         
         

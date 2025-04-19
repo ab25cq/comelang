@@ -813,7 +813,6 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
     return output.to_string();
 }
 
-
 void add_come_code(sInfo* info, const char* msg, ...)
 {
     if(info->no_output_come_code) {

@@ -1,64 +1,5 @@
 #include "common.h"
 
-string, sFun*,sGenericsFun* get_operator_function(sType*% type, char* fun_name, sInfo* info=info)
-{
-    string fun_name2 = null;
-    sFun* operator_fun = null;
-    sGenericsFun* generics_fun = null;
-    
-    if(type->mNoSolvedGenericsType) {
-        type = type->mNoSolvedGenericsType;
-    }
-    
-    if(type->mGenericsTypes.length() > 0) {
-        string none_generics_name = get_none_generics_name(type.mClass.mName);
-        
-        sType*% obj_type = solve_generics(type, info.generics_type, info);
-        
-        fun_name2 = create_method_name(obj_type, false@no_pointer_name, fun_name, info);
-        string fun_name3 = xsprintf("%s_%s", none_generics_name, fun_name);
-        
-        generics_fun = info.generics_funcs.at(fun_name3, null);
-        
-        if(generics_fun) {
-            sType*% no_solved_type = clone type;
-            if(type->mNoSolvedGenericsType) {
-                no_solved_type = type->mNoSolvedGenericsType;
-            }
-            var name, err = create_generics_fun(string(fun_name2), generics_fun, obj_type, info);
-            
-            if(!err) {
-                exit(1);
-            }
-            
-            operator_fun = info->funcs[name]??;
-        }
-        else {
-            operator_fun = info->funcs[fun_name2]??;
-        }
-    }
-    else {
-        fun_name2 = create_method_name(type, false@no_pointer_name, fun_name, info);
-        
-        int i;
-        for(i=FUN_VERSION_MAX-1; i>=1; i--) {
-            string new_fun_name = xsprintf("%s_v%d", fun_name2, i);
-            operator_fun = info->funcs[new_fun_name]??;
-            
-            if(operator_fun) {
-                fun_name2 = string(new_fun_name);
-                break;
-            }
-        }
-        
-        if(operator_fun == NULL) {
-            operator_fun = info->funcs[fun_name2]??;
-        }
-    }
-    
-    return (fun_name2, operator_fun,generics_fun);
-}
-
 bool operator_overload_fun2(sType*% type, char* fun_name, sNode*% left_node, sNode*% middle_node, sNode*% right_node, CVALUE* left_value, CVALUE* middle_value, CVALUE* right_value, sInfo* info)
 {
     sType*% generics_type = clone type;
@@ -70,11 +11,7 @@ bool operator_overload_fun2(sType*% type, char* fun_name, sNode*% left_node, sNo
     sClass* klass = type->mClass;
     char* class_name = klass->mName;
     
-    sFun* operator_fun = null;
-    string fun_name2 = null;
-    sGenericsFun* generics_fun = null;
-    
-    var fun_name2, operator_fun, generics_fun = get_operator_function(type, fun_name);
+    var fun_name2, operator_fun, generics_fun = get_method(fun_name, type, info);
     
     bool result = false;
     
@@ -638,7 +575,7 @@ class sStoreArrayNode extends sNodeBase
         }
         
         char* fun_name = "operator_store_element";
-        var fun_name2, operator_fun,generics_fun = get_operator_function(left_type, fun_name);
+        var fun_name2, operator_fun, generics_fun = get_method(fun_name, left_type, info);
         
         node_compile(right).elif {
             return false;
