@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar Scr libmbedx509.a CMakeFiles/mbedx509.dir/certs.c.o CMakeFiles/mbedx509.dir/pkcs11.c.o CMakeFiles/mbedx509.dir/x509.c.o CMakeFiles/mbedx509.dir/x509_create.c.o CMakeFiles/mbedx509.dir/x509_crl.c.o CMakeFiles/mbedx509.dir/x509_crt.c.o CMakeFiles/mbedx509.dir/x509_csr.c.o CMakeFiles/mbedx509.dir/x509write_crt.c.o CMakeFiles/mbedx509.dir/x509write_csr.c.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib -no_warning_for_no_symbols -c libmbedx509.a

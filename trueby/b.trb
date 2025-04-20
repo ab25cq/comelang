@@ -1,0 +1,72 @@
+native class Kernel {
+    def puts(str:String);
+}
+
+native class String {
+    def sub(regex:String, string:String):String;
+    def gsub(regex:Regex, string:String):String;
+}
+
+native class Integer {
+    def times();
+}
+
+# comment
+
+class DataA
+{
+    def initialize(a:Integer) {
+        @ruby:String = "RUBY";
+        @ruby2 := "RUBY2"
+        @ruby = "TRUEBY";
+        puts("HELLO");
+    }
+    
+    def fun() {
+        puts(@ruby);
+        puts(@ruby2);
+    }
+}
+
+b:Integer = a:Integer = 123;
+a = 123;
+c:String = "123";
+
+puts(c);
+
+d:="PRE";
+
+puts(d);
+
+data:DataA = DataA.new(1)
+data.fun()
+
+i:=0;
+while (i < 3) {
+    puts("HO!");
+    i = i + 1;
+}
+
+# comment
+
+$x:= "Hello Global Variable";
+
+puts("#{$x}");
+
+3.times() {
+    puts("UHO!");
+}
+
+puts("A,A,A".split(","));
+
+p("NO CHECK TYPE");
+
+xxx:String = "AAA".sub("A", "B");
+
+puts(xxx);
+
+xxx2:String = "AAA".gsub(/A/, "B");
+
+puts(xxx2)
+
+
