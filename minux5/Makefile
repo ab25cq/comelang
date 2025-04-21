@@ -11,7 +11,7 @@ debug:
 	pkill -f qemu-system-riscv64
 
 clean:
-	rm kernel.bin kernel.elf
+	rm kernel.bin kernel.elf core
           
           
 
