@@ -24,6 +24,7 @@ fi
 (cd pico; rm -rf build)
 (cd minux; rm -rf build)
 (cd minux2; rm -rf build)
+(cd minux5; make clean)
 (cd sd; rm -rf build)
 (cd pcre; rm -rf build)
 (cd minux3; make clean)
