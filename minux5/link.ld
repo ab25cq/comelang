@@ -4,15 +4,16 @@ SECTIONS
 {
   /* text: test code section */
   . = 0x80000000;
-  .text : { *(.text) }
+  .text : { *(.text*) }
+  .rodata : { *(.rodata*) }
   /* data: Initialized data segment */
-  .data : { *(.data) }
-  .rodata : { *(.rodata) }
-  .sdata : { *(.sdata) }
-  .debug : { *(.debug) }
+  .data : { *(.data*) }
+  .sdata : { *(.sdata*) }
+  .debug : { *(.debug*) }
   . += 0x8000;
   stack_top = .;
 
   /* End of uninitalized data segement */
   _end = .;
 }
+

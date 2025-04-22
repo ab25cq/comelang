@@ -5,5 +5,3 @@ layout asm
 layout src
 layout regs
 b _start
-list
-

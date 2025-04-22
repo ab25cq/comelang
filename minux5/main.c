@@ -12,7 +12,6 @@ void puts(const char *s) {
 
 int main()
 {
-//    char* gStr = "HELLO WORLD\n";
-//    puts(gStr);
+    puts("HELLO WORLD\n");
     while (1);
 }
