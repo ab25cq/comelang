@@ -1,3 +1,5 @@
+
+
 volatile char *uart = (char *)0x10000000;
 
 void putc(char c) {
