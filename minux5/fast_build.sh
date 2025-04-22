@@ -1,6 +1,13 @@
-sudo apt update
-sudo apt install qemu-system-misc gcc-riscv64-linux-gnu
-sudo apt install gcc-riscv64-unknown-elf 
-sudo apt install gdb-multiarch
+sudo apt install gcc-riscv64-unknown-elf \
+                 binutils-riscv64-unknown-elf \
+                 qemu-system-misc \
+                 make \
+                 git \
+                 build-essential \
+                 gawk \
+                 gdb-multiarch
 
+
+mkdir -p ~/.config/gdb
+echo "add-auto-load-safe-path $(pwd)/.gdbinit" >> ~/.config/gdb/gdbinit
 
