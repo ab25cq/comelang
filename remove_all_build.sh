@@ -28,6 +28,7 @@ fi
 (cd sd; rm -rf build)
 (cd pcre; rm -rf build)
 (cd minux3; make clean)
+(cd minux5; make clean)
 (cd webweb; sh clean_build.sh)
 (cd webweb/cgi-bin; make clean)
 (cd xv6-riscv; make clean)
