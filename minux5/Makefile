@@ -1,13 +1,12 @@
-LIBC_PATH := $(shell riscv64-unknown-elf-gcc -print-libgcc-file-name)
-LIBC_DIR := $(shell dirname $(LIBC_PATH))
+#LIBC_PATH := $(shell riscv64-unknown-elf-gcc -print-libgcc-file-name)
+#LIBC_DIR := $(shell dirname $(LIBC_PATH))
 
 all: kernel.elf
 
 kernel.elf:
 	riscv64-unknown-elf-as -g -o start.o start.s
 	riscv64-unknown-elf-gcc -nostdlib -c -g -O0 -ffreestanding -mcmodel=medany -o main.o main.c
-#	riscv64-unknown-elf-ld -nostdlib -T link.ld -o kernel.elf start.o main.o
-	riscv64-unknown-elf-gcc -T link.ld -nostartfiles -o kernel.elf main.o -L $(LIBC_DIR) -lc -lnosys 
+	riscv64-unknown-elf-ld -g -nostdlib -T link.ld -o kernel.elf start.o main.o
 #	riscv64-unknown-elf-objcopy -O binary kernel.elf kernel.bin
 
 run: kernel.elf
