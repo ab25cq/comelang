@@ -10,100 +10,133 @@ Linker script and memory map
 
 LOAD start.o
 LOAD swtch.o
+LOAD timervec.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000      0x8f2
+.text           0x0000000080000000      0xf68
  *(.text*)
  .text          0x0000000080000000       0x40 start.o
                 0x0000000080000000                _start
  .text          0x0000000080000040       0x74 swtch.o
                 0x0000000080000040                swtch
- .text          0x00000000800000b4      0x83e main.o
-                0x00000000800000b4                putc
-                0x00000000800000ea                puts
-                0x00000000800002aa                vprintf
-                0x00000000800006f6                fprintf
-                0x000000008000074a                printf
-                0x0000000080000796                kinit
-                0x00000000800007ba                freerange
+ .text          0x00000000800000b4       0x18 timervec.o
+                0x00000000800000b4                timervec
+ .text          0x00000000800000cc      0xe9c main.o
+                0x00000000800000cc                putc
+                0x0000000080000102                puts
+                0x00000000800002c2                vprintf
+                0x000000008000070e                fprintf
+                0x0000000080000762                printf
+                0x00000000800007ae                kinit
+                0x00000000800007d6                freerange
                 0x000000008000082e                kfree
-                0x000000008000089e                kalloc
-                0x00000000800008d4                main
+                0x00000000800008a2                kalloc
+                0x00000000800008d8                memset
+                0x0000000080000938                memcmp
+                0x00000000800009bc                memmove
+                0x0000000080000a98                memcpy
+                0x0000000080000acc                strncmp
+                0x0000000080000b56                strncpy
+                0x0000000080000bd8                safestrcpy
+                0x0000000080000c54                strlen
+                0x0000000080000c8a                yield
+                0x0000000080000d12                task1
+                0x0000000080000d2c                task2
+                0x0000000080000d46                alloc_proc
+                0x0000000080000e56                timer_init
+                0x0000000080000e98                timervec_setup
+                0x0000000080000eb8                timer_reset
+                0x0000000080000ee6                timer_handler
+                0x0000000080000f00                enable_timer_interrupts
+                0x0000000080000f3a                main
 
-.rodata         0x00000000800008f8       0x30
+.rodata         0x0000000080000f68       0x1e
  *(.rodata*)
- .rodata        0x00000000800008f8       0x30 main.o
+ .rodata        0x0000000080000f68       0x1e main.o
 
-.rela.dyn       0x0000000080000928        0x0
- .rela.text     0x0000000080000928        0x0 start.o
+.rela.dyn       0x0000000080000f88        0x0
+ .rela.text     0x0000000080000f88        0x0 start.o
 
-.data           0x0000000080000928       0x11
+.data           0x0000000080000f88       0x11
  *(.data*)
- .data          0x0000000080000928        0x0 start.o
- .data          0x0000000080000928        0x0 swtch.o
- .data          0x0000000080000928       0x11 main.o
+ .data          0x0000000080000f88        0x0 start.o
+ .data          0x0000000080000f88        0x0 swtch.o
+ .data          0x0000000080000f88        0x0 timervec.o
+ .data          0x0000000080000f88       0x11 main.o
 
-.sdata          0x0000000080000940        0x8
+.sdata          0x0000000080000fa0        0x8
  *(.sdata*)
- .sdata         0x0000000080000940        0x8 main.o
-                0x0000000080000940                uart
-                0x0000000080008948                . = (. + 0x8000)
-                0x0000000080008948                stack_top = .
-                0x0000000080008948                end = .
+ .sdata         0x0000000080000fa0        0x8 main.o
+                0x0000000080000fa0                uart
+                0x0000000080008fa8                . = (. + 0x8000)
+                0x0000000080008fa8                stack_top = .
+                0x0000000080008fa8                end = .
 OUTPUT(kernel.elf elf64-littleriscv)
 
-.bss            0x0000000080008948       0x78
- .bss           0x0000000080008948        0x0 start.o
- .bss           0x0000000080008948        0x0 swtch.o
- .bss           0x0000000080008948       0x78 main.o
-                0x0000000080008948                cpu
+.bss            0x0000000080008fa8      0x478
+ .bss           0x0000000080008fa8        0x0 start.o
+ .bss           0x0000000080008fa8        0x0 swtch.o
+ .bss           0x0000000080008fa8        0x0 timervec.o
+ .bss           0x0000000080008fa8      0x478 main.o
+                0x0000000080008fa8                cpu
+                0x0000000080009020                gProc
 
-.sbss           0x00000000800089c0        0x8
- .sbss          0x00000000800089c0        0x8 main.o
-                0x00000000800089c0                kmem
+.sbss           0x0000000080009420       0x10
+ .sbss          0x0000000080009420       0x10 main.o
+                0x0000000080009420                kmem
+                0x0000000080009428                gActiveProc
+                0x000000008000942c                gNumProc
 
 .riscv.attributes
-                0x0000000000000000       0x53
+                0x0000000000000000       0x57
  .riscv.attributes
                 0x0000000000000000       0x4c start.o
  .riscv.attributes
                 0x000000000000004c       0x4c swtch.o
  .riscv.attributes
-                0x0000000000000098       0x47 main.o
+                0x0000000000000098       0x50 timervec.o
+ .riscv.attributes
+                0x00000000000000e8       0x4b main.o
 
 .comment        0x0000000000000000       0x22
  .comment       0x0000000000000000       0x22 main.o
                                          0x23 (size before relaxing)
 
-.debug_line     0x0000000000000000      0x752
+.debug_line     0x0000000000000000      0xe2c
  .debug_line    0x0000000000000000       0x45 start.o
  .debug_line    0x0000000000000045       0xe1 swtch.o
- .debug_line    0x0000000000000126      0x62c main.o
+ .debug_line    0x0000000000000126       0x58 timervec.o
+ .debug_line    0x000000000000017e      0xcae main.o
 
-.debug_info     0x0000000000000000      0x666
+.debug_info     0x0000000000000000      0xc22
  .debug_info    0x0000000000000000       0x2e start.o
  .debug_info    0x000000000000002e       0x2e swtch.o
- .debug_info    0x000000000000005c      0x60a main.o
+ .debug_info    0x000000000000005c       0x2e timervec.o
+ .debug_info    0x000000000000008a      0xb98 main.o
 
-.debug_abbrev   0x0000000000000000      0x26a
+.debug_abbrev   0x0000000000000000      0x3d1
  .debug_abbrev  0x0000000000000000       0x14 start.o
  .debug_abbrev  0x0000000000000014       0x14 swtch.o
- .debug_abbrev  0x0000000000000028      0x242 main.o
+ .debug_abbrev  0x0000000000000028       0x14 timervec.o
+ .debug_abbrev  0x000000000000003c      0x395 main.o
 
-.debug_aranges  0x0000000000000000       0x90
+.debug_aranges  0x0000000000000000       0xc0
  .debug_aranges
                 0x0000000000000000       0x30 start.o
  .debug_aranges
                 0x0000000000000030       0x30 swtch.o
  .debug_aranges
-                0x0000000000000060       0x30 main.o
+                0x0000000000000060       0x30 timervec.o
+ .debug_aranges
+                0x0000000000000090       0x30 main.o
 
-.debug_str      0x0000000000000000      0x1cd
- .debug_str     0x0000000000000000      0x1cd start.o
+.debug_str      0x0000000000000000      0x304
+ .debug_str     0x0000000000000000      0x304 start.o
                                          0x2e (size before relaxing)
- .debug_str     0x00000000000001cd       0x2e swtch.o
- .debug_str     0x00000000000001cd      0x1c3 main.o
+ .debug_str     0x0000000000000304       0x2e swtch.o
+ .debug_str     0x0000000000000304       0x31 timervec.o
+ .debug_str     0x0000000000000304      0x2f4 main.o
 
 .debug_line_str
                 0x0000000000000000       0x5a
@@ -111,5 +144,5 @@ OUTPUT(kernel.elf elf64-littleriscv)
                 0x0000000000000000       0x5a main.o
                                          0x82 (size before relaxing)
 
-.debug_frame    0x0000000000000000      0x248
- .debug_frame   0x0000000000000000      0x248 main.o
+.debug_frame    0x0000000000000000      0x658
+ .debug_frame   0x0000000000000000      0x658 main.o

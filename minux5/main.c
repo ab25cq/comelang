@@ -8,6 +8,7 @@ typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int  uint32;
 typedef unsigned long uint64;
+typedef unsigned long uint64_t;
 
 typedef uint64 pde_t;
 
@@ -50,8 +51,12 @@ struct proc
 
   struct proc *parent;         // Parent process
   
-  char* stack[256];
+  char* stack;
 };
+
+#define NPROC 128
+
+struct proc* gProc[NPROC];
 
 #define KERNBASE 0x80000000L
 #define PHYSTOP (KERNBASE + 1024)
@@ -203,9 +208,11 @@ printf(const char *fmt, ...)
   vprintf(1, fmt, ap);
 }
 
+#define HEAP_END (end + PGSIZE * 1024)
+
 void kinit()
 {
-  freerange(end, end + PGSIZE * 3);
+  freerange(end, HEAP_END);
 }
 
 void
@@ -213,10 +220,8 @@ freerange(void *pa_start, void *pa_end)
 {
   char *p;
   p = (char*)PGROUNDUP((uint64)pa_start);
-  for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE) {
-printf("%p\n", p);
+  for(; p + PGSIZE <= HEAP_END; p += PGSIZE) {
     kfree(p);
-printf("%p end\n", p);
   }
 }
 
@@ -225,8 +230,9 @@ kfree(void *pa)
 {
   struct run *r;
 
-  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= HEAP_END) {
       puts("panic");
+  }
 
   r = (struct run*)pa;
 
@@ -247,10 +253,236 @@ kalloc(void)
   return (void*)r;
 }
 
+void*
+memset(void *dst, int c, uint n)
+{
+  char *cdst = (char *) dst;
+  int i;
+  for(i = 0; i < n; i++){
+    cdst[i] = c;
+  }
+  return dst;
+}
+
+int
+memcmp(const void *v1, const void *v2, uint n)
+{
+  const uchar *s1, *s2;
+
+  s1 = v1;
+  s2 = v2;
+  while(n-- > 0){
+    if(*s1 != *s2)
+      return *s1 - *s2;
+    s1++, s2++;
+  }
+
+  return 0;
+}
+
+void*
+memmove(void *dst, const void *src, uint n)
+{
+  const char *s;
+  char *d;
+
+  if(n == 0)
+    return dst;
+  
+  s = src;
+  d = dst;
+  if(s < d && s + n > d){
+    s += n;
+    d += n;
+    while(n-- > 0)
+      *--d = *--s;
+  } else
+    while(n-- > 0)
+      *d++ = *s++;
+
+  return dst;
+}
+
+// memcpy exists to placate GCC.  Use memmove.
+void*
+memcpy(void *dst, const void *src, uint n)
+{
+  return memmove(dst, src, n);
+}
+
+int
+strncmp(const char *p, const char *q, uint n)
+{
+  while(n > 0 && *p && *p == *q)
+    n--, p++, q++;
+  if(n == 0)
+    return 0;
+  return (uchar)*p - (uchar)*q;
+}
+
+char*
+strncpy(char *s, const char *t, int n)
+{
+  char *os;
+
+  os = s;
+  while(n-- > 0 && (*s++ = *t++) != 0)
+    ;
+  while(n-- > 0)
+    *s++ = 0;
+  return os;
+}
+
+// Like strncpy but guaranteed to NUL-terminate.
+char*
+safestrcpy(char *s, const char *t, int n)
+{
+  char *os;
+
+  os = s;
+  if(n <= 0)
+    return os;
+  while(--n > 0 && (*s++ = *t++) != 0)
+    ;
+  *s = 0;
+  return os;
+}
+
+int
+strlen(const char *s)
+{
+  int n;
+
+  for(n = 0; s[n]; n++)
+    ;
+  return n;
+}
+
+int gActiveProc = 0;
+int gNumProc = 0;
+
+void yield()
+{
+    int other_proc = gActiveProc +1;
+    if(other_proc >= gNumProc) {
+        other_proc = 0;
+    }
+    int active_proc = gActiveProc;
+    gActiveProc = other_proc;
+    swtch(&gProc[active_proc]->context, &gProc[other_proc]->context);
+}
+
+void task1()
+{
+    while(1) {
+        puts("TASK1");
+        yield();
+    }
+}
+
+void task2()
+{
+    while(1) {
+        puts("TASK2");
+        yield();
+    }
+}
+
+struct proc* alloc_proc(void (*task)())
+{
+    struct proc* result = kalloc();
+    
+    memset(result, 0, sizeof(struct proc));
+    
+    result->stack = kalloc();
+    
+    result->context.sp = result->stack + PGSIZE;
+    result->context.ra = task;
+    
+    gProc[gNumProc] = result;
+    
+    gNumProc++;
+    
+    return result;
+}
+
+#define MTIMECMP (volatile uint64*)0x02004000
+#define MTIME    (volatile uint64*)0x0200BFF8
+
+// mie: Machine Interrupt Enable Register
+#define MIE_MSIE (1 << 3)   // 
+#define MIE_MTIE (1 << 7)   // 
+#define MIE_MEIE (1 << 11)  // 
+
+// mstatus: Machine Status Register
+#define MSTATUS_MIE (1 << 3) // 
+
+static inline uint64 r_mstatus() {
+  uint64 x;
+  asm volatile("csrr %0, mstatus" : "=r" (x));
+  return x;
+}
+
+static inline void w_mstatus(uint64 x) {
+  asm volatile("csrw mstatus, %0" : : "r" (x));
+}
+static inline uint64_t r_mie() {
+    uint64_t x;
+    asm volatile("csrr %0, mie" : "=r"(x));
+    return x;
+}
+
+static inline void w_mie(uint64_t x) {
+    asm volatile("csrw mie, %0" : : "r"(x));
+}
+
+static inline void w_mtvec(uint64_t x) {
+    asm volatile("csrw mtvec, %0" : : "r"(x));
+}
+
+
+void timer_init() {
+    uint64 now = *MTIME;
+    *MTIMECMP = now + 1000000;  // 
+    // mie 
+    w_mie(r_mie() | MIE_MTIE);
+}
+
+extern void timervec();  // 
+
+void timervec_setup() {
+    w_mtvec((uint64)timervec);
+}
+
+#define TIMER_INTERVAL 1000000  //  100ms 
+
+void timer_reset() {
+    uint64_t now = *MTIME;
+    *MTIMECMP = now + TIMER_INTERVAL;
+}
+
+void timer_handler() {
+    timer_reset();  // mtimecmp
+    yield();        //  
+}
+
+void enable_timer_interrupts() {
+    timervec_setup();  // mtvec 
+    timer_init();      // mtimecmp 
+    w_mie(r_mie() | MIE_MTIE);       // 
+    w_mstatus(r_mstatus() | MSTATUS_MIE); // 
+}
+
 int main()
 {
-    printf("HELLO WORLD %d\n", 123);
     kinit();
-    printf("HELLO WORLD %d\n", 123);
+    
+    alloc_proc(task1);
+    alloc_proc(task2);
+
+    enable_timer_interrupts();
+    
+    task1();
+    
     while (1);
 }

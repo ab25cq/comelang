@@ -6,11 +6,9 @@ all: kernel.elf
 kernel.elf:
 	riscv64-unknown-elf-as -g -o start.o start.s
 	riscv64-unknown-elf-as -g -o swtch.o swtch.s
+	riscv64-unknown-elf-as -g -o timervec.o timervec.s
 	riscv64-unknown-elf-gcc -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
-#	riscv64-unknown-elf-gcc -g -nostdlib -T link.ld -o kernel.elf start.o swtch.o main.o
-#	riscv64-unknown-elf-ld -g -o kernel.elf -T link.ld start.o swtch.o main.o
-#	riscv64-unknown-elf-gcc -g -Wl,--emit-debug-info -nostdlib -T link.ld -o kernel.elf start.o swtch.o main.o
-	riscv64-unknown-elf-gcc -nostdlib -g -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o main.o
+	riscv64-unknown-elf-gcc -nostdlib -g -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o main.o
 
 
 
