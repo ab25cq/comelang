@@ -13,6 +13,66 @@ typedef uint64 pde_t;
 
 static char digits[] = "0123456789ABCDEF";
 
+struct context 
+{
+  uint64 ra;
+  uint64 sp;
+
+  // callee-saved
+  uint64 s0;
+  uint64 s1;
+  uint64 s2;
+  uint64 s3;
+  uint64 s4;
+  uint64 s5;
+  uint64 s6;
+  uint64 s7;
+  uint64 s8;
+  uint64 s9;
+  uint64 s10;
+  uint64 s11;
+};
+
+struct cpu 
+{
+    struct proc *proc;          // The process running on this cpu, or null.
+    struct context context;     // swtch() here to enter scheduler().
+};
+
+struct cpu cpu;
+
+enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+
+struct proc 
+{
+  enum procstate state;        // Process state
+  struct context context;      // swtch() here to run process
+
+  struct proc *parent;         // Parent process
+  
+  char* stack[256];
+};
+
+#define KERNBASE 0x80000000L
+#define PHYSTOP (KERNBASE + 1024)
+
+#define PGSIZE 4096 // bytes per page
+#define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
+#define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
+
+extern char end[]; // first address after kernel.
+                   // defined by kernel.ld.
+
+struct run {
+  struct run *next;
+};
+
+struct {
+  struct run *freelist;
+} kmem;
+
+typedef uint64 pde_t;
+
 volatile char *uart = (char *)0x10000000;
 
 void putc(int fd, char c) {
@@ -143,8 +203,54 @@ printf(const char *fmt, ...)
   vprintf(1, fmt, ap);
 }
 
+void kinit()
+{
+  freerange(end, end + PGSIZE * 3);
+}
+
+void
+freerange(void *pa_start, void *pa_end)
+{
+  char *p;
+  p = (char*)PGROUNDUP((uint64)pa_start);
+  for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE) {
+printf("%p\n", p);
+    kfree(p);
+printf("%p end\n", p);
+  }
+}
+
+void
+kfree(void *pa)
+{
+  struct run *r;
+
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
+      puts("panic");
+
+  r = (struct run*)pa;
+
+  r->next = kmem.freelist;
+  kmem.freelist = r;
+}
+
+void *
+kalloc(void)
+{
+  struct run *r;
+
+  r = kmem.freelist;
+  if(r) {
+    kmem.freelist = r->next;
+  }
+
+  return (void*)r;
+}
+
 int main()
 {
-    printf("HELLO WORLD\n");
+    printf("HELLO WORLD %d\n", 123);
+    kinit();
+    printf("HELLO WORLD %d\n", 123);
     while (1);
 }
