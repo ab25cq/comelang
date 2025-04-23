@@ -1,0 +1,115 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD start.o
+LOAD swtch.o
+LOAD main.o
+                0x0000000080000000                . = 0x80000000
+
+.text           0x0000000080000000      0x120
+ *(.text*)
+ .text          0x0000000080000000       0x40 start.o
+                0x0000000080000000                _start
+ .text          0x0000000080000040       0x74 swtch.o
+                0x0000000080000040                swtch
+ .text          0x00000000800000b4       0x6c main.o
+                0x00000000800000b4                putc
+                0x00000000800000d4                puts
+                0x000000008000010e                main
+
+.rela.dyn       0x0000000080000120        0x0
+ .rela.text     0x0000000080000120        0x0 start.o
+
+.rodata
+ *(.rodata*)
+
+.data           0x0000000080000120       0x11
+ *(.data*)
+ .data          0x0000000080000120        0x0 start.o
+ .data          0x0000000080000120        0x0 swtch.o
+ .data          0x0000000080000120       0x11 main.o
+
+.sdata
+ *(.sdata*)
+
+.bss            0x0000000080000138       0x78
+ *(.bss*)
+ .bss           0x0000000080000138        0x0 start.o
+ .bss           0x0000000080000138        0x0 swtch.o
+ .bss           0x0000000080000138       0x78 main.o
+                0x0000000080000138                cpu
+
+.sbss           0x00000000800001b0        0x8
+ .sbss          0x00000000800001b0        0x8 main.o
+                0x00000000800001b0                kmem
+
+.debug_abbrev   0x0000000000000000      0x1a1
+ *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000       0x14 start.o
+ .debug_abbrev  0x0000000000000014       0x14 swtch.o
+ .debug_abbrev  0x0000000000000028      0x179 main.o
+
+.debug_line     0x0000000000000000      0x1dd
+ *(.debug_line)
+ .debug_line    0x0000000000000000       0x45 start.o
+ .debug_line    0x0000000000000045       0xe1 swtch.o
+ .debug_line    0x0000000000000126       0xb7 main.o
+
+.debug_str      0x0000000000000000      0x14a
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0x14a start.o
+                                         0x2a (size before relaxing)
+ .debug_str     0x000000000000014a       0x2a swtch.o
+ .debug_str     0x000000000000014a      0x135 main.o
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+                0x000000000000827f                . = (. + 0x8000)
+                0x000000000000814a                stack_top = .
+                [!provide]                        PROVIDE (end = .)
+OUTPUT(kernel.elf elf64-littleriscv)
+
+.riscv.attributes
+                0x0000000000000000       0x53
+ .riscv.attributes
+                0x0000000000000000       0x4c start.o
+ .riscv.attributes
+                0x000000000000004c       0x4c swtch.o
+ .riscv.attributes
+                0x0000000000000098       0x47 main.o
+
+.comment        0x0000000000000000       0x22
+ .comment       0x0000000000000000       0x22 main.o
+                                         0x23 (size before relaxing)
+
+.debug_info     0x0000000000000000      0x310
+ .debug_info    0x0000000000000000       0x2e start.o
+ .debug_info    0x000000000000002e       0x2e swtch.o
+ .debug_info    0x000000000000005c      0x2b4 main.o
+
+.debug_aranges  0x0000000000000000       0x90
+ .debug_aranges
+                0x0000000000000000       0x30 start.o
+ .debug_aranges
+                0x0000000000000030       0x30 swtch.o
+ .debug_aranges
+                0x0000000000000060       0x30 main.o
+
+.debug_line_str
+                0x0000000000000000       0x1d
+ .debug_line_str
+                0x0000000000000000       0x1d main.o
+                                         0x41 (size before relaxing)
+
+.debug_frame    0x0000000000000000       0x98
+ .debug_frame   0x0000000000000000       0x98 main.o
