@@ -1,5 +1,7 @@
 #include <stdarg.h>
 
+extern char trampoline[];
+
 typedef unsigned int   uint;
 typedef unsigned short ushort;
 typedef unsigned char  uchar;
@@ -17,7 +19,12 @@ typedef uint64_t pte_t;
 
 typedef pte_t* pagetable_t;
 
+pagetable_t kernel_pagetable;
+
 static char digits[] = "0123456789ABCDEF";
+
+#define TRAMPOLINE  (MAXVA - PGSIZE)
+#define TRAPFRAME   (TRAMPOLINE - PGSIZE)
 
 struct context 
 {
@@ -37,28 +44,6 @@ struct context
   uint64 s9;
   uint64 s10;
   uint64 s11;
-};
-
-struct cpu 
-{
-    struct proc *proc;          // The process running on this cpu, or null.
-    struct context context;     // swtch() here to enter scheduler().
-};
-
-struct cpu cpu;
-
-enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
-
-struct proc 
-{
-  enum procstate state;        // Process state
-  struct context context;      // swtch() here to run process
-
-  struct proc *parent;         // Parent process
-
-  pagetable_t pagetable;
-  
-  char* stack;
 };
 
 struct trapframe {
@@ -99,6 +84,30 @@ struct trapframe {
   /* 272 */ uint64 t5;
   /* 280 */ uint64 t6;
 };
+
+struct cpu 
+{
+    struct proc *proc;          // The process running on this cpu, or null.
+    struct context context;     // swtch() here to enter scheduler().
+};
+
+struct cpu cpu;
+
+enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+
+struct proc 
+{
+  enum procstate state;        // Process state
+  struct context context;      // swtch() here to run process
+
+  struct proc *parent;         // Parent process
+
+  pagetable_t pagetable;
+  struct trapframe* trapframe;
+  
+  char* stack;
+};
+
 #define SATP_SV39 (8L << 60)
 #define SSTATUS_SPP (1L << 8)  // Previous mode, 1=Supervisor, 0=User
 #define SSTATUS_SPIE (1L << 5) // Supervisor Previous Interrupt Enable
@@ -429,24 +438,6 @@ void yield()
     swtch(&gProc[active_proc]->context, &gProc[other_proc]->context);
 }
 
-void task1()
-{
-    while(1) {
-        puts((char*)0x01);
-        puts((char*)0x10);
-        yield();
-    }
-}
-
-void task2()
-{
-    while(1) {
-        puts((char*)0x01);
-        puts((char*)0x12);
-        yield();
-    }
-}
-
 #define MTIMECMP (volatile uint64*)0x02004000
 #define MTIME    (volatile uint64*)0x0200BFF8
 
@@ -522,6 +513,37 @@ void enable_timer_interrupts() {
     w_mstatus(r_mstatus() | MSTATUS_MIE); // 
 }
 
+#define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
+
+void usertrap() {
+puts("TRAP!");
+
+    struct proc *p = cpu.proc;
+    struct trapframe *tf = p->trapframe;
+puts("TRAP:");
+printf("TRAP: a7=%d a0=%d\n", tf->a7, tf->a0);
+
+    uint64 cause;
+    asm volatile("csrr %0, scause" : "=r"(cause));
+
+    if (cause == 8) { // ECALL from U-mode
+        tf->epc += 4; // skip ecall
+
+        if (tf->a7 == 1) { // syscall number 1 = puts
+            char buf[128];
+            copyin(p->pagetable, buf, tf->a0, 127);
+            buf[127] = 0;
+            puts(buf);
+        }
+
+        userret(MAKE_SATP(p->pagetable), r_sstatus(), tf->epc, tf->sp);
+    } else {
+        puts("unexpected trap\n");
+        while (1);
+    }
+}
+
+
 #define PTE_V  0x001  // valid
 #define PTE_R  0x002  // readable
 #define PTE_W  0x004  // writable
@@ -586,6 +608,11 @@ mappages(pagetable_t pagetable, uint64 va, uint64 pa, uint64 size, int perm)
 
   for (;;) {
     pte = walk(pagetable, a, 1);  // alloc=1  
+printf("PTE: %p\n", pte);
+if (pte) {
+uint64 pa = PTE2PA(*pte);
+printf("PA: %p, value at PA: %x\n", pa, *(uint32_t*)pa);
+}
     if (pte == 0)
       return -1;
     if (*pte & PTE_V)
@@ -751,22 +778,39 @@ void exec_user_program(const char* elf_bin, pagetable_t pt, struct trapframe* tf
 */
 
 const uint8_t user_code[] = {
-  0x13, 0x05, 0x00, 0x54,   // li a0, 'T'
-  0x73, 0x00, 0x00, 0x00,   // ecall
-  0x13, 0x05, 0x00, 0x41,   // li a0, 'A'
+
+  0x13, 0x07, 0x00, 0x01,
+
+  // li a0, 'T'
+  0x13, 0x05, 0x00, 0x54,
   0x73, 0x00, 0x00, 0x00,
+
+  0x13, 0x07, 0x00, 0x01,
+  0x13, 0x05, 0x00, 0x41,
+  0x73, 0x00, 0x00, 0x00,
+
+  0x13, 0x07, 0x00, 0x01,
   0x13, 0x05, 0x00, 0x53,
   0x73, 0x00, 0x00, 0x00,
+
+  0x13, 0x07, 0x00, 0x01,
   0x13, 0x05, 0x00, 0x4B,
   0x73, 0x00, 0x00, 0x00,
+
+  0x13, 0x07, 0x00, 0x01,
   0x13, 0x05, 0x00, 0x31,
   0x73, 0x00, 0x00, 0x00,
-  0x13, 0x05, 0x00, 0x0A,   // \n
+
+  0x13, 0x07, 0x00, 0x01,
+  0x13, 0x05, 0x00, 0x0A,
   0x73, 0x00, 0x00, 0x00,
-  0x6F, 0xF0, 0xDF, 0xFF    // j start (PC  -32)
+
+
+  0x6F, 0xF0, 0xDF, 0xFF
 };
 
-struct proc* alloc_proc(void (*task)())
+
+struct proc* alloc_proc()
 {
     struct proc* result = kalloc();
     
@@ -774,8 +818,8 @@ struct proc* alloc_proc(void (*task)())
     
     result->stack = kalloc();
     
-    result->context.sp = result->stack + PGSIZE;
-    result->context.ra = task;
+//    result->context.sp = result->stack + PGSIZE;
+//    result->context.ra = task;
     
     result->pagetable = uvmcreate();
     uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);
@@ -783,36 +827,80 @@ struct proc* alloc_proc(void (*task)())
     //  0x1000  user_func 
     copyout(result->pagetable, 0x1000, user_code, sizeof(user_code));
 
-    // trapframe 
+    // trapframe
     struct trapframe *tf = kalloc();
     memset(tf, 0, sizeof(*tf));
+    result->trapframe = tf;
+    
     tf->epc = 0x1000;
     tf->sp = 0x20000;
+    
+    tf->kernel_satp = MAKE_SATP(kernel_pagetable);
+    tf->kernel_sp = (uint64)(result->stack + PGSIZE);
+    tf->kernel_trap = (uint64)usertrap;
+    tf->kernel_hartid = 0; // OK
+    
+    // TRAPFRAME
+    mappages(result->pagetable, TRAPFRAME, (uint64)tf, PGSIZE,
+             PTE_R | PTE_W | PTE_U);
 
-    uint64 satp = MAKE_SATP(result->pagetable);
-    uint64 sstatus = r_sstatus();
-    sstatus &= ~SSTATUS_SPP;
-    sstatus |= SSTATUS_SPIE;
+    result->trapframe = tf;
+/*
+    result->state = RUNNABLE;
+*/
 
-    userret(satp, sstatus, tf->epc, tf->sp);
-    
-    gProc[gNumProc] = result;
-    
-    gNumProc++;
-    
+    gProc[gNumProc++] = result;
+
     return result;
+}
+
+void scheduler()
+{
+    while (1) {
+puts("7");
+        struct proc* p = gProc[gActiveProc];
+        cpu.proc = p;
+
+        uint64 satp = MAKE_SATP(p->pagetable);
+        uint64 sstatus = r_sstatus();
+        sstatus &= ~SSTATUS_SPP;  // 
+        sstatus |= SSTATUS_SPIE;  // 
+
+        // epc/sp trapframe  userret  restore
+printf("epc=%p sp=%p satp=%lx sstatus=%lx\n", p->trapframe->epc, p->trapframe->sp, satp, sstatus);
+        userret(satp, sstatus, p->trapframe->epc, p->trapframe->sp);
+    }
+}
+
+extern void uservec();
+
+static inline void w_stvec(uint64 x) {
+  asm volatile("csrw stvec, %0" : : "r"(x));
+}
+
+void trapvec_setup() {
+    w_stvec((uint64)uservec);
 }
 
 int main()
 {
     kinit();
     
-    alloc_proc(task1);
-    alloc_proc(task2);
+puts("1");
+    
+    kernel_pagetable = uvmcreate();
+    mappages(kernel_pagetable, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_X | PTE_R);
+puts("2");
+    
+    trapvec_setup();
+puts("4");
+    
+    alloc_proc();
+    alloc_proc();
+puts("5");
 
     enable_timer_interrupts();
+puts("6");
     
-    task1();
-    
-    while (1);
+    scheduler();
 }
