@@ -121,7 +121,7 @@ struct proc
 struct proc* gProc[NPROC];
 
 #define KERNBASE 0x80000000L
-#define PHYSTOP (KERNBASE + 1024)
+#define PHYSTOP (KERNBASE + 128*1024*1024)
 
 #define PGSIZE 4096 // bytes per page
 #define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
@@ -465,6 +465,24 @@ r_sstatus()
   return x;
 }
 
+static inline void w_sstatus(uint64 x)
+{
+    asm volatile("csrw sstatus, %0" : : "r"(x));
+}
+
+void intr_off()
+{
+    uint64 x = r_sstatus();
+    w_sstatus(x & ~SSTATUS_SIE); // SIESupervisor Interrupt Enable
+}
+
+void intr_on()
+{
+    uint64 x = r_sstatus();
+    w_sstatus(x | SSTATUS_SIE); // SIE
+}
+        
+
 static inline void w_mstatus(uint64 x) {
   asm volatile("csrw mstatus, %0" : : "r" (x));
 }
@@ -519,7 +537,7 @@ void enable_timer_interrupts() {
 
 int
 copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len);
-extern void userret();
+extern void userret(uint64 satp, uint64 sstatus, uint64 sepc, uint64 sp);
 
 void usertrap() {
 puts("TRAP!");
@@ -740,7 +758,7 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
   return 0;
 }
 
-const uint8_t user_code[] = {
+const uint8_t user_code[8] = {
   0x13, 0x07, 0x00, 0x01,  // li a7, 1
   0x73, 0x00, 0x00, 0x00,  // ecall
 
@@ -758,7 +776,7 @@ struct proc* alloc_proc()
     uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);
 
     //  0x1000  user_func 
-    copyout(result->pagetable, 0x1000, user_code, sizeof(user_code));
+    copyout(result->pagetable, 0x1000, user_code, sizeof(char)*8);
 
     // trapframe
     struct trapframe *tf = kalloc();
@@ -786,17 +804,34 @@ struct proc* alloc_proc()
 
 void scheduler()
 {
+//    intr_off();
+    
     while (1) {
         struct proc* p = gProc[gActiveProc];
         cpu.proc = p;
 
         uint64 satp = MAKE_SATP(p->pagetable);
+/*
+printf("scheduler2: p=%p p->pagetable=%p\n", p->pagetable, MAKE_SATP(p->pagetable));
+pte_t *pte = walk(p->pagetable, 0x1000, 0);
+if (pte && (*pte & PTE_V)) {
+uint64 pa = (*pte >> 10) << 12;
+uint8_t* pp = (uint8_t*)pa;
+int i;
+for(i=0; i<8; i++) {
+printf("%x\n", *pp);
+pp++;
+}
+
+}
+*/
         uint64 sstatus = r_sstatus();
         sstatus &= ~SSTATUS_SPP;
         sstatus |= SSTATUS_SPIE;
 
         // epc/sp trapframe  userret  restore
-printf("epc=%p sp=%p satp=%lx sstatus=%lx\n", p->trapframe->epc, p->trapframe->sp, satp, sstatus);
+//printf("epc=%p sp=%p satp=%lx sstatus=%lx\n", p->trapframe->epc, p->trapframe->sp, satp, sstatus);
+//        intr_on();
         userret(satp, sstatus, p->trapframe->epc, p->trapframe->sp);
     }
 }
@@ -818,8 +853,8 @@ int main()
     
     alloc_proc();
     alloc_proc();
-
-    enable_timer_interrupts();
+    
+    //enable_timer_interrupts();
     
     scheduler();
 }

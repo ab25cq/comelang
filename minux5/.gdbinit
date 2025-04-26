@@ -7,4 +7,3 @@ layout asm
 layout src
 layout regs
 list
-b main.c:812

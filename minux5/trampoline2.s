@@ -102,6 +102,7 @@ uservec:
         # jump to usertrap(), which does not return
         jr t0
 
+.section .text
 .globl userret
 userret:
     csrw satp, a0 # MMU
