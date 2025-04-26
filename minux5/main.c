@@ -276,21 +276,6 @@ printf(const char *fmt, ...)
 
 #define HEAP_END (end + PGSIZE * 1024)
 
-void kinit()
-{
-  freerange(end, HEAP_END);
-}
-
-void
-freerange(void *pa_start, void *pa_end)
-{
-  char *p;
-  p = (char*)PGROUNDUP((uint64)pa_start);
-  for(; p + PGSIZE <= HEAP_END; p += PGSIZE) {
-    kfree(p);
-  }
-}
-
 void
 kfree(void *pa)
 {
@@ -304,6 +289,21 @@ kfree(void *pa)
 
   r->next = kmem.freelist;
   kmem.freelist = r;
+}
+
+void
+freerange(void *pa_start, void *pa_end)
+{
+  char *p;
+  p = (char*)PGROUNDUP((uint64)pa_start);
+  for(; p + PGSIZE <= HEAP_END; p += PGSIZE) {
+    kfree(p);
+  }
+}
+
+void kinit()
+{
+  freerange(end, HEAP_END);
 }
 
 void *
@@ -427,6 +427,8 @@ strlen(const char *s)
 int gActiveProc = 0;
 int gNumProc = 0;
 
+void            swtch(struct context*, struct context*);
+
 void yield()
 {
     int other_proc = gActiveProc +1;
@@ -515,13 +517,14 @@ void enable_timer_interrupts() {
 
 #define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
 
+int
+copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len);
+extern void userret();
+
 void usertrap() {
 puts("TRAP!");
-
     struct proc *p = cpu.proc;
     struct trapframe *tf = p->trapframe;
-puts("TRAP:");
-printf("TRAP: a7=%d a0=%d\n", tf->a7, tf->a0);
 
     uint64 cause;
     asm volatile("csrr %0, scause" : "=r"(cause));
@@ -530,10 +533,7 @@ printf("TRAP: a7=%d a0=%d\n", tf->a7, tf->a0);
         tf->epc += 4; // skip ecall
 
         if (tf->a7 == 1) { // syscall number 1 = puts
-            char buf[128];
-            copyin(p->pagetable, buf, tf->a0, 127);
-            buf[127] = 0;
-            puts(buf);
+            puts("TRAP!");
         }
 
         userret(MAKE_SATP(p->pagetable), r_sstatus(), tf->epc, tf->sp);
@@ -575,15 +575,12 @@ walk(pagetable_t pagetable, uint64 va, int alloc)
     return 0;
 
   for (int level = 2; level > 0; level--) {
-    // 9  3
     int idx = PX(level, va);
     pte_t *pte = &pagetable[idx];
 
     if (*pte & PTE_V) {
-      // PTE
       pagetable = (pagetable_t)PTE2PA(*pte);
     } else {
-      // PTE
       if (!alloc || (pagetable = (pagetable_t)kalloc()) == 0)
         return 0;
       memset(pagetable, 0, PGSIZE);
@@ -608,18 +605,16 @@ mappages(pagetable_t pagetable, uint64 va, uint64 pa, uint64 size, int perm)
 
   for (;;) {
     pte = walk(pagetable, a, 1);  // alloc=1  
-printf("PTE: %p\n", pte);
-if (pte) {
-uint64 pa = PTE2PA(*pte);
-printf("PA: %p, value at PA: %x\n", pa, *(uint32_t*)pa);
-}
-    if (pte == 0)
+
+    if (pte == 0) {
       return -1;
-    if (*pte & PTE_V)
+    }
+    if (*pte & PTE_V) {
       return -1;  // 
-
+    }
+    
     *pte = PA2PTE(pa) | perm | PTE_V;
-
+    
     if (a == last)
       break;
     a += PGSIZE;
@@ -745,70 +740,11 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
   return 0;
 }
 
-/*
-void syscall() {
-    if (a7 == SYS_puts) {
-        char buf[128];
-        copyin(p->pagetable, buf, p->trapframe->a0, 127);
-        buf[127] = 0;
-        puts(buf); // UART
-    }
-}
-*/
-
-/*
-void exec_user_program(const char* elf_bin, pagetable_t pt, struct trapframe* tf) 
-{
-    Elf64_Ehdr *eh = (Elf64_Ehdr*)elf_bin;
-
-    for (int i = 0; i < eh->e_phnum; i++) {
-        Elf64_Phdr *ph = (Elf64_Phdr*)(elf_bin + eh->e_phoff + i * sizeof(Elf64_Phdr));
-        if (ph->p_type != PT_LOAD)
-            continue;
-
-        uvmalloc(pt, ph->p_vaddr, ph->p_vaddr + ph->p_memsz,
-                 PTE_R | PTE_W | PTE_X | PTE_U);
-
-        copyout(pt, ph->p_vaddr, elf_bin + ph->p_offset, ph->p_filesz);
-    }
-
-    tf->epc = eh->e_entry;
-    tf->sp = USER_STACK_TOP;
-}
-*/
-
 const uint8_t user_code[] = {
+  0x13, 0x07, 0x00, 0x01,  // li a7, 1
+  0x73, 0x00, 0x00, 0x00,  // ecall
 
-  0x13, 0x07, 0x00, 0x01,
-
-  // li a0, 'T'
-  0x13, 0x05, 0x00, 0x54,
-  0x73, 0x00, 0x00, 0x00,
-
-  0x13, 0x07, 0x00, 0x01,
-  0x13, 0x05, 0x00, 0x41,
-  0x73, 0x00, 0x00, 0x00,
-
-  0x13, 0x07, 0x00, 0x01,
-  0x13, 0x05, 0x00, 0x53,
-  0x73, 0x00, 0x00, 0x00,
-
-  0x13, 0x07, 0x00, 0x01,
-  0x13, 0x05, 0x00, 0x4B,
-  0x73, 0x00, 0x00, 0x00,
-
-  0x13, 0x07, 0x00, 0x01,
-  0x13, 0x05, 0x00, 0x31,
-  0x73, 0x00, 0x00, 0x00,
-
-  0x13, 0x07, 0x00, 0x01,
-  0x13, 0x05, 0x00, 0x0A,
-  0x73, 0x00, 0x00, 0x00,
-
-
-  0x6F, 0xF0, 0xDF, 0xFF
 };
-
 
 struct proc* alloc_proc()
 {
@@ -817,9 +753,6 @@ struct proc* alloc_proc()
     memset(result, 0, sizeof(struct proc));
     
     result->stack = kalloc();
-    
-//    result->context.sp = result->stack + PGSIZE;
-//    result->context.ra = task;
     
     result->pagetable = uvmcreate();
     uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);
@@ -845,9 +778,6 @@ struct proc* alloc_proc()
              PTE_R | PTE_W | PTE_U);
 
     result->trapframe = tf;
-/*
-    result->state = RUNNABLE;
-*/
 
     gProc[gNumProc++] = result;
 
@@ -857,14 +787,13 @@ struct proc* alloc_proc()
 void scheduler()
 {
     while (1) {
-puts("7");
         struct proc* p = gProc[gActiveProc];
         cpu.proc = p;
 
         uint64 satp = MAKE_SATP(p->pagetable);
         uint64 sstatus = r_sstatus();
-        sstatus &= ~SSTATUS_SPP;  // 
-        sstatus |= SSTATUS_SPIE;  // 
+        sstatus &= ~SSTATUS_SPP;
+        sstatus |= SSTATUS_SPIE;
 
         // epc/sp trapframe  userret  restore
 printf("epc=%p sp=%p satp=%lx sstatus=%lx\n", p->trapframe->epc, p->trapframe->sp, satp, sstatus);
@@ -878,29 +807,19 @@ static inline void w_stvec(uint64 x) {
   asm volatile("csrw stvec, %0" : : "r"(x));
 }
 
-void trapvec_setup() {
-    w_stvec((uint64)uservec);
-}
-
 int main()
 {
     kinit();
     
-puts("1");
-    
     kernel_pagetable = uvmcreate();
     mappages(kernel_pagetable, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_X | PTE_R);
-puts("2");
     
-    trapvec_setup();
-puts("4");
+    w_stvec((uint64)uservec);
     
     alloc_proc();
     alloc_proc();
-puts("5");
 
     enable_timer_interrupts();
-puts("6");
     
     scheduler();
 }

@@ -7,11 +7,11 @@ kernel.elf:
 	riscv64-unknown-elf-as -g -o start.o start.S
 	riscv64-unknown-elf-as -g -o swtch.o swtch.S
 	riscv64-unknown-elf-as -g -o timervec.o timervec.S
-	riscv64-unknown-elf-gcc -E trampoline.S > trampoline.s
-	riscv64-unknown-elf-as -g -o trampoline.o trampoline.s
-	riscv64-unknown-elf-gcc -c -ffreestanding -nostdlib -static -o user_task.elf user_task.c
+	riscv64-unknown-elf-gcc -E trampoline.S > trampoline2.s
+	riscv64-unknown-elf-as -g -o trampoline.o trampoline2.s
+	riscv64-unknown-elf-gcc -g -c -ffreestanding -nostdlib -static -o user_task.elf user_task.c
 	riscv64-unknown-elf-gcc -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
-	riscv64-unknown-elf-gcc -nostdlib -g -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o trampoline.o main.o
+	riscv64-unknown-elf-gcc -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o trampoline.o main.o
 
 
 
@@ -26,7 +26,7 @@ debug: kernel.elf
 	pkill -f qemu-system-riscv64
 
 clean:
-	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain
+	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o swtch.o timervec.o trampoline.o trampolin2.s
   
           
           

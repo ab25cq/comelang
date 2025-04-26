@@ -15,7 +15,7 @@ LOAD trampoline.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0x18c4
+.text           0x0000000080000000     0x17e2
  *(.text*)
  .text          0x0000000080000000       0x40 start.o
                 0x0000000080000000                _start
@@ -24,16 +24,16 @@ LOAD main.o
  .text          0x00000000800000b4       0x18 timervec.o
                 0x00000000800000b4                timervec
  .text          0x00000000800000cc        0x0 trampoline.o
- .text          0x00000000800000cc     0x17f8 main.o
+ .text          0x00000000800000cc     0x1716 main.o
                 0x00000000800000cc                putc
                 0x0000000080000102                uartputc_sync
                 0x0000000080000122                puts
                 0x00000000800002e2                vprintf
                 0x000000008000072e                fprintf
                 0x0000000080000782                printf
-                0x00000000800007ce                kinit
-                0x00000000800007f6                freerange
-                0x000000008000084e                kfree
+                0x00000000800007ce                kfree
+                0x0000000080000842                freerange
+                0x000000008000089a                kinit
                 0x00000000800008c2                kalloc
                 0x00000000800008f8                memset
                 0x0000000080000958                memcmp
@@ -50,59 +50,58 @@ LOAD main.o
                 0x0000000080000e5e                timer_handler
                 0x0000000080000e78                enable_timer_interrupts
                 0x0000000080000eb2                usertrap
-                0x0000000080000fa8                uvmcreate
-                0x0000000080000fd2                walk
-                0x00000000800010ba                mappages
-                0x00000000800011b8                uvmdealloc
-                0x000000008000126c                uvmalloc
-                0x0000000080001340                uvmcopy
-                0x0000000080001426                copyin
-                0x0000000080001512                copyout
-                0x00000000800015fe                alloc_proc
-                0x000000008000173a                scheduler
-                0x000000008000180e                trapvec_setup
-                0x000000008000182a                main
+                0x0000000080000f62                uvmcreate
+                0x0000000080000f8c                walk
+                0x0000000080001074                mappages
+                0x0000000080001136                uvmdealloc
+                0x00000000800011ea                uvmalloc
+                0x00000000800012be                uvmcopy
+                0x00000000800013a4                copyin
+                0x0000000080001490                copyout
+                0x000000008000157c                alloc_proc
+                0x00000000800016b6                scheduler
+                0x000000008000177e                main
 
-.rodata         0x00000000800018c8      0x122
+.rodata         0x00000000800017e8       0x53
  *(.rodata*)
- .rodata        0x00000000800018c8      0x122 main.o
-                0x0000000080001948                user_code
+ .rodata        0x00000000800017e8       0x53 main.o
 
-.rela.dyn       0x00000000800019f0        0x0
- .rela.text     0x00000000800019f0        0x0 start.o
+.srodata        0x0000000080001840        0x8
+ .srodata       0x0000000080001840        0x8 main.o
+                0x0000000080001840                user_code
 
-.data           0x00000000800019f0       0x11
+.rela.dyn       0x0000000080001848        0x0
+ .rela.text     0x0000000080001848        0x0 start.o
+
+.data           0x0000000080001848       0x11
  *(.data*)
- .data          0x00000000800019f0        0x0 start.o
- .data          0x00000000800019f0        0x0 swtch.o
- .data          0x00000000800019f0        0x0 timervec.o
- .data          0x00000000800019f0        0x0 trampoline.o
- .data          0x00000000800019f0       0x11 main.o
+ .data          0x0000000080001848        0x0 start.o
+ .data          0x0000000080001848        0x0 swtch.o
+ .data          0x0000000080001848        0x0 timervec.o
+ .data          0x0000000080001848        0x0 trampoline.o
+ .data          0x0000000080001848       0x11 main.o
 
-.sdata          0x0000000080001a08        0x8
+.sdata          0x0000000080001860        0x8
  *(.sdata*)
- .sdata         0x0000000080001a08        0x8 main.o
-                0x0000000080001a08                uart
-                0x0000000080009a10                . = (. + 0x8000)
-                0x0000000080009a10                stack_top = .
-                0x0000000080009a10                end = .
-OUTPUT(kernel.elf elf64-littleriscv)
+ .sdata         0x0000000080001860        0x8 main.o
+                0x0000000080001860                uart
 
-.bss            0x0000000080009a10      0x478
- .bss           0x0000000080009a10        0x0 start.o
- .bss           0x0000000080009a10        0x0 swtch.o
- .bss           0x0000000080009a10        0x0 timervec.o
- .bss           0x0000000080009a10        0x0 trampoline.o
- .bss           0x0000000080009a10      0x478 main.o
-                0x0000000080009a10                cpu
-                0x0000000080009a88                gProc
+.bss            0x0000000080001868      0x478
+ *(.bss*)
+ .bss           0x0000000080001868        0x0 start.o
+ .bss           0x0000000080001868        0x0 swtch.o
+ .bss           0x0000000080001868        0x0 timervec.o
+ .bss           0x0000000080001868        0x0 trampoline.o
+ .bss           0x0000000080001868      0x478 main.o
+                0x0000000080001868                cpu
+                0x00000000800018e0                gProc
 
-.sbss           0x0000000080009e88       0x18
- .sbss          0x0000000080009e88       0x18 main.o
-                0x0000000080009e88                kernel_pagetable
-                0x0000000080009e90                kmem
-                0x0000000080009e98                gActiveProc
-                0x0000000080009e9c                gNumProc
+.sbss           0x0000000080001ce0       0x18
+ .sbss          0x0000000080001ce0       0x18 main.o
+                0x0000000080001ce0                kernel_pagetable
+                0x0000000080001ce8                kmem
+                0x0000000080001cf0                gActiveProc
+                0x0000000080001cf4                gNumProc
 
 .riscv.attributes
                 0x0000000000000000       0x57
@@ -117,8 +116,8 @@ OUTPUT(kernel.elf elf64-littleriscv)
  .riscv.attributes
                 0x0000000000000138       0x4b main.o
 
-trampsec        0x0000000000000000      0x148
- trampsec       0x0000000000000000      0x148 trampoline.o
+trampsec        0x0000000000000000       0xc8
+ trampsec       0x0000000000000000       0xc8 trampoline.o
                 0x0000000000000000                trampoline
                 0x0000000000000000                uservec
                 0x00000000000000b0                userret
@@ -127,23 +126,45 @@ trampsec        0x0000000000000000      0x148
  .comment       0x0000000000000000       0x22 main.o
                                          0x23 (size before relaxing)
 
-.debug_line     0x0000000000000000     0x16ad
- .debug_line    0x0000000000000000       0x45 start.o
- .debug_line    0x0000000000000045       0xe1 swtch.o
- .debug_line    0x0000000000000126       0x58 timervec.o
- .debug_line    0x000000000000017e     0x152f main.o
-
-.debug_info     0x0000000000000000     0x14fc
+.debug_info     0x0000000000000000     0x140a
+ *(.debug_info)
  .debug_info    0x0000000000000000       0x2e start.o
  .debug_info    0x000000000000002e       0x2e swtch.o
  .debug_info    0x000000000000005c       0x2e timervec.o
- .debug_info    0x000000000000008a     0x1472 main.o
+ .debug_info    0x000000000000008a     0x1380 main.o
 
-.debug_abbrev   0x0000000000000000      0x40e
+.debug_abbrev   0x0000000000000000      0x400
+ *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000       0x14 start.o
  .debug_abbrev  0x0000000000000014       0x14 swtch.o
  .debug_abbrev  0x0000000000000028       0x14 timervec.o
- .debug_abbrev  0x000000000000003c      0x3d2 main.o
+ .debug_abbrev  0x000000000000003c      0x3c4 main.o
+
+.debug_line     0x0000000000000000     0x1610
+ *(.debug_line)
+ .debug_line    0x0000000000000000       0x45 start.o
+ .debug_line    0x0000000000000045       0xe1 swtch.o
+ .debug_line    0x0000000000000126       0x58 timervec.o
+ .debug_line    0x000000000000017e     0x1492 main.o
+
+.debug_str      0x0000000000000000      0x42c
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0x42c start.o
+                                         0x2e (size before relaxing)
+ .debug_str     0x000000000000042c       0x2e swtch.o
+ .debug_str     0x000000000000042c       0x31 timervec.o
+ .debug_str     0x000000000000042c      0x439 main.o
+
+.debug_line_str
+                0x0000000000000000       0x5a
+ *(.debug_line_str)
+ .debug_line_str
+                0x0000000000000000       0x5a main.o
+                                         0x82 (size before relaxing)
+                0x000000000000805a                . = (. + 0x8000)
+                0x000000000000805a                stack_top = .
+                0x000000000000805a                end = .
+OUTPUT(kernel.elf elf64-littleriscv)
 
 .debug_aranges  0x0000000000000000       0xc0
  .debug_aranges
@@ -155,18 +176,5 @@ trampsec        0x0000000000000000      0x148
  .debug_aranges
                 0x0000000000000090       0x30 main.o
 
-.debug_str      0x0000000000000000      0x443
- .debug_str     0x0000000000000000      0x443 start.o
-                                         0x2e (size before relaxing)
- .debug_str     0x0000000000000443       0x2e swtch.o
- .debug_str     0x0000000000000443       0x31 timervec.o
- .debug_str     0x0000000000000443      0x450 main.o
-
-.debug_line_str
-                0x0000000000000000       0x5a
- .debug_line_str
-                0x0000000000000000       0x5a main.o
-                                         0x82 (size before relaxing)
-
-.debug_frame    0x0000000000000000      0x8b0
- .debug_frame   0x0000000000000000      0x8b0 main.o
+.debug_frame    0x0000000000000000      0x880
+ .debug_frame   0x0000000000000000      0x880 main.o

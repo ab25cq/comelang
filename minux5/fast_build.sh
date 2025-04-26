@@ -24,4 +24,5 @@ then
     echo "add-auto-load-safe-path $(pwd)/.gdbinit" >> ~/.config/gdb/gdbinit
 fi
 
+make clean
 make debug
