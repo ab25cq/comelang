@@ -13,6 +13,42 @@ LOAD swtch.o
 LOAD timervec.o
 LOAD trampoline.o
 LOAD main.o
+
+.debug_info     0x0000000000000000     0x140a
+ *(.debug_info)
+ .debug_info    0x0000000000000000       0x2e start.o
+ .debug_info    0x000000000000002e       0x2e swtch.o
+ .debug_info    0x000000000000005c       0x2e timervec.o
+ .debug_info    0x000000000000008a     0x1380 main.o
+
+.debug_abbrev   0x0000000000000000      0x400
+ *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000       0x14 start.o
+ .debug_abbrev  0x0000000000000014       0x14 swtch.o
+ .debug_abbrev  0x0000000000000028       0x14 timervec.o
+ .debug_abbrev  0x000000000000003c      0x3c4 main.o
+
+.debug_line     0x0000000000000000     0x1610
+ *(.debug_line)
+ .debug_line    0x0000000000000000       0x45 start.o
+ .debug_line    0x0000000000000045       0xe1 swtch.o
+ .debug_line    0x0000000000000126       0x58 timervec.o
+ .debug_line    0x000000000000017e     0x1492 main.o
+
+.debug_str      0x0000000000000000      0x42c
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0x42c start.o
+                                         0x2e (size before relaxing)
+ .debug_str     0x000000000000042c       0x2e swtch.o
+ .debug_str     0x000000000000042c       0x31 timervec.o
+ .debug_str     0x000000000000042c      0x439 main.o
+
+.debug_line_str
+                0x0000000000000000       0x5a
+ *(.debug_line_str)
+ .debug_line_str
+                0x0000000000000000       0x5a main.o
+                                         0x82 (size before relaxing)
                 0x0000000080000000                . = 0x80000000
 
 .text           0x0000000080000000     0x17e2
@@ -95,13 +131,17 @@ LOAD main.o
  .bss           0x0000000080001868      0x478 main.o
                 0x0000000080001868                cpu
                 0x00000000800018e0                gProc
+                0x0000000080009ce0                . = (. + 0x8000)
+                0x0000000080009ce0                stack_top = .
+                0x0000000080009ce0                end = .
+OUTPUT(kernel.elf elf64-littleriscv)
 
-.sbss           0x0000000080001ce0       0x18
- .sbss          0x0000000080001ce0       0x18 main.o
-                0x0000000080001ce0                kernel_pagetable
-                0x0000000080001ce8                kmem
-                0x0000000080001cf0                gActiveProc
-                0x0000000080001cf4                gNumProc
+.sbss           0x0000000080009ce0       0x18
+ .sbss          0x0000000080009ce0       0x18 main.o
+                0x0000000080009ce0                kernel_pagetable
+                0x0000000080009ce8                kmem
+                0x0000000080009cf0                gActiveProc
+                0x0000000080009cf4                gNumProc
 
 .riscv.attributes
                 0x0000000000000000       0x57
@@ -125,46 +165,6 @@ trampsec        0x0000000000000000       0xc8
 .comment        0x0000000000000000       0x22
  .comment       0x0000000000000000       0x22 main.o
                                          0x23 (size before relaxing)
-
-.debug_info     0x0000000000000000     0x140a
- *(.debug_info)
- .debug_info    0x0000000000000000       0x2e start.o
- .debug_info    0x000000000000002e       0x2e swtch.o
- .debug_info    0x000000000000005c       0x2e timervec.o
- .debug_info    0x000000000000008a     0x1380 main.o
-
-.debug_abbrev   0x0000000000000000      0x400
- *(.debug_abbrev)
- .debug_abbrev  0x0000000000000000       0x14 start.o
- .debug_abbrev  0x0000000000000014       0x14 swtch.o
- .debug_abbrev  0x0000000000000028       0x14 timervec.o
- .debug_abbrev  0x000000000000003c      0x3c4 main.o
-
-.debug_line     0x0000000000000000     0x1610
- *(.debug_line)
- .debug_line    0x0000000000000000       0x45 start.o
- .debug_line    0x0000000000000045       0xe1 swtch.o
- .debug_line    0x0000000000000126       0x58 timervec.o
- .debug_line    0x000000000000017e     0x1492 main.o
-
-.debug_str      0x0000000000000000      0x42c
- *(.debug_str)
- .debug_str     0x0000000000000000      0x42c start.o
-                                         0x2e (size before relaxing)
- .debug_str     0x000000000000042c       0x2e swtch.o
- .debug_str     0x000000000000042c       0x31 timervec.o
- .debug_str     0x000000000000042c      0x439 main.o
-
-.debug_line_str
-                0x0000000000000000       0x5a
- *(.debug_line_str)
- .debug_line_str
-                0x0000000000000000       0x5a main.o
-                                         0x82 (size before relaxing)
-                0x000000000000805a                . = (. + 0x8000)
-                0x000000000000805a                stack_top = .
-                0x000000000000805a                end = .
-OUTPUT(kernel.elf elf64-littleriscv)
 
 .debug_aranges  0x0000000000000000       0xc0
  .debug_aranges

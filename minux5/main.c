@@ -274,7 +274,7 @@ printf(const char *fmt, ...)
   vprintf(1, fmt, ap);
 }
 
-#define HEAP_END (end + PGSIZE * 1024)
+#define HEAP_END (end + PGSIZE * 256)
 
 void
 kfree(void *pa)

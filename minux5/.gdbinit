@@ -6,4 +6,5 @@ set disassemble-next-line on
 layout asm
 layout src
 layout regs
-b main
+list
+b main.c:812
