@@ -25,4 +25,4 @@ then
 fi
 
 make clean
-make debug
+make

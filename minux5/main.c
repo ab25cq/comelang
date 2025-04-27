@@ -1,7 +1,5 @@
 #include <stdarg.h>
 
-extern char trampoline[];
-
 typedef unsigned int   uint;
 typedef unsigned short ushort;
 typedef unsigned char  uchar;
@@ -17,14 +15,7 @@ typedef unsigned long uint64_t;
 
 typedef uint64_t pte_t;
 
-typedef pte_t* pagetable_t;
-
-pagetable_t kernel_pagetable;
-
 static char digits[] = "0123456789ABCDEF";
-
-#define TRAMPOLINE  (MAXVA - PGSIZE)
-#define TRAPFRAME   (TRAMPOLINE - PGSIZE)
 
 struct context 
 {
@@ -46,50 +37,19 @@ struct context
   uint64 s11;
 };
 
-struct trapframe {
-  /*   0 */ uint64 kernel_satp;   // kernel page table
-  /*   8 */ uint64 kernel_sp;     // top of process's kernel stack
-  /*  16 */ uint64 kernel_trap;   // usertrap()
-  /*  24 */ uint64 epc;           // saved user program counter
-  /*  32 */ uint64 kernel_hartid; // saved kernel tp
-  /*  40 */ uint64 ra;
-  /*  48 */ uint64 sp;
-  /*  56 */ uint64 gp;
-  /*  64 */ uint64 tp;
-  /*  72 */ uint64 t0;
-  /*  80 */ uint64 t1;
-  /*  88 */ uint64 t2;
-  /*  96 */ uint64 s0;
-  /* 104 */ uint64 s1;
-  /* 112 */ uint64 a0;
-  /* 120 */ uint64 a1;
-  /* 128 */ uint64 a2;
-  /* 136 */ uint64 a3;
-  /* 144 */ uint64 a4;
-  /* 152 */ uint64 a5;
-  /* 160 */ uint64 a6;
-  /* 168 */ uint64 a7;
-  /* 176 */ uint64 s2;
-  /* 184 */ uint64 s3;
-  /* 192 */ uint64 s4;
-  /* 200 */ uint64 s5;
-  /* 208 */ uint64 s6;
-  /* 216 */ uint64 s7;
-  /* 224 */ uint64 s8;
-  /* 232 */ uint64 s9;
-  /* 240 */ uint64 s10;
-  /* 248 */ uint64 s11;
-  /* 256 */ uint64 t3;
-  /* 264 */ uint64 t4;
-  /* 272 */ uint64 t5;
-  /* 280 */ uint64 t6;
-};
 
 struct cpu 
 {
     struct proc *proc;          // The process running on this cpu, or null.
     struct context context;     // swtch() here to enter scheduler().
 };
+struct run {
+  struct run *next;
+};
+
+struct {
+  struct run *freelist;
+} kmem;
 
 struct cpu cpu;
 
@@ -102,19 +62,9 @@ struct proc
 
   struct proc *parent;         // Parent process
 
-  pagetable_t pagetable;
-  struct trapframe* trapframe;
-  
   char* stack;
+  uint64_t mepc;
 };
-
-#define SATP_SV39 (8L << 60)
-#define SSTATUS_SPP (1L << 8)  // Previous mode, 1=Supervisor, 0=User
-#define SSTATUS_SPIE (1L << 5) // Supervisor Previous Interrupt Enable
-#define SSTATUS_UPIE (1L << 4) // User Previous Interrupt Enable
-#define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
-#define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
-#define PTE_FLAGS(pte) ((pte) & 0x3FF)
 
 #define NPROC 128
 
@@ -130,15 +80,6 @@ struct proc* gProc[NPROC];
 extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
 
-struct run {
-  struct run *next;
-};
-
-struct {
-  struct run *freelist;
-} kmem;
-
-typedef uint64 pde_t;
 
 volatile char *uart = (char *)0x10000000;
 
@@ -427,19 +368,6 @@ strlen(const char *s)
 int gActiveProc = 0;
 int gNumProc = 0;
 
-void            swtch(struct context*, struct context*);
-
-void yield()
-{
-    int other_proc = gActiveProc +1;
-    if(other_proc >= gNumProc) {
-        other_proc = 0;
-    }
-    int active_proc = gActiveProc;
-    gActiveProc = other_proc;
-    swtch(&gProc[active_proc]->context, &gProc[other_proc]->context);
-}
-
 #define MTIMECMP (volatile uint64*)0x02004000
 #define MTIME    (volatile uint64*)0x0200BFF8
 
@@ -469,17 +397,23 @@ static inline void w_sstatus(uint64 x)
 {
     asm volatile("csrw sstatus, %0" : : "r"(x));
 }
+#define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
+#define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
 
-void intr_off()
+static inline void intr_on()
 {
-    uint64 x = r_sstatus();
-    w_sstatus(x & ~SSTATUS_SIE); // SIESupervisor Interrupt Enable
+    uint64_t x;
+    asm volatile ("csrr %0, mstatus" : "=r" (x));
+    x |= (1L << 3);  // MIEをセット
+    asm volatile ("csrw mstatus, %0" : : "r" (x));
 }
 
-void intr_on()
+static inline void intr_off()
 {
-    uint64 x = r_sstatus();
-    w_sstatus(x | SSTATUS_SIE); // SIE
+    uint64_t x;
+    asm volatile ("csrr %0, mstatus" : "=r" (x));
+    x &= ~(1L << 3);  // MIEをOFF
+    asm volatile ("csrw mstatus, %0" : : "r" (x));
 }
         
 
@@ -500,271 +434,34 @@ static inline void w_mtvec(uint64_t x) {
     asm volatile("csrw mtvec, %0" : : "r"(x));
 }
 
-
-void timer_init() {
-    uint64 now = *MTIME;
-    *MTIMECMP = now + 1000000;  // 
-    // mie 
-    w_mie(r_mie() | MIE_MTIE);
-}
+#define TIMER_INTERVAL 100000000  //  100ms 
 
 extern void timervec();  // 
 
-void timervec_setup() {
-    w_mtvec((uint64)timervec);
-}
-
-#define TIMER_INTERVAL 1000000  //  100ms 
-
-void timer_reset() {
-    uint64_t now = *MTIME;
-    *MTIMECMP = now + TIMER_INTERVAL;
-}
-
-void timer_handler() {
-    timer_reset();  // mtimecmp
-    yield();        //  
-}
-
 void enable_timer_interrupts() {
-    timervec_setup();  // mtvec 
-    timer_init();      // mtimecmp 
-    w_mie(r_mie() | MIE_MTIE);       // 
+    w_mtvec((uint64)timervec & ~0x03);
+    uint64 now = *MTIME;
+    *MTIMECMP = now + 10000;  // 
+    // mie 
+    w_mie(r_mie() | MIE_MTIE);
     w_mstatus(r_mstatus() | MSTATUS_MIE); // 
 }
 
-#define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
-
-int
-copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len);
-extern void userret(uint64 satp, uint64 sstatus, uint64 sepc, uint64 sp);
-
-void usertrap() {
-puts("TRAP!");
-    struct proc *p = cpu.proc;
-    struct trapframe *tf = p->trapframe;
-
-    uint64 cause;
-    asm volatile("csrr %0, scause" : "=r"(cause));
-
-    if (cause == 8) { // ECALL from U-mode
-        tf->epc += 4; // skip ecall
-
-        if (tf->a7 == 1) { // syscall number 1 = puts
-            puts("TRAP!");
-        }
-
-        userret(MAKE_SATP(p->pagetable), r_sstatus(), tf->epc, tf->sp);
-    } else {
-        puts("unexpected trap\n");
-        while (1);
-    }
-}
-
-
-#define PTE_V  0x001  // valid
-#define PTE_R  0x002  // readable
-#define PTE_W  0x004  // writable
-#define PTE_X  0x008  // executable
-#define PTE_U  0x010  // user-accessible
-
-#define MAXVA (1L << 39)
-
-#define PXSHIFT(level) (12 + 9 * (level))
-#define PX(level, va) (((va) >> PXSHIFT(level)) & 0x1FF)
-
-// PTE  
-#define PTE2PA(pte) (((pte) >> 10) << 12)
-
-//   PTE
-#define PA2PTE(pa) (((uint64)(pa) >> 12) << 10)
-#define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
-
-pagetable_t uvmcreate() {
-    pagetable_t pagetable = (pagetable_t)kalloc();
-    memset(pagetable, 0, PGSIZE);
-    return pagetable;
-}
-
-pte_t *
-walk(pagetable_t pagetable, uint64 va, int alloc)
+void task1()
 {
-  if (va >= MAXVA)  // 
-    return 0;
-
-  for (int level = 2; level > 0; level--) {
-    int idx = PX(level, va);
-    pte_t *pte = &pagetable[idx];
-
-    if (*pte & PTE_V) {
-      pagetable = (pagetable_t)PTE2PA(*pte);
-    } else {
-      if (!alloc || (pagetable = (pagetable_t)kalloc()) == 0)
-        return 0;
-      memset(pagetable, 0, PGSIZE);
-      *pte = PA2PTE(pagetable) | PTE_V;
+    while(1) {
+        puts("TASK1");
     }
-  }
-
-  return &pagetable[PX(0, va)];
 }
 
-int
-mappages(pagetable_t pagetable, uint64 va, uint64 pa, uint64 size, int perm)
+void task2()
 {
-  uint64 a, last;
-  pte_t *pte;
-
-  if (size == 0)
-    return -1;
-
-  a = PGROUNDDOWN(va);
-  last = PGROUNDDOWN(va + size - 1);
-
-  for (;;) {
-    pte = walk(pagetable, a, 1);  // alloc=1  
-
-    if (pte == 0) {
-      return -1;
+    while(1) {
+        puts("TASK2");
     }
-    if (*pte & PTE_V) {
-      return -1;  // 
-    }
-    
-    *pte = PA2PTE(pa) | perm | PTE_V;
-    
-    if (a == last)
-      break;
-    a += PGSIZE;
-    pa += PGSIZE;
-  }
-
-  return 0;
 }
 
-uint64
-uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
-{
-  if (newsz >= oldsz)
-    return oldsz;
-
-  oldsz = PGROUNDUP(oldsz);
-  for (uint64 a = PGROUNDUP(newsz); a < oldsz; a += PGSIZE) {
-    pte_t *pte = walk(pagetable, a, 0);
-    if (pte && (*pte & PTE_V)) {
-      uint64 pa = PTE2PA(*pte);
-      kfree((void*)pa);
-      *pte = 0;
-    }
-  }
-  return newsz;
-}
-
-uint64
-uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int perm)
-{
-  if (newsz < oldsz)
-    return oldsz;
-
-  oldsz = PGROUNDUP(oldsz);
-  for (uint64 a = oldsz; a < newsz; a += PGSIZE) {
-    void *mem = kalloc();  // 1
-    if (mem == 0) {
-      uvmdealloc(pagetable, a, oldsz);  // 
-      return 0;
-    }
-    memset(mem, 0, PGSIZE);
-    if (mappages(pagetable, a, (uint64)mem, PGSIZE, perm) != 0) {
-      kfree(mem);
-      uvmdealloc(pagetable, a, oldsz);
-      return 0;
-    }
-  }
-  return newsz;
-}
-
-
-int
-uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
-{
-  for (uint64 i = 0; i < sz; i += PGSIZE) {
-    pte_t *pte = walk(old, i, 0);
-    if (!pte || !(*pte & PTE_V))
-      continue;
-
-    uint64 pa = PTE2PA(*pte);
-    int flags = PTE_FLAGS(*pte);
-
-    void *mem = kalloc();
-    if (mem == 0) {
-      uvmdealloc(new, i, 0);
-      return -1;
-    }
-
-    memmove(mem, (void*)pa, PGSIZE);
-
-    if (mappages(new, i, (uint64)mem, PGSIZE, flags) != 0) {
-      kfree(mem);
-      uvmdealloc(new, i, 0);
-      return -1;
-    }
-  }
-  return 0;
-}
-
-int
-copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len)
-{
-  while (len > 0) {
-    uint64 va0 = PGROUNDDOWN(srcva);
-    pte_t *pte = walk(pagetable, va0, 0);
-    if (pte == 0 || (*pte & PTE_V) == 0 || (*pte & PTE_U) == 0)
-      return -1;
-
-    uint64 pa = PTE2PA(*pte);
-    uint64 n = PGSIZE - (srcva - va0);
-    if (n > len)
-      n = len;
-
-    memmove(dst, (char *)(pa + (srcva - va0)), n);
-
-    len -= n;
-    dst += n;
-    srcva += n;
-  }
-  return 0;
-}
-
-int
-copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
-{
-  while (len > 0) {
-    uint64 va0 = PGROUNDDOWN(dstva);
-    pte_t *pte = walk(pagetable, va0, 0);
-    if (pte == 0 || (*pte & PTE_V) == 0 || (*pte & PTE_U) == 0)
-      return -1;
-
-    uint64 pa = PTE2PA(*pte);
-    uint64 n = PGSIZE - (dstva - va0);
-    if (n > len)
-      n = len;
-
-    memmove((void *)(pa + (dstva - va0)), src, n);
-
-    len -= n;
-    src += n;
-    dstva += n;
-  }
-  return 0;
-}
-
-const uint8_t user_code[8] = {
-  0x13, 0x07, 0x00, 0x01,  // li a7, 1
-  0x73, 0x00, 0x00, 0x00,  // ecall
-
-};
-
-struct proc* alloc_proc()
+struct proc* alloc_proc(void (*task)())
 {
     struct proc* result = kalloc();
     
@@ -772,89 +469,144 @@ struct proc* alloc_proc()
     
     result->stack = kalloc();
     
-    result->pagetable = uvmcreate();
-    uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);
-
-    //  0x1000  user_func 
-    copyout(result->pagetable, 0x1000, user_code, sizeof(char)*8);
-
-    // trapframe
-    struct trapframe *tf = kalloc();
-    memset(tf, 0, sizeof(*tf));
-    result->trapframe = tf;
-    
-    tf->epc = 0x1000;
-    tf->sp = 0x20000;
-    
-    tf->kernel_satp = MAKE_SATP(kernel_pagetable);
-    tf->kernel_sp = (uint64)(result->stack + PGSIZE);
-    tf->kernel_trap = (uint64)usertrap;
-    tf->kernel_hartid = 0; // OK
-    
-    // TRAPFRAME
-    mappages(result->pagetable, TRAPFRAME, (uint64)tf, PGSIZE,
-             PTE_R | PTE_W | PTE_U);
-
-    result->trapframe = tf;
+    result->context.sp = (uint64)(result->stack + PGSIZE);
+    result->context.ra = (uint64)task;
+    result->state = RUNNABLE;
 
     gProc[gNumProc++] = result;
 
     return result;
 }
 
-void scheduler()
-{
-//    intr_off();
+void swtch(struct context*, struct context*);
+
+#define TIMER_INTERVAL 50000  // 適当な間隔（例えば100ms）
+
+#define MTIME    ((volatile uint64_t *)0x0200BFF8)
+#define MTIMECMP ((volatile uint64_t *)0x02004000)
+
+void timer_reset() {
+    uint64_t now = *MTIME;
+    *MTIMECMP = now + TIMER_INTERVAL;
     
-    while (1) {
-        struct proc* p = gProc[gActiveProc];
-        cpu.proc = p;
+printf("timer_reset: now=%lx mtimecmp=%lx\n", now, now + TIMER_INTERVAL);
+}
 
-        uint64 satp = MAKE_SATP(p->pagetable);
+void yield();
+void scheduler();
 /*
-printf("scheduler2: p=%p p->pagetable=%p\n", p->pagetable, MAKE_SATP(p->pagetable));
-pte_t *pte = walk(p->pagetable, 0x1000, 0);
-if (pte && (*pte & PTE_V)) {
-uint64 pa = (*pte >> 10) << 12;
-uint8_t* pp = (uint8_t*)pa;
-int i;
-for(i=0; i<8; i++) {
-printf("%x\n", *pp);
-pp++;
-}
-
-}
+    asm volatile(
+        "sd ra, 0(%0)\n"
+        "sd sp, 8(%0)\n"
+        "sd s0, 16(%0)\n"
+        "sd s1, 24(%0)\n"
+        "sd s2, 32(%0)\n"
+        "sd s3, 40(%0)\n"
+        "sd s4, 48(%0)\n"
+        "sd s5, 56(%0)\n"
+        "sd s6, 64(%0)\n"
+        "sd s7, 72(%0)\n"
+        "sd s8, 80(%0)\n"
+        "sd s9, 88(%0)\n"
+        "sd s10, 96(%0)\n"
+        "sd s11, 104(%0)\n"
+        :
+        : "r"(&p->context)
+        : "memory"
+    );
+   
+     asm volatile(
+        "ld ra, 0(%0)\n"
+        "ld sp, 8(%0)\n"
+        "ld s0, 16(%0)\n"
+        "ld s1, 24(%0)\n"
+        "ld s2, 32(%0)\n"
+        "ld s3, 40(%0)\n"
+        "ld s4, 48(%0)\n"
+        "ld s5, 56(%0)\n"
+        "ld s6, 64(%0)\n"
+        "ld s7, 72(%0)\n"
+        "ld s8, 80(%0)\n"
+        "ld s9, 88(%0)\n"
+        "ld s10, 96(%0)\n"
+        "ld s11, 104(%0)\n"
+        "ret\n"
+        :
+        : "r"(&cpu.context)
+        : "memory"
+    );
 */
-        uint64 sstatus = r_sstatus();
-        sstatus &= ~SSTATUS_SPP;
-        sstatus |= SSTATUS_SPIE;
 
-        // epc/sp trapframe  userret  restore
-//printf("epc=%p sp=%p satp=%lx sstatus=%lx\n", p->trapframe->epc, p->trapframe->sp, satp, sstatus);
-//        intr_on();
-        userret(satp, sstatus, p->trapframe->epc, p->trapframe->sp);
+void timer_handler() {
+puts("TIMER\n");
+    timer_reset();
+/*
+    uint64_t mepc;
+    asm volatile ( 
+        "csrr s7, mepc\n"
+        "sd s7, 0(%0)\n"
+        :
+        : "r"(&mepc)
+        : "memory"
+    );
+    struct proc *p = gProc[gActiveProc];
+    p->mepc = mepc;
+*/
+    yield();  // タイマー割り込み中に強制的にyield！
+}
+
+void yield() {
+    struct proc *p = gProc[gActiveProc];
+    
+    
+//    swtch(&p->context, &cpu.context);
+    gActiveProc++;
+    if(gActiveProc >= gNumProc) {
+        gActiveProc = 0;
+    }
+    p = gProc[gActiveProc];
+    p->state = RUNNABLE;
+printf("YIELD ACTIVE PROC SAVE %d LOAD CPU\n", gActiveProc);
+    scheduler();  // cpu.contextから戻ったらスケジューラを呼ぶ
+}
+
+void scheduler() {
+puts("SCHEDULER\n");
+    while (1) {
+        intr_off();
+        for (int i = 0; i < gNumProc; i++) {
+puts("SCHEDULER LOOP\n");
+printf("i %d\n", i);
+            struct proc *p = gProc[i];
+            if (p->state == RUNNABLE) {
+puts("RUNNABLE\n");
+                gActiveProc = i;
+                p->state = RUNNING;
+printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
+                swtch(&cpu.context, &p->context);
+                p->state = RUNNABLE;
+            }
+else {
+puts("NO RUNNABLE\n");
+}
+puts("SCHEDULER LOOP END\n");
+        }
+        
+        intr_on();
     }
 }
 
-extern void uservec();
-
-static inline void w_stvec(uint64 x) {
-  asm volatile("csrw stvec, %0" : : "r"(x));
-}
 
 int main()
 {
-    kinit();
-    
-    kernel_pagetable = uvmcreate();
-    mappages(kernel_pagetable, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_X | PTE_R);
-    
-    w_stvec((uint64)uservec);
-    
-    alloc_proc();
-    alloc_proc();
-    
-    //enable_timer_interrupts();
-    
-    scheduler();
+    kinit();  // カーネルヒープ初期化
+
+    alloc_proc(task1);  // タスク1を作る
+    alloc_proc(task2);  // タスク2を作る
+
+    enable_timer_interrupts();  // タイマ割り込みスタート
+
+    scheduler();  // ★ 最後はscheduler()に制御を渡す！
+
+    while (1);  // ここには戻らないはずだが、念のため無限ループ
 }

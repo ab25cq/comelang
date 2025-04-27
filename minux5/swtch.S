@@ -4,7 +4,6 @@
 # 
 # Save current registers in old. Load from new.	
 
-
 .globl swtch
 swtch:
         sd ra, 0(a0)
@@ -36,7 +35,18 @@ swtch:
         ld s9, 88(a1)
         ld s10, 96(a1)
         ld s11, 104(a1)
+
         
+        csrr t0, mstatus
+        ori t0, t0, 0x8  # MSTATUS_MIE = (1 << 3)
+        csrw mstatus, t0
+        
+        csrr t1, mstatus
+        li t2, ~(3 << 11)  # MPPフィールドを0にするマスク
+        and t1, t1, t2
+        li t2, (3 << 11)   # MPP=11
+        or t1, t1, t2
+        csrw mstatus, t1
+       
         ret
 
-	
