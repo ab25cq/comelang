@@ -14,7 +14,7 @@ LOAD timervec.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0x123c
+.text           0x0000000080000000     0x12ae
  *(.text*)
  .text          0x0000000080000000       0x40 start.o
                 0x0000000080000000                _start
@@ -22,7 +22,7 @@ LOAD main.o
                 0x0000000080000040                swtch
  .text          0x00000000800000e0      0x110 timervec.o
                 0x00000000800000e0                timervec
- .text          0x00000000800001f0     0x104c main.o
+ .text          0x00000000800001f0     0x10be main.o
                 0x00000000800001f0                putc
                 0x000000008000022a                uartputc_sync
                 0x000000008000024e                puts
@@ -43,50 +43,50 @@ LOAD main.o
                 0x0000000080000db8                strlen
                 0x0000000080000ee2                enable_timer_interrupts
                 0x0000000080000f42                task1
-                0x0000000080000f58                task2
-                0x0000000080000f6e                alloc_proc
-                0x0000000080000ffc                timer_reset
-                0x000000008000104a                timer_handler
-                0x0000000080001070                yield
-                0x000000008000111c                scheduler
-                0x000000008000120e                main
+                0x0000000080000fa0                task2
+                0x0000000080000ffe                alloc_proc
+                0x000000008000108c                timer_reset
+                0x00000000800010da                timer_handler
+                0x0000000080001100                yield
+                0x0000000080001194                scheduler
+                0x0000000080001280                main
 
-.rodata         0x0000000080001240       0xfc
+.rodata         0x00000000800012b0      0x12c
  *(.rodata*)
- .rodata        0x0000000080001240       0xfc main.o
+ .rodata        0x00000000800012b0      0x12c main.o
 
-.rela.dyn       0x0000000080001340        0x0
- .rela.text     0x0000000080001340        0x0 start.o
+.rela.dyn       0x00000000800013e0        0x0
+ .rela.text     0x00000000800013e0        0x0 start.o
 
-.data           0x0000000080001340       0x11
+.data           0x00000000800013e0       0x11
  *(.data*)
- .data          0x0000000080001340        0x0 start.o
- .data          0x0000000080001340        0x0 swtch.o
- .data          0x0000000080001340        0x0 timervec.o
- .data          0x0000000080001340       0x11 main.o
+ .data          0x00000000800013e0        0x0 start.o
+ .data          0x00000000800013e0        0x0 swtch.o
+ .data          0x00000000800013e0        0x0 timervec.o
+ .data          0x00000000800013e0       0x11 main.o
 
-.sdata          0x0000000080001358        0x8
+.sdata          0x00000000800013f8        0x8
  *(.sdata*)
- .sdata         0x0000000080001358        0x8 main.o
-                0x0000000080001358                uart
+ .sdata         0x00000000800013f8        0x8 main.o
+                0x00000000800013f8                uart
 
-.bss            0x0000000080001360      0x478
+.bss            0x0000000080001400      0x478
  *(.bss*)
- .bss           0x0000000080001360        0x0 start.o
- .bss           0x0000000080001360        0x0 swtch.o
- .bss           0x0000000080001360        0x0 timervec.o
- .bss           0x0000000080001360      0x478 main.o
-                0x0000000080001360                cpu
-                0x00000000800013d8                gProc
-                0x00000000800097d8                . = (. + 0x8000)
-                0x00000000800097d8                stack_top = .
-                0x00000000800097d8                end = .
+ .bss           0x0000000080001400        0x0 start.o
+ .bss           0x0000000080001400        0x0 swtch.o
+ .bss           0x0000000080001400        0x0 timervec.o
+ .bss           0x0000000080001400      0x478 main.o
+                0x0000000080001400                cpu
+                0x0000000080001478                gProc
+                0x0000000080009878                . = (. + 0x8000)
+                0x0000000080009878                stack_top = .
+                0x0000000080009878                end = .
 
-.sbss           0x00000000800097d8       0x10
- .sbss          0x00000000800097d8       0x10 main.o
-                0x00000000800097d8                kmem
-                0x00000000800097e0                gActiveProc
-                0x00000000800097e4                gNumProc
+.sbss           0x0000000080009878       0x10
+ .sbss          0x0000000080009878       0x10 main.o
+                0x0000000080009878                kmem
+                0x0000000080009880                gActiveProc
+                0x0000000080009884                gNumProc
 
 .riscv.attributes
                 0x0000000000000000       0x6a
@@ -122,12 +122,12 @@ LOAD main.o
  .debug_abbrev  0x0000000000000028       0x14 timervec.o
  .debug_abbrev  0x000000000000003c      0x38e main.o
 
-.debug_line     0x0000000000000000     0x10ce
+.debug_line     0x0000000000000000     0x1104
  *(.debug_line)
  .debug_line    0x0000000000000000       0x45 start.o
  .debug_line    0x0000000000000045      0x115 swtch.o
  .debug_line    0x000000000000015a      0x1c6 timervec.o
- .debug_line    0x0000000000000320      0xdae main.o
+ .debug_line    0x0000000000000320      0xde4 main.o
 
 .debug_str      0x0000000000000000      0x319
  *(.debug_str)

@@ -97,8 +97,7 @@ void puts(const char *s) {
     while (*s) putc(1, *s++);
 }
 
-static void
-printint(int fd, int xx, int base, int sgn)
+static void printint(int fd, int xx, int base, int sgn)
 {
   char buf[16];
   int i, neg;
@@ -123,8 +122,7 @@ printint(int fd, int xx, int base, int sgn)
     putc(fd, buf[i]);
 }
 
-static void
-printptr(int fd, uint64 x) 
+static void printptr(int fd, uint64 x) 
 {
   int i;
   putc(fd, '0');
@@ -206,8 +204,7 @@ fprintf(int fd, const char *fmt, ...)
   vprintf(fd, fmt, ap);
 }
 
-void
-printf(const char *fmt, ...)
+void printf(const char *fmt, ...)
 {
   va_list ap;
 
@@ -450,14 +447,26 @@ void enable_timer_interrupts() {
 void task1()
 {
     while(1) {
-        puts("TASK1");
+        puts("TASK1a\n");
+        puts("TASK1b\n");
+        puts("TASK1c\n");
+        puts("TASK1d\n");
+        puts("TASK1e\n");
+        puts("TASK1f\n");
+        puts("TASK1g\n");
     }
 }
 
 void task2()
 {
     while(1) {
-        puts("TASK2");
+        puts("TASK2a\n");
+        puts("TASK2b\n");
+        puts("TASK2c\n");
+        puts("TASK2d\n");
+        puts("TASK2e\n");
+        puts("TASK2f\n");
+        puts("TASK2g\n");
     }
 }
 
@@ -494,79 +503,21 @@ printf("timer_reset: now=%lx mtimecmp=%lx\n", now, now + TIMER_INTERVAL);
 
 void yield();
 void scheduler();
-/*
-    asm volatile(
-        "sd ra, 0(%0)\n"
-        "sd sp, 8(%0)\n"
-        "sd s0, 16(%0)\n"
-        "sd s1, 24(%0)\n"
-        "sd s2, 32(%0)\n"
-        "sd s3, 40(%0)\n"
-        "sd s4, 48(%0)\n"
-        "sd s5, 56(%0)\n"
-        "sd s6, 64(%0)\n"
-        "sd s7, 72(%0)\n"
-        "sd s8, 80(%0)\n"
-        "sd s9, 88(%0)\n"
-        "sd s10, 96(%0)\n"
-        "sd s11, 104(%0)\n"
-        :
-        : "r"(&p->context)
-        : "memory"
-    );
-   
-     asm volatile(
-        "ld ra, 0(%0)\n"
-        "ld sp, 8(%0)\n"
-        "ld s0, 16(%0)\n"
-        "ld s1, 24(%0)\n"
-        "ld s2, 32(%0)\n"
-        "ld s3, 40(%0)\n"
-        "ld s4, 48(%0)\n"
-        "ld s5, 56(%0)\n"
-        "ld s6, 64(%0)\n"
-        "ld s7, 72(%0)\n"
-        "ld s8, 80(%0)\n"
-        "ld s9, 88(%0)\n"
-        "ld s10, 96(%0)\n"
-        "ld s11, 104(%0)\n"
-        "ret\n"
-        :
-        : "r"(&cpu.context)
-        : "memory"
-    );
-*/
 
 void timer_handler() {
 puts("TIMER\n");
     timer_reset();
-/*
-    uint64_t mepc;
-    asm volatile ( 
-        "csrr s7, mepc\n"
-        "sd s7, 0(%0)\n"
-        :
-        : "r"(&mepc)
-        : "memory"
-    );
-    struct proc *p = gProc[gActiveProc];
-    p->mepc = mepc;
-*/
     yield();  // タイマー割り込み中に強制的にyield！
 }
 
 void yield() {
     struct proc *p = gProc[gActiveProc];
-    
-    
-//    swtch(&p->context, &cpu.context);
     gActiveProc++;
     if(gActiveProc >= gNumProc) {
         gActiveProc = 0;
     }
     p = gProc[gActiveProc];
     p->state = RUNNABLE;
-printf("YIELD ACTIVE PROC SAVE %d LOAD CPU\n", gActiveProc);
     scheduler();  // cpu.contextから戻ったらスケジューラを呼ぶ
 }
 
@@ -576,10 +527,9 @@ puts("SCHEDULER\n");
         intr_off();
         for (int i = 0; i < gNumProc; i++) {
 puts("SCHEDULER LOOP\n");
-printf("i %d\n", i);
             struct proc *p = gProc[i];
             if (p->state == RUNNABLE) {
-puts("RUNNABLE\n");
+printf("RUNNABLE %d\n", i);
                 gActiveProc = i;
                 p->state = RUNNING;
 printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
@@ -587,7 +537,7 @@ printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
                 p->state = RUNNABLE;
             }
 else {
-puts("NO RUNNABLE\n");
+printf("NO RUNNABLE %d\n", i);
 }
 puts("SCHEDULER LOOP END\n");
         }
