@@ -14,79 +14,79 @@ LOAD timervec.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0x12ae
+.text           0x0000000080000000     0x12f6
  *(.text*)
  .text          0x0000000080000000       0x40 start.o
                 0x0000000080000000                _start
- .text          0x0000000080000040       0xa0 swtch.o
+ .text          0x0000000080000040       0xb0 swtch.o
                 0x0000000080000040                swtch
- .text          0x00000000800000e0      0x110 timervec.o
-                0x00000000800000e0                timervec
- .text          0x00000000800001f0     0x10be main.o
-                0x00000000800001f0                putc
-                0x000000008000022a                uartputc_sync
-                0x000000008000024e                puts
-                0x000000008000040a                vprintf
-                0x0000000080000856                fprintf
-                0x00000000800008aa                printf
-                0x00000000800008f6                kfree
-                0x000000008000096a                freerange
-                0x00000000800009c2                kinit
-                0x00000000800009ea                kalloc
-                0x0000000080000a24                memset
-                0x0000000080000a88                memcmp
-                0x0000000080000b10                memmove
-                0x0000000080000bf0                memcpy
-                0x0000000080000c24                strncmp
-                0x0000000080000cb2                strncpy
-                0x0000000080000d38                safestrcpy
-                0x0000000080000db8                strlen
-                0x0000000080000ee2                enable_timer_interrupts
-                0x0000000080000f42                task1
-                0x0000000080000fa0                task2
-                0x0000000080000ffe                alloc_proc
-                0x000000008000108c                timer_reset
-                0x00000000800010da                timer_handler
-                0x0000000080001100                yield
-                0x0000000080001194                scheduler
-                0x0000000080001280                main
+ .text          0x00000000800000f0      0x120 timervec.o
+                0x00000000800000f0                timervec
+ .text          0x0000000080000210     0x10e6 main.o
+                0x0000000080000210                putc
+                0x000000008000024a                uartputc_sync
+                0x000000008000026e                puts
+                0x000000008000042a                vprintf
+                0x0000000080000876                fprintf
+                0x00000000800008ca                printf
+                0x0000000080000916                kfree
+                0x000000008000098a                freerange
+                0x00000000800009e2                kinit
+                0x0000000080000a0a                kalloc
+                0x0000000080000a44                memset
+                0x0000000080000aa8                memcmp
+                0x0000000080000b30                memmove
+                0x0000000080000c10                memcpy
+                0x0000000080000c44                strncmp
+                0x0000000080000cd2                strncpy
+                0x0000000080000d58                safestrcpy
+                0x0000000080000dd8                strlen
+                0x0000000080000f02                enable_timer_interrupts
+                0x0000000080000f62                task1
+                0x0000000080000fc0                task2
+                0x000000008000101e                alloc_proc
+                0x00000000800010ac                timer_reset
+                0x00000000800010fa                timer_handler
+                0x0000000080001120                yield
+                0x00000000800011b4                scheduler
+                0x00000000800012c8                main
 
-.rodata         0x00000000800012b0      0x12c
+.rodata         0x00000000800012f8      0x15c
  *(.rodata*)
- .rodata        0x00000000800012b0      0x12c main.o
+ .rodata        0x00000000800012f8      0x15c main.o
 
-.rela.dyn       0x00000000800013e0        0x0
- .rela.text     0x00000000800013e0        0x0 start.o
+.rela.dyn       0x0000000080001458        0x0
+ .rela.text     0x0000000080001458        0x0 start.o
 
-.data           0x00000000800013e0       0x11
+.data           0x0000000080001458       0x11
  *(.data*)
- .data          0x00000000800013e0        0x0 start.o
- .data          0x00000000800013e0        0x0 swtch.o
- .data          0x00000000800013e0        0x0 timervec.o
- .data          0x00000000800013e0       0x11 main.o
+ .data          0x0000000080001458        0x0 start.o
+ .data          0x0000000080001458        0x0 swtch.o
+ .data          0x0000000080001458        0x0 timervec.o
+ .data          0x0000000080001458       0x11 main.o
 
-.sdata          0x00000000800013f8        0x8
+.sdata          0x0000000080001470        0x8
  *(.sdata*)
- .sdata         0x00000000800013f8        0x8 main.o
-                0x00000000800013f8                uart
+ .sdata         0x0000000080001470        0x8 main.o
+                0x0000000080001470                uart
 
-.bss            0x0000000080001400      0x478
+.bss            0x0000000080001478      0x480
  *(.bss*)
- .bss           0x0000000080001400        0x0 start.o
- .bss           0x0000000080001400        0x0 swtch.o
- .bss           0x0000000080001400        0x0 timervec.o
- .bss           0x0000000080001400      0x478 main.o
-                0x0000000080001400                cpu
-                0x0000000080001478                gProc
-                0x0000000080009878                . = (. + 0x8000)
-                0x0000000080009878                stack_top = .
-                0x0000000080009878                end = .
+ .bss           0x0000000080001478        0x0 start.o
+ .bss           0x0000000080001478        0x0 swtch.o
+ .bss           0x0000000080001478        0x0 timervec.o
+ .bss           0x0000000080001478      0x480 main.o
+                0x0000000080001478                cpu
+                0x00000000800014f8                gProc
+                0x00000000800098f8                . = (. + 0x8000)
+                0x00000000800098f8                stack_top = .
+                0x00000000800098f8                end = .
 
-.sbss           0x0000000080009878       0x10
- .sbss          0x0000000080009878       0x10 main.o
-                0x0000000080009878                kmem
-                0x0000000080009880                gActiveProc
-                0x0000000080009884                gNumProc
+.sbss           0x00000000800098f8       0x10
+ .sbss          0x00000000800098f8       0x10 main.o
+                0x00000000800098f8                kmem
+                0x0000000080009900                gActiveProc
+                0x0000000080009904                gNumProc
 
 .riscv.attributes
                 0x0000000000000000       0x6a
@@ -108,12 +108,12 @@ LOAD main.o
  .note.GNU-stack
                 0x0000000000000000        0x0 main.o
 
-.debug_info     0x0000000000000000      0xc90
+.debug_info     0x0000000000000000      0xc9c
  *(.debug_info)
  .debug_info    0x0000000000000000       0x2e start.o
  .debug_info    0x000000000000002e       0x2e swtch.o
  .debug_info    0x000000000000005c       0x2e timervec.o
- .debug_info    0x000000000000008a      0xc06 main.o
+ .debug_info    0x000000000000008a      0xc12 main.o
 
 .debug_abbrev   0x0000000000000000      0x3ca
  *(.debug_abbrev)
@@ -122,20 +122,20 @@ LOAD main.o
  .debug_abbrev  0x0000000000000028       0x14 timervec.o
  .debug_abbrev  0x000000000000003c      0x38e main.o
 
-.debug_line     0x0000000000000000     0x1104
+.debug_line     0x0000000000000000     0x1142
  *(.debug_line)
  .debug_line    0x0000000000000000       0x45 start.o
- .debug_line    0x0000000000000045      0x115 swtch.o
- .debug_line    0x000000000000015a      0x1c6 timervec.o
- .debug_line    0x0000000000000320      0xde4 main.o
+ .debug_line    0x0000000000000045      0x12d swtch.o
+ .debug_line    0x0000000000000172      0x1de timervec.o
+ .debug_line    0x0000000000000350      0xdf2 main.o
 
-.debug_str      0x0000000000000000      0x319
+.debug_str      0x0000000000000000      0x31e
  *(.debug_str)
- .debug_str     0x0000000000000000      0x319 start.o
+ .debug_str     0x0000000000000000      0x31e start.o
                                          0x38 (size before relaxing)
- .debug_str     0x0000000000000319       0x38 swtch.o
- .debug_str     0x0000000000000319       0x3b timervec.o
- .debug_str     0x0000000000000319      0x2ff main.o
+ .debug_str     0x000000000000031e       0x38 swtch.o
+ .debug_str     0x000000000000031e       0x3b timervec.o
+ .debug_str     0x000000000000031e      0x304 main.o
 
 .debug_line_str
                 0x0000000000000000       0x8b

@@ -35,6 +35,7 @@ struct context
   uint64 s9;
   uint64 s10;
   uint64 s11;
+  uint64 sepc;
 };
 
 
@@ -365,6 +366,17 @@ strlen(const char *s)
 int gActiveProc = 0;
 int gNumProc = 0;
 
+static inline uint64 r_sepc() {
+    uint64 x;
+    asm volatile("csrr %0, sepc" : "=r" (x) );
+    return x;
+}
+
+static inline void w_sepc(uint64 x) {
+    asm volatile("csrw sepc, %0" : : "r" (x) );
+}
+
+
 #define MTIMECMP (volatile uint64*)0x02004000
 #define MTIME    (volatile uint64*)0x0200BFF8
 
@@ -431,7 +443,7 @@ static inline void w_mtvec(uint64_t x) {
     asm volatile("csrw mtvec, %0" : : "r"(x));
 }
 
-#define TIMER_INTERVAL 100000000  //  100ms 
+#define TIMER_INTERVAL 10000000  //  100ms 
 
 extern void timervec();  // 
 
@@ -447,26 +459,26 @@ void enable_timer_interrupts() {
 void task1()
 {
     while(1) {
-        puts("TASK1a\n");
-        puts("TASK1b\n");
-        puts("TASK1c\n");
-        puts("TASK1d\n");
-        puts("TASK1e\n");
-        puts("TASK1f\n");
-        puts("TASK1g\n");
+        puts("1a");
+        puts("1b");
+        puts("1c");
+        puts("1d");
+        puts("1e");
+        puts("1f");
+        puts("1g");
     }
 }
 
 void task2()
 {
     while(1) {
-        puts("TASK2a\n");
-        puts("TASK2b\n");
-        puts("TASK2c\n");
-        puts("TASK2d\n");
-        puts("TASK2e\n");
-        puts("TASK2f\n");
-        puts("TASK2g\n");
+        puts("2a");
+        puts("2b");
+        puts("2c");
+        puts("2d");
+        puts("2e");
+        puts("2f");
+        puts("2g");
     }
 }
 
@@ -533,7 +545,9 @@ printf("RUNNABLE %d\n", i);
                 gActiveProc = i;
                 p->state = RUNNING;
 printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
+printf("p->sepc %p p->ra %p\n", p->context.sepc, p->context.ra);
                 swtch(&cpu.context, &p->context);
+printf("RETURN SCHEDULER\n");
                 p->state = RUNNABLE;
             }
 else {

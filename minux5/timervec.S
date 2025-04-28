@@ -33,10 +33,14 @@ timervec:
     sd t4, 224(sp)
     sd t5, 232(sp)
     sd t6, 240(sp)
+    csrr t0, sepc 
+    sd t0, 248(sp)
 
     la t0, timer_handler
     jalr t0
 
+    ld t0, 248(sp)
+    csrw sepc, t0
     ld ra, 0(sp)
     ld sp, 8(sp)
     ld gp, 16(sp)
