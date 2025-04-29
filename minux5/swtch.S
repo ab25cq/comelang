@@ -20,8 +20,6 @@ swtch:
         sd s9, 88(a0)
         sd s10, 96(a0)
         sd s11, 104(a0)
-        csrr t0, sepc 
-        sd t0, 112(a0)
 
         ld ra, 0(a1)
         ld sp, 8(a1)
@@ -37,9 +35,6 @@ swtch:
         ld s9, 88(a1)
         ld s10, 96(a1)
         ld s11, 104(a1)
-        ld t0, 112(a1)
-        csrw sepc, t0
-
         
         csrr t0, mstatus
         ori t0, t0, 0x8  # MSTATUS_MIE = (1 << 3)

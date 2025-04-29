@@ -35,7 +35,6 @@ struct context
   uint64 s9;
   uint64 s10;
   uint64 s11;
-  uint64 sepc;
 };
 
 
@@ -376,6 +375,14 @@ static inline void w_sepc(uint64 x) {
     asm volatile("csrw sepc, %0" : : "r" (x) );
 }
 
+static inline uint64_t r_mepc(void)
+{
+    uint64_t x;
+    asm volatile("csrr %0, mepc" : "=r" (x));
+    return x;
+}
+            
+
 
 #define MTIMECMP (volatile uint64*)0x02004000
 #define MTIME    (volatile uint64*)0x0200BFF8
@@ -518,6 +525,10 @@ void scheduler();
 
 void timer_handler() {
 puts("TIMER\n");
+    struct proc *p = gProc[gActiveProc];
+    p->context.ra = r_mepc();
+printf("mepc %p\n", r_mepc());
+printf("task1 %p task2 %p\n", task1, task2);
     timer_reset();
     yield();  // タイマー割り込み中に強制的にyield！
 }
@@ -545,7 +556,6 @@ printf("RUNNABLE %d\n", i);
                 gActiveProc = i;
                 p->state = RUNNING;
 printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
-printf("p->sepc %p p->ra %p\n", p->context.sepc, p->context.ra);
                 swtch(&cpu.context, &p->context);
 printf("RETURN SCHEDULER\n");
                 p->state = RUNNABLE;

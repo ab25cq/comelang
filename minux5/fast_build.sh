@@ -1,6 +1,8 @@
 make clean
 
-sudo apt install gcc-riscv64-unknown-elf \
+if which apt
+then
+    sudo apt install gcc-riscv64-unknown-elf \
                  binutils-riscv64-unknown-elf \
                  qemu-system-misc \
                  make \
@@ -8,6 +10,7 @@ sudo apt install gcc-riscv64-unknown-elf \
                  build-essential \
                  gawk \
                  gdb-multiarch
+ fi
 
 
 if test ! -f ~/.config/gdb/gdbinit
