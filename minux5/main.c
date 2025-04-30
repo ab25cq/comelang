@@ -17,12 +17,26 @@ typedef uint64_t pte_t;
 
 static char digits[] = "0123456789ABCDEF";
 
-struct context 
-{
+struct context {
   uint64 ra;
   uint64 sp;
-
-  // callee-saved
+  uint64 gp;
+  uint64 tp;
+  uint64 t0;
+  uint64 t1;
+  uint64 t2;
+  uint64 t3;
+  uint64 t4;
+  uint64 t5;
+  uint64 t6;
+  uint64 a0;
+  uint64 a1;
+  uint64 a2;
+  uint64 a3;
+  uint64 a4;
+  uint64 a5;
+  uint64 a6;
+  uint64 a7;
   uint64 s0;
   uint64 s1;
   uint64 s2;
@@ -36,7 +50,6 @@ struct context
   uint64 s10;
   uint64 s11;
 };
-
 
 struct cpu 
 {
@@ -416,11 +429,15 @@ static inline void w_sstatus(uint64 x)
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
 #define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
 
+#define MTIME_ADDR    ((volatile uint64_t*)0x0200bff8)
+#define MTIMECMP_ADDR ((volatile uint64_t*)0x02004000)
+
+/*
 static inline void intr_on()
 {
     uint64_t x;
     asm volatile ("csrr %0, mstatus" : "=r" (x));
-    x |= (1L << 3);  // MIEをセット
+
     asm volatile ("csrw mstatus, %0" : : "r" (x));
 }
 
@@ -428,8 +445,13 @@ static inline void intr_off()
 {
     uint64_t x;
     asm volatile ("csrr %0, mstatus" : "=r" (x));
-    x &= ~(1L << 3);  // MIEをOFF
+
     asm volatile ("csrw mstatus, %0" : : "r" (x));
+}
+*/
+
+void disable_timer_interrupt() {
+    *MTIMECMP_ADDR = (uint64_t)-1;  // 最大値を入れておく
 }
         
 
@@ -457,10 +479,20 @@ extern void timervec();  //
 void enable_timer_interrupts() {
     w_mtvec((uint64)timervec & ~0x03);
     uint64 now = *MTIME;
-    *MTIMECMP = now + 10000;  // 
-    // mie 
+    *MTIMECMP = now + 10000;
     w_mie(r_mie() | MIE_MTIE);
-    w_mstatus(r_mstatus() | MSTATUS_MIE); // 
+    w_mstatus(r_mstatus() | MSTATUS_MIE);
+}
+
+void disable_timer_interrupts() {
+    // mie の MTIEビットをクリア（タイマー割り込みを無効化）
+    w_mie(r_mie() & ~MIE_MTIE);
+
+    // mstatus の MIEビットをクリア（Mモード割り込み全体を無効化）
+    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+
+    // mtimecmp を非常に大きな値にして、当面割り込みが起きないようにする（オプション）
+    *MTIMECMP = (uint64_t)-1;
 }
 
 void task1()
@@ -508,7 +540,7 @@ struct proc* alloc_proc(void (*task)())
 
 void swtch(struct context*, struct context*);
 
-#define TIMER_INTERVAL 50000  // 適当な間隔（例えば100ms）
+
 
 #define MTIME    ((volatile uint64_t *)0x0200BFF8)
 #define MTIMECMP ((volatile uint64_t *)0x02004000)
@@ -530,7 +562,7 @@ puts("TIMER\n");
 printf("mepc %p\n", r_mepc());
 printf("task1 %p task2 %p\n", task1, task2);
     timer_reset();
-    yield();  // タイマー割り込み中に強制的にyield！
+
 }
 
 void yield() {
@@ -541,13 +573,12 @@ void yield() {
     }
     p = gProc[gActiveProc];
     p->state = RUNNABLE;
-    scheduler();  // cpu.contextから戻ったらスケジューラを呼ぶ
+
 }
 
 void scheduler() {
 puts("SCHEDULER\n");
     while (1) {
-        intr_off();
         for (int i = 0; i < gNumProc; i++) {
 puts("SCHEDULER LOOP\n");
             struct proc *p = gProc[i];
@@ -556,8 +587,10 @@ printf("RUNNABLE %d\n", i);
                 gActiveProc = i;
                 p->state = RUNNING;
 printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
+                enable_timer_interrupts();
                 swtch(&cpu.context, &p->context);
 printf("RETURN SCHEDULER\n");
+                disable_timer_interrupt();
                 p->state = RUNNABLE;
             }
 else {
@@ -565,22 +598,18 @@ printf("NO RUNNABLE %d\n", i);
 }
 puts("SCHEDULER LOOP END\n");
         }
-        
-        intr_on();
     }
 }
 
 
 int main()
 {
-    kinit();  // カーネルヒープ初期化
+    kinit();
 
-    alloc_proc(task1);  // タスク1を作る
-    alloc_proc(task2);  // タスク2を作る
+    alloc_proc(task1);
+    alloc_proc(task2);
 
-    enable_timer_interrupts();  // タイマ割り込みスタート
+    scheduler();
 
-    scheduler();  // ★ 最後はscheduler()に制御を渡す！
-
-    while (1);  // ここには戻らないはずだが、念のため無限ループ
+    while (1);
 }
