@@ -106,8 +106,26 @@ void uartputc_sync(char c) {
     *(volatile char*)(0x10000000) = c;
 }
 
+static inline void intr_on()
+{
+    uint64_t x;
+    asm volatile ("csrr %0, mstatus" : "=r" (x));
+
+    asm volatile ("csrw mstatus, %0" : : "r" (x));
+}
+
+static inline void intr_off()
+{
+    uint64_t x;
+    asm volatile ("csrr %0, mstatus" : "=r" (x));
+
+    asm volatile ("csrw mstatus, %0" : : "r" (x));
+}
+
 void puts(const char *s) {
+    intr_off();
     while (*s) putc(1, *s++);
+    intr_on();
 }
 
 static void printint(int fd, int xx, int base, int sgn)
@@ -432,24 +450,6 @@ static inline void w_sstatus(uint64 x)
 #define MTIME_ADDR    ((volatile uint64_t*)0x0200bff8)
 #define MTIMECMP_ADDR ((volatile uint64_t*)0x02004000)
 
-/*
-static inline void intr_on()
-{
-    uint64_t x;
-    asm volatile ("csrr %0, mstatus" : "=r" (x));
-
-    asm volatile ("csrw mstatus, %0" : : "r" (x));
-}
-
-static inline void intr_off()
-{
-    uint64_t x;
-    asm volatile ("csrr %0, mstatus" : "=r" (x));
-
-    asm volatile ("csrw mstatus, %0" : : "r" (x));
-}
-*/
-
 void disable_timer_interrupt() {
     *MTIMECMP_ADDR = (uint64_t)-1;  // 最大値を入れておく
 }
@@ -556,7 +556,7 @@ void yield();
 void scheduler();
 
 void timer_handler() {
-puts("TIMER\n");
+printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
     p->context.ra = r_mepc();
 printf("mepc %p\n", r_mepc());
@@ -577,17 +577,16 @@ void yield() {
 }
 
 void scheduler() {
-puts("SCHEDULER\n");
+printf("SCHEDULER\n");
     while (1) {
         for (int i = 0; i < gNumProc; i++) {
-puts("SCHEDULER LOOP\n");
+printf("SCHEDULER LOOP\n");
             struct proc *p = gProc[i];
             if (p->state == RUNNABLE) {
 printf("RUNNABLE %d\n", i);
                 gActiveProc = i;
                 p->state = RUNNING;
 printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
-                enable_timer_interrupts();
                 swtch(&cpu.context, &p->context);
 printf("RETURN SCHEDULER\n");
                 disable_timer_interrupt();
@@ -596,7 +595,7 @@ printf("RETURN SCHEDULER\n");
 else {
 printf("NO RUNNABLE %d\n", i);
 }
-puts("SCHEDULER LOOP END\n");
+printf("SCHEDULER LOOP END\n");
         }
     }
 }
@@ -608,6 +607,8 @@ int main()
 
     alloc_proc(task1);
     alloc_proc(task2);
+    
+    enable_timer_interrupts();
 
     scheduler();
 
