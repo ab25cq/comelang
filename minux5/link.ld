@@ -10,6 +10,10 @@ SECTIONS
   .bss : { *(.bss*) }
   . += 0x8000;
   stack_top = .;
+  
+  . = ALIGN(4096);
+  TRAPFRAME = .;
+  . = . + 4096;
 
   /* End of uninitalized data segement */
   end = .;

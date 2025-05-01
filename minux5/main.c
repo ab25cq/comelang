@@ -53,7 +53,9 @@ struct context {
   uint64 mepc;
 };
 
-struct context TRAPFRAME;
+extern char TRAPFRAME[];
+
+
 
 struct cpu 
 {
@@ -527,14 +529,13 @@ w_mstatus(r_mstatus() & ~MSTATUS_MIE);
 }
 
 void disable_timer_interrupts() {
-
-    w_mie(r_mie() & ~MIE_MTIE);
-
+    w_mie(0x0);
+    //w_mie(r_mie() & ~MIE_MTIE);
 
     w_mstatus(r_mstatus() & ~MSTATUS_MIE);
 
-
-    *MTIMECMP = (uint64_t)-1;
+    *MTIMECMP = *MTIME + 0xFFFFFFFF;
+    //*MTIMECMP = (uint64_t)-1;
 }
 
 void task1()
@@ -600,14 +601,23 @@ void yield();
 void scheduler();
 
 void timer_handler() {
+    disable_timer_interrupts();
     printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
     
-    p->context = TRAPFRAME;
-//    p->context.mepc = r_mepc();
-//printf("mepc %p\n", r_mepc());
+    struct context *tf = (struct context*)TRAPFRAME;
+    p->context = *tf;
+printf("TRAPFRAME %p\n", TRAPFRAME);
+printf("ative proc saved %d\n", gActiveProc);
+printf("ra %x\n", tf->ra);
+printf("ra %x\n", p->context.ra);
+printf("sp %x\n", tf->sp);
+printf("sp %x\n", p->context.sp);
+printf("gp %x\n", p->context.gp);
+printf("mepc %x\n", tf->mepc);
+printf("mepc %x\n", p->context.mepc);
 
-    timer_reset();
+    //timer_reset();
 
     yield();
 }
@@ -635,9 +645,9 @@ printf("SCHEDULER\n");
                 p->state = RUNNING;
 
 printf("SWITCH TO %d\n", i);
-                timer_interrupts_for_task_switch();
+                disable_timer_interrupts();
                 swtch(&cpu.context, &p->context);
-                timer_interrupts_for_scheduler();
+                disable_timer_interrupts();
 
                 p->state = RUNNABLE;
             }

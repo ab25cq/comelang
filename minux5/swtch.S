@@ -77,7 +77,7 @@ swtch:
     li   a0, 0x0200BFF8
     ld   a4, 0(a0)
 
-    li   a2, 500000
+    li   a2, 100000
     add  a4, a4, a2
 
     li   a0, 0x02004000
@@ -99,7 +99,7 @@ swtch:
 
 .globl trampoline
 trampoline:
-    ld t0, TRAPFRAME;
+    la t0, TRAPFRAME;
     
     sd ra, 0(t0)
     sd sp, 8(t0)
