@@ -70,17 +70,10 @@ swtch:
     ld s9, 224(a1)
     ld s10, 232(a1)
     ld s11, 240(a1)
-
-    csrr t0, mstatus
-    ori t0, t0, 0x8  # MSTATUS_MIE = (1 << 3)
-    csrw mstatus, t0
     
-    csrr t1, mstatus
-
-    and t1, t1, t2
-    li t2, (3 << 11)   # MPP=11
-    or t1, t1, t2
-    csrw mstatus, t1
+    csrr t0, mstatus
+    ori  t0, t0, 0x8
+    csrw mstatus, t0 
    
     ret
 

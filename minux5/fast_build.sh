@@ -28,4 +28,4 @@ then
 fi
 
 make clean
-make run
+make debug

@@ -106,21 +106,20 @@ void uartputc_sync(char c) {
     *(volatile char*)(0x10000000) = c;
 }
 
-static inline void intr_on()
-{
+static inline void intr_on() {
     uint64_t x;
-    asm volatile ("csrr %0, mstatus" : "=r" (x));
-
-    asm volatile ("csrw mstatus, %0" : : "r" (x));
+    asm volatile("csrr %0, mstatus" : "=r"(x));
+    x |= (1L << 3);  // MSTATUS_MIE をセット
+    asm volatile("csrw mstatus, %0" : : "r"(x));
 }
 
-static inline void intr_off()
-{
+static inline void intr_off() {
     uint64_t x;
-    asm volatile ("csrr %0, mstatus" : "=r" (x));
-
-    asm volatile ("csrw mstatus, %0" : : "r" (x));
+    asm volatile("csrr %0, mstatus" : "=r"(x));
+    x &= ~(1L << 3);  // ビット3: MSTATUS_MIE をクリア
+    asm volatile("csrw mstatus, %0" : : "r"(x));
 }
+                
 
 void puts(const char *s) {
     intr_off();
@@ -548,22 +547,20 @@ void swtch(struct context*, struct context*);
 void timer_reset() {
     uint64_t now = *MTIME;
     *MTIMECMP = now + TIMER_INTERVAL;
-    
-printf("timer_reset: now=%lx mtimecmp=%lx\n", now, now + TIMER_INTERVAL);
 }
 
 void yield();
 void scheduler();
 
 void timer_handler() {
-printf("TIMER\n");
+    printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
-    p->context.ra = r_mepc();
-printf("mepc %p\n", r_mepc());
-printf("task1 %p task2 %p\n", task1, task2);
+    p->context.ra = r_mepc(); // 保存
     timer_reset();
 
+    yield();
 }
+
 
 void yield() {
     struct proc *p = gProc[gActiveProc];
@@ -573,32 +570,30 @@ void yield() {
     }
     p = gProc[gActiveProc];
     p->state = RUNNABLE;
-
+    
+    scheduler();
 }
 
 void scheduler() {
 printf("SCHEDULER\n");
     while (1) {
         for (int i = 0; i < gNumProc; i++) {
-printf("SCHEDULER LOOP\n");
             struct proc *p = gProc[i];
             if (p->state == RUNNABLE) {
-printf("RUNNABLE %d\n", i);
                 gActiveProc = i;
                 p->state = RUNNING;
-printf("YIELD ACTIVE PROC LOAD %d SAVE CPU\n", gActiveProc);
+
+printf("SWITCH TO %d\n", i);
                 swtch(&cpu.context, &p->context);
-printf("RETURN SCHEDULER\n");
-                disable_timer_interrupt();
+
+                // 戻ってきたとき
+//                disable_timer_interrupt();     // 一度止める
                 p->state = RUNNABLE;
             }
-else {
-printf("NO RUNNABLE %d\n", i);
-}
-printf("SCHEDULER LOOP END\n");
         }
     }
 }
+
 
 
 int main()
@@ -609,6 +604,7 @@ int main()
     alloc_proc(task2);
     
     enable_timer_interrupts();
+    intr_off();
 
     scheduler();
 
