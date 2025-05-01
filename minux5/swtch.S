@@ -50,11 +50,11 @@ swtch:
     ld t4, 64(a1)
     ld t5, 72(a1)
     ld t6, 80(a1)
-    ld a0, 88(a1)
-    ld a1, 96(a1)
-    ld a2, 104(a1)
-    ld a3, 112(a1)
-    ld a4, 120(a1)
+#    ld a0, 88(a1)
+#    ld a1, 96(a1)
+#    ld a2, 104(a1)
+#    ld a3, 112(a1)
+#    ld a4, 120(a1)
     ld a5, 128(a1)
     ld a6, 136(a1)
     ld a7, 144(a1)
@@ -71,9 +71,24 @@ swtch:
     ld s10, 232(a1)
     ld s11, 240(a1)
     
-    csrr t0, mstatus
-    ori  t0, t0, 0x8
-    csrw mstatus, t0 
-   
+    li   a0, 0x0200BFF8
+    ld   a1, 0(a0)
+
+    li   a2, 10000
+    add  a1, a1, a2
+
+    li   a0, 0x02004000
+    sd   a1, 0(a0)
+
+    csrr a0, mie
+    li   a1, (1 << 7)         # MIE_MTIE = 0x80
+    or   a0, a0, a1
+    csrw mie, a0
+
+    csrr a0, mstatus
+    li   a1, (1 << 3)         # MSTATUS_MIE = 0x8
+    or   a0, a0, a1
+    csrw mstatus, a0
+
     ret
 

@@ -109,22 +109,22 @@ void uartputc_sync(char c) {
 static inline void intr_on() {
     uint64_t x;
     asm volatile("csrr %0, mstatus" : "=r"(x));
-    x |= (1L << 3);  // MSTATUS_MIE をセット
+
     asm volatile("csrw mstatus, %0" : : "r"(x));
 }
 
 static inline void intr_off() {
     uint64_t x;
     asm volatile("csrr %0, mstatus" : "=r"(x));
-    x &= ~(1L << 3);  // ビット3: MSTATUS_MIE をクリア
+
     asm volatile("csrw mstatus, %0" : : "r"(x));
 }
                 
 
 void puts(const char *s) {
-    intr_off();
+    //intr_off();
     while (*s) putc(1, *s++);
-    intr_on();
+    //intr_on();
 }
 
 static void printint(int fd, int xx, int base, int sgn)
@@ -450,7 +450,7 @@ static inline void w_sstatus(uint64 x)
 #define MTIMECMP_ADDR ((volatile uint64_t*)0x02004000)
 
 void disable_timer_interrupt() {
-    *MTIMECMP_ADDR = (uint64_t)-1;  // 最大値を入れておく
+
 }
         
 
@@ -478,19 +478,56 @@ extern void timervec();  //
 void enable_timer_interrupts() {
     w_mtvec((uint64)timervec & ~0x03);
     uint64 now = *MTIME;
-    *MTIMECMP = now + 10000;
-    w_mie(r_mie() | MIE_MTIE);
-    w_mstatus(r_mstatus() | MSTATUS_MIE);
+    //*MTIMECMP = now + 10000;
+    *MTIMECMP = now + 0xFFFFFFFF;
+    w_mie(0x00);
+
+
+w_mie(0x0);
+
+
+w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+
+
+*MTIMECMP = *MTIME + 0xFFFFFFFF;
+}
+
+void timer_interrupts_for_task_switch() {
+//    uint64 now = *MTIME;
+//    *MTIMECMP = now + 10000;
+//    w_mie(r_mie() | MIE_MTIE);
+//    w_mstatus(r_mstatus() | MSTATUS_MIE);
+
+w_mie(0x0);
+
+
+w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+
+
+*MTIMECMP = *MTIME + 0xFFFFFFFF;
+}
+void timer_interrupts_for_scheduler() {
+//    uint64 now = *MTIME;
+//    *MTIMECMP = now + 0xFFFFFFFF;
+//    w_mie(0x00);
+
+w_mie(0x0);
+
+
+w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+
+
+*MTIMECMP = *MTIME + 0xFFFFFFFF;
 }
 
 void disable_timer_interrupts() {
-    // mie の MTIEビットをクリア（タイマー割り込みを無効化）
+
     w_mie(r_mie() & ~MIE_MTIE);
 
-    // mstatus の MIEビットをクリア（Mモード割り込み全体を無効化）
+
     w_mstatus(r_mstatus() & ~MSTATUS_MIE);
 
-    // mtimecmp を非常に大きな値にして、当面割り込みが起きないようにする（オプション）
+
     *MTIMECMP = (uint64_t)-1;
 }
 
@@ -555,7 +592,7 @@ void scheduler();
 void timer_handler() {
     printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
-    p->context.ra = r_mepc(); // 保存
+
     timer_reset();
 
     yield();
@@ -584,27 +621,39 @@ printf("SCHEDULER\n");
                 p->state = RUNNING;
 
 printf("SWITCH TO %d\n", i);
+                timer_interrupts_for_task_switch();
                 swtch(&cpu.context, &p->context);
+                timer_interrupts_for_scheduler();
 
-                // 戻ってきたとき
-//                disable_timer_interrupt();     // 一度止める
+
+
                 p->state = RUNNABLE;
             }
         }
     }
 }
 
+void mask_and_clear_timer_interrupt() {
 
+    uint64_t now = *MTIME;
+
+            
+
+    w_mie(r_mie() & ~MIE_MTIE);
+                    
+
+    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+}
 
 int main()
 {
+
     kinit();
 
     alloc_proc(task1);
     alloc_proc(task2);
     
     enable_timer_interrupts();
-    intr_off();
 
     scheduler();
 
