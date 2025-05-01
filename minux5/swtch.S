@@ -37,6 +37,8 @@ swtch:
     sd s9, 224(a0)
     sd s10, 232(a0)
     sd s11, 240(a0)
+#    csrr a3, mepc
+#    sd a3, 248(a0)
 
     # Load all registers from *a1
     ld ra, 0(a1)
@@ -70,25 +72,67 @@ swtch:
     ld s9, 224(a1)
     ld s10, 232(a1)
     ld s11, 240(a1)
+#    csrw mepc, a2
     
     li   a0, 0x0200BFF8
-    ld   a1, 0(a0)
+    ld   a4, 0(a0)
 
     li   a2, 500000
-    add  a1, a1, a2
+    add  a4, a4, a2
 
     li   a0, 0x02004000
-    sd   a1, 0(a0)
+    sd   a4, 0(a0)
 
     csrr a0, mie
-    li   a1, (1 << 7)         # MIE_MTIE = 0x80
-    or   a0, a0, a1
+    li   a4, (1 << 7)         # MIE_MTIE = 0x80
+    or   a0, a0, a4
     csrw mie, a0
 
     csrr a0, mstatus
-    li   a1, (1 << 3)         # MSTATUS_MIE = 0x8
-    or   a0, a0, a1
+    li   a4, (1 << 3)         # MSTATUS_MIE = 0x8
+    or   a0, a0, a4
     csrw mstatus, a0
+    
+    ld a2, 248(a1)
 
-    ret
+    jr a2
 
+.globl trampoline
+trampoline:
+    ld t0, TRAPFRAME;
+    
+    sd ra, 0(t0)
+    sd sp, 8(t0)
+    sd gp, 16(t0)
+    sd tp, 24(t0)
+#    sd t0, 32(t0)
+    sd t1, 40(t0)
+    sd t2, 48(t0)
+    sd t3, 56(t0)
+    sd t4, 64(t0)
+    sd t5, 72(t0)
+    sd t6, 80(t0)
+    sd a0, 88(t0)
+    sd a1, 96(t0)
+    sd a2, 104(t0)
+    sd a3, 112(t0)
+    sd a4, 120(t0)
+    sd a5, 128(t0)
+    sd a6, 136(t0)
+    sd a7, 144(t0)
+    sd s0, 152(t0)
+    sd s1, 160(t0)
+    sd s2, 168(t0)
+    sd s3, 176(t0)
+    sd s4, 184(t0)
+    sd s5, 192(t0)
+    sd s6, 200(t0)
+    sd s7, 208(t0)
+    sd s8, 216(t0)
+    sd s9, 224(t0)
+    sd s10, 232(t0)
+    sd s11, 240(t0)
+    csrr t1, mepc
+    sd t1, 248(t0)
+
+    j timer_handler

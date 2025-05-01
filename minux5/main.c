@@ -17,6 +17,7 @@ typedef uint64_t pte_t;
 
 static char digits[] = "0123456789ABCDEF";
 
+
 struct context {
   uint64 ra;
   uint64 sp;
@@ -49,7 +50,10 @@ struct context {
   uint64 s9;
   uint64 s10;
   uint64 s11;
+  uint64 mepc;
 };
+
+struct context TRAPFRAME;
 
 struct cpu 
 {
@@ -76,7 +80,6 @@ struct proc
   struct proc *parent;         // Parent process
 
   char* stack;
-  uint64_t mepc;
 };
 
 #define NPROC 128
@@ -108,21 +111,19 @@ void uartputc_sync(char c) {
 
 #define MIE_MTIE (1 << 7)
 
-static inline void intr_on() {
-    // mie.MTIE 
-    uint64_t x;
-    asm volatile("csrr %0, mie" : "=r"(x));
-    x |= MIE_MTIE;
-    asm volatile("csrw mie, %0" : : "r"(x));
-}
+#define intr_on() {\
+    uint64_t x; \
+    asm volatile("csrr %0, mie" : "=r"(x)); \ 
+    x |= MIE_MTIE; \
+    asm volatile("csrw mie, %0" : : "r"(x)); \
+    }
 
-static inline void intr_off() {
-    // mie.MTIE 
-    uint64_t x;
-    asm volatile("csrr %0, mie" : "=r"(x));
-    x &= ~MIE_MTIE;
-    asm volatile("csrw mie, %0" : : "r"(x));
-}
+#define intr_off() { \
+    uint64_t x; \
+    asm volatile("csrr %0, mie" : "=r"(x)); \
+    x &= ~MIE_MTIE; \
+    asm volatile("csrw mie, %0" : : "r"(x)); \
+    }
 
                     
                 
@@ -575,7 +576,7 @@ struct proc* alloc_proc(void (*task)())
     result->stack = kalloc();
     
     result->context.sp = (uint64)(result->stack + PGSIZE);
-    result->context.ra = (uint64)task;
+    result->context.mepc = (uint64)task;
     result->state = RUNNABLE;
 
     gProc[gNumProc++] = result;
@@ -601,8 +602,10 @@ void scheduler();
 void timer_handler() {
     printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
-    p->context.ra = r_mepc();
-printf("mepc %p\n", r_mepc());
+    
+    p->context = TRAPFRAME;
+//    p->context.mepc = r_mepc();
+//printf("mepc %p\n", r_mepc());
 
     timer_reset();
 
