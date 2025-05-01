@@ -106,25 +106,31 @@ void uartputc_sync(char c) {
     *(volatile char*)(0x10000000) = c;
 }
 
-static inline void intr_on() {
-    uint64_t x;
-    asm volatile("csrr %0, mstatus" : "=r"(x));
+#define MIE_MTIE (1 << 7)
 
-    asm volatile("csrw mstatus, %0" : : "r"(x));
+static inline void intr_on() {
+    // mie.MTIE 
+    uint64_t x;
+    asm volatile("csrr %0, mie" : "=r"(x));
+    x |= MIE_MTIE;
+    asm volatile("csrw mie, %0" : : "r"(x));
 }
 
 static inline void intr_off() {
+    // mie.MTIE 
     uint64_t x;
-    asm volatile("csrr %0, mstatus" : "=r"(x));
-
-    asm volatile("csrw mstatus, %0" : : "r"(x));
+    asm volatile("csrr %0, mie" : "=r"(x));
+    x &= ~MIE_MTIE;
+    asm volatile("csrw mie, %0" : : "r"(x));
 }
+
+                    
                 
 
 void puts(const char *s) {
-    //intr_off();
+    intr_off();
     while (*s) putc(1, *s++);
-    //intr_on();
+    intr_on();
 }
 
 static void printint(int fd, int xx, int base, int sgn)
@@ -419,7 +425,6 @@ static inline uint64_t r_mepc(void)
 
 // mie: Machine Interrupt Enable Register
 #define MIE_MSIE (1 << 3)   // 
-#define MIE_MTIE (1 << 7)   // 
 #define MIE_MEIE (1 << 11)  // 
 
 // mstatus: Machine Status Register
@@ -533,6 +538,8 @@ void disable_timer_interrupts() {
 
 void task1()
 {
+puts("TASK1");
+printf("TASK1 TOP %p\n", task1);
     while(1) {
         puts("1a");
         puts("1b");
@@ -546,6 +553,8 @@ void task1()
 
 void task2()
 {
+puts("TASK2");
+printf("TASK2 TOP %p\n", task2);
     while(1) {
         puts("2a");
         puts("2b");
@@ -592,6 +601,8 @@ void scheduler();
 void timer_handler() {
     printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
+    p->context.ra = r_mepc();
+printf("mepc %p\n", r_mepc());
 
     timer_reset();
 
@@ -625,8 +636,6 @@ printf("SWITCH TO %d\n", i);
                 swtch(&cpu.context, &p->context);
                 timer_interrupts_for_scheduler();
 
-
-
                 p->state = RUNNABLE;
             }
         }
@@ -634,20 +643,15 @@ printf("SWITCH TO %d\n", i);
 }
 
 void mask_and_clear_timer_interrupt() {
-
     uint64_t now = *MTIME;
 
-            
-
     w_mie(r_mie() & ~MIE_MTIE);
-                    
 
     w_mstatus(r_mstatus() & ~MSTATUS_MIE);
 }
 
 int main()
 {
-
     kinit();
 
     alloc_proc(task1);

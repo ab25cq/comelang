@@ -74,7 +74,7 @@ swtch:
     li   a0, 0x0200BFF8
     ld   a1, 0(a0)
 
-    li   a2, 10000
+    li   a2, 500000
     add  a1, a1, a2
 
     li   a0, 0x02004000
