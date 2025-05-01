@@ -37,10 +37,15 @@ else
     sudo mv xpack-riscv-none-elf-gcc-* /opt/riscv
     echo 'export PATH=/opt/riscv/xpack-riscv-none-elf-gcc-13.2.0-1/bin:$PATH' >> ~/.bashrc
     export PATH=/opt/riscv/xpack-riscv-none-elf-gcc-13.2.0-1/bin:$PATH
+    rm -rf xpack-riscv-none-elf-gcc-13.2.0-1
 fi
 
 
 make clean
-#make debug CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64"
-make debug CCPREFIX=riscv64-unknown-elf- CFLAGS=""
+if which riscv-none-elf-gcc
+then
+    make debug CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64"
+else 
+    make debug CCPREFIX=riscv64-unknown-elf- CFLAGS=""
+fi
 
