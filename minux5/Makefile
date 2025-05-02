@@ -1,7 +1,7 @@
-CCPREFIX=riscv-none-elf-
-#CCPREFIX=riscv64-unknown-elf-
-CFLAGS=-march=rv64gc -mabi=lp64
-#CFLAGS=
+#CCPREFIX=riscv-none-elf-
+CCPREFIX=riscv64-unknown-elf-
+#CFLAGS=-march=rv64gc -mabi=lp64
+CFLAGS=
 
 all: kernel.elf
 
@@ -9,9 +9,12 @@ kernel.elf:
 	$(CCPREFIX)as -g $(CFLAGS) -o start.o start.S
 	$(CCPREFIX)as -g $(CFLAGS) -o swtch.o swtch.S
 	$(CCPREFIX)as -g $(CFLAGS) -o timervec.o timervec.S
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o main.o
+	comelang -riscv -c -g -s main.c
+#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o main.c.o 
 
+#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
+#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o main.c.o -lc 
 
 
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin

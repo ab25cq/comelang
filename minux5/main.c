@@ -1,4 +1,6 @@
 #include <stdarg.h>
+//#include <stdio.h>
+#include <comelang.h>
 
 typedef unsigned int   uint;
 typedef unsigned short ushort;
@@ -70,7 +72,7 @@ struct {
   struct run *freelist;
 } kmem;
 
-struct cpu cpu;
+struct cpu gCPU;
 
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
@@ -95,7 +97,7 @@ struct proc* gProc[NPROC];
 #define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
 
-extern char end[]; // first address after kernel.
+extern char _end[]; // first address after kernel.
                    // defined by kernel.ld.
 
 
@@ -113,19 +115,19 @@ void uartputc_sync(char c) {
 
 #define MIE_MTIE (1 << 7)
 
-#define intr_on() {\
-    uint64_t x; \
-    asm volatile("csrr %0, mie" : "=r"(x)); \ 
-    x |= MIE_MTIE; \
-    asm volatile("csrw mie, %0" : : "r"(x)); \
-    }
+static inline void intr_on() {
+    uint64_t x; 
+    asm volatile("csrr %0, mie" : "=r"(x)); 
+    x |= MIE_MTIE; 
+    asm volatile("csrw mie, %0" : : "r"(x)); 
+}
 
-#define intr_off() { \
-    uint64_t x; \
-    asm volatile("csrr %0, mie" : "=r"(x)); \
-    x &= ~MIE_MTIE; \
-    asm volatile("csrw mie, %0" : : "r"(x)); \
-    }
+static inline void intr_off() { 
+    uint64_t x; 
+    asm volatile("csrr %0, mie" : "=r"(x)); 
+    x &= ~MIE_MTIE; 
+    asm volatile("csrw mie, %0" : : "r"(x)); 
+}
 
                     
                 
@@ -234,7 +236,7 @@ vprintf(int fd, const char *fmt, va_list ap)
   }
 }
 
-void
+int
 fprintf(int fd, const char *fmt, ...)
 {
   va_list ap;
@@ -251,14 +253,14 @@ void printf(const char *fmt, ...)
   vprintf(1, fmt, ap);
 }
 
-#define HEAP_END (end + PGSIZE * 256)
+#define HEAP_END (_end + PGSIZE * 256)
 
 void
 kfree(void *pa)
 {
   struct run *r;
 
-  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= HEAP_END) {
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < _end || (uint64)pa >= HEAP_END) {
       puts("panic");
   }
 
@@ -280,7 +282,7 @@ freerange(void *pa_start, void *pa_end)
 
 void kinit()
 {
-  freerange(end, HEAP_END);
+  freerange(_end, HEAP_END);
 }
 
 void *
@@ -588,10 +590,6 @@ struct proc* alloc_proc(void (*task)())
 void swtch(struct context*, struct context*);
 
 
-
-#define MTIME    ((volatile uint64_t *)0x0200BFF8)
-#define MTIMECMP ((volatile uint64_t *)0x02004000)
-
 void timer_reset() {
     uint64_t now = *MTIME;
     *MTIMECMP = now + TIMER_INTERVAL;
@@ -646,7 +644,7 @@ printf("SCHEDULER\n");
 
 printf("SWITCH TO %d\n", i);
                 disable_timer_interrupts();
-                swtch(&cpu.context, &p->context);
+                swtch(&gCPU.context, &p->context);
                 disable_timer_interrupts();
 
                 p->state = RUNNABLE;

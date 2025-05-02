@@ -68,6 +68,113 @@ output {#include "hardware/irq.h"}
 output {#include "hardware/timer.h"}
 output {#include "hardware/uart.h"}
 
+#elif __RISCV__
+using comelang;
+
+typedef unsigned long size_t;
+typedef long ptrdiff_t;
+#define NULL ((void*)0)
+
+extern char _end[]; // first address after kernel.
+                   // defined by kernel.ld.
+
+static char* heap_end = 0;
+static char* heap_limit = (char*)0x88000000;  // 
+
+#define ALIGN8(size) (((size) + 7) & ~7)
+
+typedef struct sBlock {
+    size_t size;
+    struct sBlock* next;
+    int free;
+} block_t;
+
+#define BLOCK_SIZE sizeof(block_t)
+
+uniq block_t* free_list = NULL;
+
+uniq void* _sbrk(ptrdiff_t incr) {
+    if (heap_end == 0)
+        heap_end = &_end;
+
+    if (heap_end + incr >= heap_limit)
+        return (void*)-1;
+
+    void* prev = heap_end;
+    heap_end += incr;
+    return prev;
+}
+
+uniq block_t* find_free_block(size_t size) {
+    block_t* curr = free_list;
+    while (curr) {
+        if (curr->free && curr->size >= size)
+            return curr;
+        curr = curr->next;
+    }
+    return NULL;
+}
+
+uniq block_t* request_space(size_t size) {
+    void* mem = _sbrk(size + BLOCK_SIZE);
+    if (mem == (void*)-1)
+        return NULL;
+
+    block_t* b = (block_t*)mem;
+    b->size = size;
+    b->next = NULL;
+    b->free = 0;
+
+    return b;
+}
+
+uniq void* malloc(size_t size) {
+    size = ALIGN8(size);
+    block_t* block;
+
+    if ((block = find_free_block(size))) {
+        block->free = 0;
+        return (void*)(block + 1);  //  block 
+    }
+
+    block = request_space(size);
+    if (!block)
+        return NULL;
+
+    if (!free_list)
+        free_list = block;
+    else {
+        block_t* curr = free_list;
+        while (curr->next) curr = curr->next;
+        curr->next = block;
+    }
+
+    return (void*)(block + 1);
+}
+
+uniq void free(void* ptr) {
+    if (!ptr) return;
+
+    block_t* block = ((block_t*)ptr) - 1;
+    block->free = 1;
+}
+
+uniq void* calloc(size_t n, size_t size) {
+    size_t total = n * size;
+    void* ptr = malloc(total);
+    if (ptr)
+        memset(ptr, 0, total);
+    return ptr;
+}
+
+uniq char* strdup(const char* s) {
+    size_t len = strlen(s) + 1;
+    char* p = malloc(len);
+    if (p)
+        memcpy(p, s, len);
+    return p;
+}
+
 #else
 
 using C
@@ -86,6 +193,8 @@ using C
 
 #endif
 
+using comelang;
+
 /*
 #ifdef ENABLE_GC
 using C
@@ -99,7 +208,6 @@ using C
 #endif
 */
 
-using comelang;
 
 typedef void*% any;
 typedef char*% string;
@@ -3746,6 +3854,7 @@ uniq float float::clone(float self)
 //////////////////////////////
 /// base library(character code)
 //////////////////////////////
+#ifndef __RISCV__
 uniq bool xiswalpha(wchar_t c)
 {
     bool result = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
@@ -3766,6 +3875,14 @@ uniq bool xiswalnum(wchar_t c)
 {
     return xiswalpha(c) || xiswdigit(c);
 }
+
+uniq bool xiswascii(wchar_t c)
+{
+    bool result = (c >= ' ' && c <= '~');
+    return result;
+}
+
+#endif
 
 uniq bool xisalpha(char c)
 {
@@ -3789,12 +3906,6 @@ uniq bool xisalnum(char c)
 }
 
 uniq bool xisascii(char c)
-{
-    bool result = (c >= ' ' && c <= '~');
-    return result;
-}
-
-uniq bool xiswascii(wchar_t c)
 {
     bool result = (c >= ' ' && c <= '~');
     return result;
@@ -4459,6 +4570,7 @@ uniq int char*::compare(char* left, char* right)
 //////////////////////////////
 /// base library(IO-FILE)
 //////////////////////////////
+#ifndef __RISCV__
 uniq string FILE*::read(FILE* f)
 {
     if(f == null) {
@@ -4621,10 +4733,13 @@ uniq list<string>*% FILE*::readlines(FILE* f)
     
     return result;
 }
+#endif
 
 //////////////////////////////
 /// base library(STDOUT, STDIN)
 //////////////////////////////
+#ifdef __RISCV__
+#else
 uniq string char*::puts(char* self)
 {
     if(self == null) {
@@ -4670,7 +4785,12 @@ uniq int int::printf(int self, char* msg)
     
     return self;
 }
+#endif
 
+//////////////////////////////
+/// base library(assert)
+//////////////////////////////
+#ifndef __RISCV__
 #undef assert
 
 uniq record int assert(int exp) version 2
@@ -4683,7 +4803,12 @@ uniq record int assert(int exp) version 2
         exit(2);
     }
 }
+#endif
 
+//////////////////////////////
+/// base library(wchar_t)
+//////////////////////////////
+#ifndef __RISCV__
 uniq bool wchar_t::equals(wchar_t left, wchar_t right)
 {
     return left == right;
@@ -4734,6 +4859,7 @@ uniq string wchar_t::to_string(wchar_t wc)
 {
     return xsprintf("%ls", wc);
 }
+#endif
 
 uniq void int::times(int self, void* parent, void (*block)(void* parent, int it))
 {

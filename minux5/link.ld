@@ -16,7 +16,7 @@ SECTIONS
   . = . + 4096;
 
   /* End of uninitalized data segement */
-  end = .;
+  _end = .;
   
   .debug_info        0 : { *(.debug_info) } 
   .debug_abbrev      0 : { *(.debug_abbrev) }
