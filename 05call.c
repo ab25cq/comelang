@@ -897,6 +897,54 @@ class sFunCallNode extends sNodeBase
             
             return true;
         }
+        else if(fun_name === "__builtin_va_copy") {
+            list<CVALUE*%>*% come_params = new list<CVALUE*%>();
+            
+            int i = 0;
+            foreach(it, params) {
+                var label, node = it;
+                
+                node_compile(node).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                come_value.type = solve_generics(come_value.type, info->generics_type, info);
+                
+                come_params.add(come_value);
+            }
+            
+            buffer*% buf = new buffer();
+            
+            buf.append_str(fun_name);
+            buf.append_str("(");
+            
+            int j = 0;
+            foreach(it, come_params) {
+                buf.append_str(it.c_value);
+                
+                if(j != come_params.length()-1) {
+                    buf.append_str(",");
+                }
+                
+                j++;
+            }
+            buf.append_str(")");
+            
+            sType*% result_type = new sType(s"void");
+            
+            CVALUE*% come_value = new CVALUE();
+            come_value.c_value = buf.to_string();
+            come_value.type = result_type;
+            come_value.var = null;
+            
+            add_come_last_code(info, "%s", come_value.c_value);
+            
+            info.stack.push_back(come_value);
+            
+            return true;
+        }
         
         if(fun_name === "string") {
             fun_name = string("__builtin_string");

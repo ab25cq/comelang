@@ -46,8 +46,7 @@ make clean
 #then
 #    make debug CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64"
 #else 
-#    make debug CCPREFIX=riscv64-unknown-elf- CFLAGS=""
+    make debug CCPREFIX=riscv64-unknown-elf- CFLAGS=""
 #fi
 
-make
 

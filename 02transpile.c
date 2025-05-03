@@ -843,8 +843,14 @@ module MEvalOptions<T, T2>
         else if(argv[i] === "-riscv") {
             gcc_compiler = true;
             CC="riscv64-unknown-elf-gcc"
-            cpp_option.append_format(s" -D__RISCV__ ");
+            cpp_option.append_format(s" -D__BARE_METAL__ -D__RISCV__ ");
             clang_option.append_str(s" -nostdlib -ffreestanding -mcmodel=medany -D__RISCV__");
+        }
+        else if(argv[i] === "-bare") {
+            gcc_compiler = true;
+            CC="gcc";
+            cpp_option.append_format(s" -D__BARE_METAL__ ");
+            clang_option.append_str(s" -nostdlib -ffreestanding ");
         }
         else if(argv[i] === "-pico") {
             output_source_file_flag = true;

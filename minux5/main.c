@@ -57,10 +57,7 @@ struct context {
 
 extern char TRAPFRAME[];
 
-
-
-struct cpu 
-{
+struct cpu  {
     struct proc *proc;          // The process running on this cpu, or null.
     struct context context;     // swtch() here to enter scheduler().
 };
@@ -76,8 +73,7 @@ struct cpu gCPU;
 
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
-struct proc 
-{
+struct proc  {
   enum procstate state;        // Process state
   struct context context;      // swtch() here to run process
 
@@ -100,13 +96,8 @@ struct proc* gProc[NPROC];
 extern char _end[]; // first address after kernel.
                    // defined by kernel.ld.
 
-
-volatile char *uart = (char *)0x10000000;
-
-void putc(int fd, char c) {
-    if(fd == 1) {
-        *(volatile char*)(0x10000000) = c;
-    }
+void putchar(char c) {
+    *(volatile char*)(0x10000000) = c;
 }
 
 void uartputc_sync(char c) {
@@ -129,135 +120,15 @@ static inline void intr_off() {
     asm volatile("csrw mie, %0" : : "r"(x)); 
 }
 
-                    
-                
-
 void puts(const char *s) {
     intr_off();
-    while (*s) putc(1, *s++);
+    while (*s) putchar(*s++);
     intr_on();
-}
-
-static void printint(int fd, int xx, int base, int sgn)
-{
-  char buf[16];
-  int i, neg;
-  uint x;
-
-  neg = 0;
-  if(sgn && xx < 0){
-    neg = 1;
-    x = -xx;
-  } else {
-    x = xx;
-  }
-
-  i = 0;
-  do{
-    buf[i++] = digits[x % base];
-  }while((x /= base) != 0);
-  if(neg)
-    buf[i++] = '-';
-
-  while(--i >= 0)
-    putc(fd, buf[i]);
-}
-
-static void printptr(int fd, uint64 x) 
-{
-  int i;
-  putc(fd, '0');
-  putc(fd, 'x');
-  for (i = 0; i < (sizeof(uint64) * 2); i++, x <<= 4)
-    putc(fd, digits[x >> (sizeof(uint64) * 8 - 4)]);
-}
-
-// Print to the given fd. Only understands %d, %x, %p, %s.
-void
-vprintf(int fd, const char *fmt, va_list ap)
-{
-  char *s;
-  int c0, c1, c2, i, state;
-
-  state = 0;
-  for(i = 0; fmt[i]; i++){
-    c0 = fmt[i] & 0xff;
-    if(state == 0){
-      if(c0 == '%'){
-        state = '%';
-      } else {
-        putc(fd, c0);
-      }
-    } else if(state == '%'){
-      c1 = c2 = 0;
-      if(c0) c1 = fmt[i+1] & 0xff;
-      if(c1) c2 = fmt[i+2] & 0xff;
-      if(c0 == 'd'){
-        printint(fd, va_arg(ap, int), 10, 1);
-      } else if(c0 == 'l' && c1 == 'd'){
-        printint(fd, va_arg(ap, uint64), 10, 1);
-        i += 1;
-      } else if(c0 == 'l' && c1 == 'l' && c2 == 'd'){
-        printint(fd, va_arg(ap, uint64), 10, 1);
-        i += 2;
-      } else if(c0 == 'u'){
-        printint(fd, va_arg(ap, int), 10, 0);
-      } else if(c0 == 'l' && c1 == 'u'){
-        printint(fd, va_arg(ap, uint64), 10, 0);
-        i += 1;
-      } else if(c0 == 'l' && c1 == 'l' && c2 == 'u'){
-        printint(fd, va_arg(ap, uint64), 10, 0);
-        i += 2;
-      } else if(c0 == 'x'){
-        printint(fd, va_arg(ap, int), 16, 0);
-      } else if(c0 == 'l' && c1 == 'x'){
-        printint(fd, va_arg(ap, uint64), 16, 0);
-        i += 1;
-      } else if(c0 == 'l' && c1 == 'l' && c2 == 'x'){
-        printint(fd, va_arg(ap, uint64), 16, 0);
-        i += 2;
-      } else if(c0 == 'p'){
-        printptr(fd, va_arg(ap, uint64));
-      } else if(c0 == 's'){
-        if((s = va_arg(ap, char*)) == 0)
-          s = "(null)";
-        for(; *s; s++)
-          putc(fd, *s);
-      } else if(c0 == '%'){
-        putc(fd, '%');
-      } else {
-        // Unknown % sequence.  Print it to draw attention.
-        putc(fd, '%');
-        putc(fd, c0);
-      }
-
-      state = 0;
-    }
-  }
-}
-
-int
-fprintf(int fd, const char *fmt, ...)
-{
-  va_list ap;
-
-  va_start(ap, fmt);
-  vprintf(fd, fmt, ap);
-}
-
-void printf(const char *fmt, ...)
-{
-  va_list ap;
-
-  va_start(ap, fmt);
-  vprintf(1, fmt, ap);
 }
 
 #define HEAP_END (_end + PGSIZE * 256)
 
-void
-kfree(void *pa)
-{
+void kfree(void *pa) {
   struct run *r;
 
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < _end || (uint64)pa >= HEAP_END) {
@@ -270,9 +141,7 @@ kfree(void *pa)
   kmem.freelist = r;
 }
 
-void
-freerange(void *pa_start, void *pa_end)
-{
+void freerange(void *pa_start, void *pa_end) {
   char *p;
   p = (char*)PGROUNDUP((uint64)pa_start);
   for(; p + PGSIZE <= HEAP_END; p += PGSIZE) {
@@ -280,14 +149,11 @@ freerange(void *pa_start, void *pa_end)
   }
 }
 
-void kinit()
-{
+void kinit() {
   freerange(_end, HEAP_END);
 }
 
-void *
-kalloc(void)
-{
+void * kalloc(void) {
   struct run *r;
 
   r = kmem.freelist;
@@ -298,110 +164,6 @@ kalloc(void)
   return (void*)r;
 }
 
-void*
-memset(void *dst, int c, uint n)
-{
-  char *cdst = (char *) dst;
-  int i;
-  for(i = 0; i < n; i++){
-    cdst[i] = c;
-  }
-  return dst;
-}
-
-int
-memcmp(const void *v1, const void *v2, uint n)
-{
-  const uchar *s1, *s2;
-
-  s1 = v1;
-  s2 = v2;
-  while(n-- > 0){
-    if(*s1 != *s2)
-      return *s1 - *s2;
-    s1++, s2++;
-  }
-
-  return 0;
-}
-
-void*
-memmove(void *dst, const void *src, uint n)
-{
-  const char *s;
-  char *d;
-
-  if(n == 0)
-    return dst;
-  
-  s = src;
-  d = dst;
-  if(s < d && s + n > d){
-    s += n;
-    d += n;
-    while(n-- > 0)
-      *--d = *--s;
-  } else
-    while(n-- > 0)
-      *d++ = *s++;
-
-  return dst;
-}
-
-// memcpy exists to placate GCC.  Use memmove.
-void*
-memcpy(void *dst, const void *src, uint n)
-{
-  return memmove(dst, src, n);
-}
-
-int
-strncmp(const char *p, const char *q, uint n)
-{
-  while(n > 0 && *p && *p == *q)
-    n--, p++, q++;
-  if(n == 0)
-    return 0;
-  return (uchar)*p - (uchar)*q;
-}
-
-char*
-strncpy(char *s, const char *t, int n)
-{
-  char *os;
-
-  os = s;
-  while(n-- > 0 && (*s++ = *t++) != 0)
-    ;
-  while(n-- > 0)
-    *s++ = 0;
-  return os;
-}
-
-// Like strncpy but guaranteed to NUL-terminate.
-char*
-safestrcpy(char *s, const char *t, int n)
-{
-  char *os;
-
-  os = s;
-  if(n <= 0)
-    return os;
-  while(--n > 0 && (*s++ = *t++) != 0)
-    ;
-  *s = 0;
-  return os;
-}
-
-int
-strlen(const char *s)
-{
-  int n;
-
-  for(n = 0; s[n]; n++)
-    ;
-  return n;
-}
 
 int gActiveProc = 0;
 int gNumProc = 0;
@@ -422,8 +184,6 @@ static inline uint64_t r_mepc(void)
     asm volatile("csrr %0, mepc" : "=r" (x));
     return x;
 }
-            
-
 
 #define MTIMECMP (volatile uint64*)0x02004000
 #define MTIME    (volatile uint64*)0x0200BFF8
@@ -441,18 +201,16 @@ static inline uint64 r_mstatus() {
   return x;
 }
 
-static inline uint64
-r_sstatus()
-{
+static inline uint64 r_sstatus() {
   uint64 x;
   asm volatile("csrr %0, sstatus" : "=r" (x) );
   return x;
 }
 
-static inline void w_sstatus(uint64 x)
-{
+static inline void w_sstatus(uint64 x) {
     asm volatile("csrw sstatus, %0" : : "r"(x));
 }
+
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
 #define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
 
@@ -460,13 +218,13 @@ static inline void w_sstatus(uint64 x)
 #define MTIMECMP_ADDR ((volatile uint64_t*)0x02004000)
 
 void disable_timer_interrupt() {
-
 }
         
 
 static inline void w_mstatus(uint64 x) {
   asm volatile("csrw mstatus, %0" : : "r" (x));
 }
+
 static inline uint64_t r_mie() {
     uint64_t x;
     asm volatile("csrr %0, mie" : "=r"(x));
@@ -491,57 +249,31 @@ void enable_timer_interrupts() {
     //*MTIMECMP = now + 10000;
     *MTIMECMP = now + 0xFFFFFFFF;
     w_mie(0x00);
-
-
-w_mie(0x0);
-
-
-w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-
-
-*MTIMECMP = *MTIME + 0xFFFFFFFF;
+    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+    *MTIMECMP = *MTIME + 0xFFFFFFFF;
 }
 
 void timer_interrupts_for_task_switch() {
-//    uint64 now = *MTIME;
-//    *MTIMECMP = now + 10000;
-//    w_mie(r_mie() | MIE_MTIE);
-//    w_mstatus(r_mstatus() | MSTATUS_MIE);
-
-w_mie(0x0);
-
-
-w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-
-
-*MTIMECMP = *MTIME + 0xFFFFFFFF;
+    w_mie(0x0);
+    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+    *MTIMECMP = *MTIME + 0xFFFFFFFF;
 }
+
 void timer_interrupts_for_scheduler() {
-//    uint64 now = *MTIME;
-//    *MTIMECMP = now + 0xFFFFFFFF;
-//    w_mie(0x00);
-
-w_mie(0x0);
-
-
-w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-
-
-*MTIMECMP = *MTIME + 0xFFFFFFFF;
+    w_mie(0x0);
+    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+    *MTIMECMP = *MTIME + 0xFFFFFFFF;
 }
 
 void disable_timer_interrupts() {
     w_mie(0x0);
-    //w_mie(r_mie() & ~MIE_MTIE);
 
     w_mstatus(r_mstatus() & ~MSTATUS_MIE);
 
     *MTIMECMP = *MTIME + 0xFFFFFFFF;
-    //*MTIMECMP = (uint64_t)-1;
 }
 
-void task1()
-{
+void task1() {
 puts("TASK1");
 printf("TASK1 TOP %p\n", task1);
     while(1) {
@@ -555,8 +287,7 @@ printf("TASK1 TOP %p\n", task1);
     }
 }
 
-void task2()
-{
+void task2() {
 puts("TASK2");
 printf("TASK2 TOP %p\n", task2);
     while(1) {
@@ -570,8 +301,7 @@ printf("TASK2 TOP %p\n", task2);
     }
 }
 
-struct proc* alloc_proc(void (*task)())
-{
+struct proc* alloc_proc(void (*task)()) {
     struct proc* result = kalloc();
     
     memset(result, 0, sizeof(struct proc));
