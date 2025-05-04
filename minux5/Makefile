@@ -10,7 +10,7 @@ kernel.elf:
 	$(CCPREFIX)as -g $(CFLAGS) -o swtch.o swtch.S
 	$(CCPREFIX)as -g $(CFLAGS) -o timervec.o timervec.S
 	comelang -riscv -c -g -s main.c
-#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
+#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o main.c.o 
 
 #	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c

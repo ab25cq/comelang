@@ -1,6 +1,6 @@
 #include <stdarg.h>
 //#include <stdio.h>
-#include <comelang.h>
+//#include <comelang.h>
 
 typedef unsigned int   uint;
 typedef unsigned short ushort;
@@ -103,6 +103,244 @@ void putchar(char c) {
 void uartputc_sync(char c) {
     *(volatile char*)(0x10000000) = c;
 }
+char* itoa(char* buf, long val_, int base, int is_unsigned) {
+    char* p = buf;
+    char tmp[32];
+    int i = 0, negative = 0;
+
+    if (base < 2 || base > 16) {
+        *p = '\0';
+        return p;
+    }
+
+    if (!is_unsigned && val_ < 0) {
+        negative = 1;
+        val_ = -val_;
+    }
+
+    do {
+        int digit = val_ % base;
+        tmp[i++] = (digit < 10) ? '0' + digit : 'a' + digit - 10;
+        val_ /= base;
+    } while (val_);
+
+    if (negative)
+        *p++ = '-';
+
+    while (i--)
+        *p++ = tmp[i];
+    *p = '\0';
+    return buf;
+}
+
+int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+
+    char* p = out;
+    const char* s;
+    char buf[32];
+    unsigned long remaining = out_size;
+
+    if (remaining == 0) {
+        va_end(ap);
+        return 0;
+    }
+
+    for (; *fmt; fmt++) {
+        if (*fmt != '%') {
+            if (remaining > 1) {
+                *p++ = *fmt;
+                remaining--;
+            }
+            continue;
+        }
+
+        fmt++;
+        switch (*fmt) {
+        case 's':
+            s = va_arg(ap, const char*);
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'd':
+            itoa(buf, va_arg(ap, int), 10, 0);
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'x':
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'c':
+            if (remaining > 1) {
+                *p++ = (char)va_arg(ap, int);
+                remaining--;
+            }
+            break;
+        case 'p':
+            s = "0x";
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            itoa(buf, (long)va_arg(ap, void*), 16, 1);
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'l':
+            if (*(fmt + 1) == 'u') {
+                fmt++;
+                itoa(buf, va_arg(ap, long), 10, 1);
+                s = buf;
+                while (*s && remaining > 1) {
+                    *p++ = *s++;
+                    remaining--;
+                }
+            }
+            break;
+        default:
+            if (remaining > 1) {
+                *p++ = '%';
+                remaining--;
+                if (remaining > 1) {
+                    *p++ = *fmt;
+                    remaining--;
+                }
+            }
+            break;
+        }
+    }
+
+    *p = '\0';
+    va_end(ap);
+    return p - out;
+}
+
+int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+
+    char* p = out;
+    const char* s;
+    char buf[32];
+    unsigned long remaining = out_size;
+
+    if (remaining == 0) {
+        va_end(ap);
+        return 0;
+    }
+
+    for (; *fmt; fmt++) {
+        if (*fmt != '%') {
+            if (remaining > 1) {
+                *p++ = *fmt;
+                remaining--;
+            }
+            continue;
+        }
+
+        fmt++;
+        switch (*fmt) {
+        case 's':
+            s = va_arg(ap, const char*);
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'd':
+            itoa(buf, va_arg(ap, int), 10, 0);
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'x':
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'c':
+            if (remaining > 1) {
+                *p++ = (char)va_arg(ap, int);
+                remaining--;
+            }
+            break;
+        case 'p':
+            s = "0x";
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            itoa(buf, (long)va_arg(ap, void*), 16, 1);
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'l':
+            if (*(fmt + 1) == 'u') {
+                fmt++;
+                itoa(buf, va_arg(ap, long), 10, 1);
+                s = buf;
+                while (*s && remaining > 1) {
+                    *p++ = *s++;
+                    remaining--;
+                }
+            }
+            break;
+        default:
+            if (remaining > 1) {
+                *p++ = '%';
+                remaining--;
+                if (remaining > 1) {
+                    *p++ = *fmt;
+                    remaining--;
+                }
+            }
+            break;
+        }
+    }
+
+    *p = '\0';
+    va_end(ap);
+    return p - out;
+}
+
+// UART1
+int printf(const char* fmt, ...) {
+    char buf[256];
+    va_list ap;
+    va_start(ap, fmt);
+
+    int len = snprintf(buf, sizeof(buf), fmt, ap);
+
+    for (int i = 0; i < len; i++) {
+        putchar(buf[i]);
+    }
+
+    va_end(ap);
+    return len;
+}
+
 
 #define MIE_MTIE (1 << 7)
 
@@ -301,6 +539,55 @@ printf("TASK2 TOP %p\n", task2);
     }
 }
 
+void* memset(void *dst, int c, unsigned int n) {
+  char *cdst = (char *) dst;
+  int i;
+  for(i = 0; i < n; i++){
+    cdst[i] = c;
+  }
+  return dst;
+}
+
+int memcmp(const void *v1, const void *v2, unsigned int n) {
+  const uchar *s1, *s2;
+
+  s1 = v1;
+  s2 = v2;
+  while(n-- > 0){
+    if(*s1 != *s2)
+      return *s1 - *s2;
+    s1++, s2++;
+  }
+
+  return 0;
+}
+
+void* memmove(void *dst, const void *src, uint n) {
+  const char *s;
+  char *d;
+
+  if(n == 0)
+    return dst;
+  
+  s = src;
+  d = dst;
+  if(s < d && s + n > d){
+    s += n;
+    d += n;
+    while(n-- > 0)
+      *--d = *--s;
+  } else
+    while(n-- > 0)
+      *d++ = *s++;
+
+  return dst;
+}
+
+// memcpy exists to placate GCC.  Use memmove.
+void* memcpy(void *dst, const void *src, uint n) {
+  return memmove(dst, src, n);
+}
+
 struct proc* alloc_proc(void (*task)()) {
     struct proc* result = kalloc();
     
@@ -393,6 +680,7 @@ void mask_and_clear_timer_interrupt() {
 
 int main()
 {
+puts("HELLO WORLD");
     kinit();
 
     alloc_proc(task1);
