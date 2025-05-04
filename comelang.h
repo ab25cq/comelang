@@ -229,7 +229,7 @@ uniq int memcmp(const void *v1, const void *v2, unsigned int n) {
   return 0;
 }
 
-uniq void* memmove(void *dst, const void *src, uint n) {
+uniq void* memmove(void *dst, const void *src, unsigned int n) {
   const char *s;
   char *d;
 
@@ -251,11 +251,11 @@ uniq void* memmove(void *dst, const void *src, uint n) {
 }
 
 // memcpy exists to placate GCC.  Use memmove.
-uniq void* memcpy(void *dst, const void *src, uint n) {
+uniq void* memcpy(void *dst, const void *src, unsigned int n) {
   return memmove(dst, src, n);
 }
 
-uniq int strncmp(const char *p, const char *q, uint n) {
+uniq int strncmp(const char *p, const char *q, unsigned int n) {
   while(n > 0 && *p && *p == *q)
     n--, p++, q++;
   if(n == 0)

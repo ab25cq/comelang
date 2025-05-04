@@ -98,8 +98,12 @@ struct proc* gProc[NPROC];
 extern char _end[]; // first address after kernel.
                    // defined by kernel.ld.
 
+volatile int uart_busy = 0;
+
 void putchar(char c) {
+//    while (__sync_lock_test_and_set(&uart_busy, 1)) ;
     *(volatile char*)(0x10000000) = c;
+//    uart_busy = 0;
 }
 
 void uartputc_sync(char c) {
@@ -345,6 +349,7 @@ int printf(const char* fmt, ...) {
 
 #define MIE_MTIE (1 << 7)
 
+/*
 static inline void intr_on() {
     uint64_t x; 
     asm volatile("csrr %0, mie" : "=r"(x)); 
@@ -358,12 +363,133 @@ static inline void intr_off() {
     x &= ~MIE_MTIE; 
     asm volatile("csrw mie, %0" : : "r"(x)); 
 }
+*/
+
+static inline uint64 intr_get() {
+    uint64 x;
+    asm volatile("csrr %0, mstatus" : "=r"(x));
+    return (x & (1 << 3)) != 0;  // MSTATUS_MIE
+}
+
+static inline void intr_off() {
+    uint64 x;
+    asm volatile("csrr %0, mstatus" : "=r"(x));
+    x &= ~(1 << 3);
+    asm volatile("csrw mstatus, %0" : : "r"(x));
+}
+
+static inline void intr_on() {
+    uint64 x;
+    asm volatile("csrr %0, mstatus" : "=r"(x));
+    x |= (1 << 3);
+    asm volatile("csrw mstatus, %0" : : "r"(x));
+}
+
+
+#define UARTBUF_SIZE 1024
+
+char uartbuf[UARTBUF_SIZE];
+volatile int uartbuf_head = 0;
+volatile int uartbuf_tail = 0;
+
+/*
+void puts(const char *s) {
+    while (*s) {
+        int next = (uartbuf_head + 1) % UARTBUF_SIZE;
+
+        if (next == uartbuf_tail) {
+            break;  // 
+        }
+
+        uartbuf[uartbuf_head] = *s++;
+        uartbuf_head = next;
+    }
+}
+*/
+
+/*
+typedef struct {
+    volatile int locked;
+} spinlock_t;
+
+spinlock_t uart_lock;
+
+void initlock(spinlock_t *lk) {
+    lk->locked = 0;
+}
+
+void acquire(spinlock_t *lk) {
+    while (__sync_lock_test_and_set(&lk->locked, 1) != 0) ;
+    //  __sync_synchronize();
+}
+
+void release(spinlock_t *lk) {
+    __sync_lock_release(&lk->locked);
+}
 
 void puts(const char *s) {
-    intr_off();
+    acquire(&uart_lock);
+    while (*s) *(volatile char*)(0x10000000) = *s++;
+    release(&uart_lock);
+}
+*/
+
+/*
+void puts(const char *s) {
+    //intr_off();
     while (*s) putchar(*s++);
+    //intr_on();
+}
+*/
+
+/*
+void puts(const char *s) {
+//    int enabled = intr_get();
+//    if (enabled) intr_off();
+
+    while (*s) putchar(*s++);
+
+//    if (enabled) intr_on();
+}
+*/
+
+/*
+void flush_uart() {
+    while (uartbuf_tail != uartbuf_head) {
+        *(volatile char*)(0x10000000) = uartbuf[uartbuf_tail];
+        uartbuf_tail = (uartbuf_tail + 1) % UARTBUF_SIZE;
+    }
+}
+*/
+
+void puts(const char *s) {
+    intr_off();  // MSTATUS.MIE 
+
+    while (*s) {
+        int next = (uartbuf_head + 1) % UARTBUF_SIZE;
+        if (next != uartbuf_tail) {
+            uartbuf[uartbuf_head] = *s++;
+            uartbuf_head = next;
+        } else {
+            break; // 
+        }
+    }
+
+    intr_on();  // MSTATUS.MIE 
+}
+
+
+void flush_uart() {
+    intr_off();
+
+    while (uartbuf_tail != uartbuf_head) {
+        *(volatile char*)(0x10000000) = uartbuf[uartbuf_tail];
+        uartbuf_tail = (uartbuf_tail + 1) % UARTBUF_SIZE;
+    }
+
     intr_on();
 }
+
 
 #define HEAP_END (_end + PGSIZE * 256)
 
@@ -523,6 +649,7 @@ printf("TASK1 TOP %p\n", task1);
         puts("1e");
         puts("1f");
         puts("1g");
+        flush_uart();
     }
 }
 
@@ -537,6 +664,7 @@ printf("TASK2 TOP %p\n", task2);
         puts("2e");
         puts("2f");
         puts("2g");
+        flush_uart();
     }
 }
 
@@ -616,22 +744,13 @@ void timer_reset() {
 void yield();
 void scheduler();
 
+
 void timer_handler() {
     disable_timer_interrupts();
-    printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
     
     struct context *tf = (struct context*)TRAPFRAME;
     p->context = *tf;
-printf("TRAPFRAME %p\n", TRAPFRAME);
-printf("ative proc saved %d\n", gActiveProc);
-printf("ra %x\n", tf->ra);
-printf("ra %x\n", p->context.ra);
-printf("sp %x\n", tf->sp);
-printf("sp %x\n", p->context.sp);
-printf("gp %x\n", p->context.gp);
-printf("mepc %x\n", tf->mepc);
-printf("mepc %x\n", p->context.mepc);
 
     //timer_reset();
 
@@ -679,12 +798,83 @@ void mask_and_clear_timer_interrupt() {
     w_mstatus(r_mstatus() & ~MSTATUS_MIE);
 }
 
+/// MMU ///
+typedef uint64_t pte_t;
+typedef pte_t* pagetable_t; // 512
+
+#define PTE_V (1L << 0)
+#define PTE_R (1L << 1)
+#define PTE_W (1L << 2)
+#define PTE_X (1L << 3)
+#define PTE_U (1L << 4)
+
+#define VA2VPN(va, level) ((((uint64_t)(va)) >> (12 + (9 * level))) & 0x1FF)
+
+pagetable_t kernel_pagetable;
+
+void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm);
+
+void kvminit() {
+    kernel_pagetable = (pagetable_t)kalloc();
+    memset(kernel_pagetable, 0, PGSIZE);
+
+    // 0x80000000
+    for (uint64 addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
+        map_page(kernel_pagetable, addr, addr, PTE_R | PTE_W | PTE_X | PTE_V);
+    }
+
+    // UART
+    map_page(kernel_pagetable, 0x10000000, 0x10000000, PTE_R | PTE_W | PTE_V);
+}
+
+void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm) {
+    int level;
+    pagetable_t pt = pagetable;
+
+    for (level = 2; level > 0; level--) {
+        int idx = VA2VPN(va, level);
+        if (!(pt[idx] & PTE_V)) {
+            pagetable_t new_pt = (pagetable_t)kalloc();
+            memset(new_pt, 0, PGSIZE);
+            pt[idx] = ((uint64)new_pt >> 12) << 10 | PTE_V;
+        }
+        pt = (pagetable_t)(((pt[idx] >> 10) << 12));
+    }
+
+    int idx = VA2VPN(va, 0);
+    pt[idx] = (pa >> 12) << 10 | perm | PTE_V;
+}
+
+#define SATP_SV39 (8L << 60)
+
+void enable_vm(pagetable_t pagetable) {
+    uint64 satp = SATP_SV39 | (((uint64)pagetable >> 12) & 0xFFFFFFFFFFF);
+    asm volatile("csrw satp, %0" : : "r"(satp));
+    asm volatile("sfence.vma zero, zero"); // TLB
+}
+
+pagetable_t uvmcreate() {
+    pagetable_t pagetable = (pagetable_t)kalloc();
+    memset(pagetable, 0, PGSIZE);
+    return pagetable;
+}
+
+void copyout(pagetable_t pagetable, uint64 va, void *src, uint sz) {
+    for (int i = 0; i < sz; i++) {
+        map_page(pagetable, va + i, (uint64)(src + i), PTE_U | PTE_R | PTE_W | PTE_X);
+    }
+}
+
+pagetable_t kernel_pagetable;
+
 int main()
 {
 puts("HELLO WORLD");
     kinit();
+//    initlock(&uart_lock);  // 
     
-    new char[123];
+    kvminit();
+    enable_vm(kernel_pagetable);
     
     alloc_proc(task1);
     alloc_proc(task2);
