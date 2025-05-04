@@ -7,7 +7,8 @@ SECTIONS
   .rodata : { *(.rodata*) }
   .data : { *(.data*) }
   .sdata : { *(.sdata*) }
-  .bss : { *(.bss*) }
+  /* .bss : { *(.bss*) } */
+  .bss : { *(.bss) *(.bss.*) *(.sbss) *(.sbss.*) }
   . += 0x8000;
   stack_top = .;
   
@@ -16,7 +17,7 @@ SECTIONS
   . = . + 4096;
 
   /* End of uninitalized data segement */
-  _end = .;
+  PROVIDE(_end = .);
   
   .debug_info        0 : { *(.debug_info) } 
   .debug_abbrev      0 : { *(.debug_abbrev) }

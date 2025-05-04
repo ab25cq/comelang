@@ -2,6 +2,8 @@
 //#include <stdio.h>
 //#include <comelang.h>
 
+#include <comelang.h>
+
 typedef unsigned int   uint;
 typedef unsigned short ushort;
 typedef unsigned char  uchar;
@@ -103,6 +105,7 @@ void putchar(char c) {
 void uartputc_sync(char c) {
     *(volatile char*)(0x10000000) = c;
 }
+
 char* itoa(char* buf, long val_, int base, int is_unsigned) {
     char* p = buf;
     char tmp[32];
@@ -325,7 +328,6 @@ int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     return p - out;
 }
 
-// UART1
 int printf(const char* fmt, ...) {
     char buf[256];
     va_list ap;
@@ -340,7 +342,6 @@ int printf(const char* fmt, ...) {
     va_end(ap);
     return len;
 }
-
 
 #define MIE_MTIE (1 << 7)
 
@@ -682,7 +683,9 @@ int main()
 {
 puts("HELLO WORLD");
     kinit();
-
+    
+    new char[123];
+    
     alloc_proc(task1);
     alloc_proc(task2);
     
