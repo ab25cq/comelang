@@ -1080,7 +1080,11 @@ sNode*% parse_array_initializer(sInfo* info=info)
         sNode*% index = expression();
         
         expected_next_character(']');
-        expected_next_character('=');
+        
+        if(*info->p == '=') {
+            info->p++;
+            skip_spaces_and_lf();
+        }
         
         bool no_comma = info->no_comma;
         info->no_comma = true;
@@ -1115,7 +1119,11 @@ sNode*% parse_array_initializer(sInfo* info=info)
             sNode*% index = expression();
             
             expected_next_character(']');
-            expected_next_character('=');
+            
+            if(*info->p == '=') {
+                info->p++;
+                skip_spaces_and_lf();
+            }
             
             bool no_comma = info->no_comma;
             info->no_comma = true;
@@ -1207,7 +1215,10 @@ sNode*% parse_struct_initializer(sInfo* info=info)
         
         string name = parse_word();
         
-        expected_next_character('=');
+        if(*info->p == '=') {
+            info->p++;
+            skip_spaces_and_lf();
+        }
         
         bool no_comma = info->no_comma;
         info->no_comma = true;
@@ -1241,7 +1252,10 @@ sNode*% parse_struct_initializer(sInfo* info=info)
             
             string name = parse_word();
             
-            expected_next_character('=');
+            if(*info->p == '=') {
+                info->p++;
+                skip_spaces_and_lf();
+            }
             
             bool no_comma = info->no_comma;
             info->no_comma = true;
