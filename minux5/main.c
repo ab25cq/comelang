@@ -98,272 +98,11 @@ struct proc* gProc[NPROC];
 extern char _end[]; // first address after kernel.
                    // defined by kernel.ld.
 
-volatile int uart_busy = 0;
-
 void putchar(char c) {
-//    while (__sync_lock_test_and_set(&uart_busy, 1)) ;
     *(volatile char*)(0x10000000) = c;
-//    uart_busy = 0;
-}
-
-void uartputc_sync(char c) {
-    *(volatile char*)(0x10000000) = c;
-}
-
-char* itoa(char* buf, long val_, int base, int is_unsigned) {
-    char* p = buf;
-    char tmp[32];
-    int i = 0, negative = 0;
-
-    if (base < 2 || base > 16) {
-        *p = '\0';
-        return p;
-    }
-
-    if (!is_unsigned && val_ < 0) {
-        negative = 1;
-        val_ = -val_;
-    }
-
-    do {
-        int digit = val_ % base;
-        tmp[i++] = (digit < 10) ? '0' + digit : 'a' + digit - 10;
-        val_ /= base;
-    } while (val_);
-
-    if (negative)
-        *p++ = '-';
-
-    while (i--)
-        *p++ = tmp[i];
-    *p = '\0';
-    return buf;
-}
-
-int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
-
-    char* p = out;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = out_size;
-
-    if (remaining == 0) {
-        va_end(ap);
-        return 0;
-    }
-
-    for (; *fmt; fmt++) {
-        if (*fmt != '%') {
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining--;
-            }
-            continue;
-        }
-
-        fmt++;
-        switch (*fmt) {
-        case 's':
-            s = va_arg(ap, const char*);
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 0);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'c':
-            if (remaining > 1) {
-                *p++ = (char)va_arg(ap, int);
-                remaining--;
-            }
-            break;
-        case 'p':
-            s = "0x";
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            itoa(buf, (long)va_arg(ap, void*), 16, 1);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'l':
-            if (*(fmt + 1) == 'u') {
-                fmt++;
-                itoa(buf, va_arg(ap, long), 10, 1);
-                s = buf;
-                while (*s && remaining > 1) {
-                    *p++ = *s++;
-                    remaining--;
-                }
-            }
-            break;
-        default:
-            if (remaining > 1) {
-                *p++ = '%';
-                remaining--;
-                if (remaining > 1) {
-                    *p++ = *fmt;
-                    remaining--;
-                }
-            }
-            break;
-        }
-    }
-
-    *p = '\0';
-    va_end(ap);
-    return p - out;
-}
-
-int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
-
-    char* p = out;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = out_size;
-
-    if (remaining == 0) {
-        va_end(ap);
-        return 0;
-    }
-
-    for (; *fmt; fmt++) {
-        if (*fmt != '%') {
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining--;
-            }
-            continue;
-        }
-
-        fmt++;
-        switch (*fmt) {
-        case 's':
-            s = va_arg(ap, const char*);
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 0);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'c':
-            if (remaining > 1) {
-                *p++ = (char)va_arg(ap, int);
-                remaining--;
-            }
-            break;
-        case 'p':
-            s = "0x";
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            itoa(buf, (long)va_arg(ap, void*), 16, 1);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'l':
-            if (*(fmt + 1) == 'u') {
-                fmt++;
-                itoa(buf, va_arg(ap, long), 10, 1);
-                s = buf;
-                while (*s && remaining > 1) {
-                    *p++ = *s++;
-                    remaining--;
-                }
-            }
-            break;
-        default:
-            if (remaining > 1) {
-                *p++ = '%';
-                remaining--;
-                if (remaining > 1) {
-                    *p++ = *fmt;
-                    remaining--;
-                }
-            }
-            break;
-        }
-    }
-
-    *p = '\0';
-    va_end(ap);
-    return p - out;
-}
-
-int printf(const char* fmt, ...) {
-    char buf[256];
-    va_list ap;
-    va_start(ap, fmt);
-
-    int len = snprintf(buf, sizeof(buf), fmt, ap);
-
-    for (int i = 0; i < len; i++) {
-        putchar(buf[i]);
-    }
-
-    va_end(ap);
-    return len;
 }
 
 #define MIE_MTIE (1 << 7)
-
-/*
-static inline void intr_on() {
-    uint64_t x; 
-    asm volatile("csrr %0, mie" : "=r"(x)); 
-    x |= MIE_MTIE; 
-    asm volatile("csrw mie, %0" : : "r"(x)); 
-}
-
-static inline void intr_off() { 
-    uint64_t x; 
-    asm volatile("csrr %0, mie" : "=r"(x)); 
-    x &= ~MIE_MTIE; 
-    asm volatile("csrw mie, %0" : : "r"(x)); 
-}
-*/
 
 static inline uint64 intr_get() {
     uint64 x;
@@ -384,112 +123,6 @@ static inline void intr_on() {
     x |= (1 << 3);
     asm volatile("csrw mstatus, %0" : : "r"(x));
 }
-
-
-#define UARTBUF_SIZE 1024
-
-char uartbuf[UARTBUF_SIZE];
-volatile int uartbuf_head = 0;
-volatile int uartbuf_tail = 0;
-
-/*
-void puts(const char *s) {
-    while (*s) {
-        int next = (uartbuf_head + 1) % UARTBUF_SIZE;
-
-        if (next == uartbuf_tail) {
-            break;  // 
-        }
-
-        uartbuf[uartbuf_head] = *s++;
-        uartbuf_head = next;
-    }
-}
-*/
-
-/*
-typedef struct {
-    volatile int locked;
-} spinlock_t;
-
-spinlock_t uart_lock;
-
-void initlock(spinlock_t *lk) {
-    lk->locked = 0;
-}
-
-void acquire(spinlock_t *lk) {
-    while (__sync_lock_test_and_set(&lk->locked, 1) != 0) ;
-    //  __sync_synchronize();
-}
-
-void release(spinlock_t *lk) {
-    __sync_lock_release(&lk->locked);
-}
-
-void puts(const char *s) {
-    acquire(&uart_lock);
-    while (*s) *(volatile char*)(0x10000000) = *s++;
-    release(&uart_lock);
-}
-*/
-
-/*
-void puts(const char *s) {
-    //intr_off();
-    while (*s) putchar(*s++);
-    //intr_on();
-}
-*/
-
-/*
-void puts(const char *s) {
-//    int enabled = intr_get();
-//    if (enabled) intr_off();
-
-    while (*s) putchar(*s++);
-
-//    if (enabled) intr_on();
-}
-*/
-
-/*
-void flush_uart() {
-    while (uartbuf_tail != uartbuf_head) {
-        *(volatile char*)(0x10000000) = uartbuf[uartbuf_tail];
-        uartbuf_tail = (uartbuf_tail + 1) % UARTBUF_SIZE;
-    }
-}
-*/
-
-void puts(const char *s) {
-    intr_off();  // MSTATUS.MIE 
-
-    while (*s) {
-        int next = (uartbuf_head + 1) % UARTBUF_SIZE;
-        if (next != uartbuf_tail) {
-            uartbuf[uartbuf_head] = *s++;
-            uartbuf_head = next;
-        } else {
-            break; // 
-        }
-    }
-
-    intr_on();  // MSTATUS.MIE 
-}
-
-
-void flush_uart() {
-    intr_off();
-
-    while (uartbuf_tail != uartbuf_head) {
-        *(volatile char*)(0x10000000) = uartbuf[uartbuf_tail];
-        uartbuf_tail = (uartbuf_tail + 1) % UARTBUF_SIZE;
-    }
-
-    intr_on();
-}
-
 
 #define HEAP_END (_end + PGSIZE * 256)
 
@@ -582,10 +215,6 @@ static inline void w_sstatus(uint64 x) {
 #define MTIME_ADDR    ((volatile uint64_t*)0x0200bff8)
 #define MTIMECMP_ADDR ((volatile uint64_t*)0x02004000)
 
-void disable_timer_interrupt() {
-}
-        
-
 static inline void w_mstatus(uint64 x) {
   asm volatile("csrw mstatus, %0" : : "r" (x));
 }
@@ -609,7 +238,7 @@ static inline void w_mtvec(uint64_t x) {
 extern void timervec();  // 
 
 void enable_timer_interrupts() {
-    w_mtvec((uint64)timervec & ~0x03);
+    //w_mtvec((uint64)timervec & ~0x03);
     uint64 now = *MTIME;
     //*MTIMECMP = now + 10000;
     *MTIMECMP = now + 0xFFFFFFFF;
@@ -639,85 +268,32 @@ void disable_timer_interrupts() {
 }
 
 void task1() {
-puts("TASK1");
-printf("TASK1 TOP %p\n", task1);
+user_puts("TASK1");
     while(1) {
-        puts("1a");
-        puts("1b");
-        puts("1c");
-        puts("1d");
-        puts("1e");
-        puts("1f");
-        puts("1g");
-        flush_uart();
+        user_puts("1a");
+        user_puts("1b");
+        user_puts("1c");
+        user_puts("1d");
+        user_puts("1e");
+        user_puts("1f");
+        user_puts("1g");
     }
 }
 
 void task2() {
-puts("TASK2");
-printf("TASK2 TOP %p\n", task2);
+user_puts("TASK2");
     while(1) {
-        puts("2a");
-        puts("2b");
-        puts("2c");
-        puts("2d");
-        puts("2e");
-        puts("2f");
-        puts("2g");
-        flush_uart();
+        user_puts("2a");
+        user_puts("2b");
+        user_puts("2c");
+        user_puts("2d");
+        user_puts("2e");
+        user_puts("2f");
+        user_puts("2g");
     }
 }
 
-void* memset(void *dst, int c, unsigned int n) {
-  char *cdst = (char *) dst;
-  int i;
-  for(i = 0; i < n; i++){
-    cdst[i] = c;
-  }
-  return dst;
-}
-
-int memcmp(const void *v1, const void *v2, unsigned int n) {
-  const uchar *s1, *s2;
-
-  s1 = v1;
-  s2 = v2;
-  while(n-- > 0){
-    if(*s1 != *s2)
-      return *s1 - *s2;
-    s1++, s2++;
-  }
-
-  return 0;
-}
-
-void* memmove(void *dst, const void *src, uint n) {
-  const char *s;
-  char *d;
-
-  if(n == 0)
-    return dst;
-  
-  s = src;
-  d = dst;
-  if(s < d && s + n > d){
-    s += n;
-    d += n;
-    while(n-- > 0)
-      *--d = *--s;
-  } else
-    while(n-- > 0)
-      *d++ = *s++;
-
-  return dst;
-}
-
-// memcpy exists to placate GCC.  Use memmove.
-void* memcpy(void *dst, const void *src, uint n) {
-  return memmove(dst, src, n);
-}
-
-struct proc* alloc_proc(void (*task)()) {
+struct proc* alloc_proc(void (*task)(), long task_size) {
     struct proc* result = kalloc();
     
     memset(result, 0, sizeof(struct proc));
@@ -725,16 +301,21 @@ struct proc* alloc_proc(void (*task)()) {
     result->stack = kalloc();
     
     result->context.sp = (uint64)(result->stack + PGSIZE);
-    result->context.mepc = (uint64)task;
+    result->context.mepc = (uint64)0x1000;
     result->state = RUNNABLE;
 
     gProc[gNumProc++] = result;
+    
+    p->pagetable = uvmcreate(); // 
+    uvmalloc(p->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);  // 128KB
+
+    // user_code  0x1000 
+    copyout(p->pagetable, 0x1000, task, task_size);
 
     return result;
 }
 
 void swtch(struct context*, struct context*);
-
 
 void timer_reset() {
     uint64_t now = *MTIME;
@@ -743,7 +324,6 @@ void timer_reset() {
 
 void yield();
 void scheduler();
-
 
 void timer_handler() {
     disable_timer_interrupts();
@@ -756,7 +336,6 @@ void timer_handler() {
 
     yield();
 }
-
 
 void yield() {
     struct proc *p = gProc[gActiveProc];
@@ -781,6 +360,7 @@ printf("SCHEDULER\n");
 
 printf("SWITCH TO %d\n", i);
                 disable_timer_interrupts();
+printf("mstatus = %x\n", r_mstatus());
                 swtch(&gCPU.context, &p->context);
                 disable_timer_interrupts();
 
@@ -867,17 +447,65 @@ void copyout(pagetable_t pagetable, uint64 va, void *src, uint sz) {
 
 pagetable_t kernel_pagetable;
 
+void puts(const char *s) {
+    while (*s) putchar(*s++);
+}
+
+void user_puts(const char *s) {
+    register const char* a0 = s;
+    register long syscall_id = 1; // syscall1
+
+    asm volatile("ecall" : : "r"(a0), "r"(syscall_id));
+}
+
+void usertrap() {
+    struct proc *p = gProc[gActiveProc];
+    struct context *tf = &p->context;
+
+    uint64 epc = tf->mepc;
+    uint64 syscall_id = tf->a7;
+    
+    if (syscall_id == 1) { // puts syscall
+/*
+        const char *user_str = (const char *)tf->a0;
+        char buf[256];
+        for (int i = 0; i < sizeof(buf)-1; i++) {
+            uint64 va = (uint64)(user_str + i);
+
+            if (buf[i] == '\0') break;
+        }
+        buf[sizeof(buf)-1] = '\0';
+*/
+        puts("ABC");
+    }
+    tf->mepc += 4; // ecall
+}
+
+extern void kernelvec();
+void trap_init() {
+    w_mtvec((uint64)kernelvec); 
+}
+
+void user_mode()
+{
+    // sstatus  SPPSupervisor Previous Privilege User 
+    uint64 x = r_sstatus();
+    x &= ~SSTATUS_SPP; // 0 = U-mode
+    w_sstatus(x);
+}
+
 int main()
 {
-puts("HELLO WORLD");
     kinit();
-//    initlock(&uart_lock);  // 
+    trap_init();
     
     kvminit();
     enable_vm(kernel_pagetable);
+
+    user_mode();
     
-    alloc_proc(task1);
-    alloc_proc(task2);
+    alloc_proc(task1, sizeof(task1));
+    alloc_proc(task2, sizeof(task2));
     
     enable_timer_interrupts();
 
