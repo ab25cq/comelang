@@ -21,6 +21,209 @@ typedef uint64_t pte_t;
 
 static char digits[] = "0123456789ABCDEF";
 
+#define KERNBASE 0x80000000L
+#define PHYSTOP (KERNBASE + 128*1024*1024)
+
+#define PGSIZE 4096 // bytes per page
+#define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
+#define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
+
+extern char _end[]; // first address after kernel.
+                   // defined by kernel.ld.
+
+void putchar(char c) {
+    *(volatile char*)(0x10000000) = c;
+}
+
+#define HEAP_END (_end + PGSIZE * 256)
+
+void kinit() {
+  freerange(_end, HEAP_END);
+}
+struct run {
+  struct run *next;
+};
+
+struct {
+  struct run *freelist;
+} kmem;
+
+void * kalloc(void) {
+  struct run *r;
+
+  r = kmem.freelist;
+  if(r) {
+    kmem.freelist = r->next;
+  }
+
+  return (void*)r;
+}
+
+/// MMU ///
+#define PTE_V (1L << 0)
+#define PTE_R (1L << 1)
+#define PTE_W (1L << 2)
+#define PTE_X (1L << 3)
+#define PTE_U (1L << 4)
+
+#define VA2VPN(va, level) ((((uint64_t)(va)) >> (12 + (9 * level))) & 0x1FF)
+
+typedef uint64_t pte_t;
+typedef pte_t* pagetable_t; // 512
+pagetable_t kernel_pagetable;
+
+void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm);
+
+void kvminit() {
+    kernel_pagetable = (pagetable_t)kalloc();
+    memset(kernel_pagetable, 0, PGSIZE);
+
+    // 0x80000000
+    for (uint64 addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
+        map_page(kernel_pagetable, addr, addr, PTE_R | PTE_W | PTE_X | PTE_V);
+    }
+
+    // UART
+    map_page(kernel_pagetable, 0x10000000, 0x10000000, PTE_R | PTE_W | PTE_V);
+}
+
+void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm) {
+    int level;
+    pagetable_t pt = pagetable;
+
+    for (level = 2; level > 0; level--) {
+        int idx = VA2VPN(va, level);
+        if (!(pt[idx] & PTE_V)) {
+            pagetable_t new_pt = (pagetable_t)kalloc();
+            memset(new_pt, 0, PGSIZE);
+            pt[idx] = ((uint64)new_pt >> 12) << 10 | PTE_V;
+        }
+        pt = (pagetable_t)(((pt[idx] >> 10) << 12));
+    }
+
+    int idx = VA2VPN(va, 0);
+    pt[idx] = (pa >> 12) << 10 | perm | PTE_V;
+}
+
+#define SATP_SV39 (8L << 60)
+
+void enable_vm(pagetable_t pagetable) {
+    uint64 satp = SATP_SV39 | (((uint64)pagetable >> 12) & 0xFFFFFFFFFFF);
+    asm volatile("csrw satp, %0" : : "r"(satp));
+    asm volatile("sfence.vma zero, zero"); // TLB
+}
+
+pagetable_t uvmcreate() {
+    pagetable_t pagetable = (pagetable_t)kalloc();
+    memset(pagetable, 0, PGSIZE);
+    return pagetable;
+}
+
+/*
+void copyout(pagetable_t pagetable, uint64 va, void *src, uint sz) {
+    for (int i = 0; i < sz; i++) {
+        map_page(pagetable, va + i, (uint64)(src + i), PTE_U | PTE_R | PTE_W | PTE_X);
+    }
+}
+*/
+pte_t* walk(pagetable_t pagetable, uint64 va, int alloc) {
+    if (va >= (1L << 39))  // Sv39 
+        return (pte_t*)0;
+
+    for (int level = 2; level > 0; level--) {
+        int idx = (va >> (12 + 9 * level)) & 0x1FF;
+        pte_t* pte = &pagetable[idx];
+
+        if (*pte & PTE_V) {
+            pagetable = (pagetable_t)(((*pte >> 10) << 12)); // 
+        } else {
+            if (!alloc)
+                return (pte_t*)0;
+
+            pagetable_t newpage = (pagetable_t)kalloc();
+            if (newpage == 0)
+                return (pte_t*)0;
+
+            memset(newpage, 0, PGSIZE);
+            *pte = ((uint64)newpage >> 12) << 10 | PTE_V;
+            pagetable = newpage;
+        }
+    }
+
+    int idx = (va >> 12) & 0x1FF;
+    return &pagetable[idx];
+}
+
+int copyout(pagetable_t pagetable, uint64 dstva, void *src, uint64 len) {
+    uint64 va = dstva;
+    uint64 end = dstva + len;
+
+    while (va < end) {
+        //  PTE 
+        pte_t *pte = walk(pagetable, va, 0);
+        if (pte == 0 || (*pte & PTE_V) == 0)
+            return -1;
+
+        // 
+        uint64 pa = ((*pte >> 10) << 12);
+
+        // 
+        uint64 page_offset = va % PGSIZE;
+        uint64 n = PGSIZE - page_offset;
+        if (n > end - va)
+            n = end - va;
+
+        // 
+        memmove((void *)(pa + page_offset), src, n);
+
+        va += n;
+        src += n;
+    }
+
+    return 0;
+}
+
+
+int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm) {
+    uint64 a;
+    pte_t* pte;
+
+    va = PGROUNDDOWN(va);
+    for (a = va; a < va + size; a += PGSIZE, pa += PGSIZE) {
+        pte = walk(pagetable, a, 1);
+        if (pte == 0)
+            return -1;
+        if (*pte & PTE_V)
+            return -1; // 
+
+        *pte = (pa >> 12 << 10) | perm | PTE_V;
+    }
+    return 0;
+}
+
+uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int perm) {
+    if (newsz < oldsz)
+        return oldsz;
+
+    oldsz = PGROUNDUP(oldsz);
+    for (uint64 a = oldsz; a < newsz; a += PGSIZE) {
+        void* mem = kalloc();
+        if (!mem) {
+            puts("uvmalloc: kalloc failed");
+        }
+
+        memset(mem, 0, PGSIZE);  // 
+
+        if (mappages(pagetable, a, PGSIZE, (uint64)mem, perm) != 0) {
+            puts("uvmalloc: mappages failed");
+        }
+    }
+
+    return newsz;
+}
+
+pagetable_t kernel_pagetable;
+
 
 struct context {
   uint64 ra;
@@ -63,13 +266,6 @@ struct cpu  {
     struct proc *proc;          // The process running on this cpu, or null.
     struct context context;     // swtch() here to enter scheduler().
 };
-struct run {
-  struct run *next;
-};
-
-struct {
-  struct run *freelist;
-} kmem;
 
 struct cpu gCPU;
 
@@ -78,29 +274,18 @@ enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 struct proc  {
   enum procstate state;        // Process state
   struct context context;      // swtch() here to run process
+  
+  pagetable_t pagetable;
 
   struct proc *parent;         // Parent process
 
   char* stack;
+  
 };
 
 #define NPROC 128
 
 struct proc* gProc[NPROC];
-
-#define KERNBASE 0x80000000L
-#define PHYSTOP (KERNBASE + 128*1024*1024)
-
-#define PGSIZE 4096 // bytes per page
-#define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
-#define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
-
-extern char _end[]; // first address after kernel.
-                   // defined by kernel.ld.
-
-void putchar(char c) {
-    *(volatile char*)(0x10000000) = c;
-}
 
 #define MIE_MTIE (1 << 7)
 
@@ -124,7 +309,6 @@ static inline void intr_on() {
     asm volatile("csrw mstatus, %0" : : "r"(x));
 }
 
-#define HEAP_END (_end + PGSIZE * 256)
 
 void kfree(void *pa) {
   struct run *r;
@@ -147,20 +331,6 @@ void freerange(void *pa_start, void *pa_end) {
   }
 }
 
-void kinit() {
-  freerange(_end, HEAP_END);
-}
-
-void * kalloc(void) {
-  struct run *r;
-
-  r = kmem.freelist;
-  if(r) {
-    kmem.freelist = r->next;
-  }
-
-  return (void*)r;
-}
 
 
 int gActiveProc = 0;
@@ -306,11 +476,11 @@ struct proc* alloc_proc(void (*task)(), long task_size) {
 
     gProc[gNumProc++] = result;
     
-    p->pagetable = uvmcreate(); // 
-    uvmalloc(p->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);  // 128KB
+    result->pagetable = uvmcreate();
+    uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);  // 128KB
 
     // user_code  0x1000 
-    copyout(p->pagetable, 0x1000, task, task_size);
+    copyout(result->pagetable, 0x1000, (void*)task, task_size);
 
     return result;
 }
@@ -379,73 +549,6 @@ void mask_and_clear_timer_interrupt() {
 }
 
 /// MMU ///
-typedef uint64_t pte_t;
-typedef pte_t* pagetable_t; // 512
-
-#define PTE_V (1L << 0)
-#define PTE_R (1L << 1)
-#define PTE_W (1L << 2)
-#define PTE_X (1L << 3)
-#define PTE_U (1L << 4)
-
-#define VA2VPN(va, level) ((((uint64_t)(va)) >> (12 + (9 * level))) & 0x1FF)
-
-pagetable_t kernel_pagetable;
-
-void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm);
-
-void kvminit() {
-    kernel_pagetable = (pagetable_t)kalloc();
-    memset(kernel_pagetable, 0, PGSIZE);
-
-    // 0x80000000
-    for (uint64 addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-        map_page(kernel_pagetable, addr, addr, PTE_R | PTE_W | PTE_X | PTE_V);
-    }
-
-    // UART
-    map_page(kernel_pagetable, 0x10000000, 0x10000000, PTE_R | PTE_W | PTE_V);
-}
-
-void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm) {
-    int level;
-    pagetable_t pt = pagetable;
-
-    for (level = 2; level > 0; level--) {
-        int idx = VA2VPN(va, level);
-        if (!(pt[idx] & PTE_V)) {
-            pagetable_t new_pt = (pagetable_t)kalloc();
-            memset(new_pt, 0, PGSIZE);
-            pt[idx] = ((uint64)new_pt >> 12) << 10 | PTE_V;
-        }
-        pt = (pagetable_t)(((pt[idx] >> 10) << 12));
-    }
-
-    int idx = VA2VPN(va, 0);
-    pt[idx] = (pa >> 12) << 10 | perm | PTE_V;
-}
-
-#define SATP_SV39 (8L << 60)
-
-void enable_vm(pagetable_t pagetable) {
-    uint64 satp = SATP_SV39 | (((uint64)pagetable >> 12) & 0xFFFFFFFFFFF);
-    asm volatile("csrw satp, %0" : : "r"(satp));
-    asm volatile("sfence.vma zero, zero"); // TLB
-}
-
-pagetable_t uvmcreate() {
-    pagetable_t pagetable = (pagetable_t)kalloc();
-    memset(pagetable, 0, PGSIZE);
-    return pagetable;
-}
-
-void copyout(pagetable_t pagetable, uint64 va, void *src, uint sz) {
-    for (int i = 0; i < sz; i++) {
-        map_page(pagetable, va + i, (uint64)(src + i), PTE_U | PTE_R | PTE_W | PTE_X);
-    }
-}
-
-pagetable_t kernel_pagetable;
 
 void puts(const char *s) {
     while (*s) putchar(*s++);
@@ -485,6 +588,8 @@ extern void kernelvec();
 void trap_init() {
     w_mtvec((uint64)kernelvec); 
 }
+
+#define SSTATUS_SPP (1L << 8)  // Supervisor Previous Privilege
 
 void user_mode()
 {
