@@ -35,7 +35,7 @@ void putchar(char c) {
     *(volatile char*)(0x10000000) = c;
 }
 
-#define HEAP_END (_end + PGSIZE * 256)
+#define HEAP_END (_end + PGSIZE * 4096)
 
 void kinit() {
   freerange(_end, HEAP_END);
@@ -119,13 +119,6 @@ pagetable_t uvmcreate() {
     return pagetable;
 }
 
-/*
-void copyout(pagetable_t pagetable, uint64 va, void *src, uint sz) {
-    for (int i = 0; i < sz; i++) {
-        map_page(pagetable, va + i, (uint64)(src + i), PTE_U | PTE_R | PTE_W | PTE_X);
-    }
-}
-*/
 pte_t* walk(pagetable_t pagetable, uint64 va, int alloc) {
     if (va >= (1L << 39))  // Sv39 
         return (pte_t*)0;
@@ -200,6 +193,27 @@ int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     }
     return 0;
 }
+
+int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm) {
+    uint64 a;
+    pte_t* pte;
+
+    va = PGROUNDDOWN(va);
+    for (a = va; a < va + size; a += PGSIZE, pa += PGSIZE) {
+        pte = walk(pagetable, a, 1);
+        if (pte == 0)
+            return -1;
+        if (*pte & PTE_V) {
+            // OK
+            return -1;
+        }
+
+        //  leaf PTE 
+        *pte = (pa >> 12 << 10) | perm | PTE_V;
+    }
+    return 0;
+}
+
 
 uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int perm) {
     if (newsz < oldsz)

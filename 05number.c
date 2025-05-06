@@ -48,13 +48,13 @@ class sUIntNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%u", self.value);
+        come_value.c_value = xsprintf("%uU", self.value);
         come_value.type = new sType(s"int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s", come_value.c_value);
+        add_come_last_code(info, "%sU", come_value.c_value);
         
         return true;
     }
@@ -78,13 +78,13 @@ class sLongNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%ld", self.value);
+        come_value.c_value = xsprintf("%ldL", self.value);
         come_value.type = new sType(s"long");
         come_value.var = null;
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s", come_value.c_value);
+        add_come_last_code(info, "%sL", come_value.c_value);
         
         return true;
     }
@@ -108,13 +108,13 @@ class sULongNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%lu", self.value);
+        come_value.c_value = xsprintf("%luUL", self.value);
         come_value.type = new sType(s"long");
         come_value.var = null;
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s", come_value.c_value);
+        add_come_last_code(info, "%sUL", come_value.c_value);
         
         return true;
     }
@@ -138,13 +138,13 @@ class sFloatNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%s", self.value);
+        come_value.c_value = xsprintf("%sf", self.value);
         come_value.type = new sType(s"float");
         come_value.var = null;
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%s", come_value.c_value);
+        add_come_last_code(info, "%sf", come_value.c_value);
         
         return true;
     }

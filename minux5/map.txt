@@ -357,14 +357,14 @@ LOAD main.o
  .debug_line    0x0000000000000332       0x6b kernelvec.o
  .debug_line    0x000000000000039d     0x84a0 main.o
 
-.debug_str      0x0000000000000000     0x3881
+.debug_str      0x0000000000000000     0x3883
  *(.debug_str)
- .debug_str     0x0000000000000000     0x3881 start.o
+ .debug_str     0x0000000000000000     0x3883 start.o
                                          0x2e (size before relaxing)
- .debug_str     0x0000000000003881       0x2e swtch.o
- .debug_str     0x0000000000003881       0x31 timervec.o
- .debug_str     0x0000000000003881       0x32 kernelvec.o
- .debug_str     0x0000000000003881     0x38f7 main.o
+ .debug_str     0x0000000000003883       0x2e swtch.o
+ .debug_str     0x0000000000003883       0x31 timervec.o
+ .debug_str     0x0000000000003883       0x32 kernelvec.o
+ .debug_str     0x0000000000003883     0x38f9 main.o
 
 .debug_line_str
                 0x0000000000000000       0x23

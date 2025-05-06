@@ -2764,14 +2764,14 @@ struct sType* __dec_obj7;
 _Bool __result_obj__7;
     come_value_10=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "05number.c", 49, "struct CVALUE*"))));
     __dec_obj6=come_value_10->c_value,
-    come_value_10->c_value=(char*)come_increment_ref_count(xsprintf("%u",self->value));
+    come_value_10->c_value=(char*)come_increment_ref_count(xsprintf("%uU",self->value));
     __dec_obj6 = come_decrement_ref_count(__dec_obj6, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __dec_obj7=come_value_10->type,
     come_value_10->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "05number.c", 52, "struct sType*")),(char*)come_increment_ref_count(xsprintf("int")),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj7,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value_10->var=((void*)0);
     list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_10));
-    add_come_last_code(info,"%s",come_value_10->c_value);
+    add_come_last_code(info,"%sU",come_value_10->c_value);
     __result_obj__7 = (_Bool)1;
     come_call_finalizer(CVALUE_finalize, come_value_10, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     return __result_obj__7;
@@ -2817,14 +2817,14 @@ struct sType* __dec_obj9;
 _Bool __result_obj__10;
     come_value_11=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "05number.c", 79, "struct CVALUE*"))));
     __dec_obj8=come_value_11->c_value,
-    come_value_11->c_value=(char*)come_increment_ref_count(xsprintf("%ld",self->value));
+    come_value_11->c_value=(char*)come_increment_ref_count(xsprintf("%ldL",self->value));
     __dec_obj8 = come_decrement_ref_count(__dec_obj8, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __dec_obj9=come_value_11->type,
     come_value_11->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "05number.c", 82, "struct sType*")),(char*)come_increment_ref_count(xsprintf("long")),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj9,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value_11->var=((void*)0);
     list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_11));
-    add_come_last_code(info,"%s",come_value_11->c_value);
+    add_come_last_code(info,"%sL",come_value_11->c_value);
     __result_obj__10 = (_Bool)1;
     come_call_finalizer(CVALUE_finalize, come_value_11, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     return __result_obj__10;
@@ -2870,14 +2870,14 @@ struct sType* __dec_obj11;
 _Bool __result_obj__13;
     come_value_12=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "05number.c", 109, "struct CVALUE*"))));
     __dec_obj10=come_value_12->c_value,
-    come_value_12->c_value=(char*)come_increment_ref_count(xsprintf("%lu",self->value));
+    come_value_12->c_value=(char*)come_increment_ref_count(xsprintf("%luUL",self->value));
     __dec_obj10 = come_decrement_ref_count(__dec_obj10, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __dec_obj11=come_value_12->type,
     come_value_12->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "05number.c", 112, "struct sType*")),(char*)come_increment_ref_count(xsprintf("long")),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj11,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value_12->var=((void*)0);
     list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_12));
-    add_come_last_code(info,"%s",come_value_12->c_value);
+    add_come_last_code(info,"%sUL",come_value_12->c_value);
     __result_obj__13 = (_Bool)1;
     come_call_finalizer(CVALUE_finalize, come_value_12, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     return __result_obj__13;
@@ -2927,14 +2927,14 @@ struct sType* __dec_obj14;
 _Bool __result_obj__16;
     come_value_13=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "05number.c", 139, "struct CVALUE*"))));
     __dec_obj13=come_value_13->c_value,
-    come_value_13->c_value=(char*)come_increment_ref_count(xsprintf("%s",self->value));
+    come_value_13->c_value=(char*)come_increment_ref_count(xsprintf("%sf",self->value));
     __dec_obj13 = come_decrement_ref_count(__dec_obj13, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __dec_obj14=come_value_13->type,
     come_value_13->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "05number.c", 142, "struct sType*")),(char*)come_increment_ref_count(xsprintf("float")),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj14,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value_13->var=((void*)0);
     list$1CVALUE$ph_push_back(info->stack,(struct CVALUE*)come_increment_ref_count(come_value_13));
-    add_come_last_code(info,"%s",come_value_13->c_value);
+    add_come_last_code(info,"%sf",come_value_13->c_value);
     __result_obj__16 = (_Bool)1;
     come_call_finalizer(CVALUE_finalize, come_value_13, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     return __result_obj__16;

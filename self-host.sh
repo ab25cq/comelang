@@ -10,5 +10,5 @@ elif uname -a | grep Darwin
 then
     make CFLAGS_OPT="-O2 -g" comelang -j$(($(sysctl -n hw.logicalcpu) / 2)) && sudo make install
 else
-    make CFLAGS_OPT="-g" comelang -j$(($(nproc) / 2)) && sudo make install
+    make CFLAGS_OPT="-O2 -g" comelang -j$(($(nproc) / 2)) && sudo make install
 fi
