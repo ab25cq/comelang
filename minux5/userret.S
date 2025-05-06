@@ -10,7 +10,7 @@ userret:
 
 
     # trapframe  a1 
-    li a1, TRAPFRAME
+    li a1, 0x3000
     
     ld ra, 0(a1)
     ld sp, 8(a1)

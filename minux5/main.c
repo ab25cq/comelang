@@ -180,7 +180,7 @@ int copyout(pagetable_t pagetable, uint64 dstva, void *src, uint64 len) {
 
         // 
         memmove((void *)(pa + page_offset), src, n);
-
+        
         va += n;
         src += n;
     }
@@ -470,30 +470,26 @@ user_puts("TASK2");
 
 struct proc* alloc_proc(void (*task)()) {
     struct proc* result = kalloc();
-    
     memset(result, 0, sizeof(struct proc));
-    
-    result->stack = kalloc();
-    
-    result->trapframe = (struct context*)kalloc();  // OK
-    result->state = RUNNABLE;
 
+    result->stack = kalloc();
+    result->trapframe = (struct context*)kalloc();
+    result->state = RUNNABLE;
     gProc[gNumProc++] = result;
-    
+
     result->pagetable = uvmcreate();
-    uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);  // 128KB
+    uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);
 
     // task  0x1000 
-    walk(result->pagetable, 0x1000, 1);
     copyout(result->pagetable, 0x1000, (void*)task, 0x1000);
-    
-    memset(result->trapframe, 0, PGSIZE);
-    
+
+    // trapframe 
+    memset(result->trapframe, 0, sizeof(struct context));
     result->trapframe->sp = (uint64)(result->stack + PGSIZE);
-    result->trapframe->mepc = (uint64)0x1000;
-    result->trapframe->ra = (uint64)0x1000;
-    
-    mappages(result->pagetable, 0x3000, PGSIZE, (uint64)result->trapframe, PTE_R | PTE_W | PTE_U);
+    result->trapframe->mepc = 0x1000;
+    result->trapframe->ra = 0x1000;
+
+    copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
 
     return result;
 }
@@ -564,13 +560,7 @@ void scheduler() {
             if (p->state == RUNNABLE) {
                 gActiveProc = i;
                 p->state = RUNNING;
-
-/*
-                // trapframe  context 
-                struct context* tf = (struct context*)TRAPFRAME;
-                *tf = p->context;
-*/
-
+                
                 enable_vm(p->pagetable);
                 userret(p->pagetable);
             }

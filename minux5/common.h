@@ -13,6 +13,7 @@ static char* heap_limit = (char*)0x88000000;
 
 #define ALIGN8(size) (((size) + 7) & ~7)
 
+int printf(const char* fmt, ...);
 
  void* memmove(void *dst, const void *src, unsigned int n) {
   const char *s;
@@ -20,7 +21,7 @@ static char* heap_limit = (char*)0x88000000;
 
   if(n == 0)
     return dst;
-  
+    
   s = src;
   d = dst;
   if(s < d && s + n > d){
