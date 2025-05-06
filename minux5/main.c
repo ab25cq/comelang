@@ -478,20 +478,28 @@ struct proc* alloc_proc(void (*task)()) {
     gProc[gNumProc++] = result;
 
     result->pagetable = uvmcreate();
-    uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);
+    uvmalloc(result->pagetable, 0x0000, 0x21000, PTE_R | PTE_W | PTE_X | PTE_U);
 
     // task  0x1000 
     copyout(result->pagetable, 0x1000, (void*)task, 0x1000);
 
     // trapframe 
     memset(result->trapframe, 0, sizeof(struct context));
-    result->trapframe->sp = (uint64)(result->stack + PGSIZE);
+//    result->trapframe->sp = (uint64)(result->stack + PGSIZE);
+    result->trapframe->sp = 0x20000; //  uvmalloc 
     result->trapframe->mepc = 0x1000;
     result->trapframe->ra = 0x1000;
 
+    mappages(result->pagetable, 0x3000, PGSIZE, (uint64)result->trapframe, PTE_R | PTE_W | PTE_U);
     copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
 
     return result;
+}
+
+uint64 va2pa(pagetable_t pagetable, uint64 va) {
+    pte_t* pte = walk(pagetable, va, 0);
+    if (pte == 0 || (*pte & PTE_V) == 0) return 0;
+    return ((*pte >> 10) << 12) | (va & 0xFFF);
 }
 
 void swtch(struct context*, struct context*);

@@ -1,4 +1,16 @@
-.equ TRAPFRAME,  0x3000
+
+.global printsp
+printsp:
+    li   t1, 0x10000000     # UART IO address
+    mv   t2, sp             # t2 = sp
+    srli t0, t2, 17         # 17  0x2 t0 4bit
+    andi t0, t0, 0xf        # 4bit  t0 = 0x2
+    li   t3, 0x30           # ASCII '0'
+    add  t0, t0, t3         # '0' + 2 = '2'
+    sb   t0, 0(t1)          #   UART  '2' 
+
+end:
+    j end
 
 .globl userret
 userret:
@@ -53,6 +65,8 @@ userret:
     li   t2, (1 << 5)       # SPIE=1
     or   t1, t1, t2
     csrw sstatus, t1
+
+    j printsp
 
     sret
 
