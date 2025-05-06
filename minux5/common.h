@@ -52,7 +52,7 @@ typedef struct sBlock {
 
  void* _sbrk(ptrdiff_t incr) {
     if (heap_end == 0)
-        heap_end = &_end;
+        heap_end = (char*)&_end;
 
     if (heap_end + incr >= heap_limit)
         return (void*)-1;
@@ -131,6 +131,7 @@ typedef struct sBlock {
         memset(ptr, 0, total);
     return ptr;
 }
+ int strlen(const char *s);
 
  char* strdup(const char* s) {
     size_t len = strlen(s) + 1;
@@ -516,4 +517,8 @@ void perror(const char* msg) {
     for (int i = 0; i < len; i++) {
         putchar(msg[i]);
     }
+}
+
+void puts(const char *s) {
+    while (*s) putchar(*s++);
 }

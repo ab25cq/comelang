@@ -38,6 +38,7 @@ void putchar(char c) {
 }
 
 #define HEAP_END (_end + PGSIZE * 4096)
+void freerange(void *pa_start, void *pa_end);
 
 void kinit() {
   freerange(_end, HEAP_END);
@@ -174,6 +175,8 @@ pte_t * walk(pagetable_t pagetable, uint64 va, int alloc)
 #define PX(level, va) ((((uint64) (va)) >> PXSHIFT(level)) & PXMASK)
 typedef uint64 pde_t;
 
+void kfree(void *pa);
+
 void uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
 {
   uint64 a;
@@ -209,6 +212,7 @@ uint64 uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
 
   return newsz;
 }
+int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm);
 
 uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
 {
@@ -292,53 +296,6 @@ int copyout(pagetable_t pagetable, uint64 dstva, void *src, uint64 len) {
 }
 */
 
-/*
-int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm) {
-    uint64 a;
-    pte_t* pte;
-
-    va = PGROUNDDOWN(va);
-    for (a = va; a < va + size; a += PGSIZE, pa += PGSIZE) {
-        pte = walk(pagetable, a, 1);
-        if (pte == 0)
-            return -1;
-        if (*pte & PTE_V)
-            return -1; // 
-
-        *pte = (pa >> 12 << 10) | perm | PTE_V;
-    }
-    return 0;
-}
-*/
-/*
-int mappages(pagetable_t pagetable, uint64 va, uint64 pa, uint64 size, int perm) {
-  uint64 a, last;
-  pte_t *pte;
-
-  a = PGROUNDDOWN(va);
-  last = PGROUNDDOWN(va + size - 1);
-
-  for (;;) {
-    pte = walk(pagetable, a, 1);  // 
-    if (pte == 0)
-      return -1;
-
-    if (*pte & PTE_V)  // 
-      return -1;
-
-    // PTEKERNBASE
-    *pte = ((pa >> 12) << 10) | perm | PTE_V;
-
-    if (a == last)
-      break;
-
-    a += PGSIZE;
-    pa += PGSIZE;
-  }
-
-  return 0;
-}
-*/
 
 int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 {
@@ -480,6 +437,38 @@ void freerange(void *pa_start, void *pa_end) {
   }
 }
 
+void vmprint_rec(pagetable_t pagetable, int level) {
+  for (int i = 0; i < 512; i++) {
+    pte_t pte = pagetable[i];
+    if (pte & PTE_V) {
+      uint64 pa = PTE2PA(pte);
+      for (int j = 0; j < level; j++)
+        puts(".. ");
+      printf("pte %d: pa %p", i, pa);
+
+      // leafなら属性も出す
+      if ((pte & (PTE_R | PTE_W | PTE_X)) != 0) {
+        printf(" [leaf]");
+      }
+      printf(" flags: ");
+      if (pte & PTE_R) printf("R");
+      if (pte & PTE_W) printf("W");
+      if (pte & PTE_X) printf("X");
+      if (pte & PTE_U) printf("U");
+      puts("");
+
+      // 再帰（leafでないときのみ）
+      if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
+        vmprint_rec((pagetable_t)(pa + KERNBASE), level + 1);
+      }
+    }
+  }
+}
+
+void vmprint(pagetable_t pagetable) {
+  puts("page table:\n");
+  vmprint_rec(pagetable, 1);
+}
 
 
 int gActiveProc = 0;
@@ -585,6 +574,7 @@ void disable_timer_interrupts() {
 
     *MTIMECMP = *MTIME + 0xFFFFFFFF;
 }
+void user_puts(const char *s);
 
 void task1() {
 user_puts("TASK1");
@@ -637,6 +627,7 @@ struct proc* alloc_proc(void (*task)()) {
     result->trapframe->mepc = 0x1000;
     result->trapframe->ra = 0x1000;
     copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
+//vmprint(result->pagetable);
 
     return result;
 }
@@ -730,10 +721,6 @@ void mask_and_clear_timer_interrupt() {
 }
 
 /// MMU ///
-
-void puts(const char *s) {
-    while (*s) putchar(*s++);
-}
 
 void user_puts(const char *s) {
     register const char* a0 = s;
