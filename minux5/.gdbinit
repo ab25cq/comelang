@@ -14,7 +14,7 @@ define va2pa
   else
     set $pa = ((*$pte >> 10) << 12) | ($arg0 & 0xFFF)
     printf "VA 0x%lx -> PA 0x%lx\n", $arg0, $pa
-    x/8i $pa
+    x/8x $pa
   end
 end
 

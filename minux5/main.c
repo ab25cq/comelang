@@ -24,7 +24,7 @@ typedef uint64_t pte_t;
 static char digits[] = "0123456789ABCDEF";
 
 #define KERNBASE 0x80000000L
-#define PHYSTOP (KERNBASE + 128*1024*1024)
+#define PHYSTOP (KERNBASE + 128*512)
 
 #define PGSIZE 4096 // bytes per page
 #define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
@@ -70,9 +70,21 @@ void * kalloc(void) {
 
 #define VA2VPN(va, level) ((((uint64_t)(va)) >> (12 + (9 * level))) & 0x1FF)
 
+#define MAXVA (1UL << (9 + 9 + 9 + 12 - 1))
+#define PTE2PA(pte) (((pte) >> 10) << 12)
+#define PA2PTE(pa) ((((uint64)pa) >> 12) << 10)
+#define PTE_FLAGS(pte) ((pte) & 0x3FF)
+#define PXMASK          0x1FF // 9 bits
+#define PXSHIFT(level)  (PGSHIFT+(9*(level)))
+#define PGSHIFT 12  // bits of offset within a page
+#define PX(level, va) ((((uint64) (va)) >> PXSHIFT(level)) & PXMASK)
+typedef uint64 pde_t;
+
 typedef uint64_t pte_t;
 typedef pte_t* pagetable_t; // 512
 pagetable_t kernel_pagetable;
+pte_t * walk(pagetable_t pagetable, uint64 va, int alloc);
+
 
 void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm);
 
@@ -117,12 +129,14 @@ void enable_vm(pagetable_t pagetable) {
 }
 */
 
+/*
 void enable_vm(pagetable_t pagetable) {
     uint64 pa = (uint64)pagetable - KERNBASE;  // 
     uint64 satp = SATP_SV39 | ((pa >> 12) & 0xFFFFFFFFFFF);
     asm volatile("csrw satp, %0" : : "r"(satp));
     asm volatile("sfence.vma zero, zero"); // flush TLB
 }
+*/
 
 
 pagetable_t uvmcreate() {
@@ -131,34 +145,123 @@ pagetable_t uvmcreate() {
     return pagetable;
 }
 
-pte_t* walk(pagetable_t pagetable, uint64 va, int alloc) {
-    if (va >= (1L << 39))  // Sv39 
-        return (pte_t*)0;
+pte_t * walk(pagetable_t pagetable, uint64 va, int alloc)
+{
+  if(va >= MAXVA)
+    puts("walk");
 
-    for (int level = 2; level > 0; level--) {
-        int idx = (va >> (12 + 9 * level)) & 0x1FF;
-        pte_t* pte = &pagetable[idx];
-
-        if (*pte & PTE_V) {
-            pagetable = (pagetable_t)(((*pte >> 10) << 12)); // 
-        } else {
-            if (!alloc)
-                return (pte_t*)0;
-
-            pagetable_t newpage = (pagetable_t)kalloc();
-            if (newpage == 0)
-                return (pte_t*)0;
-
-            memset(newpage, 0, PGSIZE);
-            *pte = ((uint64)newpage >> 12) << 10 | PTE_V;
-            pagetable = newpage;
-        }
+  for(int level = 2; level > 0; level--) {
+    pte_t *pte = &pagetable[PX(level, va)];
+    if(*pte & PTE_V) {
+      pagetable = (pagetable_t)PTE2PA(*pte);
+    } else {
+      if(!alloc || (pagetable = (pde_t*)kalloc()) == 0)
+        return 0;
+      memset(pagetable, 0, PGSIZE);
+      *pte = PA2PTE(pagetable) | PTE_V;
     }
-
-    int idx = (va >> 12) & 0x1FF;
-    return &pagetable[idx];
+  }
+  return &pagetable[PX(0, va)];
 }
 
+#define MAXVA (1L << (9 + 9 + 9 + 12 - 1))
+#define PTE2PA(pte) (((pte) >> 10) << 12)
+#define PA2PTE(pa) ((((uint64)pa) >> 12) << 10)
+#define PTE_FLAGS(pte) ((pte) & 0x3FF)
+#define PXMASK          0x1FF // 9 bits
+#define PXSHIFT(level)  (PGSHIFT+(9*(level)))
+#define PGSHIFT 12  // bits of offset within a page
+#define PX(level, va) ((((uint64) (va)) >> PXSHIFT(level)) & PXMASK)
+typedef uint64 pde_t;
+
+void uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
+{
+  uint64 a;
+  pte_t *pte;
+
+  if((va % PGSIZE) != 0)
+    puts("uvmunmap: not aligned");
+
+  for(a = va; a < va + npages*PGSIZE; a += PGSIZE){
+    if((pte = walk(pagetable, a, 0)) == 0)
+      puts("uvmunmap: walk");
+    if((*pte & PTE_V) == 0)
+      puts("uvmunmap: not mapped");
+    if(PTE_FLAGS(*pte) == PTE_V)
+      puts("uvmunmap: not a leaf");
+    if(do_free){
+      uint64 pa = PTE2PA(*pte);
+      kfree((void*)pa);
+    }
+    *pte = 0;
+  }
+}
+
+uint64 uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
+{
+  if(newsz >= oldsz)
+    return oldsz;
+
+  if(PGROUNDUP(newsz) < PGROUNDUP(oldsz)){
+    int npages = (PGROUNDUP(oldsz) - PGROUNDUP(newsz)) / PGSIZE;
+    uvmunmap(pagetable, PGROUNDUP(newsz), npages, 1);
+  }
+
+  return newsz;
+}
+
+uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
+{
+  char *mem;
+  uint64 a;
+
+  if(newsz < oldsz)
+    return oldsz;
+
+  oldsz = PGROUNDUP(oldsz);
+  for(a = oldsz; a < newsz; a += PGSIZE){
+    mem = kalloc();
+    if(mem == 0){
+      uvmdealloc(pagetable, a, oldsz);
+      return 0;
+    }
+    memset(mem, 0, PGSIZE);
+    if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_R|PTE_U|xperm) != 0){
+      kfree(mem);
+      uvmdealloc(pagetable, a, oldsz);
+      return 0;
+    }
+  }
+  return newsz;
+}
+
+int copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
+{
+  uint64 n, va0, pa0;
+  pte_t *pte;
+
+  while(len > 0){
+    va0 = PGROUNDDOWN(dstva);
+    if(va0 >= MAXVA)
+      return -1;
+    pte = walk(pagetable, va0, 0);
+    if(pte == 0 || (*pte & PTE_V) == 0 || (*pte & PTE_U) == 0 ||
+       (*pte & PTE_W) == 0)
+      return -1;
+    pa0 = PTE2PA(*pte);
+    n = PGSIZE - (dstva - va0);
+    if(n > len)
+      n = len;
+    memmove((void *)(pa0 + (dstva - va0)), src, n);
+
+    len -= n;
+    src += n;
+    dstva = va0 + PGSIZE;
+  }
+  return 0;
+}
+
+/*
 int copyout(pagetable_t pagetable, uint64 dstva, void *src, uint64 len) {
     uint64 va = dstva;
     uint64 end = dstva + len;
@@ -187,8 +290,9 @@ int copyout(pagetable_t pagetable, uint64 dstva, void *src, uint64 len) {
 
     return 0;
 }
+*/
 
-
+/*
 int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm) {
     uint64 a;
     pte_t* pte;
@@ -205,27 +309,67 @@ int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     }
     return 0;
 }
+*/
+/*
+int mappages(pagetable_t pagetable, uint64 va, uint64 pa, uint64 size, int perm) {
+  uint64 a, last;
+  pte_t *pte;
 
-uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int perm) {
-    if (newsz < oldsz)
-        return oldsz;
+  a = PGROUNDDOWN(va);
+  last = PGROUNDDOWN(va + size - 1);
 
-    oldsz = PGROUNDUP(oldsz);
-    for (uint64 a = oldsz; a < newsz; a += PGSIZE) {
-        void* mem = kalloc();
-        if (!mem) {
-            puts("uvmalloc: kalloc failed");
-        }
+  for (;;) {
+    pte = walk(pagetable, a, 1);  // 
+    if (pte == 0)
+      return -1;
 
-        memset(mem, 0, PGSIZE);  // 
+    if (*pte & PTE_V)  // 
+      return -1;
 
-        if (mappages(pagetable, a, PGSIZE, (uint64)mem, perm) != 0) {
-            puts("uvmalloc: mappages failed");
-        }
-    }
+    // PTEKERNBASE
+    *pte = ((pa >> 12) << 10) | perm | PTE_V;
 
-    return newsz;
+    if (a == last)
+      break;
+
+    a += PGSIZE;
+    pa += PGSIZE;
+  }
+
+  return 0;
 }
+*/
+
+int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
+{
+  uint64 a, last;
+  pte_t *pte;
+
+  if((va % PGSIZE) != 0)
+    puts("mappages: va not aligned");
+
+  if((size % PGSIZE) != 0)
+    puts("mappages: size not aligned");
+
+  if(size == 0)
+    puts("mappages: size");
+  
+  a = va;
+  last = va + size - PGSIZE;
+  for(;;){
+    if((pte = walk(pagetable, a, 1)) == 0)
+      return -1;
+    if(*pte & PTE_V)
+      puts("mappages: remap");
+    *pte = PA2PTE(pa) | perm | PTE_V;
+    if(a == last)
+      break;
+    a += PGSIZE;
+    pa += PGSIZE;
+  }
+  return 0;
+}
+
 
 pagetable_t kernel_pagetable;
 
@@ -486,11 +630,12 @@ struct proc* alloc_proc(void (*task)()) {
     // trapframe 
     memset(result->trapframe, 0, sizeof(struct context));
 //    result->trapframe->sp = (uint64)(result->stack + PGSIZE);
+
+    uint64 pa = (uint64)result->trapframe;
+    mappages(result->pagetable, 0x3000, PGSIZE, pa, PTE_R | PTE_W | PTE_U);
     result->trapframe->sp = 0x20000; //  uvmalloc 
     result->trapframe->mepc = 0x1000;
     result->trapframe->ra = 0x1000;
-
-    mappages(result->pagetable, 0x3000, PGSIZE, (uint64)result->trapframe, PTE_R | PTE_W | PTE_U);
     copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
 
     return result;
@@ -569,7 +714,7 @@ void scheduler() {
                 gActiveProc = i;
                 p->state = RUNNING;
                 
-                enable_vm(p->pagetable);
+                //enable_vm(p->pagetable);
                 userret(p->pagetable);
             }
         }
@@ -641,7 +786,7 @@ int main()
     trap_init();
     
     kvminit();
-    enable_vm(kernel_pagetable);
+    //enable_vm(kernel_pagetable);
 
     user_mode();
     

@@ -1,16 +1,36 @@
-
-.global printsp
 printsp:
-    li   t1, 0x10000000     # UART IO address
-    mv   t2, sp             # t2 = sp
-    srli t0, t2, 17         # 17  0x2 t0 4bit
-    andi t0, t0, 0xf        # 4bit  t0 = 0x2
-    li   t3, 0x30           # ASCII '0'
-    add  t0, t0, t3         # '0' + 2 = '2'
-    sb   t0, 0(t1)          #   UART  '2' 
+    li t1, 0x10000000    # UART IO address
+    mv t2, sp            # spt2
+
+    li t3, 16            # 1664bit = 16 hex digits
+
+print_hex_loop:
+    srli t4, t2, 60      # 4
+    li t5, 10
+    blt t4, t5, digit_is_num
+
+    # 'A' + (t4 - 10)
+    addi t4, t4, -10
+    li t6, 'A'
+    add t4, t4, t6
+    j store_uart
+
+digit_is_num:
+    li t6, '0'
+    add t4, t4, t6
+
+store_uart:
+    sb t4, 0(t1)         # UART 1
+
+    slli t2, t2, 4       # 4
+    addi t3, t3, -1
+    bnez t3, print_hex_loop
 
 end:
     j end
+
+
+    
 
 .globl userret
 userret:
