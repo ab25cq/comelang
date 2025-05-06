@@ -120,8 +120,6 @@ void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm) {
     pt[idx] = (pa >> 12) << 10 | perm | PTE_V;
 }
 
-#define SATP_SV39 (8L << 60)
-
 /*
 void enable_vm(pagetable_t pagetable) {
     uint64 satp = SATP_SV39 | (((uint64)pagetable >> 12) & 0xFFFFFFFFFFF);
@@ -446,7 +444,7 @@ void vmprint_rec(pagetable_t pagetable, int level) {
         puts(".. ");
       printf("pte %d: pa %p", i, pa);
 
-      // leafなら属性も出す
+
       if ((pte & (PTE_R | PTE_W | PTE_X)) != 0) {
         printf(" [leaf]");
       }
@@ -457,7 +455,7 @@ void vmprint_rec(pagetable_t pagetable, int level) {
       if (pte & PTE_U) printf("U");
       puts("");
 
-      // 再帰（leafでないときのみ）
+
       if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
         vmprint_rec((pagetable_t)(pa + KERNBASE), level + 1);
       }
@@ -628,6 +626,8 @@ struct proc* alloc_proc(void (*task)()) {
     result->trapframe->ra = 0x1000;
     copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
 //vmprint(result->pagetable);
+pte_t *pte = walk(result->pagetable, 0x3000, 0);
+printf("UHE %p %p\n", ((*pte >> 10) << 12), result->trapframe);
 
     return result;
 }
@@ -695,7 +695,11 @@ printf("mstatus = %x\n", r_mstatus());
 }
 */
 
-extern void userret(pagetable_t pagetable);
+extern void userret();
+
+#define SATP_SV39 (8L << 60)
+
+#define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
 
 void scheduler() {
     while (1) {
@@ -705,8 +709,14 @@ void scheduler() {
                 gActiveProc = i;
                 p->state = RUNNING;
                 
+                uint64 user_trapframe_addr = 0x3000;
+                
+                uint64 satp_value = SATP_SV39 | (((uint64)p->pagetable >> 12) & 0xFFFFFFFFFFF);
+                asm volatile("mv a0, %0" : : "r"(satp_value));
+                asm volatile("mv a1, %0" : : "r"(user_trapframe_addr));
+                
                 //enable_vm(p->pagetable);
-                userret(p->pagetable);
+                userret();
             }
         }
     }

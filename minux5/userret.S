@@ -1,33 +1,33 @@
-printsp:
-    li t1, 0x10000000    # UART IO address
-    mv t2, sp            # spt2
-
-    li t3, 16            # 1664bit = 16 hex digits
-
-print_hex_loop:
-    srli t4, t2, 60      # 4
-    li t5, 10
-    blt t4, t5, digit_is_num
-
-    # 'A' + (t4 - 10)
-    addi t4, t4, -10
-    li t6, 'A'
-    add t4, t4, t6
-    j store_uart
-
-digit_is_num:
-    li t6, '0'
-    add t4, t4, t6
-
-store_uart:
-    sb t4, 0(t1)         # UART 1
-
-    slli t2, t2, 4       # 4
-    addi t3, t3, -1
-    bnez t3, print_hex_loop
-
-end:
-    j end
+#printsp:
+#    li t1, 0x10000000    # UART IO address
+#    mv t2, sp            # spt2
+#
+#    li t3, 16            # 1664bit = 16 hex digits
+#
+#print_hex_loop:
+#    srli t4, t2, 60      # 4
+#    li t5, 10
+#    blt t4, t5, digit_is_num
+#
+#    # 'A' + (t4 - 10)
+#    addi t4, t4, -10
+#    li t6, 'A'
+#    add t4, t4, t6
+#    j store_uart
+#
+#digit_is_num:
+#    li t6, '0'
+#    add t4, t4, t6
+#
+#store_uart:
+#    sb t4, 0(t1)         # UART 1
+#
+#    slli t2, t2, 4       # 4
+#    addi t3, t3, -1
+#    bnez t3, print_hex_loop
+#
+#end:
+#    j end
 
 
     
@@ -37,12 +37,13 @@ userret:
     # a0: satp 
 
     # MMU
+    sfence.vma zero, zero
     csrw satp, a0
     sfence.vma zero, zero
 
 
     # trapframe  a1 
-    li a1, 0x3000
+#    li a1, 0x3000
     
     ld ra, 0(a1)
     ld sp, 8(a1)
@@ -86,7 +87,7 @@ userret:
     or   t1, t1, t2
     csrw sstatus, t1
 
-    j printsp
+#    j printsp
 
     sret
 
