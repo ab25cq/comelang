@@ -269,7 +269,7 @@ extern char TRAPFRAME[];
 
 struct cpu  {
     struct proc *proc;          // The process running on this cpu, or null.
-    struct context context;     // swtch() here to enter scheduler().
+    struct context* context;     // swtch() here to enter scheduler().
 };
 
 struct cpu gCPU;
@@ -278,7 +278,7 @@ enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 struct proc  {
   enum procstate state;        // Process state
-  struct context context;
+  struct context* trapframe;
   
   pagetable_t pagetable;
 
@@ -475,8 +475,7 @@ struct proc* alloc_proc(void (*task)()) {
     
     result->stack = kalloc();
     
-    result->context.sp = (uint64)(result->stack + PGSIZE);
-    result->context.mepc = (uint64)0x1000;
+    result->trapframe = (struct context*)kalloc();  // OK
     result->state = RUNNABLE;
 
     gProc[gNumProc++] = result;
@@ -485,9 +484,16 @@ struct proc* alloc_proc(void (*task)()) {
     uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);  // 128KB
 
     // task  0x1000 
+    walk(result->pagetable, 0x1000, 1);
     copyout(result->pagetable, 0x1000, (void*)task, 0x1000);
     
-    mappages(result->pagetable, 0x3000, PGSIZE, (uint64)&result->context, PTE_R | PTE_W | PTE_U);
+    memset(result->trapframe, 0, PGSIZE);
+    
+    result->trapframe->sp = (uint64)(result->stack + PGSIZE);
+    result->trapframe->mepc = (uint64)0x1000;
+    result->trapframe->ra = (uint64)0x1000;
+    
+    mappages(result->pagetable, 0x3000, PGSIZE, (uint64)result->trapframe, PTE_R | PTE_W | PTE_U);
 
     return result;
 }
@@ -507,7 +513,7 @@ void timer_handler() {
     struct proc *p = gProc[gActiveProc];
     
     struct context *tf = (struct context*)TRAPFRAME;
-    p->context = *tf;
+    p->trapframe = tf;
 
     //timer_reset();
 
@@ -595,7 +601,7 @@ void user_puts(const char *s) {
 
 void usertrap() {
     struct proc *p = gProc[gActiveProc];
-    struct context *tf = &p->context;
+    struct context *tf = p->trapframe;
 
     uint64 epc = tf->mepc;
     uint64 syscall_id = tf->a7;

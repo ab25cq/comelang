@@ -5,8 +5,9 @@ userret:
     # a0: satp 
 
     # MMU
-#    csrw satp, a0
-#    sfence.vma zero, zero
+    csrw satp, a0
+    sfence.vma zero, zero
+
 
     # trapframe  a1 
     li a1, TRAPFRAME
