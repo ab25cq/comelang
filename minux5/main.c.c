@@ -367,11 +367,12 @@ void timer_interrupts_for_scheduler();
 void disable_timer_interrupts();
 void task1();
 void task2();
-struct proc* alloc_proc(void (*task)(), long task_size);
-void swtch(struct context* anonymous_var_nameX125, struct context* anonymous_var_nameX126);
+struct proc* alloc_proc(void (*task)());
+void swtch(struct context* anonymous_var_nameX126, struct context* anonymous_var_nameX127);
 void timer_reset();
 void timer_handler();
 void yield();
+void userret(unsigned long  int* pagetable);
 void scheduler();
 void mask_and_clear_timer_interrupt();
 void puts(const char* s);
@@ -791,10 +792,10 @@ void kvminit(){
 unsigned long  int addr_10;
     kernel_pagetable=(unsigned long  int*)kalloc();
     memset(kernel_pagetable,0,4096);
-    for(    addr_10=2147483648    ;    addr_10<(2147483648+128*1024*1024)    ;    addr_10+=4096    ){
-        map_page(kernel_pagetable,addr_10,addr_10,(1<<1)|(1<<2)|(1<<3)|(1<<0));
+    for(    addr_10=2147483648L    ;    addr_10<(2147483648L+128*1024*1024)    ;    addr_10+=4096    ){
+        map_page(kernel_pagetable,addr_10,addr_10,(1L<<1)|(1L<<2)|(1L<<3)|(1L<<0));
     }
-    map_page(kernel_pagetable,268435456,268435456,(1<<1)|(1<<2)|(1<<0));
+    map_page(kernel_pagetable,268435456,268435456,(1L<<1)|(1L<<2)|(1L<<0));
 }
 
 void map_page(unsigned long  int* pagetable, unsigned long  int va, unsigned long  int pa, int perm){
@@ -807,20 +808,20 @@ memset(&level_11, 0, sizeof(int));
     pt_12=pagetable;
     for(    level_11=2    ;    level_11>0    ;    level_11--    ){
         idx_13=((((unsigned long  int)(va))>>(12+(9*level_11)))&511);
-        if(        !(pt_12[idx_13]&(1<<0))        ) {
+        if(        !(pt_12[idx_13]&(1L<<0))        ) {
             new_pt_14=(unsigned long  int*)kalloc();
             memset(new_pt_14,0,4096);
-            pt_12[idx_13]=((unsigned long  int)new_pt_14>>12)<<10|(1<<0);
+            pt_12[idx_13]=((unsigned long  int)new_pt_14>>12)<<10|(1L<<0);
         }
         pt_12=(unsigned long  int*)(((pt_12[idx_13]>>10)<<12));
     }
     idx_15=((((unsigned long  int)(va))>>(12+(9*0)))&511);
-    pt_12[idx_15]=(pa>>12)<<10|perm|(1<<0);
+    pt_12[idx_15]=(pa>>12)<<10|perm|(1L<<0);
 }
 
 void enable_vm(unsigned long  int* pagetable){
 unsigned long  int satp_16;
-    satp_16=(8<<60)|(((unsigned long  int)pagetable>>12)&-1);
+    satp_16=(8L<<60)|(((unsigned long  int)pagetable>>12)&-1);
     __asm volatile("csrw satp, %0" : : "r"(satp_16));
     __asm volatile("sfence.vma zero, zero");
 }
@@ -844,14 +845,14 @@ unsigned long  int* newpage_21;
 unsigned long  int* __result_obj__9;
 int idx_22;
 unsigned long  int* __result_obj__10;
-    if(    va>=(1<<39)    ) {
+    if(    va>=(1L<<39)    ) {
         __result_obj__7 = (unsigned long  int*)0;
         return __result_obj__7;
     }
     for(    level_18=2    ;    level_18>0    ;    level_18--    ){
         idx_19=(va>>(12+9*level_18))&511;
         pte_20=&pagetable[idx_19];
-        if(        *pte_20&(1<<0)        ) {
+        if(        *pte_20&(1L<<0)        ) {
             pagetable=(unsigned long  int*)(((*pte_20>>10)<<12));
         }
         else {
@@ -865,7 +866,7 @@ unsigned long  int* __result_obj__10;
                 return __result_obj__9;
             }
             memset(newpage_21,0,4096);
-            *pte_20=((unsigned long  int)newpage_21>>12)<<10|(1<<0);
+            *pte_20=((unsigned long  int)newpage_21>>12)<<10|(1L<<0);
             pagetable=newpage_21;
         }
     }
@@ -885,7 +886,7 @@ unsigned long  int n_28;
     end_24=dstva+len;
     while(    va_23<end_24    ) {
         pte_25=walk(pagetable,va_23,0);
-        if(        pte_25==0||(*pte_25&(1<<0))==0        ) {
+        if(        pte_25==0||(*pte_25&(1L<<0))==0        ) {
             return -1;
         }
         pa_26=((*pte_25>>10)<<12);
@@ -912,10 +913,10 @@ pte_32 = (void*)0;
         if(        pte_32==0        ) {
             return -1;
         }
-        if(        *pte_32&(1<<0)        ) {
+        if(        *pte_32&(1L<<0)        ) {
             return -1;
         }
-        *pte_32=(pa>>12<<10)|perm|(1<<0);
+        *pte_32=(pa>>12<<10)|perm|(1L<<0);
     }
     return 0;
 }
@@ -1013,7 +1014,7 @@ void task2(){
     }
 }
 
-struct proc* alloc_proc(void (*task)(), long task_size){
+struct proc* alloc_proc(void (*task)()){
 struct proc* result_46;
 struct proc* __result_obj__11;
     result_46=kalloc();
@@ -1024,8 +1025,9 @@ struct proc* __result_obj__11;
     result_46->state=(3);
     gProc[gNumProc++]=result_46;
     result_46->pagetable=uvmcreate();
-    uvmalloc(result_46->pagetable,0,131072,(1<<1)|(1<<2)|(1<<3)|(1<<4));
-    copyout(result_46->pagetable,4096,(void*)task,task_size);
+    uvmalloc(result_46->pagetable,0,131072,(1L<<1)|(1L<<2)|(1L<<3)|(1L<<4));
+    copyout(result_46->pagetable,4096,(void*)task,4096);
+    mappages(result_46->pagetable,12288,4096,(unsigned long  int)&result_46->context,(1L<<1)|(1L<<2)|(1L<<4));
     __result_obj__11 = result_46;
     return __result_obj__11;
 }
@@ -1061,19 +1063,14 @@ struct proc* p_50;
 void scheduler(){
 int i_51;
 struct proc* p_52;
-    printf("SCHEDULER\n");
     while(    1    ) {
         for(        i_51=0        ;        i_51<gNumProc        ;        i_51++        ){
             p_52=gProc[i_51];
             if(            p_52->state==(3)            ) {
                 gActiveProc=i_51;
                 p_52->state=(4);
-                printf("SWITCH TO %d\n",i_51);
-                disable_timer_interrupts();
-                printf("mstatus = %x\n",r_mstatus());
-                swtch(&gCPU.context,&p_52->context);
-                disable_timer_interrupts();
-                p_52->state=(3);
+                enable_vm(p_52->pagetable);
+                userret(p_52->pagetable);
             }
         }
     }
@@ -1121,7 +1118,7 @@ void trap_init(){
 void user_mode(){
 unsigned long  int x_60;
     x_60=r_sstatus();
-    x_60&=~(1<<8);
+    x_60&=~(1L<<8);
     w_sstatus(x_60);
 }
 
@@ -1132,8 +1129,8 @@ int main(){
     kvminit();
     enable_vm(kernel_pagetable);
     user_mode();
-    alloc_proc(task1,sizeof(task1));
-    alloc_proc(task2,sizeof(task2));
+    alloc_proc(task1);
+    alloc_proc(task2);
     enable_timer_interrupts();
     scheduler();
     while(    1    ) {

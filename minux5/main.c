@@ -2,7 +2,7 @@
 //#include <stdio.h>
 //#include <comelang.h>
 
-#include <comelang.h>
+//#include <comelang.h>
 
 typedef unsigned int   uint;
 typedef unsigned short ushort;
@@ -16,6 +16,8 @@ typedef unsigned int  uint32;
 typedef unsigned int  uint32_t;
 typedef unsigned long uint64;
 typedef unsigned long uint64_t;
+
+#include "common.h"
 
 typedef uint64_t pte_t;
 
@@ -107,11 +109,21 @@ void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm) {
 
 #define SATP_SV39 (8L << 60)
 
+/*
 void enable_vm(pagetable_t pagetable) {
     uint64 satp = SATP_SV39 | (((uint64)pagetable >> 12) & 0xFFFFFFFFFFF);
     asm volatile("csrw satp, %0" : : "r"(satp));
     asm volatile("sfence.vma zero, zero"); // TLB
 }
+*/
+
+void enable_vm(pagetable_t pagetable) {
+    uint64 pa = (uint64)pagetable - KERNBASE;  // 
+    uint64 satp = SATP_SV39 | ((pa >> 12) & 0xFFFFFFFFFFF);
+    asm volatile("csrw satp, %0" : : "r"(satp));
+    asm volatile("sfence.vma zero, zero"); // flush TLB
+}
+
 
 pagetable_t uvmcreate() {
     pagetable_t pagetable = (pagetable_t)kalloc();
@@ -194,27 +206,6 @@ int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     return 0;
 }
 
-int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm) {
-    uint64 a;
-    pte_t* pte;
-
-    va = PGROUNDDOWN(va);
-    for (a = va; a < va + size; a += PGSIZE, pa += PGSIZE) {
-        pte = walk(pagetable, a, 1);
-        if (pte == 0)
-            return -1;
-        if (*pte & PTE_V) {
-            // OK
-            return -1;
-        }
-
-        //  leaf PTE 
-        *pte = (pa >> 12 << 10) | perm | PTE_V;
-    }
-    return 0;
-}
-
-
 uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int perm) {
     if (newsz < oldsz)
         return oldsz;
@@ -287,7 +278,7 @@ enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 struct proc  {
   enum procstate state;        // Process state
-  struct context context;      // swtch() here to run process
+  struct context context;
   
   pagetable_t pagetable;
 
@@ -477,7 +468,7 @@ user_puts("TASK2");
     }
 }
 
-struct proc* alloc_proc(void (*task)(), long task_size) {
+struct proc* alloc_proc(void (*task)()) {
     struct proc* result = kalloc();
     
     memset(result, 0, sizeof(struct proc));
@@ -493,8 +484,10 @@ struct proc* alloc_proc(void (*task)(), long task_size) {
     result->pagetable = uvmcreate();
     uvmalloc(result->pagetable, 0x0000, 0x20000, PTE_R | PTE_W | PTE_X | PTE_U);  // 128KB
 
-    // user_code  0x1000 
-    copyout(result->pagetable, 0x1000, (void*)task, task_size);
+    // task  0x1000 
+    copyout(result->pagetable, 0x1000, (void*)task, 0x1000);
+    
+    mappages(result->pagetable, 0x3000, PGSIZE, (uint64)&result->context, PTE_R | PTE_W | PTE_U);
 
     return result;
 }
@@ -533,6 +526,7 @@ void yield() {
     scheduler();
 }
 
+/*
 void scheduler() {
 printf("SCHEDULER\n");
     while (1) {
@@ -549,6 +543,30 @@ printf("mstatus = %x\n", r_mstatus());
                 disable_timer_interrupts();
 
                 p->state = RUNNABLE;
+            }
+        }
+    }
+}
+*/
+
+extern void userret(pagetable_t pagetable);
+
+void scheduler() {
+    while (1) {
+        for (int i = 0; i < gNumProc; i++) {
+            struct proc *p = gProc[i];
+            if (p->state == RUNNABLE) {
+                gActiveProc = i;
+                p->state = RUNNING;
+
+/*
+                // trapframe  context 
+                struct context* tf = (struct context*)TRAPFRAME;
+                *tf = p->context;
+*/
+
+                enable_vm(p->pagetable);
+                userret(p->pagetable);
             }
         }
     }
@@ -623,8 +641,8 @@ int main()
 
     user_mode();
     
-    alloc_proc(task1, sizeof(task1));
-    alloc_proc(task2, sizeof(task2));
+    alloc_proc(task1);
+    alloc_proc(task2);
     
     enable_timer_interrupts();
 

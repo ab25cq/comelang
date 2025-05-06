@@ -10,12 +10,13 @@ kernel.elf:
 	$(CCPREFIX)as -g $(CFLAGS) -o swtch.o swtch.S
 	$(CCPREFIX)as -g $(CFLAGS) -o timervec.o timervec.S
 	$(CCPREFIX)as -g $(CFLAGS) -o kernelvec.o kernelvec.S
-	comelang -riscv -c -g -s main.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o kernelvec.o main.o 
+	$(CCPREFIX)as -g $(CFLAGS) -o userret.o userret.S
+#	comelang -riscv -c -g -s main.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o userret.o kernelvec.o main.o 
 
 #	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
-#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o main.c.o -lc 
+#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o userret.o main.c.o -lc 
 
 
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
