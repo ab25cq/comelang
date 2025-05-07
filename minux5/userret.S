@@ -35,6 +35,9 @@
 .globl userret
 userret:
     # a0: satp 
+    
+    mv t0, a0
+    mv t1, a1
 
     # MMU
     sfence.vma zero, zero
@@ -50,8 +53,8 @@ userret:
     ld gp, 16(a1)
     ld tp, 24(a1)
     ld t0, 32(a1)
-    ld t1, 40(a1)
-    ld t2, 48(a1)
+#    ld t1, 40(a1)
+#    ld t2, 48(a1)
     ld t3, 56(a1)
     ld t4, 64(a1)
     ld t5, 72(a1)

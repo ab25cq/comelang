@@ -87,21 +87,26 @@ pagetable_t kernel_pagetable;
 pte_t * walk(pagetable_t pagetable, uint64 va, int alloc);
 
 
-void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm);
+//void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm);
+
+int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm);
 
 void kvminit() {
     kernel_pagetable = (pagetable_t)kalloc();
     memset(kernel_pagetable, 0, PGSIZE);
 
+/*
     // 0x80000000
     for (uint64 addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
         map_page(kernel_pagetable, addr, addr, PTE_R | PTE_W | PTE_X | PTE_V);
     }
+*/
 
     // UART
-    map_page(kernel_pagetable, 0x10000000, 0x10000000, PTE_R | PTE_W | PTE_V);
+    mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V);
 }
 
+/*
 void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm) {
     int level;
     pagetable_t pt = pagetable;
@@ -119,6 +124,7 @@ void map_page(pagetable_t pagetable, uint64 va, uint64 pa, int perm) {
     int idx = VA2VPN(va, 0);
     pt[idx] = (pa >> 12) << 10 | perm | PTE_V;
 }
+*/
 
 /*
 void enable_vm(pagetable_t pagetable) {
@@ -210,7 +216,6 @@ uint64 uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
 
   return newsz;
 }
-int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm);
 
 uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
 {
@@ -442,7 +447,7 @@ void vmprint_rec(pagetable_t pagetable, int level) {
       uint64 pa = PTE2PA(pte);
       for (int j = 0; j < level; j++)
         puts(".. ");
-      printf("pte %d: pa %p", i, pa);
+      printf("pte %d: pa %p\n", i, pa);
 
 
       if ((pte & (PTE_R | PTE_W | PTE_X)) != 0) {
@@ -455,9 +460,8 @@ void vmprint_rec(pagetable_t pagetable, int level) {
       if (pte & PTE_U) printf("U");
       puts("");
 
-
       if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
-        vmprint_rec((pagetable_t)(pa + KERNBASE), level + 1);
+        vmprint_rec((pagetable_t)(pa), level + 1);
       }
     }
   }
@@ -625,9 +629,8 @@ struct proc* alloc_proc(void (*task)()) {
     result->trapframe->mepc = 0x1000;
     result->trapframe->ra = 0x1000;
     copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
-//vmprint(result->pagetable);
-pte_t *pte = walk(result->pagetable, 0x3000, 0);
-printf("UHE %p %p\n", ((*pte >> 10) << 12), result->trapframe);
+                
+vmprint(result->pagetable);
 
     return result;
 }
@@ -711,7 +714,7 @@ void scheduler() {
                 
                 uint64 user_trapframe_addr = 0x3000;
                 
-                uint64 satp_value = SATP_SV39 | (((uint64)p->pagetable >> 12) & 0xFFFFFFFFFFF);
+                uint64 satp_value = MAKE_SATP(p->pagetable);
                 asm volatile("mv a0, %0" : : "r"(satp_value));
                 asm volatile("mv a1, %0" : : "r"(user_trapframe_addr));
                 

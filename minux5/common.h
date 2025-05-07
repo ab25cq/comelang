@@ -470,20 +470,89 @@ int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
 
 // UART1
 extern void putchar(char c);
+#include <stdarg.h>
 
+// UART
+extern void putchar(char c);
+
+// 1016
+static void printint(long num, int base, int is_signed) {
+    char buf[32];
+    int i = 0;
+    unsigned long n;
+
+    if (is_signed && num < 0) {
+        putchar('-');
+        n = -num;
+    } else {
+        n = num;
+    }
+
+    do {
+        buf[i++] = "0123456789abcdef"[n % base];
+        n /= base;
+    } while (n > 0);
+
+    while (i--)
+        putchar(buf[i]);
+}
+
+// printf
 int printf(const char* fmt, ...) {
-    char buf[256];
     va_list ap;
     va_start(ap, fmt);
 
-    int len = snprintf(buf, sizeof(buf), fmt, ap);
+    for (const char* p = fmt; *p; p++) {
+        if (*p != '%') {
+            putchar(*p);
+            continue;
+        }
 
-    for (int i = 0; i < len; i++) {
-        putchar(buf[i]);
+        p++;  // 
+        switch (*p) {
+        case 'd': {
+            int val = va_arg(ap, int);
+            printint(val, 10, 1);
+            break;
+        }
+        case 'x': {
+            unsigned int val = va_arg(ap, unsigned int);
+            printint(val, 16, 0);
+            break;
+        }
+        case 'p': {
+            unsigned long val = (unsigned long)va_arg(ap, void*);
+            putchar('0');
+            putchar('x');
+            printint(val, 16, 0);
+            break;
+        }
+        case 's': {
+            const char* s = va_arg(ap, const char*);
+            if (!s) s = "(null)";
+            while (*s)
+                putchar(*s++);
+            break;
+        }
+        case 'c': {
+            char c = (char)va_arg(ap, int);
+            putchar(c);
+            break;
+        }
+        case '%': {
+            putchar('%');
+            break;
+        }
+        default: {
+            putchar('%');
+            putchar(*p);  // 
+            break;
+        }
+        }
     }
 
     va_end(ap);
-    return len;
+    return 0;
 }
 
 int vasprintf(char** strp, const char* fmt, va_list ap) {
