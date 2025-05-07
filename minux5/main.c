@@ -440,6 +440,7 @@ void freerange(void *pa_start, void *pa_end) {
   }
 }
 
+/*
 void vmprint_rec(pagetable_t pagetable, int level) {
   for (int i = 0; i < 512; i++) {
     pte_t pte = pagetable[i];
@@ -466,12 +467,41 @@ void vmprint_rec(pagetable_t pagetable, int level) {
     }
   }
 }
+*/
+
+void vmprint_rec(pagetable_t pagetable, uint64 va, int level) {
+  for (int i = 0; i < 512; i++) {
+    pte_t pte = pagetable[i];
+    if (pte & PTE_V) {
+      uint64 pa = PTE2PA(pte);
+      uint64 child_va = va | ((uint64)i << (12 + 9 * (2 - level)));  // va
+
+      for (int j = 0; j < level; j++)
+        puts(".. ");
+      printf("VA %p -> PA %p  (pte[%d])\n", child_va, pa, i);
+
+      if ((pte & (PTE_R | PTE_W | PTE_X)) != 0) {
+        printf(" [leaf]");
+      }
+
+      printf(" flags: ");
+      if (pte & PTE_R) printf(" R");
+      if (pte & PTE_W) printf(" W");
+      if (pte & PTE_X) printf(" X");
+      if (pte & PTE_U) printf(" U");
+      puts("");
+
+      if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
+        vmprint_rec((pagetable_t)pa, child_va, level + 1);
+      }
+    }
+  }
+}
 
 void vmprint(pagetable_t pagetable) {
   puts("page table:\n");
-  vmprint_rec(pagetable, 1);
+  vmprint_rec(pagetable, 0, 0);
 }
-
 
 int gActiveProc = 0;
 int gNumProc = 0;
@@ -672,7 +702,9 @@ void yield() {
     p = gProc[gActiveProc];
     p->state = RUNNABLE;
     
-    scheduler();
+//    scheduler();
+test:
+    goto test;
 }
 
 /*
