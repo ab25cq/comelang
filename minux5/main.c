@@ -135,6 +135,8 @@ void enable_vm(pagetable_t pagetable) {
 */
 
 /*
+#define SATP_SV39 (8L << 60)
+#define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
 void enable_vm(pagetable_t pagetable) {
     uint64 pa = (uint64)pagetable - KERNBASE;  // 
     uint64 satp = SATP_SV39 | ((pa >> 12) & 0xFFFFFFFFFFF);
@@ -469,6 +471,23 @@ void vmprint_rec(pagetable_t pagetable, int level) {
 }
 */
 
+void dump_physical_memory(uint64 pa, int count) {
+    volatile uint32_t* ptr = (volatile uint32_t*)pa;
+
+    for (int i = 0; i < count; i++) {
+        if (i % 4 == 0)
+            printf("%p: ", (uint64)(ptr + i));
+
+        printf("%p ", ptr[i]);
+
+        if (i % 4 == 3)
+            puts("");
+    }
+
+    if (count % 4 != 0)
+        puts("");
+}
+
 void vmprint_rec(pagetable_t pagetable, uint64 va, int level) {
   for (int i = 0; i < 512; i++) {
     pte_t pte = pagetable[i];
@@ -477,8 +496,9 @@ void vmprint_rec(pagetable_t pagetable, uint64 va, int level) {
       uint64 child_va = va | ((uint64)i << (12 + 9 * (2 - level)));  // va
 
       for (int j = 0; j < level; j++)
-        puts(".. ");
-      printf("VA %p -> PA %p  (pte[%d])\n", child_va, pa, i);
+        puts("\n.. ");
+      printf("VA %p -> PA %p  (pte[%d]) (level %d)\n", child_va, pa, i, level);
+      dump_physical_memory(pa, 8);
 
       if ((pte & (PTE_R | PTE_W | PTE_X)) != 0) {
         printf(" [leaf]");
@@ -702,9 +722,7 @@ void yield() {
     p = gProc[gActiveProc];
     p->state = RUNNABLE;
     
-//    scheduler();
-test:
-    goto test;
+    scheduler();
 }
 
 /*
@@ -744,9 +762,13 @@ void scheduler() {
                 gActiveProc = i;
                 p->state = RUNNING;
                 
+                uint64 pa = (uint64)p->pagetable;
+                uint64 satp_value = (8ULL << 60) | (pa >> 12);
+                
+                //uint64 user_trapframe_addr = //0x81007000; //MAKE_SATP(p->pagetable);
                 uint64 user_trapframe_addr = 0x3000;
                 
-                uint64 satp_value = MAKE_SATP(p->pagetable);
+                //uint64 satp_value = MAKE_SATP(p->pagetable);
                 asm volatile("mv a0, %0" : : "r"(satp_value));
                 asm volatile("mv a1, %0" : : "r"(user_trapframe_addr));
                 

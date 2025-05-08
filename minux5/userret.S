@@ -38,7 +38,7 @@ userret:
     
     mv t0, a0
     mv t1, a1
-
+    
     # MMU
     sfence.vma zero, zero
     csrw satp, a0

@@ -16,7 +16,7 @@ LOAD kernelvec.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0x27d4
+.text           0x0000000080000000     0x28c2
  *(.text*)
  .text          0x0000000080000000       0x40 start.o
                 0x0000000080000000                _start
@@ -31,7 +31,7 @@ LOAD main.o
                 0x00000000800002a0                kernelvec
                 0x00000000800002c4                ecall_handler
                 0x00000000800002cc                unexpected_trap
- .text          0x00000000800002d0     0x2504 main.o
+ .text          0x00000000800002d0     0x25f2 main.o
                 0x00000000800002d0                memmove
                 0x00000000800003ac                memcpy
                 0x00000000800003e0                _sbrk
@@ -71,72 +71,73 @@ LOAD main.o
                 0x0000000080001d6a                mappages
                 0x0000000080001e64                kfree
                 0x0000000080001ed8                freerange
-                0x0000000080001f30                vmprint_rec
-                0x00000000800020aa                vmprint
-                0x000000008000218e                enable_timer_interrupts
-                0x00000000800021e4                timer_interrupts_for_task_switch
-                0x000000008000221e                timer_interrupts_for_scheduler
-                0x0000000080002258                disable_timer_interrupts
-                0x0000000080002292                task1
-                0x00000000800022fc                task2
-                0x0000000080002366                alloc_proc
-                0x0000000080002490                va2pa
-                0x00000000800024e8                timer_reset
-                0x0000000080002516                timer_handler
-                0x0000000080002562                yield
-                0x00000000800025e8                scheduler
-                0x000000008000267a                mask_and_clear_timer_interrupt
-                0x00000000800026b6                user_puts
-                0x00000000800026da                usertrap
-                0x000000008000274c                trap_init
-                0x000000008000276c                user_mode
-                0x000000008000279a                main
+                0x0000000080001f30                dump_physical_memory
+                0x0000000080001ffa                vmprint_rec
+                0x0000000080002182                vmprint
+                0x0000000080002266                enable_timer_interrupts
+                0x00000000800022bc                timer_interrupts_for_task_switch
+                0x00000000800022f6                timer_interrupts_for_scheduler
+                0x0000000080002330                disable_timer_interrupts
+                0x000000008000236a                task1
+                0x00000000800023d4                task2
+                0x000000008000243e                alloc_proc
+                0x0000000080002568                va2pa
+                0x00000000800025c0                timer_reset
+                0x00000000800025ee                timer_handler
+                0x000000008000263a                yield
+                0x00000000800026ce                scheduler
+                0x0000000080002768                mask_and_clear_timer_interrupt
+                0x00000000800027a4                user_puts
+                0x00000000800027c8                usertrap
+                0x000000008000283a                trap_init
+                0x000000008000285a                user_mode
+                0x0000000080002888                main
 
-.rodata         0x00000000800027d8      0x2f4
+.rodata         0x00000000800028c8      0x30c
  *(.rodata*)
- .rodata        0x00000000800027d8      0x2f4 main.o
+ .rodata        0x00000000800028c8      0x30c main.o
 
-.rela.dyn       0x0000000080002ad0        0x0
- .rela.text     0x0000000080002ad0        0x0 start.o
+.rela.dyn       0x0000000080002bd8        0x0
+ .rela.text     0x0000000080002bd8        0x0 start.o
 
-.data           0x0000000080002ad0       0x11
+.data           0x0000000080002bd8       0x11
  *(.data*)
- .data          0x0000000080002ad0        0x0 start.o
- .data          0x0000000080002ad0        0x0 swtch.o
- .data          0x0000000080002ad0        0x0 timervec.o
- .data          0x0000000080002ad0        0x0 userret.o
- .data          0x0000000080002ad0        0x0 kernelvec.o
- .data          0x0000000080002ad0       0x11 main.o
+ .data          0x0000000080002bd8        0x0 start.o
+ .data          0x0000000080002bd8        0x0 swtch.o
+ .data          0x0000000080002bd8        0x0 timervec.o
+ .data          0x0000000080002bd8        0x0 userret.o
+ .data          0x0000000080002bd8        0x0 kernelvec.o
+ .data          0x0000000080002bd8       0x11 main.o
 
-.sdata          0x0000000080002ae8        0x8
+.sdata          0x0000000080002bf0        0x8
  *(.sdata*)
- .sdata         0x0000000080002ae8        0x8 main.o
+ .sdata         0x0000000080002bf0        0x8 main.o
 
-.bss            0x0000000080002af0      0x438
+.bss            0x0000000080002bf8      0x438
  *(.bss)
- .bss           0x0000000080002af0        0x0 start.o
- .bss           0x0000000080002af0        0x0 swtch.o
- .bss           0x0000000080002af0        0x0 timervec.o
- .bss           0x0000000080002af0        0x0 userret.o
- .bss           0x0000000080002af0        0x0 kernelvec.o
- .bss           0x0000000080002af0      0x418 main.o
-                0x0000000080002af0                gCPU
-                0x0000000080002b00                gProc
+ .bss           0x0000000080002bf8        0x0 start.o
+ .bss           0x0000000080002bf8        0x0 swtch.o
+ .bss           0x0000000080002bf8        0x0 timervec.o
+ .bss           0x0000000080002bf8        0x0 userret.o
+ .bss           0x0000000080002bf8        0x0 kernelvec.o
+ .bss           0x0000000080002bf8      0x418 main.o
+                0x0000000080002bf8                gCPU
+                0x0000000080002c08                gProc
  *(.bss.*)
  *(.sbss)
- .sbss          0x0000000080002f08       0x20 main.o
-                0x0000000080002f08                free_list
-                0x0000000080002f10                kmem
-                0x0000000080002f18                kernel_pagetable
-                0x0000000080002f20                gActiveProc
-                0x0000000080002f24                gNumProc
+ .sbss          0x0000000080003010       0x20 main.o
+                0x0000000080003010                free_list
+                0x0000000080003018                kmem
+                0x0000000080003020                kernel_pagetable
+                0x0000000080003028                gActiveProc
+                0x000000008000302c                gNumProc
  *(.sbss.*)
-                0x000000008000af28                . = (. + 0x8000)
-                0x000000008000af28                stack_top = .
-                0x000000008000b000                . = ALIGN (0x1000)
-                0x000000008000b000                TRAPFRAME = .
-                0x000000008000c000                . = (. + 0x1000)
-                0x000000008000c000                PROVIDE (_end = .)
+                0x000000008000b030                . = (. + 0x8000)
+                0x000000008000b030                stack_top = .
+                0x000000008000c000                . = ALIGN (0x1000)
+                0x000000008000c000                TRAPFRAME = .
+                0x000000008000d000                . = (. + 0x1000)
+                0x000000008000d000                PROVIDE (_end = .)
 
 .riscv.attributes
                 0x0000000000000000       0x57
@@ -157,42 +158,42 @@ LOAD main.o
  .comment       0x0000000000000000       0x22 main.o
                                          0x23 (size before relaxing)
 
-.debug_info     0x0000000000000000     0x1b66
+.debug_info     0x0000000000000000     0x1bea
  *(.debug_info)
  .debug_info    0x0000000000000000       0x2e start.o
  .debug_info    0x000000000000002e       0x2e swtch.o
  .debug_info    0x000000000000005c       0x2e timervec.o
  .debug_info    0x000000000000008a       0x2e userret.o
  .debug_info    0x00000000000000b8       0x2e kernelvec.o
- .debug_info    0x00000000000000e6     0x1a80 main.o
+ .debug_info    0x00000000000000e6     0x1b04 main.o
 
-.debug_abbrev   0x0000000000000000      0x474
+.debug_abbrev   0x0000000000000000      0x46a
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000       0x14 start.o
  .debug_abbrev  0x0000000000000014       0x14 swtch.o
  .debug_abbrev  0x0000000000000028       0x14 timervec.o
  .debug_abbrev  0x000000000000003c       0x14 userret.o
  .debug_abbrev  0x0000000000000050       0x14 kernelvec.o
- .debug_abbrev  0x0000000000000064      0x410 main.o
+ .debug_abbrev  0x0000000000000064      0x406 main.o
 
-.debug_line     0x0000000000000000     0x28b4
+.debug_line     0x0000000000000000     0x2970
  *(.debug_line)
  .debug_line    0x0000000000000000       0x45 start.o
  .debug_line    0x0000000000000045      0x2b3 swtch.o
  .debug_line    0x00000000000002f8       0x3a timervec.o
  .debug_line    0x0000000000000332      0x12b userret.o
  .debug_line    0x000000000000045d       0x6b kernelvec.o
- .debug_line    0x00000000000004c8     0x23ec main.o
+ .debug_line    0x00000000000004c8     0x24a8 main.o
 
-.debug_str      0x0000000000000000      0x5ac
+.debug_str      0x0000000000000000      0x5cb
  *(.debug_str)
- .debug_str     0x0000000000000000      0x5ac start.o
+ .debug_str     0x0000000000000000      0x5cb start.o
                                          0x2e (size before relaxing)
- .debug_str     0x00000000000005ac       0x2e swtch.o
- .debug_str     0x00000000000005ac       0x31 timervec.o
- .debug_str     0x00000000000005ac       0x30 userret.o
- .debug_str     0x00000000000005ac       0x32 kernelvec.o
- .debug_str     0x00000000000005ac      0x5d5 main.o
+ .debug_str     0x00000000000005cb       0x2e swtch.o
+ .debug_str     0x00000000000005cb       0x31 timervec.o
+ .debug_str     0x00000000000005cb       0x30 userret.o
+ .debug_str     0x00000000000005cb       0x32 kernelvec.o
+ .debug_str     0x00000000000005cb      0x5f4 main.o
 
 .debug_line_str
                 0x0000000000000000       0x63
@@ -216,5 +217,5 @@ OUTPUT(kernel.elf elf64-littleriscv)
  .debug_aranges
                 0x00000000000000f0       0x30 main.o
 
-.debug_frame    0x0000000000000000      0xc90
- .debug_frame   0x0000000000000000      0xc90 main.o
+.debug_frame    0x0000000000000000      0xcc8
+ .debug_frame   0x0000000000000000      0xcc8 main.o
