@@ -708,7 +708,7 @@ struct proc* alloc_proc(void (*task)()) {
 //    uvmalloc(result->pagetable, 0x0000, 0x21000, PTE_R | PTE_W | PTE_X | PTE_U);
 
     // task  0x1000 
-    uint64 pa = (void*)task;
+    uint64 pa = (uint64)task;
     mappages(result->pagetable, 0x1000, PGSIZE, pa, PTE_R | PTE_W | PTE_U | PTE_X);
 
     // trapframe 
@@ -857,7 +857,7 @@ void user_puts(const char *s) {
 
 void usertrap() {
     struct proc *p = gProc[gActiveProc];
-    struct context *tf = &p->trapframe;
+    struct context *tf = p->trapframe;
 
     uint64 epc = tf->mepc;
     uint64 syscall_id = tf->a7;
