@@ -842,12 +842,14 @@ module MEvalOptions<T, T2>
         }
         else if(argv[i] === "-riscv") {
             gcc_compiler = true;
+            output_object_file_flag = false;
             CC="riscv64-unknown-elf-gcc"
             cpp_option.append_format(s" -D__BARE_METAL__ -D__RISCV__ ");
-            clang_option.append_str(s" -nostdlib -ffreestanding -mcmodel=medany -D__RISCV__");
+            clang_option.append_str(s" -nostdlib -ffreestanding -D__RISCV__");
         }
         else if(argv[i] === "-bare") {
             gcc_compiler = true;
+            output_object_file_flag = false;
             CC="gcc";
             cpp_option.append_format(s" -D__BARE_METAL__ ");
             clang_option.append_str(s" -nostdlib -ffreestanding ");
