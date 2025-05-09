@@ -14,7 +14,7 @@ then
  
 if which apk
 then
-    sudo apk add binutils-riscv-none-elf binutils-riscv64 g++-riscv-none-elf gcc-riscv-none-elf newlib-riscv-none-elf picolibc-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch
+    sudo apk add binutils-riscv-none-elf binutils-riscv64 gcc-riscv-none-elf newlib-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch
 fi
 
 
