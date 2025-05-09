@@ -270,6 +270,47 @@ int copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
   return 0;
 }
 
+uint64
+walkaddr(pagetable_t pagetable, uint64 va)
+{
+  pte_t *pte;
+  uint64 pa;
+
+  if(va >= MAXVA)
+    return 0;
+
+  pte = walk(pagetable, va, 0);
+  if(pte == 0)
+    return 0;
+  if((*pte & PTE_V) == 0)
+    return 0;
+  if((*pte & PTE_U) == 0)
+    return 0;
+  pa = PTE2PA(*pte);
+  return pa;
+}
+
+int copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len)
+{
+  uint64 n, va0, pa0;
+
+  while(len > 0){
+    va0 = PGROUNDDOWN(srcva);
+    pa0 = walkaddr(pagetable, va0);
+    if(pa0 == 0)
+      return -1;
+    n = PGSIZE - (srcva - va0);
+    if(n > len)
+      n = len;
+    memmove(dst, (void *)(pa0 + (srcva - va0)), n);
+
+    len -= n;
+    dst += n;
+    srcva = va0 + PGSIZE;
+  }
+  return 0;
+}
+
 /*
 int copyout(pagetable_t pagetable, uint64 dstva, void *src, uint64 len) {
     uint64 va = dstva;
@@ -322,7 +363,7 @@ int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     if((pte = walk(pagetable, a, 1)) == 0)
       return -1;
     if(*pte & PTE_V)
-      puts("mappages: remap");
+      printf("mappages: remap %p", va);
     *pte = PA2PTE(pa) | perm | PTE_V;
     if(a == last)
       break;
@@ -664,24 +705,31 @@ struct proc* alloc_proc(void (*task)()) {
     gProc[gNumProc++] = result;
 
     result->pagetable = uvmcreate();
-    uvmalloc(result->pagetable, 0x0000, 0x21000, PTE_R | PTE_W | PTE_X | PTE_U);
+//    uvmalloc(result->pagetable, 0x0000, 0x21000, PTE_R | PTE_W | PTE_X | PTE_U);
 
     // task  0x1000 
-    copyout(result->pagetable, 0x1000, (void*)task, 0x1000);
+    uint64 pa = (void*)task;
+    mappages(result->pagetable, 0x1000, PGSIZE, pa, PTE_R | PTE_W | PTE_U | PTE_X);
 
     // trapframe 
     memset(result->trapframe, 0, sizeof(struct context));
 //    result->trapframe->sp = (uint64)(result->stack + PGSIZE);
 
-    uint64 pa = (uint64)result->trapframe;
+    pa = (uint64)result->trapframe;
     mappages(result->pagetable, 0x3000, PGSIZE, pa, PTE_R | PTE_W | PTE_U);
     result->trapframe->sp = 0x20000; //  uvmalloc 
     result->trapframe->mepc = 0x1000;
     result->trapframe->ra = 0x1000;
-    copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
+//    copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
+    
+uint64 read_value;
+copyin(result->pagetable, &read_value, 0x3000, sizeof(read_value)); // copyin 
+printf("\nRead: %p\n", read_value);
+/*
+uint64 test_value = 0x1234567890abcdef;
+copyout(result->pagetable, 0x3008, &test_value, sizeof(test_value));
+*/
                 
-vmprint(result->pagetable);
-
     return result;
 }
 
@@ -705,8 +753,8 @@ void timer_handler() {
     disable_timer_interrupts();
     struct proc *p = gProc[gActiveProc];
     
-    struct context *tf = (struct context*)TRAPFRAME;
-    p->trapframe = tf;
+//    struct context *tf = (struct context*)TRAPFRAME;
+//    p->trapframe = tf;
 
     //timer_reset();
 
@@ -761,18 +809,51 @@ void scheduler() {
             if (p->state == RUNNABLE) {
                 gActiveProc = i;
                 p->state = RUNNING;
+vmprint(p->pagetable);
                 
+/*
                 uint64 pa = (uint64)p->pagetable;
                 uint64 satp_value = (8ULL << 60) | (pa >> 12);
                 
                 //uint64 user_trapframe_addr = //0x81007000; //MAKE_SATP(p->pagetable);
                 uint64 user_trapframe_addr = 0x3000;
+*/
+                
+                //uint64 root_ppn = ((uint64)p->pagetable) >> 12;
+                //uint64 satp_value = (8ULL << 60) | root_ppn;
+                uint64 satp_value = MAKE_SATP(p->pagetable);
+                uint64 user_trapframe_addr = 0x3000;
+                //uint64 user_trapframe_addr = 0x81007000; //MAKE_SATP(p->pagetable);
+                //uint64 user_trapframe_addr = 0x81000000;
                 
                 //uint64 satp_value = MAKE_SATP(p->pagetable);
                 asm volatile("mv a0, %0" : : "r"(satp_value));
                 asm volatile("mv a1, %0" : : "r"(user_trapframe_addr));
                 
+/*
+                asm volatile("sfence.vma zero, zero");
+                asm volatile("csrw satp, %0": : "r"(satp_value));
+                asm volatile("sfence.vma zero, zero");
+                
+                uint64 user_trapframe_addr = 0x3000;
+                uint64 trapframe_pa = 0x81000000; // vmprint 
+                
+                asm volatile("sfence.vma zero, zero");
+                asm volatile("csrw satp, %0": : "r"(satp_value));
+                asm volatile("sfence.vma zero, zero");
+uint64 read_value;
+copyin(p->pagetable, &read_value, 0x3000, sizeof(read_value)); // copyin 
+printf("\n(X)Read: %p\n", read_value);
+                                                                
+                puts("0x3000\n");
+                dump_physical_memory(user_trapframe_addr, 32); //  0x3000  ( 0x81000000 )
+                puts("PA of trapframe:\n");
+                dump_physical_memory(trapframe_pa, 32); 
+                
                 //enable_vm(p->pagetable);
+*/
+aaaa:
+    goto aaaa;
                 userret();
             }
         }
@@ -798,7 +879,7 @@ void user_puts(const char *s) {
 
 void usertrap() {
     struct proc *p = gProc[gActiveProc];
-    struct context *tf = p->trapframe;
+    struct context *tf = &p->trapframe;
 
     uint64 epc = tf->mepc;
     uint64 syscall_id = tf->a7;
@@ -824,13 +905,23 @@ void trap_init() {
     w_mtvec((uint64)kernelvec); 
 }
 
-#define SSTATUS_SPP (1L << 8)  // Supervisor Previous Privilege
+#define SSTATUS_SPP (1L << 8)  // Previous mode, 1=Supervisor, 0=User
+#define SSTATUS_SPIE (1L << 5) // Supervisor Previous Interrupt Enable
+#define SSTATUS_UPIE (1L << 4) // User Previous Interrupt Enable
+#define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
+#define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
 
 void user_mode()
 {
     // sstatus  SPPSupervisor Previous Privilege User 
+/*
     uint64 x = r_sstatus();
     x &= ~SSTATUS_SPP; // 0 = U-mode
+    w_sstatus(x);
+*/
+    unsigned long x = r_sstatus();
+    x &= ~SSTATUS_SPP; // clear SPP to 0 for user mode
+    x |= SSTATUS_SPIE; // enable interrupts in user mode
     w_sstatus(x);
 }
 
@@ -840,7 +931,13 @@ int main()
     trap_init();
     
     kvminit();
+    
     //enable_vm(kernel_pagetable);
+    
+    uint64 kernel_root_ppn = ((uint64)kernel_pagetable) >> 12;
+    uint64 satp_value = (8ULL << 60) | kernel_root_ppn;
+    asm volatile("csrw satp, %0" : : "r"(satp_value));
+    asm volatile("sfence.vma zero, zero");
 
     user_mode();
     
