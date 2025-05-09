@@ -8,12 +8,20 @@
 .equ IIR_RX_RDY, 4
 
 .section .text
-.globl _start
-.globl stack_top
-
-_start:
-  la sp, stack_top
-  call main
-
-loop_here: j loop_here
+.global _entry
+_entry:
+        # set up a stack for C.
+        # stack0 is declared in start.c,
+        # with a 4096-byte stack per CPU.
+        # sp = stack0 + (hartid * 4096)
+        la sp, stack0
+        li a0, 1024*4
+        csrr a1, mhartid
+        addi a1, a1, 1
+        mul a0, a0, a1
+        add sp, sp, a0
+        # jump to start() in start.c
+        call start
+spin:
+        j spin
 

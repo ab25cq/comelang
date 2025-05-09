@@ -722,9 +722,11 @@ struct proc* alloc_proc(void (*task)()) {
     result->trapframe->ra = 0x1000;
 //    copyout(result->pagetable, 0x3000, (void*)result->trapframe, sizeof(struct context));
     
+/*
 uint64 read_value;
 copyin(result->pagetable, &read_value, 0x3000, sizeof(read_value)); // copyin 
 printf("\nRead: %p\n", read_value);
+*/
 /*
 uint64 test_value = 0x1234567890abcdef;
 copyout(result->pagetable, 0x3008, &test_value, sizeof(test_value));
@@ -802,6 +804,7 @@ extern void userret();
 
 #define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
 
+
 void scheduler() {
     while (1) {
         for (int i = 0; i < gNumProc; i++) {
@@ -810,55 +813,30 @@ void scheduler() {
                 gActiveProc = i;
                 p->state = RUNNING;
 vmprint(p->pagetable);
-                
-/*
-                uint64 pa = (uint64)p->pagetable;
-                uint64 satp_value = (8ULL << 60) | (pa >> 12);
-                
-                //uint64 user_trapframe_addr = //0x81007000; //MAKE_SATP(p->pagetable);
-                uint64 user_trapframe_addr = 0x3000;
-*/
-                
-                //uint64 root_ppn = ((uint64)p->pagetable) >> 12;
-                //uint64 satp_value = (8ULL << 60) | root_ppn;
+
                 uint64 satp_value = MAKE_SATP(p->pagetable);
                 uint64 user_trapframe_addr = 0x3000;
-                //uint64 user_trapframe_addr = 0x81007000; //MAKE_SATP(p->pagetable);
-                //uint64 user_trapframe_addr = 0x81000000;
-                
-                //uint64 satp_value = MAKE_SATP(p->pagetable);
-                asm volatile("mv a0, %0" : : "r"(satp_value));
-                asm volatile("mv a1, %0" : : "r"(user_trapframe_addr));
-                
+//uint64 user_trapframe_addr = 0x81007000;
 /*
-                asm volatile("sfence.vma zero, zero");
-                asm volatile("csrw satp, %0": : "r"(satp_value));
-                asm volatile("sfence.vma zero, zero");
-                
-                uint64 user_trapframe_addr = 0x3000;
-                uint64 trapframe_pa = 0x81000000; // vmprint 
-                
-                asm volatile("sfence.vma zero, zero");
-                asm volatile("csrw satp, %0": : "r"(satp_value));
-                asm volatile("sfence.vma zero, zero");
 uint64 read_value;
 copyin(p->pagetable, &read_value, 0x3000, sizeof(read_value)); // copyin 
 printf("\n(X)Read: %p\n", read_value);
-                                                                
-                puts("0x3000\n");
-                dump_physical_memory(user_trapframe_addr, 32); //  0x3000  ( 0x81000000 )
-                puts("PA of trapframe:\n");
-                dump_physical_memory(trapframe_pa, 32); 
-                
-                //enable_vm(p->pagetable);
 */
-aaaa:
-    goto aaaa;
+
+                asm volatile("mv a0, %0" : : "r"(satp_value));
+                asm volatile("mv a1, %0" : : "r"(user_trapframe_addr));
+
+                asm volatile("sfence.vma zero, zero");
+                asm volatile("csrw satp, %0" : : "r"(satp_value));
+                asm volatile("sfence.vma zero, zero");
+
                 userret();
             }
         }
     }
 }
+
+
 
 void mask_and_clear_timer_interrupt() {
     uint64_t now = *MTIME;
@@ -925,6 +903,84 @@ void user_mode()
     w_sstatus(x);
 }
 
+static inline void  w_satp(uint64 x)
+{
+  asm volatile("csrw satp, %0" : : "r" (x));
+}
+
+static inline void sfence_vma()
+{
+  // the zero, zero means flush all TLB entries.
+  asm volatile("sfence.vma zero, zero");
+}
+
+static inline void  w_mepc(uint64 x)
+{
+  asm volatile("csrw mepc, %0" : : "r" (x));
+}
+
+
+static inline void w_mideleg(uint64 x)
+{
+  asm volatile("csrw mideleg, %0" : : "r" (x));
+}
+
+static inline void w_medeleg(uint64 x)
+{
+  asm volatile("csrw medeleg, %0" : : "r" (x));
+}
+
+static inline void
+w_pmpaddr0(uint64 x)
+{
+  asm volatile("csrw pmpaddr0, %0" : : "r" (x));
+}
+// Physical Memory Protection
+static inline void
+w_pmpcfg0(uint64 x)
+{
+  asm volatile("csrw pmpcfg0, %0" : : "r" (x));
+}
+
+static inline uint64
+r_mhartid()
+{
+  uint64 x;
+  asm volatile("csrr %0, mhartid" : "=r" (x) );
+  return x;
+}
+
+static inline void 
+w_tp(uint64 x)
+{
+  asm volatile("mv tp, %0" : : "r" (x));
+}
+#define SIE_SEIE (1L << 9) // external
+#define SIE_STIE (1L << 5) // timer
+#define SIE_SSIE (1L << 1) // software
+static inline uint64
+r_sie()
+{
+  uint64 x;
+  asm volatile("csrr %0, sie" : "=r" (x) );
+  return x;
+}
+
+static inline void 
+w_sie(uint64 x)
+{
+  asm volatile("csrw sie, %0" : : "r" (x));
+}
+#define MSTATUS_MPP_MASK (3L << 11) // previous mode.
+#define MSTATUS_MPP_M (3L << 11)
+#define MSTATUS_MPP_S (1L << 11)
+#define MSTATUS_MPP_U (0L << 11)
+#define MSTATUS_MIE (1L << 3)    // machine-mode interrupt enable.
+
+#define NCPU 1
+
+__attribute__ ((aligned (16))) char stack0[4096 * NCPU];
+
 int main()
 {
     kinit();
@@ -934,6 +990,7 @@ int main()
     
     //enable_vm(kernel_pagetable);
     
+    asm volatile("sfence.vma zero, zero");
     uint64 kernel_root_ppn = ((uint64)kernel_pagetable) >> 12;
     uint64 satp_value = (8ULL << 60) | kernel_root_ppn;
     asm volatile("csrw satp, %0" : : "r"(satp_value));
@@ -949,4 +1006,40 @@ int main()
     scheduler();
 
     while (1);
+}
+
+void start()
+{
+  // set M Previous Privilege mode to Supervisor, for mret.
+  unsigned long x = r_mstatus();
+  x &= ~MSTATUS_MPP_MASK;
+  x |= MSTATUS_MPP_S;
+  w_mstatus(x);
+
+  // set M Exception Program Counter to main, for mret.
+  // requires gcc -mcmodel=medany
+  w_mepc((uint64)main);
+
+  // disable paging for now.
+  w_satp(0);
+
+  // delegate all interrupts and exceptions to supervisor mode.
+  w_medeleg(0xffff);
+  w_mideleg(0xffff);
+  w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_SSIE);
+
+  // configure Physical Memory Protection to give supervisor mode
+  // access to all of physical memory.
+  w_pmpaddr0(0x3fffffffffffffull);
+  w_pmpcfg0(0xf);
+
+  // ask for clock interrupts.
+//  timerinit();
+
+  // keep each CPU's hartid in its tp register, for cpuid().
+  int id = r_mhartid();
+  w_tp(id);
+
+  // switch to supervisor mode and jump to main().
+  asm volatile("mret");
 }

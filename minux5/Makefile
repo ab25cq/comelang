@@ -13,10 +13,8 @@ kernel.elf:
 	$(CCPREFIX)as -g $(CFLAGS) -o userret.o userret.S
 #	comelang -riscv -c -g -s main.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o userret.o kernelvec.o main.o 
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o timervec.o userret.o kernelvec.o main.o 
 
-#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c
-#	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt -o kernel.elf start.o swtch.o timervec.o userret.o main.c.o -lc 
 
 
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
