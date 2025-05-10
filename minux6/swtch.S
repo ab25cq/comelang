@@ -1,8 +1,8 @@
 # Context switch
 #
-#   void swtch(struct context *old, struct context *new);
-# 
-# Save current registers in old. Load from new.	
+#  void swtch(struct context *old, struct context *new);
+#
+# Save current registers in old. Load from new.
 
 .globl swtch
 swtch:
@@ -37,8 +37,8 @@ swtch:
     sd s9, 224(a0)
     sd s10, 232(a0)
     sd s11, 240(a0)
-#    csrr a3, mepc
-#    sd a3, 248(a0)
+    csrr a3, mepc
+    sd a3, 248(a0)
 
     # Load all registers from *a1
     ld ra, 0(a1)
@@ -52,11 +52,11 @@ swtch:
     ld t4, 64(a1)
     ld t5, 72(a1)
     ld t6, 80(a1)
-#    ld a0, 88(a1)
-#    ld a1, 96(a1)
-#    ld a2, 104(a1)
-#    ld a3, 112(a1)
-#    ld a4, 120(a1)
+    ld a0, 88(a1)
+    ld a1, 96(a1)
+    ld a2, 104(a1)
+    ld a3, 112(a1)
+    ld a4, 120(a1)
     ld a5, 128(a1)
     ld a6, 136(a1)
     ld a7, 144(a1)
@@ -72,30 +72,12 @@ swtch:
     ld s9, 224(a1)
     ld s10, 232(a1)
     ld s11, 240(a1)
-#    csrw mepc, a2
-    
-    li   a0, 0x0200BFF8
-    ld   a4, 0(a0)
-
-    li   a2, 100000
-    add  a4, a4, a2
-
-    li   a0, 0x02004000
-    sd   a4, 0(a0)
-
-    csrr a0, mie
-    li   a4, (1 << 7)         # MIE_MTIE = 0x80
-    or   a0, a0, a4
-    csrw mie, a0
-
-    csrr a0, mstatus
-    li   a4, (1 << 3)         # MSTATUS_MIE = 0x8
-    or   a0, a0, a4
-    csrw mstatus, a0
-    
     ld a2, 248(a1)
+    csrw mepc, a2
 
-    jr a2
+    # タイマー割り込みはタイマーハンドラでリセットし、有効化するためここでは行わない
+
+    jr ra
 
 .globl trampoline
 trampoline:

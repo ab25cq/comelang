@@ -1,0 +1,346 @@
+==7766== Memcheck, a memory error detector
+==7766== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==7766== Using Valgrind-3.20.0 and LibVEX; rerun with -h for copyright info
+==7766== Command: vin 01main.c
+==7766== 
+==7766== error calling PR_SET_PTRACER, vgdb might block
+==7766== Invalid read of size 8
+==7766==    at 0x4943D0B: _nc_screen_of (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE5B: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d068 is 8 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 8
+==7766==    at 0x4943D0B: _nc_screen_of (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492F903: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d068 is 8 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 1
+==7766==    at 0x492F9F5: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d090 is 48 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 2
+==7766==    at 0x4937D36: is_wintouched (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492F6F6: ??? (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FA11: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d074 is 20 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 8
+==7766==    at 0x4937D4A: is_wintouched (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492F6F6: ??? (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FA11: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d098 is 56 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 2
+==7766==    at 0x4937D4E: is_wintouched (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492F6F6: ??? (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FA11: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d168 is 8 bytes inside a block of size 512 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x493369D: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933753: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 4
+==7766==    at 0x492F6FE: ??? (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FA11: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d07c is 28 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 1
+==7766==    at 0x492FA12: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d088 is 40 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 4
+==7766==    at 0x492FA18: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d094 is 52 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 1
+==7766==    at 0x492FA27: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d090 is 48 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 1
+==7766==    at 0x492FA3D: _nc_wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x492FE77: wgetch (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x140145: ViWin_getKey_v14 (14dot.c.c:3622)
+==7766==    by 0x13C057: ViWin_commandModeInput (12command.c.c:3275)
+==7766==    by 0x14B8AB: Vi_main_loop_v19 (19rewrite_mode.c.c:3244)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0x4a6d088 is 40 bytes inside a block of size 192 free'd
+==7766==    at 0x48A78F1: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x49336A5: _nc_freewin (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x11BB61: ViWin_finalize (02base.c.c:2591)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11FAC7: list_item$1ViWin$ph$p_finalize (02base.c.c:3739)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F5A9: list$1ViWin$ph$p_finalize (02base.c.c:3733)
+==7766==    by 0x10B6CC: come_call_finalizer (main.c.c:3394)
+==7766==    by 0x11F556: Vi_view (02base.c.c:4033)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Block was alloc'd at
+==7766==    at 0x48A97AE: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7766==    by 0x4933736: _nc_makenew_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x4933907: newwin_sp (in /usr/lib/libncursesw.so.6.3)
+==7766==    by 0x12844D: Vi_repositionWindows_v6 (06file.c.c:3812)
+==7766==    by 0x1293B7: Vi_openFile_v6 (06file.c.c:3942)
+==7766==    by 0x10A9D8: main (main.c.c:0)
+==7766== 
+==7766== Invalid read of size 8
+==7766==    at 0x11C7FA: ViWin_view_v2 (02base.c.c:3092)
+==7766==    by 0x11F513: Vi_view (02base.c.c:4030)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  Address 0xffffffff is not stack'd, malloc'd or (recently) free'd
+==7766== 
+==7766== 
+==7766== Process terminating with default action of signal 11 (SIGSEGV)
+==7766==  Access not within mapped region at address 0xFFFFFFFF
+==7766==    at 0x11C7FA: ViWin_view_v2 (02base.c.c:3092)
+==7766==    by 0x11F513: Vi_view (02base.c.c:4030)
+==7766==    by 0x14B8B9: Vi_main_loop_v19 (19rewrite_mode.c.c:3240)
+==7766==    by 0x10A9E5: main (main.c.c:2597)
+==7766==  If you believe this happened as a result of a stack
+==7766==  overflow in your program's main thread (unlikely but
+==7766==  possible), you can try to increase the size of the
+==7766==  main thread stack using the --main-stacksize= flag.
+==7766==  The main thread stack size used in this run was 8388608.
+==7766== 
+==7766== HEAP SUMMARY:
+==7766==     in use at exit: 2,458,862 bytes in 930 blocks
+==7766==   total heap usage: 1,062 allocs, 132 frees, 2,789,250 bytes allocated
+==7766== 
+==7766== LEAK SUMMARY:
+==7766==    definitely lost: 0 bytes in 0 blocks
+==7766==    indirectly lost: 0 bytes in 0 blocks
+==7766==      possibly lost: 0 bytes in 0 blocks
+==7766==    still reachable: 2,458,862 bytes in 930 blocks
+==7766==         suppressed: 0 bytes in 0 blocks
+==7766== Rerun with --leak-check=full to see details of leaked memory
+==7766== 
+==7766== For lists of detected and suppressed errors, rerun with: -s
+==7766== ERROR SUMMARY: 74 errors from 12 contexts (suppressed: 0 from 0)
+Segmentation fault (core dumped)

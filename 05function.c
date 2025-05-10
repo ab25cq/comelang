@@ -2767,7 +2767,7 @@ sFun*,string create_finalizer_automatically(sType*% type, char* fun_name, sInfo*
             
             if(user_finalizer) {
                 char source2[1024];
-                snprintf(source2, 1024, "if(self != ((void*)0)) { %s(self); }\n", user_real_fun_name);
+                snprintf(source2, 1024, "if(self != ((void*)0) && come_get_ref_count(self) == 0) { %s(self); }\n", user_real_fun_name);
                 
                 source.append_str(source2);
             }
@@ -2784,10 +2784,10 @@ sFun*,string create_finalizer_automatically(sType*% type, char* fun_name, sInfo*
                 }
                 else if(field_type->mChannel) {
                     char source2[1024];
-                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[0] != ((void*)0)) { close(self.%s[0]); }", name, name);
+                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[0] != ((void*)0) && come_get_ref_count(self) == 0) { close(self.%s[0]); }", name, name);
                     source.append_str(source2);
                     
-                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[1] != ((void*)0)) { close(self.%s[1]); }", name, name);
+                    snprintf(source2, 1024, "if(self != ((void*)0) && self.%s[1] != ((void*)0) && come_get_ref_count(self) == 0) { close(self.%s[1]); }", name, name);
                     
                     source.append_str(source2);
                 }

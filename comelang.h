@@ -1424,6 +1424,17 @@ uniq void* come_print_ref_count(void* mem)
     return mem;
 }
 
+uniq int come_get_ref_count(void* mem)
+{
+    if(mem == NULL) {
+        return mem;
+    }
+    
+    size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
+    
+    return *ref_count;
+}
+
 uniq void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protocol_obj, bool no_decrement, bool no_free, void* result_obj)
 {
     if(result_obj) {
