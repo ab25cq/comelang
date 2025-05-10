@@ -354,7 +354,7 @@ void disable_timer_interrupts();
 void task1();
 void task2();
 struct proc* alloc_proc(void (*task)());
-void swtch(struct context* anonymous_var_nameX68, struct context* anonymous_var_nameX69);
+void swtch(struct context* anonymous_var_nameX66, struct context* anonymous_var_nameX67);
 void timer_reset();
 void timer_handler();
 void yield();
@@ -707,7 +707,7 @@ void kfree(void* pa){
 struct run* r_21;
 r_21 = (void*)0;
     if(    ((unsigned long  int)pa%4096)!=0||(char*)pa<_end||(unsigned long  int)pa>=(_end+4096*256)    ) {
-        puts("panic");
+        puts("panic: kfree");
     }
     r_21=(struct run*)pa;
     r_21->next=kmem.freelist;
@@ -746,10 +746,9 @@ void enable_timer_interrupts(){
 unsigned long  int now_29;
     w_mtvec((unsigned long  int)timervec&~3);
     now_29=*(unsigned long  int*)33603576;
-    *(unsigned long  int*)33570816=now_29+-1;
-    w_mie(0);
-    w_mstatus(r_mstatus()&~(1<<3));
-    *(unsigned long  int*)33570816=*(unsigned long  int*)33603576+-1;
+    *(unsigned long  int*)33570816=now_29+1000000;
+    w_mie((1<<7));
+    w_mstatus(r_mstatus()|(1<<3));
 }
 
 void timer_interrupts_for_task_switch(){
@@ -815,7 +814,7 @@ struct proc* __result_obj__13;
 void timer_reset(){
 unsigned long  int now_37;
     now_37=*(unsigned long  int*)33603576;
-    *(unsigned long  int*)33570816=now_37+10000000;
+    *(unsigned long  int*)33570816=now_37+1000000;
 }
 
 void timer_handler(){
@@ -828,13 +827,14 @@ struct context* tf_39;
     p_38->context=*tf_39;
     printf("TRAPFRAME %p\n",TRAPFRAME);
     printf("ative proc saved %d\n",gActiveProc);
-    printf("ra %x\n",tf_39->ra);
-    printf("ra %x\n",p_38->context.ra);
-    printf("sp %x\n",tf_39->sp);
-    printf("sp %x\n",p_38->context.sp);
-    printf("gp %x\n",p_38->context.gp);
-    printf("mepc %x\n",tf_39->mepc);
-    printf("mepc %x\n",p_38->context.mepc);
+    printf("ra %lx\n",tf_39->ra);
+    printf("ra %lx\n",p_38->context.ra);
+    printf("sp %lx\n",tf_39->sp);
+    printf("sp %lx\n",p_38->context.sp);
+    printf("gp %lx\n",p_38->context.gp);
+    printf("mepc %lx\n",tf_39->mepc);
+    printf("mepc %lx\n",p_38->context.mepc);
+    timer_reset();
     yield();
 }
 
@@ -863,7 +863,7 @@ struct proc* p_42;
                 printf("SWITCH TO %d\n",i_41);
                 disable_timer_interrupts();
                 swtch(&gCPU.context,&p_42->context);
-                disable_timer_interrupts();
+                enable_timer_interrupts();
                 p_42->state=(3);
             }
         }
@@ -882,7 +882,7 @@ void* __right_value0 = (void*)0;
     come_heap_init(0, 0, 0);
     puts("HELLO WORLD");
     kinit();
-    ((char*)(__right_value0=(char*)come_calloc_v2(1, sizeof(char)*(1*(123)), "main.c", 687, "char*")));
+    ((char*)(__right_value0=(char*)come_calloc_v2(1, sizeof(char)*(1*(123)), "main.c", 679, "char*")));
     (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
     alloc_proc(task1);
     alloc_proc(task2);

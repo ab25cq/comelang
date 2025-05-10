@@ -1,19 +1,16 @@
 #include <stdarg.h>
-//#include <stdio.h>
-//#include <comelang.h>
-
 #include <comelang.h>
 
-typedef unsigned int   uint;
+typedef unsigned int    uint;
 typedef unsigned short ushort;
-typedef unsigned char  uchar;
+typedef unsigned char   uchar;
 
 typedef unsigned char uint8;
 typedef unsigned char uint8_t;
 typedef unsigned short uint16;
 typedef unsigned short uint16_t;
-typedef unsigned int  uint32;
-typedef unsigned int  uint32_t;
+typedef unsigned int    uint32;
+typedef unsigned int    uint32_t;
 typedef unsigned long uint64;
 typedef unsigned long uint64_t;
 
@@ -21,40 +18,39 @@ typedef uint64_t pte_t;
 
 static char digits[] = "0123456789ABCDEF";
 
-
 struct context {
-  uint64 ra;
-  uint64 sp;
-  uint64 gp;
-  uint64 tp;
-  uint64 t0;
-  uint64 t1;
-  uint64 t2;
-  uint64 t3;
-  uint64 t4;
-  uint64 t5;
-  uint64 t6;
-  uint64 a0;
-  uint64 a1;
-  uint64 a2;
-  uint64 a3;
-  uint64 a4;
-  uint64 a5;
-  uint64 a6;
-  uint64 a7;
-  uint64 s0;
-  uint64 s1;
-  uint64 s2;
-  uint64 s3;
-  uint64 s4;
-  uint64 s5;
-  uint64 s6;
-  uint64 s7;
-  uint64 s8;
-  uint64 s9;
-  uint64 s10;
-  uint64 s11;
-  uint64 mepc;
+    uint64 ra;
+    uint64 sp;
+    uint64 gp;
+    uint64 tp;
+    uint64 t0;
+    uint64 t1;
+    uint64 t2;
+    uint64 t3;
+    uint64 t4;
+    uint64 t5;
+    uint64 t6;
+    uint64 a0;
+    uint64 a1;
+    uint64 a2;
+    uint64 a3;
+    uint64 a4;
+    uint64 a5;
+    uint64 a6;
+    uint64 a7;
+    uint64 s0;
+    uint64 s1;
+    uint64 s2;
+    uint64 s3;
+    uint64 s4;
+    uint64 s5;
+    uint64 s6;
+    uint64 s7;
+    uint64 s8;
+    uint64 s9;
+    uint64 s10;
+    uint64 s11;
+    uint64 mepc;
 };
 
 extern char TRAPFRAME[];
@@ -64,11 +60,11 @@ struct cpu  {
     struct context context;     // swtch() here to enter scheduler().
 };
 struct run {
-  struct run *next;
+    struct run *next;
 };
 
 struct {
-  struct run *freelist;
+    struct run *freelist;
 } kmem;
 
 struct cpu gCPU;
@@ -76,12 +72,12 @@ struct cpu gCPU;
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 struct proc  {
-  enum procstate state;        // Process state
-  struct context context;      // swtch() here to run process
+    enum procstate state;       // Process state
+    struct context context;     // swtch() here to run process
 
-  struct proc *parent;         // Parent process
+    struct proc *parent;         // Parent process
 
-  char* stack;
+    char* stack;
 };
 
 #define NPROC 128
@@ -96,7 +92,7 @@ struct proc* gProc[NPROC];
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
 
 extern char _end[]; // first address after kernel.
-                   // defined by kernel.ld.
+                    // defined by kernel.ld.
 
 void putchar(char c) {
     *(volatile char*)(0x10000000) = c;
@@ -346,17 +342,17 @@ int printf(const char* fmt, ...) {
 #define MIE_MTIE (1 << 7)
 
 static inline void intr_on() {
-    uint64_t x; 
-    asm volatile("csrr %0, mie" : "=r"(x)); 
-    x |= MIE_MTIE; 
-    asm volatile("csrw mie, %0" : : "r"(x)); 
+    uint64_t x;
+    asm volatile("csrr %0, mie" : "=r"(x));
+    x |= MIE_MTIE;
+    asm volatile("csrw mie, %0" : : "r"(x));
 }
 
-static inline void intr_off() { 
-    uint64_t x; 
-    asm volatile("csrr %0, mie" : "=r"(x)); 
-    x &= ~MIE_MTIE; 
-    asm volatile("csrw mie, %0" : : "r"(x)); 
+static inline void intr_off() {
+    uint64_t x;
+    asm volatile("csrr %0, mie" : "=r"(x));
+    x &= ~MIE_MTIE;
+    asm volatile("csrw mie, %0" : : "r"(x));
 }
 
 void puts(const char *s) {
@@ -368,39 +364,39 @@ void puts(const char *s) {
 #define HEAP_END (_end + PGSIZE * 256)
 
 void kfree(void *pa) {
-  struct run *r;
+    struct run *r;
 
-  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < _end || (uint64)pa >= HEAP_END) {
-      puts("panic");
-  }
+    if(((uint64)pa % PGSIZE) != 0 || (char*)pa < _end || (uint64)pa >= HEAP_END) {
+        puts("panic: kfree");
+    }
 
-  r = (struct run*)pa;
+    r = (struct run*)pa;
 
-  r->next = kmem.freelist;
-  kmem.freelist = r;
+    r->next = kmem.freelist;
+    kmem.freelist = r;
 }
 
 void freerange(void *pa_start, void *pa_end) {
-  char *p;
-  p = (char*)PGROUNDUP((uint64)pa_start);
-  for(; p + PGSIZE <= HEAP_END; p += PGSIZE) {
-    kfree(p);
-  }
+    char *p;
+    p = (char*)PGROUNDUP((uint64)pa_start);
+    for(; p + PGSIZE <= HEAP_END; p += PGSIZE) {
+        kfree(p);
+    }
 }
 
 void kinit() {
-  freerange(_end, HEAP_END);
+    freerange(_end, HEAP_END);
 }
 
 void * kalloc(void) {
-  struct run *r;
+    struct run *r;
 
-  r = kmem.freelist;
-  if(r) {
-    kmem.freelist = r->next;
-  }
+    r = kmem.freelist;
+    if(r) {
+        kmem.freelist = r->next;
+    }
 
-  return (void*)r;
+    return (void*)r;
 }
 
 
@@ -425,25 +421,25 @@ static inline uint64_t r_mepc(void)
 }
 
 #define MTIMECMP (volatile uint64*)0x02004000
-#define MTIME    (volatile uint64*)0x0200BFF8
+#define MTIME     (volatile uint64*)0x0200BFF8
 
 // mie: Machine Interrupt Enable Register
-#define MIE_MSIE (1 << 3)   // 
-#define MIE_MEIE (1 << 11)  // 
+#define MIE_MSIE (1 << 3)    //
+#define MIE_MEIE (1 << 11)   //
 
 // mstatus: Machine Status Register
-#define MSTATUS_MIE (1 << 3) // 
+#define MSTATUS_MIE (1 << 3) //
 
 static inline uint64 r_mstatus() {
-  uint64 x;
-  asm volatile("csrr %0, mstatus" : "=r" (x));
-  return x;
+    uint64 x;
+    asm volatile("csrr %0, mstatus" : "=r" (x));
+    return x;
 }
 
 static inline uint64 r_sstatus() {
-  uint64 x;
-  asm volatile("csrr %0, sstatus" : "=r" (x) );
-  return x;
+    uint64 x;
+    asm volatile("csrr %0, sstatus" : "=r" (x) );
+    return x;
 }
 
 static inline void w_sstatus(uint64 x) {
@@ -453,15 +449,15 @@ static inline void w_sstatus(uint64 x) {
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
 #define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
 
-#define MTIME_ADDR    ((volatile uint64_t*)0x0200bff8)
+#define MTIME_ADDR     ((volatile uint64_t*)0x0200bff8)
 #define MTIMECMP_ADDR ((volatile uint64_t*)0x02004000)
 
 void disable_timer_interrupt() {
 }
-        
+
 
 static inline void w_mstatus(uint64 x) {
-  asm volatile("csrw mstatus, %0" : : "r" (x));
+    asm volatile("csrw mstatus, %0" : : "r" (x));
 }
 
 static inline uint64_t r_mie() {
@@ -478,18 +474,16 @@ static inline void w_mtvec(uint64_t x) {
     asm volatile("csrw mtvec, %0" : : "r"(x));
 }
 
-#define TIMER_INTERVAL 10000000  //  100ms 
+#define TIMER_INTERVAL 1000000 // 10ms (調整可能)
 
-extern void timervec();  // 
+extern void timervec();  //
 
 void enable_timer_interrupts() {
     w_mtvec((uint64)timervec & ~0x03);
     uint64 now = *MTIME;
-    //*MTIMECMP = now + 10000;
-    *MTIMECMP = now + 0xFFFFFFFF;
-    w_mie(0x00);
-    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-    *MTIMECMP = *MTIME + 0xFFFFFFFF;
+    *MTIMECMP = now + TIMER_INTERVAL;
+    w_mie(MIE_MTIE);
+    w_mstatus(r_mstatus() | MSTATUS_MIE);
 }
 
 void timer_interrupts_for_task_switch() {
@@ -506,9 +500,7 @@ void timer_interrupts_for_scheduler() {
 
 void disable_timer_interrupts() {
     w_mie(0x0);
-
     w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-
     *MTIMECMP = *MTIME + 0xFFFFFFFF;
 }
 
@@ -541,61 +533,61 @@ printf("TASK2 TOP %p\n", task2);
 }
 
 void* memset(void *dst, int c, unsigned int n) {
-  char *cdst = (char *) dst;
-  int i;
-  for(i = 0; i < n; i++){
-    cdst[i] = c;
-  }
-  return dst;
+    char *cdst = (char *) dst;
+    int i;
+    for(i = 0; i < n; i++){
+        cdst[i] = c;
+    }
+    return dst;
 }
 
 int memcmp(const void *v1, const void *v2, unsigned int n) {
-  const uchar *s1, *s2;
+    const uchar *s1, *s2;
 
-  s1 = v1;
-  s2 = v2;
-  while(n-- > 0){
-    if(*s1 != *s2)
-      return *s1 - *s2;
-    s1++, s2++;
-  }
+    s1 = v1;
+    s2 = v2;
+    while(n-- > 0){
+        if(*s1 != *s2)
+            return *s1 - *s2;
+        s1++, s2++;
+    }
 
-  return 0;
+    return 0;
 }
 
 void* memmove(void *dst, const void *src, uint n) {
-  const char *s;
-  char *d;
+    const char *s;
+    char *d;
 
-  if(n == 0)
+    if(n == 0)
+        return dst;
+
+    s = src;
+    d = dst;
+    if(s < d && s + n > d){
+        s += n;
+        d += n;
+        while(n-- > 0)
+            *--d = *--s;
+    } else
+        while(n-- > 0)
+            *d++ = *s++;
+
     return dst;
-  
-  s = src;
-  d = dst;
-  if(s < d && s + n > d){
-    s += n;
-    d += n;
-    while(n-- > 0)
-      *--d = *--s;
-  } else
-    while(n-- > 0)
-      *d++ = *s++;
-
-  return dst;
 }
 
 // memcpy exists to placate GCC.  Use memmove.
 void* memcpy(void *dst, const void *src, uint n) {
-  return memmove(dst, src, n);
+    return memmove(dst, src, n);
 }
 
 struct proc* alloc_proc(void (*task)()) {
     struct proc* result = kalloc();
-    
+
     memset(result, 0, sizeof(struct proc));
-    
+
     result->stack = kalloc();
-    
+
     result->context.sp = (uint64)(result->stack + PGSIZE);
     result->context.mepc = (uint64)task;
     result->state = RUNNABLE;
@@ -620,20 +612,20 @@ void timer_handler() {
     disable_timer_interrupts();
     printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
-    
+
     struct context *tf = (struct context*)TRAPFRAME;
     p->context = *tf;
 printf("TRAPFRAME %p\n", TRAPFRAME);
 printf("ative proc saved %d\n", gActiveProc);
-printf("ra %x\n", tf->ra);
-printf("ra %x\n", p->context.ra);
-printf("sp %x\n", tf->sp);
-printf("sp %x\n", p->context.sp);
-printf("gp %x\n", p->context.gp);
-printf("mepc %x\n", tf->mepc);
-printf("mepc %x\n", p->context.mepc);
+printf("ra %lx\n", tf->ra);
+printf("ra %lx\n", p->context.ra);
+printf("sp %lx\n", tf->sp);
+printf("sp %lx\n", p->context.sp);
+printf("gp %lx\n", p->context.gp);
+printf("mepc %lx\n", tf->mepc);
+printf("mepc %lx\n", p->context.mepc);
 
-    //timer_reset();
+    timer_reset(); // タイマーをリセット
 
     yield();
 }
@@ -647,7 +639,7 @@ void yield() {
     }
     p = gProc[gActiveProc];
     p->state = RUNNABLE;
-    
+
     scheduler();
 }
 
@@ -663,7 +655,7 @@ printf("SCHEDULER\n");
 printf("SWITCH TO %d\n", i);
                 disable_timer_interrupts();
                 swtch(&gCPU.context, &p->context);
-                disable_timer_interrupts();
+                enable_timer_interrupts(); // スケジューラから戻ったら割り込みを再度有効化
 
                 p->state = RUNNABLE;
             }
@@ -683,12 +675,12 @@ int main()
 {
 puts("HELLO WORLD");
     kinit();
-    
+
     new char[123];
-    
+
     alloc_proc(task1);
     alloc_proc(task2);
-    
+
     enable_timer_interrupts();
 
     scheduler();
