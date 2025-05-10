@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 40.0.0
+version 50.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+50.0.0 This project may be complete.
 40.0.0 Refactoring this project may be complete.
 38.0.0 Refactoring
 37.0.0 type infference come again. 
