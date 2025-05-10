@@ -1427,7 +1427,7 @@ uniq void* come_print_ref_count(void* mem)
 uniq int come_get_ref_count(void* mem)
 {
     if(mem == NULL) {
-        return mem;
+        return 0;
     }
     
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
