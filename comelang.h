@@ -98,7 +98,7 @@ uniq block_t* free_list = NULL;
 
 uniq void* _sbrk(ptrdiff_t incr) {
     if (heap_end == 0)
-        heap_end = &_end;
+        heap_end = (char*)&_end;
 
     if (heap_end + incr >= heap_limit)
         return (void*)-1;
@@ -442,7 +442,7 @@ uniq int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     return p - out;
 }
 
-uniq int vasprintf(const char* fmt, ...) {
+uniq int vasprintf(char** result, const char* fmt, ...) {
     va_list ap;
     va_start(ap, fmt);
     
@@ -539,11 +539,11 @@ uniq int vasprintf(const char* fmt, ...) {
     *p = '\0';
     va_end(ap);
     
-    char* result = malloc(sizeof(char)*(p - out +1));
+    *result = malloc(sizeof(char)*(p - out +1));
     
-    strncpy(result, out, p - out);
+    strncpy(*result, out, p - out);
     
-    return result;
+    return p - out;
 }
 
 uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
