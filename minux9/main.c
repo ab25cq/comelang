@@ -119,11 +119,60 @@ static inline void intr_off() {
     asm volatile("csrw mie, %0" : : "r"(x)); 
 }
 
-void puts(const char *s) {
-    intr_off();
-    while (*s) putchar(*s++);
-    intr_on();
+#define UART0 0x10000000L
+#define UART_TXDATA (volatile uint32*)(UART0 + 0x00)
+#define UART_TXFULL 0x80000000
+
+#define UART_IRQ 10  // 任意の割り込み番号（使用するIRQによる）
+
+#define UART_TX_INTR (1 << 5)  // 仮に tx empty 割り込み
+
+#define BUF_SIZE 128
+
+char uart_tx_buf[BUF_SIZE];
+volatile int tx_w = 0;
+volatile int tx_r = 0;
+
+volatile int uart_tx_busy = 0;
+
+static void uartstart() {
+    while (tx_r != tx_w) {
+        if (*(UART_TXDATA) & UART_TXFULL)
+            break;
+
+        *(UART_TXDATA) = uart_tx_buf[tx_r];
+        tx_r = (tx_r + 1) % BUF_SIZE;
+    }
+
+    if (tx_r == tx_w) {
+        uart_tx_busy = 0;
+    } else {
+        uart_tx_busy = 1;
+    }
 }
+
+void uartputc(char c) {
+    int next = (tx_w + 1) % BUF_SIZE;
+
+    while (next == tx_r) {
+        // バッファフルなので待機（または drop してもいい）
+    }
+
+    uart_tx_buf[tx_w] = c;
+    tx_w = next;
+
+    if (!uart_tx_busy) {
+        uart_tx_busy = 1;
+        uartstart();
+    }
+}
+
+void puts(const char* s) {
+    while (*s) {
+        uartputc(*s++);
+    }
+}
+
 
 #define HEAP_END (_end + PGSIZE * 256)
 
@@ -276,13 +325,10 @@ void task1() {
 puts("TASK1");
 printf("TASK1 TOP %p\n", task1);
     while(1) {
-        puts("1a");
-        puts("1b");
-        puts("1c");
-        puts("1d");
-        puts("1e");
-        puts("1f");
-        puts("1g");
+        puts("[1A]\n");
+        puts("[1B]\n");
+        puts("[1C]\n");
+        puts("[1D]\n");
     }
 }
 
@@ -290,13 +336,10 @@ void task2() {
 puts("TASK2");
 printf("TASK2 TOP %p\n", task2);
     while(1) {
-        puts("2a");
-        puts("2b");
-        puts("2c");
-        puts("2d");
-        puts("2e");
-        puts("2f");
-        puts("2g");
+        puts("[2A]\n");
+        puts("[2B]\n");
+        puts("[2C]\n");
+        puts("[2D]\n");
     }
 }
 
@@ -393,7 +436,7 @@ printf("gp %x\n", p->context.gp);
 printf("mepc %x\n", tf->mepc);
 printf("mepc %x\n", p->context.mepc);
 
-    //timer_reset();
+    timer_reset();
 
     yield();
 }
