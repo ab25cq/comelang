@@ -31,6 +31,8 @@ fi
 (cd minux5; make clean)
 (cd minux6; make clean)
 (cd minux7; make clean)
+(cd minux8; make clean)
+(cd minux9; make clean)
 (cd webweb; sh clean_build.sh)
 (cd webweb/cgi-bin; make clean)
 (cd xv6-riscv; make clean)

@@ -12,4 +12,4 @@ else
                  
 fi
 
-make qemu
+make qemu TOOLPREFIX=riscv64-alpine-linux-musl-

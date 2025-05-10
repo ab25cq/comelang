@@ -5307,7 +5307,6 @@ uniq list<string>*% FILE*::readlines(FILE* f)
 /// base library(STDOUT, STDIN)
 //////////////////////////////
 #ifdef __BARE_METAL__
-#else
 uniq string char*::puts(char* self)
 {
     if(self == null) {
