@@ -429,6 +429,9 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
     else {
         int i;
         foreach(node, block->mNodes) {
+if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
+add_come_code(info, "mutex_enter_blocking(&gExpMutex);\n");
+}
             var right_value_objects = info.right_value_objects;
             info.right_value_objects = new list<sRightValueObject*%>();
             
@@ -508,7 +511,9 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             
             if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
-            
+if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
+add_come_code(info, "mutex_exit(&gExpMutex);\n");
+}
             i++;
         }
     }

@@ -16,6 +16,7 @@ extern bool gComeNet;
 extern bool gComeMalloc;
 extern bool gCommonHeader;
 extern int gComeDebugStackFrameID;
+extern bool gComeBareMetal;
 
 struct sType;
 struct sClass;
@@ -33,6 +34,7 @@ interface sNode
     string sname();
     bool terminated();
     string kind();
+    bool no_mutex();
 };
 
 uniq class sClass 
@@ -111,6 +113,7 @@ uniq class sType
     bool mExtern;
     bool mRestrict;
     bool mImmutable;
+    bool mTask;
     bool mHeap;
     bool mChannel;
     bool mNoHeap;
@@ -605,6 +608,10 @@ uniq class sNodeBase
     }
     
     bool terminated() {
+        return false;
+    }
+    
+    bool no_mutex() {
         return false;
     }
     

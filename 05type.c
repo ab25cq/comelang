@@ -44,6 +44,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         || ((buf === "__attribute" || buf === "__attribute__") && *info->p == '(')
         || (buf === "immutable")
         || (buf === "mutable")
+        || buf === "_task"
         || (buf === "tup" && (*info->p == ':' || *info->p == '('))
         || (info.in_top_level && buf === "exception") 
         || (info.in_top_level && buf === "record") 
@@ -1008,6 +1009,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool uniq_ = false;
     bool tuple_ = false;
     bool immutable_ = false;
+    bool task_ = false;
     
     sNode*% alignas_ = null;
     
@@ -1118,6 +1120,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else if(type_name === "immutable") {
             immutable_ = true;
+            
+            type_name = parse_word();
+        }
+        else if(type_name === "_task") {
+            task_ = true;
             
             type_name = parse_word();
         }
@@ -1933,6 +1940,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mAtomic = result_type->mAtomic || atomic_;
         result_type->mConstant = result_type->mConstant || constant;
         result_type->mImmutable = result_type->mImmutable || immutable_;
+        result_type->mTask = result_type->mTask || task_;
         result_type->mAlignas = alignas_;
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
@@ -2006,6 +2014,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         result_type->mConstant = result_type->mConstant || constant;
         result_type->mImmutable = result_type->mImmutable || immutable_;
+        result_type->mTask = result_type->mTask || task_;
         result_type->mAtomic = result_type->mAtomic || atomic_;
         result_type->mAlignas = alignas_;
         result_type->mRegister = register_;
@@ -2159,6 +2168,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mImmutable = type->mImmutable || immutable_;
+            type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2189,6 +2199,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mImmutable = type->mImmutable || immutable_;
+            type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2219,6 +2230,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mImmutable = type->mImmutable || immutable_;
+            type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2290,6 +2302,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mImmutable = type->mImmutable || immutable_;
+            type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;
@@ -2333,6 +2346,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             
             type->mConstant = type->mConstant || constant;
             type->mImmutable = type->mImmutable || immutable_;
+            type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
             type->mAlignas = alignas_;
             type->mRegister = register_;

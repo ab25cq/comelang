@@ -10,6 +10,10 @@ class sDoWhileNode extends sNodeBase
         sBlock*% self.mBlock = clone block;
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     bool terminated()
     {
         return true;

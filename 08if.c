@@ -22,6 +22,10 @@ class sIfNode extends sNodeBase
         }
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     bool terminated()
     {
         return true;
@@ -189,6 +193,10 @@ class sMatchNode extends sNodeBase
         sNode*% self.match_node = clone match_node;
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     bool terminated()
     {
         return true;
@@ -238,6 +246,10 @@ class sIfMethodNode extends sNodeBase
     
         sNode*% self.it_node = clone it_node;
         sNode*% self.match_node = clone match_node;
+    }
+    
+    bool no_mutex() {
+        return true;
     }
     
     bool terminated()
@@ -296,6 +308,10 @@ class sOrStatmentNode extends sNodeBase
         return true;
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     string kind()
     {
         return string("sOrStatmentNode");
@@ -341,6 +357,10 @@ class sAndStatmentNode extends sNodeBase
     
     bool terminated()
     {
+        return true;
+    }
+    
+    bool no_mutex() {
         return true;
     }
     

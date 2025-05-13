@@ -15,6 +15,10 @@ class sSwitchNode extends sNodeBase
         return true;
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     string kind()
     {
         return string("sSwitchNode");
@@ -69,6 +73,10 @@ class sCaseNode extends sNodeBase
         return true;
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     string kind()
     {
         return string("sCaseNode");
@@ -109,6 +117,10 @@ class sDefaultNode extends sNodeBase
         return string("sDefaultNode");
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     bool compile(sInfo* info)
     {
         add_come_code(info, "default:\n");
@@ -131,6 +143,10 @@ class sLabelNode extends sNodeBase
     
     bool terminated()
     {
+        return true;
+    }
+    
+    bool no_mutex() {
         return true;
     }
     
@@ -163,6 +179,10 @@ class sGotoNode extends sNodeBase
         string self.label = label;
     }
     
+    bool no_mutex() {
+        return true;
+    }
+    
     string kind()
     {
         return string("sGotoNode");
@@ -183,6 +203,10 @@ class sBreakNode extends sNodeBase
     new(sInfo* info)
     {
         self.super();
+    }
+    
+    bool no_mutex() {
+        return true;
     }
     
     string kind()
@@ -207,6 +231,10 @@ class sContinueNode extends sNodeBase
     new(sInfo* info)
     {
         self.super();
+    }
+    
+    bool no_mutex() {
+        return true;
     }
     
     string kind()

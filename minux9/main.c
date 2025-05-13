@@ -105,7 +105,8 @@ void uartputc_sync(char c) {
 
 #define MIE_MTIE (1 << 7)
 
-static inline void intr_on() {
+/*
+void intr_on() {
     uint64_t x; 
     asm volatile("csrr %0, mie" : "=r"(x)); 
     x |= MIE_MTIE; 
@@ -118,6 +119,7 @@ static inline void intr_off() {
     x &= ~MIE_MTIE; 
     asm volatile("csrw mie, %0" : : "r"(x)); 
 }
+*/
 
 #define UART0 0x10000000L
 #define UART_TXDATA (volatile uint32*)(UART0 + 0x00)
@@ -167,10 +169,14 @@ void uartputc(char c) {
     }
 }
 
+volatile mutex_t mutex = { 0 };
+
 void puts(const char* s) {
+    //mutex_enter_blocking(&mutex);
     while (*s) {
         uartputc(*s++);
     }
+    //mutex_exit(&mutex);
 }
 
 
@@ -287,30 +293,16 @@ static inline void w_mtvec(uint64_t x) {
     asm volatile("csrw mtvec, %0" : : "r"(x));
 }
 
-#define TIMER_INTERVAL 10000000  //  100ms 
+#define TIMER_INTERVAL 10  //  100ms 
 
 extern void timervec();  // 
 
 void enable_timer_interrupts() {
-    w_mtvec((uint64)timervec & ~0x03);
-    uint64 now = *MTIME;
-    //*MTIMECMP = now + 10000;
-    *MTIMECMP = now + 0xFFFFFFFF;
     w_mie(0x00);
+    w_mtvec((uint64)timervec & ~0x03);
     w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-    *MTIMECMP = *MTIME + 0xFFFFFFFF;
-}
-
-void timer_interrupts_for_task_switch() {
-    w_mie(0x0);
-    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-    *MTIMECMP = *MTIME + 0xFFFFFFFF;
-}
-
-void timer_interrupts_for_scheduler() {
-    w_mie(0x0);
-    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-    *MTIMECMP = *MTIME + 0xFFFFFFFF;
+    uint64 now = *MTIME;
+    *MTIMECMP = now + TIMER_INTERVAL;
 }
 
 void disable_timer_interrupts() {
@@ -321,25 +313,28 @@ void disable_timer_interrupts() {
     *MTIMECMP = *MTIME + 0xFFFFFFFF;
 }
 
-void task1() {
-puts("TASK1");
-printf("TASK1 TOP %p\n", task1);
+volatile int gCountTask1 = 0;
+volatile int gCountTask2 = 0;
+
+_task void task1() {
     while(1) {
         puts("[1A]\n");
         puts("[1B]\n");
         puts("[1C]\n");
         puts("[1D]\n");
+        "ABC".puts();
+        gCountTask1++;
     }
 }
 
-void task2() {
-puts("TASK2");
-printf("TASK2 TOP %p\n", task2);
+_task void task2() {
     while(1) {
         puts("[2A]\n");
         puts("[2B]\n");
         puts("[2C]\n");
         puts("[2D]\n");
+        "ABC".puts();
+        gCountTask2++;
     }
 }
 
@@ -411,67 +406,32 @@ struct proc* alloc_proc(void (*task)()) {
 void swtch(struct context*, struct context*);
 
 
-void timer_reset() {
-    uint64_t now = *MTIME;
-    *MTIMECMP = now + TIMER_INTERVAL;
-}
-
 void yield();
 void scheduler();
 
 void timer_handler() {
     disable_timer_interrupts();
-    printf("TIMER\n");
     struct proc *p = gProc[gActiveProc];
     
     struct context *tf = (struct context*)TRAPFRAME;
     p->context = *tf;
-printf("TRAPFRAME %p\n", TRAPFRAME);
-printf("ative proc saved %d\n", gActiveProc);
-printf("ra %x\n", tf->ra);
-printf("ra %x\n", p->context.ra);
-printf("sp %x\n", tf->sp);
-printf("sp %x\n", p->context.sp);
-printf("gp %x\n", p->context.gp);
-printf("mepc %x\n", tf->mepc);
-printf("mepc %x\n", p->context.mepc);
-
-    timer_reset();
 
     yield();
 }
 
-
 void yield() {
-    struct proc *p = gProc[gActiveProc];
     gActiveProc++;
     if(gActiveProc >= gNumProc) {
         gActiveProc = 0;
     }
-    p = gProc[gActiveProc];
-    p->state = RUNNABLE;
-    
     scheduler();
 }
 
 void scheduler() {
-printf("SCHEDULER\n");
-    while (1) {
-        for (int i = 0; i < gNumProc; i++) {
-            struct proc *p = gProc[i];
-            if (p->state == RUNNABLE) {
-                gActiveProc = i;
-                p->state = RUNNING;
+    struct proc *p = gProc[gActiveProc];
 
-printf("SWITCH TO %d\n", i);
-                disable_timer_interrupts();
-                swtch(&gCPU.context, &p->context);
-                disable_timer_interrupts();
-
-                p->state = RUNNABLE;
-            }
-        }
-    }
+    enable_timer_interrupts();
+    swtch(&gCPU.context, &p->context);
 }
 
 void mask_and_clear_timer_interrupt() {
@@ -484,15 +444,12 @@ void mask_and_clear_timer_interrupt() {
 
 int main()
 {
-puts("HELLO WORLD");
     kinit();
     
     new char[123];
     
     alloc_proc(task1);
     alloc_proc(task2);
-    
-    enable_timer_interrupts();
 
     scheduler();
 

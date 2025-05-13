@@ -194,22 +194,22 @@ LOAD main.o
  .debug_line    0x000000000000047b       0x6b kernelvec.o
  .debug_line    0x00000000000004e6     0x2730 main.o
 
-.debug_str      0x0000000000000000      0x643
+.debug_str      0x0000000000000000      0x63f
  *(.debug_str)
- .debug_str     0x0000000000000000      0x643 start.o
-                                         0x2e (size before relaxing)
- .debug_str     0x0000000000000643       0x2e swtch.o
- .debug_str     0x0000000000000643       0x31 timervec.o
- .debug_str     0x0000000000000643       0x30 userret.o
- .debug_str     0x0000000000000643       0x32 kernelvec.o
- .debug_str     0x0000000000000643      0x677 main.o
+ .debug_str     0x0000000000000000      0x63f start.o
+                                         0x2a (size before relaxing)
+ .debug_str     0x000000000000063f       0x2a swtch.o
+ .debug_str     0x000000000000063f       0x2d timervec.o
+ .debug_str     0x000000000000063f       0x2c userret.o
+ .debug_str     0x000000000000063f       0x2e kernelvec.o
+ .debug_str     0x000000000000063f      0x677 main.o
 
 .debug_line_str
-                0x0000000000000000       0x5e
+                0x0000000000000000       0x5a
  *(.debug_line_str)
  .debug_line_str
-                0x0000000000000000       0x5e main.o
-                                         0x86 (size before relaxing)
+                0x0000000000000000       0x5a main.o
+                                         0x7e (size before relaxing)
 OUTPUT(kernel.elf elf64-littleriscv)
 
 .debug_aranges  0x0000000000000000      0x120
