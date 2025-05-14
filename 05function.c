@@ -430,7 +430,7 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
         int i;
         foreach(node, block->mNodes) {
 if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
-add_come_code(info, "mutex_enter_blocking(&gExpMutex);\n");
+add_come_code(info, "disable_interrupts();\n");
 }
             var right_value_objects = info.right_value_objects;
             info.right_value_objects = new list<sRightValueObject*%>();
@@ -512,7 +512,7 @@ add_come_code(info, "mutex_enter_blocking(&gExpMutex);\n");
             if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
 if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
-add_come_code(info, "mutex_exit(&gExpMutex);\n");
+add_come_code(info, "enable_interrupts();\n");
 }
             i++;
         }

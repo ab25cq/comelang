@@ -5,42 +5,11 @@
 // RISCV 
 ////////////////////////////////////////////////////////////
 #ifdef __RISCV__
-#include <stddef.h>
+//#include <stddef.h>
 
 using comelang;
-/*
-typedef struct {
-    volatile int locked;  // 0: unlocked, 1: locked
-} mutex_t;
 
-uniq _Atomic int atomic_swap(volatile int *addr, int newval) {
-    int result;
-    asm volatile (
-        "amoswap.w.aq %0, %2, %1"
-        : "=r"(result), "+A"(*addr)
-        : "r"(newval)
-        : "memory"
-    );
-    return result;
-}
-
-uniq _Atomic void mutex_enter_blocking(mutex_t *mutex) {
-    while (atomic_swap(&mutex->locked, 1) != 0) {
-        // busy wait
-    }
-}
-
-_Atomic void mutex_exit(mutex_t *mutex) {
-    asm volatile("fence" ::: "memory");
-    mutex->locked = 0;
-}
-
-void mutex_init(mutex_t *mutex) {
-    mutex->locked = 0;
-}
-*/
-
-output { #include <stdatomic.h> }
+output {#include <stdatomic.h>}
 
 typedef struct {
     _Atomic int locked;
@@ -51,7 +20,7 @@ void mutex_init(mutex_t *mutex) {
 }
 
 void mutex_enter_blocking(mutex_t *mutex) {
-    int expected = 0;
+    volatile int expected = 0;
     while (!atomic_compare_exchange_weak(&mutex->locked, &expected, 1)) {
         expected = 0;
         __asm__ volatile("nop");
@@ -62,172 +31,26 @@ void mutex_exit(mutex_t *mutex) {
     atomic_store(&mutex->locked, 0);
 }
 
-
 #define MUTEX_INITIALIZER { 0 }
 
 uniq volatile mutex_t gExpMutex = MUTEX_INITIALIZER;
 
-////////////////////////////////////////////////////////////
-// PICO 
-////////////////////////////////////////////////////////////
-#elif __PICO__
-no_output {
-#include "stdint.h"
-}
-no_output {
-#include "ctype.h"
-}
-no_output {
-#include "stdarg.h"
-}
-no_output {
-#include "string.h"
-}
-no_output {
-#include "stdlib.h"
-}
-no_output {
-#include "stdio.h"
-}
-no_output {
-#include "wchar.h"
-}
-no_output {
-#include "pico/stdlib.h"
-}
-no_output {
-#include "pico/time.h"
-}
-no_output {
-#include "hardware/irq.h"
-}
-no_output {
-#include "hardware/timer.h"
-}
-no_output {
-#include "hardware/uart.h"
-}
-#undef _GNU_SOURCE
-output {#define _GNU_SOURCE}
-#define _GNU_SOURCE
-output {#include "stdint.h"}
-output {#include "stdarg.h"}
-output {#include "string.h"}
-output {#include "stdlib.h"}
-output {#include "stdio.h"}
-output {#include "ctype.h"}
-output {#include "wchar.h"}
-output {#include "pico/stdlib.h"}
-output {#include "pico/time.h"}
-output {#include "hardware/irq.h"}
-output {#include "hardware/timer.h"}
-output {#include "hardware/uart.h"}
-
-#include "pico/mutex.h"
-output {#include "pico/mutex.h"}
-#include "pico/multicore.h"
-output {#include "pico/multicore.h"}
-
-#define MUTEX_INITIALIZER (mutex_t){ .locked = false, .core = NULL }
-
-#endif
-
-////////////////////////////////////////////////////////////
-// COME MUTEX 
-////////////////////////////////////////////////////////////
-using comelang;
-
-struct come_mutex<T>
-{
-    T value;
-    mutex_t mutex;
-    bool lock;
-};
-
-impl come_mutex<T>
-{
-    come_mutex<T>*% initialize(come_mutex<T>*% self, T value) {
-        mutex_init(&self.mutex);
-        self.value = value;
-        return self;
-    }
-    
-    T~ lock(come_mutex<T>* self) {
-        mutex_enter_blocking(&self.mutex);
-        self.lock = true;
-        
-        return self.value;
-    }
-    void unlock(come_mutex<T>* self) {
-        if(self.lock) {
-            mutex_exit(&self.mutex);
-        }
-    }
-    
-    void on_drop(come_mutex<T>* self) {
-        self.unlock();
-    }
+// 割り込み禁止
+uniq void disable_interrupts() {
+    uint64_t mstatus;
+    __asm__ volatile ("csrr %0, mstatus" : "=r"(mstatus));
+    mstatus &= ~(1 << 3); // MIEビットをクリア
+    __asm__ volatile ("csrw mstatus, %0" :: "r"(mstatus));
 }
 
-uniq mutex_t gComeHeapMutex = MUTEX_INITIALIZER;
-
-uniq void come_push_stackframe(char* sname, int sline, int id) version 2
-{
-    mutex_enter_blocking(&gComeHeapMutex);
-    inherit(sname, sline, id);
-    mutex_exit(&gComeHeapMutex);
+// 割り込み許可
+uniq void enable_interrupts() {
+    uint64_t mstatus;
+    __asm__ volatile ("csrr %0, mstatus" : "=r"(mstatus));
+    mstatus |= (1 << 3);  // MIEビットをセット
+    __asm__ volatile ("csrw mstatus, %0" :: "r"(mstatus));
 }
 
-uniq void come_pop_stackframe() version 2
-{
-    mutex_enter_blocking(&gComeHeapMutex);
-    inherit();
-    mutex_exit(&gComeHeapMutex);
-}
-
-uniq void come_save_stackframe(char* sname, int sline) version 2
-{
-    mutex_enter_blocking(&gComeHeapMutex);
-    inherit(sname, sline);
-    mutex_exit(&gComeHeapMutex);
-}
-
-uniq void stackframe() version 2
-{
-    mutex_enter_blocking(&gComeHeapMutex);
-    inherit();
-    mutex_exit(&gComeHeapMutex);
-}
-
-uniq string come_get_stackframe() version 2
-{
-    mutex_enter_blocking(&gComeHeapMutex);
-    string result = inherit();
-    mutex_exit(&gComeHeapMutex);
-    
-    return result;
-}
-
-uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="") version 2
-{
-    mutex_enter_blocking(&gComeHeapMutex);
-    void* result = inherit(count, size, sname, sline, class_name);
-    mutex_exit(&gComeHeapMutex);
-    
-    return result;
-}
-
-uniq void come_free(void* mem) version 2
-{
-    mutex_enter_blocking(&gComeHeapMutex);
-    inherit(mem);
-    mutex_exit(&gComeHeapMutex);
-}
-
-////////////////////////////////////////////////////////////
-// BARE_METAL LIBC SUBSET
-////////////////////////////////////////////////////////////
-#ifdef __BARE_METAL__
 #include <stdarg.h>
 
 typedef unsigned long size_t;
@@ -243,17 +66,7 @@ static char* heap_limit = (char*)0x88000000;
 
 #define ALIGN8(size) (((size) + 7) & ~7)
 
-typedef struct sBlock {
-    size_t size;
-    struct sBlock* next;
-    int free;
-} block_t;
-
-#define BLOCK_SIZE sizeof(block_t)
-
-uniq block_t* free_list = NULL;
-
-uniq void* _sbrk(ptrdiff_t incr) {
+uniq void* sbrk(ptrdiff_t incr) {
     if (heap_end == 0)
         heap_end = (char*)&_end;
 
@@ -266,66 +79,78 @@ uniq void* _sbrk(ptrdiff_t incr) {
     return prev;
 }
 
-uniq block_t* find_free_block(size_t size) {
-    block_t* curr = free_list;
-    while (curr) {
-        if (curr->free && curr->size >= size)
-            return curr;
-        curr = curr->next;
-    }
-    return NULL;
-}
+// メモリブロックのヘッダ構造体 (サイズと次のブロックへのポインタ)
+typedef struct mem_block {
+    size_t size;
+    struct mem_block *next;
+} mem_block_t;
 
-uniq block_t* request_space(size_t size) {
-    void* mem = _sbrk(size + BLOCK_SIZE);
-    if (mem == (void*)-1)
+uniq mem_block_t *free_list = NULL;
+
+uniq void *malloc(size_t size) {
+    if (size == 0) {
         return NULL;
-
-    block_t* b = (block_t*)mem;
-    b->size = size;
-    b->next = NULL;
-    b->free = 0;
-
-    return b;
-}
-
-uniq void* malloc(size_t size) {
-    size = ALIGN8(size);
-    block_t* block;
-
-    if ((block = find_free_block(size))) {
-        block->free = 0;
-        return (void*)(block + 1);  //  block 
     }
 
-    block = request_space(size);
-    if (!block)
+    // アラインメント調整 (例: 8バイトアラインメント)
+    if (size % 8 != 0) {
+        size += 8 - (size % 8);
+    }
+    size += sizeof(mem_block_t); // ヘッダ分のサイズを追加
+
+    mem_block_t *current = free_list;
+    mem_block_t *prev = NULL;
+
+    // フリーリストを検索して、十分なサイズの空きブロックを探す
+    while (current != NULL) {
+        if (current->size >= size) {
+            if (prev == NULL) {
+                free_list = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            return (void *)(current + 1); // データ領域へのポインタを返す
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    // 空きブロックが見つからなかった場合、sbrkで新しい領域を確保
+    mem_block_t *new_mem = (mem_block_t *)sbrk(size);
+    if (new_mem == (void *)-1) {
+        return NULL; // メモリ不足
+    }
+
+    new_mem->size = size;
+    new_mem->next = NULL;
+    return (void *)(new_mem + 1); // データ領域へのポインタを返す
+}
+
+uniq void *calloc(size_t nmemb, size_t size) {
+    size_t total_size = nmemb * size;
+    if (total_size == 0) {
         return NULL;
-
-    if (!free_list)
-        free_list = block;
-    else {
-        block_t* curr = free_list;
-        while (curr->next) curr = curr->next;
-        curr->next = block;
     }
 
-    return (void*)(block + 1);
-}
-
-uniq void free(void* ptr) {
-    if (!ptr) return;
-
-    block_t* block = ((block_t*)ptr) - 1;
-    block->free = 1;
-}
-
-uniq void* calloc(size_t n, size_t size) {
-    size_t total = n * size;
-    void* ptr = malloc(total);
-    if (ptr)
-        memset(ptr, 0, total);
+    void *ptr = malloc(total_size);
+    if (ptr != NULL) {
+        memset(ptr, 0, total_size);
+    }
     return ptr;
+}
+
+uniq void free(void *ptr) {
+    if (ptr == NULL) {
+        return;
+    }
+
+    mem_block_t *block = (mem_block_t *)ptr - 1; // ヘッダへのポインタを取得
+
+    // フリーリストの先頭に挿入 (より効率的な方法もある)
+    block->next = free_list;
+    free_list = block;
+
+    // ここで隣接する空きブロックをマージする処理を追加すると、より効率的なメモリ管理が可能になります。
 }
 
 uniq char* strdup(const char* s) {
@@ -364,7 +189,7 @@ uniq char* strstr(const char* haystack, const char* needle) {
     return NULL;  // 
 }
 
-uniq _Atomic void* memset(void *dst, int c, unsigned int n) {
+uniq void* memset(void *dst, int c, unsigned int n) {
   char *cdst = (char *) dst;
   int i;
   for(i = 0; i < n; i++){
@@ -890,6 +715,326 @@ uniq void perror(char* str)
     puts(str);
 }
 
+uniq void* alloc_from_pages(size_t size)
+{
+    void* result = null;
+#ifdef __32BIT_CPU__
+    size = (size + 3 & ~0x3);
+#else
+    size = (size + 7 & ~0x7);
 #endif
 
+    result = calloc(1, size);
+    
+    return result;
+}
+
+uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="")
+{
+    if(gComeDebugLib) {
+        void* result = alloc_from_pages(size + sizeof(sMemHeader));
+        
+        sMemHeader* it = result;
+        
+        it->allocated = ALLOCATED_MAGIC_NUM;
+        
+        it->size = size + sizeof(sMemHeader);
+        it->free_next = NULL;
+        
+        come_push_stackframe(sname, sline, 0);
+
+        if(gNumComeStackFrame < COME_STACKFRAME_MAX) {
+            int i;
+            for(i=0; i<gNumComeStackFrame; i++) {
+                it.sname[i] = gComeStackFrameSName[i];
+                it.sline[i] = gComeStackFrameSLine[i];
+                it.id[i] = gComeStackFrameID[i];
+            }
+        }
+        else {
+            int i;
+            for(i=0; i<COME_STACKFRAME_MAX; i++) {
+                it.sname[i] = gComeStackFrameSName[gNumComeStackFrame -1 - i];
+                it.sline[i] = gComeStackFrameSLine[gNumComeStackFrame -1 - i];
+                it.id[i] = gComeStackFrameID[gNumComeStackFrame -1 - i];
+            }
+        }
+        
+        come_pop_stackframe();
+        
+        it->next = gAllocMem;
+        it->prev = null;
+        
+        it->class_name = class_name; 
+        
+        if(gAllocMem) {
+            gAllocMem->prev = it;
+        }
+        
+        gAllocMem = it;
+        
+        gNumAlloc++;
+        
+        return (char*)result + sizeof(sMemHeader);
+    }
+    else {
+        void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
+        
+        sMemHeaderTiny* it = result;
+        
+        it->allocated = ALLOCATED_MAGIC_NUM;
+        
+        it->class_name = class_name; 
+        
+        it->sname = sname;
+        it->sline = sline;
+        
+        it->size = size + sizeof(sMemHeaderTiny);
+        it->free_next = NULL;
+        
+        it->next = (sMemHeaderTiny*)gAllocMem;
+        it->prev = null;
+        
+        if(gAllocMem) {
+            ((sMemHeaderTiny*)gAllocMem)->prev = it;
+        }
+        
+        gAllocMem = (sMemHeader*)it;
+        
+        gNumAlloc++;
+        
+        return (char*)result + sizeof(sMemHeaderTiny);
+    }
+}
+
+uniq void come_free_mem_of_heap_pool(void* mem)
+{
+    if(mem) {
+        if(gComeDebugLib) {
+            sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(sMemHeader));
+            
+            if(it->allocated != ALLOCATED_MAGIC_NUM) {
+                return;
+            }
+            
+            it->allocated = 0;
+            
+            sMemHeader* prev_it = it->prev;
+            sMemHeader* next_it = it->next;
+            
+            if(gAllocMem == it) {
+                gAllocMem = next_it;
+                
+                if(gAllocMem) {
+                    gAllocMem->prev = null;
+                }
+            }
+            else {
+                if(prev_it) {
+                    prev_it->next = next_it;
+                }
+                if(next_it) {
+                    next_it->prev = prev_it;
+                }
+            }
+            
+            size_t size = it->size;
+            
+            free(it);
+            
+            gNumFree++;
+        }
+        else {
+            sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(sMemHeaderTiny));
+            
+            if(it->allocated != ALLOCATED_MAGIC_NUM) {
+                return;
+            }
+            
+            it->allocated = 0;
+            
+            sMemHeaderTiny* prev_it = it->prev;
+            sMemHeaderTiny* next_it = it->next;
+            
+            if(gAllocMem == it) {
+                gAllocMem = (sMemHeader*)next_it;
+                
+                if(gAllocMem) {
+                    gAllocMem->prev = null;
+                }
+            }
+            else {
+                if(prev_it) {
+                    prev_it->next = next_it;
+                }
+                if(next_it) {
+                    next_it->prev = prev_it;
+                }
+            }
+            
+            free(it);
+            
+            gNumFree++;
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////
+// PICO 
+////////////////////////////////////////////////////////////
+#elif __PICO__
+no_output {
+#include "stdint.h"
+}
+no_output {
+#include "ctype.h"
+}
+no_output {
+#include "stdarg.h"
+}
+no_output {
+#include "string.h"
+}
+no_output {
+#include "stdlib.h"
+}
+no_output {
+#include "stdio.h"
+}
+no_output {
+#include "wchar.h"
+}
+no_output {
+#include "pico/stdlib.h"
+}
+no_output {
+#include "pico/time.h"
+}
+no_output {
+#include "hardware/irq.h"
+}
+no_output {
+#include "hardware/timer.h"
+}
+no_output {
+#include "hardware/uart.h"
+}
+#undef _GNU_SOURCE
+output {#define _GNU_SOURCE}
+#define _GNU_SOURCE
+output {#include "stdint.h"}
+output {#include "stdarg.h"}
+output {#include "string.h"}
+output {#include "stdlib.h"}
+output {#include "stdio.h"}
+output {#include "ctype.h"}
+output {#include "wchar.h"}
+output {#include "pico/stdlib.h"}
+output {#include "pico/time.h"}
+output {#include "hardware/irq.h"}
+output {#include "hardware/timer.h"}
+output {#include "hardware/uart.h"}
+
+#include "pico/mutex.h"
+output {#include "pico/mutex.h"}
+#include "pico/multicore.h"
+output {#include "pico/multicore.h"}
+
+#define MUTEX_INITIALIZER (mutex_t){ .locked = false, .core = NULL }
+
 #endif
+
+////////////////////////////////////////////////////////////
+// COME MUTEX 
+////////////////////////////////////////////////////////////
+using comelang;
+
+struct come_mutex<T>
+{
+    T value;
+    mutex_t mutex;
+    bool lock;
+};
+
+impl come_mutex<T>
+{
+    come_mutex<T>*% initialize(come_mutex<T>*% self, T value) {
+        mutex_init(&self.mutex);
+        self.value = value;
+        return self;
+    }
+    
+    T~ lock(come_mutex<T>* self) {
+        mutex_enter_blocking(&self.mutex);
+        self.lock = true;
+        
+        return self.value;
+    }
+    void unlock(come_mutex<T>* self) {
+        if(self.lock) {
+            mutex_exit(&self.mutex);
+        }
+    }
+    
+    void on_drop(come_mutex<T>* self) {
+        self.unlock();
+    }
+}
+
+uniq mutex_t gComeHeapMutex = MUTEX_INITIALIZER;
+
+uniq void come_push_stackframe(char* sname, int sline, int id) version 2
+{
+    mutex_enter_blocking(&gComeHeapMutex);
+    inherit(sname, sline, id);
+    mutex_exit(&gComeHeapMutex);
+}
+
+uniq void come_pop_stackframe() version 2
+{
+    mutex_enter_blocking(&gComeHeapMutex);
+    inherit();
+    mutex_exit(&gComeHeapMutex);
+}
+
+uniq void come_save_stackframe(char* sname, int sline) version 2
+{
+    mutex_enter_blocking(&gComeHeapMutex);
+    inherit(sname, sline);
+    mutex_exit(&gComeHeapMutex);
+}
+
+uniq void stackframe() version 2
+{
+    mutex_enter_blocking(&gComeHeapMutex);
+    inherit();
+    mutex_exit(&gComeHeapMutex);
+}
+
+uniq string come_get_stackframe() version 2
+{
+    mutex_enter_blocking(&gComeHeapMutex);
+    string result = inherit();
+    mutex_exit(&gComeHeapMutex);
+    
+    return result;
+}
+
+uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="") version 2
+{
+    mutex_enter_blocking(&gComeHeapMutex);
+    void* result = inherit(count, size, sname, sline, class_name);
+    mutex_exit(&gComeHeapMutex);
+    
+    return result;
+}
+
+uniq void come_free(void* mem) version 2
+{
+    mutex_enter_blocking(&gComeHeapMutex);
+    inherit(mem);
+    mutex_exit(&gComeHeapMutex);
+}
+
+#endif
+

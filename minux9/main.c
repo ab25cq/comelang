@@ -1,7 +1,3 @@
-#include <stdarg.h>
-//#include <stdio.h>
-//#include <comelang.h>
-
 #include <comelang.h>
 
 typedef unsigned int   uint;
@@ -88,7 +84,7 @@ struct proc* gProc[NPROC];
 #define KERNBASE 0x80000000L
 #define PHYSTOP (KERNBASE + 128*1024*1024)
 
-#define PGSIZE 4096 // bytes per page
+#define PGSIZE 4096*2*2 // bytes per page
 #define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
 
