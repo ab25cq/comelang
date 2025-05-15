@@ -1,17 +1,5 @@
 #include <comelang.h>
 
-typedef unsigned int   uint;
-typedef unsigned short ushort;
-typedef unsigned char  uchar;
-
-typedef unsigned char uint8;
-typedef unsigned char uint8_t;
-typedef unsigned short uint16;
-typedef unsigned short uint16_t;
-typedef unsigned int  uint32;
-typedef unsigned int  uint32_t;
-typedef unsigned long uint64;
-typedef unsigned long uint64_t;
 
 typedef uint64_t pte_t;
 
@@ -235,15 +223,10 @@ static inline uint64_t r_mepc(void)
     return x;
 }
 
-#define MTIMECMP (volatile uint64*)0x02004000
-#define MTIME    (volatile uint64*)0x0200BFF8
-
 // mie: Machine Interrupt Enable Register
 #define MIE_MSIE (1 << 3)   // 
 #define MIE_MEIE (1 << 11)  // 
 
-// mstatus: Machine Status Register
-#define MSTATUS_MIE (1 << 3) // 
 
 static inline uint64 r_mstatus() {
   uint64 x;
@@ -267,52 +250,12 @@ static inline void w_sstatus(uint64 x) {
 #define MTIME_ADDR    ((volatile uint64_t*)0x0200bff8)
 #define MTIMECMP_ADDR ((volatile uint64_t*)0x02004000)
 
-void disable_timer_interrupt() {
-}
-        
-
-static inline void w_mstatus(uint64 x) {
-  asm volatile("csrw mstatus, %0" : : "r" (x));
-}
-
-static inline uint64_t r_mie() {
-    uint64_t x;
-    asm volatile("csrr %0, mie" : "=r"(x));
-    return x;
-}
-
-static inline void w_mie(uint64_t x) {
-    asm volatile("csrw mie, %0" : : "r"(x));
-}
-
-static inline void w_mtvec(uint64_t x) {
-    asm volatile("csrw mtvec, %0" : : "r"(x));
-}
-
-#define TIMER_INTERVAL 10  //  100ms 
-
 extern void timervec();  // 
-
-void enable_timer_interrupts() {
-    w_mie(0x00);
-    w_mtvec((uint64)timervec & ~0x03);
-    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-    uint64 now = *MTIME;
-    *MTIMECMP = now + TIMER_INTERVAL;
-}
-
-void disable_timer_interrupts() {
-    w_mie(0x0);
-
-    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
-
-    *MTIMECMP = *MTIME + 0xFFFFFFFF;
-}
 
 volatile int gCountTask1 = 0;
 volatile int gCountTask2 = 0;
 
-_task void task1() {
+void task1() {
     while(1) {
         puts("[1A]\n");
         puts("[1B]\n");
@@ -323,7 +266,7 @@ _task void task1() {
     }
 }
 
-_task void task2() {
+void task2() {
     while(1) {
         puts("[2A]\n");
         puts("[2B]\n");

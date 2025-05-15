@@ -429,9 +429,6 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
     else {
         int i;
         foreach(node, block->mNodes) {
-if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
-add_come_code(info, "disable_interrupts();\n");
-}
             var right_value_objects = info.right_value_objects;
             info.right_value_objects = new list<sRightValueObject*%>();
             
@@ -497,6 +494,12 @@ add_come_code(info, "disable_interrupts();\n");
             
             info.sline = sline;
             info.sname = string(sname);
+            
+            if(gComeBareMetal && !node.no_mutex() 
+                && existance_free_right_value_objects(info)) 
+            {
+                add_come_code(info, "disable_timer_interrupts();\n");
+            }
     
             if(comma) {
                 add_last_code_to_source_with_comma(info);
@@ -511,9 +514,12 @@ add_come_code(info, "disable_interrupts();\n");
             
             if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
-if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
-add_come_code(info, "enable_interrupts();\n");
-}
+            
+            if(gComeBareMetal && !node.no_mutex() 
+                && existance_free_right_value_objects(info))
+            {
+                add_come_code(info, "enable_timer_interrupts();\n");
+            }
             i++;
         }
     }

@@ -1,6 +1,19 @@
 #ifndef COMELANG_BARE_METAL_H
 #define COMELANG_BARE_METAL_H
 
+typedef unsigned int   uint;
+typedef unsigned short ushort;
+typedef unsigned char  uchar;
+
+typedef unsigned char uint8;
+typedef unsigned char uint8_t;
+typedef unsigned short uint16;
+typedef unsigned short uint16_t;
+typedef unsigned int  uint32;
+typedef unsigned int  uint32_t;
+typedef unsigned long uint64;
+typedef unsigned long uint64_t;
+
 ////////////////////////////////////////////////////////////
 // RISCV 
 ////////////////////////////////////////////////////////////
@@ -35,21 +48,47 @@ void mutex_exit(mutex_t *mutex) {
 
 uniq volatile mutex_t gExpMutex = MUTEX_INITIALIZER;
 
-// 割り込み禁止
-uniq void disable_interrupts() {
-    uint64_t mstatus;
-    __asm__ volatile ("csrr %0, mstatus" : "=r"(mstatus));
-    mstatus &= ~(1 << 3); // MIEビットをクリア
-    __asm__ volatile ("csrw mstatus, %0" :: "r"(mstatus));
+#ifdef __RISCV__
+
+#define TIMER_INTERVAL 10  //  100ms 
+#define MTIMECMP (volatile uint64*)0x02004000
+#define MTIME    (volatile uint64*)0x0200BFF8
+
+uniq uint64_t r_mie() {
+    uint64_t x;
+    asm volatile("csrr %0, mie" : "=r"(x));
+    return x;
 }
 
-// 割り込み許可
-uniq void enable_interrupts() {
-    uint64_t mstatus;
-    __asm__ volatile ("csrr %0, mstatus" : "=r"(mstatus));
-    mstatus |= (1 << 3);  // MIEビットをセット
-    __asm__ volatile ("csrw mstatus, %0" :: "r"(mstatus));
+uniq void w_mie(uint64_t x) {
+    asm volatile("csrw mie, %0" : : "r"(x));
 }
+
+uniq void w_mstatus(uint64 x) {
+  asm volatile("csrw mstatus, %0" : : "r" (x));
+}
+
+uniq void w_mtvec(uint64_t x) {
+    asm volatile("csrw mtvec, %0" : : "r"(x));
+}
+// mstatus: Machine Status Register
+#define MSTATUS_MIE (1 << 3) // 
+
+uniq void enable_timer_interrupts() {
+    w_mie(0x00);
+    w_mtvec((uint64)timervec & ~0x03);
+    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+    uint64 now = *MTIME;
+    *MTIMECMP = now + TIMER_INTERVAL;
+}
+uniq void disable_timer_interrupts() {
+    w_mie(0x0);
+
+    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+
+    *MTIMECMP = *MTIME + 0xFFFFFFFF;
+}
+#endif
 
 #include <stdarg.h>
 

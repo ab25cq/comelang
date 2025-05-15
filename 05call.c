@@ -2432,9 +2432,25 @@ sNode*% expression_node(sInfo* info=info) version 97
             expected_next_character('(');
             buf2.append_char('(');
             
+            
             list<sNode*%>*% exps = new list<sNode*%>();
             while(true) {
-                if(*info->p == '(') {
+                if(*info->p == '"') {
+                    buf2.append_char('"');
+                    info->p++;
+                    
+                    while(*info->p) {
+                        if(*info->p == '"') {
+                            buf2.append_char('"');
+                            info->p++;
+                            break;
+                        }
+                        else {
+                            buf2.append_char(*info->p++);
+                        }
+                    }
+                }
+                else if(*info->p == '(') {
                     buf2.append_char('(');
                     info->p++;
                     
