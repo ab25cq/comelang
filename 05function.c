@@ -429,7 +429,11 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
     else {
         int i;
         foreach(node, block->mNodes) {
-if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
+bool timer_interrupt = false;
+if(gComeBareMetal && !node.no_mutex() 
+&& existance_free_right_value_objects(info)) 
+{
+timer_interrupt = true;
 add_come_code(info, "disable_interrupts();\n");
 }
             var right_value_objects = info.right_value_objects;
@@ -511,7 +515,7 @@ add_come_code(info, "disable_interrupts();\n");
             
             if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
-if(gComeBareMetal && !node.no_mutex() && info.come_fun.mResultType.mTask) {
+if(timer_interrupt) {
 add_come_code(info, "enable_interrupts();\n");
 }
             i++;

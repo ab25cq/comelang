@@ -13,8 +13,6 @@ typedef struct anonymous_typeX1 mutex_t;
 
 extern struct anonymous_typeX1 gExpMutex;
 
-typedef __builtin_va_list __gnuc_va_list;
-
 typedef __builtin_va_list va_list;
 
 typedef unsigned long  int size_t;
@@ -816,50 +814,26 @@ void disable_timer_interrupts(){
 void task1(){
 void* __right_value0 = (void*)0;
     while(    1    ) {
-        disable_interrupts();
         puts("[1A]\n");
-        enable_interrupts();
-        disable_interrupts();
         puts("[1B]\n");
-        enable_interrupts();
-        disable_interrupts();
         puts("[1C]\n");
-        enable_interrupts();
-        disable_interrupts();
         puts("[1D]\n");
-        enable_interrupts();
-        disable_interrupts();
         ((char*)(__right_value0=charp_puts("ABC")));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        enable_interrupts();
-        disable_interrupts();
         gCountTask1++;
-        enable_interrupts();
     }
 }
 
 void task2(){
 void* __right_value1 = (void*)0;
     while(    1    ) {
-        disable_interrupts();
         puts("[2A]\n");
-        enable_interrupts();
-        disable_interrupts();
         puts("[2B]\n");
-        enable_interrupts();
-        disable_interrupts();
         puts("[2C]\n");
-        enable_interrupts();
-        disable_interrupts();
         puts("[2D]\n");
-        enable_interrupts();
-        disable_interrupts();
         ((char*)(__right_value1=charp_puts("ABC")));
         (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        enable_interrupts();
-        disable_interrupts();
         gCountTask2++;
-        enable_interrupts();
     }
 }
 
