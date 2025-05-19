@@ -133,6 +133,14 @@ volatile int tx_r = 0;
 
 volatile int uart_tx_busy = 0;
 
+#define UART_IE   ((volatile uint32*)(UART0 + 0x04))  // 割り込み許可レジスタ（例）
+#define UART_IP   ((volatile uint32*)(UART0 + 0x44))  // 割り込み保留（例）
+
+void uart_init() {
+    *UART_IE = UART_TX_INTR;  // TX 空割り込みを許可
+}
+    
+
 static void uartstart() {
     while (tx_r != tx_w) {
         if (*(UART_TXDATA) & UART_TXFULL)
@@ -144,16 +152,21 @@ static void uartstart() {
 
     if (tx_r == tx_w) {
         uart_tx_busy = 0;
+        // TX 割り込み不要 → 無効化しても良い
     } else {
         uart_tx_busy = 1;
+        // TX 割り込みが来るようにしておく
+        *UART_IE |= UART_TX_INTR;
     }
 }
+
+
 
 void uartputc(char c) {
     int next = (tx_w + 1) % BUF_SIZE;
 
-    while (next == tx_r) {
-        // バッファフルなので待機（または drop してもいい）
+    if (next == tx_r) {
+        return; // バッファフル → 捨てる
     }
 
     disable_interrupts();
@@ -443,8 +456,7 @@ void mask_and_clear_timer_interrupt() {
 int main()
 {
     kinit();
-    
-    new char[123];
+    uart_init();
     
     alloc_proc(task1);
     alloc_proc(task2);
