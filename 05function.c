@@ -429,13 +429,6 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
     else {
         int i;
         foreach(node, block->mNodes) {
-bool timer_interrupt = false;
-if(gComeBareMetal && !node.no_mutex() 
-&& existance_free_right_value_objects(info)) 
-{
-timer_interrupt = true;
-add_come_code(info, "disable_interrupts();\n");
-}
             var right_value_objects = info.right_value_objects;
             info.right_value_objects = new list<sRightValueObject*%>();
             
@@ -452,11 +445,18 @@ add_come_code(info, "disable_interrupts();\n");
             info.sline = node.sline();
             info.sname = node.sname();
             
+bool interrupts = false;
             if(i == block->mNodes.length()-1 && if_result && block->mOmitSemicolon) {
                 node_compile(node).elif {
                     printf("%s %d: compiling is failed(5)\n", info->sname, info->sline);
                     exit(2);
                 }
+if(gComeBareMetal && !node.no_mutex() 
+&& existance_free_right_value_objects(info)) 
+{
+interrupts = true;
+add_come_code(info, "disable_interrupts();\n");
+}
                 
                 if(info.stack.length() == stack_num_before + 1) {
                     CVALUE*% come_value = get_value_from_stack(-1, info);
@@ -497,6 +497,12 @@ add_come_code(info, "disable_interrupts();\n");
                     printf("%s %d: compiling is failed(5)\n", info->sname, info->sline);
                     exit(2);
                 }
+if(gComeBareMetal && !node.no_mutex() 
+&& existance_free_right_value_objects(info)) 
+{
+interrupts = true;
+add_come_code(info, "disable_interrupts();\n");
+}
             }
             
             info.sline = sline;
@@ -515,7 +521,7 @@ add_come_code(info, "disable_interrupts();\n");
             
             if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
-if(timer_interrupt) {
+if(interrupts) {
 add_come_code(info, "enable_interrupts();\n");
 }
             i++;
