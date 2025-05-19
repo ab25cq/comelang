@@ -358,6 +358,7 @@ void mutex_exit(struct anonymous_typeX1* mutex);
 void putchar(char c);
 void uartputc_sync(char c);
 void uart_init();
+void uart_raw_puts(const char* s);
 static void uartstart();
 void uartputc(char c);
 void puts(const char* s);
@@ -372,7 +373,7 @@ void disable_timer_interrupts();
 void task1();
 void task2();
 struct proc* alloc_proc(void (*task)());
-void swtch(struct context* anonymous_var_nameX64, struct context* anonymous_var_nameX65);
+void swtch(struct context* anonymous_var_nameX68, struct context* anonymous_var_nameX69);
 void timer_handler();
 void yield();
 void scheduler();
@@ -725,11 +726,21 @@ void uart_init(){
     *((unsigned int*)(268435456L+4))=(1<<5);
 }
 
+void uart_raw_puts(const char* s){
+    while(    *s    ) {
+        while(        *((unsigned int*)(268435456L+0))&-2147483648        ) {
+            ;
+        }
+        *((unsigned int*)(268435456L+0))=*s++;
+    }
+}
+
 static void uartstart(){
     while(    tx_r!=tx_w    ) {
         if(        *((unsigned int*)(268435456L+0))&-2147483648        ) {
-            break;
+            uart_raw_puts("TX FIFO FULL in uartstart\n");
         }
+        break;
         *((unsigned int*)(268435456L+0))=uart_tx_buf[tx_r];
         tx_r=(tx_r+1)%128;
     }
@@ -746,6 +757,7 @@ void uartputc(char c){
 int next_1;
     next_1=(tx_w+1)%128;
     if(    next_1==tx_r    ) {
+        uart_raw_puts("TX FIFO FULL\n");
         return;
     }
     disable_interrupts();

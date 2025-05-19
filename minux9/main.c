@@ -139,11 +139,19 @@ volatile int uart_tx_busy = 0;
 void uart_init() {
     *UART_IE = UART_TX_INTR;  // TX 空割り込みを許可
 }
-    
+
+void uart_raw_puts(const char* s) {
+    while (*s) {
+        while (*(UART_TXDATA) & UART_TXFULL)
+            ;  // wait
+        *(UART_TXDATA) = *s++;
+    }
+}
 
 static void uartstart() {
     while (tx_r != tx_w) {
         if (*(UART_TXDATA) & UART_TXFULL)
+            uart_raw_puts("TX FIFO FULL in uartstart\n");
             break;
 
         *(UART_TXDATA) = uart_tx_buf[tx_r];
@@ -166,6 +174,7 @@ void uartputc(char c) {
     int next = (tx_w + 1) % BUF_SIZE;
 
     if (next == tx_r) {
+        uart_raw_puts("TX FIFO FULL\n");  // ← ここに入れる
         return; // バッファフル → 捨てる
     }
 
