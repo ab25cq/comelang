@@ -20,10 +20,11 @@ void mutex_init(mutex_t *mutex) {
 }
 
 void mutex_enter_blocking(mutex_t *mutex) {
-    volatile int expected = 0;
-    while (!atomic_compare_exchange_weak(&mutex->locked, &expected, 1)) {
-        expected = 0;
-        __asm__ volatile("nop");
+    while (1) {
+        int expected = 0;
+        if (atomic_compare_exchange_weak(&mutex->locked, &expected, 1))
+            break;
+        __asm__ volatile("nop");  // or yield() or wfi
     }
 }
 
@@ -32,8 +33,6 @@ void mutex_exit(mutex_t *mutex) {
 }
 
 #define MUTEX_INITIALIZER { 0 }
-
-uniq volatile mutex_t gExpMutex = MUTEX_INITIALIZER;
 
 // 割り込み禁止
 uniq void disable_interrupts() {

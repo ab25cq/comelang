@@ -27,9 +27,9 @@ fi
 make clean
 if which riscv-none-elf-gcc
 then
-    make run CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64" > aaa
+    make run CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64"
 else 
-    make run > aaa
+    make run
 fi
 
 

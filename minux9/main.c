@@ -156,6 +156,7 @@ void uartputc(char c) {
         // バッファフルなので待機（または drop してもいい）
     }
 
+    disable_interrupts();
     uart_tx_buf[tx_w] = c;
     tx_w = next;
 
@@ -163,16 +164,17 @@ void uartputc(char c) {
         uart_tx_busy = 1;
         uartstart();
     }
+    enable_interrupts();
 }
 
-volatile mutex_t mutex = { 0 };
+volatile mutex_t uart_mutex = { 0 };
 
 void puts(const char* s) {
-    //mutex_enter_blocking(&mutex);
+    mutex_enter_blocking(&uart_mutex);  // 割り込みは許可されたまま
     while (*s) {
         uartputc(*s++);
     }
-    //mutex_exit(&mutex);
+    mutex_exit(&uart_mutex);
 }
 
 
@@ -318,8 +320,8 @@ _task void task1() {
         puts("[1B]\n");
         puts("[1C]\n");
         puts("[1D]\n");
-        "ABC".puts();
-        gCountTask1++;
+        //"ABC".puts();
+        //gCountTask1++;
     }
 }
 
@@ -329,8 +331,8 @@ _task void task2() {
         puts("[2B]\n");
         puts("[2C]\n");
         puts("[2D]\n");
-        "ABC".puts();
-        gCountTask2++;
+        //"ABC".puts();
+        //gCountTask2++;
     }
 }
 

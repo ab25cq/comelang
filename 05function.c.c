@@ -4271,7 +4271,7 @@ void* __right_value122 = (void*)0;
 char* sname_175;
 void* __right_value123 = (void*)0;
 char* __dec_obj55;
-_Bool timer_interrupt_176;
+_Bool interrupts_176;
 _Bool Value_177;
 void* __right_value124 = (void*)0;
 struct CVALUE* come_value_178;
@@ -4357,7 +4357,7 @@ memset(&i_161, 0, sizeof(int));
             __dec_obj55=info->sname,
             info->sname=(char*)come_increment_ref_count(node_165->sname(node_165->_protocol_obj));
             __dec_obj55 = come_decrement_ref_count(__dec_obj55, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
-            timer_interrupt_176=(_Bool)0;
+            interrupts_176=(_Bool)0;
             if(            i_161==list$1sNode$ph_length(block->mNodes)-1&&if_result&&block->mOmitSemicolon            ) {
                 Value_177=node_compile(node_165,info);
                 if(                !Value_177                ) {
@@ -4367,7 +4367,7 @@ memset(&i_161, 0, sizeof(int));
                 else {
                 }
                 if(                gComeBareMetal&&!node_165->no_mutex(node_165->_protocol_obj)&&existance_free_right_value_objects(info)                ) {
-                    timer_interrupt_176=(_Bool)1;
+                    interrupts_176=(_Bool)1;
                     add_come_code(info,"disable_interrupts();\n");
                 }
                 if(                list$1CVALUE$ph_length(info->stack)==stack_num_before_173+1                ) {
@@ -4424,7 +4424,7 @@ memset(&i_161, 0, sizeof(int));
                 else {
                 }
                 if(                gComeBareMetal&&!node_165->no_mutex(node_165->_protocol_obj)&&existance_free_right_value_objects(info)                ) {
-                    timer_interrupt_176=(_Bool)1;
+                    interrupts_176=(_Bool)1;
                     add_come_code(info,"disable_interrupts();\n");
                 }
             }
@@ -4446,7 +4446,7 @@ memset(&i_161, 0, sizeof(int));
             __dec_obj66=info->right_value_objects,
             info->right_value_objects=(struct list$1sRightValueObject$ph*)come_increment_ref_count(right_value_objects_168);
             come_call_finalizer(list$1sRightValueObject$ph_finalize, __dec_obj66,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
-            if(            timer_interrupt_176            ) {
+            if(            interrupts_176            ) {
                 add_come_code(info,"enable_interrupts();\n");
             }
             i_161++;
