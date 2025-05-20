@@ -79,21 +79,29 @@ struct proc* alloc_proc(void (*task)()) {
 }
 
 void swtch(struct context*, struct context*);
-void scheduler();
+
+void reset_watchdog();
+extern volatile char last_key;
+void putc(char c);
 
 void yield() {
     gActiveProc++;
     if(gActiveProc >= gNumProc) {
         gActiveProc = 0;
     }
-    scheduler();
-}
 
-void scheduler() {
+    if(last_key) {
+        putc(last_key);
+        last_key = 0;
+    }
+
+    reset_watchdog();
+
     struct proc *p = gProc[gActiveProc];
 
     swtch(&gCPU.context, &p->context);
 }
+
 
 void task1() {
     while(1) {
@@ -140,7 +148,9 @@ int main()
     alloc_proc(task1);
     alloc_proc(task2);
     
-    scheduler();
+    struct proc *p = gProc[gActiveProc];
+
+    swtch(&gCPU.context, &p->context);
 
     while (1);
 }

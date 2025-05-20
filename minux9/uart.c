@@ -36,8 +36,6 @@ void putchar(char c) {
     *UART_THR = c;
 }
 
-
-
 void puts(const char* s) {
     while (*s) putc(*s++);
 }

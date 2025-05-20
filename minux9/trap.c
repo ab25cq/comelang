@@ -24,3 +24,24 @@ void external_interrupt_handler() {
         plic_complete(irq);
     }
 }
+
+volatile int watchdog_counter = 0;
+const int watchdog_timeout = 100;  // 100 × 10ms = 1秒でタイムアウト
+
+// タイマー割り込みで呼ばれる
+void puts(const char* s);
+
+void timer_irq_handler() 
+{
+    watchdog_counter++;
+    if (watchdog_counter >= watchdog_timeout) {
+        puts("WATCH DOG RESET");
+        while(1);
+    }
+}
+
+void reset_watchdog() 
+{
+    watchdog_counter = 0;
+}
+
