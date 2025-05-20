@@ -10,6 +10,11 @@
 #define UART_IER ((volatile uint8_t *)(UART0 + 0x01))
 #define UART_RX_INTR 0x01
 
+#define UART_THR  ((volatile uint8_t *)(UART0 + 0x00))  // 書き込み用
+#define UART_LSR  ((volatile uint8_t *)(UART0 + 0x05))  // Line Status Register
+#define UART_LSR_THRE 0x20  // Transmit Holding Register Empty
+
+
 volatile char last_key = 0;
 
 void uart_rx_handler() {
@@ -23,13 +28,15 @@ void uart_init() {
 }
 
 void putc(char c) {
-    while (*(UART_TXDATA) & UART_TXFULL) ;
-    *(UART_TXDATA) = c;
+    while (!(*UART_LSR & UART_LSR_THRE)) ;  // 送信FIFO空くまで待つ
+    *UART_THR = c;
 }
 void putchar(char c) {
-    while (*(UART_TXDATA) & UART_TXFULL) ;
-    *(UART_TXDATA) = c;
+    while (!(*UART_LSR & UART_LSR_THRE)) ;  // 送信FIFO空くまで待つ
+    *UART_THR = c;
 }
+
+
 
 void puts(const char* s) {
     while (*s) putc(*s++);
