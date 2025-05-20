@@ -8,17 +8,20 @@ all: kernel.elf
 kernel.elf:
 	$(CCPREFIX)as -g $(CFLAGS) -o start.o start.S
 	$(CCPREFIX)as -g $(CFLAGS) -o swtch.o swtch.S
-	$(CCPREFIX)as -g $(CFLAGS) -o timervec.o timervec.S
+	$(CCPREFIX)as -g $(CFLAGS) -o trap.o trap.S
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o trap_c.o trap.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o uart.o uart.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o plic.o plic.c
 	comelang -riscv -c -g -s main.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o timervec.o main.o 
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o main.o 
 
 
 
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
 
 run: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic 
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -serial mon:stdio
 
 debug: kernel.elf
 	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -S -gdb tcp::3777 &

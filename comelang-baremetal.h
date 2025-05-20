@@ -5,9 +5,10 @@
 // RISCV 
 ////////////////////////////////////////////////////////////
 #ifdef __RISCV__
-//#include <stddef.h>
 
 using comelang;
+
+#include <stdint.h>
 
 output {#include <stdatomic.h>}
 
@@ -198,7 +199,7 @@ uniq void* memset(void *dst, int c, unsigned int n) {
 }
 
 uniq int memcmp(const void *v1, const void *v2, unsigned int n) {
-  const uchar *s1, *s2;
+  const unsigned char *s1, *s2;
 
   s1 = v1;
   s2 = v2;
@@ -242,7 +243,7 @@ uniq int strncmp(const char *p, const char *q, unsigned int n) {
     n--, p++, q++;
   if(n == 0)
     return 0;
-  return (uchar)*p - (uchar)*q;
+  return (unsigned char)*p - (unsigned char)*q;
 }
 
 uniq char* strncpy(char *s, const char *t, int n) {
@@ -709,6 +710,8 @@ uniq int printf(const char* fmt, ...) {
     return 0;
 }
 
+void puts(const char* s);
+
 uniq void perror(char* str)
 {
     puts(str);
@@ -984,55 +987,41 @@ uniq mutex_t gComeHeapMutex = MUTEX_INITIALIZER;
 
 uniq void come_push_stackframe(char* sname, int sline, int id) version 2
 {
-    mutex_enter_blocking(&gComeHeapMutex);
     inherit(sname, sline, id);
-    mutex_exit(&gComeHeapMutex);
 }
 
 uniq void come_pop_stackframe() version 2
 {
-    mutex_enter_blocking(&gComeHeapMutex);
     inherit();
-    mutex_exit(&gComeHeapMutex);
 }
 
 uniq void come_save_stackframe(char* sname, int sline) version 2
 {
-    mutex_enter_blocking(&gComeHeapMutex);
     inherit(sname, sline);
-    mutex_exit(&gComeHeapMutex);
 }
 
 uniq void stackframe() version 2
 {
-    mutex_enter_blocking(&gComeHeapMutex);
     inherit();
-    mutex_exit(&gComeHeapMutex);
 }
 
 uniq string come_get_stackframe() version 2
 {
-    mutex_enter_blocking(&gComeHeapMutex);
     string result = inherit();
-    mutex_exit(&gComeHeapMutex);
     
     return result;
 }
 
 uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="") version 2
 {
-    mutex_enter_blocking(&gComeHeapMutex);
     void* result = inherit(count, size, sname, sline, class_name);
-    mutex_exit(&gComeHeapMutex);
     
     return result;
 }
 
 uniq void come_free(void* mem) version 2
 {
-    mutex_enter_blocking(&gComeHeapMutex);
     inherit(mem);
-    mutex_exit(&gComeHeapMutex);
 }
 
 #endif
