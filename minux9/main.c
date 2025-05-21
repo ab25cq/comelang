@@ -124,7 +124,7 @@ void task1() {
         puts("[1B]\n");
         puts("[1C]\n");
         puts("[1D]\n");
-//        "ABC".puts();
+        "ABC".puts();
         gCountTask1++;
         yield();
     }
@@ -136,7 +136,7 @@ void task2() {
         puts("[2B]\n");
         puts("[2C]\n");
         puts("[2D]\n");
-        //"ABC".puts();
+        "ABC".puts();
         gCountTask2++;
         yield();
     }
