@@ -37,7 +37,8 @@ void putchar(char c) {
 }
 
 void puts(const char* s) {
-    while (*s) putc(*s++);
+    char *s2 = s;
+    while (*s2) putc(*s2++);
 }
 
 void putc_direct(char c) {

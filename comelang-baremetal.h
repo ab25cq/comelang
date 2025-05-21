@@ -154,10 +154,11 @@ uniq void free(void *ptr) {
 }
 
 uniq char* strdup(const char* s) {
-    size_t len = strlen(s) + 1;
+    char* s2 = s;
+    size_t len = strlen(s2) + 1;
     char* p = malloc(len);
     if (p)
-        memcpy(p, s, len);
+        memcpy(p, s2, len);
     return p;
 }
 
@@ -715,6 +716,11 @@ void puts(const char* s);
 uniq void perror(char* str)
 {
     puts(str);
+}
+
+uniq void panic()
+{
+    puts("panic!");
 }
 
 uniq void* alloc_from_pages(size_t size)

@@ -120,7 +120,7 @@ void yield() {
 
 void task1() {
     while(1) {
-        puts("[1A]\n");
+        puts("1\n");
         puts("[1B]\n");
         puts("[1C]\n");
         puts("[1D]\n");
@@ -132,11 +132,16 @@ void task1() {
 
 void task2() {
     while(1) {
-        puts("[2A]\n");
+        puts("2\n");
         puts("[2B]\n");
         puts("[2C]\n");
         puts("[2D]\n");
         "ABC".puts();
+        {
+            var a = s"123";
+            puts(a);
+            //puts(a.to_string());
+        }
         gCountTask2++;
         yield();
     }

@@ -17,6 +17,7 @@ trapvec:
     j trap_return
 
 not_interrupt:
+    call panic
     j trap_return
 
 handle_timer:
