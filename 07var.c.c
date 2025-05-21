@@ -2445,7 +2445,7 @@ struct sType* __dec_obj81;
                 come_call_finalizer(CVALUE_finalize, come_value_72, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             }
             else {
-                if(                string_operator_not_equals(info->come_fun->mName,"memset")                ) {
+                if(                string_operator_not_equals(info->come_fun->mName,"memset")&&!left_type_70->mNoCallingDestructor                ) {
                     add_come_code_at_function_head2(info,"memset(&%s, 0, sizeof(%s));\n",var__39->mCValueName,((char*)(__right_value69=make_type_name_string(left_type_70,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)1))));
                     (__right_value69 = come_decrement_ref_count(__right_value69, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 }
@@ -2612,14 +2612,14 @@ struct sType* __dec_obj81;
         }
         left_type_108=(struct sType*)come_increment_ref_count(sType_clone(var__106->mType));
         if(        left_type_108->mChannel        ) {
-            if(            string_operator_not_equals(info->come_fun->mName,"memset")            ) {
+            if(            string_operator_not_equals(info->come_fun->mName,"memset")&&!left_type_108->mNoCallingDestructor            ) {
                 add_come_code_at_function_head2(info,"memset(%s, 0, sizeof(int)*2);\n",var__106->mCValueName);
             }
         }
         else if(        list$1sNode$ph_length(left_type_108->mArrayNum)>0        ) {
             add_come_code(info,"%s;\n",((char*)(__right_value116=make_define_var(left_type_108,var__106->mCValueName,(_Bool)0,(_Bool)0,info,(_Bool)0))));
             (__right_value116 = come_decrement_ref_count(__right_value116, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            if(            string_operator_not_equals(info->come_fun->mName,"memset")            ) {
+            if(            string_operator_not_equals(info->come_fun->mName,"memset")&&!left_type_108->mNoCallingDestructor            ) {
                 add_come_code(info,"memset(&%s, 0, sizeof(%s)",var__106->mCValueName,((char*)(__right_value117=make_type_name_string(left_type_108,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)1))));
                 (__right_value117 = come_decrement_ref_count(__right_value117, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             }
@@ -2650,7 +2650,7 @@ struct sType* __dec_obj81;
                 add_come_code_at_function_head2(info,"%s = (void*)0;\n",var__106->mCValueName);
             }
             else {
-                if(                string_operator_not_equals(info->come_fun->mName,"memset")                ) {
+                if(                string_operator_not_equals(info->come_fun->mName,"memset")&&!left_type_108->mNoCallingDestructor                ) {
                     add_come_code_at_function_head2(info,"memset(&%s, 0, sizeof(%s));\n",var__106->mCValueName,((char*)(__right_value121=make_type_name_string(left_type_108,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)1))));
                     (__right_value121 = come_decrement_ref_count(__right_value121, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 }
@@ -2729,7 +2729,7 @@ struct sType* __dec_obj81;
             else if(            (var_type_129->mClass->mStruct||var_type_129->mClass->mUnion||var_type_129->mClass->mEnum)||var_type_129->mPointerNum>0            ) {
             }
             else {
-                if(                string_operator_not_equals(info->come_fun->mName,"memset")                ) {
+                if(                string_operator_not_equals(info->come_fun->mName,"memset")&&!var_type_129->mNoCallingDestructor                ) {
                     add_come_code_at_function_head2(info,"memset(&%s, 0, sizeof(%s));\n",var__121->mCValueName,((char*)(__right_value144=make_type_name_string(var_type_129,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)1))));
                     (__right_value144 = come_decrement_ref_count(__right_value144, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 }
@@ -2800,7 +2800,7 @@ struct sType* __dec_obj81;
         else if(        left_type_130->mChannel&&new_channel_126        ) {
             add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value171=make_define_var(left_type_130,var__121->mCValueName,(_Bool)0,(_Bool)0,info,(_Bool)0))));
             (__right_value171 = come_decrement_ref_count(__right_value171, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            if(            string_operator_not_equals(info->come_fun->mName,"memset")            ) {
+            if(            string_operator_not_equals(info->come_fun->mName,"memset")&&!left_type_130->mNoCallingDestructor            ) {
                 add_come_code_at_function_head2(info,"memset(%s, 0, sizeof(int)*2);\n",var__121->mCValueName);
             }
             come_value_137=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "07var.c", 431, "struct CVALUE*"))));

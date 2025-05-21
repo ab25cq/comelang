@@ -71,20 +71,35 @@ struct proc* alloc_proc(void (*task)()) {
     result->stack = calloc(1, 256);
     
     result->context.sp = (uint64_t)(result->stack + 256);
-    result->context.mepc = (uint64_t)task;
+    result->context.ra = (uint64_t)task;
 
     gProc[gNumProc++] = result;
 
     return result;
 }
 
-void swtch(struct context*, struct context*);
+void load_context(struct context*);
+void save_context(struct context*);
 
 void reset_watchdog();
 extern volatile char last_key;
 void putc(char c);
 
+struct proc* p;
+uintptr_t saved_ra;
+uintptr_t saved_sp;
+
 void yield() {
+    asm volatile ("mv %0, ra" : "=r"(saved_ra));
+    asm volatile ("mv %0, sp" : "=r"(saved_sp));
+    
+    p = gProc[gActiveProc];
+    
+    save_context(&p->context);
+    
+    p->context.ra = saved_ra;
+    p->context.sp = saved_sp + 16;
+
     gActiveProc++;
     if(gActiveProc >= gNumProc) {
         gActiveProc = 0;
@@ -97,9 +112,9 @@ void yield() {
 
     reset_watchdog();
 
-    struct proc *p = gProc[gActiveProc];
+    p = gProc[gActiveProc];
 
-    swtch(&gCPU.context, &p->context);
+    load_context(&p->context);
 }
 
 
@@ -109,7 +124,7 @@ void task1() {
         puts("[1B]\n");
         puts("[1C]\n");
         puts("[1D]\n");
-        //"ABC".puts();
+//        "ABC".puts();
         gCountTask1++;
         yield();
     }
@@ -150,7 +165,7 @@ int main()
     
     struct proc *p = gProc[gActiveProc];
 
-    swtch(&gCPU.context, &p->context);
+    load_context(&p->context);
 
     while (1);
 }
