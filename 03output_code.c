@@ -672,9 +672,11 @@ string header_function(sFun* fun, sInfo* info)
             output.append_str("inline ");
         }
         output.append_str(str);
+/*
         if(fun->mFunAttribute !== "") {
             output.append_str(s" \{fun->mFunAttribute} ");
         }
+*/
         
         output.append_str(";\n");
     }
@@ -762,12 +764,14 @@ string header_function(sFun* fun, sInfo* info)
             i++;
         }
         
+/*
         if(fun->mFunAttribute !== "") {
             output.append_str(s") \{fun->mFunAttribute};\n");
         }
         else {
+*/
             output.append_str(");\n");
-        }
+//        }
     }
     
     return output.to_string();
