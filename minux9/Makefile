@@ -28,6 +28,11 @@ debug: kernel.elf
 	gdb-multiarch kernel.elf
 	pkill -f qemu-system-riscv64
 
+debug-mac: kernel.elf
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -S -gdb tcp::3777 &
+	gdb kernel.elf
+	pkill -f qemu-system-riscv64
+
 clean:
 	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o swtch.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1
   
