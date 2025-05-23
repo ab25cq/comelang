@@ -3021,6 +3021,16 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
         return self;
     }
     
+#ifdef __RISCV__
+    char result[128];
+    
+    va_list` args;
+    va_start(args, msg);
+    snprintf(result, 128, args);
+    va_end(args);
+    
+    int len = strlen(result);
+#else
     va_list` args;
     va_start(args, msg);
     char* result;
@@ -3030,6 +3040,7 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
     if(len < 0) {
         return self;
     }
+#endif
     
     string mem = string(result);
     
@@ -4712,10 +4723,19 @@ uniq string char*::printf(char* self, ...)
     }
     char* msg2;
 
+#ifdef __RISCV__
+    char msg2[128];
+    
+    va_list` args;
+    va_start(args, self);
+    int len = snprintf(msg2, 128, self, args);
+    va_end(args);
+#else
     va_list` args;
     va_start(args, self);
     vasprintf(&msg2,self,args);
     va_end(args);
+#endif
     
     printf("%s", msg2);
 

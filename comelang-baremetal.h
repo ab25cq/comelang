@@ -300,7 +300,8 @@ uniq void exit(int n)
     while(1);
 }
 
-uniq char* itoa(char* buf, long val_, int base, int is_unsigned) {
+/*
+uniq char* itoa(char* buf, int val_, int base, int is_unsigned) {
     char* p = buf;
     char tmp[32];
     int i = 0, negative = 0;
@@ -329,109 +330,94 @@ uniq char* itoa(char* buf, long val_, int base, int is_unsigned) {
     *p = '\0';
     return buf;
 }
+*/
 
-uniq int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
+// 簡易 itoa (base 10, 16 に対応)
+uniq char* itoa(char* buf, int val_, int base, int is_unsigned) {
+    char* p = buf;
+    char tmp[32];
+    int i = 0, negative = 0;
+    unsigned int val2;
 
-    char* p = out;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = out_size;
-
-    if (remaining == 0) {
-        va_end(ap);
-        return 0;
+    if (base < 2 || base > 16) {
+        *p = '\0';
+        return p;
     }
 
-    for (; *fmt; fmt++) {
-        if (*fmt != '%') {
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining--;
-            }
-            continue;
-        }
-
-        fmt++;
-        switch (*fmt) {
-        case 's':
-            s = va_arg(ap, const char*);
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 0);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'c':
-            if (remaining > 1) {
-                *p++ = (char)va_arg(ap, int);
-                remaining--;
-            }
-            break;
-        case 'p':
-            s = "0x";
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            itoa(buf, (long)va_arg(ap, void*), 16, 1);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'l':
-            if (*(fmt + 1) == 'u') {
-                fmt++;
-                itoa(buf, va_arg(ap, long), 10, 1);
-                s = buf;
-                while (*s && remaining > 1) {
-                    *p++ = *s++;
-                    remaining--;
-                }
-            }
-            break;
-        default:
-            if (remaining > 1) {
-                *p++ = '%';
-                remaining--;
-                if (remaining > 1) {
-                    *p++ = *fmt;
-                    remaining--;
-                }
-            }
-            break;
-        }
+    if (!is_unsigned && val_ < 0) {
+        negative = 1;
+        val2 = -val_;
+    } else {
+        val2 = (unsigned int)val_;
     }
 
+    do {
+        int digit = val2 % base;
+        tmp[i++] = (digit < 10) ? '0' + digit : 'a' + digit - 10;
+        val2 /= base;
+    } while (val2);
+
+    if (negative)
+        *p++ = '-';
+
+    while (i--)
+        *p++ = tmp[i];
     *p = '\0';
-    va_end(ap);
-    return p - out;
+    return buf;
 }
 
-uniq int vasprintf(char** result, const char* fmt, ...) {
-    va_list ap;
+// vasprintf: %d, %x, %s に対応
+uniq int vasprintf(char** out, const char* fmt, va_list ap) {
+    char out2[512];  // 十分なバッファ
+    char* p = out2;
+    const char* s;
+    char buf[32];
+    unsigned long remaining = sizeof(out2);
+
+    for (; *fmt && remaining > 1; fmt++) {
+        if (*fmt != '%') {
+            *p++ = *fmt;
+            remaining--;
+            continue;
+        }
+
+        fmt++;
+        switch (*fmt) {
+        case 'd':
+            itoa(buf, va_arg(ap, int), 10, 0);
+            s = buf;
+            break;
+        case 'x':
+            itoa(buf, va_arg(ap, unsigned int), 16, 1);
+            s = buf;
+            break;
+        case 's':
+            s = va_arg(ap, const char*);
+            if (!s) s = "(null)";
+            break;
+        default:
+            *p++ = '%';
+            if (remaining > 1) {
+                *p++ = *fmt;
+                remaining -= 2;
+            }
+            continue;
+        }
+
+        while (*s && remaining > 1) {
+            *p++ = *s++;
+            remaining--;
+        }
+    }
+
+    *p = '\0';
+    *out = strdup(out2);  // 呼び出し側で free すること
+    return p - out2;
+}
+
+uniq int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
+    va_list` ap;
     va_start(ap, fmt);
-    
-    char out[256];
-    unsigned long out_size = 256;
 
     char* p = out;
     const char* s;
@@ -522,16 +508,11 @@ uniq int vasprintf(char** result, const char* fmt, ...) {
 
     *p = '\0';
     va_end(ap);
-    
-    *result = malloc(sizeof(char)*(p - out +1));
-    
-    strncpy(*result, out, p - out);
-    
     return p - out;
 }
 
 uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list ap;
+    va_list` ap;
     va_start(ap, fmt);
 
     char* p = out;
@@ -625,6 +606,111 @@ uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     va_end(ap);
     return p - out;
 }
+
+/*
+uniq int vasprintf(char** out, const char* fmt, ...) {
+    va_list` ap;
+    va_start(ap, fmt);
+    
+    int out_size = 128;
+    
+    char out2[128];
+
+    char* p = out2;
+    const char* s;
+    char buf[32];
+    unsigned long remaining = out_size;
+
+    if (remaining == 0) {
+        va_end(ap);
+        return 0;
+    }
+
+    for (; *fmt; fmt++) {
+        if (*fmt != '%') {
+            if (remaining > 1) {
+                *p++ = *fmt;
+                remaining--;
+            }
+            continue;
+        }
+
+        fmt++;
+        switch (*fmt) {
+        case 's':
+            s = va_arg(ap, const char*);
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'd':
+            itoa(buf, va_arg(ap, int), 10, 0);
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'x':
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'c':
+            if (remaining > 1) {
+                *p++ = (char)va_arg(ap, int);
+                remaining--;
+            }
+            break;
+        case 'p':
+            s = "0x";
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            itoa(buf, (long)va_arg(ap, void*), 16, 1);
+            s = buf;
+            while (*s && remaining > 1) {
+                *p++ = *s++;
+                remaining--;
+            }
+            break;
+        case 'l':
+            if (*(fmt + 1) == 'u') {
+                fmt++;
+                itoa(buf, va_arg(ap, long), 10, 1);
+                s = buf;
+                while (*s && remaining > 1) {
+                    *p++ = *s++;
+                    remaining--;
+                }
+            }
+            break;
+        default:
+            if (remaining > 1) {
+                *p++ = '%';
+                remaining--;
+                if (remaining > 1) {
+                    *p++ = *fmt;
+                    remaining--;
+                }
+            }
+            break;
+        }
+    }
+
+    *p = '\0';
+    va_end(ap);
+    
+    *out = strdup(out2);
+    
+    return p - out2;
+}
+*/
 
 // UART1
 extern void putchar(char c);
@@ -653,7 +739,7 @@ uniq void printint(long num, int base, int is_signed) {
 
 // printf
 uniq int printf(const char* fmt, ...) {
-    va_list ap;
+    va_list` ap;
     va_start(ap, fmt);
     
     char* p;

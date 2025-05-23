@@ -163,11 +163,15 @@ int main()
     plic_init();
     plic_enable(UART_IRQ);
     uart_init();
-    puts_direct("[1A]\n");
     
     alloc_proc(task1);
     alloc_proc(task2);
     
+    char buf[128];
+    snprintf(buf, 128, "%d\n", 1+1);
+    puts(buf);
+    puts(xsprintf("%d\n", 1+1));
+   
     struct proc *p = gProc[gActiveProc];
 
     load_context(&p->context);
