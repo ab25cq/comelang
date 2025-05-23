@@ -171,7 +171,7 @@ int main()
     snprintf(buf, 128, "%d\n", 1+1);
     puts(buf);
     puts(xsprintf("%d\n", 1+1));
-   
+    
     struct proc *p = gProc[gActiveProc];
 
     load_context(&p->context);

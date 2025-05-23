@@ -300,20 +300,21 @@ uniq void exit(int n)
     while(1);
 }
 
-/*
-uniq char* itoa(char* buf, int val_, int base, int is_unsigned) {
+
+char* itoa(char* buf, unsigned int val_, int base, int is_signed) {
     char* p = buf;
     char tmp[32];
-    int i = 0, negative = 0;
+    int i = 0;
+    int negative = 0;
 
     if (base < 2 || base > 16) {
         *p = '\0';
         return p;
     }
 
-    if (!is_unsigned && val_ < 0) {
+    if (is_signed && (int)val_ < 0) {
         negative = 1;
-        val_ = -val_;
+        val_ = (unsigned int)(-(int)val_);
     }
 
     do {
@@ -330,8 +331,8 @@ uniq char* itoa(char* buf, int val_, int base, int is_unsigned) {
     *p = '\0';
     return buf;
 }
-*/
 
+/*
 // 簡易 itoa (base 10, 16 に対応)
 uniq char* itoa(char* buf, int val_, int base, int is_unsigned) {
     char* p = buf;
@@ -365,7 +366,9 @@ uniq char* itoa(char* buf, int val_, int base, int is_unsigned) {
     *p = '\0';
     return buf;
 }
+*/
 
+/*
 // vasprintf: %d, %x, %s に対応
 uniq int vasprintf(char** out, const char* fmt, va_list ap) {
     char out2[512];  // 十分なバッファ
@@ -412,6 +415,64 @@ uniq int vasprintf(char** out, const char* fmt, va_list ap) {
 
     *p = '\0';
     *out = strdup(out2);  // 呼び出し側で free すること
+    return p - out2;
+}
+*/
+
+int vasprintf(char** out, const char* fmt, va_list ap) {
+    char out2[512];
+    char* p = out2;
+    const char* s;
+    char buf[32];
+    unsigned long remaining = sizeof(out2);
+
+    for (; *fmt && remaining > 1; fmt++) {
+        if (*fmt != '%') {
+            *p++ = *fmt;
+            remaining--;
+            continue;
+        }
+
+        fmt++;
+        switch (*fmt) {
+        case 'd':
+            itoa(buf, va_arg(ap, int), 10, 1);
+            s = buf;
+            break;
+        case 'u':
+            itoa(buf, va_arg(ap, unsigned int), 10, 0);
+            s = buf;
+            break;
+        case 'x':
+            itoa(buf, va_arg(ap, unsigned int), 16, 0);
+            s = buf;
+            break;
+        case 's':
+            s = va_arg(ap, const char*);
+            if (!s) s = "(null)";
+            break;
+        case 'c':
+            buf[0] = (char)va_arg(ap, int);  // charはintとして渡される
+            buf[1] = '\0';
+            s = buf;
+            break;
+        default:
+            *p++ = '%';
+            if (remaining > 1) {
+                *p++ = *fmt;
+                remaining -= 2;
+            }
+            continue;
+        }
+
+        while (*s && remaining > 1) {
+            *p++ = *s++;
+            remaining--;
+        }
+    }
+
+    *p = '\0';
+    *out = strdup(out2);
     return p - out2;
 }
 
