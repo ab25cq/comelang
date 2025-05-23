@@ -259,7 +259,7 @@ uniq char* strncpy(char *s, const char *t, int n) {
 }
 
 // Like strncpy but guaranteed to NUL-terminate.
-uniq char* safestrcpy(char *s, const char *t, int n) {
+uniq char* strncpy(char *s, const char *t, int n) {
   char *os;
 
   os = s;
@@ -300,8 +300,8 @@ uniq void exit(int n)
     while(1);
 }
 
-
-char* itoa(char* buf, unsigned int val_, int base, int is_signed) {
+// 汎用 itoa（符号あり/なし、base 10, 16 に対応）
+char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     char* p = buf;
     char tmp[32];
     int i = 0;
@@ -312,9 +312,9 @@ char* itoa(char* buf, unsigned int val_, int base, int is_signed) {
         return p;
     }
 
-    if (is_signed && (int)val_ < 0) {
+    if (is_signed && (long)val_ < 0) {
         negative = 1;
-        val_ = (unsigned int)(-(int)val_);
+        val_ = (unsigned long)(-(long)val_);
     }
 
     do {
@@ -332,93 +332,7 @@ char* itoa(char* buf, unsigned int val_, int base, int is_signed) {
     return buf;
 }
 
-/*
-// 簡易 itoa (base 10, 16 に対応)
-uniq char* itoa(char* buf, int val_, int base, int is_unsigned) {
-    char* p = buf;
-    char tmp[32];
-    int i = 0, negative = 0;
-    unsigned int val2;
-
-    if (base < 2 || base > 16) {
-        *p = '\0';
-        return p;
-    }
-
-    if (!is_unsigned && val_ < 0) {
-        negative = 1;
-        val2 = -val_;
-    } else {
-        val2 = (unsigned int)val_;
-    }
-
-    do {
-        int digit = val2 % base;
-        tmp[i++] = (digit < 10) ? '0' + digit : 'a' + digit - 10;
-        val2 /= base;
-    } while (val2);
-
-    if (negative)
-        *p++ = '-';
-
-    while (i--)
-        *p++ = tmp[i];
-    *p = '\0';
-    return buf;
-}
-*/
-
-/*
-// vasprintf: %d, %x, %s に対応
-uniq int vasprintf(char** out, const char* fmt, va_list ap) {
-    char out2[512];  // 十分なバッファ
-    char* p = out2;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = sizeof(out2);
-
-    for (; *fmt && remaining > 1; fmt++) {
-        if (*fmt != '%') {
-            *p++ = *fmt;
-            remaining--;
-            continue;
-        }
-
-        fmt++;
-        switch (*fmt) {
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 0);
-            s = buf;
-            break;
-        case 'x':
-            itoa(buf, va_arg(ap, unsigned int), 16, 1);
-            s = buf;
-            break;
-        case 's':
-            s = va_arg(ap, const char*);
-            if (!s) s = "(null)";
-            break;
-        default:
-            *p++ = '%';
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining -= 2;
-            }
-            continue;
-        }
-
-        while (*s && remaining > 1) {
-            *p++ = *s++;
-            remaining--;
-        }
-    }
-
-    *p = '\0';
-    *out = strdup(out2);  // 呼び出し側で free すること
-    return p - out2;
-}
-*/
-
+// 拡張版 vasprintf
 int vasprintf(char** out, const char* fmt, va_list ap) {
     char out2[512];
     char* p = out2;
@@ -433,7 +347,7 @@ int vasprintf(char** out, const char* fmt, va_list ap) {
             continue;
         }
 
-        fmt++;
+        fmt++;  // skip '%'
         switch (*fmt) {
         case 'd':
             itoa(buf, va_arg(ap, int), 10, 1);
@@ -452,17 +366,26 @@ int vasprintf(char** out, const char* fmt, va_list ap) {
             if (!s) s = "(null)";
             break;
         case 'c':
-            buf[0] = (char)va_arg(ap, int);  // charはintとして渡される
+            buf[0] = (char)va_arg(ap, int);  // char は int に昇格されて渡る
+            buf[1] = '\0';
+            s = buf;
+            break;
+        case 'p':
+            strncpy(buf, "0x", 32);
+            itoa(buf + 2, (unsigned long)(uintptr_t)va_arg(ap, void*), 16, 0);
+            s = buf;
+            break;
+        case '%':
+            buf[0] = '%';
             buf[1] = '\0';
             s = buf;
             break;
         default:
-            *p++ = '%';
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining -= 2;
-            }
-            continue;
+            buf[0] = '%';
+            buf[1] = *fmt;
+            buf[2] = '\0';
+            s = buf;
+            break;
         }
 
         while (*s && remaining > 1) {
