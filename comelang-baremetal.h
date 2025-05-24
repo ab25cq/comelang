@@ -301,7 +301,7 @@ uniq void exit(int n)
 }
 
 // 汎用 itoa（符号あり/なし、base 10, 16 に対応）
-char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
+uniq char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     char* p = buf;
     char tmp[32];
     int i = 0;
@@ -333,7 +333,7 @@ char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
 }
 
 // 拡張版 vasprintf
-int vasprintf(char** out, const char* fmt, va_list ap) {
+uniq int vasprintf(char** out, const char* fmt, va_list ap) {
     char out2[512];
     char* p = out2;
     const char* s;
@@ -591,189 +591,205 @@ uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     return p - out;
 }
 
-/*
-uniq int vasprintf(char** out, const char* fmt, ...) {
-    va_list` ap;
-    va_start(ap, fmt);
-    
-    int out_size = 128;
-    
-    char out2[128];
-
-    char* p = out2;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = out_size;
-
-    if (remaining == 0) {
-        va_end(ap);
-        return 0;
-    }
-
-    for (; *fmt; fmt++) {
-        if (*fmt != '%') {
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining--;
-            }
-            continue;
-        }
-
-        fmt++;
-        switch (*fmt) {
-        case 's':
-            s = va_arg(ap, const char*);
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 0);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'c':
-            if (remaining > 1) {
-                *p++ = (char)va_arg(ap, int);
-                remaining--;
-            }
-            break;
-        case 'p':
-            s = "0x";
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            itoa(buf, (long)va_arg(ap, void*), 16, 1);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'l':
-            if (*(fmt + 1) == 'u') {
-                fmt++;
-                itoa(buf, va_arg(ap, long), 10, 1);
-                s = buf;
-                while (*s && remaining > 1) {
-                    *p++ = *s++;
-                    remaining--;
-                }
-            }
-            break;
-        default:
-            if (remaining > 1) {
-                *p++ = '%';
-                remaining--;
-                if (remaining > 1) {
-                    *p++ = *fmt;
-                    remaining--;
-                }
-            }
-            break;
-        }
-    }
-
-    *p = '\0';
-    va_end(ap);
-    
-    *out = strdup(out2);
-    
-    return p - out2;
-}
-*/
 
 // UART1
 extern void putchar(char c);
 
-// 1016
-uniq void printint(long num, int base, int is_signed) {
-    char buf[32];
-    int i = 0;
-    unsigned long n;
+extern void putchar(int c);
 
-    if (is_signed && num < 0) {
-        putchar('-');
-        n = -num;
+#include <stdint.h>
+
+// putcharは環境依存で外部定義
+extern void putchar(int c);
+
+uniq void printint(int val_, int base, int sign) {
+    char buf[33];  // 32bit最大桁数 + '\0'
+    int i = 0;
+    int negative = 0;
+    unsigned int uval;
+
+    if (sign && val_ < 0) {
+        negative = 1;
+        uval = -val_;
     } else {
-        n = num;
+        uval = (unsigned int)val_;
     }
 
-    do {
-        buf[i++] = "0123456789abcdef"[n % base];
-        n /= base;
-    } while (n > 0);
+    if (uval == 0) {
+        putchar('0');
+        return;
+    }
 
-    while (i--)
+    while (uval > 0) {
+        int digit = uval % base;
+        buf[i++] = digit < 10 ? '0' + digit : 'a' + (digit - 10);
+        uval /= base;
+    }
+
+    if (negative) {
+        putchar('-');
+    }
+
+    while (--i >= 0) {
         putchar(buf[i]);
+    }
 }
 
-// printf
-uniq int printf(const char* fmt, ...) {
-    va_list` ap;
-    va_start(ap, fmt);
-    
-    char* p;
+uniq void printlong(unsigned long val_, int base, int sign) 
+{
+    char buf[65];  // 64bit最大桁数 + '\0'
+    int i = 0;
+    int negative = 0;
 
+    if (sign && (long)val_ < 0) {
+        negative = 1;
+        val_ = -(long)val_;
+    }
+
+    // 0の特別処理
+    if (val_ == 0) {
+        putchar('0');
+        return;
+    }
+
+    while (val_ > 0) {
+        int digit = val_ % base;
+        buf[i++] = digit < 10 ? '0' + digit : 'a' + (digit - 10);
+        val_ /= base;
+    }
+
+    if (negative) {
+        putchar('-');
+    }
+
+    // 逆順に出力
+    while (--i >= 0) {
+        putchar(buf[i]);
+    }
+}
+
+uniq void printlonglong(unsigned long long val_, int base, int sign) 
+{
+    char buf[65];
+    int i = 0;
+    int negative = 0;
+
+    if (sign && (long long)val_ < 0) {
+        negative = 1;
+        val_ = -(long long)val_;
+    }
+
+    if (val_ == 0) {
+        putchar('0');
+        return;
+    }
+
+    while (val_ > 0) {
+        int digit = val_ % base;
+        buf[i++] = digit < 10 ? '0' + digit : 'a' + (digit - 10);
+        val_ /= base;
+    }
+
+    if (negative) {
+        putchar('-');
+    }
+
+    while (--i >= 0) {
+        putchar(buf[i]);
+    }
+}
+
+
+uniq int printf(const char* fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+
+    const char* p;
     for (p = fmt; *p; p++) {
         if (*p != '%') {
             putchar(*p);
             continue;
         }
 
-        p++;  // 
-        switch (*p) {
-        case 'd': {
-            int val_ = va_arg(ap, int);
-            printint(val_, 10, 1);
-            break;
-        }
-        case 'x': {
-            unsigned int val_ = va_arg(ap, unsigned int);
-            printint(val_, 16, 0);
-            break;
-        }
-        case 'p': {
-            unsigned long val_ = (unsigned long)va_arg(ap, void*);
-            putchar('0');
-            putchar('x');
-            printint(val_, 16, 0);
-            break;
-        }
-        case 's': {
-            const char* s = va_arg(ap, const char*);
-            if (!s) s = "(null)";
-            while (*s)
-                putchar(*s++);
-            break;
-        }
-        case 'c': {
-            char c = (char)va_arg(ap, int);
-            putchar(c);
-            break;
-        }
-        case '%': {
-            putchar('%');
-            break;
-        }
-        default: {
-            putchar('%');
-            putchar(*p);  // 
-            break;
-        }
+        p++; // %の次の文字
+
+        if (*p == 'l') {
+            // 'l'が連続しているかチェック。%lx or %llx 対応
+            int lcount = 1;
+            if (*(p+1) == 'l') {
+                lcount = 2;
+                p++;
+            }
+            p++;
+
+            switch (*p) {
+                case 'x': {
+                    if (lcount == 1) {
+                        unsigned long val_ = va_arg(ap, unsigned long);
+                        printlong(val_, 16, 0);
+                    } else {
+                        unsigned long long val_ = va_arg(ap, unsigned long long);
+                        printlonglong(val_, 16, 0);
+                    }
+                    break;
+                }
+                case 'd': {
+                    if (lcount == 1) {
+                        long val_ = va_arg(ap, long);
+                        printlong(val_, 10, 1);
+                    } else {
+                        long long val_ = va_arg(ap, long long);
+                        printlonglong(val_, 10, 1);
+                    }
+                    break;
+                }
+                default: {
+                    putchar('%');
+                    for (int i=0; i<lcount; i++) putchar('l');
+                    putchar(*p);
+                    break;
+                }
+            }
+        } else {
+            // 従来の1文字指定子
+            switch (*p) {
+                case 'd': {
+                    int val_ = va_arg(ap, int);
+                    printint(val_, 10, 1);
+                    break;
+                }
+                case 'x': {
+                    unsigned int val_ = va_arg(ap, unsigned int);
+                    printint(val_, 16, 0);
+                    break;
+                }
+                case 'p': {
+                    unsigned long val_ = (unsigned long)va_arg(ap, void*);
+                    putchar('0'); putchar('x');
+                    printlong(val_, 16, 0);
+                    break;
+                }
+                case 's': {
+                    const char* s = va_arg(ap, const char*);
+                    if (!s) s = "(null)";
+                    while (*s) putchar(*s++);
+                    break;
+                }
+                case 'c': {
+                    char c = (char)va_arg(ap, int);
+                    putchar(c);
+                    break;
+                }
+                case '%': {
+                    putchar('%');
+                    break;
+                }
+                default: {
+                    putchar('%');
+                    putchar(*p);
+                    break;
+                }
+            }
         }
     }
 
@@ -781,7 +797,7 @@ uniq int printf(const char* fmt, ...) {
     return 0;
 }
 
-void puts(const char* s);
+extern void puts(const char* s);
 
 uniq void perror(char* str)
 {

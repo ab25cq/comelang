@@ -81,6 +81,8 @@ struct proc* alloc_proc(void (*task)()) {
 void load_context(struct context*);
 void save_context(struct context*);
 
+void* memset(void *dst, int c, unsigned int n);
+
 void reset_watchdog();
 extern volatile char last_key;
 void putc(char c);
@@ -156,6 +158,7 @@ void puts_direct(const char* s);
 #define UART_IRQ 10
 
 void plic_enable(int irq);
+void mmu_init();
 
 int main()
 {
@@ -163,6 +166,7 @@ int main()
     plic_init();
     plic_enable(UART_IRQ);
     uart_init();
+    mmu_init();
     
     alloc_proc(task1);
     alloc_proc(task2);
