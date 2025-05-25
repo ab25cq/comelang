@@ -493,11 +493,16 @@ struct cpu
 };
 
 struct cpu gCPU;
+typedef unsigned long  long pte_t;
+
+typedef unsigned long  long* pagetable_t;
+
 struct proc
 {
     struct context context;
     struct proc* parent;
     char* stack;
+    unsigned long  long* pagetable;
 };
 
 struct proc* gProc[128];
@@ -523,11 +528,13 @@ void mutex_enter_blocking(struct anonymous_typeX2* mutex);
 void mutex_exit(struct anonymous_typeX2* mutex);
 void putchar(int c);
 void puts(const char* s);
+void user_mmu_init(unsigned long  long* user_pagetable);
 struct proc* alloc_proc(void (*task)());
 void load_context(struct context* anonymous_var_nameX33);
 void save_context(struct context* anonymous_var_nameX34);
 void reset_watchdog();
 void putc(char c);
+void enable_mmu(unsigned long  long* kernel_pagetable);
 void yield();
 void task1();
 void task2();
@@ -838,6 +845,7 @@ struct proc* __result_obj__1;
     result_1->stack=calloc(1,256);
     result_1->context.sp=(unsigned long  long)(result_1->stack+256);
     result_1->context.ra=(unsigned long  long)task;
+    user_mmu_init(result_1->pagetable);
     gProc[gNumProc++]=result_1;
     __result_obj__1 = result_1;
     return __result_obj__1;
@@ -860,6 +868,7 @@ void yield(){
     }
     reset_watchdog();
     p=gProc[gActiveProc];
+    enable_mmu(p->pagetable);
     load_context(&p->context);
 }
 

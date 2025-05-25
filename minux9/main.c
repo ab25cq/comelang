@@ -42,10 +42,15 @@ struct cpu  {
 
 struct cpu gCPU;
 
+typedef uint64_t pte_t;
+typedef pte_t* pagetable_t; // 512
+
 struct proc {
     struct context context;      // swtch() here to run process
     struct proc *parent;         // Parent process
     char* stack;
+    
+    pagetable_t pagetable;
 };
 
 #define NPROC 128
@@ -63,6 +68,8 @@ int gNumProc = 0;
 volatile int gCountTask1 = 0;
 volatile int gCountTask2 = 0;
 
+void user_mmu_init(pagetable_t user_pagetable);
+
 struct proc* alloc_proc(void (*task)()) {
     struct proc* result = calloc(1, sizeof(struct proc));
     
@@ -72,6 +79,7 @@ struct proc* alloc_proc(void (*task)()) {
     
     result->context.sp = (uint64_t)(result->stack + 256);
     result->context.ra = (uint64_t)task;
+    user_mmu_init(result->pagetable);
 
     gProc[gNumProc++] = result;
 
@@ -90,6 +98,8 @@ void putc(char c);
 struct proc* p;
 uintptr_t saved_ra;
 uintptr_t saved_sp;
+
+void enable_mmu(pagetable_t kernel_pagetable);
 
 void yield() {
     asm volatile ("mv %0, ra" : "=r"(saved_ra));
@@ -115,6 +125,8 @@ void yield() {
     reset_watchdog();
 
     p = gProc[gActiveProc];
+    
+    enable_mmu(p->pagetable);
 
     load_context(&p->context);
 }
@@ -154,6 +166,8 @@ void uart_init();
 void trap_init();
 void uart_rx_init();
 void puts_direct(const char* s);
+
+void mmu_init();
 
 #define UART_IRQ 10
 
