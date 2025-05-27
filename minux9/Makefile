@@ -22,7 +22,8 @@ kernel.elf:
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
 
 run: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -serial mon:stdio > aaa
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -serial mon:stdio
+      
 
 debug: kernel.elf
 	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -S -gdb tcp::3777 &

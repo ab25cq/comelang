@@ -7,7 +7,6 @@ SECTIONS
   .rodata : { *(.rodata*) }
   .data : { *(.data*) }
   .sdata : { *(.sdata*) }
-  /* .bss : { *(.bss*) } */
   .bss : { *(.bss) *(.bss.*) *(.sbss) *(.sbss.*) }
   . += 0x8000;
   stack_top = .;

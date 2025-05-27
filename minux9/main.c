@@ -69,6 +69,7 @@ volatile int gCountTask1 = 0;
 volatile int gCountTask2 = 0;
 
 void user_mmu_init(pagetable_t user_pagetable);
+pagetable_t create_pagetable();
 
 struct proc* alloc_proc(void (*task)()) {
     struct proc* result = calloc(1, sizeof(struct proc));
@@ -79,11 +80,35 @@ struct proc* alloc_proc(void (*task)()) {
     
     result->context.sp = (uint64_t)(result->stack + 256);
     result->context.ra = (uint64_t)task;
+    
+    result->pagetable = create_pagetable();
+    
     user_mmu_init(result->pagetable);
 
     gProc[gNumProc++] = result;
 
     return result;
+}
+
+uint64_t load_program(pagetable_t pagetable);
+
+void alloc_prog() 
+{
+    struct proc* result = calloc(1, sizeof(struct proc));
+    
+    memset(result, 0, sizeof(struct proc));
+    
+    result->stack = calloc(1, 256);
+    
+    result->context.sp = (uint64_t)(result->stack + 256);
+
+    gProc[gNumProc++] = result;
+    
+    result->pagetable = create_pagetable();
+    
+    result->context.ra = load_program(result->pagetable);
+    
+    user_mmu_init(result->pagetable);
 }
 
 void load_context(struct context*);
@@ -174,13 +199,20 @@ void mmu_init();
 void plic_enable(int irq);
 void mmu_init();
 
+void mmu_test();
+
 int main()
 {
     trap_init();           // mtvecにtrap handler設定
     plic_init();
     plic_enable(UART_IRQ);
     uart_init();
-    mmu_init();
+//    mmu_init();
+    
+mmu_test();
+a:goto a;
+    
+    //alloc_prog();
     
     alloc_proc(task1);
     alloc_proc(task2);
@@ -191,7 +223,7 @@ int main()
     puts(xsprintf("%d\n", 1+1));
     
     struct proc *p = gProc[gActiveProc];
-
+    
     load_context(&p->context);
 
     while (1);
