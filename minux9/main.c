@@ -59,6 +59,8 @@ struct proc* gProc[NPROC];
 
 extern char _end[]; // first address after kernel.
                    // defined by kernel.ld.
+extern char _code_end[]; // first address after kernel.
+extern char stack_top[]; // first address after kernel.
 
 #define HEAP_END (_end + PGSIZE * 256)
 
@@ -163,7 +165,12 @@ void task1() {
         puts("[1B]\n");
         puts("[1C]\n");
         puts("[1D]\n");
-        "ABC".puts();
+        "ABCABC".puts();
+        {
+            var a = s"123";
+            puts(a);
+            //puts(a.to_string());
+        }
         gCountTask1++;
         yield();
     }
@@ -175,7 +182,7 @@ void task2() {
         puts("[2B]\n");
         puts("[2C]\n");
         puts("[2D]\n");
-        "ABC".puts();
+        "ABCD".puts();
         {
             var a = s"123";
             puts(a);
@@ -200,6 +207,7 @@ void plic_enable(int irq);
 void mmu_init();
 
 void mmu_test();
+void kinit();
 
 int main()
 {
@@ -207,10 +215,13 @@ int main()
     plic_init();
     plic_enable(UART_IRQ);
     uart_init();
-//    mmu_init();
+    kinit();
+    mmu_init();
     
+/*
 mmu_test();
 a:goto a;
+*/
     
     //alloc_prog();
     

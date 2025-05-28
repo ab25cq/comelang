@@ -126,6 +126,45 @@ uniq void *malloc(size_t size) {
     return (void *)(new_mem + 1); // データ領域へのポインタを返す
 }
 
+uniq void *malloc(size_t size) {
+    if (size == 0) {
+        return NULL;
+    }
+
+    // アラインメント調整 (例: 8バイトアラインメント)
+    if (size % 8 != 0) {
+        size += 8 - (size % 8);
+    }
+    size += sizeof(mem_block_t); // ヘッダ分のサイズを追加
+
+    mem_block_t *current = free_list;
+    mem_block_t *prev = NULL;
+
+    // フリーリストを検索して、十分なサイズの空きブロックを探す
+    while (current != NULL) {
+        if (current->size >= size) {
+            if (prev == NULL) {
+                free_list = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            return (void *)(current + 1); // データ領域へのポインタを返す
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    // 空きブロックが見つからなかった場合、sbrkで新しい領域を確保
+    mem_block_t *new_mem = (mem_block_t *)sbrk(size);
+    if (new_mem == (void *)-1) {
+        return NULL; // メモリ不足
+    }
+
+    new_mem->size = size;
+    new_mem->next = NULL;
+    return (void *)(new_mem + 1); // データ領域へのポインタを返す
+}
+
 uniq void *calloc(size_t nmemb, size_t size) {
     size_t total_size = nmemb * size;
     if (total_size == 0) {

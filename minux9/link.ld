@@ -8,8 +8,9 @@ SECTIONS
   .data : { *(.data*) }
   .sdata : { *(.sdata*) }
   .bss : { *(.bss) *(.bss.*) *(.sbss) *(.sbss.*) }
-  . += 0x8000;
-  stack_top = .;
+  PROVIDE(_code_end = .);
+  . += 0x64000;
+  PROVIDE(stack_top = .);
   
   . = ALIGN(4096);
   TRAPFRAME = .;
@@ -17,6 +18,8 @@ SECTIONS
 
   /* End of uninitalized data segement */
   PROVIDE(_end = .);
+  . += 0x64000;
+  PROVIDE(_end2 = .);
   
   .debug_info        0 : { *(.debug_info) } 
   .debug_abbrev      0 : { *(.debug_abbrev) }
