@@ -78,9 +78,9 @@ struct proc* alloc_proc(void (*task)()) {
     
     memset(result, 0, sizeof(struct proc));
     
-    result->stack = calloc(1, 256);
+    result->stack = calloc(1, 4096);
     
-    result->context.sp = (uint64_t)(result->stack + 256);
+    result->context.sp = (uint64_t)(result->stack + 4096);
     result->context.ra = (uint64_t)task;
     
     result->pagetable = create_pagetable();
@@ -113,51 +113,35 @@ void alloc_prog()
     user_mmu_init(result->pagetable);
 }
 
-void load_context(struct context*);
-void save_context(struct context*);
-
 void* memset(void *dst, int c, unsigned int n);
 
 void reset_watchdog();
 extern volatile char last_key;
 void putc(char c);
 
-struct proc* p;
-uintptr_t saved_ra;
-uintptr_t saved_sp;
+struct proc *p ,*p2;
 
 void enable_mmu(pagetable_t kernel_pagetable);
 
-void yield() {
-    asm volatile ("mv %0, ra" : "=r"(saved_ra));
-    asm volatile ("mv %0, sp" : "=r"(saved_sp));
-    
-    p = gProc[gActiveProc];
-    
-    save_context(&p->context);
-    
-    p->context.ra = saved_ra;
-    p->context.sp = saved_sp + 16;
+void swtch(struct proc* current_proc, struct proc* next_proc);
 
-    gActiveProc++;
-    if(gActiveProc >= gNumProc) {
-        gActiveProc = 0;
-    }
-
-    if(last_key) {
-        putc(last_key);
-        last_key = 0;
-    }
-
-    reset_watchdog();
-
-    p = gProc[gActiveProc];
-    
-    enable_mmu(p->pagetable);
-
-    load_context(&p->context);
-}
-
+#define yield \
+    if(last_key) { \
+        putc(last_key); \
+        last_key = 0; \
+    } \
+    \
+    reset_watchdog(); \
+    \
+    p = gProc[gActiveProc]; \
+    gActiveProc++; \
+    if(gActiveProc >= gNumProc) { \
+        gActiveProc = 0; \
+    } \
+    p2 = gProc[gActiveProc]; \
+    \
+    enable_mmu(p2->pagetable); \
+    swtch(p, p2); \
 
 void task1() {
     while(1) {
@@ -166,13 +150,12 @@ void task1() {
         puts("[1C]\n");
         puts("[1D]\n");
         "ABCABC".puts();
-        {
             var a = s"123";
             puts(a);
             //puts(a.to_string());
-        }
+
         gCountTask1++;
-        yield();
+        yield;
     }
 }
 
@@ -183,13 +166,11 @@ void task2() {
         puts("[2C]\n");
         puts("[2D]\n");
         "ABCD".puts();
-        {
             var a = s"123";
             puts(a);
             //puts(a.to_string());
-        }
         gCountTask2++;
-        yield();
+        yield;
     }
 }
 
@@ -208,6 +189,8 @@ void mmu_init();
 
 void mmu_test();
 void kinit();
+
+void load_context(struct context*);
 
 int main()
 {

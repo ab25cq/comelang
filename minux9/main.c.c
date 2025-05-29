@@ -515,8 +515,7 @@ int gCountTask1=0;
 int gCountTask2=0;
 extern char last_key;
 struct proc* p;
-unsigned long  int saved_ra;
-unsigned long  int saved_sp;
+struct proc* p2;
 // source head
 #include <stdatomic.h>
 
@@ -535,12 +534,10 @@ unsigned long  long* create_pagetable();
 struct proc* alloc_proc(void (*task)());
 unsigned long  long load_program(unsigned long  long* pagetable);
 void alloc_prog();
-void load_context(struct context* anonymous_var_nameX34);
-void save_context(struct context* anonymous_var_nameX35);
 void reset_watchdog();
 void putc(char c);
 void enable_mmu(unsigned long  long* kernel_pagetable);
-void yield();
+void swtch(struct proc* current_proc, struct proc* next_proc);
 void task1();
 void task2();
 void plic_init();
@@ -552,6 +549,7 @@ void plic_enable(int irq);
 void mmu_init();
 void mmu_test();
 void kinit();
+void load_context(struct context* anonymous_var_nameX34);
 int main();
 void disable_interrupts();
 void enable_interrupts();
@@ -849,8 +847,8 @@ struct proc* result_1;
 struct proc* __result_obj__1;
     result_1=calloc(1,sizeof(struct proc));
     memset(result_1,0,sizeof(struct proc));
-    result_1->stack=calloc(1,256);
-    result_1->context.sp=(unsigned long  long)(result_1->stack+256);
+    result_1->stack=calloc(1,4096);
+    result_1->context.sp=(unsigned long  long)(result_1->stack+4096);
     result_1->context.ra=(unsigned long  long)task;
     result_1->pagetable=create_pagetable();
     user_mmu_init(result_1->pagetable);
@@ -871,27 +869,6 @@ struct proc* result_2;
     user_mmu_init(result_2->pagetable);
 }
 
-void yield(){
-    __asm volatile("mv %0, ra" : "=r"(saved_ra));
-    __asm volatile("mv %0, sp" : "=r"(saved_sp));
-    p=gProc[gActiveProc];
-    save_context(&p->context);
-    p->context.ra=saved_ra;
-    p->context.sp=saved_sp+16;
-    gActiveProc++;
-    if(    gActiveProc>=gNumProc    ) {
-        gActiveProc=0;
-    }
-    if(    last_key    ) {
-        putc(last_key);
-        last_key=0;
-    }
-    reset_watchdog();
-    p=gProc[gActiveProc];
-    enable_mmu(p->pagetable);
-    load_context(&p->context);
-}
-
 void task1(){
 void* __right_value0 = (void*)0;
 void* __right_value1 = (void*)0;
@@ -903,13 +880,23 @@ char* a_3;
         puts("[1D]\n");
         ((char*)(__right_value0=charp_puts("ABCABC")));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        {
-            a_3=(char*)come_increment_ref_count(xsprintf("123"));
-            puts(a_3);
-            (a_3 = come_decrement_ref_count(a_3, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-        }
+        a_3=(char*)come_increment_ref_count(xsprintf("123"));
+        puts(a_3);
         gCountTask1++;
-        yield();
+        if(        last_key        ) {
+            putc(last_key);
+            last_key=0;
+        }
+        reset_watchdog();
+        p=gProc[gActiveProc];
+        gActiveProc++;
+        if(        gActiveProc>=gNumProc        ) {
+            gActiveProc=0;
+        }
+        p2=gProc[gActiveProc];
+        enable_mmu(p2->pagetable);
+        swtch(p,p2);
+        (a_3 = come_decrement_ref_count(a_3, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     }
 }
 
@@ -924,13 +911,23 @@ char* a_4;
         puts("[2D]\n");
         ((char*)(__right_value2=charp_puts("ABCD")));
         (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        {
-            a_4=(char*)come_increment_ref_count(xsprintf("123"));
-            puts(a_4);
-            (a_4 = come_decrement_ref_count(a_4, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-        }
+        a_4=(char*)come_increment_ref_count(xsprintf("123"));
+        puts(a_4);
         gCountTask2++;
-        yield();
+        if(        last_key        ) {
+            putc(last_key);
+            last_key=0;
+        }
+        reset_watchdog();
+        p=gProc[gActiveProc];
+        gActiveProc++;
+        if(        gActiveProc>=gNumProc        ) {
+            gActiveProc=0;
+        }
+        p2=gProc[gActiveProc];
+        enable_mmu(p2->pagetable);
+        swtch(p,p2);
+        (a_4 = come_decrement_ref_count(a_4, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     }
 }
 
