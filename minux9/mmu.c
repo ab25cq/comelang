@@ -1,5 +1,52 @@
 #include <stdint.h>
 
+typedef uint64_t pte_t;
+typedef pte_t* pagetable_t; // 512
+
+struct context {
+  uint64_t ra;
+  uint64_t sp;
+  uint64_t gp;
+  uint64_t tp;
+  uint64_t t0;
+  uint64_t t1;
+  uint64_t t2;
+  uint64_t t3;
+  uint64_t t4;
+  uint64_t t5;
+  uint64_t t6;
+  uint64_t a0;
+  uint64_t a1;
+  uint64_t a2;
+  uint64_t a3;
+  uint64_t a4;
+  uint64_t a5;
+  uint64_t a6;
+  uint64_t a7;
+  uint64_t s0;
+  uint64_t s1;
+  uint64_t s2;
+  uint64_t s3;
+  uint64_t s4;
+  uint64_t s5;
+  uint64_t s6;
+  uint64_t s7;
+  uint64_t s8;
+  uint64_t s9;
+  uint64_t s10;
+  uint64_t s11;
+  uint64_t mepc;
+};
+
+struct proc {
+    struct context context;      // swtch() here to run process
+    struct proc *parent;         // Parent process
+    char* stack;
+    char* program;
+    
+    pagetable_t pagetable;
+};
+
 #define PTE_V (1L << 0)
 #define PTE_R (1L << 1)
 #define PTE_W (1L << 2)
@@ -22,7 +69,8 @@
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
 
 #define KERNBASE 0x80000000L
-#define PHYSTOP (KERNBASE + 0x8000 + 4096 + 0x8000 + 0x8000*256)
+#define PHYSTOP 0x81000000L
+#define USERBASE 0x82000000L
 
 typedef uint64_t pte_t;
 typedef pte_t* pagetable_t; // 512
@@ -39,20 +87,6 @@ void free(void *ptr);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 char* strncpy(char *s, const char *t, int n);
-
-/*
-void* kalloc()
-{
-    void* mem = calloc(1, PGSIZE);
-printf("calloc %p\n", mem);
-    return mem;
-}
-
-void kfree(void* ptr)
-{
-    free(ptr);
-}
-*/
 
 void freerange(void *pa_start, void *pa_end);
 
@@ -142,12 +176,9 @@ pte_t * walk(pagetable_t pagetable, uint64_t va, int alloc)
         puts("walk");
 
     for(int level = 2; level > 0; level--) {
-//printf("level %d PX(level, va) %x\n", level, PX(level, va));
         pte_t *pte = &pagetable[PX(level, va)];
-//printf("pte %x\n", *pte);
         if(*pte & PTE_V) {
             pagetable = (pagetable_t)PTE2PA(*pte);
-//printf("PTE2PA %p\n", PTE2PA(*pte));
         } else {
             if(!alloc || (pagetable = (pde_t*)kalloc()) == 0)
                 return 0;
@@ -162,7 +193,6 @@ pte_t * walk(pagetable_t pagetable, uint64_t va, int alloc)
 int mappages(pagetable_t pagetable, uint64_t va, uint64_t size, uint64_t pa, int perm);
 
 void* memmove(void *dst, const void *src, unsigned int n);
-
 
 int mappages(pagetable_t pagetable, uint64_t va, uint64_t size, uint64_t pa, int perm)
 {
@@ -231,6 +261,7 @@ void vmprint_rec(pagetable_t pagetable, int level) {
       if (pte & PTE_W) printf("W");
       if (pte & PTE_X) printf("X");
       if (pte & PTE_U) printf("U");
+      if (pte & PTE_V) printf("V");
       puts("");
 
       if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
@@ -264,6 +295,7 @@ void vmprint_rec(pagetable_t pagetable, uint64_t va, int level) {
       if (pte & PTE_W) printf(" W");
       if (pte & PTE_X) printf(" X");
       if (pte & PTE_U) printf(" U");
+      if (pte & PTE_V) printf(" V");
       puts("");
 
       if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
@@ -280,13 +312,20 @@ void vmprint(pagetable_t pagetable) {
 
 pagetable_t kernel_pagetable;
 
-#define SATP_MODE_SV39 (8L << 60)
+//#define SATP_MODE_SV39 (8L << 60)
 
+/*
 uint64_t make_satp(pagetable_t pagetable) {
     // pagetable は物理アドレスである必要がある
     uint64_t pa = (uint64_t)pagetable;
     return SATP_MODE_SV39 | (pa >> 12);
 }
+*/
+#define SATP_SV39 (8L << 60)
+uint64_t make_satp(pagetable_t pagetable) {
+    return SATP_SV39 | (((uint64_t)pagetable >> 12) & 0xFFFFFFFFFFF);
+}
+    
 
 void enable_mmu(pagetable_t kernel_pagetable) {
     uint64_t satp = make_satp(kernel_pagetable);
@@ -307,11 +346,19 @@ void mmu_init() {
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
     //for (uint64_t addr = KERNBASE; addr < KERNBASE + PGSIZE*20; addr += PGSIZE) {
-        mappages(kernel_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V);
+        mappages(kernel_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
     }
 
     // UART
-    mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V);
+    mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
+    asm volatile("sfence.vma zero, zero"); 
+    
+/*
+    /// USER PROGRAM
+    for (uint64_t addr = USERBASE; addr < USERBASE+0x100000; addr += PGSIZE) {
+        mappages(kernel_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V);
+    }
+*/
     
     enable_mmu(kernel_pagetable);
 }
@@ -328,11 +375,19 @@ void user_mmu_init(pagetable_t user_pagetable)
 {
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-        mappages(user_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V);
+        mappages(user_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
     }
+    
+/*
+    /// USER PROGRAM ////
+    for (uint64_t addr = USERBASE; addr < USERBASE+0x100000; addr += PGSIZE) {
+        mappages(user_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
+    }
+*/
 
     // UART
-    mappages(user_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V);
+    mappages(user_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
+    asm volatile("sfence.vma zero, zero"); 
 }
 
 #include "elf.h"
@@ -373,93 +428,62 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
     return 0;
 }
 
-uint64_t load_program(pagetable_t pagetable)
+void panic();
+
+struct proc* create_user_process()
 {
-    struct elfhdr *eh = (struct elfhdr *)user_elf;
-    if (eh->magic != ELF_MAGIC)
-        return -1;
-        
-    struct proghdr *ph = (struct proghdr *)(user_elf + eh->phoff);
+    struct proc* result = calloc(1, sizeof(struct proc));
     
+    result->stack = calloc(1, 256);
+    result->context.sp = (uint64_t)(result->stack + 256);
+    
+    result->pagetable = create_pagetable();
+
+    user_mmu_init(result->pagetable);
+    
+    struct elfhdr *eh = (struct elfhdr *)hello_elf;
+    
+    if (eh->magic != ELF_MAGIC) {
+        while(1) puts("panic");
+    }
+            
+        
+    struct proghdr *ph = (struct proghdr *)(hello_elf + eh->phoff);
+    
+    uint64_t size = ph->filesz;
+    
+    uint64_t va2 = 0;
     for (int i = 0; i < eh->phnum; i++, ph++) {
         if (ph->type != ELF_PROG_LOAD)
             continue;
-
-        for (uint64_t va = ph->vaddr; va < ph->vaddr + ph->memsz; va += PGSIZE) {
+    
+        // メモリ確保とマッピング（memsz分）
+        for (uint64_t va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
             void *pa = kalloc();
+            if (!pa) panic();
             memset(pa, 0, PGSIZE);
-            mappages(pagetable, va, PGSIZE, (uint64_t)pa, PTE_U | PTE_R | PTE_W | PTE_X | PTE_V);
+            mappages(result->pagetable, va, PGSIZE, (uint64_t)pa,
+                     PTE_U | PTE_R | PTE_W | PTE_X | PTE_V);
+//            mappages(kernel_pagetable, va, PGSIZE, (uint64_t)pa,
+//                     PTE_U | PTE_R | PTE_W | PTE_X | PTE_V);
+            asm volatile("sfence.vma zero, zero");
         }
-
-/*
-        // load data
-//        memcpy((void*)ph->vaddr, user_elf + ph->off, ph->filesz);
-        // セグメントを仮想メモリにコピー（仮想アドレスへ）
-        if (copyout(pagetable, ph->vaddr, user_elf + ph->off, ph->filesz) < 0)
-            return -1;
-*/
         
-        void* dst = walkaddr(pagetable, ph->vaddr);
-        memcpy(dst, user_elf + ph->off, ph->filesz);
+        
+        // 実行ファイルの内容を仮想アドレスに書き込み（filesz分）
+        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), hello_elf + ph->off, ph->filesz) < 0) {
+            panic();
+        }
+        else if(va2 == 0) {
+            va2 = PGROUNDDOWN(ph->vaddr);
+        }
+        asm volatile("sfence.vma zero, zero"); 
     }
+    asm volatile("sfence.vma zero, zero"); 
     
-    return (uint64_t)eh->entry;
+    /// USER PROGRAM
+    result->context.mepc = va2;
+    
+    return result;
 }
 
-/*
-void mmu_test()
-{
-    kinit();
-    kernel_pagetable = (pagetable_t)kalloc();
-    memset(kernel_pagetable, 0, PGSIZE);
-    
-    uint64_t va = 0x80000000;         // 任意の仮想アドレス
-    uint64_t pa = 0x90000000;     // 任意の物理アドレス（未使用領域ならOK）
-    uint64_t va2 = 0x80010000;         // 任意の仮想アドレス
-    uint64_t pa2 = 0x90010000;     // 任意の物理アドレス（未使用領域ならOK）
-    uint64_t va3 = 0x1000;         // 任意の仮想アドレス
-    uint64_t pa3 = 0x1000;     // 任意の物理アドレス（未使用領域ならOK）
-    uint64_t va4 = (uint64_t)_end;     // 任意の物理アドレス（未使用領域ならOK）
-    uint64_t pa4 = (uint64_t)_end;     // 任意の物理アドレス（未使用領域ならOK）
-            
-    mappages(kernel_pagetable, va, PGSIZE, pa, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(kernel_pagetable, va2, PGSIZE, pa2, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(kernel_pagetable, va3, PGSIZE, pa3, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(kernel_pagetable, va4, PGSIZE, pa4, PTE_R | PTE_W | PTE_V | PTE_U);
-    
-    vmprint(kernel_pagetable);
-    puts("\n");
-    
-    
-    void* va_ptr = walkaddr(kernel_pagetable, va);
-    if (va_ptr)
-        printf("SUCCESS VA %p maps to PA %p\n", va, va_ptr);
-    else
-        puts("walkaddr failed\n");
-        
-    void* va_ptr2 = walkaddr(kernel_pagetable, va2);
-    if (va_ptr)
-        printf("SUCCESS VA %p maps to PA %p\n", va2, va_ptr2);
-    else
-        puts("walkaddr failed\n");
-        
-    void* va_ptr3 = walkaddr(kernel_pagetable, va3);
-    if (va_ptr)
-        printf("SUCCESS VA %p maps to PA %p\n", va3, va_ptr3);
-    else
-        puts("walkaddr failed\n");
-        
-    void* va_ptr4 = walkaddr(kernel_pagetable, va4);
-    if (va_ptr)
-        printf("SUCCESS VA %p maps to PA %p\n", va4, va_ptr4);
-    else
-        puts("walkaddr failed\n");
-        
-    enable_mmu(kernel_pagetable);
-        
-    char* str = calloc(1, 4);
-    strncpy(str, "ABC", 4);
-    
-    puts(str);
-}
-*/

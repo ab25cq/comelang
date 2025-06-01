@@ -27,6 +27,7 @@ fi
 make clean
 if uname -a | grep Darwin
 then
+#    make log
 #    make run
     make debug-mac
 elif which riscv-none-elf-gcc

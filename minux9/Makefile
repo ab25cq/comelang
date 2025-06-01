@@ -1,7 +1,7 @@
 #CCPREFIX=riscv-none-elf-
 CCPREFIX=riscv64-unknown-elf-
 #CFLAGS=-march=rv64gc -mabi=lp64
-CFLAGS=
+CFLAGS=-march=rv64gc_zifencei -mabi=lp64d
 
 all: kernel.elf
 
@@ -12,9 +12,10 @@ kernel.elf:
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o trap_c.o trap.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o uart.o uart.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o plic.o plic.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o mmu.o mmu.c
-	comelang -riscv -c -g -s main.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o main.o main.c.c
+	$(CCPREFIX)gcc $(CFLAGS) -O0 -nostdlib -c -g -ffreestanding -mcmodel=medany -o mmu.o mmu.c
+#	comelang -riscv -c -g -s main.c
+	cp main.c main.c.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -O0 -g -ffreestanding -mcmodel=medany -o main.o main.c.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o mmu.o main.o 
 
 
@@ -22,21 +23,25 @@ kernel.elf:
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
 
 run: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -serial mon:stdio
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -serial mon:stdio
+
+log: kernel.elf
+	qemu-system-riscv64 -machine virt -bios none -m 128M -nographic -kernel kernel.elf -d in_asm,exec,cpu,int -D qemu.log
+            
       
 
 debug: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -S -gdb tcp::3777 &
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 &
 	gdb-multiarch kernel.elf
 	pkill -f qemu-system-riscv64
 
 debug-mac: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 128M -nographic -S -gdb tcp::3777 &
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 &
 	gdb kernel.elf
 	pkill -f qemu-system-riscv64
 
 clean:
-	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o swtch.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1 *.o
+	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o swtch.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1 *.o qemu.log
   
           
           
