@@ -1,5 +1,12 @@
 make clean
 
+if which brew
+then
+    brew tap riscv-software-src/riscv
+    brew install riscv-tools
+fi
+
+
 if which apt
 then
     sudo apt install gcc-riscv64-unknown-elf \

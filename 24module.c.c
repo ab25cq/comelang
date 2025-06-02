@@ -369,22 +369,22 @@ struct __darwin_arm_sme_state
 struct __darwin_arm_sve_z_state
 {
     char __z[16][256];
-} __attribute__((aligned(_Alignof(unsigned int))));
+} __attribute__((aligned(4)));
 
 struct __darwin_arm_sve_p_state
 {
     char __p[16][256/8];
-} __attribute__((aligned(_Alignof(unsigned int))));
+} __attribute__((aligned(4)));
 
 struct __darwin_arm_sme_za_state
 {
     char __za[4096];
-} __attribute__((aligned(_Alignof(unsigned int))));
+} __attribute__((aligned(4)));
 
 struct __darwin_arm_sme2_state
 {
     char __zt0[64];
-} __attribute__((aligned(_Alignof(unsigned int))));
+} __attribute__((aligned(4)));
 
 struct __arm_legacy_debug_state
 {

@@ -242,32 +242,32 @@ LOAD main.o
  .debug_line    0x0000000000000743      0xa16 mmu.o
  .debug_line    0x0000000000001159     0x19f8 main.o
 
-.debug_str      0x0000000000000000      0x6bf
+.debug_str      0x0000000000000000      0x6bb
  *(.debug_str)
- .debug_str     0x0000000000000000      0x6bf start.o
-                                         0x38 (size before relaxing)
- .debug_str     0x00000000000006bf       0x38 swtch.o
- .debug_str     0x00000000000006bf       0x37 trap.o
- .debug_str     0x00000000000006bf      0x199 trap_c.o
- .debug_str     0x00000000000006bf      0x142 uart.o
- .debug_str     0x00000000000006bf      0x117 plic.o
- .debug_str     0x00000000000006bf      0x36b mmu.o
- .debug_str     0x00000000000006bf      0x3ff main.o
+ .debug_str     0x0000000000000000      0x6bb start.o
+                                         0x34 (size before relaxing)
+ .debug_str     0x00000000000006bb       0x34 swtch.o
+ .debug_str     0x00000000000006bb       0x33 trap.o
+ .debug_str     0x00000000000006bb      0x199 trap_c.o
+ .debug_str     0x00000000000006bb      0x142 uart.o
+ .debug_str     0x00000000000006bb      0x117 plic.o
+ .debug_str     0x00000000000006bb      0x36b mmu.o
+ .debug_str     0x00000000000006bb      0x3ff main.o
 
 .debug_line_str
-                0x0000000000000000       0xc6
+                0x0000000000000000       0xc2
  *(.debug_line_str)
  .debug_line_str
-                0x0000000000000000       0xc6 trap_c.o
-                                         0xbf (size before relaxing)
+                0x0000000000000000       0xc2 trap_c.o
+                                         0xb7 (size before relaxing)
  .debug_line_str
-                0x00000000000000c6       0xbf uart.o
+                0x00000000000000c2       0xb7 uart.o
  .debug_line_str
-                0x00000000000000c6       0xbf plic.o
+                0x00000000000000c2       0xb7 plic.o
  .debug_line_str
-                0x00000000000000c6       0xcd mmu.o
+                0x00000000000000c2       0xc5 mmu.o
  .debug_line_str
-                0x00000000000000c6       0xce main.o
+                0x00000000000000c2       0xc6 main.o
 OUTPUT(kernel.elf elf64-littleriscv)
 
 .debug_aranges  0x0000000000000000      0x180
