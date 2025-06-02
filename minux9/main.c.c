@@ -1265,17 +1265,17 @@ static inline void w_mtvec(uint64_t x) {
     asm volatile("csrw mtvec, %0" : : "r"(x));
 }
 
-#define TIMER_INTERVAL 10000000  //  100ms 
+#define TIMER_INTERVAL 1000  //  100ms 
+#define MIE_MTIE (1 << 7)
 
 extern void timervec();  // 
 
 void enable_timer_interrupts() {
     w_mtvec((uint64_t)timervec & ~0x03);
     uint64_t now = *MTIME;
-    *MTIMECMP = now + 10000;
-    //*MTIMECMP = now + 0xFFFFFFFF;
-    w_mie(0x00);
-    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+    *MTIMECMP = now + TIMER_INTERVAL;
+    w_mie(MIE_MTIE);
+    w_mstatus(r_mstatus() | MSTATUS_MIE);
 }
 
 void disable_timer_interrupts() {
@@ -1288,9 +1288,23 @@ void disable_timer_interrupts() {
 
 extern void swtch(struct context *old, struct context *new);
 
-void timer_handler(void) {
+extern char TRAPFRAME[];
+
+void timer_reset() {
+    uint64_t now = *MTIME;
+    *MTIMECMP = now + TIMER_INTERVAL;
+}
+
+void timer_handler() {
+//puts("TIMER INTERRUPT");
     disable_timer_interrupts();
-    
+    struct proc *p = gProc[gActiveProc];
+
+    struct context *tf = (struct context*)TRAPFRAME;
+    p->context = *tf;
+
+    timer_reset(); // タイマーをリセット
+
     // カレントプロセスの保存
     struct proc *old = gProc[gActiveProc];
     gActiveProc++;
@@ -1298,13 +1312,11 @@ void timer_handler(void) {
         gActiveProc = 0;
     } 
     struct proc *new = gProc[gActiveProc];
-
-    // 次回のタイマー割り込み設定
-    *MTIMECMP = *MTIME + TIMER_INTERVAL;
     
     if (new != old) {
+        disable_timer_interrupts();
+        swtch(&gCPU.context, &p->context);
         enable_timer_interrupts();
-        swtch(&old->context, &new->context);  // コンテキストスイッチ
     }
 }
 

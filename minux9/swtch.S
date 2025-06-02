@@ -42,8 +42,36 @@ swtch:
     ld s10, 232(a1)
     ld s11, 240(a1)
     
-    ret
+    jr ra
+
+.globl trampoline
+trampoline:
+    la a0, TRAPFRAME;
+    
+    sd ra, 0(a0)
+    sd sp, 8(a0)
+    sd gp, 16(a0)
+    sd tp, 24(a0)
+    sd s0, 152(a0)
+    sd s1, 160(a0)
+    sd s2, 168(a0)
+    sd s3, 176(a0)
+    sd s4, 184(a0)
+    sd s5, 192(a0)
+    sd s6, 200(a0)
+    sd s7, 208(a0)
+    sd s8, 216(a0)
+    sd s9, 224(a0)
+    sd s10, 232(a0)
+    sd s11, 240(a0)
+    csrr a3, mepc
+    sd a3, 248(a0)
+
+    j timer_handler
+
 
 .globl timervec
 timervec:
-    j timer_handler
+    li a0, 'A'         # a0に文字'A'をロード
+    call putchar       # putchar(a0)
+    j trampoline

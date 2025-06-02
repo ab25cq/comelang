@@ -1,3 +1,3 @@
 .globl timervec
 timervec:
-    j trampoline
+    j trampolin
