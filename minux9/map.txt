@@ -14,160 +14,151 @@ LOAD trap.o
 LOAD trap_c.o
 LOAD uart.o
 LOAD plic.o
-LOAD mmu.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0x2a74
+.text           0x0000000080000000     0x2d62
  *(.text*)
  .text          0x0000000080000000       0x3e start.o
                 0x0000000080000000                _start
- .text          0x000000008000003e      0x16e swtch.o
+ .text          0x000000008000003e       0x84 swtch.o
                 0x000000008000003e                swtch
-                0x00000000800000be                sswtch
-                0x000000008000016a                load_context
- *fill*         0x00000000800001ac        0x0 
- .text          0x00000000800001ac       0x3e trap.o
-                0x00000000800001ac                trapvec
- .text          0x00000000800001ea       0xd6 trap_c.o
-                0x00000000800001ea                trap_init
-                0x0000000080000210                external_interrupt_handler
-                0x0000000080000250                timer_irq_handler
-                0x00000000800002a2                reset_watchdog
- .text          0x00000000800002c0      0x188 uart.o
-                0x00000000800002c0                uart_rx_handler
-                0x00000000800002ea                uart_init
-                0x000000008000032c                putc
-                0x000000008000036a                putchar
-                0x00000000800003a8                puts
-                0x00000000800003ea                putc_direct
-                0x000000008000040e                puts_direct
- .text          0x0000000080000448       0xd4 plic.o
-                0x0000000080000448                plic_init
-                0x000000008000049c                plic_enable
-                0x00000000800004dc                plic_claim
-                0x00000000800004f8                plic_complete
- .text          0x000000008000051c      0xa5a mmu.o
-                0x000000008000051c                kinit
-                0x0000000080000542                freerange
-                0x0000000080000596                kfree
-                0x0000000080000616                kalloc
-                0x0000000080000662                walk
-                0x0000000080000748                mappages
-                0x0000000080000858                dump_physical_memory
-                0x0000000080000922                vmprint_rec
-                0x0000000080000ab4                vmprint
-                0x0000000080000ae2                make_satp
-                0x0000000080000b0c                enable_mmu
-                0x0000000080000b3a                mmu_init
-                0x0000000080000be0                create_pagetable
-                0x0000000080000c0a                user_mmu_init
-                0x0000000080000c70                walkaddr
-                0x0000000080000ce0                copyout
-                0x0000000080000dae                create_user_process
- .text          0x0000000080000f76     0x1afe main.o
-                0x0000000080000f76                sbrk
-                0x0000000080000ff8                malloc
-                0x00000000800010d0                calloc
-                0x000000008000112c                free
-                0x0000000080001172                strdup
-                0x00000000800011cc                strcmp
-                0x0000000080001236                strstr
-                0x00000000800012d4                memset
-                0x0000000080001338                memcmp
-                0x00000000800013c0                memmove
-                0x00000000800014a0                memcpy
-                0x00000000800014d4                strncmp
-                0x0000000080001562                strncpy
-                0x00000000800015e8                strlen
-                0x0000000080001622                strncat
-                0x00000000800016a4                exit
-                0x00000000800016b4                itoa
-                0x00000000800017f6                vasprintf
-                0x0000000080001aa2                snprintf
-                0x0000000080001ed2                vsnprintf
-                0x0000000080002302                printint
-                0x0000000080002418                printlong
-                0x0000000080002516                printlonglong
-                0x0000000080002614                printf
-                0x000000008000293c                perror
-                0x000000008000295a                panic
-                0x0000000080002978                alloc_prog
-                0x00000000800029c0                main
+                0x00000000800000be                timervec
+ *fill*         0x00000000800000c2        0x2 
+ .text          0x00000000800000c4       0x3e trap.o
+                0x00000000800000c4                trapvec
+ .text          0x0000000080000102       0xd6 trap_c.o
+                0x0000000080000102                trap_init
+                0x0000000080000128                external_interrupt_handler
+                0x0000000080000168                timer_irq_handler
+                0x00000000800001ba                reset_watchdog
+ .text          0x00000000800001d8      0x188 uart.o
+                0x00000000800001d8                uart_rx_handler
+                0x0000000080000202                uart_init
+                0x0000000080000244                putc
+                0x0000000080000282                putchar
+                0x00000000800002c0                puts
+                0x0000000080000302                putc_direct
+                0x0000000080000326                puts_direct
+ .text          0x0000000080000360       0xd4 plic.o
+                0x0000000080000360                plic_init
+                0x00000000800003b4                plic_enable
+                0x00000000800003f4                plic_claim
+                0x0000000080000410                plic_complete
+ .text          0x0000000080000434     0x292e main.o
+                0x0000000080000434                sbrk
+                0x00000000800004b6                malloc
+                0x000000008000058e                calloc
+                0x00000000800005ea                free
+                0x0000000080000630                strdup
+                0x000000008000068a                strcmp
+                0x00000000800006f4                strstr
+                0x0000000080000792                memset
+                0x00000000800007f6                memcmp
+                0x000000008000087e                memmove
+                0x000000008000095e                memcpy
+                0x0000000080000992                strncmp
+                0x0000000080000a20                strncpy
+                0x0000000080000aa6                strlen
+                0x0000000080000ae0                strncat
+                0x0000000080000b62                exit
+                0x0000000080000b72                itoa
+                0x0000000080000cb4                vasprintf
+                0x0000000080000f60                snprintf
+                0x0000000080001390                vsnprintf
+                0x00000000800017c0                printint
+                0x00000000800018d6                printlong
+                0x00000000800019d4                printlonglong
+                0x0000000080001ad2                printf
+                0x0000000080001dfa                perror
+                0x0000000080001e18                panic
+                0x0000000080001e36                kinit
+                0x0000000080001e5c                freerange
+                0x0000000080001eb0                kfree
+                0x0000000080001f30                kalloc
+                0x0000000080001f7c                walk
+                0x0000000080002062                mappages
+                0x0000000080002172                dump_physical_memory
+                0x000000008000223c                vmprint_rec
+                0x00000000800023ce                vmprint
+                0x00000000800023fc                make_satp
+                0x0000000080002426                enable_mmu
+                0x0000000080002454                mmu_init
+                0x00000000800024fa                walkaddr
+                0x000000008000256a                copyout
+                0x0000000080002638                alloc_prog
+                0x000000008000288a                alloc_prog2
+                0x0000000080002b54                enable_timer_interrupts
+                0x0000000080002ba8                disable_timer_interrupts
+                0x0000000080002be2                timer_handler
+                0x0000000080002ca6                main
 
-.rodata         0x0000000080002a78      0x2df
+.rodata         0x0000000080002d68      0x2de
  *(.rodata*)
- .rodata        0x0000000080002a78       0x10 trap_c.o
- .rodata        0x0000000080002a88      0x156 mmu.o
- *fill*         0x0000000080002bde        0x2 
- .rodata        0x0000000080002be0      0x177 main.o
+ .rodata        0x0000000080002d68       0x10 trap_c.o
+ .rodata        0x0000000080002d78      0x2ce main.o
 
-.srodata        0x0000000080002d58        0x4
- .srodata       0x0000000080002d58        0x4 trap_c.o
-                0x0000000080002d58                watchdog_timeout
+.srodata        0x0000000080003048        0x4
+ .srodata       0x0000000080003048        0x4 trap_c.o
+                0x0000000080003048                watchdog_timeout
 
-.rela.dyn       0x0000000080002d60        0x0
- .rela.text     0x0000000080002d60        0x0 start.o
+.rela.dyn       0x0000000080003050        0x0
+ .rela.text     0x0000000080003050        0x0 start.o
 
-.data           0x0000000080002d60     0x13b8
+.data           0x0000000080003050     0x2770
  *(.data*)
- .data          0x0000000080002d60        0x0 start.o
- .data          0x0000000080002d60        0x0 swtch.o
- .data          0x0000000080002d60        0x0 trap.o
- .data          0x0000000080002d60        0x0 trap_c.o
- .data          0x0000000080002d60        0x0 uart.o
- .data          0x0000000080002d60        0x0 plic.o
- .data          0x0000000080002d60     0x13b8 mmu.o
-                0x0000000080002d60                hello_elf
- .data          0x0000000080004118        0x0 main.o
+ .data          0x0000000080003050        0x0 start.o
+ .data          0x0000000080003050        0x0 swtch.o
+ .data          0x0000000080003050        0x0 trap.o
+ .data          0x0000000080003050        0x0 trap_c.o
+ .data          0x0000000080003050        0x0 uart.o
+ .data          0x0000000080003050        0x0 plic.o
+ .data          0x0000000080003050     0x2770 main.o
+                0x0000000080003050                hello_elf
+                0x0000000080004408                hello2_elf
 
-.sdata          0x0000000080004118       0x10
+.sdata          0x00000000800057c0       0x10
  *(.sdata*)
- .sdata         0x0000000080004118        0x4 mmu.o
-                0x0000000080004118                hello_elf_len
- *fill*         0x000000008000411c        0x4 
- .sdata         0x0000000080004120        0x8 main.o
+ .sdata         0x00000000800057c0       0x10 main.o
+                0x00000000800057c0                hello_elf_len
+                0x00000000800057c4                hello2_elf_len
 
-.bss            0x0000000080004128      0x550
+.bss            0x00000000800057d0      0x548
  *(.bss)
- .bss           0x0000000080004128        0x0 start.o
- .bss           0x0000000080004128        0x0 swtch.o
- .bss           0x0000000080004128        0x0 trap.o
- .bss           0x0000000080004128        0x0 trap_c.o
- .bss           0x0000000080004128        0x0 uart.o
- .bss           0x0000000080004128        0x0 plic.o
- .bss           0x0000000080004128        0x0 mmu.o
- .bss           0x0000000080004128      0x510 main.o
-                0x0000000080004128                gCPU
-                0x0000000080004230                gProc
+ .bss           0x00000000800057d0        0x0 start.o
+ .bss           0x00000000800057d0        0x0 swtch.o
+ .bss           0x00000000800057d0        0x0 trap.o
+ .bss           0x00000000800057d0        0x0 trap_c.o
+ .bss           0x00000000800057d0        0x0 uart.o
+ .bss           0x00000000800057d0        0x0 plic.o
+ .bss           0x00000000800057d0      0x510 main.o
+                0x00000000800057d0                gCPU
+                0x00000000800058d8                gProc
  *(.bss.*)
  *(.sbss)
- .sbss          0x0000000080004638        0x4 trap_c.o
-                0x0000000080004638                watchdog_counter
- .sbss          0x000000008000463c        0x1 uart.o
-                0x000000008000463c                last_key
- *fill*         0x000000008000463d        0x3 
- .sbss          0x0000000080004640       0x10 mmu.o
-                0x0000000080004640                kernel_pagetable
-                0x0000000080004648                kmem
- .sbss          0x0000000080004650       0x28 main.o
-                0x0000000080004650                free_list
-                0x0000000080004658                gActiveProc
-                0x000000008000465c                gNumProc
-                0x0000000080004660                gCountTask1
-                0x0000000080004664                gCountTask2
-                0x0000000080004668                p
-                0x0000000080004670                p2
+ .sbss          0x0000000080005ce0        0x4 trap_c.o
+                0x0000000080005ce0                watchdog_counter
+ .sbss          0x0000000080005ce4        0x1 uart.o
+                0x0000000080005ce4                last_key
+ *fill*         0x0000000080005ce5        0x3 
+ .sbss          0x0000000080005ce8       0x30 main.o
+                0x0000000080005ce8                free_list
+                0x0000000080005cf0                kernel_pagetable
+                0x0000000080005cf8                gActiveProc
+                0x0000000080005cfc                gNumProc
+                0x0000000080005d00                kmem
+                0x0000000080005d08                p
+                0x0000000080005d10                p2
  *(.sbss.*)
                 [!provide]                        PROVIDE (_code_end = .)
-                0x0000000080068678                . = (. + 0x64000)
-                0x0000000080068678                PROVIDE (stack_top = .)
-                0x0000000080069000                . = ALIGN (0x1000)
-                0x0000000080069000                TRAPFRAME = .
-                0x000000008006a000                . = (. + 0x1000)
-                0x000000008006a000                PROVIDE (_end = .)
-                0x00000000800ce000                . = (. + 0x64000)
-                0x00000000800ce000                PROVIDE (_end2 = .)
+                0x0000000080069d18                . = (. + 0x64000)
+                0x0000000080069d18                PROVIDE (stack_top = .)
+                0x000000008006a000                . = ALIGN (0x1000)
+                0x000000008006a000                TRAPFRAME = .
+                0x000000008006b000                . = (. + 0x1000)
+                0x000000008006b000                PROVIDE (_end = .)
+                0x00000000800cf000                . = (. + 0x64000)
+                0x00000000800cf000                PROVIDE (_end2 = .)
 
 .riscv.attributes
                 0x0000000000000000       0x6a
@@ -184,16 +175,13 @@ LOAD main.o
  .riscv.attributes
                 0x0000000000000208       0x66 plic.o
  .riscv.attributes
-                0x000000000000026e       0x6a mmu.o
- .riscv.attributes
-                0x00000000000002d8       0x6a main.o
+                0x000000000000026e       0x6a main.o
 
 .comment        0x0000000000000000       0x19
  .comment       0x0000000000000000       0x19 trap_c.o
                                          0x1a (size before relaxing)
  .comment       0x0000000000000019       0x1a uart.o
  .comment       0x0000000000000019       0x1a plic.o
- .comment       0x0000000000000019       0x1a mmu.o
  .comment       0x0000000000000019       0x1a main.o
 
 .note.GNU-stack
@@ -205,11 +193,9 @@ LOAD main.o
  .note.GNU-stack
                 0x0000000000000000        0x0 plic.o
  .note.GNU-stack
-                0x0000000000000000        0x0 mmu.o
- .note.GNU-stack
                 0x0000000000000000        0x0 main.o
 
-.debug_info     0x0000000000000000     0x21dc
+.debug_info     0x0000000000000000     0x2073
  *(.debug_info)
  .debug_info    0x0000000000000000       0x2e start.o
  .debug_info    0x000000000000002e       0x2e swtch.o
@@ -217,10 +203,9 @@ LOAD main.o
  .debug_info    0x000000000000008a      0x18b trap_c.o
  .debug_info    0x0000000000000215      0x1b9 uart.o
  .debug_info    0x00000000000003ce      0x121 plic.o
- .debug_info    0x00000000000004ef      0xbcf mmu.o
- .debug_info    0x00000000000010be     0x111e main.o
+ .debug_info    0x00000000000004ef     0x1b84 main.o
 
-.debug_abbrev   0x0000000000000000      0x968
+.debug_abbrev   0x0000000000000000      0x6cf
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000       0x14 start.o
  .debug_abbrev  0x0000000000000014       0x14 swtch.o
@@ -228,49 +213,44 @@ LOAD main.o
  .debug_abbrev  0x000000000000003c      0x130 trap_c.o
  .debug_abbrev  0x000000000000016c       0xdb uart.o
  .debug_abbrev  0x0000000000000247       0xb2 plic.o
- .debug_abbrev  0x00000000000002f9      0x30a mmu.o
- .debug_abbrev  0x0000000000000603      0x365 main.o
+ .debug_abbrev  0x00000000000002f9      0x3d6 main.o
 
-.debug_line     0x0000000000000000     0x2b51
+.debug_line     0x0000000000000000     0x2d37
  *(.debug_line)
  .debug_line    0x0000000000000000       0x45 start.o
- .debug_line    0x0000000000000045      0x283 swtch.o
- .debug_line    0x00000000000002c8       0x9c trap.o
- .debug_line    0x0000000000000364       0xf1 trap_c.o
- .debug_line    0x0000000000000455      0x1d1 uart.o
- .debug_line    0x0000000000000626      0x11d plic.o
- .debug_line    0x0000000000000743      0xa16 mmu.o
- .debug_line    0x0000000000001159     0x19f8 main.o
+ .debug_line    0x0000000000000045      0x109 swtch.o
+ .debug_line    0x000000000000014e       0x9c trap.o
+ .debug_line    0x00000000000001ea       0xf1 trap_c.o
+ .debug_line    0x00000000000002db      0x1d1 uart.o
+ .debug_line    0x00000000000004ac      0x11d plic.o
+ .debug_line    0x00000000000005c9     0x276e main.o
 
-.debug_str      0x0000000000000000      0x6bb
+.debug_str      0x0000000000000000      0x707
  *(.debug_str)
- .debug_str     0x0000000000000000      0x6bb start.o
+ .debug_str     0x0000000000000000      0x707 start.o
                                          0x34 (size before relaxing)
- .debug_str     0x00000000000006bb       0x34 swtch.o
- .debug_str     0x00000000000006bb       0x33 trap.o
- .debug_str     0x00000000000006bb      0x199 trap_c.o
- .debug_str     0x00000000000006bb      0x142 uart.o
- .debug_str     0x00000000000006bb      0x117 plic.o
- .debug_str     0x00000000000006bb      0x36b mmu.o
- .debug_str     0x00000000000006bb      0x3ff main.o
+ .debug_str     0x0000000000000707       0x34 swtch.o
+ .debug_str     0x0000000000000707       0x33 trap.o
+ .debug_str     0x0000000000000707      0x199 trap_c.o
+ .debug_str     0x0000000000000707      0x142 uart.o
+ .debug_str     0x0000000000000707      0x117 plic.o
+ .debug_str     0x0000000000000707      0x616 main.o
 
 .debug_line_str
-                0x0000000000000000       0xc2
+                0x0000000000000000       0xc8
  *(.debug_line_str)
  .debug_line_str
-                0x0000000000000000       0xc2 trap_c.o
+                0x0000000000000000       0xc8 trap_c.o
                                          0xb7 (size before relaxing)
  .debug_line_str
-                0x00000000000000c2       0xb7 uart.o
+                0x00000000000000c8       0xb7 uart.o
  .debug_line_str
-                0x00000000000000c2       0xb7 plic.o
+                0x00000000000000c8       0xb7 plic.o
  .debug_line_str
-                0x00000000000000c2       0xc5 mmu.o
- .debug_line_str
-                0x00000000000000c2       0xc6 main.o
+                0x00000000000000c8       0xe3 main.o
 OUTPUT(kernel.elf elf64-littleriscv)
 
-.debug_aranges  0x0000000000000000      0x180
+.debug_aranges  0x0000000000000000      0x150
  .debug_aranges
                 0x0000000000000000       0x30 start.o
  .debug_aranges
@@ -284,13 +264,10 @@ OUTPUT(kernel.elf elf64-littleriscv)
  .debug_aranges
                 0x00000000000000f0       0x30 plic.o
  .debug_aranges
-                0x0000000000000120       0x30 mmu.o
- .debug_aranges
-                0x0000000000000150       0x30 main.o
+                0x0000000000000120       0x30 main.o
 
-.debug_frame    0x0000000000000000      0xba8
+.debug_frame    0x0000000000000000      0xc80
  .debug_frame   0x0000000000000000       0xd0 trap_c.o
  .debug_frame   0x00000000000000d0      0x160 uart.o
  .debug_frame   0x0000000000000230       0xd0 plic.o
- .debug_frame   0x0000000000000300      0x340 mmu.o
- .debug_frame   0x0000000000000640      0x568 main.o
+ .debug_frame   0x0000000000000300      0x980 main.o

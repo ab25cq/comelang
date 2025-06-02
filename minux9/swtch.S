@@ -29,7 +29,6 @@ swtch:
     ld sp, 8(a1)
     ld gp, 16(a1)
     ld tp, 24(a1)
-#    ld t0, 32(a1)
     ld s0, 152(a1)
     ld s1, 160(a1)
     ld s2, 168(a1)
@@ -45,86 +44,6 @@ swtch:
     
     ret
 
-.global sswtch
-sswtch:
-    sd ra, 0(a0)
-    sd sp, 8(a0)
-    sd gp, 16(a0)
-    sd tp, 24(a0)
-    sd s0, 152(a0)
-    sd s1, 160(a0)
-    sd s2, 168(a0)
-    sd s3, 176(a0)
-    sd s4, 184(a0)
-    sd s5, 192(a0)
-    sd s6, 200(a0)
-    sd s7, 208(a0)
-    sd s8, 216(a0)
-    sd s9, 224(a0)
-    sd s10, 232(a0)
-    sd s11, 240(a0)
-    csrr a3, mepc
-    sd a3, 248(a0)
-    
-    ld ra, 0(a1)
-    ld sp, 8(a1)
-    ld gp, 16(a1)
-    ld tp, 24(a1)
-#    ld t0, 32(a1)
-    ld s0, 152(a1)
-    ld s1, 160(a1)
-    ld s2, 168(a1)
-    ld s3, 176(a1)
-    ld s4, 184(a1)
-    ld s5, 192(a1)
-    ld s6, 200(a1)
-    ld s7, 208(a1)
-    ld s8, 216(a1)
-    ld s9, 224(a1)
-    ld s10, 232(a1)
-    ld s11, 240(a1)
-    ld a3, 248(a1)
-    
-    
-    # satp（ページテーブル）を使って仮想メモリを有効化
-    sfence.vma zero, zero
-    csrw satp, a2
-    sfence.vma zero, zero
-            
-    # ユーザーアドレスにジャンプ
-    csrw mepc, a3         # mepc にエントリポイントをセット
-                    
-    # ユーザーモードで戻る設定
-    csrr t0, sstatus
-    li t1, 0xFFFFFFFFFFFFFEFF
-    and t0, t0, t1
-    
-    # SPIEビットを1に設定して、sret後に割り込みを有効にする
-    li t1, (1 << 5)   # SPIE is bit 5
-    or t0, t0, t1
-    csrw sstatus, t0
-                                        
-    # ジャンプ！
-    sret
-    
-.global load_context
-load_context:
-    ld ra, 0(a0)
-    ld sp, 8(a0)
-    ld gp, 16(a0)
-    ld tp, 24(a0)
-    ld t0, 32(a0)
-    ld s0, 152(a0)
-    ld s1, 160(a0)
-    ld s2, 168(a0)
-    ld s3, 176(a0)
-    ld s4, 184(a0)
-    ld s5, 192(a0)
-    ld s6, 200(a0)
-    ld s7, 208(a0)
-    ld s8, 216(a0)
-    ld s9, 224(a0)
-    ld s10, 232(a0)
-    ld s11, 240(a0)
-    
-    ret
+.globl timervec
+timervec:
+    j timer_handler
