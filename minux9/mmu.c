@@ -345,20 +345,12 @@ void mmu_init() {
 
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-    //for (uint64_t addr = KERNBASE; addr < KERNBASE + PGSIZE*20; addr += PGSIZE) {
         mappages(kernel_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
     }
 
     // UART
     mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
-    
-/*
-    /// USER PROGRAM
-    for (uint64_t addr = USERBASE; addr < USERBASE+0x100000; addr += PGSIZE) {
-        mappages(kernel_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V);
-    }
-*/
     
     enable_mmu(kernel_pagetable);
 }
@@ -378,13 +370,6 @@ void user_mmu_init(pagetable_t user_pagetable)
         mappages(user_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
     }
     
-/*
-    /// USER PROGRAM ////
-    for (uint64_t addr = USERBASE; addr < USERBASE+0x100000; addr += PGSIZE) {
-        mappages(user_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
-    }
-*/
-
     // UART
     mappages(user_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
@@ -394,6 +379,7 @@ void user_mmu_init(pagetable_t user_pagetable)
 #include "userprog.h" // user_bin, user_bin_len
 
 void* memcpy(void *dst, const void *src, unsigned int n);
+
 // 仮想アドレス va に対応する物理アドレスを返す。
 // 対応するPTEが存在しない or 有効でない or Uビットなし → NULLを返す。
 void* walkaddr(pagetable_t pagetable, uint64_t va) {

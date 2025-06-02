@@ -28,6 +28,12 @@ void* sbrk(ptrdiff_t incr) {
     return prev;
 }
 
+void* memset(void *dst, int c, unsigned int n);
+void* memcpy(void *dst, const void *src, unsigned int n);
+int strlen(const char *s);
+int printf(const char* fmt, ...);
+extern void puts(const char* s);
+
 // メモリブロックのヘッダ構造体 (サイズと次のブロックへのポインタ)
 typedef struct mem_block {
     size_t size;
@@ -75,9 +81,6 @@ void *malloc(size_t size) {
     return (void *)(new_mem + 1); // データ領域へのポインタを返す
 }
 
-
-void* memset(void *dst, int c, unsigned int n);
-
 void *calloc(size_t nmemb, size_t size) {
     size_t total_size = nmemb * size;
     if (total_size == 0) {
@@ -104,8 +107,6 @@ void free(void *ptr) {
 
     // ここで隣接する空きブロックをマージする処理を追加すると、より効率的なメモリ管理が可能になります。
 }
-void* memcpy(void *dst, const void *src, unsigned int n);
-int strlen(const char *s);
 
 char* strdup(const char* s) {
     char* s2 = s;
@@ -145,14 +146,13 @@ char* strstr(const char* haystack, const char* needle) {
 }
 
 void* memset(void *dst, int c, unsigned int n) {
-  char *cdst = (char *) dst;
-  int i;
-  for(i = 0; i < n; i++){
-    cdst[i] = c;
-  }
-  return dst;
+    char *cdst = (char *) dst;
+    int i;
+    for(i = 0; i < n; i++){
+        cdst[i] = c;
+    }
+    return dst;
 }
-int printf(const char* fmt, ...);
 
 int memcmp(const void *v1, const void *v2, unsigned int n) {
   const unsigned char *s1, *s2;
@@ -168,7 +168,7 @@ int memcmp(const void *v1, const void *v2, unsigned int n) {
   return 0;
 }
 
- void* memmove(void *dst, const void *src, unsigned int n) {
+void* memmove(void *dst, const void *src, unsigned int n) {
   const char *s;
   char *d;
 
@@ -203,7 +203,7 @@ int strncmp(const char *p, const char *q, unsigned int n) {
   return (unsigned char)*p - (unsigned char)*q;
 }
 
- char* strncpy(char *s, const char *t, int n) {
+char* strncpy(char *s, const char *t, int n) {
   char *os;
 
   os = s;
@@ -239,8 +239,7 @@ char* strncat(char* dest, const char* src, size_t n) {
     return dest;
 }
 
-void exit(int n)
-{
+void exit(int n) {
     while(1);
 }
 
@@ -539,10 +538,7 @@ int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
 // UART1
 extern void putchar(char c);
 
-
-#include <stdint.h>
-
- void printint(int val_, int base, int sign) {
+void printint(int val_, int base, int sign) {
     char buf[33];  // 32bit最大桁数 + '\0'
     int i = 0;
     int negative = 0;
@@ -575,8 +571,7 @@ extern void putchar(char c);
     }
 }
 
-void printlong(unsigned long val_, int base, int sign) 
-{
+void printlong(unsigned long val_, int base, int sign)  {
     char buf[65];  // 64bit最大桁数 + '\0'
     int i = 0;
     int negative = 0;
@@ -608,8 +603,7 @@ void printlong(unsigned long val_, int base, int sign)
     }
 }
 
-void printlonglong(unsigned long long val_, int base, int sign) 
-{
+void printlonglong(unsigned long long val_, int base, int sign)  {
     char buf[65];
     int i = 0;
     int negative = 0;
@@ -737,10 +731,7 @@ int printf(const char* fmt, ...) {
     return 0;
 }
 
-extern void puts(const char* s);
-
-void perror(char* str)
-{
+void perror(char* str) {
     puts(str);
 }
 
@@ -850,6 +841,7 @@ struct proc* alloc_proc(void (*task)()) {
 uint64_t load_program(struct proc* proc);
 
 struct proc* create_user_process();
+
 #define USERBASE 0x82000000L
 
 void vmprint(pagetable_t pagetable);
@@ -987,71 +979,6 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len);
 // 例として pmp0 を使用します
 #define PMP_ENTRY_INDEX 0 // 使用するPMPエントリのインデックス
 
-// main関数の適切な場所（mretする前）に追加
-void setup_pmp_for_user_code() {
-    volatile uint64_t pmpcfg_val;
-    volatile uint64_t pmpaddr_val;
-    
-    uint64_t current_mstatus;
-    asm volatile("csrr %0, mstatus" : "=r"(current_mstatus));
-    printf("DEBUG: MSTATUS before PMP setup: 0x%lx\n", current_mstatus);
-
-    // 物理アドレス 0x80ff2000 にマップされている領域を保護する場合
-    // この物理アドレスは kalloc() で取得したページのアドレスです。
-    // mappages() で使用した `pa` 変数の値と同じアドレスです。
-    // 例: uint32_t *pa = (uint32_t *)kalloc();
-    // 0x80ff2000 は例であり、kalloc() の実際の返り値によって動します。
-    // あなたのprintf("XXX pa %x\n", pa); の出力結果 0x80ff2000 を使用します。
-    uint64_t target_pa_base = 0x80ff2000; // 実行したいコードの物理アドレスのベース
-
-    // PMPエントリ0 (pmpaddr0) の設定
-    // 4KBページをNAPOT (Naturally Aligned Power-of-2) で指定します。
-    // NAPOTはアドレスを右シフトして使うため、PAGE_SIZE-1 で XOR してから右シフトします。
-    // (target_pa_base | ((PGSIZE / 2) -1)) >> 2  の形式でNAPOTアドレスを計算します。
-    // PMPADDR[i] = (base_address | (size / 2) - 1) >> 2
-    // 0x80ff2000 (base) + 0x07ff (PGSIZE/2 - 1 = 2048 - 1) = 0x80ff27ff
-    // しかしNAPOTではサイズが重要なので、ページサイズ4KBの場合、
-    // pmpaddr[i] = (base >> 2) | ((size_in_bytes / 2) - 1) >> 2
-    // 正しい計算は (base_address / 4) | (power_of_2_size / 8 - 1) です。
-    // 4KBのページの場合、NAPOTエントリは `(base_address >> 2) | ((PGSIZE / 8) - 1)`
-    // あるいは `(base_address >> 2) | ((1 << (log2(PGSIZE) - 1)) -1)` となります。
-    // 簡単な方法は `base_address / 4` を `pmpaddr` に書き込み、
-    // `PMPCFG_A_NAPOT` で `PGSIZE` を指定することです。
-    // base_address = 0x80ff2000, size = 4096 (PGSIZE)
-    // NAPOT for 4KB page: pmpaddrX = (base_address / 4) + (2048 / 4 - 1) = (base_address / 4) + 511
-    // Simplest: pmpaddrX = (base_address >> 2) | ((PGSIZE >> 3) - 1) is not correct.
-    // The spec says "address / 4 | ((size / 2) - 1) / 4" for NAPOT encoding.
-    // Or, for a single 4KB page (base address = X): pmpaddrX = (X >> 2) | ((4096 / 8) - 1) = (X >> 2) | 511
-    // The base address should be 4-byte aligned, and size should be power-of-2.
-    // So for 0x80ff2000 (base) and 4096 (size):
-    pmpaddr_val = (target_pa_base >> 2) | ((PGSIZE >> 3) - 1); // 4KB for NAPOT mode
-
-    // pmpcfg0 レジスタに設定 (PMPエントリ0の設定)
-    // R (Read), W (Write), X (Execute) アクセスを許可し、NAPOTモード (Naturally Aligned Power-of-2 region)
-    pmpcfg_val = PTE_R | PTE_W | PTE_X | PMPCFG_A_NAPOT; // R/W/X許可, NAPOTモード
-
-    // pmpcfg0 は PMPエントリ0から7までを制御します。
-    // PMPエントリのインデックスに合わせてビットをシフトします。
-    // pmpcfg0 = pmpcfg[7]:pmpcfg[6]:pmpcfg[5]:pmpcfg[4]:pmpcfg[3]:pmpcfg[2]:pmpcfg[1]:pmpcfg[0]
-    // 今回はpmp0なので、ビット0-7を使用します。
-    // pmpcfg_val は既に pmp0 の設定値になっているので、そのまま pmpcfg0 に書き込みます。
-    asm volatile("csrw pmpcfg0, %0" :: "r"(pmpcfg_val));
-    asm volatile("csrw pmpaddr0, %0" :: "r"(pmpaddr_val));
-
-    // 必要に応じて、他のPMPエントリ（1-15）を無効化（A=OFF）して、意図しないアクセス制限を防ぐ
-    // pmpcfg0 の残りの部分をクリアするか、または明示的に無効化する
-    // pmpcfg0 には PMP0-PMP7 の設定がパックされているので注意
-    // : pmpcfg0 を pmp0 の設定のみにして、残りを無効化 (0) する場合
-    // pmpcfg0 = (pmpcfg_val << (PMP_ENTRY_INDEX * 8)) | (既存のpmpcfg0の残りの部分 & ~マスク);
-    // しかし、PMPCFG0を直接上書きしているので、他のエントリは0 (Disabled) になります。
-    // デフォルトで無効であれば、このままでOK。
-
-    volatile uint64_t read_pmpcfg0, read_pmpaddr0;
-    asm volatile("csrr %0, pmpcfg0" : "=r"(read_pmpcfg0));
-    asm volatile("csrr %0, pmpaddr0" : "=r"(read_pmpaddr0));
-    printf("PMPCFG0: 0x%x, PMPADDR0: 0x%x\n", read_pmpcfg0, read_pmpaddr0);
-}
-
 int main()
 {
     trap_init();           // mtvecにtrap handler設定
@@ -1060,12 +987,12 @@ int main()
     uart_init();
     kinit();
     mmu_init();
-
     
-    //alloc_prog();
+    alloc_prog();
 
-    //struct proc* p = gProc[gActiveProc];
+    struct proc* p = gProc[gActiveProc];
     
+/*
     pagetable_t pagetable = (pagetable_t)kalloc();
     memset(pagetable, 0, PGSIZE);
 
@@ -1074,22 +1001,11 @@ int main()
     pa[1] = 0x0000006f; // j 0x0
     asm volatile("fence.i");
     
-    printf("4K %d\n", ((uint64_t)pagetable % 4096) == 0);
-    
-printf("XXX pa %x\n", pa);
-printf("YYY *pa %x\n", *(uint32_t*)pa);
-printf("YYY *papaap %x\n", *(uint32_t*)0x80ff2000L);
-    
     mappages(pagetable, 0x82000000, PGSIZE, (uint64_t)pa,
              PTE_R | PTE_W | PTE_X | PTE_U | PTE_V); // ★ X 必須
+ */
 
-void* va = (void*)0x82000000;
-void* real = walkaddr(pagetable, (uint64_t)va);
-printf("walkaddr(0x%p) = %p\n", va, real);
-
-vmprint(pagetable);
-
-    uint64_t satp_val = make_satp(pagetable);
+    uint64_t satp_val = make_satp(p->pagetable);
     asm volatile("csrw satp, %0" :: "r"(satp_val));
     asm volatile("sfence.vma zero, zero");
     
