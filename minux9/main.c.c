@@ -1066,6 +1066,8 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
     return 0;
 }
 
+extern char TRAPFRAME[];
+
 void alloc_prog() {
     struct proc* result = calloc(1, sizeof(struct proc));
     
@@ -1084,6 +1086,9 @@ void alloc_prog() {
     
     // UART
     mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
+    
+    /// TRAPFRAME
+    mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)hello_elf;
@@ -1288,7 +1293,6 @@ void disable_timer_interrupts() {
 
 extern void swtch(struct context *old, struct context *new);
 
-extern char TRAPFRAME[];
 
 void timer_reset() {
     uint64_t now = *MTIME;
@@ -1296,7 +1300,6 @@ void timer_reset() {
 }
 
 void timer_handler() {
-//puts("TIMER INTERRUPT");
     disable_timer_interrupts();
     struct proc *p = gProc[gActiveProc];
 
@@ -1314,9 +1317,9 @@ void timer_handler() {
     struct proc *new = gProc[gActiveProc];
     
     if (new != old) {
-        disable_timer_interrupts();
-        swtch(&gCPU.context, &p->context);
+        enable_mmu(new->pagetable);
         enable_timer_interrupts();
+        swtch(&gCPU.context, &new->context);
     }
 }
 

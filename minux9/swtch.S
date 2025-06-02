@@ -41,8 +41,10 @@ swtch:
     ld s9, 224(a1)
     ld s10, 232(a1)
     ld s11, 240(a1)
+    ld a2, 248(a1)
+    csrw mepc, a2
     
-    jr ra
+    mret
 
 .globl trampoline
 trampoline:
@@ -72,6 +74,4 @@ trampoline:
 
 .globl timervec
 timervec:
-    li a0, 'A'         # a0に文字'A'をロード
-    call putchar       # putchar(a0)
     j trampoline
