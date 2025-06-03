@@ -1009,7 +1009,7 @@ struct {
 } kmem;
 
 void kinit() {
-  initlock(&kmem.lock, "kmem");
+    initlock(&kmem.lock, "kmem");
     freerange(_end2, (void*)PHYSTOP);
 }
 
@@ -1036,7 +1036,7 @@ void kfree(void *pa) {
 
     r = (struct run*)pa;
 
-    //  acquire(&kmem.lock);
+    acquire(&kmem.lock);
     r->next = kmem.freelist;
     kmem.freelist = r;
     release(&kmem.lock);
@@ -1047,11 +1047,11 @@ void kfree(void *pa) {
 void * kalloc(void) {
     struct run *r;
 
-    //acquire(&kmem.lock);
+    acquire(&kmem.lock);
     r = kmem.freelist;
     if(r)
         kmem.freelist = r->next;
-    //release(&kmem.lock);
+    release(&kmem.lock);
 
     if(r) {
         memset((char*)r, 5, PGSIZE); // fill with junk
@@ -1226,9 +1226,148 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
     return 0;
 }
 
+
+// Minimal virtio-blk driver for RISC-V QEMU virt machine
+// Inspired by xv6 but simplified
+
+#define VIRTIO_MMIO_BASE 0x10001000
+#define VIRTIO_MMIO_MAGIC_VALUE     (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x000))
+#define VIRTIO_MMIO_VERSION         (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x004))
+#define VIRTIO_MMIO_DEVICE_ID       (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x008))
+#define VIRTIO_MMIO_VENDOR_ID       (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x00c))
+#define VIRTIO_MMIO_DEVICE_FEATURES (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x010))
+#define VIRTIO_MMIO_DRIVER_FEATURES (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x020))
+#define VIRTIO_MMIO_GUEST_PAGE_SIZE (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x028))
+#define VIRTIO_MMIO_QUEUE_SEL       (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x030))
+#define VIRTIO_MMIO_QUEUE_NUM_MAX   (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x034))
+#define VIRTIO_MMIO_QUEUE_NUM       (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x038))
+#define VIRTIO_MMIO_QUEUE_PFN       (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x040))
+#define VIRTIO_MMIO_QUEUE_NOTIFY    (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x050))
+#define VIRTIO_MMIO_INTERRUPT_ACK   (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x060))
+#define VIRTIO_MMIO_STATUS          (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x070))
+
+#define VIRTIO_BLK_T_IN   0
+#define VIRTIO_BLK_T_OUT  1
+
+#define SECTOR_SIZE 512
+
+struct virtq_desc {
+    uint64_t addr;
+    uint32_t len;
+    uint16_t flags;
+    uint16_t next;
+};
+
+struct virtq_avail {
+    uint16_t flags;
+    uint16_t idx;
+    uint16_t ring[8];
+};
+
+struct virtq_used_elem {
+    uint32_t id;
+    uint32_t len;
+};
+
+struct virtq_used {
+    uint16_t flags;
+    uint16_t idx;
+    struct virtq_used_elem ring[8];
+};
+
+// Virtio descriptor setup for a single-block read
+struct virtio_blk_req {
+    uint32_t type;
+    uint32_t reserved;
+    uint64_t sector;
+};
+
+char disk_buf[SECTOR_SIZE] __attribute__((aligned(4096)));
+
+struct virtq_desc *desc;
+struct virtq_avail *avail;
+struct virtq_used *used;
+
+void virtio_disk_init(void) {
+    desc = (struct virtq_desc *)0x80001000;
+    avail = (struct virtq_avail *)(0x80001000 + 16 * sizeof(struct virtq_desc));
+    used = (struct virtq_used *)((char *)avail + sizeof(struct virtq_avail) + sizeof(uint16_t) * 8);
+    if (VIRTIO_MMIO_MAGIC_VALUE != 0x74726976 ||
+        VIRTIO_MMIO_VERSION != 1 ||
+        VIRTIO_MMIO_DEVICE_ID != 2 ||
+        VIRTIO_MMIO_VENDOR_ID != 0x554d4551) 
+    {
+        while (1); // panic
+    }
+
+    VIRTIO_MMIO_STATUS = 0;
+    VIRTIO_MMIO_STATUS |= 0x1; // ACKNOWLEDGE
+    VIRTIO_MMIO_STATUS |= 0x2; // DRIVER
+  
+    VIRTIO_MMIO_GUEST_PAGE_SIZE = 4096;
+  
+    VIRTIO_MMIO_QUEUE_SEL = 0;
+    uint32_t max = VIRTIO_MMIO_QUEUE_NUM_MAX;
+    if (max == 0) while (1);
+    VIRTIO_MMIO_QUEUE_NUM = 8;
+    VIRTIO_MMIO_QUEUE_PFN = (uint32_t)(0x80001000 >> 12);
+  
+    VIRTIO_MMIO_STATUS |= 0x4; // FEATURES_OK
+    VIRTIO_MMIO_STATUS |= 0x8; // DRIVER_OK
+}
+
+void virtio_disk_read_sector(uint64_t sector, void *dst) {
+    static struct virtio_blk_req req __attribute__((aligned(4096)));
+    static uint8_t status __attribute__((aligned(4096)));
+
+    req.type = VIRTIO_BLK_T_IN;
+    req.reserved = 0;
+    req.sector = sector;
+
+    memset(desc, 0, sizeof(struct virtq_desc) * 3);
+
+    desc[0].addr = (uint64_t)(uintptr_t)&req;
+    desc[0].len = sizeof(req);
+    desc[0].flags = 0x1; // NEXT
+    desc[0].next = 1;
+
+    desc[1].addr = (uint64_t)(uintptr_t)disk_buf;
+    desc[1].len = SECTOR_SIZE;
+    desc[1].flags = 0x1; // NEXT
+    desc[1].next = 2;
+  
+    desc[2].addr = (uint64_t)(uintptr_t)&status;
+    desc[2].len = 1;
+    desc[2].flags = 0; // device writes
+  
+    avail->ring[avail->idx % 8] = 0;
+    __sync_synchronize();
+    avail->idx++;
+  
+    VIRTIO_MMIO_QUEUE_NOTIFY = 0;
+  
+    while (status == 0xFF);
+  
+    memcpy(dst, disk_buf, SECTOR_SIZE);
+    status = 0xFF;
+}
+
+
 extern char TRAPFRAME[];
 
+#define ELF_SECTOR_START 0     // sector 0 から読み込み
+#define ELF_MAX_SIZE     4096  // 最大 4KB（8セクタ）
+
+char elf_buffer[ELF_MAX_SIZE];
+
 void alloc_prog() {
+    char* elf_program = hello_elf;
+    /*
+    for (int i = 0; i < 16; i++) {
+        virtio_disk_read_sector(ELF_SECTOR_START + i, elf_buffer + 512 * i);
+    }
+    */
+
     struct proc* result = calloc(1, sizeof(struct proc));
     
     result->stack = calloc(1, 256);
@@ -1251,14 +1390,14 @@ void alloc_prog() {
     mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
-    struct elfhdr *eh = (struct elfhdr *)hello_elf;
+    struct elfhdr *eh = (struct elfhdr *)elf_program;
     
     if (eh->magic != ELF_MAGIC) {
         while(1) puts("panic");
     }
             
         
-    struct proghdr *ph = (struct proghdr *)(hello_elf + eh->phoff);
+    struct proghdr *ph = (struct proghdr *)(elf_program + eh->phoff);
     
     uint64_t size = ph->filesz;
     
@@ -1279,7 +1418,7 @@ void alloc_prog() {
         
         
         // 実行ファイルの内容を仮想アドレスに書き込み（filesz分）
-        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), hello_elf + ph->off, ph->filesz) < 0) {
+        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
             panic();
         }
         else if(va2 == 0) {
@@ -1296,8 +1435,14 @@ void alloc_prog() {
 }
 
 void alloc_prog2() {
-    struct proc* result = calloc(1, sizeof(struct proc));
+    char* elf_program = hello2_elf;
+    /*
+    for (int i = 128; i < 16; i++) {
+        virtio_disk_read_sector(ELF_SECTOR_START + i, elf_program + 512 * i);
+    }
+    */
     
+    struct proc* result = calloc(1, sizeof(struct proc));
     result->stack = calloc(1, 256);
     result->context.sp = (uint64_t)(result->stack + 256);
     
@@ -1315,13 +1460,13 @@ void alloc_prog2() {
     mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
-    struct elfhdr *eh = (struct elfhdr *)hello2_elf;
+    struct elfhdr *eh = (struct elfhdr *)elf_program;
     
     if (eh->magic != ELF_MAGIC) {
         while(1) puts("panic");
     }
         
-    struct proghdr *ph = (struct proghdr *)(hello2_elf + eh->phoff);
+    struct proghdr *ph = (struct proghdr *)(elf_program + eh->phoff);
     
     uint64_t size = ph->filesz;
     
@@ -1342,7 +1487,7 @@ void alloc_prog2() {
         
         
         // 実行ファイルの内容を仮想アドレスに書き込み（filesz分）
-        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), hello2_elf + ph->off, ph->filesz) < 0) {
+        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
             panic();
         }
         else if(va2 == 0) {
@@ -1463,6 +1608,7 @@ int main()
     uart_init();
     kinit();
     mmu_init();
+    virtio_disk_init();
     //timer_init();
     
     alloc_prog();

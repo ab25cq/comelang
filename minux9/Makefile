@@ -18,6 +18,10 @@ kernel.elf:
 	xxd -i hello.elf > userprog.h  
 	riscv64-unknown-elf-gcc -nostdlib -static -T hello2.ld -o hello2.elf hello2.c
 	xxd -i hello2.elf > userprog2.h  
+	dd if=/dev/zero of=fs.img bs=1k count=512
+	dd if=hello.elf of=fs.img bs=512 seek=0 conv=notrunc
+	dd if=hello2.elf of=fs.img bs=512 seek=128 conv=notrunc
+
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -O0 -g -ffreestanding -mcmodel=medany -o main.o main.c.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o main.o 
 
@@ -26,20 +30,20 @@ kernel.elf:
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
 
 run: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -serial mon:stdio
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -serial mon:stdio -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0
 
 log: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -m 128M -nographic -kernel kernel.elf -d in_asm,exec,cpu,int -D qemu.log
+	qemu-system-riscv64 -machine virt -bios none -m 128M -nographic -kernel kernel.elf -d in_asm,exec,cpu,int -D qemu.log -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0
             
       
 
 debug: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 &
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0 &
 	gdb-multiarch kernel.elf
 	pkill -f qemu-system-riscv64
 
 debug-mac: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 &
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0 &
 	gdb kernel.elf
 	pkill -f qemu-system-riscv64
 
