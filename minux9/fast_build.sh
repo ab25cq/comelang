@@ -35,8 +35,8 @@ make clean
 if uname -a | grep Darwin
 then
 #    make log
-#    make run
-    make debug-mac
+    make run
+#    make debug-mac
 elif which riscv-none-elf-gcc
 then
     make debug CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64" 

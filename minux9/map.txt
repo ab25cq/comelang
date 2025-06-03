@@ -17,7 +17,7 @@ LOAD plic.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0x3438
+.text           0x0000000080000000     0x3794
  *(.text*)
  .text          0x0000000080000000       0x3e start.o
                 0x0000000080000000                _start
@@ -46,7 +46,7 @@ LOAD main.o
                 0x0000000080000408                plic_enable
                 0x0000000080000448                plic_claim
                 0x0000000080000464                plic_complete
- .text          0x0000000080000488     0x2fb0 main.o
+ .text          0x0000000080000488     0x330c main.o
                 0x0000000080000488                sbrk
                 0x000000008000050a                malloc
                 0x00000000800005e2                calloc
@@ -92,90 +92,90 @@ LOAD main.o
                 0x0000000080002746                make_satp
                 0x0000000080002770                enable_mmu
                 0x000000008000279e                mmu_init
-                0x0000000080002844                walkaddr
-                0x00000000800028b4                copyout
-                0x0000000080002982                virtio_disk_init
-                0x0000000080002af4                virtio_disk_read_sector
-                0x0000000080002c9c                alloc_prog
-                0x0000000080002f10                alloc_prog2
-                0x00000000800031bc                enable_timer_interrupts
-                0x0000000080003210                disable_timer_interrupts
-                0x000000008000324a                timer_reset
-                0x0000000080003276                timer_handler
-                0x0000000080003378                main
+                0x0000000080002860                walkaddr
+                0x00000000800028d0                copyout
+                0x00000000800029f6                virtio_disk_init_legacy_features_test
+                0x0000000080002d8c                read_entire_fsimg
+                0x0000000080002e22                alloc_prog
+                0x00000000800030b2                alloc_prog2
+                0x000000008000337a                enable_timer_interrupts
+                0x00000000800033ce                disable_timer_interrupts
+                0x0000000080003408                timer_reset
+                0x0000000080003434                timer_handler
+                0x000000008000358e                test_virtio_rng
+                0x00000000800036d0                main
 
-.rodata         0x0000000080003438      0x316
+.rodata         0x0000000080003798      0x85e
  *(.rodata*)
- .rodata        0x0000000080003438       0x10 trap_c.o
- .rodata        0x0000000080003448      0x306 main.o
+ .rodata        0x0000000080003798       0x10 trap_c.o
+ .rodata        0x00000000800037a8      0x84e main.o
 
-.srodata        0x0000000080003750        0x4
- .srodata       0x0000000080003750        0x4 trap_c.o
-                0x0000000080003750                watchdog_timeout
+.srodata        0x0000000080003ff8        0x4
+ .srodata       0x0000000080003ff8        0x4 trap_c.o
+                0x0000000080003ff8                watchdog_timeout
 
-.rela.dyn       0x0000000080003758        0x0
- .rela.text     0x0000000080003758        0x0 start.o
+.rela.dyn       0x0000000080004000        0x0
+ .rela.text     0x0000000080004000        0x0 start.o
 
-.data           0x0000000080003758     0x2780
+.data           0x0000000080004000     0x2780
  *(.data*)
- .data          0x0000000080003758        0x0 start.o
- .data          0x0000000080003758        0x0 swtch.o
- .data          0x0000000080003758        0x0 trap.o
- .data          0x0000000080003758        0x0 trap_c.o
- .data          0x0000000080003758        0x0 uart.o
- .data          0x0000000080003758        0x0 plic.o
- .data          0x0000000080003758     0x2780 main.o
-                0x0000000080003758                hello_elf
-                0x0000000080004b18                hello2_elf
+ .data          0x0000000080004000        0x0 start.o
+ .data          0x0000000080004000        0x0 swtch.o
+ .data          0x0000000080004000        0x0 trap.o
+ .data          0x0000000080004000        0x0 trap_c.o
+ .data          0x0000000080004000        0x0 uart.o
+ .data          0x0000000080004000        0x0 plic.o
+ .data          0x0000000080004000     0x2780 main.o
+                0x0000000080004000                hello_elf
+                0x00000000800053c0                hello2_elf
 
-.sdata          0x0000000080005ed8       0x10
+.sdata          0x0000000080006780       0x10
  *(.sdata*)
- .sdata         0x0000000080005ed8       0x10 main.o
-                0x0000000080005ed8                hello_elf_len
-                0x0000000080005edc                hello2_elf_len
+ .sdata         0x0000000080006780       0x10 main.o
+                0x0000000080006780                hello_elf_len
+                0x0000000080006784                hello2_elf_len
 
-.bss            0x0000000080006000     0x4050
+.bss            0x0000000080007000    0x22050
  *(.bss)
- .bss           0x0000000080006000        0x0 start.o
- .bss           0x0000000080006000        0x0 swtch.o
- .bss           0x0000000080006000        0x0 trap.o
- .bss           0x0000000080006000        0x0 trap_c.o
- .bss           0x0000000080006000        0x0 uart.o
- .bss           0x0000000080006000        0x0 plic.o
- .bss           0x0000000080006000     0x4001 main.o
-                0x0000000080006000                gCPU
-                0x0000000080006110                gProc
-                0x0000000080006510                kmem
-                0x0000000080007000                disk_buf
-                0x0000000080007200                elf_buffer
+ .bss           0x0000000080007000        0x0 start.o
+ .bss           0x0000000080007000        0x0 swtch.o
+ .bss           0x0000000080007000        0x0 trap.o
+ .bss           0x0000000080007000        0x0 trap_c.o
+ .bss           0x0000000080007000        0x0 uart.o
+ .bss           0x0000000080007000        0x0 plic.o
+ .bss           0x0000000080007000    0x22008 main.o
+                0x0000000080007000                gCPU
+                0x0000000080007110                gProc
+                0x0000000080007510                kmem
+                0x0000000080008000                disk_buf
+                0x0000000080009000                fsimg_buf
  *(.bss.*)
  *(.sbss)
- *fill*         0x000000008000a001        0x3 
- .sbss          0x000000008000a004        0x4 trap_c.o
-                0x000000008000a004                watchdog_counter
- .sbss          0x000000008000a008        0x1 uart.o
-                0x000000008000a008                last_key
- *fill*         0x000000008000a009        0x7 
- .sbss          0x000000008000a010       0x40 main.o
-                0x000000008000a010                free_list
-                0x000000008000a018                kernel_pagetable
-                0x000000008000a020                gActiveProc
-                0x000000008000a024                gNumProc
-                0x000000008000a028                desc
-                0x000000008000a030                avail
-                0x000000008000a038                used
-                0x000000008000a040                p
-                0x000000008000a048                p2
+ .sbss          0x0000000080029008        0x4 trap_c.o
+                0x0000000080029008                watchdog_counter
+ .sbss          0x000000008002900c        0x1 uart.o
+                0x000000008002900c                last_key
+ *fill*         0x000000008002900d        0x3 
+ .sbss          0x0000000080029010       0x40 main.o
+                0x0000000080029010                free_list
+                0x0000000080029018                kernel_pagetable
+                0x0000000080029020                gActiveProc
+                0x0000000080029024                gNumProc
+                0x0000000080029028                desc
+                0x0000000080029030                avail
+                0x0000000080029038                used
+                0x0000000080029040                p
+                0x0000000080029048                p2
  *(.sbss.*)
                 [!provide]                        PROVIDE (_code_end = .)
-                0x000000008006e050                . = (. + 0x64000)
-                0x000000008006e050                PROVIDE (stack_top = .)
-                0x000000008006f000                . = ALIGN (0x1000)
-                0x000000008006f000                TRAPFRAME = .
-                0x0000000080070000                . = (. + 0x1000)
-                0x0000000080070000                PROVIDE (_end = .)
-                0x00000000800d4000                . = (. + 0x64000)
-                0x00000000800d4000                PROVIDE (_end2 = .)
+                0x000000008008d050                . = (. + 0x64000)
+                0x000000008008d050                PROVIDE (stack_top = .)
+                0x000000008008e000                . = ALIGN (0x1000)
+                0x000000008008e000                TRAPFRAME = .
+                0x000000008008f000                . = (. + 0x1000)
+                0x000000008008f000                PROVIDE (_end = .)
+                0x00000000800f3000                . = (. + 0x64000)
+                0x00000000800f3000                PROVIDE (_end2 = .)
 
 .riscv.attributes
                 0x0000000000000000       0x6a
@@ -212,7 +212,7 @@ LOAD main.o
  .note.GNU-stack
                 0x0000000000000000        0x0 main.o
 
-.debug_info     0x0000000000000000     0x25d5
+.debug_info     0x0000000000000000     0x27e6
  *(.debug_info)
  .debug_info    0x0000000000000000       0x2e start.o
  .debug_info    0x000000000000002e       0x2e swtch.o
@@ -220,7 +220,7 @@ LOAD main.o
  .debug_info    0x000000000000008a      0x18b trap_c.o
  .debug_info    0x0000000000000215      0x1b9 uart.o
  .debug_info    0x00000000000003ce      0x121 plic.o
- .debug_info    0x00000000000004ef     0x20e6 main.o
+ .debug_info    0x00000000000004ef     0x22f7 main.o
 
 .debug_abbrev   0x0000000000000000      0x7b2
  *(.debug_abbrev)
@@ -232,7 +232,7 @@ LOAD main.o
  .debug_abbrev  0x0000000000000247       0xb2 plic.o
  .debug_abbrev  0x00000000000002f9      0x4b9 main.o
 
-.debug_line     0x0000000000000000     0x3413
+.debug_line     0x0000000000000000     0x3616
  *(.debug_line)
  .debug_line    0x0000000000000000       0x45 start.o
  .debug_line    0x0000000000000045      0x18d swtch.o
@@ -240,18 +240,18 @@ LOAD main.o
  .debug_line    0x000000000000026e       0xf1 trap_c.o
  .debug_line    0x000000000000035f      0x1d1 uart.o
  .debug_line    0x0000000000000530      0x11d plic.o
- .debug_line    0x000000000000064d     0x2dc6 main.o
+ .debug_line    0x000000000000064d     0x2fc9 main.o
 
-.debug_str      0x0000000000000000      0x834
+.debug_str      0x0000000000000000      0x914
  *(.debug_str)
- .debug_str     0x0000000000000000      0x834 start.o
+ .debug_str     0x0000000000000000      0x914 start.o
                                          0x34 (size before relaxing)
- .debug_str     0x0000000000000834       0x34 swtch.o
- .debug_str     0x0000000000000834       0x33 trap.o
- .debug_str     0x0000000000000834      0x199 trap_c.o
- .debug_str     0x0000000000000834      0x142 uart.o
- .debug_str     0x0000000000000834      0x117 plic.o
- .debug_str     0x0000000000000834      0x76e main.o
+ .debug_str     0x0000000000000914       0x34 swtch.o
+ .debug_str     0x0000000000000914       0x33 trap.o
+ .debug_str     0x0000000000000914      0x199 trap_c.o
+ .debug_str     0x0000000000000914      0x142 uart.o
+ .debug_str     0x0000000000000914      0x117 plic.o
+ .debug_str     0x0000000000000914      0x840 main.o
 
 .debug_line_str
                 0x0000000000000000       0xc8
@@ -283,8 +283,8 @@ OUTPUT(kernel.elf elf64-littleriscv)
  .debug_aranges
                 0x0000000000000120       0x30 main.o
 
-.debug_frame    0x0000000000000000      0xf58
+.debug_frame    0x0000000000000000     0x1048
  .debug_frame   0x0000000000000000       0xd0 trap_c.o
  .debug_frame   0x00000000000000d0      0x160 uart.o
  .debug_frame   0x0000000000000230       0xd0 plic.o
- .debug_frame   0x0000000000000300      0xc58 main.o
+ .debug_frame   0x0000000000000300      0xd48 main.o

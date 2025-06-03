@@ -1189,6 +1189,7 @@ void mmu_init() {
 
     // UART
     mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
     enable_mmu(kernel_pagetable);
@@ -1230,6 +1231,66 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
 // Minimal virtio-blk driver for RISC-V QEMU virt machine
 // Inspired by xv6 but simplified
 
+// Minimal xv6-style virtio-blk driver for QEMU
+// Assumes virtio-blk is attached with -device virtio-blk-device,drive=hd0
+#define SECTOR_SIZE 512
+#define NUM 8
+#define VIRTIO0 0x10001000L
+
+#define REG_DEVICE_FEATURES 0x010
+#define REG_DRIVER_FEATURES 0x020
+#define REG_QUEUE_SEL 0x030
+#define REG_QUEUE_NUM 0x034
+#define REG_QUEUE_ALIGN 0x038
+#define REG_QUEUE_PFN 0x040
+#define REG_QUEUE_NOTIFY 0x050
+#define REG_STATUS 0x070
+#define REG_MAGIC_VALUE 0x000
+#define REG_DEVICE_ID 0x008
+#define REG_VENDOR_ID 0x00c
+#define REG_VERSION           0x004 // R Device version number
+
+#define VIRTIO_BLK_T_IN 0
+#define VIRTIO_BLK_T_OUT 1
+
+struct virtq_desc {
+    uint64_t addr;
+    uint32_t len;
+    uint16_t flags;
+    uint16_t next;
+};
+
+struct virtq_avail {
+    uint16_t flags;
+    uint16_t idx;
+    uint16_t ring[NUM];
+};
+
+struct virtq_used_elem {
+    uint32_t id;
+    uint32_t len;
+};
+
+struct virtq_used {
+    uint16_t flags;
+    uint16_t idx;
+    struct virtq_used_elem ring[NUM];
+};
+
+struct virtio_blk_req {
+    uint32_t type;
+    uint32_t reserved;
+    uint64_t sector;
+};
+
+static inline void write_mmio(uint32_t offset, uint32_t val) {
+    *(volatile uint32_t *)(VIRTIO0 + offset) = val;
+}
+
+static inline uint32_t read_mmio(uint32_t offset) {
+    return *(volatile uint32_t *)(VIRTIO0 + offset);
+}
+
 #define VIRTIO_MMIO_BASE 0x10001000
 #define VIRTIO_MMIO_MAGIC_VALUE     (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x000))
 #define VIRTIO_MMIO_VERSION         (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x004))
@@ -1246,41 +1307,9 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
 #define VIRTIO_MMIO_INTERRUPT_ACK   (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x060))
 #define VIRTIO_MMIO_STATUS          (*(volatile uint32_t *)(VIRTIO_MMIO_BASE + 0x070))
 
-#define VIRTIO_BLK_T_IN   0
-#define VIRTIO_BLK_T_OUT  1
 
 #define SECTOR_SIZE 512
 
-struct virtq_desc {
-    uint64_t addr;
-    uint32_t len;
-    uint16_t flags;
-    uint16_t next;
-};
-
-struct virtq_avail {
-    uint16_t flags;
-    uint16_t idx;
-    uint16_t ring[8];
-};
-
-struct virtq_used_elem {
-    uint32_t id;
-    uint32_t len;
-};
-
-struct virtq_used {
-    uint16_t flags;
-    uint16_t idx;
-    struct virtq_used_elem ring[8];
-};
-
-// Virtio descriptor setup for a single-block read
-struct virtio_blk_req {
-    uint32_t type;
-    uint32_t reserved;
-    uint64_t sector;
-};
 
 char disk_buf[SECTOR_SIZE] __attribute__((aligned(4096)));
 
@@ -1288,85 +1317,139 @@ struct virtq_desc *desc;
 struct virtq_avail *avail;
 struct virtq_used *used;
 
-void virtio_disk_init(void) {
-    desc = (struct virtq_desc *)0x80001000;
-    avail = (struct virtq_avail *)(0x80001000 + 16 * sizeof(struct virtq_desc));
-    used = (struct virtq_used *)((char *)avail + sizeof(struct virtq_avail) + sizeof(uint16_t) * 8);
-    if (VIRTIO_MMIO_MAGIC_VALUE != 0x74726976 ||
-        VIRTIO_MMIO_VERSION != 1 ||
-        VIRTIO_MMIO_DEVICE_ID != 2 ||
-        VIRTIO_MMIO_VENDOR_ID != 0x554d4551) 
-    {
-        while (1); // panic
+
+// virtio_disk_init_legacy_test をこちらに置き換えてください。
+
+// レガシー VirtIO MMIO レジスタ (一部)
+#define REG_GUEST_PAGE_SIZE   0x028 // W Guest page size
+#define REG_QUEUE_PFN         0x040 // RW Guest physical page number of the virtual queue
+
+void virtio_disk_init_legacy_features_test() {
+    // Step 1: Reset the device.
+    write_mmio(REG_STATUS, 0);
+    for(volatile int i=0; i<10000; i++); // 短い待機
+
+    // Step 2: Read IDs and Version
+    uint32_t magic = read_mmio(REG_MAGIC_VALUE);
+    uint32_t version = read_mmio(REG_VERSION);
+    uint32_t dev_id_before_init = read_mmio(REG_DEVICE_ID); // 初期状態のDeviceID
+    uint32_t vend_id = read_mmio(REG_VENDOR_ID);
+
+    printf("--- VirtIO ID Check (Legacy Features Test) ---\n");
+    printf(" magic:     0x%x\n", magic);
+    printf(" version:   0x%x\n", version);
+    printf(" device_id (initial): 0x%x\n", dev_id_before_init);
+    printf(" vendor_id: 0x%x\n", vend_id);
+
+    if (magic != 0x74726976 || vend_id != 0x554d4551) {
+         puts("Basic VirtIO MMIO not detected or wrong vendor.\n");
+         while(1);
     }
+    if (version != 1) {
+        printf("This test expects a Legacy VirtIO Device (version 1), but got version %d.\n", version);
+        while(1);
+    }
+    puts("Detected Legacy VirtIO Device (version 1).\n");
 
-    VIRTIO_MMIO_STATUS = 0;
-    VIRTIO_MMIO_STATUS |= 0x1; // ACKNOWLEDGE
-    VIRTIO_MMIO_STATUS |= 0x2; // DRIVER
-  
-    VIRTIO_MMIO_GUEST_PAGE_SIZE = 4096;
-  
-    VIRTIO_MMIO_QUEUE_SEL = 0;
-    uint32_t max = VIRTIO_MMIO_QUEUE_NUM_MAX;
-    if (max == 0) while (1);
-    VIRTIO_MMIO_QUEUE_NUM = 8;
-    VIRTIO_MMIO_QUEUE_PFN = (uint32_t)(0x80001000 >> 12);
-  
-    VIRTIO_MMIO_STATUS |= 0x4; // FEATURES_OK
-    VIRTIO_MMIO_STATUS |= 0x8; // DRIVER_OK
+    // Step 3: Set ACKNOWLEDGE and DRIVER status bits
+    uint32_t current_status = read_mmio(REG_STATUS);
+    current_status |= 1; // ACKNOWLEDGE
+    write_mmio(REG_STATUS, current_status);
+
+    current_status = read_mmio(REG_STATUS);
+    current_status |= 2; // DRIVER
+    write_mmio(REG_STATUS, current_status);
+    
+    for(volatile int i=0; i<10000; i++); // 短い待機
+    uint32_t dev_id_after_ack_driver = read_mmio(REG_DEVICE_ID);
+    printf(" device_id (after ACK/DRIVER): 0x%x\n", dev_id_after_ack_driver);
+
+
+    // Step 4: Feature negotiation
+    uint32_t device_features = read_mmio(REG_DEVICE_FEATURES);
+    printf(" Device Features: 0x%x\n", device_features);
+    // ドライバがサポトするフィーチャーをここで選択・設定します。
+    // レガシーvirtio-blkでは、特にネゴシエートすべき重要なフィーチャーは少ないですが、
+    // 例えば VIRTIO_BLK_F_RO (読み取り専用) などがあります。
+    // ここでは、デバイスが提示するフィーチャーをそのまま受け入れます。
+    // (実際には、ドライバがサポートするフィーチャーとのANDを取るなどします)
+    uint32_t driver_accepted_features = device_features; 
+    write_mmio(REG_DRIVER_FEATURES, driver_accepted_features);
+
+    // Step 4.1: FEATURES_OK ビットを立てる
+    current_status = read_mmio(REG_STATUS);
+    current_status |= 4; // FEATURES_OK
+    write_mmio(REG_STATUS, current_status);
+
+    // FEATURES_OKがセットされたか確認 (任意)
+    current_status = read_mmio(REG_STATUS);
+    if (!(current_status & 4)) {
+        puts("virtio-blk: Failed to set FEATURES_OK bit.\n");
+        //  while(1); // ここで停止するかはデバッグ次第
+    } else {
+        puts("FEATURES_OK bit is set.");
+    }
+    
+    for(volatile int i=0; i<10000; i++); // 短い待機
+    uint32_t dev_id_after_features_ok = read_mmio(REG_DEVICE_ID);
+    printf(" device_id (after FEATURES_OK): 0x%x\n", dev_id_after_features_ok);
+
+    if (dev_id_after_features_ok != 2) {
+        printf("virtio-blk: invalid device id %d after FEATURES_OK. Expected 2.\n", dev_id_after_features_ok);
+        while(1); // ここで期待値でなければ停止
+    }
+    puts("Device ID is 2 (Block Device) after FEATURES_OK - Proceeding with queue setup.\n");
+
+    // Step 5: Queue Setup (Legacy uses Queue PFN)
+    write_mmio(REG_QUEUE_SEL, 0); // Select queue 0
+    
+    uint32_t qsz_max = read_mmio(REG_QUEUE_NUM);
+    if (qsz_max == 0 || qsz_max < NUM) { // NUMはドライバ側のdesc配列のサイズ
+         printf("virtio-blk: queue 0 max size (%d) is insufficient or zero (legacy).\n", qsz_max);
+        while(1);
+    }
+    // レガシーではREG_QUEUE_NUMは読み取り専用でデバイスの最大サポートサイズを示す
+    // ドライバはNUM <= qsz_max の範囲でキューを使用する
+
+    write_mmio(REG_GUEST_PAGE_SIZE, PGSIZE);
+
+    uint64_t queue_base_pa = (uint64_t)(uintptr_t)desc;
+    if ((queue_base_pa % PGSIZE) != 0) {
+        printf("virtio-blk: desc array PA 0x%lx is not page aligned for PFN.\n", queue_base_pa);
+        while(1);
+    }
+    write_mmio(REG_QUEUE_PFN, (uint32_t)(queue_base_pa >> PGSHIFT));
+    printf("Set Queue PFN to 0x%x (PA: 0x%lx)\n", (uint32_t)(queue_base_pa >> PGSHIFT), queue_base_pa);
+
+    // Step 6: Driver OK
+    current_status = read_mmio(REG_STATUS);
+    current_status |= 8; // DRIVER_OK
+    write_mmio(REG_STATUS, current_status);
+
+    puts("virtio-blk legacy device initialization with features_ok step completed.\n");
 }
-
-void virtio_disk_read_sector(uint64_t sector, void *dst) {
-    static struct virtio_blk_req req __attribute__((aligned(4096)));
-    static uint8_t status __attribute__((aligned(4096)));
-
-    req.type = VIRTIO_BLK_T_IN;
-    req.reserved = 0;
-    req.sector = sector;
-
-    memset(desc, 0, sizeof(struct virtq_desc) * 3);
-
-    desc[0].addr = (uint64_t)(uintptr_t)&req;
-    desc[0].len = sizeof(req);
-    desc[0].flags = 0x1; // NEXT
-    desc[0].next = 1;
-
-    desc[1].addr = (uint64_t)(uintptr_t)disk_buf;
-    desc[1].len = SECTOR_SIZE;
-    desc[1].flags = 0x1; // NEXT
-    desc[1].next = 2;
-  
-    desc[2].addr = (uint64_t)(uintptr_t)&status;
-    desc[2].len = 1;
-    desc[2].flags = 0; // device writes
-  
-    avail->ring[avail->idx % 8] = 0;
-    __sync_synchronize();
-    avail->idx++;
-  
-    VIRTIO_MMIO_QUEUE_NOTIFY = 0;
-  
-    while (status == 0xFF);
-  
-    memcpy(dst, disk_buf, SECTOR_SIZE);
-    status = 0xFF;
-}
-
 
 extern char TRAPFRAME[];
 
-#define ELF_SECTOR_START 0     // sector 0 から読み込み
-#define ELF_MAX_SIZE     4096  // 最大 4KB（8セクタ）
+#define FSIMG_SECTORS 256
+#define SECTOR_SIZE 512
+#define FSIMG_TOTAL_SIZE (FSIMG_SECTORS * SECTOR_SIZE)
 
-char elf_buffer[ELF_MAX_SIZE];
+char fsimg_buf[FSIMG_TOTAL_SIZE] __attribute__((aligned(4096)));
+
+void read_entire_fsimg() {
+    for (int i = 0; i < FSIMG_SECTORS; i++) {
+//        virtio_disk_read_sector(i, fsimg_buf + i * SECTOR_SIZE);
+    }
+puts("First few bytes of fsimg_buf:\n");
+for (int i = 0; i < 16; i++) {
+    printf("%x\n", fsimg_buf[i]); puts(" ");
+}
+puts("\n");
+}
 
 void alloc_prog() {
-    char* elf_program = hello_elf;
-    /*
-    for (int i = 0; i < 16; i++) {
-        virtio_disk_read_sector(ELF_SECTOR_START + i, elf_buffer + 512 * i);
-    }
-    */
+    char* elf_program = fsimg_buf;
 
     struct proc* result = calloc(1, sizeof(struct proc));
     
@@ -1385,6 +1468,7 @@ void alloc_prog() {
     
     // UART
     mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     
     /// TRAPFRAME
     mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
@@ -1435,12 +1519,7 @@ void alloc_prog() {
 }
 
 void alloc_prog2() {
-    char* elf_program = hello2_elf;
-    /*
-    for (int i = 128; i < 16; i++) {
-        virtio_disk_read_sector(ELF_SECTOR_START + i, elf_program + 512 * i);
-    }
-    */
+    char* elf_program = fsimg_buf + 128 * SECTOR_SIZE;
     
     struct proc* result = calloc(1, sizeof(struct proc));
     result->stack = calloc(1, 256);
@@ -1458,6 +1537,7 @@ void alloc_prog2() {
     
     // UART
     mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)elf_program;
@@ -1600,6 +1680,44 @@ void timer_handler() {
     }
 }
 
+#define VIRTIO_RNG_BASE 0x10002000L // 仮のアドレス。QEMUのデバイスツリーで確認が必要
+
+static inline void write_mmio_rng(uint32_t offset, uint32_t val) {
+    *(volatile uint32_t *)(VIRTIO_RNG_BASE + offset) = val;
+}
+static inline uint32_t read_mmio_rng(uint32_t offset) {
+    return *(volatile uint32_t *)(VIRTIO_RNG_BASE + offset);
+}
+
+void test_virtio_rng() {
+    puts("--- VirtIO RNG Device Test ---");
+
+    // RNGデバイスをリセット
+    write_mmio_rng(REG_STATUS, 0);
+    for(volatile int i=0; i<10000; i++);
+
+    uint32_t magic = read_mmio_rng(REG_MAGIC_VALUE);
+    uint32_t version = read_mmio_rng(REG_VERSION);
+    uint32_t dev_id = read_mmio_rng(REG_DEVICE_ID);
+    uint32_t vend_id = read_mmio_rng(REG_VENDOR_ID);
+
+    printf(" RNG Magic: 0x%x (Expected 0x74726976)\n", magic);
+    printf(" RNG Version: 0x%x (Expected 1 or 2)\n", version);
+    printf(" RNG DeviceID: 0x%x (Expected 4 for RNG)\n", dev_id);
+    printf(" RNG VendorID: 0x%x (Expected 0x554d4551 for QEMU)\n", vend_id);
+
+    if (magic == 0x74726976 && vend_id == 0x554d4551) {
+        if ((version == 1 || version == 2) && dev_id == 4) {
+            puts("VirtIO RNG device identified successfully!");
+        } else {
+            puts("VirtIO RNG device identified, but version or device_id is unexpected.");
+        }
+    } else {
+        puts("Failed to identify VirtIO RNG device.");
+    }
+}
+
+
 int main()
 {
     trap_init();           // mtvecにtrap handler設定
@@ -1608,8 +1726,11 @@ int main()
     uart_init();
     kinit();
     mmu_init();
-    virtio_disk_init();
+    //virtio_disk_init();
+    virtio_disk_init_legacy_features_test();
     //timer_init();
+    
+    read_entire_fsimg();
     
     alloc_prog();
     alloc_prog2();

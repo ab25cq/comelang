@@ -30,7 +30,11 @@ kernel.elf:
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
 
 run: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -serial mon:stdio -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0
+
+
+
+#	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -serial mon:stdio -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0 > aaa
 
 log: kernel.elf
 	qemu-system-riscv64 -machine virt -bios none -m 128M -nographic -kernel kernel.elf -d in_asm,exec,cpu,int -D qemu.log -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0
@@ -38,7 +42,7 @@ log: kernel.elf
       
 
 debug: kernel.elf
-	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 -drive file=fs.img,format=raw,if=none,id=fsdisk -device virtio-blk-device,drive=fsdisk,bus=virtio-mmio-bus.0 &
+	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -S -gdb tcp::3777 -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 &
 	gdb-multiarch kernel.elf
 	pkill -f qemu-system-riscv64
 
