@@ -31,6 +31,7 @@ kernel.elf:
 
 run: kernel.elf
 	qemu-system-riscv64 -machine virt -bios none -kernel kernel.elf -m 512M -nographic -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0
+              
 
 
 
