@@ -778,9 +778,16 @@ struct context {
 struct cpu {
     struct proc *proc;          // The process running on this cpu, or null.
     struct context context;     // swtch() here to enter scheduler().
+    int noff;                   // Depth of push_off() nesting.
+    int intena;                 // Were interrupts enabled before push_off()?
 };
 
 struct cpu gCPU;
+
+struct cpu* mycpu()
+{
+    return &gCPU;
+}
 
 typedef uint64_t pte_t;
 typedef uint64_t pde_t;
@@ -843,13 +850,166 @@ struct run {
     struct run *next;
 };
 
+static inline uint64_t r_mstatus() {
+  uint64_t x;
+  asm volatile("csrr %0, mstatus" : "=r" (x));
+  return x;
+}
+
+static inline uint64_t r_sstatus() {
+  uint64_t x;
+  asm volatile("csrr %0, sstatus" : "=r" (x) );
+  return x;
+}
+
+static inline void w_sstatus(uint64_t x) {
+    asm volatile("csrw sstatus, %0" : : "r"(x));
+}
+// mie: Machine Interrupt Enable Register
+#define MIE_MSIE (1 << 3)   // 
+#define MIE_MEIE (1 << 11)  // 
+
+// mstatus: Machine Status Register
+#define MSTATUS_MIE (1 << 3) // 
+
+#define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
+#define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
+
+#define MTIME    (volatile uint64_t*)0x0200BFF8
+#define MTIMECMP (volatile uint64_t*)0x02004000
+
+// Mutual exclusion lock.
+struct spinlock {
+  uint32_t locked;       // Is the lock held?
+
+  // For debugging:
+  char *name;        // Name of lock.
+  struct cpu *cpu;   // The cpu holding the lock.
+};
+
+
+static inline void intr_on() {
+  w_sstatus(r_sstatus() | SSTATUS_SIE);
+}
+
+// disable device interrupts
+static inline void intr_off() {
+  w_sstatus(r_sstatus() & ~SSTATUS_SIE);
+}
+
+// are device interrupts enabled?
+static inline int intr_get() {
+  uint64_t x = r_sstatus();
+  return (x & SSTATUS_SIE) != 0;
+}
+
+int holding(struct spinlock *lk);
+void pop_off(void);
+void push_off(void);
+
+// Mutual exclusion spin locks.
+void initlock(struct spinlock *lk, char *name)
+{
+    lk->name = name;
+    lk->locked = 0;
+    lk->cpu = 0;
+}
+
+// Acquire the lock.
+// Loops (spins) until the lock is acquired.
+void acquire(struct spinlock *lk)
+{
+    push_off(); // disable interrupts to avoid deadlock.
+    if(holding(lk))
+        panic("acquire");
+
+     // On RISC-V, sync_lock_test_and_set turns into an atomic swap:
+     //   a5 = 1
+     //   s1 = &lk->locked
+     //   amoswap.w.aq a5, a5, (s1)
+     while(__sync_lock_test_and_set(&lk->locked, 1) != 0)
+    ;
+
+     // Tell the C compiler and the processor to not move loads or stores
+     // past this point, to ensure that the critical section's memory
+     // references happen strictly after the lock is acquired.
+     // On RISC-V, this emits a fence instruction.
+     __sync_synchronize();
+
+     // Record info about lock acquisition for holding() and debugging.
+     lk->cpu = mycpu();
+}
+
+// Release the lock.
+void
+release(struct spinlock *lk)
+{
+    if(!holding(lk))
+        panic("release");
+
+    lk->cpu = 0;
+
+    // Tell the C compiler and the CPU to not move loads or stores
+    // past this point, to ensure that all the stores in the critical
+    // section are visible to other CPUs before the lock is released,
+    // and that loads in the critical section occur strictly before
+    // the lock is released.
+    // On RISC-V, this emits a fence instruction.
+     __sync_synchronize();
+
+    // Release the lock, equivalent to lk->locked = 0.
+    // This code doesn't use a C assignment, since the C standard
+    // implies that an assignment might be implemented with
+    // multiple store instructions.
+    // On RISC-V, sync_lock_release turns into an atomic swap:
+    //   s1 = &lk->locked
+    //   amoswap.w zero, zero, (s1)
+    __sync_lock_release(&lk->locked);
+  
+    pop_off();
+}
+
+// Check whether this cpu is holding the lock.
+// Interrupts must be off.
+int holding(struct spinlock *lk) {
+    int r;
+    r = (lk->locked && lk->cpu == mycpu());
+    return r;
+}
+
+// push_off/pop_off are like intr_off()/intr_on() except that they are matched:
+// it takes two pop_off()s to undo two push_off()s.  Also, if interrupts
+// are initially off, then push_off, pop_off leaves them off.
+
+void push_off(void)
+{
+    int old = intr_get();
+  
+    intr_off();
+    if(mycpu()->noff == 0)
+        mycpu()->intena = old;
+    mycpu()->noff += 1;
+}
+
+void pop_off(void)
+{
+    struct cpu *c = mycpu();
+    if(intr_get())
+        panic("pop_off - interruptible");
+    if(c->noff < 1)
+        panic("pop_off");
+    c->noff -= 1;
+    if(c->noff == 0 && c->intena)
+        intr_on();
+}
+
 struct {
-//  struct spinlock lock;
+  struct spinlock lock;
     struct run *freelist;
 } kmem;
 
 void kinit() {
-//  initlock(&kmem.lock, "kmem");
+  initlock(&kmem.lock, "kmem");
     freerange(_end2, (void*)PHYSTOP);
 }
 
@@ -879,7 +1039,7 @@ void kfree(void *pa) {
     //  acquire(&kmem.lock);
     r->next = kmem.freelist;
     kmem.freelist = r;
-//  release(&kmem.lock);
+    release(&kmem.lock);
 }
 
 #define USERBASE 0x82000000L
@@ -1223,34 +1383,6 @@ void mmu_init();
 void kinit();
 
 
-// mie: Machine Interrupt Enable Register
-#define MIE_MSIE (1 << 3)   // 
-#define MIE_MEIE (1 << 11)  // 
-
-// mstatus: Machine Status Register
-#define MSTATUS_MIE (1 << 3) // 
-
-static inline uint64_t r_mstatus() {
-  uint64_t x;
-  asm volatile("csrr %0, mstatus" : "=r" (x));
-  return x;
-}
-
-static inline uint64_t r_sstatus() {
-  uint64_t x;
-  asm volatile("csrr %0, sstatus" : "=r" (x) );
-  return x;
-}
-
-static inline void w_sstatus(uint64_t x) {
-    asm volatile("csrw sstatus, %0" : : "r"(x));
-}
-
-#define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
-#define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
-
-#define MTIME    (volatile uint64_t*)0x0200BFF8
-#define MTIMECMP (volatile uint64_t*)0x02004000
 
 static inline void w_mstatus(uint64_t x) {
   asm volatile("csrw mstatus, %0" : : "r" (x));
@@ -1319,7 +1451,7 @@ void timer_handler() {
     if (new != old) {
         enable_mmu(new->pagetable);
         enable_timer_interrupts();
-        swtch(&gCPU.context, &new->context);
+        swtch(&mycpu()->context, &new->context);
     }
 }
 
