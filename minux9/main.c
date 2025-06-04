@@ -37,7 +37,6 @@ int strlen(const char *s);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 
-// メモリブロックのヘッダ構造体 (サイズと次のブロックへのポインタ)
 typedef struct mem_block {
     size_t size;
     struct mem_block *next;
@@ -50,16 +49,14 @@ void *malloc(size_t size) {
         return NULL;
     }
 
-    // アラインメント調整 (例: 8バイトアラインメント)
     if (size % 8 != 0) {
         size += 8 - (size % 8);
     }
-    size += sizeof(mem_block_t); // ヘッダ分のサイズを追加
+    size += sizeof(mem_block_t); 
 
     mem_block_t *current = free_list;
     mem_block_t *prev = NULL;
 
-    // フリーリストを検索して、十分なサイズの空きブロックを探す
     while (current != NULL) {
         if (current->size >= size) {
             if (prev == NULL) {
@@ -67,21 +64,20 @@ void *malloc(size_t size) {
             } else {
                 prev->next = current->next;
             }
-            return (void *)(current + 1); // データ領域へのポインタを返す
+            return (void *)(current + 1); 
         }
         prev = current;
         current = current->next;
     }
 
-    // 空きブロックが見つからなかった場合、sbrkで新しい領域を確保
     mem_block_t *new_mem = (mem_block_t *)sbrk(size);
     if (new_mem == (void *)-1) {
-        return NULL; // メモリ不足
+        return NULL; 
     }
 
     new_mem->size = size;
     new_mem->next = NULL;
-    return (void *)(new_mem + 1); // データ領域へのポインタを返す
+    return (void *)(new_mem + 1); 
 }
 
 void *calloc(size_t nmemb, size_t size) {
@@ -102,13 +98,10 @@ void free(void *ptr) {
         return;
     }
 
-    mem_block_t *block = (mem_block_t *)ptr - 1; // ヘッダへのポインタを取得
+    mem_block_t *block = (mem_block_t *)ptr - 1;
 
-    // フリーリストの先頭に挿入 (より効率的な方法もある)
     block->next = free_list;
     free_list = block;
-
-    // ここで隣接する空きブロックをマージする処理を追加すると、より効率的なメモリ管理が可能になります。
 }
 
 char* strdup(const char* s) {
@@ -130,7 +123,7 @@ int strcmp(const char* s1, const char* s2) {
                             
 char* strstr(const char* haystack, const char* needle) {
     if (!*needle)
-        return (char*)haystack;  // 
+        return (char*)haystack;
 
     for (; *haystack; haystack++) {
         const char* h = haystack;
@@ -145,7 +138,7 @@ char* strstr(const char* haystack, const char* needle) {
             return (char*)haystack;
     }
 
-    return NULL;  // 
+    return NULL;  
 }
 
 void* memset(void *dst, int c, unsigned int n) {
@@ -236,7 +229,7 @@ char* strncat(char* dest, const char* src, size_t n) {
         *d++ = *src++;
     }
 
-    *d = '\0';  // 
+    *d = '\0';
 
     return dest;
 }
@@ -245,7 +238,6 @@ void exit(int n) {
     while(1);
 }
 
-// 汎用 itoa（符号あり/なし、base 10, 16 に対応）
 char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     char* p = buf;
     char tmp[32];
@@ -277,7 +269,6 @@ char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     return buf;
 }
 
-// 拡張版 vasprintf
 int vasprintf(char** out, const char* fmt, va_list ap) {
     char out2[512];
     char* p = out2;
@@ -311,7 +302,7 @@ int vasprintf(char** out, const char* fmt, va_list ap) {
             if (!s) s = "(null)";
             break;
         case 'c':
-            buf[0] = (char)va_arg(ap, int);  // char は int に昇格されて渡る
+            buf[0] = (char)va_arg(ap, int);  
             buf[1] = '\0';
             s = buf;
             break;
@@ -385,7 +376,7 @@ int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
             }
             break;
         case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
             s = buf;
             while (*s && remaining > 1) {
                 *p++ = *s++;
@@ -481,7 +472,7 @@ int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
             }
             break;
         case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
             s = buf;
             while (*s && remaining > 1) {
                 *p++ = *s++;
@@ -536,11 +527,10 @@ int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     return p - out;
 }
 
-// UART1
 extern void putchar(char c);
 
 void printint(int val_, int base, int sign) {
-    char buf[33];  // 32bit最大桁数 + '\0'
+    char buf[33];  
     int i = 0;
     int negative = 0;
     unsigned int uval;
@@ -573,7 +563,7 @@ void printint(int val_, int base, int sign) {
 }
 
 void printlong(unsigned long val_, int base, int sign)  {
-    char buf[65];  // 64bit最大桁数 + '\0'
+    char buf[65];  
     int i = 0;
     int negative = 0;
 
@@ -582,7 +572,6 @@ void printlong(unsigned long val_, int base, int sign)  {
         val_ = -(long)val_;
     }
 
-    // 0の特別処理
     if (val_ == 0) {
         putchar('0');
         return;
@@ -598,7 +587,6 @@ void printlong(unsigned long val_, int base, int sign)  {
         putchar('-');
     }
 
-    // 逆順に出力
     while (--i >= 0) {
         putchar(buf[i]);
     }
@@ -645,10 +633,9 @@ int printf(const char* fmt, ...) {
             continue;
         }
 
-        p++; // %の次の文字
+        p++; 
 
         if (*p == 'l') {
-            // 'l'が連続しているかチェック。%lx or %llx 対応
             int lcount = 1;
             if (*(p+1) == 'l') {
                 lcount = 2;
@@ -685,7 +672,6 @@ int printf(const char* fmt, ...) {
                 }
             }
         } else {
-            // 従来の1文字指定子
             switch (*p) {
                 case 'd': {
                     int val_ = va_arg(ap, int);
@@ -866,11 +852,11 @@ static inline void w_sstatus(uint64_t x) {
     asm volatile("csrw sstatus, %0" : : "r"(x));
 }
 // mie: Machine Interrupt Enable Register
-#define MIE_MSIE (1 << 3)   // 
-#define MIE_MEIE (1 << 11)  // 
+#define MIE_MSIE (1 << 3)   
+#define MIE_MEIE (1 << 11)  
 
 // mstatus: Machine Status Register
-#define MSTATUS_MIE (1 << 3) // 
+#define MSTATUS_MIE (1 << 3) 
 
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
 #define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
@@ -1169,16 +1155,12 @@ uint64_t make_satp(pagetable_t pagetable) {
 void enable_mmu(pagetable_t kernel_pagetable) {
     uint64_t satp = make_satp(kernel_pagetable);
     
-    // SATP に書き込み（仮想メモリ有効化）
     asm volatile("csrw satp, %0" :: "r"(satp));
             
-    // アドレス変換を反映
     asm volatile("sfence.vma zero, zero");
-                    
-    // mstatus は不要（SATPだけで切り替わる）
 }
 
-#define VIRTIO0 0x10001000L       // VirtIO MMIO ベースアドレス
+#define VIRTIO0 0x10001000L       
 #define REG_STATUS 0x070 
 
 void mmu_init() {
@@ -1207,7 +1189,7 @@ void* walkaddr(pagetable_t pagetable, uint64_t va) {
     if ((*pte & PTE_U) == 0)
         return 0;
     uint64_t pa = PTE2PA(*pte);
-    return (void*)(pa + (va & (PGSIZE - 1)));  // ページ内オフセットを足す
+    return (void*)(pa + (va & (PGSIZE - 1)));  
 }
 
 int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
@@ -1424,7 +1406,6 @@ void alloc_prog() {
         if (ph->type != ELF_PROG_LOAD)
             continue;
     
-        // メモリ確保とマッピング（memsz分）
         for (uint64_t va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
             void *pa = kalloc();
             if (!pa) panic();
@@ -1435,7 +1416,6 @@ void alloc_prog() {
         }
         
         
-        // 実行ファイルの内容を仮想アドレスに書き込み（filesz分）
         if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
             panic();
         }
@@ -1489,7 +1469,6 @@ void alloc_prog2() {
         if (ph->type != ELF_PROG_LOAD)
             continue;
     
-        // メモリ確保とマッピング（memsz分）
         for (uint64_t va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
             void *pa = kalloc();
             if (!pa) panic();
@@ -1500,7 +1479,6 @@ void alloc_prog2() {
         }
         
         
-        // 実行ファイルの内容を仮想アドレスに書き込み（filesz分）
         if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
             panic();
         }
@@ -1564,7 +1542,7 @@ static inline void w_mtvec(uint64_t x) {
 #define TIMER_INTERVAL 1000  //  100ms 
 #define MIE_MTIE (1 << 7)
 
-extern void timervec();  // 
+extern void timervec();  
 
 void enable_timer_interrupts() {
     w_mtvec((uint64_t)timervec & ~0x03);
@@ -1596,9 +1574,8 @@ void timer_handler() {
     struct context *tf = (struct context*)TRAPFRAME;
     p->context = *tf;
 
-    timer_reset(); // タイマーをリセット
+    timer_reset(); 
 
-    // カレントプロセスの保存
     struct proc *old = gProc[gActiveProc];
     gActiveProc++;
     if(gActiveProc >= gNumProc) {
@@ -1615,7 +1592,7 @@ void timer_handler() {
 
 int main()
 {
-    trap_init();           // mtvecにtrap handler設定
+    trap_init();          
     plic_init();
     plic_enable(UART_IRQ);
     uart_init();
@@ -1640,7 +1617,6 @@ int main()
     mstatus |= (1UL << 7);   // MPIE = 1
     asm volatile("csrw mstatus, %0" :: "r"(mstatus));
     
-    // mepcに仮想アドレス（そのまま39bit仮想で渡してOK）
     uint64_t entry = 0x82000000;
     asm volatile("csrw mepc, %0" :: "r"(entry));
     
@@ -1659,6 +1635,6 @@ int main()
     asm volatile("fence.i");
     asm volatile("mret");
     
-    while (1); // mretが失敗したとき用
+    while (1); 
 }
 
