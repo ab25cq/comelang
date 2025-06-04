@@ -37,7 +37,6 @@ int strlen(const char *s);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 
-// メモリブロックのヘッダ構造体 (サイズと次のブロックへのポインタ)
 typedef struct mem_block {
     size_t size;
     struct mem_block *next;
@@ -50,16 +49,14 @@ void *malloc(size_t size) {
         return NULL;
     }
 
-    // アラインメント調整 (例: 8バイトアラインメント)
     if (size % 8 != 0) {
         size += 8 - (size % 8);
     }
-    size += sizeof(mem_block_t); // ヘッダ分のサイズを追加
+    size += sizeof(mem_block_t); 
 
     mem_block_t *current = free_list;
     mem_block_t *prev = NULL;
 
-    // フリーリストを検索して、十分なサイズの空きブロックを探す
     while (current != NULL) {
         if (current->size >= size) {
             if (prev == NULL) {
@@ -67,21 +64,20 @@ void *malloc(size_t size) {
             } else {
                 prev->next = current->next;
             }
-            return (void *)(current + 1); // データ領域へのポインタを返す
+            return (void *)(current + 1); 
         }
         prev = current;
         current = current->next;
     }
 
-    // 空きブロックが見つからなかった場合、sbrkで新しい領域を確保
     mem_block_t *new_mem = (mem_block_t *)sbrk(size);
     if (new_mem == (void *)-1) {
-        return NULL; // メモリ不足
+        return NULL; 
     }
 
     new_mem->size = size;
     new_mem->next = NULL;
-    return (void *)(new_mem + 1); // データ領域へのポインタを返す
+    return (void *)(new_mem + 1); 
 }
 
 void *calloc(size_t nmemb, size_t size) {
@@ -102,13 +98,10 @@ void free(void *ptr) {
         return;
     }
 
-    mem_block_t *block = (mem_block_t *)ptr - 1; // ヘッダへのポインタを取得
+    mem_block_t *block = (mem_block_t *)ptr - 1;
 
-    // フリーリストの先頭に挿入 (より効率的な方法もある)
     block->next = free_list;
     free_list = block;
-
-    // ここで隣接する空きブロックをマージする処理を追加すると、より効率的なメモリ管理が可能になります。
 }
 
 char* strdup(const char* s) {
@@ -130,7 +123,7 @@ int strcmp(const char* s1, const char* s2) {
                             
 char* strstr(const char* haystack, const char* needle) {
     if (!*needle)
-        return (char*)haystack;  // 
+        return (char*)haystack;
 
     for (; *haystack; haystack++) {
         const char* h = haystack;
@@ -145,7 +138,7 @@ char* strstr(const char* haystack, const char* needle) {
             return (char*)haystack;
     }
 
-    return NULL;  // 
+    return NULL;  
 }
 
 void* memset(void *dst, int c, unsigned int n) {
@@ -236,7 +229,7 @@ char* strncat(char* dest, const char* src, size_t n) {
         *d++ = *src++;
     }
 
-    *d = '\0';  // 
+    *d = '\0';
 
     return dest;
 }
@@ -245,7 +238,6 @@ void exit(int n) {
     while(1);
 }
 
-// 汎用 itoa（符号あり/なし、base 10, 16 に対応）
 char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     char* p = buf;
     char tmp[32];
@@ -277,7 +269,6 @@ char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     return buf;
 }
 
-// 拡張版 vasprintf
 int vasprintf(char** out, const char* fmt, va_list ap) {
     char out2[512];
     char* p = out2;
@@ -311,7 +302,7 @@ int vasprintf(char** out, const char* fmt, va_list ap) {
             if (!s) s = "(null)";
             break;
         case 'c':
-            buf[0] = (char)va_arg(ap, int);  // char は int に昇格されて渡る
+            buf[0] = (char)va_arg(ap, int);  
             buf[1] = '\0';
             s = buf;
             break;
@@ -385,7 +376,7 @@ int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
             }
             break;
         case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
             s = buf;
             while (*s && remaining > 1) {
                 *p++ = *s++;
@@ -481,7 +472,7 @@ int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
             }
             break;
         case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
             s = buf;
             while (*s && remaining > 1) {
                 *p++ = *s++;
@@ -536,11 +527,10 @@ int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     return p - out;
 }
 
-// UART1
 extern void putchar(char c);
 
 void printint(int val_, int base, int sign) {
-    char buf[33];  // 32bit最大桁数 + '\0'
+    char buf[33];  
     int i = 0;
     int negative = 0;
     unsigned int uval;
@@ -573,7 +563,7 @@ void printint(int val_, int base, int sign) {
 }
 
 void printlong(unsigned long val_, int base, int sign)  {
-    char buf[65];  // 64bit最大桁数 + '\0'
+    char buf[65];  
     int i = 0;
     int negative = 0;
 
@@ -582,7 +572,6 @@ void printlong(unsigned long val_, int base, int sign)  {
         val_ = -(long)val_;
     }
 
-    // 0の特別処理
     if (val_ == 0) {
         putchar('0');
         return;
@@ -598,7 +587,6 @@ void printlong(unsigned long val_, int base, int sign)  {
         putchar('-');
     }
 
-    // 逆順に出力
     while (--i >= 0) {
         putchar(buf[i]);
     }
@@ -645,10 +633,9 @@ int printf(const char* fmt, ...) {
             continue;
         }
 
-        p++; // %の次の文字
+        p++; 
 
         if (*p == 'l') {
-            // 'l'が連続しているかチェック。%lx or %llx 対応
             int lcount = 1;
             if (*(p+1) == 'l') {
                 lcount = 2;
@@ -685,7 +672,6 @@ int printf(const char* fmt, ...) {
                 }
             }
         } else {
-            // 従来の1文字指定子
             switch (*p) {
                 case 'd': {
                     int val_ = va_arg(ap, int);
@@ -866,11 +852,11 @@ static inline void w_sstatus(uint64_t x) {
     asm volatile("csrw sstatus, %0" : : "r"(x));
 }
 // mie: Machine Interrupt Enable Register
-#define MIE_MSIE (1 << 3)   // 
-#define MIE_MEIE (1 << 11)  // 
+#define MIE_MSIE (1 << 3)   
+#define MIE_MEIE (1 << 11)  
 
 // mstatus: Machine Status Register
-#define MSTATUS_MIE (1 << 3) // 
+#define MSTATUS_MIE (1 << 3) 
 
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
 #define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
@@ -1169,16 +1155,12 @@ uint64_t make_satp(pagetable_t pagetable) {
 void enable_mmu(pagetable_t kernel_pagetable) {
     uint64_t satp = make_satp(kernel_pagetable);
     
-    // SATP に書き込み（仮想メモリ有効化）
     asm volatile("csrw satp, %0" :: "r"(satp));
             
-    // アドレス変換を反映
     asm volatile("sfence.vma zero, zero");
-                    
-    // mstatus は不要（SATPだけで切り替わる）
 }
 
-#define VIRTIO0 0x10001000L       // VirtIO MMIO ベースアドレス
+#define VIRTIO0 0x10001000L       
 #define REG_STATUS 0x070 
 
 void mmu_init() {
@@ -1207,7 +1189,7 @@ void* walkaddr(pagetable_t pagetable, uint64_t va) {
     if ((*pte & PTE_U) == 0)
         return 0;
     uint64_t pa = PTE2PA(*pte);
-    return (void*)(pa + (va & (PGSIZE - 1)));  // ページ内オフセットを足す
+    return (void*)(pa + (va & (PGSIZE - 1)));  
 }
 
 int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
@@ -1230,11 +1212,36 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
     return 0;
 }
 
-// Based on xv6-riscv virtio-blk driver
-#define SECTOR_SIZE 512
-#define NUM 8
-#define VIRTIO0 0x10001000L
+extern char TRAPFRAME[];
 
+// minimal virtioblk driver for RISCV QEMU (SV39)
+// --------------------------------------------------
+// * block(deviceid==2)
+//   write_mmio_base 
+// * NUM=8  DMA  ()
+// * read_entire_fsimg()  fs.img  256 
+//
+// 20250605  (public domain / no warranty)
+
+//--------------------------------------------------
+// 
+//--------------------------------------------------
+#define VIRTIO_MMIO_BASE0 0x10001000UL   // slot0
+#define VIRTIO_MMIO_STRIDE   0x1000UL    // 4KB 
+#define VIRTIO_MAX_SLOTS     8           // virt machine  8 
+
+#define SECTOR_SIZE 512
+#define NUM_DESC    8                    // desc/avail/used 
+#define FSIMG_SECTORS 256                // 128KiB
+
+//--------------------------------------------------
+//  (export)
+//--------------------------------------------------
+uint64_t write_mmio_base = 0;            //   base 
+
+//--------------------------------------------------
+// MMIO  (virtiommio )
+//--------------------------------------------------
 #define REG_MAGIC_VALUE 0x000
 #define REG_VERSION     0x004
 #define REG_DEVICE_ID   0x008
@@ -1249,138 +1256,119 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
 #define REG_QUEUE_AVAIL_HIGH 0x094
 #define REG_QUEUE_USED_LOW  0x0a0
 #define REG_QUEUE_USED_HIGH 0x0a4
-#define REG_QUEUE_NOTIFY 0x050
-#define REG_STATUS       0x070
+#define REG_QUEUE_NOTIFY    0x050
+#define REG_STATUS          0x070
 
-#define VIRTIO_BLK_T_IN 0
+#define VIRTIO_BLK_T_IN  0
 
-struct virtq_desc {
-    uint64_t addr;
-    uint32_t len;
-    uint16_t flags;
-    uint16_t next;
-};
-
-struct virtq_avail {
-    uint16_t flags;
-    uint16_t idx;
-    uint16_t ring[NUM];
-};
-
-struct virtq_used_elem {
-    uint32_t id;
-    uint32_t len;
-};
-
-struct virtq_used {
-    uint16_t flags;
-    uint16_t idx;
-    struct virtq_used_elem ring[NUM];
-};
-
-struct virtio_blk_req {
-    uint32_t type;
-    uint32_t reserved;
-    uint64_t sector;
-};
-
-static struct virtq_desc desc[NUM] __attribute__((aligned(16)));
-static struct virtq_avail avail __attribute__((aligned(2)));
-static struct virtq_used used __attribute__((aligned(4)));
-
-static uint8_t status __attribute__((aligned(4096)));
-static uint8_t disk_buf[SECTOR_SIZE] __attribute__((aligned(4096)));
-static uint16_t idx = 0;
-
-static inline void write_mmio(uint32_t offset, uint32_t val) {
-    *(volatile uint32_t *)(VIRTIO0 + offset) = val;
+//--------------------------------------------------
+// 
+//--------------------------------------------------
+static inline void mmio_write32(uint64_t base, uint32_t off, uint32_t val){
+    *(volatile uint32_t*)(base + off) = val;
+}
+static inline uint32_t mmio_read32(uint64_t base, uint32_t off){
+    return *(volatile uint32_t*)(base + off);
 }
 
-static inline uint32_t read_mmio(uint32_t offset) {
-    return *(volatile uint32_t *)(VIRTIO0 + offset);
-}
+//--------------------------------------------------
+// 
+//--------------------------------------------------
+struct virtq_desc  { uint64_t addr; uint32_t len; uint16_t flags; uint16_t next; } __attribute__((packed));
+struct virtq_avail{ uint16_t flags; uint16_t idx;  uint16_t ring[NUM_DESC]; } __attribute__((packed,aligned(2)));
+struct virtq_used_elem{ uint32_t id,len; } __attribute__((packed));
+struct virtq_used { uint16_t flags; uint16_t idx; struct virtq_used_elem ring[NUM_DESC]; } __attribute__((packed,aligned(4)));
 
-void virtio_disk_init() {
-    if (read_mmio(REG_MAGIC_VALUE) != 0x74726976 || read_mmio(REG_DEVICE_ID) != 2) {
-        puts("virtio-blk device not found\n");
-        while (1);
+struct virtio_blk_req{ uint32_t type; uint32_t reserved; uint64_t sector; } __attribute__((packed));
+
+static struct virtq_desc desc[NUM_DESC] __attribute__((aligned(16)));
+static struct virtq_avail avail;
+static struct virtq_used  used;
+static uint8_t status_byte __attribute__((aligned(4)));
+static uint8_t dma_buf[SECTOR_SIZE] __attribute__((aligned(512)));
+static uint16_t avail_idx = 0;
+
+//--------------------------------------------------
+//--------------------------------------------------
+void virtio_disk_init(void)
+{
+    for(int slot=0; slot<VIRTIO_MAX_SLOTS; slot++){
+        uint64_t base = VIRTIO_MMIO_BASE0 + slot*VIRTIO_MMIO_STRIDE;
+        if(mmio_read32(base,REG_MAGIC_VALUE)!=0x74726976) continue;   // "virt"
+        uint32_t devid = mmio_read32(base,REG_DEVICE_ID);
+        if(devid==2){                    // block
+            write_mmio_base = base;
+            break;
+        }
     }
+    if(write_mmio_base==0){ printf("virtioblk not found\n"); while(1); }
 
-    write_mmio(REG_STATUS, 0);
-    write_mmio(REG_STATUS, 1);  // Acknowledge
-    write_mmio(REG_STATUS, 2);  // Driver
+    mmio_write32(write_mmio_base, REG_STATUS, 0);           // reset
+    mmio_write32(write_mmio_base, REG_STATUS, 1);           // ACKNOWLEDGE
+    mmio_write32(write_mmio_base, REG_STATUS, 2);           // DRIVER
 
-    write_mmio(REG_QUEUE_SEL, 0);
-    uint32_t qsz = read_mmio(REG_QUEUE_NUM);
-    if (qsz == 0 || qsz < NUM) {
-        puts("virtio-blk: queue too small or unavailable\n");
-        while (1);
-    }
+    mmio_write32(write_mmio_base, REG_QUEUE_SEL, 0);
+    uint32_t qsz = mmio_read32(write_mmio_base, REG_QUEUE_NUM);
+    if(qsz==0 || qsz<NUM_DESC){ printf("virtioblk queue too small\n"); while(1);}    
+    mmio_write32(write_mmio_base, REG_QUEUE_NUM, NUM_DESC);
 
-    write_mmio(REG_QUEUE_NUM, NUM);
+    uint64_t pa_desc  =(uint64_t)(uintptr_t)desc;
+    uint64_t pa_avail =(uint64_t)(uintptr_t)&avail;
+    uint64_t pa_used  =(uint64_t)(uintptr_t)&used;
 
-    uint64_t pa_desc  = (uint64_t)(uintptr_t)desc;
-    uint64_t pa_avail = (uint64_t)(uintptr_t)&avail;
-    uint64_t pa_used  = (uint64_t)(uintptr_t)&used;
+    mmio_write32(write_mmio_base, REG_QUEUE_DESC_LOW,  (uint32_t)pa_desc);
+    mmio_write32(write_mmio_base, REG_QUEUE_DESC_HIGH, (uint32_t)(pa_desc>>32));
+    mmio_write32(write_mmio_base, REG_QUEUE_AVAIL_LOW,  (uint32_t)pa_avail);
+    mmio_write32(write_mmio_base, REG_QUEUE_AVAIL_HIGH, (uint32_t)(pa_avail>>32));
+    mmio_write32(write_mmio_base, REG_QUEUE_USED_LOW,   (uint32_t)pa_used);
+    mmio_write32(write_mmio_base, REG_QUEUE_USED_HIGH,  (uint32_t)(pa_used>>32));
 
-    write_mmio(REG_QUEUE_DESC_LOW,  (uint32_t)(pa_desc));
-    write_mmio(REG_QUEUE_DESC_HIGH, (uint32_t)(pa_desc >> 32));
-    write_mmio(REG_QUEUE_AVAIL_LOW,  (uint32_t)(pa_avail));
-    write_mmio(REG_QUEUE_AVAIL_HIGH, (uint32_t)(pa_avail >> 32));
-    write_mmio(REG_QUEUE_USED_LOW,   (uint32_t)(pa_used));
-    write_mmio(REG_QUEUE_USED_HIGH,  (uint32_t)(pa_used >> 32));
-
-    write_mmio(REG_STATUS, 4);  // DRIVER_OK
+    mmio_write32(write_mmio_base, REG_STATUS, 4);          // DRIVER_OK
 }
 
-void virtio_disk_read_sector(uint64_t sector, void *dst) {
-    struct virtio_blk_req req = { .type = VIRTIO_BLK_T_IN, .reserved = 0, .sector = sector };
-    status = 0xFF;
+//--------------------------------------------------
+// 1  (blocking)
+//--------------------------------------------------
+#define VIRTQ_DESC_F_NEXT   1
+#define VIRTQ_DESC_F_WRITE  2 
 
-    desc[0].addr = (uint64_t)(uintptr_t)&req;
-    desc[0].len = sizeof(req);
-    desc[0].flags = 0x1;
-    desc[0].next = 1;
+void virtio_disk_read_sector(uint64_t sector, void *dst)
+{
+    struct virtio_blk_req req = { .type = VIRTIO_BLK_T_IN, .sector = sector };
+    status_byte = 0xFF;
 
-    desc[1].addr = (uint64_t)(uintptr_t)disk_buf;
-    desc[1].len = SECTOR_SIZE;
-    desc[1].flags = 0x1;
-    desc[1].next = 2;
+    // desc0: req
+    desc[0] = (struct virtq_desc){ .addr=(uint64_t)(uintptr_t)&req, .len=sizeof(req), .flags=1, .next=1 };
+    // desc1: data buf
+    desc[1] = (struct virtq_desc){ .addr=(uint64_t)(uintptr_t)dma_buf, .len=SECTOR_SIZE, .flags=1, .next=2 };
+    // desc2: status byte (device writes)
+    desc[2] = (struct virtq_desc){ .addr=(uint64_t)(uintptr_t)&status_byte, .len=1, .flags=2, .next=0 };
 
-    desc[2].addr = (uint64_t)(uintptr_t)&status;
-    desc[2].len = 1;
-    desc[2].flags = 0x0;
-
-    avail.ring[idx % NUM] = 0;
+    avail.ring[avail_idx % NUM_DESC] = 0;   // head desc id
     __sync_synchronize();
-    avail.idx = ++idx;
+    avail.idx = ++avail_idx;
 
-    write_mmio(REG_QUEUE_NOTIFY, 0);
+    mmio_write32(write_mmio_base, REG_QUEUE_NOTIFY, 0);
 
-    while (status == 0xFF)
-        __sync_synchronize();
+    while(status_byte==0xFF) __sync_synchronize();
 
-    memcpy(dst, disk_buf, SECTOR_SIZE);
+    memcpy(dst, dma_buf, SECTOR_SIZE);
 }
 
-extern char TRAPFRAME[];
+//--------------------------------------------------
+// fs.img (128KiB)
+//--------------------------------------------------
+static uint8_t fsimg_buf[FSIMG_SECTORS*SECTOR_SIZE] __attribute__((aligned(4096)));
 
-#define FSIMG_SECTORS 256
-#define SECTOR_SIZE 512
-#define FSIMG_TOTAL_SIZE (FSIMG_SECTORS * SECTOR_SIZE)
+void read_entire_fsimg(void)
+{
+    for(int i=0;i<FSIMG_SECTORS;i++)
+        virtio_disk_read_sector(i, fsimg_buf + i*SECTOR_SIZE);
 
-char fsimg_buf[FSIMG_TOTAL_SIZE] __attribute__((aligned(4096)));
-
-void read_entire_fsimg() {
-    for (int i = 0; i < FSIMG_SECTORS; i++) {
-        virtio_disk_read_sector(i, fsimg_buf + i * SECTOR_SIZE);
-    }
-puts("First few bytes of fsimg_buf:\n");
-for (int i = 0; i < 16; i++) {
-    printf("%x\n", fsimg_buf[i]); puts(" ");
+    printf("fs.img first bytes: %02x %02x %02x %02x\n",
+           fsimg_buf[0], fsimg_buf[1], fsimg_buf[2], fsimg_buf[3]);
 }
-puts("\n");
-}
+
 
 void alloc_prog() {
     char* elf_program = fsimg_buf;
@@ -1424,7 +1412,6 @@ void alloc_prog() {
         if (ph->type != ELF_PROG_LOAD)
             continue;
     
-        // メモリ確保とマッピング（memsz分）
         for (uint64_t va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
             void *pa = kalloc();
             if (!pa) panic();
@@ -1435,7 +1422,6 @@ void alloc_prog() {
         }
         
         
-        // 実行ファイルの内容を仮想アドレスに書き込み（filesz分）
         if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
             panic();
         }
@@ -1489,7 +1475,6 @@ void alloc_prog2() {
         if (ph->type != ELF_PROG_LOAD)
             continue;
     
-        // メモリ確保とマッピング（memsz分）
         for (uint64_t va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
             void *pa = kalloc();
             if (!pa) panic();
@@ -1500,7 +1485,6 @@ void alloc_prog2() {
         }
         
         
-        // 実行ファイルの内容を仮想アドレスに書き込み（filesz分）
         if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
             panic();
         }
@@ -1564,7 +1548,7 @@ static inline void w_mtvec(uint64_t x) {
 #define TIMER_INTERVAL 1000  //  100ms 
 #define MIE_MTIE (1 << 7)
 
-extern void timervec();  // 
+extern void timervec();  
 
 void enable_timer_interrupts() {
     w_mtvec((uint64_t)timervec & ~0x03);
@@ -1596,9 +1580,8 @@ void timer_handler() {
     struct context *tf = (struct context*)TRAPFRAME;
     p->context = *tf;
 
-    timer_reset(); // タイマーをリセット
+    timer_reset(); 
 
-    // カレントプロセスの保存
     struct proc *old = gProc[gActiveProc];
     gActiveProc++;
     if(gActiveProc >= gNumProc) {
@@ -1615,7 +1598,7 @@ void timer_handler() {
 
 int main()
 {
-    trap_init();           // mtvecにtrap handler設定
+    trap_init();          
     plic_init();
     plic_enable(UART_IRQ);
     uart_init();
@@ -1640,7 +1623,6 @@ int main()
     mstatus |= (1UL << 7);   // MPIE = 1
     asm volatile("csrw mstatus, %0" :: "r"(mstatus));
     
-    // mepcに仮想アドレス（そのまま39bit仮想で渡してOK）
     uint64_t entry = 0x82000000;
     asm volatile("csrw mepc, %0" :: "r"(entry));
     
@@ -1659,6 +1641,6 @@ int main()
     asm volatile("fence.i");
     asm volatile("mret");
     
-    while (1); // mretが失敗したとき用
+    while (1); 
 }
 

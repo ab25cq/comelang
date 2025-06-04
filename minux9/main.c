@@ -1212,11 +1212,36 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
     return 0;
 }
 
-// Based on xv6-riscv virtio-blk driver
-#define SECTOR_SIZE 512
-#define NUM 8
-#define VIRTIO0 0x10001000L
+extern char TRAPFRAME[];
 
+// minimal virtioblk driver for RISCV QEMU (SV39)
+// --------------------------------------------------
+// * block(deviceid==2)
+//   write_mmio_base 
+// * NUM=8  DMA  ()
+// * read_entire_fsimg()  fs.img  256 
+//
+// 20250605  (public domain / no warranty)
+
+//--------------------------------------------------
+// 
+//--------------------------------------------------
+#define VIRTIO_MMIO_BASE0 0x10001000UL   // slot0
+#define VIRTIO_MMIO_STRIDE   0x1000UL    // 4KB 
+#define VIRTIO_MAX_SLOTS     8           // virt machine  8 
+
+#define SECTOR_SIZE 512
+#define NUM_DESC    8                    // desc/avail/used 
+#define FSIMG_SECTORS 256                // 128KiB
+
+//--------------------------------------------------
+//  (export)
+//--------------------------------------------------
+uint64_t write_mmio_base = 0;            //   base 
+
+//--------------------------------------------------
+// MMIO  (virtiommio )
+//--------------------------------------------------
 #define REG_MAGIC_VALUE 0x000
 #define REG_VERSION     0x004
 #define REG_DEVICE_ID   0x008
@@ -1231,138 +1256,119 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
 #define REG_QUEUE_AVAIL_HIGH 0x094
 #define REG_QUEUE_USED_LOW  0x0a0
 #define REG_QUEUE_USED_HIGH 0x0a4
-#define REG_QUEUE_NOTIFY 0x050
-#define REG_STATUS       0x070
+#define REG_QUEUE_NOTIFY    0x050
+#define REG_STATUS          0x070
 
-#define VIRTIO_BLK_T_IN 0
+#define VIRTIO_BLK_T_IN  0
 
-struct virtq_desc {
-    uint64_t addr;
-    uint32_t len;
-    uint16_t flags;
-    uint16_t next;
-};
-
-struct virtq_avail {
-    uint16_t flags;
-    uint16_t idx;
-    uint16_t ring[NUM];
-};
-
-struct virtq_used_elem {
-    uint32_t id;
-    uint32_t len;
-};
-
-struct virtq_used {
-    uint16_t flags;
-    uint16_t idx;
-    struct virtq_used_elem ring[NUM];
-};
-
-struct virtio_blk_req {
-    uint32_t type;
-    uint32_t reserved;
-    uint64_t sector;
-};
-
-static struct virtq_desc desc[NUM] __attribute__((aligned(16)));
-static struct virtq_avail avail __attribute__((aligned(2)));
-static struct virtq_used used __attribute__((aligned(4)));
-
-static uint8_t status __attribute__((aligned(4096)));
-static uint8_t disk_buf[SECTOR_SIZE] __attribute__((aligned(4096)));
-static uint16_t idx = 0;
-
-static inline void write_mmio(uint32_t offset, uint32_t val) {
-    *(volatile uint32_t *)(VIRTIO0 + offset) = val;
+//--------------------------------------------------
+// 
+//--------------------------------------------------
+static inline void mmio_write32(uint64_t base, uint32_t off, uint32_t val){
+    *(volatile uint32_t*)(base + off) = val;
+}
+static inline uint32_t mmio_read32(uint64_t base, uint32_t off){
+    return *(volatile uint32_t*)(base + off);
 }
 
-static inline uint32_t read_mmio(uint32_t offset) {
-    return *(volatile uint32_t *)(VIRTIO0 + offset);
-}
+//--------------------------------------------------
+// 
+//--------------------------------------------------
+struct virtq_desc  { uint64_t addr; uint32_t len; uint16_t flags; uint16_t next; } __attribute__((packed));
+struct virtq_avail{ uint16_t flags; uint16_t idx;  uint16_t ring[NUM_DESC]; } __attribute__((packed,aligned(2)));
+struct virtq_used_elem{ uint32_t id,len; } __attribute__((packed));
+struct virtq_used { uint16_t flags; uint16_t idx; struct virtq_used_elem ring[NUM_DESC]; } __attribute__((packed,aligned(4)));
 
-void virtio_disk_init() {
-    if (read_mmio(REG_MAGIC_VALUE) != 0x74726976 || read_mmio(REG_DEVICE_ID) != 2) {
-        puts("virtio-blk device not found\n");
-        while (1);
+struct virtio_blk_req{ uint32_t type; uint32_t reserved; uint64_t sector; } __attribute__((packed));
+
+static struct virtq_desc desc[NUM_DESC] __attribute__((aligned(16)));
+static struct virtq_avail avail;
+static struct virtq_used  used;
+static uint8_t status_byte __attribute__((aligned(4)));
+static uint8_t dma_buf[SECTOR_SIZE] __attribute__((aligned(512)));
+static uint16_t avail_idx = 0;
+
+//--------------------------------------------------
+//--------------------------------------------------
+void virtio_disk_init(void)
+{
+    for(int slot=0; slot<VIRTIO_MAX_SLOTS; slot++){
+        uint64_t base = VIRTIO_MMIO_BASE0 + slot*VIRTIO_MMIO_STRIDE;
+        if(mmio_read32(base,REG_MAGIC_VALUE)!=0x74726976) continue;   // "virt"
+        uint32_t devid = mmio_read32(base,REG_DEVICE_ID);
+        if(devid==2){                    // block
+            write_mmio_base = base;
+            break;
+        }
     }
+    if(write_mmio_base==0){ printf("virtioblk not found\n"); while(1); }
 
-    write_mmio(REG_STATUS, 0);
-    write_mmio(REG_STATUS, 1);  // Acknowledge
-    write_mmio(REG_STATUS, 2);  // Driver
+    mmio_write32(write_mmio_base, REG_STATUS, 0);           // reset
+    mmio_write32(write_mmio_base, REG_STATUS, 1);           // ACKNOWLEDGE
+    mmio_write32(write_mmio_base, REG_STATUS, 2);           // DRIVER
 
-    write_mmio(REG_QUEUE_SEL, 0);
-    uint32_t qsz = read_mmio(REG_QUEUE_NUM);
-    if (qsz == 0 || qsz < NUM) {
-        puts("virtio-blk: queue too small or unavailable\n");
-        while (1);
-    }
+    mmio_write32(write_mmio_base, REG_QUEUE_SEL, 0);
+    uint32_t qsz = mmio_read32(write_mmio_base, REG_QUEUE_NUM);
+    if(qsz==0 || qsz<NUM_DESC){ printf("virtioblk queue too small\n"); while(1);}    
+    mmio_write32(write_mmio_base, REG_QUEUE_NUM, NUM_DESC);
 
-    write_mmio(REG_QUEUE_NUM, NUM);
+    uint64_t pa_desc  =(uint64_t)(uintptr_t)desc;
+    uint64_t pa_avail =(uint64_t)(uintptr_t)&avail;
+    uint64_t pa_used  =(uint64_t)(uintptr_t)&used;
 
-    uint64_t pa_desc  = (uint64_t)(uintptr_t)desc;
-    uint64_t pa_avail = (uint64_t)(uintptr_t)&avail;
-    uint64_t pa_used  = (uint64_t)(uintptr_t)&used;
+    mmio_write32(write_mmio_base, REG_QUEUE_DESC_LOW,  (uint32_t)pa_desc);
+    mmio_write32(write_mmio_base, REG_QUEUE_DESC_HIGH, (uint32_t)(pa_desc>>32));
+    mmio_write32(write_mmio_base, REG_QUEUE_AVAIL_LOW,  (uint32_t)pa_avail);
+    mmio_write32(write_mmio_base, REG_QUEUE_AVAIL_HIGH, (uint32_t)(pa_avail>>32));
+    mmio_write32(write_mmio_base, REG_QUEUE_USED_LOW,   (uint32_t)pa_used);
+    mmio_write32(write_mmio_base, REG_QUEUE_USED_HIGH,  (uint32_t)(pa_used>>32));
 
-    write_mmio(REG_QUEUE_DESC_LOW,  (uint32_t)(pa_desc));
-    write_mmio(REG_QUEUE_DESC_HIGH, (uint32_t)(pa_desc >> 32));
-    write_mmio(REG_QUEUE_AVAIL_LOW,  (uint32_t)(pa_avail));
-    write_mmio(REG_QUEUE_AVAIL_HIGH, (uint32_t)(pa_avail >> 32));
-    write_mmio(REG_QUEUE_USED_LOW,   (uint32_t)(pa_used));
-    write_mmio(REG_QUEUE_USED_HIGH,  (uint32_t)(pa_used >> 32));
-
-    write_mmio(REG_STATUS, 4);  // DRIVER_OK
+    mmio_write32(write_mmio_base, REG_STATUS, 4);          // DRIVER_OK
 }
 
-void virtio_disk_read_sector(uint64_t sector, void *dst) {
-    struct virtio_blk_req req = { .type = VIRTIO_BLK_T_IN, .reserved = 0, .sector = sector };
-    status = 0xFF;
+//--------------------------------------------------
+// 1  (blocking)
+//--------------------------------------------------
+#define VIRTQ_DESC_F_NEXT   1
+#define VIRTQ_DESC_F_WRITE  2 
 
-    desc[0].addr = (uint64_t)(uintptr_t)&req;
-    desc[0].len = sizeof(req);
-    desc[0].flags = 0x1;
-    desc[0].next = 1;
+void virtio_disk_read_sector(uint64_t sector, void *dst)
+{
+    struct virtio_blk_req req = { .type = VIRTIO_BLK_T_IN, .sector = sector };
+    status_byte = 0xFF;
 
-    desc[1].addr = (uint64_t)(uintptr_t)disk_buf;
-    desc[1].len = SECTOR_SIZE;
-    desc[1].flags = 0x1;
-    desc[1].next = 2;
+    // desc0: req
+    desc[0] = (struct virtq_desc){ .addr=(uint64_t)(uintptr_t)&req, .len=sizeof(req), .flags=1, .next=1 };
+    // desc1: data buf
+    desc[1] = (struct virtq_desc){ .addr=(uint64_t)(uintptr_t)dma_buf, .len=SECTOR_SIZE, .flags=1, .next=2 };
+    // desc2: status byte (device writes)
+    desc[2] = (struct virtq_desc){ .addr=(uint64_t)(uintptr_t)&status_byte, .len=1, .flags=2, .next=0 };
 
-    desc[2].addr = (uint64_t)(uintptr_t)&status;
-    desc[2].len = 1;
-    desc[2].flags = 0x0;
-
-    avail.ring[idx % NUM] = 0;
+    avail.ring[avail_idx % NUM_DESC] = 0;   // head desc id
     __sync_synchronize();
-    avail.idx = ++idx;
+    avail.idx = ++avail_idx;
 
-    write_mmio(REG_QUEUE_NOTIFY, 0);
+    mmio_write32(write_mmio_base, REG_QUEUE_NOTIFY, 0);
 
-    while (status == 0xFF)
-        __sync_synchronize();
+    while(status_byte==0xFF) __sync_synchronize();
 
-    memcpy(dst, disk_buf, SECTOR_SIZE);
+    memcpy(dst, dma_buf, SECTOR_SIZE);
 }
 
-extern char TRAPFRAME[];
+//--------------------------------------------------
+// fs.img (128KiB)
+//--------------------------------------------------
+static uint8_t fsimg_buf[FSIMG_SECTORS*SECTOR_SIZE] __attribute__((aligned(4096)));
 
-#define FSIMG_SECTORS 256
-#define SECTOR_SIZE 512
-#define FSIMG_TOTAL_SIZE (FSIMG_SECTORS * SECTOR_SIZE)
+void read_entire_fsimg(void)
+{
+    for(int i=0;i<FSIMG_SECTORS;i++)
+        virtio_disk_read_sector(i, fsimg_buf + i*SECTOR_SIZE);
 
-char fsimg_buf[FSIMG_TOTAL_SIZE] __attribute__((aligned(4096)));
-
-void read_entire_fsimg() {
-    for (int i = 0; i < FSIMG_SECTORS; i++) {
-        virtio_disk_read_sector(i, fsimg_buf + i * SECTOR_SIZE);
-    }
-puts("First few bytes of fsimg_buf:\n");
-for (int i = 0; i < 16; i++) {
-    printf("%x\n", fsimg_buf[i]); puts(" ");
+    printf("fs.img first bytes: %02x %02x %02x %02x\n",
+           fsimg_buf[0], fsimg_buf[1], fsimg_buf[2], fsimg_buf[3]);
 }
-puts("\n");
-}
+
 
 void alloc_prog() {
     char* elf_program = fsimg_buf;
