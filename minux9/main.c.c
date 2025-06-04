@@ -4,6 +4,8 @@
 #include <stdarg.h>
 
 extern void putchar(char c);
+extern void puts(const char* s);
+
 void* memset(void *dst, int c, unsigned int n) {
     char *cdst = (char *) dst;
     int i;
@@ -262,8 +264,19 @@ void* memcpy(void *dst, const void *src, unsigned int n) {
 #define R_Q_NUM              0x034
 #define R_Q_ALIGN            0x038
 #define R_Q_PFN              0x040
+#define R_Q_READY            0x044
 #define R_Q_NOTIFY           0x050
 #define R_STATUS             0x070
+
+#define R_Q_DESC_LOW   0x080   /* QueueDescLow     (32-bit) */
+#define R_Q_DESC_HIGH  0x084   /* QueueDescHigh    (32-bit) */
+#define R_Q_AVAIL_LOW  0x090   /* QueueDriverLow   (32-bit) */
+#define R_Q_AVAIL_HIGH 0x094   /* QueueDriverHigh  (32-bit) */
+#define R_Q_USED_LOW   0x0A0   /* QueueDeviceLow   (32-bit) */
+#define R_Q_USED_HIGH  0x0A4   /* QueueDeviceHigh  (32-bit) */
+
+#define R_Q_NUM_MAX   0x034   /* QueueNumMax : RO */
+#define R_Q_NUM       0x038   /* QueueNum    : RW */
 
 #define S_ACK        1
 #define S_DRIVER     2
@@ -340,8 +353,8 @@ static uint64_t            vq_phys; /* phys addr of contiguous region */
 static uint8_t            *vq_area;
 
 static uint16_t aidx = 0;           /* avail index */
-static uint8_t  status_byte __attribute__((aligned(4)));
-static uint8_t  dma_buf[SECTOR_SIZE] __attribute__((aligned(512)));
+volatile static uint8_t  status_byte __attribute__((aligned(4)));
+volatile static uint8_t  dma_buf[SECTOR_SIZE] __attribute__((aligned(512)));
 
 /* MMIO helpers */
 static inline void mw32(uint64_t b,uint32_t o,uint32_t v){ *(volatile uint32_t*)(b+o)=v; }
@@ -370,47 +383,62 @@ void virtio_blk_init(void)
     if(!vbase){ puts("virtio-blk not found\n"); while(1);}  
     if(mr32(vbase,R_VERSION)!=1){ puts("not legacy mmio\n"); while(1);}  
 
-    mw32(vbase,R_STATUS,0);
-    mw32(vbase,R_STATUS, S_ACK | S_DRIVER);
+    /* 1) ステータスクリア～ACK, DRIVER */
+    mw32(vbase, R_STATUS, 0);
+    mw32(vbase, R_STATUS, S_ACK | S_DRIVER);
 
-    /* ---- feature negotiation --------------------------------------- */
-    uint32_t devfeat = mr32(vbase, R_DEVICE_FEATURES); /* unused */
+    /* 2) FEATURE 交渉 */
+    uint32_t devfeat = mr32(vbase, R_DEVICE_FEATURES);
     (void)devfeat;
-    mw32(vbase, R_DRIVER_FEATURES, 0);                 /* we claim no features */
+    mw32(vbase, R_DRIVER_FEATURES, 0);  // 特に何も要求しない
 
     uint32_t st = mr32(vbase, R_STATUS) | S_FEATURES_OK;
     mw32(vbase, R_STATUS, st);
-    if(!(mr32(vbase,R_STATUS) & S_FEATURES_OK)){
-        puts("FEATURES_OK rejected\n");
-        while(1);
+    if (!(mr32(vbase, R_STATUS) & S_FEATURES_OK)) {
+        puts("FEATURES_OK rejected\n"); while (1);
     }
 
-    mw32(vbase,R_GPAGE_SZ, 4096);
-    mw32(vbase,R_Q_SEL,0);
-    Q = mr32(vbase,R_Q_NUM);
-    printf("device queue size = %d\n", Q);
-    if(!Q || Q>1024){ puts("unsupported queue size\n"); while(1);}  
+    /* 3) ページサイズ, キュー選択, キューサイズ取得＆設定 */
+    mw32(vbase, R_GPAGE_SZ, 4096);
+    mw32(vbase, R_Q_SEL, 0);
+    uint32_t devQ = mr32(vbase, R_Q_NUM_MAX);
+    uint32_t drvQ = (devQ > 128) ? 128 : devQ;  // 例として 128
+    mw32(vbase, R_Q_NUM, drvQ);
+    Q = drvQ;
+    if (!Q || Q > 1024) {
+        puts("unsupported queue size\n"); while (1);
+    }
+    printf("device queue size = %d (driver uses %d)\n", devQ, Q);
 
-    /* ---- allocate contiguous region for desc + avail + used --------- */
+    /* 4) キュー全体を1ブロックで確保する */
     size_t sz_desc  = 16ULL * Q;
-    size_t sz_avail = 4ULL + 2ULL * Q;
-    size_t sz_used  = 4ULL + 8ULL * Q;
+    size_t sz_avail =  4ULL + 2ULL * Q;
+    size_t sz_used  =  4ULL + 8ULL * Q;
     size_t sz_total = sz_desc + sz_avail + sz_used;
-    size_t npages   = (sz_total + 4095) >> 12;
+    size_t npages   = (sz_total + 4095) >> 12;  // 4096で丸める
 
     vq_area = kalloc_pages(npages);
-    memset(vq_area, 0, npages*4096);
+    if (!vq_area) {
+        puts("kalloc_pages failed\n");
+        while (1);
+    }
+    memset(vq_area, 0, npages * 4096);
 
-    desc  = (struct virtq_desc*)vq_area;
-    avail = (struct virtq_avail*)(vq_area + sz_desc);
-    used  = (struct virtq_used *)(vq_area + sz_desc + sz_avail);
+    /* 5) 「desc/avail/used」はすべてこの連続領域に順次置く */
+    desc  = (struct virtq_desc  *)vq_area;
+    avail = (struct virtq_avail *)(vq_area + sz_desc);
+    used  = (struct virtq_used  *)(vq_area + sz_desc + sz_avail);
 
-    vq_phys = (uint64_t)(uintptr_t)vq_area;
-    mw32(vbase,R_Q_ALIGN,4096);
-    mw32(vbase,R_Q_PFN, (uint32_t)(vq_phys >> 12));
+    vq_phys = (uintptr_t)vq_area;  // 物理アドレスの先頭
 
-    /* ---- DRIVER_OK () ------------------------------------------ */
-    mw32(vbase,R_STATUS, st | S_DRIVER_OK);
+    /* 6) レガシー MMIO ではここだけで済む */
+    mw32(vbase, R_Q_ALIGN, 4096);
+    mw32(vbase, R_Q_PFN,   (uint32_t)(vq_phys >> 12));
+
+    /* 7) 最終的に DRIVER_OK 立てる */
+    mw32(vbase, R_STATUS, st | S_DRIVER_OK);
+
+    /* デバッグ出力 */
     dbg("init");
 }
 
@@ -419,9 +447,13 @@ void virtio_blk_init(void)
  * ---------------------------------------------------------*/
 static inline void set_flags(uint16_t f0,uint16_t f1,uint16_t f2){ desc[0].flags=f0; desc[1].flags=f1; desc[2].flags=f2; }
 
+static struct virtio_blk_req req;
+
 void virtio_blk_read(uint64_t sector, void *dst)
 {
-    struct virtio_blk_req req = { .type = VBLK_T_IN, .sector = sector };
+    req.type = VBLK_T_IN;
+    req.sector = sector;
+    req.reserved = 0;    /* ← これをセット（必須） */
     status_byte = 0xFF;
 
     desc[0].addr = (uint64_t)&req;        desc[0].len = sizeof(req);       desc[0].next = 1;
@@ -461,7 +493,7 @@ void read_fsimg(void)
     for(int i = 0; i < FSIMG_SECTORS; i++)
         virtio_blk_read(i, fsimg_buf + i * SECTOR_SIZE);
 
-    printf("fs.img head: %02x %02x %02x %02x",
+    printf("fs.img head: %x %x %x %x",
            fsimg_buf[0], fsimg_buf[1], fsimg_buf[2], fsimg_buf[3]);
 }
 
