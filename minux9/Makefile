@@ -23,7 +23,7 @@ kernel.elf:
 	dd if=hello2.elf of=fs.img bs=512 seek=128 conv=notrunc
 
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -O0 -g -ffreestanding -mcmodel=medany -o main.o main.c.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o main.o 
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o main.o
 
 
 

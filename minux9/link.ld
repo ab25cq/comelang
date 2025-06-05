@@ -20,6 +20,8 @@ SECTIONS
   PROVIDE(_end = .);
   . += 0x64000;
   PROVIDE(_end2 = .);
+  . = . + 4096 * 8;
+  PROVIDE(_end3 = .);
   
   .debug_info        0 : { *(.debug_info) } 
   .debug_abbrev      0 : { *(.debug_abbrev) }
