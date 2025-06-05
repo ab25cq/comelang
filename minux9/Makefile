@@ -12,18 +12,21 @@ kernel.elf:
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o trap_c.o trap.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o uart.o uart.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o plic.o plic.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o fs.o fs.c
 #	comelang -riscv -c -g -s main.c
 	cp main.c main.c.c
 	riscv64-unknown-elf-gcc -nostdlib -static -T hello.ld -o hello.elf hello.c
 	xxd -i hello.elf > userprog.h  
 	riscv64-unknown-elf-gcc -nostdlib -static -T hello2.ld -o hello2.elf hello2.c
 	xxd -i hello2.elf > userprog2.h  
-	dd if=/dev/zero of=fs.img bs=1k count=512
-	dd if=hello.elf of=fs.img bs=512 seek=0 conv=notrunc
-	dd if=hello2.elf of=fs.img bs=512 seek=128 conv=notrunc
+#	dd if=/dev/zero of=fs.img bs=1k count=512
+#	dd if=hello.elf of=fs.img bs=512 seek=0 conv=notrunc
+#	dd if=hello2.elf of=fs.img bs=512 seek=128 conv=notrunc
+	gcc -o mkfs mkfs.c
+	./mkfs fs.img
 
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -O0 -g -ffreestanding -mcmodel=medany -o main.o main.c.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o main.o
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o fs.o main.o
 
 
 
