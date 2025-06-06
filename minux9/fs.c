@@ -306,15 +306,15 @@ uint32_t path_lookup(const char *path) {
 void dump_inode(uint32_t inum) {
     struct dinode ip;
     read_inode(inum, &ip);
-    printf("== i-node %u ==\n", inum);
-    printf("  type  = %u\n", ip.type);
-    printf("  size  = %u\n", ip.size);
+    printf("== i-node %d ==\n", inum);
+    printf("  type  = %d\n", ip.type);
+    printf("  size  = %d\n", ip.size);
     printf("  addrs =");
     for (int i = 0; i < NDIRECT; i++) {
-        if (ip.addrs[i] != 0) printf(" %u", ip.addrs[i]);
+        if (ip.addrs[i] != 0) printf(" %d", ip.addrs[i]);
     }
     if (ip.addrs[NDIRECT] != 0) {
-        printf(" [indirect %u]", ip.addrs[NDIRECT]);
+        printf(" [indirect %d]", ip.addrs[NDIRECT]);
     }
     printf("\n");
 }

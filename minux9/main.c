@@ -1321,10 +1321,11 @@ int strlen(const char *s);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 
-/*
-void alloc_prog() {
-    char* elf_program = fsimg();
+uint8_t elf_program[5096+1];
+uint8_t elf_program2[5048+1];
 
+
+void alloc_prog() {
     struct proc* result = calloc(1, sizeof(struct proc));
     
     result->stack = calloc(1, 256);
@@ -1389,17 +1390,8 @@ void alloc_prog() {
     
     gProc[gNumProc++] = result;
 }
-*/
-
-/*
-#define SECTOR_SIZE         512
-void read_fsimg(void);
-void virtio_blk_init(void);
-
 
 void alloc_prog2() {
-    char* elf_program = fsimg() + 128 * SECTOR_SIZE;
-    
     struct proc* result = calloc(1, sizeof(struct proc));
     result->stack = calloc(1, 256);
     result->context.sp = (uint64_t)(result->stack + 256);
@@ -1419,13 +1411,13 @@ void alloc_prog2() {
     mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
-    struct elfhdr *eh = (struct elfhdr *)elf_program;
+    struct elfhdr *eh = (struct elfhdr *)elf_program2;
     
     if (eh->magic != ELF_MAGIC) {
         while(1) puts("panic");
     }
         
-    struct proghdr *ph = (struct proghdr *)(elf_program + eh->phoff);
+    struct proghdr *ph = (struct proghdr *)(elf_program2 + eh->phoff);
     
     uint64_t size = ph->filesz;
     
@@ -1444,7 +1436,7 @@ void alloc_prog2() {
         }
         
         
-        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
+        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program2 + ph->off, ph->filesz) < 0) {
             panic();
         }
         else if(va2 == 0) {
@@ -1459,7 +1451,6 @@ void alloc_prog2() {
     
     gProc[gNumProc++] = result;
 }
-*/
 
 void reset_watchdog();
 extern volatile char last_key;
@@ -1567,27 +1558,27 @@ int main()
     read_superblock();
     
     uint32_t inum = path_lookup("/hello.elf");
-     if (inum != 0) {
-        dump_inode(inum);
+    if (inum != 0) {
+        //dump_inode(inum);
 
-        // ファイル先頭 512バイトだけ読み出して UART にダンプしてみる
         struct dinode ip;
         read_inode(inum, &ip);
-        uint8_t buf[512];
-        read_data(&ip, 0, buf, 512);
-        for (int i = 0; i < 512; i++) {
-            // 16進で先頭 32バイトだけ出してみる例
-            if (i < 32) {
-                printf("%x ", buf[i]);
-            }
-        }
-        puts("\n");
+        read_data(&ip, 0, elf_program, 5096);
+    } else {
+        puts("hello.elf not found in fs.img\n");
+    }
+    
+    uint32_t inum2 = path_lookup("/hello2.elf");
+    if (inum2 != 0) {
+        //dump_inode(inum2);
+
+        struct dinode ip;
+        read_inode(inum2, &ip);
+        read_data(&ip, 0, elf_program2, 5048);
     } else {
         puts("hello.elf not found in fs.img\n");
     }
 
-/*
-    
     alloc_prog();
     alloc_prog2();
 
@@ -1620,7 +1611,6 @@ int main()
     
     asm volatile("fence.i");
     asm volatile("mret");
-*/
     
     while (1); 
 }

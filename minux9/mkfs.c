@@ -472,17 +472,18 @@ main(int argc, char *argv[])
         // ルートディレクトリにリンク /hello.elf
         dirlink(ROOTINO, "hello.elf", new_inum);
     }
-/*
+    // 4) たとえば「hello2.elf」を読み込んで、ファイルとして埋め込む例を呼ぶ
+    //    ここでは /hello2.elf という名前でルートディレクトリに置く
     {
         const char *elfpath = "hello2.elf";  // 現在のカレントに存在するバイナリ
         struct stat st;
         if (stat(elfpath, &st) < 0) {
-            perror("stat hello.elf");
+            perror("stat hello2.elf");
             exit(1);
         }
         size_t filesize = st.st_size;
         if (filesize > MAXFILESIZE) {
-            fprintf(stderr, "hello.elf が大きすぎます (上限 %d bytes)\n", MAXFILESIZE);
+            fprintf(stderr, "hello2.elf が大きすぎます (上限 %d bytes)\n", MAXFILESIZE);
             exit(1);
         }
 
@@ -497,7 +498,7 @@ main(int argc, char *argv[])
         // hello2.elf の中身をブロック単位で読み込んで書き込む
         int fd = open(elfpath, O_RDONLY);
         if (fd < 0) {
-            perror("open hello.elf");
+            perror("open hello2.elf");
             exit(1);
         }
         char buf[BSIZE];
@@ -511,7 +512,7 @@ main(int argc, char *argv[])
             uint32_t b = alloc_data_block();
             ssize_t r = read(fd, buf, BSIZE);
             if (r < 0) {
-                perror("read hello.elf");
+                perror("read hello2.elf");
                 close(fd);
                 exit(1);
             }
@@ -546,10 +547,9 @@ main(int argc, char *argv[])
         // イノード情報をディスクに書き込む
         write_inode(new_inum, &file_ip);
 
-        // ルートディレクトリにリンク /hello.elf
-        dirlink(ROOTINO, "hello.elf", new_inum);
+        // ルートディレクトリにリンク /hello2.elf
+        dirlink(ROOTINO, "hello2.elf", new_inum);
     }
-*/
 
     // 5) 最後に img[] 全体を実ファイルに書き出す
     int outfd = open(argv[1], O_CREAT | O_RDWR, 0666);
