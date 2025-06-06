@@ -1544,7 +1544,7 @@ void timer_handler() {
     }
 }
 
-#include "fs.h"
+#include "fs2.h"
 
 int main()
 {
