@@ -15,9 +15,19 @@ kernel.elf:
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o fs2.o fs2.c
 #	comelang -riscv -c -g -s main.c
 	cp main.c main.c.c
-	riscv64-unknown-elf-gcc -nostdlib -static -T hello.ld -o hello.elf hello.c
+
+#	riscv64-unknown-elf-gcc -O0 -static -o hello.elf hello.c -mcmodel=medany
+	riscv64-unknown-elf-gcc -O0 -nostdlib -static -o hello.elf hello.c -mcmodel=medany
+#	riscv64-unknown-elf-gcc -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello.elf hello.c
+#	riscv64-unknown-elf-gcc -nostdlib -static -T hello.ld -o hello.elf hello.c -mcmodel=medany
+
 	xxd -i hello.elf > userprog.h  
-	riscv64-unknown-elf-gcc -nostdlib -static -T hello2.ld -o hello2.elf hello2.c
+
+#	riscv64-unknown-elf-gcc -O0 -static -o hello2.elf hello2.c -mcmodel=medany
+	riscv64-unknown-elf-gcc -nostdlib -O0 -static -o hello2.elf hello2.c -mcmodel=medany
+#	riscv64-unknown-elf-gcc -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello2.elf hello2.c
+#	riscv64-unknown-elf-gcc -nostdlib -static -T hello2.ld -o hello2.elf hello2.c -mcmodel=medany
+
 	xxd -i hello2.elf > userprog2.h  
 #	dd if=/dev/zero of=fs.img bs=1k count=512
 #	dd if=hello.elf of=fs.img bs=512 seek=0 conv=notrunc

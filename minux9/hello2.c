@@ -1,9 +1,11 @@
+
+
 // hello.c
 int main() {
-    volatile char *uart = (char*)0x10000000;
     while (1) {
-        *uart = 'X';
+        *(volatile char*)0x10000000L = 'H';
     }
     return 0;
 }
 
+int fun() { return 5; }

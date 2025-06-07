@@ -1,13 +1,13 @@
+//int fun() { return 3; }
+
 // hello.c
 int main() {
-    volatile char *uart = (char*)0x10000000;
     while (1) {
-        *uart = 'H';
-        *uart = 'E';
-        *uart = 'L';
-        *uart = 'L';
-        *uart = 'O';
+        *(volatile char*)0x10000000L = 'W';
     }
     return 0;
 }
 
+int fun() {
+    return 3;
+}

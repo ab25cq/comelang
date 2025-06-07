@@ -10,6 +10,7 @@ typedef unsigned long size_t;
 typedef long ptrdiff_t;
 
 #define NULL ((void*)0)
+#define USERBASE 0x82000000L
 
 extern char _end[];   // heap start
 extern char _end2[];            /* provided by linker */
@@ -928,8 +929,6 @@ void freerange(void *pa_start, void *pa_end);
 
 #define KERNBASE 0x80000000L
 #define PHYSTOP 0x81000000L
-#define USERBASE 0x82000000L
-
 void* memset(void *dst, int c, unsigned int n);
 
 struct run {
@@ -1128,8 +1127,6 @@ void kfree(void *pa) {
     release(&kmem.lock);
 }
 
-#define USERBASE 0x82000000L
-
 void * kalloc(void) {
     struct run *r;
 
@@ -1180,10 +1177,13 @@ int mappages(pagetable_t pagetable, uint64_t va, uint64_t size, uint64_t pa, int
     a = va;
     last = va + size - PGSIZE;
     for(;;){
-        if((pte = walk(pagetable, a, 1)) == 0)
+        if((pte = walk(pagetable, a, 1)) == 0) {
             return -1;
-        if(*pte & PTE_V)
+        }
+        if(*pte & PTE_V) {
             printf("mappages: remap detected at va %p, existing pte flags 0x%lx, new perm 0x%x\n", va, *pte & 0x3FF, perm);
+        }
+        
         *pte = PA2PTE(pa) | perm | PTE_V;
         if(a == last)
             break;
@@ -1360,7 +1360,6 @@ void alloc_prog() {
     
     uint64_t size = ph->filesz;
     
-    uint64_t va2 = 0;
     for (int i = 0; i < eh->phnum; i++, ph++) {
         if (ph->type != ELF_PROG_LOAD)
             continue;
@@ -1375,18 +1374,15 @@ void alloc_prog() {
         }
         
         
-        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program + ph->off, ph->filesz) < 0) {
+        if (copyout(result->pagetable, ph->vaddr, elf_program + ph->off, ph->filesz) < 0) {
             panic();
-        }
-        else if(va2 == 0) {
-            va2 = PGROUNDDOWN(ph->vaddr);
         }
         asm volatile("sfence.vma zero, zero"); 
     }
     asm volatile("sfence.vma zero, zero"); 
     
     /// USER PROGRAM
-    result->context.mepc = va2;
+    result->context.mepc = eh->entry;
     
     gProc[gNumProc++] = result;
 }
@@ -1409,6 +1405,9 @@ void alloc_prog2() {
     // UART
     mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
     mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
+    
+    /// TRAPFRAME
+    mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)elf_program2;
@@ -1421,7 +1420,6 @@ void alloc_prog2() {
     
     uint64_t size = ph->filesz;
     
-    uint64_t va2 = 0;
     for (int i = 0; i < eh->phnum; i++, ph++) {
         if (ph->type != ELF_PROG_LOAD)
             continue;
@@ -1435,19 +1433,15 @@ void alloc_prog2() {
             asm volatile("sfence.vma zero, zero");
         }
         
-        
-        if (copyout(result->pagetable, PGROUNDDOWN(ph->vaddr), elf_program2 + ph->off, ph->filesz) < 0) {
+        if (copyout(result->pagetable, ph->vaddr, elf_program2 + ph->off, ph->filesz) < 0) {
             panic();
-        }
-        else if(va2 == 0) {
-            va2 = PGROUNDDOWN(ph->vaddr);
         }
         asm volatile("sfence.vma zero, zero"); 
     }
     asm volatile("sfence.vma zero, zero"); 
     
     /// USER PROGRAM
-    result->context.mepc = va2;
+    result->context.mepc = eh->entry;
     
     gProc[gNumProc++] = result;
 }
@@ -1493,7 +1487,7 @@ static inline void w_mtvec(uint64_t x) {
     asm volatile("csrw mtvec, %0" : : "r"(x));
 }
 
-#define TIMER_INTERVAL 1000  //  100ms 
+#define TIMER_INTERVAL 10000000UL
 #define MIE_MTIE (1 << 7)
 
 extern void timervec();  
@@ -1594,7 +1588,8 @@ int main()
     mstatus |= (1UL << 7);   // MPIE = 1
     asm volatile("csrw mstatus, %0" :: "r"(mstatus));
     
-    uint64_t entry = 0x82000000;
+    //uint64_t entry = 0x1000;
+    uint64_t entry = p->context.mepc;
     asm volatile("csrw mepc, %0" :: "r"(entry));
     
     // PMP entry 0: allow all access to all physical memory
