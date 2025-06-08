@@ -882,6 +882,7 @@ typedef uint64_t pde_t;
 typedef pte_t* pagetable_t; // 512
 
 pagetable_t kernel_pagetable;
+uint64_t user_satp;
 
 uint64_t make_satp(pagetable_t pagetable);
 
@@ -1026,8 +1027,7 @@ void acquire(struct spinlock *lk)
 }
 
 // Release the lock.
-void
-release(struct spinlock *lk)
+void release(struct spinlock *lk)
 {
     if(!holding(lk))
         panic("release");
@@ -1263,9 +1263,15 @@ void enable_mmu(pagetable_t kernel_pagetable) {
 #define VIRTIO0 0x10001000L       
 #define REG_STATUS 0x070 
 
+uint64_t kernel_satp;    // trap.S から参照する
+extern char TRAPFRAME[];
+extern char TRAMPOLINE[];
+
 void mmu_init() {
     kernel_pagetable = (pagetable_t)kalloc();
     memset(kernel_pagetable, 0, PGSIZE);
+    
+    kernel_satp = make_satp(kernel_pagetable);
 
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
@@ -1275,8 +1281,16 @@ void mmu_init() {
     // UART
     mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
     mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
+    
+    mappages(kernel_pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE,
+                    PTE_V | PTE_R | PTE_X);    // U ビットは外す
+    mappages(kernel_pagetable, (uint64_t)TRAPFRAME, PGSIZE,
+        (uint64_t)TRAPFRAME,      // リンク時にこの VA=PA に配置しておく
+                                        PTE_V | PTE_R | PTE_W);
+                                                
+                
     asm volatile("sfence.vma zero, zero"); 
-
+                                                        
     enable_mmu(kernel_pagetable);
 }
 
@@ -1312,7 +1326,6 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
     return 0;
 }
 
-extern char TRAPFRAME[];
 
 void *kalloc_pages(size_t npages);
 void* memset(void *dst, int c, unsigned int n);
@@ -1324,6 +1337,8 @@ extern void puts(const char* s);
 uint8_t elf_program[5096+1];
 uint8_t elf_program2[5048+1];
 
+// ↑main.c の先頭あたりに追加
+#include <stdint.h>
 
 void alloc_prog() {
     struct proc* result = calloc(1, sizeof(struct proc));
@@ -1331,10 +1346,10 @@ void alloc_prog() {
     result->stack = calloc(1, 256);
     result->context.sp = (uint64_t)(result->stack + 256);
     
-    pagetable_t user_pagetable = (pagetable_t)kalloc();
-    memset(user_pagetable, 0, PGSIZE);
+    pagetable_t pagetable = (pagetable_t)kalloc();
+    memset(pagetable, 0, PGSIZE);
     
-    result->pagetable = user_pagetable;
+    result->pagetable = pagetable;
 
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
@@ -1347,6 +1362,7 @@ void alloc_prog() {
     
     /// TRAPFRAME
     mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)elf_program;
@@ -1384,6 +1400,13 @@ void alloc_prog() {
     /// USER PROGRAM
     result->context.mepc = eh->entry;
     
+    uint64_t satp_val = make_satp(result->pagetable);
+    user_satp = satp_val;                       // ← ここを追加
+/*
+    asm volatile("csrw satp, %0" :: "r"(satp_val));
+    asm volatile("sfence.vma zero, zero");
+*/
+    
     gProc[gNumProc++] = result;
 }
 
@@ -1392,10 +1415,10 @@ void alloc_prog2() {
     result->stack = calloc(1, 256);
     result->context.sp = (uint64_t)(result->stack + 256);
     
-    pagetable_t user_pagetable = (pagetable_t)kalloc();
-    memset(user_pagetable, 0, PGSIZE);
+    pagetable_t pagetable = (pagetable_t)kalloc();
+    memset(pagetable, 0, PGSIZE);
     
-    result->pagetable = user_pagetable;
+    result->pagetable = pagetable;
 
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
@@ -1408,6 +1431,7 @@ void alloc_prog2() {
     
     /// TRAPFRAME
     mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U);
     asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)elf_program2;
@@ -1442,6 +1466,13 @@ void alloc_prog2() {
     
     /// USER PROGRAM
     result->context.mepc = eh->entry;
+    
+    uint64_t satp_val = make_satp(result->pagetable);
+    user_satp = satp_val;                       // ← ここを追加
+/*
+    asm volatile("csrw satp, %0" :: "r"(satp_val));
+    asm volatile("sfence.vma zero, zero");
+*/
     
     gProc[gNumProc++] = result;
 }
@@ -1490,10 +1521,10 @@ static inline void w_mtvec(uint64_t x) {
 #define TIMER_INTERVAL 10000000UL
 #define MIE_MTIE (1 << 7)
 
-extern void timervec();  
+extern void trapvec();  
 
 void enable_timer_interrupts() {
-    w_mtvec((uint64_t)timervec & ~0x03);
+    w_mtvec((uint64_t)trapvec & ~0x03);
     uint64_t now = *MTIME;
     *MTIMECMP = now + TIMER_INTERVAL;
     w_mie(MIE_MTIE);
@@ -1534,9 +1565,103 @@ void timer_handler() {
     if (new != old) {
         enable_mmu(new->pagetable);
         enable_timer_interrupts();
+        user_satp = make_satp(new->pagetable);
         swtch(&mycpu()->context, &new->context);
     }
 }
+
+extern void putchar(char c);
+
+// コンソール用スピンロック
+static struct spinlock console_lock;
+
+// 起動時に一度だけ呼び出す
+void console_init(void) {
+    initlock(&console_lock, "console");
+}
+
+extern void putchar(char c);
+
+// コンソール用スピンロック
+static struct spinlock console_lock;
+
+// システムコール番号を定義
+#define SYS_puts 64
+
+// syscall.c に copyin_str を追加
+// pagetableを渡すように変更が必要
+// この関数は、現在のプロセスのページテーブルを使って、ユーザー仮想アドレスから文字列をカーネルバッファにコピーする
+// (ここでは簡単のため、実装の詳細は省略し、syscall_handler内にロジックを記述します)
+
+extern struct proc* gProc[];
+extern int gActiveProc;
+
+
+// カーネル側の puts (UART 等に文字列を出力)
+void puts(const char *s) {
+    acquire(&console_lock);
+    while (*s) {
+        putchar(*s++);
+    }
+    release(&console_lock);
+}
+
+void panic();
+
+uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
+    uintptr_t a3, uintptr_t a4, uintptr_t a5,
+    uintptr_t a6, uintptr_t syscall_no)
+{
+    disable_timer_interrupts();
+    switch(syscall_no) {
+    case SYS_puts: {
+        char kernel_buf[256];
+        uint64_t user_va = a0;
+        
+        struct proc *p = gProc[gActiveProc]; // 現在のプロセスを取得
+        int i = 0;
+        for (i = 0; i < sizeof(kernel_buf) - 1; ++i) {
+            char* user_char_pa = walkaddr(p->pagetable, user_va + i);
+            if (user_char_pa == 0) {
+                panic();
+            }
+            
+            kernel_buf[i] = *user_char_pa;
+            if (kernel_buf[i] == '\0') {
+                break; // 文字列終端
+            }
+        }
+        kernel_buf[i] = '\0';
+        
+        puts((char*)kernel_buf);
+        enable_timer_interrupts();
+        return 0;
+    }
+    default:
+        panic();
+    }
+}
+
+
+/*
+// user-space からのシステムコールを受け取って dispatch する
+uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
+                          uintptr_t a3, uintptr_t a4, uintptr_t a5,
+                          uintptr_t a6, uintptr_t syscall_no)
+{
+    switch(syscall_no) {
+    case SYS_puts:
+        // a0 にユーザー空間ポインタが入っている
+        puts((const char *)a0);
+        return 0;
+    default:
+        // 未知のシステムコール
+        panic();
+    }
+}
+*/
+
+
 
 #include "fs2.h"
 
@@ -1547,6 +1672,7 @@ int main()
     plic_enable(UART_IRQ);
     uart_init();
     kinit();
+    console_init();
     mmu_init();
     virtio_blk_init();
     read_superblock();

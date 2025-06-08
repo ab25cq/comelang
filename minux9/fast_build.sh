@@ -34,6 +34,7 @@ fi
 make clean
 if uname -a | grep Darwin
 then
+#    make run
     make debug-mac
 #    make log
 #    make debug

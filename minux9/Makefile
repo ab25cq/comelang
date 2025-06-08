@@ -7,25 +7,25 @@ all: kernel.elf
 
 kernel.elf:
 	$(CCPREFIX)as -g $(CFLAGS) -o start.o start.S
-	$(CCPREFIX)as -g $(CFLAGS) -o swtch.o swtch.S
 	$(CCPREFIX)as -g $(CFLAGS) -o trap.o trap.S
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o trap_c.o trap.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o uart.o uart.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o plic.o plic.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o fs2.o fs2.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o syscall.o syscall.c
 #	comelang -riscv -c -g -s main.c
 	cp main.c main.c.c
 
 #	riscv64-unknown-elf-gcc -O0 -static -o hello.elf hello.c -mcmodel=medany
-	riscv64-unknown-elf-gcc -O0 -nostdlib -static -o hello.elf hello.c -mcmodel=medany
-#	riscv64-unknown-elf-gcc -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello.elf hello.c
+#	riscv64-unknown-elf-gcc -O0 -nostdlib -static -o hello.elf hello.c -mcmodel=medany
+	riscv64-unknown-elf-gcc -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello.elf hello.c
 #	riscv64-unknown-elf-gcc -nostdlib -static -T hello.ld -o hello.elf hello.c -mcmodel=medany
 
 	xxd -i hello.elf > userprog.h  
 
 #	riscv64-unknown-elf-gcc -O0 -static -o hello2.elf hello2.c -mcmodel=medany
-	riscv64-unknown-elf-gcc -nostdlib -O0 -static -o hello2.elf hello2.c -mcmodel=medany
-#	riscv64-unknown-elf-gcc -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello2.elf hello2.c
+#	riscv64-unknown-elf-gcc -nostdlib -O0 -static -o hello2.elf hello2.c -mcmodel=medany
+	riscv64-unknown-elf-gcc -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello2.elf hello2.c
 #	riscv64-unknown-elf-gcc -nostdlib -static -T hello2.ld -o hello2.elf hello2.c -mcmodel=medany
 
 	xxd -i hello2.elf > userprog2.h  
@@ -36,7 +36,7 @@ kernel.elf:
 	./mkfs2 fs.img
 
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -O0 -g -ffreestanding -mcmodel=medany -o main.o main.c.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o swtch.o trap.o trap_c.o uart.o plic.o fs2.o main.o
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf start.o trap.o trap_c.o uart.o plic.o fs2.o syscall.o main.o
 
 
 
@@ -61,5 +61,5 @@ debug-mac: kernel.elf
 	pkill -f qemu-system-riscv64
 
 clean:
-	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o swtch.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1 *.o qemu.log hello.elf hello2.elf *.elf mkfs mkfs2
+	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1 *.o qemu.log hello.elf hello2.elf *.elf mkfs mkfs2
 

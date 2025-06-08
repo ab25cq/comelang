@@ -15,6 +15,9 @@ SECTIONS
   . = ALIGN(4096);
   TRAPFRAME = .;
   . = . + 4096;
+  
+  TRAMPOLINE = .;
+  . = . + 4096;
 
   /* End of uninitalized data segement */
   PROVIDE(_end = .);

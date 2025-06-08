@@ -36,11 +36,6 @@ void putchar(char c) {
     *UART_THR = c;
 }
 
-void puts(const char* s) {
-    char *s2 = s;
-    while (*s2) putc(*s2++);
-}
-
 void putc_direct(char c) {
     *(volatile char*)0x10000000L = c;
 }
