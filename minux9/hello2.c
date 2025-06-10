@@ -15,10 +15,10 @@ void user_puts(const char *s) {
 
 // hello.c
 int main() {
-    user_puts("H");
+//    user_puts("H");
     while (1) {
-        user_puts("H");
-        //*(volatile char*)0x10000000L = 'H';
+//        user_puts("H");
+        *(volatile char*)0x10000000L = 'H';
         //puts("UHI");
     }
     return 0;

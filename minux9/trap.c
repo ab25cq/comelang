@@ -12,7 +12,7 @@ void trap_init() {
     uintptr_t trapvec_addr = (uintptr_t)&trapvec;
     
     // mtvec に trapvec のアドレスを設定（direct モード）
-    asm volatile("csrw mtvec, %0" :: "r"(trapvec_addr));
+    asm volatile("csrw stvec, %0" :: "r"(trapvec_addr));
 }
 
 void external_interrupt_handler() {

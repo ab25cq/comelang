@@ -4,12 +4,6 @@
     .extern TRAMPOLINE
     .section .text
     .align 2
-
-    .equ MTIME,       0x0200BFF8
-    .equ MTIMECMP,    0x02004000
-    .equ TIMER_INTERVAL, 10000000      # ご自分の定義に合わせる
-    .equ MIE_MTIE,    (1 << 7)
-    .equ MSTATUS_MIE, (1 << 3)
 trapvec:
 #    csrr   t1, satp
 #    la     t0, user_satp
@@ -25,109 +19,83 @@ trapvec:
     # ここからはカーネル用ページテーブルで動くので、
     # syscall_handler 内の puts() がユーザー空間ポインタを
     # 正しく "カーネル仮想→物理" でデリファレンスできる
-    csrr  t0, mcause
-                                    
-    csrr   t0, mcause
-    li     t1, 0x8000000000000000   # 割り込みフラグ
-    and    t2, t0, t1
-    beqz   t2, not_interrupt
+    # trapvec_S entrypoint
+    csrr   t0, scause          # S-mode の原因レジスタを読む
+    srli   t1, t0, 63          # t1 = 割り込みフラグ (scause[63])
+    beqz   t1, not_interrupt   # フラグが 0 なら同期例外へ
 
-    li     t1, 7                    # Machine timer interrupt
-    li     t3, 0xfff
-    and    t0, t0, t3
-    beq    t0, t1, handle_timer
+    li     t2, 0xfff
+    and    t0, t0, t2          # t0 = scause[11:0]（割り込み番号）
 
-    li     t1, 11                   # Machine external interrupt
-    beq    t0, t1, handle_external
+    li     t2, 5               # Supervisor タイマー割り込み = 5
+    beq    t0, t2, handle_timer
+
+    li     t2, 9               # Supervisor 外部割り込み = 9
+    beq    t0, t2, handle_external
+
+    # その他の割り込み
     j      trap_return
 
 not_interrupt:
-    # ユーザーモードからの ecall かチェック
-    li     t1, 8                    # ecall from U-mode = cause 8
-    li     t3, 0xfff
-    and    t0, t0, t3
-    beq    t0, t1, handle_ecall
-    mret
+    # ecall from U-mode?
+    li     t2, 8               # ecall from U = 8
+    and    t0, t0, t2          # (scause & 0xfff) == 8 ?
+    beq    t0, t2, handle_ecall
 
-label:
-    j label
+    # それ以外の同期例外
+    j      trap_return
 
 handle_timer:
-    j trampoline
+    call   timer_handler
+    j      trap_return
 
 handle_external:
-    j handle_external
+    call   external_handler
+    j      trap_return
+    
+    
+.equ PLIC_BASE,       0x0C000000
+.equ PLIC_CLAIM,      PLIC_BASE + 0x201004   # hart0, claim/complete register
+.equ PLIC_COMPLETE,   PLIC_BASE + 0x201004
+.equ UART_PLIC_IRQ,   10                     # あなたの環境の UART IRQ 番号
+external_handler:
+    # 1) PLIC から current IRQ を取り出す
+    la   t0, PLIC_CLAIM
+    ld   t1, 0(t0)           # t1 = IRQ number
 
-#――――――――――――――――――――――――――――――――――――――――
-# ユーザーモードからのシステムコール(ecall)処理
-#――――――――――――――――――――――――――――――――――――――――
+    # 2) IRQ に応じたハンドラ
+    li   t2, UART_PLIC_IRQ
+    beq  t1, t2, .Lhandle_uart
+    # その他の IRQ は未対応なら無視
+    j    .Lcomplete
+
+.Lhandle_uart:
+    call uart_rx_handler
+    j    .Lcomplete
+
+.Lcomplete:
+    # 3) PLIC に complete を書き戻し
+    la   t0, PLIC_COMPLETE
+    sd   t1, 0(t0)
+
+    ret
+
 handle_ecall:
-#    la     t0, TRAMPOLINE
-#    
-#    sd ra, 0(t0)
-#    sd sp, 8(t0)
-#    sd gp, 16(t0)
-#    sd tp, 24(t0)
-#    sd s0, 152(t0)
-#    sd s1, 160(t0)
-#    sd s2, 168(t0)
-#    sd s3, 176(t0)
-#    sd s4, 184(t0)
-#    sd s5, 192(t0)
-#    sd s6, 200(t0)
-#    sd s7, 208(t0)
-#    sd s8, 216(t0)
-#    sd s9, 224(t0)
-#    sd s10, 232(t0)
-#    sd s11, 240(t0)
-    
-    # --- システムコール処理の前に割り込みを有効化する ---
-#    csrr t0, mstatus
-#    li   t1, 8              # 1 << 3 = MSTATUS_MIE
-#    or   t0, t0, t1
-#    csrw mstatus, t0
+    call   syscall_handler
 
-    # 引数は a0..a6、システムコール番号は a7 に入っている想定
-    call   syscall_handler       # C側の syscall_handler(a0,a1,..,a7) を呼び出し
-    # 戻り値は a0 に
-
-    # mepc を +4 して再実行を防ぐ
-    csrr   t0, mepc
+    csrr   t0, sepc
     addi   t0, t0, 4
-    csrw   mepc, t0
-    
-#    la     t0, TRAMPOLINE
-#    
-#    ld ra, 0(t0)
-#    ld sp, 8(t0)
-#    ld gp, 16(t0)
-#    ld tp, 24(t0)
-#    ld s0, 152(t0)
-#    ld s1, 160(t0)
-#    ld s2, 168(t0)
-#    ld s3, 176(t0)
-#    ld s4, 184(t0)
-#    ld s5, 192(t0)
-#    ld s6, 200(t0)
-#    ld s7, 208(t0)
-#    ld s8, 216(t0)
-#    ld s9, 224(t0)
-#    ld s10, 232(t0)
-#    ld s11, 240(t0)
-    
-    mret
-#    j      trap_return
+    csrw   sepc, t0
+
+    j      trap_return
 
 trap_return:
-    # 5) レジスタを TRMPOLINE から復元
+#    la     t0, user_satp
+#    ld     t0, 0(t0)
+#    csrw   satp, t0
+#    sfence.vma zero, zero
 
-    # 6) ユーザー SATP を復元
-    la     t0, user_satp
-    ld     t0, 0(t0)
-    csrw   satp, t0
-    sfence.vma zero, zero
-
-    mret
+    sret
     
 .global swtch
 swtch:
@@ -147,7 +115,7 @@ swtch:
     sd s9, 224(a0)
     sd s10, 232(a0)
     sd s11, 240(a0)
-    csrr a3, mepc
+    csrr a3, sepc
     sd a3, 248(a0)
     
     ld ra, 0(a1)
@@ -167,9 +135,9 @@ swtch:
     ld s10, 232(a1)
     ld s11, 240(a1)
     ld a2, 248(a1)
-    csrw mepc, a2
+    csrw sepc, a2
     
-    mret
+    sret
 
 .globl trampoline
 trampoline:
@@ -195,4 +163,5 @@ trampoline:
     sd a3, 248(a0)
 
     j timer_handler
+
 

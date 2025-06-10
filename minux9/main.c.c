@@ -19,6 +19,11 @@ extern char _end3[];  // kernel page start
 static char* heap_end = 0;
 static char* heap_limit = (char*)0x88000000;
 
+#define VIRTIO_MMIO_BASE0   0x10001000UL
+#define VIRTIO_MMIO_STRIDE  0x00001000UL
+#define VIRTIO_MAX_SLOTS    8
+#define VIRTIO_NUM VIRTIO_MAX_SLOTS
+
 #define ALIGN8(size) (((size) + 7) & ~7)
 
 void* sbrk(ptrdiff_t incr) {
@@ -928,8 +933,8 @@ void freerange(void *pa_start, void *pa_end);
 #define PGROUNDUP(sz)  (((sz)+PGSIZE-1) & ~(PGSIZE-1))
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
 
-#define KERNBASE 0x80000000L
-#define PHYSTOP 0x81000000L
+#define KERNBASE 0x80000000UL
+#define PHYSTOP 0x81000000UL
 void* memset(void *dst, int c, unsigned int n);
 
 struct run {
@@ -951,12 +956,6 @@ static inline uint64_t r_sstatus() {
 static inline void w_sstatus(uint64_t x) {
     asm volatile("csrw sstatus, %0" : : "r"(x));
 }
-// mie: Machine Interrupt Enable Register
-#define MIE_MSIE (1 << 3)   
-#define MIE_MEIE (1 << 11)  
-
-// mstatus: Machine Status Register
-#define MSTATUS_MIE (1 << 3) 
 
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
 #define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
@@ -973,9 +972,10 @@ struct spinlock {
   struct cpu *cpu;   // The cpu holding the lock.
 };
 
-
-static inline void intr_on() {
-  w_sstatus(r_sstatus() | SSTATUS_SIE);
+static inline void intr_on(void) {
+    unsigned long x = r_sstatus();
+    x |= SSTATUS_SIE;
+    w_sstatus(x);
 }
 
 // disable device interrupts
@@ -1248,12 +1248,10 @@ void vmprint(pagetable_t pagetable) {
 
 #define SATP_SV39 (8L << 60)
 
-uint64_t make_satp(pagetable_t pagetable) {
-    return SATP_SV39 | (((uint64_t)pagetable >> 12) & 0xFFFFFFFFFFF);
-}
+#define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64_t)pagetable) >> 12))
 
 void enable_mmu(pagetable_t kernel_pagetable) {
-    uint64_t satp = make_satp(kernel_pagetable);
+    uint64_t satp = MAKE_SATP(kernel_pagetable);
     
     asm volatile("csrw satp, %0" :: "r"(satp));
             
@@ -1267,30 +1265,103 @@ uint64_t kernel_satp;    // trap.S から参照する
 extern char TRAPFRAME[];
 extern char TRAMPOLINE[];
 
+// uart.c (Supervisor モード用)
+// === UART RX 割り込みでキーを受け取る簡単な例 ===
+
+// UART デバイスのアドレス
+#define UART0         0x10000000UL
+#define UART_RXDATA   ((volatile uint32_t*)(UART0 + 0x00))
+#define UART_TXDATA   ((volatile uint32_t*)(UART0 + 0x04))
+#define UART_IER      ((volatile uint8_t *)(UART0 + 0x01))
+#define UART_RX_INTR  0x01
+
+#define UART_THR      ((volatile uint8_t *)(UART0 + 0x00))  // 書き込み用
+#define UART_LSR      ((volatile uint8_t *)(UART0 + 0x05))  // Line Status Register
+#define UART_LSR_THRE 0x20  // Transmit Holding Register Empty
+
+// Supervisor‐mode CSR ビット定義
+#define SIE_SEIE   (1UL << 9)  // Supervisor External Interrupt Enable
+#define SSTATUS_SIE (1UL << 1) // Sstatus.SIE
+
+// PLIC 側で UART IRQ を Supervisor にルーティングする
+extern void plic_enable(int irq);
+#define UART_PLIC_IRQ 10
+
+volatile char last_key = 0;
+
+// UART 受信割り込みハンドラ。trap ハンドラ内からこれを呼びます。
+void uart_rx_handler(void) {
+    last_key = *(UART_RXDATA);
+}
+
+// Supervisor モードでの初期化
+void uart_init(void) {
+    // 1) UART デバイス側の RX 割り込みを有効化
+    *UART_IER |= UART_RX_INTR;
+
+    // 2) PLIC 側で UART_IRQ を Supervisor モードに有効化
+    plic_enable(UART_PLIC_IRQ);
+
+    // 3) Supervisor‐mode 外部割り込みを受け付ける
+    asm volatile("csrs sie, %0" :: "r"(SIE_SEIE));
+
+    // 4) Supervisor モード全体の割り込みを有効化
+    asm volatile("csrs sstatus, %0" :: "r"(SSTATUS_SIE));
+}
+
+// 1 文字送信 (FIFO 空きを待ってから)
+void putc(char c) {
+    while (!(*UART_LSR & UART_LSR_THRE)) ;
+    *UART_THR = c;
+}
+void putchar(char c) {
+    putc(c);
+}
+
+// 割り込みなしでダイレクトに送る場合
+void putc_direct(char c) {
+    *(volatile char*)UART0 = c;
+}
+void puts_direct(const char* s) {
+    while (*s) putc_direct(*s++);
+}
+
 void mmu_init() {
     kernel_pagetable = (pagetable_t)kalloc();
     memset(kernel_pagetable, 0, PGSIZE);
     
-    kernel_satp = make_satp(kernel_pagetable);
+    kernel_satp = MAKE_SATP(kernel_pagetable);
 
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-        mappages(kernel_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
+        uint64_t pa = addr;
+        mappages(kernel_pagetable, addr, PGSIZE, pa, PTE_R | PTE_W | PTE_X | PTE_V);
     }
 
     // UART
-    mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
-    
-    mappages(kernel_pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE,
-                    PTE_V | PTE_R | PTE_X);    // U ビットは外す
-    mappages(kernel_pagetable, (uint64_t)TRAPFRAME, PGSIZE,
-        (uint64_t)TRAPFRAME,      // リンク時にこの VA=PA に配置しておく
+    mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V);
+    mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V);
+
+    // PLIC
+    mappages(kernel_pagetable, 0x02000000, 0x00020000, 0x02000000, PTE_V|PTE_R|PTE_W);
+
+    mappages(kernel_pagetable, 0x0C000000, 0x00400000, 0x0C000000, PTE_V|PTE_R|PTE_W);
+
+    /// VIRTIO ///
+    for (int i = 0; i < VIRTIO_NUM; i++) {
+        uint64_t va = VIRTIO_MMIO_BASE0 + i * VIRTIO_MMIO_STRIDE;
+        uint64_t pa = va;  // QEMU virt では VA=PA の identity map
+        
+        mappages(kernel_pagetable, va, VIRTIO_MMIO_STRIDE, pa, PTE_V | PTE_R | PTE_W);
+   }
+                
+    /// TRAMPOLINE ///
+    mappages(kernel_pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_V | PTE_R | PTE_X);    // U ビットは外す
+    mappages(kernel_pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME,      // リンク時にこの VA=PA に配置しておく
                                         PTE_V | PTE_R | PTE_W);
-                                                
                 
     asm volatile("sfence.vma zero, zero"); 
-                                                        
+    
     enable_mmu(kernel_pagetable);
 }
 
@@ -1350,19 +1421,40 @@ void alloc_prog() {
     memset(pagetable, 0, PGSIZE);
     
     result->pagetable = pagetable;
+    
+/*
+    uint64_t addr = (uint64_t)_userret;
+    mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
+*/
+    
 
     // 0x80000000
+/*
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
         mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
     }
+*/
     
     // UART
     mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(result->pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     
-    /// TRAPFRAME
-    mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
+    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
+    
+    // PLIC
+    mappages(result->pagetable, 0x02000000, 0x00020000, 0x02000000, PTE_V|PTE_R|PTE_W | PTE_U);
+
+    mappages(result->pagetable, 0x0C000000, 0x00400000, 0x0C000000, PTE_V|PTE_R|PTE_W | PTE_U);
+
+    /// VIRTIO ///
+    for (int i = 0; i < VIRTIO_NUM; i++) {
+        uint64_t va = VIRTIO_MMIO_BASE0 + i * VIRTIO_MMIO_STRIDE;
+        uint64_t pa = va;  // QEMU virt では VA=PA の identity map
+        
+        mappages(result->pagetable, va, VIRTIO_MMIO_STRIDE, pa, PTE_V | PTE_R | PTE_W | PTE_U);
+    }
+                
     asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)elf_program;
@@ -1400,7 +1492,7 @@ void alloc_prog() {
     /// USER PROGRAM
     result->context.mepc = eh->entry;
     
-    uint64_t satp_val = make_satp(result->pagetable);
+    uint64_t satp_val = MAKE_SATP(result->pagetable);
     user_satp = satp_val;                       // ← ここを追加
 /*
     asm volatile("csrw satp, %0" :: "r"(satp_val));
@@ -1419,19 +1511,40 @@ void alloc_prog2() {
     memset(pagetable, 0, PGSIZE);
     
     result->pagetable = pagetable;
+    
+/*
+    uint64_t addr = (uint64_t)_userret;
+    mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
+*/
 
+/*
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
         mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
     }
+*/
     
     // UART
     mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(result->pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     
     /// TRAPFRAME
     mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
+    
+    // PLIC
+    mappages(result->pagetable, 0x02000000, 0x00020000, 0x02000000, PTE_V|PTE_R|PTE_W | PTE_U);
+
+    mappages(result->pagetable, 0x0C000000, 0x00400000, 0x0C000000, PTE_V|PTE_R|PTE_W | PTE_U);
+
+    /// VIRTIO ///
+    for (int i = 0; i < VIRTIO_NUM; i++) {
+        uint64_t va = VIRTIO_MMIO_BASE0 + i * VIRTIO_MMIO_STRIDE;
+        uint64_t pa = va;  // QEMU virt では VA=PA の identity map
+        
+        mappages(result->pagetable, va, VIRTIO_MMIO_STRIDE, pa, PTE_V | PTE_R | PTE_W | PTE_U);
+    }
+    
     asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)elf_program2;
@@ -1467,7 +1580,7 @@ void alloc_prog2() {
     /// USER PROGRAM
     result->context.mepc = eh->entry;
     
-    uint64_t satp_val = make_satp(result->pagetable);
+    uint64_t satp_val = MAKE_SATP(result->pagetable);
     user_satp = satp_val;                       // ← ここを追加
 /*
     asm volatile("csrw satp, %0" :: "r"(satp_val));
@@ -1504,18 +1617,18 @@ static inline void w_mstatus(uint64_t x) {
   asm volatile("csrw mstatus, %0" : : "r" (x));
 }
 
-static inline uint64_t r_mie() {
+static inline uint64_t r_sie() {
     uint64_t x;
-    asm volatile("csrr %0, mie" : "=r"(x));
+    asm volatile("csrr %0, sie" : "=r"(x));
     return x;
 }
 
-static inline void w_mie(uint64_t x) {
-    asm volatile("csrw mie, %0" : : "r"(x));
+static inline void w_sie(uint64_t x) {
+    asm volatile("csrw sie, %0" : : "r"(x));
 }
 
-static inline void w_mtvec(uint64_t x) {
-    asm volatile("csrw mtvec, %0" : : "r"(x));
+static inline void w_stvec(uint64_t x) {
+    asm volatile("csrw stvec, %0" : : "r"(x));
 }
 
 #define TIMER_INTERVAL 10000000UL
@@ -1523,27 +1636,65 @@ static inline void w_mtvec(uint64_t x) {
 
 extern void trapvec();  
 
-void enable_timer_interrupts() {
-    w_mtvec((uint64_t)trapvec & ~0x03);
-    uint64_t now = *MTIME;
-    *MTIMECMP = now + TIMER_INTERVAL;
-    w_mie(MIE_MTIE);
-    w_mstatus(r_mstatus() | MSTATUS_MIE);
+
+#define CLINT_MTIMECMP  0x02004000UL
+#define CLINT_MTIME     0x0200BFF8UL
+
+static inline uint64_t read_mtime(void) {
+    return *(volatile uint64_t *)CLINT_MTIME;
+}
+static inline void write_mtimecmp(uint64_t v) {
+    *(volatile uint64_t *)CLINT_MTIMECMP = v;
 }
 
-void disable_timer_interrupts() {
-    w_mie(0x0);
+void set_supervisor_timer(uint64_t interval) {
+    uint64_t now = read_mtime();
+    write_mtimecmp(now + interval);
+}
 
-    w_mstatus(r_mstatus() & ~MSTATUS_MIE);
+// bit 定義
+#define SSTATUS_SIE (1UL << 1)  // sstatus.SIE ビット
+#define SIE_STIE    (1UL << 5)  // sie.STIE ビット
 
-    *MTIMECMP = *MTIME + 0xFFFFFFFF;
+// Supervisor-mode タイマー割り込みを有効化
+void enable_timer_interrupts(void) {
+    w_stvec((uint64_t)trapvec & ~0x03);
+    unsigned long x;
+
+    // STIE = 1
+    x = r_sie();
+    x |= SIE_STIE;
+    w_sie(x);
+
+    // SIE = 1
+    x = r_sstatus();
+    x |= SSTATUS_SIE;
+    w_sstatus(x);
+    
+    set_supervisor_timer(TIMER_INTERVAL);
+}
+
+// Supervisor-mode タイマー割り込みを無効化
+void disable_timer_interrupts(void) {
+    unsigned long x;
+
+    // STIE = 0
+    x = r_sie();
+    x &= ~SIE_STIE;
+    w_sie(x);
+
+    // SIE = 0
+    x = r_sstatus();
+    x &= ~SSTATUS_SIE;
+    w_sstatus(x);
 }
 
 extern void swtch(struct context *old, struct context *new);
 
 void timer_reset() {
-    uint64_t now = *MTIME;
-    *MTIMECMP = now + TIMER_INTERVAL;
+    set_supervisor_timer(TIMER_INTERVAL);
+//    uint64_t now = *MTIME;
+//    *MTIMECMP = now + TIMER_INTERVAL;
 }
 
 void timer_handler() {
@@ -1565,7 +1716,7 @@ void timer_handler() {
     if (new != old) {
         enable_mmu(new->pagetable);
         enable_timer_interrupts();
-        user_satp = make_satp(new->pagetable);
+        user_satp = MAKE_SATP(new->pagetable);
         swtch(&mycpu()->context, &new->context);
     }
 }
@@ -1665,6 +1816,11 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
 
 #include "fs2.h"
 
+extern void user_entry_trampoline();
+void (*goto_user)(uintptr_t, uintptr_t, uintptr_t, uint64_t) = (void*)user_entry_trampoline;
+//TRAMPOLINE;
+
+
 int main()
 {
     trap_init();          
@@ -1702,9 +1858,60 @@ int main()
     alloc_prog();
     alloc_prog2();
 
+/*
+    // PMP entry 0: allow all access to all physical memory
+    // address matching: TOR (top-of-range)
+    // pmpaddr0 = max_addr >> 2 (TOR uses pmpaddr0 * 4 as upper bound)
+    // pmpcfg0 = A=TOR, R/W/X=1
+    
+    asm volatile("li t0, -1");            // 0xFFFFFFFF for 32-bit PMPADDR
+    asm volatile("csrw pmpaddr0, t0");    // Top address (unbounded TOR)
+    asm volatile("li t0, 0x1F");          // TOR | R | W | X = 0001 1111
+    asm volatile("csrw pmpcfg0, t0");     // PMP0 configuration
+*/
+
+/*
+    uint64_t medeleg_val = (1 << 8); 
+    // ページフォルト関連も委譲しておくと良い
+    medeleg_val |= (1 << 12) | (1 << 13) | (1 << 15);
+    asm volatile("csrw medeleg, %0" : : "r"(medeleg_val));
+
+    // Supervisor-modeのタイマー(5)、外部(9)、ソフトウェア(1)割り込みをS-modeに委譲
+    uint64_t mideleg_val = (1 << 9) | (1 << 5) | (1 << 1);
+    asm volatile("csrw mideleg, %0" : : "r"(mideleg_val));
+*/
+
+    /// ユーザープロセスへ降りる
     struct proc* p = gProc[gActiveProc];
     
-    uint64_t satp_val = make_satp(p->pagetable);
+    uintptr_t usersp = (uint64_t)(p->stack + 256);
+    uint64_t usersatp = MAKE_SATP(p->pagetable);
+    uintptr_t entry = p->context.mepc;
+
+/*
+    // 1) SATP をユーザー用ページテーブルにセット
+    asm volatile("csrw satp, %0" :: "r"(usersatp));
+    asm volatile("sfence.vma zero, zero");
+
+    // 2) スタックをユーザースタックに
+    asm volatile("mv sp, %0" :: "r"(usersp));
+
+    // 3) sstatus.SPP=0, SPIE=1
+    uintptr_t x;
+    asm volatile("csrr %0, sstatus" : "=r"(x));
+    x = (x & ~(1UL<<8)) | (1UL<<5);  // clear SPP, set SPIE
+    asm volatile("csrw sstatus, %0" :: "r"(x));
+
+    // 4) sepc にエントリセット
+    asm volatile("csrw sepc, %0" :: "r"(entry));
+
+    enable_timer_interrupts();
+
+    // 5) User モードへ
+    asm volatile("sret");
+*/
+    
+/*
     asm volatile("csrw satp, %0" :: "r"(satp_val));
     asm volatile("sfence.vma zero, zero");
     
@@ -1717,21 +1924,12 @@ int main()
     //uint64_t entry = 0x1000;
     uint64_t entry = p->context.mepc;
     asm volatile("csrw mepc, %0" :: "r"(entry));
-    
-    // PMP entry 0: allow all access to all physical memory
-    // address matching: TOR (top-of-range)
-    // pmpaddr0 = max_addr >> 2 (TOR uses pmpaddr0 * 4 as upper bound)
-    // pmpcfg0 = A=TOR, R/W/X=1
-    
-    asm volatile("li t0, -1");            // 0xFFFFFFFF for 32-bit PMPADDR
-    asm volatile("csrw pmpaddr0, t0");    // Top address (unbounded TOR)
-    asm volatile("li t0, 0x1F");          // TOR | R | W | X = 0001 1111
-    asm volatile("csrw pmpcfg0, t0");     // PMP0 configuration
-    
-    enable_timer_interrupts();
-    
+
     asm volatile("fence.i");
     asm volatile("mret");
+*/
+
+    goto_user(entry, usersp, usersatp, TIMER_INTERVAL);
     
     while (1); 
 }

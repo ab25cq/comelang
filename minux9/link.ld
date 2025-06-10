@@ -1,9 +1,17 @@
 OUTPUT_ARCH( "riscv" )
-ENTRY( _start )
+ENTRY(entry)
 SECTIONS
 {
+#  . = 0x90000000;
+#  PROVIDE(_userret = .);
+#  .text.userret : {
+#    *(.text.userret)
+#  }
+#  . += 4096;
+  
   . = 0x80000000;
   .text : { *(.text*) }
+#  .text : { *(.text) }
   .rodata : { *(.rodata*) }
   .data : { *(.data*) }
   .sdata : { *(.sdata*) }
@@ -16,8 +24,11 @@ SECTIONS
   TRAPFRAME = .;
   . = . + 4096;
   
-  TRAMPOLINE = .;
-  . = . + 4096;
+#  . = 0x80100000;
+  PROVIDE(TRAMPOLINE = .);
+  .trampoline : { *(.trampoline) }
+  
+  . = ALIGN(4096);
 
   /* End of uninitalized data segement */
   PROVIDE(_end = .);
@@ -25,6 +36,7 @@ SECTIONS
   PROVIDE(_end2 = .);
   . = . + 4096 * 8;
   PROVIDE(_end3 = .);
+  
   
   .debug_info        0 : { *(.debug_info) } 
   .debug_abbrev      0 : { *(.debug_abbrev) }
