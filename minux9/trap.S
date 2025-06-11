@@ -1,20 +1,24 @@
     .extern kernel_satp      # C のグローバルを取り込む
     .extern user_satp        # C のグローバルを取り込む
+    .extern kernel_sp        # C のゴローバル変数を取り込む
     .section ".trampoline", "ax"
     .globl trapvec
     .extern TRAMPOLINE
     #.section .text
     .align 2
 trapvec:
-#    csrr   t1, satp
-#    la     t0, user_satp
-#    sd     t1, 0(t0)
+    #csrr   t1, satp
+    #la     t0, user_satp
+    #sd     t1, 0(t0)
 
     # --- まずカーネルページテーブルを SATP にセット ---
     la   t0, kernel_satp     # t0 = &kernel_satp
     ld   t0, 0(t0)           # t0 = kernel_satp
     csrw satp, t0
     sfence.vma zero, zero
+    
+    la     t0, kernel_sp
+    mv     sp, t0
                 
     # ここからはカーネル用ページテーブルで動くので、
     # syscall_handler 内の puts() がユーザー空間ポインタを

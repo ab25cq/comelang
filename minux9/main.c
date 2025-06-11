@@ -1275,9 +1275,12 @@ void enable_mmu(pagetable_t kernel_pagetable) {
 #define VIRTIO0 0x10001000L       
 #define REG_STATUS 0x070 
 
-uint64_t kernel_satp;    // trap.S から参照する
 extern char TRAPFRAME[];
 extern char TRAMPOLINE[];
+extern char COMMON[];
+uint64_t kernel_sp __attribute__((section(".common")));
+
+uint64_t kernel_satp __attribute__((section(".common")));    // trap.S から参照する
 
 // uart.c (Supervisor モード用)
 // === UART RX 割り込みでキーを受け取る簡単な例 ===
@@ -1346,15 +1349,12 @@ void puts_direct(const char* s) {
 void mmu_init() {
     kernel_pagetable = (pagetable_t)kalloc();
     memset(kernel_pagetable, 0, PGSIZE);
-    
-    kernel_satp = MAKE_SATP(kernel_pagetable);
 
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-        uint64_t pa = addr;
-        mappages(kernel_pagetable, addr, PGSIZE, pa, PTE_R | PTE_W | PTE_X | PTE_V);
+        mappages(kernel_pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V);
     }
-
+    
     // UART
     mappages(kernel_pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V);
     mappages(kernel_pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V);
@@ -1375,6 +1375,8 @@ void mmu_init() {
     mappages(kernel_pagetable, CLINT_MTIMECMP,  PGSIZE, CLINT_MTIMECMP, PTE_R|PTE_W|PTE_V);
                 
     asm volatile("sfence.vma zero, zero"); 
+    
+    kernel_satp = MAKE_SATP(kernel_pagetable);
     
     enable_mmu(kernel_pagetable);
 }
@@ -1428,6 +1430,7 @@ uint8_t elf_program2[5048+1];
 void setting_user_pagetable(pagetable_t pagetable)
 {
     mappages(pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_X);
+    mappages(pagetable, (uint64_t)COMMON, PGSIZE, (uint64_t)COMMON, PTE_R | PTE_W | PTE_V | PTE_X | PTE_U);
     
     // CLINT (タイマー割り込み)
     mappages(pagetable, CLINT_MTIME, PGSIZE, CLINT_MTIME, PTE_U|PTE_R|PTE_W|PTE_V);
@@ -1644,8 +1647,16 @@ static inline void w_stvec(uint64_t x) {
 
 #define TIMER_INTERVAL 10000000UL
 #define MIE_MTIE (1 << 7)
+#define SSTATUS_SIE (1UL << 1)  // sstatus.SIE ビット
+#define SIE_STIE    (1UL << 5)  // sie.STIE ビット
 
 extern void trapvec();  
+
+void my_intr_off()
+{
+    intr_off();
+    w_sie(r_sie() & ~SIE_STIE);
+}
 
 
 
@@ -1664,8 +1675,6 @@ void set_supervisor_timer(uint64_t interval) {
 */
 
 // bit 定義
-#define SSTATUS_SIE (1UL << 1)  // sstatus.SIE ビット
-#define SIE_STIE    (1UL << 5)  // sie.STIE ビット
 
 static inline uint64_t read_mtime() {
     return *(volatile uint64_t*)CLINT_MTIME;
@@ -1697,6 +1706,9 @@ void enable_timer_interrupts(void) {
 
 // Supervisor-mode タイマー割り込みを無効化
 void disable_timer_interrupts(void) {
+    my_intr_off();
+    
+/*
     unsigned long x;
 
     // STIE = 0
@@ -1708,6 +1720,7 @@ void disable_timer_interrupts(void) {
     x = r_sstatus();
     x &= ~SSTATUS_SIE;
     w_sstatus(x);
+*/
 }
 
 extern void swtch(struct context *old, struct context *new);
@@ -1850,10 +1863,21 @@ r_sip()
   return x;
 }
 
+static inline uint64_t read_s_sp(void) {
+    uint64_t sp_val;
+    asm volatile(
+        "mv %0, sp\n"     // sp レジスタの値を出力オペランド %0 に
+        : "=r"(sp_val)    // %0 は r• レジスタに出力
+        :                 // 入力オペランドなし
+        :                 // 破壊するレジスタなし
+    );
+    
+    return sp_val;
+}
+
 int main()
 {
-    intr_off();
-    w_sie(r_sie() & ~SIE_STIE);
+    my_intr_off();
     w_stvec((uint64_t)trapvec & ~0x03);
     
     trap_init();          
@@ -1980,6 +2004,7 @@ printf("sie=0x%x (STIE=%d), sstatus=0x%x (SIE=%d), sip=0x%x (STIP=%d)\n",
                      r_sip(),   !!(r_sip()   & SIE_STIE));
 */
 
+    kernel_sp = read_s_sp();
     goto_user(entry, usersp, usersatp, TIMER_INTERVAL);
     
     while (1); 

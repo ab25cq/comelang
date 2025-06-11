@@ -29,6 +29,10 @@ SECTIONS
   PROVIDE(TRAMPOLINE = .);
   .trampoline : { *(.trampoline) }
   . = ALIGN(4096);
+  PROVIDE(COMMON = .);
+  .common : { *(.common) }
+  . = . + 4096;
+  . = ALIGN(4096);
 
   /* End of uninitalized data segement */
   PROVIDE(_end = .);
