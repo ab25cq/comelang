@@ -983,6 +983,20 @@ static inline void intr_off() {
   w_sstatus(r_sstatus() & ~SSTATUS_SIE);
 }
 
+#define SSTATUS_SIE (1UL << 1)
+
+static inline void intr_off_direct(void) {
+    // sstatusレジスタのSIEビットをクリアする
+    asm volatile("csrc sstatus, %0" : : "r"(SSTATUS_SIE));
+}
+
+#define SSTATUS_SIE (1UL << 1)
+
+static inline void intr_on_direct(void) {
+    // sstatusレジスタのSIEビットをセットする
+    asm volatile("csrs sstatus, %0" : : "r"(SSTATUS_SIE));
+}
+
 // are device interrupts enabled?
 static inline int intr_get() {
   uint64_t x = r_sstatus();
@@ -1326,6 +1340,9 @@ void puts_direct(const char* s) {
     while (*s) putc_direct(*s++);
 }
 
+#define CLINT_MTIMECMP  0x02004000UL
+#define CLINT_MTIME     0x0200BFF8UL
+
 void mmu_init() {
     kernel_pagetable = (pagetable_t)kalloc();
     memset(kernel_pagetable, 0, PGSIZE);
@@ -1353,12 +1370,9 @@ void mmu_init() {
         uint64_t pa = va;  // QEMU virt では VA=PA の identity map
         
         mappages(kernel_pagetable, va, VIRTIO_MMIO_STRIDE, pa, PTE_V | PTE_R | PTE_W);
-   }
-                
-    /// TRAMPOLINE ///
-    mappages(kernel_pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_V | PTE_R | PTE_X);    // U ビットは外す
-    mappages(kernel_pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME,      // リンク時にこの VA=PA に配置しておく
-                                        PTE_V | PTE_R | PTE_W);
+    }
+    mappages(kernel_pagetable, CLINT_MTIME, PGSIZE, CLINT_MTIME, PTE_R|PTE_W|PTE_V);
+    mappages(kernel_pagetable, CLINT_MTIMECMP,  PGSIZE, CLINT_MTIMECMP, PTE_R|PTE_W|PTE_V);
                 
     asm volatile("sfence.vma zero, zero"); 
     
@@ -1411,68 +1425,78 @@ uint8_t elf_program2[5048+1];
 // ↑main.c の先頭あたりに追加
 #include <stdint.h>
 
-void alloc_prog() {
-    struct proc* result = calloc(1, sizeof(struct proc));
+void setting_user_pagetable(pagetable_t pagetable)
+{
+    mappages(pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_X);
     
-    result->stack = calloc(1, 256);
-    result->context.sp = (uint64_t)(result->stack + 256);
-    
-    pagetable_t pagetable = (pagetable_t)kalloc();
-    memset(pagetable, 0, PGSIZE);
-    
-    result->pagetable = pagetable;
+    // CLINT (タイマー割り込み)
+    mappages(pagetable, CLINT_MTIME, PGSIZE, CLINT_MTIME, PTE_U|PTE_R|PTE_W|PTE_V);
+    mappages(pagetable, CLINT_MTIMECMP,  PGSIZE, CLINT_MTIMECMP, PTE_U|PTE_R|PTE_W|PTE_V);
     
 /*
     uint64_t addr = (uint64_t)_userret;
-    mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
+    mappages(pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
 */
     
 
-    // 0x80000000
 /*
+    // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-        mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
+        mappages(pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
     }
 */
     
     // UART
-    mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(result->pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
+    mappages(pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     
-    mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
-    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
+/*
+    mappages(pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
+    mappages(pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
     
     // PLIC
-    mappages(result->pagetable, 0x02000000, 0x00020000, 0x02000000, PTE_V|PTE_R|PTE_W | PTE_U);
+    mappages(pagetable, 0x02000000, 0x00020000, 0x02000000, PTE_V|PTE_R|PTE_W | PTE_U);
 
-    mappages(result->pagetable, 0x0C000000, 0x00400000, 0x0C000000, PTE_V|PTE_R|PTE_W | PTE_U);
+    mappages(pagetable, 0x0C000000, 0x00400000, 0x0C000000, PTE_V|PTE_R|PTE_W | PTE_U);
 
     /// VIRTIO ///
     for (int i = 0; i < VIRTIO_NUM; i++) {
         uint64_t va = VIRTIO_MMIO_BASE0 + i * VIRTIO_MMIO_STRIDE;
         uint64_t pa = va;  // QEMU virt では VA=PA の identity map
         
-        mappages(result->pagetable, va, VIRTIO_MMIO_STRIDE, pa, PTE_V | PTE_R | PTE_W | PTE_U);
+        mappages(pagetable, va, VIRTIO_MMIO_STRIDE, pa, PTE_V | PTE_R | PTE_W | PTE_U);
     }
+*/
                 
     asm volatile("sfence.vma zero, zero"); 
+}
+
+void alloc_prog() {
+    struct proc* result = calloc(1, sizeof(struct proc));
+    
+    pagetable_t pagetable = (pagetable_t)kalloc();
+    memset(pagetable, 0, PGSIZE);
+    
+    setting_user_pagetable(pagetable);
+    
+    result->pagetable = pagetable;
     
     struct elfhdr *eh = (struct elfhdr *)elf_program;
     
     if (eh->magic != ELF_MAGIC) {
         while(1) puts("panic");
     }
-            
         
     struct proghdr *ph = (struct proghdr *)(elf_program + eh->phoff);
     
     uint64_t size = ph->filesz;
     
+    uint64_t va = 0;
     for (int i = 0; i < eh->phnum; i++, ph++) {
         if (ph->type != ELF_PROG_LOAD)
             continue;
     
-        for (uint64_t va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
+        for (va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
             void *pa = kalloc();
             if (!pa) panic();
             memset(pa, 0, PGSIZE);
@@ -1487,7 +1511,17 @@ void alloc_prog() {
         }
         asm volatile("sfence.vma zero, zero"); 
     }
+    
+    /// stack ///
+    char *pa = kalloc();
+    if (!pa) panic();
+    memset(pa, 0, PGSIZE);
+    
+    mappages(result->pagetable, va, PGSIZE, (uint64_t)pa, PTE_U | PTE_R | PTE_W | PTE_V);
     asm volatile("sfence.vma zero, zero"); 
+    
+    result->stack = (char*)va + PGSIZE;
+    result->context.sp = va + PGSIZE;
     
     /// USER PROGRAM
     result->context.mepc = eh->entry;
@@ -1504,48 +1538,13 @@ void alloc_prog() {
 
 void alloc_prog2() {
     struct proc* result = calloc(1, sizeof(struct proc));
-    result->stack = calloc(1, 256);
-    result->context.sp = (uint64_t)(result->stack + 256);
     
     pagetable_t pagetable = (pagetable_t)kalloc();
     memset(pagetable, 0, PGSIZE);
     
+    setting_user_pagetable(pagetable);
+    
     result->pagetable = pagetable;
-    
-/*
-    uint64_t addr = (uint64_t)_userret;
-    mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
-*/
-
-/*
-    // 0x80000000
-    for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-        mappages(result->pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
-    }
-*/
-    
-    // UART
-    mappages(result->pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(result->pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
-    
-    /// TRAPFRAME
-    mappages(result->pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U);
-    mappages(result->pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
-    
-    // PLIC
-    mappages(result->pagetable, 0x02000000, 0x00020000, 0x02000000, PTE_V|PTE_R|PTE_W | PTE_U);
-
-    mappages(result->pagetable, 0x0C000000, 0x00400000, 0x0C000000, PTE_V|PTE_R|PTE_W | PTE_U);
-
-    /// VIRTIO ///
-    for (int i = 0; i < VIRTIO_NUM; i++) {
-        uint64_t va = VIRTIO_MMIO_BASE0 + i * VIRTIO_MMIO_STRIDE;
-        uint64_t pa = va;  // QEMU virt では VA=PA の identity map
-        
-        mappages(result->pagetable, va, VIRTIO_MMIO_STRIDE, pa, PTE_V | PTE_R | PTE_W | PTE_U);
-    }
-    
-    asm volatile("sfence.vma zero, zero"); 
     
     struct elfhdr *eh = (struct elfhdr *)elf_program2;
     
@@ -1557,11 +1556,12 @@ void alloc_prog2() {
     
     uint64_t size = ph->filesz;
     
+    uint64_t va;
     for (int i = 0; i < eh->phnum; i++, ph++) {
         if (ph->type != ELF_PROG_LOAD)
             continue;
     
-        for (uint64_t va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
+        for (va = PGROUNDDOWN(ph->vaddr); va < ph->vaddr + ph->memsz; va += PGSIZE) {
             void *pa = kalloc();
             if (!pa) panic();
             memset(pa, 0, PGSIZE);
@@ -1576,6 +1576,17 @@ void alloc_prog2() {
         asm volatile("sfence.vma zero, zero"); 
     }
     asm volatile("sfence.vma zero, zero"); 
+    
+    /// stack ///
+    char *pa = kalloc();
+    if (!pa) panic();
+    memset(pa, 0, PGSIZE);
+    
+    mappages(result->pagetable, va, PGSIZE, (uint64_t)pa, PTE_U | PTE_R | PTE_W | PTE_V);
+    asm volatile("sfence.vma zero, zero"); 
+    
+    result->stack = (char*)va + PGSIZE;
+    result->context.sp = va + PGSIZE;
     
     /// USER PROGRAM
     result->context.mepc = eh->entry;
@@ -1637,8 +1648,6 @@ static inline void w_stvec(uint64_t x) {
 extern void trapvec();  
 
 
-#define CLINT_MTIMECMP  0x02004000UL
-#define CLINT_MTIME     0x0200BFF8UL
 
 static inline uint64_t read_mtime(void) {
     return *(volatile uint64_t *)CLINT_MTIME;
@@ -1812,13 +1821,12 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
 }
 */
 
-
+#define SSTATUS_SUM (1UL << 18)
 
 #include "fs2.h"
 
 extern void user_entry_trampoline();
 void (*goto_user)(uintptr_t, uintptr_t, uintptr_t, uint64_t) = (void*)user_entry_trampoline;
-//TRAMPOLINE;
 
 
 int main()
@@ -1835,8 +1843,6 @@ int main()
     
     uint32_t inum = path_lookup("/hello.elf");
     if (inum != 0) {
-        //dump_inode(inum);
-
         struct dinode ip;
         read_inode(inum, &ip);
         read_data(&ip, 0, elf_program, 5096);
@@ -1846,8 +1852,6 @@ int main()
     
     uint32_t inum2 = path_lookup("/hello2.elf");
     if (inum2 != 0) {
-        //dump_inode(inum2);
-
         struct dinode ip;
         read_inode(inum2, &ip);
         read_data(&ip, 0, elf_program2, 5048);
@@ -1881,10 +1885,18 @@ int main()
     asm volatile("csrw mideleg, %0" : : "r"(mideleg_val));
 */
 
+    /// カーネルページからユーザープロセスをアクセス可能にする
+    asm volatile("csrs sstatus, %0" : : "r"(SSTATUS_SUM));
+    
+    
+//    push_off();
+//    intr_off_direct(); 
+    
     /// ユーザープロセスへ降りる
+    
     struct proc* p = gProc[gActiveProc];
     
-    uintptr_t usersp = (uint64_t)(p->stack + 256);
+    uintptr_t usersp = (uint64_t)(p->stack);
     uint64_t usersatp = MAKE_SATP(p->pagetable);
     uintptr_t entry = p->context.mepc;
 
@@ -1928,6 +1940,8 @@ int main()
     asm volatile("fence.i");
     asm volatile("mret");
 */
+//vmprint(p->pagetable);
+//aaa: goto aaa;
 
     goto_user(entry, usersp, usersatp, TIMER_INTERVAL);
     

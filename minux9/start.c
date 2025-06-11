@@ -383,13 +383,19 @@ typedef uint64 *pagetable_t; // 512 PTEs
 // that have the high bit set.
 #define MAXVA (1L << (9 + 9 + 9 + 12 - 1))
 
+#define MSTATUS_TSR  (1UL << 22) // TSRビット(22)を定義
+
 void start()
 {
     // set M Previous Privilege mode to Supervisor, for mret.
     unsigned long x = r_mstatus();
     x &= ~MSTATUS_MPP_MASK;
-    x |= MSTATUS_MPP_S;
+    x |= MSTATUS_MPP_S;    // S-mode
+    x &= ~(1UL << 20);     /// TVM clear
+    x &= ~(MSTATUS_TSR);   // sret, sfenceできるようにTSRを0
     w_mstatus(x);
+    
+//    asm volatile("csrc mstatus, %0" : : "r"(MSTATUS_TSR));
   
     // set M Exception Program Counter to main, for mret.
     // requires gcc -mcmodel=medany

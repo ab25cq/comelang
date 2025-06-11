@@ -129,7 +129,7 @@ void virtio_blk_init(void)
     mw32(vbase, R_Q_NUM, drvQ);
     Q = drvQ;
     if(!Q || Q > 1024) { puts("unsupported queue size\n"); while(1); }
-    printf("device queue size = %d (driver uses %d)\n", devQ, Q);
+    //printf("device queue size = %d (driver uses %d)\n", devQ, Q);
 
     size_t sz_desc  = 16ULL * Q;
     size_t sz_avail =  4ULL + 2ULL * Q;

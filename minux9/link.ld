@@ -24,10 +24,10 @@ SECTIONS
   TRAPFRAME = .;
   . = . + 4096;
   
-#  . = 0x80100000;
+  . = ALIGN(4096);
+  . = 0x80010000;
   PROVIDE(TRAMPOLINE = .);
   .trampoline : { *(.trampoline) }
-  
   . = ALIGN(4096);
 
   /* End of uninitalized data segement */
@@ -36,6 +36,8 @@ SECTIONS
   PROVIDE(_end2 = .);
   . = . + 4096 * 8;
   PROVIDE(_end3 = .);
+  
+  
   
   
   .debug_info        0 : { *(.debug_info) } 
