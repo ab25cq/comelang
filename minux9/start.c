@@ -385,6 +385,36 @@ typedef uint64 *pagetable_t; // 512 PTEs
 
 #define MSTATUS_TSR  (1UL << 22) // TSRビット(22)を定義
 
+#define TIMER_INTERVAL 10000000UL
+
+#define CLINT_MTIME    0x0200BFF8UL
+
+// Machine タイマー（MTIME）を読み出す
+static inline uint64_t read_mtime(void) {
+    return *(volatile uint64_t *)CLINT_MTIME;
+}
+
+#define CLINT_MTIMECMP 0x02004000UL
+
+static inline void write_mtimecmp(uint64_t t) {
+    *(volatile uint64_t *)CLINT_MTIMECMP = t;
+}
+
+void timerinit()
+{
+  // enable supervisor-mode timer interrupts.
+  w_mie(r_mie() | MIE_STIE);
+  
+  // enable the sstc extension (i.e. stimecmp).
+  w_menvcfg(r_menvcfg() | (1LL << 63)); 
+  
+  // allow supervisor to use stimecmp and time.
+  w_mcounteren(r_mcounteren() | 2);
+  
+  // ask for the very first timer interrupt.
+  w_stimecmp(r_time() + 1000000);
+}
+
 void start()
 {
     // set M Previous Privilege mode to Supervisor, for mret.
@@ -415,11 +445,18 @@ void start()
     w_pmpcfg0(0xf);
   
     // ask for clock interrupts.
-    //timerinit();
+    timerinit();
   
     // keep each CPU's hartid in its tp register, for cpuid().
     //int id = r_mhartid();
     //w_tp(id);
+    
+//    w_mie( r_mie() | (1UL<<7) );    // MTIE = 1
+    
+/*
+    uint64_t now = read_mtime();
+    write_mtimecmp(now + (uint64_t)-1);
+*/
   
     // switch to supervisor mode and jump to main().
     asm volatile("mret");

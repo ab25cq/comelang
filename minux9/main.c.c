@@ -1649,6 +1649,7 @@ extern void trapvec();
 
 
 
+/*
 static inline uint64_t read_mtime(void) {
     return *(volatile uint64_t *)CLINT_MTIME;
 }
@@ -1660,14 +1661,23 @@ void set_supervisor_timer(uint64_t interval) {
     uint64_t now = read_mtime();
     write_mtimecmp(now + interval);
 }
+*/
 
 // bit 定義
 #define SSTATUS_SIE (1UL << 1)  // sstatus.SIE ビット
 #define SIE_STIE    (1UL << 5)  // sie.STIE ビット
 
+static inline uint64_t read_mtime() {
+    return *(volatile uint64_t*)CLINT_MTIME;
+}
+
+// CLINT に MTIMECMP を書く
+static inline void write_mtimecmp(uint64_t v) {
+    *(volatile uint64_t*)CLINT_MTIMECMP = v;
+}
+
 // Supervisor-mode タイマー割り込みを有効化
 void enable_timer_interrupts(void) {
-    w_stvec((uint64_t)trapvec & ~0x03);
     unsigned long x;
 
     // STIE = 1
@@ -1680,7 +1690,9 @@ void enable_timer_interrupts(void) {
     x |= SSTATUS_SIE;
     w_sstatus(x);
     
-    set_supervisor_timer(TIMER_INTERVAL);
+    //set_supervisor_timer(TIMER_INTERVAL);
+//    uint64_t now = read_mtime();
+//    write_mtimecmp(now + TIMER_INTERVAL);
 }
 
 // Supervisor-mode タイマー割り込みを無効化
@@ -1701,7 +1713,7 @@ void disable_timer_interrupts(void) {
 extern void swtch(struct context *old, struct context *new);
 
 void timer_reset() {
-    set_supervisor_timer(TIMER_INTERVAL);
+    //set_supervisor_timer(TIMER_INTERVAL);
 //    uint64_t now = *MTIME;
 //    *MTIMECMP = now + TIMER_INTERVAL;
 }
@@ -1828,9 +1840,22 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
 extern void user_entry_trampoline();
 void (*goto_user)(uintptr_t, uintptr_t, uintptr_t, uint64_t) = (void*)user_entry_trampoline;
 
+#define SSTATUS_SPP (1L << 8)  // Previous mode, 1=Supervisor, 0=User
+
+static inline uint64_t
+r_sip()
+{
+  uint64_t x;
+  asm volatile("csrr %0, sip" : "=r" (x) );
+  return x;
+}
 
 int main()
 {
+    intr_off();
+    w_sie(r_sie() & ~SIE_STIE);
+    w_stvec((uint64_t)trapvec & ~0x03);
+    
     trap_init();          
     plic_init();
     plic_enable(UART_IRQ);
@@ -1917,7 +1942,6 @@ int main()
     // 4) sepc にエントリセット
     asm volatile("csrw sepc, %0" :: "r"(entry));
 
-    enable_timer_interrupts();
 
     // 5) User モードへ
     asm volatile("sret");
@@ -1940,8 +1964,21 @@ int main()
     asm volatile("fence.i");
     asm volatile("mret");
 */
-//vmprint(p->pagetable);
-//aaa: goto aaa;
+//    enable_timer_interrupts();
+   
+/*
+    // ここで初めて次の発火時刻をセット
+    {
+        uint64_t now = read_mtime();
+        write_mtimecmp(now + TIMER_INTERVAL);
+    } 
+*/
+/*
+printf("sie=0x%x (STIE=%d), sstatus=0x%x (SIE=%d), sip=0x%x (STIP=%d)\n",
+       r_sie(),   !!(r_sie()   & SIE_STIE),
+              r_sstatus(), !!(r_sstatus() & SSTATUS_SIE),
+                     r_sip(),   !!(r_sip()   & SIE_STIE));
+*/
 
     goto_user(entry, usersp, usersatp, TIMER_INTERVAL);
     
