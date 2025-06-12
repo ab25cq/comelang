@@ -385,20 +385,19 @@ typedef uint64 *pagetable_t; // 512 PTEs
 
 #define MSTATUS_TSR  (1UL << 22) // TSRビット(22)を定義
 
-#define TIMER_INTERVAL 10000000UL
-
 #define CLINT_MTIME    0x0200BFF8UL
+#define CLINT_MTIMECMP 0x02004000UL
 
-// Machine タイマー（MTIME）を読み出す
+void my_intr_off();
+
+
 static inline uint64_t read_mtime(void) {
     return *(volatile uint64_t *)CLINT_MTIME;
 }
-
-#define CLINT_MTIMECMP 0x02004000UL
-
 static inline void write_mtimecmp(uint64_t t) {
     *(volatile uint64_t *)CLINT_MTIMECMP = t;
 }
+
 
 void timerinit()
 {
@@ -412,7 +411,7 @@ void timerinit()
   w_mcounteren(r_mcounteren() | 2);
   
   // ask for the very first timer interrupt.
-  w_stimecmp(r_time() + 1000000);
+  w_stimecmp(r_time() + 10000000);
 }
 
 void start()

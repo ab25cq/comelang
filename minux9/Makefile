@@ -45,7 +45,7 @@ kernel.elf:
 QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -nic none
 
 run: kernel.elf
-	qemu-system-riscv64 $(QEMU_OPTION) > aaa
+	qemu-system-riscv64 $(QEMU_OPTION) #> aaa
 
 log: kernel.elf
 	qemu-system-riscv64 $(QEMU_OPTION) -d in_asm,exec,cpu,int -D qemu.log 

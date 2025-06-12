@@ -6,6 +6,21 @@
 #include "userprog.h"
 #include "userprog2.h"
 
+// machine-mode cycle counter
+static inline uint64_t
+r_time()
+{
+  uint64_t x;
+  asm volatile("csrr %0, time" : "=r" (x) );
+  return x;
+}
+static inline void 
+w_stimecmp(uint64_t x)
+{
+  // asm volatile("csrw stimecmp, %0" : : "r" (x));
+  asm volatile("csrw 0x14d, %0" : : "r" (x));
+}
+
 typedef unsigned long size_t;
 typedef long ptrdiff_t;
 
@@ -961,6 +976,8 @@ static inline void w_sstatus(uint64_t x) {
 
 #define MTIME    (volatile uint64_t*)0x0200BFF8
 #define MTIMECMP (volatile uint64_t*)0x02004000
+#define CLINT_MTIME     0x0200BFF8UL
+#define CLINT_MTIMECMP  0x02004000UL
 
 // Mutual exclusion lock.
 struct spinlock {
@@ -1343,8 +1360,6 @@ void puts_direct(const char* s) {
     while (*s) putc_direct(*s++);
 }
 
-#define CLINT_MTIMECMP  0x02004000UL
-#define CLINT_MTIME     0x0200BFF8UL
 
 void mmu_init() {
     kernel_pagetable = (pagetable_t)kalloc();
@@ -1434,8 +1449,6 @@ void setting_user_pagetable(pagetable_t pagetable)
     mappages(pagetable, (uint64_t)COMMON, PGSIZE, (uint64_t)COMMON, PTE_R | PTE_W | PTE_V | PTE_X | PTE_U);
     
     // CLINT (タイマー割り込み)
-    mappages(pagetable, CLINT_MTIME, PGSIZE, CLINT_MTIME, PTE_U|PTE_R|PTE_W|PTE_V);
-    mappages(pagetable, CLINT_MTIMECMP,  PGSIZE, CLINT_MTIMECMP, PTE_U|PTE_R|PTE_W|PTE_V);
     
 /*
     uint64_t addr = (uint64_t)_userret;
@@ -1443,12 +1456,10 @@ void setting_user_pagetable(pagetable_t pagetable)
 */
     
 
-/*
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
-        mappages(pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V | PTE_U);
+        mappages(pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V);
     }
-*/
     
     // UART
     mappages(pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);
@@ -1645,7 +1656,7 @@ static inline void w_stvec(uint64_t x) {
     asm volatile("csrw stvec, %0" : : "r"(x));
 }
 
-#define TIMER_INTERVAL 10000000UL
+#define TIMER_INTERVAL 10000UL
 #define MIE_MTIE (1 << 7)
 #define SSTATUS_SIE (1UL << 1)  // sstatus.SIE ビット
 #define SIE_STIE    (1UL << 5)  // sie.STIE ビット
@@ -1663,20 +1674,6 @@ void my_intr_on()
     w_sie(r_sie() | SIE_STIE);
 }
 
-
-/*
-static inline uint64_t read_mtime(void) {
-    return *(volatile uint64_t *)CLINT_MTIME;
-}
-static inline void write_mtimecmp(uint64_t v) {
-    *(volatile uint64_t *)CLINT_MTIMECMP = v;
-}
-
-void set_supervisor_timer(uint64_t interval) {
-    uint64_t now = read_mtime();
-    write_mtimecmp(now + interval);
-}
-*/
 
 // bit 定義
 
@@ -1702,10 +1699,6 @@ void enable_timer_interrupts(void) {
     x = r_sstatus();
     x |= SSTATUS_SIE;
     w_sstatus(x);
-    
-    //set_supervisor_timer(TIMER_INTERVAL);
-//    uint64_t now = read_mtime();
-//    write_mtimecmp(now + TIMER_INTERVAL);
 }
 
 // Supervisor-mode タイマー割り込みを無効化
@@ -1730,9 +1723,6 @@ void disable_timer_interrupts(void) {
 extern void swtch(struct context *old, struct context *new);
 
 void timer_reset() {
-    //set_supervisor_timer(TIMER_INTERVAL);
-//    uint64_t now = *MTIME;
-//    *MTIMECMP = now + TIMER_INTERVAL;
 }
 
 void timer_handler() {
@@ -1752,9 +1742,6 @@ void timer_handler() {
     struct proc *new = gProc[gActiveProc];
     
     if (new != old) {
-//        enable_mmu(new->pagetable);
-//        enable_timer_interrupts();
-
         user_satp = MAKE_SATP(new->pagetable);
         swtch(&mycpu()->context, &new->context);
     }
@@ -1855,8 +1842,7 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
 
 #include "fs2.h"
 
-extern void user_entry_trampoline();
-void (*goto_user)(uintptr_t, uintptr_t, uintptr_t, uint64_t) = (void*)user_entry_trampoline;
+void enter_user(uintptr_t, uintptr_t, uintptr_t, uint64_t);
 
 #define SSTATUS_SPP (1L << 8)  // Previous mode, 1=Supervisor, 0=User
 
@@ -1880,20 +1866,53 @@ static inline uint64_t read_s_sp(void) {
     return sp_val;
 }
 
+/*
+static inline void 
+w_stimecmp(uint64_t x)
+{
+  // asm volatile("csrw stimecmp, %0" : : "r" (x));
+  asm volatile("csrw 0x14d, %0" : : "r" (x));
+}
+*/
+
+static inline void
+sfence_vma()
+{
+  // the zero, zero means flush all TLB entries.
+  asm volatile("sfence.vma zero, zero");
+}
+
+static inline void 
+w_satp(uint64_t x)
+{
+  asm volatile("csrw satp, %0" : : "r" (x));
+}
+
+static inline void 
+w_sepc(uint64_t x)
+{
+  asm volatile("csrw sepc, %0" : : "r" (x));
+}
+
 int main()
 {
-    my_intr_off();
     w_stvec((uint64_t)trapvec & ~0x03);
+    w_stimecmp(r_time() + 10000000);
     
     trap_init();          
     plic_init();
     plic_enable(UART_IRQ);
+    
+    w_stimecmp(r_time() + 10000000);
+    
     uart_init();
     kinit();
     console_init();
     mmu_init();
     virtio_blk_init();
     read_superblock();
+    
+    w_stimecmp(r_time() + 10000000);
     
     uint32_t inum = path_lookup("/hello.elf");
     if (inum != 0) {
@@ -1912,6 +1931,8 @@ int main()
     } else {
         puts("hello.elf not found in fs.img\n");
     }
+    
+    w_stimecmp(r_time() + 10000000);
 
     alloc_prog();
     alloc_prog2();
@@ -1947,6 +1968,7 @@ int main()
 //    intr_off_direct(); 
     
     /// ユーザープロセスへ降りる
+    w_stimecmp(r_time() + 10000000);
     
     struct proc* p = gProc[gActiveProc];
     
@@ -1993,24 +2015,44 @@ int main()
     asm volatile("fence.i");
     asm volatile("mret");
 */
-//    enable_timer_interrupts();
-   
+    w_stimecmp(r_time() + 100000);
+    
+    
 /*
-    // ここで初めて次の発火時刻をセット
-    {
-        uint64_t now = read_mtime();
-        write_mtimecmp(now + TIMER_INTERVAL);
-    } 
-*/
-/*
-printf("sie=0x%x (STIE=%d), sstatus=0x%x (SIE=%d), sip=0x%x (STIP=%d)\n",
-       r_sie(),   !!(r_sie()   & SIE_STIE),
-              r_sstatus(), !!(r_sstatus() & SSTATUS_SIE),
-                     r_sip(),   !!(r_sip()   & SIE_STIE));
-*/
-
     kernel_sp = read_s_sp();
-    goto_user(entry, usersp, usersatp, TIMER_INTERVAL);
+    w_sp(usersp);
+    
+    w_satp(MAKE_SATP(p->pagetable));
+    sfence_vma();
+    w_sepc(p->context.mepc);
+    
+    // sretでU-modeに移行するためのsstatusを完璧に設定する
+    uint64_t sstatus_val = r_sstatus();
+    
+    // 1. SPPビット(8)をクリア -> 戻り先はU-mode
+    sstatus_val &= ~(1UL << 8);
+    
+    // 2. SPIEビット(5)をセット -> sret後、SIEが1になり、次にトラップした時S-modeは割り込み有効
+    sstatus_val |= (1UL << 5);
+    
+    // 3. ★★★ UPIEビット(4)をセット ★★★
+    // これによりsret後、U-modeのUIEが1になり、割り込みを受け付けるようになる
+    sstatus_val |= (1UL << 4);
+    
+    // 4. SIEビット(1)はクリアしておく (sretがSPIEの値をコピーするので、ここでセットする必要はない)
+    sstatus_val &= ~(1UL << 1);
+    
+    // 完成した値をsstatusに書き込む
+    w_sstatus(sstatus_val);
+    
+    // 最初のタイマーをセット
+    //w_stimecmp(r_time() + TIMER_INTERVAL);
+    w_stimecmp(r_time() + 100000);
+    
+    // sretでU-modeへ！
+    asm volatile("sret");
+*/
+    enter_user(entry, usersp, usersatp, TIMER_INTERVAL);
     
     while (1); 
 }

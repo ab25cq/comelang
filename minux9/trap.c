@@ -25,9 +25,10 @@ void external_interrupt_handler() {
     }
 }
 
-volatile int watchdog_counter = 0;
-const int watchdog_timeout = 100;  // 100 × 10ms = 1秒でタイムアウト
+//volatile int watchdog_counter = 0;
+//const int watchdog_timeout = 100;  // 100 × 10ms = 1秒でタイムアウト
 
+/*
 // タイマー割り込みで呼ばれる
 void puts(const char* s);
 
@@ -44,4 +45,4 @@ void reset_watchdog()
 {
     watchdog_counter = 0;
 }
-
+*/

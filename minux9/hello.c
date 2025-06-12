@@ -19,11 +19,11 @@ int fun() {
             
 // hello.c
 int main() {
+    *(volatile char*)0x10000000L = 'O';
     //*(volatile char*)0x10000000L = 'W';
 //    user_puts("O");
     while (1) {
 //        user_puts("O");
-        *(volatile char*)0x10000000L = 'O';
     }
     return 0;
 }
