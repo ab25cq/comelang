@@ -887,7 +887,6 @@ typedef uint64_t pde_t;
 typedef pte_t* pagetable_t; // 512
 
 pagetable_t kernel_pagetable;
-uint64_t user_satp;
 
 uint64_t make_satp(pagetable_t pagetable);
 
@@ -1281,6 +1280,7 @@ extern char COMMON[];
 uint64_t kernel_sp __attribute__((section(".common")));
 
 uint64_t kernel_satp __attribute__((section(".common")));    // trap.S から参照する
+uint64_t user_satp __attribute__((section(".common")));
 
 // uart.c (Supervisor モード用)
 // === UART RX 割り込みでキーを受け取る簡単な例 ===
@@ -1430,6 +1430,7 @@ uint8_t elf_program2[5048+1];
 void setting_user_pagetable(pagetable_t pagetable)
 {
     mappages(pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_X);
+    mappages(pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
     mappages(pagetable, (uint64_t)COMMON, PGSIZE, (uint64_t)COMMON, PTE_R | PTE_W | PTE_V | PTE_X | PTE_U);
     
     // CLINT (タイマー割り込み)
@@ -1454,7 +1455,6 @@ void setting_user_pagetable(pagetable_t pagetable)
     mappages(pagetable, 0x10001000L, PGSIZE, 0x10001000L, PTE_R | PTE_W | PTE_V | PTE_U);
     
 /*
-    mappages(pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
     mappages(pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
     
     // PLIC
@@ -1654,10 +1654,14 @@ extern void trapvec();
 
 void my_intr_off()
 {
-    intr_off();
+    w_sstatus(r_sstatus() & ~SSTATUS_SIE);
     w_sie(r_sie() & ~SIE_STIE);
 }
-
+void my_intr_on()
+{
+    w_sstatus(r_sstatus() | SSTATUS_SIE);
+    w_sie(r_sie() | SIE_STIE);
+}
 
 
 /*
@@ -1748,8 +1752,9 @@ void timer_handler() {
     struct proc *new = gProc[gActiveProc];
     
     if (new != old) {
-        enable_mmu(new->pagetable);
-        enable_timer_interrupts();
+//        enable_mmu(new->pagetable);
+//        enable_timer_interrupts();
+
         user_satp = MAKE_SATP(new->pagetable);
         swtch(&mycpu()->context, &new->context);
     }
