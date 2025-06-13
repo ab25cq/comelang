@@ -496,3 +496,48 @@ enter_user:
 #    
 #    # 4. U-modeへ移行！
 #    sret
+
+#.align 2
+#.globl mtvec
+#.equ CLINT_MTIME,    0x0200BFF8
+#.equ CLINT_MTIMECMP, 0x02004000
+#mtvec:
+    # Mモードの汎用レジスタを一時的に保存 (必要であれば)
+    # 例えば、scratch レジスタ (t0, t1, t2 など) を保存し、後で復元する
+
+    # MIDELEG が有効なら、ほとんどの割り込み/例外はSモードに転送されるため、
+    # ここでは最低限のMモードからSモードへのコンテキスト調整を行う
+    # mepc に sret で戻るアドレスをコピー
+    
+#    li    a3, 0xFFFFFFFFFFFFFFFF   # t2 = 0xFFFFFFFFFFFFFFFFULL (64-bit max value)
+
+#    li      t0, CLINT_MTIME
+#    ld      t1, 0(t0)            # t1 = *CLINT_MTIME
+#    add     t1, t1, a3           # t1 += interval
+#    li      t0, CLINT_MTIMECMP
+#    sd      t1, 0(t0)
+
+#    mret
+
+    .align 2
+    .globl mtvec
+.equ CLINT_MTIME,    0x0200BFF8
+.equ CLINT_MTIMECMP, 0x02004000
+.equ INTERVAL,  0xFFFFFFFFFFFFFF
+mtvec:
+    # --- （必要なら scratch レジスタをスタックに退避）---
+
+    # 1) 現在時刻を取る
+    csrr    t0, time           # t0 = CSR time
+
+    # 2) 次のタイマー発火時刻を計算
+    li      t1, INTERVAL       # t1 = （例えば）100000
+    add     t0, t0, t1         # t0 ← t0 + INTERVAL
+
+    # 3) CLINT_MTIMECMP に書き戻し → MTIP ビットがクリアされる
+    la      t2, CLINT_MTIMECMP # t2 = アドレス 0x02004000
+    sd      t0, 0(t2)          # *mtimecmp = next_time
+
+    # 4) （必要なら scratch レジスタを復元）---
+
+    mret                        # トラップから復帰

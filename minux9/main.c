@@ -6,6 +6,8 @@
 #include "userprog.h"
 #include "userprog2.h"
 
+#define MSTATUS_MIE (1L << 3)    // machine-mode interrupt enable.
+
 // machine-mode cycle counter
 static inline uint64_t
 r_time()
@@ -1894,11 +1896,22 @@ w_sepc(uint64_t x)
   asm volatile("csrw sepc, %0" : : "r" (x));
 }
 
-int main()
+void timerinit()
 {
     w_stvec((uint64_t)trapvec & ~0x03);
     w_stimecmp(r_time() + 10000000);
     
+    // ask for the very first timer interrupt.
+//    w_stimecmp(r_time() + 0xFFFFFFFFFFFFFFFFULL);
+  
+    // enable supervisor-mode timer interrupts.
+    w_sstatus(r_sstatus() | SSTATUS_SIE);
+    w_sie(r_sie() | SIE_STIE);
+}
+
+int main()
+{
+    timerinit();
     trap_init();          
     plic_init();
     plic_enable(UART_IRQ);
