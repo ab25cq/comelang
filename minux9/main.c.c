@@ -1438,8 +1438,11 @@ int strlen(const char *s);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 
-uint8_t elf_program[5096+1];
-uint8_t elf_program2[5048+1];
+
+//#include "userprog.h"
+//#include "userprog2.h"
+//uint8_t elf_program[5096+1];
+//uint8_t elf_program2[5048+1];
 
 // ↑main.c の先頭あたりに追加
 #include <stdint.h>
@@ -1499,13 +1502,13 @@ void alloc_prog() {
     
     result->pagetable = pagetable;
     
-    struct elfhdr *eh = (struct elfhdr *)elf_program;
+    struct elfhdr *eh = (struct elfhdr *)hello_elf;
     
     if (eh->magic != ELF_MAGIC) {
         while(1) puts("panic");
     }
         
-    struct proghdr *ph = (struct proghdr *)(elf_program + eh->phoff);
+    struct proghdr *ph = (struct proghdr *)(hello_elf + eh->phoff);
     
     uint64_t size = ph->filesz;
     
@@ -1524,7 +1527,7 @@ void alloc_prog() {
         }
         
         
-        if (copyout(result->pagetable, ph->vaddr, elf_program + ph->off, ph->filesz) < 0) {
+        if (copyout(result->pagetable, ph->vaddr, hello_elf + ph->off, ph->filesz) < 0) {
             panic();
         }
         asm volatile("sfence.vma zero, zero"); 
@@ -1564,13 +1567,13 @@ void alloc_prog2() {
     
     result->pagetable = pagetable;
     
-    struct elfhdr *eh = (struct elfhdr *)elf_program2;
+    struct elfhdr *eh = (struct elfhdr *)hello2_elf;
     
     if (eh->magic != ELF_MAGIC) {
         while(1) puts("panic");
     }
         
-    struct proghdr *ph = (struct proghdr *)(elf_program2 + eh->phoff);
+    struct proghdr *ph = (struct proghdr *)(hello2_elf + eh->phoff);
     
     uint64_t size = ph->filesz;
     
@@ -1588,7 +1591,7 @@ void alloc_prog2() {
             asm volatile("sfence.vma zero, zero");
         }
         
-        if (copyout(result->pagetable, ph->vaddr, elf_program2 + ph->off, ph->filesz) < 0) {
+        if (copyout(result->pagetable, ph->vaddr, hello2_elf + ph->off, ph->filesz) < 0) {
             panic();
         }
         asm volatile("sfence.vma zero, zero"); 
@@ -1844,7 +1847,7 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
 
 #define SSTATUS_SUM (1UL << 18)
 
-#include "fs2.h"
+//#include "fs2.h"
 
 void enter_user(uintptr_t, uintptr_t, uintptr_t, uint64_t);
 
@@ -1924,11 +1927,12 @@ int main()
     kinit();
     console_init();
     mmu_init();
-    virtio_blk_init();
-    read_superblock();
+//    virtio_blk_init();
+//    read_superblock();
     
     w_stimecmp(r_time() + 10000000);
     
+/*
     uint32_t inum = path_lookup("/hello.elf");
     if (inum != 0) {
         struct dinode ip;
@@ -1946,6 +1950,7 @@ int main()
     } else {
         puts("hello.elf not found in fs.img\n");
     }
+*/
     
     w_stimecmp(r_time() + 10000000);
 

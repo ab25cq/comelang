@@ -24,6 +24,11 @@ then
     sudo apk add binutils-riscv-none-elf binutils-riscv64 gcc-riscv-none-elf newlib-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-system-riscv64
 fi
 
+if brew
+then
+    brew install spike
+fi
+
 
 if test ! -f ~/.config/gdb/gdbinit
 then
