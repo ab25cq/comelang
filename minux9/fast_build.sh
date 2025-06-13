@@ -16,7 +16,7 @@ then
                  git \
                  build-essential \
                  gawk \
-                 gdb-multiarch
+                 gdb-multiarch xxd
  fi
  
 if which apk
