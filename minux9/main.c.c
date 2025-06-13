@@ -1458,10 +1458,12 @@ void setting_user_pagetable(pagetable_t pagetable)
 */
     
 
+/*
     // 0x80000000
     for (uint64_t addr = KERNBASE; addr < PHYSTOP; addr += PGSIZE) {
         mappages(pagetable, addr, PGSIZE, addr, PTE_R | PTE_W | PTE_X | PTE_V);
     }
+*/
     
     // UART
     mappages(pagetable, 0x10000000, PGSIZE, 0x10000000, PTE_R | PTE_W | PTE_V | PTE_U);

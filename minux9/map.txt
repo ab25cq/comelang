@@ -18,7 +18,7 @@ LOAD fs2.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0x4846
+.text           0x0000000080000000     0x480e
  *(.text*)
  .text          0x0000000080000000       0x3e entry.o
                 0x0000000080000000                entry
@@ -43,7 +43,7 @@ LOAD main.o
                 0x00000000800010bc                dir_lookup
                 0x00000000800011a8                path_lookup
                 0x0000000080001328                dump_inode
- .text          0x000000008000141a     0x342c main.o
+ .text          0x000000008000141a     0x33f4 main.o
                 0x0000000080001456                sbrk
                 0x0000000080001518                kalloc_pages
                 0x0000000080001578                malloc
@@ -99,44 +99,44 @@ LOAD main.o
                 0x0000000080003c14                walkaddr
                 0x0000000080003c84                copyout
                 0x0000000080003d52                setting_user_pagetable
-                0x0000000080003e26                alloc_prog
-                0x000000008000405e                alloc_prog2
-                0x00000000800042f0                my_intr_off
-                0x0000000080004320                my_intr_on
-                0x0000000080004352                enable_timer_interrupts
-                0x000000008000439c                disable_timer_interrupts
-                0x00000000800043b2                timer_reset
-                0x00000000800043c4                timer_handler
-                0x00000000800044d0                console_init
-                0x00000000800044f6                puts
-                0x0000000080004546                syscall_handler
-                0x000000008000463c                timerinit
-                0x0000000080004694                main
+                0x0000000080003dee                alloc_prog
+                0x0000000080004026                alloc_prog2
+                0x00000000800042b8                my_intr_off
+                0x00000000800042e8                my_intr_on
+                0x000000008000431a                enable_timer_interrupts
+                0x0000000080004364                disable_timer_interrupts
+                0x000000008000437a                timer_reset
+                0x000000008000438c                timer_handler
+                0x0000000080004498                console_init
+                0x00000000800044be                puts
+                0x000000008000450e                syscall_handler
+                0x0000000080004604                timerinit
+                0x000000008000465c                main
 
-.rodata         0x0000000080004848      0x44c
+.rodata         0x0000000080004810      0x44c
  *(.rodata*)
- .rodata        0x0000000080004848       0xfa fs2.o
- *fill*         0x0000000080004942        0x6 
- .rodata        0x0000000080004948      0x34c main.o
+ .rodata        0x0000000080004810       0xfa fs2.o
+ *fill*         0x000000008000490a        0x6 
+ .rodata        0x0000000080004910      0x34c main.o
 
-.data           0x0000000080004c98      0xbd0
+.data           0x0000000080004c60      0xbd0
  *(.data*)
- .data          0x0000000080004c98        0x0 entry.o
- .data          0x0000000080004c98        0x0 start.o
- .data          0x0000000080004c98        0x0 userret.o
- .data          0x0000000080004c98        0x0 trap.o
- .data          0x0000000080004c98        0x0 trap_c.o
- .data          0x0000000080004c98        0x0 plic.o
- .data          0x0000000080004c98        0x0 fs2.o
- .data          0x0000000080004c98      0xbd0 main.o
-                0x0000000080004c98                hello_elf
-                0x0000000080005280                hello2_elf
+ .data          0x0000000080004c60        0x0 entry.o
+ .data          0x0000000080004c60        0x0 start.o
+ .data          0x0000000080004c60        0x0 userret.o
+ .data          0x0000000080004c60        0x0 trap.o
+ .data          0x0000000080004c60        0x0 trap_c.o
+ .data          0x0000000080004c60        0x0 plic.o
+ .data          0x0000000080004c60        0x0 fs2.o
+ .data          0x0000000080004c60      0xbd0 main.o
+                0x0000000080004c60                hello_elf
+                0x0000000080005248                hello2_elf
 
-.sdata          0x0000000080005868       0x10
+.sdata          0x0000000080005830       0x10
  *(.sdata*)
- .sdata         0x0000000080005868       0x10 main.o
-                0x0000000080005868                hello_elf_len
-                0x000000008000586c                hello2_elf_len
+ .sdata         0x0000000080005830       0x10 main.o
+                0x0000000080005830                hello_elf_len
+                0x0000000080005834                hello2_elf_len
 
 .bss            0x0000000080005a00     0x3368
  *(.bss)
@@ -243,7 +243,7 @@ LOAD main.o
  .note.GNU-stack
                 0x0000000000000000        0x0 main.o
 
-.debug_info     0x0000000000000000     0x364b
+.debug_info     0x0000000000000000     0x362a
  *(.debug_info)
  .debug_info    0x0000000000000000       0x2e entry.o
  .debug_info    0x000000000000002e      0x3b1 start.o
@@ -251,7 +251,7 @@ LOAD main.o
  .debug_info    0x000000000000040d      0x101 trap_c.o
  .debug_info    0x000000000000050e      0x121 plic.o
  .debug_info    0x000000000000062f      0xb61 fs2.o
- .debug_info    0x0000000000001190     0x24bb main.o
+ .debug_info    0x0000000000001190     0x249a main.o
 
 .debug_abbrev   0x0000000000000000      0xae4
  *(.debug_abbrev)
@@ -263,7 +263,7 @@ LOAD main.o
  .debug_abbrev  0x00000000000002f9      0x2b8 fs2.o
  .debug_abbrev  0x00000000000005b1      0x533 main.o
 
-.debug_line     0x0000000000000000     0x42e3
+.debug_line     0x0000000000000000     0x42b1
  *(.debug_line)
  .debug_line    0x0000000000000000       0x43 entry.o
  .debug_line    0x0000000000000043      0x2e3 start.o
@@ -271,7 +271,7 @@ LOAD main.o
  .debug_line    0x000000000000065a       0xa5 trap_c.o
  .debug_line    0x00000000000006ff      0x11d plic.o
  .debug_line    0x000000000000081c      0x9e4 fs2.o
- .debug_line    0x0000000000001200     0x30e3 main.o
+ .debug_line    0x0000000000001200     0x30b1 main.o
 
 .debug_str      0x0000000000000000      0xb52
  *(.debug_str)
