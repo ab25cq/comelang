@@ -17,11 +17,13 @@ then
                  build-essential \
                  gawk \
                  gdb-multiarch xxd
- fi
+    sudo apt install spike
+fi
  
 if which apk
 then
     sudo apk add binutils-riscv-none-elf binutils-riscv64 gcc-riscv-none-elf newlib-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-system-riscv64
+    sudo apk add spike
 fi
 
 if brew

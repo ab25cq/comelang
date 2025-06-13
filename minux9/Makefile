@@ -17,14 +17,14 @@ kernel.elf:
 
 #	riscv64-unknown-elf-gcc -O0 -static -o hello.elf hello.c -mcmodel=medany
 #	riscv64-unknown-elf-gcc -O0 -nostdlib -static -o hello.elf hello.c -mcmodel=medany
-	riscv64-unknown-elf-gcc -nostdlib -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello.elf hello.c
+	$(CCPREFIX)gcc -nostdlib -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello.elf hello.c
 #	riscv64-unknown-elf-gcc -nostdlib -static -T hello.ld -o hello.elf hello.c -mcmodel=medany
 
 	xxd -i hello.elf > userprog.h  
 
 #	riscv64-unknown-elf-gcc -O0 -static -o hello2.elf hello2.c -mcmodel=medany
 #	riscv64-unknown-elf-gcc -nostdlib -O0 -static -o hello2.elf hello2.c -mcmodel=medany
-	riscv64-unknown-elf-gcc -nostdlib -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello2.elf hello2.c
+	$(CCPREFIX)gcc -nostdlib -mcmodel=medany -static -nostartfiles -Wl,-e,main -o hello2.elf hello2.c
 #	riscv64-unknown-elf-gcc -nostdlib -static -T hello2.ld -o hello2.elf hello2.c -mcmodel=medany
 
 	xxd -i hello2.elf > userprog2.h  
