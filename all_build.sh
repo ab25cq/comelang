@@ -1,5 +1,5 @@
 sh remove_all_build.sh
-
+echo aaa
 (echo vin && cd vin && sh fast_build.sh)
 
 if uname -a | grep Android
