@@ -66,5 +66,3 @@ then
 else 
     make debug
 fi
-
-
