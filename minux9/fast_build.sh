@@ -1,10 +1,10 @@
 make clean
 
-if which brew
-then
-#    brew tap riscv-software-src/riscv
-#    brew install riscv-tools
-fi
+#if which brew
+#then
+##    brew tap riscv-software-src/riscv
+##    brew install riscv-tools
+#fi
 
 if which apk
 then
@@ -21,8 +21,8 @@ then
 fi
 
 
-if which apt
-then
+#if which apt
+#then
 #    sudo apt install gcc-riscv64-unknown-elf \
 #                 binutils-riscv64-unknown-elf \
 #                 qemu-system-misc \
@@ -32,18 +32,18 @@ then
 #                 gawk \
 #                 gdb-multiarch xxd
 #    sudo apt install spike
-fi
+#fi
  
-if which apk
-then
+#if which apk
+#then
 #    sudo apk add binutils-riscv-none-elf binutils-riscv64 gcc-riscv-none-elf newlib-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-system-riscv64
 #    sudo apk add spike
-fi
+#fi
 
-if brew
-then
+#if brew
+#then
 #    brew install spike
-fi
+#fi
 
 
 if test ! -f ~/.config/gdb/gdbinit
