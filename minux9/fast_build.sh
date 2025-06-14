@@ -13,10 +13,8 @@ then
     git clone https://github.com/riscv/riscv-gnu-toolchain
     cd riscv-gnu-toolchain
     mkdir -p /opt/riscv
-    
     ./configure --prefix=/opt/riscv --with-arch=rv64gc --with-abi=lp64 --disable-multilib
-    
-    make -j$(($(nproc)/2))"
+    make -j$(($(nproc)/2))
     export PATH="/opt/riscv/bin:$PATH"
 fi
 
