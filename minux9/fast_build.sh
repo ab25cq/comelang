@@ -2,33 +2,33 @@ make clean
 
 if which brew
 then
-    brew tap riscv-software-src/riscv
-    brew install riscv-tools
+#    brew tap riscv-software-src/riscv
+#    brew install riscv-tools
 fi
 
 
 if which apt
 then
-    sudo apt install gcc-riscv64-unknown-elf \
-                 binutils-riscv64-unknown-elf \
-                 qemu-system-misc \
-                 make \
-                 git \
-                 build-essential \
-                 gawk \
-                 gdb-multiarch xxd
-    sudo apt install spike
+#    sudo apt install gcc-riscv64-unknown-elf \
+#                 binutils-riscv64-unknown-elf \
+#                 qemu-system-misc \
+#                 make \
+#                 git \
+#                 build-essential \
+#                 gawk \
+#                 gdb-multiarch xxd
+#    sudo apt install spike
 fi
  
 if which apk
 then
-    sudo apk add binutils-riscv-none-elf binutils-riscv64 gcc-riscv-none-elf newlib-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-system-riscv64
-    sudo apk add spike
+#    sudo apk add binutils-riscv-none-elf binutils-riscv64 gcc-riscv-none-elf newlib-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-system-riscv64
+#    sudo apk add spike
 fi
 
 if brew
 then
-    brew install spike
+#    brew install spike
 fi
 
 
