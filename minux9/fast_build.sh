@@ -6,6 +6,20 @@ then
 #    brew install riscv-tools
 fi
 
+if which apk
+then
+    apk update
+    apk add git build-base autoconf automake libtool curl mpfr-dev gmp-dev mpc1-dev texinfo flex bison gperf patchutils bc zlib-dev expat-dev g++ gawk
+    git clone https://github.com/riscv/riscv-gnu-toolchain
+    cd riscv-gnu-toolchain
+    mkdir -p /opt/riscv
+    
+    ./configure --prefix=/opt/riscv --with-arch=rv64gc --with-abi=lp64 --disable-multilib
+    
+    make -j$(($(nproc)/2))"
+    export PATH="/opt/riscv/bin:$PATH"
+fi
+
 
 if which apt
 then
