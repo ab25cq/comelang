@@ -49,19 +49,22 @@ run: kernel.elf
 #	qemu-system-riscv64 $(QEMU_OPTION) #> aaa
 
 log: kernel.elf
-	qemu-system-riscv64 $(QEMU_OPTION) -d in_asm,exec,cpu,int -D qemu.log 
+#	qemu-system-riscv64 $(QEMU_OPTION) -d in_asm,exec,cpu,int -D qemu.log 
 
 debug: kernel.elf
-	spike --gdb-port=3777 bbl kernel.elf &
+	spike --rbb-port=2510 /opt/riscv/riscv64-unknown-elf/bin/pk kernel.elf &
+	/opt/openocd/bin/openocd -f spike.cfg
+#	spike --gdb-port=2510 bbl kernel.elf &
+#	riscv64-unknown-elf-gdb kernel.elf
+	pkill -f spike
+
 #	qemu-system-riscv64 $(QEMU_OPTION) -S -gdb tcp::3777 & 
-	gdb-multiarch kernel.elf
-#	pkill -f qemu-system-riscv64
 
 debug-mac: kernel.elf
 #	spike --gdb-port=3777 bbl kernel.elf &
-	spike --rbb-port=2510 kernel.elf & 
-	riscv64-elf-gdb kernel.elf
-	pkill spike
+#	spike --rbb-port=2510 kernel.elf & 
+#	riscv64-elf-gdb kernel.elf
+#	pkill spike
 #	qemu-system-riscv64 $(QEMU_OPTION) -S -gdb tcp::3777 & 
 #	riscv64-unknown-elf-gdb kernel.elf
 #	pkill -f qemu-system-riscv64
@@ -70,5 +73,5 @@ debug-mac: kernel.elf
 #	pkill -f qemu-system-riscv64
 
 clean:
-	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1 *.o qemu.log hello.elf hello2.elf *.elf mkfs mkfs2
+	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1 *.o qemu.log hello.elf hello2.elf *.elf mkfs mkfs2 riscv-isa-sim/ riscv-pk
 

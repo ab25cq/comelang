@@ -28,9 +28,30 @@ ViWin*% ViWin*::initialize(ViWin*% self, int y, int x, int width, int height, Vi
     return self;
 }
 
-void ViWin*::user_finalize(ViWin* self)
+void ViWin*::finalize(ViWin* self)
 {
     delwin(self.win);
+    delete self.texts;
+    delete self.texts_length;
+    delete self.returnPoint;
+    delete self.returnPointStack;
+
+
+    delete self.undo;
+    delete self.undoScroll;
+    delete self.undoCursorX;
+    delete self.undoCursorY;
+
+    delete self.fileName;
+    delete self.inputedKeys;
+    delete self.savedInputedKeys;
+
+    delete self.macro;
+    delete self.recordingMacro;
+    delete self.runningMacro;
+
+
+    delete self.mark;
 }
 
 void ViWin*::view(ViWin* self, Vi* nvi) version 1

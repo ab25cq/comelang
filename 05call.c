@@ -2068,11 +2068,11 @@ sNode*% expression_node(sInfo* info=info) version 97
         
         bool is_type_name_ = is_type_name(buf);
         
-        static char* is_special_word_array[19] = { "if", "while", "for", "switch", "return", "sizeof", "isheap", "ispointer", "__typeof__"
+        static char* is_special_word_array[22] = { "if", "while", "for", "switch", "return", "sizeof", "isheap", "ispointer", "__typeof__"
                                     , "dynamic_typeof", "typeof", "gc_inc", "gc_dec", "gc_dec_nofree", "case", "_Alignof"
-                                    , "_Alignas", "__alignof__", "_Atomic" }
+                                    , "_Alignas", "__alignof__", "_Atomic", "borrow", "dupe", "clone" }
                                     
-        bool is_special_word = is_special_word_array.contained(19, buf);
+        bool is_special_word = is_special_word_array.contained(22, buf);
         
         /// backtrace ///
         bool define_function_pointer_flag = false;

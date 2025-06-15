@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 50.0.0
+version 50.1.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+50.1.0 user finalize and user clone removed. It makes bugs.
 50.0.0 This project may be complete.
 40.0.0 Refactoring this project may be complete.
 38.0.0 Refactoring
@@ -2412,6 +2413,9 @@ int main(int argc, char** argv)
 
 # User finalize, User clone
 
+version 50.1 REMOVE user_finalze, user_clone. It makes memory bug.
+
+
 ```
 #include <comelang.h>
 
@@ -2441,6 +2445,8 @@ user_finalize is for use to non-memory management routine at finalize.
 This is no memory leak.
 
 user_clone is similer.
+
+REMOVE this function.
 
 # uniq
 

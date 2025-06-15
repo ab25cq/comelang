@@ -130,7 +130,6 @@ extern int gBinaryMode;
 
 
 ViWin*% ViWin*::initialize(ViWin*% self, int y, int x, int width, int height, Vi* vi) version 1;
-void ViWin*::user_finalize(ViWin* self);
 void ViWin*::view(ViWin* self, Vi* nvi) version 1;
 void ViWin*::input(ViWin* self, Vi* nvi) version 1;
 Vi*% Vi*::initialize(Vi*% self) version 1;

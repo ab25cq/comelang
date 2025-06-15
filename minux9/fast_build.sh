@@ -1,4 +1,4 @@
-make clean
+#make clean
 
 #if which brew
 #then
@@ -6,17 +6,44 @@ make clean
 ##    brew install riscv-tools
 #fi
 
-if which apk
-then
-    apk update
-    apk add git build-base autoconf automake libtool curl mpfr-dev gmp-dev mpc1-dev texinfo flex bison gperf patchutils bc zlib-dev expat-dev g++ gawk
-    git clone https://github.com/riscv/riscv-gnu-toolchain
-    cd riscv-gnu-toolchain
-    mkdir -p /opt/riscv
-    ./configure --prefix=/opt/riscv --with-arch=rv64gc --with-abi=lp64 --disable-multilib
-    make -j$(($(nproc)/2))
-    export PATH="/opt/riscv/bin:$PATH"
-fi
+#if which apk
+#then
+#    apk update
+#    apk add git build-base autoconf automake libtool curl mpfr-dev gmp-dev mpc1-dev texinfo flex bison gperf patchutils bc zlib-dev expat-dev g++ gawk python3-dev tcl-dev libffi-dev texinfo flex bison boost-dev boost-program_options dtc musl pthreads-dev
+#    apk update
+#    git clone https://github.com/riscv/riscv-gnu-toolchain
+#    cd riscv-gnu-toolchain
+#    mkdir -p /opt/riscv
+#    ./configure --prefix=/opt/riscv --with-arch=rv64gc --with-abi=lp64 --disable-multilib --enable-gdb --enable-multilib
+#    make -j$(($(nproc)/2))
+#    echo 'export PATH="/opt/riscv/bin:$PATH"' >> ~/.bashrc
+#    cd ..
+#
+#    (git clone https://github.com/riscv-software-src/riscv-isa-sim
+#    cd riscv-isa-sim
+#    ./configure --prefix=/opt/riscv --enable-histogram --enable-gdb
+#    make -j$(nproc)
+#    sudo make install
+#    )
+    
+#    git clone https://github.com/riscv/riscv-openocd.git
+#    cd riscv-openocd
+#    ./bootstrap
+#    ./configure --prefix=/opt/openocd --enable-remote-bitbang --enable-jtag_manual --enable-riscv --disable-werror
+#    make -j$(nproc)
+#    sudo make install
+#    
+#    apk add jimtcl-dev
+#    
+#    git clone https://github.com/riscv/riscv-openocd.git
+#    cd riscv-openocd
+#    ./bootstrap
+#    ./configure --prefix=/opt/openocd --enable-remote-bitbang --enable-jtag_manual --enable-riscv --disable-werror
+#    make -j$(nproc)
+#    sudo make install
+#    
+#    echo 'export PATH=/opt/openocd/bin:$PATH' >> ~/.bashrc
+#fi
 
 
 #if which apt
@@ -50,7 +77,7 @@ then
     echo "add-auto-load-safe-path $(pwd)/.gdbinit" >> ~/.config/gdb/gdbinit
 fi
 
-make clean
+#make clean
 if uname -a | grep Darwin
 then
 #    make run
@@ -60,7 +87,7 @@ then
 #    make debug-mac
 elif which riscv-none-elf-gcc
 then
-    make run CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64" 
+    make debug CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64" 
 else 
     make debug
 fi

@@ -41,9 +41,6 @@ SECTIONS
   . = . + 4096 * 8;
   PROVIDE(_end3 = .);
   
-  
-  
-  
   .debug_info        0 : { *(.debug_info) } 
   .debug_abbrev      0 : { *(.debug_abbrev) }
   .debug_line        0 : { *(.debug_line) }

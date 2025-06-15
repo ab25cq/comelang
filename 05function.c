@@ -2786,12 +2786,14 @@ sFun*,string create_finalizer_automatically(sType*% type, char* fun_name, sInfo*
             
             source.append_char('{');
             
+/*
             if(user_finalizer) {
                 char source2[1024];
                 snprintf(source2, 1024, "if(self != ((void*)0) && come_get_ref_count(self) == 0) { %s(self); }\n", user_real_fun_name);
                 
                 source.append_str(source2);
             }
+*/
             
             klass = info.classes[klass->mName]??;
             foreach(it, klass->mFields) {
@@ -3543,12 +3545,14 @@ sFun*,string create_cloner_automatically(sType*% type, char* fun_name, sInfo* in
         string user_real_fun_name = create_method_name(type, false@no_pointer_name, "user_clone", info);
         sFun* user_cloner = info->funcs[user_real_fun_name]??;
         
+/*
         if(user_cloner) {
             char source2[1024];
             snprintf(source2, 1024, "if(self != ((void*)0)) { %s(result, self); }\n", user_real_fun_name);
             
             source.append_str(source2);
         }
+*/
         
         source.append_format("return result;");
         source.append_char('}');
