@@ -53,7 +53,6 @@
 #                 gdb-multiarch xxd
 #    sudo apt install spike
 #fi
- 
 #if which apk
 #then
 #    sudo apk add binutils-riscv-none-elf binutils-riscv64 gcc-riscv-none-elf newlib-riscv-none-elf qemu-riscv64 make git gawk gdb-multiarch qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-riscv64 qemu-system-riscv64
@@ -69,9 +68,6 @@ if uname -a | grep Darwin
 then
 #    make run
     make debug-mac
-#    make log
-#    make debug
-#    make debug-mac
 elif which riscv-none-elf-gcc
 then
     make debug CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64" 
