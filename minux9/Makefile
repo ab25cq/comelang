@@ -42,35 +42,22 @@ kernel.elf:
 
 #	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
 
-QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -nic none
+QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -nic none
+#QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -nic none
 
 run: kernel.elf
-	spike bbl kernel.elf
-#	qemu-system-riscv64 $(QEMU_OPTION) #> aaa
+	qemu-system-riscv64 $(QEMU_OPTION) #> aaa
 
 log: kernel.elf
-#	qemu-system-riscv64 $(QEMU_OPTION) -d in_asm,exec,cpu,int -D qemu.log 
+	qemu-system-riscv64 $(QEMU_OPTION) -d in_asm,exec,cpu,int -D qemu.log 
 
 debug: kernel.elf
-	spike --rbb-port=2510 /opt/riscv/riscv64-unknown-elf/bin/pk kernel.elf &
-	/opt/openocd/bin/openocd -f spike.cfg
-#	spike --gdb-port=2510 bbl kernel.elf &
-#	riscv64-unknown-elf-gdb kernel.elf
-	pkill -f spike
-
-#	qemu-system-riscv64 $(QEMU_OPTION) -S -gdb tcp::3777 & 
+	qemu-system-riscv64 $(QEMU_OPTION) -S -gdb tcp::3777 & 
 
 debug-mac: kernel.elf
-#	spike --gdb-port=3777 bbl kernel.elf &
-#	spike --rbb-port=2510 kernel.elf & 
-#	riscv64-elf-gdb kernel.elf
-#	pkill spike
-#	qemu-system-riscv64 $(QEMU_OPTION) -S -gdb tcp::3777 & 
-#	riscv64-unknown-elf-gdb kernel.elf
-#	pkill -f qemu-system-riscv64
-#	qemu-system-riscv64 $(QEMU_OPTION) -S -gdb tcp::3777 &
-#	gdb kernel.elf
-#	pkill -f qemu-system-riscv64
+	qemu-system-riscv64 $(QEMU_OPTION) -S -gdb tcp::3777 & 
+	gdb kernel.elf
+	pkill -f qemu-system-riscv64
 
 clean:
 	rm -rf kernel.bin kernel.elf core riscv-gnu-toolchain main.o start.o timervec.o trampoline.o trampolin2.s aaa aa aaaa xpack-riscv-none-elf-gcc-13.2.0-1 *.o qemu.log hello.elf hello2.elf *.elf mkfs mkfs2 riscv-isa-sim/ riscv-pk

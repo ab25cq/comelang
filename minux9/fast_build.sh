@@ -1,11 +1,9 @@
-#make clean
 
 #if which brew
 #then
-##    brew tap riscv-software-src/riscv
-##    brew install riscv-tools
+#    brew tap riscv-software-src/riscv
+#    brew install riscv-tools
 #fi
-
 #if which apk
 #then
 #    apk update
@@ -25,7 +23,6 @@
 #    make -j$(nproc)
 #    sudo make install
 #    )
-    
 #    git clone https://github.com/riscv/riscv-openocd.git
 #    cd riscv-openocd
 #    ./bootstrap
@@ -44,8 +41,6 @@
 #    
 #    echo 'export PATH=/opt/openocd/bin:$PATH' >> ~/.bashrc
 #fi
-
-
 #if which apt
 #then
 #    sudo apt install gcc-riscv64-unknown-elf \
@@ -65,19 +60,11 @@
 #    sudo apk add spike
 #fi
 
-#if brew
-#then
-#    brew install spike
-#fi
+rm -rf ~/.config/gdb
+mkdir -p ~/.config/gdb
+echo "add-auto-load-safe-path $(pwd)/.gdbinit" >> ~/.config/gdb/gdbinit
 
-
-if test ! -f ~/.config/gdb/gdbinit
-then
-    mkdir -p ~/.config/gdb
-    echo "add-auto-load-safe-path $(pwd)/.gdbinit" >> ~/.config/gdb/gdbinit
-fi
-
-#make clean
+make clean
 if uname -a | grep Darwin
 then
 #    make run
