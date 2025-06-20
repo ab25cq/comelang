@@ -66,8 +66,8 @@ echo "add-auto-load-safe-path $(pwd)/.gdbinit" >> ~/.config/gdb/gdbinit
 make clean
 if uname -a | grep Darwin
 then
-#    make run
-    make debug-mac
+    make run
+#    make debug-mac
 elif which riscv-none-elf-gcc
 then
     make run CCPREFIX=riscv-none-elf- CFLAGS="-march=rv64gc -mabi=lp64" 
