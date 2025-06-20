@@ -1730,6 +1730,8 @@ void disable_timer_interrupts(void) {
 extern void swtch(struct context *old, struct context *new);
 
 void timer_reset() {
+    uint64_t next = r_time() + TIMER_INTERVAL;
+    w_stimecmp(next);
 }
 
 void timer_handler() {
@@ -2072,6 +2074,7 @@ int main()
     // sretでU-modeへ！
     asm volatile("sret");
 */
+
     enter_user(entry, usersp, usersatp, TIMER_INTERVAL);
     
     while (1); 

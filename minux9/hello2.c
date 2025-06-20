@@ -18,6 +18,7 @@ int main() {
 //    user_puts("H");
     *(volatile char*)0x10000000L = 'H';
     while (1) {
+        *(volatile char*)0x10000000L = 'H';
 //        user_puts("H");
         //puts("UHI");
     }

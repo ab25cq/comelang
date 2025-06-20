@@ -23,7 +23,8 @@ int main() {
     //*(volatile char*)0x10000000L = 'W';
 //    user_puts("O");
     while (1) {
-//        user_puts("O");
+        *(volatile char*)0x10000000L = 'O';
+        //user_puts("O");
     }
     return 0;
 }
