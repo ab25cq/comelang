@@ -21,10 +21,16 @@ int fun() {
 int main() {
     *(volatile char*)0x10000000L = 'O';
     //*(volatile char*)0x10000000L = 'W';
-//    user_puts("O");
+    user_puts("O");
     while (1) {
-        *(volatile char*)0x10000000L = 'O';
-        //user_puts("O");
+        user_puts("O");
+        //*(volatile char*)0x10000000L = 'O';
+/*
+        char buf[128];
+        buf[0] = '0';
+        buf[1] = '\0';
+        user_puts(buf);
+*/
     }
     return 0;
 }

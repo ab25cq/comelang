@@ -1297,6 +1297,7 @@ extern char TRAPFRAME[];
 extern char TRAMPOLINE[];
 extern char COMMON[];
 uint64_t kernel_sp __attribute__((section(".common")));
+uint64_t user_sp __attribute__((section(".common")));
 
 uint64_t kernel_satp __attribute__((section(".common")));    // trap.S から参照する
 uint64_t user_satp __attribute__((section(".common")));
