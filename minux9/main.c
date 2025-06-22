@@ -1294,6 +1294,7 @@ void enable_mmu(pagetable_t kernel_pagetable) {
 #define REG_STATUS 0x070 
 
 extern char TRAPFRAME[];
+extern char TRAPFRAME2[];
 extern char TRAMPOLINE[];
 extern char COMMON[];
 uint64_t kernel_sp __attribute__((section(".common")));
@@ -1452,6 +1453,7 @@ void setting_user_pagetable(pagetable_t pagetable)
 {
     mappages(pagetable, (uint64_t)TRAMPOLINE, PGSIZE, (uint64_t)TRAMPOLINE, PTE_R | PTE_W | PTE_V | PTE_X);
     mappages(pagetable, (uint64_t)TRAPFRAME, PGSIZE, (uint64_t)TRAPFRAME, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
+    mappages(pagetable, (uint64_t)TRAPFRAME2, PGSIZE, (uint64_t)TRAPFRAME2, PTE_R | PTE_W | PTE_V | PTE_U | PTE_X);
     mappages(pagetable, (uint64_t)COMMON, PGSIZE, (uint64_t)COMMON, PTE_R | PTE_W | PTE_V | PTE_X | PTE_U);
     
     // CLINT (タイマー割り込み)
@@ -1549,7 +1551,6 @@ void alloc_prog() {
     result->context.mepc = eh->entry;
     
     uint64_t satp_val = MAKE_SATP(result->pagetable);
-    user_satp = satp_val;                       // ← ここを追加
 /*
     asm volatile("csrw satp, %0" :: "r"(satp_val));
     asm volatile("sfence.vma zero, zero");
@@ -1614,7 +1615,6 @@ void alloc_prog2() {
     result->context.mepc = eh->entry;
     
     uint64_t satp_val = MAKE_SATP(result->pagetable);
-    user_satp = satp_val;                       // ← ここを追加
 /*
     asm volatile("csrw satp, %0" :: "r"(satp_val));
     asm volatile("sfence.vma zero, zero");
@@ -1752,8 +1752,9 @@ void timer_handler() {
     struct proc *new = gProc[gActiveProc];
     
     if (new != old) {
+        user_sp = new->context.sp;
         user_satp = MAKE_SATP(new->pagetable);
-        swtch(&mycpu()->context, &new->context);
+        swtch(&old->context, &new->context);
     }
 }
 
@@ -1799,11 +1800,21 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
     uintptr_t a3, uintptr_t a4, uintptr_t a5,
     uintptr_t a6, uintptr_t syscall_no)
 {
+    uintptr_t arg0 = a0;
+    uintptr_t arg1 = a1;
+    uintptr_t arg2 = a2;
+    uintptr_t arg3 = a3;
+    uintptr_t arg4 = a4;
+    uintptr_t arg5 = a5;
+    uintptr_t arg6 = a6;
+    uintptr_t arg_syscall_no = syscall_no;
+    
     disable_timer_interrupts();
+    
     switch(syscall_no) {
     case SYS_puts: {
         char kernel_buf[256];
-        uint64_t user_va = a0;
+        uint64_t user_va = arg0;
         
         struct proc *p = gProc[gActiveProc]; // 現在のプロセスを取得
         int i = 0;
@@ -1821,7 +1832,7 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
         kernel_buf[i] = '\0';
         
         puts((char*)kernel_buf);
-        enable_timer_interrupts();
+//        enable_timer_interrupts();
         return 0;
     }
     default:
@@ -2042,7 +2053,6 @@ int main()
     
     
 /*
-    kernel_sp = read_s_sp();
     w_sp(usersp);
     
     w_satp(MAKE_SATP(p->pagetable));
@@ -2076,6 +2086,7 @@ int main()
     asm volatile("sret");
 */
 
+    kernel_sp = read_s_sp();
     enter_user(entry, usersp, usersatp, TIMER_INTERVAL);
     
     while (1); 

@@ -4,12 +4,36 @@
     .extern user_sp          # C のゴローバル変数を取り込む
     .section ".trampoline", "ax"
     .globl trapvec
-    .extern TRAMPOLINE
     #.section .text
     .align 2
 trapvec:
+    la t0, TRAPFRAME;
+    
+    sd ra, 0(t0)
+    sd sp, 8(t0)
+    sd gp, 16(t0)
+    sd tp, 24(t0)
+    sd s0, 152(t0)
+    sd s1, 160(t0)
+    sd s2, 168(t0)
+    sd s3, 176(t0)
+    sd s4, 184(t0)
+    sd s5, 192(t0)
+    sd s6, 200(t0)
+    sd s7, 208(t0)
+    sd s8, 216(t0)
+    sd s9, 224(t0)
+    sd s10, 232(t0)
+    sd s11, 240(t0)
+    csrr a3, sepc
+    sd a3, 248(t0)
+    
     csrr   t1, satp
     la     t0, user_satp
+    sd     t1, 0(t0)
+    
+    la     t0, user_sp
+    mv     t1, sp
     sd     t1, 0(t0)
 
     # --- まずカーネルページテーブルを SATP にセット ---
@@ -18,12 +42,8 @@ trapvec:
     csrw satp, t0
     sfence.vma zero, zero
     
-    la     t0, user_sp
-    mv     t1, sp
-    sd     t1, 0(t0)
-    
     la     t0, kernel_sp
-    mv     sp, t0
+    ld     sp, 0(t0)
                 
     # ここからはカーネル用ページテーブルで動くので、
     # syscall_handler 内の puts() がユーザー空間ポインタを
@@ -57,26 +77,6 @@ not_interrupt:
 
     .section ".trampoline", "ax"
 handle_timer:
-    la a0, TRAPFRAME;
-    
-    sd ra, 0(a0)
-    sd sp, 8(a0)
-    sd gp, 16(a0)
-    sd tp, 24(a0)
-    sd s0, 152(a0)
-    sd s1, 160(a0)
-    sd s2, 168(a0)
-    sd s3, 176(a0)
-    sd s4, 184(a0)
-    sd s5, 192(a0)
-    sd s6, 200(a0)
-    sd s7, 208(a0)
-    sd s8, 216(a0)
-    sd s9, 224(a0)
-    sd s10, 232(a0)
-    sd s11, 240(a0)
-    csrr a3, sepc
-    sd a3, 248(a0)
     call   timer_handler
     
 #    csrr   t0, time
@@ -121,56 +121,53 @@ external_handler:
 
     .section ".trampoline", "ax"
 handle_ecall:
-    la a0, TRAPFRAME;
+    la t0, TRAPFRAME2;
     
-    sd ra, 0(a0)
-    sd sp, 8(a0)
-    sd gp, 16(a0)
-    sd tp, 24(a0)
-    sd s0, 152(a0)
-    sd s1, 160(a0)
-    sd s2, 168(a0)
-    sd s3, 176(a0)
-    sd s4, 184(a0)
-    sd s5, 192(a0)
-    sd s6, 200(a0)
-    sd s7, 208(a0)
-    sd s8, 216(a0)
-    sd s9, 224(a0)
-    sd s10, 232(a0)
-    sd s11, 240(a0)
+    sd ra, 0(t0)
+    sd sp, 8(t0)
+    sd gp, 16(t0)
+    sd tp, 24(t0)
+    sd s0, 152(t0)
+    sd s1, 160(t0)
+    sd s2, 168(t0)
+    sd s3, 176(t0)
+    sd s4, 184(t0)
+    sd s5, 192(t0)
+    sd s6, 200(t0)
+    sd s7, 208(t0)
+    sd s8, 216(t0)
+    sd s9, 224(t0)
+    sd s10, 232(t0)
+    sd s11, 240(t0)
 #    csrr a3, sepc
-#    sd a3, 248(a0)
+#    sd a3, 248(t0)
     
     call   syscall_handler
     
-    la a1, TRAPFRAME;
+    la t1, TRAPFRAME2;
     
-    ld ra, 0(a1)
-    ld sp, 8(a1)
-    ld gp, 16(a1)
-    ld tp, 24(a1)
-    ld s0, 152(a1)
-    ld s1, 160(a1)
-    ld s2, 168(a1)
-    ld s3, 176(a1)
-    ld s4, 184(a1)
-    ld s5, 192(a1)
-    ld s6, 200(a1)
-    ld s7, 208(a1)
-    ld s8, 216(a1)
-    ld s9, 224(a1)
-    ld s10, 232(a1)
-    ld s11, 240(a1)
-#    ld a2, 248(a1)
+    ld ra, 0(t1)
+    ld sp, 8(t1)
+    ld gp, 16(t1)
+    ld tp, 24(t1)
+    ld s0, 152(t1)
+    ld s1, 160(t1)
+    ld s2, 168(t1)
+    ld s3, 176(t1)
+    ld s4, 184(t1)
+    ld s5, 192(t1)
+    ld s6, 200(t1)
+    ld s7, 208(t1)
+    ld s8, 216(t1)
+    ld s9, 224(t1)
+    ld s10, 232(t1)
+    ld s11, 240(t1)
+#    ld a2, 248(t1)
 #    csrw sepc, a2
 
     csrr   t0, sepc
     addi   t0, t0, 4
     csrw   sepc, t0
-    
-    la t0, user_sp
-    ld sp, 0(t0)
 
     j      trap_return
 
@@ -184,6 +181,9 @@ trap_return:
     ld    t0, 0(t0)
     csrw  satp, t0
     sfence.vma zero, zero
+    
+    la t0, user_sp
+    ld sp, 0(t0)
 
     # 1) Supervisor タイマー割り込み許可 (STIE=bit5)
     li    t1, STIE_BIT
@@ -203,6 +203,26 @@ trap_return:
     .extern user_satp      # C のグローバルを取り込む
 .global swtch
 swtch:
+    la t1, TRAPFRAME;
+    
+    ld ra, 0(t1)
+    ld sp, 8(t1)
+    ld gp, 16(t1)
+    ld tp, 24(t1)
+    ld s0, 152(t1)
+    ld s1, 160(t1)
+    ld s2, 168(t1)
+    ld s3, 176(t1)
+    ld s4, 184(t1)
+    ld s5, 192(t1)
+    ld s6, 200(t1)
+    ld s7, 208(t1)
+    ld s8, 216(t1)
+    ld s9, 224(t1)
+    ld s10, 232(t1)
+    ld s11, 240(t1)
+    ld t2, 248(t1)
+    
     sd ra, 0(a0)
     sd sp, 8(a0)
     sd gp, 16(a0)
@@ -219,9 +239,8 @@ swtch:
     sd s9, 224(a0)
     sd s10, 232(a0)
     sd s11, 240(a0)
-    csrr a3, sepc
-    sd a3, 248(a0)
-    
+    sd t2, 248(a0)
+
     ld ra, 0(a1)
     ld sp, 8(a1)
     ld gp, 16(a1)
@@ -238,16 +257,17 @@ swtch:
     ld s9, 224(a1)
     ld s10, 232(a1)
     ld s11, 240(a1)
-    ld a2, 248(a1)
-    csrw sepc, a2
+    ld t2, 248(a1)
+    csrw sepc, t2
     
     # 1) SATP をユーザー用ページテーブルにセット
     ld t0, user_satp
     csrw    satp, t0
     sfence.vma zero, zero
-
+    
     # 2) スタックをユーザースタックに
-#    mv      sp, a1
+    la t0, user_sp
+    ld sp, 0(t0)
 
     # 3) sstatus.SPP=0, SPIE=1
     csrr    t0, sstatus

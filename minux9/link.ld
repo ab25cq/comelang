@@ -25,6 +25,10 @@ SECTIONS
   . = . + 4096;
   
   . = ALIGN(4096);
+  TRAPFRAME2 = .;
+  . = . + 4096;
+  
+  . = ALIGN(4096);
   . = 0x80010000;
   PROVIDE(TRAMPOLINE = .);
   .trampoline : { *(.trampoline) }
