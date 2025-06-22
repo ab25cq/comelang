@@ -1,5 +1,4 @@
 #include <comelang.h>
-#include <comelang-baremetal.h>
 #include <stdint.h>
 #include <stdarg.h>
 #include <stddef.h>
