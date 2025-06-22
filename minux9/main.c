@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include "elf.h"
+#include "fs2.h"
 #include "userprog.h"
 #include "userprog2.h"
 
@@ -642,7 +643,6 @@ int copyout(pagetable_t pagetable, uint64_t dstva, void *src, uint64_t len) {
 }
 
 
-void *kalloc_pages(size_t npages);
 void* memset(void *dst, int c, unsigned int n);
 void* memcpy(void *dst, const void *src, unsigned int n);
 int strlen(const char *s);
@@ -966,7 +966,6 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
 
 #define SSTATUS_SUM (1UL << 18)
 
-//#include "fs2.h"
 
 void enter_user(uintptr_t, uintptr_t, uintptr_t, uint64_t);
 
@@ -1028,8 +1027,8 @@ int main()
     kinit();
     console_init();
     mmu_init();
-//    virtio_blk_init();
-//    read_superblock();
+    virtio_blk_init();
+    read_superblock();
     
     w_stimecmp(r_time() + 10000000);
 

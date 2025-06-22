@@ -9,6 +9,7 @@ kernel.elf:
 	$(CCPREFIX)as -g $(CFLAGS) -o trap.o trap.S
 	$(CCPREFIX)as -g $(CFLAGS) -o userret.o userret.S
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o start.o start.c
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o fs2.o fs2.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o trap_c.o trap.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -g -ffreestanding -mcmodel=medany -o plic.o plic.c
 
@@ -28,12 +29,12 @@ kernel.elf:
 
 	comelang -S -bare main.c
 	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -c -O0 -g -ffreestanding -mcmodel=medany -o main.o main.c.c
-	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf entry.o start.o userret.o trap.o trap_c.o plic.o main.o
+	$(CCPREFIX)gcc $(CFLAGS) -nostdlib -g -O0 -T link.ld -Wl,-Map=map.txt  -mcmodel=medany -o kernel.elf entry.o start.o userret.o trap.o trap_c.o plic.o fs2.o main.o 
 
 	$(CCPREFIX)objcopy -O binary kernel.elf kernel.bin
 
-QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -nic none
-#QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -nic none
+#QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -nic none
+QEMU_OPTION=-machine virt -bios none -nographic -m 512M -kernel kernel.elf -drive file=fs.img,if=none,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -nic none
 
 run: kernel.elf
 	qemu-system-riscv64 $(QEMU_OPTION)

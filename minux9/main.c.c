@@ -1262,6 +1262,33 @@ struct proghdr
     unsigned long  long align;
 };
 
+struct superblock
+{
+    unsigned int size;
+    unsigned int nblocks;
+    unsigned int ninodes;
+    unsigned int nlog;
+    unsigned int logstart;
+    unsigned int inodestart;
+    unsigned int bmapstart;
+};
+
+struct dinode
+{
+    unsigned short int type;
+    unsigned short int major;
+    unsigned short int minor;
+    unsigned short int nlink;
+    unsigned int size;
+    unsigned int addrs[12+2];
+};
+
+struct dirent
+{
+    unsigned short int inum;
+    char name[14];
+};
+
 unsigned char hello_elf[]={
   0x7f, 0x45, 0x4c, 0x46, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0xf3, 0x00, 0x01, 0x00, 0x00, 0x00,
@@ -2073,7 +2100,16 @@ int* fgetwln(struct __sFILE* anonymous_var_nameX574, unsigned long  int* __len);
 unsigned long  int wcslcat(int* anonymous_var_nameX575, const int* anonymous_var_nameX576, unsigned long  int __len);
 unsigned long  int wcslcpy(int* anonymous_var_nameX577, const int* anonymous_var_nameX578, unsigned long  int __len);
 void* sbrk(long incr);
+void read_block(unsigned int blockno, void* buf);
+void read_superblock();
+void read_inode(unsigned int inum, struct dinode* dest);
+void read_data(struct dinode* inode, unsigned int offset, unsigned char* buf, unsigned int size);
+unsigned int path_lookup(const char* path);
+unsigned int dir_lookup(struct dinode* parent, const char* name);
+void dump_inode(unsigned int inum);
+void virtio_blk_init();
 static void* kalloc_page(unsigned long  long bump);
+void* kalloc_pages(unsigned long  int npages);
 void perror(char* str);
 void panic(char* str);
 struct cpu* mycpu();
@@ -2102,7 +2138,6 @@ void putc_direct(char c);
 void mmu_init();
 void* walkaddr(unsigned long  long* pagetable, unsigned long  long va);
 int copyout(unsigned long  long* pagetable, unsigned long  long dstva, void* src, unsigned long  long len);
-void* kalloc_pages(unsigned long  int npages);
 void setting_user_pagetable(unsigned long  long* pagetable);
 void alloc_prog();
 void alloc_prog2();
@@ -2504,6 +2539,24 @@ void* __result_obj__3;
     bump+=4096;
     __result_obj__3 = p_2;
     return __result_obj__3;
+}
+
+void* kalloc_pages(unsigned long  int npages){
+unsigned long  long bump_3;
+void* base_4;
+unsigned long  int i_5;
+void* pg_6;
+void* __result_obj__4;
+    bump_3=(unsigned long  long)_end2;
+    base_4=((void*)0);
+    for(    i_5=0    ;    i_5<npages    ;    i_5++    ){
+        pg_6=kalloc_page(bump_3);
+        if(        i_5==0        ) {
+            base_4=pg_6;
+        }
+    }
+    __result_obj__4 = base_4;
+    return __result_obj__4;
 }
 
 void perror(char* str){
@@ -3125,6 +3178,8 @@ unsigned long  int entry_85;
     kinit();
     console_init();
     mmu_init();
+    virtio_blk_init();
+    read_superblock();
     w_stimecmp(r_time()+10000000);
     alloc_prog();
     alloc_prog2();
