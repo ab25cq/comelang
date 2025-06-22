@@ -850,8 +850,10 @@ module MEvalOptions<T, T2>
             gComeBareMetal = true;
         }
         else if(argv[i] === "-bare") {
+            output_source_file_flag = true;
             gcc_compiler = true;
             output_object_file_flag = false;
+            gComeOriginalSourcePosition = false;
             CC="gcc";
             cpp_option.append_format(s" -D__BARE_METAL__ ");
             clang_option.append_str(s" -nostdlib -ffreestanding ");
@@ -976,8 +978,14 @@ module MEvalOptions<T, T2>
         else if(argv[i] === "-gdwarf-4") {
             clang_option.append_str("-gdwarf-4 ");
         }
-        else if(argv[i] === "-s" || argv[i] === "-S") {
+        else if(argv[i] === "-S") {
             output_source_file_flag = true;
+            output_object_file_flag = false;
+            gComeOriginalSourcePosition = false;
+        }
+        else if(argv[i] === "-s") {
+            output_source_file_flag = true;
+            output_object_file_flag = true;
             gComeOriginalSourcePosition = false;
         }
         else if(argv[i] === "-c") {

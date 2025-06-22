@@ -1,72 +1,30 @@
 #ifndef COMELANG_BARE_METAL_H
 #define COMELANG_BARE_METAL_H
 
-////////////////////////////////////////////////////////////
-// RISCV 
-////////////////////////////////////////////////////////////
-#ifdef __RISCV__
+#include <stdint.h>
+#include <stdarg.h>
+
+extern char _end[]; // first address after kernel.
+                   // defined by kernel.ld.
 
 using comelang;
-
-#include <stdint.h>
-
-output {#include <stdatomic.h>}
-
-typedef struct {
-    _Atomic int locked;
-} mutex_t;
-
-void mutex_init(mutex_t *mutex) {
-    atomic_store(&mutex->locked, 0);
-}
-
-void mutex_enter_blocking(mutex_t *mutex) {
-    while (1) {
-        int expected = 0;
-        if (atomic_compare_exchange_weak(&mutex->locked, &expected, 1))
-            break;
-        __asm__ volatile("nop");  // or yield() or wfi
-    }
-}
-
-void mutex_exit(mutex_t *mutex) {
-    atomic_store(&mutex->locked, 0);
-}
-
-#define MUTEX_INITIALIZER { 0 }
-
-// 割り込み禁止
-uniq void disable_interrupts() {
-    uint64_t mstatus;
-    __asm__ volatile ("csrr %0, mstatus" : "=r"(mstatus));
-    mstatus &= ~(1 << 3); // MIEビットをクリア
-    __asm__ volatile ("csrw mstatus, %0" :: "r"(mstatus));
-}
-
-// 割り込み許可
-uniq void enable_interrupts() {
-    uint64_t mstatus;
-    __asm__ volatile ("csrr %0, mstatus" : "=r"(mstatus));
-    mstatus |= (1 << 3);  // MIEビットをセット
-    __asm__ volatile ("csrw mstatus, %0" :: "r"(mstatus));
-}
-
-#include <stdarg.h>
 
 typedef unsigned long size_t;
 typedef long ptrdiff_t;
 
 #define NULL ((void*)0)
 
-extern char _end[]; // first address after kernel.
-                   // defined by kernel.ld.
+void* memset(void *dst, int c, unsigned int n);
+void* memcpy(void *dst, const void *src, unsigned int n);
+int strlen(const char *s);
+int printf(const char* fmt, ...);
+extern void puts(const char* s);
 
+extern char _end[];   // heap start
 static char* heap_end = 0;
 static char* heap_limit = (char*)0x88000000;
 
-#define ALIGN8(size) (((size) + 7) & ~7)
-
-uniq void* sbrk(ptrdiff_t incr) {
+void* sbrk(ptrdiff_t incr) {
     if (heap_end == 0)
         heap_end = (char*)&_end;
 
@@ -79,29 +37,26 @@ uniq void* sbrk(ptrdiff_t incr) {
     return prev;
 }
 
-// メモリブロックのヘッダ構造体 (サイズと次のブロックへのポインタ)
 typedef struct mem_block {
     size_t size;
     struct mem_block *next;
 } mem_block_t;
 
-uniq mem_block_t *free_list = NULL;
+mem_block_t *free_list = NULL;
 
 uniq void *malloc(size_t size) {
     if (size == 0) {
         return NULL;
     }
 
-    // アラインメント調整 (例: 8バイトアラインメント)
     if (size % 8 != 0) {
         size += 8 - (size % 8);
     }
-    size += sizeof(mem_block_t); // ヘッダ分のサイズを追加
+    size += sizeof(mem_block_t); 
 
     mem_block_t *current = free_list;
     mem_block_t *prev = NULL;
 
-    // フリーリストを検索して、十分なサイズの空きブロックを探す
     while (current != NULL) {
         if (current->size >= size) {
             if (prev == NULL) {
@@ -109,60 +64,20 @@ uniq void *malloc(size_t size) {
             } else {
                 prev->next = current->next;
             }
-            return (void *)(current + 1); // データ領域へのポインタを返す
+            return (void *)(current + 1); 
         }
         prev = current;
         current = current->next;
     }
 
-    // 空きブロックが見つからなかった場合、sbrkで新しい領域を確保
     mem_block_t *new_mem = (mem_block_t *)sbrk(size);
     if (new_mem == (void *)-1) {
-        return NULL; // メモリ不足
+        return NULL; 
     }
 
     new_mem->size = size;
     new_mem->next = NULL;
-    return (void *)(new_mem + 1); // データ領域へのポインタを返す
-}
-
-uniq void *malloc(size_t size) {
-    if (size == 0) {
-        return NULL;
-    }
-
-    // アラインメント調整 (例: 8バイトアラインメント)
-    if (size % 8 != 0) {
-        size += 8 - (size % 8);
-    }
-    size += sizeof(mem_block_t); // ヘッダ分のサイズを追加
-
-    mem_block_t *current = free_list;
-    mem_block_t *prev = NULL;
-
-    // フリーリストを検索して、十分なサイズの空きブロックを探す
-    while (current != NULL) {
-        if (current->size >= size) {
-            if (prev == NULL) {
-                free_list = current->next;
-            } else {
-                prev->next = current->next;
-            }
-            return (void *)(current + 1); // データ領域へのポインタを返す
-        }
-        prev = current;
-        current = current->next;
-    }
-
-    // 空きブロックが見つからなかった場合、sbrkで新しい領域を確保
-    mem_block_t *new_mem = (mem_block_t *)sbrk(size);
-    if (new_mem == (void *)-1) {
-        return NULL; // メモリ不足
-    }
-
-    new_mem->size = size;
-    new_mem->next = NULL;
-    return (void *)(new_mem + 1); // データ領域へのポインタを返す
+    return (void *)(new_mem + 1); 
 }
 
 uniq void *calloc(size_t nmemb, size_t size) {
@@ -183,13 +98,10 @@ uniq void free(void *ptr) {
         return;
     }
 
-    mem_block_t *block = (mem_block_t *)ptr - 1; // ヘッダへのポインタを取得
+    mem_block_t *block = (mem_block_t *)ptr - 1;
 
-    // フリーリストの先頭に挿入 (より効率的な方法もある)
     block->next = free_list;
     free_list = block;
-
-    // ここで隣接する空きブロックをマージする処理を追加すると、より効率的なメモリ管理が可能になります。
 }
 
 uniq char* strdup(const char* s) {
@@ -211,7 +123,7 @@ uniq int strcmp(const char* s1, const char* s2) {
                             
 uniq char* strstr(const char* haystack, const char* needle) {
     if (!*needle)
-        return (char*)haystack;  // 
+        return (char*)haystack;
 
     for (; *haystack; haystack++) {
         const char* h = haystack;
@@ -226,30 +138,30 @@ uniq char* strstr(const char* haystack, const char* needle) {
             return (char*)haystack;
     }
 
-    return NULL;  // 
+    return NULL;  
 }
 
 uniq void* memset(void *dst, int c, unsigned int n) {
-  char *cdst = (char *) dst;
-  int i;
-  for(i = 0; i < n; i++){
-    cdst[i] = c;
-  }
-  return dst;
+    char *cdst = (char *) dst;
+    int i;
+    for(i = 0; i < n; i++){
+        cdst[i] = c;
+    }
+    return dst;
 }
 
 uniq int memcmp(const void *v1, const void *v2, unsigned int n) {
-  const unsigned char *s1, *s2;
+    const unsigned char *s1, *s2;
 
-  s1 = v1;
-  s2 = v2;
-  while(n-- > 0){
-    if(*s1 != *s2)
-      return *s1 - *s2;
-    s1++, s2++;
-  }
+    s1 = v1;
+    s2 = v2;
+    while(n-- > 0){
+        if(*s1 != *s2)
+            return *s1 - *s2;
+        s1++, s2++;
+    }
 
-  return 0;
+    return 0;
 }
 
 uniq void* memmove(void *dst, const void *src, unsigned int n) {
@@ -267,13 +179,13 @@ uniq void* memmove(void *dst, const void *src, unsigned int n) {
     while(n-- > 0)
       *--d = *--s;
   } else
-    while(n-- > 0)
+    while(n-- > 0) {
       *d++ = *s++;
+    }
 
   return dst;
 }
 
-// memcpy exists to placate GCC.  Use memmove.
 uniq void* memcpy(void *dst, const void *src, unsigned int n) {
   return memmove(dst, src, n);
 }
@@ -297,19 +209,6 @@ uniq char* strncpy(char *s, const char *t, int n) {
   return os;
 }
 
-// Like strncpy but guaranteed to NUL-terminate.
-uniq char* strncpy(char *s, const char *t, int n) {
-  char *os;
-
-  os = s;
-  if(n <= 0)
-    return os;
-  while(--n > 0 && (*s++ = *t++) != 0)
-    ;
-  *s = 0;
-  return os;
-}
-
 uniq int strlen(const char *s) {
   int n;
 
@@ -329,17 +228,93 @@ uniq char* strncat(char* dest, const char* src, size_t n) {
         *d++ = *src++;
     }
 
-    *d = '\0';  // 
+    *d = '\0';
 
     return dest;
 }
 
-uniq void exit(int n)
-{
+
+// 自前実装の strtok
+// s が NULL でなければ、s の先頭から検索を始める。
+// s が NULL の場合は、前回の呼び出し時の位置から続きのトークンを返す。
+// delim に含まれるいずれかの文字で文字列を区切り、次のトークンを返す。
+// トークンがなくなったら NULL を返す。
+uniq char *strtok(char *s, const char *delim) {
+    static char *next;    // 次のトークン探索開始位置を保持
+    char *start;
+    char *p;
+
+    // 呼び出し時に s が非 NULL なら、new string の検索を開始
+    if (s != NULL) {
+        next = s;
+    }
+
+    // 直前で末尾に達していれば NULL を返す
+    if (next == NULL) {
+        return NULL;
+    }
+
+    // 1) 先頭の区切り文字をスキップ
+    start = next;
+    while (*start != '\0') {
+        // delim に含まれるかどうか調べる
+        const char *d = delim;
+        int is_delim = 0;
+        while (*d != '\0') {
+            if (*start == *d) {
+                is_delim = 1;
+                break;
+            }
+            d++;
+        }
+        if (!is_delim) {
+            break;
+        }
+        start++;
+    }
+
+    // 終端まで区切り文字しかなかった → もうトークンはない
+    if (*start == '\0') {
+        next = NULL;
+        return NULL;
+    }
+
+    // 2) トークンの終端を見つける
+    p = start;
+    while (*p != '\0') {
+        const char *d = delim;
+        int is_delim = 0;
+        while (*d != '\0') {
+            if (*p == *d) {
+                is_delim = 1;
+                break;
+            }
+            d++;
+        }
+        if (is_delim) {
+            break;
+        }
+        p++;
+    }
+
+    // 3) トークン終端を '\0' に置き換え、next を次回呼び出し用にセット
+    if (*p == '\0') {
+        // 文字列の末尾に達したので、次回以降 s=NULL にして呼べば再び NULL が返る
+        next = NULL;
+    } else {
+        // 区切り文字を '\0' に置し、次の検索開始位置を p+1 にする
+        *p = '\0';
+        next = p + 1;
+    }
+
+    // トークンの先頭を返す
+    return start;
+}
+
+uniq void exit(int n) {
     while(1);
 }
 
-// 汎用 itoa（符号あり/なし、base 10, 16 に対応）
 uniq char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     char* p = buf;
     char tmp[32];
@@ -371,7 +346,6 @@ uniq char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
     return buf;
 }
 
-// 拡張版 vasprintf
 uniq int vasprintf(char** out, const char* fmt, va_list ap) {
     char out2[512];
     char* p = out2;
@@ -405,7 +379,7 @@ uniq int vasprintf(char** out, const char* fmt, va_list ap) {
             if (!s) s = "(null)";
             break;
         case 'c':
-            buf[0] = (char)va_arg(ap, int);  // char は int に昇格されて渡る
+            buf[0] = (char)va_arg(ap, int);  
             buf[1] = '\0';
             s = buf;
             break;
@@ -439,7 +413,7 @@ uniq int vasprintf(char** out, const char* fmt, va_list ap) {
 }
 
 uniq int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list` ap;
+    va_list ap;
     va_start(ap, fmt);
 
     char* p = out;
@@ -479,7 +453,7 @@ uniq int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
             }
             break;
         case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
             s = buf;
             while (*s && remaining > 1) {
                 *p++ = *s++;
@@ -535,7 +509,7 @@ uniq int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
 }
 
 uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list` ap;
+    va_list ap;
     va_start(ap, fmt);
 
     char* p = out;
@@ -575,7 +549,7 @@ uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
             }
             break;
         case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  // GCC promotes
+            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
             s = buf;
             while (*s && remaining > 1) {
                 *p++ = *s++;
@@ -630,19 +604,11 @@ uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     return p - out;
 }
 
-
-// UART1
+// putcharは環境依存で外部定義
 extern void putchar(char c);
 
-extern void putchar(int c);
-
-#include <stdint.h>
-
-// putcharは環境依存で外部定義
-extern void putchar(int c);
-
 uniq void printint(int val_, int base, int sign) {
-    char buf[33];  // 32bit最大桁数 + '\0'
+    char buf[33];  
     int i = 0;
     int negative = 0;
     unsigned int uval;
@@ -674,9 +640,8 @@ uniq void printint(int val_, int base, int sign) {
     }
 }
 
-uniq void printlong(unsigned long val_, int base, int sign) 
-{
-    char buf[65];  // 64bit最大桁数 + '\0'
+uniq void printlong(unsigned long val_, int base, int sign)  {
+    char buf[65];  
     int i = 0;
     int negative = 0;
 
@@ -685,7 +650,6 @@ uniq void printlong(unsigned long val_, int base, int sign)
         val_ = -(long)val_;
     }
 
-    // 0の特別処理
     if (val_ == 0) {
         putchar('0');
         return;
@@ -701,14 +665,12 @@ uniq void printlong(unsigned long val_, int base, int sign)
         putchar('-');
     }
 
-    // 逆順に出力
     while (--i >= 0) {
         putchar(buf[i]);
     }
 }
 
-uniq void printlonglong(unsigned long long val_, int base, int sign) 
-{
+uniq void printlonglong(unsigned long long val_, int base, int sign)  {
     char buf[65];
     int i = 0;
     int negative = 0;
@@ -738,7 +700,6 @@ uniq void printlonglong(unsigned long long val_, int base, int sign)
     }
 }
 
-
 uniq int printf(const char* fmt, ...) {
     va_list ap;
     va_start(ap, fmt);
@@ -750,10 +711,9 @@ uniq int printf(const char* fmt, ...) {
             continue;
         }
 
-        p++; // %の次の文字
+        p++; 
 
         if (*p == 'l') {
-            // 'l'が連続しているかチェック。%lx or %llx 対応
             int lcount = 1;
             if (*(p+1) == 'l') {
                 lcount = 2;
@@ -790,7 +750,6 @@ uniq int printf(const char* fmt, ...) {
                 }
             }
         } else {
-            // 従来の1文字指定子
             switch (*p) {
                 case 'd': {
                     int val_ = va_arg(ap, int);
@@ -834,18 +793,6 @@ uniq int printf(const char* fmt, ...) {
 
     va_end(ap);
     return 0;
-}
-
-extern void puts(const char* s);
-
-uniq void perror(char* str)
-{
-    puts(str);
-}
-
-uniq void panic()
-{
-    puts("panic!");
 }
 
 uniq void* alloc_from_pages(size_t size)
@@ -1015,7 +962,7 @@ uniq void come_free_mem_of_heap_pool(void* mem)
 ////////////////////////////////////////////////////////////
 // PICO 
 ////////////////////////////////////////////////////////////
-#elif __PICO__
+#if __PICO__
 no_output {
 #include "stdint.h"
 }
@@ -1077,9 +1024,11 @@ output {#include "pico/multicore.h"}
 
 #endif
 
+/*
 ////////////////////////////////////////////////////////////
 // COME MUTEX 
 ////////////////////////////////////////////////////////////
+
 using comelang;
 
 struct come_mutex<T>
@@ -1115,6 +1064,32 @@ impl come_mutex<T>
 }
 
 uniq mutex_t gComeHeapMutex = MUTEX_INITIALIZER;
+
+output {#include <stdatomic.h>}
+
+typedef struct {
+    _Atomic int locked;
+} mutex_t;
+
+void mutex_init(mutex_t *mutex) {
+    atomic_store(&mutex->locked, 0);
+}
+
+void mutex_enter_blocking(mutex_t *mutex) {
+    while (1) {
+        int expected = 0;
+        if (atomic_compare_exchange_weak(&mutex->locked, &expected, 1))
+            break;
+        __asm__ volatile("nop");  // or yield() or wfi
+    }
+}
+
+void mutex_exit(mutex_t *mutex) {
+    atomic_store(&mutex->locked, 0);
+}
+
+#define MUTEX_INITIALIZER { 0 }
+*/
 
 uniq void come_push_stackframe(char* sname, int sline, int id) version 2
 {

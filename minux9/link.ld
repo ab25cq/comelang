@@ -29,7 +29,7 @@ SECTIONS
   . = . + 4096;
   
   . = ALIGN(4096);
-  . = 0x80010000;
+  . = 0x80020000;
   PROVIDE(TRAMPOLINE = .);
   .trampoline : { *(.trampoline) }
   . = ALIGN(4096);
