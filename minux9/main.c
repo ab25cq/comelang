@@ -6,6 +6,7 @@
 #include "fs2.h"
 #include "userprog.h"
 #include "userprog2.h"
+#include "minux.h"
 
 // machine-mode cycle counter
 static inline uint64_t r_time()
@@ -916,8 +917,6 @@ void puts(const char *s) {
     release(&console_lock);
 }
 
-#define SYS_puts 64
-
 uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
     uintptr_t a3, uintptr_t a4, uintptr_t a5,
     uintptr_t a6, uintptr_t syscall_no)
@@ -934,9 +933,9 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
     disable_timer_interrupts();
     
     switch(syscall_no) {
-    case SYS_puts: {
+    case SYS_write: {
         char kernel_buf[256];
-        uint64_t user_va = arg0;
+        uint64_t user_va = arg1;
         
         struct proc *p = gProc[gActiveProc]; // 現在のプロセスを取得
         int i = 0;
@@ -953,7 +952,9 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
         }
         kernel_buf[i] = '\0';
         
-        puts((char*)kernel_buf);
+        if(arg0 == 1) {
+            puts((char*)kernel_buf);
+        }
         return 0;
     }
     default:
