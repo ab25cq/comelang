@@ -1249,6 +1249,16 @@ static inline int write(long fd, const char* s, long size){
         : "r"(fd), "r"(s), "r"(size), "i"(64): "a0", "a7", "memory"
     );
 }
+static inline int read(long fd, const char* s, long size){
+    __asm volatile("mv a0, %0\n"
+        "mv a1, %1\n"
+        "mv a2, %2\n"
+        "li a7, %3\n"
+        "ecall\n"
+        :
+        : "r"(fd), "r"(s), "r"(size), "i"(65): "a0", "a7", "memory"
+    );
+}
 static inline unsigned long  long r_time(){
 unsigned long  long x_1;
 memset(&x_1, 0, sizeof(unsigned long  long));
