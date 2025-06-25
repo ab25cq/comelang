@@ -671,6 +671,169 @@ main(int argc, char *argv[])
         write_inode(new_inum, &file_ip);
         dirlink(ROOTINO, "hello2.elf", new_inum);
     }
+    
+    {
+        const char *elfpath = "a.txt";  
+        struct stat st;
+        if (stat(elfpath, &st) < 0) {
+            perror("stat a.txt");
+            exit(1);
+        }
+        size_t filesize = st.st_size;
+        if (filesize > MAXFILESIZE) {
+            fprintf(stderr, "a.txt が大きすぎます (上限 %d bytes)\n", MAXFILESIZE);
+            exit(1);
+        }
+
+        // i-node 番号 2 を使ってファイルを作成するとする
+        uint32_t new_inum = 2;
+        struct dinode file_ip;
+        memset(&file_ip, 0, sizeof(file_ip));
+        file_ip.type  = T_FILE;
+        file_ip.nlink = 1;
+        file_ip.size  = filesize;
+
+        int fd = open(elfpath, O_RDONLY);
+        if (fd < 0) {
+            perror("open a.txt");
+            exit(1);
+        }
+
+        // ────────────────────────────────────────────────────────────
+        // バッファの準備
+        // ────────────────────────────────────────────────────────────
+        char buf[BSIZE];
+        size_t remaining = filesize;
+        int    di = 0;    // 書き込んだブロック数（0-based ブロック index）
+        // １次間接用のバッァ：NINDIRECT 個の uint32_t を保持
+        uint32_t single_indirect_blk = 0;
+        uint32_t single_buf[NINDIRECT];
+        memset(single_buf, 0, sizeof(single_buf));
+        // ２次間接用のバッファ：NINDIRECT 個の uint32_t を保持
+        // ２次間接の第一レベルを指すブロック番号
+        uint32_t double_indirect_blk = 0;
+        // 第一レベルの配列（"どの１次インデクスブロックを指すか" を NINDIRECT 個分保持）
+        uint32_t double_buf[NINDIRECT];
+        memset(double_buf, 0, sizeof(double_buf));
+        // 第二レベルの配列リスト（必要な分だけ動的に確保し、後で逐次 write_block する）
+        //  例えば double_second_blocks[i] が 0 でなければ、そのブロックが２次インデクスの
+        //  第一レベルの i 番エントリ用に確保された「第二レベルブロック番号」を示す。
+        uint32_t *double_second_blocks = malloc(sizeof(uint32_t) * NINDIRECT);
+        memset(double_second_blocks, 0, sizeof(uint32_t) * NINDIRECT);
+        // 第二レベルバッファ置き場：１ブロック分ずつ動的に確保して逐次書き込む
+        uint32_t *second_buf[NINDIRECT];
+        for (int i = 0; i < NINDIRECT; i++) {
+            second_buf[i] = NULL;
+        }
+
+        // ────────────────────────────────────────────────────────────
+        // 実際にファイルの中身を読み込んで
+        // データブロックを確保し、i-node の addrs[] にセットしていくループ
+        // ────────────────────────────────────────────────────────────
+        while (remaining > 0) {
+            // 1) 新規データブロックを確保
+            uint32_t b = alloc_data_block();
+            ssize_t r = read(fd, buf, BSIZE);
+            if (r < 0) {
+                perror("read a.txt");
+                close(fd);
+                exit(1);
+            }
+            // 2) 新しいブロックへデータを書き込む
+            write_block(b, buf);
+
+            // 3) i-node の addrs[] に配置
+            if (di < NDIRECT) {
+                // ─────────── 直接ブロック領域 ───────────
+                file_ip.addrs[di] = b;
+            }
+            else if (di < NDIRECT + NINDIRECT) {
+                // ─────────── 1次間接領域 ───────────
+                int idx1 = di - NDIRECT;
+                if (single_indirect_blk == 0) {
+                    // まだ１次間接ブロックを割り当てていない → 確保し、全要素ゼロクリア
+                    single_indirect_blk = alloc_data_block();
+                    uint8_t z[BSIZE];
+                    memset(z, 0, BSIZE);
+                    write_block(single_indirect_blk, z);
+                }
+                single_buf[idx1] = b;
+                // ※ 書き込みはループ後でまとめて行う
+            }
+            else {
+                // ─────────── 2次間接領域 ───────────
+                int di_idx = di - (NDIRECT + NINDIRECT);
+                int idx1 = di_idx / NINDIRECT;  // 2次インデクスの「第一レベル」インデクス
+                int idx2 = di_idx % NINDIRECT;  // 2次インデクスの「第二レベル」インデクス
+
+                if (double_indirect_blk == 0) {
+                    // まだ２次間接ブロックを割り当てていない → 確保
+                    double_indirect_blk = alloc_data_block();
+                    uint8_t z[BSIZE];
+                    memset(z, 0, BSIZE);
+                    write_block(double_indirect_blk, z);
+                }
+                // double_buf[idx1] = (この idx1 に対応する 1次間接ブロック番号)
+                if (double_buf[idx1] == 0) {
+                    // idx1 番目の１次間接ブロックを初めて割り当てる
+                    uint32_t new_first = alloc_data_block();
+                    double_buf[idx1] = new_first;
+                    // 第一レベルブロックと同様にゼロクリアしてから書き込む
+                    second_buf[idx1] = malloc(BSIZE);
+                    memset(second_buf[idx1], 0, BSIZE);
+                    write_block(new_first, second_buf[idx1]);
+                }
+                // ２次レベルのバッファを確保しておき（既にあれば再利用）
+                if (second_buf[idx1] == NULL) {
+                    second_buf[idx1] = malloc(BSIZE);
+                    memset(second_buf[idx1], 0, BSIZE);
+                    // 実際の内容は既にブロックへ書き込まれているはずなので mem はゼロで OK
+                }
+                // second_buf[idx1] の中身を更新しておく
+                uint32_t *entries = (uint32_t *)second_buf[idx1];
+                entries[idx2] = b;
+
+                // 後で書き戻す際に使うため second_buf[idx1] を保持しておく
+                double_second_blocks[idx1] = double_buf[idx1];
+            }
+
+            di++;
+            remaining -= r;
+        }
+        close(fd);
+
+        // ────────────────────────────────────────────────────────────
+        // i-node の 1次間接ブロックがあれば書き戻す
+        // ────────────────────────────────────────────────────────────
+        if (single_indirect_blk != 0) {
+            write_block(single_indirect_blk, single_buf);
+            file_ip.addrs[NDIRECT] = single_indirect_blk;
+        }
+        // ───────────────────────────────────────────────────────────
+        // i-node の 2次間接の第一レベルブロックがあれば書き戻す
+        // ※ double_buf に格納した「第一レベルブロック番号」を書き戻す
+        //    さらに各 second_buf[i] も該当ブロックへ書き込む
+        // ────────────────────────────────────────────────────────────
+        if (double_indirect_blk != 0) {
+            // 1) 第一レベルブロック本体を、double_buf の内容で書き込む
+            write_block(double_indirect_blk, double_buf);
+            file_ip.addrs[NDIRECT + 1] = double_indirect_blk;
+
+            // 2) 各 second_buf[i] を write_block する
+            for (int i = 0; i < NINDIRECT; i++) {
+                if (double_buf[i] != 0 && second_buf[i] != NULL) {
+                    write_block(double_buf[i], second_buf[i]);
+                    free(second_buf[i]);
+                }
+            }
+        }
+
+        // 4) i-node 情報をディスクに書き込む
+        write_inode(new_inum, &file_ip);
+
+        // 5) ルートディレクトリにリンク /a.txt
+        dirlink(ROOTINO, "a.txt", new_inum);
+    }
 
     // 5) 最後に img[] 全体を実ファイルに書き出す
     int outfd = open(argv[1], O_CREAT | O_RDWR, 0666);

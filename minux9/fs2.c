@@ -363,13 +363,15 @@ static struct file file_table[MAX_OPEN_FILES];
 // 成功: [0, MAX_OPEN_FILES) の fd, 失敗: -1
 int fs_open(const char *path) {
     uint32_t inum = path_lookup(path);
-    if (inum == 0)
+    if (inum == 0) {
         return -1;  // ファイル未検出
+    }
 
     struct dinode di;
     read_inode(inum, &di);
-    if (di.type != T_FILE && di.type != T_DIR)
+    if (di.type != T_FILE && di.type != T_DIR) {
         return -1;  // 通常ファイルでもディレクトリでもない
+    }
 
     // 空きスロット検索
     for (int fd = 0; fd < MAX_OPEN_FILES; fd++) {
@@ -387,8 +389,9 @@ int fs_open(const char *path) {
 // fs_read: fd から buf に count バイト読み込む
 // 成功: 読み込んだバイト数 (0 は EOF), 失敗: -1
 ssize_t fs_read(int fd, void *buf, size_t count) {
-    if (fd < 0 || fd >= MAX_OPEN_FILES || !file_table[fd].used)
+    if (fd < 0 || fd >= MAX_OPEN_FILES || !file_table[fd].used) {
         return -1;  // 無効な FD
+    }
 
     struct file *f = &file_table[fd];
     uint32_t remaining = f->din.size - f->off;

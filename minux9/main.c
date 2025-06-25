@@ -75,7 +75,7 @@ struct context {
     uint64_t t4;
     uint64_t t5;
     uint64_t t6;
-    uint64_t a0;
+    uint64_t fakea0;
     uint64_t a1;
     uint64_t a2;
     uint64_t a3;
@@ -96,6 +96,7 @@ struct context {
     uint64_t s10;
     uint64_t s11;
     uint64_t mepc;
+    uint64_t a0;
 };
 
 struct cpu {
@@ -933,32 +934,97 @@ uintptr_t syscall_handler(uintptr_t a0, uintptr_t a1, uintptr_t a2,
     disable_timer_interrupts();
     
     switch(syscall_no) {
-    case SYS_write: {
-        char kernel_buf[256];
-        uint64_t user_va = arg1;
-        
-        struct proc *p = gProc[gActiveProc]; // 現在のプロセスを取得
-        int i = 0;
-        for (i = 0; i < sizeof(kernel_buf) - 1; ++i) {
-            char* user_char_pa = walkaddr(p->pagetable, user_va + i);
-            if (user_char_pa == 0) {
-                panic("walkaddr");
+        case SYS_write: {
+            char kernel_buf[256];
+            uint64_t user_va = arg1;
+            
+            struct proc *p = gProc[gActiveProc]; // 現在のプロセスを取得
+            int i = 0;
+            for (i = 0; i < sizeof(kernel_buf) - 1; ++i) {
+                char* user_char_pa = walkaddr(p->pagetable, user_va + i);
+                if (user_char_pa == 0) {
+                    panic("walkaddr");
+                }
+                
+                kernel_buf[i] = *user_char_pa;
+                if (kernel_buf[i] == '\0') {
+                    break; // 文字列終端
+                }
+            }
+            kernel_buf[i] = '\0';
+            
+            if(arg0 == 1) {
+                puts((char*)kernel_buf);
+            }
+            return 0;
+        }
+        case SYS_open: {
+            char kernel_buf[256];
+            uint64_t user_va = arg0;
+            
+            struct proc *p = gProc[gActiveProc]; // 現在のプロセスを取得
+            int i = 0;
+            for (i = 0; i < sizeof(kernel_buf) - 1; ++i) {
+                char* user_char_pa = walkaddr(p->pagetable, user_va + i);
+                if (user_char_pa == 0) {
+                    panic("walkaddr");
+                }
+                
+                kernel_buf[i] = *user_char_pa;
+                if (kernel_buf[i] == '\0') {
+                    break; // 文字列終端
+                }
+            }
+            kernel_buf[i] = '\0';
+            
+            int fd = fs_open(kernel_buf);
+            
+            struct context* context = (struct context*)TRAPFRAME2;
+            context->a0 = fd;
+            }
+            return 0;
+        case SYS_read: {
+            int fd = arg0;
+            long size = arg2;
+            
+            char kernel_buf[256];
+            int ret = fs_read(fd, kernel_buf, size);
+            
+            if(ret < 0) {
+                struct context* context = (struct context*)TRAPFRAME2;
+                context->a0 = ret;
+                return 0;
             }
             
-            kernel_buf[i] = *user_char_pa;
-            if (kernel_buf[i] == '\0') {
-                break; // 文字列終端
+            char user_buf[256];
+            uint64_t user_va = arg1;
+            
+            struct proc *p = gProc[gActiveProc]; // 現在のプロセスを取得
+            int i = 0;
+            for (i = 0; i < size; ++i) {
+                char* user_char_pa = walkaddr(p->pagetable, user_va + i);
+                if (user_char_pa == 0) {
+                    panic("walkaddr");
+                }
+                
+                *user_char_pa = kernel_buf[i];
             }
+            
+            struct context* context = (struct context*)TRAPFRAME2;
+            context->a0 = ret;
+            return 0;
         }
-        kernel_buf[i] = '\0';
-        
-        if(arg0 == 1) {
-            puts((char*)kernel_buf);
+        case SYS_close: {
+            int fd = arg0;
+            
+            int ret = fs_close(fd);
+            
+            struct context* context = (struct context*)TRAPFRAME2;
+            context->a0 = ret;
+            return 0;
         }
-        return 0;
-    }
-    default:
-        panic("invalid syscall");
+        default:
+            panic("invalid syscall");
     }
 }
 

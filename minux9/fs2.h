@@ -89,5 +89,11 @@ void dump_inode(uint32_t inum);
 // virtio ブロックデバイスを初期化
 void virtio_blk_init(void);
 
+typedef int32_t ssize_t;
+
+int fs_open(const char *path);
+ssize_t fs_read(int fd, void *buf, size_t count);
+int fs_close(int fd);
+
 #endif // FS_H
 

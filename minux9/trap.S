@@ -141,6 +141,7 @@ handle_ecall:
     sd s11, 240(t0)
 #    csrr a3, sepc
 #    sd a3, 248(t0)
+    sd a0, 256(t0)
     
     call   syscall_handler
     
@@ -164,6 +165,7 @@ handle_ecall:
     ld s11, 240(t1)
 #    ld a2, 248(t1)
 #    csrw sepc, a2
+    ld a0, 256(t1)
 
     csrr   t0, sepc
     addi   t0, t0, 4
