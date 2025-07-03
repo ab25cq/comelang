@@ -18,7 +18,7 @@ LOAD fs2.o
 LOAD main.o
                 0x0000000080000000                . = 0x80000000
 
-.text           0x0000000080000000     0xd502
+.text           0x0000000080000000     0x4cf0
  *(.text*)
  .text          0x0000000080000000       0x3e entry.o
                 0x0000000080000000                entry
@@ -46,323 +46,133 @@ LOAD main.o
                 0x000000008000141a                fs_open
                 0x0000000080001534                fs_read
                 0x000000008000160e                fs_close
- .text          0x0000000080001678     0xbe8a main.o
-                0x0000000080001816                sbrk
-                0x00000000800018f0                kalloc_pages
-                0x0000000080001958                perror
-                0x0000000080001976                panic
-                0x0000000080001998                mycpu
-                0x00000000800019ba                initlock
-                0x00000000800019ee                acquire
-                0x0000000080001a42                release
-                0x0000000080001a8c                holding
-                0x0000000080001ada                push_off
-                0x0000000080001b26                pop_off
-                0x0000000080001b9a                kinit
-                0x0000000080001bd4                freerange
-                0x0000000080001c2c                kfree
-                0x0000000080001cc8                kalloc
-                0x0000000080001d38                walk
-                0x0000000080001e2c                mappages
-                0x0000000080001f5e                dump_physical_memory
-                0x0000000080002026                vmprint_rec
-                0x00000000800021b8                vmprint
-                0x00000000800021e6                enable_mmu
-                0x000000008000221a                uart_rx_handler
-                0x0000000080002242                uart_init
-                0x0000000080002284                putc
-                0x00000000800022be                putchar
-                0x00000000800022e0                putc_direct
-                0x0000000080002304                mmu_init
-                0x00000000800024b0                walkaddr
-                0x000000008000253a                copyout
-                0x000000008000260c                setting_user_pagetable
-                0x00000000800026c6                alloc_prog
-                0x0000000080002908                alloc_prog2
-                0x0000000080002b58                my_intr_off
-                0x0000000080002b88                my_intr_on
-                0x0000000080002bba                enable_timer_interrupts
-                0x0000000080002c1a                disable_timer_interrupts
-                0x0000000080002c4a                timer_reset
-                0x0000000080002c76                timer_handler
-                0x0000000080002d8e                console_init
-                0x0000000080002db4                puts
-                0x0000000080002e04                syscall_handler
-                0x00000000800032a0                timerinit
-                0x00000000800032f8                main
-                0x000000008000340a                malloc
-                0x00000000800034fe                calloc
-                0x0000000080003568                free
-                0x00000000800035ae                strdup
-                0x0000000080003610                strcmp
-                0x000000008000367a                strstr
-                0x000000008000372e                memset
-                0x000000008000379a                memcmp
-                0x000000008000383e                memmove
-                0x0000000080003936                memcpy
-                0x0000000080003970                strncmp
-                0x00000000800039fe                strncpy
-                0x0000000080003a90                strlen
-                0x0000000080003adc                strncat
-                0x0000000080003b66                strtok
-                0x0000000080003cf2                exit
-                0x0000000080003d02                itoa
-                0x0000000080003e64                vasprintf
-                0x0000000080004134                snprintf
-                0x0000000080004586                vsnprintf
-                0x00000000800049d8                printint
-                0x0000000080004b0a                printlong
-                0x0000000080004c18                printlonglong
-                0x0000000080004d26                printf
-                0x0000000080005060                come_push_stackframe
-                0x0000000080005104                come_pop_stackframe
-                0x000000008000513e                come_save_stackframe
-                0x0000000080005294                stackframe
-                0x0000000080005312                come_get_stackframe
-                0x0000000080005378                xassert
-                0x00000000800053d0                die
-                0x00000000800053fa                come_heap_init
-                0x0000000080005564                come_heap_final
-                0x00000000800057b8                alloc_from_pages
-                0x00000000800057f8                come_free_mem_of_heap_pool
-                0x00000000800059b0                come_alloc_mem_from_heap_pool
-                0x0000000080005d02                come_dynamic_typeof
-                0x0000000080005dae                come_print_heap_info
-                0x0000000080005ee8                come_calloc
-                0x0000000080005f74                come_free
-                0x0000000080005fa4                come_memdup
-                0x0000000080006034                come_increment_ref_count
-                0x0000000080006084                come_print_ref_count
-                0x00000000800060d8                come_get_ref_count
-                0x000000008000610a                come_decrement_ref_count
-                0x0000000080006200                come_call_finalizer
-                0x00000000800063c6                __builtin_string
-                0x0000000080006496                come_push_stackframe_v2
-                0x00000000800064ce                come_pop_stackframe_v2
-                0x00000000800064e4                come_save_stackframe_v2
-                0x000000008000650e                stackframe_v2
-                0x0000000080006524                come_get_stackframe_v2
-                0x000000008000657e                come_calloc_v2
-                0x00000000800065c8                come_free_v2
-                0x00000000800065e6                buffer_initialize
-                0x00000000800066b8                buffer_initialize_with_value
-                0x00000000800067a2                buffer_finalize
-                0x00000000800067e2                buffer_clone
-                0x000000008000692c                buffer_equals
-                0x00000000800069b8                buffer_length
-                0x00000000800069de                buffer_reset
-                0x0000000080006a0e                buffer_trim
-                0x0000000080006a5a                buffer_append
-                0x0000000080006c10                buffer_append_char
-                0x0000000080006d80                buffer_append_str
-                0x0000000080006f3c                buffer_append_format
-                0x000000008000718c                buffer_append_nullterminated_str
-                0x000000008000735c                buffer_append_int
-                0x0000000080007510                buffer_append_long
-                0x00000000800076b2                buffer_append_short
-                0x0000000080007866                buffer_alignment
-                0x0000000080007972                buffer_compare
-                0x00000000800079c6                charp_to_buffer
-                0x0000000080007ac2                buffer_to_string
-                0x0000000080007b80                buffer_head_pointer
-                0x0000000080007ba4                charpa_to_buffer
-                0x0000000080007c58                charppa_to_buffer
-                0x0000000080007d4c                shortpa_to_buffer
-                0x0000000080007e04                intpa_to_buffer
-                0x0000000080007ebc                longpa_to_buffer
-                0x0000000080007f74                floatpa_to_buffer
-                0x000000008000802c                doublepa_to_buffer
-                0x00000000800080e4                buffer_printable
-                0x000000008000850c                charpa_to_list
-                0x0000000080008854                charppa_to_list
-                0x0000000080008ba6                shortpa_to_list
-                0x0000000080008ef0                intpa_to_list
-                0x0000000080009238                longpa_to_list
-                0x000000008000958a                floatpa_to_list
-                0x00000000800098d4                doublepa_to_list
-                0x000000008000997e                bool_equals
-                0x00000000800099b6                _Bool_equals
-                0x00000000800099ee                char_equals
-                0x0000000080009a26                short_equals
-                0x0000000080009a5e                int_equals
-                0x0000000080009a98                long_equals
-                0x0000000080009ac6                size_t_equals
-                0x0000000080009af4                float_equals
-                0x0000000080009b1e                double_equals
-                0x0000000080009b48                bool_operator_equals
-                0x0000000080009b80                _Bool_operator_equals
-                0x0000000080009bb8                char_operator_equals
-                0x0000000080009bf0                short_operator_equals
-                0x0000000080009c28                int_operator_equals
-                0x0000000080009c62                long_operator_equals
-                0x0000000080009c90                bool_operator_not_equals
-                0x0000000080009cc8                _Bool_operator_not_equals
-                0x0000000080009d00                char_operator_not_equals
-                0x0000000080009d38                short_operator_not_equals
-                0x0000000080009d70                int_operator_not_equals
-                0x0000000080009daa                long_operator_not_equals
-                0x0000000080009dd8                charp_equals
-                0x0000000080009e2c                string_equals
-                0x0000000080009e80                voidp_equals
-                0x0000000080009eae                boolp_equals
-                0x0000000080009ee8                string_operator_equals
-                0x0000000080009f3c                charp_operator_equals
-                0x0000000080009f90                voidp_operator_equals
-                0x0000000080009fbe                voidp_operator_not_equals
-                0x000000008000a000                string_operator_not_equals
-                0x000000008000a054                charp_operator_not_equals
-                0x000000008000a0a8                charp_operator_add
-                0x000000008000a1de                string_operator_add
-                0x000000008000a314                charp_operator_mult
-                0x000000008000a460                string_operator_mult
-                0x000000008000a5ac                charpa_length
-                0x000000008000a5ca                charppa_contained
-                0x000000008000a64c                shortpa_length
-                0x000000008000a66a                intpa_length
-                0x000000008000a688                longpa_length
-                0x000000008000a6a6                floatpa_length
-                0x000000008000a6c4                doublepa_length
-                0x000000008000a6e2                bool_get_hash_key
-                0x000000008000a708                _Bool_get_hash_key
-                0x000000008000a72e                char_get_hash_key
-                0x000000008000a74c                short_get_hash_key
-                0x000000008000a76a                int_get_hash_key
-                0x000000008000a786                long_get_hash_key
-                0x000000008000a7a2                size_t_get_hash_key
-                0x000000008000a7be                float_get_hash_key
-                0x000000008000a7de                double_get_hash_key
-                0x000000008000a7fe                charp_get_hash_key
-                0x000000008000a858                string_get_hash_key
-                0x000000008000a8b2                voidp_get_hash_key
-                0x000000008000a8d6                bool_clone
-                0x000000008000a8f2                _Bool_clone
-                0x000000008000a90e                char_clone
-                0x000000008000a92a                short_clone
-                0x000000008000a946                int_clone
-                0x000000008000a962                long_clone
-                0x000000008000a97c                size_t_clone
-                0x000000008000a996                double_clone
-                0x000000008000a9b2                float_clone
-                0x000000008000a9ce                xisalpha
-                0x000000008000aa3e                xisblank
-                0x000000008000aa80                xisdigit
-                0x000000008000aac4                xisalnum
-                0x000000008000ab04                xisascii
-                0x000000008000ab52                xispunct
-                0x000000008000abf6                string_length
-                0x000000008000ac20                charp_length
-                0x000000008000ac4a                charp_reverse
-                0x000000008000ad92                string_operator_load_range_element
-                0x000000008000b096                charp_operator_load_range_element
-                0x000000008000b39a                charp_substring
-                0x000000008000b69e                xsprintf
-                0x000000008000b80c                charp_delete
-                0x000000008000bdaa                charp_split_char
-                0x000000008000bff2                charp_xsprintf
-                0x000000008000c06c                int_xsprintf
-                0x000000008000c0ea                charp_printable
-                0x000000008000c248                charp_sub_plain
-                0x000000008000c402                xbasename
-                0x000000008000c562                xnoextname
-                0x000000008000c714                xextname
-                0x000000008000c874                bool_to_string
-                0x000000008000c938                _Bool_to_string
-                0x000000008000c9fc                char_to_string
-                0x000000008000ca6c                short_to_string
-                0x000000008000cadc                int_to_string
-                0x000000008000cb4a                long_to_string
-                0x000000008000cbb4                size_t_to_string
-                0x000000008000cc1e                float_to_string
-                0x000000008000cc90                double_to_string
-                0x000000008000ccfa                string_to_string
-                0x000000008000cdb4                charp_to_string
-                0x000000008000ce6e                bool_compare
-                0x000000008000cee4                _Bool_compare
-                0x000000008000cf5a                char_compare
-                0x000000008000cfb0                short_compare
-                0x000000008000cffa                int_compare
-                0x000000008000d048                long_compare
-                0x000000008000d084                size_t_compare
-                0x000000008000d0c0                float_compare
-                0x000000008000d104                double_compare
-                0x000000008000d148                string_compare
-                0x000000008000d194                charp_compare
-                0x000000008000d1e0                charp_puts
-                0x000000008000d2a2                charp_print
-                0x000000008000d36c                charp_printf
-                0x000000008000d480                int_printf
-                0x000000008000d4ae                int_times
+ .text          0x0000000080001678     0x3678 main.o
+                0x00000000800016f4                kalloc_pages
+                0x0000000080001754                perror
+                0x0000000080001772                panic
+                0x0000000080001794                mycpu
+                0x0000000080001862                initlock
+                0x0000000080001896                acquire
+                0x00000000800018ea                release
+                0x0000000080001934                holding
+                0x0000000080001974                push_off
+                0x00000000800019c0                pop_off
+                0x0000000080001a34                kinit
+                0x0000000080001a6e                freerange
+                0x0000000080001ac2                kfree
+                0x0000000080001b5a                kalloc
+                0x0000000080001bbe                walk
+                0x0000000080001ca4                mappages
+                0x0000000080001db4                dump_physical_memory
+                0x0000000080001e7e                vmprint_rec
+                0x0000000080002010                vmprint
+                0x000000008000203e                enable_mmu
+                0x0000000080002072                uart_rx_handler
+                0x000000008000209c                uart_init
+                0x00000000800020e2                putc
+                0x0000000080002120                putchar
+                0x0000000080002142                putc_direct
+                0x0000000080002166                puts_direct
+                0x00000000800021a0                mmu_init
+                0x000000008000234c                walkaddr
+                0x00000000800023bc                copyout
+                0x000000008000248a                setting_user_pagetable
+                0x0000000080002544                alloc_prog
+                0x0000000080002786                alloc_prog2
+                0x0000000080002a22                my_intr_off
+                0x0000000080002a52                my_intr_on
+                0x0000000080002a84                enable_timer_interrupts
+                0x0000000080002ace                disable_timer_interrupts
+                0x0000000080002afe                timer_reset
+                0x0000000080002b2a                timer_handler
+                0x0000000080002c42                console_init
+                0x0000000080002c68                puts
+                0x0000000080002cb8                syscall_handler
+                0x0000000080003066                timerinit
+                0x00000000800030be                sbrk
+                0x0000000080003140                malloc
+                0x0000000080003218                calloc
+                0x0000000080003274                free
+                0x00000000800032ba                strdup
+                0x0000000080003314                strcmp
+                0x000000008000337e                strstr
+                0x000000008000341c                memset
+                0x0000000080003480                memcmp
+                0x0000000080003508                memmove
+                0x00000000800035e8                memcpy
+                0x000000008000361c                strncmp
+                0x00000000800036aa                strncpy
+                0x0000000080003730                strlen
+                0x000000008000376a                strncat
+                0x00000000800037ec                strtok
+                0x0000000080003950                exit
+                0x0000000080003960                itoa
+                0x0000000080003aa2                vasprintf
+                0x0000000080003d4e                snprintf
+                0x000000008000417e                vsnprintf
+                0x00000000800045ae                printint
+                0x00000000800046c4                printlong
+                0x00000000800047c2                printlonglong
+                0x00000000800048c0                printf
+                0x0000000080004be8                main
 
-.rodata         0x000000008000d508      0x7bb
+.rodata         0x0000000080004cf0      0x43c
  *(.rodata*)
- .rodata        0x000000008000d508       0xfa fs2.o
- *fill*         0x000000008000d602        0x6 
- .rodata        0x000000008000d608      0x6bb main.o
+ .rodata        0x0000000080004cf0       0xfa fs2.o
+ *fill*         0x0000000080004dea        0x6 
+ .rodata        0x0000000080004df0      0x33c main.o
 
-.data           0x000000008000dcc8      0xdf0
+.data           0x0000000080005130      0xdf0
  *(.data*)
- .data          0x000000008000dcc8        0x0 entry.o
- .data          0x000000008000dcc8        0x0 start.o
- .data          0x000000008000dcc8        0x0 userret.o
- .data          0x000000008000dcc8        0x0 trap.o
- .data          0x000000008000dcc8        0x0 trap_c.o
- .data          0x000000008000dcc8        0x0 plic.o
- .data          0x000000008000dcc8        0x0 fs2.o
- .data          0x000000008000dcc8      0xdf0 main.o
-                0x000000008000dcc8                hello_elf
-                0x000000008000e458                hello2_elf
+ .data          0x0000000080005130        0x0 entry.o
+ .data          0x0000000080005130        0x0 start.o
+ .data          0x0000000080005130        0x0 userret.o
+ .data          0x0000000080005130        0x0 trap.o
+ .data          0x0000000080005130        0x0 trap_c.o
+ .data          0x0000000080005130        0x0 plic.o
+ .data          0x0000000080005130        0x0 fs2.o
+ .data          0x0000000080005130      0xdf0 main.o
+                0x0000000080005130                hello_elf
+                0x00000000800058c0                hello2_elf
 
-.sdata          0x000000008000eab8       0x10
+.sdata          0x0000000080005f20       0x10
  *(.sdata*)
- .sdata         0x000000008000eab8       0x10 main.o
-                0x000000008000eac0                hello_elf_len
-                0x000000008000eac4                hello2_elf_len
+ .sdata         0x0000000080005f20       0x10 main.o
+                0x0000000080005f20                hello_elf_len
+                0x0000000080005f24                hello2_elf_len
 
-.bss            0x000000008000ec00     0x98f4
+.bss            0x0000000080006000     0x10b0
  *(.bss)
- .bss           0x000000008000ec00        0x0 entry.o
- .bss           0x000000008000ec00        0x0 start.o
- .bss           0x000000008000ec00        0x0 userret.o
- .bss           0x000000008000ec00        0x0 trap.o
- .bss           0x000000008000ec00        0x0 trap_c.o
- .bss           0x000000008000ec00        0x0 plic.o
- .bss           0x000000008000ec00      0xb30 fs2.o
- .bss           0x000000008000f730     0x8d80 main.o
-                0x000000008000f730                gCPU
-                0x000000008000f848                gProc
-                0x000000008000fc48                kmem
-                0x000000008000fc68                gComeStackFrameSName
-                0x0000000080010068                gComeStackFrameSLine
-                0x0000000080010268                gComeStackFrameID
-                0x0000000080010468                gHeapPages
+ .bss           0x0000000080006000        0x0 entry.o
+ .bss           0x0000000080006000        0x0 start.o
+ .bss           0x0000000080006000        0x0 userret.o
+ .bss           0x0000000080006000        0x0 trap.o
+ .bss           0x0000000080006000        0x0 trap_c.o
+ .bss           0x0000000080006000        0x0 plic.o
+ .bss           0x0000000080006000      0xb30 fs2.o
+ .bss           0x0000000080006b30      0x560 main.o
+                0x0000000080006b30                gCPU
+                0x0000000080006c48                gProc
+                0x0000000080007048                kmem
  *(.bss.*)
  *(.sbss)
- .sbss          0x00000000800184b0       0x44 main.o
-                0x00000000800184b0                free_list
-                0x00000000800184b8                kernel_pagetable
-                0x00000000800184c0                gActiveProc
-                0x00000000800184c4                gNumProc
-                0x00000000800184c8                last_key
-                0x00000000800184cc                gNumComeStackFrame
-                0x00000000800184d0                gComeStackFrameBuffer
-                0x00000000800184d8                gAllocMem
-                0x00000000800184e0                gComeResultObject
-                0x00000000800184e8                gComeMallocLib
-                0x00000000800184e9                gComeDebugLib
-                0x00000000800184ea                gComeGCLib
-                0x00000000800184ec                gNumAlloc
-                0x00000000800184f0                gNumFree
+ .sbss          0x0000000080007090       0x20 main.o
+                0x0000000080007090                kernel_pagetable
+                0x0000000080007098                gActiveProc
+                0x000000008000709c                gNumProc
+                0x00000000800070a0                last_key
+                0x00000000800070a8                free_list
  *(.sbss.*)
                 [!provide]                        PROVIDE (_code_end = .)
-                0x000000008007c4f4                . = (. + 0x64000)
-                0x000000008007c4f4                PROVIDE (stack_top = .)
-                0x000000008007d000                . = ALIGN (0x1000)
-                0x000000008007d000                TRAPFRAME = .
-                0x000000008007e000                . = (. + 0x1000)
-                0x000000008007e000                . = ALIGN (0x1000)
-                0x000000008007e000                TRAPFRAME2 = .
-                0x000000008007f000                . = (. + 0x1000)
-                0x000000008007f000                . = ALIGN (0x1000)
+                0x000000008006b0b0                . = (. + 0x64000)
+                0x000000008006b0b0                PROVIDE (stack_top = .)
+                0x000000008006c000                . = ALIGN (0x1000)
+                0x000000008006c000                TRAPFRAME = .
+                0x000000008006d000                . = (. + 0x1000)
+                0x000000008006d000                . = ALIGN (0x1000)
+                0x000000008006d000                TRAPFRAME2 = .
+                0x000000008006e000                . = (. + 0x1000)
+                0x000000008006e000                . = ALIGN (0x1000)
                 0x0000000080020000                . = 0x80020000
                 0x0000000080020000                PROVIDE (TRAMPOLINE = .)
 
@@ -436,7 +246,7 @@ LOAD main.o
  .note.GNU-stack
                 0x0000000000000000        0x0 main.o
 
-.debug_info     0x0000000000000000     0x92e6
+.debug_info     0x0000000000000000     0x3990
  *(.debug_info)
  .debug_info    0x0000000000000000       0x2e entry.o
  .debug_info    0x000000000000002e      0x3b1 start.o
@@ -444,9 +254,9 @@ LOAD main.o
  .debug_info    0x000000000000040d      0x101 trap_c.o
  .debug_info    0x000000000000050e      0x121 plic.o
  .debug_info    0x000000000000062f      0xd06 fs2.o
- .debug_info    0x0000000000001335     0x7fb1 main.o
+ .debug_info    0x0000000000001335     0x265b main.o
 
-.debug_abbrev   0x0000000000000000      0xa7e
+.debug_abbrev   0x0000000000000000      0xb17
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000       0x14 entry.o
  .debug_abbrev  0x0000000000000014      0x149 start.o
@@ -454,9 +264,9 @@ LOAD main.o
  .debug_abbrev  0x0000000000000171       0xd6 trap_c.o
  .debug_abbrev  0x0000000000000247       0xb2 plic.o
  .debug_abbrev  0x00000000000002f9      0x31b fs2.o
- .debug_abbrev  0x0000000000000614      0x46a main.o
+ .debug_abbrev  0x0000000000000614      0x503 main.o
 
-.debug_line     0x0000000000000000     0xae2e
+.debug_line     0x0000000000000000     0x47fa
  *(.debug_line)
  .debug_line    0x0000000000000000       0x43 entry.o
  .debug_line    0x0000000000000043      0x2e3 start.o
@@ -464,33 +274,33 @@ LOAD main.o
  .debug_line    0x000000000000080e       0xa5 trap_c.o
  .debug_line    0x00000000000008b3      0x11d plic.o
  .debug_line    0x00000000000009d0      0xb9c fs2.o
- .debug_line    0x000000000000156c     0x98c2 main.o
+ .debug_line    0x000000000000156c     0x328e main.o
 
-.debug_str      0x0000000000000000     0x42b5
+.debug_str      0x0000000000000000      0xbc3
  *(.debug_str)
- .debug_str     0x0000000000000000     0x42b5 entry.o
+ .debug_str     0x0000000000000000      0xbc3 entry.o
                                          0x34 (size before relaxing)
- .debug_str     0x00000000000042b5      0x1af start.o
- .debug_str     0x00000000000042b5       0x33 trap.o
- .debug_str     0x00000000000042b5      0x14b trap_c.o
- .debug_str     0x00000000000042b5      0x116 plic.o
- .debug_str     0x00000000000042b5      0x49e fs2.o
- .debug_str     0x00000000000042b5     0x3f90 main.o
+ .debug_str     0x0000000000000bc3      0x1af start.o
+ .debug_str     0x0000000000000bc3       0x33 trap.o
+ .debug_str     0x0000000000000bc3      0x14b trap_c.o
+ .debug_str     0x0000000000000bc3      0x116 plic.o
+ .debug_str     0x0000000000000bc3      0x49e fs2.o
+ .debug_str     0x0000000000000bc3      0x8b0 main.o
 
 .debug_line_str
-                0x0000000000000000       0xb8
+                0x0000000000000000       0xdc
  *(.debug_line_str)
  .debug_line_str
-                0x0000000000000000       0xb8 start.o
+                0x0000000000000000       0xdc start.o
                                          0xba (size before relaxing)
  .debug_line_str
-                0x00000000000000b8       0xb7 trap_c.o
+                0x00000000000000dc       0xb7 trap_c.o
  .debug_line_str
-                0x00000000000000b8       0xb7 plic.o
+                0x00000000000000dc       0xb7 plic.o
  .debug_line_str
-                0x00000000000000b8       0xc3 fs2.o
+                0x00000000000000dc       0xc3 fs2.o
  .debug_line_str
-                0x00000000000000b8       0x57 main.o
+                0x00000000000000dc       0xec main.o
 OUTPUT(kernel.elf elf64-littleriscv)
 
 .debug_aranges  0x0000000000000000      0x150
@@ -509,14 +319,14 @@ OUTPUT(kernel.elf elf64-littleriscv)
  .debug_aranges
                 0x0000000000000120       0x30 main.o
 
-.debug_frame    0x0000000000000000     0x3ef8
+.debug_frame    0x0000000000000000     0x1718
  .debug_frame   0x0000000000000000      0x370 start.o
  .debug_frame   0x0000000000000370       0x70 trap_c.o
  .debug_frame   0x00000000000003e0       0xd0 plic.o
  .debug_frame   0x00000000000004b0      0x338 fs2.o
- .debug_frame   0x00000000000007e8     0x3710 main.o
+ .debug_frame   0x00000000000007e8      0xf30 main.o
 
 .debug_rnglists
-                0x0000000000000000       0x22
+                0x0000000000000000       0x38
  .debug_rnglists
-                0x0000000000000000       0x22 main.o
+                0x0000000000000000       0x38 main.o

@@ -3956,9 +3956,9 @@ void* __right_value57 = (void*)0;
 default_value_50 = (void*)0;
 default_value_58 = (void*)0;
     size_40=self->size*10;
-    keys_41=(char**)come_increment_ref_count(((char**)(__right_value53=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_40)), "./comelang.h", 2134, "char**"))));
-    items_42=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value54=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_40)), "./comelang.h", 2135, "struct sClass**"))));
-    item_existance_43=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value55=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_40)), "./comelang.h", 2136, "_Bool*"))));
+    keys_41=(char**)come_increment_ref_count(((char**)(__right_value53=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_40)), "./comelang.h", 2149, "char**"))));
+    items_42=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value54=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_40)), "./comelang.h", 2150, "struct sClass**"))));
+    item_existance_43=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value55=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_40)), "./comelang.h", 2151, "_Bool*"))));
     len_44=0;
     for(    it_47=map$2char$phsClass$ph_begin(self)    ;    !map$2char$phsClass$ph_end(self)    ;    it_47=map$2char$phsClass$ph_next(self)    ){
         memset(&default_value_50,0,sizeof(struct sClass*));
@@ -4477,9 +4477,9 @@ void* __right_value73 = (void*)0;
 default_value_97 = (void*)0;
 default_value_103 = (void*)0;
     size_87=self->size*10;
-    keys_88=(char**)come_increment_ref_count(((char**)(__right_value69=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_87)), "./comelang.h", 2134, "char**"))));
-    items_89=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value70=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(size_87)), "./comelang.h", 2135, "struct sType**"))));
-    item_existance_90=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value71=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_87)), "./comelang.h", 2136, "_Bool*"))));
+    keys_88=(char**)come_increment_ref_count(((char**)(__right_value69=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_87)), "./comelang.h", 2149, "char**"))));
+    items_89=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value70=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(size_87)), "./comelang.h", 2150, "struct sType**"))));
+    item_existance_90=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value71=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_87)), "./comelang.h", 2151, "_Bool*"))));
     len_91=0;
     for(    it_94=map$2char$phsType$ph_begin(self)    ;    !map$2char$phsType$ph_end(self)    ;    it_94=map$2char$phsType$ph_next(self)    ){
         memset(&default_value_97,0,sizeof(struct sType*));
@@ -4708,9 +4708,9 @@ void* __right_value80 = (void*)0;
 default_value_118 = (void*)0;
 default_value_124 = (void*)0;
     size_108=self->size*10;
-    keys_109=(char**)come_increment_ref_count(((char**)(__right_value76=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_108)), "./comelang.h", 2134, "char**"))));
-    items_110=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value77=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_108)), "./comelang.h", 2135, "struct buffer**"))));
-    item_existance_111=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value78=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_108)), "./comelang.h", 2136, "_Bool*"))));
+    keys_109=(char**)come_increment_ref_count(((char**)(__right_value76=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_108)), "./comelang.h", 2149, "char**"))));
+    items_110=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value77=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_108)), "./comelang.h", 2150, "struct buffer**"))));
+    item_existance_111=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value78=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_108)), "./comelang.h", 2151, "_Bool*"))));
     len_112=0;
     for(    it_115=map$2char$phbuffer$ph_begin(self)    ;    !map$2char$phbuffer$ph_end(self)    ;    it_115=map$2char$phbuffer$ph_next(self)    ){
         memset(&default_value_118,0,sizeof(struct buffer*));

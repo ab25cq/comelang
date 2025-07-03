@@ -1331,6 +1331,21 @@ impl list <T>
         
         return self;
     }
+    list<T>* remove_by_pointer(list<T>* self, T& item) {
+        int it2 = 0;
+        list_item<T>* it = self.head;
+        while(it != null) {
+            if(it == item) {
+                self.delete(it2, it2+1);
+                break;
+            }
+            it2++;
+            
+            it = it.next;
+        }
+        
+        return self;
+    }
     list<T>* delete(list<T>* self, int head, int tail)
     {
         if(head < 0) {
