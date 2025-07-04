@@ -1335,7 +1335,7 @@ impl list <T>
         int it2 = 0;
         list_item<T>* it = self.head;
         while(it != null) {
-            if(it == item) {
+            if(it->item == item) {
                 self.delete(it2, it2+1);
                 break;
             }
