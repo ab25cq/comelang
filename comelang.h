@@ -1518,6 +1518,20 @@ impl list <T>
 
         return default_value;
     }
+    immutable int find_by_pointer(list<T>* self, T& item, int default_value) {
+        int it2 = 0;
+        list_item<T>* it = self.head;
+        while(it != null) {
+            if(it.item == item) {
+                return it2;
+            }
+            it2++;
+            
+            it = it.next;
+        }
+
+        return default_value;
+    }
     immutable bool equals(list<T>* left, list<T>* right)
     {
         if(left.len != right.len) {
