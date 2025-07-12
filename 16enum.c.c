@@ -3641,9 +3641,9 @@ void* __right_value40 = (void*)0;
 default_value_55 = (void*)0;
 default_value_61 = (void*)0;
     size_45=self->size*10;
-    keys_46=(char**)come_increment_ref_count(((char**)(__right_value36=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_45)), "/usr/local/include/comelang.h", 2149, "char**"))));
-    items_47=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value37=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_45)), "/usr/local/include/comelang.h", 2150, "struct buffer**"))));
-    item_existance_48=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value38=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_45)), "/usr/local/include/comelang.h", 2151, "_Bool*"))));
+    keys_46=(char**)come_increment_ref_count(((char**)(__right_value36=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_45)), "/usr/local/include/comelang.h", 2163, "char**"))));
+    items_47=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value37=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_45)), "/usr/local/include/comelang.h", 2164, "struct buffer**"))));
+    item_existance_48=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value38=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_45)), "/usr/local/include/comelang.h", 2165, "_Bool*"))));
     len_49=0;
     for(    it_52=map$2char$phbuffer$ph_begin(self)    ;    !map$2char$phbuffer$ph_end(self)    ;    it_52=map$2char$phbuffer$ph_next(self)    ){
         memset(&default_value_55,0,sizeof(struct buffer*));
@@ -4123,13 +4123,13 @@ klass_89 = (void*)0;
             element_value_120=(struct sNode*)come_increment_ref_count(expression_v13(info));
             info->no_comma=no_comma_119;
             if(            !info->no_output_err            ) {
-                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_117,(struct tuple2$2char$phsNode$ph*)come_increment_ref_count(tuple2$2char$phsNode$ph_initialize((struct tuple2$2char$phsNode$ph**)come_increment_ref_count((struct tuple2$2char$phsNode$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsNode$ph)*(1), "16enum.c", 179, "struct tuple2$2char$phsNode$ph")),(char*)come_increment_ref_count(element_name_118),(struct sNode*)come_increment_ref_count(element_value_120))));
+                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_117,(struct tuple2$2char$phsNode$ph*)come_increment_ref_count(tuple2$2char$phsNode$ph_initialize((struct tuple2$2char$phsNode$ph*)come_increment_ref_count((struct tuple2$2char$phsNode$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsNode$ph)*(1), "16enum.c", 179, "struct tuple2$2char$phsNode$ph")),(char*)come_increment_ref_count(element_name_118),(struct sNode*)come_increment_ref_count(element_value_120))));
             }
             ((element_value_120) ? element_value_120 = come_decrement_ref_count(element_value_120, ((struct sNode*)element_value_120)->finalize, ((struct sNode*)element_value_120)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
         }
         else {
             if(            !info->no_output_err            ) {
-                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_117,(struct tuple2$2char$phvoid$p*)come_increment_ref_count(tuple2$2char$phvoid$p_initialize((struct tuple2$2char$phvoid$p**)come_increment_ref_count((struct tuple2$2char$phvoid$p*)come_calloc_v2(1, sizeof(struct tuple2$2char$phvoid$p)*(1), "16enum.c", 184, "struct tuple2$2char$phvoid$p")),(char*)come_increment_ref_count(element_name_118),((void*)0))));
+                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_117,(struct tuple2$2char$phvoid$p*)come_increment_ref_count(tuple2$2char$phvoid$p_initialize((struct tuple2$2char$phvoid$p*)come_increment_ref_count((struct tuple2$2char$phvoid$p*)come_calloc_v2(1, sizeof(struct tuple2$2char$phvoid$p)*(1), "16enum.c", 184, "struct tuple2$2char$phvoid$p")),(char*)come_increment_ref_count(element_name_118),((void*)0))));
             }
         }
         ((char*)(__right_value75=parse_struct_attribute(info)));
@@ -4350,9 +4350,9 @@ void* __right_value54 = (void*)0;
 default_value_104 = (void*)0;
 default_value_108 = (void*)0;
     size_94=self->size*10;
-    keys_95=(char**)come_increment_ref_count(((char**)(__right_value50=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_94)), "/usr/local/include/comelang.h", 2149, "char**"))));
-    items_96=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value51=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_94)), "/usr/local/include/comelang.h", 2150, "struct sClass**"))));
-    item_existance_97=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value52=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_94)), "/usr/local/include/comelang.h", 2151, "_Bool*"))));
+    keys_95=(char**)come_increment_ref_count(((char**)(__right_value50=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_94)), "/usr/local/include/comelang.h", 2163, "char**"))));
+    items_96=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value51=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_94)), "/usr/local/include/comelang.h", 2164, "struct sClass**"))));
+    item_existance_97=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value52=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_94)), "/usr/local/include/comelang.h", 2165, "_Bool*"))));
     len_98=0;
     for(    it_101=map$2char$phsClass$ph_begin(self)    ;    !map$2char$phsClass$ph_end(self)    ;    it_101=map$2char$phsClass$ph_next(self)    ){
         memset(&default_value_104,0,sizeof(struct sClass*));
@@ -5261,11 +5261,11 @@ struct sNode* __result_obj__86;
                 info->no_comma=(_Bool)1;
                 element_value_159=(struct sNode*)come_increment_ref_count(expression_v13(info));
                 info->no_comma=no_comma_158;
-                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_156,(struct tuple2$2char$phsNode$ph*)come_increment_ref_count(tuple2$2char$phsNode$ph_initialize((struct tuple2$2char$phsNode$ph**)come_increment_ref_count((struct tuple2$2char$phsNode$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsNode$ph)*(1), "16enum.c", 274, "struct tuple2$2char$phsNode$ph")),(char*)come_increment_ref_count(element_name_157),(struct sNode*)come_increment_ref_count(element_value_159))));
+                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_156,(struct tuple2$2char$phsNode$ph*)come_increment_ref_count(tuple2$2char$phsNode$ph_initialize((struct tuple2$2char$phsNode$ph*)come_increment_ref_count((struct tuple2$2char$phsNode$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsNode$ph)*(1), "16enum.c", 274, "struct tuple2$2char$phsNode$ph")),(char*)come_increment_ref_count(element_name_157),(struct sNode*)come_increment_ref_count(element_value_159))));
                 ((element_value_159) ? element_value_159 = come_decrement_ref_count(element_value_159, ((struct sNode*)element_value_159)->finalize, ((struct sNode*)element_value_159)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             }
             else {
-                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_156,(struct tuple2$2char$phvoid$p*)come_increment_ref_count(tuple2$2char$phvoid$p_initialize((struct tuple2$2char$phvoid$p**)come_increment_ref_count((struct tuple2$2char$phvoid$p*)come_calloc_v2(1, sizeof(struct tuple2$2char$phvoid$p)*(1), "16enum.c", 277, "struct tuple2$2char$phvoid$p")),(char*)come_increment_ref_count(element_name_157),((void*)0))));
+                list$1tuple2$2char$phsNode$ph$ph_push_back(elements_156,(struct tuple2$2char$phvoid$p*)come_increment_ref_count(tuple2$2char$phvoid$p_initialize((struct tuple2$2char$phvoid$p*)come_increment_ref_count((struct tuple2$2char$phvoid$p*)come_calloc_v2(1, sizeof(struct tuple2$2char$phvoid$p)*(1), "16enum.c", 277, "struct tuple2$2char$phvoid$p")),(char*)come_increment_ref_count(element_name_157),((void*)0))));
             }
             ((char*)(__right_value147=parse_struct_attribute(info)));
             (__right_value147 = come_decrement_ref_count(__right_value147, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));

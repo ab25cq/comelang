@@ -3303,9 +3303,9 @@ void* __right_value10 = (void*)0;
 default_value_35 = (void*)0;
 default_value_41 = (void*)0;
     size_25=self->size*10;
-    keys_26=(char**)come_increment_ref_count(((char**)(__right_value6=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_25)), "/usr/local/include/comelang.h", 2149, "char**"))));
-    items_27=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value7=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_25)), "/usr/local/include/comelang.h", 2150, "struct buffer**"))));
-    item_existance_28=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value8=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_25)), "/usr/local/include/comelang.h", 2151, "_Bool*"))));
+    keys_26=(char**)come_increment_ref_count(((char**)(__right_value6=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_25)), "/usr/local/include/comelang.h", 2163, "char**"))));
+    items_27=(struct buffer**)come_increment_ref_count(((struct buffer**)(__right_value7=(struct buffer**)come_calloc_v2(1, sizeof(struct buffer*)*(1*(size_25)), "/usr/local/include/comelang.h", 2164, "struct buffer**"))));
+    item_existance_28=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value8=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_25)), "/usr/local/include/comelang.h", 2165, "_Bool*"))));
     len_29=0;
     for(    it_32=map$2char$phbuffer$ph_begin(self)    ;    !map$2char$phbuffer$ph_end(self)    ;    it_32=map$2char$phbuffer$ph_next(self)    ){
         memset(&default_value_35,0,sizeof(struct buffer*));
@@ -3797,7 +3797,7 @@ _Bool __result_obj__76;
             name_110=(char*)come_increment_ref_count(multiple_assign_var3->v1);
             type_111=(struct sType*)come_increment_ref_count(multiple_assign_var3->v2);
             new_type_112=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(type_111),(struct sType*)come_increment_ref_count(generics_type),info));
-            list$1tuple2$2char$phsType$ph$ph_push_back(new_class_106->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 102, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count((char*)come_memdup(name_110, "14struct.c", 102, "char*")),(struct sType*)come_increment_ref_count(sType_clone(new_type_112)))));
+            list$1tuple2$2char$phsType$ph$ph_push_back(new_class_106->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 102, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count((char*)come_memdup(name_110, "14struct.c", 102, "char*")),(struct sType*)come_increment_ref_count(sType_clone(new_type_112)))));
             (name_110 = come_decrement_ref_count(name_110, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             come_call_finalizer(sType_finalize, type_111, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             come_call_finalizer(sType_finalize, new_type_112, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -4058,9 +4058,9 @@ void* __right_value29 = (void*)0;
 default_value_95 = (void*)0;
 default_value_101 = (void*)0;
     size_85=self->size*10;
-    keys_86=(char**)come_increment_ref_count(((char**)(__right_value25=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_85)), "/usr/local/include/comelang.h", 2149, "char**"))));
-    items_87=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value26=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_85)), "/usr/local/include/comelang.h", 2150, "struct sClass**"))));
-    item_existance_88=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value27=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_85)), "/usr/local/include/comelang.h", 2151, "_Bool*"))));
+    keys_86=(char**)come_increment_ref_count(((char**)(__right_value25=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_85)), "/usr/local/include/comelang.h", 2163, "char**"))));
+    items_87=(struct sClass**)come_increment_ref_count(((struct sClass**)(__right_value26=(struct sClass**)come_calloc_v2(1, sizeof(struct sClass*)*(1*(size_85)), "/usr/local/include/comelang.h", 2164, "struct sClass**"))));
+    item_existance_88=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value27=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_85)), "/usr/local/include/comelang.h", 2165, "_Bool*"))));
     len_89=0;
     for(    it_92=map$2char$phsClass$ph_begin(self)    ;    !map$2char$phsClass$ph_end(self)    ;    it_92=map$2char$phsClass$ph_next(self)    ){
         memset(&default_value_95,0,sizeof(struct sClass*));
@@ -5554,9 +5554,9 @@ void* __right_value136 = (void*)0;
 default_value_171 = (void*)0;
 default_value_175 = (void*)0;
     size_161=self->size*10;
-    keys_162=(char**)come_increment_ref_count(((char**)(__right_value132=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_161)), "/usr/local/include/comelang.h", 2149, "char**"))));
-    items_163=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value133=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(size_161)), "/usr/local/include/comelang.h", 2150, "struct sType**"))));
-    item_existance_164=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value134=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_161)), "/usr/local/include/comelang.h", 2151, "_Bool*"))));
+    keys_162=(char**)come_increment_ref_count(((char**)(__right_value132=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_161)), "/usr/local/include/comelang.h", 2163, "char**"))));
+    items_163=(struct sType**)come_increment_ref_count(((struct sType**)(__right_value133=(struct sType**)come_calloc_v2(1, sizeof(struct sType*)*(1*(size_161)), "/usr/local/include/comelang.h", 2164, "struct sType**"))));
+    item_existance_164=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value134=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_161)), "/usr/local/include/comelang.h", 2165, "_Bool*"))));
     len_165=0;
     for(    it_168=map$2char$phsType$ph_begin(self)    ;    !map$2char$phsType$ph_end(self)    ;    it_168=map$2char$phsType$ph_next(self)    ){
         memset(&default_value_171,0,sizeof(struct sType*));
@@ -5854,7 +5854,7 @@ klass_187 = (void*)0;
             type2_203=(struct sType*)come_increment_ref_count(multiple_assign_var6->v1);
             name2_204=(char*)come_increment_ref_count(multiple_assign_var6->v2);
             come_call_finalizer(tuple2$2sType$phchar$ph$p_finalize, __right_value155, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-            list$1tuple2$2char$phsType$ph$ph_push_back(klass_187->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 343, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_204),(struct sType*)come_increment_ref_count(type2_203))));
+            list$1tuple2$2char$phsType$ph$ph_push_back(klass_187->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 343, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_204),(struct sType*)come_increment_ref_count(type2_203))));
             while(            *info->p==44            ) {
                 info->p++;
                 skip_spaces_and_lf(info);
@@ -5862,7 +5862,7 @@ klass_187 = (void*)0;
                 type2_205=(struct sType*)come_increment_ref_count(multiple_assign_var7->v1);
                 name2_206=(char*)come_increment_ref_count(multiple_assign_var7->v2);
                 come_call_finalizer(tuple2$2sType$phchar$ph$p_finalize, __right_value158, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-                list$1tuple2$2char$phsType$ph$ph_push_back(klass_187->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 351, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_206),(struct sType*)come_increment_ref_count(type2_205))));
+                list$1tuple2$2char$phsType$ph$ph_push_back(klass_187->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 351, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_206),(struct sType*)come_increment_ref_count(type2_205))));
                 come_call_finalizer(sType_finalize, type2_205, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                 (name2_206 = come_decrement_ref_count(name2_206, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             }
@@ -5882,7 +5882,7 @@ klass_187 = (void*)0;
                 printf("%s %d: parse_type failed\n",info->sname,info->sline);
                 exit(2);
             }
-            list$1tuple2$2char$phsType$ph$ph_push_back(klass_187->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 362, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_208),(struct sType*)come_increment_ref_count(type2_207))));
+            list$1tuple2$2char$phsType$ph$ph_push_back(klass_187->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 362, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_208),(struct sType*)come_increment_ref_count(type2_207))));
             come_call_finalizer(sType_finalize, type2_207, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (name_208 = come_decrement_ref_count(name_208, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
         }
@@ -6519,7 +6519,7 @@ struct_class_239 = (void*)0;
                     exit(2);
                 }
                 if(                *info->p==44                ) {
-                    list$1tuple2$2char$phsType$ph$ph_push_back(generics_class_228->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 528, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_230),(struct sType*)come_increment_ref_count(type2_229))));
+                    list$1tuple2$2char$phsType$ph$ph_push_back(generics_class_228->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 528, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_230),(struct sType*)come_increment_ref_count(type2_229))));
                     while(                    *info->p==44                    ) {
                         info->p++;
                         skip_spaces_and_lf(info);
@@ -6537,13 +6537,13 @@ struct_class_239 = (void*)0;
                             (__dec_obj64 ? __dec_obj64 = come_decrement_ref_count(__dec_obj64, ((struct sNode*)__dec_obj64)->finalize, ((struct sNode*)__dec_obj64)->_protocol_obj, 0 /* no_decrement */,0/* no_free */, (void*)0) :0);
                             ((node_235) ? node_235 = come_decrement_ref_count(node_235, ((struct sNode*)node_235)->finalize, ((struct sNode*)node_235)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
                         }
-                        list$1tuple2$2char$phsType$ph$ph_push_back(generics_class_228->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 550, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_232),(struct sType*)come_increment_ref_count(type3_233))));
+                        list$1tuple2$2char$phsType$ph$ph_push_back(generics_class_228->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 550, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_232),(struct sType*)come_increment_ref_count(type3_233))));
                         (name2_232 = come_decrement_ref_count(name2_232, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
                         come_call_finalizer(sType_finalize, type3_233, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                     }
                 }
                 else {
-                    list$1tuple2$2char$phsType$ph$ph_push_back(generics_class_228->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 554, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_230),(struct sType*)come_increment_ref_count(type2_229))));
+                    list$1tuple2$2char$phsType$ph$ph_push_back(generics_class_228->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 554, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_230),(struct sType*)come_increment_ref_count(type2_229))));
                 }
                 if(                *info->p==59                ) {
                     info->p++;
@@ -6670,7 +6670,7 @@ struct_class_239 = (void*)0;
                     type2_253=(struct sType*)come_increment_ref_count(multiple_assign_var12->v1);
                     name2_254=(char*)come_increment_ref_count(multiple_assign_var12->v2);
                     come_call_finalizer(tuple2$2sType$phchar$ph$p_finalize, __right_value252, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-                    list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_239->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 652, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_254),(struct sType*)come_increment_ref_count(type2_253))));
+                    list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_239->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 652, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_254),(struct sType*)come_increment_ref_count(type2_253))));
                     while(                    *info->p==44                    ) {
                         info->p++;
                         skip_spaces_and_lf(info);
@@ -6678,7 +6678,7 @@ struct_class_239 = (void*)0;
                         type2_255=(struct sType*)come_increment_ref_count(multiple_assign_var13->v1);
                         name2_256=(char*)come_increment_ref_count(multiple_assign_var13->v2);
                         come_call_finalizer(tuple2$2sType$phchar$ph$p_finalize, __right_value255, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-                        list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_239->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 660, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_256),(struct sType*)come_increment_ref_count(type2_255))));
+                        list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_239->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 660, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_256),(struct sType*)come_increment_ref_count(type2_255))));
                         come_call_finalizer(sType_finalize, type2_255, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                         (name2_256 = come_decrement_ref_count(name2_256, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
                     }
@@ -6697,7 +6697,7 @@ struct_class_239 = (void*)0;
                         printf("%s %d: parse_type failed\n",info->sname,info->sline);
                         exit(2);
                     }
-                    list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_239->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 670, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_258),(struct sType*)come_increment_ref_count(type2_257))));
+                    list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_239->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 670, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_258),(struct sType*)come_increment_ref_count(type2_257))));
                     come_call_finalizer(sType_finalize, type2_257, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                     (name_258 = come_decrement_ref_count(name_258, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
                 }
@@ -6983,7 +6983,7 @@ struct_class_239 = (void*)0;
                 type2_323=(struct sType*)come_increment_ref_count(multiple_assign_var18->v1);
                 name2_324=(char*)come_increment_ref_count(multiple_assign_var18->v2);
                 come_call_finalizer(tuple2$2sType$phchar$ph$p_finalize, __right_value318, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-                list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_277->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 915, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_324),(struct sType*)come_increment_ref_count(type2_323))));
+                list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_277->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 915, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_324),(struct sType*)come_increment_ref_count(type2_323))));
                 while(                *info->p==44                ) {
                     info->p++;
                     skip_spaces_and_lf(info);
@@ -6991,7 +6991,7 @@ struct_class_239 = (void*)0;
                     type2_325=(struct sType*)come_increment_ref_count(multiple_assign_var19->v1);
                     name2_326=(char*)come_increment_ref_count(multiple_assign_var19->v2);
                     come_call_finalizer(tuple2$2sType$phchar$ph$p_finalize, __right_value321, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-                    list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_277->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 923, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_326),(struct sType*)come_increment_ref_count(type2_325))));
+                    list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_277->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 923, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name2_326),(struct sType*)come_increment_ref_count(type2_325))));
                     come_call_finalizer(sType_finalize, type2_325, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                     (name2_326 = come_decrement_ref_count(name2_326, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
                 }
@@ -7096,7 +7096,7 @@ struct_class_239 = (void*)0;
                     printf("%s %d: parse_type failed\n",info->sname,info->sline);
                     exit(2);
                 }
-                list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_277->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph**)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 1005, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_373),(struct sType*)come_increment_ref_count(type2_372))));
+                list$1tuple2$2char$phsType$ph$ph_push_back(struct_class_277->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "14struct.c", 1005, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(name_373),(struct sType*)come_increment_ref_count(type2_372))));
                 if(                *info->p==59                ) {
                     info->p++;
                     skip_spaces_and_lf(info);
@@ -7273,7 +7273,7 @@ void* __right_value297 = (void*)0;
 struct list$1sClass$p* result_279;
 struct list_item$1sClass$p* it_280;
 struct list$1sClass$p* __result_obj__131;
-    result_279=(struct list$1sClass$p*)come_increment_ref_count(list$1sClass$p_initialize((struct list$1sClass$p*)come_increment_ref_count((struct list$1sClass$p*)come_calloc_v2(1, sizeof(struct list$1sClass$p)*(1), "/usr/local/include/comelang.h", 1789, "struct list$1sClass$p*"))));
+    result_279=(struct list$1sClass$p*)come_increment_ref_count(list$1sClass$p_initialize((struct list$1sClass$p*)come_increment_ref_count((struct list$1sClass$p*)come_calloc_v2(1, sizeof(struct list$1sClass$p)*(1), "/usr/local/include/comelang.h", 1803, "struct list$1sClass$p*"))));
     it_280=self->tail;
     while(    it_280!=((void*)0)    ) {
         list$1sClass$p_push_back(result_279,it_280->item);
@@ -7561,16 +7561,16 @@ void* __right_value345 = (void*)0;
 void* __right_value346 = (void*)0;
 struct list$1char$ph* __dec_obj85;
 struct map$2char$phchar$ph* __result_obj__148;
-    self->keys=(char**)come_increment_ref_count(((char**)(__right_value342=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 1910, "char**"))));
-    self->items=(char**)come_increment_ref_count(((char**)(__right_value343=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 1911, "char**"))));
-    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value344=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 1912, "_Bool*"))));
+    self->keys=(char**)come_increment_ref_count(((char**)(__right_value342=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 1924, "char**"))));
+    self->items=(char**)come_increment_ref_count(((char**)(__right_value343=(char**)come_calloc_v2(1, sizeof(char*)*(1*(128)), "/usr/local/include/comelang.h", 1925, "char**"))));
+    self->item_existance=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value344=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(128)), "/usr/local/include/comelang.h", 1926, "_Bool*"))));
     for(    i_337=0    ;    i_337<128    ;    i_337++    ){
         self->item_existance[i_337]=(_Bool)0;
     }
     self->size=128;
     self->len=0;
     __dec_obj85=self->key_list,
-    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 1922, "struct list$1char$p*"))));
+    self->key_list=(struct list$1char$p*)come_increment_ref_count(list$1char$p_initialize((struct list$1char$p*)come_increment_ref_count((struct list$1char$p*)come_calloc_v2(1, sizeof(struct list$1char$p)*(1), "/usr/local/include/comelang.h", 1936, "struct list$1char$p*"))));
     come_call_finalizer(list$1char$ph_finalize, __dec_obj85,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     self->it=0;
     __result_obj__148 = (struct map$2char$phchar$ph*)come_increment_ref_count(self);
@@ -7728,9 +7728,9 @@ void* __right_value353 = (void*)0;
 default_value_355 = (void*)0;
 default_value_361 = (void*)0;
     size_345=self->size*10;
-    keys_346=(char**)come_increment_ref_count(((char**)(__right_value349=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_345)), "/usr/local/include/comelang.h", 2149, "char**"))));
-    items_347=(char**)come_increment_ref_count(((char**)(__right_value350=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_345)), "/usr/local/include/comelang.h", 2150, "char**"))));
-    item_existance_348=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value351=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_345)), "/usr/local/include/comelang.h", 2151, "_Bool*"))));
+    keys_346=(char**)come_increment_ref_count(((char**)(__right_value349=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_345)), "/usr/local/include/comelang.h", 2163, "char**"))));
+    items_347=(char**)come_increment_ref_count(((char**)(__right_value350=(char**)come_calloc_v2(1, sizeof(char*)*(1*(size_345)), "/usr/local/include/comelang.h", 2164, "char**"))));
+    item_existance_348=(_Bool*)come_increment_ref_count(((_Bool*)(__right_value351=(_Bool*)come_calloc_v2(1, sizeof(_Bool)*(1*(size_345)), "/usr/local/include/comelang.h", 2165, "_Bool*"))));
     len_349=0;
     for(    it_352=map$2char$phchar$ph_begin(self)    ;    !map$2char$phchar$ph_end(self)    ;    it_352=map$2char$phchar$ph_next(self)    ){
         memset(&default_value_355,0,sizeof(char*));

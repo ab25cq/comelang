@@ -575,7 +575,7 @@ class sTupleNode extends sNodeBase
         type3->mHeap = true;
         type2->mHeap = true;
         obj_value.type = clone type2;
-        obj_value.type->mPointerNum ++;
+//        obj_value.type->mPointerNum ++;
         obj_value.var = null;
         
         append_object_to_right_values(obj_value, type3 ,info);
