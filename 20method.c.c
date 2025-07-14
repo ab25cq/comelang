@@ -5623,7 +5623,7 @@ _Bool __result_obj__136;
                 __dec_obj68=come_value_257->type,
                 come_value_257->type=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(come_value_257->type),(struct sType*)come_increment_ref_count(info->generics_type),info));
                 come_call_finalizer(sType_finalize, __dec_obj68,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
-                check_assign_type(((char*)(__right_value231=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value229=string_to_string(fun_name_142))),((char*)(__right_value230=int_to_string(i_251)))))),((struct sType*)(__right_value232=list$1sType$ph_operator_load_element(lambda_type_240->mParamTypes,i_251-1))),come_value_257->type,come_value_257,(_Bool)0,(_Bool)1,(_Bool)1,info);
+                check_assign_type(((char*)(__right_value231=xsprintf("(a). \%s param num \%s is assinged to",((char*)(__right_value229=string_to_string(fun_name_142))),((char*)(__right_value230=int_to_string(i_251)))))),((struct sType*)(__right_value232=list$1sType$ph_operator_load_element(lambda_type_240->mParamTypes,i_251-1))),come_value_257->type,come_value_257,(_Bool)0,(_Bool)1,(_Bool)1,info);
                 (__right_value229 = come_decrement_ref_count(__right_value229, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__right_value230 = come_decrement_ref_count(__right_value230, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__right_value231 = come_decrement_ref_count(__right_value231, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -5823,7 +5823,7 @@ _Bool __result_obj__136;
                 come_call_finalizer(sType_finalize, __dec_obj77,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
                 if(                (_condtional_value_X5=(((struct sType*)(__right_value263=list$1sType$ph_operator_load_element(param_types_272,n_294))))),                come_call_finalizer(sType_finalize, __right_value263, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0),
                 _condtional_value_X5                ) {
-                    check_assign_type(((char*)(__right_value266=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value264=string_to_string(fun_name_142))),((char*)(__right_value265=int_to_string(n_294)))))),((struct sType*)(__right_value267=list$1sType$ph_operator_load_element(type_checking_param_types_278,n_294))),come_value_302->type,come_value_302,(_Bool)0,(_Bool)1,(_Bool)1,info);
+                    check_assign_type(((char*)(__right_value266=xsprintf("(b). \%s param num \%s is assinged to",((char*)(__right_value264=string_to_string(fun_name_142))),((char*)(__right_value265=int_to_string(n_294)))))),((struct sType*)(__right_value267=list$1sType$ph_operator_load_element(type_checking_param_types_278,n_294))),come_value_302->type,come_value_302,(_Bool)0,(_Bool)1,(_Bool)1,info);
                     (__right_value264 = come_decrement_ref_count(__right_value264, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                     (__right_value265 = come_decrement_ref_count(__right_value265, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                     (__right_value266 = come_decrement_ref_count(__right_value266, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -5848,7 +5848,7 @@ _Bool __result_obj__136;
             label_311=(char*)come_increment_ref_count(multiple_assign_var14->v1);
             node_312=(struct sNode*)come_increment_ref_count(multiple_assign_var14->v2);
             if(            i_308==0            ) {
-                check_assign_type(((char*)(__right_value273=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value271=string_to_string(fun_name_142))),((char*)(__right_value272=int_to_string(i_308)))))),((struct sType*)(__right_value274=list$1sType$ph_operator_load_element(type_checking_param_types_278,i_308))),obj_value_152->type,obj_value_152,(_Bool)0,(_Bool)1,(_Bool)1,info);
+                check_assign_type(((char*)(__right_value273=xsprintf("(c). \%s param num \%s is assinged to",((char*)(__right_value271=string_to_string(fun_name_142))),((char*)(__right_value272=int_to_string(i_308)))))),((struct sType*)(__right_value274=list$1sType$ph_operator_load_element(type_checking_param_types_278,i_308))),obj_value_152->type,obj_value_152,(_Bool)0,(_Bool)1,(_Bool)1,info);
                 (__right_value271 = come_decrement_ref_count(__right_value271, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__right_value272 = come_decrement_ref_count(__right_value272, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__right_value273 = come_decrement_ref_count(__right_value273, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -5924,7 +5924,7 @@ _Bool __result_obj__136;
                 come_call_finalizer(sType_finalize, __dec_obj79,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
                 if(                (_condtional_value_X10=(((struct sType*)(__right_value283=list$1sType$ph_operator_load_element(param_types_272,i_308))))),                come_call_finalizer(sType_finalize, __right_value283, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0),
                 _condtional_value_X10                ) {
-                    check_assign_type(((char*)(__right_value286=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value284=string_to_string(fun_name_142))),((char*)(__right_value285=int_to_string(i_308)))))),((struct sType*)(__right_value287=list$1sType$ph_operator_load_element(type_checking_param_types_278,i_308))),come_value_320->type,come_value_320,(_Bool)0,(_Bool)1,(_Bool)1,info);
+                    check_assign_type(((char*)(__right_value286=xsprintf("(d). \%s param num \%s is assinged to",((char*)(__right_value284=string_to_string(fun_name_142))),((char*)(__right_value285=int_to_string(i_308)))))),((struct sType*)(__right_value287=list$1sType$ph_operator_load_element(type_checking_param_types_278,i_308))),come_value_320->type,come_value_320,(_Bool)0,(_Bool)1,(_Bool)1,info);
                     (__right_value284 = come_decrement_ref_count(__right_value284, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                     (__right_value285 = come_decrement_ref_count(__right_value285, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                     (__right_value286 = come_decrement_ref_count(__right_value286, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -6005,7 +6005,7 @@ _Bool __result_obj__136;
                     come_call_finalizer(sType_finalize, __dec_obj82,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
                     if(                    (_condtional_value_X14=(((struct sType*)(__right_value300=list$1sType$ph_operator_load_element(param_types_272,i_308))))),                    come_call_finalizer(sType_finalize, __right_value300, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0),
                     _condtional_value_X14                    ) {
-                        check_assign_type(((char*)(__right_value303=xsprintf("\%s param num \%s is assinged to",((char*)(__right_value301=string_to_string(fun_name_142))),((char*)(__right_value302=int_to_string(i_308)))))),((struct sType*)(__right_value304=list$1sType$ph_operator_load_element(type_checking_param_types_278,i_308))),come_value_329->type,come_value_329,(_Bool)0,(_Bool)1,(_Bool)1,info);
+                        check_assign_type(((char*)(__right_value303=xsprintf("(e). \%s param num \%s is assinged to",((char*)(__right_value301=string_to_string(fun_name_142))),((char*)(__right_value302=int_to_string(i_308)))))),((struct sType*)(__right_value304=list$1sType$ph_operator_load_element(type_checking_param_types_278,i_308))),come_value_329->type,come_value_329,(_Bool)0,(_Bool)1,(_Bool)1,info);
                         (__right_value301 = come_decrement_ref_count(__right_value301, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                         (__right_value302 = come_decrement_ref_count(__right_value302, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
                         (__right_value303 = come_decrement_ref_count(__right_value303, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
