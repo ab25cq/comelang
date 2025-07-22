@@ -855,6 +855,7 @@ module MEvalOptions<T, T2>
             output_object_file_flag = false;
             gComeOriginalSourcePosition = false;
             CC="gcc";
+            gComeBareMetal = true;
             cpp_option.append_format(s" -D__BARE_METAL__ ");
             clang_option.append_str(s" -nostdlib -ffreestanding ");
         }

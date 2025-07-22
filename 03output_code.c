@@ -142,11 +142,9 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         //buf.append_str(")");
     }
     
-/*
-    if(type->mAttribute) {
+    if(type->mAttribute && gComeBareMetal) {
         buf.append_str(" " + type->mAttribute);
     }
-*/
     
     return buf.to_string();
 }
@@ -494,11 +492,9 @@ string output_function(sFun* fun, sInfo* info)
         
         string str = make_lambda_type_name_string(fun->mResultType, output2.to_string(), info);
         
-/*
-        if(fun->mAttribute !== "") {
+        if(fun->mAttribute !== "" && gComeBareMetal) {
             output.append_str(s"\{fun->mAttribute} ");
         }
-*/
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -510,14 +506,12 @@ string output_function(sFun* fun, sInfo* info)
         
         info.module.mSourceHead.append_str(output.to_string());
         // when declaring outputs function attribute
-        /*
-        if(fun->mFunAttribute !== "") {
+        if(fun->mFunAttribute !== "" && gComeBareMetal) {
             info.module.mSourceHead.append_str(s" \{fun->mFunAttribute};\n");
         }
         else {
-        */
             info.module.mSourceHead.append_str(";\n");
-        //}
+        }
     }
     else if(fun->mResultType->mArrayNum.length() > 0) {
         sType*% base_result_type = fun->mResultType;
@@ -525,11 +519,9 @@ string output_function(sFun* fun, sInfo* info)
         
         string result_type_str = make_type_name_string(base_result_type, no_static:true);
         
-/*
-        if(fun->mAttribute !== "") {
+        if(fun->mAttribute !== "" && gComeBareMetal) {
             output.append_str(s"\{fun->mAttribute} ");
         }
-*/
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -573,23 +565,19 @@ string output_function(sFun* fun, sInfo* info)
         output.append_format("))[%s]", cvalue.c_value);
         
         info.module.mSourceHead.append_str(output.to_string());
-        /*
-        if(fun->mFunAttribute !== "") {
+        if(fun->mFunAttribute !== "" && gComeBareMetal) {
             info.module.mSourceHead.append_str(s" \{fun->mFunAttribute};\n");
         }
         else {
-        */
             info.module.mSourceHead.append_str(";\n");
-        //}
+        }
     }
     else {
         string result_type_str = make_type_name_string(fun->mResultType, no_static:true);
         
-/*
-        if(fun->mAttribute !== "") {
+        if(fun->mAttribute !== "" && gComeBareMetal) {
             output.append_str(s"\{fun->mAttribute} ");
         }
-*/
         if(fun->mStatic) {
             output.append_str("static ");
         }
@@ -624,14 +612,12 @@ string output_function(sFun* fun, sInfo* info)
         output.append_str(")");
         
         info.module.mSourceHead.append_str(output.to_string());
-        /*
-        if(fun->mFunAttribute !== "") {
+        if(fun->mFunAttribute !== "" && gComeBareMetal) {
             info.module.mSourceHead.append_str(s" \{fun->mFunAttribute};\n");
         }
         else {
-        */
             info.module.mSourceHead.append_str(";\n");
-        //}
+        }
     }
     
     output.append_str("{\n");
@@ -678,11 +664,10 @@ string header_function(sFun* fun, sInfo* info)
             output.append_str("inline ");
         }
         output.append_str(str);
-/*
-        if(fun->mFunAttribute !== "") {
+        
+        if(fun->mFunAttribute !== "" && gComeBareMetal) {
             output.append_str(s" \{fun->mFunAttribute} ");
         }
-*/
         
         output.append_str(";\n");
     }
@@ -731,7 +716,7 @@ string header_function(sFun* fun, sInfo* info)
         CVALUE*% cvalue = get_value_from_stack(-1, info);
         
         output.append_format("))[%s]", cvalue.c_value);
-        if(fun->mAttribute !== "") {
+        if(fun->mAttribute !== "" && gComeBareMetal) {
             output.append_str(s"\{fun->mAttribute} ");
         }
         output.append_format(";\n");
@@ -770,14 +755,12 @@ string header_function(sFun* fun, sInfo* info)
             i++;
         }
         
-/*
-        if(fun->mFunAttribute !== "") {
+        if(fun->mFunAttribute !== "" && gComeBareMetal) {
             output.append_str(s") \{fun->mFunAttribute};\n");
         }
         else {
-*/
             output.append_str(");\n");
-//        }
+        }
     }
     
     return output.to_string();
