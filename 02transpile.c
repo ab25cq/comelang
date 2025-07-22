@@ -479,7 +479,7 @@ bool new_project(int argc, char** argv)
     string libs = string("-lpcre");
     string os = string("linux");
     string prefix = string("/usr/local/");
-    string cflags = string(" -common-header -O2 ");
+    string cflags = string(" -common-header -O2 -std=c99 ");
     string cflags_debug = string(" -common-header -gdwarf-4 -cg -g ");
     
     system(s"mkdir \{project_name}").less {
@@ -799,6 +799,7 @@ void create_pico_version_header()
 module MEvalOptions<T, T2>
 {
     var clang_option = new buffer();
+    clang_option.append_str(" -std=c99 ");
     var linker_option = new buffer();
     var cpp_option = new buffer();
     cpp_option.append_str("-U__GNUC__");
