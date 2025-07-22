@@ -19,6 +19,9 @@ then
 elif uname -a | grep raspberry
 then
     sudo apt install clang gcc libpcre3-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmariadb-dev-compat libmariadb-dev mariadb-server mariadb-client libdwarf-dev libelf-dev libc6-dev
+elif which pacman > /dev/null
+then
+    sudo pacman -Syu make valgrind pcre
 elif which apt > /dev/null
 then
     sudo apt install  clang gcc libpcre3-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmysqlclient-dev mysql-server libdwarf-dev libelf-dev libc6-dev
