@@ -51,6 +51,9 @@ using C
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+
+#undef va_start
+#define va_start(ap, last) __builtin_va_start(ap, last)
 #include <limits.h>
 #include <locale.h>
 #include <errno.h>
