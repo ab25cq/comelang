@@ -24,7 +24,7 @@ extern char _end[];   // heap start
 static char* heap_end = 0;
 static char* heap_limit = (char*)0x88000000;
 
-void* sbrk(ptrdiff_t incr) {
+uniq void* sbrk(ptrdiff_t incr) {
     if (heap_end == 0)
         heap_end = (char*)&_end;
 
@@ -42,7 +42,7 @@ typedef struct mem_block {
     struct mem_block *next;
 } mem_block_t;
 
-mem_block_t *free_list = NULL;
+uniq mem_block_t *free_list = NULL;
 
 uniq void *malloc(size_t size) {
     if (size == 0) {

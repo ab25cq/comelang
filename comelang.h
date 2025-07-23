@@ -18,28 +18,15 @@
 #define COME_STACKFRAME_MAX 16
 #define COME_STACKFRAME_MAX_GLOBAL 128
 
+#define nullptr ((void*)0)
+typedef char*% string;
+
 
 ///////////////////////////////////////////////////////////////////////////
-// PICO 
+// BARE METAL 
 ///////////////////////////////////////////////////////////////////////////
 #ifdef __BARE_METAL__
-
-using comelang;
-
-typedef void*% any;
-typedef char*% string;
-
 #include <comelang-baremetal.h>
-
-#elif __PICO__
-
-using comelang;
-
-typedef void*% any;
-typedef char*% string;
-
-#include <comelang-baremetal.h>
-
 #else
 
 ///////////////////////////////////////////////////////////////////////////
@@ -51,7 +38,6 @@ using C
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-
 #undef va_start
 #define va_start(ap, last) __builtin_va_start(ap, last)
 #include <limits.h>
@@ -63,9 +49,6 @@ using C
 }
 
 using comelang;
-
-typedef void*% any;
-typedef char*% string;
 
 #endif
 

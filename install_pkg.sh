@@ -22,6 +22,9 @@ then
 elif which pacman > /dev/null
 then
     sudo pacman -Syu make valgrind pcre
+elif which dnf > /dev/null
+then
+    sudo dnf install make valgrind pcre-devel readline-devel ncurses-devel
 elif which apt > /dev/null
 then
     sudo apt install  clang gcc libpcre3-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmysqlclient-dev mysql-server libdwarf-dev libelf-dev libc6-dev
