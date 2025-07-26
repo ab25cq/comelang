@@ -759,6 +759,7 @@ class sLoadArrayNode extends sNodeBase
                     for(int i=0; i<n; i++) {
                         result_type.mArrayNum.delete(-1, -1);
                     }
+                    result_type.mPointerNum++;
                 }
                 else if(n < 0) {
                     result_type.mArrayNum.reset();

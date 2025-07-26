@@ -1,16 +1,10 @@
 #include <comelang.h>
 
-struct aaa {
-    map<void*, tuple2<void*, long>*%>*% m;
-};
-
 int main(int argc, char** argv)
 {
-    aaa X;
+    int a[16][16];
     
-    X.m = new map<void*, tuple2<void*, long>*%>();
-    
-    X.m.insert((void*)1, ((void*)1, (long)1));
+    int* b = a[7];
     
     return 0;
 }
