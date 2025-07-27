@@ -249,6 +249,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         if(left_type2->mPointerNum > 0 && right_type->mPointerNum == 0) {
             if(left_type2->mClass->mName === "lambda") {
             }
+            else if(right_type->mArrayNum.length() > 0) {
+            }
             else if(print_err_msg) {
                 printf("%s %d %s\n", info->sname, info->sline, msg);
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
