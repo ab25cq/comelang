@@ -1012,6 +1012,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool tuple_ = false;
     bool immutable_ = false;
     bool task_ = false;
+    bool original_var_name = false;
     
     sNode*% alignas_ = null;
     
