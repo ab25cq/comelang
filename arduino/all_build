@@ -1,8 +1,0 @@
-#avr-gcc -mmcu=atmega328p -O0 -o program.elf led.c
-avr-gcc -mmcu=atmega328p -DF_CPU=16000000UL -Os -o program.elf led.c
-#avr-as -mmcu=atmega328p -o program.o led.s
-#avr-ld -o program.elf program.o
-avr-objcopy -O ihex -R .eeprom program.elf program.hex
-avrdude -c arduino -p atmega328p -P /dev/tty.usbmodem101 -b 115200 -U flash:w:program.hex:i
-screen /dev/tty.usbmodem101 9600
-

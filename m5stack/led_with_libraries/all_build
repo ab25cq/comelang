@@ -1,6 +1,0 @@
-source /Users/ab25cq/esp-idf/export.sh
-
-idf.py set-target esp32
-idf.py build
-idf.py -p /dev/tty.usb* flash
-

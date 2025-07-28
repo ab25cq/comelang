@@ -1,5 +1,0 @@
-xtensa-esp32-elf-gcc -o main.o main.c
-esptool.py --chip esp32 elf2image main.o
-#esptool.py --chip esp32 load_ram *.bin
-
-esptool.py --chip esp32 --port /dev/tty.usbserial-* --baud 115200 write_flash 0x1000 main.bin

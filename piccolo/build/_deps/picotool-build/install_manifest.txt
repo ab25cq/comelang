@@ -1,5 +1,0 @@
-/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool/picotool
-/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool/picotoolTargets.cmake
-/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool/picotoolTargets-release.cmake
-/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool/picotoolConfig.cmake
-/Users/ab25cq/comelang/piccolo_os/build/_deps/picotool/picotoolConfigVersion.cmake

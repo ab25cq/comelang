@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libelf2uf2.a CMakeFiles/elf2uf2.dir/elf2uf2.cpp.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib libelf2uf2.a
