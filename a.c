@@ -3,15 +3,11 @@
 int main(int argc, char** argv)
 {
     int c = 1;
-output {
-    long x;
-    asm volatile("csrr %0, time" : "=r" (x) );
-    guho
-}
+    int a[3][3] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     
-//    int** b = a[2] + 1;
+    int** b = a[2] + 1;
     
-//    printf("%d\n", *b);
+    printf("%d\n", *b);
     
     return 0;
 }
