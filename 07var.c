@@ -1166,7 +1166,6 @@ sNode*% parse_array_initializer(sInfo* info=info)
         }
     }
     
-puts("aaa");
     expected_next_character('}');
     
     return new sArrayInitializer(initializer, info) implements sNode;
@@ -1299,7 +1298,6 @@ sNode*% parse_struct_initializer(sInfo* info=info)
         }
     }
     
-puts("bbb");
     expected_next_character('}');
     
     return new sStructInitializer(initializer, info) implements sNode;

@@ -217,6 +217,12 @@ uniq int strlen(const char *s) {
   return n;
 }
 
+uniq void puts(const char *s) {
+    while (*s) {
+        putchar(*s++);
+    }
+}
+
 uniq char* strncat(char* dest, const char* src, size_t n) {
     char* d = dest;
 
