@@ -164,6 +164,7 @@ uniq void xassert(char* msg, bool test)
     puts("ok");
 }
 
+#ifndef __BARE_METAL__
 record uniq bool die(char* msg)
 {
     perror(msg);
@@ -172,6 +173,7 @@ record uniq bool die(char* msg)
     
     return false;
 }
+#endif
 
 //////////////////////////////
 /// heap

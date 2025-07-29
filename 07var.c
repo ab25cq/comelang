@@ -345,7 +345,31 @@ class sStoreNode extends sNodeBase
             
             sType*% left_type = clone var_->mType;
             
-            if(array_initializer || left_type->mRegister) {
+            if(array_initializer) {
+                sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
+                /*
+                if(var_->mType->mAttribute) {
+                    add_come_code(info, "%s %s=%s;\n", make_define_var(var_->mType, var_->mCValueName), var_->mType->mAttribute, right_value.c_value);
+                }
+                else {
+                */
+                    add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                //}
+                
+                CVALUE*% come_value = new CVALUE();
+                come_value.c_value = string("");
+                info.stack.push_back(come_value);
+                
+                transpiler_clear_last_code(info);
+            }
+            else if(left_type->mRegister) {
+                sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
+                
+                CVALUE*% come_value = new CVALUE();
+                come_value.c_value = xsprintf("%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                info.stack.push_back(come_value);
+            }
+            else if(array_initializer || left_type->mRegister) {
                 sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
                 /*
                 if(var_->mType->mAttribute) {
@@ -1142,6 +1166,7 @@ sNode*% parse_array_initializer(sInfo* info=info)
         }
     }
     
+puts("aaa");
     expected_next_character('}');
     
     return new sArrayInitializer(initializer, info) implements sNode;
@@ -1274,6 +1299,7 @@ sNode*% parse_struct_initializer(sInfo* info=info)
         }
     }
     
+puts("bbb");
     expected_next_character('}');
     
     return new sStructInitializer(initializer, info) implements sNode;
@@ -1704,12 +1730,17 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                     info->no_comma = no_comma;
                     info->struct_initializer = false;
                 }
-                else {
+                else if(type->mArrayNum.length() > 0 || type->mArrayPointerType) {
                     info.array_initializer = true;
                     parse_sharp();
                     right_value = expression();
                     parse_sharp();
                     info.array_initializer = false;
+                }
+                else {
+                    parse_sharp();
+                    right_value = expression();
+                    parse_sharp();
                 }
                 
                 right_value = post_position_operator(right_value, info);
