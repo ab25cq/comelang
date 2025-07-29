@@ -409,10 +409,35 @@ string parse_struct_attribute(sInfo* info=info)
     parse_sharp();
     buffer*% result = new buffer();
     while(1) {
+        if(xisalnum(*info->p) || *info->p == '_') {
+        }
+        else {
+            break;
+        }
+        
+        char* p = info.p;
+        int sline = info.sline;
+        
+        string buf = parse_word();
+        
+        info.p = p;
+        info.sline = sline;
+        
         if(memcmp(info->p, "__attribute__", strlen("__attribute__")) == 0) {
             char* head = info.p;
             
             info->p += strlen("__attribute__");
+            skip_spaces_and_lf();
+            skip_paren(info);
+            
+            char* tail = info->p;
+            
+            result.append(head, tail-head);
+        }
+        else if(buf === "asm") {
+            char* head = info.p;
+            
+            info->p += strlen("asm");
             skip_spaces_and_lf();
             skip_paren(info);
             

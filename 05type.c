@@ -2623,10 +2623,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             string attribute2 = parse_struct_attribute();
             
             if(attribute !== "" && attribute2 !== "") {
-                type->mAttribute = attribute + " " + attribute2;
+                type->mAttribute = attribute;
+                type->mVarAttribute = attribute2;
             }
             else if(attribute2 !== "") {
-                type->mAttribute = attribute2;
+                type->mVarAttribute = attribute2;
             }
         }
     }

@@ -331,7 +331,7 @@ class sStoreNode extends sNodeBase
             sType*% var_type = clone var_->mType;
             var_type->mStatic = false;
             
-            if(!array_initializer && !struct_initializer && !var_->mType->mStatic && !var_type->mConstant && var_type->mArrayNum.length() == 0) {
+            if(!array_initializer && !struct_initializer && !var_->mType->mStatic && !var_type->mConstant && var_type->mArrayNum.length() == 0 && !var_->mType->mRegister) {
                 if(var_type->mClass->mNumber) {
                 }
                 else if((var_type->mClass->mStruct || var_type->mClass->mUnion || var_type->mClass->mEnum) || var_type->mPointerNum > 0) {
@@ -345,7 +345,7 @@ class sStoreNode extends sNodeBase
             
             sType*% left_type = clone var_->mType;
             
-            if(array_initializer) {
+            if(array_initializer || left_type->mRegister) {
                 sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
                 /*
                 if(var_->mType->mAttribute) {
@@ -1287,6 +1287,9 @@ void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_
     self->mType = clone type;
     
     if(function_param) {
+        self->mCValueName = string(name);
+    }
+    else if(type->mRegister) {
         self->mCValueName = string(name);
     }
     else {

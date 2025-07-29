@@ -28,6 +28,9 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
     if(type->mConstant) {
         buf.append_str("const ");
     }
+    if(type->mRegister) {
+        buf.append_str("register ");
+    }
     
     if(type->mUnsigned) {
         buf.append_str("unsigned ");
@@ -413,8 +416,8 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         }
     }
     
-    if(type2->mAttribute) {
-        buf.append_str(" " + type->mAttribute);
+    if(type2->mVarAttribute) {
+        buf.append_str(" " + type->mVarAttribute);
     }
     
     return buf.to_string();

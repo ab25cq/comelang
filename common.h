@@ -96,6 +96,7 @@ uniq class sType
     sNode*% mAlignas;
     string mTupleName;
     string mAttribute;
+    string mVarAttribute;
     
     bool mAllocaValue;
     
