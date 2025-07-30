@@ -20,6 +20,131 @@ int strlen(const char *s);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 
+#ifdef __MINUX__
+
+// sbrk() : プログラムブレークを指定された増分(incr)だけ移動させる
+// 成功した場合、以前のプログラムブレークのアドレスを返す
+// 失敗した場合、(void*)-1 を返す
+uniq void* sbrk(long incr) {
+    // まず、brk(0)を呼び出して現在のプログラムブレーク位置を取得
+    char* current_brk = (char*)brk(0);
+    if (current_brk == (char*)-1) {
+        return (void*)-1; // 失敗
+    }
+
+    // incrが0なら、現在のブレーク位置を返すだけ
+    if (incr == 0) {
+        return current_brk;
+    }
+
+    // 新しいブレーク位置を設定するようカーネルに要求
+    if (brk((long)(current_brk + incr)) == -1) {
+        return (void*)-1; // 失敗
+    }
+
+    // 成功した場合、慣例に従い「以前の」ブレーク位置を返す
+    return current_brk;
+}
+
+
+/*
+ * =================================================================
+ * 基本的な malloc / free の実装
+ * =================================================================
+ */
+
+// メモリブロックのヘッダ
+typedef struct header {
+    struct header *next; // 次の空きブロックへのポインタ
+    unsigned size;       // このブロックのサイズ (ヘッダ単位)
+} Header;
+
+uniq Header base;          // 空のリストの先頭
+uniq Header *freep = 0; // 空きリストの先頭
+
+// free関数（前方宣言）
+void free(void *ap);
+
+// sbrkを呼び出して、より多くのメモリをOSから取得する
+uniq Header *morecore(unsigned nunits) {
+    char *cp;
+    Header *up;
+
+    if (nunits < 4096)
+        nunits = 4096; // 最低でも4096単位を要求
+    
+    cp = sbrk(nunits * sizeof(Header));
+    if (cp == (char *) -1) // メモリ不足
+        return 0;
+        
+    up = (Header *) cp;
+    up->size = nunits;
+    free((void *)(up + 1)); // 取得した領域をfreeに渡して空きリストに繋げる
+    return freep;
+}
+
+// 汎用メモリアロケタ
+uniq void *malloc(unsigned nbytes) {
+    Header *p, *prevp;
+    unsigned nunits;
+
+    // 必要なヘッダ数を計算（ヘッダ自身を含む）
+    nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1;
+
+    if ((prevp = freep) == 0) { // 空きリストがまだない場合
+        base.next = freep = prevp = &base;
+        base.size = 0;
+    }
+
+    for (p = prevp->next; ; prevp = p, p = p->next) {
+        if (p->size >= nunits) { // 十分な大きさのブロックが見つかった
+            if (p->size == nunits) { // ちょうど同じサイズ
+                prevp->next = p->next;
+            } else { // 大きすぎるので、末尾を割り当てる
+                p->size -= nunits;
+                p += p->size;
+                p->size = nunits;
+            }
+            freep = prevp;
+            return (void *)(p + 1); // ヘッダの次のアドレスを返す
+        }
+        if (p == freep) { // 空きリストを一周した
+            if ((p = morecore(nunits)) == 0)
+                return 0; // メモリ不足
+        }
+    }
+}
+
+// メモリブロックを空きリストに戻す
+uniq void free(void *ap) {
+    Header *bp, *p;
+
+    if(ap == 0) return;
+
+    bp = (Header *)ap - 1; // ブロックヘッダを指す
+
+    // 空きリストをスキャンして、bpを挿入する場所を見つける
+    for (p = freep; !(bp > p && bp < p->next); p = p->next)
+        if (p >= p->next && (bp > p || bp < p->next))
+            break; // リストの先頭か末尾に解放されたブロックがある
+
+    if (bp + bp->size == p->next) { // 上の隣接ブロックと結合
+        bp->size += p->next->size;
+        bp->next = p->next->next;
+    } else {
+        bp->next = p->next;
+    }
+    if (p + p->size == bp) { // 下の隣接ブロックと結合
+        p->size += bp->size;
+        p->next = bp->next;
+    } else {
+        p->next = bp;
+    }
+    freep = p;
+}
+
+#else
+
 extern char _end[];   // heap start
 static char* heap_end = 0;
 static char* heap_limit = (char*)0x88000000;
@@ -80,6 +205,20 @@ uniq void *malloc(size_t size) {
     return (void *)(new_mem + 1); 
 }
 
+uniq void free(void *ptr) {
+    if (ptr == NULL) {
+        return;
+    }
+
+    mem_block_t *block = (mem_block_t *)ptr - 1;
+
+    block->next = free_list;
+    free_list = block;
+}
+
+#endif
+
+
 uniq void *calloc(size_t nmemb, size_t size) {
     size_t total_size = nmemb * size;
     if (total_size == 0) {
@@ -91,17 +230,6 @@ uniq void *calloc(size_t nmemb, size_t size) {
         memset(ptr, 0, total_size);
     }
     return ptr;
-}
-
-uniq void free(void *ptr) {
-    if (ptr == NULL) {
-        return;
-    }
-
-    mem_block_t *block = (mem_block_t *)ptr - 1;
-
-    block->next = free_list;
-    free_list = block;
 }
 
 uniq char* strdup(const char* s) {
