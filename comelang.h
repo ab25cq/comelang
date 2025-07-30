@@ -224,6 +224,9 @@ uniq int gNumFree = 0;
 #define HEAP_POOL_PAGE_SIZE 4096
 #endif
 
+
+#ifndef __BARE_METAL__
+
 #define INIT_PAGE_PAGE_SIZE 4
 #define NEW_ALLOC_SIZE 2
 
@@ -245,16 +248,6 @@ uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
     gComeMallocLib = come_malloc;
     gComeDebugLib = come_debug
     gComeGCLib = come_gc;
-    
-/*
-#ifdef ENABLE_GC
-    if(gComeGCLib) {
-        GC_init();
-        GC_set_warn_proc(GC_ignore_warn_proc);
-        GC_enable_incremental();
-    }
-#endif
-*/
     
     gComeStackFrameBuffer = NULL;
     memset(gComeStackFrameSName, 0, sizeof(char*)*COME_STACKFRAME_MAX_GLOBAL);
@@ -332,8 +325,6 @@ uniq void come_heap_final()
     }
     free(gHeapPages.mPages);
 }
-
-#ifndef __BARE_METAL__
 
 uniq void* alloc_from_pages(size_t size)
 {
@@ -492,6 +483,15 @@ uniq void come_free_mem_of_heap_pool(void* mem)
 }
 
 #else
+
+uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
+{
+}
+
+uniq void come_heap_final()
+{
+}
+
 uniq void* alloc_from_pages(size_t size)
 {
     void* result = null;
