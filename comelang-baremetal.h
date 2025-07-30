@@ -75,7 +75,7 @@ uniq Header *morecore(unsigned nunits) {
     
     cp = sbrk(nunits * sizeof(Header));
     if (cp == (char *) -1) // メモリ不足
-        return 0;
+        return (void*)0;
         
     up = (Header *) cp;
     up->size = nunits;
@@ -110,7 +110,7 @@ uniq void *malloc(unsigned nbytes) {
         }
         if (p == freep) { // 空きリストを一周した
             if ((p = morecore(nunits)) == 0)
-                return 0; // メモリ不足
+                return (void*)0; // メモリ不足
         }
     }
 }
