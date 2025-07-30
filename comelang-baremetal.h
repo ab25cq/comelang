@@ -20,11 +20,9 @@ int strlen(const char *s);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 
+/*
 #ifdef __MINUX__
 
-// sbrk() : プログラムブレークを指定された増分(incr)だけ移動させる
-// 成功した場合、以前のプログラムブレークのアドレスを返す
-// 失敗した場合、(void*)-1 を返す
 uniq void* sbrk(long incr) {
     // まず、brk(0)を呼び出して現在のプログラムブレーク位置を取得
     char* current_brk = (char*)brk(0);
@@ -45,13 +43,6 @@ uniq void* sbrk(long incr) {
     // 成功した場合、慣例に従い「以前の」ブレーク位置を返す
     return current_brk;
 }
-
-
-/*
- * =================================================================
- * 基本的な malloc / free の実装
- * =================================================================
- */
 
 // メモリブロックのヘッダ
 typedef struct header {
@@ -144,6 +135,7 @@ uniq void free(void *ap) {
 }
 
 #else
+*/
 
 extern char _end[];   // heap start
 static char* heap_end = 0;
@@ -216,7 +208,7 @@ uniq void free(void *ptr) {
     free_list = block;
 }
 
-#endif
+//#endif
 
 
 uniq void *calloc(size_t nmemb, size_t size) {
