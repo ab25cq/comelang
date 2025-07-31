@@ -102,7 +102,6 @@ uniq void *malloc(unsigned nbytes) {
     }
 }
 
-/*
 // メモリブロックを空きリストに戻す
 uniq void free(void *ap) {
     Header *bp, *p;
@@ -130,8 +129,8 @@ uniq void free(void *ap) {
     }
     freep = p;
 }
-*/
    
+/*
 uniq void free(void* ap){
     struct header* bp_11;
     struct header* p_12;
@@ -169,6 +168,7 @@ uniq void free(void* ap){
 
     freep = p_12;
 }
+*/
 
 #else
 
