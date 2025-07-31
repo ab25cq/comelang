@@ -170,6 +170,8 @@ uniq void free(void* ap){
 }
 */
 
+using c;
+
 #else
 
 extern char _end[];   // heap start
