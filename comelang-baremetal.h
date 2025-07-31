@@ -4,9 +4,6 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-extern char _end[]; // first address after kernel.
-                   // defined by kernel.ld.
-
 using comelang;
 
 typedef unsigned long size_t;
