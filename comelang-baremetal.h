@@ -102,6 +102,7 @@ uniq void *malloc(unsigned nbytes) {
     }
 }
 
+/*
 // メモリブロックを空きリストに戻す
 uniq void free(void *ap) {
     Header *bp, *p;
@@ -128,6 +129,45 @@ uniq void free(void *ap) {
         p->next = bp;
     }
     freep = p;
+}
+*/
+   
+uniq void free(void* ap){
+    struct header* bp_11;
+    struct header* p_12;
+
+    if(ap == 0) {
+        return;
+    }
+
+    bp_11 = (struct header*)ap - 1;
+
+    // このforループが修正点
+    for(p_12 = freep; !(bp_11 > p_12 && bp_11 < p_12->next); p_12 = p_12->next){
+        // p_12 >= p_12->next はリストの末尾（先頭に戻る場所）を示唆する。
+        // (bp_11 > p_12 || bp_11 < p_12->next) は、
+        // 新しいブロックがリストの末尾より大きいか、先頭より小さいことを意味する。
+        if(p_12 >= p_12->next && (bp_11 > p_12 || bp_11 < p_12->next)) {
+            break; // ループを抜けて正しい場所に挿入する
+        }
+    }
+
+    // --- 以下、元のコードと同じ ---
+    if(bp_11 + bp_11->size == p_12->next) { // 後ろと結合
+        bp_11->size += p_12->next->size;
+        bp_11->next = p_12->next->next;
+    } else {
+        bp_11->next = p_12->next;
+    }
+
+    if(p_12 + p_12->size == bp_11) { // 前と結合
+        p_12->size += bp_11->size;
+        p_12->next = bp_11->next;
+    } else {
+        p_12->next = bp_11;
+    }
+
+    freep = p_12;
 }
 
 #else
