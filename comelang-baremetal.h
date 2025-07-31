@@ -20,7 +20,6 @@ int strlen(const char *s);
 int printf(const char* fmt, ...);
 extern void puts(const char* s);
 
-/*
 #ifdef __MINUX__
 
 uniq void* sbrk(long incr) {
@@ -135,7 +134,6 @@ uniq void free(void *ap) {
 }
 
 #else
-*/
 
 extern char _end[];   // heap start
 static char* heap_end = 0;
@@ -208,7 +206,7 @@ uniq void free(void *ptr) {
     free_list = block;
 }
 
-//#endif
+#endif
 
 
 uniq void *calloc(size_t nmemb, size_t size) {
