@@ -19,6 +19,8 @@ extern void puts(const char* s);
 
 #ifdef __MINUX__
 
+using comelang;
+
 uniq void* sbrk(long incr) {
     // まず、brk(0)を呼び出して現在のプログラムブレーク位置を取得
     char* current_brk = (char*)brk(0);
