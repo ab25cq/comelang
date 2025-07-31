@@ -1084,11 +1084,11 @@ extern struct sMemHeader* gAllocMem;
 
 extern void* gComeResultObject;
 
-extern _Bool gComeMallocLib;
+extern int gComeMallocLib;
 
-extern _Bool gComeDebugLib;
+extern int gComeDebugLib;
 
-extern _Bool gComeGCLib;
+extern int gComeGCLib;
 
 extern int gNumAlloc;
 
@@ -2813,11 +2813,11 @@ struct sMemHeader* gAllocMem;
 
 void* gComeResultObject=((void*)0);
 
-_Bool gComeMallocLib=(_Bool)0;
+int gComeMallocLib=0;
 
-_Bool gComeDebugLib=(_Bool)0;
+int gComeDebugLib=0;
 
-_Bool gComeGCLib=(_Bool)0;
+int gComeGCLib=0;
 
 int gNumAlloc=0;
 

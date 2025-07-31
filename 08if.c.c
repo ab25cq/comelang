@@ -1084,11 +1084,11 @@ extern struct sMemHeader* gAllocMem;
 
 extern void* gComeResultObject;
 
-extern _Bool gComeMallocLib;
+extern int gComeMallocLib;
 
-extern _Bool gComeDebugLib;
+extern int gComeDebugLib;
 
-extern _Bool gComeGCLib;
+extern int gComeGCLib;
 
 extern int gNumAlloc;
 

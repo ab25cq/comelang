@@ -208,11 +208,11 @@ struct sMemHeader
 uniq sMemHeader* gAllocMem;
 
 uniq void* gComeResultObject = NULL;
-bool gComeGCLib;
+uniq int gComeGCLib = 0;
 
-uniq bool gComeMallocLib = false;
-uniq bool gComeDebugLib = false;
-uniq bool gComeGCLib = false;
+uniq int gComeMallocLib = 0;
+uniq int gComeDebugLib = 0;
+uniq int gComeGCLib = 0;
 
 uniq int gNumAlloc = 0;
 uniq int gNumFree = 0;
