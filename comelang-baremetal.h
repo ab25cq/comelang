@@ -208,7 +208,6 @@ uniq void free(void *ptr) {
 
 #endif
 
-
 uniq void *calloc(size_t nmemb, size_t size) {
     size_t total_size = nmemb * size;
     if (total_size == 0) {
