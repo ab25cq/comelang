@@ -1,6 +1,8 @@
 #ifndef COMELANG_MINUX_H
 #define COMELANG_MINUX_H
 
+#include "minux.h"
+
 #include <stdint.h>
 #include <stdarg.h>
 
