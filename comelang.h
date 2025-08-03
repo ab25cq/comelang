@@ -22,10 +22,10 @@ typedef char*% string;
 ///////////////////////////////////////////////////////////////////////////
 // BARE METAL 
 ///////////////////////////////////////////////////////////////////////////
-#ifdef __BARE_METAL__
-#include <comelang-baremetal.h>
-#elif defined(__MINUX__)
+#if defined(__MINUX__)
 #include <comelang-minux.h>
+#elif defined(__BARE_METAL__)
+#include <comelang-baremetal.h>
 #else
 
 #define COME_STACKFRAME_MAX 16
