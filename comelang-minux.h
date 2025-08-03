@@ -685,11 +685,6 @@ uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     return p - out;
 }
 
-uniq void putchar(char c)
-{
-    write(1, &c, 1);
-}
-
 uniq void printint(int val_, int base, int sign) {
     char buf[33];  
     int i = 0;
