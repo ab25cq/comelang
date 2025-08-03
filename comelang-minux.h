@@ -1,8 +1,6 @@
 #ifndef COMELANG_MINUX_H
 #define COMELANG_MINUX_H
 
-#include "minux.h"
-
 #include <stdint.h>
 #include <stdarg.h>
 
@@ -683,6 +681,11 @@ uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
     *p = '\0';
     va_end(ap);
     return p - out;
+}
+
+uniq void putchar(char c)
+{
+    write(1, &c, 1);
 }
 
 uniq void printint(int val_, int base, int sign) {
