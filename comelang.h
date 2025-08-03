@@ -15,19 +15,21 @@
 #define _GNU_SOURCE
 
 #define ALLOCATED_MAGIC_NUM 177783
-#define COME_STACKFRAME_MAX 16
-#define COME_STACKFRAME_MAX_GLOBAL 128
 
 #define nullptr ((void*)0)
 typedef char*% string;
-
 
 ///////////////////////////////////////////////////////////////////////////
 // BARE METAL 
 ///////////////////////////////////////////////////////////////////////////
 #ifdef __BARE_METAL__
 #include <comelang-baremetal.h>
+#elif defined(__MINUX__)
+#include <comelang-minux.h>
 #else
+
+#define COME_STACKFRAME_MAX 16
+#define COME_STACKFRAME_MAX_GLOBAL 128
 
 ///////////////////////////////////////////////////////////////////////////
 // UNIX
@@ -103,6 +105,29 @@ uniq string _Bool::to_string(bool self);
 uniq bool string::equals(char* self, char* right);
 
 
+#if defined(__MINUX__) || defined(__BARE_METAL__)
+uniq void come_push_stackframe(char* sname, int sline, int id)
+{
+}
+
+uniq void come_pop_stackframe()
+{
+}
+
+uniq void come_save_stackframe(char* sname, int sline)
+{
+}
+
+uniq void stackframe()
+{
+}
+
+uniq string come_get_stackframe()
+{
+    return string("");
+}
+
+#else
 uniq char* gComeStackFrameSName[COME_STACKFRAME_MAX_GLOBAL];
 uniq int gComeStackFrameSLine[COME_STACKFRAME_MAX_GLOBAL];
 uniq int gComeStackFrameID[COME_STACKFRAME_MAX_GLOBAL];
@@ -153,6 +178,7 @@ uniq string come_get_stackframe()
 {
     return string(gComeStackFrameBuffer);
 }
+#endif
 
 uniq void xassert(char* msg, bool test)
 {
@@ -198,9 +224,11 @@ struct sMemHeader
     struct sMemHeader* prev;
     struct sMemHeader* free_next;
     
+#if !defined(__MINUX__) && !defined(__BARE_METAL__)
     char* sname[COME_STACKFRAME_MAX];
     int sline[COME_STACKFRAME_MAX];
     int id[COME_STACKFRAME_MAX];
+#endif
     
     char* class_name;
 };
@@ -225,7 +253,7 @@ uniq int gNumFree = 0;
 #endif
 
 
-#ifndef __BARE_METAL__
+#if !defined(__BARE_METAL__) && !defined(__MINUX__)
 
 #define INIT_PAGE_PAGE_SIZE 4
 #define NEW_ALLOC_SIZE 2
@@ -276,11 +304,6 @@ uniq void come_heap_final()
     }
     
     if(gComeGCLib) {
-/*
-#ifdef ENABLE_GC
-        //GC_gcollect();
-#endif
-*/
     }
     else if(gComeDebugLib) {
         sMemHeader* it = gAllocMem;
@@ -482,6 +505,114 @@ uniq void come_free_mem_of_heap_pool(void* mem)
     }
 }
 
+uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="")
+{
+    if(gComeDebugLib) {
+        void* result = alloc_from_pages(size + sizeof(sMemHeader));
+        
+        sMemHeader* it = result;
+        
+        it->allocated = ALLOCATED_MAGIC_NUM;
+        
+        it->size = size + sizeof(sMemHeader);
+        it->free_next = NULL;
+        
+        come_push_stackframe(sname, sline, 0);
+
+        if(gNumComeStackFrame < COME_STACKFRAME_MAX) {
+            int i;
+            for(i=0; i<gNumComeStackFrame; i++) {
+                it.sname[i] = gComeStackFrameSName[i];
+                it.sline[i] = gComeStackFrameSLine[i];
+                it.id[i] = gComeStackFrameID[i];
+            }
+        }
+        else {
+            int i;
+            for(i=0; i<COME_STACKFRAME_MAX; i++) {
+                it.sname[i] = gComeStackFrameSName[gNumComeStackFrame -1 - i];
+                it.sline[i] = gComeStackFrameSLine[gNumComeStackFrame -1 - i];
+                it.id[i] = gComeStackFrameID[gNumComeStackFrame -1 - i];
+            }
+        }
+        
+        come_pop_stackframe();
+        
+        it->next = gAllocMem;
+        it->prev = null;
+        
+        it->class_name = class_name; 
+        
+        if(gAllocMem) {
+            gAllocMem->prev = it;
+        }
+        
+        gAllocMem = it;
+        
+        gNumAlloc++;
+        
+        return (char*)result + sizeof(sMemHeader);
+    }
+    else {
+        void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
+        
+        sMemHeaderTiny* it = result;
+        
+        it->allocated = ALLOCATED_MAGIC_NUM;
+        
+        it->class_name = class_name; 
+        
+        it->sname = sname;
+        it->sline = sline;
+        
+        it->size = size + sizeof(sMemHeaderTiny);
+        it->free_next = NULL;
+        
+        it->next = (sMemHeaderTiny*)gAllocMem;
+        it->prev = null;
+        
+        if(gAllocMem) {
+            ((sMemHeaderTiny*)gAllocMem)->prev = it;
+        }
+        
+        gAllocMem = (sMemHeader*)it;
+        
+        gNumAlloc++;
+        
+        return (char*)result + sizeof(sMemHeaderTiny);
+    }
+}
+
+uniq void come_print_heap_info(void* mem)
+{
+    if(gComeDebugLib) {
+        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return;
+        }
+        
+        printf("%p ", mem);
+        if(it->class_name) {
+            printf("(%s): ", it->class_name);
+        }
+        for(int i=0; i<COME_STACKFRAME_MAX; i++) {
+            if(it->sname[i]) {
+                printf("%s %d #%d, ", it->sname[i], it->sline[i], it->id[i]);
+            }
+        }
+        puts("");
+    }
+    else {
+        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
+        
+        if(it->allocated != ALLOCATED_MAGIC_NUM) {
+            return;
+        }
+        printf("%p (%s) %s %d\n", mem, it->class_name, it->sname , it->sline);
+    }
+}
+
 #else
 
 uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
@@ -578,7 +709,6 @@ uniq void come_free_mem_of_heap_pool(void* mem)
         }
     }
 }
-#endif
 
 uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="")
 {
@@ -658,6 +788,12 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
     }
 }
 
+uniq void come_print_heap_info(void* mem)
+{
+}
+#endif
+
+
 
 uniq char* come_dynamic_typeof(void* mem)
 {
@@ -680,36 +816,6 @@ uniq char* come_dynamic_typeof(void* mem)
         }
         
         return it->class_name;
-    }
-}
-
-uniq void come_print_heap_info(void* mem)
-{
-    if(gComeDebugLib) {
-        sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
-        
-        if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            return;
-        }
-        
-        printf("%p ", mem);
-        if(it->class_name) {
-            printf("(%s): ", it->class_name);
-        }
-        for(int i=0; i<COME_STACKFRAME_MAX; i++) {
-            if(it->sname[i]) {
-                printf("%s %d #%d, ", it->sname[i], it->sline[i], it->id[i]);
-            }
-        }
-        puts("");
-    }
-    else {
-        sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
-        
-        if(it->allocated != ALLOCATED_MAGIC_NUM) {
-            return;
-        }
-        printf("%p (%s) %s %d\n", mem, it->class_name, it->sname , it->sline);
     }
 }
 
