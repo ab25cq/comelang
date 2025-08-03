@@ -304,6 +304,7 @@ install:
 	$(INSTALL) -m 644 ./comelang-net.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-pthread.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-baremetal.h "$(DESTDIR)/include"
+	$(INSTALL) -m 644 ./comelang-minux.h "$(DESTDIR)/include"
 	mkdir -p "$(DESTDIR)/share/doc/comelang"
 	$(INSTALL) -m 644 README.md "$(DESTDIR)/share/doc/comelang/README.md"
 
