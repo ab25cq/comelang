@@ -640,38 +640,6 @@ uniq void come_free_mem_of_heap_pool(void* mem)
 {
     if(mem) {
         if(gComeDebugLib) {
-            sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(sMemHeader));
-            
-            if(it->allocated != ALLOCATED_MAGIC_NUM) {
-                return;
-            }
-            
-            it->allocated = 0;
-            
-            sMemHeader* prev_it = it->prev;
-            sMemHeader* next_it = it->next;
-            
-            if(gAllocMem == it) {
-                gAllocMem = next_it;
-                
-                if(gAllocMem) {
-                    gAllocMem->prev = null;
-                }
-            }
-            else {
-                if(prev_it) {
-                    prev_it->next = next_it;
-                }
-                if(next_it) {
-                    next_it->prev = prev_it;
-                }
-            }
-            
-            size_t size = it->size;
-            
-            free(it);
-            
-            gNumFree++;
         }
         else {
             sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(sMemHeaderTiny));
@@ -713,50 +681,6 @@ uniq void come_free_mem_of_heap_pool(void* mem)
 uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int sline=0, char* class_name="")
 {
     if(gComeDebugLib) {
-        void* result = alloc_from_pages(size + sizeof(sMemHeader));
-        
-        sMemHeader* it = result;
-        
-        it->allocated = ALLOCATED_MAGIC_NUM;
-        
-        it->size = size + sizeof(sMemHeader);
-        it->free_next = NULL;
-        
-        come_push_stackframe(sname, sline, 0);
-
-        if(gNumComeStackFrame < COME_STACKFRAME_MAX) {
-            int i;
-            for(i=0; i<gNumComeStackFrame; i++) {
-                it.sname[i] = gComeStackFrameSName[i];
-                it.sline[i] = gComeStackFrameSLine[i];
-                it.id[i] = gComeStackFrameID[i];
-            }
-        }
-        else {
-            int i;
-            for(i=0; i<COME_STACKFRAME_MAX; i++) {
-                it.sname[i] = gComeStackFrameSName[gNumComeStackFrame -1 - i];
-                it.sline[i] = gComeStackFrameSLine[gNumComeStackFrame -1 - i];
-                it.id[i] = gComeStackFrameID[gNumComeStackFrame -1 - i];
-            }
-        }
-        
-        come_pop_stackframe();
-        
-        it->next = gAllocMem;
-        it->prev = null;
-        
-        it->class_name = class_name; 
-        
-        if(gAllocMem) {
-            gAllocMem->prev = it;
-        }
-        
-        gAllocMem = it;
-        
-        gNumAlloc++;
-        
-        return (char*)result + sizeof(sMemHeader);
     }
     else {
         void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
