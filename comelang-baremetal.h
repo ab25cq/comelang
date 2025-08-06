@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <stdarg.h>
 
+#undef va_start
+#define va_start(ap, last) __builtin_va_start(ap, last)
+
 using comelang;
 
 typedef unsigned long size_t;
