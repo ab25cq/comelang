@@ -247,6 +247,8 @@ uniq class sFun
     
     sType*% mLambdaType;
     
+    list<sVar*%>*% mAllVar;
+    
     sBlock*% mBlock;
     string mTextBlock;
     
@@ -288,6 +290,7 @@ uniq class sFun
         self.mUniq = uniq_;
         self.mConstFun = const_fun;
         self.mGenerate = generate_;
+        self.mAllVar = new list<sVar*%>();
         
         self.mLambdaType = new sType(s"lambda");
         

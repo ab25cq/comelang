@@ -1310,10 +1310,22 @@ void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_
     self->mName = string(name);
     self->mType = clone type;
     
+    bool same_name = false;
+    
+    foreach(it, info.come_fun.mAllVar) {
+        if(it.mCValueName === name) {
+            same_name = true;
+        }
+    }
+    
+    
     if(function_param) {
         self->mCValueName = string(name);
     }
     else if(type->mRegister) {
+        self->mCValueName = string(name);
+    }
+    else if(!same_name) {
         self->mCValueName = string(name);
     }
     else {
@@ -1333,6 +1345,10 @@ void add_variable_to_table(char* name, sType*% type, sInfo* info, bool function_
     self->mComma = comma;
     
     info.lv_table.mVars.insert(string(name), self);
+    
+    if(info.come_fun) {
+        info.come_fun.mAllVar.add(self);
+    }
 }
 
 void add_variable_to_global_table(char* name, sType*% type, sInfo* info)
