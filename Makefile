@@ -9,6 +9,18 @@ CFLAGS=-DPREFIX="\"${DESTDIR}/\""  -I/usr/local/include $(CFLAGS_OPT) -std=c99
 LIBS= -lutil -ldl -lm -lrt
 
 #########################################
+# grammar generation (Flex + Bison)
+#########################################
+
+.PHONY: parser
+parser:
+	@echo "[Bison] grammar/comelang.y -> grammar/parser.c, grammar/parser.h"
+	bison -d -v --defines=grammar/parser.h -o grammar/parser.c grammar/comelang.y
+	@echo "[Flex ] grammar/comelang.l -> grammar/lexer.c"
+	flex -o grammar/lexer.c grammar/comelang.l
+	@echo "generated: grammar/parser.c grammar/parser.h grammar/lexer.c"
+
+#########################################
 # main
 #########################################
 all: comelang-sh
@@ -327,4 +339,3 @@ uninstall:
 	rm -f "$(DESTDIR)"/include/comelang-net.h
 	rm -f "$(DESTDIR)"/include/comelang-pthread.h
 	rm -f "$(DESTDIR)/share/doc/comelang/README.md"
-
