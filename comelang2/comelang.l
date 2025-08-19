@@ -9,6 +9,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "parser.h"
+#include "arena.h"
+#include "mem.h"
 %}
 
 WS          [ \t\r\v\f\n]+
@@ -130,17 +132,17 @@ CHARSUFF    (u8|[uUL])?
 "|="                       return OR_ASSIGN;
 "^="                       return XOR_ASSIGN;
 
-{HEX}[uUlL]*               { yylval.sval = strndup(yytext, yyleng); return INTEGER_CONSTANT; }
-{BIN}[uUlL]*               { yylval.sval = strndup(yytext, yyleng); return INTEGER_CONSTANT; }
-{OCT}[uUlL]*               { yylval.sval = strndup(yytext, yyleng); return INTEGER_CONSTANT; }
-{DEC}[uUlL]*               { yylval.sval = strndup(yytext, yyleng); return INTEGER_CONSTANT; }
-({FP_DEC}|{FP_DEC2})[fFlL]? { yylval.sval = strndup(yytext, yyleng); return FLOAT_CONSTANT; }
-{FP_HEX}[fFlL]?            { yylval.sval = strndup(yytext, yyleng); return FLOAT_CONSTANT; }
+{HEX}[uUlL]*               { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
+{BIN}[uUlL]*               { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
+{OCT}[uUlL]*               { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
+{DEC}[uUlL]*               { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
+({FP_DEC}|{FP_DEC2})[fFlL]? { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return FLOAT_CONSTANT; }
+{FP_HEX}[fFlL]?            { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return FLOAT_CONSTANT; }
 
-{CHARSUFF}'([^\\\n]|\\.)+'  { yylval.sval = strndup(yytext, yyleng); return CHAR_CONSTANT; }
-(u8|[uUL])?\"([^\\\n]|\\.)*\"  { yylval.sval = strndup(yytext, yyleng); return STRING_LITERAL; }
+{CHARSUFF}'([^\\\n]|\\.)+'  { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return CHAR_CONSTANT; }
+(u8|[uUL])?\"([^\\\n]|\\.)*\"  { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return STRING_LITERAL; }
 
-{ID}                       { yylval.sval = strndup(yytext, yyleng); return IDENTIFIER; }
+{ID}                       { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return IDENTIFIER; }
 .                           { return yytext[0]; }
 
 %%

@@ -15,6 +15,9 @@ static void yyerror(const char* msg)
 {
   fprintf(stderr, "parse error: %s\n", msg);
 }
+
+#include "ast_bridge.h"
+#include "info.h"
 %}
 
 /* Identifiers and literals */
@@ -44,6 +47,8 @@ static void yyerror(const char* msg)
 
 %union {
   char* sval;
+  long  ival;
+  struct sNode* node;
 }
 
 /* operator precedence (simplified) */
@@ -62,6 +67,10 @@ static void yyerror(const char* msg)
 %right INC DEC '!' '~' KW_SIZEOF
 %left '[' ']' '(' ')' '.' ARROW
 
+%type <ival> simple_param_list simple_param_list_opt
+%type <node> expression assignment_expression conditional_expression logical_or_expression logical_and_expression equality_expression relational_expression additive_expression multiplicative_expression unary_expression postfix_expression primary_expression
+%type <node> constant string_seq
+%type <node> argument_expression_list argument_expression_list_opt expression_opt statement labeled_statement compound_statement block_item block_item_list block_item_list_opt
 %start translation_unit
 
 %%
@@ -75,6 +84,7 @@ external_declaration
   : function_definition
   | declaration ';'
   | static_assert_declaration
+  | simple_function_definition
   ;
 
 /* Declarations */
@@ -302,6 +312,32 @@ enumerator
   | IDENTIFIER '=' constant_expression
   ;
 
+/* Simple function definition to accept common forms quickly */
+simple_function_definition
+  : function_declspec IDENTIFIER '(' simple_param_list_opt ')' compound_statement
+    { cb_on_function_simple($2, $4); }
+  ;
+
+function_declspec
+  : KW_INT
+  | declaration_specifiers
+  ;
+
+simple_param_list_opt
+  : /* empty */              { $$ = 0; }
+  | simple_param_list        { $$ = $1; }
+  ;
+
+simple_param_list
+  : simple_param                         { $$ = 1; }
+  | simple_param_list ',' simple_param   { $$ = $1 + 1; }
+  ;
+
+simple_param
+  : declaration_specifiers pointer_opt IDENTIFIER
+  | declaration_specifiers pointer_opt /* abstract parameter (e.g., char*) */
+  ;
+
 function_definition
   : type_specifier declarator compound_statement
   ;
@@ -405,22 +441,22 @@ static_assert_declaration
   ;
 
 statement
-  : ';'
-  | expression ';'
-  | KW_RETURN expression_opt ';'
-  | compound_statement
-  | labeled_statement
-  | KW_IF '(' expression ')' statement
-  | KW_IF '(' expression ')' statement KW_ELSE statement
-  | KW_WHILE '(' expression ')' statement
-  | KW_DO statement KW_WHILE '(' expression ')' ';'
-  | KW_FOR '(' expression_opt ';' expression_opt ';' expression_opt ')' statement
-  | KW_FOR '(' declaration expression_opt ';' expression_opt ')' statement
-  | KW_SWITCH '(' expression ')' statement
-  | KW_BREAK ';'
-  | KW_CONTINUE ';'
-  | KW_GOTO IDENTIFIER ';'
-  | asm_statement
+  : ';'                                        { $$ = cb_stmt_empty(); }
+  | expression ';'                              { $$ = cb_expr_stmt($1); }
+  | KW_RETURN expression_opt ';'                 { $$ = cb_stmt_return($2); }
+  | compound_statement                           { $$ = $1; }
+  | labeled_statement                            { $$ = $1; }
+  | KW_IF '(' expression ')' statement           { $$ = NULL; }
+  | KW_IF '(' expression ')' statement KW_ELSE statement { $$ = NULL; }
+  | KW_WHILE '(' expression ')' statement        { $$ = NULL; }
+  | KW_DO statement KW_WHILE '(' expression ')' ';' { $$ = NULL; }
+  | KW_FOR '(' expression_opt ';' expression_opt ';' expression_opt ')' statement { $$ = NULL; }
+  | KW_FOR '(' declaration expression_opt ';' expression_opt ')' statement { $$ = NULL; }
+  | KW_SWITCH '(' expression ')' statement       { $$ = NULL; }
+  | KW_BREAK ';'                                 { $$ = NULL; }
+  | KW_CONTINUE ';'                              { $$ = NULL; }
+  | KW_GOTO IDENTIFIER ';'                       { $$ = NULL; }
+  | asm_statement                                { $$ = NULL; }
   ;
 
 labeled_statement
@@ -430,13 +466,13 @@ labeled_statement
   ;
 
 expression_opt
-  : /* empty */
-  | expression
+  : /* empty */               { $$ = NULL; }
+  | expression                { $$ = $1; }
   ;
 
 /* A tiny expression grammar; extend with precedence/associativity as needed */
 expression
-  : assignment_expression
+  : assignment_expression                      { $$ = $1; }
   ;
 
 assignment_expression
@@ -483,69 +519,69 @@ relational_expression
   ;
 
 additive_expression
-  : multiplicative_expression
-  | additive_expression '+' multiplicative_expression
-  | additive_expression '-' multiplicative_expression
+  : multiplicative_expression                        { $$ = $1; }
+  | additive_expression '+' multiplicative_expression{ $$ = cb_binary("+", $1, $3); }
+  | additive_expression '-' multiplicative_expression{ $$ = cb_binary("-", $1, $3); }
   ;
 
 multiplicative_expression
-  : unary_expression
-  | multiplicative_expression '*' unary_expression
-  | multiplicative_expression '/' unary_expression
-  | multiplicative_expression '%' unary_expression
+  : unary_expression                               { $$ = $1; }
+  | multiplicative_expression '*' unary_expression { $$ = cb_binary("*", $1, $3); }
+  | multiplicative_expression '/' unary_expression { $$ = cb_binary("/", $1, $3); }
+  | multiplicative_expression '%' unary_expression { $$ = cb_binary("%", $1, $3); }
   ;
 
 unary_expression
-  : postfix_expression
-  | INC unary_expression
-  | DEC unary_expression
-  | '&' unary_expression
-  | '*' unary_expression
-  | '+' unary_expression
-  | '-' unary_expression
-  | KW_SIZEOF unary_expression
-  | KW_SIZEOF '(' type_specifier ')'
-  | KW_TYPEOF '(' expression ')'
+  : postfix_expression                 { $$ = $1; }
+  | INC unary_expression               { $$ = cb_unary("pre++", $2); }
+  | DEC unary_expression               { $$ = cb_unary("pre--", $2); }
+  | '&' unary_expression               { $$ = cb_unary("&", $2); }
+  | '*' unary_expression               { $$ = cb_unary("*", $2); }
+  | '+' unary_expression               { $$ = cb_unary("+", $2); }
+  | '-' unary_expression               { $$ = cb_unary("-", $2); }
+  | KW_SIZEOF unary_expression         { $$ = cb_unary("sizeof", $2); }
+  | KW_SIZEOF '(' type_specifier ')'   { $$ = cb_int_literal("0", gInfo); }
+  | KW_TYPEOF '(' expression ')'       { $$ = $3; }
   ;
 
 postfix_expression
-  : primary_expression
-  | postfix_expression '(' argument_expression_list_opt ')'
-  | postfix_expression INC
-  | postfix_expression DEC
-  | postfix_expression '[' expression ']'
-  | postfix_expression '.' IDENTIFIER
-  | postfix_expression ARROW IDENTIFIER
-  | KW_GENERIC '(' assignment_expression ',' assignment_expression ')'
+  : primary_expression                                    { $$ = $1; }
+  | postfix_expression '(' argument_expression_list_opt ')' { $$ = cb_call($1, $3); }
+  | postfix_expression INC                                 { $$ = cb_unary("post++", $1); }
+  | postfix_expression DEC                                 { $$ = cb_unary("post--", $1); }
+  | postfix_expression '[' expression ']'                  { $$ = cb_index($1, $3); }
+  | postfix_expression '.' IDENTIFIER                      { $$ = cb_member($1, $3, 0); }
+  | postfix_expression ARROW IDENTIFIER                    { $$ = cb_member($1, $3, 1); }
+  | KW_GENERIC '(' assignment_expression ',' assignment_expression ')' { $$ = cb_binary("_Generic", $3, $5); }
   ;
 
 argument_expression_list_opt
-  : /* empty */
-  | argument_expression_list
+  : /* empty */                   { $$ = cb_list_new(); }
+  | argument_expression_list      { $$ = $1; }
   ;
 
 argument_expression_list
-  : assignment_expression
-  | argument_expression_list ',' assignment_expression
+  : assignment_expression                               { $$ = cb_list_append(cb_list_new(), $1); }
+  | argument_expression_list ',' assignment_expression  { $$ = cb_list_append($1, $3); }
   ;
 
 primary_expression
-  : IDENTIFIER
-  | constant
-  | string_seq
-  | '(' expression ')'
-  | LPAREN_BRACE compound_statement ')'
+  : IDENTIFIER                           { $$ = cb_ident($1); }
+  | constant                             { $$ = $1; }
+  | string_seq                           { $$ = $1; }
+  | '(' expression ')'                   { $$ = $2; }
+  | LPAREN_BRACE compound_statement ')'  { $$ = $2; }
   ;
 
 constant
-  : INTEGER_CONSTANT
-  | FLOAT_CONSTANT
-  | CHAR_CONSTANT
+  : INTEGER_CONSTANT   { $$ = cb_int_literal($1, gInfo); }
+  | FLOAT_CONSTANT     { $$ = cb_float_literal($1); }
+  | CHAR_CONSTANT      { $$ = cb_char_literal($1); }
   ;
 
 string_seq
-  : STRING_LITERAL
-  | string_seq STRING_LITERAL
+  : STRING_LITERAL                    { $$ = cb_string_literal($1); }
+  | string_seq STRING_LITERAL         { $$ = cb_binary("strcat", $1, cb_string_literal($2)); }
   ;
 
 /* Optional expressions */

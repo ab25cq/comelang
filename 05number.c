@@ -185,6 +185,11 @@ sNode*% create_int_node(int value, sInfo* info)
     return new sIntNode(value, info) implements sNode;
 }
 
+sNode* new_int_node(int value, sInfo* info)
+{
+    return borrow new sIntNode(value, info) implements sNode;
+}
+
 sNode*% get_number(bool minus, sInfo* info)
 {
     const int buf_size = 128;

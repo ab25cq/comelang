@@ -2793,6 +2793,13 @@ struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo*
 struct sNode* top_level_v92(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v91(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* static_assert_node(struct sNode* exp, struct sNode* exp2, struct sInfo* info);
+struct sNode* new_return_node(struct sNode* value, char* value_source, struct sInfo* info);
+struct sNode* new_output_node(char* contents, struct sInfo* info);
+struct sNode* new_inline_assembler_node(char* source, int num_exps, struct sNode** exps, struct sInfo* info);
+struct sNode* new_line_node(struct sInfo* info);
+struct sNode* new_sname_node(struct sInfo* info);
+struct sNode* new_func_node(struct sInfo* info);
+struct sNode* new_int_node(int value, struct sInfo* info);
 struct sStoreNode* sStoreNode_initialize(struct sStoreNode* self, char* name, struct list$1char$ph* multiple_assign, struct list$1tuple3$3sType$phchar$phsNode$ph$ph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info, char* attribute, _Bool comma, _Bool val_);
 char* sStoreNode_kind(struct sStoreNode* self);
 _Bool sStoreNode_compile(struct sStoreNode* self, struct sInfo* info);

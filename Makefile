@@ -17,16 +17,19 @@ all: comelang-sh
 # grammar generation (Flex + Bison)
 #########################################
 
-.PHONY: parser
-parser:
-	@echo "[Bison] grammar/comelang.y -> grammar/parser.c, grammar/parser.h"
-	bison -d -v --defines=grammar/parser.h -o grammar/parser.c grammar/comelang.y
-	@echo "[Flex ] grammar/comelang.l -> grammar/lexer.c"
-	flex -o grammar/lexer.c grammar/comelang.l
-	@echo "generated: grammar/parser.c grammar/parser.h grammar/lexer.c"
-
 comelang: 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05parse.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o 
 	comelang -o comelang 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 05parse.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o $(CFLAGS) 
+
+parser:
+	@echo "[Bison] comelang2/comelang.y -> comelang2/parser.c, comelang2/parser.h"
+	bison -d -v --defines=comelang2/parser.h -o comelang2/parser.c comelang2/comelang.y
+	@echo "[Flex ] comelang2/comelang.l -> comelang2/lexer.c"
+	flex -o comelang2/lexer.c comelang2/comelang.l
+	@echo "generated: comelang2/parser.c comelang2/parser.h comelang2/lexer.c"
+
+comelang2: parser
+	comelang -c -S comelang2/main.c
+	$(CC) -DYYDEBUG=1 -Icomelang2 -o comelang2/comelang2 comelang2/main.c.c comelang2/parser.c comelang2/lexer.c comelang2/arena.c comelang2/ast_bridge_stub.c 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 05parse.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o $(CFLAGS) 
 
 01main.c.o: 01main.c
 	comelang -s -C -o 01main.c.o -c 01main.c $(CFLAGS) 
@@ -338,4 +341,4 @@ uninstall:
 	rm -f "$(DESTDIR)"/include/comelang-str.h
 	rm -f "$(DESTDIR)"/include/comelang-net.h
 	rm -f "$(DESTDIR)"/include/comelang-pthread.h
-	rm -f "$(DESTDIR)/share/doc/comelang/README.md"
+	rm -f "$(DESTDIR)/share/doc/comelang/README.md

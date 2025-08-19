@@ -245,7 +245,6 @@ uniq int gComeGCLib = 0;
 uniq int gNumAlloc = 0;
 uniq int gNumFree = 0;
 
-
 #if defined(__MAC__) || defined(__LINUX__) || defined(__ANDROID__)
 #define HEAP_POOL_PAGE_SIZE 4096 //(2 * 1024 * 1024)
 #else
@@ -717,8 +716,6 @@ uniq void come_print_heap_info(void* mem)
 }
 #endif
 
-
-
 uniq char* come_dynamic_typeof(void* mem)
 {
     if(gComeDebugLib) {
@@ -917,7 +914,6 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
         }
     }
 }
-
 
 uniq string __builtin_string(char* str)
 {
@@ -4875,6 +4871,52 @@ uniq void int::times(int self, void* parent, void (*block)(void* parent, int it)
     for(int i = 0; i < self; i++) {
         block(parent, i);
     }
+}
+
+///////////////////////////////////////////////////////////////////////////
+// C interface
+///////////////////////////////////////////////////////////////////////////
+uniq buffer*% create_buffer_object(char* mem, int size)
+{
+    buffer*% result = new buffer();
+    result.append(mem, size);
+    return result;
+}
+
+uniq void* create_list_object(int num_values, void** values)
+{
+    return new list<void*>.initialize_with_values(num_values, values);
+}
+
+uniq void* create_map_object(int num_keys, void** keys, void** values)
+{
+    return new map<void*,void*>.initialize_with_values(num_keys, keys, values);
+
+}
+
+uniq void* create_tuple1_object(void* value)
+{
+    return new tuple1<void*>.initialize(value);
+}
+
+uniq void* create_tuple2_object(void* value, void* value2)
+{
+    return new tuple2<void*, void*>.initialize(value, value2);
+}
+
+uniq void* create_tuple3_object(void* value, void* value2, void* value3)
+{
+    return new tuple3<void*, void*, void*>.initialize(value, value2, value3);
+}
+
+uniq void* create_tuple4_object(void* value, void* value2, void* value3, void* value4)
+{
+    return new tuple4<void*, void*, void*, void*>.initialize(value, value2, value3, value4);
+}
+
+uniq void* create_tuple5_object(void* value, void* value2, void* value3, void* value4, void* value5)
+{
+    return new tuple5<void*, void*, void*, void*, void*>.initialize(value, value2, value3, value4, value5);
 }
 
 #endif

@@ -1060,4 +1060,15 @@ sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 92
 sNode*% top_level(char* buf, char* head, int head_sline, sInfo* info) version 91;
 sNode*% static_assert_node(sNode*% exp, sNode*% exp2, sInfo* info=info);
 
+/////////////////////////////////////////////////////////////////////
+// C interface
+/////////////////////////////////////////////////////////////////////
+sNode* new_return_node(sNode* value, char* value_source, sInfo* info);
+sNode* new_output_node(char* contents, sInfo* info);
+sNode* new_inline_assembler_node(char* source, int num_exps, sNode** exps, sInfo* info);
+sNode* new_line_node(sInfo* info);
+sNode* new_sname_node(sInfo* info);
+sNode* new_func_node(sInfo* info);
+sNode* new_int_node(int value, sInfo* info);
+
 #endif

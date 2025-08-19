@@ -133,6 +133,11 @@ class sReturnNode extends sNodeBase
     }
 };
 
+sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info)
+{
+    return new sReturnNode(value, value_source, info) implements sNode;
+}
+
 class sOutputNode extends sNodeBase
 {
     new(string contents, sInfo* info)
@@ -154,6 +159,16 @@ class sOutputNode extends sNodeBase
         return true;
     }
 };
+
+sNode* new_output_node(char* contents, sInfo* info)
+{
+    return borrow new sOutputNode(string(contents), info) implements sNode;
+}
+
+sNode*% create_output_node(char* contents, sInfo* info=info)
+{
+    return new sOutputNode(string(contents), info) implements sNode;
+}
 
 class sInlineAssembler extends sNodeBase
 {
@@ -272,6 +287,11 @@ class sLineNode extends sNodeBase
     }
 };
 
+sNode* new_line_node(sInfo* info)
+{
+    return borrow new sLineNode(info) implements sNode;
+}
+
 class sSNameNode extends sNodeBase
 {
     new(sInfo* info)
@@ -299,6 +319,11 @@ class sSNameNode extends sNodeBase
         return true;
     }
 };
+
+sNode* new_sname_node(sInfo* info)
+{
+    return borrow new sSNameNode(info) implements sNode;
+}
 
 class sFuncNode extends sNodeBase
 {
@@ -328,6 +353,11 @@ class sFuncNode extends sNodeBase
         return true;
     }
 };
+
+sNode* new_func_node(sInfo* info)
+{
+    return borrow new sSNameNode(info) implements sNode;
+}
 
 class sWildCard extends sNodeBase
 {
@@ -1985,10 +2015,6 @@ sNode*% expression_node(sInfo* info=info) version 1
     return (sNode*%)null;
 }
 
-sNode*% create_return_node(sNode*% value, string value_source, sInfo* info=info)
-{
-    return new sReturnNode(value, value_source, info) implements sNode;
-}
 
 sNode*% expression_node(sInfo* info=info) version 97
 {

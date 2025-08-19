@@ -2746,6 +2746,13 @@ struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo*
 struct sNode* top_level_v92(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v91(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* static_assert_node(struct sNode* exp, struct sNode* exp2, struct sInfo* info);
+struct sNode* new_return_node(struct sNode* value, char* value_source, struct sInfo* info);
+struct sNode* new_output_node(char* contents, struct sInfo* info);
+struct sNode* new_inline_assembler_node(char* source, int num_exps, struct sNode** exps, struct sInfo* info);
+struct sNode* new_line_node(struct sInfo* info);
+struct sNode* new_sname_node(struct sInfo* info);
+struct sNode* new_func_node(struct sInfo* info);
+struct sNode* new_int_node(int value, struct sInfo* info);
 struct sGlobalVariable* sGlobalVariable_initialize(struct sGlobalVariable* self, struct list$1tuple3$3sType$phchar$phchar$ph$ph* multiple_declare, struct sType* type, char* name, struct sNode* right_node, char* array_initializer, struct sInfo* info);
 char* sGlobalVariable_kind(struct sGlobalVariable* self);
 _Bool sGlobalVariable_compile(struct sGlobalVariable* self, struct sInfo* info);

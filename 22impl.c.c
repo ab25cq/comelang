@@ -2695,6 +2695,13 @@ struct tuple4$4char$phchar$phchar$phchar$ph* create_vtable(struct sType* any_typ
 struct sNode* top_level_v92(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* top_level_v91(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* static_assert_node(struct sNode* exp, struct sNode* exp2, struct sInfo* info);
+struct sNode* new_return_node(struct sNode* value, char* value_source, struct sInfo* info);
+struct sNode* new_output_node(char* contents, struct sInfo* info);
+struct sNode* new_inline_assembler_node(char* source, int num_exps, struct sNode** exps, struct sInfo* info);
+struct sNode* new_line_node(struct sInfo* info);
+struct sNode* new_sname_node(struct sInfo* info);
+struct sNode* new_func_node(struct sInfo* info);
+struct sNode* new_int_node(int value, struct sInfo* info);
 struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo* info);
 static struct list$1char$ph* list$1char$ph_reset(struct list$1char$ph* self);
 static void list_item$1char$ph$p_finalize(struct list_item$1char$ph* self);
