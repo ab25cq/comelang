@@ -1,7 +1,7 @@
-#include "arena.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include "common2.h"
 
 static arena_block_t* arena_new_block(size_t cap)
 {

@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "ast_bridge.h"
 
 /* Forward decls from comelang */
 struct sNode;

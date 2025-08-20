@@ -1,6 +1,6 @@
-#line 1 "comelang2/lexer.c"
+#line 1 "src/lexer.c"
 
-#line 3 "comelang2/lexer.c"
+#line 3 "src/lexer.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -736,19 +736,18 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "comelang2/comelang.l"
+#line 1 "src/comelang.l"
 /*
  * Flex lexer for C17 + GCC/Clang extensions (skeleton)
  */
-#line 8 "comelang2/comelang.l"
+#line 8 "src/comelang.l"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "parser.h"
-#include "arena.h"
-#include "mem.h"
-#line 750 "comelang2/lexer.c"
-#line 751 "comelang2/lexer.c"
+#include "common2.h"
+#line 749 "src/lexer.c"
+#line 750 "src/lexer.c"
 
 #define INITIAL 0
 
@@ -965,10 +964,10 @@ YY_DECL
 		}
 
 	{
-#line 27 "comelang2/comelang.l"
+#line 26 "src/comelang.l"
 
 
-#line 971 "comelang2/lexer.c"
+#line 970 "src/lexer.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1028,571 +1027,571 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 29 "comelang2/comelang.l"
+#line 28 "src/comelang.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 30 "comelang2/comelang.l"
+#line 29 "src/comelang.l"
 ;
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 31 "comelang2/comelang.l"
+#line 30 "src/comelang.l"
 ;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 32 "comelang2/comelang.l"
+#line 31 "src/comelang.l"
 ;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 34 "comelang2/comelang.l"
+#line 33 "src/comelang.l"
 return KW_INT;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 35 "comelang2/comelang.l"
+#line 34 "src/comelang.l"
 return KW_CHAR;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 36 "comelang2/comelang.l"
+#line 35 "src/comelang.l"
 return KW_VOID;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 37 "comelang2/comelang.l"
+#line 36 "src/comelang.l"
 return KW_STRUCT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 38 "comelang2/comelang.l"
+#line 37 "src/comelang.l"
 return KW_UNION;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 39 "comelang2/comelang.l"
+#line 38 "src/comelang.l"
 return KW_ENUM;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 40 "comelang2/comelang.l"
+#line 39 "src/comelang.l"
 return KW_TYPEDEF;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 41 "comelang2/comelang.l"
+#line 40 "src/comelang.l"
 return KW_RETURN;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 42 "comelang2/comelang.l"
+#line 41 "src/comelang.l"
 return KW_GOTO;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 43 "comelang2/comelang.l"
+#line 42 "src/comelang.l"
 return KW_IF;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 44 "comelang2/comelang.l"
+#line 43 "src/comelang.l"
 return KW_ELSE;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 45 "comelang2/comelang.l"
+#line 44 "src/comelang.l"
 return KW_WHILE;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 46 "comelang2/comelang.l"
+#line 45 "src/comelang.l"
 return KW_FOR;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 47 "comelang2/comelang.l"
+#line 46 "src/comelang.l"
 return KW_DO;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 48 "comelang2/comelang.l"
+#line 47 "src/comelang.l"
 return KW_SWITCH;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 49 "comelang2/comelang.l"
+#line 48 "src/comelang.l"
 return KW_CASE;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 50 "comelang2/comelang.l"
+#line 49 "src/comelang.l"
 return KW_DEFAULT;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 51 "comelang2/comelang.l"
+#line 50 "src/comelang.l"
 return KW_BREAK;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 52 "comelang2/comelang.l"
+#line 51 "src/comelang.l"
 return KW_CONTINUE;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 53 "comelang2/comelang.l"
+#line 52 "src/comelang.l"
 return KW_SIZEOF;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 54 "comelang2/comelang.l"
+#line 53 "src/comelang.l"
 return KW_ALIGNAS;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 55 "comelang2/comelang.l"
+#line 54 "src/comelang.l"
 return KW_ALIGNOF;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 56 "comelang2/comelang.l"
+#line 55 "src/comelang.l"
 return KW_NORETURN;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 57 "comelang2/comelang.l"
+#line 56 "src/comelang.l"
 return KW_THREAD_LOCAL;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 58 "comelang2/comelang.l"
+#line 57 "src/comelang.l"
 return KW_ATOMIC;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 59 "comelang2/comelang.l"
+#line 58 "src/comelang.l"
 return KW_BOOL;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 60 "comelang2/comelang.l"
+#line 59 "src/comelang.l"
 return KW_COMPLEX;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 61 "comelang2/comelang.l"
+#line 60 "src/comelang.l"
 return KW_IMAGINARY;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 62 "comelang2/comelang.l"
+#line 61 "src/comelang.l"
 return KW_FLOAT;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 63 "comelang2/comelang.l"
+#line 62 "src/comelang.l"
 return KW_DOUBLE;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 64 "comelang2/comelang.l"
+#line 63 "src/comelang.l"
 return KW_SHORT;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 65 "comelang2/comelang.l"
+#line 64 "src/comelang.l"
 return KW_LONG;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 66 "comelang2/comelang.l"
+#line 65 "src/comelang.l"
 return KW_SIGNED;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 67 "comelang2/comelang.l"
+#line 66 "src/comelang.l"
 return KW_UNSIGNED;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 68 "comelang2/comelang.l"
+#line 67 "src/comelang.l"
 return KW_AUTO;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 69 "comelang2/comelang.l"
+#line 68 "src/comelang.l"
 return KW_REGISTER;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 70 "comelang2/comelang.l"
+#line 69 "src/comelang.l"
 return KW_EXTERN;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 71 "comelang2/comelang.l"
+#line 70 "src/comelang.l"
 return KW_STATIC;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 72 "comelang2/comelang.l"
+#line 71 "src/comelang.l"
 return KW_INLINE;
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 73 "comelang2/comelang.l"
+#line 72 "src/comelang.l"
 return KW_INLINE;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 74 "comelang2/comelang.l"
+#line 73 "src/comelang.l"
 return KW_CONST;
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 75 "comelang2/comelang.l"
+#line 74 "src/comelang.l"
 return KW_VOLATILE;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 76 "comelang2/comelang.l"
+#line 75 "src/comelang.l"
 return KW_RESTRICT;
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 77 "comelang2/comelang.l"
+#line 76 "src/comelang.l"
 return KW_RESTRICT;
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 78 "comelang2/comelang.l"
+#line 77 "src/comelang.l"
 return KW_STATIC_ASSERT;
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 79 "comelang2/comelang.l"
+#line 78 "src/comelang.l"
 return KW_STATIC_ASSERT;
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 80 "comelang2/comelang.l"
+#line 79 "src/comelang.l"
 return KW_GENERIC;
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 81 "comelang2/comelang.l"
+#line 80 "src/comelang.l"
 return KW_ASM;
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 82 "comelang2/comelang.l"
+#line 81 "src/comelang.l"
 return KW_ASM;
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 83 "comelang2/comelang.l"
+#line 82 "src/comelang.l"
 return KW_TYPEOF;
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 84 "comelang2/comelang.l"
+#line 83 "src/comelang.l"
 return KW_TYPEOF;
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 85 "comelang2/comelang.l"
+#line 84 "src/comelang.l"
 return KW_AUTO_TYPE;
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 86 "comelang2/comelang.l"
+#line 85 "src/comelang.l"
 return KW_ATTRIBUTE;
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 87 "comelang2/comelang.l"
+#line 86 "src/comelang.l"
 return KW_DECLSPEC;
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 89 "comelang2/comelang.l"
+#line 88 "src/comelang.l"
 return LPAREN_BRACE;
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 90 "comelang2/comelang.l"
+#line 89 "src/comelang.l"
 return '(';
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 91 "comelang2/comelang.l"
+#line 90 "src/comelang.l"
 return ')';
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 92 "comelang2/comelang.l"
+#line 91 "src/comelang.l"
 return '{';
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 93 "comelang2/comelang.l"
+#line 92 "src/comelang.l"
 return '}';
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 94 "comelang2/comelang.l"
+#line 93 "src/comelang.l"
 return ',';
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 95 "comelang2/comelang.l"
+#line 94 "src/comelang.l"
 return ';';
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 96 "comelang2/comelang.l"
+#line 95 "src/comelang.l"
 return '.';
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 97 "comelang2/comelang.l"
+#line 96 "src/comelang.l"
 return '&';
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 98 "comelang2/comelang.l"
+#line 97 "src/comelang.l"
 return '*';
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 99 "comelang2/comelang.l"
+#line 98 "src/comelang.l"
 return '+';
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 100 "comelang2/comelang.l"
+#line 99 "src/comelang.l"
 return '-';
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 101 "comelang2/comelang.l"
+#line 100 "src/comelang.l"
 return '/';
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 102 "comelang2/comelang.l"
+#line 101 "src/comelang.l"
 return '%';
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 103 "comelang2/comelang.l"
+#line 102 "src/comelang.l"
 return '<';
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 104 "comelang2/comelang.l"
+#line 103 "src/comelang.l"
 return '>';
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 105 "comelang2/comelang.l"
+#line 104 "src/comelang.l"
 return '=';
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 106 "comelang2/comelang.l"
+#line 105 "src/comelang.l"
 return '!';
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 107 "comelang2/comelang.l"
+#line 106 "src/comelang.l"
 return '^';
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 108 "comelang2/comelang.l"
+#line 107 "src/comelang.l"
 return '|';
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 109 "comelang2/comelang.l"
+#line 108 "src/comelang.l"
 return '?';
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 110 "comelang2/comelang.l"
+#line 109 "src/comelang.l"
 return ':';
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 112 "comelang2/comelang.l"
+#line 111 "src/comelang.l"
 return ELLIPSIS;
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 113 "comelang2/comelang.l"
+#line 112 "src/comelang.l"
 return ARROW;
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 114 "comelang2/comelang.l"
+#line 113 "src/comelang.l"
 return INC;
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 115 "comelang2/comelang.l"
+#line 114 "src/comelang.l"
 return DEC;
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 116 "comelang2/comelang.l"
+#line 115 "src/comelang.l"
 return LSHIFT;
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 117 "comelang2/comelang.l"
+#line 116 "src/comelang.l"
 return RSHIFT;
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 118 "comelang2/comelang.l"
+#line 117 "src/comelang.l"
 return LE;
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 119 "comelang2/comelang.l"
+#line 118 "src/comelang.l"
 return GE;
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 120 "comelang2/comelang.l"
+#line 119 "src/comelang.l"
 return EQ;
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 121 "comelang2/comelang.l"
+#line 120 "src/comelang.l"
 return NE;
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 122 "comelang2/comelang.l"
+#line 121 "src/comelang.l"
 return LOGAND;
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 123 "comelang2/comelang.l"
+#line 122 "src/comelang.l"
 return LOGOR;
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 124 "comelang2/comelang.l"
+#line 123 "src/comelang.l"
 return LSHIFT_ASSIGN;
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 125 "comelang2/comelang.l"
+#line 124 "src/comelang.l"
 return RSHIFT_ASSIGN;
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 126 "comelang2/comelang.l"
+#line 125 "src/comelang.l"
 return ADD_ASSIGN;
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 127 "comelang2/comelang.l"
+#line 126 "src/comelang.l"
 return SUB_ASSIGN;
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 128 "comelang2/comelang.l"
+#line 127 "src/comelang.l"
 return MUL_ASSIGN;
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 129 "comelang2/comelang.l"
+#line 128 "src/comelang.l"
 return DIV_ASSIGN;
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 130 "comelang2/comelang.l"
+#line 129 "src/comelang.l"
 return MOD_ASSIGN;
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 131 "comelang2/comelang.l"
+#line 130 "src/comelang.l"
 return AND_ASSIGN;
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 132 "comelang2/comelang.l"
+#line 131 "src/comelang.l"
 return OR_ASSIGN;
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 133 "comelang2/comelang.l"
+#line 132 "src/comelang.l"
 return XOR_ASSIGN;
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 135 "comelang2/comelang.l"
+#line 134 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 136 "comelang2/comelang.l"
+#line 135 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 137 "comelang2/comelang.l"
+#line 136 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 138 "comelang2/comelang.l"
+#line 137 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return INTEGER_CONSTANT; }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 139 "comelang2/comelang.l"
+#line 138 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return FLOAT_CONSTANT; }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 140 "comelang2/comelang.l"
+#line 139 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return FLOAT_CONSTANT; }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 142 "comelang2/comelang.l"
+#line 141 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return CHAR_CONSTANT; }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 143 "comelang2/comelang.l"
+#line 142 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return STRING_LITERAL; }
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 145 "comelang2/comelang.l"
+#line 144 "src/comelang.l"
 { yylval.sval = arena_strndup(g_arena, yytext, yyleng); return IDENTIFIER; }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 146 "comelang2/comelang.l"
+#line 145 "src/comelang.l"
 { return yytext[0]; }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 148 "comelang2/comelang.l"
+#line 147 "src/comelang.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 1595 "comelang2/lexer.c"
+#line 1594 "src/lexer.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2597,6 +2596,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 148 "comelang2/comelang.l"
+#line 147 "src/comelang.l"
 
 

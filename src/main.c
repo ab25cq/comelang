@@ -1,5 +1,5 @@
-#include <comelang.h>
 #include "common.h"
+#include "common2.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,10 +7,6 @@
 extern int yyparse(void);
 extern FILE* yyin;
 extern int yydebug;
-#include "arena.h"
-#include "mem.h"
-#include "ast_bridge.h"
-#include "info.h"
 
 static arena_t g_arena_inst;
 arena_t* g_arena = &g_arena_inst;

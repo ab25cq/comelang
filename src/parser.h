@@ -204,14 +204,14 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 48 "comelang2/comelang.y"
+#line 47 "src/comelang.y"
 {
   char* sval;
   long  ival;
   struct sNode* node;
 }
 /* Line 1529 of yacc.c.  */
-#line 215 "comelang2/parser.h"
+#line 215 "src/parser.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

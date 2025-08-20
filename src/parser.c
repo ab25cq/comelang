@@ -230,7 +230,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 8 "comelang2/comelang.y"
+#line 8 "src/comelang.y"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -242,8 +242,7 @@ static void yyerror(const char* msg)
   fprintf(stderr, "parse error: %s\n", msg);
 }
 
-#include "ast_bridge.h"
-#include "info.h"
+#include "common2.h"
 
 
 /* Enabling traces.  */
@@ -266,14 +265,14 @@ static void yyerror(const char* msg)
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 48 "comelang2/comelang.y"
+#line 47 "src/comelang.y"
 {
   char* sval;
   long  ival;
   struct sNode* node;
 }
 /* Line 193 of yacc.c.  */
-#line 277 "comelang2/parser.c"
+#line 276 "src/parser.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -286,7 +285,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 290 "comelang2/parser.c"
+#line 289 "src/parser.c"
 
 #ifdef short
 # undef short
@@ -683,33 +682,33 @@ static const yytype_int16 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    78,    78,    80,    84,    85,    86,    87,    92,    93,
-      97,    98,   102,   103,   104,   105,   106,   107,   108,   112,
-     113,   114,   115,   116,   117,   121,   122,   123,   124,   128,
-     129,   133,   134,   138,   142,   145,   147,   151,   152,   156,
-     157,   158,   159,   163,   164,   168,   169,   172,   174,   179,
-     182,   184,   188,   189,   190,   191,   195,   196,   200,   201,
-     202,   203,   204,   207,   209,   213,   214,   217,   219,   223,
-     224,   228,   229,   233,   234,   239,   240,   241,   242,   243,
-     244,   245,   246,   247,   248,   249,   250,   251,   252,   253,
-     257,   258,   259,   260,   264,   265,   266,   267,   268,   269,
-     273,   274,   278,   279,   283,   284,   288,   289,   290,   294,
-     295,   296,   299,   301,   305,   306,   307,   311,   312,   317,
-     322,   323,   327,   328,   332,   333,   337,   338,   342,   346,
-     349,   351,   355,   356,   360,   361,   366,   369,   371,   372,
-     373,   379,   380,   381,   382,   383,   386,   388,   391,   393,
-     396,   398,   401,   403,   407,   408,   412,   413,   417,   421,
-     424,   426,   430,   431,   435,   436,   440,   444,   445,   446,
-     447,   448,   449,   450,   451,   452,   453,   454,   455,   456,
-     457,   458,   459,   463,   464,   465,   469,   470,   475,   479,
-     480,   481,   482,   483,   484,   485,   486,   487,   488,   489,
-     490,   494,   498,   499,   503,   504,   508,   509,   510,   514,
-     515,   516,   517,   518,   522,   523,   524,   528,   529,   530,
-     531,   535,   536,   537,   538,   539,   540,   541,   542,   543,
-     544,   548,   549,   550,   551,   552,   553,   554,   555,   559,
-     560,   564,   565,   569,   570,   571,   572,   573,   577,   578,
-     579,   583,   584,   588,   590,   595,   596,   597,   601,   602,
-     605,   607,   611,   615,   616,   620,   621,   625
+       0,    77,    77,    79,    83,    84,    85,    86,    91,    92,
+      96,    97,   101,   102,   103,   104,   105,   106,   107,   111,
+     112,   113,   114,   115,   116,   120,   121,   122,   123,   127,
+     128,   132,   133,   137,   141,   144,   146,   150,   151,   155,
+     156,   157,   158,   162,   163,   167,   168,   171,   173,   178,
+     181,   183,   187,   188,   189,   190,   194,   195,   199,   200,
+     201,   202,   203,   206,   208,   212,   213,   216,   218,   222,
+     223,   227,   228,   232,   233,   238,   239,   240,   241,   242,
+     243,   244,   245,   246,   247,   248,   249,   250,   251,   252,
+     256,   257,   258,   259,   263,   264,   265,   266,   267,   268,
+     272,   273,   277,   278,   282,   283,   287,   288,   289,   293,
+     294,   295,   298,   300,   304,   305,   306,   310,   311,   316,
+     321,   322,   326,   327,   331,   332,   336,   337,   341,   345,
+     348,   350,   354,   355,   359,   360,   365,   368,   370,   371,
+     372,   378,   379,   380,   381,   382,   385,   387,   390,   392,
+     395,   397,   400,   402,   406,   407,   411,   412,   416,   420,
+     423,   425,   429,   430,   434,   435,   439,   443,   444,   445,
+     446,   447,   448,   449,   450,   451,   452,   453,   454,   455,
+     456,   457,   458,   462,   463,   464,   468,   469,   474,   478,
+     479,   480,   481,   482,   483,   484,   485,   486,   487,   488,
+     489,   493,   497,   498,   502,   503,   507,   508,   509,   513,
+     514,   515,   516,   517,   521,   522,   523,   527,   528,   529,
+     530,   534,   535,   536,   537,   538,   539,   540,   541,   542,
+     543,   547,   548,   549,   550,   551,   552,   553,   554,   558,
+     559,   563,   564,   568,   569,   570,   571,   572,   576,   577,
+     578,   582,   583,   587,   589,   594,   595,   596,   600,   601,
+     604,   606,   610,   614,   615,   619,   620,   624
 };
 #endif
 
@@ -2134,323 +2133,323 @@ yyreduce:
   switch (yyn)
     {
         case 119:
-#line 318 "comelang2/comelang.y"
+#line 317 "src/comelang.y"
     { cb_on_function_simple((yyvsp[(2) - (6)].sval), (yyvsp[(4) - (6)].ival)); ;}
     break;
 
   case 122:
-#line 327 "comelang2/comelang.y"
+#line 326 "src/comelang.y"
     { (yyval.ival) = 0; ;}
     break;
 
   case 123:
-#line 328 "comelang2/comelang.y"
+#line 327 "src/comelang.y"
     { (yyval.ival) = (yyvsp[(1) - (1)].ival); ;}
     break;
 
   case 124:
-#line 332 "comelang2/comelang.y"
+#line 331 "src/comelang.y"
     { (yyval.ival) = 1; ;}
     break;
 
   case 125:
-#line 333 "comelang2/comelang.y"
+#line 332 "src/comelang.y"
     { (yyval.ival) = (yyvsp[(1) - (3)].ival) + 1; ;}
     break;
 
   case 167:
-#line 444 "comelang2/comelang.y"
+#line 443 "src/comelang.y"
     { (yyval.node) = cb_stmt_empty(); ;}
     break;
 
   case 168:
-#line 445 "comelang2/comelang.y"
+#line 444 "src/comelang.y"
     { (yyval.node) = cb_expr_stmt((yyvsp[(1) - (2)].node)); ;}
     break;
 
   case 169:
-#line 446 "comelang2/comelang.y"
+#line 445 "src/comelang.y"
     { (yyval.node) = cb_stmt_return((yyvsp[(2) - (3)].node)); ;}
     break;
 
   case 170:
-#line 447 "comelang2/comelang.y"
+#line 446 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 171:
-#line 448 "comelang2/comelang.y"
+#line 447 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 172:
-#line 449 "comelang2/comelang.y"
+#line 448 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 173:
-#line 450 "comelang2/comelang.y"
+#line 449 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 174:
-#line 451 "comelang2/comelang.y"
+#line 450 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 175:
-#line 452 "comelang2/comelang.y"
+#line 451 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 176:
-#line 453 "comelang2/comelang.y"
+#line 452 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 177:
-#line 454 "comelang2/comelang.y"
+#line 453 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 178:
-#line 455 "comelang2/comelang.y"
+#line 454 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 179:
-#line 456 "comelang2/comelang.y"
+#line 455 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 180:
-#line 457 "comelang2/comelang.y"
+#line 456 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 181:
-#line 458 "comelang2/comelang.y"
+#line 457 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 182:
-#line 459 "comelang2/comelang.y"
+#line 458 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 186:
-#line 469 "comelang2/comelang.y"
+#line 468 "src/comelang.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 187:
-#line 470 "comelang2/comelang.y"
+#line 469 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 188:
-#line 475 "comelang2/comelang.y"
+#line 474 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 214:
-#line 522 "comelang2/comelang.y"
+#line 521 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 215:
-#line 523 "comelang2/comelang.y"
+#line 522 "src/comelang.y"
     { (yyval.node) = cb_binary("+", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 216:
-#line 524 "comelang2/comelang.y"
+#line 523 "src/comelang.y"
     { (yyval.node) = cb_binary("-", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 217:
-#line 528 "comelang2/comelang.y"
+#line 527 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 218:
-#line 529 "comelang2/comelang.y"
+#line 528 "src/comelang.y"
     { (yyval.node) = cb_binary("*", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 219:
-#line 530 "comelang2/comelang.y"
+#line 529 "src/comelang.y"
     { (yyval.node) = cb_binary("/", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 220:
-#line 531 "comelang2/comelang.y"
+#line 530 "src/comelang.y"
     { (yyval.node) = cb_binary("%", (yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 221:
-#line 535 "comelang2/comelang.y"
+#line 534 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 222:
-#line 536 "comelang2/comelang.y"
+#line 535 "src/comelang.y"
     { (yyval.node) = cb_unary("pre++", (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 223:
-#line 537 "comelang2/comelang.y"
+#line 536 "src/comelang.y"
     { (yyval.node) = cb_unary("pre--", (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 224:
-#line 538 "comelang2/comelang.y"
+#line 537 "src/comelang.y"
     { (yyval.node) = cb_unary("&", (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 225:
-#line 539 "comelang2/comelang.y"
+#line 538 "src/comelang.y"
     { (yyval.node) = cb_unary("*", (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 226:
-#line 540 "comelang2/comelang.y"
+#line 539 "src/comelang.y"
     { (yyval.node) = cb_unary("+", (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 227:
-#line 541 "comelang2/comelang.y"
+#line 540 "src/comelang.y"
     { (yyval.node) = cb_unary("-", (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 228:
-#line 542 "comelang2/comelang.y"
+#line 541 "src/comelang.y"
     { (yyval.node) = cb_unary("sizeof", (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 229:
-#line 543 "comelang2/comelang.y"
+#line 542 "src/comelang.y"
     { (yyval.node) = cb_int_literal("0", gInfo); ;}
     break;
 
   case 230:
-#line 544 "comelang2/comelang.y"
+#line 543 "src/comelang.y"
     { (yyval.node) = (yyvsp[(3) - (4)].node); ;}
     break;
 
   case 231:
-#line 548 "comelang2/comelang.y"
+#line 547 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 232:
-#line 549 "comelang2/comelang.y"
+#line 548 "src/comelang.y"
     { (yyval.node) = cb_call((yyvsp[(1) - (4)].node), (yyvsp[(3) - (4)].node)); ;}
     break;
 
   case 233:
-#line 550 "comelang2/comelang.y"
+#line 549 "src/comelang.y"
     { (yyval.node) = cb_unary("post++", (yyvsp[(1) - (2)].node)); ;}
     break;
 
   case 234:
-#line 551 "comelang2/comelang.y"
+#line 550 "src/comelang.y"
     { (yyval.node) = cb_unary("post--", (yyvsp[(1) - (2)].node)); ;}
     break;
 
   case 235:
-#line 552 "comelang2/comelang.y"
+#line 551 "src/comelang.y"
     { (yyval.node) = cb_index((yyvsp[(1) - (4)].node), (yyvsp[(3) - (4)].node)); ;}
     break;
 
   case 236:
-#line 553 "comelang2/comelang.y"
+#line 552 "src/comelang.y"
     { (yyval.node) = cb_member((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].sval), 0); ;}
     break;
 
   case 237:
-#line 554 "comelang2/comelang.y"
+#line 553 "src/comelang.y"
     { (yyval.node) = cb_member((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].sval), 1); ;}
     break;
 
   case 238:
-#line 555 "comelang2/comelang.y"
+#line 554 "src/comelang.y"
     { (yyval.node) = cb_binary("_Generic", (yyvsp[(3) - (6)].node), (yyvsp[(5) - (6)].node)); ;}
     break;
 
   case 239:
-#line 559 "comelang2/comelang.y"
+#line 558 "src/comelang.y"
     { (yyval.node) = cb_list_new(); ;}
     break;
 
   case 240:
-#line 560 "comelang2/comelang.y"
+#line 559 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 241:
-#line 564 "comelang2/comelang.y"
+#line 563 "src/comelang.y"
     { (yyval.node) = cb_list_append(cb_list_new(), (yyvsp[(1) - (1)].node)); ;}
     break;
 
   case 242:
-#line 565 "comelang2/comelang.y"
+#line 564 "src/comelang.y"
     { (yyval.node) = cb_list_append((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 243:
-#line 569 "comelang2/comelang.y"
+#line 568 "src/comelang.y"
     { (yyval.node) = cb_ident((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 244:
-#line 570 "comelang2/comelang.y"
+#line 569 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 245:
-#line 571 "comelang2/comelang.y"
+#line 570 "src/comelang.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 246:
-#line 572 "comelang2/comelang.y"
+#line 571 "src/comelang.y"
     { (yyval.node) = (yyvsp[(2) - (3)].node); ;}
     break;
 
   case 247:
-#line 573 "comelang2/comelang.y"
+#line 572 "src/comelang.y"
     { (yyval.node) = (yyvsp[(2) - (3)].node); ;}
     break;
 
   case 248:
-#line 577 "comelang2/comelang.y"
+#line 576 "src/comelang.y"
     { (yyval.node) = cb_int_literal((yyvsp[(1) - (1)].sval), gInfo); ;}
     break;
 
   case 249:
-#line 578 "comelang2/comelang.y"
+#line 577 "src/comelang.y"
     { (yyval.node) = cb_float_literal((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 250:
-#line 579 "comelang2/comelang.y"
+#line 578 "src/comelang.y"
     { (yyval.node) = cb_char_literal((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 251:
-#line 583 "comelang2/comelang.y"
+#line 582 "src/comelang.y"
     { (yyval.node) = cb_string_literal((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 252:
-#line 584 "comelang2/comelang.y"
+#line 583 "src/comelang.y"
     { (yyval.node) = cb_binary("strcat", (yyvsp[(1) - (2)].node), cb_string_literal((yyvsp[(2) - (2)].sval))); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2454 "comelang2/parser.c"
+#line 2453 "src/parser.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2664,6 +2663,6 @@ yyreturn:
 }
 
 
-#line 628 "comelang2/comelang.y"
+#line 627 "src/comelang.y"
 
 

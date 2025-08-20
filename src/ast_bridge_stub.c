@@ -1,5 +1,5 @@
-#include "ast_bridge.h"
 #include <stdio.h>
+#include "common2.h"
 
 void cb_start_translation_unit(void)
 {
@@ -21,7 +21,7 @@ void cb_on_function_simple(const char* name, long param_count)
 
 // Opaque node helpers (stubs)
 struct sNode* cb_ident(const char* name)           { (void)name; return NULL; }
-#include "ast_bridge.h"
+
 struct sNode* cb_int_literal(const char* text, struct sInfo* info)
 {
     (void)text; (void)info;

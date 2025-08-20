@@ -16,8 +16,7 @@ static void yyerror(const char* msg)
   fprintf(stderr, "parse error: %s\n", msg);
 }
 
-#include "ast_bridge.h"
-#include "info.h"
+#include "common2.h"
 %}
 
 /* Identifiers and literals */

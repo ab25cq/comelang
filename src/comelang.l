@@ -9,8 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "parser.h"
-#include "arena.h"
-#include "mem.h"
+#include "common2.h"
 %}
 
 WS          [ \t\r\v\f\n]+
