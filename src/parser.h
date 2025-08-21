@@ -44,79 +44,60 @@
      INTEGER_CONSTANT = 260,
      FLOAT_CONSTANT = 261,
      CHAR_CONSTANT = 262,
-     KW_INT = 263,
+     KW_VOID = 263,
      KW_CHAR = 264,
-     KW_VOID = 265,
-     KW_FLOAT = 266,
-     KW_DOUBLE = 267,
-     KW_SHORT = 268,
-     KW_LONG = 269,
-     KW_SIGNED = 270,
-     KW_UNSIGNED = 271,
-     KW_BOOL = 272,
-     KW_COMPLEX = 273,
-     KW_IMAGINARY = 274,
-     KW_STRUCT = 275,
-     KW_UNION = 276,
-     KW_ENUM = 277,
-     KW_TYPEDEF = 278,
-     KW_RETURN = 279,
-     KW_IF = 280,
-     KW_ELSE = 281,
-     KW_WHILE = 282,
-     KW_FOR = 283,
-     KW_DO = 284,
-     KW_SWITCH = 285,
-     KW_CASE = 286,
-     KW_DEFAULT = 287,
-     KW_BREAK = 288,
-     KW_CONTINUE = 289,
-     KW_GOTO = 290,
-     KW_SIZEOF = 291,
-     KW_ALIGNAS = 292,
-     KW_ALIGNOF = 293,
-     KW_NORETURN = 294,
-     KW_THREAD_LOCAL = 295,
-     KW_ATOMIC = 296,
-     KW_CONST = 297,
-     KW_VOLATILE = 298,
-     KW_RESTRICT = 299,
-     KW_INLINE = 300,
-     KW_EXTERN = 301,
-     KW_STATIC = 302,
-     KW_REGISTER = 303,
-     KW_AUTO = 304,
-     KW_STATIC_ASSERT = 305,
-     KW_GENERIC = 306,
-     KW_TYPEOF = 307,
-     KW_AUTO_TYPE = 308,
-     KW_ATTRIBUTE = 309,
-     KW_DECLSPEC = 310,
-     KW_EXTENSION = 311,
-     KW_ASM = 312,
-     ELLIPSIS = 313,
-     ARROW = 314,
-     INC = 315,
-     DEC = 316,
-     LSHIFT = 317,
-     RSHIFT = 318,
-     LE = 319,
-     GE = 320,
-     EQ = 321,
-     NE = 322,
-     LOGAND = 323,
-     LOGOR = 324,
-     ADD_ASSIGN = 325,
-     SUB_ASSIGN = 326,
-     MUL_ASSIGN = 327,
-     DIV_ASSIGN = 328,
-     MOD_ASSIGN = 329,
-     AND_ASSIGN = 330,
-     OR_ASSIGN = 331,
-     XOR_ASSIGN = 332,
-     LSHIFT_ASSIGN = 333,
-     RSHIFT_ASSIGN = 334,
-     LPAREN_BRACE = 335
+     KW_SHORT = 265,
+     KW_INT = 266,
+     KW_LONG = 267,
+     KW_SIGNED = 268,
+     KW_UNSIGNED = 269,
+     KW_FLOAT = 270,
+     KW_DOUBLE = 271,
+     KW_STRUCT = 272,
+     KW_UNION = 273,
+     KW_ENUM = 274,
+     KW_TYPEDEF = 275,
+     KW_RETURN = 276,
+     KW_IF = 277,
+     KW_ELSE = 278,
+     KW_WHILE = 279,
+     KW_FOR = 280,
+     KW_DO = 281,
+     KW_SWITCH = 282,
+     KW_CASE = 283,
+     KW_DEFAULT = 284,
+     KW_BREAK = 285,
+     KW_CONTINUE = 286,
+     KW_GOTO = 287,
+     KW_CONST = 288,
+     KW_VOLATILE = 289,
+     KW_RESTRICT = 290,
+     KW_INLINE = 291,
+     KW_EXTERN = 292,
+     KW_STATIC = 293,
+     KW_SIZEOF = 294,
+     ELLIPSIS = 295,
+     ARROW = 296,
+     INC = 297,
+     DEC = 298,
+     LSHIFT = 299,
+     RSHIFT = 300,
+     LE = 301,
+     GE = 302,
+     EQ = 303,
+     NE = 304,
+     LOGAND = 305,
+     LOGOR = 306,
+     ADD_ASSIGN = 307,
+     SUB_ASSIGN = 308,
+     MUL_ASSIGN = 309,
+     DIV_ASSIGN = 310,
+     MOD_ASSIGN = 311,
+     AND_ASSIGN = 312,
+     OR_ASSIGN = 313,
+     XOR_ASSIGN = 314,
+     LSHIFT_ASSIGN = 315,
+     RSHIFT_ASSIGN = 316
    };
 #endif
 /* Tokens.  */
@@ -125,93 +106,73 @@
 #define INTEGER_CONSTANT 260
 #define FLOAT_CONSTANT 261
 #define CHAR_CONSTANT 262
-#define KW_INT 263
+#define KW_VOID 263
 #define KW_CHAR 264
-#define KW_VOID 265
-#define KW_FLOAT 266
-#define KW_DOUBLE 267
-#define KW_SHORT 268
-#define KW_LONG 269
-#define KW_SIGNED 270
-#define KW_UNSIGNED 271
-#define KW_BOOL 272
-#define KW_COMPLEX 273
-#define KW_IMAGINARY 274
-#define KW_STRUCT 275
-#define KW_UNION 276
-#define KW_ENUM 277
-#define KW_TYPEDEF 278
-#define KW_RETURN 279
-#define KW_IF 280
-#define KW_ELSE 281
-#define KW_WHILE 282
-#define KW_FOR 283
-#define KW_DO 284
-#define KW_SWITCH 285
-#define KW_CASE 286
-#define KW_DEFAULT 287
-#define KW_BREAK 288
-#define KW_CONTINUE 289
-#define KW_GOTO 290
-#define KW_SIZEOF 291
-#define KW_ALIGNAS 292
-#define KW_ALIGNOF 293
-#define KW_NORETURN 294
-#define KW_THREAD_LOCAL 295
-#define KW_ATOMIC 296
-#define KW_CONST 297
-#define KW_VOLATILE 298
-#define KW_RESTRICT 299
-#define KW_INLINE 300
-#define KW_EXTERN 301
-#define KW_STATIC 302
-#define KW_REGISTER 303
-#define KW_AUTO 304
-#define KW_STATIC_ASSERT 305
-#define KW_GENERIC 306
-#define KW_TYPEOF 307
-#define KW_AUTO_TYPE 308
-#define KW_ATTRIBUTE 309
-#define KW_DECLSPEC 310
-#define KW_EXTENSION 311
-#define KW_ASM 312
-#define ELLIPSIS 313
-#define ARROW 314
-#define INC 315
-#define DEC 316
-#define LSHIFT 317
-#define RSHIFT 318
-#define LE 319
-#define GE 320
-#define EQ 321
-#define NE 322
-#define LOGAND 323
-#define LOGOR 324
-#define ADD_ASSIGN 325
-#define SUB_ASSIGN 326
-#define MUL_ASSIGN 327
-#define DIV_ASSIGN 328
-#define MOD_ASSIGN 329
-#define AND_ASSIGN 330
-#define OR_ASSIGN 331
-#define XOR_ASSIGN 332
-#define LSHIFT_ASSIGN 333
-#define RSHIFT_ASSIGN 334
-#define LPAREN_BRACE 335
+#define KW_SHORT 265
+#define KW_INT 266
+#define KW_LONG 267
+#define KW_SIGNED 268
+#define KW_UNSIGNED 269
+#define KW_FLOAT 270
+#define KW_DOUBLE 271
+#define KW_STRUCT 272
+#define KW_UNION 273
+#define KW_ENUM 274
+#define KW_TYPEDEF 275
+#define KW_RETURN 276
+#define KW_IF 277
+#define KW_ELSE 278
+#define KW_WHILE 279
+#define KW_FOR 280
+#define KW_DO 281
+#define KW_SWITCH 282
+#define KW_CASE 283
+#define KW_DEFAULT 284
+#define KW_BREAK 285
+#define KW_CONTINUE 286
+#define KW_GOTO 287
+#define KW_CONST 288
+#define KW_VOLATILE 289
+#define KW_RESTRICT 290
+#define KW_INLINE 291
+#define KW_EXTERN 292
+#define KW_STATIC 293
+#define KW_SIZEOF 294
+#define ELLIPSIS 295
+#define ARROW 296
+#define INC 297
+#define DEC 298
+#define LSHIFT 299
+#define RSHIFT 300
+#define LE 301
+#define GE 302
+#define EQ 303
+#define NE 304
+#define LOGAND 305
+#define LOGOR 306
+#define ADD_ASSIGN 307
+#define SUB_ASSIGN 308
+#define MUL_ASSIGN 309
+#define DIV_ASSIGN 310
+#define MOD_ASSIGN 311
+#define AND_ASSIGN 312
+#define OR_ASSIGN 313
+#define XOR_ASSIGN 314
+#define LSHIFT_ASSIGN 315
+#define RSHIFT_ASSIGN 316
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 47 "src/comelang.y"
+#line 17 "c.y"
 {
   char* sval;
   long  ival;
-  struct sNode* node;
 }
 /* Line 1529 of yacc.c.  */
-#line 215 "src/parser.h"
+#line 176 "parser.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
