@@ -14,6 +14,9 @@ void yyerror(const char* s);
 
 %}
 
+%destructor { free($$); } IDENTIFIER STRING_LITERAL INTEGER_CONSTANT
+FLOAT_CONSTANT CHAR_CONSTANT
+
 %union {
   char* sval;
   long  ival;
