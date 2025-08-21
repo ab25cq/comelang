@@ -36,9 +36,9 @@ int main(int argc, char** argv)
         
         if(time_ == 0L) {
             long time_value = time(NULL);
-            string time = xsprintf("%ld", time_value);
+            string time2 = xsprintf("%ld", time_value);
             
-            string query = s"INSERT INTO food(username, time) VALUES('\{username}', '\{time}')";
+            string query = s"INSERT INTO food(username, time) VALUES('\{username}', '\{time2}')";
             (void)client_socket2(port:3366, query);
             puts("""
 <!DOCTYPE html>

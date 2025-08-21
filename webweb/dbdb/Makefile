@@ -82,8 +82,8 @@ uninstall:
 
 run: dbdb
 	rm -f *.log
-	pkill dbdb
-#	./dbdb &
+	pkill dbdb || true
+	./dbdb &
 
 compile: dbdb
 

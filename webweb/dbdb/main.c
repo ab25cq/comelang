@@ -162,7 +162,7 @@ string, sType*%, bool parse_type(sInfo* info=info)
             
             array_num = n;
             
-            expected_next_charactor(')') or return (null, null, true);
+            expected_next_charactor(')')
         }
         else if(strncmp(info->p, "AUTO_INCREMENT", strlen("AUTO_INCREMENT")) == 0) {
             info->p += strlen("AUTO_INCREMENT");
@@ -207,13 +207,13 @@ bool eval_create_table(sInfo* info)
     
     string table_name = parse_word();
     
-    expected_next_charactor('(') or return false;
+    expected_next_charactor('(')
     
     list<tuple2<string, sType*%>*%>*% types = new list<tuple2<string, sType*%>*%>();
     while(1) {
         var field_name, type, err = parse_type();
         
-        err and return false;
+        err
         
         types.add((field_name, type));
         
@@ -221,14 +221,14 @@ bool eval_create_table(sInfo* info)
             break;
         }
         
-        expected_next_charactor(',') or return false;
+        expected_next_charactor(',')
     }
     
-    expected_next_charactor(')') or return false;
+    expected_next_charactor(')')
     
     Database* current_db = gDatabases[info.current_db_name];
     
-    if(current_db.tables[table_name]?? == null) {
+    if(current_db.tables[table_name] == null) {
         current_db.tables.insert(table_name, new Table(table_name, types));
         
         return true;
@@ -287,7 +287,7 @@ bool eval_insert_into(sInfo* info)
     
     skip_spaces();
     
-    expected_next_charactor('(') or return false;
+    expected_next_charactor('(')
     
     list<string>*% field_names = new list<string>();
     while(1) {
@@ -299,10 +299,10 @@ bool eval_insert_into(sInfo* info)
             break;
         }
         
-        expected_next_charactor(',') or return false;
+        expected_next_charactor(',')
     }
     
-    expected_next_charactor(')') or return false;
+    expected_next_charactor(')')
     
     if(strncmp(info->p, "VALUES", strlen("VALUES")) == 0) {
         info->p += strlen("VALUES");
@@ -310,7 +310,7 @@ bool eval_insert_into(sInfo* info)
     
     skip_spaces();
     
-    expected_next_charactor('(') or return false;
+    expected_next_charactor('(')
     
     list<string>*% values = new list<string>();
     while(1) {
@@ -322,10 +322,10 @@ bool eval_insert_into(sInfo* info)
             break;
         }
         
-        expected_next_charactor(',') or return false;
+        expected_next_charactor(',')
     }
     
-    expected_next_charactor(')') or return false;
+    expected_next_charactor(')')
     
     if(field_names.length() != values.length()) {
         return false;
@@ -350,7 +350,7 @@ bool eval_insert_into(sInfo* info)
         
         int last_index = table.rows.length();
         
-        map<string, string>* last_row = table.rows[last_index-1]??;
+        map<string, string>* last_row = table.rows[last_index-1];
         
         if(last_row) {
             foreach(it, table.types) {
@@ -732,7 +732,7 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
                 break;
             }
             
-            expected_next_charactor(',') or return false;
+            expected_next_charactor(',')
         }
     }
     
@@ -842,7 +842,7 @@ bool eval_select_from(char* deliminater="\n", sInfo* info)
     
     Database* current_db = gDatabases[info.current_db_name];
     
-    Table* table = current_db.tables[table_name]??;
+    Table* table = current_db.tables[table_name];
     
     buffer*% buf = new buffer();
     
@@ -1213,7 +1213,7 @@ fclose(f);
             
             string word = parse_word(&info);
             
-            if(gDatabases[word]??) {
+            if(gDatabases[word]) {
                 info.current_db_name = word;
                 
                 char *ok_message = "OK\n";
@@ -1256,7 +1256,7 @@ fclose(f);
             
             string word = parse_word(&info);
             
-            if(gDatabases[word]?? == null) {
+            if(gDatabases[word] == null) {
                 gDatabases[word] = new Database(word);
             }
             

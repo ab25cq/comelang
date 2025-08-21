@@ -4735,7 +4735,6 @@ uniq list<string>*% FILE*::readlines(FILE* f)
 //////////////////////////////
 /// base library(STDOUT, STDIN)
 //////////////////////////////
-#ifdef __BARE_METAL__
 uniq string char*::puts(char* self)
 {
     if(self == null) {
@@ -4790,7 +4789,6 @@ uniq int int::printf(int self, char* msg)
     
     return self;
 }
-#endif
 
 //////////////////////////////
 /// base library(assert)
