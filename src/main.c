@@ -4,6 +4,9 @@
 
 extern int yyparse(void);
 extern FILE* yyin;
+extern int yylineno;
+
+extern int yydebug;                                                     
 
 static void usage(const char* prog)
 {
@@ -12,6 +15,7 @@ static void usage(const char* prog)
 
 int main(int argc, char** argv)
 {
+yydebug = 1;
     if(argc < 2) {
         usage(argv[0]);
         return 2;
@@ -23,6 +27,7 @@ int main(int argc, char** argv)
         return 1;
     }
     yyin = f;
+    yylineno = 1;
     int rc = yyparse();
     fclose(f);
     if(rc != 0) {
@@ -30,6 +35,7 @@ int main(int argc, char** argv)
         return 3;
     }
     printf("parsed OK: %s\n", path);
+    ast_validate();
     ast_dump();
     ast_free_all();
     return 0;

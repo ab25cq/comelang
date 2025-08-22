@@ -1,7 +1,7 @@
 # Simple Makefile for the minimal C parser built with Bison/Flex
 
 CC ?= clang
-CFLAGS ?= -O2 -g -Wall -Wextra
+CFLAGS ?= -O2 -g -Wall -Wextra -DYYDEBUG
 
 all: cparse
 
@@ -13,7 +13,7 @@ lexer.c: c.l parser.h
 	@echo "[Flex ] c.l -> lexer.c"
 	flex -o lexer.c c.l
 
-cparse: parser.o lexer.o main.o ast.o
+cparse: parser.o lexer.o main.o ast.o typedefs.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:

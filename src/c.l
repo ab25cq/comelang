@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "parser.h"
+#include "typedefs.h"
 
 static char* strndup0(const char* s, size_t n) {
   char* r = (char*)malloc(n+1);
@@ -120,6 +121,7 @@ FP_HEX      0[xX]([0-9A-Fa-f]*\.[0-9A-Fa-f]+|[0-9A-Fa-f]+\.[0-9A-Fa-f]*)([pP][+-
 {HEX}[uUlL]*               { yylval.sval = strndup0(yytext, yyleng); return INTEGER_CONSTANT; }
 {BIN}[uUlL]*               { yylval.sval = strndup0(yytext, yyleng); return INTEGER_CONSTANT; }
 {OCT}[uUlL]*               { yylval.sval = strndup0(yytext, yyleng); return INTEGER_CONSTANT; }
+0[uUlL]*                   { yylval.sval = strndup0(yytext, yyleng); return INTEGER_CONSTANT; }
 {DEC}[uUlL]*               { yylval.sval = strndup0(yytext, yyleng); return INTEGER_CONSTANT; }
 ({FP_DEC}|{FP_DEC2})[fFlL]? { yylval.sval = strndup0(yytext, yyleng); return FLOAT_CONSTANT; }
 {FP_HEX}[fFlL]?            { yylval.sval = strndup0(yytext, yyleng); return FLOAT_CONSTANT; }
@@ -127,7 +129,11 @@ FP_HEX      0[xX]([0-9A-Fa-f]*\.[0-9A-Fa-f]+|[0-9A-Fa-f]+\.[0-9A-Fa-f]*)([pP][+-
 ([uUL]|u8)?'([^\\\n]|\\.)+' { yylval.sval = strndup0(yytext, yyleng); return CHAR_CONSTANT; }
 (u8|[uUL])?\"([^\\\n]|\\.)*\"  { yylval.sval = strndup0(yytext, yyleng); return STRING_LITERAL; }
 
-{ID}                       { yylval.sval = strndup0(yytext, yyleng); return IDENTIFIER; }
+{ID}                       {
+                              yylval.sval = strndup0(yytext, yyleng);
+                              if(typedef_is(yylval.sval)) return TYPE_NAME;
+                              return IDENTIFIER;
+                           }
 
 .                           { return yytext[0]; }
 
