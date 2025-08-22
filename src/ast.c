@@ -26,12 +26,14 @@ AstCompound* ast_compound_new_with(AstNode** items, long count)
     return n;
 }
 
-AstFunction* ast_function_new(const char* name, AstParam* params, long param_count, AstNode* body)
+AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, AstNode* body)
 {
     AstFunction* f = (AstFunction*)calloc(1, sizeof(AstFunction));
     if(!f) return NULL;
     f->kind = AST_FUNCTION;
     f->name = name ? sdup(name) : NULL;
+    f->return_type = return_type ? sdup(return_type) : NULL;
+    f->flags = flags;
     f->params = params; /* take ownership of array (and its strings) */
     f->param_count = param_count;
     f->body = body;
@@ -292,7 +294,20 @@ void ast_print(const AstNode* n, int indent)
     case AST_FUNCTION: {
         const AstFunction* f = (const AstFunction*)n;
         print_indent(indent);
-        printf("Function name=%s params=%ld\n", f->name?f->name:"<anon>", f->param_count);
+        printf("Function rtype=%s name=%s params=%ld\n",
+               f->return_type?f->return_type:"<ret>",
+               f->name?f->name:"<anon>", f->param_count);
+        if(f->flags){
+            print_indent(indent+2);
+            printf("flags:");
+            if(f->flags & ASTF_EXTERN) printf(" extern");
+            if(f->flags & ASTF_STATIC) printf(" static");
+            if(f->flags & ASTF_INLINE) printf(" inline");
+            if(f->flags & ASTF_CONST) printf(" const");
+            if(f->flags & ASTF_VOLATILE) printf(" volatile");
+            if(f->flags & ASTF_RESTRICT) printf(" restrict");
+            printf("\n");
+        }
         for(long i=0;i<f->param_count;i++) {
             const AstParam* p = &f->params[i];
             print_indent(indent+2);
@@ -572,6 +587,7 @@ static void ast_free_node(AstNode* n) {
         AstFunction* f = (AstFunction*)n;
         if(f->body) ast_free_node(f->body);
         free(f->name);
+        free(f->return_type);
         if(f->params) {
             for(long i=0;i<f->param_count;i++) {
                 free(f->params[i].type_name);

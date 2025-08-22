@@ -18,7 +18,7 @@ void yyerror(const char* s);
 extern int yylineno;
 extern char* yytext;
 
-/* Simple parameter list builder for the simple_function_definition path */
+/* Parameter list builder for function params */
 typedef struct ParamList {
   AstParam* a;
   long n;
@@ -123,6 +123,20 @@ static char* array_suffix_from_expr(struct AstNode* e){
 static char* sappend(char* a, const char* b){ size_t na=a?strlen(a):0, nb=b?strlen(b):0; char* r=(char*)malloc(na+nb+1); if(!r) return a; if(na) memcpy(r,a,na); if(nb) memcpy(r+na,b,nb); r[na+nb]='\0'; free(a); return r; }
 static char* sappend3(char* a, const char* b, const char* c){ return sappend(sappend(a,b),c); }
 
+/* Function decl-spec accumulator (storage/qualifiers/inline + base+stars) */
+typedef struct FSpec {
+  char* rtype; /* return type */
+  int flags;   /* AstFuncFlags bitmask */
+} FSpec;
+
+static FSpec* fspec_new_from(const char* base, const char* stars){
+  FSpec* s=(FSpec*)calloc(1,sizeof(FSpec));
+  if(!s) return NULL;
+  size_t n=strlen(base)+strlen(stars?stars:"")+1; s->rtype=(char*)malloc(n);
+  if(s->rtype){ s->rtype[0]='\0'; strcat(s->rtype, base); if(stars) strcat(s->rtype, stars); }
+  return s;
+}
+
 %}
 
 //%define parse.trace true
@@ -137,6 +151,7 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier star_list star_list_opt array_dims
   struct ParamList* plist;
   struct NodeList* nlist;
   struct DStr* dstr;
+  struct FSpec* fspec;
 }
 
 /* Identifiers and literals */
@@ -174,9 +189,14 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier star_list star_list_opt array_dims
 %right '!' '~' INC DEC KW_SIZEOF
 %left '(' ')' '[' ']' '.' ARROW
 
-%type <plist> simple_param_list simple_param_list_opt simple_param
+/* Precedence tweak to prefer reducing empty star_list_opt over shifting IDENTIFIER */
+%nonassoc IDENTIFIER
+%nonassoc PREFER_EMPTY
+
+%type <plist> parameter_type_list_opt parameter_type_list parameter_list parameter_declaration
 %type <sval> type_specifier star_list star_list_opt struct_or_union_specifier enum_specifier array_dims
 %type <sval> fp_param_list_opt fp_param_list fp_param
+%type <fspec> func_decl_specs
 %type <node> compound_statement
 %type <node> statement jump_statement expression_statement
 %type <node> expression assignment_expression conditional_expression logical_or_expression logical_and_expression inclusive_or_expression exclusive_or_expression and_expression equality_expression relational_expression shift_expression additive_expression multiplicative_expression unary_expression postfix_expression primary_expression constant_expression
@@ -198,26 +218,89 @@ translation_unit
   | translation_unit external_declaration
   ;
 
-external_declaration
-  : type_specifier star_list_opt IDENTIFIER '=' assignment_expression ';'
-    {
-      size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
-      char* t = (char*)malloc(nt);
-      if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); }
-      AstNode* d = ast_decl_new(t ? t : $1, $3, $5);
-      free(t); free($1); free($2);
-      ast_add(d);
+/* Put star_list_opt early so its empty reduction wins reduce/reduce
+   against reducing type_specifier -> declaration_specifier in ambiguous prefixes. */
+star_list_opt
+  : /* empty */ %prec PREFER_EMPTY { $$ = strdup(""); }
+  | star_list            { $$ = $1; }
+  ;
+
+star_list
+  : '*'                  { $$ = strdup("*"); }
+  | star_list '*'        {
+      size_t n = strlen($1) + 2;
+      char* s = (char*)malloc(n);
+      if(s) { strcpy(s, $1); strcat(s, "*"); }
+      free($1);
+      $$ = s;
     }
-  | declaration ';'
-  | simple_function_definition
-  | function_definition
-  | type_specifier sdecl ',' sdecl sdecl_list ';'
+  ;
+
+external_declaration
+  : type_specifier sdecl ',' sdecl sdecl_list ';'
     {
       char* base=$1;
       char* t1=compose_type(base,$2); AstNode* d1=ast_decl_new(t1,$2->name,NULL); free(t1); dstr_free($2); ast_add(d1);
       char* t2=compose_type(base,$4); AstNode* d2=ast_decl_new(t2,$4->name,NULL); free(t2); dstr_free($4); ast_add(d2);
       if($5){ for(long i=0;i<$5->n;i++){ DStr* ds=(DStr*)$5->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); ast_add(dn);} free($5->a); free($5); }
       free(base);
+    }
+  | /* removed ambiguous multi-decl form to avoid conflicts with function definitions */
+  | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' compound_statement
+    {
+      size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
+      char* rt = (char*)malloc(nt);
+      if(rt) { rt[0] = '\0'; strcat(rt, $1); if($2) strcat(rt, $2); }
+      AstFunction* f = ast_function_new($3,
+        rt ? rt : $1,
+        0,
+        $5 ? $5->a : NULL,
+        $5 ? $5->n : 0,
+        $7);
+      ast_add((AstNode*)f);
+      free(rt);
+      free($1);
+      free($2);
+      if($5) { free($5); }
+    }
+  | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' ';'
+    {
+      size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
+      char* rt = (char*)malloc(nt);
+      if(rt) { rt[0] = '\0'; strcat(rt, $1); if($2) strcat(rt, $2); }
+      AstFunction* f = ast_function_new($3,
+        rt ? rt : $1,
+        0,
+        $5 ? $5->a : NULL,
+        $5 ? $5->n : 0,
+        NULL);
+      ast_add((AstNode*)f);
+      free(rt);
+      free($1);
+      free($2);
+      if($5) { free($5); }
+    }
+  | func_decl_specs IDENTIFIER '(' parameter_type_list_opt ')' compound_statement
+    {
+      AstFunction* f = ast_function_new($2,
+        $1 && $1->rtype ? $1->rtype : NULL,
+        $1 ? $1->flags : 0,
+        $4 ? $4->a : NULL,
+        $4 ? $4->n : 0,
+        $6);
+      ast_add((AstNode*)f);
+      if($1){ free($1->rtype); free($1);} if($4) free($4);
+    }
+  | func_decl_specs IDENTIFIER '(' parameter_type_list_opt ')' ';'
+    {
+      AstFunction* f = ast_function_new($2,
+        $1 && $1->rtype ? $1->rtype : NULL,
+        $1 ? $1->flags : 0,
+        $4 ? $4->a : NULL,
+        $4 ? $4->n : 0,
+        NULL);
+      ast_add((AstNode*)f);
+      if($1){ free($1->rtype); free($1);} if($4) free($4);
     }
   | KW_TYPEDEF type_specifier star_list_opt IDENTIFIER ';'
     {
@@ -239,6 +322,15 @@ external_declaration
       free($5);
       ast_add(td);
       typedef_add($4);
+    }
+  | type_specifier star_list_opt IDENTIFIER '=' assignment_expression ';'
+    {
+      size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); }
+      AstNode* d = ast_decl_new(t ? t : $1, $3, $5);
+      free(t); free($1); free($2);
+      ast_add(d);
     }
   | KW_TYPEDEF type_specifier star_list_opt '(' '*' IDENTIFIER ')' '(' fp_param_list_opt ')' ';'
     {
@@ -289,59 +381,63 @@ external_declaration
       free(t); free($1); free($2); free($4);
       ast_add(d);
     }
+  | function_definition
+  /* removed generic declaration to force explicit decl rules and avoid conflicts */
   ;
 
-/* Simple function form to produce a function node easily */
-simple_function_definition
-  : function_declspec IDENTIFIER '(' simple_param_list_opt ')' compound_statement
-    {
-      AstFunction* f = ast_function_new($2,
-        $4 ? $4->a : NULL,
-        $4 ? $4->n : 0,
-        $6);
-      if($4) { free($4); }
-      ast_add((AstNode*)f);
-    }
+/* Accumulate storage/qualifiers/inline + base type + stars in any order (right-recursive) */
+func_decl_specs
+  : type_specifier star_list_opt              { $$ = fspec_new_from($1, $2); free($1); free($2); }
+  | KW_EXTERN func_decl_specs                 { $$ = $2; if($$) $$->flags |= ASTF_EXTERN; }
+  | KW_STATIC func_decl_specs                 { $$ = $2; if($$) $$->flags |= ASTF_STATIC; }
+  | KW_CONST func_decl_specs                  { $$ = $2; if($$) $$->flags |= ASTF_CONST; }
+  | KW_VOLATILE func_decl_specs               { $$ = $2; if($$) $$->flags |= ASTF_VOLATILE; }
+  | KW_RESTRICT func_decl_specs               { $$ = $2; if($$) $$->flags |= ASTF_RESTRICT; }
+  | KW_INLINE func_decl_specs                 { $$ = $2; if($$) $$->flags |= ASTF_INLINE; }
   ;
 
-function_declspec
-  : type_specifier
-  | declaration_specifiers
+/* Full C-style parameter lists using declaration_specifiers + smart declarator (sdecl) */
+parameter_type_list_opt
+  : /* empty */                     { $$ = NULL; }
+  | parameter_type_list             { $$ = $1; }
   ;
 
-simple_param_list_opt
-  : /* empty */              { $$ = NULL; }
-  | simple_param_list        { $$ = $1; }
+parameter_type_list
+  : parameter_list                  { $$ = $1; }
+  | parameter_list ',' ELLIPSIS     { $$ = $1; /* variadic marker ignored in AST */ }
   ;
 
-simple_param_list
-  : simple_param                                  { $$ = $1; }
-  | simple_param_list ',' simple_param            { $$ = plist_merge($1, $3); }
+parameter_list
+  : parameter_declaration                               { $$ = $1; }
+  | parameter_list ',' parameter_declaration            { $$ = plist_merge($1, $3); }
   ;
 
-/* Simple param just supports: <type_specifier> <stars>* IDENTIFIER */
-simple_param
-  : type_specifier star_list_opt IDENTIFIER
+parameter_declaration
+  : type_specifier sdecl
     {
       ParamList* p = plist_new();
-      size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
-      char* t = (char*)malloc(nt);
-      if(t) {
-        t[0] = '\0';
-        strcat(t, $1);
-        if($2) strcat(t, $2);
-      }
-      plist_push(p, t ? t : $1, $3);
-      free(t);
+      char* t = compose_type($1, $2);
+      plist_push(p, t ? t : $1, $2->name);
+      if(t) free(t);
+      dstr_free($2);
+      free($1);
+      $$ = p;
+    }
+  | type_specifier
+    {
+      ParamList* p = plist_new();
+      /* parameter without a name (e.g., void) */
+      plist_push(p, $1, NULL);
+      free($1);
       $$ = p;
     }
   ;
+
 
 /* Declarations */
 declaration
   : declaration_specifiers init_declarator_list_opt
   ;
-
 init_declarator_list_opt
   : /* empty */
   | init_declarator_list
@@ -399,22 +495,6 @@ type_specifier
   | struct_or_union_specifier { $$ = $1; }
   | enum_specifier            { $$ = $1; }
   | TYPE_NAME                 { $$ = $1; }
-  ;
-
-star_list_opt
-  : /* empty */          { $$ = strdup(""); }
-  | star_list            { $$ = $1; }
-  ;
-
-star_list
-  : '*'                  { $$ = strdup("*"); }
-  | star_list '*'        {
-      size_t n = strlen($1) + 2;
-      char* s = (char*)malloc(n);
-      if(s) { strcpy(s, $1); strcat(s, "*"); }
-      free($1);
-      $$ = s;
-    }
   ;
 
 /* One or more array dimensions, concatenated like [10][20] */
@@ -526,11 +606,6 @@ identifier_list
   | identifier_list ',' IDENTIFIER
   ;
 
-parameter_type_list_opt
-  : /* empty */
-  | parameter_type_list
-  ;
-
 /* For function pointer typedef text-only param list building */
 fp_param_list_opt
   : /* empty */                    { $$ = strdup("()"); }
@@ -571,21 +646,7 @@ fp_param
     }
   ;
 
-parameter_type_list
-  : parameter_list
-  | parameter_list ',' ELLIPSIS
-  ;
-
-parameter_list
-  : parameter_declaration
-  | parameter_list ',' parameter_declaration
-  ;
-
-parameter_declaration
-  : declaration_specifiers declarator
-  | declaration_specifiers
-  | type_specifier star_list_opt
-  ;
+/* (parameter list rules are defined earlier; avoid duplicate definitions here) */
 
 /* Function definition (generic) */
 function_definition
@@ -694,8 +755,8 @@ sdecl
 sdir
   : IDENTIFIER { DStr* d=(DStr*)calloc(1,sizeof(DStr)); d->name=$1; d->pre=strdup(""); d->post=strdup(""); $$=d; }
   | '(' sdecl ')' { $$=$2; }
+  | '(' sdecl ')' '(' fp_param_list_opt ')' { char* params=$5?$5:strdup("()"); $2->post=sappend3($2->post, "(*)", params); free($5); $$=$2; }
   | sdir '[' assignment_expression_opt ']' { char* suf=array_suffix_from_expr($3); $1->post=sappend($1->post,suf); free(suf); $$=$1; }
-  | sdir '(' fp_param_list_opt ')' { char* params=$3?$3:strdup("()"); $1->post=sappend3($1->post, "(*)", params); free($3); $$=$1; }
   ;
 
 /* (smart declarators temporarily disabled to avoid conflicts) */
@@ -721,7 +782,7 @@ jump_statement
   : KW_RETURN expression_opt ';'     { $$ = ast_return_new($2); }
   | KW_BREAK ';'                     { $$ = NULL; }
   | KW_CONTINUE ';'                  { $$ = NULL; }
-  | KW_GOTO IDENTIFIER ';'           { $$ = NULL; }
+  | KW_GOTO IDENTIFIER ';'           { free($2); $$ = NULL; }
   ;
 
 /* Expressions */
@@ -827,7 +888,7 @@ unary_expression
   | '!' unary_expression                               { $$ = ast_expr_unary_new("!", $2, 0); }
   | '~' unary_expression                               { $$ = ast_expr_unary_new("~", $2, 0); }
   | KW_SIZEOF unary_expression                         { $$ = NULL; }
-  | KW_SIZEOF '(' type_specifier ')'                   { $$ = NULL; }
+  | KW_SIZEOF '(' type_specifier ')'                   { free($3); $$ = NULL; }
   ;
 
 postfix_expression

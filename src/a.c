@@ -1,7 +1,8 @@
-int main(int argc, char** argv)
+typedef int I;
+
+I aaa;
+
+int main(I argc, char** argv)
 {
-    puts("AAA");
-    typedef unsigned long UL;
-    typedef char* PCHAR;
     return 1+1;
 }

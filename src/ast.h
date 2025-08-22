@@ -47,14 +47,25 @@ typedef struct AstParam {
 typedef struct AstFunction {
     AstKind kind; /* AST_FUNCTION */
     char* name;
+    char* return_type; /* e.g., "int", "char*" */
+    int flags; /* AstFuncFlags bitmask */
     AstParam* params;
     long param_count;
     AstNode* body; /* AstCompound* */
 } AstFunction;
 
+typedef enum AstFuncFlags {
+    ASTF_EXTERN   = 1<<0,
+    ASTF_STATIC   = 1<<1,
+    ASTF_INLINE   = 1<<2,
+    ASTF_CONST    = 1<<3,
+    ASTF_VOLATILE = 1<<4,
+    ASTF_RESTRICT = 1<<5,
+} AstFuncFlags;
+
 AstCompound* ast_compound_new(void);
 AstCompound* ast_compound_new_with(struct AstNode** items, long count);
-AstFunction* ast_function_new(const char* name, AstParam* params, long param_count, AstNode* body);
+AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, AstNode* body);
 
 /* Optional: small debug printer */
 void ast_print(const AstNode* n, int indent);

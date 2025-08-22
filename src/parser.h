@@ -98,7 +98,8 @@
      OR_ASSIGN = 314,
      XOR_ASSIGN = 315,
      LSHIFT_ASSIGN = 316,
-     RSHIFT_ASSIGN = 317
+     RSHIFT_ASSIGN = 317,
+     PREFER_EMPTY = 318
    };
 #endif
 /* Tokens.  */
@@ -162,13 +163,14 @@
 #define XOR_ASSIGN 315
 #define LSHIFT_ASSIGN 316
 #define RSHIFT_ASSIGN 317
+#define PREFER_EMPTY 318
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 133 "c.y"
+#line 147 "c.y"
 {
   char* sval;
   long  ival;
@@ -176,9 +178,10 @@ typedef union YYSTYPE
   struct ParamList* plist;
   struct NodeList* nlist;
   struct DStr* dstr;
+  struct FSpec* fspec;
 }
 /* Line 1529 of yacc.c.  */
-#line 182 "parser.h"
+#line 185 "parser.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
