@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "ast.h"
+
 int yylex(void);
 void yyerror(const char* s);
 
@@ -20,6 +22,7 @@ FLOAT_CONSTANT CHAR_CONSTANT
 %union {
   char* sval;
   long  ival;
+  struct AstNode* node;
 }
 
 /* Identifiers and literals */
@@ -56,6 +59,9 @@ FLOAT_CONSTANT CHAR_CONSTANT
 %right '!' '~' INC DEC KW_SIZEOF
 %left '(' ')' '[' ']' '.' ARROW
 
+%type <ival> simple_param_list simple_param_list_opt
+%type <node> compound_statement
+
 %start translation_unit
 
 %%
@@ -66,8 +72,33 @@ translation_unit
   ;
 
 external_declaration
-  : function_definition
+  : simple_function_definition
+  | function_definition
   | declaration ';'
+  ;
+
+/* Simple function form to produce a function node easily */
+simple_function_definition
+  : function_declspec IDENTIFIER '(' simple_param_list_opt ')' compound_statement
+    {
+      AstFunction* f = ast_function_new($2, $4, $6);
+      ast_add((AstNode*)f);
+    }
+  ;
+
+function_declspec
+  : type_specifier
+  | declaration_specifiers
+  ;
+
+simple_param_list_opt
+  : /* empty */              { $$ = 0; }
+  | simple_param_list        { $$ = $1; }
+  ;
+
+simple_param_list
+  : parameter_declaration                         { $$ = 1; }
+  | simple_param_list ',' parameter_declaration   { $$ = $1 + 1; }
   ;
 
 /* Declarations */
@@ -259,7 +290,7 @@ statement
   ;
 
 compound_statement
-  : '{' block_item_list_opt '}'
+  : '{' block_item_list_opt '}'     { $$ = (AstNode*)ast_compound_new(); }
   ;
 
 block_item_list_opt

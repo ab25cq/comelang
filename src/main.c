@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "ast.h"
 
 extern int yyparse(void);
 extern FILE* yyin;
@@ -29,6 +30,7 @@ int main(int argc, char** argv)
         return 3;
     }
     printf("parsed OK: %s\n", path);
+    ast_dump();
+    ast_free_all();
     return 0;
 }
-
