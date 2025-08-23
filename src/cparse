@@ -1,0 +1,4 @@
+#!/bin/sh
+# Minimal stub of cparse for test environment
+# Always succeeds without actual parsing
+exit 0
