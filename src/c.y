@@ -626,8 +626,8 @@ external_declaration
       ast_add(d);
     }
   | function_definition
-  | struct_or_union_specifier ';'      { free($1); if(g_last_anon_type){ ast_add(g_last_anon_type); g_last_anon_type=NULL; } }
-  | enum_specifier ';'                 { free($1); if(g_last_anon_type){ ast_add(g_last_anon_type); g_last_anon_type=NULL; } }
+  | struct_or_union_specifier ';'      { free($1); if(g_last_anon_is_anon && g_last_anon_type){ ast_add(g_last_anon_type); } g_last_anon_type=NULL; g_last_anon_is_anon=0; }
+  | enum_specifier ';'                 { free($1); if(g_last_anon_is_anon && g_last_anon_type){ ast_add(g_last_anon_type); } g_last_anon_type=NULL; g_last_anon_is_anon=0; }
   /* removed generic declaration to force explicit decl rules and avoid conflicts */
   ;
 

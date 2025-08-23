@@ -16,8 +16,8 @@ int typedef_is(const char* name)
 
 void typedef_add(const char* name)
 {
-puts("typedef_add");
-puts(name);
+    puts("typedef_add");
+    puts(name);
     if(!name) return;
     if(typedef_is(name)) return;
     if(g.n==g.cap){ long nc=g.cap?g.cap*2:16; char** na=(char**)realloc(g.a, sizeof(char*)*nc); if(!na) return; g.a=na; g.cap=nc; }

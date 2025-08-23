@@ -709,14 +709,6 @@ void ast_print(const AstNode* n, int indent)
         print_indent(indent); printf("Member(%s%s)\n", e->is_arrow?"->":".", e->name?e->name:"<anon>");
         if(e->recv) ast_print(e->recv, indent+2);
         break; }
-    case AST_EXPR_COND: {
-        typedef struct { AstKind kind; AstNode* cond; AstNode* then_e; AstNode* else_e; } AstExprCond;
-        AstExprCond* e = (AstExprCond*)n;
-        if(e->cond) ast_free_node(e->cond);
-        if(e->then_e) ast_free_node(e->then_e);
-        if(e->else_e) ast_free_node(e->else_e);
-        free(e);
-        break; }
     case AST_INIT_LIST: {
         typedef struct { AstKind kind; AstNode** items; long count; } AstInitList;
         const AstInitList* il = (const AstInitList*)n;
@@ -1036,6 +1028,14 @@ static void ast_free_node(AstNode* n) {
         AstExprIndex* e = (AstExprIndex*)n;
         if(e->arr) ast_free_node(e->arr);
         if(e->index) ast_free_node(e->index);
+        free(e);
+        break; }
+    case AST_EXPR_COND: {
+        typedef struct AstExprCond { AstKind kind; AstNode* cond; AstNode* then_e; AstNode* else_e; } AstExprCond;
+        AstExprCond* e = (AstExprCond*)n;
+        if(e->cond) ast_free_node(e->cond);
+        if(e->then_e) ast_free_node(e->then_e);
+        if(e->else_e) ast_free_node(e->else_e);
         free(e);
         break; }
     case AST_EXPR_MEMBER: {

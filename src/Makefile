@@ -13,7 +13,7 @@ lexer.c: c.l parser.h
 	@echo "[Flex ] c.l -> lexer.c"
 	flex -o lexer.c c.l
 
-cparse: parser.o lexer.o main.o ast.o typedefs.o
+cparse: parser.o lexer.o main.o ast.o typedefs_impl.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:
