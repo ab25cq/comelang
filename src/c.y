@@ -142,7 +142,7 @@ static FSpec* fspec_new_from(const char* base, const char* stars){
 //%define parse.trace true
 
 %destructor { free($$); } IDENTIFIER STRING_LITERAL INTEGER_CONSTANT
-FLOAT_CONSTANT CHAR_CONSTANT type_specifier star_list star_list_opt array_dims
+FLOAT_CONSTANT CHAR_CONSTANT type_specifier type_unit star_list star_list_opt array_dims type_qualifier_seq_opt
 
 %union {
   char* sval;
@@ -194,7 +194,7 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier star_list star_list_opt array_dims
 %nonassoc PREFER_EMPTY
 
 %type <plist> parameter_type_list_opt parameter_type_list parameter_list parameter_declaration
-%type <sval> type_specifier star_list star_list_opt struct_or_union_specifier enum_specifier array_dims
+%type <sval> type_specifier type_unit star_list star_list_opt struct_or_union_specifier enum_specifier array_dims type_qualifier_seq_opt
 %type <sval> fp_param_list_opt fp_param_list fp_param
 %type <fspec> func_decl_specs
 %type <node> compound_statement
@@ -237,7 +237,16 @@ star_list
   ;
 
 external_declaration
-  : type_specifier sdecl ',' sdecl sdecl_list ';'
+  : type_qualifier_seq_opt type_specifier sdecl ',' sdecl sdecl_list ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
+      char* t1=compose_type(base,$3); AstNode* d1=ast_decl_new(t1,$3->name,NULL); free(t1); dstr_free($3); ast_add(d1);
+      char* t2=compose_type(base,$5); AstNode* d2=ast_decl_new(t2,$5->name,NULL); free(t2); dstr_free($5); ast_add(d2);
+      if($6){ for(long i=0;i<$6->n;i++){ DStr* ds=(DStr*)$6->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); ast_add(dn);} free($6->a); free($6); }
+      free(base); free($1); free($2);
+    }
+  | type_specifier sdecl ',' sdecl sdecl_list ';'
     {
       char* base=$1;
       char* t1=compose_type(base,$2); AstNode* d1=ast_decl_new(t1,$2->name,NULL); free(t1); dstr_free($2); ast_add(d1);
@@ -245,7 +254,43 @@ external_declaration
       if($5){ for(long i=0;i<$5->n;i++){ DStr* ds=(DStr*)$5->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); ast_add(dn);} free($5->a); free($5); }
       free(base);
     }
+  | type_qualifier_seq_opt type_specifier sdecl '=' initializer ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
+      char* t=compose_type(base,$3);
+      AstNode* d=ast_decl_new(t? t: base, $3->name, $5);
+      free(t); dstr_free($3); free(base); free($1); free($2);
+      ast_add(d);
+    }
+  | type_specifier sdecl '=' initializer ';'
+    {
+      char* base=$1;
+      char* t=compose_type(base,$2);
+      AstNode* d=ast_decl_new(t? t: base, $2->name, $4);
+      free(t); dstr_free($2); free(base);
+      ast_add(d);
+    }
   | /* removed ambiguous multi-decl form to avoid conflicts with function definitions */
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' compound_statement
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* rt = (char*)malloc(nt);
+      if(rt) { rt[0] = '\0'; if(qs){ strcat(rt, $1); strcat(rt, " "); } strcat(rt, $2); if($3) strcat(rt, $3); }
+      AstFunction* f = ast_function_new($4,
+        rt ? rt : $2,
+        0,
+        $6 ? $6->a : NULL,
+        $6 ? $6->n : 0,
+        $8);
+      ast_add((AstNode*)f);
+      free(rt);
+      free($1);
+      free($2);
+      free($3);
+      if($6) { free($6); }
+    }
   | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' compound_statement
     {
       size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
@@ -262,6 +307,25 @@ external_declaration
       free($1);
       free($2);
       if($5) { free($5); }
+    }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* rt = (char*)malloc(nt);
+      if(rt) { rt[0] = '\0'; if(qs){ strcat(rt, $1); strcat(rt, " "); } strcat(rt, $2); if($3) strcat(rt, $3); }
+      AstFunction* f = ast_function_new($4,
+        rt ? rt : $2,
+        0,
+        $6 ? $6->a : NULL,
+        $6 ? $6->n : 0,
+        NULL);
+      ast_add((AstNode*)f);
+      free(rt);
+      free($1);
+      free($2);
+      free($3);
+      if($6) { free($6); }
     }
   | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' ';'
     {
@@ -302,6 +366,18 @@ external_declaration
       ast_add((AstNode*)f);
       if($1){ free($1->rtype); free($1);} if($4) free($4);
     }
+  | KW_TYPEDEF type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER ';'
+    {
+      const char* qs = ($2 && $2[0]) ? $2 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); }
+      AstNode* td = ast_typedef_new(t ? t : $3, $5);
+      free(t);
+      ast_add(td);
+      typedef_add($5);
+      free($2); free($3); free($4);
+    }
   | KW_TYPEDEF type_specifier star_list_opt IDENTIFIER ';'
     {
       size_t nt = strlen($2) + strlen($3 ? $3 : "") + 1;
@@ -311,6 +387,19 @@ external_declaration
       free(t);
       ast_add(td);
       typedef_add($4);
+    }
+  | KW_TYPEDEF type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER array_dims ';'
+    {
+      const char* qs = ($2 && $2[0]) ? $2 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + strlen($6 ? $6 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); if($6) strcat(t, $6); }
+      AstNode* td = ast_typedef_new(t ? t : $3, $5);
+      free(t);
+      free($6);
+      ast_add(td);
+      typedef_add($5);
+      free($2); free($3); free($4);
     }
   | KW_TYPEDEF type_specifier star_list_opt IDENTIFIER array_dims ';'
     {
@@ -323,6 +412,16 @@ external_declaration
       ast_add(td);
       typedef_add($4);
     }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '=' assignment_expression ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, $6);
+      free(t); free($1); free($2); free($3);
+      ast_add(d);
+    }
   | type_specifier star_list_opt IDENTIFIER '=' assignment_expression ';'
     {
       size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
@@ -331,6 +430,18 @@ external_declaration
       AstNode* d = ast_decl_new(t ? t : $1, $3, $5);
       free(t); free($1); free($2);
       ast_add(d);
+    }
+  | KW_TYPEDEF type_qualifier_seq_opt type_specifier star_list_opt '(' '*' IDENTIFIER ')' '(' fp_param_list_opt ')' ';'
+    {
+      const char* qs = ($2 && $2[0]) ? $2 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + strlen("(*)") + strlen($10 ? $10 : "()") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); strcat(t, "(*)"); strcat(t, $10 ? $10 : "()"); }
+      AstNode* td = ast_typedef_new(t ? t : $3, $7);
+      free(t); free($10);
+      ast_add(td);
+      typedef_add($7);
+      free($2); free($3); free($4);
     }
   | KW_TYPEDEF type_specifier star_list_opt '(' '*' IDENTIFIER ')' '(' fp_param_list_opt ')' ';'
     {
@@ -341,6 +452,19 @@ external_declaration
       free(t); free($9);
       ast_add(td);
       typedef_add($6);
+    }
+  | KW_TYPEDEF type_qualifier_seq_opt type_specifier star_list_opt '(' '*' IDENTIFIER array_dims ')' '(' fp_param_list_opt ')' ';'
+    {
+      const char* qs = ($2 && $2[0]) ? $2 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + strlen("(*)") + strlen($11 ? $11 : "()") + strlen($8 ? $8 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); strcat(t, "(*)"); strcat(t, $11 ? $11 : "()"); if($8) strcat(t, $8); }
+      AstNode* td = ast_typedef_new(t ? t : $3, $7);
+      free(t);
+      free($8); free($11);
+      ast_add(td);
+      typedef_add($7);
+      free($2); free($3); free($4);
     }
   | KW_TYPEDEF type_specifier star_list_opt '(' '*' IDENTIFIER array_dims ')' '(' fp_param_list_opt ')' ';'
     {
@@ -354,6 +478,16 @@ external_declaration
       typedef_add($6);
     }
   
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, NULL);
+      free(t); free($1); free($2); free($3);
+      ast_add(d);
+    }
   | type_specifier star_list_opt IDENTIFIER ';'
     {
       size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
@@ -363,6 +497,16 @@ external_declaration
       free(t); free($1); free($2);
       ast_add(d);
     }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '=' initializer ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, $6);
+      free(t); free($1); free($2); free($3);
+      ast_add(d);
+    }
   | type_specifier star_list_opt IDENTIFIER '=' initializer ';'
     {
       size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
@@ -370,6 +514,16 @@ external_declaration
       if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); }
       AstNode* d = ast_decl_new(t ? t : $1, $3, $5);
       free(t); free($1); free($2);
+      ast_add(d);
+    }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER array_dims '=' initializer ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + strlen($5 ? $5 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); if($5) strcat(t, $5); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, $7);
+      free(t); free($1); free($2); free($3); free($5);
       ast_add(d);
     }
   | type_specifier star_list_opt IDENTIFIER array_dims '=' initializer ';'
@@ -382,6 +536,8 @@ external_declaration
       ast_add(d);
     }
   | function_definition
+  | struct_or_union_specifier ';'      { free($1); }
+  | enum_specifier ';'                 { free($1); }
   /* removed generic declaration to force explicit decl rules and avoid conflicts */
   ;
 
@@ -413,22 +569,28 @@ parameter_list
   ;
 
 parameter_declaration
-  : type_specifier sdecl
+  : type_qualifier_seq_opt type_specifier sdecl
     {
       ParamList* p = plist_new();
-      char* t = compose_type($1, $2);
-      plist_push(p, t ? t : $1, $2->name);
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
+      char* t = compose_type(base, $3);
+      plist_push(p, t ? t : base, $3->name);
       if(t) free(t);
-      dstr_free($2);
-      free($1);
+      free(base);
+      dstr_free($3);
+      free($1); free($2);
       $$ = p;
     }
-  | type_specifier
+  | type_qualifier_seq_opt type_specifier
     {
       ParamList* p = plist_new();
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
       /* parameter without a name (e.g., void) */
-      plist_push(p, $1, NULL);
-      free($1);
+      plist_push(p, base, NULL);
+      free(base);
+      free($1); free($2);
       $$ = p;
     }
   ;
@@ -482,7 +644,8 @@ function_specifier
   ;
 
 /* Types (subset) */
-type_specifier
+/* A single type unit token/construct */
+type_unit
   : KW_VOID      { $$ = strdup("void"); }
   | KW_CHAR      { $$ = strdup("char"); }
   | KW_SHORT     { $$ = strdup("short"); }
@@ -495,6 +658,19 @@ type_specifier
   | struct_or_union_specifier { $$ = $1; }
   | enum_specifier            { $$ = $1; }
   | TYPE_NAME                 { $$ = $1; }
+  ;
+
+/* One or more type units, concatenated with a single space when needed.
+   This allows sequences like "unsigned long", "long long", etc. */
+type_specifier
+  : type_unit                                 { $$ = $1; }
+  | type_specifier type_unit                  {
+      size_t n = strlen($1) + 1 + strlen($2) + 1;
+      char* s = (char*)malloc(n);
+      if(s) { s[0] = '\0'; strcat(s, $1); strcat(s, " "); strcat(s, $2); }
+      free($1); free($2);
+      $$ = s;
+    }
   ;
 
 /* One or more array dimensions, concatenated like [10][20] */
@@ -630,19 +806,21 @@ fp_param_list
   ;
 
 fp_param
-  : type_specifier star_list_opt            {
-      size_t n = strlen($1) + strlen($2 ? $2 : "") + 1;
+  : type_qualifier_seq_opt type_specifier star_list_opt            {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t n = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
       char* s = (char*)malloc(n);
-      if(s) { s[0]='\0'; strcat(s, $1); if($2) strcat(s, $2); }
-      $$ = s;
-      free($1); free($2);
-    }
-  | type_specifier star_list_opt IDENTIFIER {
-      size_t n = strlen($1) + strlen($2 ? $2 : "") + 1;
-      char* s = (char*)malloc(n);
-      if(s) { s[0]='\0'; strcat(s, $1); if($2) strcat(s, $2); }
+      if(s) { s[0]='\0'; if(qs){ strcat(s, $1); strcat(s, " "); } strcat(s, $2); if($3) strcat(s, $3); }
       $$ = s;
       free($1); free($2); free($3);
+    }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t n = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* s = (char*)malloc(n);
+      if(s) { s[0]='\0'; if(qs){ strcat(s, $1); strcat(s, " "); } strcat(s, $2); if($3) strcat(s, $3); }
+      $$ = s;
+      free($1); free($2); free($3); free($4);
     }
   ;
 
@@ -686,12 +864,39 @@ block_item
       free(t); free($1); free($2); /* $3 freed by decl */
       $$ = nlist_from1(d);
     }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER ';' {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, NULL);
+      free(t); free($1); free($2); free($3); /* $4 freed by decl */
+      $$ = nlist_from1(d);
+    }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '=' assignment_expression ';' {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, $6);
+      free(t); free($1); free($2); free($3);
+      $$ = nlist_from1(d);
+    }
   | type_specifier star_list_opt IDENTIFIER '=' assignment_expression ';' {
       size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); }
       AstNode* d = ast_decl_new(t ? t : $1, $3, $5);
       free(t); free($1); free($2);
+      $$ = nlist_from1(d);
+    }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '=' initializer ';' {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, $6);
+      free(t); free($1); free($2); free($3);
       $$ = nlist_from1(d);
     }
   | type_specifier star_list_opt IDENTIFIER '=' initializer ';' {
@@ -702,6 +907,15 @@ block_item
       free(t); free($1); free($2);
       $$ = nlist_from1(d);
     }
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER array_dims '=' initializer ';' {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + strlen($5 ? $5 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); if($5) strcat(t, $5); }
+      AstNode* d = ast_decl_new(t ? t : $2, $4, $7);
+      free(t); free($1); free($2); free($3); free($5);
+      $$ = nlist_from1(d);
+    }
   | type_specifier star_list_opt IDENTIFIER array_dims '=' initializer ';' {
       size_t nt = strlen($1) + strlen($2 ? $2 : "") + strlen($4 ? $4 : "") + 1;
       char* t = (char*)malloc(nt);
@@ -710,14 +924,24 @@ block_item
       free(t); free($1); free($2); free($4);
       $$ = nlist_from1(d);
     }
-  | type_specifier sdecl ',' sdecl sdecl_list ';'
+  | type_qualifier_seq_opt type_specifier sdecl ',' sdecl sdecl_list ';'
     {
-      char* base=$1; NodeList* nl=nlist_new();
-      char* t1=compose_type(base,$2); AstNode* d1=ast_decl_new(t1,$2->name,NULL); free(t1); dstr_free($2); nlist_push(nl,d1);
-      char* t2=compose_type(base,$4); AstNode* d2=ast_decl_new(t2,$4->name,NULL); free(t2); dstr_free($4); nlist_push(nl,d2);
-      if($5){ for(long i=0;i<$5->n;i++){ DStr* ds=(DStr*)$5->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); nlist_push(nl,dn);} free($5->a); free($5); }
-      free(base);
+      const char* qs = ($1 && $1[0]) ? $1 : NULL; NodeList* nl=nlist_new();
+      char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
+      char* t1=compose_type(base,$3); AstNode* d1=ast_decl_new(t1,$3->name,NULL); free(t1); dstr_free($3); nlist_push(nl,d1);
+      char* t2=compose_type(base,$5); AstNode* d2=ast_decl_new(t2,$5->name,NULL); free(t2); dstr_free($5); nlist_push(nl,d2);
+      if($6){ for(long i=0;i<$6->n;i++){ DStr* ds=(DStr*)$6->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); nlist_push(nl,dn);} free($6->a); free($6); }
+      free(base); free($1); free($2);
       $$=nl;
+    }
+  | type_qualifier_seq_opt type_specifier sdecl '=' initializer ';'
+    {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
+      char* t=compose_type(base,$3);
+      AstNode* d=ast_decl_new(t? t: base, $3->name, $5);
+      free(t); dstr_free($3); free(base); free($1); free($2);
+      $$ = nlist_from1(d);
     }
   | statement                       { $$ = nlist_from1($1); }
   
@@ -727,15 +951,6 @@ block_item
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; strcat(t, $2); if($3) strcat(t, $3); }
       AstNode* td = ast_typedef_new(t ? t : $2, $4);
-      free(t);
-      $$ = nlist_from1(td);
-    }
-  | KW_TYPEDEF type_specifier type_specifier star_list_opt IDENTIFIER ';'
-    {
-      size_t nt = strlen($2) + 1 + strlen($3) + strlen($4 ? $4 : "") + 1;
-      char* t = (char*)malloc(nt);
-      if(t) { t[0] = '\0'; strcat(t, $2); strcat(t, " "); strcat(t, $3); if($4) strcat(t, $4); }
-      AstNode* td = ast_typedef_new(t ? t : $2, $5);
       free(t);
       $$ = nlist_from1(td);
     }
@@ -889,6 +1104,27 @@ unary_expression
   | '~' unary_expression                               { $$ = ast_expr_unary_new("~", $2, 0); }
   | KW_SIZEOF unary_expression                         { $$ = NULL; }
   | KW_SIZEOF '(' type_specifier ')'                   { free($3); $$ = NULL; }
+  | '(' type_qualifier_seq_opt type_specifier star_list_opt ')' unary_expression {
+      const char* qs = ($2 && $2[0]) ? $2 : NULL;
+      size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + 1;
+      char* t = (char*)malloc(nt);
+      if(t) {
+        t[0]='\0';
+        if(qs){ strcat(t, qs); strcat(t, " "); }
+        strcat(t, $3);
+        if($4) strcat(t, $4);
+      }
+      $$ = ast_expr_cast_new(t ? t : $3, $6);
+      free(t); free($2); free($3); free($4);
+    }
+  ;
+
+/* optional sequence of type qualifiers as a string (e.g., "const volatile") */
+type_qualifier_seq_opt
+  : /* empty */                      { $$ = strdup(""); }
+  | type_qualifier_seq_opt KW_CONST  { $$ = sappend($1, ($1 && $1[0])?" const":"const"); }
+  | type_qualifier_seq_opt KW_VOLATILE { $$ = sappend($1, ($1 && $1[0])?" volatile":"volatile"); }
+  | type_qualifier_seq_opt KW_RESTRICT { $$ = sappend($1, ($1 && $1[0])?" restrict":"restrict"); }
   ;
 
 postfix_expression
@@ -942,9 +1178,7 @@ initializer_list
   ;
 
 designated_initializer
-  : '.' IDENTIFIER '=' initializer        { $$ = ast_init_desig_field_new($2, $4); free($2); }
-  | '[' constant_expression ']' '=' initializer { $$ = ast_init_desig_index_new($2, $5); }
-  | designation '=' initializer           { $$ = ast_init_desig_chain_new($1 ? $1->a : NULL, $1 ? $1->n : 0, $3); if($1) free($1); }
+  : designation '=' initializer           { $$ = ast_init_desig_chain_new($1 ? $1->a : NULL, $1 ? $1->n : 0, $3); if($1) free($1); }
   ;
 
 /* C standard designator list + GNU range [first ... last] */

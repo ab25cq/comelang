@@ -1,8 +1,37 @@
 make clean
 make
-./cparse md.c
-./cparse md2.c
-./cparse onlyfp.c
-./cparse onlyfpa.c
-./cparse onlyfunc_ok.c
-./cparse onlyfunc.c
+./cparse md.c || exit 3
+./cparse md2.c || exit 3
+./cparse onlyfp.c || exit 3
+./cparse onlyfpa.c || exit 3
+./cparse onlyfunc_ok.c || exit 3
+./cparse onlyfunc.c || exit 3
+./cparse mini.c || exit 3
+./cparse onlyfunc.c || exit 3
+./cparse onlyfunc2.c || exit 3
+./cparse onlyfunc3.c || exit 3
+./cparse onlyvar.c || exit 3
+./cparse t_typedef.c || exit 3
+./cparse t.c || exit 3
+./cparse t2.c || exit 3
+./cparse tA.c || exit 3
+./cparse tdecl.c || exit 3
+./cparse tdesign.c || exit 3
+./cparse tFP.c || exit 3
+./cparse tFP2.c || exit 3
+./cparse tglob.c || exit 3
+./cparse tinit.c || exit 3
+./cparse tmd.c || exit 3
+./cparse top.c || exit 3
+./cparse top2.c || exit 3
+./cparse top2b.c || exit 3
+./cparse top3.c || exit 3
+./cparse top5.c || exit 3
+./cparse trange.c || exit 3
+./cparse ts1.c || exit 3
+./cparse tsmart.c || exit 3
+./cparse t_more_types.c || exit 3
+./cparse t_cast.c || exit 3
+./cparse t_cast2.c || exit 3
+./cparse t_more_casts.c || exit 3
+./cparse t_ptr_levels.c || exit 3

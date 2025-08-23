@@ -27,6 +27,7 @@ typedef enum AstKind {
     AST_DESIG_INDEX = 21,      /* element: [expr] */
     AST_DESIG_RANGE = 22,      /* element: [first ... last] */
     AST_INIT_DESIG = 23,       /* chain of elements + value */
+    AST_EXPR_CAST = 24,
 } AstKind;
 
 typedef struct AstNode {
@@ -89,6 +90,7 @@ AstNode* ast_expr_assign_new(const char* op, AstNode* lhs, AstNode* rhs);
 AstNode* ast_expr_float_new(double value);
 AstNode* ast_expr_char_new(const char* text);
 AstNode* ast_expr_string_new(const char* text);
+AstNode* ast_expr_cast_new(const char* type_name, struct AstNode* expr);
 
 /* Typedef */
 AstNode* ast_typedef_new(const char* type_name, const char* alias_name);

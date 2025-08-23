@@ -114,6 +114,17 @@ AstNode* ast_expr_string_new(const char* text)
     return (AstNode*)e;
 }
 
+AstNode* ast_expr_cast_new(const char* type_name, AstNode* expr)
+{
+    typedef struct AstExprCast { AstKind kind; char* type_name; AstNode* expr; } AstExprCast;
+    AstExprCast* e = (AstExprCast*)calloc(1, sizeof(AstExprCast));
+    if(!e) return NULL;
+    e->kind = AST_EXPR_CAST;
+    e->type_name = type_name ? sdup(type_name) : NULL;
+    e->expr = expr;
+    return (AstNode*)e;
+}
+
 AstNode* ast_typedef_new(const char* type_name, const char* alias_name)
 {
     typedef struct AstTypedef { AstKind kind; char* type_name; char* alias_name; } AstTypedef;
@@ -446,6 +457,12 @@ void ast_print(const AstNode* n, int indent)
         typedef struct { AstKind kind; char* text; } AstExprString;
         const AstExprString* e = (const AstExprString*)n;
         print_indent(indent); printf("String(%s)\n", e->text?e->text:"\"\"");
+        break; }
+    case AST_EXPR_CAST: {
+        typedef struct { AstKind kind; char* type_name; AstNode* expr; } AstExprCast;
+        const AstExprCast* e = (const AstExprCast*)n;
+        print_indent(indent); printf("Cast(%s)\n", e->type_name?e->type_name:"<type>");
+        if(e->expr) ast_print(e->expr, indent+2);
         break; }
     default:
         print_indent(indent); printf("<unknown kind %d>\n", (int)n->kind);

@@ -1,8 +1,13 @@
-typedef int I;
 
-I aaa;
-
-int main(I argc, char** argv)
+struct sData
 {
-    return 1+1;
+    int a:2;
+    int b:1;
+};
+
+
+int main(int argc, char** argv)
+{
+    struct sData data;
+    return 0;
 }
