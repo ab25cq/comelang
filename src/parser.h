@@ -170,7 +170,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 147 "c.y"
+#line 211 "c.y"
 {
   char* sval;
   long  ival;
@@ -179,9 +179,12 @@ typedef union YYSTYPE
   struct NodeList* nlist;
   struct DStr* dstr;
   struct FSpec* fspec;
+  struct SField* sfield;       /* 単一フィールド（使い回さないなら不要） */
+  struct SFieldList* sflist;   /* フィールド配列 */
+  struct EnumList* elist;      /* enum enumerator list */
 }
 /* Line 1529 of yacc.c.  */
-#line 185 "parser.h"
+#line 188 "parser.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

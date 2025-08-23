@@ -18,6 +18,11 @@ void yyerror(const char* s);
 extern int yylineno;
 extern char* yytext;
 
+/* Track the most recent anonymous or nested type definition encountered in a type specifier,
+   so we can attach it inline to struct/union fields. */
+static struct AstNode* g_last_anon_type = NULL;
+static int g_last_anon_is_anon = 0; /* 1 if last was anonymous brace form */
+
 /* Parameter list builder for function params */
 typedef struct ParamList {
   AstParam* a;
@@ -137,6 +142,65 @@ static FSpec* fspec_new_from(const char* base, const char* stars){
   return s;
 }
 
+/* 構造体フィールド一時バッファ */
+typedef struct SField {
+  char* base;     /* 宣言スペックから得た基本型 "unsigned long" 等 */
+  struct DStr* d; /* 変数名や * や [] を含む宣言子 */
+  int bitwidth;   /* 0: 通常フィールド, >0: ビットフィールド幅 */
+  struct AstNode* anon_def; /* base が無名の struct/union/enum 定義を含む場合 */
+} SField;
+
+typedef struct SFieldList {
+  struct SField* a;
+  long n, cap;
+} SFieldList;
+
+static SFieldList* sfl_new(void){
+  return (SFieldList*)calloc(1,sizeof(SFieldList));
+}
+static void sfl_push(SFieldList* l, struct SField f){
+  if(!l) return;
+  if(l->n==l->cap){
+    long nc = l->cap? l->cap*2 : 8;
+    struct SField* na = (struct SField*)realloc(l->a, nc*sizeof(*na));
+    if(!na) return;
+    l->a=na; l->cap=nc;
+  }
+  l->a[l->n++] = f;
+}
+static void sfl_free(SFieldList* l){
+  if(!l) return;
+  for(long i=0;i<l->n;i++){
+    free(l->a[i].base);
+    if(l->a[i].d) { /* DStr は専用解放 */
+      free(l->a[i].d->name); free(l->a[i].d->pre); free(l->a[i].d->post); free(l->a[i].d);
+    }
+  }
+  free(l->a); free(l);
+}
+
+/* enum enumerator temporary list */
+typedef struct EnumItemTmp {
+  char* name;            /* enumerator name */
+  struct AstNode* value; /* optional expression (ownership passed to AST) */
+} EnumItemTmp;
+
+typedef struct EnumList {
+  struct EnumItemTmp* a;
+  long n, cap;
+} EnumList;
+
+static EnumList* el_new(void){ return (EnumList*)calloc(1,sizeof(EnumList)); }
+static void el_push(EnumList* l, const char* name, struct AstNode* value){
+  if(!l) return;
+  if(l->n==l->cap){ long nc=l->cap?l->cap*2:8; struct EnumItemTmp* na=(struct EnumItemTmp*)realloc(l->a,nc*sizeof(*na)); if(!na) return; l->a=na; l->cap=nc; }
+  l->a[l->n].name = name ? strdup(name) : NULL;
+  l->a[l->n].value = value; /* ownership moves to AST later */
+  l->n++;
+}
+static EnumList* el_merge(EnumList* a, EnumList* b){ if(!a) return b; if(!b) return a; for(long i=0;i<b->n;i++){ el_push(a, b->a[i].name, b->a[i].value); free(b->a[i].name); /* value owned by a now */ } free(b->a); free(b); return a; }
+static void el_free_shallow(EnumList* l){ if(!l) return; if(l->a){ for(long i=0;i<l->n;i++){ free(l->a[i].name); /* value freed by owner */ } free(l->a);} free(l); }
+
 %}
 
 //%define parse.trace true
@@ -152,6 +216,9 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier type_unit star_list star_list_opt ar
   struct NodeList* nlist;
   struct DStr* dstr;
   struct FSpec* fspec;
+  struct SField* sfield;       /* 単一フィールド（使い回さないなら不要） */
+  struct SFieldList* sflist;   /* フィールド配列 */
+  struct EnumList* elist;      /* enum enumerator list */
 }
 
 /* Identifiers and literals */
@@ -194,7 +261,8 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier type_unit star_list star_list_opt ar
 %nonassoc PREFER_EMPTY
 
 %type <plist> parameter_type_list_opt parameter_type_list parameter_list parameter_declaration
-%type <sval> type_specifier type_unit star_list star_list_opt struct_or_union_specifier enum_specifier array_dims type_qualifier_seq_opt
+%type <sval> type_specifier type_unit star_list star_list_opt enum_specifier array_dims type_qualifier_seq_opt specifier_qualifier_list
+%type <elist> enumerator_list_opt enumerator_list enumerator
 %type <sval> fp_param_list_opt fp_param_list fp_param
 %type <fspec> func_decl_specs
 %type <node> compound_statement
@@ -208,6 +276,14 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier type_unit star_list star_list_opt ar
 %type <node> initializer designated_initializer
 %type <dstr> sdecl sdir
 %type <nlist> sdecl_list
+
+%type <sval> struct_or_union_specifier
+%type <sflist> struct_declaration_list_opt
+%type <sflist> struct_declaration_list
+%type <sflist> struct_declaration
+%type <sflist> struct_declarator_list
+%type <sflist> struct_declarator
+
 
 %start translation_unit
 
@@ -241,17 +317,21 @@ external_declaration
     {
       const char* qs = ($1 && $1[0]) ? $1 : NULL;
       char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
-      char* t1=compose_type(base,$3); AstNode* d1=ast_decl_new(t1,$3->name,NULL); free(t1); dstr_free($3); ast_add(d1);
-      char* t2=compose_type(base,$5); AstNode* d2=ast_decl_new(t2,$5->name,NULL); free(t2); dstr_free($5); ast_add(d2);
-      if($6){ for(long i=0;i<$6->n;i++){ DStr* ds=(DStr*)$6->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); ast_add(dn);} free($6->a); free($6); }
+      AstNode* A = (g_last_anon_is_anon ? g_last_anon_type : NULL);
+      char* t1=compose_type(base,$3); AstNode* d1=ast_decl_new(t1,$3->name,NULL); if(A){ ast_decl_attach_anon(d1, A); } free(t1); dstr_free($3); ast_add(d1);
+      char* t2=compose_type(base,$5); AstNode* d2=ast_decl_new(t2,$5->name,NULL); if(A){ ast_decl_attach_anon(d2, ast_type_clone(A)); } free(t2); dstr_free($5); ast_add(d2);
+      if($6){ for(long i=0;i<$6->n;i++){ DStr* ds=(DStr*)$6->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); if(A){ ast_decl_attach_anon(dn, ast_type_clone(A)); } free(tx); dstr_free(ds); ast_add(dn);} free($6->a); free($6); }
+      if(A){ g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(base); free($1); free($2);
     }
   | type_specifier sdecl ',' sdecl sdecl_list ';'
     {
       char* base=$1;
-      char* t1=compose_type(base,$2); AstNode* d1=ast_decl_new(t1,$2->name,NULL); free(t1); dstr_free($2); ast_add(d1);
-      char* t2=compose_type(base,$4); AstNode* d2=ast_decl_new(t2,$4->name,NULL); free(t2); dstr_free($4); ast_add(d2);
-      if($5){ for(long i=0;i<$5->n;i++){ DStr* ds=(DStr*)$5->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); ast_add(dn);} free($5->a); free($5); }
+      AstNode* A = (g_last_anon_is_anon ? g_last_anon_type : NULL);
+      char* t1=compose_type(base,$2); AstNode* d1=ast_decl_new(t1,$2->name,NULL); if(A){ ast_decl_attach_anon(d1, A); } free(t1); dstr_free($2); ast_add(d1);
+      char* t2=compose_type(base,$4); AstNode* d2=ast_decl_new(t2,$4->name,NULL); if(A){ ast_decl_attach_anon(d2, ast_type_clone(A)); } free(t2); dstr_free($4); ast_add(d2);
+      if($5){ for(long i=0;i<$5->n;i++){ DStr* ds=(DStr*)$5->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); if(A){ ast_decl_attach_anon(dn, ast_type_clone(A)); } free(tx); dstr_free(ds); ast_add(dn);} free($5->a); free($5); }
+      if(A){ g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(base);
     }
   | type_qualifier_seq_opt type_specifier sdecl '=' initializer ';'
@@ -260,6 +340,7 @@ external_declaration
       char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
       char* t=compose_type(base,$3);
       AstNode* d=ast_decl_new(t? t: base, $3->name, $5);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); dstr_free($3); free(base); free($1); free($2);
       ast_add(d);
     }
@@ -268,6 +349,7 @@ external_declaration
       char* base=$1;
       char* t=compose_type(base,$2);
       AstNode* d=ast_decl_new(t? t: base, $2->name, $4);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); dstr_free($2); free(base);
       ast_add(d);
     }
@@ -419,6 +501,7 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
       AstNode* d = ast_decl_new(t ? t : $2, $4, $6);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2); free($3);
       ast_add(d);
     }
@@ -428,6 +511,7 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); }
       AstNode* d = ast_decl_new(t ? t : $1, $3, $5);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2);
       ast_add(d);
     }
@@ -485,6 +569,7 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
       AstNode* d = ast_decl_new(t ? t : $2, $4, NULL);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2); free($3);
       ast_add(d);
     }
@@ -494,6 +579,7 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); }
       AstNode* d = ast_decl_new(t ? t : $1, $3, NULL);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2);
       ast_add(d);
     }
@@ -504,6 +590,7 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); }
       AstNode* d = ast_decl_new(t ? t : $2, $4, $6);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2); free($3);
       ast_add(d);
     }
@@ -513,6 +600,7 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); }
       AstNode* d = ast_decl_new(t ? t : $1, $3, $5);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2);
       ast_add(d);
     }
@@ -523,6 +611,7 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; if(qs){ strcat(t, $1); strcat(t, " "); } strcat(t, $2); if($3) strcat(t, $3); if($5) strcat(t, $5); }
       AstNode* d = ast_decl_new(t ? t : $2, $4, $7);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2); free($3); free($5);
       ast_add(d);
     }
@@ -532,12 +621,13 @@ external_declaration
       char* t = (char*)malloc(nt);
       if(t) { t[0]='\0'; strcat(t, $1); if($2) strcat(t, $2); if($4) strcat(t, $4); }
       AstNode* d = ast_decl_new(t ? t : $1, $3, $6);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); free($1); free($2); free($4);
       ast_add(d);
     }
   | function_definition
-  | struct_or_union_specifier ';'      { free($1); }
-  | enum_specifier ';'                 { free($1); }
+  | struct_or_union_specifier ';'      { free($1); if(g_last_anon_type){ ast_add(g_last_anon_type); g_last_anon_type=NULL; } }
+  | enum_specifier ';'                 { free($1); if(g_last_anon_type){ ast_add(g_last_anon_type); g_last_anon_type=NULL; } }
   /* removed generic declaration to force explicit decl rules and avoid conflicts */
   ;
 
@@ -656,6 +746,44 @@ type_unit
   | KW_FLOAT     { $$ = strdup("float"); }
   | KW_DOUBLE    { $$ = strdup("double"); }
   | struct_or_union_specifier { $$ = $1; }
+  | KW_STRUCT '{' struct_declaration_list_opt '}'            {
+      $$ = strdup("struct");
+      long fc = $3 ? $3->n : 0;
+      AstStructField* fs = NULL;
+      if(fc > 0){
+        fs = (AstStructField*)calloc(fc, sizeof(*fs));
+        for(long i=0;i<fc;i++){
+          char* t = compose_type($3->a[i].base ? $3->a[i].base : "", $3->a[i].d);
+          const char* fname = ($3->a[i].d && $3->a[i].d->name) ? $3->a[i].d->name : "";
+          fs[i] = ast_struct_field_new(t ? t : "", fname, $3->a[i].bitwidth);
+          fs[i].anon_def = $3->a[i].anon_def;
+          free(t);
+        }
+      }
+      AstNode* st = ast_struct_new_with(NULL, fs, fc);
+      g_last_anon_type = st; g_last_anon_is_anon = 1; /* inline, not global yet */
+      if($3){ sfl_free($3); }
+    }
+  | KW_UNION  '{' struct_declaration_list_opt '}'            {
+      $$ = strdup("union");
+      long fc = $3 ? $3->n : 0;
+      AstStructField* fs = NULL;
+      if(fc > 0){
+        fs = (AstStructField*)calloc(fc, sizeof(*fs));
+        for(long i=0;i<fc;i++){
+          char* t = compose_type($3->a[i].base ? $3->a[i].base : "", $3->a[i].d);
+          const char* fname = ($3->a[i].d && $3->a[i].d->name) ? $3->a[i].d->name : "";
+          fs[i] = ast_struct_field_new(t ? t : "", fname, $3->a[i].bitwidth);
+          fs[i].anon_def = $3->a[i].anon_def;
+          free(t);
+        }
+      }
+      AstNode* un = ast_union_new_with(NULL, fs, fc);
+      g_last_anon_type = un; g_last_anon_is_anon = 1; /* inline */
+      if($3){ sfl_free($3); }
+    }
+  | KW_STRUCT IDENTIFIER                                     { size_t n=strlen("struct ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$,"struct "); strcat($$,$2);} free($2); }
+  | KW_UNION  IDENTIFIER                                     { size_t n=strlen("union ")+strlen($2)+1;  $$=(char*)malloc(n); if($$){ strcpy($$,"union ");  strcat($$,$2);} free($2); }
   | enum_specifier            { $$ = $1; }
   | TYPE_NAME                 { $$ = $1; }
   ;
@@ -668,6 +796,18 @@ type_specifier
       size_t n = strlen($1) + 1 + strlen($2) + 1;
       char* s = (char*)malloc(n);
       if(s) { s[0] = '\0'; strcat(s, $1); strcat(s, " "); strcat(s, $2); }
+      free($1); free($2);
+      $$ = s;
+    }
+  ;
+
+/* specifier-qualifier-list for struct/union fields */
+specifier_qualifier_list
+  : type_qualifier_seq_opt type_specifier     {
+      const char* qs = ($1 && $1[0]) ? $1 : NULL;
+      size_t n = (qs?strlen(qs)+1:0) + strlen($2) + 1;
+      char* s = (char*)malloc(n);
+      if(s){ s[0]='\0'; if(qs){ strcat(s,$1); strcat(s," "); } strcat(s,$2); }
       free($1); free($2);
       $$ = s;
     }
@@ -693,58 +833,175 @@ array_dims
   ;
 
 struct_or_union_specifier
-  : KW_STRUCT IDENTIFIER '{' struct_declaration_list_opt '}' { size_t n=strlen("struct ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "struct "); strcat($$, $2);} }
-  | KW_UNION  IDENTIFIER '{' struct_declaration_list_opt '}' { size_t n=strlen("union ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "union "); strcat($$, $2);} }
-  | KW_STRUCT '{' struct_declaration_list_opt '}'            { $$ = strdup("struct"); }
-  | KW_UNION  '{' struct_declaration_list_opt '}'            { $$ = strdup("union"); }
-  | KW_STRUCT IDENTIFIER                                     { size_t n=strlen("struct ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "struct "); strcat($$, $2);} }
-  | KW_UNION  IDENTIFIER                                     { size_t n=strlen("union ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "union "); strcat($$, $2);} }
+  : KW_STRUCT IDENTIFIER '{' struct_declaration_list_opt '}'  {
+      /* return type name "struct Foo" */
+      size_t n = strlen("struct ")+strlen($2)+1;
+      $$ = (char*)malloc(n); if($$){ strcpy($$, "struct "); strcat($$, $2);} 
+      /* build AST_STRUCT with fields */
+      long fc = $4 ? $4->n : 0;
+      AstStructField* fs = NULL;
+      if(fc > 0){
+        fs = (AstStructField*)calloc(fc, sizeof(*fs));
+        for(long i=0;i<fc;i++){
+          char* t = compose_type($4->a[i].base ? $4->a[i].base : "", $4->a[i].d);
+          const char* fname = ($4->a[i].d && $4->a[i].d->name) ? $4->a[i].d->name : "";
+          fs[i] = ast_struct_field_new(t ? t : "", fname, $4->a[i].bitwidth);
+          fs[i].anon_def = $4->a[i].anon_def;
+          free(t);
+        }
+      }
+      AstNode* st = ast_struct_new_with($2, fs, fc);
+      g_last_anon_type = st; g_last_anon_is_anon = 0; /* named */
+      free($2);
+      if($4){ sfl_free($4); }
+    }
+  | KW_UNION  IDENTIFIER '{' struct_declaration_list_opt '}'  {
+      size_t n = strlen("union ")+strlen($2)+1;
+      $$ = (char*)malloc(n); if($$){ strcpy($$, "union "); strcat($$, $2);} 
+      long fc = $4 ? $4->n : 0;
+      AstStructField* fs = NULL;
+      if(fc > 0){
+        fs = (AstStructField*)calloc(fc, sizeof(*fs));
+        for(long i=0;i<fc;i++){
+          char* t = compose_type($4->a[i].base ? $4->a[i].base : "", $4->a[i].d);
+          const char* fname = ($4->a[i].d && $4->a[i].d->name) ? $4->a[i].d->name : "";
+          fs[i] = ast_struct_field_new(t ? t : "", fname, $4->a[i].bitwidth);
+          fs[i].anon_def = $4->a[i].anon_def;
+          free(t);
+        }
+      }
+      AstNode* un = ast_union_new_with($2, fs, fc);
+      g_last_anon_type = un; g_last_anon_is_anon = 0;
+      free($2);
+      if($4){ sfl_free($4); }
+    }
+  | KW_STRUCT '{' struct_declaration_list_opt '}'            { $$ = strdup("struct"); if($3){ sfl_free($3); } }
+  | KW_UNION  '{' struct_declaration_list_opt '}'            { $$ = strdup("union");  if($3){ sfl_free($3); } }
+  | KW_STRUCT IDENTIFIER                                     { size_t n=strlen("struct ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "struct "); strcat($$, $2);} free($2); }
+  | KW_UNION  IDENTIFIER                                     { size_t n=strlen("union ")+strlen($2)+1;  $$=(char*)malloc(n); if($$){ strcpy($$, "union ");  strcat($$, $2);} free($2); }
   ;
 
 struct_declaration_list_opt
-  : /* empty */
-  | struct_declaration_list
+  : /* empty */                  { $$ = sfl_new(); }
+  | struct_declaration_list      { $$ = $1; }
   ;
 
 struct_declaration_list
-  : struct_declaration
+  : struct_declaration                       { $$ = $1 ? $1 : sfl_new(); }
   | struct_declaration_list struct_declaration
+    {
+      if(!$1) $$ = sfl_new(); else $$ = $1;
+      if($2){
+        for(long i=0;i<$2->n;i++) sfl_push($$, $2->a[i]);
+        free($2->a); free($2);
+      }
+    }
   ;
 
+/* 1行分: base 型 (specifier_qualifier_list) + 複数 declarator/bitfield の並び */
 struct_declaration
-  : declaration_specifiers struct_declarator_list ';'
+  : specifier_qualifier_list struct_declarator_list ';'
+    {
+      SFieldList* out = sfl_new();
+      for(long i=0;i<$2->n;i++){
+        SField f = $2->a[i];
+        /* 各 declarator エントリに base 型を埋める（複製） */
+        f.base = $1 ? strdup($1) : strdup("");
+        /* If a nested anon type was just parsed as part of the base, attach it inline */
+        if(g_last_anon_type){ f.anon_def = g_last_anon_type; }
+        sfl_push(out, f);
+      }
+      /* consume the last anon type for this specifier */
+      g_last_anon_type = NULL;
+      /* 右側の一時領域だけ解放 */
+      free($1);
+      free($2->a); free($2);
+      $$ = out;
+    }
   ;
 
+/* カンマ区切りの declarator 群を SFieldList に */
 struct_declarator_list
   : struct_declarator
+    {
+      SFieldList* l = sfl_new();
+      sfl_push(l, $1->a[0]);
+      free($1->a); free($1);
+      $$ = l;
+    }
   | struct_declarator_list ',' struct_declarator
+    {
+      if(!$1) $$ = sfl_new(); else $$ = $1;
+      sfl_push($$, $3->a[0]);
+      free($3->a); free($3);
+    }
   ;
 
+/* 単一 declarator（名前あり／ビットフィールド、の3形態）を SFieldList として返す */
 struct_declarator
-  : declarator
+  : sdecl
+    {
+      SFieldList* l = sfl_new();
+      SField f = { .base=NULL, .d=$1, .bitwidth=0, .anon_def=NULL };
+      sfl_push(l, f);
+      $$ = l;
+    }
   | ':' constant_expression
-  | declarator ':' constant_expression
+    {
+      SFieldList* l = sfl_new();
+      /* 無名ビットフィールド（名前なし）。DStr は空名で用意しておく */
+      DStr* d = (DStr*)calloc(1,sizeof(DStr));
+      d->name = strdup(""); d->pre=strdup(""); d->post=strdup("");
+      int bw = 0; if($2 && ((AstNode*)$2)->kind==AST_EXPR_INT){ typedef struct { AstKind kind; long value; } AstExprInt; bw=(int)((AstExprInt*)$2)->value; }
+      SField f = { .base=NULL, .d=d, .bitwidth=bw, .anon_def=NULL };
+      sfl_push(l, f);
+      $$ = l;
+    }
+  | sdecl ':' constant_expression
+    {
+      SFieldList* l = sfl_new();
+      int bw = 0; if($3 && ((AstNode*)$3)->kind==AST_EXPR_INT){ typedef struct { AstKind kind; long value; } AstExprInt; bw=(int)((AstExprInt*)$3)->value; }
+      SField f = { .base=NULL, .d=$1, .bitwidth=bw, .anon_def=NULL };
+      sfl_push(l, f);
+      $$ = l;
+    }
   ;
+
 
 enum_specifier
-  : KW_ENUM IDENTIFIER '{' enumerator_list_opt '}'   { size_t n=strlen("enum ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "enum "); strcat($$, $2);} }
-  | KW_ENUM '{' enumerator_list_opt '}'              { $$ = strdup("enum"); }
-  | KW_ENUM IDENTIFIER                               { size_t n=strlen("enum ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "enum "); strcat($$, $2);} }
+  : KW_ENUM IDENTIFIER '{' enumerator_list_opt '}'   {
+      size_t n=strlen("enum ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "enum "); strcat($$, $2);} 
+      long cnt = $4 ? $4->n : 0;
+      AstEnumItem* items = NULL;
+      if(cnt>0){ items=(AstEnumItem*)calloc(cnt, sizeof(*items)); for(long i=0;i<cnt;i++){ items[i] = ast_enum_item_new($4->a[i].name, $4->a[i].value); free($4->a[i].name); } }
+      AstNode* en = ast_enum_new_with($2, items, cnt); ast_add(en); g_last_anon_type = en; g_last_anon_is_anon = 0;
+      free($2);
+      if($4){ free($4->a); free($4); }
+    }
+  | KW_ENUM '{' enumerator_list_opt '}'              {
+      $$ = strdup("enum");
+      long cnt = $3 ? $3->n : 0;
+      AstEnumItem* items = NULL;
+      if(cnt>0){ items=(AstEnumItem*)calloc(cnt, sizeof(*items)); for(long i=0;i<cnt;i++){ items[i] = ast_enum_item_new($3->a[i].name, $3->a[i].value); free($3->a[i].name); } }
+      AstNode* en = ast_enum_new_with(NULL, items, cnt); g_last_anon_type = en; g_last_anon_is_anon = 1;
+      if($3){ free($3->a); free($3); }
+    }
+  | KW_ENUM IDENTIFIER                               { size_t n=strlen("enum ")+strlen($2)+1; $$=(char*)malloc(n); if($$){ strcpy($$, "enum "); strcat($$, $2);} free($2); }
   ;
 
 enumerator_list_opt
-  : /* empty */
-  | enumerator_list
+  : /* empty */                      { $$ = NULL; }
+  | enumerator_list                  { $$ = $1; }
   ;
 
 enumerator_list
-  : enumerator
-  | enumerator_list ',' enumerator
+  : enumerator                        { $$ = $1; }
+  | enumerator_list ',' enumerator    { $$ = el_merge($1, $3); }
   ;
 
 enumerator
-  : IDENTIFIER
-  | IDENTIFIER '=' constant_expression
+  : IDENTIFIER                        { EnumList* l=el_new(); el_push(l, $1, NULL); free($1); $$=l; }
+  | IDENTIFIER '=' constant_expression { EnumList* l=el_new(); el_push(l, $1, $3); free($1); $$=l; }
   ;
 
 /* Declarators */
@@ -928,9 +1185,11 @@ block_item
     {
       const char* qs = ($1 && $1[0]) ? $1 : NULL; NodeList* nl=nlist_new();
       char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
-      char* t1=compose_type(base,$3); AstNode* d1=ast_decl_new(t1,$3->name,NULL); free(t1); dstr_free($3); nlist_push(nl,d1);
-      char* t2=compose_type(base,$5); AstNode* d2=ast_decl_new(t2,$5->name,NULL); free(t2); dstr_free($5); nlist_push(nl,d2);
-      if($6){ for(long i=0;i<$6->n;i++){ DStr* ds=(DStr*)$6->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); free(tx); dstr_free(ds); nlist_push(nl,dn);} free($6->a); free($6); }
+      AstNode* A = (g_last_anon_is_anon ? g_last_anon_type : NULL);
+      char* t1=compose_type(base,$3); AstNode* d1=ast_decl_new(t1,$3->name,NULL); if(A){ ast_decl_attach_anon(d1, A); } free(t1); dstr_free($3); nlist_push(nl,d1);
+      char* t2=compose_type(base,$5); AstNode* d2=ast_decl_new(t2,$5->name,NULL); if(A){ ast_decl_attach_anon(d2, ast_type_clone(A)); } free(t2); dstr_free($5); nlist_push(nl,d2);
+      if($6){ for(long i=0;i<$6->n;i++){ DStr* ds=(DStr*)$6->a[i]; char* tx=compose_type(base,ds); AstNode* dn=ast_decl_new(tx, ds->name,NULL); if(A){ ast_decl_attach_anon(dn, ast_type_clone(A)); } free(tx); dstr_free(ds); nlist_push(nl,dn);} free($6->a); free($6); }
+      if(A){ g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(base); free($1); free($2);
       $$=nl;
     }
@@ -940,6 +1199,7 @@ block_item
       char* base = qs ? sjoin3($1, " ", $2) : sdup0x($2);
       char* t=compose_type(base,$3);
       AstNode* d=ast_decl_new(t? t: base, $3->name, $5);
+      if(g_last_anon_is_anon && g_last_anon_type){ ast_decl_attach_anon(d, g_last_anon_type); g_last_anon_type=NULL; g_last_anon_is_anon=0; }
       free(t); dstr_free($3); free(base); free($1); free($2);
       $$ = nlist_from1(d);
     }
@@ -1033,7 +1293,7 @@ assignment_expression
 
 conditional_expression
   : logical_or_expression                              { $$ = $1; }
-  | logical_or_expression '?' expression ':' conditional_expression { $$ = NULL; }
+  | logical_or_expression '?' expression ':' conditional_expression { $$ = ast_expr_cond_new($1, $3, $5); }
   ;
 
 logical_or_expression

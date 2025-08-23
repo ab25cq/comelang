@@ -26,6 +26,80 @@ AstCompound* ast_compound_new_with(AstNode** items, long count)
     return n;
 }
 
+AstNode* ast_struct_new(const char* name) {
+    AstStruct* s = (AstStruct*)calloc(1, sizeof(AstStruct));
+    if (!s) return NULL;
+    s->kind = AST_STRUCT;
+    s->name = name ? sdup(name) : NULL;
+    s->fields = NULL;
+    s->field_count = 0;
+    return (AstNode*)s;
+}
+
+AstNode* ast_struct_new_with(const char* name, AstStructField* fields, long field_count) {
+    AstStruct* s = (AstStruct*)calloc(1, sizeof(AstStruct));
+    if (!s) return NULL;
+    s->kind = AST_STRUCT;
+    s->name = name ? sdup(name) : NULL;
+    s->fields = fields;          /* 所有権を受け取る想定 */
+    s->field_count = field_count;
+    return (AstNode*)s;
+}
+
+AstStructField ast_struct_field_new(const char* type_name, const char* name, int bitwidth) {
+    AstStructField f;
+    f.type_name = type_name ? sdup(type_name) : NULL;
+    f.name = name ? sdup(name) : NULL;
+    f.bitwidth = bitwidth;   /* 0なら通常、>0ならビットフィールド */
+    f.anon_def = NULL;
+    return f;
+}
+
+AstNode* ast_enum_new(const char* name) {
+    AstEnum* e = (AstEnum*)calloc(1, sizeof(AstEnum));
+    if (!e) return NULL;
+    e->kind = AST_ENUM;
+    e->name = name ? sdup(name) : NULL;
+    e->items = NULL;
+    e->item_count = 0;
+    return (AstNode*)e;
+}
+
+AstEnumItem ast_enum_item_new(const char* name, AstNode* value) {
+    AstEnumItem it; it.name = name ? sdup(name) : NULL; it.value = value; return it;
+}
+
+AstNode* ast_enum_new_with(const char* name, AstEnumItem* items, long item_count) {
+    AstEnum* e = (AstEnum*)calloc(1, sizeof(AstEnum));
+    if (!e) return NULL;
+    e->kind = AST_ENUM;
+    e->name = name ? sdup(name) : NULL;
+    e->items = items;
+    e->item_count = item_count;
+    return (AstNode*)e;
+}
+
+AstNode* ast_union_new(const char* name) {
+    AstUnion* u = (AstUnion*)calloc(1, sizeof(AstUnion));
+    if (!u) return NULL;
+    u->kind = AST_UNION;
+    u->name = name ? sdup(name) : NULL;
+    u->fields = NULL;
+    u->field_count = 0;
+    return (AstNode*)u;
+}
+
+AstNode* ast_union_new_with(const char* name, AstStructField* fields, long field_count) {
+    AstUnion* u = (AstUnion*)calloc(1, sizeof(AstUnion));
+    if (!u) return NULL;
+    u->kind = AST_UNION;
+    u->name = name ? sdup(name) : NULL;
+    u->fields = fields;
+    u->field_count = field_count;
+    return (AstNode*)u;
+}
+
+
 AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, AstNode* body)
 {
     AstFunction* f = (AstFunction*)calloc(1, sizeof(AstFunction));
@@ -125,6 +199,18 @@ AstNode* ast_expr_cast_new(const char* type_name, AstNode* expr)
     return (AstNode*)e;
 }
 
+AstNode* ast_expr_cond_new(AstNode* cond, AstNode* then_e, AstNode* else_e)
+{
+    typedef struct AstExprCond { AstKind kind; AstNode* cond; AstNode* then_e; AstNode* else_e; } AstExprCond;
+    AstExprCond* e = (AstExprCond*)calloc(1, sizeof(AstExprCond));
+    if(!e) return NULL;
+    e->kind = AST_EXPR_COND;
+    e->cond = cond;
+    e->then_e = then_e;
+    e->else_e = else_e;
+    return (AstNode*)e;
+}
+
 AstNode* ast_typedef_new(const char* type_name, const char* alias_name)
 {
     typedef struct AstTypedef { AstKind kind; char* type_name; char* alias_name; } AstTypedef;
@@ -138,14 +224,23 @@ AstNode* ast_typedef_new(const char* type_name, const char* alias_name)
 
 AstNode* ast_decl_new(const char* type_name, const char* name, AstNode* init)
 {
-    typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; } AstDecl;
+    typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
     AstDecl* d = (AstDecl*)calloc(1, sizeof(AstDecl));
     if(!d) return NULL;
     d->kind = AST_DECL;
     d->type_name = type_name ? sdup(type_name) : NULL;
     d->name = name ? sdup(name) : NULL;
     d->init = init;
+    d->anon_def = NULL;
     return (AstNode*)d;
+}
+
+void ast_decl_attach_anon(struct AstNode* decl, struct AstNode* anon_def)
+{
+    if(!decl || !anon_def) return;
+    typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
+    AstDecl* d = (AstDecl*)decl;
+    d->anon_def = anon_def;
 }
 
 AstNode* ast_init_list_new(AstNode** items, long count)
@@ -285,6 +380,145 @@ static void print_indent(int n) {
     for(int i=0;i<n;i++) putchar(' ');
 }
 
+/* Pretty-print type names, expanding anonymous struct/union as "struct <anon>"/"union <anon>". */
+static const char* prettify_type(const char* t, char* buf, size_t bufsz)
+{
+    if(!t) return "<type>";
+    if(strncmp(t, "struct", 6)==0){
+        const char* suf = t+6;
+        if(suf[0]=='\0')
+            snprintf(buf, bufsz, "struct <anon>");
+        else if(suf[0] != ' '){
+            /* e.g., struct*, struct[], struct() */
+            snprintf(buf, bufsz, "struct <anon>%s", suf);
+        } else {
+            /* named: keep as-is */
+            return t;
+        }
+        return buf;
+    }
+    if(strncmp(t, "union", 5)==0){
+        const char* suf = t+5;
+        if(suf[0]=='\0')
+            snprintf(buf, bufsz, "union <anon>");
+        else if(suf[0] != ' '){
+            snprintf(buf, bufsz, "union <anon>%s", suf);
+        } else {
+            return t;
+        }
+        return buf;
+    }
+    if(strncmp(t, "enum", 4)==0){
+        const char* suf = t+4;
+        if(suf[0]=='\0') snprintf(buf, bufsz, "enum <anon>");
+        else if(suf[0] != ' ') snprintf(buf, bufsz, "enum <anon>%s", suf);
+        else return t;
+        return buf;
+    }
+    return t;
+}
+
+/* ---- shallow/deep clone helpers for inline attachments ---- */
+static AstNode* clone_expr_const(const AstNode* n)
+{
+    if(!n) return NULL;
+    switch(n->kind){
+    case AST_EXPR_INT: {
+        typedef struct { AstKind kind; long value; } AstExprInt;
+        const AstExprInt* e = (const AstExprInt*)n;
+        return ast_expr_int_new(e->value);
+    }
+    case AST_EXPR_CHAR: {
+        typedef struct { AstKind kind; char* text; } AstExprChar;
+        const AstExprChar* e = (const AstExprChar*)n;
+        return ast_expr_char_new(e->text ? e->text : "");
+    }
+    case AST_EXPR_IDENT: {
+        typedef struct { AstKind kind; char* name; } AstExprIdent;
+        const AstExprIdent* e = (const AstExprIdent*)n;
+        return ast_expr_ident_new(e->name ? e->name : "");
+    }
+    case AST_EXPR_UNARY: {
+        typedef struct { AstKind kind; char* op; AstNode* expr; int is_postfix; } AstExprUnary;
+        const AstExprUnary* e = (const AstExprUnary*)n;
+        AstNode* sub = clone_expr_const(e->expr);
+        return ast_expr_unary_new(e->op ? e->op : "", sub, e->is_postfix);
+    }
+    case AST_EXPR_BINARY: {
+        typedef struct { AstKind kind; char* op; AstNode* lhs; AstNode* rhs; } AstExprBinary;
+        const AstExprBinary* e = (const AstExprBinary*)n;
+        AstNode* lhs = clone_expr_const(e->lhs);
+        AstNode* rhs = clone_expr_const(e->rhs);
+        return ast_expr_binary_new(e->op ? e->op : "", lhs, rhs);
+    }
+    case AST_EXPR_CAST: {
+        typedef struct { AstKind kind; char* type_name; AstNode* expr; } AstExprCast;
+        const AstExprCast* e = (const AstExprCast*)n;
+        AstNode* sub = clone_expr_const(e->expr);
+        return ast_expr_cast_new(e->type_name ? e->type_name : "", sub);
+    }
+    case AST_EXPR_COND: {
+        typedef struct { AstKind kind; AstNode* cond; AstNode* then_e; AstNode* else_e; } AstExprCond;
+        const AstExprCond* e = (const AstExprCond*)n;
+        AstNode* c = clone_expr_const(e->cond);
+        AstNode* t = clone_expr_const(e->then_e);
+        AstNode* f = clone_expr_const(e->else_e);
+        return ast_expr_cond_new(c, t, f);
+    }
+    default:
+        return NULL; /* not cloning complex expressions here */
+    }
+}
+
+AstNode* ast_type_clone(const AstNode* n)
+{
+    if(!n) return NULL;
+    switch(n->kind){
+    case AST_STRUCT: {
+        const AstStruct* s = (const AstStruct*)n;
+        AstStructField* fs = NULL;
+        if(s->field_count>0){
+            fs = (AstStructField*)calloc(s->field_count, sizeof(*fs));
+            for(long i=0;i<s->field_count;i++){
+                fs[i].type_name = s->fields[i].type_name ? sdup(s->fields[i].type_name) : NULL;
+                fs[i].name = s->fields[i].name ? sdup(s->fields[i].name) : NULL;
+                fs[i].bitwidth = s->fields[i].bitwidth;
+                fs[i].anon_def = s->fields[i].anon_def ? ast_type_clone(s->fields[i].anon_def) : NULL;
+            }
+        }
+        return (AstNode*)ast_struct_new_with(s->name ? s->name : NULL, fs, s->field_count);
+    }
+    case AST_UNION: {
+        const AstUnion* u = (const AstUnion*)n;
+        AstStructField* fs = NULL;
+        if(u->field_count>0){
+            fs = (AstStructField*)calloc(u->field_count, sizeof(*fs));
+            for(long i=0;i<u->field_count;i++){
+                fs[i].type_name = u->fields[i].type_name ? sdup(u->fields[i].type_name) : NULL;
+                fs[i].name = u->fields[i].name ? sdup(u->fields[i].name) : NULL;
+                fs[i].bitwidth = u->fields[i].bitwidth;
+                fs[i].anon_def = u->fields[i].anon_def ? ast_type_clone(u->fields[i].anon_def) : NULL;
+            }
+        }
+        return (AstNode*)ast_union_new_with(u->name ? u->name : NULL, fs, u->field_count);
+    }
+    case AST_ENUM: {
+        const AstEnum* e = (const AstEnum*)n;
+        AstEnumItem* items = NULL;
+        if(e->item_count>0){
+            items = (AstEnumItem*)calloc(e->item_count, sizeof(*items));
+            for(long i=0;i<e->item_count;i++){
+                items[i].name = e->items[i].name ? sdup(e->items[i].name) : NULL;
+                items[i].value = e->items[i].value ? clone_expr_const(e->items[i].value) : NULL;
+            }
+        }
+        return (AstNode*)ast_enum_new_with(e->name ? e->name : NULL, items, e->item_count);
+    }
+    default:
+        return NULL;
+    }
+}
+
 void ast_print(const AstNode* n, int indent)
 {
     if(!n) { print_indent(indent); printf("(null)\n"); return; }
@@ -296,6 +530,81 @@ void ast_print(const AstNode* n, int indent)
             ast_print(c->items[i], indent+2);
         }
         break; }
+
+    case AST_STRUCT: {
+        const AstStruct* s = (const AstStruct*)n;
+        print_indent(indent);
+        printf("Struct name=%s fields=%ld\n", s->name ? s->name : "<anon>", s->field_count);
+        for (long i = 0; i < s->field_count; i++) {
+            const AstStructField* f = &s->fields[i];
+            print_indent(indent+2);
+            char tbuf[256];
+            const char* tname = prettify_type(f->type_name ? f->type_name : "<type>", tbuf, sizeof(tbuf));
+            if (f->bitwidth > 0) {
+                printf("field type=%s name=%s :%d\n",
+                    tname,
+                    f->name ? f->name : "<anon>",
+                    f->bitwidth);
+            } else {
+                printf("field type=%s name=%s\n",
+                    tname,
+                    f->name ? f->name : "<anon>");
+            }
+            if (f->anon_def) {
+                print_indent(indent+4);
+                printf("inline:\n");
+                ast_print(f->anon_def, indent+6);
+            }
+        }
+        break; }
+
+    case AST_UNION: {
+        const AstUnion* u = (const AstUnion*)n;
+        print_indent(indent);
+        printf("Union name=%s fields=%ld\n", u->name ? u->name : "<anon>", u->field_count);
+        for (long i = 0; i < u->field_count; i++) {
+            const AstStructField* f = &u->fields[i];
+            print_indent(indent+2);
+            char tbuf[256];
+            const char* tname = prettify_type(f->type_name ? f->type_name : "<type>", tbuf, sizeof(tbuf));
+            if (f->bitwidth > 0) {
+                printf("field type=%s name=%s :%d\n",
+                    tname,
+                    f->name ? f->name : "<anon>",
+                    f->bitwidth);
+            } else {
+                printf("field type=%s name=%s\n",
+                    tname,
+                    f->name ? f->name : "<anon>");
+            }
+            if (f->anon_def) {
+                print_indent(indent+4);
+                printf("inline:\n");
+                ast_print(f->anon_def, indent+6);
+            }
+        }
+        break; }
+
+    case AST_ENUM: {
+        const AstEnum* e = (const AstEnum*)n;
+        print_indent(indent);
+        printf("Enum name=%s items=%ld\n", e->name ? e->name : "<anon>", e->item_count);
+        for (long i = 0; i < e->item_count; i++) {
+            const AstEnumItem* it = &e->items[i];
+            print_indent(indent+2);
+            if (it->value && it->value->kind == AST_EXPR_INT) {
+                typedef struct { AstKind kind; long value; } AstExprInt;
+                long v = ((const AstExprInt*)it->value)->value;
+                printf("%s = %ld\n", it->name ? it->name : "<anon>", v);
+            } else if (it->value) {
+                printf("%s value:\n", it->name ? it->name : "<anon>");
+                ast_print(it->value, indent+4);
+            } else {
+                printf("%s\n", it->name ? it->name : "<anon>");
+            }
+        }
+        break; }
+
     case AST_TYPEDEF: {
         typedef struct { AstKind kind; char* type_name; char* alias_name; } AstTypedef;
         const AstTypedef* t = (const AstTypedef*)n;
@@ -356,10 +665,11 @@ void ast_print(const AstNode* n, int indent)
         print_indent(indent); printf("Ident(%s)\n", e->name ? e->name : "<anon>");
         break; }
     case AST_DECL: {
-        typedef struct { AstKind kind; char* type_name; char* name; AstNode* init; } AstDecl;
+        typedef struct { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
         const AstDecl* d = (const AstDecl*)n;
         print_indent(indent);
         printf("Decl type=%s name=%s\n", d->type_name?d->type_name:"<type>", d->name?d->name:"<anon>");
+        if(d->anon_def) { print_indent(indent+2); printf("inline:\n"); ast_print(d->anon_def, indent+4); }
         if(d->init) { print_indent(indent+2); printf("init:\n"); ast_print(d->init, indent+4); }
         break; }
     case AST_EXPR_UNARY: {
@@ -378,6 +688,14 @@ void ast_print(const AstNode* n, int indent)
             ast_print(e->args[i], indent+4);
         }
         break; }
+    case AST_EXPR_COND: {
+        typedef struct { AstKind kind; AstNode* cond; AstNode* then_e; AstNode* else_e; } AstExprCond;
+        const AstExprCond* e = (const AstExprCond*)n;
+        print_indent(indent); printf("Cond\n");
+        if(e->cond){ print_indent(indent+2); printf("cond:\n"); ast_print(e->cond, indent+4);} 
+        if(e->then_e){ print_indent(indent+2); printf("then:\n"); ast_print(e->then_e, indent+4);} 
+        if(e->else_e){ print_indent(indent+2); printf("else:\n"); ast_print(e->else_e, indent+4);} 
+        break; }
     case AST_EXPR_INDEX: {
         typedef struct { AstKind kind; AstNode* arr; AstNode* index; } AstExprIndex;
         const AstExprIndex* e = (const AstExprIndex*)n;
@@ -390,6 +708,14 @@ void ast_print(const AstNode* n, int indent)
         const AstExprMember* e = (const AstExprMember*)n;
         print_indent(indent); printf("Member(%s%s)\n", e->is_arrow?"->":".", e->name?e->name:"<anon>");
         if(e->recv) ast_print(e->recv, indent+2);
+        break; }
+    case AST_EXPR_COND: {
+        typedef struct { AstKind kind; AstNode* cond; AstNode* then_e; AstNode* else_e; } AstExprCond;
+        AstExprCond* e = (AstExprCond*)n;
+        if(e->cond) ast_free_node(e->cond);
+        if(e->then_e) ast_free_node(e->then_e);
+        if(e->else_e) ast_free_node(e->else_e);
+        free(e);
         break; }
     case AST_INIT_LIST: {
         typedef struct { AstKind kind; AstNode** items; long count; } AstInitList;
@@ -588,7 +914,7 @@ void ast_validate(void)
         const AstNode* n=g_nodes.data[i];
         if(!n) continue;
         if(n->kind==AST_DECL){
-            typedef struct { AstKind kind; char* type_name; char* name; AstNode* init; } AstDecl;
+            typedef struct { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
             const AstDecl* d=(const AstDecl*)n;
             long dims[8]={0}; int nd=parse_dims(d->type_name?d->type_name:"", dims, 8);
             if(nd>0){ (void)validate_init_rec(d->init, dims, nd, 0); }
@@ -614,6 +940,47 @@ static void ast_free_node(AstNode* n) {
         }
         free(f);
         break; }
+
+    case AST_STRUCT: {
+        AstStruct* s = (AstStruct*)n;
+        if (s->fields) {
+            for (long i = 0; i < s->field_count; i++) {
+                free(s->fields[i].type_name);
+                free(s->fields[i].name);
+                if (s->fields[i].anon_def) ast_free_node(s->fields[i].anon_def);
+            }
+            free(s->fields);
+        }
+        free(s->name);
+        free(s);
+        break; }
+
+    case AST_UNION: {
+        AstUnion* u = (AstUnion*)n;
+        if (u->fields) {
+            for (long i = 0; i < u->field_count; i++) {
+                free(u->fields[i].type_name);
+                free(u->fields[i].name);
+                if (u->fields[i].anon_def) ast_free_node(u->fields[i].anon_def);
+            }
+            free(u->fields);
+        }
+        free(u->name);
+        free(u);
+        break; }
+    case AST_ENUM: {
+        AstEnum* e = (AstEnum*)n;
+        if (e->items) {
+            for (long i = 0; i < e->item_count; i++) {
+                free(e->items[i].name);
+                if (e->items[i].value) ast_free_node(e->items[i].value);
+            }
+            free(e->items);
+        }
+        free(e->name);
+        free(e);
+        break; }
+
     case AST_COMPOUND: {
         AstCompound* c = (AstCompound*)n;
         if(c->items) {
@@ -755,10 +1122,11 @@ static void ast_free_node(AstNode* n) {
         free(t);
         break; }
     case AST_DECL: {
-        typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; } AstDecl;
+        typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
         AstDecl* d = (AstDecl*)n;
         free(d->type_name);
         free(d->name);
+        if(d->anon_def) ast_free_node(d->anon_def);
         if(d->init) ast_free_node(d->init);
         free(d);
         break; }

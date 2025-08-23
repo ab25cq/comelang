@@ -28,6 +28,10 @@ typedef enum AstKind {
     AST_DESIG_RANGE = 22,      /* element: [first ... last] */
     AST_INIT_DESIG = 23,       /* chain of elements + value */
     AST_EXPR_CAST = 24,
+    AST_STRUCT = 25,
+    AST_UNION  = 26,
+    AST_ENUM   = 27,
+    AST_EXPR_COND = 28
 } AstKind;
 
 typedef struct AstNode {
@@ -64,6 +68,52 @@ typedef enum AstFuncFlags {
     ASTF_RESTRICT = 1<<5,
 } AstFuncFlags;
 
+typedef struct AstStructField {
+    char* type_name;
+    char* name;
+    int bitwidth;   // 0 なら通常フィールド、>0 ならビット幅
+    struct AstNode* anon_def; // optional inline nested definition (struct/union/enum)
+} AstStructField;
+
+typedef struct AstStruct {
+    AstKind kind;   // AST_STRUCT
+    char* name;     // "Point"
+    AstStructField* fields;
+    long field_count;
+} AstStruct;
+
+typedef struct AstUnion {
+    AstKind kind;   // AST_UNION
+    char* name;     // union tag name
+    AstStructField* fields;
+    long field_count;
+} AstUnion;
+
+typedef struct AstEnumItem {
+    char* name;            /* enumerator name */
+    struct AstNode* value; /* optional constant expression (nullable) */
+} AstEnumItem;
+
+typedef struct AstEnum {
+    AstKind kind;   // AST_ENUM
+    char* name;     // enum tag name (nullable for anonymous)
+    AstEnumItem* items;
+    long item_count;
+} AstEnum;
+
+struct AstNode* ast_struct_new(const char* name);
+struct AstNode* ast_struct_new_with(const char* name, AstStructField* fields, long field_count);
+AstStructField  ast_struct_field_new(const char* type_name, const char* name, int bitwidth);
+
+/* Union constructors */
+struct AstNode* ast_union_new(const char* name);
+struct AstNode* ast_union_new_with(const char* name, AstStructField* fields, long field_count);
+
+/* Enum constructors */
+struct AstNode* ast_enum_new(const char* name);
+struct AstNode* ast_enum_new_with(const char* name, AstEnumItem* items, long item_count);
+AstEnumItem     ast_enum_item_new(const char* name, struct AstNode* value);
+
 AstCompound* ast_compound_new(void);
 AstCompound* ast_compound_new_with(struct AstNode** items, long count);
 AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, AstNode* body);
@@ -91,12 +141,17 @@ AstNode* ast_expr_float_new(double value);
 AstNode* ast_expr_char_new(const char* text);
 AstNode* ast_expr_string_new(const char* text);
 AstNode* ast_expr_cast_new(const char* type_name, struct AstNode* expr);
+AstNode* ast_expr_cond_new(struct AstNode* cond, struct AstNode* then_e, struct AstNode* else_e);
 
 /* Typedef */
 AstNode* ast_typedef_new(const char* type_name, const char* alias_name);
 
 /* Declaration */
 AstNode* ast_decl_new(const char* type_name, const char* name, AstNode* init);
+void ast_decl_attach_anon(struct AstNode* decl, struct AstNode* anon_def);
+
+/* Clone a type definition node (struct/union/enum) for safe inline attachment */
+struct AstNode* ast_type_clone(const struct AstNode* n);
 AstNode* ast_init_list_new(struct AstNode** items, long count);
 AstNode* ast_init_desig_field_new(const char* name, struct AstNode* value);
 AstNode* ast_init_desig_index_new(struct AstNode* index_expr, struct AstNode* value);
