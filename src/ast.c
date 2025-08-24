@@ -10,6 +10,72 @@ static char* sdup(const char* s) {
     return r;
 }
 
+/* crude type scanner: fills AstQuals from a flattened type string */
+static void parse_type_details(const char* type_name, AstQuals* q)
+{
+    if(!q){ return; }
+    memset(q, 0, sizeof(*q));
+    if(!type_name) return;
+    const char* p = type_name;
+    int long_cnt = 0;
+    int arr_dims = 0;
+    while(*p){
+        if(*p=='*'){ q->pointer_num++; p++; continue; }
+        if(*p=='%'){ q->ptr_heap++; p++; continue; }
+        if(*p=='`'){ q->ptr_no_dtor++; p++; continue; }
+        if(*p=='&'){ q->ptr_no_heap++; p++; continue; }
+        if(*p=='['){
+            /* parse optional decimal size */
+            p++;
+            long v = 0; int any=0;
+            while(*p>='0' && *p<='9'){ any=1; v = v*10 + (*p - '0'); p++; }
+            if(arr_dims < (int)(sizeof(q->array_size)/sizeof(q->array_size[0]))){
+                q->array_size[arr_dims] = any ? v : -1;
+            }
+            arr_dims++;
+            while(*p && *p!=']') p++;
+            if(*p==']') p++;
+            continue;
+        }
+        if(*p==' '||*p=='\t' || *p=='(' || *p==')') { p++; continue; }
+        const char* start=p;
+        while(*p && !(*p==' '||*p=='\t' || *p=='*' || *p=='(' || *p==')' || *p=='[' || *p==']')) p++;
+        size_t n = (size_t)(p-start);
+        if(n==0) break;
+        if(n==5 && strncmp(start, "const", 5)==0) q->const_ = 1;
+        else if(n==8 && strncmp(start, "volatile", 8)==0) q->volatile_ = 1;
+        else if(n==8 && strncmp(start, "restrict", 8)==0) q->restrict_ = 1;
+        else if(n==4 && strncmp(start, "uniq", 4)==0) q->uniq_ = 1;
+        else if(n==4 && strncmp(start, "void", 4)==0) q->is_void = 1;
+        else if(n==4 && strncmp(start, "char", 4)==0) q->is_char = 1;
+        else if(n==5 && strncmp(start, "short", 5)==0) q->is_short = 1;
+        else if(n==3 && strncmp(start, "int", 3)==0) q->is_int = 1;
+        else if(n==4 && strncmp(start, "long", 4)==0) long_cnt++;
+        else if(n==5 && strncmp(start, "float", 5)==0) q->is_float = 1;
+        else if(n==6 && strncmp(start, "double", 6)==0) q->is_double = 1;
+        else if(n==6 && strncmp(start, "signed", 6)==0) q->is_signed = 1;
+        else if(n==8 && strncmp(start, "unsigned", 8)==0) q->is_unsigned = 1;
+        else if(n==6 && strncmp(start, "struct", 6)==0) q->is_struct = 1;
+        else if(n==5 && strncmp(start, "union", 5)==0) q->is_union = 1;
+        else if(n==4 && strncmp(start, "enum", 4)==0) q->is_enum = 1;
+    }
+    q->long_count = long_cnt;
+    q->array_dims = arr_dims;
+    /* function pointer heuristic: look for "(*" then ")(" sequence */
+    if(type_name){ const char* a=strstr(type_name, "(*"); if(a){ const char* b=strchr(a, ')'); if(b && strchr(b, '(')) q->fp_ = 1; } }
+    /* infer integer bit width using LP64 model: char=8, short=16, int=32, long=64, long long=64 */
+    int is_integer_like = q->is_char || q->is_short || q->is_int || q->is_signed || q->is_unsigned || long_cnt>0;
+    if(is_integer_like){
+        int bits = 32; /* int */
+        if(q->is_char) bits = 8;
+        else if(q->is_short) bits = 16;
+        else if(long_cnt>=1) bits = 64;
+        q->int_bits = bits;
+    } else {
+        q->int_bits = 0;
+    }
+}
+
 AstCompound* ast_compound_new(void)
 {
     AstCompound* n = (AstCompound*)calloc(1, sizeof(AstCompound));
@@ -100,7 +166,7 @@ AstNode* ast_union_new_with(const char* name, AstStructField* fields, long field
 }
 
 
-AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, AstNode* body)
+AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, int version, AstNode* body)
 {
     AstFunction* f = (AstFunction*)calloc(1, sizeof(AstFunction));
     if(!f) return NULL;
@@ -108,8 +174,10 @@ AstFunction* ast_function_new(const char* name, const char* return_type, int fla
     f->name = name ? sdup(name) : NULL;
     f->return_type = return_type ? sdup(return_type) : NULL;
     f->flags = flags;
+    f->uniq_ = (flags & ASTF_UNIQ) ? 1 : 0;
     f->params = params; /* take ownership of array (and its strings) */
     f->param_count = param_count;
+    f->version = version;
     f->body = body;
     return f;
 }
@@ -190,12 +258,13 @@ AstNode* ast_expr_string_new(const char* text)
 
 AstNode* ast_expr_cast_new(const char* type_name, AstNode* expr)
 {
-    typedef struct AstExprCast { AstKind kind; char* type_name; AstNode* expr; } AstExprCast;
+    typedef struct AstExprCast { AstKind kind; char* type_name; AstNode* expr; AstQuals q; } AstExprCast;
     AstExprCast* e = (AstExprCast*)calloc(1, sizeof(AstExprCast));
     if(!e) return NULL;
     e->kind = AST_EXPR_CAST;
     e->type_name = type_name ? sdup(type_name) : NULL;
     e->expr = expr;
+    parse_type_details(type_name, &e->q);
     return (AstNode*)e;
 }
 
@@ -211,20 +280,22 @@ AstNode* ast_expr_cond_new(AstNode* cond, AstNode* then_e, AstNode* else_e)
     return (AstNode*)e;
 }
 
-AstNode* ast_typedef_new(const char* type_name, const char* alias_name)
+AstNode* ast_typedef_new(const char* type_name, const char* alias_name, int alias_ptrs)
 {
-    typedef struct AstTypedef { AstKind kind; char* type_name; char* alias_name; } AstTypedef;
+    typedef struct AstTypedef { AstKind kind; char* type_name; char* alias_name; AstQuals q; int alias_ptrs; } AstTypedef;
     AstTypedef* t = (AstTypedef*)calloc(1, sizeof(AstTypedef));
     if(!t) return NULL;
     t->kind = AST_TYPEDEF;
     t->type_name = type_name ? sdup(type_name) : NULL;
     t->alias_name = alias_name ? sdup(alias_name) : NULL;
+    parse_type_details(type_name, &t->q);
+    t->alias_ptrs = alias_ptrs;
     return (AstNode*)t;
 }
 
 AstNode* ast_decl_new(const char* type_name, const char* name, AstNode* init)
 {
-    typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
+    typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; AstQuals q; } AstDecl;
     AstDecl* d = (AstDecl*)calloc(1, sizeof(AstDecl));
     if(!d) return NULL;
     d->kind = AST_DECL;
@@ -232,6 +303,7 @@ AstNode* ast_decl_new(const char* type_name, const char* name, AstNode* init)
     d->name = name ? sdup(name) : NULL;
     d->init = init;
     d->anon_def = NULL;
+    parse_type_details(type_name, &d->q);
     return (AstNode*)d;
 }
 
@@ -606,10 +678,18 @@ void ast_print(const AstNode* n, int indent)
         break; }
 
     case AST_TYPEDEF: {
-        typedef struct { AstKind kind; char* type_name; char* alias_name; } AstTypedef;
+        typedef struct { AstKind kind; char* type_name; char* alias_name; AstQuals q; int alias_ptrs; } AstTypedef;
         const AstTypedef* t = (const AstTypedef*)n;
         print_indent(indent);
         printf("Typedef type=%s name=%s\n", t->type_name ? t->type_name : "<unknown>", t->alias_name ? t->alias_name : "<anon>");
+        print_indent(indent+2); printf("quals: const_=%d volatile_=%d restrict_=%d uniq_=%d pointer_num=%d fp_=%d ptr_heap=%d ptr_no_dtor=%d ptr_no_heap=%d\n",
+                t->q.const_, t->q.volatile_, t->q.restrict_, t->q.uniq_, t->q.pointer_num, t->q.fp_, t->q.ptr_heap, t->q.ptr_no_dtor, t->q.ptr_no_heap);
+        print_indent(indent+2); printf("alias_pointer_num=%d\n", t->alias_ptrs);
+        print_indent(indent+2); printf("typeinfo: signed=%d unsigned=%d short=%d long=%d long_long=%d void=%d char=%d int=%d float=%d double=%d struct=%d union=%d enum=%d array_dims=%d int_bits=%d\n",
+                t->q.is_signed, t->q.is_unsigned, t->q.is_short, (t->q.long_count>=1), (t->q.long_count>=2),
+                t->q.is_void, t->q.is_char, t->q.is_int, t->q.is_float, t->q.is_double,
+                t->q.is_struct, t->q.is_union, t->q.is_enum, t->q.array_dims, t->q.int_bits);
+        if(t->q.array_dims>0){ print_indent(indent+2); printf("array_sizes="); for(int i=0;i<t->q.array_dims && i<8;i++){ if(i) printf(","); printf("%ld", t->q.array_size[i]); } printf("\n"); }
         break; }
     case AST_FUNCTION: {
         const AstFunction* f = (const AstFunction*)n;
@@ -617,6 +697,22 @@ void ast_print(const AstNode* n, int indent)
         printf("Function rtype=%s name=%s params=%ld\n",
                f->return_type?f->return_type:"<ret>",
                f->name?f->name:"<anon>", f->param_count);
+        if(f->version){
+            print_indent(indent+2);
+            printf("version=%d\n", f->version);
+        }
+        if(f->return_type){
+            AstQuals rq; parse_type_details(f->return_type, &rq);
+            print_indent(indent+2);
+            printf("return.quals: const_=%d volatile_=%d restrict_=%d uniq_=%d pointer_num=%d fp_=%d ptr_heap=%d ptr_no_dtor=%d ptr_no_heap=%d\n",
+                   rq.const_, rq.volatile_, rq.restrict_, rq.uniq_, rq.pointer_num, rq.fp_, rq.ptr_heap, rq.ptr_no_dtor, rq.ptr_no_heap);
+            print_indent(indent+2);
+            printf("return.typeinfo: signed=%d unsigned=%d short=%d long=%d long_long=%d void=%d char=%d int=%d float=%d double=%d struct=%d union=%d enum=%d array_dims=%d int_bits=%d\n",
+                   rq.is_signed, rq.is_unsigned, rq.is_short, (rq.long_count>=1), (rq.long_count>=2),
+                   rq.is_void, rq.is_char, rq.is_int, rq.is_float, rq.is_double,
+                   rq.is_struct, rq.is_union, rq.is_enum, rq.array_dims, rq.int_bits);
+            if(rq.array_dims>0){ print_indent(indent+2); printf("return.array_sizes="); for(int i=0;i<rq.array_dims && i<8;i++){ if(i) printf(","); printf("%ld", rq.array_size[i]); } printf("\n"); }
+        }
         if(f->flags){
             print_indent(indent+2);
             printf("flags:");
@@ -626,6 +722,7 @@ void ast_print(const AstNode* n, int indent)
             if(f->flags & ASTF_CONST) printf(" const");
             if(f->flags & ASTF_VOLATILE) printf(" volatile");
             if(f->flags & ASTF_RESTRICT) printf(" restrict");
+            if(f->flags & ASTF_UNIQ) printf(" uniq");
             printf("\n");
         }
         for(long i=0;i<f->param_count;i++) {
@@ -634,6 +731,18 @@ void ast_print(const AstNode* n, int indent)
             printf("param[%ld]: type=%s name=%s\n", i,
                    p->type_name ? p->type_name : "<unknown>",
                    p->name ? p->name : "<anon>");
+            if(p->type_name){
+                AstQuals pq; parse_type_details(p->type_name, &pq);
+                print_indent(indent+4);
+                printf("param.quals: const_=%d volatile_=%d restrict_=%d uniq_=%d pointer_num=%d fp_=%d ptr_heap=%d ptr_no_dtor=%d ptr_no_heap=%d\n",
+                       pq.const_, pq.volatile_, pq.restrict_, pq.uniq_, pq.pointer_num, pq.fp_, pq.ptr_heap, pq.ptr_no_dtor, pq.ptr_no_heap);
+                print_indent(indent+4);
+                printf("param.typeinfo: signed=%d unsigned=%d short=%d long=%d long_long=%d void=%d char=%d int=%d float=%d double=%d struct=%d union=%d enum=%d array_dims=%d int_bits=%d\n",
+                       pq.is_signed, pq.is_unsigned, pq.is_short, (pq.long_count>=1), (pq.long_count>=2),
+                       pq.is_void, pq.is_char, pq.is_int, pq.is_float, pq.is_double,
+                       pq.is_struct, pq.is_union, pq.is_enum, pq.array_dims, pq.int_bits);
+                if(pq.array_dims>0){ print_indent(indent+4); printf("param.array_sizes="); for(int j=0;j<pq.array_dims && j<8;j++){ if(j) printf(","); printf("%ld", pq.array_size[j]); } printf("\n"); }
+            }
         }
         ast_print(f->body, indent+2);
         break; }
@@ -665,10 +774,17 @@ void ast_print(const AstNode* n, int indent)
         print_indent(indent); printf("Ident(%s)\n", e->name ? e->name : "<anon>");
         break; }
     case AST_DECL: {
-        typedef struct { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
+        typedef struct { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; AstQuals q; } AstDecl;
         const AstDecl* d = (const AstDecl*)n;
         print_indent(indent);
         printf("Decl type=%s name=%s\n", d->type_name?d->type_name:"<type>", d->name?d->name:"<anon>");
+        print_indent(indent+2); printf("quals: const_=%d volatile_=%d restrict_=%d uniq_=%d pointer_num=%d fp_=%d ptr_heap=%d ptr_no_dtor=%d ptr_no_heap=%d\n",
+                d->q.const_, d->q.volatile_, d->q.restrict_, d->q.uniq_, d->q.pointer_num, d->q.fp_, d->q.ptr_heap, d->q.ptr_no_dtor, d->q.ptr_no_heap);
+        print_indent(indent+2); printf("typeinfo: signed=%d unsigned=%d short=%d long=%d long_long=%d void=%d char=%d int=%d float=%d double=%d struct=%d union=%d enum=%d array_dims=%d int_bits=%d\n",
+                d->q.is_signed, d->q.is_unsigned, d->q.is_short, (d->q.long_count>=1), (d->q.long_count>=2),
+                d->q.is_void, d->q.is_char, d->q.is_int, d->q.is_float, d->q.is_double,
+                d->q.is_struct, d->q.is_union, d->q.is_enum, d->q.array_dims, d->q.int_bits);
+        if(d->q.array_dims>0){ print_indent(indent+2); printf("array_sizes="); for(int i=0;i<d->q.array_dims && i<8;i++){ if(i) printf(","); printf("%ld", d->q.array_size[i]); } printf("\n"); }
         if(d->anon_def) { print_indent(indent+2); printf("inline:\n"); ast_print(d->anon_def, indent+4); }
         if(d->init) { print_indent(indent+2); printf("init:\n"); ast_print(d->init, indent+4); }
         break; }
@@ -777,9 +893,16 @@ void ast_print(const AstNode* n, int indent)
         print_indent(indent); printf("String(%s)\n", e->text?e->text:"\"\"");
         break; }
     case AST_EXPR_CAST: {
-        typedef struct { AstKind kind; char* type_name; AstNode* expr; } AstExprCast;
+        typedef struct { AstKind kind; char* type_name; AstNode* expr; AstQuals q; } AstExprCast;
         const AstExprCast* e = (const AstExprCast*)n;
         print_indent(indent); printf("Cast(%s)\n", e->type_name?e->type_name:"<type>");
+        print_indent(indent+2); printf("quals: const_=%d volatile_=%d restrict_=%d uniq_=%d pointer_num=%d fp_=%d ptr_heap=%d ptr_no_dtor=%d ptr_no_heap=%d\n",
+                e->q.const_, e->q.volatile_, e->q.restrict_, e->q.uniq_, e->q.pointer_num, e->q.fp_, e->q.ptr_heap, e->q.ptr_no_dtor, e->q.ptr_no_heap);
+        print_indent(indent+2); printf("typeinfo: signed=%d unsigned=%d short=%d long=%d long_long=%d void=%d char=%d int=%d float=%d double=%d struct=%d union=%d enum=%d array_dims=%d int_bits=%d\n",
+                e->q.is_signed, e->q.is_unsigned, e->q.is_short, (e->q.long_count>=1), (e->q.long_count>=2),
+                e->q.is_void, e->q.is_char, e->q.is_int, e->q.is_float, e->q.is_double,
+                e->q.is_struct, e->q.is_union, e->q.is_enum, e->q.array_dims, e->q.int_bits);
+        if(e->q.array_dims>0){ print_indent(indent+2); printf("array_sizes="); for(int i=0;i<e->q.array_dims && i<8;i++){ if(i) printf(","); printf("%ld", e->q.array_size[i]); } printf("\n"); }
         if(e->expr) ast_print(e->expr, indent+2);
         break; }
     default:
@@ -1115,14 +1238,14 @@ static void ast_free_node(AstNode* n) {
         free(e);
         break; }
     case AST_TYPEDEF: {
-        typedef struct AstTypedef { AstKind kind; char* type_name; char* alias_name; } AstTypedef;
+        typedef struct AstTypedef { AstKind kind; char* type_name; char* alias_name; AstQuals q; int alias_ptrs; } AstTypedef;
         AstTypedef* t = (AstTypedef*)n;
         free(t->type_name);
         free(t->alias_name);
         free(t);
         break; }
     case AST_DECL: {
-        typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; } AstDecl;
+        typedef struct AstDecl { AstKind kind; char* type_name; char* name; AstNode* init; AstNode* anon_def; AstQuals q; } AstDecl;
         AstDecl* d = (AstDecl*)n;
         free(d->type_name);
         free(d->name);

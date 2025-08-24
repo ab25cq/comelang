@@ -51,6 +51,7 @@ FP_HEX      0[xX]([0-9A-Fa-f]*\.[0-9A-Fa-f]+|[0-9A-Fa-f]+\.[0-9A-Fa-f]*)([pP][+-
 "union"                    return KW_UNION;
 "enum"                     return KW_ENUM;
 "typedef"                  return KW_TYPEDEF;
+"version"                  return KW_VERSION;
 
 "return"                   return KW_RETURN;
 "if"                       return KW_IF;
@@ -69,6 +70,7 @@ FP_HEX      0[xX]([0-9A-Fa-f]*\.[0-9A-Fa-f]+|[0-9A-Fa-f]+\.[0-9A-Fa-f]*)([pP][+-
 "volatile"                 return KW_VOLATILE;
 "restrict"                 return KW_RESTRICT;
 "inline"                   return KW_INLINE;
+"uniq"                     return KW_UNIQ;
 "extern"                   return KW_EXTERN;
 "static"                   return KW_STATIC;
 "sizeof"                   return KW_SIZEOF;

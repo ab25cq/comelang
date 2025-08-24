@@ -54,52 +54,54 @@
      KW_UNSIGNED = 270,
      KW_FLOAT = 271,
      KW_DOUBLE = 272,
-     KW_STRUCT = 273,
-     KW_UNION = 274,
-     KW_ENUM = 275,
-     KW_TYPEDEF = 276,
-     KW_RETURN = 277,
-     KW_IF = 278,
-     KW_ELSE = 279,
-     KW_WHILE = 280,
-     KW_FOR = 281,
-     KW_DO = 282,
-     KW_SWITCH = 283,
-     KW_CASE = 284,
-     KW_DEFAULT = 285,
-     KW_BREAK = 286,
-     KW_CONTINUE = 287,
-     KW_GOTO = 288,
-     KW_CONST = 289,
-     KW_VOLATILE = 290,
-     KW_RESTRICT = 291,
-     KW_INLINE = 292,
-     KW_EXTERN = 293,
-     KW_STATIC = 294,
-     KW_SIZEOF = 295,
-     ELLIPSIS = 296,
-     ARROW = 297,
-     INC = 298,
-     DEC = 299,
-     LSHIFT = 300,
-     RSHIFT = 301,
-     LE = 302,
-     GE = 303,
-     EQ = 304,
-     NE = 305,
-     LOGAND = 306,
-     LOGOR = 307,
-     ADD_ASSIGN = 308,
-     SUB_ASSIGN = 309,
-     MUL_ASSIGN = 310,
-     DIV_ASSIGN = 311,
-     MOD_ASSIGN = 312,
-     AND_ASSIGN = 313,
-     OR_ASSIGN = 314,
-     XOR_ASSIGN = 315,
-     LSHIFT_ASSIGN = 316,
-     RSHIFT_ASSIGN = 317,
-     PREFER_EMPTY = 318
+     KW_VERSION = 273,
+     KW_STRUCT = 274,
+     KW_UNION = 275,
+     KW_ENUM = 276,
+     KW_TYPEDEF = 277,
+     KW_RETURN = 278,
+     KW_IF = 279,
+     KW_ELSE = 280,
+     KW_WHILE = 281,
+     KW_FOR = 282,
+     KW_DO = 283,
+     KW_SWITCH = 284,
+     KW_CASE = 285,
+     KW_DEFAULT = 286,
+     KW_BREAK = 287,
+     KW_CONTINUE = 288,
+     KW_GOTO = 289,
+     KW_CONST = 290,
+     KW_VOLATILE = 291,
+     KW_RESTRICT = 292,
+     KW_INLINE = 293,
+     KW_EXTERN = 294,
+     KW_STATIC = 295,
+     KW_UNIQ = 296,
+     KW_SIZEOF = 297,
+     ELLIPSIS = 298,
+     ARROW = 299,
+     INC = 300,
+     DEC = 301,
+     LSHIFT = 302,
+     RSHIFT = 303,
+     LE = 304,
+     GE = 305,
+     EQ = 306,
+     NE = 307,
+     LOGAND = 308,
+     LOGOR = 309,
+     ADD_ASSIGN = 310,
+     SUB_ASSIGN = 311,
+     MUL_ASSIGN = 312,
+     DIV_ASSIGN = 313,
+     MOD_ASSIGN = 314,
+     AND_ASSIGN = 315,
+     OR_ASSIGN = 316,
+     XOR_ASSIGN = 317,
+     LSHIFT_ASSIGN = 318,
+     RSHIFT_ASSIGN = 319,
+     PREFER_EMPTY = 320
    };
 #endif
 /* Tokens.  */
@@ -118,52 +120,54 @@
 #define KW_UNSIGNED 270
 #define KW_FLOAT 271
 #define KW_DOUBLE 272
-#define KW_STRUCT 273
-#define KW_UNION 274
-#define KW_ENUM 275
-#define KW_TYPEDEF 276
-#define KW_RETURN 277
-#define KW_IF 278
-#define KW_ELSE 279
-#define KW_WHILE 280
-#define KW_FOR 281
-#define KW_DO 282
-#define KW_SWITCH 283
-#define KW_CASE 284
-#define KW_DEFAULT 285
-#define KW_BREAK 286
-#define KW_CONTINUE 287
-#define KW_GOTO 288
-#define KW_CONST 289
-#define KW_VOLATILE 290
-#define KW_RESTRICT 291
-#define KW_INLINE 292
-#define KW_EXTERN 293
-#define KW_STATIC 294
-#define KW_SIZEOF 295
-#define ELLIPSIS 296
-#define ARROW 297
-#define INC 298
-#define DEC 299
-#define LSHIFT 300
-#define RSHIFT 301
-#define LE 302
-#define GE 303
-#define EQ 304
-#define NE 305
-#define LOGAND 306
-#define LOGOR 307
-#define ADD_ASSIGN 308
-#define SUB_ASSIGN 309
-#define MUL_ASSIGN 310
-#define DIV_ASSIGN 311
-#define MOD_ASSIGN 312
-#define AND_ASSIGN 313
-#define OR_ASSIGN 314
-#define XOR_ASSIGN 315
-#define LSHIFT_ASSIGN 316
-#define RSHIFT_ASSIGN 317
-#define PREFER_EMPTY 318
+#define KW_VERSION 273
+#define KW_STRUCT 274
+#define KW_UNION 275
+#define KW_ENUM 276
+#define KW_TYPEDEF 277
+#define KW_RETURN 278
+#define KW_IF 279
+#define KW_ELSE 280
+#define KW_WHILE 281
+#define KW_FOR 282
+#define KW_DO 283
+#define KW_SWITCH 284
+#define KW_CASE 285
+#define KW_DEFAULT 286
+#define KW_BREAK 287
+#define KW_CONTINUE 288
+#define KW_GOTO 289
+#define KW_CONST 290
+#define KW_VOLATILE 291
+#define KW_RESTRICT 292
+#define KW_INLINE 293
+#define KW_EXTERN 294
+#define KW_STATIC 295
+#define KW_UNIQ 296
+#define KW_SIZEOF 297
+#define ELLIPSIS 298
+#define ARROW 299
+#define INC 300
+#define DEC 301
+#define LSHIFT 302
+#define RSHIFT 303
+#define LE 304
+#define GE 305
+#define EQ 306
+#define NE 307
+#define LOGAND 308
+#define LOGOR 309
+#define ADD_ASSIGN 310
+#define SUB_ASSIGN 311
+#define MUL_ASSIGN 312
+#define DIV_ASSIGN 313
+#define MOD_ASSIGN 314
+#define AND_ASSIGN 315
+#define OR_ASSIGN 316
+#define XOR_ASSIGN 317
+#define LSHIFT_ASSIGN 318
+#define RSHIFT_ASSIGN 319
+#define PREFER_EMPTY 320
 
 
 
@@ -184,7 +188,7 @@ typedef union YYSTYPE
   struct EnumList* elist;      /* enum enumerator list */
 }
 /* Line 1529 of yacc.c.  */
-#line 188 "parser.h"
+#line 192 "parser.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

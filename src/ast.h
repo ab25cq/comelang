@@ -54,8 +54,10 @@ typedef struct AstFunction {
     char* name;
     char* return_type; /* e.g., "int", "char*" */
     int flags; /* AstFuncFlags bitmask */
+    int uniq_; /* 1 if 'uniq' specifier present */
     AstParam* params;
     long param_count;
+    int version; /* optional version tag; 0 if unspecified */
     AstNode* body; /* AstCompound* */
 } AstFunction;
 
@@ -66,6 +68,7 @@ typedef enum AstFuncFlags {
     ASTF_CONST    = 1<<3,
     ASTF_VOLATILE = 1<<4,
     ASTF_RESTRICT = 1<<5,
+    ASTF_UNIQ     = 1<<6,
 } AstFuncFlags;
 
 typedef struct AstStructField {
@@ -101,6 +104,34 @@ typedef struct AstEnum {
     long item_count;
 } AstEnum;
 
+/* Qualifier flags for type-bearing nodes */
+typedef struct AstQuals {
+    int const_;
+    int volatile_;
+    int restrict_;
+    int uniq_;
+    int pointer_num;
+    int fp_;          /* function pointer type flag */
+    int ptr_heap;     /* number of '%' pointer markers */
+    int ptr_no_dtor;  /* number of '`' pointer markers */
+    int ptr_no_heap;  /* number of '&' pointer markers */
+    int is_void;
+    int is_char;
+    int is_int;
+    int is_float;
+    int is_double;
+    int is_signed;
+    int is_unsigned;
+    int is_short;
+    int long_count;   /* 0,1,2 for long/long long */
+    int is_struct;
+    int is_union;
+    int is_enum;
+    int array_dims;   /* number of [] pairs detected */
+    long array_size[8]; /* per-dimension size; -1 if unspecified */
+    int int_bits;     /* inferred integer bit width (LP64 assumption), 0 if non-integer */
+} AstQuals;
+
 struct AstNode* ast_struct_new(const char* name);
 struct AstNode* ast_struct_new_with(const char* name, AstStructField* fields, long field_count);
 AstStructField  ast_struct_field_new(const char* type_name, const char* name, int bitwidth);
@@ -116,7 +147,7 @@ AstEnumItem     ast_enum_item_new(const char* name, struct AstNode* value);
 
 AstCompound* ast_compound_new(void);
 AstCompound* ast_compound_new_with(struct AstNode** items, long count);
-AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, AstNode* body);
+AstFunction* ast_function_new(const char* name, const char* return_type, int flags, AstParam* params, long param_count, int version, AstNode* body);
 
 /* Optional: small debug printer */
 void ast_print(const AstNode* n, int indent);
@@ -144,7 +175,7 @@ AstNode* ast_expr_cast_new(const char* type_name, struct AstNode* expr);
 AstNode* ast_expr_cond_new(struct AstNode* cond, struct AstNode* then_e, struct AstNode* else_e);
 
 /* Typedef */
-AstNode* ast_typedef_new(const char* type_name, const char* alias_name);
+AstNode* ast_typedef_new(const char* type_name, const char* alias_name, int alias_ptrs);
 
 /* Declaration */
 AstNode* ast_decl_new(const char* type_name, const char* name, AstNode* init);

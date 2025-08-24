@@ -220,6 +220,7 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier type_unit star_list star_list_opt ar
   struct SFieldList* sflist;   /* フィールド配列 */
   struct EnumList* elist;      /* enum enumerator list */
 }
+%type <ival> version_opt
 
 /* Identifiers and literals */
 %token <sval> IDENTIFIER
@@ -231,9 +232,10 @@ FLOAT_CONSTANT CHAR_CONSTANT type_specifier type_unit star_list star_list_opt ar
 
 /* Keywords (subset) */
 %token KW_VOID KW_CHAR KW_SHORT KW_INT KW_LONG KW_SIGNED KW_UNSIGNED KW_FLOAT KW_DOUBLE
+%token KW_VERSION
 %token KW_STRUCT KW_UNION KW_ENUM KW_TYPEDEF
 %token KW_RETURN KW_IF KW_ELSE KW_WHILE KW_FOR KW_DO KW_SWITCH KW_CASE KW_DEFAULT KW_BREAK KW_CONTINUE KW_GOTO
-%token KW_CONST KW_VOLATILE KW_RESTRICT KW_INLINE KW_EXTERN KW_STATIC
+%token KW_CONST KW_VOLATILE KW_RESTRICT KW_INLINE KW_EXTERN KW_STATIC KW_UNIQ
 %token KW_SIZEOF
 
 /* Punctuators and operators */
@@ -294,6 +296,12 @@ translation_unit
   | translation_unit external_declaration
   ;
 
+/* Optional version annotation: "version <int>" */
+version_opt
+  : /* empty */                 { $$ = 0; }
+  | KW_VERSION INTEGER_CONSTANT  { $$ = strtol($2, NULL, 0); free($2); }
+  ;
+
 /* Put star_list_opt early so its empty reduction wins reduce/reduce
    against reducing type_specifier -> declaration_specifier in ambiguous prefixes. */
 star_list_opt
@@ -303,10 +311,34 @@ star_list_opt
 
 star_list
   : '*'                  { $$ = strdup("*"); }
+  | '%'                  { $$ = strdup("%"); }
+  | '&'                  { $$ = strdup("&"); }
+  | '`'                  { $$ = strdup("`"); }
   | star_list '*'        {
       size_t n = strlen($1) + 2;
       char* s = (char*)malloc(n);
       if(s) { strcpy(s, $1); strcat(s, "*"); }
+      free($1);
+      $$ = s;
+    }
+  | star_list '%'        {
+      size_t n = strlen($1) + 2;
+      char* s = (char*)malloc(n);
+      if(s) { strcpy(s, $1); strcat(s, "%"); }
+      free($1);
+      $$ = s;
+    }
+  | star_list '&'        {
+      size_t n = strlen($1) + 2;
+      char* s = (char*)malloc(n);
+      if(s) { strcpy(s, $1); strcat(s, "&"); }
+      free($1);
+      $$ = s;
+    }
+  | star_list '`'        {
+      size_t n = strlen($1) + 2;
+      char* s = (char*)malloc(n);
+      if(s) { strcpy(s, $1); strcat(s, "`"); }
       free($1);
       $$ = s;
     }
@@ -354,7 +386,7 @@ external_declaration
       ast_add(d);
     }
   | /* removed ambiguous multi-decl form to avoid conflicts with function definitions */
-  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' compound_statement
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' version_opt compound_statement
     {
       const char* qs = ($1 && $1[0]) ? $1 : NULL;
       size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
@@ -365,32 +397,34 @@ external_declaration
         0,
         $6 ? $6->a : NULL,
         $6 ? $6->n : 0,
+        $8,
+        $9);
+      ast_add((AstNode*)f);
+      free(rt);
+      free($1);
+      free($2);
+      free($3);
+      if($6) { free($6); }
+    }
+  | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' version_opt compound_statement
+    {
+      size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
+      char* rt = (char*)malloc(nt);
+      if(rt) { rt[0] = '\0'; strcat(rt, $1); if($2) strcat(rt, $2); }
+      AstFunction* f = ast_function_new($3,
+        rt ? rt : $1,
+        0,
+        $5 ? $5->a : NULL,
+        $5 ? $5->n : 0,
+        $7,
         $8);
       ast_add((AstNode*)f);
       free(rt);
       free($1);
       free($2);
-      free($3);
-      if($6) { free($6); }
-    }
-  | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' compound_statement
-    {
-      size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
-      char* rt = (char*)malloc(nt);
-      if(rt) { rt[0] = '\0'; strcat(rt, $1); if($2) strcat(rt, $2); }
-      AstFunction* f = ast_function_new($3,
-        rt ? rt : $1,
-        0,
-        $5 ? $5->a : NULL,
-        $5 ? $5->n : 0,
-        $7);
-      ast_add((AstNode*)f);
-      free(rt);
-      free($1);
-      free($2);
       if($5) { free($5); }
     }
-  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' ';'
+  | type_qualifier_seq_opt type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' version_opt ';'
     {
       const char* qs = ($1 && $1[0]) ? $1 : NULL;
       size_t nt = (qs?strlen(qs)+1:0) + strlen($2) + strlen($3 ? $3 : "") + 1;
@@ -401,6 +435,7 @@ external_declaration
         0,
         $6 ? $6->a : NULL,
         $6 ? $6->n : 0,
+        $8,
         NULL);
       ast_add((AstNode*)f);
       free(rt);
@@ -409,7 +444,7 @@ external_declaration
       free($3);
       if($6) { free($6); }
     }
-  | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' ';'
+  | type_specifier star_list_opt IDENTIFIER '(' parameter_type_list_opt ')' version_opt ';'
     {
       size_t nt = strlen($1) + strlen($2 ? $2 : "") + 1;
       char* rt = (char*)malloc(nt);
@@ -419,6 +454,7 @@ external_declaration
         0,
         $5 ? $5->a : NULL,
         $5 ? $5->n : 0,
+        $7,
         NULL);
       ast_add((AstNode*)f);
       free(rt);
@@ -426,24 +462,26 @@ external_declaration
       free($2);
       if($5) { free($5); }
     }
-  | func_decl_specs IDENTIFIER '(' parameter_type_list_opt ')' compound_statement
+  | func_decl_specs IDENTIFIER '(' parameter_type_list_opt ')' version_opt compound_statement
     {
       AstFunction* f = ast_function_new($2,
         $1 && $1->rtype ? $1->rtype : NULL,
         $1 ? $1->flags : 0,
         $4 ? $4->a : NULL,
         $4 ? $4->n : 0,
-        $6);
+        $6,
+        $7);
       ast_add((AstNode*)f);
       if($1){ free($1->rtype); free($1);} if($4) free($4);
     }
-  | func_decl_specs IDENTIFIER '(' parameter_type_list_opt ')' ';'
+  | func_decl_specs IDENTIFIER '(' parameter_type_list_opt ')' version_opt ';'
     {
       AstFunction* f = ast_function_new($2,
         $1 && $1->rtype ? $1->rtype : NULL,
         $1 ? $1->flags : 0,
         $4 ? $4->a : NULL,
         $4 ? $4->n : 0,
+        $6,
         NULL);
       ast_add((AstNode*)f);
       if($1){ free($1->rtype); free($1);} if($4) free($4);
@@ -454,7 +492,8 @@ external_declaration
       size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); }
-      AstNode* td = ast_typedef_new(t ? t : $3, $5);
+      int ap=0; if($4){ for(const char* s=$4; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $3, $5, ap);
       free(t);
       ast_add(td);
       typedef_add($5);
@@ -465,7 +504,8 @@ external_declaration
       size_t nt = strlen($2) + strlen($3 ? $3 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; strcat(t, $2); if($3) strcat(t, $3); }
-      AstNode* td = ast_typedef_new(t ? t : $2, $4);
+      int ap=0; if($3){ for(const char* s=$3; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $2, $4, ap);
       free(t);
       ast_add(td);
       typedef_add($4);
@@ -476,7 +516,8 @@ external_declaration
       size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + strlen($6 ? $6 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); if($6) strcat(t, $6); }
-      AstNode* td = ast_typedef_new(t ? t : $3, $5);
+      int ap=0; if($4){ for(const char* s=$4; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $3, $5, ap);
       free(t);
       free($6);
       ast_add(td);
@@ -488,7 +529,8 @@ external_declaration
       size_t nt = strlen($2) + strlen($3 ? $3 : "") + strlen($5 ? $5 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; strcat(t, $2); if($3) strcat(t, $3); if($5) strcat(t, $5); }
-      AstNode* td = ast_typedef_new(t ? t : $2, $4);
+      int ap=0; if($3){ for(const char* s=$3; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $2, $4, ap);
       free(t);
       free($5);
       ast_add(td);
@@ -521,7 +563,8 @@ external_declaration
       size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + strlen("(*)") + strlen($10 ? $10 : "()") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); strcat(t, "(*)"); strcat(t, $10 ? $10 : "()"); }
-      AstNode* td = ast_typedef_new(t ? t : $3, $7);
+      int ap=1; if($4){ for(const char* s=$4; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $3, $7, ap);
       free(t); free($10);
       ast_add(td);
       typedef_add($7);
@@ -532,7 +575,8 @@ external_declaration
       size_t nt = strlen($2) + strlen($3 ? $3 : "") + strlen("(*)") + strlen($9 ? $9 : "()") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; strcat(t, $2); if($3) strcat(t, $3); strcat(t, "(*)"); strcat(t, $9 ? $9 : "()"); }
-      AstNode* td = ast_typedef_new(t ? t : $2, $6);
+      int ap=1; if($3){ for(const char* s=$3; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $2, $6, ap);
       free(t); free($9);
       ast_add(td);
       typedef_add($6);
@@ -543,7 +587,8 @@ external_declaration
       size_t nt = (qs?strlen(qs)+1:0) + strlen($3) + strlen($4 ? $4 : "") + strlen("(*)") + strlen($11 ? $11 : "()") + strlen($8 ? $8 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; if(qs){ strcat(t, $2); strcat(t, " "); } strcat(t, $3); if($4) strcat(t, $4); strcat(t, "(*)"); strcat(t, $11 ? $11 : "()"); if($8) strcat(t, $8); }
-      AstNode* td = ast_typedef_new(t ? t : $3, $7);
+      int ap=1; if($4){ for(const char* s=$4; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $3, $7, ap);
       free(t);
       free($8); free($11);
       ast_add(td);
@@ -555,7 +600,8 @@ external_declaration
       size_t nt = strlen($2) + strlen($3 ? $3 : "") + strlen("(*)") + strlen($10 ? $10 : "()") + strlen($7 ? $7 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; strcat(t, $2); if($3) strcat(t, $3); strcat(t, "(*)"); strcat(t, $10 ? $10 : "()"); if($7) strcat(t, $7); }
-      AstNode* td = ast_typedef_new(t ? t : $2, $6);
+      int ap=1; if($3){ for(const char* s=$3; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $2, $6, ap);
       free(t);
       free($7); free($10);
       ast_add(td);
@@ -640,6 +686,7 @@ func_decl_specs
   | KW_VOLATILE func_decl_specs               { $$ = $2; if($$) $$->flags |= ASTF_VOLATILE; }
   | KW_RESTRICT func_decl_specs               { $$ = $2; if($$) $$->flags |= ASTF_RESTRICT; }
   | KW_INLINE func_decl_specs                 { $$ = $2; if($$) $$->flags |= ASTF_INLINE; }
+  | KW_UNIQ func_decl_specs                   { $$ = $2; if($$) $$->flags |= ASTF_UNIQ; }
   ;
 
 /* Full C-style parameter lists using declaration_specifiers + smart declarator (sdecl) */
@@ -727,6 +774,7 @@ type_qualifier
   : KW_CONST
   | KW_VOLATILE
   | KW_RESTRICT
+  | KW_UNIQ
   ;
 
 function_specifier
@@ -1210,7 +1258,8 @@ block_item
       size_t nt = strlen($2) + strlen($3 ? $3 : "") + 1;
       char* t = (char*)malloc(nt);
       if(t) { t[0] = '\0'; strcat(t, $2); if($3) strcat(t, $3); }
-      AstNode* td = ast_typedef_new(t ? t : $2, $4);
+      int ap=0; if($3){ for(const char* s=$3; *s; s++) if(*s=='*') ap++; }
+      AstNode* td = ast_typedef_new(t ? t : $2, $4, ap);
       free(t);
       $$ = nlist_from1(td);
     }
@@ -1385,6 +1434,7 @@ type_qualifier_seq_opt
   | type_qualifier_seq_opt KW_CONST  { $$ = sappend($1, ($1 && $1[0])?" const":"const"); }
   | type_qualifier_seq_opt KW_VOLATILE { $$ = sappend($1, ($1 && $1[0])?" volatile":"volatile"); }
   | type_qualifier_seq_opt KW_RESTRICT { $$ = sappend($1, ($1 && $1[0])?" restrict":"restrict"); }
+  | type_qualifier_seq_opt KW_UNIQ   { $$ = sappend($1, ($1 && $1[0])?" uniq":"uniq"); }
   ;
 
 postfix_expression
