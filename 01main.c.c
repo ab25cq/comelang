@@ -9021,18 +9021,38 @@ _Bool __result_obj__256;
                 else {
                     if(                    string_operator_equals(value_67->mFunName,info->come_fun->mName)                    ) {
                         if(                        string_operator_equals(type2_68->mClass->mName,"lambda")                        ) {
-                            add_come_code(info,"__current_stack%d__.%s = %s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            if(                            info->comma_instead_of_semicolon                            ) {
+                                add_come_code(info,"__current_stack%d__.%s = %s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
+                            else {
+                                add_come_code(info,"__current_stack%d__.%s = %s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
                         }
                         else {
-                            add_come_code(info,"__current_stack%d__.%s = &%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            if(                            info->comma_instead_of_semicolon                            ) {
+                                add_come_code(info,"__current_stack%d__.%s = &%s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
+                            else {
+                                add_come_code(info,"__current_stack%d__.%s = &%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
                         }
                     }
                     else {
                         if(                        string_operator_equals(type2_68->mClass->mName,"lambda")                        ) {
-                            add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            if(                            info->comma_instead_of_semicolon                            ) {
+                                add_come_code(info,"__current_stack%d__.%s = parent->%s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
+                            else {
+                                add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
                         }
                         else {
-                            add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            if(                            info->comma_instead_of_semicolon                            ) {
+                                add_come_code(info,"__current_stack%d__.%s = parent->%s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
+                            else {
+                                add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
+                            }
                         }
                     }
                 }
@@ -9043,12 +9063,12 @@ _Bool __result_obj__256;
         come_call_finalizer(map$2char$phsVar$ph$p_finalize, o2_saved_64, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         vtable=vtable->mParent;
     }
-    come_value=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "./common.h", 754, "struct CVALUE*"))));
+    come_value=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "./common.h", 774, "struct CVALUE*"))));
     __dec_obj103=come_value->c_value,
     come_value->c_value=(char*)come_increment_ref_count(xsprintf("&__current_stack%d__",info->current_stack_num));
     __dec_obj103 = come_decrement_ref_count(__dec_obj103, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __dec_obj104=come_value->type,
-    come_value->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "./common.h", 757, "struct sType*")),(char*)come_increment_ref_count(class_name),(_Bool)0,info));
+    come_value->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "./common.h", 777, "struct sType*")),(char*)come_increment_ref_count(class_name),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj104,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value->var=((void*)0);
     add_come_last_code(info,"%s;\n",come_value->c_value);

@@ -730,18 +730,38 @@ uniq class sCurrentNode extends sNodeBase
                     else {
                         if(value->mFunName === info.come_fun.mName) {
                             if(type2->mClass->mName === "lambda") {
-                                add_come_code(info, "__current_stack%d__.%s = %s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                if(info.comma_instead_of_semicolon) {
+                                    add_come_code(info, "__current_stack%d__.%s = %s,\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
+                                else {
+                                    add_come_code(info, "__current_stack%d__.%s = %s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
                             }
                             else {
-                                add_come_code(info, "__current_stack%d__.%s = &%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                if(info.comma_instead_of_semicolon) {
+                                    add_come_code(info, "__current_stack%d__.%s = &%s,\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
+                                else {
+                                    add_come_code(info, "__current_stack%d__.%s = &%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
                             }
                         }
                         else {
                             if(type2->mClass->mName === "lambda") {
-                                add_come_code(info, "__current_stack%d__.%s = parent->%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                if(info.comma_instead_of_semicolon) {
+                                    add_come_code(info, "__current_stack%d__.%s = parent->%s,\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
+                                else {
+                                    add_come_code(info, "__current_stack%d__.%s = parent->%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
                             }
                             else {
-                                add_come_code(info, "__current_stack%d__.%s = parent->%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                if(info.comma_instead_of_semicolon) {
+                                    add_come_code(info, "__current_stack%d__.%s = parent->%s,\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
+                                else {
+                                    add_come_code(info, "__current_stack%d__.%s = parent->%s;\n", info->current_stack_num, value.mCValueName, value.mCValueName);
+                                }
                             }
                         }
                     }
