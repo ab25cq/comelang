@@ -310,6 +310,7 @@ comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o
 #########################################
 test:
 	comelang code/a.c -o code/a && ./code/a
+	comelang code/b.c -o code/b && ./code/b
 
 #########################################
 # install
@@ -331,7 +332,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2 code/a code/a.c.o code/a.c.c
+	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2 code/a code/a.c.o code/a.c.c code/*.c.c code/*.c.o
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 

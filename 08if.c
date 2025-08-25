@@ -322,7 +322,7 @@ class sOrStatmentNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
         
-        add_come_code(info, "if(");
+        add_come_code(info, "if(!(");
     
         bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
         info.comma_instead_of_semicolon = true;
@@ -334,7 +334,7 @@ class sOrStatmentNode extends sNodeBase
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
         transpile_conditional_with_free_right_object_value(conditional_value);
         
-        add_come_code(info, ") {\n");
+        add_come_code(info, ")) {\n");
         sBlock* if_block = self.mIfBlock;
         transpile_block(if_block, null, null, info);
         add_come_code(info, "}\n");

@@ -774,15 +774,22 @@ sNode*% pre_position_operator(sInfo* info=info)
             
             parse_sharp();
             
+            char* p2 = info.p;
+            int sline2 = info.sline;
+            
             string word = string("");
             if(xisalpha(*info->p) || *info->p == '_') {
                 word = parse_word();
-            }
-            
-            parse_sharp();
-            
-            if(is_type_name(word)) {
-                cast_expression_flag = true;
+                if(is_type_name(word)) {
+                    info.p = p2;
+                    info.sline = sline2;
+                    
+                    parse_type();
+                    
+                    if(*info->p == ')') {
+                        cast_expression_flag = true;
+                    }
+                }
             }
             
             parse_sharp();
