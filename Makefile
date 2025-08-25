@@ -306,6 +306,12 @@ comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o
 	$(CC) -o 24module.c.o.tmp -c 24module.c.c $(CFLAGS) 2> /dev/null
 
 #########################################
+# test
+#########################################
+test:
+	comelang code/a.c -o code/a && ./code/a
+
+#########################################
 # install
 #########################################
 install:
@@ -325,7 +331,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2
+	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2 code/a code/a.c.o code/a.c.c
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 
