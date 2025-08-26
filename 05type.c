@@ -827,6 +827,39 @@ sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* i
         info.p = p;
         info.sline = sline;
     }
+    bool lambda_ = false;
+    {
+        char* p = info.p;
+        int sline = info.sline;
+        
+        if(*info->p == '(') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            if(*info->p == '*') {
+                info->p++
+                skip_spaces_and_lf();
+                
+                if(xisalpha(*info->p) || *info->p == '_') {
+                    string word = parse_word();
+                    
+                    if(is_type_name(word)) {
+                    }
+                    else if(*info->p == ')') {
+                        info->p++;
+                        skip_spaces_and_lf();
+                        
+                        if(*info->p == '(') {
+                            lambda_ = true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        info.p = p;
+        info.sline = sline;
+    }
     
     parse_sharp();
     while(*info->p == '*') {
@@ -844,7 +877,25 @@ sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* i
         skip_spaces_and_lf();
     }
     
-    if(xisalnum(*info.p) || *info->p == '_') {
+    if(lambda_) {
+        expected_next_character('(');
+        expected_next_character('*');
+            
+        var_name = parse_word();
+        
+        expected_next_character(')');
+        
+        var param_types, param_names, param_default_parametors, var_args = parse_params(info);
+        sType*% result_type2 = new sType(s"lambda");
+        
+        result_type2->mResultType = clone result_type;
+        result_type2->mParamTypes = param_types;
+        result_type2->mParamNames = param_names;
+        result_type2->mVarArgs = var_args;
+        
+        result_type = result_type2;
+    }
+    else if(xisalnum(*info.p) || *info->p == '_') {
         var_name = parse_word();
     }
     else {

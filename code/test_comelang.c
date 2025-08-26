@@ -3,7 +3,7 @@
 struct P { int x; int y; };
 struct P gP = { .y = 10 };
 int gA[5] = { [2] = 3 };
-//int *a, arr[3], (*fp)(int, char*); //, (*fpa[2])(int);
+int *a, arr[3], (*fp)(int, char*); //, (*fpa[2])(int);
 //int *a, (*fp)(int, char*), arr[3], (*fpa[2])(int);
 
 int main(int argc, char** argv)
