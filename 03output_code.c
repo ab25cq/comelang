@@ -105,7 +105,25 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
     else if(class_name === "lambda") {
         string result_type_str = make_type_name_string(type->mResultType, in_header, no_static:true);
         buf.append_str(result_type_str);
-        buf.append_str(" (*)(");
+        buf.append_str(" (*");
+        
+        if(type->mArrayNum.length() > 0) {
+            for(int i=0; i<type->mArrayNum.length(); i++) {
+                buf.append_str("[");
+                sNode*% node = type->mArrayNum[i];
+                
+                node_compile(node).elif {
+                    err_msg(info, "invalid array num");
+                    exit(2);
+                }
+            
+                CVALUE*% cvalue = get_value_from_stack(-1, info);
+                
+                buf.append_format("%s", cvalue.c_value);
+                buf.append_str("]");
+            }
+        }
+        buf.append_str(")(");
         
         int j = 0;
         foreach(it, type->mParamTypes) {
@@ -245,7 +263,25 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
     
     if(type->mResultType && type->mResultType.mClass->mName === "lambda") 
     {
-        buf.append_format("(*%s)(", var_name);
+        buf.append_format("(*%s", var_name);
+        
+        if(type->mResultType->mArrayNum.length() > 0) {
+            for(int i=0; i<type->mResultType->mArrayNum.length(); i++) {
+                buf.append_str("[");
+                sNode*% node = type->mArrayNum[i];
+                
+                node_compile(node).elif {
+                    err_msg(info, "invalid array num");
+                    exit(2);
+                }
+            
+                CVALUE*% cvalue = get_value_from_stack(-1, info);
+                
+                buf.append_format("%s", cvalue.c_value);
+                buf.append_str("]");
+            }
+        }
+        buf.append_format(")(", var_name);
         
         int i = 0;
         foreach(it, type->mParamTypes) {
@@ -266,27 +302,34 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         return make_lambda_type_name_string(type->mResultType, buf.to_string(), info);
     }
     else {
-        if(type->mLambdaArray) {
-            if(type->mLambdaArrayNum == 0) {
-                buf.append_format("%s (*%s[])(", make_type_name_string(type->mResultType, no_static:true), var_name);
+        buf.append_format("%s ", make_type_name_string(type->mResultType, no_static:true));
+        if(type->mFunctionPointerNum > 1) {
+            buf.append_str("(");
+            for(int i=0; i<type->mFunctionPointerNum; i++) {
+                buf.append_str("*");
             }
-            else {
-                buf.append_format("%s (*%s[%d])(", make_type_name_string(type->mResultType, no_static:true), var_name, type->mLambdaArrayNum);
-            }
+            buf.append_str(var_name);
         }
         else {
-            buf.append_format("%s ", make_type_name_string(type->mResultType, no_static:true));
-            if(type->mFunctionPointerNum > 1) {
-                buf.append_str("(");
-                for(int i=0; i<type->mFunctionPointerNum; i++) {
-                    buf.append_str("*");
+            buf.append_format("(*%s", var_name);
+        }
+        if(type->mArrayNum.length() > 0) {
+            for(int i=0; i<type->mArrayNum.length(); i++) {
+                buf.append_str("[");
+                sNode*% node = type->mArrayNum[i];
+                
+                node_compile(node).elif {
+                    err_msg(info, "invalid array num");
+                    exit(2);
                 }
-                buf.append_format("%s)(", var_name);
-            }
-            else {
-                buf.append_format("(*%s)(", var_name);
+            
+                CVALUE*% cvalue = get_value_from_stack(-1, info);
+                
+                buf.append_format("%s", cvalue.c_value);
+                buf.append_str("]");
             }
         }
+        buf.append_format(")(");
         
         int i = 0;
         foreach(it, type->mParamTypes) {
@@ -779,6 +822,22 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
     output.append_str(" ");
     
     output.append_str(name);
+    if(lambda_type->mArrayNum.length() > 0) {
+        for(int i=0; i<lambda_type->mArrayNum.length(); i++) {
+            output.append_str("[");
+            sNode*% node = lambda_type->mArrayNum[i];
+            
+            node_compile(node).elif {
+                err_msg(info, "invalid array num");
+                exit(2);
+            }
+        
+            CVALUE*% cvalue = get_value_from_stack(-1, info);
+            
+            output.append_format("%s", cvalue.c_value);
+            output.append_str("]");
+        }
+    }
     output.append_str("(");
     
     int i = 0;

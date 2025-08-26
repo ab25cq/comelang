@@ -845,6 +845,9 @@ sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* i
                     
                     if(is_type_name(word)) {
                     }
+                    else if(*info->p == '[') {
+                        lambda_ = true;
+                    }
                     else if(*info->p == ')') {
                         info->p++;
                         skip_spaces_and_lf();
@@ -883,10 +886,22 @@ sType*%, string parse_variable_name(sType*% base_type_name, bool first, sInfo* i
             
         var_name = parse_word();
         
+        sType*% result_type2 = new sType(s"lambda");
+        
+        if(*info->p == '[') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            sNode*% node = expression();
+            
+            result_type2.mArrayNum.add(node);
+            
+            expected_next_character(']');
+        }
+        
         expected_next_character(')');
         
         var param_types, param_names, param_default_parametors, var_args = parse_params(info);
-        sType*% result_type2 = new sType(s"lambda");
         
         result_type2->mResultType = clone result_type;
         result_type2->mParamTypes = param_types;
@@ -2103,41 +2118,31 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             num_anonymous_var_name++;
             var_name = xsprintf("anonymous_lambda_var_nameZ%d", num_anonymous_var_name);
         }
-        bool function_pointer_array = false;
-        int function_pointer_array_num = 0;
-        if(*info->p == '[') {
+        
+        type = new sType(s"lambda");
+        
+        while(*info->p == '[') {
             info->p++;
             skip_spaces_and_lf();
             
-            int n = 0 ;
-            while(xisdigit(*info->p)) {
-                n = n * 10 + *info->p - '0';
-                info->p++;
-            }
-            skip_spaces_and_lf();
-            function_pointer_array_num = n;
+            sNode*% node = expression();
+            
+            type.mArrayNum.add(node);
             
             if(*info->p == ']') {
                 info->p++;
                 skip_spaces_and_lf();
-                function_pointer_array = true;
             }
         }
         expected_next_character(')');
         
         var param_types, param_names, param_default_parametors, var_args = parse_params(info);
         
-        type = new sType(s"lambda");
-        
         type->mResultType = clone result_type;
         type->mParamTypes = param_types;
         type->mParamNames = param_names;
         type->mVarArgs = var_args;
         type->mExtern = extern_;
-        if(function_pointer_array) {
-            type->mLambdaArray = true;
-            type->mLambdaArrayNum = function_pointer_array_num;
-        }
         
         type->mFunctionPointerNum = function_pointer_num;
     }

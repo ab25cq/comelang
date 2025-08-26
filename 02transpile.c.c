@@ -1358,8 +1358,6 @@ struct sType
     char* mOriginalTypeName;
     int mOriginalPointerNum;
     _Bool mArrayPointerType;
-    _Bool mLambdaArray;
-    int mLambdaArrayNum;
     struct list$1sType$ph* mParamTypes;
     struct list$1char$ph* mParamNames;
     struct sType* mResultType;

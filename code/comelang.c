@@ -1,6 +1,7 @@
 #include <comelang.h>
 
 typedef int (*FP)(int,char*);
+typedef int (*FP2[2][3])(int, char*);
 
 struct P { int x; int y; };
 struct P gP = { .y = 10 };

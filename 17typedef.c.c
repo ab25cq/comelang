@@ -1368,8 +1368,6 @@ struct sType
     char* mOriginalTypeName;
     int mOriginalPointerNum;
     _Bool mArrayPointerType;
-    _Bool mLambdaArray;
-    int mLambdaArrayNum;
     struct list$1sType$ph* mParamTypes;
     struct list$1char$ph* mParamNames;
     struct sType* mResultType;
@@ -3221,12 +3219,6 @@ struct sType* __result_obj__16;
     }
     if(    self!=((void*)0)    ) {
         result->mArrayPointerType=self->mArrayPointerType;
-    }
-    if(    self!=((void*)0)    ) {
-        result->mLambdaArray=self->mLambdaArray;
-    }
-    if(    self!=((void*)0)    ) {
-        result->mLambdaArrayNum=self->mLambdaArrayNum;
     }
     if(    self!=((void*)0)&&self->mParamTypes!=((void*)0)    ) {
         __dec_obj20=result->mParamTypes,

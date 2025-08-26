@@ -145,9 +145,6 @@ uniq class sType
     
     bool mArrayPointerType;
     
-    bool mLambdaArray;
-    int mLambdaArrayNum;
-    
     //// lambda ///
     list<sType*%>*% mParamTypes;
     list<string>*% mParamNames;
