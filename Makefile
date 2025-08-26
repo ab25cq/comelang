@@ -20,15 +20,6 @@ all: comelang-sh
 comelang: 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05parse.c.o 05type.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o 
 	comelang -o comelang 01main.c.o 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 05parse.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o $(CFLAGS) 
 
-comelang2: src/main.c
-	@echo "[Bison] src/comelang.y -> src/parser.c, src/parser.h"
-	bison -d -v --defines=src/parser.h -o src/parser.c src/comelang.y
-	@echo "[Flex ] src/comelang.l -> src/lexer.c"
-	flex -o src/lexer.c src/comelang.l
-	@echo "generated: src/parser.c src/parser.h src/lexer.c"
-	comelang -c -S src/main.c
-	$(CC) -DYYDEBUG=1 -Isrc -o comelang2 src/main.c.c src/parser.c src/lexer.c src/arena.c src/ast_bridge_stub.c 02transpile.c.o 03output_code.c.o 04heap.c.o 05pre_op.c.o 05call.c.o 05function.c.o 05number.c.o 05type.c.o 05parse.c.o 06str.c.o 07var.c.o 07gvar.c.o 08if.c.o 09while.c.o 10do_while.c.o 11for.c.o 12switch.c.o 13op.c.o 14struct.c.o 15union.c.o 16enum.c.o 17typedef.c.o 18field.c.o 19eq.c.o 20method.c.o 21obj.c.o 22impl.c.o 23interface.c.o 24module.c.o $(CFLAGS) 
-
 01main.c.o: 01main.c
 	comelang -s -C -o 01main.c.o -c 01main.c $(CFLAGS) 
 
@@ -309,8 +300,8 @@ comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o
 # test
 #########################################
 test:
-	comelang -s code/test_comelang.c -o code/test_comelang && ./code/test_comelang
-	comelang code/test_comelang2.c -o code/test_comelang2 && ./code/test_comelang2
+	comelang -s code/comelang.c -o code/comelang && ./code/comelang
+	comelang -s code/comelang2.c -o code/comelang2 && ./code/comelang2
 
 #########################################
 # install
@@ -332,7 +323,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2 code/a code/*.c.c code/*.c.o code/b code/test_comelang code/test_comelang2
+	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2 code/a code/*.c.c code/*.c.o code/b code/comelang code/comelang2
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 
