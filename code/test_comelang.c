@@ -42,6 +42,8 @@ int main(int argc, char** argv)
     xassert("block test3", ({string a = string("aaa"); a === "aaa"}) == true);
     
     xassert("method block test", [1,2,3].map { it.to_string() } === [s"1", s"2", s"3"]);
+    
+    xassert("method block test2", [1,2,3,4,5].filter { it < 4 }.map { it.to_string() }.map { atoi(it) }  === [1, 2, 3]);
 
     
     return 0;
