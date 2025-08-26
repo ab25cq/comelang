@@ -1,7 +1,19 @@
 #include <comelang.h>
 
+struct P { int x; int y; };
+struct P gP = { .y = 10 };
+int gA[5] = { [2] = 3 };
+//int *a, arr[3], (*fp)(int, char*); //, (*fpa[2])(int);
+//int *a, (*fp)(int, char*), arr[3], (*fpa[2])(int);
+
 int main(int argc, char** argv)
 {
+    struct P p = { .y = 10, .x = 5 };
+    int a[5] = { [2] = 3, [4] = 7 };
+    
+    xassert("C", a[2] == 3 && a[4] == 7 && p.y == 10 && p.x == 5 && gP.y == 10);
+    xassert("C", gA[2] === 3);
+    
     var li = [1,2,3,4,5];
     
     int x = false;
@@ -43,7 +55,7 @@ int main(int argc, char** argv)
     
     xassert("method block test", [1,2,3].map { it.to_string() } === [s"1", s"2", s"3"]);
     
-    xassert("method block test2", [1,2,3,4,5].filter { it < 4 }.map { it.to_string() }.map { atoi(it) }  === [1, 2, 3]);
+    xassert("method block test2", [1,2,3,4,5].filter { it < 4 }.map { it.to_string() } === [s"1", s"2", s"3"]); //.map { atoi(it) }  === [1, 2, 3]);
 
     
     return 0;

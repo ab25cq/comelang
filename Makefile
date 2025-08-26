@@ -309,7 +309,7 @@ comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o
 # test
 #########################################
 test:
-	comelang code/test_comelang.c -o code/test_comelang && ./code/test_comelang
+	comelang -s code/test_comelang.c -o code/test_comelang && ./code/test_comelang
 	comelang code/test_comelang2.c -o code/test_comelang2 && ./code/test_comelang2
 
 #########################################
