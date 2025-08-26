@@ -182,10 +182,6 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
     info->current_stack_frame_struct = current_stack_frame_struct;
     info->come_method_block_function_result_type = clone info->function_result_type;
     
-    if(info->no_output_come_code) {
-        info.funcs.remove(string(method_block_name));
-    }
-    
     return true;
 }
 
@@ -414,11 +410,15 @@ class sMethodCallNode extends sNodeBase
                         sType* generics_fun_method_block_lambda_type = generics_fun.mParamTypes[-1];
                         sType* generics_fun_method_block_result_type = generics_fun_method_block_lambda_type.mResultType;
                         
+printf("generics_fun_method_block_result_type %s\n", generics_fun_method_block_result_type.mClass.mName);
+
                         if(generics_fun_method_block_result_type.mClass.mMethodGenerics) {
                             int method_generics_num = generics_fun_method_block_result_type.mClass.mMethodGenericsNum;
                             info.method_generics_types[method_generics_num] = clone method_block_result_type;
                         }
                         int n = 0;
+                        foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
+printf("generics_fun_method_block_result_type %s\n", it.mClass.mName);
                         foreach(it, generics_fun_method_block_lambda_type.mParamTypes) {
                             if(it.mClass.mMethodGenerics) {
                                 int method_generics_num = it.mClass.mMethodGenericsNum;
@@ -447,6 +447,7 @@ class sMethodCallNode extends sNodeBase
                                 come_params.push_back(come_value);
                             }
                         }
+printf("generics_fun.mResultType.mClass %s\n", generics_fun.mResultType.mClass.mName);
                         if(generics_fun.mResultType.mClass.mMethodGenerics) {
                             int method_generics_num = generics_fun.mResultType.mClass.mMethodGenericsNum;
                             

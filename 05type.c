@@ -206,6 +206,9 @@ list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, 
 
 bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* come_value, bool check_no_pointer=false, bool print_err_msg=true, bool pointer_massive=true, sInfo* info=info)
 {
+    if(info->no_output_come_code) {
+        return true;
+    }
     sType*% left_type2 = clone left_type;
     sType*% right_type2 = clone right_type;
     

@@ -36,5 +36,13 @@ int main(int argc, char** argv)
     int c = (int)b + 111;
     xassert("parse test", c == 222);
     
+    xassert("block test", ({int a = 222;}) == 222);
+    
+    xassert("block test2", ({int a = 222; string("aaa") === "aaa"}) == true);
+    xassert("block test3", ({string a = string("aaa"); a === "aaa"}) == true);
+    
+    xassert("method block test", [1,2,3].map { it.to_string() } === [s"1", s"2", s"3"]);
+
+    
     return 0;
 }
