@@ -17,6 +17,7 @@ bool is_type_name(char* buf, sInfo* info=info)
             || info->in_top_level && (buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline" )
             || buf === "__extension__" 
             || buf === "_Noreturn" 
+            || buf === "restrict" 
             || buf === "__noreturn" 
             || buf === "_noreturn" 
             || buf === "__typeof__" 
@@ -41,6 +42,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         || buf === "__declspec" 
         || buf === "_Alignas"
         || buf === "_Atomic"
+        || buf === "restrict"
         || ((buf === "__attribute" || buf === "__attribute__") && *info->p == '(')
         || (buf === "immutable")
         || (buf === "mutable")
@@ -224,15 +226,6 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
     sClass* left_class = left_type2->mClass;
     sClass* right_class = right_type2->mClass;
     
-/*
-    if(left_type->mImmutable)  {
-        if(!right_type->mImmutable) {
-            err_msg(info, "Require right type to immutable");
-            return false;
-        }
-    }
-*/
-    
     bool parent_class = false;
     if(left_class->mName !== right_class->mName) {
         while(left_class && right_class) {
@@ -254,6 +247,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
             else if(right_type->mArrayNum.length() > 0) {
             }
+/*
             else if(print_err_msg) {
                 printf("%s %d %s\n", info->sname, info->sline, msg);
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
@@ -263,8 +257,10 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 
                 return false;
             }
+*/
         }
-        else if(left_type2->mPointerNum == 0 && right_type->mPointerNum > 0) {
+        else 
+        if(left_type2->mPointerNum == 0 && right_type->mPointerNum > 0) {
             if(left_type2->mArrayNum.length() > 0) {
             }
             else if(left_type2->mClass->mName === "lambda" || right_type->mClass->mName === "void") {
@@ -341,6 +337,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
         } 
         else if(right_type->mPointerNum == 0 && left_type2->mPointerNum > 0) {
+        }
+        else if(left_type->mPointerNum > 0 && right_type->mPointerNum == 0) {
         }
         else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mNumber && left_type2->mPointerNum == 0) {
             if(pointer_massive) {
@@ -430,6 +428,8 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 check_assign_type(msg, left_no_solved_generics_type, right_no_solved_generics_type, come_value);
             }
         }
+    }
+    else if(left_type2->mPointerNum > 0 && right_type->mPointerNum == 0) {
     }
     else if(strlen(left_type2->mClass->mName) >= strlen("tuple") 
         && memcmp(left_type2->mClass->mName, "tuple", strlen("tuple")) == 0
@@ -1882,7 +1882,12 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else if(enum_) {
             if(type_name === "") {
-                type_name = xsprintf("anonymous_typeY%d", ++anonymous_num);
+                if(!info.no_output_err) {
+                    type_name = xsprintf("anonymous_typeY%d", anonymous_num);
+                }
+                else {
+                    type_name = xsprintf("anonymous_typeY%d", ++anonymous_num);
+                }
             }
             
             sNode*% node = parse_enum(type_name, info);

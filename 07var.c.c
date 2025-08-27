@@ -283,12 +283,12 @@ typedef long ssize_t;
 
 extern const int sys_nerr;
 extern const char* sys_errlist[];
-enum anonymous_typeY2 { P_ALL
+enum anonymous_typeY1 { P_ALL
 ,P_PID
 ,P_PGID
 };
 
-typedef enum anonymous_typeY2 idtype_t;
+typedef enum anonymous_typeY1 idtype_t;
 
 typedef int pid_t;
 
@@ -842,7 +842,7 @@ struct proc_rlimit_control_wakeupmon
     int wm_rate;
 };
 
-struct anonymous_typeX3
+struct anonymous_typeX2
 {
     unsigned int w_Termsig:7;
     unsigned int w_Coredump:1;
@@ -850,7 +850,7 @@ struct anonymous_typeX3
     unsigned int w_Filler:16;
 };
 
-struct anonymous_typeX4
+struct anonymous_typeX3
 {
     unsigned int w_Stopval:8;
     unsigned int w_Stopsig:8;
@@ -860,8 +860,8 @@ struct anonymous_typeX4
 union wait
 {
 int w_status;
-struct anonymous_typeX3 w_T;
-struct anonymous_typeX4 w_S;
+struct anonymous_typeX2 w_T;
+struct anonymous_typeX3 w_S;
 };
 
 typedef int ct_rune_t;
@@ -870,29 +870,29 @@ typedef int rune_t;
 
 typedef int wchar_t;
 
-struct anonymous_typeX5
+struct anonymous_typeX4
 {
     int quot;
     int rem;
 };
 
-typedef struct anonymous_typeX5 div_t;
+typedef struct anonymous_typeX4 div_t;
 
-struct anonymous_typeX6
+struct anonymous_typeX5
 {
     long quot;
     long rem;
 };
 
-typedef struct anonymous_typeX6 ldiv_t;
+typedef struct anonymous_typeX5 ldiv_t;
 
-struct anonymous_typeX7
+struct anonymous_typeX6
 {
     long long quot;
     long long rem;
 };
 
-typedef struct anonymous_typeX7 lldiv_t;
+typedef struct anonymous_typeX6 lldiv_t;
 
 extern int __mb_cur_max;
 typedef unsigned long  long malloc_type_id_t;
@@ -944,7 +944,7 @@ typedef struct _xlocale* locale_t;
 
 typedef int wint_t;
 
-struct anonymous_typeX8
+struct anonymous_typeX7
 {
     int __min;
     int __max;
@@ -952,25 +952,25 @@ struct anonymous_typeX8
     unsigned int* __types;
 };
 
-typedef struct anonymous_typeX8 _RuneEntry;
+typedef struct anonymous_typeX7 _RuneEntry;
 
-struct anonymous_typeX9
+struct anonymous_typeX8
 {
     int __nranges;
-    struct anonymous_typeX8* __ranges;
+    struct anonymous_typeX7* __ranges;
 };
 
-typedef struct anonymous_typeX9 _RuneRange;
+typedef struct anonymous_typeX8 _RuneRange;
 
-struct anonymous_typeX10
+struct anonymous_typeX9
 {
     char __name[14];
     unsigned int __mask;
 };
 
-typedef struct anonymous_typeX10 _RuneCharClass;
+typedef struct anonymous_typeX9 _RuneCharClass;
 
-struct anonymous_typeX11
+struct anonymous_typeX10
 {
     char __magic[8];
     char __encoding[32];
@@ -980,19 +980,19 @@ struct anonymous_typeX11
     unsigned int __runetype[(1<<8)];
     int __maplower[(1<<8)];
     int __mapupper[(1<<8)];
-    struct anonymous_typeX9 __runetype_ext;
-    struct anonymous_typeX9 __maplower_ext;
-    struct anonymous_typeX9 __mapupper_ext;
+    struct anonymous_typeX8 __runetype_ext;
+    struct anonymous_typeX8 __maplower_ext;
+    struct anonymous_typeX8 __mapupper_ext;
     void* __variable;
     int __variable_len;
     int __ncharclasses;
-    struct anonymous_typeX10* __charclasses;
+    struct anonymous_typeX9* __charclasses;
 };
 
-typedef struct anonymous_typeX11 _RuneLocale;
+typedef struct anonymous_typeX10 _RuneLocale;
 
-extern struct anonymous_typeX11 _DefaultRuneLocale;
-extern struct anonymous_typeX11* _CurrentRuneLocale;
+extern struct anonymous_typeX10 _DefaultRuneLocale;
+extern struct anonymous_typeX10* _CurrentRuneLocale;
 typedef union anonymous_typeZ1 mbstate_t;
 
 typedef unsigned long  int clock_t;
@@ -1024,7 +1024,7 @@ extern char* tzname[];
 extern int getdate_err;
 extern long timezone;
 extern int daylight;
-enum anonymous_typeY12 { _CLOCK_REALTIME=(0),
+enum anonymous_typeY10 { _CLOCK_REALTIME=(0),
 _CLOCK_MONOTONIC=(6),
 _CLOCK_MONOTONIC_RAW=(4),
 _CLOCK_MONOTONIC_RAW_APPROX=(5),
@@ -1034,7 +1034,7 @@ _CLOCK_PROCESS_CPUTIME_ID=(12),
 _CLOCK_THREAD_CPUTIME_ID=(16)
 };
 
-typedef enum anonymous_typeY12 clockid_t;
+typedef enum anonymous_typeY10 clockid_t;
 
 typedef unsigned int wctype_t;
 
@@ -2050,7 +2050,7 @@ int setiopolicy_np(int anonymous_var_nameX174, int anonymous_var_nameX175, int a
 int setrlimit(int anonymous_var_nameX177, const struct rlimit* anonymous_var_nameX178);
 int wait(int* anonymous_var_nameX179);
 int waitpid(int anonymous_var_nameX180, int* anonymous_var_nameX181, int anonymous_var_nameX182);
-int waitid(enum anonymous_typeY2 anonymous_var_nameX183, unsigned int anonymous_var_nameX184, struct __siginfo* anonymous_var_nameX185, int anonymous_var_nameX186);
+int waitid(enum anonymous_typeY1 anonymous_var_nameX183, unsigned int anonymous_var_nameX184, struct __siginfo* anonymous_var_nameX185, int anonymous_var_nameX186);
 int wait3(int* anonymous_var_nameX187, int anonymous_var_nameX188, struct rusage* anonymous_var_nameX189);
 int wait4(int anonymous_var_nameX190, int* anonymous_var_nameX191, int anonymous_var_nameX192, struct rusage* anonymous_var_nameX193);
 void* alloca(unsigned long  int __size);
@@ -2084,13 +2084,13 @@ int atoi(const char* anonymous_var_nameX197);
 long atol(const char* anonymous_var_nameX198);
 long long atoll(const char* anonymous_var_nameX199);
 void* bsearch(const void* __key, const void* __base, unsigned long  int __nel, unsigned long  int __width, int (*__compar)(const void*,const void*));
-struct anonymous_typeX5 div(int anonymous_var_nameX202, int anonymous_var_nameX203);
+struct anonymous_typeX4 div(int anonymous_var_nameX202, int anonymous_var_nameX203);
 void exit(int anonymous_var_nameX204);
 char* getenv(const char* anonymous_var_nameX205);
 long labs(long anonymous_var_nameX206);
-struct anonymous_typeX6 ldiv(long anonymous_var_nameX207, long anonymous_var_nameX208);
+struct anonymous_typeX5 ldiv(long anonymous_var_nameX207, long anonymous_var_nameX208);
 long long llabs(long  long anonymous_var_nameX209);
-struct anonymous_typeX7 lldiv(long  long anonymous_var_nameX210, long  long anonymous_var_nameX211);
+struct anonymous_typeX6 lldiv(long  long anonymous_var_nameX210, long  long anonymous_var_nameX211);
 int mblen(const char* __s, unsigned long  int __n);
 unsigned long  int mbstowcs(int* anonymous_var_nameX212, const char* anonymous_var_nameX213, unsigned long  int __n);
 int mbtowc(int* anonymous_var_nameX214, const char* anonymous_var_nameX215, unsigned long  int __n);
@@ -2295,10 +2295,10 @@ long time2posix(long anonymous_var_nameX413);
 long timelocal(struct tm* anonymous_var_nameX414);
 long timegm(struct tm* anonymous_var_nameX415);
 int nanosleep(const struct timespec* __rqtp, struct timespec* __rmtp);
-int clock_getres(enum anonymous_typeY12 __clock_id, struct timespec* __res);
-int clock_gettime(enum anonymous_typeY12 __clock_id, struct timespec* __tp);
-unsigned long  long clock_gettime_nsec_np(enum anonymous_typeY12 __clock_id);
-int clock_settime(enum anonymous_typeY12 __clock_id, const struct timespec* __tp);
+int clock_getres(enum anonymous_typeY10 __clock_id, struct timespec* __res);
+int clock_gettime(enum anonymous_typeY10 __clock_id, struct timespec* __tp);
+unsigned long  long clock_gettime_nsec_np(enum anonymous_typeY10 __clock_id);
+int clock_settime(enum anonymous_typeY10 __clock_id, const struct timespec* __tp);
 int timespec_get(struct timespec* ts, int base);
 int iswalnum(int anonymous_var_nameX416);
 int iswalpha(int anonymous_var_nameX417);
