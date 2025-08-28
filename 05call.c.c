@@ -10151,7 +10151,9 @@ struct sNode* __result_obj__317;
         info->sline_real=info->sline;
         buf_189=(char*)come_increment_ref_count(backtrace_parse_word(info));
         is_type_name_=is_type_name(buf_189,info);
-        static char* is_special_word_array[22]={"if","while","for","switch","return","sizeof","isheap","ispointer","__typeof__","dynamic_typeof","typeof","gc_inc","gc_dec","gc_dec_nofree","case","_Alignof","_Alignas","__alignof__","_Atomic","borrow","dupe","clone"};
+        static char* is_special_word_array[22]={ "if", "while", "for", "switch", "return", "sizeof", "isheap", "ispointer", "__typeof__"
+                                    , "dynamic_typeof", "typeof", "gc_inc", "gc_dec", "gc_dec_nofree", "case", "_Alignof"
+                                    , "_Alignas", "__alignof__", "_Atomic", "borrow", "dupe", "clone" };
         is_special_word=charppa_contained(is_special_word_array,22,buf_189);
         define_function_pointer_flag=(_Bool)0;
         if(        !is_special_word&&*info->p==40&&*(info->p+1)!=42        ) {

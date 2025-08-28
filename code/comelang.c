@@ -146,6 +146,50 @@ struct S22 { enum { X22=1, Y22=X22+3 } e; };
 enum EXX { AXX, BXX=3, CXX };
 struct SXX { enum { XXXX=1, YXX } e; };
 
+struct AAAAAAAAAAA { enum EEEEEEEEEEE { A11111111111111=10, A222222222222222 } e; };
+struct BBBBBBBBBBB { enum EEEEEEEEEEE e; };
+
+struct Outer {
+  enum { X=1, Y } e1;
+  struct { int a; union { char c; } u; } s1;
+  struct Named { int n; } s2;
+  union NamedU { float f; } u2;
+};
+
+struct Outer {
+  int a;
+  struct { int x; union { char c; long l; } inner_u; } anon_s;
+  union { float f; struct { unsigned u:3; int v; } inner_s; } anon_u;
+};
+
+union UUUUUUUUU {
+  int x;
+  unsigned short y;
+};
+
+int fun(int a, int b) version 2 { return a+b; }
+
+typedef int IIIIIIII;
+IIIIIIII f(IIIIIIII x){ return x; }
+int funXXXXXXXX(){ IIIIIIII a=1; return f(a); }
+
+typedef struct Foo Foo;
+typedef int AAAAAAAAAAAAA[10];
+typedef int (*FPPPPPP)(int, char*);
+typedef int IIIIII3;
+typedef int (*FPPXUHO)(int);
+int a3,b3;
+
+struct SSS { int a; struct { int b[5]; } inner; };
+
+int funHO(){
+  struct SSS s = { .inner.b[1] = 9, .inner.b[2 ... 4] = 7 };
+  int x[5] = { [0 ... 2] = 1, [4] = 5 };
+  return s.inner.b[2] + x[0];
+}
+
+int *aXYZ, (*fpXYZ)(int, char*), arrXYZ[3], (*fpaXYZ[2])(int);
+
 int main(int argc, char** argv)
 {
    int xxx = 1;

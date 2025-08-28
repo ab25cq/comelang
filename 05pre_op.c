@@ -629,6 +629,38 @@ sNode*% reverse_node(sNode*% value, sInfo* info)
     return new sReverseNode(value, info) implements sNode;
 }
 
+class sArrayInitializer extends sNodeBase
+{
+    new(string initializer, sInfo* info)
+    {
+        self.super();
+       
+        string self.initializer = clone initializer;
+    }
+    
+    string kind()
+    {
+        return string("sArrayInitializer");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        var initializer = self.initializer;
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = initializer;
+        come_value.type = new sType(s"void");
+        come_value.type->mPointerNum++;
+        come_value.var = null;
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
+
 sNode*% pre_position_operator(sInfo* info=info)
 {
     skip_spaces_and_lf();
@@ -668,11 +700,72 @@ sNode*% pre_position_operator(sInfo* info=info)
     parse_sharp();
     
     if(*info->p == '{') {
-        if(info.array_initializer) {
-            return parse_array_initializer();
-        }
-        else if(info.struct_initializer) {
-            return parse_struct_initializer();
+        if(info.array_initializer || info.struct_initializer) {
+            buffer*% buf = new buffer();
+            
+            buf.append_char(*info->p);
+            info->p++;
+            
+            bool squort = false;
+            bool dquort = false;
+            int nest = 1;
+            while(1) {
+                if(*info->p == '\0') {
+                    err_msg(info, "unexpected source end in array initiailizer");
+                    exit(2);
+                }
+                else if(*info->p == '\\') {
+                    buf.append_char(*info->p);
+                    info->p++;
+                    if(*info->p == '\n') {
+                        info->sline++;
+                    }
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else if(!squort && *info->p == '"') {
+                    buf.append_char(*info->p);
+                    info->p++;
+                    dquort = !dquort;
+                }
+                else if(!dquort && *info->p == '\'') {
+                    buf.append_char(*info->p);
+                    info->p++;
+                    squort = !squort;
+                }
+                else if(squort || dquort) {
+                    if(*info->p == '\n') {
+                        info->sline++;
+                    }
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else if(*info->p == '{') {
+                    nest++;
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else if(*info->p == '}') {
+                    nest--;
+                    buf.append_char(*info->p);
+                    info->p++;
+                    
+                    if(nest == 0) {
+                        skip_spaces_and_lf();
+                        break;
+                    }
+                }
+                else if(*info->p == '\n') {
+                    info->sline++;
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else {
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+            }
+            return new sArrayInitializer(buf.to_string(), info) implements sNode;
         }
         else {
             return parse_normal_block();
