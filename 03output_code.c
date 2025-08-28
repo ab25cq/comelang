@@ -374,6 +374,21 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         
         buf.append_str(str);
     }
+    else if(type2->mArrayPointerNum > 0) {
+        string type_name = make_type_name_string(type2);
+        
+        buf.append_format("%s (*%s)", type_name, name);
+        
+        foreach(it, type2->mArrayNum) {
+            if(!node_compile(it)) {
+                err_msg(info, "invalid array number");
+                return string("");
+            }
+            CVALUE*% cvalue = get_value_from_stack(-1, info);
+        
+            buf.append_format("[%s]", cvalue.c_value);
+        }
+    }
     else if(type2->mSizeNum != null) {
         if(!node_compile(type2->mSizeNum)) {
             err_msg(info, "invalid bit field number");

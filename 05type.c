@@ -79,7 +79,7 @@ bool is_contained_generics_class(sType* type, sInfo* info)
     return false;
 }
 
-list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false)
+tuple4<list<sType*%>*%, list<string>*%, list<string>*%, bool>*% parse_params(sInfo* info, bool in_constructor_=false)
 {
     var param_types = new list<sType*%>();
     var param_names = new list<string>();
@@ -1770,6 +1770,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     string var_name;
     
     bool function_pointer_flag = false;
+    bool pointer_to_array_flag = false;
     {
         char* p = info.p;
         int sline = info.sline;
@@ -1781,7 +1782,26 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             skip_pointer_attribute();
             
             if(*info->p == '*' || *info->p == '^') {
+                info->p++;
+                skip_spaces_and_lf();
+                
                 function_pointer_flag = true;
+                
+                if(xisalpha(*info->p) || *info->p == '_') {
+                    string word = parse_word();
+                }
+                
+                if(*info->p == ')') {
+                    info->p++;
+                    skip_spaces_and_lf();
+                    
+                    if(*info->p == '[') {
+                        pointer_to_array_flag = true;
+                    }
+                    else if(*info->p == '(') {
+                        function_pointer_flag = true;
+                    }
+                }
             }
             else if(xisalpha(*info->p) || *info->p == '_') {
                 string word = parse_word();
@@ -2048,6 +2068,70 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mParamNames = param_names;
         type->mVarArgs = var_args;
         type->mExtern = extern_;
+    }
+    else if(pointer_to_array_flag) {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        skip_pointer_attribute();
+        
+        int array_pointer_num = 0;
+        while(*info->p == '*' || *info->p == '^') {
+            info->p++;
+            skip_spaces_and_lf();
+            skip_pointer_attribute();
+            array_pointer_num++;
+        }
+        
+        skip_pointer_attribute();
+        
+        type = new sType(string(type_name));
+        
+        type->mConstant = type->mConstant || constant;
+        type->mImmutable = type->mImmutable || immutable_;
+        type->mTask = type->mTask || task_;
+        type->mAtomic = type->mAtomic || atomic_;
+        type->mAlignas = alignas_;
+        type->mRegister = register_;
+        type->mUnsigned = type->mUnsigned || unsigned_;
+        type->mVolatile = volatile_;
+        type->mUniq = type->mUniq || uniq_;
+        type->mStatic = (type->mStatic || static_) && !type->mUniq;
+        type->mRecord = type->mRecord || record_;
+        type->mException = type->mException || exception_;
+        type->mExtern = type->mExtern || extern_;
+        type->mInline = type->mInline || inline_;
+        type->mRestrict = type->mRestrict || restrict_;
+        type->mLongLong = type->mLongLong || long_long;
+        type->mLong = type->mLong || long_;
+        type->mShort = type->mShort || short_;
+        type->mPointerNum += pointer_num;
+        type->mHeap = type->mHeap || heap;
+        type->mChannel = type->mChannel || channel;
+        type->mDefferRightValue = type->mDefferRightValue || deffer_;
+        type->mTupleName = tuple_name;
+        
+//    type = new sType(s"lambda");
+        
+        var_name = parse_word();
+        
+        expected_next_character(')');
+        
+        while(*info->p == '[') {
+            info->p++;
+            skip_spaces_and_lf();
+            
+            sNode*% node = expression();
+            
+            type.mArrayNum.add(node);
+            
+            if(*info->p == ']') {
+                info->p++;
+                skip_spaces_and_lf();
+            }
+        }
+        
+        type->mArrayPointerNum = array_pointer_num;
     }
     else if(function_pointer_flag) {
         info->p++;
@@ -2553,7 +2637,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
         }
         
-        if(parse_multiple_type && *info->p == ',') {
+        if(parse_multiple_type && *info->p == ',' && !info.in_offsetof) {
             list<sType*%>*% types = new list<sType*%>();
             
             types.push_back(clone type);

@@ -139,6 +139,7 @@ uniq class sType
     int mOriginalTypeNameHeap;
     int mTypedefOriginalPointerNum;
     int mFunctionPointerNum;
+    int mArrayPointerNum;
     
     string mOriginalTypeName;
     int mOriginalPointerNum;
@@ -592,6 +593,7 @@ struct sInfo
     bool in_method_block;
     
     bool prohibits_output_last_code;
+    bool in_offsetof;
 };
 
 uniq class sNodeBase

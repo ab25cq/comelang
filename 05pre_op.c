@@ -19,7 +19,7 @@ bool operator_overload_fun_self(sType*% type, char* fun_name, sNode*% node, CVAL
     
     if(operator_fun) {
         sNode*% obj = node;
-        list<tup: string, sNode*%>*% params =  new list<tup: string, sNode*%>();
+        list<tuple2<string, sNode*%>*%>*% params =  new list<tuple2<string, sNode*%>*%>();
         
         params.add((null, obj));
         
@@ -631,11 +631,12 @@ sNode*% reverse_node(sNode*% value, sInfo* info)
 
 class sArrayInitializer extends sNodeBase
 {
-    new(string initializer, sInfo* info)
+    new(sType*% type_, string initializer, sInfo* info)
     {
         self.super();
        
         string self.initializer = clone initializer;
+        sType*% self.type_ = type_;
     }
     
     string kind()
@@ -645,16 +646,29 @@ class sArrayInitializer extends sNodeBase
     
     bool compile(sInfo* info)
     {
+        var type_ = self.type_;
         var initializer = self.initializer;
         
-        CVALUE*% come_value = new CVALUE();
-        
-        come_value.c_value = initializer;
-        come_value.type = new sType(s"void");
-        come_value.type->mPointerNum++;
-        come_value.var = null;
-        
-        info.stack.push_back(come_value);
+        if(type_) {
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = xsprintf("(%s)%s", make_type_name_string(type_), initializer);
+            come_value.type = new sType(s"void");
+            come_value.type->mPointerNum++;
+            come_value.var = null;
+            
+            info.stack.push_back(come_value);
+        }
+        else {
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = initializer;
+            come_value.type = new sType(s"void");
+            come_value.type->mPointerNum++;
+            come_value.var = null;
+            
+            info.stack.push_back(come_value);
+        }
         
         return true;
     }
@@ -765,7 +779,7 @@ sNode*% pre_position_operator(sInfo* info=info)
                     info->p++;
                 }
             }
-            return new sArrayInitializer(buf.to_string(), info) implements sNode;
+            return new sArrayInitializer(null, buf.to_string(), info) implements sNode;
         }
         else {
             return parse_normal_block();
@@ -861,6 +875,7 @@ sNode*% pre_position_operator(sInfo* info=info)
         
         /// backtrace ///
         bool cast_expression_flag = false;
+        bool struct_initializer_flag = false;
         {
             char* p = info.p;
             int sline = info.sline;
@@ -880,7 +895,14 @@ sNode*% pre_position_operator(sInfo* info=info)
                     parse_type();
                     
                     if(*info->p == ')') {
-                        cast_expression_flag = true;
+                        info->p++;
+                        skip_spaces_and_lf();
+                        if(*info->p == '{') {
+                            struct_initializer_flag = true;
+                        }
+                        else {
+                            cast_expression_flag = true;
+                        }
                     }
                 }
             }
@@ -992,6 +1014,85 @@ sNode*% pre_position_operator(sInfo* info=info)
             parse_sharp();
             
             return node;
+        }
+        else if(struct_initializer_flag) {
+            parse_sharp();
+            var type, name, err = parse_type();
+            
+            if(!err) {
+                printf("%s %d: parse_type failed\n", info->sname, info->sline);
+                exit(2);
+            }
+            
+            parse_sharp();
+            expected_next_character(')');
+            parse_sharp();
+            
+            buffer*% buf = new buffer();
+            
+            buf.append_char(*info->p);
+            info->p++;
+            
+            bool squort = false;
+            bool dquort = false;
+            int nest = 1;
+            while(1) {
+                if(*info->p == '\0') {
+                    err_msg(info, "unexpected source end in array initiailizer");
+                    exit(2);
+                }
+                else if(*info->p == '\\') {
+                    buf.append_char(*info->p);
+                    info->p++;
+                    if(*info->p == '\n') {
+                        info->sline++;
+                    }
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else if(!squort && *info->p == '"') {
+                    buf.append_char(*info->p);
+                    info->p++;
+                    dquort = !dquort;
+                }
+                else if(!dquort && *info->p == '\'') {
+                    buf.append_char(*info->p);
+                    info->p++;
+                    squort = !squort;
+                }
+                else if(squort || dquort) {
+                    if(*info->p == '\n') {
+                        info->sline++;
+                    }
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else if(*info->p == '{') {
+                    nest++;
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else if(*info->p == '}') {
+                    nest--;
+                    buf.append_char(*info->p);
+                    info->p++;
+                    
+                    if(nest == 0) {
+                        skip_spaces_and_lf();
+                        break;
+                    }
+                }
+                else if(*info->p == '\n') {
+                    info->sline++;
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+                else {
+                    buf.append_char(*info->p);
+                    info->p++;
+                }
+            }
+            return new sArrayInitializer(type, buf.to_string(), info) implements sNode;
         }
         else if(cast_expression_flag) {
             parse_sharp();

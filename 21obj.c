@@ -425,6 +425,44 @@ class sSizeOfNode extends sNodeBase
     }
 };
 
+class sOffsetOf extends sNodeBase
+{
+    new(sType*% type, string name, sInfo* info)
+    {
+        self.super();
+        
+        sType*% self.type = clone type;
+        string self.name = clone name;
+    }
+    
+    string kind()
+    {
+        return string("sOffsetOf");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sType*% type = self.type;
+        string name = self.name;
+        
+        CVALUE*% come_value = new CVALUE();
+        
+        var type2 = solve_generics(type, info->generics_type, info);
+        
+        string type_name = make_type_name_string(type2, no_static:true);
+        
+        come_value.c_value = xsprintf("__builtin_offsetof(%s, %s)", type_name, name);
+        come_value.type = type2;
+        come_value.var = null;
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        info.stack.push_back(come_value);
+        
+        return true;
+    }
+};
+
 class sSizeOfExpNode extends sNodeBase
 {
     new(sNode*% exp, sInfo* info)
@@ -1491,6 +1529,26 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             err_msg(info, "invalid using");
             exit(2);
         }
+    }
+    else if(buf === "offsetof" || buf === "__builtin_offsetof") {
+        expected_next_character('(');
+        
+        info.in_offsetof = true;
+        var type, name, err = parse_type(parse_multiple_type:false);
+        info.in_offsetof = false;
+        
+        if(!err) {
+            err_msg(info, "parse type");
+            exit(2);
+        }
+        
+        expected_next_character(',');
+        
+        string word = parse_word();
+        
+        expected_next_character(')');
+        
+        return new sOffsetOf(type, word, info) implements sNode;
     }
     else if(buf === "sizeof") {
         bool paren = false;

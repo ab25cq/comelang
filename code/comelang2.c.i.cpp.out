@@ -1,0 +1,9 @@
+clang: warning: -lang-c: 'linker' input unused [-Wunused-command-line-argument]
+In file included from code/comelang2.c:3:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h:61:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h:69:
+In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_bounds.h:27:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:81:2: warning: "Unsupported compiler detected" [-W#warnings]
+   81 | #warning "Unsupported compiler detected"
+      |  ^
+1 warning generated.

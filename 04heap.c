@@ -618,7 +618,7 @@ void free_object(sType*% type, char* obj, bool no_decrement, bool no_free, sInfo
     info.stack = stack_saved;
 }
 
-sType*%, string clone_object(sType*% type, char* obj, sInfo* info)
+tuple2<sType*%, string>*% clone_object(sType*% type, char* obj, sInfo* info)
 {
     bool in_clone_object = info.in_clone_object;
     info.in_clone_object = true;

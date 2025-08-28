@@ -1245,7 +1245,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     
     /// backtrace ///
     bool multiple_declare = false;
-    if(is_type_name_flag)
+    if(is_type_name_flag && !info.in_offsetof)
     {
         char* p = info.p;
         int sline = info.sline;
@@ -1254,7 +1254,6 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         info.sline = head_sline;
         
         if(xisalpha(*info->p) || *info->p == '_') {
-            
             parse_sharp();
             var type, name, err = parse_type(parse_variable_name:false);
             parse_sharp();
@@ -1301,7 +1300,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     }
     
     bool attr_define = false;
-    if(is_type_name_flag && info->defining_class) {
+    if(is_type_name_flag && info->defining_class && !info.in_offsetof) {
         char* p = info.p;
         int sline = info.sline;
         
