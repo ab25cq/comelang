@@ -138,6 +138,14 @@ union { char c; int i; } bXXX;
 enum { XXXXXA=1, XXXXXB } eXXX;
 struct { int y; } a2XXX, a3XXX; // only first gets inline for now
 
+const int gxxxxx = 1;
+
+enum E22 { A22=1, B22=A22+2, C=(B22<<1)|~0, D22=(int)A22, E122='x', F22 = -A22 };
+struct S22 { enum { X22=1, Y22=X22+3 } e; };
+
+enum EXX { AXX, BXX=3, CXX };
+struct SXX { enum { XXXX=1, YXX } e; };
+
 int main(int argc, char** argv)
 {
    int xxx = 1;

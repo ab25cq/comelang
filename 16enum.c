@@ -175,14 +175,14 @@ sNode*% parse_enum(string type_name, sInfo* info)
                 
             info.no_comma = no_comma;
             
-            if(!info.no_output_err) {
+//            if(!info.no_output_err) {
                 elements.push_back((element_name, element_value));
-            }
+//            }
         }
         else {
-            if(!info.no_output_err) {
+//            if(!info.no_output_err) {
                 elements.push_back((element_name, null));
-            }
+//            }
         }
 
         parse_struct_attribute();

@@ -176,6 +176,11 @@ uniq class sType
         sClass* generics_class = info.generics_classes[name2]??;
         
         if(klass == null && generics_class == null) {
+/*
+            if(info.no_output_err) {
+                return null;
+            }
+*/
             printf("%s %d: class not found(%s)(1)\n", info->sname, info->sline, name2);
         }
         
