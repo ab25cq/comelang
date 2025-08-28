@@ -2095,11 +2095,11 @@ sNode*% expression_node(sInfo* info=info) version 97
         
         bool is_type_name_ = is_type_name(buf);
         
-        static char* is_special_word_array[24] = { "if", "while", "for", "switch", "return", "sizeof", "offsetof", "isheap", "ispointer", "__typeof__"
+        static char* is_special_word_array[25] = { "if", "while", "for", "switch", "return", "sizeof", "offsetof", "isheap", "ispointer", "__typeof__"
                                     , "dynamic_typeof", "typeof", "gc_inc", "gc_dec", "gc_dec_nofree", "case", "_Alignof"
-                                    , "_Alignas", "__alignof__", "_Atomic", "borrow", "dupe", "clone", "__builtin_offsetof" }
+                                    , "_Alignas", "__alignof__", "_Atomic", "borrow", "dupe", "clone", "__builtin_offsetof", "_Generic" }
                                     
-        bool is_special_word = is_special_word_array.contained(24, buf);
+        bool is_special_word = is_special_word_array.contained(25, buf);
         
         /// backtrace ///
         bool define_function_pointer_flag = false;
@@ -2443,7 +2443,7 @@ sNode*% expression_node(sInfo* info=info) version 97
             info.sline_real = sline_real;
             return new sVarArgTypeName(type) implements sNode;
         }
-        else if(buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__" || buf === "offsetof" || buf === "__builtin_offsetof") {
+        else if(buf === "sizeof" || buf === "_Alignof" || buf === "_Alignas" || buf === "__alignof__" || buf === "offsetof" || buf === "__builtin_offsetof" || buf === "_Generic") {
             sNode*% node = string_node(buf, head, head_sline, info)
             
             info.sline_real = sline_real;

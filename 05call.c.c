@@ -10156,10 +10156,10 @@ struct sNode* __result_obj__317;
         info->sline_real=info->sline;
         buf_189=(char*)come_increment_ref_count(backtrace_parse_word(info));
         is_type_name_=is_type_name(buf_189,info);
-        static char* is_special_word_array[24]={ "if", "while", "for", "switch", "return", "sizeof", "offsetof", "isheap", "ispointer", "__typeof__"
+        static char* is_special_word_array[25]={ "if", "while", "for", "switch", "return", "sizeof", "offsetof", "isheap", "ispointer", "__typeof__"
                                     , "dynamic_typeof", "typeof", "gc_inc", "gc_dec", "gc_dec_nofree", "case", "_Alignof"
-                                    , "_Alignas", "__alignof__", "_Atomic", "borrow", "dupe", "clone", "__builtin_offsetof" };
-        is_special_word=charppa_contained(is_special_word_array,24,buf_189);
+                                    , "_Alignas", "__alignof__", "_Atomic", "borrow", "dupe", "clone", "__builtin_offsetof", "_Generic" };
+        is_special_word=charppa_contained(is_special_word_array,25,buf_189);
         define_function_pointer_flag=(_Bool)0;
         if(        !is_special_word&&*info->p==40&&*(info->p+1)!=42        ) {
             ((struct tuple3$3sType$phchar$phbool$*)(__right_value625=backtrace_parse_type((_Bool)0,info)));
@@ -10705,7 +10705,7 @@ struct sNode* __result_obj__317;
             come_call_finalizer(sType_finalize, type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (name = come_decrement_ref_count(name, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
         }
-        else if(        string_operator_equals(buf_189,"sizeof")||string_operator_equals(buf_189,"_Alignof")||string_operator_equals(buf_189,"_Alignas")||string_operator_equals(buf_189,"__alignof__")||string_operator_equals(buf_189,"offsetof")||string_operator_equals(buf_189,"__builtin_offsetof")        ) {
+        else if(        string_operator_equals(buf_189,"sizeof")||string_operator_equals(buf_189,"_Alignof")||string_operator_equals(buf_189,"_Alignas")||string_operator_equals(buf_189,"__alignof__")||string_operator_equals(buf_189,"offsetof")||string_operator_equals(buf_189,"__builtin_offsetof")||string_operator_equals(buf_189,"_Generic")        ) {
             node_213=(struct sNode*)come_increment_ref_count(string_node_v21(buf_189,head_188,head_sline,info));
             info->sline_real=sline_real;
             __result_obj__299 = (struct sNode*)come_increment_ref_count(node_213);

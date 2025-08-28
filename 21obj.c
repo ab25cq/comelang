@@ -463,6 +463,106 @@ class sOffsetOf extends sNodeBase
     }
 };
 
+class sGeneric extends sNodeBase
+{
+    new(sNode*% exp, list<sType*%>*% types, list<sNode*%>*% exps, sNode*% default_exp, sInfo* info)
+    {
+        self.super();
+        
+        sNode*% self.exp = exp;
+        list<sType*%>*% self.types = types;
+        list<sNode*%>*% self.exps = exps;
+        sNode*% self.default_exp = default_exp;
+    }
+    
+    string kind()
+    {
+        return string("sGeneric");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        sNode*% exp = self.exp;
+        list<sNode*%>*% exps = self.exps;
+        list<sType*%>*% types = self.types;
+        sNode*% default_exp = self.default_exp;
+        
+        buffer*% buf = new buffer();
+        
+        node_compile(exp).elif {
+            return false;
+        }
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        
+        buf.append_format("_Generic((%s), ", come_value.c_value);
+        
+        if(default_exp) {
+            int n = 0;
+            foreach(it, exps) {
+                sType*% type = types[n];
+                
+                node_compile(it).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                buf.append_format("%s: %s", make_type_name_string(type), come_value.c_value);
+                
+                buf.append_format(",");
+                
+                n++;
+            }
+            
+            node_compile(default_exp).elif {
+                return false;
+            }
+                
+            CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+            buf.append_format("default: %s", come_value.c_value);
+                
+            buf.append_format(")");
+        }
+        else {
+            int n = 0;
+            foreach(it, exps) {
+                sType*% type = types[n];
+                
+                node_compile(it).elif {
+                    return false;
+                }
+                
+                CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                buf.append_format("%s: %s", make_type_name_string(type), come_value.c_value);
+                
+                if(n == exps.length() -1) {
+                    buf.append_format(")");
+                }
+                else {
+                    buf.append_format(",");
+                }
+                
+                n++;
+            }
+        }
+        
+        
+        CVALUE*% come_value2 = new CVALUE();
+        
+        come_value2.c_value = buf.to_string();
+        come_value2.type = new sType(s"void");
+        come_value2.var = null;
+        
+        add_come_last_code(info, "%s", come_value2.c_value);
+        
+        info.stack.push_back(come_value2);
+        
+        return true;
+    }
+};
+
 class sSizeOfExpNode extends sNodeBase
 {
     new(sNode*% exp, sInfo* info)
@@ -1529,6 +1629,65 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
             err_msg(info, "invalid using");
             exit(2);
         }
+    }
+    else if(buf === "_Generic" && *info->p == '(') {
+        info->p ++;
+        skip_spaces_and_lf();
+        
+        bool no_comma = info.no_comma;
+        info.no_comma = true;
+        sNode*% exp = expression();
+        info.no_comma = no_comma;
+        
+        expected_next_character(',');
+        
+        list<sType*%>*% types = new list<sType*%>();
+        list<sNode*%>*% exps = new list<sNode*%>();
+        sNode*% default_exp = null;
+        
+        while(1) {
+            if (strncmp(info->p, "default", strlen("default")) == 0) {
+                info->p += strlen("default");
+                skip_spaces_and_lf();
+                
+                expected_next_character(':');
+                
+                bool no_comma = info.no_comma;
+                info.no_comma = true;
+                default_exp = expression();
+                info.no_comma = no_comma;
+            }
+            else {
+                var type, name, err = parse_type(parse_multiple_type:false);
+                
+                types.add(type);
+                
+                expected_next_character(':');
+                
+                bool no_comma = info.no_comma;
+                info.no_comma = true;
+                sNode*% node = expression();
+                info.no_comma = no_comma;
+                
+                exps.add(node);
+            }
+            
+            if(*info->p == ',')  {
+                info->p++;
+                skip_spaces_and_lf();
+            }
+            else if(*info->p == '\0') {
+                err_msg(info, "invalid source end");
+                exit(2);
+            }
+            else if(*info->p == ')') {
+                info->p++;
+                skip_spaces_and_lf();
+                break;
+            }
+        }
+        
+        return new sGeneric(exp, types, exps, default_exp, info) implements sNode;
     }
     else if(buf === "offsetof" || buf === "__builtin_offsetof") {
         expected_next_character('(');

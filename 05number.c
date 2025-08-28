@@ -202,9 +202,18 @@ sNode*% get_number(bool minus, sInfo* info)
     }
 
     if(xisdigit(*info->p)) {
-        while(xisdigit(*info->p) || *info->p == '_') {
+        while(xisdigit(*info->p) || *info->p == '_' || *info->p == 'e' || *info->p == 'E') {
             if(*info->p ==  '_') {
                 info->p++;
+            }
+            else if(*info->p == 'e' || *info->p == 'E') {
+                *p2++ = *info->p;
+                info->p++;
+                
+                if(*info->p == '+' || *info->p == '-') {
+                    *p2++ = *info->p;
+                    info->p++;
+                }
             }
             else {
                 *p2++ = *info->p;
