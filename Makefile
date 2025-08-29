@@ -335,7 +335,7 @@ install:
 # clean
 #########################################
 clean:
-	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2 code/a code/*.c.c code/*.c.o code/b code/comelang code/comelang2
+	rm -fR *.log *.c.o comelang *.o a *.tmp comelang-val comelang-sh comelang-inf *.i *.val *.out *.log a.c.c b.c.c b c c.c.c *.valgrind aa aaa src/comelang2 code/a code/*.c.c code/*.c.o code/b code/comelang code/comelang2 code/comelang3 code/comelang4 code/comelang5 code/comelang6 code/comelang7 code/comelang8 code/comelang9 code/comelang10 code/comelang11 code/comelang12
 
 distclean: clean
 	rm -fR  config.h autom4te.cache 
