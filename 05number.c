@@ -180,6 +180,36 @@ class sDoubleNode extends sNodeBase
     }
 };
 
+class sDigitNode extends sNodeBase
+{
+    new(char* value, sInfo* info)
+    {
+        self.super();
+        
+        string self.value = string(value);
+    }
+    
+    string kind()
+    {
+        return string("sDigitNode");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        CVALUE*% come_value = new CVALUE();
+        
+        come_value.c_value = xsprintf("%s", self.value);
+        come_value.type = new sType(s"int");
+        come_value.var = null;
+        
+        info.stack.push_back(come_value);
+        
+        add_come_last_code(info, "%s", come_value.c_value);
+        
+        return true;
+    }
+};
+
 sNode*% create_int_node(int value, sInfo* info)
 {
     return new sIntNode(value, info) implements sNode;
@@ -523,6 +553,76 @@ sNode*% get_hex_number(bool minus, sInfo* info)
     return (sNode*%)null;
 }
 
+sNode*% get_digits(sInfo* info)
+{
+    int buf_size = 128;
+    char buf[128+1];
+    char* p = buf;
+
+    *p++ = '0';
+    *p++ = 'b';
+
+    while(*info->p == '0' || *info->p == '1') {
+        if(*info->p == '_') {
+            info->p++;
+        }
+        else {
+            *p++ = *info->p;
+            info->p++;
+        }
+
+        if(p - buf >= buf_size-1) {
+            err_msg(info, "overflow node of number");
+            exit(2);
+        }
+    }
+    *p = 0;
+    skip_spaces_and_lf();
+
+    if(*info->p == 'u' || *info->p == 'U')
+    {
+        *p++ = *info->p;
+        info->p++;
+        skip_spaces_and_lf();
+
+        if(*info->p == 'L' || *info->p == 'l')
+        {
+            *p++ = *info->p;
+            info->p++;
+            skip_spaces_and_lf();
+
+            if(*info->p == 'L' || *info->p == 'l')
+            {
+                *p++ = *info->p;
+                info->p++;
+                skip_spaces_and_lf();
+            }
+        }
+    }
+    else if(*info->p == 'L' || *info->p == 'l') {
+        *p++ = *info->p;
+        info->p++;
+        skip_spaces_and_lf();
+
+        if(*info->p == 'L' || *info->p == 'l')
+        {
+            *p++ = *info->p;
+            info->p++;
+            skip_spaces_and_lf();
+        }
+        else if(*info->p == 'U' || *info->p == 'u')
+        {
+            *p++ = *info->p;
+            info->p++;
+            skip_spaces_and_lf();
+        }
+    }
+    *p = 0;
+    skip_spaces_and_lf();
+    
+    return new sDigitNode(buf, info) implements sNode;
+}
+
 sNode*% get_oct_number(bool minus, sInfo* info)
 {
     int buf_size = 128;
@@ -625,6 +725,15 @@ sNode*% expression_node(sInfo* info=info) version 99
         info->p += 2;
 
         sNode*% node = get_hex_number(false@minus, info);
+        
+        node = post_position_operator(node, info);
+        
+        return node;
+    }
+    else if(*info->p == '0' && (*(info->p+1) == 'b' || *(info->p+1) == 'B')) {
+        info->p += 2;
+
+        sNode*% node = get_digits(info);
         
         node = post_position_operator(node, info);
         
