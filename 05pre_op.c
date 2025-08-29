@@ -586,7 +586,7 @@ class sCastNode extends sNodeBase
         
         cast_type(type2, left_value.type, left_value);
         
-        come_value.c_value = xsprintf("(%s)%s", make_type_name_string(type2), left_value.c_value);
+        come_value.c_value = xsprintf("(%s)%s", make_type_name_string(type2, cast_type:true), left_value.c_value);
         come_value.type = clone type2;
         come_value.var = null;
         
@@ -652,7 +652,7 @@ class sArrayInitializer extends sNodeBase
         if(type_) {
             CVALUE*% come_value = new CVALUE();
             
-            come_value.c_value = xsprintf("(%s)%s", make_type_name_string(type_), initializer);
+            come_value.c_value = xsprintf("(%s)%s", make_type_name_string(type_, cast_type:true), initializer);
             come_value.type = new sType(s"void");
             come_value.type->mPointerNum++;
             come_value.var = null;

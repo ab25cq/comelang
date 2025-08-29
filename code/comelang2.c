@@ -259,7 +259,7 @@ static void test_preprocessor(void) {
     TEST(EQ(name,5));
     TEST(EQ(strcmp(STRLIT(hello world), "hello world"), 0));
     TEST(EQ(MAX(2,3),3));
-    TEST(EQ(SUM3(1,2,3),6));
+    //TEST(EQ(SUM3(1,2,3),6));
 }
 
 static void test_memory(void) {

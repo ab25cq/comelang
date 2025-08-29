@@ -302,6 +302,18 @@ comelang-sh: 01main.c.o.tmp 02transpile.c.o.tmp 03output_code.c.o.tmp 04heap.c.o
 test:
 	comelang -s code/comelang.c -o code/comelang && ./code/comelang
 	comelang -s code/comelang2.c -o code/comelang2 && ./code/comelang2
+	comelang -s code/comelang3.c -o code/comelang3 && ./code/comelang3
+	comelang -s code/comelang4.c -o code/comelang4 && ./code/comelang4
+	comelang -s code/comelang5.c -o code/comelang5 && ./code/comelang5
+	comelang -s code/comelang6.c -o code/comelang6 && ./code/comelang6
+	comelang -s code/comelang7.c -o code/comelang7 && ./code/comelang7
+	comelang -s code/comelang8.c -o code/comelang8 && ./code/comelang8
+	comelang -s code/comelang9.c -o code/comelang9 && ./code/comelang9
+	comelang -s code/comelang10.c -o code/comelang10 && ./code/comelang10
+	comelang -s code/comelang11.c -o code/comelang11 && ./code/comelang11
+	comelang -s code/comelang12.c -o code/comelang12 && ./code/comelang12
+	comelang -s code/comelang13.c -o code/comelang13 && ./code/comelang13
+	comelang -s code/comelang14.c -o code/comelang14 && ./code/comelang14
 
 #########################################
 # install

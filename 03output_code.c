@@ -1,6 +1,6 @@
 #include "common.h"
 
-string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false)
+string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false, bool cast_type=false)
 {
     var buf = new buffer();
     
@@ -146,9 +146,14 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str(class_name);
     }
     
-    if(class_name !== "lambda" && !no_pointer && type->mOriginalTypeName !== "va_list" && type->mOriginalTypeName !== "__builtin_va_list") {
-        for(int i=0; i<type->mPointerNum; i++) {
-            buf.append_str("*");
+    if(cast_type && type->mArrayPointerType) {
+        buf.append_str("[]");
+    }
+    else {
+        if(class_name !== "lambda" && !no_pointer && type->mOriginalTypeName !== "va_list" && type->mOriginalTypeName !== "__builtin_va_list") {
+            for(int i=0; i<type->mPointerNum; i++) {
+                buf.append_str("*");
+            }
         }
     }
     
