@@ -1903,7 +1903,6 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 exit(2);
             }
             
-            expected_next_character(')');
             if(paren && *info->p == ')') {
                 info->p++;
                 skip_spaces_and_lf();

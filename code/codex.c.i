@@ -5,7 +5,7 @@
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
 # 1 "code/codex.c" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h" 1 3 4
 /*
  * Copyright (c) 2000, 2005, 2007, 2009, 2010, 2023 Apple Inc. All rights reserved.
  *
@@ -66,7 +66,7 @@
  *	@(#)stdio.h	8.5 (Berkeley) 4/29/95
  */
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 1 3 4
 /*
  * Copyright (c) 2000, 2005, 2007, 2009, 2010, 2023 Apple Inc. All rights reserved.
  *
@@ -135,7 +135,7 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_bounds.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h" 1 3 4
 /*
  * Copyright (c) 2024 Apple Inc. All rights reserved.
  *
@@ -162,7 +162,7 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 1 3 4
 /*
  * Copyright (c) 2000-2018 Apple Inc. All rights reserved.
  *
@@ -228,7 +228,7 @@
  *
  *	@(#)cdefs.h	8.8 (Berkeley) 1/9/95
  */
-# 78 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 78 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /* This SDK is designed to work with clang and specific versions of
  * gcc >= 4.0 with Apple's patch sets */
 
@@ -239,7 +239,7 @@
  * Compatibility with compilers and environments that don't support compiler
  * feature checking function-like macros.
  */
-# 107 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 107 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * The __CONCAT macro is used to concatenate parts of symbol names, e.g.
  * with "#define OLD(foo) __CONCAT(old,foo)", OLD(foo) produces oldfoo.
@@ -247,7 +247,7 @@
  * in between its arguments.  __CONCAT can also concatenate double-quoted
  * strings produced by the __STRING macro, but this only works with ANSI C.
  */
-# 158 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 158 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * __pure2 can be used for functions that are only a function of their scalar
  * arguments (meaning they can't dereference pointers).
@@ -304,11 +304,11 @@
  * __kpi_deprecated() specifically indicates deprecation of kernel programming
  * interfaces in Kernel.framework used by KEXTs.
  */
-# 231 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 231 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /* __unavailable causes the compiler to error out when encountering
  * code using the tagged function
  */
-# 244 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 244 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /* Delete pseudo-keywords wherever they are not available or needed. */
 
 
@@ -328,7 +328,7 @@
 /* Compatibility with compilers and environments that don't support the
  * nullability feature.
  */
-# 285 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 285 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * __disable_tail_calls causes the compiler to not perform tail call
  * optimization inside the marked function.
@@ -375,7 +375,7 @@
 /*
  * Attributes to support Swift concurrency.
  */
-# 341 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 341 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * __abortlike is the attribute to put on functions like abort() that are
  * typically used to mark assertions. These optimize the codegen
@@ -400,7 +400,7 @@
  * support c99 inline in some cases:
  * http://gcc.gnu.org/bugzilla/show_bug.cgi?id=55965
  */
-# 385 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 385 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /* Unfortunately, we're using a compiler that we don't know how to force to
  * inline.  Oh well.
  */
@@ -411,7 +411,7 @@
  * Compiler-dependent macros that bracket portions of code where the
  * "-Wunreachable-code" warning should be ignored. Please use sparingly.
  */
-# 412 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 412 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * Compiler-dependent macros to declare that functions take printf-like
  * or scanf-like arguments.  They are null except for versions of gcc
@@ -420,14 +420,14 @@
  * mismatch between the format string and subsequent function parameter
  * types.
  */
-# 447 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 447 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /* Source compatibility only, ID string not emitted in object file */
-# 464 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 464 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * __alloc_align can be used to label function arguments that represent the
  * alignment of the returned pointer.
  */
-# 476 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 476 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * __alloc_size can be used to label function arguments that represent the
  * size of memory that the function allocates and returns. The one-argument
@@ -441,7 +441,7 @@
  *
  * void	*calloc(size_t __count, size_t __size) __alloc_size(1,2);
  */
-# 497 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 497 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * Facilities below assist adoption of -Wunsafe-buffer-usage, an off-by-default
  * Clang compiler warning that helps the developer minimize unsafe, raw
@@ -512,7 +512,7 @@
  * to do all three: put the attribute on the function, put pragmas inside
  * the body of the function, and put pragmas around some call sites.
  */
-# 585 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 585 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * COMPILATION ENVIRONMENTS -- see compat(5) for additional detail
  *
@@ -552,7 +552,7 @@
 
 /* These settings are particular to each product. */
 /* Platform: MacOSX */
-# 638 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 638 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * The __DARWIN_ALIAS macros are used to do symbol renaming; they allow
  * legacy code to use the old symbol, thus maintaining binary compatibility
@@ -571,19 +571,19 @@
  * pre-10.5, and it is the default compilation environment, revert the
  * compilation environment to pre-__DARWIN_UNIX03.
  */
-# 716 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 716 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * symbol suffixes used for symbol versioning
  */
-# 761 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 761 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * symbol versioning macros
  */
-# 779 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 779 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * symbol release macros
  */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h" 1 3 4
 /* Copyright (c) 2010 Apple Inc. All rights reserved.
  * 
  * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
@@ -610,8 +610,8 @@
  * 
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 783 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
-# 793 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 783 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
+# 793 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * POSIX.1 requires that the macros we test be defined before any standard
  * header file is included.  This permits us to convert values for feature
@@ -645,7 +645,7 @@
 
 
 /* Deal with various X/Open Portability Guides and Single UNIX Spec. */
-# 839 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 839 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * Deal with all versions of POSIX.  The ordering relative to the tests above is
  * important.
@@ -655,7 +655,7 @@
 
 
 /* POSIX C deprecation macros */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h" 1 3 4
 /* Copyright (c) 2010 Apple Inc. All rights reserved.
  * 
  * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
@@ -682,7 +682,7 @@
  * 
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 849 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
+# 849 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
 
 
 
@@ -692,7 +692,7 @@
  * _POSIX_C_SOURCE value.  Currently there are two additional levels corresponding
  * to ANSI (_ANSI_SOURCE) and Darwin extensions (_DARWIN_C_SOURCE)
  */
-# 869 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 869 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /* If the developer has neither requested a strict language mode nor a version
  * of POSIX, turn on functionality provided by __STDC_WANT_LIB_EXT1__ as part
  * of __DARWIN_C_FULL.
@@ -772,7 +772,7 @@
  * ignored everything, so things break left and right if you
  * make it only ignore -Wcast-qual.
  */
-# 957 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 957 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * __XNU_PRIVATE_EXTERN is a linkage decoration indicating that a symbol can be
  * used from other compilation units, but not other libraries or executables.
@@ -782,7 +782,7 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/ptrcheck.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h" 1 3 4
 /*===---- ptrcheck.h - Pointer bounds hints & specifications ----------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -798,7 +798,7 @@
 /* __has_ptrcheck can be used in preprocessor macros (and other parts of the
    language expecting constant expressions) to test if bounds attributes
    exist. */
-# 163 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/ptrcheck.h" 3 4
+# 163 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h" 3 4
 /* We intentionally define the terminated_by attributes to nothing. */
 
 
@@ -817,7 +817,7 @@
 
 
 /* decay operates normally; attribute is meaningless without pointer checks. */
-# 307 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/ptrcheck.h" 3 4
+# 307 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h" 3 4
 /* We intentionally define to nothing pointer attributes which do not have an
    impact on the ABI. __indexable and __bidi_indexable are not defined because
    of the ABI incompatibility that makes the diagnostic preferable. */
@@ -845,22 +845,22 @@
 
 /* The APIs marked with these attributes are available outside the context of
    pointer checks, so do nothing. */
-# 967 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
-# 1034 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 967 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 2 3 4
+# 1034 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * Architecture validation for current SDK
  */
-# 1063 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
+# 1063 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h" 3 4
 /*
  * Similar to OS_ENUM/OS_CLOSED_ENUM/OS_OPTIONS/OS_CLOSED_OPTIONS
  *
  * This provides more advanced type checking on compilers supporting
  * the proper extensions, even in C.
  */
-# 28 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_bounds.h" 2 3 4
-# 70 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 28 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h" 2 3 4
+# 70 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -990,8 +990,8 @@
  * (iOS)
  *   clang -D__API_TO_BE_DEPRECATED=11.0 <other compiler flags>
  */
-# 196 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+# 196 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
 /*
  * Copyright (c) 2019 by Apple Inc.. All rights reserved.
  *
@@ -1014,17 +1014,17 @@
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 98 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 98 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 /* __MAC__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
-# 188 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 188 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 /* __IPHONE__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
-# 245 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 245 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 /* __WATCHOS__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
-# 302 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 302 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 /* __TVOS__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
-# 360 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 360 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 /* __DRIVERKIT__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
-# 372 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 372 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 /* __VISIONOS__NA is not defined to a value but is used as a token by macros to indicate that the API is unavailable */
 
 
@@ -1039,10 +1039,10 @@
 /*
  * Set up standard Mac OS X versions
  */
-# 466 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 466 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 // This is explicitly outside the header guard
-# 197 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+# 197 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -1075,7 +1075,7 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
 /*
  * Copyright (c) 2019 by Apple Inc.. All rights reserved.
  *
@@ -1098,16 +1098,16 @@
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 466 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
+# 466 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 3 4
 // This is explicitly outside the header guard
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 2 3 4
-# 221 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 2 3 4
+# 221 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
 /*
  Macros for defining which versions/platform a given symbol can be used.
  
  @see http://clang.llvm.org/docs/AttributeReference.html#availability
  */
-# 452 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
+# 452 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
     /*
      * API Unavailability
      * Use to specify that an API is unavailable for a particular platform.
@@ -1116,7 +1116,7 @@
      *    __API_UNAVAILABLE(macos)
      *    __API_UNAVAILABLE(watchos, tvos)
      */
-# 504 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
+# 504 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
 /*
  * Swift compiler version
  * Allows for project-agnostic "epochs" for frameworks imported into Swift via the Clang importer, like #if _compiler_version for Swift
@@ -1128,10 +1128,10 @@
  *  - (NSString *)description;
  *  #endif
  */
-# 528 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
+# 528 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
 // This is explicitly outside the header guard
-# 198 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 1 3 4
+# 198 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 1 3 4
 /*
  * Copyright (c) 2007-2022 by Apple Inc.. All rights reserved.
  *
@@ -1165,7 +1165,7 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -1195,25 +1195,25 @@
     Contains:   implementation details of __OSX_AVAILABLE_* macros from <Availability.h>
 
 */
-# 528 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
+# 528 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
 // This is explicitly outside the header guard
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 2 3 4
-# 2832 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 2 3 4
+# 2832 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 3 4
             /* use better attributes if possible */
-# 199 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
-# 278 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 199 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+# 278 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /* for use to document app extension usage */
-# 296 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 296 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /* for use marking APIs available info for Mac OSX */
-# 322 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 322 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /* for use marking APIs available info for iOS */
-# 351 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 351 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /* for use marking APIs available info for tvOS */
-# 380 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 380 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /* for use marking APIs available info for Watch OS */
-# 408 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 408 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /* for use marking APIs unavailable for swift */
-# 424 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 424 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /*
  Macros for defining which versions/platform a given symbol can be used.
  
@@ -1270,7 +1270,7 @@
      *    __API_DEPRECATED_WITH_REPLACEMENT("-setName:", tvos(10.0, 10.4), ios(9.0, 10.0))
      *    __API_DEPRECATED_WITH_REPLACEMENT("SomeClassName", macos(10.4, 10.6), watchos(2.0, 3.0))
      */
-# 499 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 499 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
     /*
      * API Unavailability
      * Use to specify that an API is unavailable for a particular platform.
@@ -1289,15 +1289,15 @@
 /* 
  * Evaluate to nothing for compilers that don't support availability.
  */
-# 590 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 590 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 /*
  * If SPI decorations have not been defined elsewhere, disable them.
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 72 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 72 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h" 1 3 4
 /*
  * Copyright (c) 2004, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -1324,7 +1324,7 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 1 3 4
 /*
  * Copyright (c) 2003-2007 Apple Inc. All rights reserved.
  *
@@ -1357,7 +1357,7 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_types.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h" 1 3 4
 /*
  * Copyright (c) 2003-2007 Apple Inc. All rights reserved.
  *
@@ -1391,11 +1391,11 @@
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 1 3 4
 /*
  * Copyright (c) 2000-2007 Apple Inc. All rights reserved.
  */
-# 22 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 3 4
+# 22 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 3 4
 /*
  * This header file contains integer types.  It's intended to also contain
  * flotaing point and other arithmetic types, as needed, later.
@@ -1452,9 +1452,9 @@ typedef __mbstate_t __darwin_mbstate_t; /* mbstate_t */
 
 
 typedef long int __darwin_ptrdiff_t; /* ptr1 - ptr2 */
-# 87 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 3 4
+# 87 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 3 4
 typedef long unsigned int __darwin_size_t; /* sizeof() */
-# 97 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 3 4
+# 97 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h" 3 4
 typedef void * __darwin_va_list; /* va_list */
 
 
@@ -1478,15 +1478,15 @@ typedef unsigned long __darwin_clock_t; /* clock() */
 typedef __uint32_t __darwin_socklen_t; /* socklen_t (duh) */
 typedef long __darwin_ssize_t; /* byte count or error */
 typedef long __darwin_time_t; /* time() */
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_types.h" 2 3 4
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 2 3 4
-# 45 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h" 2 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 2 3 4
+# 45 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 3 4
 /*
  * Type definitions; takes common type definitions that must be used
  * in multiple header files due to [XSI], removes them from the system
  * space, and puts them in the implementation space.
  */
-# 67 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 3 4
+# 67 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 3 4
 typedef __int64_t __darwin_blkcnt_t; /* total blocks */
 typedef __int32_t __darwin_blksize_t; /* preferred block size */
 typedef __int32_t __darwin_dev_t; /* dev_t */
@@ -1514,7 +1514,7 @@ typedef char __darwin_uuid_string_t[37];
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h" 1 3 4
 /*
  * Copyright (c) 2003-2013 Apple Inc. All rights reserved.
  *
@@ -1549,7 +1549,7 @@ typedef char __darwin_uuid_string_t[37];
 
 
 // pthread opaque structures
-# 57 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h" 3 4
+# 57 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h" 3 4
 struct __darwin_pthread_handler_rec {
  void (*__routine)(void *); // Routine to call
  void *__arg; // Argument to pass
@@ -1612,18 +1612,18 @@ typedef struct _opaque_pthread_once_t __darwin_pthread_once_t;
 typedef struct _opaque_pthread_rwlock_t __darwin_pthread_rwlock_t;
 typedef struct _opaque_pthread_rwlockattr_t __darwin_pthread_rwlockattr_t;
 typedef struct _opaque_pthread_t *__darwin_pthread_t;
-# 95 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 2 3 4
-# 28 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types.h" 2 3 4
-# 43 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types.h" 3 4
+# 95 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h" 2 3 4
+# 28 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h" 2 3 4
+# 43 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h" 3 4
 typedef int __darwin_nl_item;
 typedef int __darwin_wctrans_t;
 
 typedef __uint32_t __darwin_wctype_t;
-# 74 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 74 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
 /* DO NOT REMOVE THIS COMMENT: fixincludes needs to see:
  * __gnuc_va_list and include <stdarg.h> */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1651,8 +1651,8 @@ typedef __uint32_t __darwin_wctype_t;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 43 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/types.h" 1 3 4
+# 43 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h" 1 3 4
 /*
  * Copyright (c) 2000-2007 Apple Inc. All rights reserved.
  *
@@ -1689,7 +1689,7 @@ typedef __uint32_t __darwin_wctype_t;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 1 3 4
 /*
  * Copyright (c) 2000-2008 Apple Inc. All rights reserved.
  */
@@ -1730,12 +1730,12 @@ typedef __uint32_t __darwin_wctype_t;
  *
  *	@(#)types.h	8.3 (Berkeley) 1/5/94
  */
-# 51 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 3 4
+# 51 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 3 4
 /*
  * Basic integral types.  Omit the typedef if
  * not possible for a machine/compiler combination.
  */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1766,8 +1766,8 @@ typedef __uint32_t __darwin_wctype_t;
 
 
 typedef signed char int8_t;
-# 56 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h" 1 3 4
+# 56 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1798,8 +1798,8 @@ typedef signed char int8_t;
 
 
 typedef short int16_t;
-# 57 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h" 1 3 4
+# 57 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1830,8 +1830,8 @@ typedef short int16_t;
 
 
 typedef int int32_t;
-# 58 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h" 1 3 4
+# 58 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1862,9 +1862,9 @@ typedef int int32_t;
 
 
 typedef long long int64_t;
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 59 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h" 1 3 4
 /*
  * Copyright (c) 2016 Apple Inc. All rights reserved.
  *
@@ -1895,8 +1895,8 @@ typedef long long int64_t;
 
 
 typedef unsigned char u_int8_t;
-# 61 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h" 1 3 4
+# 61 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1927,8 +1927,8 @@ typedef unsigned char u_int8_t;
 
 
 typedef unsigned short u_int16_t;
-# 62 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h" 1 3 4
+# 62 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1959,8 +1959,8 @@ typedef unsigned short u_int16_t;
 
 
 typedef unsigned int u_int32_t;
-# 63 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h" 1 3 4
+# 63 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -1991,7 +1991,7 @@ typedef unsigned int u_int32_t;
 
 
 typedef unsigned long long u_int64_t;
-# 64 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 64 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
 
 
 typedef int64_t register_t;
@@ -1999,7 +1999,7 @@ typedef int64_t register_t;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2032,8 +2032,8 @@ typedef int64_t register_t;
 
 
 typedef __darwin_intptr_t intptr_t;
-# 72 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h" 1 3 4
+# 72 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2068,7 +2068,7 @@ typedef __darwin_intptr_t intptr_t;
 
 
 typedef unsigned long uintptr_t;
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
+# 73 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 2 3 4
 
 
 /* These types are used for reserving the largest possible size. */
@@ -2080,17 +2080,17 @@ typedef int64_t user_long_t;
 typedef u_int64_t user_ulong_t;
 typedef int64_t user_time_t;
 typedef int64_t user_off_t;
-# 101 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/types.h" 3 4
+# 101 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h" 3 4
 /* This defines the size of syscall arguments after copying into the kernel: */
 
 
 
 typedef u_int64_t syscall_arg_t;
-# 38 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/types.h" 2 3 4
-# 44 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h" 2 3 4
+# 38 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h" 2 3 4
+# 44 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h" 2 3 4
 typedef __darwin_va_list va_list;
-# 78 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 78 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2118,10 +2118,10 @@ typedef __darwin_va_list va_list;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 50 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 3 4
+# 50 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 3 4
 typedef __darwin_size_t size_t;
-# 79 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h" 1 3 4
+# 79 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2149,9 +2149,9 @@ typedef __darwin_size_t size_t;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 80 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 80 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/stdio.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h" 1 3 4
 /*
  * Copyright (c) 2013 Apple Inc. All rights reserved.
  *
@@ -2179,8 +2179,8 @@ typedef __darwin_size_t size_t;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 43 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/stdio.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 43 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -2203,9 +2203,9 @@ typedef __darwin_size_t size_t;
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 44 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/stdio.h" 2 3 4
+# 44 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h" 2 3 4
 
 
 
@@ -2215,8 +2215,8 @@ int renameat(int, const char *, int, const char *) __attribute__((availability(m
 
 int renamex_np(const char *, const char *, unsigned int) __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
 int renameatx_np(int, const char *, int, const char *, unsigned int) __attribute__((availability(macosx,introduced=10.12))) __attribute__((availability(ios,introduced=10.0))) __attribute__((availability(tvos,introduced=10.0))) __attribute__((availability(watchos,introduced=3.0)));
-# 82 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_printf.h" 1 3 4
+# 82 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h" 1 3 4
 /*
  * Copyright (c) 2023 Apple Inc. All rights reserved.
  *
@@ -2239,9 +2239,9 @@ int renameatx_np(int, const char *, int, const char *, unsigned int) __attribute
  *
  * @APPLE_LICENSE_HEADER_END@
  */
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_printf.h" 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h" 3 4
 int printf(const char * restrict, ...) __attribute__((__format__ (__printf__, 1, 2)));
-# 83 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 83 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
 
 
@@ -2323,7 +2323,7 @@ typedef struct __sFILE {
  fpos_t _offset; /* current lseek offset (see WARNING) */
 } FILE;
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2358,7 +2358,7 @@ typedef struct __sFILE {
 
 
 /* whence values for lseek(2) */
-# 165 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 165 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
 
 extern FILE *__stdinp __attribute__((__swift_attr__("nonisolated(unsafe)")));
@@ -2371,7 +2371,7 @@ extern FILE *__stderrp __attribute__((__swift_attr__("nonisolated(unsafe)")));
 
 
  /* RD and WR are never simultaneously asserted */
-# 190 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
+# 190 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
 /*
  * The following three definitions are for ANSI C, which took them
  * from System V, which brilliantly took internal interface macros and
@@ -2393,7 +2393,7 @@ extern FILE *__stderrp __attribute__((__swift_attr__("nonisolated(unsafe)")));
 
 
 /* System V/ANSI C; this is the wrong way to do this, do *not* use these. */
-# 229 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
+# 229 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
 /* ANSI-C */
 
 
@@ -2476,7 +2476,7 @@ int vsprintf(char * restrict , const char * restrict, va_list) __attribute__((__
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctermid.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h" 1 3 4
 /*
  * Copyright (c) 2000, 2002-2006, 2008-2010, 2012, 2020 Apple Inc. All rights reserved.
  *
@@ -2499,9 +2499,9 @@ int vsprintf(char * restrict , const char * restrict, va_list) __attribute__((__
  *
  * @APPLE_LICENSE_HEADER_END@
  */
-# 36 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctermid.h" 3 4
+# 36 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h" 3 4
 char * ctermid(char *);
-# 312 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 312 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
 
 
@@ -2549,11 +2549,11 @@ int __swbuf(int, FILE *);
  * The __sfoo macros are here so that we can
  * define function versions in the C library.
  */
-# 368 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
+# 368 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
 /*
  * This has been tuned to generate reasonable code on the vax using pcc.
  */
-# 387 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
+# 387 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
 void flockfile(FILE *);
 int ftrylockfile(FILE *);
 void funlockfile(FILE *);
@@ -2573,14 +2573,14 @@ __attribute__((__availability__(swift, unavailable, message="Use mkstemp(3) inst
 __attribute__((__deprecated__("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of tempnam(3), it is highly recommended that you use mkstemp(3) instead.")))
 
 char * tempnam(const char *__dir, const char *__prefix) __asm("_" "tempnam" );
-# 419 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
+# 419 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 3 4
 /* Additional functionality provided by:
  * POSIX.1-2001
  * ISO C99
  */
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2612,7 +2612,7 @@ char * tempnam(const char *__dir, const char *__prefix) __asm("_" "tempnam" );
 
 
 typedef __darwin_off_t off_t;
-# 426 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 426 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
 
 int fseeko(FILE * __stream, off_t __offset, int __whence);
@@ -2637,7 +2637,7 @@ int vsscanf(const char * restrict __str, const char * restrict __format, va_list
  */
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2669,7 +2669,7 @@ int vsscanf(const char * restrict __str, const char * restrict __format, va_list
 
 
 typedef __darwin_ssize_t ssize_t;
-# 451 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
+# 451 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h" 2 3 4
 
 
 int dprintf(int, const char * restrict, ...) __attribute__((__format__ (__printf__, 2, 3))) __attribute__((availability(macosx,introduced=10.7)));
@@ -2708,9 +2708,9 @@ FILE *funopen(const void *,
      int (* _Nullable)(void *, const char *, int __n),
      fpos_t (* _Nullable)(void *, fpos_t, int),
      int (* _Nullable)(void *));
-# 62 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h" 2 3 4
+# 62 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h" 2 3 4
 # 2 "code/codex.c" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdlib.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdlib.h" 1 3 4
 /*
  * Copyright (c) 2000, 2002 - 2008, 2023 Apple Inc. All rights reserved.
  *
@@ -2768,7 +2768,7 @@ FILE *funopen(const void *,
  *	@(#)stdlib.h	8.5 (Berkeley) 5/19/95
  */
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 1 3 4
 /*
  * Copyright (c) 2023 Apple Inc. All rights reserved.
  *
@@ -2832,7 +2832,7 @@ FILE *funopen(const void *,
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -2855,15 +2855,15 @@ FILE *funopen(const void *,
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 65 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 65 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 1 3 4
 /*
  * Copyright (c) 2000 Apple Computer, Inc. All rights reserved.
  *
@@ -2952,7 +2952,7 @@ typedef enum {
  * [XSI] The id_t and pid_t types shall be defined as described
  * in <sys/types.h>
  */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -2984,8 +2984,8 @@ typedef enum {
 
 
 typedef __darwin_pid_t pid_t;
-# 90 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h" 1 3 4
+# 90 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3017,7 +3017,7 @@ typedef __darwin_pid_t pid_t;
 
 
 typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
-# 91 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
+# 91 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
 
 /*
  * [XSI] The siginfo_t type shall be defined as described in <signal.h>
@@ -3036,7 +3036,7 @@ typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
  *		well, or in future releases your stware may not compile
  *		without modification.
  */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 1 3 4
 /*
  * Copyright (c) 2000-2006 Apple Computer, Inc. All rights reserved.
  *
@@ -3109,7 +3109,7 @@ typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h" 1 3 4
 /*
  * Copyright (c) 2002 Apple Computer, Inc. All rights reserved.
  *
@@ -3137,8 +3137,8 @@ typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 74 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 74 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -3161,9 +3161,9 @@ typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 75 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 75 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
 
 
 
@@ -3171,7 +3171,7 @@ typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/signal.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/signal.h" 1 3 4
 /*
  * Copyright (c) 2000-2007 Apple Inc. All rights reserved.
  *
@@ -3205,7 +3205,7 @@ typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/signal.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h" 1 3 4
 /*
  * Copyright (c) 2000-2009 Apple, Inc. All rights reserved.
  */
@@ -3213,18 +3213,18 @@ typedef __darwin_id_t id_t; /* can hold pid_t, gid_t, or uid_t */
  * Copyright (c) 1992 NeXT Computer, Inc.
  *
  */
-# 17 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/signal.h" 3 4
+# 17 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h" 3 4
 typedef int sig_atomic_t;
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/signal.h" 2 3 4
-# 83 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
-# 126 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/signal.h" 2 3 4
+# 83 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 126 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
 /*
  * Language spec sez we must list exactly one parameter, even though we
  * actually supply three.  Ugh!
  * SIG_HOLD is chosen to avoid KERN_SIG_* values in <sys/signalvar.h>
  */
-# 146 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h" 1 3 4
+# 146 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3258,7 +3258,7 @@ typedef int sig_atomic_t;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3286,8 +3286,8 @@ typedef int sig_atomic_t;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 36 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h" 1 3 4
+# 36 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h" 1 3 4
 /*
  * Copyright (c) 2017 Apple Inc. All rights reserved.
  *
@@ -3322,7 +3322,7 @@ typedef int sig_atomic_t;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 1 3 4
 /*
  * Copyright (c) 2004-2007 Apple Inc. All rights reserved.
  *
@@ -3353,14 +3353,14 @@ typedef int sig_atomic_t;
 /*
  * @OSF_COPYRIGHT@
  */
-# 41 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 41 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_exception_state
 {
  __uint32_t __exception; /* number of arm exception taken */
  __uint32_t __fsr; /* Fault status */
  __uint32_t __far; /* Virtual Fault Address */
 };
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 59 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_exception_state64
 {
  __uint64_t __far; /* Virtual Fault Address */
@@ -3373,7 +3373,7 @@ struct __darwin_arm_exception_state64_v2
  __uint64_t __far; /* Virtual Fault Address */
  __uint64_t __esr; /* Exception syndrome */
 };
-# 89 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 89 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_thread_state
 {
  __uint32_t __r[13]; /* General purpose register r0-r12 */
@@ -3382,14 +3382,14 @@ struct __darwin_arm_thread_state
  __uint32_t __pc; /* Program counter r15 */
  __uint32_t __cpsr; /* Current program status register */
 };
-# 110 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 110 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 /*
  * By default, the pointer fields in the arm_thread_state64_t structure are
  * opaque on the arm64e architecture and require the use of accessor macros.
  * This mode can also be enabled on the arm64 architecture by building with
  * -D__DARWIN_OPAQUE_ARM_THREAD_STATE64=1.
  */
-# 148 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 148 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_thread_state64
 {
  __uint64_t __x[29]; /* General purpose registers x0-x28 */
@@ -3400,9 +3400,9 @@ struct __darwin_arm_thread_state64
  __uint32_t __cpsr; /* Current program status register */
  __uint32_t __pad; /* Same size for 32-bit or 64-bit clients */
 };
-# 188 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 188 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 /* Accessor macros for arm_thread_state64_t pointer fields */
-# 429 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 429 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 /* Return pc field of arm_thread_state64_t as a data pointer value */
 
 
@@ -3440,13 +3440,13 @@ struct __darwin_arm_thread_state64
 
 
 /* Strip ptr auth bits from pc, lr, sp and fp field of arm_thread_state64_t */
-# 519 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 519 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_vfp_state
 {
  __uint32_t __r[64];
  __uint32_t __fpscr;
 };
-# 538 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 538 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_neon_state64
 {
  __uint128_t __v[32];
@@ -3460,7 +3460,7 @@ struct __darwin_arm_neon_state
  __uint32_t __fpsr;
  __uint32_t __fpcr;
 };
-# 609 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 609 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __arm_pagein_state
 {
  int __pagein_error;
@@ -3498,11 +3498,11 @@ struct __darwin_arm_sme2_state
 {
  char __zt0[64];
 } __attribute__((aligned(4)));
-# 680 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 680 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 /*
  * Debug State
  */
-# 708 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 708 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 /* ARM's arm_debug_state is ARM64's arm_legacy_debug_state */
 
 
@@ -3514,7 +3514,7 @@ struct __arm_legacy_debug_state
  __uint32_t __wvr[16];
  __uint32_t __wcr[16];
 };
-# 735 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 735 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_debug_state32
 {
  __uint32_t __bvr[16];
@@ -3533,13 +3533,13 @@ struct __darwin_arm_debug_state64
  __uint64_t __wcr[16];
  __uint64_t __mdscr_el1; /* Bit 0 is SS (Hardware Single Step) */
 };
-# 777 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
+# 777 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h" 3 4
 struct __darwin_arm_cpmu_state64
 {
  __uint64_t __ctrs[16];
 };
-# 36 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h" 2 3 4
-# 37 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 2 3 4
+# 36 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h" 2 3 4
+# 37 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 2 3 4
 
 
 
@@ -3550,19 +3550,19 @@ struct __darwin_mcontext32
  struct __darwin_arm_thread_state __ss;
  struct __darwin_arm_vfp_state __fs;
 };
-# 64 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 3 4
+# 64 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 3 4
 struct __darwin_mcontext64
 {
  struct __darwin_arm_exception_state64 __es;
  struct __darwin_arm_thread_state64 __ss;
  struct __darwin_arm_neon_state64 __ns;
 };
-# 85 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 3 4
+# 85 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h" 3 4
 typedef struct __darwin_mcontext64 *mcontext_t;
-# 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h" 2 3 4
-# 147 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 35 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h" 2 3 4
+# 147 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3594,9 +3594,9 @@ typedef struct __darwin_mcontext64 *mcontext_t;
 
 
 typedef __darwin_pthread_attr_t pthread_attr_t;
-# 149 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 149 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3626,7 +3626,7 @@ typedef __darwin_pthread_attr_t pthread_attr_t;
  */
 
 /* Structure used in sigaltstack call. */
-# 42 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h" 3 4
+# 42 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h" 3 4
 struct __darwin_sigaltstack
 {
  void *ss_sp; /* signal stack base */
@@ -3634,8 +3634,8 @@ struct __darwin_sigaltstack
  int ss_flags; /* SA_DISABLE and/or SA_ONSTACK */
 };
 typedef struct __darwin_sigaltstack stack_t; /* [???] signal stack */
-# 151 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h" 1 3 4
+# 151 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3663,7 +3663,7 @@ typedef struct __darwin_sigaltstack stack_t; /* [???] signal stack */
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 43 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h" 3 4
+# 43 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h" 3 4
 struct __darwin_ucontext
 {
  int uc_onstack;
@@ -3679,10 +3679,10 @@ struct __darwin_ucontext
 
 /* user context */
 typedef struct __darwin_ucontext ucontext_t; /* [???] user context */
-# 152 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 152 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3714,8 +3714,8 @@ typedef struct __darwin_ucontext ucontext_t; /* [???] user context */
 
 
 typedef __darwin_sigset_t sigset_t;
-# 155 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 155 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3743,8 +3743,8 @@ typedef __darwin_sigset_t sigset_t;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 156 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h" 1 3 4
+# 156 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -3776,7 +3776,7 @@ typedef __darwin_sigset_t sigset_t;
 
 
 typedef __darwin_uid_t uid_t;
-# 157 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
+# 157 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 2 3 4
 
 union sigval {
  /* Members as suggested by Annex C of POSIX 1003.1b. */
@@ -3825,9 +3825,9 @@ typedef struct __siginfo {
 /* Values for si_code */
 
 /* Codes for SIGILL */
-# 217 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 217 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
 /* Codes for SIGFPE */
-# 230 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 230 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
 /* Codes for SIGSEGV */
 
 
@@ -3848,7 +3848,7 @@ typedef struct __siginfo {
 
 
 /* Codes for SIGCHLD */
-# 260 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 260 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
 /* Codes for SIGPOLL */
 
 
@@ -3884,7 +3884,7 @@ struct sigaction {
 
 
 /* if SA_SIGINFO is set, sa_sigaction is to be used instead of sa_handler. */
-# 307 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 307 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
 /* This will provide 64bit register set in a 32bit user address space */
 
 
@@ -3931,7 +3931,7 @@ struct sigvec {
  int sv_mask; /* signal mask to apply */
  int sv_flags; /* see signal options below */
 };
-# 364 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 364 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
 /*
  * Structure used in sigstack call.
  */
@@ -3945,15 +3945,15 @@ struct sigstack {
  * Macro for converting signal number to a mask suitable for
  * sigblock().
  */
-# 385 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
+# 385 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h" 3 4
 /*
  * For historical reasons; programs expect signal's return value to be
  * defined by <sys/signal.h>.
  */
 
 void(*signal(int, void (*)(int)))(int);
-# 110 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 1 3 4
+# 110 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 1 3 4
 /*
  * Copyright (c) 2000-2018 Apple Inc. All rights reserved.
  *
@@ -4016,8 +4016,8 @@ void(*signal(int, void (*)(int)))(int);
  *
  *	@(#)resource.h	8.2 (Berkeley) 1/4/94
  */
-# 72 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h" 1 3 4
+# 72 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h" 1 3 4
 /*===---- stdint.h - Standard header for sized integer types --------------===*\
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -4062,13 +4062,13 @@ void(*signal(int, void (*)(int)))(int);
 // Work around this inconsistency by always defining those macros in C++ mode,
 // so that a C library implementation which follows the C99 standard can be
 // used in C++.
-# 56 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 1 3 4
+# 56 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 1 3 4
 /*
  * Copyright (c) 2000-2010 Apple Inc.
  * All rights reserved.
  */
-# 15 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
+# 15 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
 /* from ISO/IEC 988:1999 spec */
 
 /* 7.18.1.1 Exact-width integer types */
@@ -4077,7 +4077,7 @@ void(*signal(int, void (*)(int)))(int);
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -4109,8 +4109,8 @@ void(*signal(int, void (*)(int)))(int);
 
 
 typedef unsigned char uint8_t;
-# 24 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h" 1 3 4
+# 24 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -4142,8 +4142,8 @@ typedef unsigned char uint8_t;
 
 
 typedef unsigned short uint16_t;
-# 25 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h" 1 3 4
+# 25 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -4175,8 +4175,8 @@ typedef unsigned short uint16_t;
 
 
 typedef unsigned int uint32_t;
-# 26 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h" 1 3 4
+# 26 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -4208,7 +4208,7 @@ typedef unsigned int uint32_t;
 
 
 typedef unsigned long long uint64_t;
-# 27 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
+# 27 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
 
 /* 7.18.1.2 Minimum-width integer types */
 typedef int8_t int_least8_t;
@@ -4240,7 +4240,7 @@ typedef uint64_t uint_fast64_t;
 
 
 /* 7.18.1.5 Greatest-width integer types */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -4273,8 +4273,8 @@ typedef uint64_t uint_fast64_t;
 
 
 typedef long int intmax_t;
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h" 1 3 4
+# 59 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -4307,10 +4307,10 @@ typedef long int intmax_t;
 
 
 typedef long unsigned int uintmax_t;
-# 60 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
+# 60 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 2 3 4
 
 /* 7.18.4 Macros for integer constants */
-# 80 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
+# 80 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
 /* 7.18.2 Limits of specified-width integer types:
  *   These #defines specify the minimum and maximum limits
  *   of each of the types declared above.
@@ -4335,29 +4335,29 @@ typedef long unsigned int uintmax_t;
       an unsigned type, so INT32_MIN (and the most negative member of
       any larger signed type) must be written via a constant expression.
    */
-# 112 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
+# 112 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
 /* 7.18.2.2 Limits of minimum-width integer types */
-# 128 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
+# 128 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
 /* 7.18.2.3 Limits of fastest minimum-width integer types */
-# 144 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
+# 144 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
 /* 7.18.2.4 Limits of integer types capable of holding object pointers */
-# 159 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
+# 159 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
 /* 7.18.2.5 Limits of greatest-width integer types */
 
 
 
 
 /* 7.18.3 "Other" */
-# 187 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
+# 187 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h" 3 4
 /* WCHAR_MIN should be 0 if wchar_t is an unsigned type and
    (-WCHAR_MAX-1) if wchar_t is a signed type.  Unfortunately,
    it turns out that -fshort-wchar changes the signedness of
    the type. */
-# 57 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h" 2 3 4
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 2 3 4
+# 57 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h" 2 3 4
+# 73 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 2 3 4
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -4380,14 +4380,14 @@ typedef long unsigned int uintmax_t;
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 76 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 2 3 4
+# 76 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 2 3 4
 
 /* [XSI] The timeval structure shall be defined as described in
  * <sys/time.h>
  */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -4426,7 +4426,7 @@ struct timeval
  __darwin_time_t tv_sec; /* seconds */
  __darwin_suseconds_t tv_usec; /* and microseconds */
 };
-# 81 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 2 3 4
+# 81 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 2 3 4
 
 /* The id_t type shall be defined as described in <sys/types.h> */
 
@@ -4532,7 +4532,7 @@ struct rusage {
 /*
  * Flavors for proc_pid_rusage().
  */
-# 195 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
+# 195 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
 /*
  * Flags for RUSAGE_INFO_V5
  */
@@ -4781,7 +4781,7 @@ typedef struct rusage_info_v6 rusage_info_current;
  * Possible values of the first parameter to getrlimit()/setrlimit(), to
  * indicate for which resource the operation is being performed.
  */
-# 460 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
+# 460 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
 /*
  * A structure representing a resource limit.  The address of an instance
  * of this structure is the second parameter to getrlimit()/setrlimit().
@@ -4829,7 +4829,7 @@ struct proc_rlimit_control_wakeupmon {
 /* Additional private I/O policies are in resource_private.h */
 
 /* I/O type */
-# 518 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
+# 518 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
 /* scope */
 
 
@@ -4844,7 +4844,7 @@ struct proc_rlimit_control_wakeupmon {
 
 
 /* compatibility with older names */
-# 571 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
+# 571 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h" 3 4
 int getpriority(int, id_t);
 
 int getiopolicy_np(int, int) __attribute__((availability(macosx,introduced=10.5)));
@@ -4856,7 +4856,7 @@ int setpriority(int, id_t, int);
 int setiopolicy_np(int, int, int) __attribute__((availability(macosx,introduced=10.5)));
 
 int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
-# 111 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
+# 111 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
 
 /*
  * Option bits for the third argument of wait4.  WNOHANG causes the
@@ -4895,7 +4895,7 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 /* 0x13 == SIGCONT */
-# 162 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 3 4
+# 162 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 3 4
 /*
  * [XSI] The following symbolic constants shall be defined as possible
  * values for the fourth argument to waitid().
@@ -4920,7 +4920,7 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/endian.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h" 1 3 4
 /*
  * Copyright (c) 2000-2007 Apple Inc. All rights reserved.
  *
@@ -4957,7 +4957,7 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/endian.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h" 1 3 4
 /*
  * Copyright (c) 2000-2023 Apple Inc. All rights reserved.
  */
@@ -5018,7 +5018,7 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 1 3 4
 /*
  * Copyright (c) 2004, 2006, 2023 Apple Computer, Inc. All rights reserved.
  *
@@ -5112,7 +5112,7 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_endian.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_endian.h" 1 3 4
 /*
  * Copyright (c) 2000-2023 Apple Inc. All rights reserved.
  *
@@ -5149,7 +5149,7 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_endian.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_endian.h" 1 3 4
 /*
  * Copyright (c) 2004, 2006, 2023 Apple Computer, Inc. All rights reserved.
  *
@@ -5244,7 +5244,7 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/__endian.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/__endian.h" 1 3 4
 /*
  * Copyright (c) 2004, 2006, 2023 Apple Computer, Inc. All rights reserved.
  *
@@ -5341,15 +5341,15 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
  * Definitions for byte order, according to byte significance from low
  * address to high.
  */
-# 96 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_endian.h" 2 3 4
-# 38 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_endian.h" 2 3 4
-# 95 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 2 3 4
+# 96 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_endian.h" 2 3 4
+# 38 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_endian.h" 2 3 4
+# 95 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 2 3 4
 
 /*
  * Macros for network/external number representation conversion.
  */
-# 131 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h" 1 3 4
+# 131 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h" 1 3 4
 /*
  * Copyright (c) 2006-2023 Apple Computer, Inc. All rights reserved.
  *
@@ -5384,10 +5384,10 @@ int setrlimit(int, const struct rlimit *) __asm("_" "setrlimit" );
 
 
 /* Macros for swapping constant values in the preprocessing stage. */
-# 132 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 2 3 4
-# 62 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/endian.h" 2 3 4
-# 38 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/endian.h" 2 3 4
-# 187 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
+# 132 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h" 2 3 4
+# 62 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h" 2 3 4
+# 38 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h" 2 3 4
+# 187 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 2 3 4
 
 /*
  * Deprecated:
@@ -5430,7 +5430,7 @@ union wait {
 
  } w_S;
 };
-# 246 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 3 4
+# 246 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h" 3 4
 pid_t wait(int *) __asm("_" "wait" );
 pid_t waitpid(pid_t, int *, int) __asm("_" "waitpid" );
 
@@ -5439,9 +5439,9 @@ int waitid(idtype_t, id_t, siginfo_t *, int) __asm("_" "waitid" );
 
 pid_t wait3(int *, int, struct rusage *);
 pid_t wait4(pid_t, int *, int, struct rusage *);
-# 71 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 71 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/alloca.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/alloca.h" 1 3 4
 /*
  * Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
  *
@@ -5471,7 +5471,7 @@ pid_t wait4(pid_t, int *, int, struct rusage *);
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -5499,17 +5499,17 @@ pid_t wait4(pid_t, int *, int, struct rusage *);
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 31 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/alloca.h" 2 3 4
+# 31 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/alloca.h" 2 3 4
 
 
 
 
 void * alloca(size_t __size); /* built-in for gcc */
-# 73 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
-# 89 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
+# 73 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 89 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
 /* DO NOT REMOVE THIS COMMENT: fixincludes needs to see:
  * _GCC_SIZE_T */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -5537,10 +5537,10 @@ void * alloca(size_t __size); /* built-in for gcc */
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 92 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 92 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -5573,8 +5573,8 @@ void * alloca(size_t __size); /* built-in for gcc */
 
 
 typedef __darwin_ct_rune_t ct_rune_t;
-# 95 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_rune_t.h" 1 3 4
+# 95 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rune_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -5606,10 +5606,10 @@ typedef __darwin_ct_rune_t ct_rune_t;
 
 
 typedef __darwin_rune_t rune_t;
-# 96 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 96 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h" 1 3 4
 /*
  * Copyright (c) 2012 Apple Inc. All rights reserved.
  *
@@ -5637,14 +5637,14 @@ typedef __darwin_rune_t rune_t;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 48 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h" 3 4
+# 48 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h" 3 4
 /* wchar_t is a built-in type in C++ */
 
 
 
 
 typedef __darwin_wchar_t wchar_t;
-# 99 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 99 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
 
 
@@ -5665,7 +5665,7 @@ typedef struct {
 } lldiv_t;
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -5693,7 +5693,7 @@ typedef struct {
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 120 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 120 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
 
 
@@ -5713,7 +5713,7 @@ extern int __mb_cur_max;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 1 3 4
 /*
  * Copyright (c) 2018-2023 Apple Computer, Inc. All rights reserved.
  *
@@ -5746,7 +5746,7 @@ extern int __mb_cur_max;
  * Be cautious about what is included and declared here.
  */
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -5769,12 +5769,12 @@ extern int __mb_cur_max;
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 2 3 4
+# 34 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 2 3 4
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -5802,7 +5802,7 @@ extern int __mb_cur_max;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 37 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 2 3 4
+# 37 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 2 3 4
 
 
 
@@ -5810,7 +5810,7 @@ extern int __mb_cur_max;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 1 3 4
 /*
  * Copyright (c) 2022 Apple Computer, Inc. All rights reserved.
  *
@@ -5837,7 +5837,7 @@ extern int __mb_cur_max;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h" 1 3 4
 /*
  * Copyright (c) 2023 Apple Computer, Inc. All rights reserved.
  *
@@ -5860,7 +5860,7 @@ extern int __mb_cur_max;
  *
  * @APPLE_LICENSE_HEADER_END@
  */
-# 28 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 2 3 4
+# 28 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 2 3 4
 
 
 typedef unsigned long long malloc_type_id_t;
@@ -5868,7 +5868,7 @@ typedef unsigned long long malloc_type_id_t;
 
 
 // Included from <malloc/_malloc.h> so carefully manage what we include here.
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -5891,11 +5891,11 @@ typedef unsigned long long malloc_type_id_t;
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 36 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 2 3 4
+# 36 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 2 3 4
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -5923,8 +5923,8 @@ typedef unsigned long long malloc_type_id_t;
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 38 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 2 3 4
-# 49 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 3 4
+# 38 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 2 3 4
+# 49 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h" 3 4
 /* <malloc/_malloc.h> */
 
 __attribute__((availability(macos,introduced=14.0))) __attribute__((availability(ios,introduced=17.0))) __attribute__((availability(tvos,introduced=17.0))) __attribute__((availability(watchos,introduced=10.0))) __attribute__((availability(visionos,introduced=1.0))) __attribute__((availability(driverkit,introduced=23.0))) void * malloc_type_malloc(size_t size, malloc_type_id_t type_id) __attribute__((__warn_unused_result__)) __attribute__((alloc_size(1)));
@@ -5951,8 +5951,8 @@ __attribute__((availability(macos,introduced=14.0))) __attribute__((availability
 
 
 /* Rewrite enablement */
-# 45 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 2 3 4
-# 54 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 3 4
+# 45 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 2 3 4
+# 54 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h" 3 4
 void * malloc(size_t __size) __attribute__((__warn_unused_result__)) __attribute__((alloc_size(1))) ;
 void * calloc(size_t __count, size_t __size) __attribute__((__warn_unused_result__)) __attribute__((alloc_size(1,2))) ;
 void free(void * );
@@ -5968,8 +5968,8 @@ void * aligned_alloc(size_t __alignment, size_t __size) __attribute__((__warn_un
 
 /* rdar://120689514 */
 int posix_memalign(void * *__memptr, size_t __alignment, size_t __size) __attribute__((availability(macosx,introduced=10.6)));
-# 140 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_abort.h" 1 3 4
+# 140 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_abort.h" 1 3 4
 /*
  * Copyright (c) 2023 Apple Inc. All rights reserved.
  *
@@ -5992,9 +5992,9 @@ int posix_memalign(void * *__memptr, size_t __alignment, size_t __size) __attrib
  *
  * @APPLE_LICENSE_HEADER_END@
  */
-# 33 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_abort.h" 3 4
+# 33 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_abort.h" 3 4
 void abort(void) __attribute__((__cold__)) __attribute__((__noreturn__));
-# 141 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 141 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
 
 int abs(int) __attribute__((__const__));
@@ -6123,8 +6123,8 @@ void srandom(unsigned);
 int unlockpt(int);
 
 int unsetenv(const char *) __asm("_" "unsetenv" );
-# 277 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h" 1 3 4
+# 277 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -6156,8 +6156,8 @@ int unsetenv(const char *) __asm("_" "unsetenv" );
 
 
 typedef __darwin_dev_t dev_t; /* device number */
-# 278 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h" 1 3 4
+# 278 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -6189,7 +6189,7 @@ typedef __darwin_dev_t dev_t; /* device number */
 
 
 typedef __darwin_mode_t mode_t;
-# 279 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
+# 279 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 2 3 4
 
 
 
@@ -6205,7 +6205,7 @@ uint32_t
   arc4random_uniform(uint32_t __upper_bound) __attribute__((availability(macosx,introduced=10.7)));
 
 int atexit_b(void (^ _Nonnull)(void)) __attribute__((availability(macosx,introduced=10.6)));
-# 302 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
+# 302 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
 void *bsearch_b(const void * __key, const void * __base, size_t __nel,
      size_t __width, int (^ _Nonnull __compar)(const void *, const void *) __attribute__((__noescape__)))
      __attribute__((availability(macosx,introduced=10.6)));
@@ -6231,7 +6231,7 @@ int getloadavg(double [], int __nelem);
 const char
  *getprogname(void);
 void setprogname(const char *);
-# 336 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
+# 336 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h" 3 4
 int heapsort(void * __base, size_t __nel, size_t __width,
      int (* _Nonnull __compar)(const void *, const void *));
 
@@ -6289,9 +6289,9 @@ extern char * suboptarg; /* getsubopt(3) external variable */
 
 
 /* Poison the following routines if -fshort-wchar is set */
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdlib.h" 2 3 4
+# 59 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdlib.h" 2 3 4
 # 3 "code/codex.c" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/string.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/string.h" 1 3 4
 /*
  * Copyright (c) 2000, 2007, 2010, 2023 Apple Inc. All rights reserved.
  *
@@ -6349,7 +6349,7 @@ extern char * suboptarg; /* getsubopt(3) external variable */
  *	@(#)string.h	8.1 (Berkeley) 6/2/93
  */
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_string.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h" 1 3 4
 /*
  * Copyright (c) 2023 Apple Inc. All rights reserved.
  *
@@ -6413,7 +6413,7 @@ extern char * suboptarg; /* getsubopt(3) external variable */
 
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -6436,10 +6436,10 @@ extern char * suboptarg; /* getsubopt(3) external variable */
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 65 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 65 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -6467,8 +6467,8 @@ extern char * suboptarg; /* getsubopt(3) external variable */
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 66 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h" 1 3 4
+# 66 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -6496,7 +6496,7 @@ extern char * suboptarg; /* getsubopt(3) external variable */
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 67 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
+# 67 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
 
 /* ANSI-C */
 
@@ -6602,7 +6602,7 @@ char * strsignal(int __sig);
 /* C11 Annex K */
 
 
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -6630,10 +6630,10 @@ char * strsignal(int __sig);
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 50 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h" 3 4
+# 50 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h" 3 4
 typedef __darwin_size_t rsize_t;
-# 173 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h" 1 3 4
+# 173 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -6664,7 +6664,7 @@ typedef __darwin_size_t rsize_t;
 
 
 typedef int errno_t;
-# 174 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
+# 174 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
 
 
 errno_t memset_s(void * __s, rsize_t __smax, int __c, rsize_t __n) __attribute__((availability(macosx,introduced=10.9)));
@@ -6713,7 +6713,7 @@ int strsignal_r(int __sig, char * __strsignalbuf, size_t __buflen);
 /* Some functions historically defined in string.h were placed in strings.h
  * by SUS.
  */
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h" 1 3 4
 /*
  * Copyright (c) 2000, 2007, 2010, 2023 Apple Inc. All rights reserved.
  *
@@ -6770,8 +6770,8 @@ int strsignal_r(int __sig, char * __strsignalbuf, size_t __buflen);
  *
  *	@(#)strings.h	8.1 (Berkeley) 6/2/93
  */
-# 65 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 65 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -6794,10 +6794,10 @@ int strsignal_r(int __sig, char * __strsignalbuf, size_t __buflen);
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 66 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h" 2 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
+# 66 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h" 2 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h" 1 3 4
 /*
  * Copyright (c) 2003-2012 Apple Inc. All rights reserved.
  *
@@ -6825,7 +6825,7 @@ int strsignal_r(int __sig, char * __strsignalbuf, size_t __buflen);
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
  */
-# 67 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h" 2 3 4
+# 67 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h" 2 3 4
 
 
 
@@ -6852,10 +6852,10 @@ int ffsll(long long) __attribute__((availability(macosx,introduced=10.9)));
 int fls(int) __attribute__((availability(macosx,introduced=10.5)));
 int flsl(long) __attribute__((availability(macosx,introduced=10.5)));
 int flsll(long long) __attribute__((availability(macosx,introduced=10.9)));
-# 223 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
-# 59 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/string.h" 2 3 4
+# 223 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h" 2 3 4
+# 59 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/string.h" 2 3 4
 # 4 "code/codex.c" 2
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 1 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 1 3 4
 /*
  * Copyright (c) 2002-2017 Apple Inc. All rights reserved.
  *
@@ -6877,8 +6877,8 @@ int flsll(long long) __attribute__((availability(macosx,introduced=10.9)));
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 32 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
-# 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+# 32 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 1 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
 /*
  * Copyright (c) 2007-2016 by Apple Inc.. All rights reserved.
  *
@@ -6901,9 +6901,9 @@ int flsll(long long) __attribute__((availability(macosx,introduced=10.9)));
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
-# 617 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+# 617 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
 // This is explicitly outside the header guard
-# 33 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 2 3 4
+# 33 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 2 3 4
 
 
 
@@ -6923,14 +6923,14 @@ int flsll(long long) __attribute__((availability(macosx,introduced=10.9)));
 
     typedef float float_t;
     typedef double double_t;
-# 76 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 76 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /******************************************************************************
  *      Taxonomy of floating point data types                                 *
  ******************************************************************************/
-# 88 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 88 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /*  On these architectures, fma(), fmaf( ), and fmal( ) are generally about as
     fast as (or faster than) separate multiply and add of the same operands.  */
-# 108 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 108 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /* The values returned by `ilogb' for 0 and NaN respectively. */
 
 
@@ -6963,11 +6963,11 @@ extern int __math_errhandling(void);
 extern int __fpclassifyf(float);
 extern int __fpclassifyd(double);
 extern int __fpclassifyl(long double);
-# 261 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 261 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /*  Implementations making function calls to fall back on when -ffast-math
     or similar is specified.  These are not available in iOS versions prior
     to 6.0.  If you need them, you must target that version or later.         */
-# 290 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 290 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 extern int __isnormalf(float);
 extern int __isnormald(double);
 extern int __isnormall(long double);
@@ -7226,11 +7226,11 @@ extern long double fminl(long double, long double);
 extern float fmaf(float, float, float);
 extern double fma(double, double, double);
 extern long double fmal(long double, long double, long double);
-# 568 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 568 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /******************************************************************************
  *  Reentrant variants of lgamma[fl]                                          *
  ******************************************************************************/
-# 579 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 579 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /******************************************************************************
  *  Apple extensions to the C standard                                        *
  ******************************************************************************/
@@ -7284,7 +7284,7 @@ extern _Float16 __nextafterf16(_Float16, _Float16) __attribute__((availability(m
 extern _Float16 __fmaxf16(_Float16, _Float16) __attribute__((availability(macos,introduced=15.0))) __attribute__((availability(ios,introduced=18.0))) __attribute__((availability(watchos,introduced=11.0))) __attribute__((availability(tvos,introduced=18.0)));
 extern _Float16 __fminf16(_Float16, _Float16) __attribute__((availability(macos,introduced=15.0))) __attribute__((availability(ios,introduced=18.0))) __attribute__((availability(watchos,introduced=11.0))) __attribute__((availability(tvos,introduced=18.0)));
 extern _Float16 __fmaf16(_Float16, _Float16, _Float16) __attribute__((availability(macos,introduced=15.0))) __attribute__((availability(ios,introduced=18.0))) __attribute__((availability(watchos,introduced=11.0))) __attribute__((availability(tvos,introduced=18.0)));
-# 648 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 648 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /*  __sincospi(x,sinp,cosp) computes the sine and cosine of pi times x with a
     single function call, storing the sine in the memory pointed to by sinp,
     and the cosine in the memory pointed to by cosp.  Edge cases match those
@@ -7347,15 +7347,15 @@ extern int signgam;
 
 /*  Even though these might be more useful as long doubles, POSIX requires
     that they be double-precision literals.                                   */
-# 727 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 727 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /*  Long-double versions of M_E, etc for convenience on Intel where long-
     double is not the same as double.  Define __MATH_LONG_DOUBLE_CONSTANTS
     to make these constants available.                                        */
-# 746 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 746 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 /******************************************************************************
  *  Legacy BSD extensions to the C standard                                   *
  ******************************************************************************/
-# 784 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
+# 784 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h" 3 4
 struct exception {
     int type;
     char *name;
@@ -7364,7 +7364,7 @@ struct exception {
     double retval;
 };
 # 5 "code/codex.c" 2
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdbool.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h" 1 3
 /*===---- stdbool.h - Standard header for booleans -------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7375,7 +7375,7 @@ struct exception {
  */
 # 6 "code/codex.c" 2
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdatomic.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdatomic.h" 1 3
 /*===---- stdatomic.h - Standard header for atomic types and operations -----===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7402,7 +7402,7 @@ struct exception {
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 1 3
 /*===---- stddef.h - Basic type definitions --------------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7424,7 +7424,7 @@ struct exception {
  * so that it doesn't add duplicate declarations to all of its includers'
  * modules.
  */
-# 50 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 3
+# 50 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 3
 /* ISO9899:2011 7.20 (C11 Annex K): Define rsize_t if __STDC_WANT_LIB_EXT1__ is
  * enabled. */
 
@@ -7447,11 +7447,11 @@ struct exception {
  * export NULL as expected. When building with modules, always include
  * __stddef_null.h so that everything works as expected.
  */
-# 86 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 3
+# 86 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 3
 /* wint_t is provided by <wchar.h> and not <stddef.h>. It's here
  * for compatibility, but must be explicitly requested. Therefore
  * __need_wint_t is intentionally not defined here. */
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_header_macro.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h" 1 3
 /*===---- __stddef_header_macro.h ------------------------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7460,11 +7460,11 @@ struct exception {
  *
  *===-----------------------------------------------------------------------===
  */
-# 90 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 90 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_ptrdiff_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h" 1 3
 /*===---- __stddef_ptrdiff_t.h - Definition of ptrdiff_t -------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7483,12 +7483,12 @@ struct exception {
 
 
 typedef long int ptrdiff_t;
-# 94 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 94 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_size_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h" 1 3
 /*===---- __stddef_size_t.h - Definition of size_t -------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7502,12 +7502,12 @@ typedef long int ptrdiff_t;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 99 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 99 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_rsize_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h" 1 3
 /*===---- __stddef_rsize_t.h - Definition of rsize_t -----------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7521,12 +7521,12 @@ typedef long int ptrdiff_t;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 104 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 104 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_wchar_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h" 1 3
 /*===---- __stddef_wchar.h - Definition of wchar_t -------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7542,12 +7542,12 @@ typedef long int ptrdiff_t;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 109 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 109 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_null.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h" 1 3
 /*===---- __stddef_null.h - Definition of NULL -----------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7564,9 +7564,9 @@ typedef long int ptrdiff_t;
  * Modules don't support redefining macros like that, but support that pattern
  * in the non-modules case.
  */
-# 114 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
-# 128 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 3
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_max_align_t.h" 1 3
+# 114 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
+# 128 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h" 1 3
 /*===---- __stddef_max_align_t.h - Definition of max_align_t ---------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7583,12 +7583,12 @@ typedef long int ptrdiff_t;
 
 
 typedef long double max_align_t;
-# 129 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 129 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_offsetof.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h" 1 3
 /*===---- __stddef_offsetof.h - Definition of offsetof ---------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7602,13 +7602,13 @@ typedef long double max_align_t;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 134 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 134 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 /* Some C libraries expect to see a wint_t here. Others (notably MinGW) will use
 __WINT_TYPE__ directly; accommodate both by requiring __need_wint_t */
-# 28 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdatomic.h" 2 3
+# 28 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdatomic.h" 2 3
 
 
 
@@ -7616,7 +7616,7 @@ __WINT_TYPE__ directly; accommodate both by requiring __need_wint_t */
 
 
 /* 7.17.1 Introduction */
-# 50 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdatomic.h" 3
+# 50 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdatomic.h" 3
 /* 7.17.2 Initialization */
 
 
@@ -7707,7 +7707,7 @@ typedef _Atomic(intmax_t) atomic_intmax_t;
 typedef _Atomic(uintmax_t) atomic_uintmax_t;
 
 /* 7.17.7 Operations on atomic types */
-# 171 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdatomic.h" 3
+# 171 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdatomic.h" 3
 /* 7.17.8 Atomic flag type and operations */
 
 typedef struct atomic_flag { atomic_bool _Value; } atomic_flag;
@@ -7729,7 +7729,7 @@ _Bool atomic_flag_test_and_set_explicit(volatile atomic_flag *, memory_order);
 void atomic_flag_clear(volatile atomic_flag *);
 void atomic_flag_clear_explicit(volatile atomic_flag *, memory_order);
 # 8 "code/codex.c" 2
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 1 3
 /*===---- stdarg.h - Variable argument handling ----------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7751,7 +7751,7 @@ void atomic_flag_clear_explicit(volatile atomic_flag *, memory_order);
  * so that it doesn't add duplicate declarations to all of its includers'
  * modules.
  */
-# 39 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 3
+# 39 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 3
 /* GCC always defines __va_copy, but does not define va_copy unless in c99 mode
  * or -ansi is not specified, since it was not part of C90.
  */
@@ -7760,7 +7760,7 @@ void atomic_flag_clear_explicit(volatile atomic_flag *, memory_order);
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg_header_macro.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h" 1 3
 /*===---- __stdarg_header_macro.h ------------------------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7769,11 +7769,11 @@ void atomic_flag_clear_explicit(volatile atomic_flag *, memory_order);
  *
  *===-----------------------------------------------------------------------===
  */
-# 48 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 2 3
+# 48 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 2 3
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h" 1 3
 /*===---- __stdarg___gnuc_va_list.h - Definition of __gnuc_va_list ---------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7786,12 +7786,12 @@ void atomic_flag_clear_explicit(volatile atomic_flag *, memory_order);
 
 
 typedef __builtin_va_list __gnuc_va_list;
-# 52 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 2 3
+# 52 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg_va_list.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_list.h" 1 3
 /*===---- __stdarg_va_list.h - Definition of va_list -----------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7804,12 +7804,12 @@ typedef __builtin_va_list __gnuc_va_list;
 
 
 typedef __builtin_va_list va_list;
-# 57 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 2 3
+# 57 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg_va_arg.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h" 1 3
 /*===---- __stdarg_va_arg.h - Definitions of va_start, va_arg, va_end-------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7826,12 +7826,12 @@ typedef __builtin_va_list va_list;
 
 
 /* Versions before C23 do require the second parameter. */
-# 62 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 2 3
+# 62 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg___va_copy.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h" 1 3
 /*===---- __stdarg___va_copy.h - Definition of __va_copy -------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7840,12 +7840,12 @@ typedef __builtin_va_list va_list;
  *
  *===-----------------------------------------------------------------------===
  */
-# 67 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 2 3
+# 67 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg_va_copy.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h" 1 3
 /*===---- __stdarg_va_copy.h - Definition of va_copy------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7854,9 +7854,9 @@ typedef __builtin_va_list va_list;
  *
  *===-----------------------------------------------------------------------===
  */
-# 72 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h" 2 3
+# 72 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h" 2 3
 # 9 "code/codex.c" 2
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 1 3
 /*===---- stddef.h - Basic type definitions --------------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7878,10 +7878,10 @@ typedef __builtin_va_list va_list;
  * so that it doesn't add duplicate declarations to all of its includers'
  * modules.
  */
-# 50 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 3
+# 50 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 3
 /* ISO9899:2011 7.20 (C11 Annex K): Define rsize_t if __STDC_WANT_LIB_EXT1__ is
  * enabled. */
-# 86 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 3
+# 86 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 3
 /* wint_t is provided by <wchar.h> and not <stddef.h>. It's here
  * for compatibility, but must be explicitly requested. Therefore
  * __need_wint_t is intentionally not defined here. */
@@ -7889,7 +7889,7 @@ typedef __builtin_va_list va_list;
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_ptrdiff_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h" 1 3
 /*===---- __stddef_ptrdiff_t.h - Definition of ptrdiff_t -------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7903,12 +7903,12 @@ typedef __builtin_va_list va_list;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 94 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 94 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_size_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h" 1 3
 /*===---- __stddef_size_t.h - Definition of size_t -------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7922,12 +7922,12 @@ typedef __builtin_va_list va_list;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 99 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 99 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_rsize_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h" 1 3
 /*===---- __stddef_rsize_t.h - Definition of rsize_t -----------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7941,12 +7941,12 @@ typedef __builtin_va_list va_list;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 104 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 104 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
 
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_wchar_t.h" 1 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h" 1 3
 /*===---- __stddef_wchar.h - Definition of wchar_t -------------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7962,9 +7962,9 @@ typedef __builtin_va_list va_list;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 109 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
-# 133 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 3
-# 1 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_offsetof.h" 1 3
+# 109 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
+# 133 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 3
+# 1 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h" 1 3
 /*===---- __stddef_offsetof.h - Definition of offsetof ---------------------===
  *
  * Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -7978,7 +7978,7 @@ typedef __builtin_va_list va_list;
  * When -fbuiltin-headers-in-system-modules is set this is a non-modular header
  * and needs to behave as if it was textual.
  */
-# 134 "/Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h" 2 3
+# 134 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h" 2 3
 
 
 
