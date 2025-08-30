@@ -24,6 +24,10 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         buf.append_str("_Atomic ");
         //buf.append_str("_Atomic(");
     }
+    if(type->mThreadLocal) {
+        buf.append_str("_Thread_local ");
+        //buf.append_str("_Atomic(");
+    }
     
     if(type->mConstant) {
         buf.append_str("const ");
@@ -127,7 +131,9 @@ string make_type_name_string(sType* type, bool in_header=false, bool array_cast_
         
         int j = 0;
         foreach(it, type->mParamTypes) {
+            info.undefined_array_num_var = true;
             string param_type_str = make_type_name_string(it, in_header, no_static:true);
+            info.undefined_array_num_var = false;
             
             buf.append_str(param_type_str);
             
@@ -290,7 +296,9 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         
         int i = 0;
         foreach(it, type->mParamTypes) {
+            info.undefined_array_num_var = true;
             buf.append_str(make_type_name_string(it, no_static:true));
+            info.undefined_array_num_var = false;
             if(i != type->mParamTypes.length()-1) {
                 buf.append_str(",");
             }
@@ -338,7 +346,9 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
         
         int i = 0;
         foreach(it, type->mParamTypes) {
+            info.undefined_array_num_var = true;
             buf.append_str(make_type_name_string(it, no_static:true));
+            info.undefined_array_num_var = false;
             if(i != type->mParamTypes.length()-1) {
                 buf.append_str(",");
             }
@@ -501,6 +511,7 @@ string make_come_header_function(sFun* fun, string base_fun_name, sType*% impl_t
     }
     
     for(int i=0; i<fun.mParamTypes.length(); i++) {
+        info.undefined_array_num_var = true;
         var param_type = fun.mParamTypes[i];
         var param_name = fun.mParamNames[i];
         var default_parametor = fun.mParamDefaultParametors[i];
@@ -515,6 +526,7 @@ string make_come_header_function(sFun* fun, string base_fun_name, sType*% impl_t
         if(i != fun.mParamTypes.length()-1) {
             header.append_str(",");
         }
+        info.undefined_array_num_var = false;
     }
     
     if(version_ == -1 || version_ == 0) {
@@ -538,6 +550,7 @@ string output_function(sFun* fun, sInfo* info)
         
         int i = 0;
         foreach(it, fun->mParamTypes) {
+            info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
             var str = make_define_var(it, name);
@@ -553,6 +566,7 @@ string output_function(sFun* fun, sInfo* info)
             }
             
             i++;
+            info.undefined_array_num_var = false;
         }
         output2.append_str(")");
         
@@ -603,6 +617,7 @@ string output_function(sFun* fun, sInfo* info)
         
         int i = 0;
         foreach(it, fun->mParamTypes) {
+            info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
             string str = make_define_var(it, name);
@@ -618,6 +633,7 @@ string output_function(sFun* fun, sInfo* info)
             }
             
             i++;
+            info.undefined_array_num_var = false;
         }
         
         sNode* node = fun->mResultType->mArrayNum[0]??;
@@ -659,6 +675,7 @@ string output_function(sFun* fun, sInfo* info)
         
         int i = 0;
         foreach(it, fun->mParamTypes) {
+            info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
             string str = make_define_var(it, name);
@@ -673,6 +690,7 @@ string output_function(sFun* fun, sInfo* info)
                 output.append_str(", ");
             }
             i++;
+            info.undefined_array_num_var = false;
         }
         
         output.append_str(")");
@@ -709,6 +727,7 @@ string header_function(sFun* fun, sInfo* info)
         
         int i = 0;
         foreach(it, fun->mParamTypes) {
+            info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
             string str = make_define_var(it, name);
@@ -718,6 +737,7 @@ string header_function(sFun* fun, sInfo* info)
                 output2.append_str(", ");
             }
             i++;
+            info.undefined_array_num_var = false;
         }
         output2.append_str(")");
         
@@ -758,6 +778,7 @@ string header_function(sFun* fun, sInfo* info)
         
         int i = 0;
         foreach(it, fun->mParamTypes) {
+            info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
             string str = make_define_var(it, name);
@@ -772,6 +793,7 @@ string header_function(sFun* fun, sInfo* info)
                 output.append_str(", ");
             }
             i++;
+            info.undefined_array_num_var = false;
         }
         
         sNode* node = fun->mResultType->mArrayNum[0]??;
@@ -805,9 +827,12 @@ string header_function(sFun* fun, sInfo* info)
         
         int i = 0;
         foreach(it, fun->mParamTypes) {
+            info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
+            info.undefined_array_num_var = true;
             string str = make_define_var(it, name);
+            info.undefined_array_num_var = false;
             output.append_str(str);
             
             if(i == fun->mParamTypes.length()-1) {
@@ -819,6 +844,7 @@ string header_function(sFun* fun, sInfo* info)
                 output.append_str(", ");
             }
             i++;
+            info.undefined_array_num_var = false;
         }
         
         if(fun->mFunAttribute !== "" && gComeBareMetal) {
@@ -862,6 +888,7 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
     
     int i = 0;
     foreach(it, lambda_type->mParamTypes) {
+        info.undefined_array_num_var = true;
         char* name = lambda_type->mParamNames[i];
         
         string str = make_define_var(it, name);
@@ -876,6 +903,7 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
             output.append_str(", ");
         }
         i++;
+        info.undefined_array_num_var = false;
     }
     
     if(lambda_type->mAttribute) {

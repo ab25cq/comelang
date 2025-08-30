@@ -12,6 +12,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         return (type && type->mTypedef) 
             || (klass && klass->mNumber) 
             || (klass && klass->mFloat) 
+            || buf === "_Thread_local"
             || buf === "const" || buf === "register" || buf === "static" || buf === "volatile" || buf === "unsigned" 
             || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" 
             || info->in_top_level && (buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline" )
@@ -34,6 +35,7 @@ bool is_type_name(char* buf, sInfo* info=info)
         || buf === "signed" || buf === "struct" || buf === "enum" || buf === "union" || buf === "extern" 
         || info->in_top_level && (buf === "inline" || buf === "__inline" || buf === "__always_inline" || buf === "__inline__" || buf === "__forceinline")
         || buf === "__extension__" 
+        || buf === "_Thread_local"
         || (info->in_top_level && buf === "_Noreturn")
         || (info->in_top_level && buf === "__noreturn")
         || (info->in_top_level && buf === "_noreturn")
@@ -1089,6 +1091,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     bool anonymous_name = false;
     bool atomic_ = false;
     bool object_interface = false;
+    bool thread_local = false;
     while(true) {
         if(type_name === "object" && *info->p == ':') {
             info->p ++;
@@ -1099,6 +1102,10 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             object_interface = true;
             
             type_name = parse_word();
+        }
+        else if(type_name === "_Thread_local") {
+            type_name = parse_word();
+            thread_local = true;
         }
         else if(type_name === "_Atomic") {
             if(*info->p == '(') {
@@ -2035,6 +2042,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         
         result_type->mAtomic = result_type->mAtomic || atomic_;
+        result_type->mThreadLocal = result_type->mThreadLocal || thread_local;
         result_type->mConstant = result_type->mConstant || constant;
         result_type->mImmutable = result_type->mImmutable || immutable_;
         result_type->mTask = result_type->mTask || task_;
@@ -2091,6 +2099,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mImmutable = type->mImmutable || immutable_;
         type->mTask = type->mTask || task_;
         type->mAtomic = type->mAtomic || atomic_;
+        type->mThreadLocal = type->mThreadLocal || thread_local;
         type->mAlignas = alignas_;
         type->mRegister = register_;
         type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2177,6 +2186,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mImmutable = result_type->mImmutable || immutable_;
         result_type->mTask = result_type->mTask || task_;
         result_type->mAtomic = result_type->mAtomic || atomic_;
+        result_type->mThreadLocal = result_type->mThreadLocal || thread_local;
         result_type->mAlignas = alignas_;
         result_type->mRegister = register_;
         result_type->mUnsigned = result_type->mUnsigned || unsigned_;
@@ -2321,6 +2331,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mImmutable = type->mImmutable || immutable_;
             type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
+            type->mThreadLocal = type->mThreadLocal || thread_local;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2352,6 +2363,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mImmutable = type->mImmutable || immutable_;
             type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
+            type->mThreadLocal = type->mThreadLocal || thread_local;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2383,6 +2395,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mImmutable = type->mImmutable || immutable_;
             type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
+            type->mThreadLocal = type->mThreadLocal || thread_local;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2455,6 +2468,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mImmutable = type->mImmutable || immutable_;
             type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
+            type->mThreadLocal = type->mThreadLocal || thread_local;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;
@@ -2499,6 +2513,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mImmutable = type->mImmutable || immutable_;
             type->mTask = type->mTask || task_;
             type->mAtomic = type->mAtomic || atomic_;
+            type->mThreadLocal = type->mThreadLocal || thread_local;
             type->mAlignas = alignas_;
             type->mRegister = register_;
             type->mUnsigned = type->mUnsigned || unsigned_;

@@ -106,6 +106,7 @@ uniq class sType
     bool mLongLong;
     bool mConstant;
     bool mAtomic;
+    bool mThreadLocal;
     bool mRegister;
     bool mVolatile;
     bool mStatic;
@@ -487,6 +488,7 @@ struct sInfo
     bool no_output_err;
     bool no_output_come_code;
     bool no_output_come_code2;
+    bool undefined_array_num_var;
     
     sFun* come_fun;
     

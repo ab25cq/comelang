@@ -496,6 +496,7 @@ class sGeneric extends sNodeBase
         
         buf.append_format("_Generic((%s), ", come_value.c_value);
         
+        sType*% result_type = null;
         if(default_exp) {
             int n = 0;
             foreach(it, exps) {
@@ -506,6 +507,8 @@ class sGeneric extends sNodeBase
                 }
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
+                
+                result_type = come_value.type;
                 
                 buf.append_format("%s: %s", make_type_name_string(type), come_value.c_value);
                 
@@ -535,6 +538,8 @@ class sGeneric extends sNodeBase
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
+                result_type = come_value.type;
+                
                 buf.append_format("%s: %s", make_type_name_string(type), come_value.c_value);
                 
                 if(n == exps.length() -1) {
@@ -552,7 +557,7 @@ class sGeneric extends sNodeBase
         CVALUE*% come_value2 = new CVALUE();
         
         come_value2.c_value = buf.to_string();
-        come_value2.type = new sType(s"void");
+        come_value2.type = result_type;
         come_value2.var = null;
         
         add_come_last_code(info, "%s", come_value2.c_value);

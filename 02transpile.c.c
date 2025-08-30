@@ -1328,6 +1328,7 @@ struct sType
     _Bool mLongLong;
     _Bool mConstant;
     _Bool mAtomic;
+    _Bool mThreadLocal;
     _Bool mRegister;
     _Bool mVolatile;
     _Bool mStatic;
@@ -1636,6 +1637,7 @@ struct sInfo
     _Bool no_output_err;
     _Bool no_output_come_code;
     _Bool no_output_come_code2;
+    _Bool undefined_array_num_var;
     struct sFun* come_fun;
     struct sFun* caller_fun;
     int caller_line;

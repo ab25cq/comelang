@@ -1338,6 +1338,7 @@ struct sType
     _Bool mLongLong;
     _Bool mConstant;
     _Bool mAtomic;
+    _Bool mThreadLocal;
     _Bool mRegister;
     _Bool mVolatile;
     _Bool mStatic;
@@ -1646,6 +1647,7 @@ struct sInfo
     _Bool no_output_err;
     _Bool no_output_come_code;
     _Bool no_output_come_code2;
+    _Bool undefined_array_num_var;
     struct sFun* come_fun;
     struct sFun* caller_fun;
     int caller_line;
@@ -3029,6 +3031,9 @@ struct sType* __result_obj__16;
         result->mAtomic=self->mAtomic;
     }
     if(    self!=((void*)0)    ) {
+        result->mThreadLocal=self->mThreadLocal;
+    }
+    if(    self!=((void*)0)    ) {
         result->mRegister=self->mRegister;
     }
     if(    self!=((void*)0)    ) {
@@ -3081,7 +3086,7 @@ struct sType* __result_obj__16;
     }
     if(    self!=((void*)0)&&self->mAsmName!=((void*)0)    ) {
         __dec_obj13=result->mAsmName,
-        result->mAsmName=(char*)come_increment_ref_count((char*)come_memdup(self->mAsmName, "sType_clone", 38, "char*"));
+        result->mAsmName=(char*)come_increment_ref_count((char*)come_memdup(self->mAsmName, "sType_clone", 39, "char*"));
         __dec_obj13 = come_decrement_ref_count(__dec_obj13, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
     if(    self!=((void*)0)    ) {
@@ -3118,7 +3123,7 @@ struct sType* __result_obj__16;
     }
     if(    self!=((void*)0)&&self->mOriginalTypeName!=((void*)0)    ) {
         __dec_obj18=result->mOriginalTypeName,
-        result->mOriginalTypeName=(char*)come_increment_ref_count((char*)come_memdup(self->mOriginalTypeName, "sType_clone", 49, "char*"));
+        result->mOriginalTypeName=(char*)come_increment_ref_count((char*)come_memdup(self->mOriginalTypeName, "sType_clone", 50, "char*"));
         __dec_obj18 = come_decrement_ref_count(__dec_obj18, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     }
     if(    self!=((void*)0)    ) {
