@@ -42,7 +42,7 @@ LDBL e;
 
 void fun2()
 {
-      void* vp = 0;
+      void* vp = (void*)0;
       long long* llp = (volatile long long*) vp;
       unsigned long long* ullp = (volatile unsigned long long*) vp;
       char* rc = (restrict char*) vp;
@@ -63,7 +63,7 @@ typedef char* PCHAR;
 typedef int I3;
 
 void funX() {
-  void* vp = 0;
+  void* vp = (void*)0;
   long double** ldpp = (long double**) vp;
   int*** ippp = (int***) vp;
   union U u = (union U) 0;
@@ -250,7 +250,7 @@ int main(int argc, char** argv)
     x = (unsigned long) x;
     x = (int) 42;
     int y =  (int) x;
-    void* vp = 0;
+    void* vp = (void*)0;
     int* ip = (const int*) vp;
      struct P* pp = (struct P*) vp;
     int z = (int) (unsigned long) 0;

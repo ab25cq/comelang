@@ -5236,6 +5236,7 @@ _Bool Value_33;
 _Bool __result_obj__76;
 void* __right_value170 = (void*)0;
 struct CVALUE* c_value;
+char* fun_name;
 void* __right_value171 = (void*)0;
 struct tuple3$3char$phsFun$psGenericsFun$p* multiple_assign_var8 = (void*)0;
 char* fun_name2=0;
@@ -5329,7 +5330,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
         list$1CVALUE$ph_push_back(array_num,(struct CVALUE*)come_increment_ref_count(c_value));
         come_call_finalizer(CVALUE_finalize, c_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
-    char* fun_name="operator_store_element";
+    fun_name="operator_store_element";
     multiple_assign_var8=((struct tuple3$3char$phsFun$psGenericsFun$p*)(__right_value171=get_method(fun_name,(struct sType*)come_increment_ref_count(left_type),info)));
     fun_name2=(char*)come_increment_ref_count(multiple_assign_var8->v1);
     operator_fun=multiple_assign_var8->v2;
@@ -5907,6 +5908,7 @@ void* __right_value200 = (void*)0;
 struct CVALUE* c_value;
 void* __right_value201 = (void*)0;
 struct sType* type;
+char* fun_name;
 _Bool calling_fun;
 void* __right_value202 = (void*)0;
 void* __right_value203 = (void*)0;
@@ -5968,7 +5970,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
         come_call_finalizer(CVALUE_finalize, c_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
     type=(struct sType*)come_increment_ref_count(sType_clone(left_value->type));
-    char* fun_name="operator_load_element";
+    fun_name="operator_load_element";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -6115,6 +6117,7 @@ void* __right_value224 = (void*)0;
 struct CVALUE* c_value;
 void* __right_value225 = (void*)0;
 struct sType* type;
+char* fun_name;
 _Bool calling_fun;
 void* __right_value226 = (void*)0;
 struct sNode* middle;
@@ -6179,7 +6182,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
         come_call_finalizer(CVALUE_finalize, c_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
     type=(struct sType*)come_increment_ref_count(sType_clone(left_value->type));
-    char* fun_name="operator_load_range_element";
+    fun_name="operator_load_range_element";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }

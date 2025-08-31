@@ -249,7 +249,6 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             }
             else if(right_type->mArrayNum.length() > 0) {
             }
-/*
             else if(print_err_msg) {
                 printf("%s %d %s\n", info->sname, info->sline, msg);
                 printf("left type is %s pointer num %d\n", left_type2->mClass->mName, left_type2->mPointerNum);
@@ -259,7 +258,6 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 
                 return false;
             }
-*/
         }
         else 
         if(left_type2->mPointerNum == 0 && right_type->mPointerNum > 0) {
@@ -340,8 +338,10 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
         } 
         else if(right_type->mPointerNum == 0 && left_type2->mPointerNum > 0) {
         }
+/*
         else if(left_type->mPointerNum > 0 && right_type->mPointerNum == 0) {
         }
+*/
         else if(right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type2->mClass->mNumber && left_type2->mPointerNum == 0) {
             if(pointer_massive) {
                 if(print_err_msg) {

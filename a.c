@@ -10,8 +10,8 @@ int main(int argc, char** argv) {
     
     li.add(4).add(5);
     
-    foreach(it, li.sublist(0,1000000).map { it.to_string() }) {
-        printf("%s\n", it);
+    (li.sublist(0,1000000).filter { it > 3 }.map { it.to_string() } === [s"4",s"5"]).if {
+        puts("OK");
     }
 
     return 0;
