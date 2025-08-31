@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 50.1.0
+version 60.0.0
 
 ``` C
 #include <comelang.h>
@@ -49,11 +49,11 @@ Comelang outputs c source with standard C libraries only. So you can use this fo
 
 sh fast_build.sh will automatically install the necessary packages.
 
-Supports Linux, MacOS (Darwin), termux (Android) userland (Android), and raspberry pi(pico).
+Supports Linux, MacOS (Darwin), termux (Android) userland (Android), and raspberry pi(pico). Also berametalAlso berametal
 
 sh fast_build.shとすると自動的に必要なパッケージがインストールされます。
 
-LinuxとMacOS(Darwin), termux(Android), raspberry pi, raspberry pi picoをサポートしています。
+LinuxとMacOS(Darwin), termux(Android), raspberry pi, raspberry pi pico, ベアメタルをサポートしています。
 
 sudoとgitは事前にインストールしてください。
 
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+50.2.0 More compatiblity for C language.
 50.1.0 user finalize and user clone removed. It makes bugs.
 50.0.0 This project may be complete.
 40.0.0 Refactoring this project may be complete.
@@ -1759,8 +1760,6 @@ int main(int argc, char** argv)
     return 0;
 }
 ```
-
-REMOVED
 
 # Interface
 
