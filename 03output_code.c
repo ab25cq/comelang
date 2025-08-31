@@ -1,12 +1,12 @@
 #include "common.h"
 
-string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false, bool cast_type=false)
+string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false, bool cast_type=false, bool no_alignas=false)
 {
     var buf = new buffer();
     
     char* class_name = type->mClass->mName;
     
-    if(type->mAlignas) {
+    if(type->mAlignas && !no_alignas) {
         if(!node_compile(type->mAlignas)) {
             printf("_Alignas error\n");
             return string("");

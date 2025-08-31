@@ -410,7 +410,7 @@ class sSizeOfNode extends sNodeBase
         
         var type2 = solve_generics(type, info->generics_type, info);
         
-        string type_name = make_type_name_string(type2, no_static:true);
+        string type_name = make_type_name_string(type2, no_static:true, no_alignas:true);
         
         come_value.c_value = xsprintf("sizeof(%s)", type_name);
         come_value.type = new sType(s"long");

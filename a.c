@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
     do { do { total_tests++; } while(0); long long _e = (long long)(7L); long long _g = (long long)((long)_Generic((7L), int: max_int, long: max_long, double: max_double, default: max_double)(7L, 2L)); if(_e != _g) do { failed_tests++; printf("FAIL: %s:%d in %s() -> " "INT expected=%lld got=%lld" "\n", "code/codex.c", 435, __func__, _e, _g); } while(0); } while(0);
     do { do { total_tests++; } while(0); double _e = (double)(2.5); double _g = (double)(_Generic((2.5), int: max_int, long: max_long, double: max_double, default: max_double)(2.5, -1.0)); double _d = fabs(_e - _g); if(!(_d <= (1e-12))) do { failed_tests++; printf("FAIL: %s:%d in %s() -> " "DBL expected=%.10f got=%.10f (|d|=%.3g, eps=%.3g)" "\n", "code/codex.c", 436, __func__, _e, _g, _d, (double)(1e-12)); } while(0); } while(0);
 */
+    char s[] = "ABC";
 
     return 0;
 }

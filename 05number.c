@@ -138,7 +138,7 @@ class sFloatNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%sf", self.value);
+        come_value.c_value = xsprintf("%s", self.value);
         come_value.type = new sType(s"float");
         come_value.var = null;
         

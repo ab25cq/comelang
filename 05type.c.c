@@ -2513,7 +2513,7 @@ int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main(int argc, char** argv);
-char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type);
+char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type, _Bool no_alignas);
 char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name);
 char* header_function(struct sFun* fun, struct sInfo* info);
 _Bool output_source_file(struct sInfo* info);
@@ -4426,7 +4426,7 @@ _Bool __result_obj__96;
                 }
             }
             else {
-                left_type3=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0));
+                left_type3=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
                 __dec_obj36=come_value->c_value,
                 come_value->c_value=(char*)come_increment_ref_count(xsprintf("(%s)%s",left_type3,come_value->c_value));
                 __dec_obj36 = come_decrement_ref_count(__dec_obj36, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
@@ -4454,7 +4454,7 @@ _Bool __result_obj__96;
                 }
             }
             else {
-                left_type3_15=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0));
+                left_type3_15=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
                 __dec_obj39=come_value->c_value,
                 come_value->c_value=(char*)come_increment_ref_count(xsprintf("(%s)(long)%s",left_type3_15,come_value->c_value));
                 __dec_obj39 = come_decrement_ref_count(__dec_obj39, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
@@ -4544,7 +4544,7 @@ _Bool __result_obj__96;
             }
         }
         else {
-            left_type3_16=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0));
+            left_type3_16=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
             __dec_obj42=come_value->c_value,
             come_value->c_value=(char*)come_increment_ref_count(xsprintf("(%s)%s",left_type3_16,come_value->c_value));
             __dec_obj42 = come_decrement_ref_count(__dec_obj42, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
@@ -4572,7 +4572,7 @@ _Bool __result_obj__96;
             }
         }
         else {
-            left_type3_17=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0));
+            left_type3_17=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
             __dec_obj45=come_value->c_value,
             come_value->c_value=(char*)come_increment_ref_count(xsprintf("(%s)(long)%s",left_type3_17,come_value->c_value));
             __dec_obj45 = come_decrement_ref_count(__dec_obj45, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
@@ -4622,7 +4622,7 @@ _Bool __result_obj__96;
             }
         }
         else {
-            left_type3_18=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0));
+            left_type3_18=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
             __dec_obj51=come_value->c_value,
             come_value->c_value=(char*)come_increment_ref_count(xsprintf("(%s)%s",left_type3_18,come_value->c_value));
             __dec_obj51 = come_decrement_ref_count(__dec_obj51, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
@@ -4650,7 +4650,7 @@ _Bool __result_obj__96;
             }
         }
         else {
-            left_type3_19=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0));
+            left_type3_19=(char*)come_increment_ref_count(make_type_name_string(left_type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
             __dec_obj54=come_value->c_value,
             come_value->c_value=(char*)come_increment_ref_count(xsprintf("(%s)(long)%s",left_type3_19,come_value->c_value));
             __dec_obj54 = come_decrement_ref_count(__dec_obj54, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
