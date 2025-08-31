@@ -61,7 +61,6 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
         bool immutable_ = type->mImmutable;
         int pointer_num = type->mPointerNum;
         bool heap = type->mHeap;
-        bool exception_ = type->mException;
         bool guard_ = type->mGuardValue;
         bool deffer_right_value = type->mDefferRightValue;
         
@@ -83,9 +82,6 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
         if(no_heap) {
             result->mNoHeap = true;
             result->mHeap = false;
-        }
-        if(exception_) {
-            result->mException = true;
         }
         if(no_calling_destructor) {
             result->mNoCallingDestructor = true;
@@ -132,15 +128,11 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
             bool null_value = type->mNullValue;
             bool record_ = type->mRecord;
             bool multiple_types = type->mMultipleTypes;
-            bool exception_ = type->mException;
             
             result = clone generics_type->mGenericsTypes[generics_number];
 
             if(heap) {
                 result->mHeap = result->mHeap || heap;
-            }
-            if(exception_) {
-                result->mException = exception_;
             }
             if(deffer_right_value) {
                 result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
@@ -220,7 +212,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         bool no_heap = type->mNoHeap;
         bool no_calling_destructor = type->mNoCallingDestructor;
         bool null_value = type->mNullValue;
-        bool exception_ = type->mException;
         
         result = clone info->method_generics_types[generics_number];
 
@@ -229,9 +220,6 @@ sType*% solve_method_generics(sType* type, sInfo* info)
         }
         if(deffer_right_value) {
             result->mDefferRightValue = deffer_right_value || result->mDefferRightValue;
-        }
-        if(exception_) {
-            result->mException = exception_;
         }
         if(guard_) {
             result->mGuardValue = guard_ || result->mGuardValue;

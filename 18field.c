@@ -1135,9 +1135,6 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 
                 node = new sStoreFieldNode(node, right_node, field_name, info) implements sNode;
             }
-            else if(field_name === "expect") {
-                node = parse_expect_method_call(clone node, info);
-            }
             else if(!gComeC && (*info->p == '(' || *info->p == '{' || parse_method_generics_type)) {
                 if(field_name === "if") 
                 {
@@ -1151,9 +1148,6 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
                 }
                 else if(field_name === "less") {
                     node = parse_less_method_call(clone node, info);
-                }
-                else if(field_name === "rescue") {
-                    node = parse_rescue_method_call(clone node, info);
                 }
                 else {
                     node = parse_method_call(clone node, field_name, info);

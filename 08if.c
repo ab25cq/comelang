@@ -38,20 +38,7 @@ class sIfNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        bool existance_of_result_value = true;
-        {
-            if(!self.mIfBlock.mOmitSemicolon) {
-                existance_of_result_value = false;
-            }
-            for(int i=0; i<self.mElifNum; i++) {
-                if(!self.mElifBlocks[i].mOmitSemicolon) {
-                    existance_of_result_value = false;
-                }
-            }
-            if(self.mElseBlock && !self.mElseBlock.mOmitSemicolon) {
-                existance_of_result_value = false;
-            }
-        }
+        bool existance_of_result_value = false;
         
         if(info.comma_instead_of_semicolon) {
             err_msg(info, "In conditional operator comelang can't use if statment");
@@ -61,19 +48,6 @@ class sIfNode extends sNodeBase
         sBlock* else_block = self.mElseBlock;
         int elif_num = self.mElifNum;
         bool guard_ = self.mGuard;
-        
-        string if_result_var_name = info.if_result_var_name;
-        if(existance_of_result_value) {
-            sType*% if_result_type = new sType(s"void*");
-            
-            static int var_num = 0;
-            info->if_result_var_name = xsprintf("__if_result__%d", var_num++);
-            
-            add_variable_to_table(info->if_result_var_name, clone if_result_type, info, false@function_param);
-            
-            sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
-            add_come_code_at_function_head(info, "%s = (void*)0;\n", make_define_var(var_->mType, var_->mCValueName));
-        }
         
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
@@ -160,25 +134,6 @@ class sIfNode extends sNodeBase
         
         transpiler_clear_last_code(info);
         
-        if(existance_of_result_value) {
-            sVar* var_ = get_variable_from_table(info.lv_table, info->if_result_var_name);
-            
-            assert(var_ != null);
-            
-            sNode*% result_node = create_load_var(info->if_result_var_name);
-            result_node = cast_node(clone var_->mType, result_node);
-            
-            node_compile(result_node, info).elif {
-                return false;
-            }
-            CVALUE*% come_value2 = get_value_from_stack(-1, info);
-            
-            come_value2->type = clone var_->mType;
-            
-            info.stack.push_back(come_value2);
-        }
-        info.if_result_var_name = if_result_var_name;
-        
         return true;
     }
 };
@@ -223,17 +178,6 @@ class sMatchNode extends sNodeBase
             return false;
         }
         
-        if(info->if_result_var_name) {
-            sVar* var_ = get_variable_from_table(info->lv_table, info->if_result_var_name);
-        
-            assert(var_ != null);
-        
-            if(info->match_it_var == null) {
-                info->match_it_var = new list<sVar*%>();
-            }
-            info->match_it_var.add(clone var_);
-        }
-        
         return true;
     }
 };
@@ -276,17 +220,6 @@ class sIfMethodNode extends sNodeBase
         
         node_compile(match_node, info).elif {
             return false;
-        }
-        
-        if(info->if_result_var_name) {
-            sVar* var_ = get_variable_from_table(info->lv_table, info->if_result_var_name);
-        
-            assert(var_ != null);
-        
-            if(info->match_it_var == null) {
-                info->match_it_var = new list<sVar*%>();
-            }
-            info->match_it_var.add(clone var_);
         }
         
         return true;
@@ -845,203 +778,5 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
     return result;
 }
 
-sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info)
-{
-    string sname = clone info->sname;
-    int sline = info->sline;
-    
-    sNode*% it_node = store_var(s"Value", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
-    sNode*% value_node = create_load_var("Value", info);
-    
-    sNode*% conditional_node = load_field(value_node, s"v2");
-    sNode*% conditional_node2 = craete_logical_denial(conditional_node, info);
-    
-    parse_sharp();
 
-    sBlock*% if_block = parse_block();
-    
-    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
 
-    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
-
-    int elif_num = 0;
-
-    sBlock*% else_block = null;
-
-    while(1) {
-        char* saved_p = info->p;
-        int saved_sline = info->sline;
-        parse_sharp();
-        
-        if(*info->p == ';') {
-            info->p++;
-            skip_spaces_and_lf();
-        }
-
-        /// else ///
-        if(!(xisalpha(*info->p) || *info->p == '_')) {
-            break;
-        }
-        parse_sharp();
-        string buf = parse_word();
-        parse_sharp();
-
-        if(buf === "else") {
-            if(parsecmp("if", info)) {
-                parse_sharp();
-                info->p+=strlen("if");
-                skip_spaces_and_lf();
-                parse_sharp();
-
-                expected_next_character('(');
-
-                /// expression ///
-                sNode*% expression_node = expression();
-                
-                elif_expression_nodes.push_back(expression_node);
-
-                expected_next_character(')');
-                parse_sharp();
-
-                
-                sBlock*% elif_block = parse_block();
-                
-                elif_blocks.push_back(elif_block);
-
-                elif_num++;
-            }
-            else {
-                else_block = parse_block();
-                break;
-            }
-        }
-        else {
-            info->p = saved_p;
-            info->sline = saved_sline;
-            break;
-        }
-    };
-    
-    if(else_block == null) {
-        else_block = new sBlock();
-        else_block.mOmitSemicolon = true;
-        
-        sNode*% node = load_field(value_node, s"v1");
-        
-        else_block.mNodes.push_back(node);
-    }
-
-    sNode*% result = new sIfMethodNode(it_node, new sIfNode(conditional_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
-    
-    return result;
-}
-
-sNode*% parse_expect_method_call(sNode*% expression_node, sInfo* info)
-{
-    string sname = clone info->sname;
-    int sline = info->sline;
-    
-    sNode*% it_node = store_var(s"Value", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
-    sNode*% value_node = create_load_var("Value", info);
-    
-    sNode*% conditional_node = load_field(value_node, s"v2");
-    sNode*% conditional_node2 = craete_logical_denial(conditional_node, info);
-    
-    parse_sharp();
-    
-    buffer*% buf = xsprintf("{ puts(\"%s %d: exception\"); exit(39); 39 }\n", info->sname, info->sline).to_buffer();
-    
-    char* p = info.p;
-    
-    buffer*% source = info.source;
-    char* head = info.head;
-    char* p = info.p;
-    int sline = info.sline;
-    
-    info.source = buf;
-    info.head = info.source.to_string();
-    info.p = info.head;
-    info.sline = 0;
-
-    sBlock*% if_block = parse_block();
-    
-    info.source = source;
-    info.head = head;
-    info.p = p;
-    info.sline = sline;
-    
-    list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
-
-    list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
-
-    int elif_num = 0;
-
-    sBlock*% else_block = null;
-
-    while(1) {
-        char* saved_p = info->p;
-        int saved_sline = info->sline;
-        parse_sharp();
-        
-        if(*info->p == ';') {
-            info->p++;
-            skip_spaces_and_lf();
-        }
-
-        /// else ///
-        if(!(xisalpha(*info->p) || *info->p == '_')) {
-            break;
-        }
-        parse_sharp();
-        string buf = parse_word();
-        parse_sharp();
-
-        if(buf === "else") {
-            if(parsecmp("if", info)) {
-                parse_sharp();
-                info->p+=strlen("if");
-                skip_spaces_and_lf();
-                parse_sharp();
-
-                expected_next_character('(');
-
-                /// expression ///
-                sNode*% expression_node = expression();
-                
-                elif_expression_nodes.push_back(expression_node);
-
-                expected_next_character(')');
-                parse_sharp();
-
-                
-                sBlock*% elif_block = parse_block();
-                
-                elif_blocks.push_back(elif_block);
-
-                elif_num++;
-            }
-            else {
-                else_block = parse_block();
-                break;
-            }
-        }
-        else {
-            info->p = saved_p;
-            info->sline = saved_sline;
-            break;
-        }
-    };
-    
-    if(else_block == null) {
-        else_block = new sBlock();
-        else_block.mOmitSemicolon = true;
-        
-        sNode*% node = load_field(value_node, s"v1");
-        
-        else_block.mNodes.push_back(node);
-    }
-
-    sNode*% result = new sIfMethodNode(it_node, new sIfNode(conditional_node2, if_block, elif_expression_nodes, elif_blocks, elif_num, else_block, false@guard, info) implements sNode, info) implements sNode;
-    
-    return result;
-}

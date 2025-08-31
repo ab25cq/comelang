@@ -795,7 +795,7 @@ uniq class sCurrentNode extends sNodeBase
 /// 02transpile.c ///
 /////////////////////////////////////////////////////////////////////
 void transpile_conditional_with_free_right_object_value(CVALUE*% condtional_value, sInfo* info=info);
-exception int err_msg(sInfo* info, char* msg, ...);
+int err_msg(sInfo* info, char* msg, ...);
 int expected_next_character(char c, sInfo* info=info);;
 bool node_compile(sNode* node, sInfo* info=info);
 bool node_condional_compile(sNode* node, sInfo* info=info);
@@ -955,8 +955,6 @@ void add_variable_to_global_table_with_int_value(char* name, sType*% type, char*
 /////////////////////////////////////////////////////////////////////
 /// 08if.c
 /////////////////////////////////////////////////////////////////////
-sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info);
-sNode*% parse_expect_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_match(sNode*% expression_node, sInfo* info);
 
 sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 8;
@@ -965,7 +963,6 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info);
 sNode*% parse_or_statment(sNode*% expression_node, sInfo* info);
 sNode*% parse_and_statment(sNode*% expression_node, sInfo* info);
-sNode*% parse_rescue_method_call(sNode*% expression_node, sInfo* info);
 
 /////////////////////////////////////////////////////////////////////
 /// 09while.c

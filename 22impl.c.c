@@ -1741,12 +1741,6 @@ struct sCurrentNode
     int sline_real;
 };
 
-struct tuple2$2int$bool$
-{
-    int v1;
-    _Bool v2;
-};
-
 struct tuple2$2sType$phchar$ph
 {
     struct sType* v1;
@@ -2508,7 +2502,7 @@ char* sCurrentNode_sname(struct sCurrentNode* self, struct sInfo* info);
 char* sCurrentNode_kind(struct sCurrentNode* self);
 _Bool sCurrentNode_compile(struct sCurrentNode* self, struct sInfo* info);
 void transpile_conditional_with_free_right_object_value(struct CVALUE* condtional_value, struct sInfo* info);
-struct tuple2$2int$bool$* err_msg(struct sInfo* info, char* msg, ...);
+int err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
@@ -2640,7 +2634,6 @@ struct sNode* string_node_v7(char* buf, char* head, int head_sline, struct sInfo
 void add_variable_to_table(char* name, struct sType* type, struct sInfo* info, _Bool function_param, _Bool comma);
 void add_variable_to_global_table(char* name, struct sType* type, struct sInfo* info);
 void add_variable_to_global_table_with_int_value(char* name, struct sType* type, char* c_value, struct sInfo* info);
-struct sNode* parse_expect_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_match(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v8(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* parse_if_method_call(struct sNode* expression_node, struct sInfo* info);
@@ -2648,7 +2641,6 @@ struct sNode* parse_less_method_call(struct sNode* expression_node, struct sInfo
 struct sNode* parse_elif_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_or_statment(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_and_statment(struct sNode* expression_node, struct sInfo* info);
-struct sNode* parse_rescue_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
@@ -2712,7 +2704,6 @@ struct sNode* top_level_v93(char* buf, char* head, int head_sline, struct sInfo*
 static struct list$1char$ph* list$1char$ph_reset(struct list$1char$ph* self);
 static void list_item$1char$ph$p_finalize(struct list_item$1char$ph* self);
 static struct list$1char$ph* list$1char$ph_push_back(struct list$1char$ph* self, char* item);
-static void tuple2$2int$bool$$p_finalize(struct tuple2$2int$bool$* self);
 static void sType_finalize(struct sType* self);
 static void list$1sType$ph$p_finalize(struct list$1sType$ph* self);
 static void list_item$1sType$ph$p_finalize(struct list_item$1sType$ph* self);
@@ -2730,31 +2721,29 @@ char* word;
 void* __right_value1 = (void*)0;
 char* generics_name;
 void* __right_value5 = (void*)0;
-void* __right_value6 = (void*)0;
 int pointer_num;
+void* __right_value6 = (void*)0;
 void* __right_value7 = (void*)0;
-void* __right_value8 = (void*)0;
 struct sType* __dec_obj4;
 char* head_2;
-void* __right_value9 = (void*)0;
+void* __right_value8 = (void*)0;
 char* buf_3;
-void* __right_value10 = (void*)0;
+void* __right_value9 = (void*)0;
 struct sNode* node;
 struct sType* impl_type;
 struct sType* __dec_obj5;
 _Bool Value;
-void* __right_value11 = (void*)0;
 struct sType* __dec_obj6;
 struct sType* __dec_obj7;
 char* source_tail;
-void* __right_value12 = (void*)0;
-void* __right_value13 = (void*)0;
+void* __right_value10 = (void*)0;
+void* __right_value11 = (void*)0;
 struct buffer* header;
-void* __right_value14 = (void*)0;
+void* __right_value12 = (void*)0;
 char* anonymous_name;
-void* __right_value15 = (void*)0;
+void* __right_value13 = (void*)0;
 struct sNode* __result_obj__3;
-void* __right_value16 = (void*)0;
+void* __right_value14 = (void*)0;
 struct sNode* __result_obj__4;
     if(    !gComeC&&charp_operator_equals(buf,"impl")    ) {
         source_head=info->p;
@@ -2777,8 +2766,7 @@ struct sNode* __result_obj__4;
                     break;
                 }
                 else {
-                    ((struct tuple2$2int$bool$*)(__right_value6=err_msg(info,"invalid character on impl (%c)",*info->p)));
-                    come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value6, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+                    err_msg(info,"invalid character on impl (%c)",*info->p);
                     exit(2);
                 }
                 (generics_name = come_decrement_ref_count(generics_name, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -2814,8 +2802,7 @@ struct sNode* __result_obj__4;
             if(            node!=((void*)0)            ) {
                 Value=node_compile(node,info);
                 if(                !Value                ) {
-                    ((struct tuple2$2int$bool$*)(__right_value11=err_msg(info,"compiling is faield(Y)")));
-                    come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value11, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+                    err_msg(info,"compiling is faield(Y)");
                     exit(2);
                 }
                 else {
@@ -2841,8 +2828,8 @@ struct sNode* __result_obj__4;
         if(        info->output_header_file        ) {
             static int n=0;
             anonymous_name=(char*)come_increment_ref_count(xsprintf("annymous_impl_name_%d",n++));
-            add_come_code_at_come_header(info,anonymous_name,"impl %s\n",((char*)(__right_value15=buffer_to_string(header))));
-            (__right_value15 = come_decrement_ref_count(__right_value15, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+            add_come_code_at_come_header(info,anonymous_name,"impl %s\n",((char*)(__right_value13=buffer_to_string(header))));
+            (__right_value13 = come_decrement_ref_count(__right_value13, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
             (anonymous_name = come_decrement_ref_count(anonymous_name, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
         }
         __result_obj__3 = (struct sNode*)come_increment_ref_count((struct sNode*)((void*)0));
@@ -2853,8 +2840,8 @@ struct sNode* __result_obj__4;
         (word = come_decrement_ref_count(word, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
         come_call_finalizer(buffer_finalize, header, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
-    __result_obj__4 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value16=top_level_v92(buf,head,head_sline,info))));
-    ((__right_value16) ? __right_value16 = come_decrement_ref_count(__right_value16, ((struct sNode*)__right_value16)->finalize, ((struct sNode*)__right_value16)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
+    __result_obj__4 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value14=top_level_v92(buf,head,head_sline,info))));
+    ((__right_value14) ? __right_value14 = come_decrement_ref_count(__right_value14, ((struct sNode*)__right_value14)->finalize, ((struct sNode*)__right_value14)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
     ((__result_obj__4) ? __result_obj__4 = come_decrement_ref_count(__result_obj__4, ((struct sNode*)__result_obj__4)->finalize, ((struct sNode*)__result_obj__4)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
     return __result_obj__4;
 }
@@ -2927,9 +2914,6 @@ struct list$1char$ph* __result_obj__2;
     __result_obj__2 = self;
     (item = come_decrement_ref_count(item, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     return __result_obj__2;
-}
-
-static void tuple2$2int$bool$$p_finalize(struct tuple2$2int$bool$* self){
 }
 
 static void sType_finalize(struct sType* self){

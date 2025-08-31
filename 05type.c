@@ -50,7 +50,6 @@ bool is_type_name(char* buf, sInfo* info=info)
         || (buf === "mutable")
         || buf === "_task"
         || (buf === "tup" && (*info->p == ':' || *info->p == '('))
-        || (info.in_top_level && buf === "exception") 
         || (info.in_top_level && buf === "record") 
         || (info.in_top_level && buf === "uniq") ;
     }
@@ -292,8 +291,6 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             if(left_type2->mClass->mName === "void") {
             }
             else if(left_type2->mClass->mName === "lambda") {
-            }
-            else if(left_type2->mException) {
             }
             else if(left_no_solved_generics_type && right_no_solved_generics_type && (left_no_solved_generics_type.mGenericsTypes.length() > 0 || right_no_solved_generics_type->mGenericsTypes.length() > 0))
             {
@@ -1063,7 +1060,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     string type_name = parse_word();
     
     bool record_ = false;
-    bool exception_ = false;
     bool constant = false;
     bool static_ = false;
     bool volatile_ = false;
@@ -1219,11 +1215,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         }
         else if(type_name === "record") {
             record_ = true;
-            
-            type_name = parse_word();
-        }
-        else if(type_name === "exception") {
-            exception_ = true;
             
             type_name = parse_word();
         }
@@ -2053,7 +2044,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mRecord = result_type->mRecord || record_;
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
-        result_type->mException = result_type->mException || exception_;
         result_type->mExtern = result_type->mExtern || extern_;
         result_type->mInline = result_type->mInline || inline_;
         result_type->mRestrict = result_type->mRestrict || restrict_;
@@ -2107,7 +2097,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mUniq = type->mUniq || uniq_;
         type->mStatic = (type->mStatic || static_) && !type->mUniq;
         type->mRecord = type->mRecord || record_;
-        type->mException = type->mException || exception_;
         type->mExtern = type->mExtern || extern_;
         type->mInline = type->mInline || inline_;
         type->mRestrict = type->mRestrict || restrict_;
@@ -2194,7 +2183,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         result_type->mUniq = result_type->mUniq || uniq_;
         result_type->mStatic = (result_type->mStatic || static_) && !result_type->mUniq;
         result_type->mRecord = result_type->mRecord || record_;
-        result_type->mException = result_type->mException || exception_;
         result_type->mExtern = result_type->mExtern || extern_;
         result_type->mInline = result_type->mInline || inline_;
         result_type->mRestrict = result_type->mRestrict || restrict_;
@@ -2339,7 +2327,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
-            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2371,7 +2358,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
-            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2403,7 +2389,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
-            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2476,7 +2461,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
-            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2521,7 +2505,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             type->mUniq = type->mUniq || uniq_;
             type->mStatic = (type->mStatic || static_) && !type->mUniq;
             type->mRecord = type->mRecord || record_;
-            type->mException = type->mException || exception_;
             type->mExtern = type->mExtern || extern_;
             type->mInline = type->mInline || inline_;
             type->mRestrict = type->mRestrict || restrict_;
@@ -2835,24 +2818,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         type->mArrayNum = [ create_int_node(2@value, info) ];
         type->mChannelType = type_before;
         type->mChannel = true;
-    }
-    else if(type->mException) {
-        sType*% type2 = new sType(s"tuple2");
-        type2->mGenericsTypes[0] = new sType(s"__generics_type0");
-        type2->mGenericsTypes[1] = new sType(s"__generics_type1");
-        type2->mPointerNum = 1;
-        type2->mHeap = true;
-        
-        sType*% type3 = new sType(s"tuple2");
-        type3->mGenericsTypes[0] = type;
-        type3->mGenericsTypes[1] = new sType(s"bool");
-        
-        sType*% type4 = solve_generics(type2,  type3, info);
-        
-        type4->mException = true;
-        type4->mUniq = type->mUniq;
-        
-        return (type4, var_name, true);
     }
     
     if(attribute !== "") {

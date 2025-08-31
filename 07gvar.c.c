@@ -1741,12 +1741,6 @@ struct sCurrentNode
     int sline_real;
 };
 
-struct tuple2$2int$bool$
-{
-    int v1;
-    _Bool v2;
-};
-
 struct tuple2$2sType$phchar$ph
 {
     struct sType* v1;
@@ -2559,7 +2553,7 @@ char* sCurrentNode_sname(struct sCurrentNode* self, struct sInfo* info);
 char* sCurrentNode_kind(struct sCurrentNode* self);
 _Bool sCurrentNode_compile(struct sCurrentNode* self, struct sInfo* info);
 void transpile_conditional_with_free_right_object_value(struct CVALUE* condtional_value, struct sInfo* info);
-struct tuple2$2int$bool$* err_msg(struct sInfo* info, char* msg, ...);
+int err_msg(struct sInfo* info, char* msg, ...);
 int expected_next_character(char c, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
@@ -2690,7 +2684,6 @@ struct sNode* string_node_v7(char* buf, char* head, int head_sline, struct sInfo
 void add_variable_to_table(char* name, struct sType* type, struct sInfo* info, _Bool function_param, _Bool comma);
 void add_variable_to_global_table(char* name, struct sType* type, struct sInfo* info);
 void add_variable_to_global_table_with_int_value(char* name, struct sType* type, char* c_value, struct sInfo* info);
-struct sNode* parse_expect_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_match(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v8(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* parse_if_method_call(struct sNode* expression_node, struct sInfo* info);
@@ -2698,7 +2691,6 @@ struct sNode* parse_less_method_call(struct sNode* expression_node, struct sInfo
 struct sNode* parse_elif_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_or_statment(struct sNode* expression_node, struct sInfo* info);
 struct sNode* parse_and_statment(struct sNode* expression_node, struct sInfo* info);
-struct sNode* parse_rescue_method_call(struct sNode* expression_node, struct sInfo* info);
 struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
@@ -2828,7 +2820,6 @@ static struct list$1tuple3$3sType$phchar$phchar$ph$ph* list$1tuple3$3sType$phcha
 static struct tuple3$3sType$phchar$phchar$ph* tuple3$3sType$phchar$phchar$ph_initialize(struct tuple3$3sType$phchar$phchar$ph* self, struct sType* v1, char* v2, char* v3);
 static struct tuple3$3sType$phchar$phvoid$p* tuple3$3sType$phchar$phvoid$p_initialize(struct tuple3$3sType$phchar$phvoid$p* self, struct sType* v1, char* v2, void* v3);
 static void tuple3$3sType$phchar$phvoid$p$p_finalize(struct tuple3$3sType$phchar$phvoid$p* self);
-static void tuple2$2int$bool$$p_finalize(struct tuple2$2int$bool$* self);
 static struct sExternalGlobalVariable* sExternalGlobalVariable_clone(struct sExternalGlobalVariable* self);
 static struct sGlobalVariable* sGlobalVariable_clone(struct sGlobalVariable* self);
 // uniq global variable
@@ -4960,47 +4951,44 @@ void* __right_value178 = (void*)0;
 char* var_name2;
 void* __right_value179 = (void*)0;
 void* __right_value180 = (void*)0;
-void* __right_value181 = (void*)0;
 struct sNode* _inf_value1;
 struct sExternalGlobalVariable* _inf_obj_value1;
-void* __right_value187 = (void*)0;
+void* __right_value186 = (void*)0;
 struct sNode* __result_obj__74;
+void* __right_value187 = (void*)0;
 void* __right_value188 = (void*)0;
-void* __right_value189 = (void*)0;
 struct sNode* _inf_value2;
 struct sGlobalVariable* _inf_obj_value2;
-void* __right_value197 = (void*)0;
+void* __right_value196 = (void*)0;
 struct sNode* __result_obj__77;
-void* __right_value198 = (void*)0;
+void* __right_value197 = (void*)0;
 struct tuple3$3sType$phchar$phbool$* multiple_assign_var8 = (void*)0;
 struct sType* result_type=0;
 char* var_name_55=0;
 _Bool err_56=0;
 struct sNode* right_node_57;
 char* array_initializer_58;
+void* __right_value198 = (void*)0;
 void* __right_value199 = (void*)0;
-void* __right_value200 = (void*)0;
 struct buffer* buf_59;
 _Bool squort;
 _Bool dquort;
 int nest;
-void* __right_value201 = (void*)0;
-void* __right_value202 = (void*)0;
+void* __right_value200 = (void*)0;
 char* __dec_obj60;
-void* __right_value203 = (void*)0;
+void* __right_value201 = (void*)0;
 struct sNode* __dec_obj61;
-void* __right_value204 = (void*)0;
-void* __right_value205 = (void*)0;
-void* __right_value206 = (void*)0;
+void* __right_value202 = (void*)0;
+void* __right_value203 = (void*)0;
 struct sNode* _inf_value3;
 struct sExternalGlobalVariable* _inf_obj_value3;
-void* __right_value207 = (void*)0;
+void* __right_value204 = (void*)0;
 struct sNode* __result_obj__78;
-void* __right_value208 = (void*)0;
-void* __right_value209 = (void*)0;
+void* __right_value205 = (void*)0;
+void* __right_value206 = (void*)0;
 struct sNode* _inf_value4;
 struct sGlobalVariable* _inf_obj_value4;
-void* __right_value210 = (void*)0;
+void* __right_value207 = (void*)0;
 struct sNode* __result_obj__79;
 struct sNode* __result_obj__80;
     multiple_declare=(_Bool)0;
@@ -5154,12 +5142,11 @@ struct sNode* __result_obj__80;
         var_name2=(char*)come_increment_ref_count(__builtin_string(""));
         if(        base_type->mExtern        ) {
             if(            right_node            ) {
-                ((struct tuple2$2int$bool$*)(__right_value179=err_msg(info,"invalid right value")));
-                come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value179, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+                err_msg(info,"invalid right value");
                 exit(2);
             }
             _inf_value1=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "07gvar.c", 405, "struct sNode");
-            _inf_obj_value1=(struct sExternalGlobalVariable*)come_increment_ref_count(((struct sExternalGlobalVariable*)(__right_value181=sExternalGlobalVariable_initialize((struct sExternalGlobalVariable*)come_increment_ref_count((struct sExternalGlobalVariable*)come_calloc_v2(1, sizeof(struct sExternalGlobalVariable)*(1), "07gvar.c", 405, "struct sExternalGlobalVariable*")),(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count(multiple_declare_36),base_type,(char*)come_increment_ref_count(var_name2),info))));
+            _inf_obj_value1=(struct sExternalGlobalVariable*)come_increment_ref_count(((struct sExternalGlobalVariable*)(__right_value180=sExternalGlobalVariable_initialize((struct sExternalGlobalVariable*)come_increment_ref_count((struct sExternalGlobalVariable*)come_calloc_v2(1, sizeof(struct sExternalGlobalVariable)*(1), "07gvar.c", 405, "struct sExternalGlobalVariable*")),(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count(multiple_declare_36),base_type,(char*)come_increment_ref_count(var_name2),info))));
             _inf_value1->_protocol_obj=_inf_obj_value1;
             _inf_value1->finalize=(void*)sExternalGlobalVariable_finalize;
             _inf_value1->clone=(void*)sExternalGlobalVariable_clone;
@@ -5170,7 +5157,7 @@ struct sNode* __result_obj__80;
             _inf_value1->terminated=(void*)sNodeBase_terminated;
             _inf_value1->kind=(void*)sExternalGlobalVariable_kind;
             _inf_value1->no_mutex=(void*)sNodeBase_no_mutex;
-            __result_obj__74 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value187=_inf_value1)));
+            __result_obj__74 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value186=_inf_value1)));
             come_call_finalizer(list$1tuple3$3sType$phchar$phchar$ph$ph$p_finalize, multiple_declare_36, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             come_call_finalizer(sType_finalize, base_type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (name_37 = come_decrement_ref_count(name_37, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -5179,14 +5166,14 @@ struct sNode* __result_obj__80;
             ((right_node) ? right_node = come_decrement_ref_count(right_node, ((struct sNode*)right_node)->finalize, ((struct sNode*)right_node)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             (array_initializer = come_decrement_ref_count(array_initializer, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             (var_name2 = come_decrement_ref_count(var_name2, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-            come_call_finalizer(sExternalGlobalVariable_finalize, __right_value181, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-            ((__right_value187) ? __right_value187 = come_decrement_ref_count(__right_value187, ((struct sNode*)__right_value187)->finalize, ((struct sNode*)__right_value187)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
+            come_call_finalizer(sExternalGlobalVariable_finalize, __right_value180, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+            ((__right_value186) ? __right_value186 = come_decrement_ref_count(__right_value186, ((struct sNode*)__right_value186)->finalize, ((struct sNode*)__right_value186)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__74) ? __result_obj__74 = come_decrement_ref_count(__result_obj__74, ((struct sNode*)__result_obj__74)->finalize, ((struct sNode*)__result_obj__74)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__74;
         }
         else {
             _inf_value2=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "07gvar.c", 408, "struct sNode");
-            _inf_obj_value2=(struct sGlobalVariable*)come_increment_ref_count(((struct sGlobalVariable*)(__right_value189=sGlobalVariable_initialize((struct sGlobalVariable*)come_increment_ref_count((struct sGlobalVariable*)come_calloc_v2(1, sizeof(struct sGlobalVariable)*(1), "07gvar.c", 408, "struct sGlobalVariable*")),(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count(multiple_declare_36),base_type,(char*)come_increment_ref_count(var_name2),(struct sNode*)come_increment_ref_count(right_node),(char*)come_increment_ref_count(array_initializer),info))));
+            _inf_obj_value2=(struct sGlobalVariable*)come_increment_ref_count(((struct sGlobalVariable*)(__right_value188=sGlobalVariable_initialize((struct sGlobalVariable*)come_increment_ref_count((struct sGlobalVariable*)come_calloc_v2(1, sizeof(struct sGlobalVariable)*(1), "07gvar.c", 408, "struct sGlobalVariable*")),(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count(multiple_declare_36),base_type,(char*)come_increment_ref_count(var_name2),(struct sNode*)come_increment_ref_count(right_node),(char*)come_increment_ref_count(array_initializer),info))));
             _inf_value2->_protocol_obj=_inf_obj_value2;
             _inf_value2->finalize=(void*)sGlobalVariable_finalize;
             _inf_value2->clone=(void*)sGlobalVariable_clone;
@@ -5197,7 +5184,7 @@ struct sNode* __result_obj__80;
             _inf_value2->terminated=(void*)sNodeBase_terminated;
             _inf_value2->kind=(void*)sGlobalVariable_kind;
             _inf_value2->no_mutex=(void*)sNodeBase_no_mutex;
-            __result_obj__77 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value197=_inf_value2)));
+            __result_obj__77 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value196=_inf_value2)));
             come_call_finalizer(list$1tuple3$3sType$phchar$phchar$ph$ph$p_finalize, multiple_declare_36, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             come_call_finalizer(sType_finalize, base_type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (name_37 = come_decrement_ref_count(name_37, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -5206,8 +5193,8 @@ struct sNode* __result_obj__80;
             ((right_node) ? right_node = come_decrement_ref_count(right_node, ((struct sNode*)right_node)->finalize, ((struct sNode*)right_node)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             (array_initializer = come_decrement_ref_count(array_initializer, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             (var_name2 = come_decrement_ref_count(var_name2, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-            come_call_finalizer(sGlobalVariable_finalize, __right_value189, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-            ((__right_value197) ? __right_value197 = come_decrement_ref_count(__right_value197, ((struct sNode*)__right_value197)->finalize, ((struct sNode*)__right_value197)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
+            come_call_finalizer(sGlobalVariable_finalize, __right_value188, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+            ((__right_value196) ? __right_value196 = come_decrement_ref_count(__right_value196, ((struct sNode*)__right_value196)->finalize, ((struct sNode*)__right_value196)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__77) ? __result_obj__77 = come_decrement_ref_count(__result_obj__77, ((struct sNode*)__result_obj__77)->finalize, ((struct sNode*)__result_obj__77)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__77;
         }
@@ -5222,11 +5209,11 @@ struct sNode* __result_obj__80;
     }
     else {
         parse_sharp_v5(info);
-        multiple_assign_var8=((struct tuple3$3sType$phchar$phbool$*)(__right_value198=parse_type(info,(_Bool)1,(_Bool)1,(_Bool)0)));
+        multiple_assign_var8=((struct tuple3$3sType$phchar$phbool$*)(__right_value197=parse_type(info,(_Bool)1,(_Bool)1,(_Bool)0)));
         result_type=(struct sType*)come_increment_ref_count(multiple_assign_var8->v1);
         var_name_55=(char*)come_increment_ref_count(multiple_assign_var8->v2);
         err_56=multiple_assign_var8->v3;
-        come_call_finalizer(tuple3$3sType$phchar$phbool$$p_finalize, __right_value198, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+        come_call_finalizer(tuple3$3sType$phchar$phbool$$p_finalize, __right_value197, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
         parse_sharp_v5(info);
         if(        !err_56        ) {
             printf("%s %d: parse_type failed\n",info->sname,info->sline);
@@ -5246,8 +5233,7 @@ struct sNode* __result_obj__80;
                 nest=1;
                 while(                1                ) {
                     if(                    *info->p==0                    ) {
-                        ((struct tuple2$2int$bool$*)(__right_value201=err_msg(info,"unexpected source end in array initiailizer")));
-                        come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value201, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+                        err_msg(info,"unexpected source end in array initiailizer");
                         exit(2);
                     }
                     else if(                    *info->p==92                    ) {
@@ -5315,12 +5301,11 @@ struct sNode* __result_obj__80;
         }
         if(        result_type->mExtern        ) {
             if(            right_node_57            ) {
-                ((struct tuple2$2int$bool$*)(__right_value204=err_msg(info,"invalid right value")));
-                come_call_finalizer(tuple2$2int$bool$$p_finalize, __right_value204, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+                err_msg(info,"invalid right value");
                 exit(2);
             }
             _inf_value3=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "07gvar.c", 507, "struct sNode");
-            _inf_obj_value3=(struct sExternalGlobalVariable*)come_increment_ref_count(((struct sExternalGlobalVariable*)(__right_value206=sExternalGlobalVariable_initialize((struct sExternalGlobalVariable*)come_increment_ref_count((struct sExternalGlobalVariable*)come_calloc_v2(1, sizeof(struct sExternalGlobalVariable)*(1), "07gvar.c", 507, "struct sExternalGlobalVariable*")),((void*)0),result_type,(char*)come_increment_ref_count(var_name_55),info))));
+            _inf_obj_value3=(struct sExternalGlobalVariable*)come_increment_ref_count(((struct sExternalGlobalVariable*)(__right_value203=sExternalGlobalVariable_initialize((struct sExternalGlobalVariable*)come_increment_ref_count((struct sExternalGlobalVariable*)come_calloc_v2(1, sizeof(struct sExternalGlobalVariable)*(1), "07gvar.c", 507, "struct sExternalGlobalVariable*")),((void*)0),result_type,(char*)come_increment_ref_count(var_name_55),info))));
             _inf_value3->_protocol_obj=_inf_obj_value3;
             _inf_value3->finalize=(void*)sExternalGlobalVariable_finalize;
             _inf_value3->clone=(void*)sExternalGlobalVariable_clone;
@@ -5331,19 +5316,19 @@ struct sNode* __result_obj__80;
             _inf_value3->terminated=(void*)sNodeBase_terminated;
             _inf_value3->kind=(void*)sExternalGlobalVariable_kind;
             _inf_value3->no_mutex=(void*)sNodeBase_no_mutex;
-            __result_obj__78 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value207=_inf_value3)));
+            __result_obj__78 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value204=_inf_value3)));
             come_call_finalizer(sType_finalize, result_type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (var_name_55 = come_decrement_ref_count(var_name_55, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             ((right_node_57) ? right_node_57 = come_decrement_ref_count(right_node_57, ((struct sNode*)right_node_57)->finalize, ((struct sNode*)right_node_57)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             (array_initializer_58 = come_decrement_ref_count(array_initializer_58, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-            come_call_finalizer(sExternalGlobalVariable_finalize, __right_value206, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-            ((__right_value207) ? __right_value207 = come_decrement_ref_count(__right_value207, ((struct sNode*)__right_value207)->finalize, ((struct sNode*)__right_value207)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
+            come_call_finalizer(sExternalGlobalVariable_finalize, __right_value203, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+            ((__right_value204) ? __right_value204 = come_decrement_ref_count(__right_value204, ((struct sNode*)__right_value204)->finalize, ((struct sNode*)__right_value204)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__78) ? __result_obj__78 = come_decrement_ref_count(__result_obj__78, ((struct sNode*)__result_obj__78)->finalize, ((struct sNode*)__result_obj__78)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__78;
         }
         else {
             _inf_value4=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "07gvar.c", 510, "struct sNode");
-            _inf_obj_value4=(struct sGlobalVariable*)come_increment_ref_count(((struct sGlobalVariable*)(__right_value209=sGlobalVariable_initialize((struct sGlobalVariable*)come_increment_ref_count((struct sGlobalVariable*)come_calloc_v2(1, sizeof(struct sGlobalVariable)*(1), "07gvar.c", 510, "struct sGlobalVariable*")),((void*)0),result_type,(char*)come_increment_ref_count(var_name_55),(struct sNode*)come_increment_ref_count(right_node_57),(char*)come_increment_ref_count(array_initializer_58),info))));
+            _inf_obj_value4=(struct sGlobalVariable*)come_increment_ref_count(((struct sGlobalVariable*)(__right_value206=sGlobalVariable_initialize((struct sGlobalVariable*)come_increment_ref_count((struct sGlobalVariable*)come_calloc_v2(1, sizeof(struct sGlobalVariable)*(1), "07gvar.c", 510, "struct sGlobalVariable*")),((void*)0),result_type,(char*)come_increment_ref_count(var_name_55),(struct sNode*)come_increment_ref_count(right_node_57),(char*)come_increment_ref_count(array_initializer_58),info))));
             _inf_value4->_protocol_obj=_inf_obj_value4;
             _inf_value4->finalize=(void*)sGlobalVariable_finalize;
             _inf_value4->clone=(void*)sGlobalVariable_clone;
@@ -5354,13 +5339,13 @@ struct sNode* __result_obj__80;
             _inf_value4->terminated=(void*)sNodeBase_terminated;
             _inf_value4->kind=(void*)sGlobalVariable_kind;
             _inf_value4->no_mutex=(void*)sNodeBase_no_mutex;
-            __result_obj__79 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value210=_inf_value4)));
+            __result_obj__79 = (struct sNode*)come_increment_ref_count(((struct sNode*)(__right_value207=_inf_value4)));
             come_call_finalizer(sType_finalize, result_type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (var_name_55 = come_decrement_ref_count(var_name_55, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
             ((right_node_57) ? right_node_57 = come_decrement_ref_count(right_node_57, ((struct sNode*)right_node_57)->finalize, ((struct sNode*)right_node_57)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             (array_initializer_58 = come_decrement_ref_count(array_initializer_58, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-            come_call_finalizer(sGlobalVariable_finalize, __right_value209, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
-            ((__right_value210) ? __right_value210 = come_decrement_ref_count(__right_value210, ((struct sNode*)__right_value210)->finalize, ((struct sNode*)__right_value210)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
+            come_call_finalizer(sGlobalVariable_finalize, __right_value206, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
+            ((__right_value207) ? __right_value207 = come_decrement_ref_count(__right_value207, ((struct sNode*)__right_value207)->finalize, ((struct sNode*)__right_value207)->_protocol_obj, 1/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
             ((__result_obj__79) ? __result_obj__79 = come_decrement_ref_count(__result_obj__79, ((struct sNode*)__result_obj__79)->finalize, ((struct sNode*)__result_obj__79)->_protocol_obj, 0/* no_decrement */, 1/*no_free*/,(void*)0):(void*)0);
             return __result_obj__79;
         }
@@ -5490,20 +5475,17 @@ static void tuple3$3sType$phchar$phvoid$p$p_finalize(struct tuple3$3sType$phchar
     }
 }
 
-static void tuple2$2int$bool$$p_finalize(struct tuple2$2int$bool$* self){
-}
-
 static struct sExternalGlobalVariable* sExternalGlobalVariable_clone(struct sExternalGlobalVariable* self){
 struct sExternalGlobalVariable* __result_obj__72;
-void* __right_value182 = (void*)0;
+void* __right_value181 = (void*)0;
 struct sExternalGlobalVariable* result;
-void* __right_value183 = (void*)0;
+void* __right_value182 = (void*)0;
 char* __dec_obj50;
-void* __right_value184 = (void*)0;
+void* __right_value183 = (void*)0;
 struct sType* __dec_obj51;
-void* __right_value185 = (void*)0;
+void* __right_value184 = (void*)0;
 char* __dec_obj52;
-void* __right_value186 = (void*)0;
+void* __right_value185 = (void*)0;
 struct list$1tuple3$3sType$phchar$phchar$ph$ph* __dec_obj53;
 struct sExternalGlobalVariable* __result_obj__73;
     if(    self==(void*)0    ) {
@@ -5544,19 +5526,19 @@ struct sExternalGlobalVariable* __result_obj__73;
 
 static struct sGlobalVariable* sGlobalVariable_clone(struct sGlobalVariable* self){
 struct sGlobalVariable* __result_obj__75;
-void* __right_value190 = (void*)0;
+void* __right_value189 = (void*)0;
 struct sGlobalVariable* result;
-void* __right_value191 = (void*)0;
+void* __right_value190 = (void*)0;
 char* __dec_obj54;
-void* __right_value192 = (void*)0;
+void* __right_value191 = (void*)0;
 struct sType* __dec_obj55;
-void* __right_value193 = (void*)0;
+void* __right_value192 = (void*)0;
 char* __dec_obj56;
-void* __right_value194 = (void*)0;
+void* __right_value193 = (void*)0;
 struct sNode* __dec_obj57;
-void* __right_value195 = (void*)0;
+void* __right_value194 = (void*)0;
 char* __dec_obj58;
-void* __right_value196 = (void*)0;
+void* __right_value195 = (void*)0;
 struct list$1tuple3$3sType$phchar$phchar$ph$ph* __dec_obj59;
 struct sGlobalVariable* __result_obj__76;
     if(    self==(void*)0    ) {
