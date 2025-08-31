@@ -339,6 +339,15 @@ class sListNode extends sNodeBase
             
             params.push_back(come_value);
             
+            if(list_element_type) {
+                if(list_element_type->mHeap != come_value.type->mHeap) {
+                    err_msg(info, "List element type");
+                    exit(2);
+                }
+                else {
+                    check_assign_type(s"List element type", list_element_type, come_value.type, come_value);
+                }
+            }
             list_element_type = clone come_value.type;
             
             n++;
@@ -710,6 +719,16 @@ class sMapNode extends sNodeBase
                 
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
+                if(map_key_type) {
+                    if(map_key_type->mHeap != come_value.type->mHeap) {
+                        err_msg(info, "Map Key type");
+                        exit(2);
+                    }
+                    else {
+                        check_assign_type(s"Map key type", map_key_type, come_value.type, come_value);
+                    }
+                }
+                
                 key_params.push_back(come_value);
                 map_key_type = clone come_value.type;
             }
@@ -721,7 +740,13 @@ class sMapNode extends sNodeBase
                 CVALUE*% come_value = get_value_from_stack(-1, info);
                 
                 if(map_key_type) {
-                    check_assign_type(s"invalid map key type", map_key_type, come_value.type, come_value);
+                    if(map_key_type->mHeap != come_value.type->mHeap) {
+                        err_msg(info, "Map key type");
+                        exit(2);
+                    }
+                    else {
+                        check_assign_type(s"Map key type", map_key_type, come_value.type, come_value);
+                    }
                 }
                 
                 key_params.push_back(come_value);
@@ -751,7 +776,13 @@ class sMapNode extends sNodeBase
                 CVALUE*% come_value2 = get_value_from_stack(-1, info);
                 
                 if(map_element_type) {
-                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
+                    if(map_element_type->mHeap != come_value2.type->mHeap) {
+                        err_msg(info, "Map element type");
+                        exit(2);
+                    }
+                    else {
+                        check_assign_type(s"Map element type", map_element_type, come_value2.type, come_value2);
+                    }
                 }
                 
                 element_params.push_back(come_value2);
@@ -765,7 +796,13 @@ class sMapNode extends sNodeBase
                 CVALUE*% come_value2 = get_value_from_stack(-1, info);
                 
                 if(map_element_type) {
-                    check_assign_type(s"invalid map element type", map_element_type, come_value2.type, come_value2);
+                    if(map_element_type->mHeap != come_value2.type->mHeap) {
+                        err_msg(info, "Map element type");
+                        exit(2);
+                    }
+                    else {
+                        check_assign_type(s"Map element type", map_element_type, come_value2.type, come_value2);
+                    }
                 }
                 
                 element_params.push_back(come_value2);

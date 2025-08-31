@@ -148,12 +148,16 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
    
     sNode*% node = parse_function(info);
     
+    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
+    info.comma_instead_of_semicolon = false;
+    info->comma_instead_of_semicolon = false;
     bool in_method_block = info.in_method_block;
     info.in_method_block = true;
     node_compile(node).elif {
         return false;
     }
     info.in_method_block = in_method_block;
+    info.comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     char*% method_block_name = xsprintf("method_block%d_%s", num_method_block, all_alhabet_sname.to_string());
     

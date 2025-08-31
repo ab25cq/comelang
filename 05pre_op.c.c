@@ -4218,7 +4218,6 @@ _Bool __result_obj__37;
 void* __right_value84 = (void*)0;
 struct CVALUE* left_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value85 = (void*)0;
 void* __right_value86 = (void*)0;
@@ -4237,7 +4236,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     left_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_derefference";
+    char* fun_name="operator_derefference";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
