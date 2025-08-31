@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
     strcmp("A", "B").case {
-        (Value < 0) { puts("Lesser");  }
+        (Value < 0) { puts("Lesser"); }
         (Value == 0) { puts("Equal"); }
         (Value > 0) { puts("Greater"); }
     }
