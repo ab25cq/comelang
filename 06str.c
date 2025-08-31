@@ -63,10 +63,10 @@ class sBufferNode extends sNodeBase
         any_type->mHeap = true;
         
         if(info.funcs["come_calloc_v2"]??) {
-            buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc_v2(1, sizeof(struct buffer), \"%s\", %d, \"buffer\"), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
+            buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc_v2(1, sizeof(struct buffer), \"%s\", %d, \"buffer\")), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
         }
         else {
-            buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\"), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
+            buf.append_format("buffer_initialize_with_value((struct buffer*)come_increment_ref_count(come_calloc(1, sizeof(struct buffer), \"%s\", %d, \"buffer\")), \"%s\", %ld)", info->sname, info->sline, value.to_string(), size);
         }
         
         sType*% type2 = new sType(s"buffer*");
@@ -1217,7 +1217,7 @@ sNode*% expression_node(sInfo* info) version 96
         size_t size = 0;
         while(1) {
             if(*info->p == '"') {
-                value.append_char(*info->p);
+//                value.append_char(*info->p);
                 info->p++;
                 
                 char* p = info->p;

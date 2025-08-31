@@ -2111,7 +2111,7 @@ sNode*% create_implements(sNode*% node, sType*% inf_type, sInfo* info=info)
 
 sNode*% post_position_operator(sNode*% node, sInfo* info) version 21
 {
-    if(!gComeC && parsecmp("implements")) {
+    if(!node->terminated() && !gComeC && parsecmp("implements")) {
         info->p += strlen("implements");
         skip_spaces_and_lf();
         

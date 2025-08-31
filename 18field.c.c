@@ -6494,7 +6494,7 @@ struct sNode* __result_obj__118;
             info->p=p;
             info->sline=sline;
         }
-        if(        range_array&&(*info->p==92&&*(info->p+1)==91||*info->p==91)        ) {
+        if(        !node->terminated(node->_protocol_obj)&&range_array&&(*info->p==92&&*(info->p+1)==91||*info->p==91)        ) {
             quote=*info->p==92;
             if(            quote            ) {
                 info->p++;
@@ -6533,7 +6533,7 @@ struct sNode* __result_obj__118;
             come_call_finalizer(list$1sNode$ph$p_finalize, array_num, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             ((node2) ? node2 = come_decrement_ref_count(node2, ((struct sNode*)node2)->finalize, ((struct sNode*)node2)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
         }
-        else if(        !range_array&&(*info->p==92&&*(info->p+1)==91||*info->p==91)        ) {
+        else if(        !node->terminated(node->_protocol_obj)&&!range_array&&(*info->p==92&&*(info->p+1)==91||*info->p==91)        ) {
             quote_53=*info->p==92;
             if(            quote_53            ) {
                 info->p++;
@@ -6638,12 +6638,12 @@ struct sNode* __result_obj__118;
             }
             come_call_finalizer(list$1sNode$ph$p_finalize, array_num_54, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         }
-        else if(        *info->p==63&&*(info->p+1)==63        ) {
+        else if(        !node->terminated(node->_protocol_obj)&&*info->p==63&&*(info->p+1)==63        ) {
             info->p+=2;
             skip_spaces_and_lf(info);
             parse_sharp_v5(info);
         }
-        else if(        (*info->p==46&&*(info->p+1)!=46)||(*info->p==45&&*(info->p+1)==62)        ) {
+        else if(        !node->terminated(node->_protocol_obj)&&(*info->p==46&&*(info->p+1)!=46)||(*info->p==45&&*(info->p+1)==62)        ) {
             if(            *info->p==46            ) {
                 info->p++;
                 skip_spaces_and_lf(info);

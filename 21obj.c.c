@@ -10125,7 +10125,7 @@ void* __right_value639 = (void*)0;
 struct sNode* __result_obj__270;
 void* __right_value640 = (void*)0;
 struct sNode* __result_obj__271;
-    if(    !gComeC&&parsecmp("implements",info)    ) {
+    if(    !node->terminated(node->_protocol_obj)&&!gComeC&&parsecmp("implements",info)    ) {
         info->p+=strlen("implements");
         skip_spaces_and_lf(info);
         multiple_assign_var18=((struct tuple3$3sType$phchar$phbool$*)(__right_value635=parse_type(info,(_Bool)0,(_Bool)0,(_Bool)0)));

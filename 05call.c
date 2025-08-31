@@ -2600,7 +2600,7 @@ sNode*% expression(sInfo* info=info) version 5
 
 static sNode*% post_position_operator_of_statment(sNode*% node, sInfo* info)
 {
-    if(parsecmp("or")) {
+    if(!node->terminated() && parsecmp("or")) {
         info->p += strlen("or");
         skip_spaces_and_lf();
         
@@ -2608,7 +2608,7 @@ static sNode*% post_position_operator_of_statment(sNode*% node, sInfo* info)
         
         return node;
     }
-    else if(parsecmp("and")) {
+    else if(!node->terminated() && parsecmp("and")) {
         info->p += strlen("and");
         skip_spaces_and_lf();
         

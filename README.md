@@ -5,7 +5,7 @@ Another modern Object Oriented C compiler. It has Rerfference Count GC, and incl
 
 もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 60.0.0
+version 70.0.0
 
 ``` C
 #include <comelang.h>
@@ -85,6 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
+70.0.0 Fixed bug, and some function has been removed.
 60.0.0 More compatiblity for C language.
 50.1.0 user finalize and user clone removed. It makes bugs.
 50.0.0 This project may be complete.
@@ -1092,31 +1093,6 @@ int, boolはtuple2<int, bool>*%と同じ意味です。複数の値を返すた�
 tup: int, stringはtuple2<int,string>*%と同じです。list<tuple2<int,string>*%>*%の代わりにlist<int, string>*%は使えませんが、list<tup:int,string>*%は使えます。
 
 tup: int, string is the same as tuple2<int,string>*%. You cannot use list<int, string>*% instead of list<tuple2<int,string>*%>*%, ​​but you can use list<tup:int,string>*%.
-
-named tuple
-
-```C
-    var tup = (x:1, y:2);
-    puts(s"\{tup.x} \{tup.y}");
-```
-
-```C
-int fun(tup(int:xx, int:yy) tup)
-{
-    puts(s"xx \{tup.xx} yy \{tup.yy}");
-}
-
-int main(int argc, char** argv) 
-{
-    var tup = (x:1, y:2);
-    
-    puts(s"\{tup.x} \{tup.y}");
-    
-    fun(tup);
-    
-    return 0;
-}
-```
 
 # buffer
 
@@ -2412,43 +2388,6 @@ int main(int argc, char** argv)
 }
 ```
 
-# User finalize, User clone
-
-version 50.1 REMOVE user_finalze, user_clone. It makes memory bug.
-
-
-```
-#include <comelang.h>
-
-class sData
-{
-    string data;
-    new() {
-        self.data = string("A");
-        initscr();
-    }
-    
-    void user_finalize() {
-        endwin();
-    }
-}
-
-int main(int argc, char** argv)
-{
-    var data = new sData();
-    
-    return 0;
-}
-```
-
-user_finalize is for use to non-memory management routine at finalize.
-
-This is no memory leak.
-
-user_clone is similer.
-
-REMOVE this function.
-
 # uniq
 
 ```
@@ -2523,18 +2462,15 @@ Omitting semicolon at the function block end means return statment.
 
 int main(int argc, char** argv)
 {
-    string x = strcmp("A", "B").case {
-        (Value < 0) { puts("Lesser"); puts("UHO!"); s"AAA" }
-        (Value == 0) { puts("Equal"); s"BBB" }
-        (Value > 0) { puts("Greater"); s"CCC" }
+    strcmp("A", "B").case {
+        (Value < 0) { puts("Lesser");  }
+        (Value == 0) { puts("Equal"); }
+        (Value > 0) { puts("Greater"); }
     }
-    puts(x);
-    string y = strcmp("A", "A").case {
-        (Value == 0) s"Equal" }
-        else s"Not Equal"
+    strcmp("A", "A").case {
+        (Value == 0) puts("Equal"); }
+        else puts("Not Equal");
     }
-    
-    puts(y);
     
     return 0;
 }
@@ -2555,12 +2491,9 @@ char*% fun(int a)
 
 int main(int argc, char** argv)
 {
-    string a = fun(1).case {
-        (Value == null) s"null"
-        else Value + "X"
+    fun(0).elif {
+        puts("null");
     }
-    
-    puts(a);
     
     return 0;
 }
@@ -2581,41 +2514,13 @@ char*% fun(int a)
 
 int main(int argc, char** argv)
 {
-    string a = fun(0).elif {
-        s"null"
+    fun(1).if {
+        puts(Value);
     }
-    
-    puts(a);  // "null"
     
     return 0;
 }
 ```
-
-```C
-#include <comelang.h>
-
-char*% fun(int a)
-{
-    if(a == 0) {
-        return null;
-    }
-    else {
-        return xsprintf("%d", a);
-    }
-}
-
-int main(int argc, char** argv)
-{
-    string a = fun(1).elif {
-        s"null"
-    }
-    
-    puts(a);  // "1"
-    
-    return 0;
-}
-```
-if omitting else block or statment, the value of expression is result value.
 
 ```C
 #include <comelang.h>
@@ -2632,11 +2537,11 @@ int fun2()
 
 int main(int argc, char** argv)
 {
-    int n = fun().less {   // n == 0 block not runned
+    fun().less {
         puts("ERR");
         return 1;
     }
-    int m = fun2().less {  // block runned
+    fun2().less {
         puts("ERR");
         return 1;
     }
@@ -2645,101 +2550,7 @@ int main(int argc, char** argv)
 }
 ```
 
-UNIX library and systemcall error handling
-
-Pattern matching block should return the value at the end of blocks.
-
-パターンマッチングのブロックではブロックの最後に値を返すべきです。
-
-Pattern matchin can use wildcard.
-
-```C
-    [1,2,3].case {
-        (Value === [wildcard, 2, 3]) {
-            puts("MATCH");
-        }
-        else {
-            puts("NO MATCH");
-        }
-    }
-    struct Data { int a; int b; };
-    
-    Data{a:123, b:234}.case {
-        (Value === Data {a:wildcard, b:234}) {
-            puts("MATCH");
-        }
-        else {
-            puts("NO MATCH");
-        }
-    }
-    ["AAA":1,"BBB":2,"CCC":3].case {
-        (Value === [wildcard:wildcard, "BBB":2, "CCC":3]) {
-            puts("MATCH");
-        }
-        else {
-            puts("NO MATCH");
-        }
-    }
-```
-
-```C
-#include <comelang.h>
-
-struct sData
-{
-    int a;
-    int b;
-};
-
-int main(int argc, char** argv)
-{
-    var data = new sData { a:123, b:234 };
-    
-    data.case {
-        (Value === new sData { a:wildcard, b:234 }) {
-            puts("MATCH");
-        }
-        else {
-            puts("NO MATCH");
-        }
-    }
-    
-    return 0;
-}
-```
-
-Example for fopen
-
-```C
-fopen("AAA", "r").if { 
-    fprintf(Value, "UHO!");
-    fclose(Value);
-}
-else {
-     die("fopen"); 
-}
-```
-
-```C
-fopen("AAA", "r").case {
-    (Value) {
-        fprintf(Value, "UHO!");
-        fclose(Value);
-    }
-    (Value == NULL) {
-        die("fopen");
-    }
-}
-```
-
-```C
-FILE* f = fopen("AAA", "r").elif {
-     die("fopen");
-     null
-}
-fprintf(f, "UHO!");
-fclose(f);
-```
+Pattern matching should'nt return value.
 
 # Object initializer
 
@@ -2756,33 +2567,6 @@ int main(int argc, char** argv)
 {
     var data = new sData { a:123, b:234 };
     
-    data.to_string().puts(); // new sData {a:123,b:234}
-    
-    return 0;
-}
-```
-
-```C
-#include <comelang.h>
-
-struct sData<T>
-{
-    T a;
-    T b;
-};
-
-int main(int argc, char** argv)
-{
-    var data = new sData<int> { a:123, b:234 };
-    
-    data.case {
-        (Value === new sData<int>(a:wildcard, b:234) {
-            puts("MATCH");
-        }
-        else {
-            puts("NO MATCH");
-        }
-    }
     data.to_string().puts(); // new sData {a:123,b:234}
     
     return 0;

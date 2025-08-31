@@ -4579,7 +4579,7 @@ struct map$2char$phsFun$ph* __result_obj__60;
                 if(                1                ) {
                     come_call_finalizer(sFun_finalize, self->items[it], (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                 }
-                self->items[it]=((void*)0);
+                memset(self->items+it,0,sizeof(struct sFun*));
                 self->len--;
                 break;
             }

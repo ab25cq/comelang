@@ -2116,7 +2116,48 @@ impl map <T, T2>
                     if(isheap(T2)) {
                         delete borrow self.items\[it];
                     }
-                    self.items\[it] = null;
+                    memset(self.items + it, 0, sizeof(T2));
+                    
+                    self.len--;
+                    break;
+                }
+
+                it++;
+
+                if(it >= self.size) {
+                    it = 0;
+                }
+                else if(it == hash) {
+                    break;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        
+        return self;
+    }
+    map<T,T2>* remove_by_pointer(map<T, T2>* self, T& key) {
+        unsigned int hash = ((T)key).get_hash_key() % self.size;
+        unsigned int it = hash;
+        
+        while(true) {
+            if(self.item_existance[it])
+            {
+                if(self.keys\[it] == key) 
+                {
+                    self.key_list.remove(self.keys\[it]);
+                    
+                    self.item_existance[it] = false;
+                    if(isheap(T)) {
+                        delete borrow self.keys\[it];
+                    }
+                    self.keys\[it] = null;
+                    if(isheap(T2)) {
+                        delete borrow self.items\[it];
+                    }
+                    memset(self.items + it, 0, sizeof(T2));
                     
                     self.len--;
                     break;

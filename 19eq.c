@@ -998,7 +998,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 19
         
          return new sOrEqualNode(node, right_node, quote, info) implements sNode;
     }
-    else if(((*info->p == '\\' && *(info->p+1) == '=' && *(info->p+2) != '=' && *(info->p+2) != '>') || (*info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>'))) {
+    else if(!node->terminated() && ((*info->p == '\\' && *(info->p+1) == '=' && *(info->p+2) != '=' && *(info->p+2) != '>') || (*info->p == '=' && *(info->p+1) != '=' && *(info->p+1) != '>'))) {
          bool quote
          if(*info->p == '\\') {
              info->p+=2;
