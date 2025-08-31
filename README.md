@@ -426,7 +426,7 @@ li is list<string>*%. The reference count of s"OPQ" in li.add(s"OPQ"); is increm
 liはlist<string>*%です。li.add(s"OPQ");のs"OPQ"はリファレンスカウントが+1されて、正しくliに格納されます。liが解放されるとき格納された、s"ABC", s"DEF", s"GHQ", s"OPQ"は正しくfreeされます。
 
 ```C
-void pop_front(list<T>* self) 
+T pop_front(list<T>* self) 
 ```
 
 Delete the beginning of the list. If the heap is stored, the element will be freed. If it is a non-heap pointer such as "ABC", it will not be freed.

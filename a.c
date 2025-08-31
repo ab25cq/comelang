@@ -6,13 +6,19 @@ int main(int argc, char** argv) {
     const int b = 3;
     int values[b] = { [a]=1,[0]=2,[2]=3 };
     
-    list<int>*% li = new list<int>.initialize_with_values(3, values);
+    list<int>*% li = clone new list<int>.initialize_with_values(3, values);
     
     li.add(4).add(5);
     
-    (li.sublist(0,1000000).filter { it > 3 }.map { it.to_string() } === [s"4",s"5"]).if {
+    var li2 = li;
+    
+    (clone (li2.sublist(0,1000000).filter { it > 3 }) === clone [4,5]).if {
         puts("OK");
     }
+    
+    int a = li2.pop_front();
+    
+    printf("%d\n", a);
 
     return 0;
 }

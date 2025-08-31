@@ -4063,7 +4063,7 @@ struct list_item$1CVALUE$ph* litem_9;
 struct CVALUE* __dec_obj35;
 struct list$1CVALUE$ph* __result_obj__23;
     if(    self->len==0    ) {
-        litem=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value58=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1111, "struct list_item$1CVALUE$ph*"))));
+        litem=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value58=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1119, "struct list_item$1CVALUE$ph*"))));
         litem->prev=((void*)0);
         litem->next=((void*)0);
         __dec_obj33=litem->item,
@@ -4073,7 +4073,7 @@ struct list$1CVALUE$ph* __result_obj__23;
         self->head=litem;
     }
     else if(    self->len==1    ) {
-        litem_8=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value59=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1121, "struct list_item$1CVALUE$ph*"))));
+        litem_8=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value59=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1129, "struct list_item$1CVALUE$ph*"))));
         litem_8->prev=self->head;
         litem_8->next=((void*)0);
         __dec_obj34=litem_8->item,
@@ -4083,7 +4083,7 @@ struct list$1CVALUE$ph* __result_obj__23;
         self->head->next=litem_8;
     }
     else {
-        litem_9=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value60=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1131, "struct list_item$1CVALUE$ph*"))));
+        litem_9=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value60=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1139, "struct list_item$1CVALUE$ph*"))));
         litem_9->prev=self->tail;
         litem_9->next=((void*)0);
         __dec_obj35=litem_9->item,
@@ -4197,7 +4197,6 @@ _Bool __result_obj__31;
 void* __right_value71 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value72 = (void*)0;
 struct sType* result_type;
@@ -4235,7 +4234,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_add";
+    char* fun_name="operator_add";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -4329,7 +4328,6 @@ _Bool __result_obj__36;
 void* __right_value83 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value84 = (void*)0;
 struct sType* result_type;
@@ -4369,7 +4367,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_sub";
+    char* fun_name="operator_sub";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -4463,7 +4461,6 @@ _Bool __result_obj__41;
 void* __right_value97 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value98 = (void*)0;
 void* __right_value99 = (void*)0;
@@ -4497,7 +4494,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_mult";
+    char* fun_name="operator_mult";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -4584,7 +4581,6 @@ _Bool __result_obj__46;
 void* __right_value107 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value108 = (void*)0;
 void* __right_value109 = (void*)0;
@@ -4618,7 +4614,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_div";
+    char* fun_name="operator_div";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -4705,7 +4701,6 @@ _Bool __result_obj__51;
 void* __right_value117 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value118 = (void*)0;
 void* __right_value119 = (void*)0;
@@ -4739,7 +4734,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_mod";
+    char* fun_name="operator_mod";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -4826,7 +4821,6 @@ _Bool __result_obj__56;
 void* __right_value127 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value128 = (void*)0;
 void* __right_value129 = (void*)0;
@@ -4860,7 +4854,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_lshift";
+    char* fun_name="operator_lshift";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -4947,7 +4941,6 @@ _Bool __result_obj__61;
 void* __right_value137 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value138 = (void*)0;
 void* __right_value139 = (void*)0;
@@ -4981,7 +4974,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_rshift";
+    char* fun_name="operator_rshift";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -5068,7 +5061,6 @@ _Bool __result_obj__66;
 void* __right_value147 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value148 = (void*)0;
 void* __right_value149 = (void*)0;
@@ -5104,7 +5096,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_gteq";
+    char* fun_name="operator_gteq";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -5190,7 +5182,6 @@ _Bool __result_obj__71;
 void* __right_value159 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value160 = (void*)0;
 void* __right_value161 = (void*)0;
@@ -5226,7 +5217,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_lteq";
+    char* fun_name="operator_lteq";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -5312,7 +5303,6 @@ _Bool __result_obj__76;
 void* __right_value171 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value172 = (void*)0;
 void* __right_value173 = (void*)0;
@@ -5348,7 +5338,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_lt";
+    char* fun_name="operator_lt";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -5434,7 +5424,6 @@ _Bool __result_obj__81;
 void* __right_value183 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value184 = (void*)0;
 void* __right_value185 = (void*)0;
@@ -5470,7 +5459,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_gt";
+    char* fun_name="operator_gt";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -5756,7 +5745,6 @@ _Bool __result_obj__94;
 void* __right_value219 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value220 = (void*)0;
 void* __right_value221 = (void*)0;
@@ -5792,7 +5780,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_equals";
+    char* fun_name="operator_equals";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -5878,7 +5866,6 @@ _Bool __result_obj__99;
 void* __right_value231 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value232 = (void*)0;
 void* __right_value233 = (void*)0;
@@ -5914,7 +5901,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_not_equals";
+    char* fun_name="operator_not_equals";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -6000,7 +5987,6 @@ _Bool __result_obj__104;
 void* __right_value243 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value244 = (void*)0;
 void* __right_value245 = (void*)0;
@@ -6034,7 +6020,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_and";
+    char* fun_name="operator_and";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -6121,7 +6107,6 @@ _Bool __result_obj__109;
 void* __right_value253 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value254 = (void*)0;
 void* __right_value255 = (void*)0;
@@ -6155,7 +6140,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_xor";
+    char* fun_name="operator_xor";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -6242,7 +6227,6 @@ _Bool __result_obj__114;
 void* __right_value263 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value264 = (void*)0;
 void* __right_value265 = (void*)0;
@@ -6276,7 +6260,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_or";
+    char* fun_name="operator_or";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -6363,7 +6347,6 @@ _Bool __result_obj__119;
 void* __right_value273 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value274 = (void*)0;
 void* __right_value275 = (void*)0;
@@ -6399,7 +6382,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_andand";
+    char* fun_name="operator_andand";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }
@@ -6485,7 +6468,6 @@ _Bool __result_obj__124;
 void* __right_value285 = (void*)0;
 struct CVALUE* right_value;
 struct sType* type;
-char* fun_name;
 _Bool calling_fun;
 void* __right_value286 = (void*)0;
 void* __right_value287 = (void*)0;
@@ -6521,7 +6503,7 @@ memset(&calling_fun, 0, sizeof(_Bool));
     }
     right_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
     type=(struct sType*)come_increment_ref_count(left_value->type);
-    fun_name="operator_oror";
+    char* fun_name="operator_oror";
     if(    self->mQuote    ) {
         calling_fun=(_Bool)0;
     }

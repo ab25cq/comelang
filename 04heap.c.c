@@ -3918,7 +3918,7 @@ struct list_item$1sType$ph* litem_11;
 struct sType* __dec_obj31;
 struct list$1sType$ph* __result_obj__32;
     if(    self->len==0    ) {
-        litem=(struct list_item$1sType$ph*)come_increment_ref_count(((struct list_item$1sType$ph*)(__right_value43=(struct list_item$1sType$ph*)come_calloc_v2(1, sizeof(struct list_item$1sType$ph)*(1), "/usr/local/include/comelang.h", 1111, "struct list_item$1sType$ph*"))));
+        litem=(struct list_item$1sType$ph*)come_increment_ref_count(((struct list_item$1sType$ph*)(__right_value43=(struct list_item$1sType$ph*)come_calloc_v2(1, sizeof(struct list_item$1sType$ph)*(1), "/usr/local/include/comelang.h", 1119, "struct list_item$1sType$ph*"))));
         litem->prev=((void*)0);
         litem->next=((void*)0);
         __dec_obj29=litem->item,
@@ -3928,7 +3928,7 @@ struct list$1sType$ph* __result_obj__32;
         self->head=litem;
     }
     else if(    self->len==1    ) {
-        litem_10=(struct list_item$1sType$ph*)come_increment_ref_count(((struct list_item$1sType$ph*)(__right_value44=(struct list_item$1sType$ph*)come_calloc_v2(1, sizeof(struct list_item$1sType$ph)*(1), "/usr/local/include/comelang.h", 1121, "struct list_item$1sType$ph*"))));
+        litem_10=(struct list_item$1sType$ph*)come_increment_ref_count(((struct list_item$1sType$ph*)(__right_value44=(struct list_item$1sType$ph*)come_calloc_v2(1, sizeof(struct list_item$1sType$ph)*(1), "/usr/local/include/comelang.h", 1129, "struct list_item$1sType$ph*"))));
         litem_10->prev=self->head;
         litem_10->next=((void*)0);
         __dec_obj30=litem_10->item,
@@ -3938,7 +3938,7 @@ struct list$1sType$ph* __result_obj__32;
         self->head->next=litem_10;
     }
     else {
-        litem_11=(struct list_item$1sType$ph*)come_increment_ref_count(((struct list_item$1sType$ph*)(__right_value45=(struct list_item$1sType$ph*)come_calloc_v2(1, sizeof(struct list_item$1sType$ph)*(1), "/usr/local/include/comelang.h", 1131, "struct list_item$1sType$ph*"))));
+        litem_11=(struct list_item$1sType$ph*)come_increment_ref_count(((struct list_item$1sType$ph*)(__right_value45=(struct list_item$1sType$ph*)come_calloc_v2(1, sizeof(struct list_item$1sType$ph)*(1), "/usr/local/include/comelang.h", 1139, "struct list_item$1sType$ph*"))));
         litem_11->prev=self->tail;
         litem_11->next=((void*)0);
         __dec_obj31=litem_11->item,
@@ -4269,7 +4269,7 @@ struct list_item$1sRightValueObject$ph* litem_30;
 struct sRightValueObject* __dec_obj47;
 struct list$1sRightValueObject$ph* __result_obj__41;
     if(    self->len==0    ) {
-        litem=(struct list_item$1sRightValueObject$ph*)come_increment_ref_count(((struct list_item$1sRightValueObject$ph*)(__right_value67=(struct list_item$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list_item$1sRightValueObject$ph)*(1), "/usr/local/include/comelang.h", 1111, "struct list_item$1sRightValueObject$ph*"))));
+        litem=(struct list_item$1sRightValueObject$ph*)come_increment_ref_count(((struct list_item$1sRightValueObject$ph*)(__right_value67=(struct list_item$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list_item$1sRightValueObject$ph)*(1), "/usr/local/include/comelang.h", 1119, "struct list_item$1sRightValueObject$ph*"))));
         litem->prev=((void*)0);
         litem->next=((void*)0);
         __dec_obj45=litem->item,
@@ -4279,7 +4279,7 @@ struct list$1sRightValueObject$ph* __result_obj__41;
         self->head=litem;
     }
     else if(    self->len==1    ) {
-        litem_29=(struct list_item$1sRightValueObject$ph*)come_increment_ref_count(((struct list_item$1sRightValueObject$ph*)(__right_value68=(struct list_item$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list_item$1sRightValueObject$ph)*(1), "/usr/local/include/comelang.h", 1121, "struct list_item$1sRightValueObject$ph*"))));
+        litem_29=(struct list_item$1sRightValueObject$ph*)come_increment_ref_count(((struct list_item$1sRightValueObject$ph*)(__right_value68=(struct list_item$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list_item$1sRightValueObject$ph)*(1), "/usr/local/include/comelang.h", 1129, "struct list_item$1sRightValueObject$ph*"))));
         litem_29->prev=self->head;
         litem_29->next=((void*)0);
         __dec_obj46=litem_29->item,
@@ -4289,7 +4289,7 @@ struct list$1sRightValueObject$ph* __result_obj__41;
         self->head->next=litem_29;
     }
     else {
-        litem_30=(struct list_item$1sRightValueObject$ph*)come_increment_ref_count(((struct list_item$1sRightValueObject$ph*)(__right_value69=(struct list_item$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list_item$1sRightValueObject$ph)*(1), "/usr/local/include/comelang.h", 1131, "struct list_item$1sRightValueObject$ph*"))));
+        litem_30=(struct list_item$1sRightValueObject$ph*)come_increment_ref_count(((struct list_item$1sRightValueObject$ph*)(__right_value69=(struct list_item$1sRightValueObject$ph*)come_calloc_v2(1, sizeof(struct list_item$1sRightValueObject$ph)*(1), "/usr/local/include/comelang.h", 1139, "struct list_item$1sRightValueObject$ph*"))));
         litem_30->prev=self->tail;
         litem_30->next=((void*)0);
         __dec_obj47=litem_30->item,
@@ -4502,7 +4502,6 @@ void* __right_value80 = (void*)0;
 char* c_value;
 struct sClass* klass_37;
 char* class_name;
-char* fun_name;
 void* __right_value81 = (void*)0;
 struct sType* type2;
 void* __right_value82 = (void*)0;
@@ -4594,7 +4593,7 @@ memset(&i, 0, sizeof(int));
         c_value=(char*)come_increment_ref_count(__builtin_string(obj));
         klass_37=type->mClass;
         class_name=klass_37->mName;
-        fun_name="finalize";
+        char* fun_name="finalize";
         type2=(struct sType*)come_increment_ref_count(sType_clone(type));
         type2->mHeap=(_Bool)0;
         fun_name2=(char*)come_increment_ref_count(create_method_name(type,(_Bool)0,fun_name,info,(_Bool)1));
@@ -5106,7 +5105,6 @@ void* __right_value126 = (void*)0;
 char* c_value;
 struct sClass* klass;
 char* class_name;
-char* fun_name;
 void* __right_value127 = (void*)0;
 struct sType* type2;
 void* __right_value128 = (void*)0;
@@ -5224,7 +5222,7 @@ memset(&i, 0, sizeof(int));
         c_value=(char*)come_increment_ref_count(__builtin_string(obj));
         klass=type->mClass;
         class_name=klass->mName;
-        fun_name="finalize";
+        char* fun_name="finalize";
         type2=(struct sType*)come_increment_ref_count(sType_clone(type));
         type2->mHeap=(_Bool)0;
         fun_name2=(char*)come_increment_ref_count(create_method_name(type,(_Bool)0,fun_name,info,(_Bool)1));
@@ -5486,7 +5484,6 @@ void* __right_value186 = (void*)0;
 char* c_value;
 struct sClass* klass;
 char* class_name;
-char* fun_name;
 struct sFun* cloner;
 char* fun_name2;
 void* __right_value187 = (void*)0;
@@ -5564,7 +5561,7 @@ memset(&i, 0, sizeof(int));
     c_value=(char*)come_increment_ref_count(__builtin_string(obj));
     klass=type->mClass;
     class_name=klass->mName;
-    fun_name="clone";
+    char* fun_name="clone";
     cloner=((void*)0);
     if(    list$1sType$ph_length(type->mGenericsTypes)>0    ) {
         none_generics_name=(char*)come_increment_ref_count(get_none_generics_name(type->mClass->mName));
@@ -5766,7 +5763,6 @@ void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool com
 struct sType* __dec_obj76;
 void* __right_value217 = (void*)0;
 char* c_value;
-char* fun_name;
 void* __right_value218 = (void*)0;
 struct sType* type2;
 void* __right_value219 = (void*)0;
@@ -5813,7 +5809,7 @@ memset(&i, 0, sizeof(int));
     }
     if(    type->mClass->mStruct||list$1sType$ph_length(type->mGenericsTypes)>0    ) {
         c_value=(char*)come_increment_ref_count(__builtin_string(obj));
-        fun_name="on_drop";
+        char* fun_name="on_drop";
         type2=(struct sType*)come_increment_ref_count(sType_clone(type));
         type2->mHeap=(_Bool)0;
         fun_name2=(char*)come_increment_ref_count(create_method_name(type,(_Bool)0,fun_name,info,(_Bool)1));

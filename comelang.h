@@ -1072,8 +1072,11 @@ impl list <T>
         
         return self;
     }
-    void pop_front(list<T>* self) {
+    T pop_front(list<T>* self) {
+        T result;
         if(self.len == 1) {
+            result = self.head.item;
+            
             list_item<T>* litem = self.head;
             self.head = null;
             self.tail = null;
@@ -1084,6 +1087,8 @@ impl list <T>
         }
         else if(self.len == 2) {
             list_item<T>* litem = self.head;
+            
+            result = self.head.item;
             
             self.head = self.head.next;
             self.head.prev = null;
@@ -1097,6 +1102,8 @@ impl list <T>
         else if(self.len >= 3) {
             list_item<T>* litem = self.head;
             
+            result = self.head.item;
+            
             self.head = litem.next;
             self.head.prev = null;
             
@@ -1104,6 +1111,7 @@ impl list <T>
             
             self.len--;
         }
+        return result;
     }
     list<T>* push_back(list<T>* self, T item)
     {
