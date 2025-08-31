@@ -74,14 +74,6 @@ vinというviクローン、zedという文字列処理インタプリタ、mf�
 sh all_build.sh
 ```
 
-# wiki Japanese
-
-[wiki Japanese](https://github.com/ab25cq/comelang/wiki)
-
-# wiki English
-
-[wiki English](https://github.com/ab25cq/comelang/wiki/DOC%E2%80%90english)
-
 # Histories
 
 ```
