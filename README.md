@@ -1,11 +1,11 @@
 
 # comelang
 
-Another modern Object Oriented C compiler. It has Rerfference Count GC, and includes the generics collection libraries.
+This has Rerfference Count GC, and includes the generics collection libraries.
 
-もう一つのモダンなオブジェクト指向Cコンパイラ。リファレンスカウントGCがありコレクションライブラリを備えてます。
+リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 80.0.0
+version 100.0.0
 
 ``` C
 #include <comelang.h>
@@ -77,7 +77,7 @@ sh all_build.sh
 # Histories
 
 ```
-80.0.0 Remove Exception. Buggy function may be few.
+100.0.0 Remove Exception. Buggy function may be few. Complete.
 70.0.0 Fixed bug, and some function has been removed.
 60.0.0 More compatiblity for C language.
 50.1.0 user finalize and user clone removed. It makes bugs.
