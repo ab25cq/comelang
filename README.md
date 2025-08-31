@@ -85,7 +85,7 @@ sh all_build.sh
 # Histories
 
 ```
-50.2.0 More compatiblity for C language.
+60.0.0 More compatiblity for C language.
 50.1.0 user finalize and user clone removed. It makes bugs.
 50.0.0 This project may be complete.
 40.0.0 Refactoring this project may be complete.
