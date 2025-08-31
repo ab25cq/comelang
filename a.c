@@ -16,9 +16,11 @@ int main(int argc, char** argv) {
         puts("OK");
     }
     
-    int a = li2.pop_front();
+    var li3 = li.map { it.to_string() + "B" };
     
-    printf("%d\n", a);
+    var a = li3.pop_front();
+    
+    printf("%s\n", a);
 
     return 0;
 }
