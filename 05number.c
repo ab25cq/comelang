@@ -2,11 +2,11 @@
 
 class sIntNode extends sNodeBase
 {
-    new(int value, sInfo* info)
+    new(string value, sInfo* info)
     {
         self.super();
         
-        int self.value = value;
+        string self.value = value;
     }
     
     string kind()
@@ -18,7 +18,7 @@ class sIntNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%d", self.value);
+        come_value.c_value = xsprintf("%s", self.value);
         come_value.type = new sType(s"int");
         come_value.var = null;
         
@@ -32,11 +32,11 @@ class sIntNode extends sNodeBase
 
 class sUIntNode extends sNodeBase
 {
-    new(unsigned int value, sInfo* info)
+    new(string value, sInfo* info)
     {
         self.super();
         
-        unsigned int self.value = value;
+        string self.value = value;
     }
     
     string kind()
@@ -48,13 +48,13 @@ class sUIntNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%uU", self.value);
+        come_value.c_value = xsprintf("%s", self.value);
         come_value.type = new sType(s"int");
         come_value.var = null;
         
         info.stack.push_back(come_value);
         
-        add_come_last_code(info, "%sU", come_value.c_value);
+        add_come_last_code(info, "%s", come_value.c_value);
         
         return true;
     }
@@ -62,11 +62,11 @@ class sUIntNode extends sNodeBase
 
 class sLongNode extends sNodeBase
 {
-    new(unsigned long value, sInfo* info)
+    new(string value, sInfo* info)
     {
         self.super();
         
-        long self.value = value;
+        string self.value = value;
     }
     
     string kind()
@@ -78,7 +78,7 @@ class sLongNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%ldL", self.value);
+        come_value.c_value = xsprintf("%s", self.value);
         come_value.type = new sType(s"long");
         come_value.var = null;
         
@@ -92,11 +92,11 @@ class sLongNode extends sNodeBase
 
 class sULongNode extends sNodeBase
 {
-    new(unsigned long value, sInfo* info)
+    new(string value, sInfo* info)
     {
         self.super();
         
-        unsigned long self.value = value;
+        string self.value = value;
     }
     
     string kind()
@@ -108,7 +108,7 @@ class sULongNode extends sNodeBase
     {
         CVALUE*% come_value = new CVALUE();
         
-        come_value.c_value = xsprintf("%luUL", self.value);
+        come_value.c_value = self.value;
         come_value.type = new sType(s"long");
         come_value.var = null;
         
@@ -210,14 +210,9 @@ class sDigitNode extends sNodeBase
     }
 };
 
-sNode*% create_int_node(int value, sInfo* info)
+sNode*% create_int_node(string value, sInfo* info)
 {
     return new sIntNode(value, info) implements sNode;
-}
-
-sNode* new_int_node(int value, sInfo* info)
-{
-    return borrow new sIntNode(value, info) implements sNode;
 }
 
 sNode*% get_number(bool minus, sInfo* info)
@@ -360,63 +355,65 @@ sNode*% get_number(bool minus, sInfo* info)
         }
         else if(*info->p == 'u' || *info->p == 'U')
         {
+            *p2++ = *info->p;
+            *p2 = 0;
             info->p++;
             skip_spaces_and_lf();
 
             if(*info->p == 'L' || *info->p == 'l')
             {
+                *p2++ = *info->p;
+                *p2 = 0;
                 info->p++;
                 skip_spaces_and_lf();
 
                 if(*info->p == 'L' || *info->p == 'l')
                 {
+                    *p2++ = *info->p;
+                    *p2 = 0;
                     info->p++;
                     skip_spaces_and_lf();
                     
-                    unsigned long lont int value2 = strtoull(buf, NULL, 0);
-
-                    return new sULongNode(value2, info) implements sNode;
+                    return new sULongNode(buf.to_string(), info) implements sNode;
                 }
                 else {
-                    unsigned long lont int value = strtoull(buf, NULL, 0);
-                    return new sULongNode(value, info) implements sNode;
+                    return new sULongNode(buf.to_string(), info) implements sNode;
                 }
             }
             else {
-                unsigned int value = strtoul(buf, NULL, 0);
-                return new sUIntNode(value, info) implements sNode;
+                return new sUIntNode(buf.to_string(), info) implements sNode;
             }
         }
         else if(*info->p == 'L' || *info->p == 'l') {
+            *p2++ = *info->p;
+            *p2 = 0;
             info->p++;
             skip_spaces_and_lf();
 
             if(*info->p == 'L' || *info->p == 'l')
             {
+                *p2++ = *info->p;
+                *p2 = 0;
                 info->p++;
                 skip_spaces_and_lf();
                 
-                unsigned long long int value = strtoull(buf, NULL, 0);
-
-                return new sLongNode(value, info) implements sNode;
+                return new sLongNode(buf.to_string(), info) implements sNode;
             }
             else if(*info->p == 'U' || *info->p == 'u')
             {
+                *p2++ = *info->p;
+                *p2 = 0;
                 info->p++;
                 skip_spaces_and_lf();
                 
-                unsigned long long int value = strtoull(buf, NULL, 0);
-
-                return new sULongNode(value, info) implements sNode;
+                return new sULongNode(buf.to_string(), info) implements sNode;
             }
             else {
-                unsigned long long int value = strtoull(buf, NULL, 0);
-                return new sLongNode(value, info) implements sNode;
+                return new sLongNode(buf.to_string(), info) implements sNode;
             }
         }
         else {
-            long lont int value = strtoll(buf, NULL, 0);
-            return new sIntNode(value, info) implements sNode;
+            return new sIntNode(buf.to_string(), info) implements sNode;
         }
     }
     else {
@@ -456,97 +453,99 @@ sNode*% get_hex_number(bool minus, sInfo* info)
 
     if(*info->p == 'u' || *info->p == 'U')
     {
+        *p++ = *info->p;
+        *p = 0;
         info->p++;
         skip_spaces_and_lf();
 
         if(*info->p == 'L' || *info->p == 'l')
         {
+            *p++ = *info->p;
+            *p = 0;
             info->p++;
             skip_spaces_and_lf();
 
             if(*info->p == 'L' || *info->p == 'l')
             {
+                *p++ = *info->p;
+                *p = 0;
                 info->p++;
                 skip_spaces_and_lf();
                 
-                unsigned long long int value = strtoull(buf, NULL, 0);
-
                 if(minus) {
-                    return new sULongNode(-value, info) implements sNode;
+                    return new sULongNode("-" + buf, info) implements sNode;
                 }
                 else {
-                    return new sULongNode(value, info) implements sNode;
+                    return new sULongNode(buf.to_string(), info) implements sNode;
                 }
             }
             else {
-                unsigned long long int value = strtoull(buf, NULL, 0);
-
                 if(minus) {
-                    return new sULongNode(-value, info) implements sNode;
+                    return new sULongNode("-" + buf.to_string(), info) implements sNode;
                 }
                 else {
-                    return new sULongNode(value, info) implements sNode;
+                    return new sULongNode(buf.to_string(), info) implements sNode;
                 }
             }
         }
         else {
-            unsigned long long int value = strtoull(buf, NULL, 0);
-
             if(minus) {
-                return new sUIntNode(-value, info) implements sNode;
+                return new sUIntNode("-" + buf, info) implements sNode;
             }
             else {
-                return new sUIntNode(value, info) implements sNode;
+                return new sUIntNode(buf.to_string(), info) implements sNode;
             }
         }
     }
     else if(*info->p == 'L' || *info->p == 'l') {
+        *p++ = *info->p;
+        *p = 0;
         info->p++;
         skip_spaces_and_lf();
 
         if(*info->p == 'L' || *info->p == 'l')
         {
+            *p++ = *info->p;
+            *p = 0;
             info->p++;
             skip_spaces_and_lf();
 
-            unsigned long long int value = strtoull(buf, NULL, 0);
             if(minus) {
-                return new sLongNode(-value, info) implements sNode;
+                return new sLongNode("-" + buf.to_string(), info) implements sNode;
             }
             else {
-                return new sLongNode(value, info) implements sNode;
+                return new sLongNode(buf.to_string(), info) implements sNode;
             }
         }
         else if(*info->p == 'U' || *info->p == 'u')
         {
+            *p++ = *info->p;
+            *p = 0;
             info->p++;
             skip_spaces_and_lf();
 
-            unsigned long long int value = strtoull(buf, NULL, 0);
             if(minus) {
-                return new sULongNode(-value, info) implements sNode;
+                return new sULongNode("-" + buf.to_string(), info) implements sNode;
             }
             else {
-                return new sULongNode(value, info) implements sNode;
+                return new sULongNode(buf.to_string(), info) implements sNode;
             }
         }
         else {
-            unsigned long long int value = strtoull(buf, NULL, 0);
             if(minus) {
-                return new sLongNode(-value, info) implements sNode;
+                return new sLongNode("-" + buf.to_string(), info) implements sNode;
             }
             else {
-                return new sLongNode(value, info) implements sNode;
+                return new sLongNode(buf.to_string(), info) implements sNode;
             }
         }
     }
     else {
-        long long int value = strtoll(buf, NULL, 0);
         if(minus) {
-            return new sIntNode(-value, info) implements sNode;
+            return new sIntNode("-" + buf, info) implements sNode;
         }
         else {
-            return new sIntNode(value, info) implements sNode;
+            return new sIntNode(buf.to_string(), info) implements sNode;
         }
     }
     
@@ -582,18 +581,21 @@ sNode*% get_digits(sInfo* info)
     if(*info->p == 'u' || *info->p == 'U')
     {
         *p++ = *info->p;
+        *p = '0';
         info->p++;
         skip_spaces_and_lf();
 
         if(*info->p == 'L' || *info->p == 'l')
         {
             *p++ = *info->p;
+            *p = '0';
             info->p++;
             skip_spaces_and_lf();
 
             if(*info->p == 'L' || *info->p == 'l')
             {
                 *p++ = *info->p;
+                *p = '0';
                 info->p++;
                 skip_spaces_and_lf();
             }
@@ -601,18 +603,21 @@ sNode*% get_digits(sInfo* info)
     }
     else if(*info->p == 'L' || *info->p == 'l') {
         *p++ = *info->p;
+        *p = '0';
         info->p++;
         skip_spaces_and_lf();
 
         if(*info->p == 'L' || *info->p == 'l')
         {
             *p++ = *info->p;
+            *p = '0';
             info->p++;
             skip_spaces_and_lf();
         }
         else if(*info->p == 'U' || *info->p == 'u')
         {
             *p++ = *info->p;
+            *p = '0';
             info->p++;
             skip_spaces_and_lf();
         }
@@ -655,31 +660,33 @@ sNode*% get_oct_number(bool minus, sInfo* info)
 
     if(*info->p == 'u' || *info->p == 'U')
     {
+        *p++ = *info->p;
+        *p = 0;
         info->p++;
         skip_spaces_and_lf();
 
         if(*info->p == 'L' || *info->p == 'l')
         {
+            *p++ = *info->p;
+            *p = 0;
             info->p++;
             skip_spaces_and_lf();
 
             if(*info->p == 'L' || *info->p == 'l')
             {
+                *p++ = *info->p;
+                *p = 0;
                 info->p++;
                 skip_spaces_and_lf();
                 
-                unsigned long long int value = strtoull(buf, NULL, 0);
-
-                return new sULongNode(value, info) implements sNode;
+                return new sULongNode(buf.to_string(), info) implements sNode;
             }
             else {
-                unsigned long long int value = strtoull(buf, NULL, 0);
-                return new sULongNode(value, info) implements sNode;
+                return new sULongNode(buf.to_string(), info) implements sNode;
             }
         }
         else {
-            unsigned int value = strtoul(buf, NULL, 0);
-            return new sUIntNode(value, info) implements sNode;
+            return new sUIntNode(buf.to_string(), info) implements sNode;
         }
     }
     else if(*info->p == 'L' || *info->p == 'l') {
@@ -688,28 +695,28 @@ sNode*% get_oct_number(bool minus, sInfo* info)
 
         if(*info->p == 'L' || *info->p == 'l')
         {
+            *p++ = *info->p;
+            *p = 0;
             info->p++;
             skip_spaces_and_lf();
 
-            unsigned long long int value = strtoull(buf, NULL, 0);
-            return new sLongNode(value, info) implements sNode;
+            return new sLongNode(buf.to_string(), info) implements sNode;
         }
         else if(*info->p == 'U' || *info->p == 'u')
         {
+            *p++ = *info->p;
+            *p = 0;
             info->p++;
             skip_spaces_and_lf();
 
-            unsigned long long int value = strtoull(buf, NULL, 0);
-            return new sULongNode(value, info) implements sNode;
+            return new sULongNode(buf.to_string(), info) implements sNode;
         }
         else {
-            unsigned long long int value = strtoull(buf, NULL, 0);
-            return new sLongNode(value, info) implements sNode;
+            return new sLongNode(buf.to_string(), info) implements sNode;
         }
     }
     else {
-        unsigned long long int value = strtoull(buf, NULL, 0);
-        return new sIntNode(value, info) implements sNode;
+        return new sIntNode(buf.to_string(), info) implements sNode;
     }
     
     return (sNode*%)null;

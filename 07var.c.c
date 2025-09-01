@@ -2653,7 +2653,7 @@ struct tuple2$2char$phchar$ph* parse_attribute(struct sInfo* info, _Bool parse_f
 struct sNode* get_number(_Bool minus, struct sInfo* info);
 struct sNode* get_oct_number(struct sInfo* info);
 struct sNode* get_hex_number(_Bool minus, struct sInfo* info);
-struct sNode* create_int_node(int value, struct sInfo* info);
+struct sNode* create_int_node(char* value, struct sInfo* info);
 struct tuple4$4list$1sType$ph$phlist$1char$ph$phlist$1char$ph$phbool$* parse_params(struct sInfo* info, _Bool in_constructor_);
 struct tuple2$2sFun$pchar$ph* create_pthread_fun(struct sType* type, char* fun_name, struct sInfo* info);
 struct tuple2$2sFun$pchar$ph* create_finalizer_automatically(struct sType* type, char* fun_name, struct sInfo* info);
@@ -2769,7 +2769,6 @@ struct sNode* new_inline_assembler_node(char* source, int num_exps, struct sNode
 struct sNode* new_line_node(struct sInfo* info);
 struct sNode* new_sname_node(struct sInfo* info);
 struct sNode* new_func_node(struct sInfo* info);
-struct sNode* new_int_node(int value, struct sInfo* info);
 struct sStoreNode* sStoreNode_initialize(struct sStoreNode* self, char* name, struct list$1char$ph* multiple_assign, struct list$1tuple3$3sType$phchar$phsNode$ph$ph* multiple_declare, struct sType* type, _Bool alloc, struct sNode* right_value, struct sInfo* info, char* attribute, _Bool comma, _Bool val_);
 char* sStoreNode_kind(struct sStoreNode* self);
 _Bool sStoreNode_compile(struct sStoreNode* self, struct sInfo* info);

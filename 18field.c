@@ -1087,7 +1087,7 @@ sNode*% post_position_operator(sNode*% node, sInfo* info) version 99
             
             parse_sharp();
         }
-        else if(!node->terminated() && (*info->p == '.' && *(info->p+1) != '.') || (*info->p == '-' && *(info->p+1) == '>')) {
+        else if((*info->p == '.' && *(info->p+1) != '.') || (*info->p == '-' && *(info->p+1) == '>')) {
             if(*info->p == '.') {
                 info->p++;
                 skip_spaces_and_lf();

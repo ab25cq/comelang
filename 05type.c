@@ -2815,7 +2815,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     if(type->mChannel) {
         sType*% type_before = clone type;
         type = new sType(s"int");
-        type->mArrayNum = [ create_int_node(2@value, info) ];
+        type->mArrayNum = [ create_int_node(s"2"@value, info) ];
         type->mChannelType = type_before;
         type->mChannel = true;
     }

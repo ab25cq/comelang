@@ -881,7 +881,7 @@ string,string parse_attribute(sInfo* info=info,bool parse_function_attribute=fal
 sNode*% get_number(bool minus, sInfo* info);
 sNode*% get_oct_number(sInfo* info);
 sNode*% get_hex_number(bool minus, sInfo* info);
-sNode*% create_int_node(int value, sInfo* info);
+sNode*% create_int_node(string value, sInfo* info);
 list<sType*%>*%, list<string>*%, list<string>*%, bool parse_params(sInfo* info, bool in_constructor_=false);
 sFun*,string create_pthread_fun(sType*% type, char* fun_name, sInfo* info);
 sFun*,string create_finalizer_automatically(sType*% type, char* fun_name, sInfo* info);
@@ -1092,6 +1092,5 @@ sNode* new_inline_assembler_node(char* source, int num_exps, sNode** exps, sInfo
 sNode* new_line_node(sInfo* info);
 sNode* new_sname_node(sInfo* info);
 sNode* new_func_node(sInfo* info);
-sNode* new_int_node(int value, sInfo* info);
 
 #endif

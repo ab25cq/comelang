@@ -318,7 +318,7 @@ class sListNode extends sNodeBase
                 
                 list<tup:string,sNode*%>*% params = new list<tup: string, sNode*%>();
                 params.add((s"self", value_node));
-                params.add((s"position", create_int_node(n, info)));
+                params.add((s"position", create_int_node(n.to_string(), info)));
                 sNode*% exp = create_method_call(s"operator_load_element", value_node@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 
                 node_compile(exp).elif {
@@ -354,7 +354,7 @@ class sListNode extends sNodeBase
         }
         
         sType*% type_values = clone list_element_type;
-        type_values.mArrayNum.push_back(create_int_node(params.length(), info));
+        type_values.mArrayNum.push_back(create_int_node(params.length().to_string(), info));
         type_values->mHeap = false;
         
         static int list_value_num = 0;
@@ -709,7 +709,7 @@ class sMapNode extends sNodeBase
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp));
-                    params.add((s"position", create_int_node(i, info)));
+                    params.add((s"position", create_int_node(i.to_string(), info)));
                     exp = create_method_call(s"operator_load_element", exp@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 
@@ -766,7 +766,7 @@ class sMapNode extends sNodeBase
                 {
                     list<tup: string,sNode*%>*% params = new list<tup: string, sNode*%>();
                     params.add((s"self", exp2));
-                    params.add((s"position", create_int_node(i, info)));
+                    params.add((s"position", create_int_node(i.to_string(), info)));
                     exp2 = create_method_call(s"operator_load_element", exp2@obj, params@params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
                 }
                 node_compile(exp2).elif {
@@ -813,7 +813,7 @@ class sMapNode extends sNodeBase
         static int map_value_num = 0;
         
         sType*% key_type_values = clone map_key_type;
-        key_type_values.mArrayNum.push_back(create_int_node(key_params.length(), info));
+        key_type_values.mArrayNum.push_back(create_int_node(key_params.length().to_string(), info));
         key_type_values->mHeap = false;
         
         string var_name = xsprintf("__map_keys%d__", ++map_value_num);
@@ -825,7 +825,7 @@ class sMapNode extends sNodeBase
         add_come_code_at_function_head(info, "%s;\n", make_define_var(key_type_values, var_->mCValueName));
         
         sType*% element_type_values = clone map_element_type;
-        element_type_values.mArrayNum.push_back(create_int_node(element_params.length(), info));
+        element_type_values.mArrayNum.push_back(create_int_node(element_params.length().to_string(), info));
         element_type_values->mHeap = false;
         
         string var_name2 = xsprintf("__map_element%d__", map_value_num);
@@ -1392,14 +1392,14 @@ sNode*% expression_node(sInfo* info) version 96
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
         
         params.add((s"self", obj));
-        params.add((s"ignore_case", ignore_case ? create_int_node(1, info) : create_int_node(0, info)));
-        params.add((s"multiline", create_int_node(0, info)));
-        params.add((s"global", global ? create_int_node(1, info) : create_int_node(0, info)));
-        params.add((s"extended", create_int_node(0, info)));
-        params.add((s"dotall", create_int_node(0, info)));
-        params.add((s"anchored", create_int_node(0, info)));
-        params.add((s"dollar_endonly", create_int_node(0, info)));
-        params.add((s"ungreedy", create_int_node(0, info)));
+        params.add((s"ignore_case", ignore_case ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"multiline", create_int_node(0.to_string(), info)));
+        params.add((s"global", global ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"extended", create_int_node(0.to_string(), info)));
+        params.add((s"dotall", create_int_node(0.to_string(), info)));
+        params.add((s"anchored", create_int_node(0.to_string(), info)));
+        params.add((s"dollar_endonly", create_int_node(0.to_string(), info)));
+        params.add((s"ungreedy", create_int_node(0.to_string(), info)));
         
         buffer* method_block = null;
         
@@ -1550,14 +1550,14 @@ sNode*% expression_node(sInfo* info) version 96
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
         
         params.add((s"self", obj));
-        params.add((s"ignore_case", ignore_case ? create_int_node(1, info) : create_int_node(0, info)));
-        params.add((s"multiline", create_int_node(0, info)));
-        params.add((s"global", global ? create_int_node(1, info) : create_int_node(0, info)));
-        params.add((s"extended", create_int_node(0, info)));
-        params.add((s"dotall", create_int_node(0, info)));
-        params.add((s"anchored", create_int_node(0, info)));
-        params.add((s"dollar_endonly", create_int_node(0, info)));
-        params.add((s"ungreedy", create_int_node(0, info)));
+        params.add((s"ignore_case", ignore_case ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"multiline", create_int_node(0.to_string(), info)));
+        params.add((s"global", global ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"extended", create_int_node(0.to_string(), info)));
+        params.add((s"dotall", create_int_node(0.to_string(), info)));
+        params.add((s"anchored", create_int_node(0.to_string(), info)));
+        params.add((s"dollar_endonly", create_int_node(0.to_string(), info)));
+        params.add((s"ungreedy", create_int_node(0.to_string(), info)));
         
         buffer* method_block = null;
         

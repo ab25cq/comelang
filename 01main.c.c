@@ -2353,7 +2353,7 @@ struct tuple2$2char$phchar$ph* parse_attribute(struct sInfo* info, _Bool parse_f
 struct sNode* get_number(_Bool minus, struct sInfo* info);
 struct sNode* get_oct_number(struct sInfo* info);
 struct sNode* get_hex_number(_Bool minus, struct sInfo* info);
-struct sNode* create_int_node(int value, struct sInfo* info);
+struct sNode* create_int_node(char* value, struct sInfo* info);
 struct tuple4$4list$1sType$ph$phlist$1char$ph$phlist$1char$ph$phbool$* parse_params(struct sInfo* info, _Bool in_constructor_);
 struct tuple2$2sFun$pchar$ph* create_pthread_fun(struct sType* type, char* fun_name, struct sInfo* info);
 struct tuple2$2sFun$pchar$ph* create_finalizer_automatically(struct sType* type, char* fun_name, struct sInfo* info);
@@ -2478,7 +2478,6 @@ struct sNode* new_inline_assembler_node(char* source, int num_exps, struct sNode
 struct sNode* new_line_node(struct sInfo* info);
 struct sNode* new_sname_node(struct sInfo* info);
 struct sNode* new_func_node(struct sInfo* info);
-struct sNode* new_int_node(int value, struct sInfo* info);
 int main(int argc, char** argv);
 void come_push_stackframe(char* sname, int sline, int id);
 void come_pop_stackframe();
@@ -2997,7 +2996,7 @@ char** new_pages;
 int i;
 void* __result_obj__3;
     result=((void*)0);
-    size=(size+7&~7);
+    size=(size+7&~0x7);
     if(    size<4096    ) {
         if(        gHeapPages.mFreeMem[size]        ) {
             result=gHeapPages.mFreeMem[size];

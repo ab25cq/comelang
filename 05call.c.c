@@ -2728,7 +2728,7 @@ struct tuple2$2char$phchar$ph* parse_attribute(struct sInfo* info, _Bool parse_f
 struct sNode* get_number(_Bool minus, struct sInfo* info);
 struct sNode* get_oct_number(struct sInfo* info);
 struct sNode* get_hex_number(_Bool minus, struct sInfo* info);
-struct sNode* create_int_node(int value, struct sInfo* info);
+struct sNode* create_int_node(char* value, struct sInfo* info);
 struct tuple4$4list$1sType$ph$phlist$1char$ph$phlist$1char$ph$phbool$* parse_params(struct sInfo* info, _Bool in_constructor_);
 struct tuple2$2sFun$pchar$ph* create_pthread_fun(struct sType* type, char* fun_name, struct sInfo* info);
 struct tuple2$2sFun$pchar$ph* create_finalizer_automatically(struct sType* type, char* fun_name, struct sInfo* info);
@@ -2839,7 +2839,6 @@ struct sNode* top_level_v91(char* buf, char* head, int head_sline, struct sInfo*
 struct sNode* static_assert_node(struct sNode* exp, struct sNode* exp2, struct sInfo* info);
 struct sNode* new_return_node(struct sNode* value, char* value_source, struct sInfo* info);
 struct sNode* new_inline_assembler_node(char* source, int num_exps, struct sNode** exps, struct sInfo* info);
-struct sNode* new_int_node(int value, struct sInfo* info);
 int poll(struct pollfd* anonymous_var_nameX601, unsigned int anonymous_var_nameX602, int anonymous_var_nameX603);
 struct sReturnNode* sReturnNode_initialize(struct sReturnNode* self, struct sNode* value, char* value_source, struct sInfo* info);
 char* sReturnNode_kind(struct sReturnNode* self);
@@ -8968,7 +8967,7 @@ _Bool __result_obj__210;
         }
         come_value=(struct CVALUE*)come_increment_ref_count(get_value_from_stack(-1,info));
         add_come_code(info,"fds%d[%d].fd = %s[0];\n",var_num,n,come_value->c_value);
-        add_come_code(info,"fds%d[%d].events = %d;\n",var_num,n,1);
+        add_come_code(info,"fds%d[%d].events = %d;\n",var_num,n,0x0001);
         n++;
         come_call_finalizer(CVALUE_finalize, come_value, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
@@ -8977,7 +8976,7 @@ _Bool __result_obj__210;
     add_come_code(info,"if(poll_ret%d > 0) {\n",var_num);
     n_177=0;
     for(    o2_saved_178=(struct list$1sNode$ph*)come_increment_ref_count((self->vars)),it_179=list$1sNode$ph_begin((o2_saved_178))    ;    !list$1sNode$ph_end((o2_saved_178))    ;    it_179=list$1sNode$ph_next((o2_saved_178))    ){
-        add_come_code(info,"if(fds%d[%d].revents & %d) {\n",var_num,n_177,1);
+        add_come_code(info,"if(fds%d[%d].revents & %d) {\n",var_num,n_177,0x0001);
         transpile_block(((struct sBlock*)(__right_value544=list$1sBlock$ph_operator_load_element(blocks,n_177))),((void*)0),((void*)0),info,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0);
         come_call_finalizer(sBlock_finalize, __right_value544, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
         add_come_code(info,"}\n");

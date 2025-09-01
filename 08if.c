@@ -771,7 +771,7 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
     sNode*% it_node = store_var(s"Value", null@multiple_assign, null@multiple_declare, null@type, true@alloc, expression_node@right_value, info);
     
     sNode*% conditional_node = create_load_var("Value");
-    sNode*% conditional_node2 = create_less(conditional_node, create_int_node(0, info), info);
+    sNode*% conditional_node2 = create_less(conditional_node, create_int_node(0.to_string(), info), info);
     
     parse_sharp();
 
