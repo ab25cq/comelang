@@ -308,10 +308,6 @@ sNode*% get_number(bool minus, sInfo* info)
                         exit(2);
                     }
                 }
-                else {
-                    err_msg(info, "invalid float value");
-                    exit(2);
-                }
             
                 while(xisdigit(*info->p) || *info->p == '_') {
                     if(*info->p ==  '_') {
@@ -352,6 +348,15 @@ sNode*% get_number(bool minus, sInfo* info)
                 *p2 = 0;
                 return new sDoubleNode(string(buf), info) implements sNode;
             }
+        }
+        else if(*info->p == 'f' || *info->p == 'F') {
+            *p2++ = *info->p;
+            *p2 = 0;
+            
+            info->p++;
+            skip_spaces_and_lf();
+            
+            return new sFloatNode(string(buf), info) implements sNode;
         }
         else if(*info->p == 'u' || *info->p == 'U')
         {

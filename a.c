@@ -1,6 +1,6 @@
 #include <comelang.h>
 
 int main(int argc, char** argv) {
-    int a = 071112u;
+    float a = 1e-6f;
     return 0;
 }

@@ -315,6 +315,15 @@ test:
 	comelang -s code/comelang13.c -o code/comelang13 && ./code/comelang13
 	comelang -s code/comelang14.c -o code/comelang14 && ./code/comelang14
 	comelang -s code/codex.c -o code/codex && ./code/codex
+	cc -std=c11 -Wall -Wextra -o code/runner code/runner.c
+	./code/runner
+	comelang -s code/test_control.c -o code/test_control && ./code/test_control
+	comelang -s code/test_ops.c -o code/test_ops && ./code/test_ops
+	comelang -s code/test_array_ptr.c -o code/test_array_ptr && ./code/test_array_ptr
+	comelang -s code/test_struct_enum.c -o code/test_struct_enum && ./code/test_struct_enum
+	comelang -s code/test_functions.c -o code/test_functions && ./code/test_functions
+	comelang -s code/test_switch_ternary.c -o code/test_switch_ternary && ./code/test_switch_ternary
+	comelang -s code/test_string_cast.c -o code/test_string_cast && ./code/test_string_cast
 
 #########################################
 # install
