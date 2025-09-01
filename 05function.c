@@ -541,7 +541,7 @@ add_come_code(info, "enable_interrupts();\n");
             foreach(it, info->match_it_var) {
                 free_object(clone it->mType, it->mCValueName, false@no_decrement, false@no_free, info);
             }
-            info->match_it_var = null
+            info->match_it_var = null;
         }
     }
     
@@ -2274,7 +2274,7 @@ bool create_method_generics_fun(string fun_name, sGenericsFun* generics_fun, sIn
     sNode*% node = new sFunNode(fun, info) implements sNode;
     
     node_compile(node).elif {
-        return false
+        return false;
     }
     
     info.method_generics_type_names = method_generics_type_names;

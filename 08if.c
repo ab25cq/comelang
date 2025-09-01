@@ -351,6 +351,13 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     
         sBlock*% if_block = parse_block();
         
+        /*
+        if(if_block.mOmitSemicolon) {
+            err_msg(info, "no omit semicolon");
+            exit(1);
+        }
+        */
+        
         list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
     
         list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
@@ -398,6 +405,12 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     
                     
                     sBlock*% elif_block = parse_block();
+                    /*
+                    if(elif_block.mOmitSemicolon) {
+                        err_msg(info, "no omit semicolon");
+                        exit(1);
+                    }
+                    */
                     
                     elif_blocks.push_back(elif_block);
     
@@ -405,6 +418,12 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
                 }
                 else {
                     else_block = parse_block();
+                    /*
+                    if(else_block.mOmitSemicolon) {
+                        err_msg(info, "no omit semicolon");
+                        exit(1);
+                    }
+                    */
                     break;
                 }
                 info.sline_real = sline_real;
@@ -467,6 +486,12 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
     parse_sharp();
     
     sBlock*% if_block = parse_block();
+    /*
+    if(if_block.mOmitSemicolon) {
+        err_msg(info, "no omit semicolon");
+        exit(1);
+    }
+    */
     list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
     list<sBlock*%>*% elif_blocks = new list<sBlock*%>();
     int elif_num = 0;
@@ -479,6 +504,12 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
             skip_spaces_and_lf();
             
             else_block = parse_block();
+            /*
+            if(else_block.mOmitSemicolon) {
+                err_msg(info, "no omit semicolon");
+                exit(1);
+            }
+            */
         }
         else {
             expected_next_character('(');
@@ -492,6 +523,12 @@ sNode*% parse_match(sNode*% expression_node, sInfo* info)
             parse_sharp();
             
             sBlock*% elif_block = parse_block();
+            /*
+            if(elif_block.mOmitSemicolon) {
+                err_msg(info, "no omit semicolon");
+                exit(1);
+            }
+            */
             
             elif_blocks.add(elif_block);
             
@@ -527,6 +564,12 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
     parse_sharp();
 
     sBlock*% if_block = parse_block();
+    /*
+    if(if_block.mOmitSemicolon) {
+        err_msg(info, "no omit semicolon");
+        exit(1);
+    }
+    */
     
     list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
 
@@ -573,6 +616,12 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
 
                 
                 sBlock*% elif_block = parse_block();
+                /*
+                if(elif_block.mOmitSemicolon) {
+                    err_msg(info, "no omit semicolon");
+                    exit(1);
+                }
+                */
                 
                 elif_blocks.push_back(elif_block);
 
@@ -580,6 +629,12 @@ sNode*% parse_if_method_call(sNode*% expression_node, sInfo* info)
             }
             else {
                 else_block = parse_block();
+                /*
+                if(else_block.mOmitSemicolon) {
+                    err_msg(info, "no omit semicolon");
+                    exit(1);
+                }
+                */
                 break;
             }
         }
@@ -615,6 +670,12 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
     parse_sharp();
 
     sBlock*% if_block = parse_block();
+    /*
+    if(if_block.mOmitSemicolon) {
+        err_msg(info, "no omit semicolon");
+        exit(1);
+    }
+    */
     
     list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
 
@@ -661,6 +722,12 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
 
                 
                 sBlock*% elif_block = parse_block();
+                /*
+                if(elif_block.mOmitSemicolon) {
+                    err_msg(info, "no omit semicolon");
+                    exit(1);
+                }
+                */
                 
                 elif_blocks.push_back(elif_block);
 
@@ -668,6 +735,12 @@ sNode*% parse_elif_method_call(sNode*% expression_node, sInfo* info)
             }
             else {
                 else_block = parse_block();
+                /*
+                if(else_block.mOmitSemicolon) {
+                    err_msg(info, "no omit semicolon");
+                    exit(1);
+                }
+                */
                 break;
             }
         }
@@ -703,6 +776,12 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
     parse_sharp();
 
     sBlock*% if_block = parse_block();
+    /*
+    if(if_block.mOmitSemicolon) {
+        err_msg(info, "no omit semicolon");
+        exit(1);
+    }
+    */
     
     list<sNode*%>*% elif_expression_nodes = new list<sNode*%>();
 
@@ -749,6 +828,12 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
 
                 
                 sBlock*% elif_block = parse_block();
+                /*
+                if(elif_block.mOmitSemicolon) {
+                    err_msg(info, "no omit semicolon");
+                    exit(1);
+                }
+                */
                 
                 elif_blocks.push_back(elif_block);
 
@@ -756,6 +841,12 @@ sNode*% parse_less_method_call(sNode*% expression_node, sInfo* info)
             }
             else {
                 else_block = parse_block();
+                /*
+                if(else_block.mOmitSemicolon) {
+                    err_msg(info, "no omit semicolon");
+                    exit(1);
+                }
+                */
                 break;
             }
         }

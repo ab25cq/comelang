@@ -341,7 +341,7 @@ static bool compile(sInfo* info, bool output_object_file, list<string>* object_f
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
     
     if(is_mac) {
-        info.clang_option = info.clang_option + " -std=gnu17 "
+        info.clang_option = info.clang_option + " -std=gnu17 ";
     }
     
     var command = xsprintf("%s -o %s -c %s %s >> %s.out 2>&1", CC, output_file_name, input_file_name, info.clang_option, input_file_name);
@@ -394,7 +394,7 @@ static bool linker(sInfo* info, list<string>* object_files)
 #endif
 */
     if(is_mac) {
-        info.linker_option = info.clang_option + s" -std=gnu17 "
+        info.linker_option = info.clang_option + s" -std=gnu17 ";
     }
     
     command.append_str(" " + info.linker_option +" ");
@@ -840,7 +840,7 @@ module MEvalOptions<T, T2>
         }
         else if(argv[i] === "-gcc") {
             gcc_compiler = true;
-            CC="gcc"
+            CC="gcc";
         }
         else if(argv[i] === "-riscv") {
             gcc_compiler = true;
