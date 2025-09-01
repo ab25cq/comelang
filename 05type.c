@@ -1059,6 +1059,72 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     
     string type_name = parse_word();
     
+puts(type_name);
+    if(type_name === "__typeof__" && *info->p == '(') {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        sNode*% exp = expression();
+        
+        bool no_output_come_code = info.no_output_come_code;
+        info.no_output_come_code = true;
+        node_compile(exp).elif {
+            return ((sType*%)null, (string)null, false);
+        }
+        info.no_output_come_code = false;
+        info.no_output_come_code = no_output_come_code;
+        
+        expected_next_character(')');
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        
+        sType*% type = clone come_value.type;
+        
+        var type2 = solve_generics(type, info->generics_type, info);
+puts(come_value.c_value);
+        string var_name = null;
+        
+        string attribute = null;
+        
+        if(parse_variable_name) {
+            if(*info->p == ':') {
+                var_name = string("");
+            }
+            else if(xisalnum(*info.p) || *info->p == '_') {
+                var_name = parse_word();
+            }
+            else {
+                static int num_anonymous_var_name = 0;
+                num_anonymous_var_name++;
+                var_name = xsprintf("anonymous_var_nameY%d", num_anonymous_var_name);
+            }
+            
+            
+            if(*info->p == ':') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                bool no_comma = info->no_comma;
+                info->no_comma = true;
+                sNode*% node = expression();
+                info->no_comma = no_comma;
+                
+                type->mSizeNum = node;
+            }
+        
+            string attribute2 = parse_struct_attribute();
+            
+            if(attribute !== "" && attribute2 !== "") {
+                type->mAttribute = attribute + " " + attribute2;
+            }
+            else if(attribute2 !== "") {
+                type->mAttribute = attribute2;
+            }
+        }
+puts(type2->mClass->mName);
+        return (type2, var_name, true);
+    }
+    
     bool record_ = false;
     bool constant = false;
     bool static_ = false;
@@ -2233,6 +2299,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         type->mFunctionPointerNum = function_pointer_num;
     }
+/*
     else if(type_name === "__typeof__" && *info->p == '(') {
         info->p++;
         skip_spaces_and_lf();
@@ -2306,6 +2373,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
             }
         }
     }
+*/
     else {
         if(info.types[type_name]??) {
             type = clone info.types[type_name]??;

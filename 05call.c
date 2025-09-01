@@ -155,16 +155,11 @@ class sOutputNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        add_come_last_code(info, "%s", self.contents);
+        add_come_last_code(info, "%s", self.contents[1..-2]);
         
         return true;
     }
 };
-
-sNode* new_output_node(char* contents, sInfo* info)
-{
-    return borrow new sOutputNode(string(contents), info) implements sNode;
-}
 
 sNode*% create_output_node(char* contents, sInfo* info=info)
 {
@@ -1864,6 +1859,30 @@ class sVarArgTypeName extends sNodeBase
     }
 };
 
+class sInnerAttribute extends sNodeBase
+{
+    new(string attr, sInfo* info=info)
+    {
+        self.super();
+        
+        string self.attr = attr;
+    }
+    
+    string kind()
+    {
+        return string("sInnerAttribute");
+    }
+    
+    bool compile(sInfo* info)
+    {
+        string attr = self.attr;
+        
+        add_come_code(info, "__attribute__%s", attr);
+        
+        return true;
+    }
+};
+
 sNode*% parse_function_call(char* fun_name, sInfo* info, bool come_=false)
 {
     list<sType*%>*% method_generics_types = new list<sType*%>();
@@ -2016,6 +2035,49 @@ sNode*% expression_node(sInfo* info=info) version 1
     return (sNode*%)null;
 }
 
+string parse_inner_attribute(sInfo* info=info)
+{
+    char* head = info.p;
+    
+    if(*info->p == '(') {
+        bool in_dquort = false;
+        int brace_num = 0;
+        while(*info->p) {
+            if(*info->p == '"') {
+                info->p++;
+
+                in_dquort = !in_dquort;
+            }
+            else if(in_dquort) {
+                info->p++;
+            }
+            else if(*info->p == '(') {
+                info->p++;
+                brace_num++;
+            }
+            else if(*info->p == ')') {
+                info->p++;
+                brace_num--;
+
+                if(brace_num == 0) {
+                    break;
+                }
+            }
+            else {
+                info->p++;
+            }
+        }
+    }
+    skip_spaces_and_lf();
+    
+    char* tail = info.p;
+    
+    var buf = new buffer();
+    
+    buf.append(head, tail-head);
+
+    return buf.to_string();
+}
 
 sNode*% expression_node(sInfo* info=info) version 97
 {
@@ -2272,6 +2334,12 @@ sNode*% expression_node(sInfo* info=info) version 97
             expected_next_character(')');
             
             return static_assert_node(exp, exp2);
+        }
+        else if(buf === "__attribute__" && *info->p == '(') 
+        {
+            string attr = parse_inner_attribute();
+            
+            return new sInnerAttribute(attr, info) implements sNode;
         }
         else if(buf === "output" && *info->p == '{') 
         {
