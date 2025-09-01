@@ -1059,7 +1059,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     
     string type_name = parse_word();
     
-puts(type_name);
     if(type_name === "__typeof__" && *info->p == '(') {
         info->p++;
         skip_spaces_and_lf();
@@ -1081,7 +1080,6 @@ puts(type_name);
         sType*% type = clone come_value.type;
         
         var type2 = solve_generics(type, info->generics_type, info);
-puts(come_value.c_value);
         string var_name = null;
         
         string attribute = null;
@@ -1121,7 +1119,6 @@ puts(come_value.c_value);
                 type->mAttribute = attribute2;
             }
         }
-puts(type2->mClass->mName);
         return (type2, var_name, true);
     }
     
