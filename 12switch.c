@@ -172,11 +172,11 @@ class sLabelNode extends sNodeBase
 
 class sGotoNode extends sNodeBase
 {
-    new(string label, sInfo* info)
+    new(sNode*% label, sInfo* info)
     {
         self.super();
         
-        string self.label = label;
+        sNode*% self.label = label;
     }
     
     bool no_mutex() {
@@ -190,7 +190,15 @@ class sGotoNode extends sNodeBase
     
     bool compile(sInfo* info)
     {
-        add_come_code(info, s"goto \{self.label};\n");
+        sNode*% label = self.label;
+        
+        node_compile(label).elif {
+            return false;
+        }
+        
+        CVALUE*% label_value = get_value_from_stack(-1, info);
+        
+        add_come_code(info, s"goto \{label_value.c_value};\n");
         
         transpiler_clear_last_code(info);
     
@@ -288,9 +296,9 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
         }
     }
     else if(buf === "goto") {
-        string buf = parse_word();
+        sNode*% exp = expression();
         
-        return new sGotoNode(buf, info) implements sNode;
+        return new sGotoNode(exp, info) implements sNode;
     }
     else if(buf === "switch") {
         expected_next_character('(');

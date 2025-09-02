@@ -324,6 +324,7 @@ test:
 	comelang -s code/test_functions.c -o code/test_functions && ./code/test_functions
 	comelang -s code/test_switch_ternary.c -o code/test_switch_ternary && ./code/test_switch_ternary
 	comelang -s code/test_string_cast.c -o code/test_string_cast && ./code/test_string_cast
+	(cd code && make)
 
 #########################################
 # install
