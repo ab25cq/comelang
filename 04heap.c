@@ -26,6 +26,20 @@ void std_move(sType* left_type, sType* right_type, CVALUE* right_value, sInfo* i
 sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
 {
     sType*% result = clone type;
+    
+    if(type->mTypeOfNode) {
+        sNode*% node = type->mTypeOfNode;
+        
+        info.no_output_come_code = true;
+        node_compile(node).elif {
+            return result;
+        }
+        info.no_output_come_code = false;
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+        
+        result = come_value.type;
+    }
     if(generics_type == null) {
         return result;
     }

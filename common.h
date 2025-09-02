@@ -154,6 +154,7 @@ uniq class sType
     bool mVarArgs;
     
     bool mDefferRightValue;
+    sNode*% mTypeOfNode;
     
     new(string name, bool heap=false, sInfo* info=info)
     {
@@ -222,6 +223,7 @@ uniq class sType
         
         self.mOriginalTypeName = string("");
         self.mOriginalPointerNum = 0;
+        self.mTypeOfNode = null;
     }
 };
 

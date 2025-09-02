@@ -54,7 +54,8 @@ class sStoreNode extends sNodeBase
                     
                     info.lv_table.mVars.remove(string(var_name));
                 }
-                add_variable_to_table(var_name, clone type, info, false@function_param, comma:self.comma);
+                var type2 = solve_generics(type, info->generics_type, info);
+                add_variable_to_table(var_name, clone type2, info, false@function_param, comma:self.comma);
                 
                 var_ = get_variable_from_table(info.lv_table, var_name);
                 

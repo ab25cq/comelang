@@ -1065,21 +1065,11 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         
         sNode*% exp = expression();
         
-        bool no_output_come_code = info.no_output_come_code;
-        info.no_output_come_code = true;
-        node_compile(exp).elif {
-            return ((sType*%)null, (string)null, false);
-        }
-        info.no_output_come_code = false;
-        info.no_output_come_code = no_output_come_code;
-        
         expected_next_character(')');
         
-        CVALUE*% come_value = get_value_from_stack(-1, info);
+        sType*% type = new sType(s"int");
+        type->mTypeOfNode = exp;
         
-        sType*% type = clone come_value.type;
-        
-        var type2 = solve_generics(type, info->generics_type, info);
         string var_name = null;
         
         string attribute = null;
@@ -1119,7 +1109,7 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 type->mAttribute = attribute2;
             }
         }
-        return (type2, var_name, true);
+        return (type, var_name, true);
     }
     
     bool record_ = false;
