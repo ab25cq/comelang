@@ -794,7 +794,7 @@ sNode*% pre_position_operator(sInfo* info=info)
         return new sLogicalDenial(node, info) implements sNode;
     }
     else if(*info->p == '!' && *(info->p+1) == '!') {
-        info->p++;
+        info->p+=2;
         skip_spaces_and_lf();
 
         sNode*% node = expression_node();

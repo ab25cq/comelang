@@ -6864,7 +6864,7 @@ node_55 = (void*)0;
         ((node) ? node = come_decrement_ref_count(node, ((struct sNode*)node)->finalize, ((struct sNode*)node)->_protocol_obj, 0/* no_decrement */, 0/*no_free*/,(void*)0):(void*)0);
     }
     else if(({    (_condtional_value_X359=(*info->p==33&&*(info->p+1)==33));    _condtional_value_X359;    })) {
-        info->p++;
+        info->p+=2;
         skip_spaces_and_lf(info);
         node_30=(struct sNode*)come_increment_ref_count(expression_node_v99(info));
         _inf_value8=(struct sNode*)come_calloc_v2(1, sizeof(struct sNode), "05pre_op.c", 802, "struct sNode");
