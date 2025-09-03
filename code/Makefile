@@ -80,9 +80,5 @@ test: *.c
 	./user
 
 clean:
-	rm -rf $(BIN_DIR) runner .valid_bin .invalid_bin .test_out *.c.c *.c.o ./attrs ./codex ./comelang ./comelang10 ./comelang11 ./comelang12 ./comelang13 ./comelang14 ./comelang2 ./comelang3 ./comelang4 ./comelang5 ./comelang6 ./comelang7 ./comelang8 ./comelang9 ./labels_as_values ./nested_functions ./statement_expr ./test_arith ./test_array_ptr ./test_control_flow ./test_control ./test_functions ./test_ops ./test_pointers_arrays ./test_string_cast ./test_struct_enum ./test_struct_union_enum ./test_switch_ternary ./test_valid
-	comelang typeof_auto.c
-	./typeof_auto
-	comelang user.c
-	./user
+	rm -rf runner .valid_bin .invalid_bin .test_out *.c.c *.c.o ./attrs ./codex ./comelang ./comelang10 ./comelang11 ./comelang12 ./comelang13 ./comelang14 ./comelang2 ./comelang3 ./comelang4 ./comelang5 ./comelang6 ./comelang7 ./comelang8 ./comelang9 ./labels_as_values ./nested_functions ./statement_expr ./test_arith ./test_array_ptr ./test_control_flow ./test_control ./test_functions ./test_ops ./test_pointers_arrays ./test_string_cast ./test_struct_enum ./test_struct_union_enum ./test_switch_ternary ./test_valid
 
