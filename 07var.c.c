@@ -1673,7 +1673,6 @@ struct sInfo
     struct sType* come_method_block_function_result_type;
     struct sVarTable* lv_table;
     struct sVarTable* gv_table;
-    _Bool comma_instead_of_semicolon;
     _Bool no_comma;
     _Bool no_assign;
     _Bool no_label;

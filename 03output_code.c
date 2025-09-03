@@ -1200,18 +1200,13 @@ void add_last_code_to_source(sInfo* info)
     if(info->no_output_come_code) {
         return;
     }
-    if(info.comma_instead_of_semicolon) {
-        add_last_code_to_source_with_comma(info);
+    if(info.module.mLastCode) {
+       add_come_code(info, "%s;\n", info.module.mLastCode);
+       info.module.mLastCode = null;
     }
-    else {
-        if(info.module.mLastCode) {
-           add_come_code(info, "%s;\n", info.module.mLastCode);
-           info.module.mLastCode = null;
-        }
-        if(info.module.mLastCode2) {
-           add_come_code(info, "%s;\n", info.module.mLastCode2);
-           info.module.mLastCode2 = null;
-        }
+    if(info.module.mLastCode2) {
+       add_come_code(info, "%s;\n", info.module.mLastCode2);
+       info.module.mLastCode2 = null;
     }
 }
 

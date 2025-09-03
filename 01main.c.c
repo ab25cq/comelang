@@ -1673,7 +1673,6 @@ struct sInfo
     struct sType* come_method_block_function_result_type;
     struct sVarTable* lv_table;
     struct sVarTable* gv_table;
-    _Bool comma_instead_of_semicolon;
     _Bool no_comma;
     _Bool no_assign;
     _Bool no_label;
@@ -9538,11 +9537,11 @@ _Bool _condtional_value_X680;
 }
 
 static struct list$1CVALUE$ph* list$1CVALUE$ph_push_back(struct list$1CVALUE$ph* self, struct CVALUE* item){
-_Bool _condtional_value_X697;
+_Bool _condtional_value_X693;
 void* __right_value341 = (void*)0;
 struct list_item$1CVALUE$ph* litem;
 struct CVALUE* __dec_obj107;
-_Bool _condtional_value_X698;
+_Bool _condtional_value_X694;
 void* __right_value342 = (void*)0;
 struct list_item$1CVALUE$ph* litem_70;
 struct CVALUE* __dec_obj108;
@@ -9550,7 +9549,7 @@ void* __right_value343 = (void*)0;
 struct list_item$1CVALUE$ph* litem_71;
 struct CVALUE* __dec_obj109;
 struct list$1CVALUE$ph* __result_obj__255;
-    if(({    (_condtional_value_X697=(self->len==0));    _condtional_value_X697;    })) {
+    if(({    (_condtional_value_X693=(self->len==0));    _condtional_value_X693;    })) {
         litem=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value341=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1119, "struct list_item$1CVALUE$ph*"))));
         litem->prev=((void*)0);
         litem->next=((void*)0);
@@ -9560,7 +9559,7 @@ struct list$1CVALUE$ph* __result_obj__255;
         self->tail=litem;
         self->head=litem;
     }
-    else if(({    (_condtional_value_X698=(self->len==1));    _condtional_value_X698;    })) {
+    else if(({    (_condtional_value_X694=(self->len==1));    _condtional_value_X694;    })) {
         litem_70=(struct list_item$1CVALUE$ph*)come_increment_ref_count(((struct list_item$1CVALUE$ph*)(__right_value342=(struct list_item$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list_item$1CVALUE$ph)*(1), "/usr/local/include/comelang.h", 1129, "struct list_item$1CVALUE$ph*"))));
         litem_70->prev=self->head;
         litem_70->next=((void*)0);
@@ -9646,10 +9645,6 @@ _Bool _condtional_value_X689;
 _Bool _condtional_value_X690;
 _Bool _condtional_value_X691;
 _Bool _condtional_value_X692;
-_Bool _condtional_value_X693;
-_Bool _condtional_value_X694;
-_Bool _condtional_value_X695;
-_Bool _condtional_value_X696;
 void* __right_value336 = (void*)0;
 void* __right_value337 = (void*)0;
 struct CVALUE* come_value;
@@ -9661,7 +9656,7 @@ struct sType* __dec_obj106;
 _Bool __result_obj__256;
     info->current_stack_num++;
     class_name=(char*)come_increment_ref_count(xsprintf("__current_stack%d__",info->current_stack_num));
-    current_stack=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "./common.h", 661, "struct sClass*")),(char*)come_increment_ref_count(class_name),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info));
+    current_stack=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "./common.h", 660, "struct sClass*")),(char*)come_increment_ref_count(class_name),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info));
     vtable=info->lv_table;
     while(({    (_condtional_value_X648=(vtable));    _condtional_value_X648;    })) {
         for(        ({        (_condtional_value_X651=(o2_saved=(struct map$2char$phsVar$ph*)come_increment_ref_count((vtable->mVars)),it=map$2char$phsVar$ph_begin((o2_saved))));        _condtional_value_X651;        });        ({        (_condtional_value_X652=(!map$2char$phsVar$ph_end((o2_saved))));        _condtional_value_X652;        });        ({        (_condtional_value_X655=(it=map$2char$phsVar$ph_next((o2_saved))));        _condtional_value_X655;        })        ){
@@ -9672,7 +9667,7 @@ _Bool __result_obj__256;
             come_call_finalizer(sVar_finalize, __right_value315, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
             type2=(struct sType*)come_increment_ref_count(sType_clone(value->mType));
             type2->mPointerNum++;
-            item=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 674, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type2)));
+            item=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 673, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type2)));
             if(({            (_condtional_value_X666=(value->mCValueName!=((void*)0)));            _condtional_value_X666;            })) {
                 if(({                (_condtional_value_X667=(strcmp(value->mCValueName,"__list_values")==0));                _condtional_value_X667;                })) {
                 }
@@ -9687,7 +9682,7 @@ _Bool __result_obj__256;
                     list$1sNode$ph_reset(type3->mArrayNum);
                     type3->mPointerNum=1;
                     type3->mOriginIsArray=(_Bool)1;
-                    item2=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 694, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type3)));
+                    item2=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 693, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(__builtin_string(value->mCValueName)),(struct sType*)come_increment_ref_count(type3)));
                     list$1tuple2$2char$phsType$ph$ph_push_back(current_stack->mFields,(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_clone(item2)));
                     value->mType->mOriginIsArray=(_Bool)1;
                     come_call_finalizer(sType_finalize, type3, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -9714,7 +9709,7 @@ _Bool __result_obj__256;
             value_67=((struct sVar*)(__right_value332=map$2char$phsVar$ph_operator_load_element(vtable->mVars,key_66)));
             come_call_finalizer(sVar_finalize, __right_value332, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
             type2_68=(struct sType*)come_increment_ref_count(sType_clone(value_67->mType));
-            item_69=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 723, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(value_67->mCValueName),(struct sType*)come_increment_ref_count(type2_68)));
+            item_69=(struct tuple2$2char$phsType$ph*)come_increment_ref_count(tuple2$2char$phsType$ph_initialize((struct tuple2$2char$phsType$ph*)come_increment_ref_count((struct tuple2$2char$phsType$ph*)come_calloc_v2(1, sizeof(struct tuple2$2char$phsType$ph)*(1), "./common.h", 722, "struct tuple2$2char$phsType$ph")),(char*)come_increment_ref_count(value_67->mCValueName),(struct sType*)come_increment_ref_count(type2_68)));
             if(({            (_condtional_value_X685=(value_67->mCValueName!=((void*)0)));            _condtional_value_X685;            })) {
                 if(({                (_condtional_value_X686=(strcmp(value_67->mCValueName,"__list_values")==0));                _condtional_value_X686;                })) {
                 }
@@ -9727,38 +9722,18 @@ _Bool __result_obj__256;
                 else {
                     if(({                    (_condtional_value_X690=(string_operator_equals(value_67->mFunName,info->come_fun->mName)));                    _condtional_value_X690;                    })) {
                         if(({                        (_condtional_value_X691=(string_operator_equals(type2_68->mClass->mName,"lambda")));                        _condtional_value_X691;                        })) {
-                            if(({                            (_condtional_value_X692=(info->comma_instead_of_semicolon));                            _condtional_value_X692;                            })) {
-                                add_come_code(info,"__current_stack%d__.%s = %s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
-                            else {
-                                add_come_code(info,"__current_stack%d__.%s = %s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
+                            add_come_code(info,"__current_stack%d__.%s = %s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
                         }
                         else {
-                            if(({                            (_condtional_value_X693=(info->comma_instead_of_semicolon));                            _condtional_value_X693;                            })) {
-                                add_come_code(info,"__current_stack%d__.%s = &%s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
-                            else {
-                                add_come_code(info,"__current_stack%d__.%s = &%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
+                            add_come_code(info,"__current_stack%d__.%s = &%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
                         }
                     }
                     else {
-                        if(({                        (_condtional_value_X694=(string_operator_equals(type2_68->mClass->mName,"lambda")));                        _condtional_value_X694;                        })) {
-                            if(({                            (_condtional_value_X695=(info->comma_instead_of_semicolon));                            _condtional_value_X695;                            })) {
-                                add_come_code(info,"__current_stack%d__.%s = parent->%s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
-                            else {
-                                add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
+                        if(({                        (_condtional_value_X692=(string_operator_equals(type2_68->mClass->mName,"lambda")));                        _condtional_value_X692;                        })) {
+                            add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
                         }
                         else {
-                            if(({                            (_condtional_value_X696=(info->comma_instead_of_semicolon));                            _condtional_value_X696;                            })) {
-                                add_come_code(info,"__current_stack%d__.%s = parent->%s,\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
-                            else {
-                                add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
-                            }
+                            add_come_code(info,"__current_stack%d__.%s = parent->%s;\n",info->current_stack_num,value_67->mCValueName,value_67->mCValueName);
                         }
                     }
                 }
@@ -9769,12 +9744,12 @@ _Bool __result_obj__256;
         come_call_finalizer(map$2char$phsVar$ph$p_finalize, o2_saved_64, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         vtable=vtable->mParent;
     }
-    come_value=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "./common.h", 782, "struct CVALUE*"))));
+    come_value=(struct CVALUE*)come_increment_ref_count(CVALUE_initialize((struct CVALUE*)come_increment_ref_count((struct CVALUE*)come_calloc_v2(1, sizeof(struct CVALUE)*(1), "./common.h", 761, "struct CVALUE*"))));
     __dec_obj105=come_value->c_value,
     come_value->c_value=(char*)come_increment_ref_count(xsprintf("&__current_stack%d__",info->current_stack_num));
     __dec_obj105 = come_decrement_ref_count(__dec_obj105, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
     __dec_obj106=come_value->type,
-    come_value->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "./common.h", 785, "struct sType*")),(char*)come_increment_ref_count(class_name),(_Bool)0,info));
+    come_value->type=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "./common.h", 764, "struct sType*")),(char*)come_increment_ref_count(class_name),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj106,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     come_value->var=((void*)0);
     add_come_last_code(info,"%s;\n",come_value->c_value);
