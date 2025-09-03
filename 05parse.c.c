@@ -2712,11 +2712,15 @@ _Bool parsecmp(char* p2, struct sInfo* info){
 _Bool terminated;
 char* p3;
 int i;
+_Bool _condtional_value_X1;
+_Bool _condtional_value_X2;
+_Bool _condtional_value_X3;
+_Bool _condtional_value_X4;
 unsigned char c;
     terminated=(_Bool)0;
     p3=info->p;
-    for(    i=0    ;    i<strlen(p2)    ;    i++    ){
-        if(        *p3==0        ) {
+    for(    ({    (_condtional_value_X1=(i=0));    _condtional_value_X1;    });    ({    (_condtional_value_X2=(i<strlen(p2)));    _condtional_value_X2;    });    ({    (_condtional_value_X3=(i++));    _condtional_value_X3;    })    ){
+        if(({        (_condtional_value_X4=(*p3==0));        _condtional_value_X4;        })) {
             return (_Bool)0;
         }
         p3++;
@@ -2726,13 +2730,17 @@ unsigned char c;
 }
 
 int err_msg(struct sInfo* info, char* msg, ...){
+_Bool _condtional_value_X5;
 char* msg2;
 va_list args;
 char* p;
 char* last_lf;
+_Bool _condtional_value_X6;
+_Bool _condtional_value_X7;
 void* __right_value0 = (void*)0;
 void* __right_value1 = (void*)0;
 struct buffer* buf;
+_Bool _condtional_value_X8;
 int col;
 int col_0;
 void* __right_value2 = (void*)0;
@@ -2741,21 +2749,21 @@ void* __right_value4 = (void*)0;
 int __result_obj__1;
 msg2 = (void*)0;
 memset(&args, 0, sizeof(va_list));
-    if(    !info->no_output_err    ) {
+    if(({    (_condtional_value_X5=(!info->no_output_err));    _condtional_value_X5;    })) {
         __builtin_va_start(args,msg);
         vasprintf(&msg2,msg,args);
         __builtin_va_end(args);
         p=info->p;
         last_lf=((void*)0);
-        while(        p>=info->head        ) {
-            if(            *p==10            ) {
+        while(({        (_condtional_value_X6=(p>=info->head));        _condtional_value_X6;        })) {
+            if(({            (_condtional_value_X7=(*p==10));            _condtional_value_X7;            })) {
                 last_lf=p;
                 break;
             }
             p--;
         }
         buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05parse.c", 38, "struct buffer*"))));
-        if(        last_lf        ) {
+        if(({        (_condtional_value_X8=(last_lf));        _condtional_value_X8;        })) {
             col=info->p-last_lf;
             buffer_append_format(buf,"%s %d(real %d)(block %d) %d: %s",info->sname,info->sline,info->sline_real,info->sline_block,col,msg2);
         }
@@ -2778,9 +2786,11 @@ memset(&args, 0, sizeof(va_list));
 }
 
 int expected_next_character(char c, struct sInfo* info){
+_Bool _condtional_value_X9;
+_Bool _condtional_value_X10;
     parse_sharp_v5(info);
-    if(    *info->p!=c    ) {
-        if(        !info->no_output_err        ) {
+    if(({    (_condtional_value_X9=(*info->p!=c));    _condtional_value_X9;    })) {
+        if(({        (_condtional_value_X10=(!info->no_output_err));        _condtional_value_X10;        })) {
             err_msg(info,"expected next charaster is %c, but %c, caller %s %d",c,*info->p,info->caller_sname,info->caller_line);
             stackframe_v2();
             exit(1);
@@ -2795,16 +2805,18 @@ char* parse_word(struct sInfo* info){
 void* __right_value5 = (void*)0;
 void* __right_value6 = (void*)0;
 struct buffer* buf;
+_Bool _condtional_value_X11;
 void* __right_value7 = (void*)0;
-_Bool _condtional_value_X1;
+_Bool _condtional_value_X12;
 void* __right_value8 = (void*)0;
 char* __result_obj__2;
 void* __right_value9 = (void*)0;
 char* result;
+_Bool _condtional_value_X13;
 void* __right_value10 = (void*)0;
 void* __right_value11 = (void*)0;
 void* __right_value12 = (void*)0;
-_Bool _condtional_value_X2;
+_Bool _condtional_value_X24;
 void* __right_value13 = (void*)0;
 void* __right_value14 = (void*)0;
 void* __right_value15 = (void*)0;
@@ -2813,13 +2825,13 @@ char* __result_obj__11;
 char* __result_obj__12;
     buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05parse.c", 81, "struct buffer*"))));
     parse_sharp_v5(info);
-    while(    (*info->p>=97&&*info->p<=122)||(*info->p>=65&&*info->p<=90)||*info->p==95||(*info->p>=48&&*info->p<=57)||(*info->p==36)    ) {
+    while(({    (_condtional_value_X11=((*info->p>=97&&*info->p<=122)||(*info->p>=65&&*info->p<=90)||*info->p==95||(*info->p>=48&&*info->p<=57)||(*info->p==36)));    _condtional_value_X11;    })) {
         buffer_append_char(buf,*info->p);
         info->p++;
     }
     skip_spaces_and_lf(info);
-    if(    (_condtional_value_X1=(string_length(((char*)(__right_value7=buffer_to_string(buf))))==0)),    (__right_value7 = come_decrement_ref_count(__right_value7, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0)),
-    _condtional_value_X1    ) {
+    if(({    (_condtional_value_X12=(string_length(((char*)(__right_value7=buffer_to_string(buf))))==0));    (__right_value7 = come_decrement_ref_count(__right_value7, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    _condtional_value_X12;    })) {
         err_msg(info,"unexpected character(%c), expected word character, caller %s %d",*info->p,info->caller_sname,info->caller_line);
         __result_obj__2 = (char*)come_increment_ref_count(((char*)(__right_value8=__builtin_string(""))));
         come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -2828,11 +2840,11 @@ char* __result_obj__12;
         return __result_obj__2;
     }
     result=(char*)come_increment_ref_count(buffer_to_string(buf));
-    if(    info->module_params    ) {
-        if(        (_condtional_value_X2=(((char*)(__right_value12=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value11=__builtin_string(result)))))))),        (__right_value10 = come_decrement_ref_count(__right_value10, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0)),
-        (__right_value11 = come_decrement_ref_count(__right_value11, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0)),
-        (__right_value12 = come_decrement_ref_count(__right_value12, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0)),
-        _condtional_value_X2        ) {
+    if(({    (_condtional_value_X13=(info->module_params));    _condtional_value_X13;    })) {
+        if(({        (_condtional_value_X24=(((char*)(__right_value12=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value11=__builtin_string(result))))))));        (__right_value10 = come_decrement_ref_count(__right_value10, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        (__right_value11 = come_decrement_ref_count(__right_value11, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        (__right_value12 = come_decrement_ref_count(__right_value12, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        _condtional_value_X24;        })) {
             __result_obj__11 = (char*)come_increment_ref_count(((char*)(__right_value16=__builtin_string(((char*)(__right_value15=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value14=__builtin_string(result))))))))));
             come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             (result = come_decrement_ref_count(result, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -2855,7 +2867,12 @@ static char* map$2char$phchar$ph$p_operator_load_element(struct map$2char$phchar
 char* default_value;
 unsigned int hash;
 unsigned int it;
+_Bool _condtional_value_X14;
+_Bool _condtional_value_X15;
+_Bool _condtional_value_X16;
 char* __result_obj__3;
+_Bool _condtional_value_X17;
+_Bool _condtional_value_X18;
 char* __result_obj__4;
 char* __result_obj__5;
 char* __result_obj__6;
@@ -2863,19 +2880,19 @@ default_value = (void*)0;
     memset(&default_value,0,sizeof(char*));
     hash=string_get_hash_key(((char*)key))%self->size;
     it=hash;
-    while(    (_Bool)1    ) {
-        if(        self->item_existance[it]        ) {
-            if(            string_equals(self->keys[it],key)            ) {
+    while(({    (_condtional_value_X14=((_Bool)1));    _condtional_value_X14;    })) {
+        if(({        (_condtional_value_X15=(self->item_existance[it]));        _condtional_value_X15;        })) {
+            if(({            (_condtional_value_X16=(string_equals(self->keys[it],key)));            _condtional_value_X16;            })) {
                 __result_obj__3 = (char*)come_increment_ref_count(self->items[it]);
                 (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__result_obj__3 = come_decrement_ref_count(__result_obj__3, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
                 return __result_obj__3;
             }
             it++;
-            if(            it>=self->size            ) {
+            if(({            (_condtional_value_X17=(it>=self->size));            _condtional_value_X17;            })) {
                 it=0;
             }
-            else if(            it==hash            ) {
+            else if(({            (_condtional_value_X18=(it==hash));            _condtional_value_X18;            })) {
                 __result_obj__4 = (char*)come_increment_ref_count(default_value);
                 (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
                 (__result_obj__4 = come_decrement_ref_count(__result_obj__4, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
@@ -2899,7 +2916,12 @@ static char* map$2char$phchar$ph_operator_load_element(struct map$2char$phchar$p
 char* default_value;
 unsigned int hash;
 unsigned int it;
+_Bool _condtional_value_X19;
+_Bool _condtional_value_X20;
+_Bool _condtional_value_X21;
 char* __result_obj__7;
+_Bool _condtional_value_X22;
+_Bool _condtional_value_X23;
 char* __result_obj__8;
 char* __result_obj__9;
 char* __result_obj__10;
@@ -2907,19 +2929,19 @@ default_value = (void*)0;
     memset(&default_value,0,sizeof(char*));
     hash=string_get_hash_key(((char*)key))%self->size;
     it=hash;
-    while(    (_Bool)1    ) {
-        if(        self->item_existance[it]        ) {
-            if(            string_equals(self->keys[it],key)            ) {
+    while(({    (_condtional_value_X19=((_Bool)1));    _condtional_value_X19;    })) {
+        if(({        (_condtional_value_X20=(self->item_existance[it]));        _condtional_value_X20;        })) {
+            if(({            (_condtional_value_X21=(string_equals(self->keys[it],key)));            _condtional_value_X21;            })) {
                 __result_obj__7 = (char*)come_increment_ref_count(self->items[it]);
                 (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
                 (__result_obj__7 = come_decrement_ref_count(__result_obj__7, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
                 return __result_obj__7;
             }
             it++;
-            if(            it>=self->size            ) {
+            if(({            (_condtional_value_X22=(it>=self->size));            _condtional_value_X22;            })) {
                 it=0;
             }
-            else if(            it==hash            ) {
+            else if(({            (_condtional_value_X23=(it==hash));            _condtional_value_X23;            })) {
                 __result_obj__8 = (char*)come_increment_ref_count(default_value);
                 (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
                 (__result_obj__8 = come_decrement_ref_count(__result_obj__8, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
@@ -2943,6 +2965,7 @@ char* backtrace_parse_word(struct sInfo* info){
 char* p;
 int sline;
 char* buf;
+_Bool _condtional_value_X25;
 void* __right_value17 = (void*)0;
 char* __dec_obj1;
 void* __right_value18 = (void*)0;
@@ -2951,7 +2974,7 @@ char* __result_obj__13;
 buf = (void*)0;
     p=info->p;
     sline=info->sline;
-    if(    xisalpha(*info->p)||*info->p==95    ) {
+    if(({    (_condtional_value_X25=(xisalpha(*info->p)||*info->p==95));    _condtional_value_X25;    })) {
         __dec_obj1=buf,
         buf=(char*)come_increment_ref_count(parse_word(info));
         __dec_obj1 = come_decrement_ref_count(__dec_obj1, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
@@ -2970,11 +2993,14 @@ buf = (void*)0;
 }
 
 void skip_spaces_and_lf(struct sInfo* info){
-    while(    (_Bool)1    ) {
-        if(        *info->p==32||*info->p==9        ) {
+_Bool _condtional_value_X26;
+_Bool _condtional_value_X27;
+_Bool _condtional_value_X28;
+    while(({    (_condtional_value_X26=((_Bool)1));    _condtional_value_X26;    })) {
+        if(({        (_condtional_value_X27=(*info->p==32||*info->p==9));        _condtional_value_X27;        })) {
             info->p++;
         }
-        else if(        *info->p==10        ) {
+        else if(({        (_condtional_value_X28=(*info->p==10));        _condtional_value_X28;        })) {
             info->p++;
             info->sline++;
         }
@@ -2986,11 +3012,14 @@ void skip_spaces_and_lf(struct sInfo* info){
 }
 
 void skip_spaces_and_lf2(struct sInfo* info){
-    while(    (_Bool)1    ) {
-        if(        *info->p==32||*info->p==9        ) {
+_Bool _condtional_value_X29;
+_Bool _condtional_value_X30;
+_Bool _condtional_value_X31;
+    while(({    (_condtional_value_X29=((_Bool)1));    _condtional_value_X29;    })) {
+        if(({        (_condtional_value_X30=(*info->p==32||*info->p==9));        _condtional_value_X30;        })) {
             info->p++;
         }
-        else if(        *info->p==10        ) {
+        else if(({        (_condtional_value_X31=(*info->p==10));        _condtional_value_X31;        })) {
             info->p++;
             info->sline++;
         }
@@ -3001,21 +3030,45 @@ void skip_spaces_and_lf2(struct sInfo* info){
 }
 
 void parse_sharp_v5(struct sInfo* info){
+_Bool _condtional_value_X32;
+_Bool _condtional_value_X33;
+_Bool _condtional_value_X34;
+_Bool _condtional_value_X35;
+_Bool _condtional_value_X36;
+_Bool _condtional_value_X37;
 int line;
 void* __right_value19 = (void*)0;
 void* __right_value20 = (void*)0;
 struct buffer* fname;
+_Bool _condtional_value_X38;
+_Bool _condtional_value_X39;
+_Bool _condtional_value_X40;
+_Bool _condtional_value_X41;
 void* __right_value21 = (void*)0;
 char* __dec_obj3;
+_Bool _condtional_value_X42;
+_Bool _condtional_value_X43;
+_Bool _condtional_value_X44;
+_Bool _condtional_value_X45;
 int nest;
-    while(    1    ) {
-        if(        *info->p==35        ) {
+_Bool _condtional_value_X46;
+_Bool _condtional_value_X47;
+_Bool _condtional_value_X48;
+_Bool _condtional_value_X49;
+_Bool _condtional_value_X50;
+_Bool _condtional_value_X51;
+_Bool _condtional_value_X52;
+_Bool _condtional_value_X53;
+_Bool _condtional_value_X54;
+_Bool _condtional_value_X55;
+    while(({    (_condtional_value_X32=(1));    _condtional_value_X32;    })) {
+        if(({        (_condtional_value_X33=(*info->p==35));        _condtional_value_X33;        })) {
             skip_spaces_and_lf2(info);
             info->p++;
             skip_spaces_and_lf2(info);
-            if(            parsecmp("pragma",info)            ) {
-                while(                *info->p                ) {
-                    if(                    *info->p==10                    ) {
+            if(({            (_condtional_value_X34=(parsecmp("pragma",info)));            _condtional_value_X34;            })) {
+                while(({                (_condtional_value_X35=(*info->p));                _condtional_value_X35;                })) {
+                    if(({                    (_condtional_value_X36=(*info->p==10));                    _condtional_value_X36;                    })) {
                         skip_spaces_and_lf2(info);
                         break;
                     }
@@ -3024,21 +3077,21 @@ int nest;
                     }
                 }
             }
-            else if(            xisdigit(*info->p)            ) {
+            else if(({            (_condtional_value_X37=(xisdigit(*info->p)));            _condtional_value_X37;            })) {
                 line=0;
                 fname=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05parse.c", 182, "struct buffer*"))));
-                while(                xisdigit(*info->p)                ) {
+                while(({                (_condtional_value_X38=(xisdigit(*info->p)));                _condtional_value_X38;                })) {
                     line=line*10+(*info->p-48);
                     info->p++;
                 }
                 skip_spaces_and_lf2(info);
-                if(                *info->p==34                ) {
+                if(({                (_condtional_value_X39=(*info->p==34));                _condtional_value_X39;                })) {
                     info->p++;
-                    while(                    *info->p!=34                    ) {
+                    while(({                    (_condtional_value_X40=(*info->p!=34));                    _condtional_value_X40;                    })) {
                         buffer_append_char(fname,*info->p);
                         info->p++;
                     }
-                    while(                    *info->p!=10                    ) {
+                    while(({                    (_condtional_value_X41=(*info->p!=10));                    _condtional_value_X41;                    })) {
                         info->p++;
                     }
                     info->p++;
@@ -3050,34 +3103,34 @@ int nest;
                 skip_spaces_and_lf2(info);
                 come_call_finalizer(buffer_finalize, fname, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
             }
-            else if(            *info->p==34            ) {
+            else if(({            (_condtional_value_X42=(*info->p==34));            _condtional_value_X42;            })) {
                 info->p++;
-                while(                *info->p!=34                ) {
+                while(({                (_condtional_value_X43=(*info->p!=34));                _condtional_value_X43;                })) {
                     info->p++;
                 }
-                while(                *info->p!=10                ) {
+                while(({                (_condtional_value_X44=(*info->p!=10));                _condtional_value_X44;                })) {
                     info->p++;
                 }
                 info->p++;
             }
             skip_spaces_and_lf2(info);
         }
-        else if(        *info->p==47&&*(info->p+1)==42        ) {
+        else if(({        (_condtional_value_X45=(*info->p==47&&*(info->p+1)==42));        _condtional_value_X45;        })) {
             nest=0;
-            while(            1            ) {
-                if(                *info->p==47&&*(info->p+1)==42                ) {
+            while(({            (_condtional_value_X46=(1));            _condtional_value_X46;            })) {
+                if(({                (_condtional_value_X47=(*info->p==47&&*(info->p+1)==42));                _condtional_value_X47;                })) {
                     info->p+=2;
                     nest++;
                 }
-                else if(                *info->p==42&&*(info->p+1)==47                ) {
+                else if(({                (_condtional_value_X48=(*info->p==42&&*(info->p+1)==47));                _condtional_value_X48;                })) {
                     info->p+=2;
                     nest--;
-                    if(                    nest==0                    ) {
+                    if(({                    (_condtional_value_X49=(nest==0));                    _condtional_value_X49;                    })) {
                         skip_spaces_and_lf2(info);
                         break;
                     }
                 }
-                else if(                *info->p==10                ) {
+                else if(({                (_condtional_value_X50=(*info->p==10));                _condtional_value_X50;                })) {
                     info->p++;
                     info->sline++;
                 }
@@ -3086,16 +3139,16 @@ int nest;
                 }
             }
         }
-        else if(        *info->p==47&&*(info->p+1)==47        ) {
+        else if(({        (_condtional_value_X51=(*info->p==47&&*(info->p+1)==47));        _condtional_value_X51;        })) {
             info->p+=2;
-            while(            1            ) {
-                if(                *info->p==10                ) {
+            while(({            (_condtional_value_X52=(1));            _condtional_value_X52;            })) {
+                if(({                (_condtional_value_X53=(*info->p==10));                _condtional_value_X53;                })) {
                     info->p++;
                     info->sline++;
                     skip_spaces_and_lf2(info);
                     break;
                 }
-                else if(                *info->p==0                ) {
+                else if(({                (_condtional_value_X54=(*info->p==0));                _condtional_value_X54;                })) {
                     break;
                 }
                 else {
@@ -3103,7 +3156,7 @@ int nest;
                 }
             }
         }
-        else if(        parsecmp("__extension__",info)        ) {
+        else if(({        (_condtional_value_X55=(parsecmp("__extension__",info)));        _condtional_value_X55;        })) {
             info->p+=strlen("__extension__");
             skip_spaces_and_lf2(info);
         }
@@ -3115,22 +3168,27 @@ int nest;
 
 void skip_paren(struct sInfo* info){
 int nest;
+_Bool _condtional_value_X56;
+_Bool _condtional_value_X57;
+_Bool _condtional_value_X58;
+_Bool _condtional_value_X59;
+_Bool _condtional_value_X60;
     nest=0;
-    while(    (_Bool)1    ) {
-        if(        *info->p==40        ) {
+    while(({    (_condtional_value_X56=((_Bool)1));    _condtional_value_X56;    })) {
+        if(({        (_condtional_value_X57=(*info->p==40));        _condtional_value_X57;        })) {
             info->p++;
             skip_spaces_and_lf(info);
             nest++;
         }
-        else if(        *info->p==41        ) {
+        else if(({        (_condtional_value_X58=(*info->p==41));        _condtional_value_X58;        })) {
             info->p++;
             skip_spaces_and_lf(info);
             nest--;
-            if(            nest==0            ) {
+            if(({            (_condtional_value_X59=(nest==0));            _condtional_value_X59;            })) {
                 break;
             }
         }
-        else if(        *info->p==0        ) {
+        else if(({        (_condtional_value_X60=(*info->p==0));        _condtional_value_X60;        })) {
             err_msg(info,"invalid the source end. require )");
             exit(1);
         }

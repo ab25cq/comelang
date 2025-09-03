@@ -28,6 +28,9 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
     sType*% result = clone type;
     
     if(type->mTypeOfNode) {
+        int pointer_num = type->mPointerNum;
+        bool heap = type->mHeap;
+        
         sNode*% node = type->mTypeOfNode;
         
         info.no_output_come_code = true;
@@ -39,6 +42,13 @@ sType*% solve_generics(sType*% type, sType*% generics_type, sInfo* info)
         CVALUE*% come_value = get_value_from_stack(-1, info);
         
         result = come_value.type;
+        
+        if(pointer_num > 0) {
+            result.mPointerNum += pointer_num;
+        }
+        if(heap) {
+            result.mHeap = true;
+        }
     }
     if(generics_type == null) {
         return result;

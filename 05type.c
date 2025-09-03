@@ -1059,58 +1059,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
     
     string type_name = parse_word();
     
-    if(type_name === "__typeof__" && *info->p == '(') {
-        info->p++;
-        skip_spaces_and_lf();
-        
-        sNode*% exp = expression();
-        
-        expected_next_character(')');
-        
-        sType*% type = new sType(s"int");
-        type->mTypeOfNode = exp;
-        
-        string var_name = null;
-        
-        string attribute = null;
-        
-        if(parse_variable_name) {
-            if(*info->p == ':') {
-                var_name = string("");
-            }
-            else if(xisalnum(*info.p) || *info->p == '_') {
-                var_name = parse_word();
-            }
-            else {
-                static int num_anonymous_var_name = 0;
-                num_anonymous_var_name++;
-                var_name = xsprintf("anonymous_var_nameY%d", num_anonymous_var_name);
-            }
-            
-            
-            if(*info->p == ':') {
-                info->p++;
-                skip_spaces_and_lf();
-                
-                bool no_comma = info->no_comma;
-                info->no_comma = true;
-                sNode*% node = expression();
-                info->no_comma = no_comma;
-                
-                type->mSizeNum = node;
-            }
-        
-            string attribute2 = parse_struct_attribute();
-            
-            if(attribute !== "" && attribute2 !== "") {
-                type->mAttribute = attribute + " " + attribute2;
-            }
-            else if(attribute2 !== "") {
-                type->mAttribute = attribute2;
-            }
-        }
-        return (type, var_name, true);
-    }
     
     bool record_ = false;
     bool constant = false;
@@ -1738,6 +1686,79 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
         else {
             break;
         }
+    }
+    
+    if(type_name === "__typeof__" && *info->p == '(') {
+        info->p++;
+        skip_spaces_and_lf();
+        
+        sNode*% exp = expression();
+        
+        expected_next_character(')');
+        
+        sType*% type = new sType(s"int");
+        type->mTypeOfNode = exp;
+        
+        string var_name = null;
+        
+        while(1) {
+            if(*info->p == '*') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                skip_pointer_attribute();
+                
+                type->mPointerNum++;
+            }
+            else if(*info->p == '%') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                type->mHeap = true;
+            }
+            else {
+                break;
+            }
+        }
+        
+        string attribute = null;
+        
+        if(parse_variable_name) {
+            if(*info->p == ':') {
+                var_name = string("");
+            }
+            else if(xisalnum(*info.p) || *info->p == '_') {
+                var_name = parse_word();
+            }
+            else {
+                static int num_anonymous_var_name = 0;
+                num_anonymous_var_name++;
+                var_name = xsprintf("anonymous_var_nameY%d", num_anonymous_var_name);
+            }
+            
+            
+            if(*info->p == ':') {
+                info->p++;
+                skip_spaces_and_lf();
+                
+                bool no_comma = info->no_comma;
+                info->no_comma = true;
+                sNode*% node = expression();
+                info->no_comma = no_comma;
+                
+                type->mSizeNum = node;
+            }
+        
+            string attribute2 = parse_struct_attribute();
+            
+            if(attribute !== "" && attribute2 !== "") {
+                type->mAttribute = attribute + " " + attribute2;
+            }
+            else if(attribute2 !== "") {
+                type->mAttribute = attribute2;
+            }
+        }
+        return (type, var_name, true);
     }
     
     string attribute = parse_struct_attribute();

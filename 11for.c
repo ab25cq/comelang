@@ -67,28 +67,21 @@ class sForNode extends sNodeBase
         sNode* expression_node = self.mExpressionNode;
         
         if(expression_node) {
-            bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-            info.comma_instead_of_semicolon = true;
             node_compile(expression_node).elif {
                 return false;
             }
-            info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
             bool normal_if = true;
             if(existance_free_right_value_objects(info)) {
                 normal_if = false;
             }
             
-            if(normal_if) {
-                CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                add_come_code(info, "%s", conditional_value.c_value);
-            }
-            else {
-                CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                transpile_conditional_with_free_right_object_value(conditional_value);
-            }
+            add_come_code(info, "({");
             
-            add_come_code(info, ";");
+            CVALUE*% conditional_value = get_value_from_stack(-1, info);
+            transpile_conditional_with_free_right_object_value(conditional_value);
+            
+            add_come_code(info, "});");
         }
         else {
             add_come_code(info, ";");
@@ -98,28 +91,15 @@ class sForNode extends sNodeBase
         sNode* expression_node2 = self.mExpressionNode2;
     
         if(expression_node2) {
-            bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-            info.comma_instead_of_semicolon = true;
+            add_come_code(info,"({");
             node_compile(expression_node2).elif {
                 return false;
             }
-            info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
-            bool normal_if = true;
-            if(existance_free_right_value_objects(info)) {
-                normal_if = false;
-            }
+            CVALUE*% conditional_value = get_value_from_stack(-1, info);
+            transpile_conditional_with_free_right_object_value(conditional_value);
             
-            if(normal_if) {
-                CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                add_come_code(info, "%s", conditional_value.c_value);
-            }
-            else {
-                CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                transpile_conditional_with_free_right_object_value(conditional_value);
-            }
-            
-            add_come_code(info, ";");
+            add_come_code(info, "});");
         }
         else {
             add_come_code(info, ";");
@@ -128,26 +108,15 @@ class sForNode extends sNodeBase
         sNode* expression_node3 = self.mExpressionNode3;
         
         if(expression_node3) {
-            bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-            info.comma_instead_of_semicolon = true;
+            add_come_code(info, "({");
+            
             node_compile(expression_node3).elif {
                 return false;
             }
-            info.comma_instead_of_semicolon = comma_instead_of_semicolon;
             
-            bool normal_if = true;
-            if(existance_free_right_value_objects(info)) {
-                normal_if = false;
-            }
-            
-            if(normal_if) {
-                CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                add_come_code(info, "%s", conditional_value.c_value);
-            }
-            else {
-                CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                transpile_conditional_with_free_right_object_value(conditional_value);
-            }
+            CVALUE*% conditional_value = get_value_from_stack(-1, info);
+            transpile_conditional_with_free_right_object_value(conditional_value);
+            add_come_code(info, "})");
         }
         
         add_come_code(info, "){\n");

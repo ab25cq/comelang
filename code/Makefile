@@ -6,8 +6,6 @@ SOURCES := attrs.c \
            statement_expr.c \
            nested_functions.c \
            labels_as_values.c \
-           vector_types.c \
-           builtins.c \
            typeof_auto.c
 BIN_DIR := bin
 BINARIES := $(patsubst %.c,$(BIN_DIR)/%,$(SOURCES))

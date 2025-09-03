@@ -414,7 +414,7 @@ class sStoreNode extends sNodeBase
                 }
                 else {
                 */
-                    add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
+                add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
                 //}
                 
                 CVALUE*% come_value = new CVALUE();
@@ -1338,7 +1338,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     parse_sharp();
     sFun* fun = info.funcs[string(buf)]??;
     
-    if((!gComeC && (buf === "var" || buf === "val")) || buf === "auto") {
+    if((!gComeC && (buf === "var" || buf === "val")) || buf === "auto" || buf === "__auto_type") {
         bool val_ = false;
         if(buf === "val") {
             val_ = true;

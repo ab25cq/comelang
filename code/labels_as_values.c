@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static int run_program(const char *ops) {
+static int run_program(char *ops) {
     int acc = 0;
-    for (const char *p = ops; *p; ++p) {
+    for (char *p = ops; *p; ++p) {
         static void *dispatch[] = {&&op_add, &&op_sub, &&op_end};
         // map: '+'->0, '-'->1, other->2
         int idx = (*p == '+') ? 0 : (*p == '-') ? 1 : 2;

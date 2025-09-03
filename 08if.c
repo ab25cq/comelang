@@ -40,11 +40,6 @@ class sIfNode extends sNodeBase
     {
         bool existance_of_result_value = false;
         
-        if(info.comma_instead_of_semicolon) {
-            err_msg(info, "In conditional operator comelang can't use if statment");
-            return true;
-        }
-        
         sBlock* else_block = self.mElseBlock;
         int elif_num = self.mElifNum;
         bool guard_ = self.mGuard;
@@ -55,30 +50,16 @@ class sIfNode extends sNodeBase
         int sline = info.sline;
         char* sname = info.sname;
         
-        add_come_code(info, "if(");
-    
-        bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
-        info.comma_instead_of_semicolon = true;
+        add_come_code(info, "if(({");
+        
         node_compile(expression_node).elif {
             return false;
         }
-        info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
         
-        bool normal_if = true;
-        if(existance_free_right_value_objects(info)) {
-            normal_if = false;
-        }
+        CVALUE*% conditional_value = get_value_from_stack(-1, info);
+        transpile_conditional_with_free_right_object_value(conditional_value);
         
-        if(normal_if) {
-            CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            add_come_code(info, "%s", conditional_value.c_value);
-        }
-        else {
-            CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            transpile_conditional_with_free_right_object_value(conditional_value);
-        }
-        
-        add_come_code(info, ") {\n");
+        add_come_code(info, "})) {\n");
     
         sBlock* if_block = self.mIfBlock;
     
@@ -91,29 +72,16 @@ class sIfNode extends sNodeBase
             for(int i=0; i<elif_num; i++) {
                 sNode* expression_node2 = self.mElifExpressionNodes[i];
     
-                add_come_code(info, "else if(");
+                add_come_code(info, "else if(({");
                 
-                bool comma_instead_of_semicolon_before = info.comma_instead_of_semicolon;
-                info.comma_instead_of_semicolon = true;
                 node_compile(expression_node2).elif {
                     return false;
                 }
-                info.comma_instead_of_semicolon = comma_instead_of_semicolon_before;
-        
-                bool normal_if = true;
-                if(existance_free_right_value_objects(info)) {
-                    normal_if = false;
-                }
                 
-                if(normal_if) {
-                    CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                    add_come_code(info, "%s", conditional_value.c_value);
-                }
-                else {
-                    CVALUE*% conditional_value = get_value_from_stack(-1, info);
-                    transpile_conditional_with_free_right_object_value(conditional_value);
-                }
-                add_come_code(info, ") {\n");
+                CVALUE*% conditional_value = get_value_from_stack(-1, info);
+                transpile_conditional_with_free_right_object_value(conditional_value);
+                
+                add_come_code(info, "})) {\n");
                 
                 sBlock* elif_node_block = self.mElifBlocks[i];
                 
@@ -255,19 +223,16 @@ class sOrStatmentNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
         
-        add_come_code(info, "if(!(");
+        add_come_code(info, "if(!({");
     
-        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-        info.comma_instead_of_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
     
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
         transpile_conditional_with_free_right_object_value(conditional_value);
         
-        add_come_code(info, ")) {\n");
+        add_come_code(info, "})) {\n");
         sBlock* if_block = self.mIfBlock;
         transpile_block(if_block, null, null, info);
         add_come_code(info, "}\n");
@@ -307,19 +272,16 @@ class sAndStatmentNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
         
-        add_come_code(info, "if(");
+        add_come_code(info, "if(({");
     
-        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-        info.comma_instead_of_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
         
         CVALUE*% conditional_value = get_value_from_stack(-1, info);
         transpile_conditional_with_free_right_object_value(conditional_value);
         
-        add_come_code(info, ") {\n");
+        add_come_code(info, "})) {\n");
     
         sBlock* if_block = self.mIfBlock;
         transpile_block(if_block, null, null, info);

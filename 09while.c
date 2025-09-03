@@ -37,31 +37,18 @@ class sWhileNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
         
-        add_come_code(info, "while(");
+        add_come_code(info, "while(({");
     
-        bool comma_instead_of_semicolon = info.comma_instead_of_semicolon;
-        info.comma_instead_of_semicolon = true;
         node_compile(expression_node).elif {
             return false;
         }
-        info.comma_instead_of_semicolon = comma_instead_of_semicolon;
     
         sBlock* block = self.mBlock;
         
-        bool normal_if = true;
-        if(existance_free_right_value_objects(info)) {
-            normal_if = false;
-        }
+        CVALUE*% conditional_value = get_value_from_stack(-1, info);
+        transpile_conditional_with_free_right_object_value(conditional_value);
         
-        if(normal_if) {
-            CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            add_come_code(info, "%s", conditional_value.c_value);
-        }
-        else {
-            CVALUE*% conditional_value = get_value_from_stack(-1, info);
-            transpile_conditional_with_free_right_object_value(conditional_value);
-        }
-        add_come_code(info, ") {\n");
+        add_come_code(info, "})) {\n");
     
         transpile_block(block, null, null, info, false, true);
         

@@ -55,16 +55,19 @@ bool node_compile(sNode* node, sInfo* info=info)
 
 void transpile_conditional_with_free_right_object_value(CVALUE*% conditional_value, sInfo* info=info)
 {
-    add_last_code_to_source_with_comma(info);
+    add_last_code_to_source(info);
     
     static int num_condtional = 0;
     add_come_code_at_function_head(info, "_Bool _condtional_value_X%d;\n", ++num_condtional);
     int num_condtional_stack = num_condtional;
     
-    add_come_code(info, "(_condtional_value_X%d=(%s)),", num_condtional_stack, conditional_value.c_value);
-    add_last_code_to_source_with_comma(info);
-    free_right_value_objects(info, comma:true);
-    add_come_code(info, "_condtional_value_X%d", num_condtional_stack);
+    if(conditional_value.c_value !== "") {
+        add_come_code(info, "(_condtional_value_X%d=(%s));", num_condtional_stack, conditional_value.c_value);
+    }
+    free_right_value_objects(info, comma:false);
+    if(conditional_value.c_value !== "") {
+        add_come_code(info, "_condtional_value_X%d;", num_condtional_stack);
+    }
 }
 
 static void clear_tmp_file(sInfo* info)
