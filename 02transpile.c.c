@@ -3324,7 +3324,7 @@ memset(&is_raspi, 0, sizeof(int));
         (command2_6 = come_decrement_ref_count(command2_6, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
     }
     else if(({    (_condtional_value_X56=(is_mac));    _condtional_value_X56;    })) {
-        cmd2_7=(char*)come_increment_ref_count(xsprintf("/usr/local/bin/ccpp %s %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):("")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value26=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
+        cmd2_7=(char*)come_increment_ref_count(xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value26=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value26 = come_decrement_ref_count(__right_value26, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         if(({        (_condtional_value_X57=(info->verbose));        _condtional_value_X57;        })) {
             puts(cmd2_7);
