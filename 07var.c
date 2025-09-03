@@ -124,9 +124,6 @@ class sStoreNode extends sNodeBase
             if(info->prohibits_output_last_code) {
                 buf.append_format("%s=%s", multiple_var_name, right_value.c_value);
             }
-            else if(info->comma_instead_of_semicolon) {
-                add_come_code(info, "%s=%s,\n", multiple_var_name, right_value.c_value);
-            }
             else {
                 add_come_code(info, "%s=%s;\n", multiple_var_name, right_value.c_value);
             }
@@ -170,9 +167,6 @@ class sStoreNode extends sNodeBase
                     
                     if(info->prohibits_output_last_code) {
                         buf.append_format("%s,\n", come_value.c_value);
-                    }
-                    else if(info->comma_instead_of_semicolon) {
-                        add_come_code(info, "%s,\n", come_value.c_value);
                     }
                     else {
                         add_come_code(info, "%s;\n", come_value.c_value);

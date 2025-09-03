@@ -148,16 +148,12 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
    
     sNode*% node = parse_function(info);
     
-    bool comma_instead_of_semicolon = info->comma_instead_of_semicolon;
-    info.comma_instead_of_semicolon = false;
-    info->comma_instead_of_semicolon = false;
     bool in_method_block = info.in_method_block;
     info.in_method_block = true;
     node_compile(node).elif {
         return false;
     }
     info.in_method_block = in_method_block;
-    info.comma_instead_of_semicolon = comma_instead_of_semicolon;
     
     char*% method_block_name = xsprintf("method_block%d_%s", num_method_block, all_alhabet_sname.to_string());
     
@@ -837,17 +833,12 @@ class sMethodCallNode extends sNodeBase
                 sType*% type = clone obj_type;
                 type->mDefferRightValue = true;
                 
-                add_variable_to_table(var_name, type, info, false@function_param, info.comma_instead_of_semicolon@comma);
+                add_variable_to_table(var_name, type, info, false@function_param, false);
                 
                 sVar* var_ = get_variable_from_table(info->lv_table, var_name);
                 
                 add_come_code_at_function_head(info, "%s;\n", make_define_var(type, var_->mCValueName));
-                if(info.comma_instead_of_semicolon) {
-                    add_come_code(info, "%s=%s,", var_->mCValueName, obj_value.c_value);
-                }
-                else {
-                    add_come_code(info, "%s=%s;\n", var_->mCValueName, obj_value.c_value);
-                }
+                add_come_code(info, "%s=%s;\n", var_->mCValueName, obj_value.c_value);
                 saved_obj_value = var_->mCValueName;
                 saved_var = var_;
                 

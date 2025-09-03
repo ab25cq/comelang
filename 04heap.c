@@ -499,10 +499,6 @@ void free_object(sType*% type, char* obj, bool no_decrement, bool no_free, sInfo
 
     sType* type_before = type;
 
-    if(info.comma_instead_of_semicolon) {
-        comma = true;
-    }
-    
     if(type->mNoSolvedGenericsType) {
         //bool alloca_value = type->mAllocaValue;
         type = type->mNoSolvedGenericsType;
@@ -814,10 +810,6 @@ void free_right_value_objects(sInfo* info, bool comma=false)
 {
     if(gComeGC || gComeC) {
         return;
-    }
-    
-    if(info.comma_instead_of_semicolon) {
-        comma = true;
     }
     
     bool free_right_value = false;
