@@ -485,6 +485,7 @@ void decrement_ref_count_object(sType*% type, char* obj, sInfo* info, bool no_fr
 
 void free_object(sType*% type, char* obj, bool no_decrement, bool no_free, sInfo* info, bool comma=false, bool ret_value=false)
 {
+comma = false;
     if(gComeGC || gComeC) {
         return;
     }
