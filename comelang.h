@@ -235,12 +235,8 @@ struct sMemHeader
 
 uniq sMemHeader* gAllocMem;
 
-uniq void* gComeResultObject = NULL;
-uniq int gComeGCLib = 0;
-
 uniq int gComeMallocLib = 0;
 uniq int gComeDebugLib = 0;
-uniq int gComeGCLib = 0;
 
 uniq int gNumAlloc = 0;
 uniq int gNumFree = 0;
@@ -274,7 +270,6 @@ uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
 {
     gComeMallocLib = come_malloc;
     gComeDebugLib = come_debug
-    gComeGCLib = come_gc;
     
     gComeStackFrameBuffer = NULL;
     memset(gComeStackFrameSName, 0, sizeof(char*)*COME_STACKFRAME_MAX_GLOBAL);
@@ -302,9 +297,7 @@ uniq void come_heap_final()
         free(gComeStackFrameBuffer);
     }
     
-    if(gComeGCLib) {
-    }
-    else if(gComeDebugLib) {
+    if(gComeDebugLib) {
         sMemHeader* it = gAllocMem;
         int n = 0;
         while(it) {
@@ -407,9 +400,7 @@ uniq void* alloc_from_pages(size_t size)
 uniq void come_free_mem_of_heap_pool(void* mem)
 {
     if(mem) {
-        if(gComeGCLib) {
-        }
-        else if(gComeDebugLib) {
+        if(gComeDebugLib) {
             sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(sMemHeader));
             
             if(it->allocated != ALLOCATED_MAGIC_NUM) {
