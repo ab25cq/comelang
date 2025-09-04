@@ -6,7 +6,7 @@
 	.text
 .Ltext0:
 	.cfi_sections	.debug_frame
-	.file 0 "/Users/ab25cq/minux9-dev" "fs.c"
+	.file 0 "/Users/ab25cq/comelang/minux9" "fs.c"
 	.local	vbase
 	.comm	vbase,8,8
 	.local	Q
@@ -9144,6 +9144,6 @@ fs_dup2:
 .LASF0:
 	.string	"fs.c"
 .LASF1:
-	.string	"/Users/ab25cq/minux9-dev"
+	.string	"/Users/ab25cq/comelang/minux9"
 	.ident	"GCC: (g04696df09) 14.2.0"
 	.section	.note.GNU-stack,"",@progbits
