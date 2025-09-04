@@ -54,11 +54,10 @@ using comelang;
 
 #endif
 
+///////////////////////////////////////////////////////////////////////////
+// PREVIOUS DEFINITIONS
+///////////////////////////////////////////////////////////////////////////
 #define foreach(o1, o2) for(var o2_saved = (o2), var o1 = (o2_saved).begin(); !(o2_saved).end(); o1 = (o2_saved).next())
-
-//////////////////////////////
-/// exception
-//////////////////////////////
 
 struct buffer 
 {
@@ -105,6 +104,9 @@ uniq string _Bool::to_string(bool self);
 uniq bool string::equals(char* self, char* right);
 
 
+///////////////////////////////////////////////////////////////////////////
+// DEBUG FUNCTIONS
+///////////////////////////////////////////////////////////////////////////
 #if defined(__MINUX__) || defined(__BARE_METAL__)
 uniq void come_push_stackframe(char* sname, int sline, int id)
 {
@@ -235,18 +237,12 @@ struct sMemHeader
 
 uniq sMemHeader* gAllocMem;
 
-uniq int gComeMallocLib = 0;
 uniq int gComeDebugLib = 0;
 
 uniq int gNumAlloc = 0;
 uniq int gNumFree = 0;
 
-#if defined(__MAC__) || defined(__LINUX__) || defined(__ANDROID__)
-#define HEAP_POOL_PAGE_SIZE 4096 //(2 * 1024 * 1024)
-#else
 #define HEAP_POOL_PAGE_SIZE 4096
-#endif
-
 
 #if !defined(__BARE_METAL__) && !defined(__MINUX__)
 
@@ -268,7 +264,6 @@ uniq struct sHeapPage gHeapPages;
 
 uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
 {
-    gComeMallocLib = come_malloc;
     gComeDebugLib = come_debug
     
     gComeStackFrameBuffer = NULL;
