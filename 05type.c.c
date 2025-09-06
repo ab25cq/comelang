@@ -2630,6 +2630,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -3261,7 +3262,7 @@ type2 = (void*)0;
         type2=(struct sType*)come_increment_ref_count(sType_clone(type));
         come_call_finalizer(sType_finalize, __dec_obj27,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
     }
-    for(    ({    (_condtional_value_X148=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count((type2->mGenericsTypes)),it=list$1sType$ph_begin((o2_saved))));    _condtional_value_X148;    });    ({    (_condtional_value_X149=(!list$1sType$ph_end((o2_saved))));    _condtional_value_X149;    });    ({    (_condtional_value_X152=(it=list$1sType$ph_next((o2_saved))));    _condtional_value_X152;    })    ){
+    for(    ({    (_condtional_value_X148=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count(type2->mGenericsTypes),it=list$1sType$ph_begin(o2_saved)));    _condtional_value_X148;    });    ({    (_condtional_value_X149=(!list$1sType$ph_end(o2_saved)));    _condtional_value_X149;    });    ({    (_condtional_value_X152=(it=list$1sType$ph_next(o2_saved)));    _condtional_value_X152;    })    ){
         if(({        (_condtional_value_X153=(is_contained_generics_class(it,info)));        _condtional_value_X153;        })) {
             __result_obj__45 = (_Bool)1;
             come_call_finalizer(list$1sType$ph$p_finalize, o2_saved, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -8494,7 +8495,7 @@ result_type_89 = (void*)0;
             come_call_finalizer(sType_finalize, __dec_obj199,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
             type_65->mPointerNum++;
             type_65->mHeap=(_Bool)1;
-            for(            ({            (_condtional_value_X643=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count((types)),it=list$1sType$ph_begin((o2_saved))));            _condtional_value_X643;            });            ({            (_condtional_value_X644=(!list$1sType$ph_end((o2_saved))));            _condtional_value_X644;            });            ({            (_condtional_value_X645=(it=list$1sType$ph_next((o2_saved))));            _condtional_value_X645;            })            ){
+            for(            ({            (_condtional_value_X643=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count(types),it=list$1sType$ph_begin(o2_saved)));            _condtional_value_X643;            });            ({            (_condtional_value_X644=(!list$1sType$ph_end(o2_saved)));            _condtional_value_X644;            });            ({            (_condtional_value_X645=(it=list$1sType$ph_next(o2_saved)));            _condtional_value_X645;            })            ){
                 list$1sType$ph_push_back(type_65->mGenericsTypes,(struct sType*)come_increment_ref_count((((struct sType*)(__right_value392=sType_clone(it))))));
                 come_call_finalizer(sType_finalize, __right_value392, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
             }

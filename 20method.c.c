@@ -2661,6 +2661,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -4063,7 +4064,7 @@ _Bool __result_obj__61;
     (__right_value84 = come_decrement_ref_count(__right_value84, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
     (__right_value85 = come_decrement_ref_count(__right_value85, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
     i=0;
-    for(    ({    (_condtional_value_X173=(o2_saved=(param_types),it=list$1sType$ph_begin((o2_saved))));    _condtional_value_X173;    });    ({    (_condtional_value_X174=(!list$1sType$ph_end((o2_saved))));    _condtional_value_X174;    });    ({    (_condtional_value_X177=(it=list$1sType$ph_next((o2_saved))));    _condtional_value_X177;    })    ){
+    for(    ({    (_condtional_value_X173=(o2_saved=param_types,it=list$1sType$ph_begin(o2_saved)));    _condtional_value_X173;    });    ({    (_condtional_value_X174=(!list$1sType$ph_end(o2_saved)));    _condtional_value_X174;    });    ({    (_condtional_value_X177=(it=list$1sType$ph_next(o2_saved)));    _condtional_value_X177;    })    ){
         param_type=(struct sType*)come_increment_ref_count(it);
         if(({        (_condtional_value_X178=(i==0));        _condtional_value_X178;        })) {
             param_name=(char*)come_increment_ref_count(xsprintf("parent"));
@@ -6000,7 +6001,7 @@ _Bool __result_obj__136;
                         come_call_finalizer(sType_finalize, __right_value196, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);
                     }
                     n=0;
-                    for(                    ({                    (_condtional_value_X328=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count((generics_fun_method_block_lambda_type->mParamTypes)),it=list$1sType$ph_begin((o2_saved))));                    _condtional_value_X328;                    });                    ({                    (_condtional_value_X329=(!list$1sType$ph_end((o2_saved))));                    _condtional_value_X329;                    });                    ({                    (_condtional_value_X330=(it=list$1sType$ph_next((o2_saved))));                    _condtional_value_X330;                    })                    ){
+                    for(                    ({                    (_condtional_value_X328=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count(generics_fun_method_block_lambda_type->mParamTypes),it=list$1sType$ph_begin(o2_saved)));                    _condtional_value_X328;                    });                    ({                    (_condtional_value_X329=(!list$1sType$ph_end(o2_saved)));                    _condtional_value_X329;                    });                    ({                    (_condtional_value_X330=(it=list$1sType$ph_next(o2_saved)));                    _condtional_value_X330;                    })                    ){
                         if(({                        (_condtional_value_X331=(it->mClass->mMethodGenerics));                        _condtional_value_X331;                        })) {
                             method_generics_num_35=it->mClass->mMethodGenericsNum;
                             list$1sType$ph_operator_store_element(info->method_generics_types,method_generics_num_35,(struct sType*)come_increment_ref_count(sType_clone(((struct sType*)(__right_value200=list$1sType$ph_operator_load_element(method_block_lambda_type->mParamTypes,n))))));
@@ -6013,7 +6014,7 @@ _Bool __result_obj__136;
                     come_call_finalizer(list$1sType$ph$p_finalize, o2_saved, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
                     come_params_36=(struct list$1CVALUE$ph*)come_increment_ref_count(list$1CVALUE$ph_initialize((struct list$1CVALUE$ph*)come_increment_ref_count((struct list$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list$1CVALUE$ph)*(1), "20method.c", 430, "struct list$1CVALUE$ph*"))));
                     i=0;
-                    for(                    ({                    (_condtional_value_X334=(o2_saved_37=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count((params)),it_39=list$1tuple2$2char$phsNode$ph$ph_begin((o2_saved_37))));                    _condtional_value_X334;                    });                    ({                    (_condtional_value_X335=(!list$1tuple2$2char$phsNode$ph$ph_end((o2_saved_37))));                    _condtional_value_X335;                    });                    ({                    (_condtional_value_X338=(it_39=list$1tuple2$2char$phsNode$ph$ph_next((o2_saved_37))));                    _condtional_value_X338;                    })                    ){
+                    for(                    ({                    (_condtional_value_X334=(o2_saved_37=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(params),it_39=list$1tuple2$2char$phsNode$ph$ph_begin(o2_saved_37)));                    _condtional_value_X334;                    });                    ({                    (_condtional_value_X335=(!list$1tuple2$2char$phsNode$ph$ph_end(o2_saved_37)));                    _condtional_value_X335;                    });                    ({                    (_condtional_value_X338=(it_39=list$1tuple2$2char$phsNode$ph$ph_next(o2_saved_37)));                    _condtional_value_X338;                    })                    ){
                         multiple_assign_var8=it_39;
                         label=(char*)come_increment_ref_count(multiple_assign_var8->v1);
                         node=(struct sNode*)come_increment_ref_count(multiple_assign_var8->v2);
@@ -6068,7 +6069,7 @@ _Bool __result_obj__136;
                         }
                     }
                     n=0;
-                    for(                    ({                    (_condtional_value_X343=(o2_saved_43=(struct list$1sType$ph*)come_increment_ref_count((generics_fun->mParamTypes)),it_44=list$1sType$ph_begin((o2_saved_43))));                    _condtional_value_X343;                    });                    ({                    (_condtional_value_X344=(!list$1sType$ph_end((o2_saved_43))));                    _condtional_value_X344;                    });                    ({                    (_condtional_value_X345=(it_44=list$1sType$ph_next((o2_saved_43))));                    _condtional_value_X345;                    })                    ){
+                    for(                    ({                    (_condtional_value_X343=(o2_saved_43=(struct list$1sType$ph*)come_increment_ref_count(generics_fun->mParamTypes),it_44=list$1sType$ph_begin(o2_saved_43)));                    _condtional_value_X343;                    });                    ({                    (_condtional_value_X344=(!list$1sType$ph_end(o2_saved_43)));                    _condtional_value_X344;                    });                    ({                    (_condtional_value_X345=(it_44=list$1sType$ph_next(o2_saved_43)));                    _condtional_value_X345;                    })                    ){
                         if(({                        (_condtional_value_X346=(it_44->mClass->mMethodGenerics));                        _condtional_value_X346;                        })) {
                             method_generics_num_45=it_44->mClass->mMethodGenericsNum;
                             if(({                            (_condtional_value_X348=(n<list$1CVALUE$ph_length(come_params_36)));                            _condtional_value_X348;                            })) {
@@ -6088,7 +6089,7 @@ _Bool __result_obj__136;
                 else {
                     come_params_46=(struct list$1CVALUE$ph*)come_increment_ref_count(list$1CVALUE$ph_initialize((struct list$1CVALUE$ph*)come_increment_ref_count((struct list$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list$1CVALUE$ph)*(1), "20method.c", 469, "struct list$1CVALUE$ph*"))));
                     i_47=0;
-                    for(                    ({                    (_condtional_value_X349=(o2_saved_48=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count((params)),it_49=list$1tuple2$2char$phsNode$ph$ph_begin((o2_saved_48))));                    _condtional_value_X349;                    });                    ({                    (_condtional_value_X350=(!list$1tuple2$2char$phsNode$ph$ph_end((o2_saved_48))));                    _condtional_value_X350;                    });                    ({                    (_condtional_value_X351=(it_49=list$1tuple2$2char$phsNode$ph$ph_next((o2_saved_48))));                    _condtional_value_X351;                    })                    ){
+                    for(                    ({                    (_condtional_value_X349=(o2_saved_48=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(params),it_49=list$1tuple2$2char$phsNode$ph$ph_begin(o2_saved_48)));                    _condtional_value_X349;                    });                    ({                    (_condtional_value_X350=(!list$1tuple2$2char$phsNode$ph$ph_end(o2_saved_48)));                    _condtional_value_X350;                    });                    ({                    (_condtional_value_X351=(it_49=list$1tuple2$2char$phsNode$ph$ph_next(o2_saved_48)));                    _condtional_value_X351;                    })                    ){
                         multiple_assign_var9=it_49;
                         label_50=(char*)come_increment_ref_count(multiple_assign_var9->v1);
                         node_51=(struct sNode*)come_increment_ref_count(multiple_assign_var9->v2);
@@ -6141,7 +6142,7 @@ _Bool __result_obj__136;
                         }
                     }
                     n_55=0;
-                    for(                    ({                    (_condtional_value_X356=(o2_saved_56=(struct list$1sType$ph*)come_increment_ref_count((generics_fun->mParamTypes)),it_57=list$1sType$ph_begin((o2_saved_56))));                    _condtional_value_X356;                    });                    ({                    (_condtional_value_X357=(!list$1sType$ph_end((o2_saved_56))));                    _condtional_value_X357;                    });                    ({                    (_condtional_value_X358=(it_57=list$1sType$ph_next((o2_saved_56))));                    _condtional_value_X358;                    })                    ){
+                    for(                    ({                    (_condtional_value_X356=(o2_saved_56=(struct list$1sType$ph*)come_increment_ref_count(generics_fun->mParamTypes),it_57=list$1sType$ph_begin(o2_saved_56)));                    _condtional_value_X356;                    });                    ({                    (_condtional_value_X357=(!list$1sType$ph_end(o2_saved_56)));                    _condtional_value_X357;                    });                    ({                    (_condtional_value_X358=(it_57=list$1sType$ph_next(o2_saved_56)));                    _condtional_value_X358;                    })                    ){
                         if(({                        (_condtional_value_X359=(it_57->mClass->mMethodGenerics));                        _condtional_value_X359;                        })) {
                             method_generics_num_58=it_57->mClass->mMethodGenericsNum;
                             if(({                            (_condtional_value_X360=(n_55<list$1CVALUE$ph_length(come_params_46)));                            _condtional_value_X360;                            })) {
@@ -6171,7 +6172,7 @@ _Bool __result_obj__136;
     klass=obj_type->mClass;
     calling_dynamic_method=(_Bool)0;
     lambda_type=((void*)0);
-    for(    ({    (_condtional_value_X363=(o2_saved_59=(struct list$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count((klass->mFields)),it_61=list$1tuple2$2char$phsType$ph$ph_begin((o2_saved_59))));    _condtional_value_X363;    });    ({    (_condtional_value_X364=(!list$1tuple2$2char$phsType$ph$ph_end((o2_saved_59))));    _condtional_value_X364;    });    ({    (_condtional_value_X367=(it_61=list$1tuple2$2char$phsType$ph$ph_next((o2_saved_59))));    _condtional_value_X367;    })    ){
+    for(    ({    (_condtional_value_X363=(o2_saved_59=(struct list$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(klass->mFields),it_61=list$1tuple2$2char$phsType$ph$ph_begin(o2_saved_59)));    _condtional_value_X363;    });    ({    (_condtional_value_X364=(!list$1tuple2$2char$phsType$ph$ph_end(o2_saved_59)));    _condtional_value_X364;    });    ({    (_condtional_value_X367=(it_61=list$1tuple2$2char$phsType$ph$ph_next(o2_saved_59)));    _condtional_value_X367;    })    ){
         multiple_assign_var10=it_61;
         field_name=(char*)come_increment_ref_count(multiple_assign_var10->v1);
         field_type=(struct sType*)come_increment_ref_count(multiple_assign_var10->v2);
@@ -6206,7 +6207,7 @@ _Bool __result_obj__136;
         }
         come_params_63=(struct list$1CVALUE$ph*)come_increment_ref_count(list$1CVALUE$ph_initialize((struct list$1CVALUE$ph*)come_increment_ref_count((struct list$1CVALUE$ph*)come_calloc_v2(1, sizeof(struct list$1CVALUE$ph)*(1), "20method.c", 539, "struct list$1CVALUE$ph*"))));
         i_64=0;
-        for(        ({        (_condtional_value_X372=(o2_saved_65=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count((params)),it_66=list$1tuple2$2char$phsNode$ph$ph_begin((o2_saved_65))));        _condtional_value_X372;        });        ({        (_condtional_value_X373=(!list$1tuple2$2char$phsNode$ph$ph_end((o2_saved_65))));        _condtional_value_X373;        });        ({        (_condtional_value_X374=(it_66=list$1tuple2$2char$phsNode$ph$ph_next((o2_saved_65))));        _condtional_value_X374;        })        ){
+        for(        ({        (_condtional_value_X372=(o2_saved_65=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(params),it_66=list$1tuple2$2char$phsNode$ph$ph_begin(o2_saved_65)));        _condtional_value_X372;        });        ({        (_condtional_value_X373=(!list$1tuple2$2char$phsNode$ph$ph_end(o2_saved_65)));        _condtional_value_X373;        });        ({        (_condtional_value_X374=(it_66=list$1tuple2$2char$phsNode$ph$ph_next(o2_saved_65)));        _condtional_value_X374;        })        ){
             multiple_assign_var11=it_66;
             label_67=(char*)come_increment_ref_count(multiple_assign_var11->v1);
             node_68=(struct sNode*)come_increment_ref_count(multiple_assign_var11->v2);
@@ -6260,7 +6261,7 @@ _Bool __result_obj__136;
         buffer_append_format(buf,"%s->%s",obj_value->c_value,fun_name);
         buffer_append_str(buf,"(");
         j=0;
-        for(        ({        (_condtional_value_X380=(o2_saved_71=(struct list$1CVALUE$ph*)come_increment_ref_count((come_params_63)),it_73=list$1CVALUE$ph_begin((o2_saved_71))));        _condtional_value_X380;        });        ({        (_condtional_value_X381=(!list$1CVALUE$ph_end((o2_saved_71))));        _condtional_value_X381;        });        ({        (_condtional_value_X384=(it_73=list$1CVALUE$ph_next((o2_saved_71))));        _condtional_value_X384;        })        ){
+        for(        ({        (_condtional_value_X380=(o2_saved_71=(struct list$1CVALUE$ph*)come_increment_ref_count(come_params_63),it_73=list$1CVALUE$ph_begin(o2_saved_71)));        _condtional_value_X380;        });        ({        (_condtional_value_X381=(!list$1CVALUE$ph_end(o2_saved_71)));        _condtional_value_X381;        });        ({        (_condtional_value_X384=(it_73=list$1CVALUE$ph_next(o2_saved_71)));        _condtional_value_X384;        })        ){
             if(({            (_condtional_value_X385=(j==0));            _condtional_value_X385;            })) {
                 __dec_obj71=it_73->c_value,
                 it_73->c_value=(char*)come_increment_ref_count(xsprintf("%s->_protocol_obj",it_73->c_value));
@@ -6355,7 +6356,7 @@ _Bool __result_obj__136;
             }
         }
         param_types=(struct list$1sType$ph*)come_increment_ref_count(list$1sType$ph_initialize((struct list$1sType$ph*)come_increment_ref_count((struct list$1sType$ph*)come_calloc_v2(1, sizeof(struct list$1sType$ph)*(1), "20method.c", 640, "struct list$1sType$ph*"))));
-        for(        ({        (_condtional_value_X392=(o2_saved_79=(struct list$1sType$ph*)come_increment_ref_count((fun_76->mParamTypes)),it_80=list$1sType$ph_begin((o2_saved_79))));        _condtional_value_X392;        });        ({        (_condtional_value_X393=(!list$1sType$ph_end((o2_saved_79))));        _condtional_value_X393;        });        ({        (_condtional_value_X394=(it_80=list$1sType$ph_next((o2_saved_79))));        _condtional_value_X394;        })        ){
+        for(        ({        (_condtional_value_X392=(o2_saved_79=(struct list$1sType$ph*)come_increment_ref_count(fun_76->mParamTypes),it_80=list$1sType$ph_begin(o2_saved_79)));        _condtional_value_X392;        });        ({        (_condtional_value_X393=(!list$1sType$ph_end(o2_saved_79)));        _condtional_value_X393;        });        ({        (_condtional_value_X394=(it_80=list$1sType$ph_next(o2_saved_79)));        _condtional_value_X394;        })        ){
             if(({            (_condtional_value_X395=(it_80==((void*)0)));            _condtional_value_X395;            })) {
                 list$1sType$ph_push_back(param_types,(struct sType*)come_increment_ref_count(sType_clone(it_80)));
             }
@@ -6373,7 +6374,7 @@ _Bool __result_obj__136;
         type_checking_param_types=(struct list$1sType$ph*)come_increment_ref_count(list$1sType$ph$p_clone(param_types));
         if(({        (_condtional_value_X396=(generics_fun_77));        _condtional_value_X396;        })) {
             n_81=0;
-            for(            ({            (_condtional_value_X397=(o2_saved_82=(struct list$1sType$ph*)come_increment_ref_count((generics_fun_77->mParamTypes)),it_83=list$1sType$ph_begin((o2_saved_82))));            _condtional_value_X397;            });            ({            (_condtional_value_X398=(!list$1sType$ph_end((o2_saved_82))));            _condtional_value_X398;            });            ({            (_condtional_value_X399=(it_83=list$1sType$ph_next((o2_saved_82))));            _condtional_value_X399;            })            ){
+            for(            ({            (_condtional_value_X397=(o2_saved_82=(struct list$1sType$ph*)come_increment_ref_count(generics_fun_77->mParamTypes),it_83=list$1sType$ph_begin(o2_saved_82)));            _condtional_value_X397;            });            ({            (_condtional_value_X398=(!list$1sType$ph_end(o2_saved_82)));            _condtional_value_X398;            });            ({            (_condtional_value_X399=(it_83=list$1sType$ph_next(o2_saved_82)));            _condtional_value_X399;            })            ){
                 if(({                (_condtional_value_X400=(it_83==((void*)0)));                _condtional_value_X400;                })) {
                 }
                 else {
@@ -6391,7 +6392,7 @@ _Bool __result_obj__136;
             list$1CVALUE$ph_add(come_params_86,((void*)0));
         }
         first_param=(_Bool)1;
-        for(        ({        (_condtional_value_X406=(o2_saved_90=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count((params)),it_91=list$1tuple2$2char$phsNode$ph$ph_begin((o2_saved_90))));        _condtional_value_X406;        });        ({        (_condtional_value_X407=(!list$1tuple2$2char$phsNode$ph$ph_end((o2_saved_90))));        _condtional_value_X407;        });        ({        (_condtional_value_X408=(it_91=list$1tuple2$2char$phsNode$ph$ph_next((o2_saved_90))));        _condtional_value_X408;        })        ){
+        for(        ({        (_condtional_value_X406=(o2_saved_90=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(params),it_91=list$1tuple2$2char$phsNode$ph$ph_begin(o2_saved_90)));        _condtional_value_X406;        });        ({        (_condtional_value_X407=(!list$1tuple2$2char$phsNode$ph$ph_end(o2_saved_90)));        _condtional_value_X407;        });        ({        (_condtional_value_X408=(it_91=list$1tuple2$2char$phsNode$ph$ph_next(o2_saved_90)));        _condtional_value_X408;        })        ){
             multiple_assign_var13=it_91;
             label_92=(char*)come_increment_ref_count(multiple_assign_var13->v1);
             node_93=(struct sNode*)come_increment_ref_count(multiple_assign_var13->v2);
@@ -6400,7 +6401,7 @@ _Bool __result_obj__136;
             }
             else if(({            (_condtional_value_X410=(label_92));            _condtional_value_X410;            })) {
                 n_94=0;
-                for(                ({                (_condtional_value_X413=(o2_saved_95=(struct list$1char$ph*)come_increment_ref_count((fun_76->mParamNames)),it_97=list$1char$ph_begin((o2_saved_95))));                _condtional_value_X413;                });                ({                (_condtional_value_X414=(!list$1char$ph_end((o2_saved_95))));                _condtional_value_X414;                });                ({                (_condtional_value_X417=(it_97=list$1char$ph_next((o2_saved_95))));                _condtional_value_X417;                })                ){
+                for(                ({                (_condtional_value_X413=(o2_saved_95=(struct list$1char$ph*)come_increment_ref_count(fun_76->mParamNames),it_97=list$1char$ph_begin(o2_saved_95)));                _condtional_value_X413;                });                ({                (_condtional_value_X414=(!list$1char$ph_end(o2_saved_95)));                _condtional_value_X414;                });                ({                (_condtional_value_X417=(it_97=list$1char$ph_next(o2_saved_95)));                _condtional_value_X417;                })                ){
                     if(({                    (_condtional_value_X418=(string_operator_equals(label_92,it_97)));                    _condtional_value_X418;                    })) {
                         break;
                     }
@@ -6455,7 +6456,7 @@ _Bool __result_obj__136;
         }
         come_call_finalizer(list$1tuple2$2char$phsNode$ph$ph$p_finalize, o2_saved_90, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
         i_102=0;
-        for(        ({        (_condtional_value_X430=(o2_saved_103=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count((params)),it_104=list$1tuple2$2char$phsNode$ph$ph_begin((o2_saved_103))));        _condtional_value_X430;        });        ({        (_condtional_value_X431=(!list$1tuple2$2char$phsNode$ph$ph_end((o2_saved_103))));        _condtional_value_X431;        });        ({        (_condtional_value_X432=(it_104=list$1tuple2$2char$phsNode$ph$ph_next((o2_saved_103))));        _condtional_value_X432;        })        ){
+        for(        ({        (_condtional_value_X430=(o2_saved_103=(struct list$1tuple2$2char$phsNode$ph$ph*)come_increment_ref_count(params),it_104=list$1tuple2$2char$phsNode$ph$ph_begin(o2_saved_103)));        _condtional_value_X430;        });        ({        (_condtional_value_X431=(!list$1tuple2$2char$phsNode$ph$ph_end(o2_saved_103)));        _condtional_value_X431;        });        ({        (_condtional_value_X432=(it_104=list$1tuple2$2char$phsNode$ph$ph_next(o2_saved_103)));        _condtional_value_X432;        })        ){
             multiple_assign_var14=it_104;
             label_105=(char*)come_increment_ref_count(multiple_assign_var14->v1);
             node_106=(struct sNode*)come_increment_ref_count(multiple_assign_var14->v2);
@@ -6697,7 +6698,7 @@ _Bool __result_obj__136;
             __dec_obj85 = come_decrement_ref_count(__dec_obj85, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
             saved_var=var_;
             j_115=0;
-            for(            ({            (_condtional_value_X462=(o2_saved_116=(struct list$1CVALUE$ph*)come_increment_ref_count((come_params_86)),it_117=list$1CVALUE$ph_begin((o2_saved_116))));            _condtional_value_X462;            });            ({            (_condtional_value_X463=(!list$1CVALUE$ph_end((o2_saved_116))));            _condtional_value_X463;            });            ({            (_condtional_value_X464=(it_117=list$1CVALUE$ph_next((o2_saved_116))));            _condtional_value_X464;            })            ){
+            for(            ({            (_condtional_value_X462=(o2_saved_116=(struct list$1CVALUE$ph*)come_increment_ref_count(come_params_86),it_117=list$1CVALUE$ph_begin(o2_saved_116)));            _condtional_value_X462;            });            ({            (_condtional_value_X463=(!list$1CVALUE$ph_end(o2_saved_116)));            _condtional_value_X463;            });            ({            (_condtional_value_X464=(it_117=list$1CVALUE$ph_next(o2_saved_116)));            _condtional_value_X464;            })            ){
                 if(({                (_condtional_value_X465=(j_115==0));                _condtional_value_X465;                })) {
                     buffer_append_str(buf_112,saved_obj_value);
                 }
@@ -6715,7 +6716,7 @@ _Bool __result_obj__136;
         }
         else {
             j_118=0;
-            for(            ({            (_condtional_value_X467=(o2_saved_119=(struct list$1CVALUE$ph*)come_increment_ref_count((come_params_86)),it_120=list$1CVALUE$ph_begin((o2_saved_119))));            _condtional_value_X467;            });            ({            (_condtional_value_X468=(!list$1CVALUE$ph_end((o2_saved_119))));            _condtional_value_X468;            });            ({            (_condtional_value_X469=(it_120=list$1CVALUE$ph_next((o2_saved_119))));            _condtional_value_X469;            })            ){
+            for(            ({            (_condtional_value_X467=(o2_saved_119=(struct list$1CVALUE$ph*)come_increment_ref_count(come_params_86),it_120=list$1CVALUE$ph_begin(o2_saved_119)));            _condtional_value_X467;            });            ({            (_condtional_value_X468=(!list$1CVALUE$ph_end(o2_saved_119)));            _condtional_value_X468;            });            ({            (_condtional_value_X469=(it_120=list$1CVALUE$ph_next(o2_saved_119)));            _condtional_value_X469;            })            ){
                 buffer_append_str(buf_112,it_120->c_value);
                 if(({                (_condtional_value_X470=(j_118!=list$1CVALUE$ph_length(come_params_86)-1));                _condtional_value_X470;                })) {
                     buffer_append_str(buf_112,",");

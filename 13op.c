@@ -2052,6 +2052,11 @@ sNode*% oror_exp(sInfo* info)
     return node;
 }
 
+sNode*% create_comma_exp(sNode*% node, sNode*% node2, sInfo* info)
+{
+    return new sCommaNode(node, node2, info) implements sNode;
+}
+
 sNode*% comma_exp(sInfo* info)
 {
     parse_sharp();

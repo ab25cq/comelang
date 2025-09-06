@@ -2664,6 +2664,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -2931,7 +2932,7 @@ _Bool __result_obj__75;
         come_call_finalizer(sType_finalize, type, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
     }
     else if(({    (_condtional_value_X261=(self->multiple_declare));    _condtional_value_X261;    })) {
-        for(        ({        (_condtional_value_X264=(o2_saved=(struct list$1tuple2$2sType$phchar$ph$ph*)come_increment_ref_count((self->multiple_declare)),it=list$1tuple2$2sType$phchar$ph$ph_begin((o2_saved))));        _condtional_value_X264;        });        ({        (_condtional_value_X265=(!list$1tuple2$2sType$phchar$ph$ph_end((o2_saved))));        _condtional_value_X265;        });        ({        (_condtional_value_X268=(it=list$1tuple2$2sType$phchar$ph$ph_next((o2_saved))));        _condtional_value_X268;        })        ){
+        for(        ({        (_condtional_value_X264=(o2_saved=(struct list$1tuple2$2sType$phchar$ph$ph*)come_increment_ref_count(self->multiple_declare),it=list$1tuple2$2sType$phchar$ph$ph_begin(o2_saved)));        _condtional_value_X264;        });        ({        (_condtional_value_X265=(!list$1tuple2$2sType$phchar$ph$ph_end(o2_saved)));        _condtional_value_X265;        });        ({        (_condtional_value_X268=(it=list$1tuple2$2sType$phchar$ph$ph_next(o2_saved)));        _condtional_value_X268;        })        ){
             multiple_assign_var1=it;
             type_29=(struct sType*)come_increment_ref_count(multiple_assign_var1->v1);
             type_name_30=(char*)come_increment_ref_count(multiple_assign_var1->v2);

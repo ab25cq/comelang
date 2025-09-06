@@ -2655,6 +2655,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -2922,7 +2923,7 @@ c_value = (void*)0;
     n=0;
     right_c_value=((void*)0);
     output=(_Bool)1;
-    for(    ({    (_condtional_value_X59=(o2_saved=(elements),it=list$1tuple2$2char$phsNode$ph$ph_begin((o2_saved))));    _condtional_value_X59;    });    ({    (_condtional_value_X60=(!list$1tuple2$2char$phsNode$ph$ph_end((o2_saved))));    _condtional_value_X60;    });    ({    (_condtional_value_X63=(it=list$1tuple2$2char$phsNode$ph$ph_next((o2_saved))));    _condtional_value_X63;    })    ){
+    for(    ({    (_condtional_value_X59=(o2_saved=elements,it=list$1tuple2$2char$phsNode$ph$ph_begin(o2_saved)));    _condtional_value_X59;    });    ({    (_condtional_value_X60=(!list$1tuple2$2char$phsNode$ph$ph_end(o2_saved)));    _condtional_value_X60;    });    ({    (_condtional_value_X63=(it=list$1tuple2$2char$phsNode$ph$ph_next(o2_saved)));    _condtional_value_X63;    })    ){
         multiple_assign_var1=it;
         name=(char*)come_increment_ref_count(multiple_assign_var1->v1);
         value=(struct sNode*)come_increment_ref_count(multiple_assign_var1->v2);

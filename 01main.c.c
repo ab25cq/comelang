@@ -2417,6 +2417,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -8594,11 +8595,11 @@ struct sFun* __result_obj__221;
     __dec_obj35=self->mLambdaType,
     self->mLambdaType=(struct sType*)come_increment_ref_count(sType_initialize((struct sType*)come_increment_ref_count((struct sType*)come_calloc_v2(1, sizeof(struct sType)*(1), "./common.h", 301, "struct sType*")),(char*)come_increment_ref_count(xsprintf("lambda")),(_Bool)0,info));
     come_call_finalizer(sType_finalize, __dec_obj35,(void*)0, (void*)0, 0/* alloca value */, 0/* no decrement */, 0/* no_free */, (void*)0);
-    for(    ({    (_condtional_value_X463=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count((param_types)),it=list$1sType$ph_begin((o2_saved))));    _condtional_value_X463;    });    ({    (_condtional_value_X464=(!list$1sType$ph_end((o2_saved))));    _condtional_value_X464;    });    ({    (_condtional_value_X467=(it=list$1sType$ph_next((o2_saved))));    _condtional_value_X467;    })    ){
+    for(    ({    (_condtional_value_X463=(o2_saved=(struct list$1sType$ph*)come_increment_ref_count(param_types),it=list$1sType$ph_begin(o2_saved)));    _condtional_value_X463;    });    ({    (_condtional_value_X464=(!list$1sType$ph_end(o2_saved)));    _condtional_value_X464;    });    ({    (_condtional_value_X467=(it=list$1sType$ph_next(o2_saved)));    _condtional_value_X467;    })    ){
         list$1sType$ph_push_back(self->mLambdaType->mParamTypes,(struct sType*)come_increment_ref_count(sType_clone(it)));
     }
     come_call_finalizer(list$1sType$ph$p_finalize, o2_saved, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    for(    ({    (_condtional_value_X552=(o2_saved_54=(struct list$1char$ph*)come_increment_ref_count((param_names)),it_55=list$1char$ph_begin((o2_saved_54))));    _condtional_value_X552;    });    ({    (_condtional_value_X553=(!list$1char$ph_end((o2_saved_54))));    _condtional_value_X553;    });    ({    (_condtional_value_X554=(it_55=list$1char$ph_next((o2_saved_54))));    _condtional_value_X554;    })    ){
+    for(    ({    (_condtional_value_X552=(o2_saved_54=(struct list$1char$ph*)come_increment_ref_count(param_names),it_55=list$1char$ph_begin(o2_saved_54)));    _condtional_value_X552;    });    ({    (_condtional_value_X553=(!list$1char$ph_end(o2_saved_54)));    _condtional_value_X553;    });    ({    (_condtional_value_X554=(it_55=list$1char$ph_next(o2_saved_54)));    _condtional_value_X554;    })    ){
         list$1char$ph_push_back(self->mLambdaType->mParamNames,(char*)come_increment_ref_count((char*)come_memdup(it_55, "./common.h", 308, "char*")));
     }
     come_call_finalizer(list$1char$ph$p_finalize, o2_saved_54, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
@@ -9639,7 +9640,7 @@ _Bool __result_obj__256;
     current_stack=(struct sClass*)come_increment_ref_count(sClass_initialize((struct sClass*)come_increment_ref_count((struct sClass*)come_calloc_v2(1, sizeof(struct sClass)*(1), "./common.h", 660, "struct sClass*")),(char*)come_increment_ref_count(class_name),(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)0,(_Bool)1,(_Bool)0,-1,-1,(_Bool)0,(_Bool)0,info));
     vtable=info->lv_table;
     while(({    (_condtional_value_X646=(vtable));    _condtional_value_X646;    })) {
-        for(        ({        (_condtional_value_X649=(o2_saved=(struct map$2char$phsVar$ph*)come_increment_ref_count((vtable->mVars)),it=map$2char$phsVar$ph_begin((o2_saved))));        _condtional_value_X649;        });        ({        (_condtional_value_X650=(!map$2char$phsVar$ph_end((o2_saved))));        _condtional_value_X650;        });        ({        (_condtional_value_X653=(it=map$2char$phsVar$ph_next((o2_saved))));        _condtional_value_X653;        })        ){
+        for(        ({        (_condtional_value_X649=(o2_saved=(struct map$2char$phsVar$ph*)come_increment_ref_count(vtable->mVars),it=map$2char$phsVar$ph_begin(o2_saved)));        _condtional_value_X649;        });        ({        (_condtional_value_X650=(!map$2char$phsVar$ph_end(o2_saved)));        _condtional_value_X650;        });        ({        (_condtional_value_X653=(it=map$2char$phsVar$ph_next(o2_saved)));        _condtional_value_X653;        })        ){
             key=it;
             value=((struct sVar*)(__right_value315=map$2char$phsVar$ph_operator_load_element(vtable->mVars,((char*)(__right_value314=__builtin_string(key))))));
             (__right_value313 = come_decrement_ref_count(__right_value313, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
@@ -9684,7 +9685,7 @@ _Bool __result_obj__256;
     add_come_code_at_function_head2(info,"memset(&__current_stack%d__, 0, sizeof(struct %s));\n",info->current_stack_num,class_name);
     vtable=info->lv_table;
     while(({    (_condtional_value_X679=(vtable));    _condtional_value_X679;    })) {
-        for(        ({        (_condtional_value_X680=(o2_saved_64=(struct map$2char$phsVar$ph*)come_increment_ref_count((vtable->mVars)),it_65=map$2char$phsVar$ph_begin((o2_saved_64))));        _condtional_value_X680;        });        ({        (_condtional_value_X681=(!map$2char$phsVar$ph_end((o2_saved_64))));        _condtional_value_X681;        });        ({        (_condtional_value_X682=(it_65=map$2char$phsVar$ph_next((o2_saved_64))));        _condtional_value_X682;        })        ){
+        for(        ({        (_condtional_value_X680=(o2_saved_64=(struct map$2char$phsVar$ph*)come_increment_ref_count(vtable->mVars),it_65=map$2char$phsVar$ph_begin(o2_saved_64)));        _condtional_value_X680;        });        ({        (_condtional_value_X681=(!map$2char$phsVar$ph_end(o2_saved_64)));        _condtional_value_X681;        });        ({        (_condtional_value_X682=(it_65=map$2char$phsVar$ph_next(o2_saved_64)));        _condtional_value_X682;        })        ){
             key_66=it_65;
             value_67=((struct sVar*)(__right_value332=map$2char$phsVar$ph_operator_load_element(vtable->mVars,key_66)));
             come_call_finalizer(sVar_finalize, __right_value332, (void*)0, (void*)0, 0/* alloca value */, 1/* no_decrement */, 0/* no_free */, (void*)0);

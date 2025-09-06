@@ -2649,6 +2649,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -2841,7 +2842,7 @@ _Bool __result_obj__66;
     klass->mProtocol=(_Bool)1;
     buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "23interface.c", 26, "struct buffer*"))));
     buffer_append_format(buf,"struct %s\n{\n",klass->mName);
-    for(    ({    (_condtional_value_X149=(o2_saved=(struct list$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count((klass->mFields)),it=list$1tuple2$2char$phsType$ph$ph_begin((o2_saved))));    _condtional_value_X149;    });    ({    (_condtional_value_X150=(!list$1tuple2$2char$phsType$ph$ph_end((o2_saved))));    _condtional_value_X150;    });    ({    (_condtional_value_X153=(it=list$1tuple2$2char$phsType$ph$ph_next((o2_saved))));    _condtional_value_X153;    })    ){
+    for(    ({    (_condtional_value_X149=(o2_saved=(struct list$1tuple2$2char$phsType$ph$ph*)come_increment_ref_count(klass->mFields),it=list$1tuple2$2char$phsType$ph$ph_begin(o2_saved)));    _condtional_value_X149;    });    ({    (_condtional_value_X150=(!list$1tuple2$2char$phsType$ph$ph_end(o2_saved)));    _condtional_value_X150;    });    ({    (_condtional_value_X153=(it=list$1tuple2$2char$phsType$ph$ph_next(o2_saved)));    _condtional_value_X153;    })    ){
         multiple_assign_var1=it;
         name_10=(char*)come_increment_ref_count(multiple_assign_var1->v1);
         type=(struct sType*)come_increment_ref_count(multiple_assign_var1->v2);

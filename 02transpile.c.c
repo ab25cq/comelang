@@ -2639,6 +2639,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -3768,7 +3769,7 @@ _Bool __result_obj__14;
     (__right_value75 = come_decrement_ref_count(__right_value75, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
     (__right_value76 = come_decrement_ref_count(__right_value76, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
     (__right_value77 = come_decrement_ref_count(__right_value77, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-    for(    ({    (_condtional_value_X106=(o2_saved=(object_files),it=list$1char$ph_begin((o2_saved))));    _condtional_value_X106;    });    ({    (_condtional_value_X107=(!list$1char$ph_end((o2_saved))));    _condtional_value_X107;    });    ({    (_condtional_value_X110=(it=list$1char$ph_next((o2_saved))));    _condtional_value_X110;    })    ){
+    for(    ({    (_condtional_value_X106=(o2_saved=object_files,it=list$1char$ph_begin(o2_saved)));    _condtional_value_X106;    });    ({    (_condtional_value_X107=(!list$1char$ph_end(o2_saved)));    _condtional_value_X107;    });    ({    (_condtional_value_X110=(it=list$1char$ph_next(o2_saved)));    _condtional_value_X110;    })    ){
         buffer_append_format(command,"%s ",it);
     }
     is_mac_33=system("uname -a | grep Darwin 1> /dev/null 2>/dev/null")==0;
@@ -6678,7 +6679,7 @@ memset(&info_124, 0, sizeof(struct sInfo));
         gComeOriginalSourcePosition=(_Bool)0;
         gComeDebug=come_debug_106;
         gComeMalloc=come_malloc_107;
-        for(        ({        (_condtional_value_X634=(o2_saved=(struct list$1char$ph*)come_increment_ref_count((files_98)),it=list$1char$ph_begin((o2_saved))));        _condtional_value_X634;        });        ({        (_condtional_value_X635=(!list$1char$ph_end((o2_saved))));        _condtional_value_X635;        });        ({        (_condtional_value_X636=(it=list$1char$ph_next((o2_saved))));        _condtional_value_X636;        })        ){
+        for(        ({        (_condtional_value_X634=(o2_saved=(struct list$1char$ph*)come_increment_ref_count(files_98),it=list$1char$ph_begin(o2_saved)));        _condtional_value_X634;        });        ({        (_condtional_value_X635=(!list$1char$ph_end(o2_saved)));        _condtional_value_X635;        });        ({        (_condtional_value_X636=(it=list$1char$ph_next(o2_saved)));        _condtional_value_X636;        })        ){
             memset(&info_116,0,sizeof(struct sInfo));
             Value_117=fopen(it,"r");
             if(({            (_condtional_value_X637=(Value_117));            _condtional_value_X637;            })) {

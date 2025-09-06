@@ -968,6 +968,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
 /////////////////////////////////////////////////////////////////////
 /// 13op.c
 /////////////////////////////////////////////////////////////////////
+sNode*% create_comma_exp(sNode*% node, sNode*% node2, sInfo* info);
 sNode*% create_less(sNode*% node, sNode*% right, sInfo* info);
 sNode*% create_null_node(sInfo* info=info);
 sNode*% conditional_node(sNode*% value1, sNode*% value2, sNode*% value3, sInfo* info);

@@ -2689,6 +2689,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -2972,7 +2973,7 @@ _Bool __result_obj__65;
     right_node=self->right_node;
     array_initializer=(char*)come_increment_ref_count((char*)come_memdup(self->array_initializer, "07gvar.c", 27, "char*"));
     if(({    (_condtional_value_X133=(self->multiple_declare));    _condtional_value_X133;    })) {
-        for(        ({        (_condtional_value_X136=(o2_saved=(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count((self->multiple_declare)),it=list$1tuple3$3sType$phchar$phchar$ph$ph_begin((o2_saved))));        _condtional_value_X136;        });        ({        (_condtional_value_X137=(!list$1tuple3$3sType$phchar$phchar$ph$ph_end((o2_saved))));        _condtional_value_X137;        });        ({        (_condtional_value_X140=(it=list$1tuple3$3sType$phchar$phchar$ph$ph_next((o2_saved))));        _condtional_value_X140;        })        ){
+        for(        ({        (_condtional_value_X136=(o2_saved=(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count(self->multiple_declare),it=list$1tuple3$3sType$phchar$phchar$ph$ph_begin(o2_saved)));        _condtional_value_X136;        });        ({        (_condtional_value_X137=(!list$1tuple3$3sType$phchar$phchar$ph$ph_end(o2_saved)));        _condtional_value_X137;        });        ({        (_condtional_value_X140=(it=list$1tuple3$3sType$phchar$phchar$ph$ph_next(o2_saved)));        _condtional_value_X140;        })        ){
             multiple_assign_var1=it;
             type_10=(struct sType*)come_increment_ref_count(multiple_assign_var1->v1);
             name_11=(char*)come_increment_ref_count(multiple_assign_var1->v2);
@@ -5078,7 +5079,7 @@ _Bool __result_obj__68;
     type=self->type;
     name=(char*)come_increment_ref_count(self->name);
     if(({    (_condtional_value_X257=(self->multiple_declare));    _condtional_value_X257;    })) {
-        for(        ({        (_condtional_value_X258=(o2_saved=(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count((self->multiple_declare)),it=list$1tuple3$3sType$phchar$phchar$ph$ph_begin((o2_saved))));        _condtional_value_X258;        });        ({        (_condtional_value_X259=(!list$1tuple3$3sType$phchar$phchar$ph$ph_end((o2_saved))));        _condtional_value_X259;        });        ({        (_condtional_value_X260=(it=list$1tuple3$3sType$phchar$phchar$ph$ph_next((o2_saved))));        _condtional_value_X260;        })        ){
+        for(        ({        (_condtional_value_X258=(o2_saved=(struct list$1tuple3$3sType$phchar$phchar$ph$ph*)come_increment_ref_count(self->multiple_declare),it=list$1tuple3$3sType$phchar$phchar$ph$ph_begin(o2_saved)));        _condtional_value_X258;        });        ({        (_condtional_value_X259=(!list$1tuple3$3sType$phchar$phchar$ph$ph_end(o2_saved)));        _condtional_value_X259;        });        ({        (_condtional_value_X260=(it=list$1tuple3$3sType$phchar$phchar$ph$ph_next(o2_saved)));        _condtional_value_X260;        })        ){
             multiple_assign_var2=it;
             type_31=(struct sType*)come_increment_ref_count(multiple_assign_var2->v1);
             name_32=(char*)come_increment_ref_count(multiple_assign_var2->v2);

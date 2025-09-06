@@ -2755,6 +2755,7 @@ struct sNode* string_node_v9(char* buf, char* head, int head_sline, struct sInfo
 struct sNode* string_node_v10(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v11(char* buf, char* head, int head_sline, struct sInfo* info);
 struct sNode* string_node_v12(char* buf, char* head, int head_sline, struct sInfo* info);
+struct sNode* create_comma_exp(struct sNode* node, struct sNode* node2, struct sInfo* info);
 struct sNode* create_less(struct sNode* node, struct sNode* right, struct sInfo* info);
 struct sNode* create_null_node(struct sInfo* info);
 struct sNode* conditional_node(struct sNode* value1, struct sNode* value2, struct sNode* value3, struct sInfo* info);
@@ -4173,7 +4174,7 @@ _Bool __result_obj__34;
     buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05pre_op.c", 99, "struct buffer*"))));
     buffer_append_str(buf,"({");
     come_type=((void*)0);
-    for(    ({    (_condtional_value_X135=(o2_saved=(struct list$1sNode$ph*)come_increment_ref_count((paren_block)),it=list$1sNode$ph_begin((o2_saved))));    _condtional_value_X135;    });    ({    (_condtional_value_X136=(!list$1sNode$ph_end((o2_saved))));    _condtional_value_X136;    });    ({    (_condtional_value_X139=(it=list$1sNode$ph_next((o2_saved))));    _condtional_value_X139;    })    ){
+    for(    ({    (_condtional_value_X135=(o2_saved=(struct list$1sNode$ph*)come_increment_ref_count(paren_block),it=list$1sNode$ph_begin(o2_saved)));    _condtional_value_X135;    });    ({    (_condtional_value_X136=(!list$1sNode$ph_end(o2_saved)));    _condtional_value_X136;    });    ({    (_condtional_value_X139=(it=list$1sNode$ph_next(o2_saved)));    _condtional_value_X139;    })    ){
         if(({        (_condtional_value_X140=(string_operator_equals(((char*)(__right_value65=it->kind(it->_protocol_obj))),"sIfNode")||string_operator_equals(((char*)(__right_value67=it->kind(it->_protocol_obj))),"sWhileNode")||string_operator_equals(((char*)(__right_value69=it->kind(it->_protocol_obj))),"sDoWhileNode")||string_operator_equals(((char*)(__right_value71=it->kind(it->_protocol_obj))),"sForNode")||((char*)(__right_value72=it->kind(it->_protocol_obj)))=="sSwitchNode"));        (__right_value64 = come_decrement_ref_count(__right_value64, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         (__right_value65 = come_decrement_ref_count(__right_value65, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
         (__right_value66 = come_decrement_ref_count(__right_value66, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
