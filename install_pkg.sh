@@ -12,9 +12,9 @@ elif test `uname -o` = Android
 then
     apt install which clang pcre readline ncurses make autoconf valgrind gdb lldb binutils libandroid-glob libgc openssl mariadb libdwarf-dev libelf-dev libc6-dev
 # debian
-elif uname -a | grep Debian
+elif test -e /etc/debian_version
 then
-    sudo apt install clang gcc libpcre3-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmariadb-dev-compat libmariadb-dev mariadb-server mariadb-client libdwarf-dev libelf-dev libc6-dev
+    sudo apt install clang gcc libpcre2-dev libreadline-dev ncurses-dev make autoconf valgrind gdb lldb libgc-dev libssl-dev libmariadb-dev-compat libmariadb-dev mariadb-server mariadb-client libdwarf-dev libelf-dev libc6-dev
 # raspberry pi
 elif uname -a | grep raspberry
 then
