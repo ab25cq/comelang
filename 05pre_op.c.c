@@ -912,6 +912,8 @@ typedef __builtin_va_list __gnuc_va_list;
 
 typedef __builtin_va_list va_list;
 
+typedef struct _xlocale* locale_t;
+
 struct lconv
 {
     char* decimal_point;
@@ -939,8 +941,6 @@ struct lconv
     char int_p_sign_posn;
     char int_n_sign_posn;
 };
-
-typedef struct _xlocale* locale_t;
 
 typedef int wint_t;
 
@@ -2251,9 +2251,9 @@ int flsl(long anonymous_var_nameX348);
 int flsll(long  long anonymous_var_nameX349);
 struct _xlocale* duplocale(struct _xlocale* anonymous_var_nameX350);
 int freelocale(struct _xlocale* anonymous_var_nameX351);
-struct lconv* localeconv();
 struct _xlocale* newlocale(int anonymous_var_nameX352, const char* anonymous_var_nameX353, struct _xlocale* anonymous_var_nameX354);
 struct _xlocale* uselocale(struct _xlocale* anonymous_var_nameX355);
+struct lconv* localeconv();
 char* setlocale(int anonymous_var_nameX356, const char* anonymous_var_nameX357);
 int* __error();
 int isalnum(int anonymous_var_nameX364);
