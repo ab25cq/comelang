@@ -1692,6 +1692,7 @@ sNode*% expression_node(sInfo* info) version 96
             return new sCharNode(c, info) implements sNode;
         }
     }
+#ifndef DISABLE_LSTR
     /// wchararacter ///
     else if(*info->p == 'L' && *(info->p+1) == '\'') {
         int sline_real = info.sline_real;
@@ -1910,6 +1911,7 @@ sNode*% expression_node(sInfo* info) version 96
         info.sline_real = sline_real;
         return new sWStringNode(wstr, sline, info) implements sNode;
     }
+#endif
     /// heap string ///
     else if((*info->p == 's' || *info->p == 'S')  && *(info->p+1) == '"') {
         int sline_real = info.sline_real;

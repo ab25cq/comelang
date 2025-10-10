@@ -47,7 +47,6 @@ using C
 #include <errno.h>
 #include <assert.h>
 #include <ctype.h>
-#include <wchar.h>
 }
 
 using comelang;
