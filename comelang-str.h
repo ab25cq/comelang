@@ -2460,4 +2460,19 @@ uniq string char*::chomp(char* str)
     return string::chomp(str);
 }
 
+uniq bool wchar_t*::equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) == 0;
+}
+
+uniq bool wchar_t*::operator_equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) == 0;
+}
+
+uniq bool wchar_t*::operator_not_equals(wchar_t* left, wchar_t* right)
+{
+    return wcscmp(left, right) != 0;
+}
+
 #endif

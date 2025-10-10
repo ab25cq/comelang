@@ -4852,11 +4852,6 @@ uniq bool wchar_t::equals(wchar_t left, wchar_t right)
     return left == right;
 }
 
-uniq bool wchar_t*::equals(wchar_t* left, wchar_t* right)
-{
-    return wcscmp(left, right) == 0;
-}
-
 uniq bool wchar_t::operator_equals(wchar_t left, wchar_t right)
 {
     return left == right;
@@ -4865,16 +4860,6 @@ uniq bool wchar_t::operator_equals(wchar_t left, wchar_t right)
 uniq bool wchar_t::operator_not_equals(wchar_t left, wchar_t right)
 {
     return left != right;
-}
-
-uniq bool wchar_t*::operator_equals(wchar_t* left, wchar_t* right)
-{
-    return wcscmp(left, right) == 0;
-}
-
-uniq bool wchar_t*::operator_not_equals(wchar_t* left, wchar_t* right)
-{
-    return wcscmp(left, right) != 0;
 }
 
 uniq unsigned int wchar_t::get_hash_key(wchar_t value)

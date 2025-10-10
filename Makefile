@@ -11,9 +11,18 @@ LIBS= -lutil -ldl -lm -lrt
 #########################################
 # main
 #########################################
-all: comelang-sh
-	for i in $(ls *.c | grep -v c.c); do cat $i >> comelang.c; done
+all: comelang-sh comelang.c.c
+
+SOURCES := $(wildcard *.c)
+SOURCES := $(filter-out %.c.c,$(SOURCES))
+
+comelang.c.c: comelang.c
 	comelang -S comelang.c
+
+comelang.c: $(SOURCES)
+	@cat $^ > $@
+    
+comelang.c:
 
 #########################################
 # grammar generation (Flex + Bison)
