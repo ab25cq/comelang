@@ -22,8 +22,6 @@ comelang.c.c: comelang.c
 comelang.c: $(SOURCES)
 	@cat $^ > $@
     
-comelang.c:
-
 #########################################
 # grammar generation (Flex + Bison)
 #########################################
