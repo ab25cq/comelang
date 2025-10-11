@@ -108,152 +108,209 @@ static bool cpp(sInfo* info)
     else {
         output_file_name = info.sname + ".i";
     }
+    int is_minux = system("uname | grep Minux") == 0;
     
-    bool exist_common_h = false;
-    {
-        fopen("common.h", "r").if {
-            exist_common_h = true;
-            fclose(Value);
-        }
-        if(info.output_file_name === "common.h") {
-            exist_common_h = false;
-        }
-        if(!gCommonHeader) {
-            exist_common_h = false;
-        }
-    }
-    
-    int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
-    int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null") == 0;
-    int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null") == 0;
-    int is_linux = 1;
-    int is_m5stack = info.m5stack_cpp; // M5Stack?
-    int is_pico = info.pico_cpp; // PICO?
-    int is_emb = info.emb_cpp; // EMBBEDED
-    bool _32bit = false;
-    FILE* f = fopen("/proc/cpuinfo", "r");
-    int is_raspi;
-    if(f) {
-        fclose(f);
-        is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi' > /dev/null 2> /dev/null ") == 0;
-        if(is_raspi) {
-            _32bit = system(" lscpu | grep armv7l > /dev/null 2> /dev/null ") == 0;
+    if(is_minux) {
+        string cmd = xsprintf("cpp %s > %s", input_file_name, output_file_name);
+        int rc = system(cmd);
+        if(rc != 0) {
+            err_msg(info, "cpp error");
+            return false;
         }
     }
     else {
-        is_raspi = 0;
-    }
+        bool exist_common_h = false;
+        {
+            fopen("common.h", "r").if {
+                exist_common_h = true;
+                fclose(Value);
+            }
+            if(info.output_file_name === "common.h") {
+                exist_common_h = false;
+            }
+            if(!gCommonHeader) {
+                exist_common_h = false;
+            }
+        }
+        
+        int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
+        int is_android = system("uname -a | grep Android 1> /dev/null 2>/dev/null") == 0;
+        int is_debian = system("uname -a | grep Debian 1> /dev/null 2>/dev/null") == 0;
+        int is_linux = 1;
+        int is_m5stack = info.m5stack_cpp; // M5Stack?
+        int is_pico = info.pico_cpp; // PICO?
+        int is_emb = info.emb_cpp; // EMBBEDED
+        bool _32bit = false;
+        FILE* f = fopen("/proc/cpuinfo", "r");
+        int is_raspi;
+        if(f) {
+            fclose(f);
+            is_raspi = system("cat /proc/cpuinfo | grep 'Model' | grep 'Raspberry Pi' > /dev/null 2> /dev/null ") == 0;
+            if(is_raspi) {
+                _32bit = system(" lscpu | grep armv7l > /dev/null 2> /dev/null ") == 0;
+            }
+        }
+        else {
+            is_raspi = 0;
+        }
+        
+        if(is_pico || is_m5stack) {
+            _32bit = true;
+        }
+        
+        if(_32bit) {
+            info.cpp_option = info.cpp_option + s" -D__32BIT_CPU__ ";
+        }
+        
+        /// Android ///
+        if(is_android) {
+            string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", (info.remove_comment ? "": " -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            
+            if(info.verbose) puts(cmd3);
+            int rc = system(cmd3);
+            
+            string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            if(rc != 0) {
+                printf("cpp failed(%s)\n", command2);
+                exit(2);
+            }
+        }
+        else if(is_m5stack) {
+            string cmd2 = xsprintf("xtensa-esp-elf-cpp -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__M5STACK__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            
+            if(info.verbose) puts(cmd2);
+            
+            int rc = system(cmd2);
+            
+            string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            if(rc != 0) {
+                printf("failed to cpp(2) (%s)\n", cmd2);
+                exit(5);
+            }
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+        }
+        else if(is_pico) {
+            string cmd2 = xsprintf("arm-none-eabi-gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__PICO__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            
+            if(info.verbose) puts(cmd2);
+            
+            string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            int rc = system(cmd2);
+            
+            if(rc != 0) {
+                printf("failed to cpp(2) (%s)\n", cmd2);
+                exit(5);
+            }
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+        }
+        /// Mac ///
+        else if(is_mac) {
+            string cmd2 = xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+            
+            if(info.verbose) puts(cmd2);
+            
+            string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            int rc = system(cmd2);
+            
+            if(rc != 0) {
+                printf("failed to cpp(2) (%s)\n", cmd2);
+                exit(5);
+            }
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+        }
+        /// EMBBEDED ///
+        else if(is_emb) {
+            string cmd3 = xsprintf("clang -E %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
     
-    if(is_pico || is_m5stack) {
-        _32bit = true;
-    }
+            if(info.verbose) puts(cmd3);
+            int rc = system(cmd3);
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            if(rc != 0) {
+                string cmd4 = xsprintf("clang -E %s -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
     
-    if(_32bit) {
-        info.cpp_option = info.cpp_option + s" -D__32BIT_CPU__ ";
-    }
+                if(is_debian) {
+                    cmd4 = xsprintf("clang -E %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+                }
+                
+                var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+                
+                if(info.verbose) puts(command2);
+                (void)system(command2);
+                
+                if(rc != 0) {
+                    printf("failed to cpp(2) (%s)\n", cmd4);
+                    exit(5);
+                }
+            }
+        }
+        /// __RASPIBERRY_PI__ ///
+        else if(is_raspi) {
+            string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
     
-    /// Android ///
-    if(is_android) {
-        string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -I/data/data/com.termux/files/usr/include/mariadb -D__ANDROID__ %s %s > %s 2> %s.cpp.out", (info.remove_comment ? "": " -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        
-        if(info.verbose) puts(cmd3);
-        int rc = system(cmd3);
-        
-        string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-        
-        if(rc != 0) {
-            printf("cpp failed(%s)\n", command2);
-            exit(2);
+            if(info.verbose) puts(cmd3);
+            int rc = system(cmd3);
+            
+            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+            
+            if(info.verbose) puts(command2);
+            (void)system(command2);
+            
+            if(rc != 0) {
+                string cmd4 = xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+                
+                var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+                
+                if(info.verbose) puts(command2);
+                (void)system(command2);
+                
+                if(rc != 0) {
+                    printf("failed to cpp(2) (%s)\n", cmd4);
+                    exit(5);
+                }
+            }
         }
-    }
-    else if(is_m5stack) {
-        string cmd2 = xsprintf("xtensa-esp-elf-cpp -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__M5STACK__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        
-        if(info.verbose) puts(cmd2);
-        
-        int rc = system(cmd2);
-        
-        string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-        
-        if(rc != 0) {
-            printf("failed to cpp(2) (%s)\n", cmd2);
-            exit(5);
-        }
-        
-        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-    }
-    else if(is_pico) {
-        string cmd2 = xsprintf("arm-none-eabi-gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__PICO__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        
-        if(info.verbose) puts(cmd2);
-        
-        string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-        
-        int rc = system(cmd2);
-        
-        if(rc != 0) {
-            printf("failed to cpp(2) (%s)\n", cmd2);
-            exit(5);
-        }
-        
-        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-    }
-    /// Mac ///
-    else if(is_mac) {
-        string cmd2 = xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        
-        if(info.verbose) puts(cmd2);
-        
-        string command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-        
-        int rc = system(cmd2);
-        
-        if(rc != 0) {
-            printf("failed to cpp(2) (%s)\n", cmd2);
-            exit(5);
-        }
-        
-        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-    }
-    /// EMBBEDED ///
-    else if(is_emb) {
-        string cmd3 = xsprintf("clang -E %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-
-        if(info.verbose) puts(cmd3);
-        int rc = system(cmd3);
-        
-        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-        
-        if(rc != 0) {
-            string cmd4 = xsprintf("clang -E %s -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-
+        else if(is_linux) {
+            string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+    
             if(is_debian) {
-                cmd4 = xsprintf("clang -E %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__EMB__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+                cmd3 = xsprintf("cpp %s -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "": " -C", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
             }
+    
+            if(info.verbose) puts(cmd3);
+            int rc = system(cmd3);
             
             var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
             
@@ -261,67 +318,21 @@ static bool cpp(sInfo* info)
             (void)system(command2);
             
             if(rc != 0) {
-                printf("failed to cpp(2) (%s)\n", cmd4);
-                exit(5);
-            }
-        }
-    }
-    /// __RASPIBERRY_PI__ ///
-    else if(is_raspi) {
-        string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-
-        if(info.verbose) puts(cmd3);
-        int rc = system(cmd3);
-        
-        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-        
-        if(rc != 0) {
-            string cmd4 = xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__RASPBERRY_PI__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-            
-            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-            
-            if(info.verbose) puts(command2);
-            (void)system(command2);
-            
-            if(rc != 0) {
-                printf("failed to cpp(2) (%s)\n", cmd4);
-                exit(5);
-            }
-        }
-    }
-    else if(is_linux) {
-        string cmd3 = xsprintf("cpp %s -lang-c %s -I. -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", (info->remove_comment ? "":" -C"), info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-
-        if(is_debian) {
-            cmd3 = xsprintf("cpp %s -lang-c %s -I. -D__DEBIAN__ -I%s/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "": " -C", info.cpp_option, getenv("HOME"), PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-        }
-
-        if(info.verbose) puts(cmd3);
-        int rc = system(cmd3);
-        
-        var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-        
-        if(info.verbose) puts(command2);
-        (void)system(command2);
-        
-        if(rc != 0) {
-            string cmd4 = xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-
-            if(is_debian) {
-                cmd4 = xsprintf("cpp %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
-            }
-            
-            var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
-            
-            if(info.verbose) puts(command2);
-            (void)system(command2);
-            
-            if(rc != 0) {
-                printf("failed to cpp(2) (%s)\n", cmd4);
-                exit(5);
+                string cmd4 = xsprintf("cpp %s -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info->remove_comment ? "": " -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+    
+                if(is_debian) {
+                    cmd4 = xsprintf("cpp %s -D__DEBIAN__ -I. %s -DPREFIX=%s -I%s/include -D__LINUX__ %s %s > %s 2> %s.cpp.out", info.remove_comment ? "":" -C", info.cpp_option, PREFIX, PREFIX, exist_common_h ? string(" -include common.h "):"", input_file_name, output_file_name, output_file_name);
+                }
+                
+                var command2 = xsprintf("grep error\\: %s.cpp.out 2>/dev/null", output_file_name);
+                
+                if(info.verbose) puts(command2);
+                (void)system(command2);
+                
+                if(rc != 0) {
+                    printf("failed to cpp(2) (%s)\n", cmd4);
+                    exit(5);
+                }
             }
         }
     }
@@ -391,11 +402,6 @@ static bool linker(sInfo* info, list<string>* object_files)
     command.append_format("%s -o %s ", CC, output_file_name);
     
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
-/*
-#ifdef __MAC__
-        setenv("LSAN_OPTIONS","verbosity=1:log_threads=1", 1);
-#endif
-*/
     if(is_mac) {
         info.linker_option = info.clang_option + s" -std=gnu17 ";
     }
