@@ -111,12 +111,6 @@ static bool cpp(sInfo* info)
     int is_minux = system("uname | grep Minux") == 0;
     
     if(is_minux) {
-        string cmd = xsprintf("cpp %s > %s", input_file_name, output_file_name);
-        int rc = system(cmd);
-        if(rc != 0) {
-            err_msg(info, "cpp error");
-            return false;
-        }
     }
     else {
         bool exist_common_h = false;
