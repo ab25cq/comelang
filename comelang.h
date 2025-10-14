@@ -24,6 +24,7 @@ typedef char*% string;
 ///////////////////////////////////////////////////////////////////////////
 #if defined(__MINUX__)
 #include <comelang-minux.h>
+using comelang;
 #elif defined(__BARE_METAL__)
 #include <comelang-baremetal.h>
 #else
@@ -191,11 +192,20 @@ uniq void xassert(char* msg, bool test)
     puts("ok");
 }
 
-#ifndef __BARE_METAL__
+#if !defined(__MINUX__) && !defined(__BARE_METAL__)
 record uniq bool die(char* msg)
 {
     perror(msg);
     stackframe();
+    exit(4);
+    
+    return false;
+}
+#else
+uniq bool die(char* msg)
+{
+    perror(msg);
+    //stackframe();
     exit(4);
     
     return false;
@@ -243,7 +253,7 @@ uniq int gNumFree = 0;
 
 #define HEAP_POOL_PAGE_SIZE 4096
 
-#if !defined(__BARE_METAL__) && !defined(__MINUX__)
+#if !defined(__MINUX__) && !defined(__BARE_METAL__)
 
 #define INIT_PAGE_PAGE_SIZE 4
 #define NEW_ALLOC_SIZE 2
@@ -3885,7 +3895,7 @@ uniq float float::clone(float self)
 //////////////////////////////
 /// base library(character code)
 //////////////////////////////
-#ifndef __BARE_METAL__
+#if !defined(__MINUX__) && !defined(__BARE_METAL__)
 uniq bool xiswalpha(wchar_t c)
 {
     bool result = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
@@ -4601,7 +4611,7 @@ uniq int char*::compare(char* left, char* right)
 //////////////////////////////
 /// base library(IO-FILE)
 //////////////////////////////
-#ifndef __BARE_METAL__
+#if !defined(__BARE_METAL__)
 uniq string FILE*::read(FILE* f)
 {
     if(f == null) {
@@ -4827,7 +4837,7 @@ uniq int int::printf(int self, char* msg)
 //////////////////////////////
 /// base library(assert)
 //////////////////////////////
-#ifndef __BARE_METAL__
+#if !defined(__MINUX__) && !defined(__BARE_METAL__)
 #undef assert
 
 uniq record int assert(int exp) version 2
@@ -4845,7 +4855,7 @@ uniq record int assert(int exp) version 2
 //////////////////////////////
 /// base library(wchar_t)
 //////////////////////////////
-#ifndef __BARE_METAL__
+#if !defined(__MINUX__) && !defined(__BARE_METAL__)
 uniq bool wchar_t::equals(wchar_t left, wchar_t right)
 {
     return left == right;

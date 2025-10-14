@@ -17,7 +17,7 @@ SOURCES := $(wildcard *.c)
 SOURCES := $(filter-out %.c.c,$(SOURCES))
 
 comelang.c.c: comelang.c
-	comelang -S -DDISABLE_LSTR comelang.c
+	comelang -S -D__MINUX__ comelang.c
 
 comelang.c: $(SOURCES)
 	@cat $^ > $@

@@ -1,879 +1,379 @@
 #ifndef COMELANG_MINUX_H
 #define COMELANG_MINUX_H
 
-#include <stdint.h>
 #include <stdarg.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-using comelang;
+//──────────────────────────────────────────
+// ファイルシステム共通定数・構造体（mkfs.c と合わせる）
+//──────────────────────────────────────────
+#define BSIZE      512                    // ブロックサイズ
+#define NDIRECT    12                     // 直接ブロックポインタ数
+#define NINDIRECT  (BSIZE / sizeof(uint32_t))  // 間接ブロック内のエントリ数（512/4=128）
+#define MAXFILE    (NDIRECT + NINDIRECT + NINDIRECT * NINDIRECT)
 
-typedef unsigned long size_t;
-typedef long ptrdiff_t;
+#define ROOTINO    1     // ルートディレクトリの i-node 番号
+#define T_DIR      1
+#define T_FILE     2
+#define T_SYMLINK  3
 
-#define NULL ((void*)0)
+// mode bits (subset)
+#ifndef S_ISUID
+#define S_ISUID 04000
+#endif
+#ifndef S_ISGID
+#define S_ISGID 02000
+#endif
+#ifndef S_ISVTX
+#define S_ISVTX 01000
+#endif
 
-void* memset(void *dst, int c, unsigned int n);
-void* memcpy(void *dst, const void *src, unsigned int n);
-int strlen(const char *s);
+#define DIRSIZ     14    // ディレクトリエントリ名の最大長
+
+// ───────────────────────────────────────────────────────────────────────
+// on-disk 構造体
+// ────────────────────────────────────────────────────────────────────────
+
+// スーパーブロック (ブロック番号 1 に配置)
+struct superblock {
+    uint32_t size;       // 全ブロック数
+    uint32_t nblocks;    // データブロック数
+    uint32_t ninodes;    // イノード数
+    uint32_t nlog;       // ログ領域ブロック数（未使用なら 0）
+    uint32_t logstart;   // ログ領域開始ブロック番号（未使用なら 0）
+    uint32_t inodestart; // イノード領域開始ブロック番号
+    uint32_t bmapstart;  // ビットマップ開始ブロック番号
+};
+
+// on-disk i-node 構造体
+struct dinode {
+    uint16_t type;             // 0=空き, 1=ディレクトリ, 2=ファイル, 3=シンボリックリンク
+    uint16_t major;            // デバイス番号（未使用時は 0）
+    uint16_t minor;            // デバイス番号（未使用時は 0）
+    uint16_t nlink;            // ハードリンク数
+    uint32_t size;             // ファイルサイズ（バイト）
+    uint32_t mode;             // パーミッション/種別ビット（簡易）
+    uint16_t uid;              // 所有者
+    uint16_t gid;              // グループ
+    uint32_t atime;            // 最終アクセス
+    uint32_t mtime;            // 最終更新
+    uint32_t ctime;            // メタデータ変更
+    /* 直接ポインタ[0..NDIRECT-1], 1次インデクス=addrs[NDIRECT], 2次インデクス=addrs[NDIRECT+1] */
+    uint32_t addrs[NDIRECT + 2];
+};
+
+// ディレクトリエントリ
+struct dirent {
+    uint16_t inum;           // ファイル/ディレクトリの i-node 番号
+    char     name[DIRSIZ];   // ファイル名（固定長14バイト、ヌル終端なし）
+};
+
+// 簡易 stat 構造体（ユーザー/カーネル共用）
+struct stat {
+    uint16_t type;  // T_DIR / T_FILE / T_SYMLINK
+    uint16_t nlink; // ハードリンク数
+    uint32_t size;  // バイト数
+    uint32_t inum;  // i-node number
+    uint32_t mode;  // パーミッション
+    uint16_t uid;   // 所有者
+    uint16_t gid;   // グループ
+    uint32_t atime; // アクセス
+    uint32_t mtime; // 更新
+    uint32_t ctime; // 変更
+};
+
+//──────────────────────────────────────────
+// ヘルパー関数のプロトタイプ
+//──────────────────────────────────────────
+
+// 低レイヤーのブロック読み込み（extern で実装されている想定）
+// blockno: ファイルシステム上のブロック番号 (0 から始まる)
+// buf:       BSIZE バイト確保されたバッファ
+extern void read_block(uint32_t blockno, void *buf);
+
+// superblock を読み込む
+void read_superblock(void);
+
+// i ノードを読み込む
+// inum: iノード番号（1 から ninodes まで）
+// dest: struct dinode のバッファ（呼び出し側が確保しておくこと）
+void read_inode(uint32_t inum, struct dinode *dest);
+
+// ファイル（またはディレクトリ）データをバッファに読み込む
+// inode: 事前に read_inode により読み込んでおくこと
+// offset, size: 読み込みたいオフセットとバイト数
+// buf: 読み出し先バッファ（size バイト以上確保しておくこと）
+void read_data(struct dinode *inode, uint32_t offset, uint8_t *buf, uint32_t size);
+
+// ルートディレクトリからファイル名 lookup
+// path: "/foo/bar.txt" のように絶対パスで与える
+// return: 見つかったらその iノード番号、見つからなければ 0
+uint32_t path_lookup(const char *path);
+
+// ディレクトリ内でエントリを探す
+// parent: 親ディレクトリの dinode 構造体
+// name:    探したいファイル名（ヌル終端文字列）
+// return:  iノード番号、見つからなければ 0
+uint32_t dir_lookup(struct dinode *parent, const char *name);
+
+// i ノードを読み込んで内容を出力する（デバッグ用）
+void dump_inode(uint32_t inum);
+
+// virtio ブロックデバイスを初期化
+void virtio_blk_init(void);
+void bcache_init(void);
+
+typedef int32_t ssize_t;
+int fs_fstat_fd(int fd, struct stat* st);
+long fs_lseek(int fd, long offset, int whence);
+
+enum { SEEK_SET, SEEK_END, SEEK_CUR };
+
+#define assert
+
+typedef long time_t;
+typedef long suseconds_t;
+struct timeval { time_t tv_sec; suseconds_t tv_usec; };
+struct tm { int tm_sec, tm_min, tm_hour, tm_mday, tm_mon, tm_year, tm_wday, tm_yday, tm_isdst; };
+
+typedef struct __minux_FILE {
+  int fd;
+  int flags;   // 1=readable, 2=writable, 4=append
+  long pos;
+  int eof;
+  int err;
+  int have_push;
+  unsigned char push_ch;
+  // memory stream support (fd < 0 if memory stream)
+  int is_mem;
+  char **ms_bufp;
+  size_t *ms_sizep;
+  char *ms_buf;    // internal buffer
+  size_t ms_cap;   // capacity of ms_buf
+  size_t ms_len;   // valid length
+} FILE;
+
+typedef struct {
+  size_t gl_pathc;   // count of paths matched
+  char **gl_pathv;   // NULL-terminated vector of strings
+} glob_t;
+
+extern FILE* stdin;
+extern FILE* stdout;
+extern FILE* stderr;
+
+#define EOF (-1)
+
+typedef int pid_t;
+
+#ifndef SYS_execve
+#define SYS_execve 100
+#endif
+#define SYS_settimeofday 92
+#define SYS_utimes 93
+#define SYS_umask 94
+#define SYS_gettimeofday 95
+#define SYS_getuid 96
+#define SYS_getgid 97
+#define SYS_setuid 98
+#define SYS_setgid 99
+#define SYS_lseek 192
+#ifndef SEEK_SET
+#define SEEK_SET 0
+#endif
+#ifndef SEEK_CUR
+#define SEEK_CUR 1
+#endif
+#ifndef SEEK_END
+#define SEEK_END 2
+#endif
+#define SYS_fstat   210
+#define SYS_write 64
+#define SYS_read 65
+#define SYS_open 66
+#define SYS_close 67
+#define SYS_fork 68
+#define SYS_execv 69
+#define SYS_exit 70
+#define SYS_wait 71
+#define SYS_dup2 72
+#define SYS_pipe 73
+#define SYS_brk 74
+#define SYS_clear 75
+#define SYS_opendir 76
+#define SYS_readdir 77
+#define SYS_closedir 78
+// add cwd-related syscalls
+#define SYS_getcwd 79
+#define SYS_chdir 80
+#define SYS_mkdir 81
+#define SYS_rmdir 82
+#define SYS_unlink 83
+#define SYS_rename 84
+#define SYS_link   85
+#define SYS_symlink 86
+#define SYS_stat    87
+#define SYS_readlink 88
+#define SYS_lstat   89
+#define SYS_chmod   90
+#define SYS_chown   91
+#define SYS_sleep 102
+#define SYS_tcsetpgrp 103
+#define SYS_getpid 105
+#define SYS_realpath 101
+#define SYS_isatty 104
+
+extern int errno;
+
+// open(2) flags (subset)
+#ifndef O_RDONLY
+#define O_RDONLY 0
+#endif
+#ifndef O_WRONLY
+#define O_WRONLY 1
+#endif
+#ifndef O_RDWR
+#define O_RDWR 2
+#endif
+#ifndef O_CREAT
+#define O_CREAT  (1<<9)
+#endif
+#ifndef O_TRUNC
+#define O_TRUNC  (1<<10)
+#endif
+#ifndef O_APPEND
+#define O_APPEND (1<<11)
+#endif
+
 int printf(const char* fmt, ...);
-extern void puts(const char* s);
+int fflush(FILE* fp);
+FILE* open_memstream(char **bufp, size_t *sizep);
+int fscanf(FILE* fp, const char* fmt, ...);
+int fprintf(FILE* fp, const char* fmt, ...);
+int vfprintf(FILE* fp, const char* fmt, va_list ap);
+int fputs(const char* s, FILE* fp);
+size_t fwrite(const void* ptr, size_t size, size_t nmemb, FILE* fp);
+size_t fread(void* ptr, size_t size, size_t nmemb, FILE* fp);
+char* fgets(char* s, int size, FILE* fp);
+int ungetc(int c, FILE* fp);
+int fgetc(FILE* fp);
+int fseek(FILE* fp, long offset, int whence);
+long ftell(FILE* fp);
+unsigned sleep(unsigned seconds);
+void rewind(FILE* fp);
+int fclose(FILE* fp);
+FILE* fopen(const char* path, const char* mode);
+FILE* tmpfile(void);
+void putchar(char c);
+int vsnprintf(char* out, unsigned long out_size, const char* fmt, va_list ap);
+int snprintf(char* out, unsigned long out_size, const char* fmt, ...);
+int vasprintf(char** out, const char* fmt, va_list ap);
+char* strncat(char* dest, const char* src, size_t n);
+void puts(const char *s);
+char* strerror(int errnum);
+int isalnum(int c);
+int isdigit(int c);
+int isalpha(int c);
+int isspace(int c);
+int isprint(int c);
+void globfree(glob_t* pglob);
+int glob(const char* pattern, int flags, void* errfunc, glob_t* pglob);
+int mkstemp(char* template);
+char* strndup(const char* s, size_t n);
+char* strrchr(const char* s, int c);
+char* strchr(const char* s, int c);
+int strlen(const char *s);
+char* strncpy(char *s, const char *t, int n);
+int strncmp(const char *p, const char *q, unsigned int n);
+void* memcpy(void *dst, const void *src, unsigned int n);
+void* memmove(void *dst, const void *src, unsigned int n);
+int memcmp(const void *v1, const void *v2, unsigned int n);
+void* memset(void *dst, int c, unsigned int n);
+char* strstr(const char* haystack, const char* needle);
+int strcmp(const char* s1, const char* s2);
+char* strdup(const char* s);
+void *realloc(void *ptr, size_t size);
+void *calloc(size_t nmemb, size_t size);
+void free(void *ptr);
+void *malloc(size_t size);
+int fputc(int c, FILE* fp);
+double strtod(const char* nptr, char** endptr);
+unsigned long strtoul(const char* nptr, char** endptr, int base);
+long strtol(const char* nptr, char** endptr, int base);
+long long strtoll(const char* nptr, char** endptr, int base);
+long atol(const char* nptr);
+int atoi(const char* nptr);
+int strncasecmp(const char* a, const char* b, size_t n);
+time_t time(time_t* tloc);
+struct tm* localtime(const time_t* timep);
+char* ctime_r(const time_t* timep, char* buf);
+char* strerror(int errnum);
+int ispunct(int c);
+char *strtok(char *s, const char *delim);
+int isxdigit(int c);
 
-uniq void* sbrk(long incr) {
-    // まず、brk(0)を呼び出して現在のプログラムブレーク位置を取得
-    char* current_brk = (char*)brk(0);
-    if (current_brk == (char*)-1) {
-        return (void*)-1; // 失敗
-    }
+extern size_t linenumber;
 
-    // incrが0なら、現在のブレーク位置を返すだけ
-    if (incr == 0) {
-        return current_brk;
-    }
 
-    // 新しいブレーク位置を設定するようカーネルに要求
-    if (brk((long)(current_brk + incr)) == -1) {
-        return (void*)-1; // 失敗
-    }
+struct __minux_FILE;
+enum arg_kind {                                                                                                          
+    ARG_KIND_LIT = 1,                                                                                                    
+    ARG_KIND_FILE = 2,                                                                                                   
+    ARG_KIND_END = 3,                                                                                                    
+};                                                     
+struct arg_hdr {                                       
+    enum arg_kind kind;                                
+    const char *shortopts;                                                                                               
+    const char *longopts;                 
+    const char *datatype;                                                                                                
+    const char *glossary;                              
+    int mincount;                                                                                                        
+    int maxcount;                                                                                                        
+};                                                                                                                       
+struct arg_lit {                                                                                                         
+    struct arg_hdr hdr;      
+    int count;
+};                                                                                                                       
+struct arg_file {                                                                                                        
+    struct arg_hdr hdr;                                                                                                  
+    int count;                                                                                                           
+    const char **filename;                                                                                               
+};                                                     
+struct arg_error {                                     
+    const char *msg;                                                                                                     
+    const char *argval;                                                                                                  
+    const struct arg_hdr *hdr;                                                                                           
+};               
 
-    // 成功した場合、慣例に従い「以前の」ブレーク位置を返す
-    return current_brk;
-}
+struct arg_end {                                                                                                         
+    struct arg_hdr hdr;                                
+    int count;                                         
+    int maxerrors;                                    
+    struct arg_error *errors;
+};                  
+struct arg_lit *arg_litn(const char *shortopts, const char *longopts,                                                    
+                         int mincount, int maxcount, const char *glossary);                                              
+struct arg_file *arg_filen(const char *shortopts, const char *longopts,                                                  
+                           const char *datatype, int mincount, int maxcount,                                             
+                           const char *glossary);      
+struct arg_end *arg_end(int maxerrors);                
+int arg_parse(int argc, char **argv, void **argtable); 
+void arg_print_syntax(struct __minux_FILE *fp, void **argtable,                                                          
+                      const char *suffix);
+void arg_print_glossary(struct __minux_FILE *fp, void **argtable,                                                        
+                        const char *format);           
+void arg_print_errors(struct __minux_FILE *fp, struct arg_end *end,                                                      
+                      const char *progname);                                                                             
+void arg_freetable(void **argtable, size_t n); 
 
-// メモリブロックのヘッダ
-typedef struct header {
-    struct header *next; // 次の空きブロックへのポインタ
-    unsigned size;       // このブロックのサイズ (ヘッダ単位)
-} Header;
-
-uniq Header base;          // 空のリストの先頭
-uniq Header *freep = 0; // 空きリストの先頭
-
-// free関数（前方宣言）
-void free(void *ap);
-
-// sbrkを呼び出して、より多くのメモリをOSから取得する
-uniq Header *morecore(unsigned nunits) {
-    char *cp;
-    Header *up;
-
-    if (nunits < 4096)
-        nunits = 4096; // 最低でも4096単位を要求
+int sscanf(const char *str, const char *fmt, ...);
+char *dirname(const char *path);
+int fileno(FILE* fp);
     
-    cp = sbrk(nunits * sizeof(Header));
-    if (cp == (char *) -1) // メモリ不足
-        return (void*)0;
-        
-    up = (Header *) cp;
-    up->size = nunits;
-    free((void *)(up + 1)); // 取得した領域をfreeに渡して空きリストに繋げる
-    return freep;
-}
+int system(const char* command);
 
-// 汎用メモリアロケタ
-uniq void *malloc(unsigned nbytes) {
-    Header *p, *prevp;
-    unsigned nunits;
-
-    // 必要なヘッダ数を計算（ヘッダ自身を含む）
-    nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1;
-
-    if ((prevp = freep) == 0) { // 空きリストがまだない場合
-        base.next = freep = prevp = &base;
-        base.size = 0;
-    }
-
-    for (p = prevp->next; ; prevp = p, p = p->next) {
-        if (p->size >= nunits) { // 十分な大きさのブロックが見つかった
-            if (p->size == nunits) { // ちょうど同じサイズ
-                prevp->next = p->next;
-            } else { // 大きすぎるので、末尾を割り当てる
-                p->size -= nunits;
-                p += p->size;
-                p->size = nunits;
-            }
-            freep = prevp;
-            return (void *)(p + 1); // ヘッダの次のアドレスを返す
-        }
-        if (p == freep) { // 空きリストを一周した
-            if ((p = morecore(nunits)) == 0)
-                return (void*)0; // メモリ不足
-        }
-    }
-}
-
-// メモリブロックを空きリストに戻す
-uniq void free(void *ap) {
-    Header *bp, *p;
-
-    if(ap == 0) return;
-
-    bp = (Header *)ap - 1; // ブロックヘッダを指す
-
-    // 空きリストをスキャンして、bpを挿入する場所を見つける
-    for (p = freep; !(bp > p && bp < p->next); p = p->next)
-        if (p >= p->next && (bp > p || bp < p->next))
-            break; // リストの先頭か末尾に解放されたブロックがある
-
-    if (bp + bp->size == p->next) { // 上の隣接ブロックと結合
-        bp->size += p->next->size;
-        bp->next = p->next->next;
-    } else {
-        bp->next = p->next;
-    }
-    if (p + p->size == bp) { // 下の隣接ブロックと結合
-        p->size += bp->size;
-        p->next = bp->next;
-    } else {
-        p->next = bp;
-    }
-    freep = p;
-}
-   
-/*
-uniq void free(void* ap){
-    struct header* bp_11;
-    struct header* p_12;
-
-    if(ap == 0) {
-        return;
-    }
-
-    bp_11 = (struct header*)ap - 1;
-
-    // このforループが修正点
-    for(p_12 = freep; !(bp_11 > p_12 && bp_11 < p_12->next); p_12 = p_12->next){
-        // p_12 >= p_12->next はリストの末尾（先頭に戻る場所）を示唆する。
-        // (bp_11 > p_12 || bp_11 < p_12->next) は、
-        // 新しいブロックがリストの末尾より大きいか、先頭より小さいことを意味する。
-        if(p_12 >= p_12->next && (bp_11 > p_12 || bp_11 < p_12->next)) {
-            break; // ループを抜けて正しい場所に挿入する
-        }
-    }
-
-    // --- 以下、元のコードと同じ ---
-    if(bp_11 + bp_11->size == p_12->next) { // 後ろと結合
-        bp_11->size += p_12->next->size;
-        bp_11->next = p_12->next->next;
-    } else {
-        bp_11->next = p_12->next;
-    }
-
-    if(p_12 + p_12->size == bp_11) { // 前と結合
-        p_12->size += bp_11->size;
-        p_12->next = bp_11->next;
-    } else {
-        p_12->next = bp_11;
-    }
-
-    freep = p_12;
-}
-*/
-
-uniq void *calloc(size_t nmemb, size_t size) {
-    size_t total_size = nmemb * size;
-    if (total_size == 0) {
-        return NULL;
-    }
-
-    void *ptr = malloc(total_size);
-    if (ptr != NULL) {
-        memset(ptr, 0, total_size);
-    }
-    return ptr;
-}
-
-uniq char* strdup(const char* s) {
-    char* s2 = s;
-    size_t len = strlen(s2) + 1;
-    char* p = malloc(len);
-    if (p)
-        memcpy(p, s2, len);
-    return p;
-}
-
-uniq int strcmp(const char* s1, const char* s2) {
-    while (*s1 && (*s1 == *s2)) {
-        s1++;
-        s2++;
-    }
-    return (unsigned char)*s1 - (unsigned char)*s2;
-}
-                            
-uniq char* strstr(const char* haystack, const char* needle) {
-    if (!*needle)
-        return (char*)haystack;
-
-    for (; *haystack; haystack++) {
-        const char* h = haystack;
-        const char* n = needle;
-
-        while (*h && *n && (*h == *n)) {
-            h++;
-            n++;
-        }
-
-        if (!*n)  // needle 
-            return (char*)haystack;
-    }
-
-    return NULL;  
-}
-
-uniq void* memset(void *dst, int c, unsigned int n) {
-    char *cdst = (char *) dst;
-    int i;
-    for(i = 0; i < n; i++){
-        cdst[i] = c;
-    }
-    return dst;
-}
-
-uniq int memcmp(const void *v1, const void *v2, unsigned int n) {
-    const unsigned char *s1, *s2;
-
-    s1 = v1;
-    s2 = v2;
-    while(n-- > 0){
-        if(*s1 != *s2)
-            return *s1 - *s2;
-        s1++, s2++;
-    }
-
-    return 0;
-}
-
-uniq void* memmove(void *dst, const void *src, unsigned int n) {
-  const char *s;
-  char *d;
-
-  if(n == 0)
-    return dst;
-  
-  s = src;
-  d = dst;
-  if(s < d && s + n > d){
-    s += n;
-    d += n;
-    while(n-- > 0)
-      *--d = *--s;
-  } else
-    while(n-- > 0) {
-      *d++ = *s++;
-    }
-
-  return dst;
-}
-
-uniq void* memcpy(void *dst, const void *src, unsigned int n) {
-  return memmove(dst, src, n);
-}
-
-uniq int strncmp(const char *p, const char *q, unsigned int n) {
-  while(n > 0 && *p && *p == *q)
-    n--, p++, q++;
-  if(n == 0)
-    return 0;
-  return (unsigned char)*p - (unsigned char)*q;
-}
-
-uniq char* strncpy(char *s, const char *t, int n) {
-  char *os;
-
-  os = s;
-  while(n-- > 0 && (*s++ = *t++) != 0)
-    ;
-  while(n-- > 0)
-    *s++ = 0;
-  return os;
-}
-
-uniq int strlen(const char *s) {
-  int n;
-
-  for(n = 0; s[n]; n++)
-    ;
-  return n;
-}
-
-uniq void puts(const char *s) {
-    while (*s) {
-        putchar(*s++);
-    }
-}
-
-uniq char* strncat(char* dest, const char* src, size_t n) {
-    char* d = dest;
-
-    // dest 
-    while (*d) d++;
-
-    //  n  src null 
-    while (n-- && *src) {
-        *d++ = *src++;
-    }
-
-    *d = '\0';
-
-    return dest;
-}
-
-
-// 自前実装の strtok
-// s が NULL でなければ、s の先頭から検索を始める。
-// s が NULL の場合は、前回の呼び出し時の位置から続きのトークンを返す。
-// delim に含まれるいずれかの文字で文字列を区切り、次のトークンを返す。
-// トークンがなくなったら NULL を返す。
-uniq char *strtok(char *s, const char *delim) {
-    static char *next;    // 次のトークン探索開始位置を保持
-    char *start;
-    char *p;
-
-    // 呼び出し時に s が非 NULL なら、new string の検索を開始
-    if (s != NULL) {
-        next = s;
-    }
-
-    // 直前で末尾に達していれば NULL を返す
-    if (next == NULL) {
-        return NULL;
-    }
-
-    // 1) 先頭の区切り文字をスキップ
-    start = next;
-    while (*start != '\0') {
-        // delim に含まれるかどうか調べる
-        const char *d = delim;
-        int is_delim = 0;
-        while (*d != '\0') {
-            if (*start == *d) {
-                is_delim = 1;
-                break;
-            }
-            d++;
-        }
-        if (!is_delim) {
-            break;
-        }
-        start++;
-    }
-
-    // 終端まで区切り文字しかなかった → もうトークンはない
-    if (*start == '\0') {
-        next = NULL;
-        return NULL;
-    }
-
-    // 2) トークンの終端を見つける
-    p = start;
-    while (*p != '\0') {
-        const char *d = delim;
-        int is_delim = 0;
-        while (*d != '\0') {
-            if (*p == *d) {
-                is_delim = 1;
-                break;
-            }
-            d++;
-        }
-        if (is_delim) {
-            break;
-        }
-        p++;
-    }
-
-    // 3) トークン終端を '\0' に置き換え、next を次回呼び出し用にセット
-    if (*p == '\0') {
-        // 文字列の末尾に達したので、次回以降 s=NULL にして呼べば再び NULL が返る
-        next = NULL;
-    } else {
-        // 区切り文字を '\0' に置し、次の検索開始位置を p+1 にする
-        *p = '\0';
-        next = p + 1;
-    }
-
-    // トークンの先頭を返す
-    return start;
-}
-
-uniq char* itoa(char* buf, unsigned long val_, int base, int is_signed) {
-    char* p = buf;
-    char tmp[32];
-    int i = 0;
-    int negative = 0;
-
-    if (base < 2 || base > 16) {
-        *p = '\0';
-        return p;
-    }
-
-    if (is_signed && (long)val_ < 0) {
-        negative = 1;
-        val_ = (unsigned long)(-(long)val_);
-    }
-
-    do {
-        int digit = val_ % base;
-        tmp[i++] = (digit < 10) ? '0' + digit : 'a' + digit - 10;
-        val_ /= base;
-    } while (val_);
-
-    if (negative)
-        *p++ = '-';
-
-    while (i--)
-        *p++ = tmp[i];
-    *p = '\0';
-    return buf;
-}
-
-uniq int vasprintf(char** out, const char* fmt, va_list ap) {
-    char out2[512];
-    char* p = out2;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = sizeof(out2);
-
-    for (; *fmt && remaining > 1; fmt++) {
-        if (*fmt != '%') {
-            *p++ = *fmt;
-            remaining--;
-            continue;
-        }
-
-        fmt++;  // skip '%'
-        switch (*fmt) {
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 1);
-            s = buf;
-            break;
-        case 'u':
-            itoa(buf, va_arg(ap, unsigned int), 10, 0);
-            s = buf;
-            break;
-        case 'x':
-            itoa(buf, va_arg(ap, unsigned int), 16, 0);
-            s = buf;
-            break;
-        case 's':
-            s = va_arg(ap, const char*);
-            if (!s) s = "(null)";
-            break;
-        case 'c':
-            buf[0] = (char)va_arg(ap, int);  
-            buf[1] = '\0';
-            s = buf;
-            break;
-        case 'p':
-            strncpy(buf, "0x", 32);
-            itoa(buf + 2, (unsigned long)(uintptr_t)va_arg(ap, void*), 16, 0);
-            s = buf;
-            break;
-        case '%':
-            buf[0] = '%';
-            buf[1] = '\0';
-            s = buf;
-            break;
-        default:
-            buf[0] = '%';
-            buf[1] = *fmt;
-            buf[2] = '\0';
-            s = buf;
-            break;
-        }
-
-        while (*s && remaining > 1) {
-            *p++ = *s++;
-            remaining--;
-        }
-    }
-
-    *p = '\0';
-    *out = strdup(out2);
-    return p - out2;
-}
-
-uniq int snprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
-
-    char* p = out;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = out_size;
-
-    if (remaining == 0) {
-        va_end(ap);
-        return 0;
-    }
-
-    for (; *fmt; fmt++) {
-        if (*fmt != '%') {
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining--;
-            }
-            continue;
-        }
-
-        fmt++;
-        switch (*fmt) {
-        case 's':
-            s = va_arg(ap, const char*);
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 0);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'c':
-            if (remaining > 1) {
-                *p++ = (char)va_arg(ap, int);
-                remaining--;
-            }
-            break;
-        case 'p':
-            s = "0x";
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            itoa(buf, (long)va_arg(ap, void*), 16, 1);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'l':
-            if (*(fmt + 1) == 'u') {
-                fmt++;
-                itoa(buf, va_arg(ap, long), 10, 1);
-                s = buf;
-                while (*s && remaining > 1) {
-                    *p++ = *s++;
-                    remaining--;
-                }
-            }
-            break;
-        default:
-            if (remaining > 1) {
-                *p++ = '%';
-                remaining--;
-                if (remaining > 1) {
-                    *p++ = *fmt;
-                    remaining--;
-                }
-            }
-            break;
-        }
-    }
-
-    *p = '\0';
-    va_end(ap);
-    return p - out;
-}
-
-uniq int vsnprintf(char* out, unsigned long out_size, const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
-
-    char* p = out;
-    const char* s;
-    char buf[32];
-    unsigned long remaining = out_size;
-
-    if (remaining == 0) {
-        va_end(ap);
-        return 0;
-    }
-
-    for (; *fmt; fmt++) {
-        if (*fmt != '%') {
-            if (remaining > 1) {
-                *p++ = *fmt;
-                remaining--;
-            }
-            continue;
-        }
-
-        fmt++;
-        switch (*fmt) {
-        case 's':
-            s = va_arg(ap, const char*);
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'd':
-            itoa(buf, va_arg(ap, int), 10, 0);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'x':
-            itoa(buf, (unsigned int)va_arg(ap, int), 16, 1);  
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'c':
-            if (remaining > 1) {
-                *p++ = (char)va_arg(ap, int);
-                remaining--;
-            }
-            break;
-        case 'p':
-            s = "0x";
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            itoa(buf, (long)va_arg(ap, void*), 16, 1);
-            s = buf;
-            while (*s && remaining > 1) {
-                *p++ = *s++;
-                remaining--;
-            }
-            break;
-        case 'l':
-            if (*(fmt + 1) == 'u') {
-                fmt++;
-                itoa(buf, va_arg(ap, long), 10, 1);
-                s = buf;
-                while (*s && remaining > 1) {
-                    *p++ = *s++;
-                    remaining--;
-                }
-            }
-            break;
-        default:
-            if (remaining > 1) {
-                *p++ = '%';
-                remaining--;
-                if (remaining > 1) {
-                    *p++ = *fmt;
-                    remaining--;
-                }
-            }
-            break;
-        }
-    }
-
-    *p = '\0';
-    va_end(ap);
-    return p - out;
-}
-
-uniq void putchar(char c)
-{
-    write(1, &c, 1);
-}
-
-uniq void printint(int val_, int base, int sign) {
-    char buf[33];  
-    int i = 0;
-    int negative = 0;
-    unsigned int uval;
-
-    if (sign && val_ < 0) {
-        negative = 1;
-        uval = -val_;
-    } else {
-        uval = (unsigned int)val_;
-    }
-
-    if (uval == 0) {
-        putchar('0');
-        return;
-    }
-
-    while (uval > 0) {
-        int digit = uval % base;
-        buf[i++] = digit < 10 ? '0' + digit : 'a' + (digit - 10);
-        uval /= base;
-    }
-
-    if (negative) {
-        putchar('-');
-    }
-
-    while (--i >= 0) {
-        putchar(buf[i]);
-    }
-}
-
-uniq void printlong(unsigned long val_, int base, int sign)  {
-    char buf[65];  
-    int i = 0;
-    int negative = 0;
-
-    if (sign && (long)val_ < 0) {
-        negative = 1;
-        val_ = -(long)val_;
-    }
-
-    if (val_ == 0) {
-        putchar('0');
-        return;
-    }
-
-    while (val_ > 0) {
-        int digit = val_ % base;
-        buf[i++] = digit < 10 ? '0' + digit : 'a' + (digit - 10);
-        val_ /= base;
-    }
-
-    if (negative) {
-        putchar('-');
-    }
-
-    while (--i >= 0) {
-        putchar(buf[i]);
-    }
-}
-
-uniq void printlonglong(unsigned long long val_, int base, int sign)  {
-    char buf[65];
-    int i = 0;
-    int negative = 0;
-
-    if (sign && (long long)val_ < 0) {
-        negative = 1;
-        val_ = -(long long)val_;
-    }
-
-    if (val_ == 0) {
-        putchar('0');
-        return;
-    }
-
-    while (val_ > 0) {
-        int digit = val_ % base;
-        buf[i++] = digit < 10 ? '0' + digit : 'a' + (digit - 10);
-        val_ /= base;
-    }
-
-    if (negative) {
-        putchar('-');
-    }
-
-    while (--i >= 0) {
-        putchar(buf[i]);
-    }
-}
-
-uniq int printf(const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
-
-    const char* p;
-    for (p = fmt; *p; p++) {
-        if (*p != '%') {
-            putchar(*p);
-            continue;
-        }
-
-        p++; 
-
-        if (*p == 'l') {
-            int lcount = 1;
-            if (*(p+1) == 'l') {
-                lcount = 2;
-                p++;
-            }
-            p++;
-
-            switch (*p) {
-                case 'x': {
-                    if (lcount == 1) {
-                        unsigned long val_ = va_arg(ap, unsigned long);
-                        printlong(val_, 16, 0);
-                    } else {
-                        unsigned long long val_ = va_arg(ap, unsigned long long);
-                        printlonglong(val_, 16, 0);
-                    }
-                    break;
-                }
-                case 'd': {
-                    if (lcount == 1) {
-                        long val_ = va_arg(ap, long);
-                        printlong(val_, 10, 1);
-                    } else {
-                        long long val_ = va_arg(ap, long long);
-                        printlonglong(val_, 10, 1);
-                    }
-                    break;
-                }
-                default: {
-                    putchar('%');
-                    for (int i=0; i<lcount; i++) putchar('l');
-                    putchar(*p);
-                    break;
-                }
-            }
-        } else {
-            switch (*p) {
-                case 'd': {
-                    int val_ = va_arg(ap, int);
-                    printint(val_, 10, 1);
-                    break;
-                }
-                case 'x': {
-                    unsigned int val_ = va_arg(ap, unsigned int);
-                    printint(val_, 16, 0);
-                    break;
-                }
-                case 'p': {
-                    unsigned long val_ = (unsigned long)va_arg(ap, void*);
-                    putchar('0'); putchar('x');
-                    printlong(val_, 16, 0);
-                    break;
-                }
-                case 's': {
-                    const char* s = va_arg(ap, const char*);
-                    if (!s) s = "(null)";
-                    while (*s) putchar(*s++);
-                    break;
-                }
-                case 'c': {
-                    char c = (char)va_arg(ap, int);
-                    putchar(c);
-                    break;
-                }
-                case '%': {
-                    putchar('%');
-                    break;
-                }
-                default: {
-                    putchar('%');
-                    putchar(*p);
-                    break;
-                }
-            }
-        }
-    }
-
-    va_end(ap);
-    return 0;
-}
+#define BUFSIZ 128
 
 #endif
