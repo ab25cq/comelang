@@ -204,7 +204,7 @@ record uniq bool die(char* msg)
 #else
 uniq bool die(char* msg)
 {
-    perror(msg);
+    puts(msg);
     //stackframe();
     exit(4);
     
