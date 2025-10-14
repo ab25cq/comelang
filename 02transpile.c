@@ -70,6 +70,7 @@ void transpile_conditional_with_free_right_object_value(CVALUE*% conditional_val
     }
 }
 
+#ifndef __MINUX__
 static void clear_tmp_file(sInfo* info)
 {
     string input_file_name = info.sname;
@@ -96,6 +97,19 @@ static void clear_tmp_file_without_object_file_and_ccfile(sInfo* info)
         (void)system(xsprintf("%s %s.i* %s.c.out", RM, input_file_name, input_file_name));
     }
 }
+#else
+static void clear_tmp_file(sInfo* info)
+{
+}
+
+static void clear_tmp_file_without_object_file(sInfo* info)
+{
+}
+
+static void clear_tmp_file_without_object_file_and_ccfile(sInfo* info)
+{
+}
+#endif
 
 static bool cpp(sInfo* info)
 {
@@ -474,6 +488,7 @@ static bool linker(sInfo* info, list<string>* object_files)
     return true;
 }
 
+#ifndef __MINUX__
 bool new_project(int argc, char** argv)
 {
     string project_name = string(argv[2]);
@@ -688,6 +703,7 @@ bool install_project(int argc, char** argv, char* prefix="/usr/local")
     
     return true;
 }
+#endif
 
 static void init_classes(sInfo* info)
 {
@@ -713,6 +729,7 @@ static void init_classes(sInfo* info)
         info.classes.insert(generics_type, new sClass(generics_type, method_generics:true, method_generics_num:i));
     }
     
+#ifndef __MINUX__
     int is_mac = system("uname -a | grep Darwin 1> /dev/null 2>/dev/null") == 0;
     if(is_mac) {
         info.classes.insert(string("__builtin_va_list"), new sClass(s"__builtin_va_list", number:true));
@@ -735,6 +752,17 @@ static void init_classes(sInfo* info)
         
         info.classes.insert(string("__builtin_va_list"), klass);
     }
+#else
+    sClass*% klass = new sClass(s"__builtin_va_list", struct_:true);
+    
+    klass.mFields.push_back((string("v1"), new sType(s"char*")));
+    klass.mFields.push_back((string("v2"), new sType(s"char*")));
+    klass.mFields.push_back((string("v3"), new sType(s"char*")));
+    klass.mFields.push_back((string("v4"), new sType(s"int")));
+    klass.mFields.push_back((string("v5"), new sType(s"int")));
+    
+    info.classes.insert(string("__builtin_va_list"), klass);
+#endif
 }
 
 void create_pico_version_header()
@@ -1033,6 +1061,7 @@ module MEvalOptions<T, T2>
 
 int come_main(int argc, char** argv)
 {
+#ifndef __MINUX__
     if(argv[1] === "header" && argc >= 3) {
         int start_num = 2;
         string output_file_name_str = s"common.h";
@@ -1163,6 +1192,7 @@ int come_main(int argc, char** argv)
         }
     }
     else {
+#endif
         int start_num = 1;
         string output_file_name_str = null;
         include MEvalOptions<start_num, output_file_name_str>;
@@ -1292,7 +1322,9 @@ int come_main(int argc, char** argv)
                 clear_tmp_file(&info);
             }
         }
+#ifndef __MINUX__
     }
+#endif
     
     return 0;
 }
