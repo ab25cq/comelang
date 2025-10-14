@@ -2605,13 +2605,13 @@ memset(&args, 0, sizeof(va_list));
         info->err_num++;
         free(msg2);
         printf(((char*)(__right_value4=string_operator_add(((char*)(__right_value3=buffer_to_string(buf))),"\n"))));
-        (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__right_value3 = come_decrement_ref_count(__right_value3, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__right_value4 = come_decrement_ref_count(__right_value4, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value3 = come_decrement_ref_count(__right_value3, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value4 = come_decrement_ref_count(__right_value4, (void*)0, (void*)0, 1, 0, (void*)0));
         __result_obj__1 = 0;
-        come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         return __result_obj__1;
-        come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+        come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
     }
     return 0;
 }
@@ -2661,36 +2661,36 @@ char* __result_obj__12;
         info->p++;
     }
     skip_spaces_and_lf(info);
-    if(({    (_condtional_value_X12=(string_length(((char*)(__right_value7=buffer_to_string(buf))))==0));    (__right_value7 = come_decrement_ref_count(__right_value7, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+    if(({    (_condtional_value_X12=(string_length(((char*)(__right_value7=buffer_to_string(buf))))==0));    (__right_value7 = come_decrement_ref_count(__right_value7, (void*)0, (void*)0, 1, 0, (void*)0));
     _condtional_value_X12;    })) {
         err_msg(info,"unexpected character(%c), expected word character, caller %s %d",*info->p,info->caller_sname,info->caller_line);
         __result_obj__2 = (char*)come_increment_ref_count(((char*)(__right_value8=__builtin_string(""))));
-        come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-        (__right_value8 = come_decrement_ref_count(__right_value8, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__result_obj__2 = come_decrement_ref_count(__result_obj__2, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+        come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+        (__right_value8 = come_decrement_ref_count(__right_value8, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__result_obj__2 = come_decrement_ref_count(__result_obj__2, (void*)0, (void*)0, 0, 1, (void*)0));
         return __result_obj__2;
     }
     result=(char*)come_increment_ref_count(buffer_to_string(buf));
     if(({    (_condtional_value_X13=(info->module_params));    _condtional_value_X13;    })) {
-        if(({        (_condtional_value_X24=(((char*)(__right_value12=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value11=__builtin_string(result))))))));        (__right_value10 = come_decrement_ref_count(__right_value10, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__right_value11 = come_decrement_ref_count(__right_value11, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-        (__right_value12 = come_decrement_ref_count(__right_value12, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
+        if(({        (_condtional_value_X24=(((char*)(__right_value12=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value11=__builtin_string(result))))))));        (__right_value10 = come_decrement_ref_count(__right_value10, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value11 = come_decrement_ref_count(__right_value11, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value12 = come_decrement_ref_count(__right_value12, (void*)0, (void*)0, 1, 0, (void*)0));
         _condtional_value_X24;        })) {
             __result_obj__11 = (char*)come_increment_ref_count(((char*)(__right_value16=__builtin_string(((char*)(__right_value15=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value14=__builtin_string(result))))))))));
-            come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-            (result = come_decrement_ref_count(result, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-            (__right_value13 = come_decrement_ref_count(__right_value13, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            (__right_value14 = come_decrement_ref_count(__right_value14, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            (__right_value15 = come_decrement_ref_count(__right_value15, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            (__right_value16 = come_decrement_ref_count(__right_value16, (void*)0, (void*)0, 1/* no_decrement*/, 0/* no_free*/, (void*)0));
-            (__result_obj__11 = come_decrement_ref_count(__result_obj__11, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+            come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+            (result = come_decrement_ref_count(result, (void*)0, (void*)0, 0, 0, (void*)0));
+            (__right_value13 = come_decrement_ref_count(__right_value13, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__right_value14 = come_decrement_ref_count(__right_value14, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__right_value15 = come_decrement_ref_count(__right_value15, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__right_value16 = come_decrement_ref_count(__right_value16, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__result_obj__11 = come_decrement_ref_count(__result_obj__11, (void*)0, (void*)0, 0, 1, (void*)0));
             return __result_obj__11;
         }
     }
     __result_obj__12 = (char*)come_increment_ref_count(result);
-    come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
-    (result = come_decrement_ref_count(result, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-    (__result_obj__12 = come_decrement_ref_count(__result_obj__12, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+    come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
+    (result = come_decrement_ref_count(result, (void*)0, (void*)0, 0, 1, (void*)0));
+    (__result_obj__12 = come_decrement_ref_count(__result_obj__12, (void*)0, (void*)0, 0, 1, (void*)0));
     return __result_obj__12;
 }
 
@@ -2715,8 +2715,8 @@ default_value = (void*)0;
         if(({        (_condtional_value_X15=(self->item_existance[it]));        _condtional_value_X15;        })) {
             if(({            (_condtional_value_X16=(string_equals(self->keys[it],key)));            _condtional_value_X16;            })) {
                 __result_obj__3 = (char*)come_increment_ref_count(self->items[it]);
-                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-                (__result_obj__3 = come_decrement_ref_count(__result_obj__3, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 0, (void*)0));
+                (__result_obj__3 = come_decrement_ref_count(__result_obj__3, (void*)0, (void*)0, 0, 1, (void*)0));
                 return __result_obj__3;
             }
             it++;
@@ -2725,21 +2725,21 @@ default_value = (void*)0;
             }
             else if(({            (_condtional_value_X18=(it==hash));            _condtional_value_X18;            })) {
                 __result_obj__4 = (char*)come_increment_ref_count(default_value);
-                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-                (__result_obj__4 = come_decrement_ref_count(__result_obj__4, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 1, (void*)0));
+                (__result_obj__4 = come_decrement_ref_count(__result_obj__4, (void*)0, (void*)0, 0, 1, (void*)0));
                 return __result_obj__4;
             }
         }
         else {
             __result_obj__5 = (char*)come_increment_ref_count(default_value);
-            (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-            (__result_obj__5 = come_decrement_ref_count(__result_obj__5, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+            (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 1, (void*)0));
+            (__result_obj__5 = come_decrement_ref_count(__result_obj__5, (void*)0, (void*)0, 0, 1, (void*)0));
             return __result_obj__5;
         }
     }
     __result_obj__6 = (char*)come_increment_ref_count(default_value);
-    (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-    (__result_obj__6 = come_decrement_ref_count(__result_obj__6, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+    (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 1, (void*)0));
+    (__result_obj__6 = come_decrement_ref_count(__result_obj__6, (void*)0, (void*)0, 0, 1, (void*)0));
     return __result_obj__6;
 }
 
@@ -2764,8 +2764,8 @@ default_value = (void*)0;
         if(({        (_condtional_value_X20=(self->item_existance[it]));        _condtional_value_X20;        })) {
             if(({            (_condtional_value_X21=(string_equals(self->keys[it],key)));            _condtional_value_X21;            })) {
                 __result_obj__7 = (char*)come_increment_ref_count(self->items[it]);
-                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 0/* no_free*/, (void*)0));
-                (__result_obj__7 = come_decrement_ref_count(__result_obj__7, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 0, (void*)0));
+                (__result_obj__7 = come_decrement_ref_count(__result_obj__7, (void*)0, (void*)0, 0, 1, (void*)0));
                 return __result_obj__7;
             }
             it++;
@@ -2774,21 +2774,21 @@ default_value = (void*)0;
             }
             else if(({            (_condtional_value_X23=(it==hash));            _condtional_value_X23;            })) {
                 __result_obj__8 = (char*)come_increment_ref_count(default_value);
-                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-                (__result_obj__8 = come_decrement_ref_count(__result_obj__8, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+                (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 1, (void*)0));
+                (__result_obj__8 = come_decrement_ref_count(__result_obj__8, (void*)0, (void*)0, 0, 1, (void*)0));
                 return __result_obj__8;
             }
         }
         else {
             __result_obj__9 = (char*)come_increment_ref_count(default_value);
-            (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-            (__result_obj__9 = come_decrement_ref_count(__result_obj__9, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+            (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 1, (void*)0));
+            (__result_obj__9 = come_decrement_ref_count(__result_obj__9, (void*)0, (void*)0, 0, 1, (void*)0));
             return __result_obj__9;
         }
     }
     __result_obj__10 = (char*)come_increment_ref_count(default_value);
-    (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-    (__result_obj__10 = come_decrement_ref_count(__result_obj__10, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+    (default_value = come_decrement_ref_count(default_value, (void*)0, (void*)0, 0, 1, (void*)0));
+    (__result_obj__10 = come_decrement_ref_count(__result_obj__10, (void*)0, (void*)0, 0, 1, (void*)0));
     return __result_obj__10;
 }
 
@@ -2808,18 +2808,18 @@ buf = (void*)0;
     if(({    (_condtional_value_X25=(xisalpha(*info->p)||*info->p==95));    _condtional_value_X25;    })) {
         __dec_obj1=buf,
         buf=(char*)come_increment_ref_count(parse_word(info));
-        __dec_obj1 = come_decrement_ref_count(__dec_obj1, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+        __dec_obj1 = come_decrement_ref_count(__dec_obj1, (void*)0, (void*)0, 0,0, (void*)0);
     }
     else {
         __dec_obj2=buf,
         buf=(char*)come_increment_ref_count(__builtin_string(""));
-        __dec_obj2 = come_decrement_ref_count(__dec_obj2, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+        __dec_obj2 = come_decrement_ref_count(__dec_obj2, (void*)0, (void*)0, 0,0, (void*)0);
     }
     info->p=p;
     info->sline=sline;
     __result_obj__13 = (char*)come_increment_ref_count(buf);
-    (buf = come_decrement_ref_count(buf, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
-    (__result_obj__13 = come_decrement_ref_count(__result_obj__13, (void*)0, (void*)0, 0/* no_decrement*/, 1/* no_free*/, (void*)0));
+    (buf = come_decrement_ref_count(buf, (void*)0, (void*)0, 0, 1, (void*)0));
+    (__result_obj__13 = come_decrement_ref_count(__result_obj__13, (void*)0, (void*)0, 0, 1, (void*)0));
     return __result_obj__13;
 }
 
@@ -2930,9 +2930,9 @@ _Bool _condtional_value_X55;
                 info->sline=line;
                 __dec_obj3=info->sname,
                 info->sname=(char*)come_increment_ref_count(buffer_to_string(fname));
-                __dec_obj3 = come_decrement_ref_count(__dec_obj3, (void*)0, (void*)0, 0/* no_decrement */,0/* no_free */, (void*)0);
+                __dec_obj3 = come_decrement_ref_count(__dec_obj3, (void*)0, (void*)0, 0,0, (void*)0);
                 skip_spaces_and_lf2(info);
-                come_call_finalizer(buffer_finalize, fname, (void*)0, (void*)0, 0/* alloca value */, 0/* no_decrement */, 0/* no_free */, (void*)0);
+                come_call_finalizer(buffer_finalize, fname, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             }
             else if(({            (_condtional_value_X42=(*info->p==34));            _condtional_value_X42;            })) {
                 info->p++;

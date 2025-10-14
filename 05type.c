@@ -686,7 +686,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
                 }
             }
             else {
-                string tmp = xsprintf("/*a*/(void*)%s", come_value.c_value);
+                string tmp = xsprintf("(void*)%s", come_value.c_value);
                 come_value.c_value = clone tmp;
                 come_value.type = clone left_type2;
                 come_value.var = null;
@@ -742,7 +742,7 @@ bool check_assign_type(char* msg, sType* left_type, sType* right_type, CVALUE* c
             return false;
         }
         else if(left_type2->mPointerNum > 0 && !(right_type2->mClass->mName === "lambda" && left_type2->mClass->mName === "lambda") && right_type2->mPointerNum == 0) {
-            string tmp = xsprintf("/*b*/(void*)%s", come_value.c_value);
+            string tmp = xsprintf("(void*)%s", come_value.c_value);
             come_value.c_value = clone tmp;
             come_value.type = clone left_type2;
             return true;
