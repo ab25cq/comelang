@@ -376,4 +376,6 @@ int system(const char* command);
 
 #define BUFSIZ 128
 
+void exit(int status);
+
 #endif
