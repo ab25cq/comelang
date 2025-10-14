@@ -739,6 +739,7 @@ static void init_classes(sInfo* info)
 
 void create_pico_version_header()
 {
+#ifndef __MINUX__
     if(getenv("PICO_SDK_PATH")) {
         (getenv("PICO_SDK_PATH") + "/pico_sdk_version.cmake").read().if {
             int version_major = 0;
@@ -798,6 +799,7 @@ void create_pico_version_header()
     }
     (void)system("touch pico_config_extra_headers.h");
     (void)system("touch pico_config_platform_headers.h");
+#endif
 }
 
 module MEvalOptions<T, T2>
@@ -864,6 +866,7 @@ module MEvalOptions<T, T2>
             cpp_option.append_format(s" -D__BARE_METAL__ ");
             clang_option.append_str(s" -nostdlib -ffreestanding ");
         }
+#ifndef __MINUX__
         else if(argv[i] === "-pico") {
             output_source_file_flag = true;
             output_object_file_flag = false;
@@ -874,12 +877,14 @@ module MEvalOptions<T, T2>
             create_pico_version_header();
             pico_cpp = true;
         }
+#endif
         else if(argv[i] === "-emb") {
             output_source_file_flag = true;
             output_object_file_flag = false;
             gComeOriginalSourcePosition = false;
             emb_cpp = true;
         }
+#ifndef __MINUX__
         else if(argv[i] === "-m5stack") {
             m5stack_cpp = true;
             output_source_file_flag = true;
@@ -889,6 +894,7 @@ module MEvalOptions<T, T2>
             cpp_option = new buffer();
             cpp_option.append_format(s" -I\{getenv("HOME")}/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/xtensa-esp-elf/include -I\{env}/components/freertos/include -I\{env}/components/esp32/include -I\{env}/components/driver/include -I\{env}/components/lwip/include -I\{env}/components/freertos/FreeRTOS-Kernel/include -I\{env}/components/freertos/config/include/freertos -I\{env}/components/freertos/config/xtensa/include -I\{env}/components/xtensa/include -I\{env}/components/xtensa/esp32/include -I\{env}/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I\{env}/components/esp_hw_support/include -I\{env}/components/soc/esp32/include/ -I\{env}/components/esp_common/include/components $(find \{env}/components -type d -name include | grep esp_ | sed 's/^/ -I/g') -I\{env}/components/esp_common/include/ -I\{env}/components/soc/esp32/register/soc/ -I\{env}/components/soc/esp32/register -I\{env}/components/heap/include -I\{env}/components/hal/include -I\{env}/components/newlib/platform_include -D__M5STACK__", PREFIX);
         }
+#endif
         else if(i + 1 < argc && argv[i] === "-target") {
             clang_option.append_str(s"-target \{argv[i+1]}");
             i++;
