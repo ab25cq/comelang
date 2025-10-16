@@ -1097,11 +1097,8 @@ uniq int char*::index_regex_count(char* self, come_regex* reg, int count, int de
     return result;
 }
 
-/*
 uniq int char*::rindex(char* str, char* search_str, int default_value)
 {
-    using unsafe;
-    
     int len = strlen(search_str);
     char* p = str + strlen(str) - len;
 
@@ -1118,45 +1115,33 @@ uniq int char*::rindex(char* str, char* search_str, int default_value)
 
 uniq int char*::rindex_regex(char* self, come_regex* reg, int default_value)
 {
-    if(reg == null || reg.re == null) {
+    if(reg == null || reg.str == null) {
         return default_value;
     }
     
-    const char* err;
-    int erro_ofs;
-
-    int options = reg.options;
-    char* str = reg.str;
-
-    pcre* re = reg.re;
-
-    string self2 = self.reverse();
+    re_t re = re_compile(reg.str);
     
-    int ovec_max = 16;
-    int start[ovec_max];
-    int end[ovec_max];
-    int ovec_value[ovec_max * 3];
-
     int result = default_value;
     
     int offset = 0;
 
-    while(true) {
-        int options = PCRE_NEWLINE_LF;
-        int len = strlen(self2);
-        int regex_result = pcre_exec(re, (pcre_extra*)0, self2, len, offset, options, ovec_value, ovec_max*3);
+    int n = 0;
+    
+    string self2 = self.reverse();
 
-        for(int i=0; i<ovec_max; i++) {
-            start[i] = ovec_value[i*2];
-        }
-        for(int i=0; i<ovec_max; i++) {
-            end[i] = ovec_value[i*2+1];
-        }
+    int result = default_value;
+    int offset = 0;
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self2 + offset, &matchlength, captures, max_captures);
 
         /// match and no group strings ///
-        if(regex_result == 1 || regex_result > 0) 
+        if(regex_result >= 0) 
         {
-            result = strlen(self) -1 - start[0];
+            result = strlen(self) -matchlength - offset;
             break;
         }
         /// no match ///
@@ -1191,6 +1176,7 @@ uniq int char*::rindex_count(char* str, char* search_str, int count, int default
     return default_value;
 }
 
+/*
 uniq list<string>*% char*::scan_block(char* self, come_regex* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
 {
     if(reg == null || reg.re == null) {
