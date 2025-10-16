@@ -23,6 +23,7 @@
  *   '\W'       Non-alphanumeric
  *   '\d'       Digits, [0-9]
  *   '\D'       Non-digits
+ *   '()'       Grouping, allowing quantifiers on sub-expressions and capturing
  *
  *
  */
@@ -43,7 +44,15 @@ extern "C"{
 
 
 /* Typedef'd pointer to get abstract datatype. */
-typedef struct regex_t* re_t;
+struct re_program;
+typedef struct re_program* re_t;
+
+
+typedef struct re_capture
+{
+  int start;
+  int length;
+} re_capture;
 
 
 /* Compile regex string pattern to a regex_t-array. */
@@ -51,11 +60,15 @@ re_t re_compile(const char* pattern);
 
 
 /* Find matches of the compiled pattern inside text. */
-int re_matchp(re_t pattern, const char* text, int* matchlength);
+int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures);
 
 
 /* Find matches of the txt pattern inside text (will compile automatically first). */
 int re_match(const char* pattern, const char* text, int* matchlength);
+
+
+/* Debug helper to inspect compiled patterns (unstable API). */
+void re_print(re_t pattern);
 
 
 #ifdef __cplusplus

@@ -36,13 +36,20 @@ The main design goal of this library is to be small, correct, self contained and
 This is the public / exported API:
 ```C
 /* Typedef'd pointer to hide implementation details. */
-typedef struct regex_t* re_t;
+struct re_program;
+typedef struct re_program* re_t;
+
+typedef struct re_capture
+{
+  int start;  /* Offset in the searched text, or -1 if not captured */
+  int length; /* Length of the capture */
+} re_capture;
 
 /* Compiles regex string pattern to a regex_t-array. */
 re_t re_compile(const char* pattern);
 
 /* Finds matches of the compiled pattern inside text. */
-int  re_matchp(re_t pattern, const char* text, int* matchlength);
+int  re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures);
 
 /* Finds matches of pattern inside text (compiles first automatically). */
 int  re_match(const char* pattern, const char* text, int* matchlength);
@@ -69,6 +76,7 @@ NOTE: inverted character classes are buggy - see the test harness for concrete e
   -  `\W`       Non-alphanumeric
   -  `\d`       Digits, [0-9]
   -  `\D`       Non-digits
+  -  `(...)`    Grouping (with captures), enabling quantifiers on subpatterns
 
 ### Usage
 Compile a regex from ASCII-string (char-array) to a custom pattern structure using `re_compile()`.
@@ -94,7 +102,7 @@ const char* string_to_search = "ahem.. 'hello world !' ..";
 re_t pattern = re_compile("[Hh]ello [Ww]orld\\s*[!]?");
 
 /* Check if the regex matches the text: */
-int match_idx = re_matchp(pattern, string_to_search, &match_length);
+int match_idx = re_matchp(pattern, string_to_search, &match_length, NULL, 0);
 if (match_idx != -1)
 {
   printf("match at idx %i, %i chars long.\n", match_idx, match_length);

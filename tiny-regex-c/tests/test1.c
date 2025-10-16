@@ -97,6 +97,11 @@ char* test_vector[][4] =
   { NOK, "X?Y",                        "Z",               (char*) 0      },
   { OK, "[a-z]+\nbreak",              "blahblah\nbreak",  (char*) 14     },
   { OK, "[a-z\\s]+\nbreak",           "bla bla \nbreak",  (char*) 14     },
+  { OK,  "(ab)+",                      "zzabababyy",      (char*) 6      },
+  { NOK, "(ab)+",                      "acb",             (char*) 0      },
+  { OK,  "(foo)?bar",                  "foobar",          (char*) 6      },
+  { OK,  "(foo)?bar",                  "bar",             (char*) 3      },
+  { OK,  "^(ab(cd)*)$",                "abcdcd",          (char*) 6      },
 };
 
 
@@ -148,6 +153,48 @@ int main()
             }
         }
     }
+
+    {
+        re_capture captures[2];
+        int caplen = sizeof(captures) / sizeof(captures[0]);
+        int matchlen = 0;
+        re_t compiled = re_compile("(ab)+c");
+        int idx = re_matchp(compiled, "zzababc", &matchlen, captures, caplen);
+        if ((idx != 2) || (matchlen != 5) || (captures[0].start != 4) || (captures[0].length != 2))
+        {
+            fprintf(stderr, "[captures]: unexpected result for '(ab)+c'. idx=%d len=%d cap0.start=%d cap0.len=%d\n",
+                    idx, matchlen, captures[0].start, captures[0].length);
+            nfailed += 1;
+        }
+    }
+
+    {
+        re_capture captures[1];
+        int matchlen = 0;
+        re_t compiled = re_compile("(foo)?bar");
+        int idx = re_matchp(compiled, "foobar", &matchlen, captures, 1);
+        if ((idx != 0) || (matchlen != 6) || (captures[0].start != 0) || (captures[0].length != 3))
+        {
+            fprintf(stderr, "[captures]: unexpected result for optional group present. idx=%d len=%d cap.start=%d cap.len=%d\n",
+                    idx, matchlen, captures[0].start, captures[0].length);
+            nfailed += 1;
+        }
+    }
+
+    {
+        re_capture captures[1];
+        int matchlen = 0;
+        re_t compiled = re_compile("(foo)?bar");
+        int idx = re_matchp(compiled, "bar", &matchlen, captures, 1);
+        if ((idx != 0) || (matchlen != 3) || (captures[0].start != -1) || (captures[0].length != 0))
+        {
+            fprintf(stderr, "[captures]: unexpected result for optional group missing. idx=%d len=%d cap.start=%d cap.len=%d\n",
+                    idx, matchlen, captures[0].start, captures[0].length);
+            nfailed += 1;
+        }
+    }
+
+    ntests += 3; /* account for the explicit capture tests above */
 
     // printf("\n");
     printf("%lu/%lu tests succeeded.\n", ntests - nfailed, ntests);
