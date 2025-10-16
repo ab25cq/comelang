@@ -2381,7 +2381,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool comma);
@@ -2782,7 +2782,7 @@ _Bool __result_obj__75;
             map$2char$phsType$ph_insert(info->types,(char*)come_increment_ref_count(__builtin_string(type_name_30)),(struct sType*)come_increment_ref_count(sType_clone(type_29)));
             if(({            (_condtional_value_X270=(string_operator_not_equals(type_29->mClass->mName,type_name_30)));            _condtional_value_X270;            })) {
                 if(({                (_condtional_value_X271=(!info->no_output_come_code2));                _condtional_value_X271;                })) {
-                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name_30)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value90=xsprintf("typedef %s;\n",((char*)(__right_value89=make_define_var(type_29,type_name_30,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
+                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name_30)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value90=xsprintf("typedef %s;\n",((char*)(__right_value89=make_define_var(type_29,type_name_30,(_Bool)1,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                     (__right_value89 = come_decrement_ref_count(__right_value89, (void*)0, (void*)0, 1, 0, (void*)0));
                     (__right_value90 = come_decrement_ref_count(__right_value90, (void*)0, (void*)0, 1, 0, (void*)0));
                 }
@@ -2798,7 +2798,7 @@ _Bool __result_obj__75;
                 (__right_value96 = come_decrement_ref_count(__right_value96, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value97 = come_decrement_ref_count(__right_value97, (void*)0, (void*)0, 1, 0, (void*)0));
                 if(({                (_condtional_value_X272=(!info->no_output_come_code2));                _condtional_value_X272;                })) {
-                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value101=xsprintf("typedef %s;\n",((char*)(__right_value100=make_define_var(type_29,type_name_30,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
+                    map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value101=xsprintf("typedef %s;\n",((char*)(__right_value100=make_define_var(type_29,type_name_30,(_Bool)1,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                     (__right_value100 = come_decrement_ref_count(__right_value100, (void*)0, (void*)0, 1, 0, (void*)0));
                     (__right_value101 = come_decrement_ref_count(__right_value101, (void*)0, (void*)0, 1, 0, (void*)0));
                 }
@@ -2820,7 +2820,7 @@ _Bool __result_obj__75;
         map$2char$phsType$ph_insert(info->types,(char*)come_increment_ref_count(__builtin_string(type_name)),(struct sType*)come_increment_ref_count(sType_clone(type_31)));
         if(({        (_condtional_value_X274=(string_operator_not_equals(type_31->mClass->mName,type_name)));        _condtional_value_X274;        })) {
             if(({            (_condtional_value_X275=(!info->no_output_come_code2));            _condtional_value_X275;            })) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value109=xsprintf("typedef %s;\n",((char*)(__right_value108=make_define_var(type_31,type_name,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value109=xsprintf("typedef %s;\n",((char*)(__right_value108=make_define_var(type_31,type_name,(_Bool)1,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value108 = come_decrement_ref_count(__right_value108, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value109 = come_decrement_ref_count(__right_value109, (void*)0, (void*)0, 1, 0, (void*)0));
             }
@@ -2836,7 +2836,7 @@ _Bool __result_obj__75;
             (__right_value115 = come_decrement_ref_count(__right_value115, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value116 = come_decrement_ref_count(__right_value116, (void*)0, (void*)0, 1, 0, (void*)0));
             if(({            (_condtional_value_X276=(!info->no_output_come_code2));            _condtional_value_X276;            })) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2_33)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value120=xsprintf("typedef %s;\n",((char*)(__right_value119=make_define_var(type_31,type_name,(_Bool)1,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(type_name2_33)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value120=xsprintf("typedef %s;\n",((char*)(__right_value119=make_define_var(type_31,type_name,(_Bool)1,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value119 = come_decrement_ref_count(__right_value119, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value120 = come_decrement_ref_count(__right_value120, (void*)0, (void*)0, 1, 0, (void*)0));
             }

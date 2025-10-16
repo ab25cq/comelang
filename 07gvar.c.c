@@ -2407,7 +2407,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool comma);
@@ -2819,25 +2819,25 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X141=(info->output_header_file));            _condtional_value_X141;            })) {
                 if(({                (_condtional_value_X142=(!type_10->mStatic));                _condtional_value_X142;                })) {
                     id=(char*)come_increment_ref_count(__builtin_string(name_11));
-                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value60=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)1))));
+                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value60=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
                     (__right_value60 = come_decrement_ref_count(__right_value60, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id = come_decrement_ref_count(id, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
             }
             else if(({            (_condtional_value_X143=(type_10->mUniq));            _condtional_value_X143;            })) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value71=xsprintf("extern %s;\n",((char*)(__right_value70=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value71=xsprintf("extern %s;\n",((char*)(__right_value70=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value70 = come_decrement_ref_count(__right_value70, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value71 = come_decrement_ref_count(__right_value71, (void*)0, (void*)0, 1, 0, (void*)0));
-                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(char*)come_increment_ref_count(xsprintf("%s;\n",((char*)(__right_value79=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0))))));
+                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(char*)come_increment_ref_count(xsprintf("%s;\n",((char*)(__right_value79=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))))));
                 (__right_value79 = come_decrement_ref_count(__right_value79, (void*)0, (void*)0, 1, 0, (void*)0));
             }
             else if(({            (_condtional_value_X236=(initializer));            _condtional_value_X236;            })) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value83=xsprintf("%s=%s;",((char*)(__right_value82=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0))),initializer))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value83=xsprintf("%s=%s;",((char*)(__right_value82=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))),initializer))))));
                 (__right_value82 = come_decrement_ref_count(__right_value82, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value83 = come_decrement_ref_count(__right_value83, (void*)0, (void*)0, 1, 0, (void*)0));
             }
             else {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value87=xsprintf("%s;",((char*)(__right_value86=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_11)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value87=xsprintf("%s;",((char*)(__right_value86=make_define_var(type_10,name_11,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value86 = come_decrement_ref_count(__right_value86, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value87 = come_decrement_ref_count(__right_value87, (void*)0, (void*)0, 1, 0, (void*)0));
             }
@@ -2853,20 +2853,20 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X238=(info->output_header_file));            _condtional_value_X238;            })) {
                 if(({                (_condtional_value_X239=(!type->mStatic));                _condtional_value_X239;                })) {
                     id_28=(char*)come_increment_ref_count(__builtin_string(name));
-                    add_come_code_at_come_header(info,id_28,"extern %s;\n",((char*)(__right_value91=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1))));
+                    add_come_code_at_come_header(info,id_28,"extern %s;\n",((char*)(__right_value91=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
                     (__right_value91 = come_decrement_ref_count(__right_value91, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id_28 = come_decrement_ref_count(id_28, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
             }
             else if(({            (_condtional_value_X240=(type->mUniq));            _condtional_value_X240;            })) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value94=xsprintf("extern %s;\n",((char*)(__right_value93=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value94=xsprintf("extern %s;\n",((char*)(__right_value93=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value93 = come_decrement_ref_count(__right_value93, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value94 = come_decrement_ref_count(__right_value94, (void*)0, (void*)0, 1, 0, (void*)0));
-                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name)),(char*)come_increment_ref_count(xsprintf("%s=%s;\n",((char*)(__right_value97=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0))),array_initializer)));
+                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name)),(char*)come_increment_ref_count(xsprintf("%s=%s;\n",((char*)(__right_value97=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))),array_initializer)));
                 (__right_value97 = come_decrement_ref_count(__right_value97, (void*)0, (void*)0, 1, 0, (void*)0));
             }
             else {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value101=xsprintf("%s=%s;",((char*)(__right_value100=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0))),array_initializer))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value101=xsprintf("%s=%s;",((char*)(__right_value100=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))),array_initializer))))));
                 (__right_value100 = come_decrement_ref_count(__right_value100, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value101 = come_decrement_ref_count(__right_value101, (void*)0, (void*)0, 1, 0, (void*)0));
             }
@@ -2886,20 +2886,20 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X243=(info->output_header_file));            _condtional_value_X243;            })) {
                 if(({                (_condtional_value_X244=(!type->mStatic));                _condtional_value_X244;                })) {
                     id_29=(char*)come_increment_ref_count(__builtin_string(name));
-                    add_come_code_at_come_header(info,id_29,"extern %s;\n",((char*)(__right_value105=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1))));
+                    add_come_code_at_come_header(info,id_29,"extern %s;\n",((char*)(__right_value105=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
                     (__right_value105 = come_decrement_ref_count(__right_value105, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id_29 = come_decrement_ref_count(id_29, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
             }
             else if(({            (_condtional_value_X245=(type->mUniq));            _condtional_value_X245;            })) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value108=xsprintf("extern %s;\n",((char*)(__right_value107=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value108=xsprintf("extern %s;\n",((char*)(__right_value107=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value107 = come_decrement_ref_count(__right_value107, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value108 = come_decrement_ref_count(__right_value108, (void*)0, (void*)0, 1, 0, (void*)0));
-                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name)),(char*)come_increment_ref_count(xsprintf("%s=%s;\n",((char*)(__right_value111=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0))),come_value->c_value)));
+                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name)),(char*)come_increment_ref_count(xsprintf("%s=%s;\n",((char*)(__right_value111=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))),come_value->c_value)));
                 (__right_value111 = come_decrement_ref_count(__right_value111, (void*)0, (void*)0, 1, 0, (void*)0));
             }
             else {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value115=xsprintf("%s=%s;",((char*)(__right_value114=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0))),come_value->c_value))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value115=xsprintf("%s=%s;",((char*)(__right_value114=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))),come_value->c_value))))));
                 (__right_value114 = come_decrement_ref_count(__right_value114, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value115 = come_decrement_ref_count(__right_value115, (void*)0, (void*)0, 1, 0, (void*)0));
             }
@@ -2909,20 +2909,20 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X250=(info->output_header_file));            _condtional_value_X250;            })) {
                 if(({                (_condtional_value_X251=(!type->mStatic));                _condtional_value_X251;                })) {
                     id_30=(char*)come_increment_ref_count(__builtin_string(name));
-                    add_come_code_at_come_header(info,id_30,"extern %s;\n",((char*)(__right_value118=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1))));
+                    add_come_code_at_come_header(info,id_30,"extern %s;\n",((char*)(__right_value118=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
                     (__right_value118 = come_decrement_ref_count(__right_value118, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id_30 = come_decrement_ref_count(id_30, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
             }
             else if(({            (_condtional_value_X252=(type->mUniq));            _condtional_value_X252;            })) {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value121=xsprintf("extern %s;\n",((char*)(__right_value120=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value121=xsprintf("extern %s;\n",((char*)(__right_value120=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value120 = come_decrement_ref_count(__right_value120, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value121 = come_decrement_ref_count(__right_value121, (void*)0, (void*)0, 1, 0, (void*)0));
-                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name)),(char*)come_increment_ref_count(xsprintf("%s;\n",((char*)(__right_value124=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0))))));
+                map$2char$phchar$ph_insert(info->uniq_definition,(char*)come_increment_ref_count(__builtin_string(name)),(char*)come_increment_ref_count(xsprintf("%s;\n",((char*)(__right_value124=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))))));
                 (__right_value124 = come_decrement_ref_count(__right_value124, (void*)0, (void*)0, 1, 0, (void*)0));
             }
             else {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value128=xsprintf("%s;",((char*)(__right_value127=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value128=xsprintf("%s;",((char*)(__right_value127=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value127 = come_decrement_ref_count(__right_value127, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value128 = come_decrement_ref_count(__right_value128, (void*)0, (void*)0, 1, 0, (void*)0));
             }
@@ -4925,13 +4925,13 @@ _Bool __result_obj__68;
             if(({            (_condtional_value_X261=(info->output_header_file));            _condtional_value_X261;            })) {
                 if(({                (_condtional_value_X262=(!type_31->mStatic));                _condtional_value_X262;                })) {
                     id=(char*)come_increment_ref_count(__builtin_string(name_32));
-                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value137=make_define_var(type_31,name_32,(_Bool)0,(_Bool)0,info,(_Bool)1))));
+                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value137=make_define_var(type_31,name_32,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
                     (__right_value137 = come_decrement_ref_count(__right_value137, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id = come_decrement_ref_count(id, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
             }
             else {
-                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_32)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value140=xsprintf("extern %s;",((char*)(__right_value139=make_define_var(type_31,name_32,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+                map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name_32)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value140=xsprintf("extern %s;",((char*)(__right_value139=make_define_var(type_31,name_32,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
                 (__right_value139 = come_decrement_ref_count(__right_value139, (void*)0, (void*)0, 1, 0, (void*)0));
                 (__right_value140 = come_decrement_ref_count(__right_value140, (void*)0, (void*)0, 1, 0, (void*)0));
             }
@@ -4946,13 +4946,13 @@ _Bool __result_obj__68;
         if(({        (_condtional_value_X263=(info->output_header_file));        _condtional_value_X263;        })) {
             if(({            (_condtional_value_X264=(!type->mStatic));            _condtional_value_X264;            })) {
                 id_33=(char*)come_increment_ref_count(__builtin_string(name));
-                add_come_code_at_come_header(info,id_33,"extern %s;\n",((char*)(__right_value144=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1))));
+                add_come_code_at_come_header(info,id_33,"extern %s;\n",((char*)(__right_value144=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
                 (__right_value144 = come_decrement_ref_count(__right_value144, (void*)0, (void*)0, 1, 0, (void*)0));
                 (id_33 = come_decrement_ref_count(id_33, (void*)0, (void*)0, 0, 0, (void*)0));
             }
         }
         else {
-            map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value147=xsprintf("extern %s;",((char*)(__right_value146=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0)))))))));
+            map$2char$phbuffer$ph_insert(info->struct_definition,(char*)come_increment_ref_count(__builtin_string(name)),(struct buffer*)come_increment_ref_count(charp_to_buffer(((char*)(__right_value147=xsprintf("extern %s;",((char*)(__right_value146=make_define_var(type,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0)))))))));
             (__right_value146 = come_decrement_ref_count(__right_value146, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value147 = come_decrement_ref_count(__right_value147, (void*)0, (void*)0, 1, 0, (void*)0));
         }

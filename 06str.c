@@ -269,14 +269,6 @@ class sRegexNode extends sNodeBase
         list<tup: string,sNode*%>*% params = new list<tup: string,sNode*%>();
         
         params.add((s"self", obj_node));
-        params.add((s"ignore_case", create_false_object(info)));
-        params.add((s"multiline", create_false_object(info)));
-        params.add((s"global", create_false_object(info)));
-        params.add((s"extended", create_false_object(info)));
-        params.add((s"dotall", create_false_object(info)));
-        params.add((s"anchored", create_false_object(info)));
-        params.add((s"dollar_endonly", create_false_object(info)));
-        params.add((s"ungreedy", create_false_object(info)));
         
         sNode*% node = create_method_call("to_regex"@fun_name, obj_node, params, null@method_block, info->sline@method_block_sline, null@method_generics_types, info);
         
@@ -1392,14 +1384,6 @@ sNode*% expression_node(sInfo* info) version 96
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
         
         params.add((s"self", obj));
-        params.add((s"ignore_case", ignore_case ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
-        params.add((s"multiline", create_int_node(0.to_string(), info)));
-        params.add((s"global", global ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
-        params.add((s"extended", create_int_node(0.to_string(), info)));
-        params.add((s"dotall", create_int_node(0.to_string(), info)));
-        params.add((s"anchored", create_int_node(0.to_string(), info)));
-        params.add((s"dollar_endonly", create_int_node(0.to_string(), info)));
-        params.add((s"ungreedy", create_int_node(0.to_string(), info)));
         
         buffer* method_block = null;
         
@@ -1550,14 +1534,6 @@ sNode*% expression_node(sInfo* info) version 96
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
         
         params.add((s"self", obj));
-        params.add((s"ignore_case", ignore_case ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
-        params.add((s"multiline", create_int_node(0.to_string(), info)));
-        params.add((s"global", global ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
-        params.add((s"extended", create_int_node(0.to_string(), info)));
-        params.add((s"dotall", create_int_node(0.to_string(), info)));
-        params.add((s"anchored", create_int_node(0.to_string(), info)));
-        params.add((s"dollar_endonly", create_int_node(0.to_string(), info)));
-        params.add((s"ungreedy", create_int_node(0.to_string(), info)));
         
         buffer* method_block = null;
         

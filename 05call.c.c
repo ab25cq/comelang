@@ -2519,7 +2519,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool comma);
@@ -3056,7 +3056,7 @@ void* __right_value65 = (void*)0;
         else {
             static int result_num=0;
             result_num++;
-            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value50=make_define_var(result_type2,((char*)(__right_value49=xsprintf("__result_obj__\%s",((char*)(__right_value48=int_to_string(result_num)))))),(_Bool)0,(_Bool)0,info,(_Bool)0))));
+            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value50=make_define_var(result_type2,((char*)(__right_value49=xsprintf("__result_obj__\%s",((char*)(__right_value48=int_to_string(result_num)))))),(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))));
             (__right_value48 = come_decrement_ref_count(__right_value48, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value49 = come_decrement_ref_count(__right_value49, (void*)0, (void*)0, 1, 0, (void*)0));
             (__right_value50 = come_decrement_ref_count(__right_value50, (void*)0, (void*)0, 1, 0, (void*)0));
@@ -7023,14 +7023,14 @@ memset(&i_99, 0, sizeof(int));
             param_type=(struct sType*)come_increment_ref_count(it_154);
             if(({            (_condtional_value_X558=(i_135==0));            _condtional_value_X558;            })) {
                 param_name_155=(char*)come_increment_ref_count(xsprintf("parent"));
-                buffer_append_format(method_block2,"%s",((char*)(__right_value462=make_define_var(param_type,param_name_155,(_Bool)0,(_Bool)0,info,(_Bool)1))));
+                buffer_append_format(method_block2,"%s",((char*)(__right_value462=make_define_var(param_type,param_name_155,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
                 (__right_value462 = come_decrement_ref_count(__right_value462, (void*)0, (void*)0, 1, 0, (void*)0));
                 (param_name_155 = come_decrement_ref_count(param_name_155, (void*)0, (void*)0, 0, 0, (void*)0));
             }
             else if(({            (_condtional_value_X559=(i_135==1));            _condtional_value_X559;            })) {
                 param_name_156=(char*)come_increment_ref_count(xsprintf("it"));
                 param_type2=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(param_type),(struct sType*)come_increment_ref_count(info->generics_type),info));
-                buffer_append_format(method_block2,"%s",((char*)(__right_value465=make_define_var(param_type2,param_name_156,(_Bool)0,(_Bool)1,info,(_Bool)1))));
+                buffer_append_format(method_block2,"%s",((char*)(__right_value465=make_define_var(param_type2,param_name_156,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
                 (__right_value465 = come_decrement_ref_count(__right_value465, (void*)0, (void*)0, 1, 0, (void*)0));
                 (param_name_156 = come_decrement_ref_count(param_name_156, (void*)0, (void*)0, 0, 0, (void*)0));
                 come_call_finalizer(sType_finalize, param_type2, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -7038,7 +7038,7 @@ memset(&i_99, 0, sizeof(int));
             else {
                 param_name_157=(char*)come_increment_ref_count(xsprintf("it%d",i_135));
                 param_type2_158=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(param_type),(struct sType*)come_increment_ref_count(info->generics_type),info));
-                buffer_append_format(method_block2,"%s",((char*)(__right_value468=make_define_var(param_type2_158,param_name_157,(_Bool)0,(_Bool)1,info,(_Bool)1))));
+                buffer_append_format(method_block2,"%s",((char*)(__right_value468=make_define_var(param_type2_158,param_name_157,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
                 (__right_value468 = come_decrement_ref_count(__right_value468, (void*)0, (void*)0, 1, 0, (void*)0));
                 (param_name_157 = come_decrement_ref_count(param_name_157, (void*)0, (void*)0, 0, 0, (void*)0));
                 come_call_finalizer(sType_finalize, param_type2_158, (void*)0, (void*)0, 0, 0, 0, (void*)0);

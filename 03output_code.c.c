@@ -2551,7 +2551,7 @@ char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool o
 static struct sType* list$1sType$ph$p_operator_load_element(struct list$1sType$ph* self, int position);
 static struct sType* list$1sType$ph_operator_load_element(struct list$1sType$ph* self, int position);
 static char* make_lambda_type_name_string(struct sType* type, char* var_name, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 static struct sNode* list$1sNode$ph_begin(struct list$1sNode$ph* self);
 static _Bool list$1sNode$ph_end(struct list$1sNode$ph* self);
 static struct sNode* list$1sNode$ph_next(struct list$1sNode$ph* self);
@@ -4309,7 +4309,7 @@ char* __result_obj__43;
     return __result_obj__43;
 }
 
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type){
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static){
 void* __right_value82 = (void*)0;
 void* __right_value83 = (void*)0;
 struct buffer* buf;
@@ -4402,7 +4402,7 @@ type_str_32 = (void*)0;
         (str_25 = come_decrement_ref_count(str_25, (void*)0, (void*)0, 0, 0, (void*)0));
     }
     else if(({    (_condtional_value_X239=(type2->mArrayPointerNum>0));    _condtional_value_X239;    })) {
-        type_name=(char*)come_increment_ref_count(make_type_name_string(type2,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
+        type_name=(char*)come_increment_ref_count(make_type_name_string(type2,(_Bool)0,(_Bool)0,(_Bool)0,info,no_static,(_Bool)0,(_Bool)0));
         buffer_append_format(buf,"%s (*%s)",type_name,name);
         for(        ({        (_condtional_value_X242=(o2_saved=(struct list$1sNode$ph*)come_increment_ref_count(type2->mArrayNum),it=list$1sNode$ph_begin(o2_saved)));        _condtional_value_X242;        });        ({        (_condtional_value_X243=(!list$1sNode$ph_end(o2_saved)));        _condtional_value_X243;        });        ({        (_condtional_value_X246=(it=list$1sNode$ph_next(o2_saved)));        _condtional_value_X246;        })        ){
             if(({            (_condtional_value_X247=(!node_compile(it,info)));            _condtional_value_X247;            })) {
@@ -4441,7 +4441,7 @@ type_str_32 = (void*)0;
         }
         else {
             __dec_obj33=type_str,
-            type_str=(char*)come_increment_ref_count(make_type_name_string(type2,in_header,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
+            type_str=(char*)come_increment_ref_count(make_type_name_string(type2,in_header,(_Bool)0,(_Bool)0,info,no_static,(_Bool)0,(_Bool)0));
             __dec_obj33 = come_decrement_ref_count(__dec_obj33, (void*)0, (void*)0, 0,0, (void*)0);
         }
         buffer_append_format(buf,"%s ",type_str);
@@ -4463,7 +4463,7 @@ type_str_32 = (void*)0;
         }
         else {
             __dec_obj35=type_str_28,
-            type_str_28=(char*)come_increment_ref_count(make_type_name_string(type2,in_header,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
+            type_str_28=(char*)come_increment_ref_count(make_type_name_string(type2,in_header,(_Bool)0,(_Bool)0,info,no_static,(_Bool)0,(_Bool)0));
             __dec_obj35 = come_decrement_ref_count(__dec_obj35, (void*)0, (void*)0, 0,0, (void*)0);
         }
         buffer_append_str(buf,type_str_28);
@@ -4502,7 +4502,7 @@ type_str_32 = (void*)0;
         }
         else {
             __dec_obj37=type_str_32,
-            type_str_32=(char*)come_increment_ref_count(make_type_name_string(type2,in_header,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
+            type_str_32=(char*)come_increment_ref_count(make_type_name_string(type2,in_header,(_Bool)0,(_Bool)0,info,no_static,(_Bool)0,(_Bool)0));
             __dec_obj37 = come_decrement_ref_count(__dec_obj37, (void*)0, (void*)0, 0,0, (void*)0);
         }
         if(({        (_condtional_value_X262=(string_operator_equals(type_str_32,"")));        _condtional_value_X262;        })) {
@@ -4831,7 +4831,7 @@ char* __result_obj__61;
             info->undefined_array_num_var=(_Bool)1;
             name=((char*)(__right_value117=list$1char$ph_operator_load_element(fun->mParamNames,i)));
             (__right_value117 = come_decrement_ref_count(__right_value117, (void*)0, (void*)0, 1, 0, (void*)0));
-            str=(char*)come_increment_ref_count(make_define_var(it,name,(_Bool)0,(_Bool)0,info,(_Bool)0));
+            str=(char*)come_increment_ref_count(make_define_var(it,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)1));
             buffer_append_str(output2,str);
             if(({            (_condtional_value_X283=(i==list$1sType$ph_length(fun->mParamTypes)-1));            _condtional_value_X283;            })) {
                 if(({                (_condtional_value_X284=(fun->mVarArgs));                _condtional_value_X284;                })) {
@@ -4900,7 +4900,7 @@ char* __result_obj__61;
             info->undefined_array_num_var=(_Bool)1;
             name_37=((char*)(__right_value131=list$1char$ph_operator_load_element(fun->mParamNames,i_34)));
             (__right_value131 = come_decrement_ref_count(__right_value131, (void*)0, (void*)0, 1, 0, (void*)0));
-            str_38=(char*)come_increment_ref_count(make_define_var(it_36,name_37,(_Bool)0,(_Bool)0,info,(_Bool)0));
+            str_38=(char*)come_increment_ref_count(make_define_var(it_36,name_37,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)1));
             buffer_append_str(output,str_38);
             if(({            (_condtional_value_X296=(i_34==list$1sType$ph_length(fun->mParamTypes)-1));            _condtional_value_X296;            })) {
                 if(({                (_condtional_value_X297=(fun->mVarArgs));                _condtional_value_X297;                })) {
@@ -4965,7 +4965,7 @@ char* __result_obj__61;
             info->undefined_array_num_var=(_Bool)1;
             name_43=((char*)(__right_value142=list$1char$ph_operator_load_element(fun->mParamNames,i_40)));
             (__right_value142 = come_decrement_ref_count(__right_value142, (void*)0, (void*)0, 1, 0, (void*)0));
-            str_44=(char*)come_increment_ref_count(make_define_var(it_42,name_43,(_Bool)0,(_Bool)0,info,(_Bool)0));
+            str_44=(char*)come_increment_ref_count(make_define_var(it_42,name_43,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)1));
             buffer_append_str(output,str_44);
             if(({            (_condtional_value_X306=(i_40==list$1sType$ph_length(fun->mParamTypes)-1));            _condtional_value_X306;            })) {
                 if(({                (_condtional_value_X307=(fun->mVarArgs));                _condtional_value_X307;                })) {
@@ -5097,7 +5097,7 @@ char* __result_obj__63;
             info->undefined_array_num_var=(_Bool)1;
             name=((char*)(__right_value155=list$1char$ph_operator_load_element(fun->mParamNames,i)));
             (__right_value155 = come_decrement_ref_count(__right_value155, (void*)0, (void*)0, 1, 0, (void*)0));
-            str=(char*)come_increment_ref_count(make_define_var(it,name,(_Bool)0,(_Bool)0,info,(_Bool)0));
+            str=(char*)come_increment_ref_count(make_define_var(it,name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)1));
             buffer_append_str(output2,str);
             if(({            (_condtional_value_X313=(i!=list$1sType$ph_length(fun->mParamTypes)-1));            _condtional_value_X313;            })) {
                 buffer_append_str(output2,", ");
@@ -5147,7 +5147,7 @@ char* __result_obj__63;
             info->undefined_array_num_var=(_Bool)1;
             name_49=((char*)(__right_value164=list$1char$ph_operator_load_element(fun->mParamNames,i_46)));
             (__right_value164 = come_decrement_ref_count(__right_value164, (void*)0, (void*)0, 1, 0, (void*)0));
-            str_50=(char*)come_increment_ref_count(make_define_var(it_48,name_49,(_Bool)0,(_Bool)0,info,(_Bool)0));
+            str_50=(char*)come_increment_ref_count(make_define_var(it_48,name_49,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)1));
             buffer_append_str(output,str_50);
             if(({            (_condtional_value_X323=(i_46==list$1sType$ph_length(fun->mParamTypes)-1));            _condtional_value_X323;            })) {
                 if(({                (_condtional_value_X324=(fun->mVarArgs));                _condtional_value_X324;                })) {
@@ -5204,7 +5204,7 @@ char* __result_obj__63;
             name_55=((char*)(__right_value172=list$1char$ph_operator_load_element(fun->mParamNames,i_52)));
             (__right_value172 = come_decrement_ref_count(__right_value172, (void*)0, (void*)0, 1, 0, (void*)0));
             info->undefined_array_num_var=(_Bool)1;
-            str_56=(char*)come_increment_ref_count(make_define_var(it_54,name_55,(_Bool)0,(_Bool)0,info,(_Bool)0));
+            str_56=(char*)come_increment_ref_count(make_define_var(it_54,name_55,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)1));
             info->undefined_array_num_var=(_Bool)0;
             buffer_append_str(output,str_56);
             if(({            (_condtional_value_X332=(i_52==list$1sType$ph_length(fun->mParamTypes)-1));            _condtional_value_X332;            })) {
@@ -5301,7 +5301,7 @@ char* __result_obj__64;
         info->undefined_array_num_var=(_Bool)1;
         name_58=((char*)(__right_value182=list$1char$ph_operator_load_element(lambda_type->mParamNames,i_57)));
         (__right_value182 = come_decrement_ref_count(__right_value182, (void*)0, (void*)0, 1, 0, (void*)0));
-        str=(char*)come_increment_ref_count(make_define_var(it,name_58,(_Bool)0,(_Bool)0,info,(_Bool)0));
+        str=(char*)come_increment_ref_count(make_define_var(it,name_58,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)1));
         buffer_append_str(output,str);
         if(({        (_condtional_value_X343=(i_57==list$1sType$ph_length(lambda_type->mParamTypes)-1));        _condtional_value_X343;        })) {
             if(({            (_condtional_value_X344=(lambda_type->mVarArgs));            _condtional_value_X344;            })) {

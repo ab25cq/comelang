@@ -2576,7 +2576,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool comma);
@@ -3131,7 +3131,7 @@ obj = (void*)0;
             type3->mNoSolvedGenericsType->mPointerNum++;
         }
         type_name3=(char*)come_increment_ref_count(make_type_name_string(type3,(_Bool)0,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0,(_Bool)0));
-        add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value53=make_define_var(type3,var_name,(_Bool)0,(_Bool)0,info,(_Bool)0))));
+        add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value53=make_define_var(type3,var_name,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))));
         (__right_value53 = come_decrement_ref_count(__right_value53, (void*)0, (void*)0, 1, 0, (void*)0));
         buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "21obj.c", 68, "struct buffer*"))));
         buffer_append_str(buf,"(");

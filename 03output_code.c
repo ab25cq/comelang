@@ -370,7 +370,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
 
 static string header_lambda(sType* lambda_type, string name, sInfo* info);
 
-string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info, bool come_type=false)
+string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info, bool come_type=false, bool no_static=false)
 {
     var buf = new buffer();
     
@@ -390,7 +390,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         buf.append_str(str);
     }
     else if(type2->mArrayPointerNum > 0) {
-        string type_name = make_type_name_string(type2);
+        string type_name = make_type_name_string(type2, no_static:no_static);
         
         buf.append_format("%s (*%s)", type_name, name);
         
@@ -417,7 +417,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
             type_str = make_come_type_name_string(type2);
         }
         else {
-            type_str = make_type_name_string(type2, in_header);
+            type_str = make_type_name_string(type2, in_header, no_static:no_static);
         }
         buf.append_format("%s ", type_str);
         buf.append_format("%s:%s", name, come_value.c_value);
@@ -436,7 +436,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
             type_str = make_come_type_name_string(type2);
         }
         else {
-            type_str = make_type_name_string(type2, in_header);
+            type_str = make_type_name_string(type2, in_header, no_static:no_static);
         }
         
         buf.append_str(type_str);
@@ -468,7 +468,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
             type_str = make_come_type_name_string(type2);
         }
         else {
-            type_str = make_type_name_string(type2, in_header);
+            type_str = make_type_name_string(type2, in_header, no_static:no_static);
         }
         
         if(type_str === "") {
@@ -553,7 +553,7 @@ string output_function(sFun* fun, sInfo* info)
             info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
-            var str = make_define_var(it, name);
+            var str = make_define_var(it, name, no_static:true);
             output2.append_str(str);
             
             if(i == fun->mParamTypes.length()-1) {
@@ -620,7 +620,7 @@ string output_function(sFun* fun, sInfo* info)
             info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
-            string str = make_define_var(it, name);
+            string str = make_define_var(it, name, no_static:true);
             output.append_str(str);
             
             if(i == fun->mParamTypes.length()-1) {
@@ -678,7 +678,7 @@ string output_function(sFun* fun, sInfo* info)
             info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
-            string str = make_define_var(it, name);
+            string str = make_define_var(it, name, no_static:true);
             output.append_str(str);
             
             if(i == fun->mParamTypes.length()-1) {
@@ -730,7 +730,7 @@ string header_function(sFun* fun, sInfo* info)
             info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
-            string str = make_define_var(it, name);
+            string str = make_define_var(it, name, no_static:true);
             output2.append_str(str);
             
             if(i != fun->mParamTypes.length()-1) {
@@ -781,7 +781,7 @@ string header_function(sFun* fun, sInfo* info)
             info.undefined_array_num_var = true;
             char* name = fun->mParamNames[i];
             
-            string str = make_define_var(it, name);
+            string str = make_define_var(it, name, no_static:true);
             output.append_str(str);
             
             if(i == fun->mParamTypes.length()-1) {
@@ -831,7 +831,7 @@ string header_function(sFun* fun, sInfo* info)
             char* name = fun->mParamNames[i];
             
             info.undefined_array_num_var = true;
-            string str = make_define_var(it, name);
+            string str = make_define_var(it, name, no_static:true);
             info.undefined_array_num_var = false;
             output.append_str(str);
             
@@ -891,7 +891,7 @@ static string header_lambda(sType* lambda_type, string name, sInfo* info)
         info.undefined_array_num_var = true;
         char* name = lambda_type->mParamNames[i];
         
-        string str = make_define_var(it, name);
+        string str = make_define_var(it, name, no_static:true);
         output.append_str(str);
         
         if(i == lambda_type->mParamTypes.length()-1) {
