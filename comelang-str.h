@@ -35,11 +35,11 @@ using comelang_str;
  */
 
 #ifndef RE_DOT_MATCHES_NEWLINE
-/* Define to 0 if you DON'T want '.' to match '\r' + '\n' */
+// Define to 0 if you DON'T want '.' to match '\r' + '\n' 
 #define RE_DOT_MATCHES_NEWLINE 0
 #endif
 
-/* Typedef'd pointer to get abstract datatype. */
+// Typedef'd pointer to get abstract datatype. 
 struct re_program;
 typedef struct re_program* re_t;
 
@@ -51,26 +51,26 @@ typedef struct re_capture
 } re_capture;
 
 
-/* Compile regex string pattern to a regex_t-array. */
+// Compile regex string pattern to a regex_t-array. 
 re_t re_compile(const char* pattern);
 
 
-/* Find matches of the compiled pattern inside text. */
+// Find matches of the compiled pattern inside text. 
 int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures);
 
 
-/* Find matches of the txt pattern inside text (will compile automatically first). */
+// Find matches of the txt pattern inside text (will compile automatically first).
 int re_match(const char* pattern, const char* text, int* matchlength);
 
 
-/* Debug helper to inspect compiled patterns (unstable API). */
+// Debug helper to inspect compiled patterns (unstable API). 
 void re_print(re_t pattern);
 
 
-/* Definitions: */
+// Definitions:
 
-#define MAX_REGEXP_OBJECTS   64   /* Max number of regex symbols in expression, incl. groups. */
-#define MAX_CHAR_CLASS_LEN   40   /* Max length of character-class buffer.                    */
+#define MAX_REGEXP_OBJECTS   64   // Max number of regex symbols in expression, incl. groups. 
+#define MAX_CHAR_CLASS_LEN   40   // Max length of character-class buffer.                   
 #define MAX_CAPTURE_SLOTS    MAX_REGEXP_OBJECTS
 
 enum
@@ -99,18 +99,18 @@ typedef struct regex_t regex_t;
 
 struct regex_t
 {
-  unsigned char type;   /* CHAR, STAR, GROUP, etc. */
+  unsigned char type;   // CHAR, STAR, GROUP, etc. 
   union
   {
-    unsigned char  ch;      /* Literal character                 */
-    unsigned char* ccl;     /* Pointer to characters in a class  */
+    unsigned char  ch;      // Literal character                
+    unsigned char* ccl;     // Pointer to characters in a class  
     struct
     {
-      regex_t* first;       /* First token inside the group      */
-      int      id;          /* Capture index (1-based)           */
+      regex_t* first;       // First token inside the group      
+      int      id;          // Capture index (1-based)          
     } group;
   } u;
-  regex_t* next;            /* Linked list pointer for sequence  */
+  regex_t* next;            // Linked list pointer for sequence 
 };
 
 
@@ -137,12 +137,12 @@ typedef struct
 {
   const char* base;
   re_capture* captures;
-  int         capture_capacity;   /* Slots provided by caller */
-  int         total_groups;       /* Groups present in pattern */
+  int         capture_capacity;   // Slots provided by caller 
+  int         total_groups;       / Groups present in pattern
 } match_context;
 
 
-/* Private function declarations: */
+// Private function declarations: 
 uniq const char* matchpattern(regex_t* pattern, const char* text, match_context* ctx);
 uniq const char* matchtoken(regex_t* token, const char* text, match_context* ctx);
 uniq const char* matchstar(regex_t* token, regex_t* rest, const char* text, match_context* ctx);
@@ -166,7 +166,7 @@ uniq void        restore_captures(match_context* ctx, const re_capture* buffer);
 uniq void        clear_captures(match_context* ctx);
 
 
-/* Public functions: */
+// Public functions: 
 uniq int re_match(const char* pattern, const char* text, int* matchlength)
 {
   return re_matchp(re_compile(pattern), text, matchlength, 0, 0);
@@ -210,7 +210,7 @@ uniq int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture*
       *matchlength = (int)(end - text);
       if (ctx.captures != 0)
       {
-        /* Groups already recorded relative to ctx.base */
+        // Groups already recorded relative to ctx.base 
       }
       return 0;
     }
@@ -231,7 +231,7 @@ uniq int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture*
       {
         if (*cursor == '\0' && cursor != text)
         {
-          return -1; /* Preserve legacy behaviour */
+          return -1; // Preserve legacy behaviour
         }
         *matchlength = (int)(end - cursor);
         return (int)(cursor - text);
@@ -260,7 +260,7 @@ uniq re_t re_compile(const char* pattern)
   state.pool_size = 0;
   state.ccl_buf = ccl_buf;
   state.ccl_capacity = MAX_CHAR_CLASS_LEN;
-  state.ccl_idx = 1; /* leave first slot unused to mimic original behaviour */
+  state.ccl_idx = 1; // leave first slot unused to mimic original behaviour 
   state.group_count = 0;
 
   if (state.ccl_capacity > 0)
@@ -298,7 +298,7 @@ uniq void re_print(re_t pattern)
 }
 
 
-/* Private helper implementations */
+// Private helper implementations 
 uniq void clear_captures(match_context* ctx)
 {
   if ((ctx->captures == 0) || (ctx->capture_capacity <= 0))
