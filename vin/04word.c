@@ -556,9 +556,6 @@ Vi*% Vi*::initialize(Vi*% self) version 4
             for(int i=0; i<self.activeWin.digitInput+1; i++) {
                 self.activeWin.forwardWord();
                 
-                if(self.activeWin.pollCancel()) {
-                    break;
-                }
             }
             self.activeWin.digitInput = 0;
         }
@@ -574,9 +571,6 @@ Vi*% Vi*::initialize(Vi*% self) version 4
             for(int i=0; i<self.activeWin.digitInput+1; i++) {
                 self.activeWin.forwardWord2();
                 
-                if(self.activeWin.pollCancel()) {
-                    break;
-                }
             }
             self.activeWin.digitInput = 0;
         }
@@ -592,9 +586,6 @@ Vi*% Vi*::initialize(Vi*% self) version 4
             for(int i=0; i<self.activeWin.digitInput+1; i++) {
                 self.activeWin.backwardWord();
                 
-                if(self.activeWin.pollCancel()) {
-                    break;
-                }
             }
             self.activeWin.digitInput = 0;
         }

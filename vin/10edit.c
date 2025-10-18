@@ -36,9 +36,6 @@ void ViWin*::deleteOneLine(ViWin* self, Vi* nvi) version 10
                 self.modifyCursorOnDeleting();
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.saveYankToFile(nvi);
@@ -78,9 +75,6 @@ void ViWin*::deleteOneLine2(ViWin* self, Vi* nvi)
                 self.texts_length.delete(self.scroll+self.cursorY, self.scroll+self.cursorY+1);
         
                 self.modifyCursorOnDeleting();
-            }
-            if(self.pollCancel()) {
-                break;
             }
         }
         
@@ -166,9 +160,6 @@ void ViWin*::deleteWord(ViWin* self, Vi* nvi)
                     }
                 }
                 
-                if(self.pollCancel()) {
-                    break;
-                }
             }
     
             nvi.yank.reset();
@@ -284,9 +275,6 @@ void ViWin*::deleteForNextCharacter(ViWin* self)
                     x++;
                 }
                 
-                if(self.pollCancel()) {
-                    break;
-                }
             }
             
             if(*p == key) {
@@ -356,9 +344,6 @@ void ViWin*::deleteForNextCharacter2(ViWin* self)
                     x++;
                 }
                 
-                if(self.pollCancel()) {
-                    break;
-                }
             }
             
             if(*p == key) {
@@ -407,9 +392,6 @@ void ViWin*::deleteCursorCharactor(ViWin* self)
         for(int i= 0; i<num; i++) {
             line.delete(self.cursorX, self.cursorX+1);
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
     
         self.modifyOverCursorXValue();
@@ -462,9 +444,6 @@ void ViWin*::deleteBack(ViWin* self)
                 line.delete(self.cursorX, self.cursorX+1);
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
     
         self.modifyOverCursorXValue();
@@ -634,9 +613,6 @@ void ViWin*::deleteUntilTail(ViWin* self)
                 self.modifyCursorOnDeleting();
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.modifyOverCursorXValue();
@@ -686,9 +662,6 @@ void ViWin*::yankOneLine(ViWin* self, Vi* nvi)
                 nvi.yank.push_back(clone line);
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.digitInput = 0;
@@ -742,9 +715,6 @@ void ViWin*::forwardToNextCharacter1(ViWin* self, int key)
                 break;
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.digitInput = 0;
@@ -776,9 +746,6 @@ void ViWin*::forwardToNextCharacter2(ViWin* self, int key)
                 break;
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.digitInput = 0;
@@ -823,9 +790,6 @@ void ViWin*::backwardToNextCharacter1(ViWin* self)
                 break;
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.digitInput = 0;
@@ -856,9 +820,6 @@ void ViWin*::backwardToNextCharacter2(ViWin* self)
                 break;
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.digitInput = 0;
@@ -898,9 +859,6 @@ void ViWin*::changeCase(ViWin* self)
                 break;
             }
             
-            if(self.pollCancel()) {
-                break;
-            }
         }
         
         self.digitInput = 0;

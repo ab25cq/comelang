@@ -1,5 +1,4 @@
 #include <comelang.h>
-#include <comelang-str.h>
 #include <comelang-net.h>
 
 int main(int argc, char** argv)

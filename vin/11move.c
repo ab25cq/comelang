@@ -284,11 +284,8 @@ void ViWin*::gotoFunctionTop(ViWin* self, Vi* nvi)
 {
     int it2 = 0;
     foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
-        come_regex*% reg = /^{/;
-        come_regex*% reg2 = /^[a-zA-Z].*{$/;
-        
-        if(it.to_string().match(reg)
-            || it.to_string().match(reg2))
+        if(it.to_string().match("^{")
+            || it.to_string().match("^[a-zA-Z].*{$")) 
         {
             self.saveReturnPoint();
 
@@ -307,10 +304,10 @@ void ViWin*::gotoMethodTop(ViWin* self, Vi* nvi)
 {
     int it2 = 0;
     foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
-        come_regex*% reg = /^ +{/;
-        come_regex*% reg2 = /^ +[a-zA-Z].*{$/;
-        come_regex*% reg3 = /^{/;
-        come_regex*% reg4 = /^[a-zA-Z].*{$/;
+        char* reg = "^ +{";
+        char* reg2 = "^ +[a-zA-Z].*{$";
+        char* reg3 = "^{";
+        char* reg4 = "^[a-zA-Z].*{$";
         
         if(reg && reg2 && reg3 && reg4 && 
             ((it.to_string().match(reg))
@@ -337,7 +334,7 @@ void ViWin*::gotoFunctionBottom(ViWin* self, Vi* nvi)
 
     int it2 = 0;
     foreach(it, self.texts.sublist(self.scroll+self.cursorY+1, -1)) {
-        if(it.to_string().match(r"^}")) 
+        if(it.to_string().match("^}")) 
         {
             self.saveReturnPoint();
 

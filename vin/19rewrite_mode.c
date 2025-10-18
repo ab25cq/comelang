@@ -60,7 +60,7 @@ void ViWin*::inputRewritetMode(ViWin* self, Vi* nvi)
     else if(key == 9) {
         auto str = self.texts.item(self.scroll+self.cursorY, null).substring(0, self.cursorX);
 
-        new come_regex("^$|^[ ]+$").if {
+        "^$|^[ ]+$".if {
             if(str.to_string().match(Value)) {
                 self.insertText2(wstring("    "));
             }

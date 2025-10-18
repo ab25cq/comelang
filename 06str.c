@@ -1384,6 +1384,14 @@ sNode*% expression_node(sInfo* info) version 96
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
         
         params.add((s"self", obj));
+        params.add((s"ignore_case", ignore_case ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"multiline", create_int_node(0.to_string(), info)));
+        params.add((s"global", global ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"extended", create_int_node(0.to_string(), info)));
+        params.add((s"dotall", create_int_node(0.to_string(), info)));
+        params.add((s"anchored", create_int_node(0.to_string(), info)));
+        params.add((s"dollar_endonly", create_int_node(0.to_string(), info)));
+        params.add((s"ungreedy", create_int_node(0.to_string(), info)));
         
         buffer* method_block = null;
         
@@ -1534,6 +1542,14 @@ sNode*% expression_node(sInfo* info) version 96
         list<tup: string, sNode*%>*% params = new list<tup: string, sNode*%>();
         
         params.add((s"self", obj));
+        params.add((s"ignore_case", ignore_case ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"multiline", create_int_node(0.to_string(), info)));
+        params.add((s"global", global ? create_int_node(1.to_string(), info) : create_int_node(0.to_string(), info)));
+        params.add((s"extended", create_int_node(0.to_string(), info)));
+        params.add((s"dotall", create_int_node(0.to_string(), info)));
+        params.add((s"anchored", create_int_node(0.to_string(), info)));
+        params.add((s"dollar_endonly", create_int_node(0.to_string(), info)));
+        params.add((s"ungreedy", create_int_node(0.to_string(), info)));
         
         buffer* method_block = null;
         

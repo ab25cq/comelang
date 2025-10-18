@@ -1,5 +1,4 @@
 #include <comelang.h>
-#include <comelang-str.h>
 #include <comelang-net.h>
 
 class sType

@@ -51,6 +51,9 @@ re_t re_compile(const char* pattern);
 /* Finds matches of the compiled pattern inside text. */
 int  re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures);
 
+/* Returns the number of capturing groups present in the compiled pattern. */
+int  re_get_group_count(re_t pattern);
+
 /* Finds matches of pattern inside text (compiles first automatically). */
 int  re_match(const char* pattern, const char* text, int* matchlength);
 ```

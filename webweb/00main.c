@@ -1,5 +1,4 @@
 #include <comelang.h>
-header {#include <comelang-str.h>}
 header {#include <comelang-net.h>}
 
 struct sInfo;

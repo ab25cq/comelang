@@ -4900,5 +4900,1613 @@ uniq void int::times(int self, void* parent, void (*block)(void* parent, int it)
     }
 }
 
+/*
+ *
+ * Mini regex-module inspired by Rob Pike's regex code described in:
+ *
+ * http://www.cs.princeton.edu/courses/archive/spr09/cos333/beautiful.html
+ *
+ *
+ *
+ * Supports:
+ * ---------
+ *   '.'        Dot, matches any character
+ *   '^'        Start anchor, matches beginning of string
+ *   '$'        End anchor, matches end of string
+ *   '*'        Asterisk, match zero or more (greedy)
+ *   '+'        Plus, match one or more (greedy)
+ *   '?'        Question, match zero or one (non-greedy)
+ *   '[abc]'    Character class, match if one of {'a', 'b', 'c'}
+ *   '[^abc]'   Inverted class, match if NOT one of {'a', 'b', 'c'} -- NOTE: feature is currently broken!
+ *   '[a-zA-Z]' Character ranges, the character set of the ranges { a-z | A-Z }
+ *   '\s'       Whitespace, \t \f \r \n \v and spaces
+ *   '\S'       Non-whitespace
+ *   '\w'       Alphanumeric, [a-zA-Z0-9_]
+ *   '\W'       Non-alphanumeric
+ *   '\d'       Digits, [0-9]
+ *   '\D'       Non-digits
+ *   '()'       Grouping, allowing quantifiers on sub-expressions and capturing
+ *
+ *
+ */
+
+#ifndef RE_DOT_MATCHES_NEWLINE
+// Define to 0 if you DON'T want '.' to match '\r' + '\n' 
+#define RE_DOT_MATCHES_NEWLINE 0
+#endif
+
+// Typedef'd pointer to get abstract datatype. 
+struct re_program;
+typedef struct re_program* re_t;
+
+
+typedef struct re_capture
+{
+  int start;
+  int length;
+} re_capture;
+
+
+// Compile regex string pattern to a regex_t-array. 
+re_t re_compile(const char* pattern);
+
+
+// Find matches of the compiled pattern inside text. 
+int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures);
+
+
+// Find matches of the txt pattern inside text (will compile automatically first).
+int re_match(const char* pattern, const char* text, int* matchlength);
+
+
+// Debug helper to inspect compiled patterns (unstable API). 
+void re_print(re_t pattern);
+
+// Return the number of capturing groups present in the compiled pattern. 
+int re_get_group_count(re_t pattern);
+
+
+// Definitions:
+
+#define MAX_REGEXP_OBJECTS   64   // Max number of regex symbols in expression, incl. groups. 
+#define MAX_CHAR_CLASS_LEN   40   // Max length of character-class buffer.                   
+#define MAX_CAPTURE_SLOTS    MAX_REGEXP_OBJECTS
+
+enum
+{
+  UNUSED,
+  DOT,
+  BEGIN,
+  END,
+  QUESTIONMARK,
+  STAR,
+  PLUS,
+  CHAR,
+  CHAR_CLASS,
+  INV_CHAR_CLASS,
+  DIGIT,
+  NOT_DIGIT,
+  ALPHA,
+  NOT_ALPHA,
+  WHITESPACE,
+  NOT_WHITESPACE,
+  GROUP
+};
+
+
+typedef struct regex_t regex_t;
+
+struct regex_t
+{
+  unsigned char type;   // CHAR, STAR, GROUP, etc. 
+  union
+  {
+    unsigned char  ch;      // Literal character                
+    unsigned char* ccl;     // Pointer to characters in a class  
+    struct
+    {
+      regex_t* first;       // First token inside the group      
+      int      id;          // Capture index (1-based)          
+    } group;
+  } u;
+  regex_t* next;            // Linked list pointer for sequence 
+};
+
+
+typedef struct re_program
+{
+  regex_t*       start;
+  int            group_count;
+} regex_program_t;
+
+
+typedef struct
+{
+  regex_t*        pool;
+  int             pool_capacity;
+  int             pool_size;
+  unsigned char*  ccl_buf;
+  int             ccl_capacity;
+  int             ccl_idx;
+  int             group_count;
+} compiler_state;
+
+
+typedef struct
+{
+  const char* base;
+  re_capture* captures;
+  int         capture_capacity;   // Slots provided by caller 
+  int         total_groups;       // Groups present in pattern
+} match_context;
+
+
+// Private function declarations: 
+uniq const char* matchpattern(regex_t* pattern, const char* text, match_context* ctx);
+uniq const char* matchtoken(regex_t* token, const char* text, match_context* ctx);
+uniq const char* matchstar(regex_t* token, regex_t* rest, const char* text, match_context* ctx);
+uniq const char* matchplus(regex_t* token, regex_t* rest, const char* text, match_context* ctx);
+uniq const char* matchquestion(regex_t* token, regex_t* rest, const char* text, match_context* ctx);
+uniq int         matchcharclass(char c, const char* str);
+uniq int         matchdigit(char c);
+uniq int         matchalpha(char c);
+uniq int         matchwhitespace(char c);
+uniq int         matchmetachar(char c, const char* str);
+uniq int         matchrange(char c, const char* str);
+uniq int         matchdot(char c);
+uniq int         matchalphanum(char c);
+uniq int         ismetachar(char c);
+uniq regex_t*    compile_sequence(compiler_state* st, const char* pattern, int* pos, int in_group);
+uniq regex_t*    new_token(compiler_state* st);
+uniq int         append_token(regex_t** head, regex_t** tail, regex_t* token);
+uniq void        re_print_internal(regex_t* pattern, int depth);
+uniq void        snapshot_captures(const match_context* ctx, re_capture* buffer_);
+uniq void        restore_captures(match_context* ctx, const re_capture* buffer_);
+uniq void        clear_captures(match_context* ctx);
+
+
+// Public functions: 
+uniq int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures)
+{
+  *matchlength = 0;
+  if (pattern == 0)
+  {
+    return -1;
+  }
+
+  regex_program_t* program = (regex_program_t*) pattern;
+  regex_t* start = program->start;
+  if (start == 0)
+  {
+    return -1;
+  }
+
+  match_context ctx;
+  ctx.base = text;
+  ctx.captures = (captures != 0 && max_captures > 0) ? captures : 0;
+  ctx.capture_capacity = (captures != 0 && max_captures > 0) ? max_captures : 0;
+  if (ctx.capture_capacity > MAX_CAPTURE_SLOTS)
+  {
+    ctx.capture_capacity = MAX_CAPTURE_SLOTS;
+  }
+  ctx.total_groups = program->group_count;
+
+  if (ctx.captures != 0)
+  {
+    clear_captures(&ctx);
+  }
+
+  if (start->type == BEGIN)
+  {
+    const char* end = matchpattern(start->next, text, &ctx);
+    if (end != 0)
+    {
+      *matchlength = (int)(end - text);
+      if (ctx.captures != 0)
+      {
+        // Groups already recorded relative to ctx.base 
+      }
+      return 0;
+    }
+    return -1;
+  }
+  else
+  {
+    const char* cursor = text;
+    while (1)
+    {
+      if (ctx.captures != 0)
+      {
+        clear_captures(&ctx);
+      }
+
+      const char* end = matchpattern(start, cursor, &ctx);
+      if (end != 0)
+      {
+        if (*cursor == '\0' && cursor != text)
+        {
+          return -1; // Preserve legacy behaviour
+        }
+        *matchlength = (int)(end - cursor);
+        return (int)(cursor - text);
+      }
+
+      if (*cursor == '\0')
+      {
+        break;
+      }
+      cursor += 1;
+    }
+  }
+
+  return -1;
+}
+
+uniq int re_match(const char* pattern, const char* text, int* matchlength)
+{
+  return re_matchp(re_compile(pattern), text, matchlength, (re_capture*)0, 0);
+}
+
+uniq re_t re_compile(const char* pattern)
+{
+  static regex_t        re_compiled[MAX_REGEXP_OBJECTS];
+  static unsigned char  ccl_buf[MAX_CHAR_CLASS_LEN];
+  static regex_program_t program;
+
+  compiler_state state;
+  state.pool = re_compiled;
+  state.pool_capacity = MAX_REGEXP_OBJECTS;
+  state.pool_size = 0;
+  state.ccl_buf = ccl_buf;
+  state.ccl_capacity = MAX_CHAR_CLASS_LEN;
+  state.ccl_idx = 1; // leave first slot unused to mimic original behaviour 
+  state.group_count = 0;
+
+  if (state.ccl_capacity > 0)
+  {
+    state.ccl_buf[0] = 0;
+  }
+
+  int pos = 0;
+  regex_t* head = compile_sequence(&state, pattern, &pos, 0);
+  if ((head == 0) || (pattern[pos] != '\0'))
+  {
+    return NULL;
+  }
+
+  program.start = head;
+  program.group_count = state.group_count;
+  return (re_t) &program;
+}
+
+
+uniq void re_print(re_t pattern)
+{
+  if (pattern == 0)
+  {
+    return;
+  }
+
+  regex_program_t* program = (regex_program_t*) pattern;
+  if (program->start == 0)
+  {
+    return;
+  }
+
+  re_print_internal(program->start, 0);
+}
+
+
+// Private helper implementations 
+uniq void clear_captures(match_context* ctx)
+{
+  if ((ctx->captures == 0) || (ctx->capture_capacity <= 0))
+  {
+    return;
+  }
+
+  for (int i = 0; i < ctx->capture_capacity; ++i)
+  {
+    ctx->captures[i].start = -1;
+    ctx->captures[i].length = 0;
+  }
+}
+
+uniq void snapshot_captures(const match_context* ctx, re_capture* buffer_)
+{
+  if ((ctx->captures == 0) || (ctx->capture_capacity <= 0))
+  {
+    return;
+  }
+
+  memcpy(buffer_, ctx->captures, sizeof(re_capture) * ctx->capture_capacity);
+}
+
+uniq void restore_captures(match_context* ctx, const re_capture* buffer_)
+{
+  if ((ctx->captures == 0) || (ctx->capture_capacity <= 0))
+  {
+    return;
+  }
+
+  memcpy(ctx->captures, buffer_, sizeof(re_capture) * ctx->capture_capacity);
+}
+
+
+uniq regex_t* new_token(compiler_state* st)
+{
+  if (st->pool_size >= st->pool_capacity)
+  {
+    return NULL;
+  }
+
+  regex_t* token = &st->pool[st->pool_size++];
+  token->type = UNUSED;
+  token->u.ccl = 0;
+  token->next = 0;
+  token->u.group.first = 0;
+  token->u.group.id = 0;
+  return token;
+}
+
+uniq int append_token(regex_t** head, regex_t** tail, regex_t* token)
+{
+  if (token == 0)
+  {
+    return 0;
+  }
+
+  if (*head == 0)
+  {
+    *head = token;
+  }
+  else
+  {
+    (*tail)->next = token;
+  }
+  *tail = token;
+  return 1;
+}
+
+uniq regex_t* compile_sequence(compiler_state* st, const char* pattern, int* pos, int in_group)
+{
+  regex_t* head = (regex_t*)0;
+  regex_t* tail = (regex_t*)0;
+
+  while (pattern[*pos] != '\0')
+  {
+    char c = pattern[*pos];
+
+    if (in_group && (c == ')'))
+    {
+      break;
+    }
+
+    regex_t* token = (regex_t*)0;
+
+    switch (c)
+    {
+      case '^':
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = BEGIN;
+        (*pos)++;
+      } break;
+
+      case '$':
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = END;
+        (*pos)++;
+      } break;
+
+      case '.':
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = DOT;
+        (*pos)++;
+      } break;
+
+      case '*':
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = STAR;
+        (*pos)++;
+      } break;
+
+      case '+':
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = PLUS;
+        (*pos)++;
+      } break;
+
+      case '?':
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = QUESTIONMARK;
+        (*pos)++;
+      } break;
+
+      case '\\':
+      {
+        (*pos)++;
+        if (pattern[*pos] == '\0')
+        {
+          return NULL;
+        }
+
+        token = new_token(st);
+        if (token == 0) return NULL;
+
+        switch (pattern[*pos])
+        {
+          case 'd': token->type = DIGIT;          break;
+          case 'D': token->type = NOT_DIGIT;      break;
+          case 'w': token->type = ALPHA;          break;
+          case 'W': token->type = NOT_ALPHA;      break;
+          case 's': token->type = WHITESPACE;     break;
+          case 'S': token->type = NOT_WHITESPACE; break;
+          default:
+          {
+            token->type = CHAR;
+            token->u.ch = (unsigned char)pattern[*pos];
+          } break;
+        }
+        (*pos)++;
+      } break;
+
+      case '[':
+      {
+        int buf_begin = st->ccl_idx;
+        int negated = 0;
+        (*pos)++;
+
+        if (pattern[*pos] == '^')
+        {
+          negated = 1;
+          (*pos)++;
+          if (pattern[*pos] == '\0')
+          {
+            return NULL;
+          }
+        }
+
+        if (pattern[*pos] == '\0')
+        {
+          return NULL;
+        }
+
+        while ((pattern[*pos] != '\0') && (pattern[*pos] != ']'))
+        {
+          if (pattern[*pos] == '\\')
+          {
+            if (st->ccl_idx >= (st->ccl_capacity - 1))
+            {
+              return NULL;
+            }
+            st->ccl_buf[st->ccl_idx++] = '\\';
+            (*pos)++;
+            if (pattern[*pos] == '\0')
+            {
+              return NULL;
+            }
+          }
+
+          if (st->ccl_idx >= st->ccl_capacity)
+          {
+            return NULL;
+          }
+          st->ccl_buf[st->ccl_idx++] = (unsigned char)pattern[*pos];
+          (*pos)++;
+        }
+
+        if (pattern[*pos] != ']')
+        {
+          return NULL;
+        }
+
+        if (st->ccl_idx >= st->ccl_capacity)
+        {
+          return NULL;
+        }
+        st->ccl_buf[st->ccl_idx++] = 0;
+
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = negated ? INV_CHAR_CLASS : CHAR_CLASS;
+        token->u.ccl = &st->ccl_buf[buf_begin];
+
+        (*pos)++;
+      } break;
+
+      case '(':
+      {
+        (*pos)++;
+        regex_t* inner = compile_sequence(st, pattern, pos, 1);
+        if (inner == 0)
+        {
+          return NULL;
+        }
+        if (pattern[*pos] != ')')
+        {
+          return NULL;
+        }
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = GROUP;
+        token->u.group.first = inner;
+        token->u.group.id = ++st->group_count;
+        (*pos)++;
+      } break;
+
+      case ')':
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = CHAR;
+        token->u.ch = (unsigned char)c;
+        (*pos)++;
+      } break;
+
+      default:
+      {
+        token = new_token(st);
+        if (token == 0) return NULL;
+        token->type = CHAR;
+        token->u.ch = (unsigned char)c;
+        (*pos)++;
+      } break;
+    }
+
+    if (!append_token(&head, &tail, token))
+    {
+      return NULL;
+    }
+  }
+
+  regex_t* sentinel = new_token(st);
+  if (sentinel == 0)
+  {
+    return NULL;
+  }
+  sentinel->type = UNUSED;
+  sentinel->next = 0;
+
+  if (head == 0)
+  {
+    head = sentinel;
+  }
+  else
+  {
+    tail->next = sentinel;
+  }
+
+  return head;
+}
+
+uniq const char* matchpattern(regex_t* pattern, const char* text, match_context* ctx)
+{
+  if ((pattern == 0) || (pattern->type == UNUSED))
+  {
+    return text;
+  }
+
+  re_capture snapshot[MAX_CAPTURE_SLOTS];
+  snapshot_captures(ctx, snapshot);
+
+  regex_t* current = pattern;
+  const char* cursor = text;
+
+  while (current != 0 && current->type != UNUSED)
+  {
+    regex_t* next = current->next;
+
+    if ((next != 0) && (next->type == QUESTIONMARK))
+    {
+      const char* result = matchquestion(current, next->next, cursor, ctx);
+      if (result != 0)
+      {
+        return result;
+      }
+      restore_captures(ctx, snapshot);
+      return NULL;
+    }
+    else if ((next != 0) && (next->type == STAR))
+    {
+      const char* result = matchstar(current, next->next, cursor, ctx);
+      if (result != 0)
+      {
+        return result;
+      }
+      restore_captures(ctx, snapshot);
+      return NULL;
+    }
+    else if ((next != 0) && (next->type == PLUS))
+    {
+      const char* result = matchplus(current, next->next, cursor, ctx);
+      if (result != 0)
+      {
+        return result;
+      }
+      restore_captures(ctx, snapshot);
+      return NULL;
+    }
+    else if (current->type == END)
+    {
+      if (*cursor != '\0')
+      {
+        restore_captures(ctx, snapshot);
+        return NULL;
+      }
+      current = current->next;
+    }
+    else
+    {
+      const char* after = matchtoken(current, cursor, ctx);
+      if (after == 0)
+      {
+        restore_captures(ctx, snapshot);
+        return NULL;
+      }
+      cursor = after;
+      current = current->next;
+    }
+  }
+
+  return cursor;
+}
+
+uniq const char* matchstar(regex_t* token, regex_t* rest, const char* text, match_context* ctx)
+{
+  re_capture snapshot_entry[MAX_CAPTURE_SLOTS];
+  snapshot_captures(ctx, snapshot_entry);
+
+  const char* consume = matchtoken(token, text, ctx);
+  while ((consume != 0) && (consume != text))
+  {
+    re_capture snapshot_after_token[MAX_CAPTURE_SLOTS];
+    snapshot_captures(ctx, snapshot_after_token);
+
+    const char* recursive = matchstar(token, rest, consume, ctx);
+    if (recursive != 0)
+    {
+      return recursive;
+    }
+
+    restore_captures(ctx, snapshot_after_token);
+    consume = matchtoken(token, consume, ctx);
+  }
+
+  restore_captures(ctx, snapshot_entry);
+  return matchpattern(rest, text, ctx);
+}
+
+uniq const char* matchplus(regex_t* token, regex_t* rest, const char* text, match_context* ctx)
+{
+  re_capture snapshot_entry[MAX_CAPTURE_SLOTS];
+  snapshot_captures(ctx, snapshot_entry);
+
+  const char* first = matchtoken(token, text, ctx);
+  if ((first == 0) || (first == text))
+  {
+    restore_captures(ctx, snapshot_entry);
+    return NULL;
+  }
+
+  const char* result = matchstar(token, rest, first, ctx);
+  if (result != 0)
+  {
+    return result;
+  }
+
+  restore_captures(ctx, snapshot_entry);
+  return NULL;
+}
+
+uniq const char* matchquestion(regex_t* token, regex_t* rest, const char* text, match_context* ctx)
+{
+  re_capture snapshot_entry[MAX_CAPTURE_SLOTS];
+  snapshot_captures(ctx, snapshot_entry);
+
+  const char* skipped = matchpattern(rest, text, ctx);
+  if (skipped != 0)
+  {
+    return skipped;
+  }
+
+  restore_captures(ctx, snapshot_entry);
+
+  const char* consumed = matchtoken(token, text, ctx);
+  if ((consumed == 0) || (consumed == text))
+  {
+    restore_captures(ctx, snapshot_entry);
+    return NULL;
+  }
+
+  const char* with = matchpattern(rest, consumed, ctx);
+  if (with != 0)
+  {
+    return with;
+  }
+
+  restore_captures(ctx, snapshot_entry);
+  return NULL;
+}
+
+uniq const char* matchtoken(regex_t* token, const char* text, match_context* ctx)
+{
+  switch (token->type)
+  {
+    case DOT:
+      return (*text != '\0' && matchdot(*text)) ? text + 1 : 0;
+
+    case CHAR:
+      return (*text != '\0' && token->u.ch == (unsigned char)*text) ? text + 1 : 0;
+
+    case CHAR_CLASS:
+      return (*text != '\0' && matchcharclass(*text, (const char*)token->u.ccl)) ? text + 1 : 0;
+
+    case INV_CHAR_CLASS:
+      return (*text != '\0' && !matchcharclass(*text, (const char*)token->u.ccl)) ? text + 1 : 0;
+
+    case DIGIT:
+      return (*text != '\0' && matchdigit(*text)) ? text + 1 : 0;
+
+    case NOT_DIGIT:
+      return (*text != '\0' && !matchdigit(*text)) ? text + 1 : 0;
+
+    case ALPHA:
+      return (*text != '\0' && matchalphanum(*text)) ? text + 1 : 0;
+
+    case NOT_ALPHA:
+      return (*text != '\0' && !matchalphanum(*text)) ? text + 1 : 0;
+
+    case WHITESPACE:
+      return (*text != '\0' && matchwhitespace(*text)) ? text + 1 : 0;
+
+    case NOT_WHITESPACE:
+      return (*text != '\0' && !matchwhitespace(*text)) ? text + 1 : 0;
+
+    case GROUP:
+    {
+      re_capture snapshot[MAX_CAPTURE_SLOTS];
+      snapshot_captures(ctx, snapshot);
+
+      const char* start = text;
+      const char* end = matchpattern(token->u.group.first, text, ctx);
+      if (end == 0)
+      {
+        restore_captures(ctx, snapshot);
+        return NULL;
+      }
+
+      if (token->u.group.id > 0 && ctx->captures != 0)
+      {
+        int idx = token->u.group.id - 1;
+        if (idx < ctx->capture_capacity)
+        {
+          ctx->captures[idx].start = (int)(start - ctx->base);
+          ctx->captures[idx].length = (int)(end - start);
+        }
+      }
+
+      return end;
+    }
+
+    case BEGIN:
+      return (text == ctx->base) ? text : 0;
+
+    case END:
+      return (*text == '\0') ? text : 0;
+
+    default:
+      break;
+  }
+
+  return (const char*)0;
+}
+
+
+uniq int matchdigit(char c)
+{
+  return isdigit((unsigned char)c);
+}
+uniq int matchalpha(char c)
+{
+  return isalpha((unsigned char)c);
+}
+uniq int matchwhitespace(char c)
+{
+  return isspace((unsigned char)c);
+}
+uniq int matchalphanum(char c)
+{
+  return ((c == '_') || matchalpha(c) || matchdigit(c));
+}
+uniq int matchrange(char c, const char* str)
+{
+  return (    (c != '-')
+           && (str[0] != '\0')
+           && (str[0] != '-')
+           && (str[1] == '-')
+           && (str[2] != '\0')
+           && (    (c >= str[0])
+                && (c <= str[2])));
+}
+uniq int matchdot(char c)
+{
+#if defined(RE_DOT_MATCHES_NEWLINE) && (RE_DOT_MATCHES_NEWLINE == 1)
+  (void)c;
+  return 1;
+#else
+  return c != '\n' && c != '\r';
+#endif
+}
+uniq int ismetachar(char c)
+{
+  return ((c == 's') || (c == 'S') || (c == 'w') || (c == 'W') || (c == 'd') || (c == 'D'));
+}
+
+uniq int matchmetachar(char c, const char* str)
+{
+  switch (str[0])
+  {
+    case 'd': return  matchdigit(c);
+    case 'D': return !matchdigit(c);
+    case 'w': return  matchalphanum(c);
+    case 'W': return !matchalphanum(c);
+    case 's': return  matchwhitespace(c);
+    case 'S': return !matchwhitespace(c);
+    default:  return (c == str[0]);
+  }
+}
+
+uniq int matchcharclass(char c, const char* str)
+{
+  do
+  {
+    if (matchrange(c, str))
+    {
+      return 1;
+    }
+    else if (str[0] == '\\')
+    {
+      str += 1;
+      if (matchmetachar(c, str))
+      {
+        return 1;
+      }
+      else if ((c == str[0]) && !ismetachar(c))
+      {
+        return 1;
+      }
+    }
+    else if (c == str[0])
+    {
+      if (c == '-')
+      {
+        return ((str[-1] == '\0') || (str[1] == '\0'));
+      }
+      else
+      {
+        return 1;
+      }
+    }
+  }
+  while (*str++ != '\0');
+
+  return 0;
+}
+
+uniq void re_print_internal(regex_t* pattern, int depth)
+{
+  const char* types[] =
+  {
+    "UNUSED", "DOT", "BEGIN", "END", "QUESTIONMARK", "STAR", "PLUS", "CHAR",
+    "CHAR_CLASS", "INV_CHAR_CLASS", "DIGIT", "NOT_DIGIT", "ALPHA", "NOT_ALPHA",
+    "WHITESPACE", "NOT_WHITESPACE", "GROUP"
+  };
+
+  while (pattern != 0 && pattern->type != UNUSED)
+  {
+    for (int i = 0; i < depth; ++i)
+    {
+      putchar(' ');
+    }
+    printf("type: %s", types[pattern->type]);
+
+    if ((pattern->type == CHAR_CLASS) || (pattern->type == INV_CHAR_CLASS))
+    {
+      printf(" [");
+      const unsigned char* ccl = pattern->u.ccl;
+      while (*ccl != '\0' && *ccl != ']')
+      {
+        printf("%c", *ccl);
+        ++ccl;
+      }
+      printf("]");
+    }
+    else if (pattern->type == CHAR)
+    {
+      printf(" '%c'", pattern->u.ch);
+    }
+    else if (pattern->type == GROUP)
+    {
+      printf(" id=%d\n", pattern->u.group.id);
+      re_print_internal(pattern->u.group.first, depth + 2);
+      pattern = pattern->next;
+      continue;
+    }
+
+    printf("\n");
+    pattern = pattern->next;
+  }
+}
+
+uniq int re_get_group_count(re_t pattern)
+{
+  if (pattern == 0)
+  {
+    return 0;
+  }
+
+  regex_program_t* program = (regex_program_t*) pattern;
+  return program->group_count;
+}
+
+#ifndef _XOPEN_SOURCE
+#define _XOPEN_SOURCE
+#endif
+
+uniq string string::lower_case(char* str)
+{
+    string result = string(str);
+    for(int i=0; i<strlen(str); i++) {
+        if(str[i] >= 'A' && str[i] <= 'Z') {
+            result[i] = str[i] - 'A' + 'a';
+        }
+    }
+    
+    return result;
+}
+
+uniq string string::upper_case(char* str)
+{
+    string result = string(str);
+    for(int i=0; i<strlen(str); i++) {
+        if(str[i] >= 'a' && str[i] <= 'z') {
+            result[i] = str[i] - 'a' + 'A';
+        }
+    }
+    
+    return result;
+}
+
+uniq int char*::index_regex(char* self, char* reg, int default_value)
+{
+    if(reg == null) {
+        return default_value;
+    }
+    
+    re_t re = re_compile(reg);
+    
+    int result = default_value;
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    int result = default_value;
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self, &matchlength, captures, max_captures);
+
+        /// match and no group strings ///
+        if(regex_result >= 0) 
+        {
+            result = regex_result;
+            break;
+        }
+        /// no match ///
+        {
+            break;
+        }
+    }
+
+    return result;
+}
+
+uniq int char*::rindex(char* str, char* search_str, int default_value)
+{
+    int len = strlen(search_str);
+    char* p = str + strlen(str) - len;
+
+    while(p >= str) {
+        if(strncmp(p, search_str, len) == 0) {
+            return p - str;
+        }
+
+        p--;
+    }
+
+    return default_value;
+}
+
+uniq int char*::rindex_regex(char* self, char* reg, int default_value)
+{
+    if(reg == null) {
+        return default_value;
+    }
+    
+    re_t re = re_compile(reg);
+    
+    int result = default_value;
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    string self2 = self.reverse();
+
+    int result = default_value;
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self2, &matchlength, captures, max_captures);
+
+        /// match and no group strings ///
+        if(regex_result >= 0) 
+        {
+            result = strlen(self) -matchlength;
+            break;
+        }
+        /// no match ///
+        {
+            break;
+        }
+    }
+
+    return result;
+}
+
+uniq string char*::strip(char* self)
+{
+    string result = string(self);
+    
+    int len = strlen(self);
+    
+    if(self[len-1] == '\n') {
+        result[len-1] = '\0';
+    }
+    else if(self[len-1] == '\r') {
+        result[len-1] = '\0';
+    }
+    else if(len > 2 && self[len-2] == '\r' && self[len-1] == '\n') {
+        result[len-2] = '\0';
+    }
+    
+    return result;
+}
+
+uniq int char*::index(char* str, char* search_str, int default_value)
+{
+    using unsafe;
+    
+    char* head = strstr(str, search_str);
+
+    if(head == null) {
+        return default_value;
+    }
+
+    return head - str;
+}
+
+uniq string string::chomp(char* str)
+{
+    string result = string(str);
+    
+    if(result[result.length()-1] == '\n') {
+        return result.substring(0, -2);
+    }
+    
+    return result;
+}
+
+uniq string xrealpath(char* path)
+{
+    if(path == null) {
+        return string("");
+    }
+    char* result = realpath(path, null);
+
+    string result2 = string(result);
+
+    free(result);
+
+    return result2;
+}
+
+
+uniq string char*::replace(char* self, int index, char c)
+{
+    int len = strlen(self);
+
+    if(strcmp(self, "") == 0) {
+        return string(self);
+    }
+    
+    if(index < 0) {
+       index += len;
+    }
+
+    if(index >= len) {
+        index = len-1;
+    }
+
+    if(index < 0) {
+        index = 0;
+    }
+    
+    self[index] = c;
+    
+    return string(self);
+}
+
+uniq string char*::multiply(char* str, int n)
+{
+    int len = strlen(str) * n + 1;
+
+    char*% result = new char[len];
+
+    result[0] = '\0';
+
+    for(int i=0; i<n; i++) {
+        strcat(result, str);
+    }
+
+    return result;
+}
+
+uniq list<string>*% char*::split_str(char* self, char* str) 
+{
+    using unsafe;
+    
+    auto result = new list<string>.initialize();
+
+    auto buf = new buffer.initialize();
+
+    for(int i=0; i<self.length(); i++) {
+        if(strstr(self + i, str) == self + i) {
+            result.push_back(string(buf.buf));
+            buf.reset();
+            i += strlen(str)-1;
+        }
+        else {
+            buf.append_char(self[i]);
+        }
+    }
+    if(buf.length() != 0) {
+        result.push_back(string(buf.buf));
+    }
+
+    return result;
+}
+
+uniq int string::rindex(char* str, char* search_str, int default_value=-1) 
+{
+    return char*::rindex(str, search_str, default_value);
+}
+
+uniq int string::rindex_regex(char* self, char* reg, int default_value=-1)
+{
+    return char*::rindex_regex(self, reg, default_value);
+}
+
+uniq string string::strip(char* self)
+{
+    return char*::strip(self);
+}
+
+uniq int string::index(char* str, char* search_str, int default_value=-1)
+{
+    return char*::index(str, search_str, default_value);
+}
+
+uniq int string::index_regex(char* self, char* reg, int default_value=-1)
+{
+    return char*::index_regex(self, reg, default_value);
+}
+
+uniq string string::replace(char* self, int index, char c)
+{
+    return char*::replace(self, index, c);
+}
+
+uniq string string::multiply(char* str, int n)
+{
+    return char*::multiply(str, n);
+}
+
+uniq bool char*::match(char* self, char* reg)
+{
+    if(reg == null) {
+        return false;
+    }
+    
+    re_t re = re_compile(reg);
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    int matchlength = 0;
+    int max_captures = 8;
+    re_capture captures[max_captures];
+    int regex_result = re_matchp(re, self, &matchlength, captures, max_captures);
+
+    /// match and no group strings ///
+    if(regex_result >= 0)
+    {
+        return true;
+    }
+    /// no match ///
+    else
+    {
+        return false;
+    }
+}
+
+uniq list<string>*% char*::scan(char* self, char* reg)
+{
+    if(reg == null || reg == null) {
+        return new list<string>();
+    }
+    auto result = new list<string>();
+    
+    re_t re = re_compile(reg);
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    int group_count = re_get_group_count(re);
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self + offset, &matchlength, captures, max_captures);
+
+        /// match and no group strings ///
+        if(regex_result >= 0 && group_count == 0)
+        {
+            string str = self.substring(offset + regex_result, offset + regex_result + matchlength);
+
+            result.add(str);
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+        /// group strings ///
+        else if(regex_result >= 0 && group_count > 0) {
+            for(int i=0; i<group_count; i++) {
+                re_capture cp = captures[i];
+                auto match_string = (self + offset).substring(cp.start, cp.start + cp.length);
+                result.push_back(match_string);
+            }
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+        /// no match ///
+        else {
+            break;
+        }
+    }
+
+    return result;
+}
+
+uniq list<string>*% char*::split(char* self, char* reg)
+{
+    if(reg == null || reg == null) {
+        return new list<string>();
+    }
+    
+    auto result = new list<string>();
+    
+    re_t re = re_compile(reg);
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    int group_count = re_get_group_count(re);
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self + offset, &matchlength, captures, max_captures);
+
+        /// match and no group strings ///
+        if(regex_result >= 0 && group_count == 0)
+        {
+            string str = self.substring(offset, offset + regex_result);
+
+            result.add(str);
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+        /// no match ///
+        else
+        {
+            break;
+        }
+    }
+
+    if(offset < self.length()) {
+        string str = self.substring(offset, -1);
+        result.push_back(str);
+    }
+
+    return result;
+}
+
+uniq string string::sub(char* self, char* reg, char* replace)
+{
+    return char*::sub(self, reg, replace);
+}
+
+uniq list<string>*% string::split_str(char* self, char* str)
+{
+    return char*::split_str(self, str);
+}
+
+uniq list<string>*% string::scan(char* self, char* reg)
+{
+    return char*::scan(self, reg);
+}
+
+uniq list<string>*% string::split(char* self, char* reg)
+{
+    return char*::split(self, reg);
+}
+
+uniq bool string::match(char* self, char* reg)
+{
+    return char*::match(self, reg);
+}
+
+uniq string char*::sub(char* self, char* reg, char* replace)
+{
+    if(reg == null || reg == null) {
+        return string("");
+    }
+    
+    re_t re = re_compile(reg);
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    auto result = new buffer.initialize();
+    
+    int group_count = re_get_group_count(re);
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self + offset, &matchlength, captures, max_captures);
+
+        /// match and no group strings ///
+        if(regex_result >= 0 && group_count == 0)
+        {
+            string str = self.substring(offset, offset + regex_result);
+
+            result.append_str(str);
+            result.append_str(replace);
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+        /// no match ///
+        else {
+            string str = self.substring(offset, -1);
+            result.append_str(str);
+            break;
+        }
+    }
+
+    return result.to_string();
+}
+
+uniq string char*::sub_block(char* self, char* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+{
+    if(reg == null || reg == null) {
+        return string("");
+    }
+    
+    auto result = new buffer();
+    
+    re_t re = re_compile(reg);
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    int group_count = re_get_group_count(re);
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self + offset, &matchlength, captures, max_captures);
+
+        /// match and no group strings ///
+        if(regex_result >= 0 && group_count == 0)
+        {
+            string str = self.substring(offset, offset + regex_result);
+
+            result.append_str(str);
+            
+            list<string>*% group_strings = new list<string>.initialize();
+            
+            string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
+            
+            string block_result = block(parent, match_string, group_strings);
+            
+            result.append_str(block_result);
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+
+        /// group strings ///
+        else if(regex_result >= 0 && group_count > 0) {
+            string str = self.substring(offset, offset + regex_result);
+
+            result.append_str(str);
+
+            list<string>*% group_strings = new list<string>.initialize();
+
+            for(int i=0; i<group_count; i++) {
+                re_capture cp = captures[i];
+                auto match_string = (self + offset).substring(cp.start, cp.start + cp.length);
+                group_strings.push_back(match_string);
+            }
+            
+            string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
+            
+            string block_result = block(parent, match_string, group_strings);
+            
+            result.append_str(block_result);
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+        /// no match ///
+        else {
+            string str = self.substring(offset, -1);
+            result.append_str(str);
+            break;
+        }
+    }
+    return result.to_string();
+}
+
+uniq list<string>*% char*::scan_block(char* self, char* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+{
+    if(reg == null || reg == null) {
+        return new list<string>();
+    }
+    auto result = new list<string>();
+    
+    re_t re = re_compile(reg);
+    
+    int offset = 0;
+
+    int n = 0;
+    
+    int group_count = re_get_group_count(re);
+
+    while(true) {
+        int matchlength = 0;
+        int max_captures = 8;
+        re_capture captures[max_captures];
+        int regex_result = re_matchp(re, self + offset, &matchlength, captures, max_captures);
+
+        /// match and no group strings ///
+        if(regex_result >= 0 && group_count == 0)
+        {
+            list<string>*% group_strings = new list<string>.initialize();
+            
+            string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
+            
+            string block_result = block(parent, match_string, group_strings);
+            
+            result.add(block_result);
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+        /// group strings ///
+        else if(regex_result >= 0 && group_count > 0) {
+            list<string>*% group_strings = new list<string>.initialize();
+
+            for(int i=0; i<group_count; i++) {
+                re_capture cp = captures[i];
+                auto match_string = (self + offset).substring(cp.start, cp.start + cp.length);
+                group_strings.push_back(match_string);
+            }
+            
+            string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
+            
+            string block_result = block(parent, match_string, group_strings);
+            
+            result.add(block_result);
+            
+            if(matchlength == 0) {
+                offset++;
+            }
+            else {
+                offset = offset + regex_result + matchlength;
+            }
+        }
+        /// no match ///
+        else {
+            break;
+        }
+    }
+
+    return result;
+}
+
+uniq string string::sub_block(char* self, char* reg, void* parent, string (*block)(void* parent, char* match_string, list<string>* group_strings))
+{
+    return char*::sub_block(self, reg, parent, block);
+}
 
 #endif

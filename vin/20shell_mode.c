@@ -39,7 +39,7 @@ void ViWin*::runCommand(ViWin* self)
     fclose(fp);
     
     self.enterNewLine2();
-    output.to_string().split(/\n/).each {
+    output.to_string().split("\n").each {
         self.insertText(it.to_wstring());
         self.enterNewLine();
     }

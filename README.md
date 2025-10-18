@@ -5,7 +5,7 @@ This has Rerfference Count GC, and includes the generics collection libraries.
 
 リファレンスカウントGCがありコレクションライブラリを備えてます。
 
-version 100.0.0
+version 101.0.0
 
 ``` C
 #include <comelang.h>
@@ -77,6 +77,7 @@ sh all_build.sh
 # Histories
 
 ```
+101.0.0 regex libraries can be used including comelang.h. scan, sub, extra. If you include comelang-str.h, it uses pcre. Even no posix enviroment, you can use regex and string libraries with including comelang.h only.
 100.0.0 Remove Exception. Buggy function may be few. Complete.
 70.0.0 Fixed bug, and some function has been removed.
 60.0.0 More compatiblity for C language.

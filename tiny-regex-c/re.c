@@ -249,6 +249,18 @@ re_t re_compile(const char* pattern)
 }
 
 
+int re_get_group_count(re_t pattern)
+{
+  if (pattern == 0)
+  {
+    return 0;
+  }
+
+  regex_program_t* program = (regex_program_t*) pattern;
+  return program->group_count;
+}
+
+
 void re_print(re_t pattern)
 {
   if (pattern == 0)

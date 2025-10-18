@@ -1,11 +1,9 @@
 #include <comelang.h>
-#include <comelang-str-libc.h>
+#include <comelang-str.h>
 
 int main(int argc, char** argv)
 {
-    int r = "ABCABCABC".index_regex_count(/ABC/, 3, -1);
-    
-    printf("r %d\n", r);
+    "ABC123ABC123DEF123GHI".sub(/ABC[0-9]+/, "X").puts();
     
     return 0;
 }

@@ -91,33 +91,6 @@ bool ViWin*::loadDotFromFile(ViWin* self, Vi* nvi)
     return true;
 }
 
-bool ViWin*::pollCancel(ViWin* self)
-{
-    struct pollfd fds[1];
-    
-    fds[0].fd = STDIN_FILENO;
-    fds[0].events = POLLIN;
-    
-    int timeout = 1;
-    
-    int ret = poll(fds, 1, timeout);
-    
-    if (ret > 0) {
-        if (fds[0].revents & POLLIN) {
-            int key = self.getKey(head:false);
-            
-            if(key == 27 || key == 'C' - 'A' +1) {
-                return true;
-            }
-        }
-    } 
-    else if (ret == 0) {
-    } 
-    else {
-    }
-    
-    return false;
-}
 
 int ViWin*::getKey(ViWin* self, bool head) version 14
 {
@@ -249,9 +222,6 @@ void ViWin*::saveInputedKey(ViWin* self) version 14
                     self.savedInputedKeys.push_back(it);
                 }
                 
-                if(self.pollCancel()) {
-                    break;
-                }
             }
             self.digitInput = 0;
         }

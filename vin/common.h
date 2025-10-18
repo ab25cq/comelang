@@ -3,10 +3,9 @@
 // src/01init.c
 ////////////////////////////
 #include <comelang.h> 
-#include <comelang-str.h> 
+#include <comelang-wchar.h> 
 #include <curses.h>
 #include <unistd.h>
-#include <poll.h>
 
 #define SAVE_INPUT_KEY_MAX 256
 
@@ -146,7 +145,6 @@ void ViWin*::textsView(ViWin* self, Vi* nvi);
 void ViWin*::statusBarView(ViWin* self, Vi* nvi) version 2;
 void ViWin*::view(ViWin* self, Vi* nvi) version 2;
 int ViWin*::getKey(ViWin* self, bool head) version 2;
-bool ViWin*::pollCancel(ViWin* self);
 void ViWin*::input(ViWin* self, Vi* nvi) version 2;
 void ViWin*::modifyUnderCursorYValue(ViWin* self);
 void ViWin*::modifyOverCursorYValue(ViWin* self);

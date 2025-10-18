@@ -132,7 +132,7 @@ void ViWin*::completion(ViWin* self, Vi* nvi) version 13
     auto candidates = new list<wstring>.initialize();
 
     foreach(it, self.texts) {
-        auto li = it.to_string().scan(/[a-zA-Z0-9_]+/);
+        auto li = it.to_string().scan("[a-zA-Z0-9_]+");
 
         foreach(it2, li) {
             if(it2.index(word.to_string(), -1) == 0 && strcmp(it2, word.to_string()) != 0)

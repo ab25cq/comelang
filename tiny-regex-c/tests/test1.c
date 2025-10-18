@@ -196,6 +196,38 @@ int main()
 
     ntests += 3; /* account for the explicit capture tests above */
 
+    {
+        re_t compiled = re_compile("abc");
+        int groupcount = re_get_group_count(compiled);
+        if (groupcount != 0)
+        {
+            fprintf(stderr, "[group-count]: expected 0 groups for 'abc', got %d\n", groupcount);
+            nfailed += 1;
+        }
+    }
+
+    {
+        re_t compiled = re_compile("(ab)+c");
+        int groupcount = re_get_group_count(compiled);
+        if (groupcount != 1)
+        {
+            fprintf(stderr, "[group-count]: expected 1 group for '(ab)+c', got %d\n", groupcount);
+            nfailed += 1;
+        }
+    }
+
+    {
+        re_t compiled = re_compile("^(ab(cd)*)$");
+        int groupcount = re_get_group_count(compiled);
+        if (groupcount != 2)
+        {
+            fprintf(stderr, "[group-count]: expected 2 groups for '^(ab(cd)*)$', got %d\n", groupcount);
+            nfailed += 1;
+        }
+    }
+
+    ntests += 3; /* group count checks */
+
     // printf("\n");
     printf("%lu/%lu tests succeeded.\n", ntests - nfailed, ntests);
     printf("\n");

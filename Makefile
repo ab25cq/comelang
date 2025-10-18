@@ -344,6 +344,7 @@ install:
 	mkdir -p "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-str.h "$(DESTDIR)/include"
+	$(INSTALL) -m 644 ./comelang-wchar.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-net.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-pthread.h "$(DESTDIR)/include"
 	$(INSTALL) -m 644 ./comelang-baremetal.h "$(DESTDIR)/include"

@@ -3,6 +3,8 @@ struct __sFILEX;
 
 struct _xlocale;
 
+struct re_program;
+
 struct sType;
 
 struct sClass;
@@ -1173,6 +1175,101 @@ struct list$1char$ph
     int len;
     struct list_item$1char$ph* it;
 };
+
+typedef struct re_program* re_t;
+
+struct re_capture
+{
+    int start;
+    int length;
+};
+
+typedef struct re_capture re_capture;
+
+enum { UNUSED
+,DOT
+,BEGIN
+,END
+,QUESTIONMARK
+,STAR
+,PLUS
+,CHAR
+,CHAR_CLASS
+,INV_CHAR_CLASS
+,DIGIT
+,NOT_DIGIT
+,ALPHA
+,NOT_ALPHA
+,WHITESPACE
+,NOT_WHITESPACE
+,GROUP
+};
+
+typedef struct regex_t regex_t;
+
+struct anonymous_typeX12
+{
+    struct regex_t* first;
+    int id;
+};
+
+union anonymous_typeZ11
+{
+unsigned char ch;
+unsigned char* ccl;
+struct anonymous_typeX12 group;
+};
+
+struct anonymous_typeX14
+{
+    struct regex_t* first;
+    int id;
+};
+
+union anonymous_typeZ13
+{
+unsigned char ch;
+unsigned char* ccl;
+struct anonymous_typeX14 group;
+};
+
+struct regex_t
+{
+    unsigned char type;
+    union anonymous_typeZ13 u;
+    struct regex_t* next;
+};
+
+struct re_program
+{
+    struct regex_t* start;
+    int group_count;
+};
+
+typedef struct re_program regex_program_t;
+
+struct anonymous_typeX15
+{
+    struct regex_t* pool;
+    int pool_capacity;
+    int pool_size;
+    unsigned char* ccl_buf;
+    int ccl_capacity;
+    int ccl_idx;
+    int group_count;
+};
+
+typedef struct anonymous_typeX15 compiler_state;
+
+struct anonymous_typeX16
+{
+    const char* base;
+    struct re_capture* captures;
+    int capture_capacity;
+    int total_groups;
+};
+
+typedef struct anonymous_typeX16 match_context;
 
 extern _Bool gComeDebug;
 extern _Bool gComeGC;
@@ -2475,6 +2572,63 @@ unsigned int wchar_t_get_hash_key(int value);
 unsigned int wchar_tp_get_hash_key(int* value);
 char* wchar_t_to_string(int wc);
 void int_times(int self, void* parent, void (*block)(void*,int));
+int re_matchp(struct re_program* pattern, const char* text, int* matchlength, struct re_capture* captures, int max_captures);
+int re_match(const char* pattern, const char* text, int* matchlength);
+struct re_program* re_compile(const char* pattern);
+void re_print(struct re_program* pattern);
+void clear_captures(struct anonymous_typeX16* ctx);
+void snapshot_captures(const struct anonymous_typeX16* ctx, struct re_capture* buffer_);
+void restore_captures(struct anonymous_typeX16* ctx, const struct re_capture* buffer_);
+struct regex_t* new_token(struct anonymous_typeX15* st);
+int append_token(struct regex_t** head, struct regex_t** tail, struct regex_t* token);
+struct regex_t* compile_sequence(struct anonymous_typeX15* st, const char* pattern, int* pos, int in_group);
+const char* matchpattern(struct regex_t* pattern, const char* text, struct anonymous_typeX16* ctx);
+const char* matchstar(struct regex_t* token, struct regex_t* rest, const char* text, struct anonymous_typeX16* ctx);
+const char* matchplus(struct regex_t* token, struct regex_t* rest, const char* text, struct anonymous_typeX16* ctx);
+const char* matchquestion(struct regex_t* token, struct regex_t* rest, const char* text, struct anonymous_typeX16* ctx);
+const char* matchtoken(struct regex_t* token, const char* text, struct anonymous_typeX16* ctx);
+int matchdigit(char c);
+int matchalpha(char c);
+int matchwhitespace(char c);
+int matchalphanum(char c);
+int matchrange(char c, const char* str);
+int matchdot(char c);
+int ismetachar(char c);
+int matchmetachar(char c, const char* str);
+int matchcharclass(char c, const char* str);
+void re_print_internal(struct regex_t* pattern, int depth);
+int re_get_group_count(struct re_program* pattern);
+char* string_lower_case(char* str);
+char* string_upper_case(char* str);
+int charp_index_regex(char* self, char* reg, int default_value);
+int charp_rindex(char* str, char* search_str, int default_value);
+int charp_rindex_regex(char* self, char* reg, int default_value);
+char* charp_strip(char* self);
+int charp_index(char* str, char* search_str, int default_value);
+char* string_chomp(char* str);
+char* xrealpath(char* path);
+char* charp_replace(char* self, int index, char c);
+char* charp_multiply(char* str, int n);
+struct list$1char$ph* charp_split_str(char* self, char* str);
+int string_rindex(char* str, char* search_str, int default_value);
+int string_rindex_regex(char* self, char* reg, int default_value);
+char* string_strip(char* self);
+int string_index(char* str, char* search_str, int default_value);
+int string_index_regex(char* self, char* reg, int default_value);
+char* string_replace(char* self, int index, char c);
+char* string_multiply(char* str, int n);
+_Bool charp_match(char* self, char* reg);
+struct list$1char$ph* charp_scan(char* self, char* reg);
+struct list$1char$ph* charp_split(char* self, char* reg);
+char* string_sub(char* self, char* reg, char* replace);
+struct list$1char$ph* string_split_str(char* self, char* str);
+struct list$1char$ph* string_scan(char* self, char* reg);
+struct list$1char$ph* string_split(char* self, char* reg);
+_Bool string_match(char* self, char* reg);
+char* charp_sub(char* self, char* reg, char* replace);
+char* charp_sub_block(char* self, char* reg, void* parent, char* (*block)(void*,char*,struct list$1char$ph*));
+struct list$1char$ph* charp_scan_block(char* self, char* reg, void* parent, char* (*block)(void*,char*,struct list$1char$ph*));
+char* string_sub_block(char* self, char* reg, void* parent, char* (*block)(void*,char*,struct list$1char$ph*));
 struct sClass* sClass_initialize(struct sClass* self, char* name, _Bool number, _Bool union_, _Bool generics, _Bool method_generics, _Bool protocol_, _Bool struct_, _Bool float_, int generics_num, int method_generics_num, _Bool enum_, _Bool uniq_, struct sInfo* info);
 struct sType* sType_initialize(struct sType* self, char* name, _Bool heap, struct sInfo* info);
 struct sFun* sFun_initialize(struct sFun* self, char* name, struct sType* result_type, struct list$1sType$ph* param_types, struct list$1char$ph* param_names, struct list$1char$ph* param_default_parametors, _Bool external, _Bool var_args, struct sBlock* block, _Bool static_, struct sInfo* info, _Bool inline_, _Bool uniq_, _Bool generate_, char* attribute, char* fun_attribute, _Bool const_fun, char* text_block, char* generics_sname, int generics_sline, _Bool immutable_);
