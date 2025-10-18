@@ -396,7 +396,7 @@ void Vi*::enterComandMode(Vi* self)
 void Vi*::exitFromComandMode(Vi* self) 
 {
     if(string(self.commandString).index("sp", -1) == 0) {
-        string file_name = string(self.commandString).scan(s"sp (.+)").item(1, null).to_string();
+        string file_name = string(self.commandString).scan(s"sp (.+)").item(0, null).to_string();
 
         if(file_name != null) {
             self.openNewFile(file_name);
