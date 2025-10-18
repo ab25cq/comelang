@@ -1161,6 +1161,53 @@ struct list$1double$
     struct list_item$1double$* it;
 };
 
+typedef union anonymous_typeZ1 mbstate_t;
+
+typedef unsigned long  int clock_t;
+
+typedef long time_t;
+
+struct timespec
+{
+    long tv_sec;
+    long tv_nsec;
+};
+
+struct tm
+{
+    int tm_sec;
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+    long tm_gmtoff;
+    char* tm_zone;
+};
+
+extern char* tzname[];
+extern int getdate_err;
+extern long timezone;
+extern int daylight;
+enum anonymous_typeY10 { _CLOCK_REALTIME=(0),
+_CLOCK_MONOTONIC=(6),
+_CLOCK_MONOTONIC_RAW=(4),
+_CLOCK_MONOTONIC_RAW_APPROX=(5),
+_CLOCK_UPTIME_RAW=(8),
+_CLOCK_UPTIME_RAW_APPROX=(9),
+_CLOCK_PROCESS_CPUTIME_ID=(12),
+_CLOCK_THREAD_CPUTIME_ID=(16)
+};
+
+typedef enum anonymous_typeY10 clockid_t;
+
+typedef unsigned int wctype_t;
+
+typedef int* wstring;
+
 struct list_item$1char$ph
 {
     char* item;
@@ -2462,6 +2509,163 @@ long  int long_clone(long self);
 unsigned long  int size_t_clone(unsigned long  int self);
 double double_clone(double self);
 float float_clone(float self);
+char* asctime(const struct tm* anonymous_var_nameX407);
+unsigned long  int clock();
+char* ctime(const long* anonymous_var_nameX408);
+double difftime(long anonymous_var_nameX409, long anonymous_var_nameX410);
+struct tm* getdate(const char* anonymous_var_nameX411);
+struct tm* gmtime(const long* anonymous_var_nameX412);
+struct tm* localtime(const long* anonymous_var_nameX413);
+long mktime(struct tm* anonymous_var_nameX414);
+unsigned long  int strftime(char* anonymous_var_nameX415, unsigned long  int __maxsize, const char* anonymous_var_nameX416, const struct tm* anonymous_var_nameX417);
+char* strptime(const char* anonymous_var_nameX418, const char* anonymous_var_nameX419, struct tm* anonymous_var_nameX420);
+long time(long* anonymous_var_nameX421);
+void tzset();
+char* asctime_r(const struct tm* anonymous_var_nameX422, char* anonymous_var_nameX423);
+char* ctime_r(const long* anonymous_var_nameX424, char* anonymous_var_nameX425);
+struct tm* gmtime_r(const long* anonymous_var_nameX426, struct tm* anonymous_var_nameX427);
+struct tm* localtime_r(const long* anonymous_var_nameX428, struct tm* anonymous_var_nameX429);
+long posix2time(long anonymous_var_nameX430);
+void tzsetwall();
+long time2posix(long anonymous_var_nameX431);
+long timelocal(struct tm* anonymous_var_nameX432);
+long timegm(struct tm* anonymous_var_nameX433);
+int nanosleep(const struct timespec* __rqtp, struct timespec* __rmtp);
+int clock_getres(enum anonymous_typeY10 __clock_id, struct timespec* __res);
+int clock_gettime(enum anonymous_typeY10 __clock_id, struct timespec* __tp);
+unsigned long  long clock_gettime_nsec_np(enum anonymous_typeY10 __clock_id);
+int clock_settime(enum anonymous_typeY10 __clock_id, const struct timespec* __tp);
+int timespec_get(struct timespec* ts, int base);
+int iswalnum(int anonymous_var_nameX434);
+int iswalpha(int anonymous_var_nameX435);
+int iswcntrl(int anonymous_var_nameX436);
+int iswctype(int anonymous_var_nameX437, unsigned int anonymous_var_nameX438);
+int iswdigit(int anonymous_var_nameX439);
+int iswgraph(int anonymous_var_nameX440);
+int iswlower(int anonymous_var_nameX441);
+int iswprint(int anonymous_var_nameX442);
+int iswpunct(int anonymous_var_nameX443);
+int iswspace(int anonymous_var_nameX444);
+int iswupper(int anonymous_var_nameX445);
+int iswxdigit(int anonymous_var_nameX446);
+int towlower(int anonymous_var_nameX447);
+int towupper(int anonymous_var_nameX448);
+unsigned int wctype(const char* anonymous_var_nameX449);
+int btowc(int anonymous_var_nameX450);
+int fgetwc(struct __sFILE* anonymous_var_nameX451);
+int* fgetws(int* anonymous_var_nameX452, int __n, struct __sFILE* anonymous_var_nameX453);
+int fputwc(int anonymous_var_nameX454, struct __sFILE* anonymous_var_nameX455);
+int fputws(const int* anonymous_var_nameX456, struct __sFILE* anonymous_var_nameX457);
+int fwide(struct __sFILE* anonymous_var_nameX458, int anonymous_var_nameX459);
+int fwprintf(struct __sFILE* anonymous_var_nameX460, const int* anonymous_var_nameX461, ...);
+int fwscanf(struct __sFILE* anonymous_var_nameX462, const int* anonymous_var_nameX463, ...);
+int getwc(struct __sFILE* anonymous_var_nameX464);
+int getwchar();
+unsigned long  int mbrlen(const char* anonymous_var_nameX465, unsigned long  int __n, union anonymous_typeZ1* anonymous_var_nameX466);
+unsigned long  int mbrtowc(int* anonymous_var_nameX467, const char* anonymous_var_nameX468, unsigned long  int __n, union anonymous_typeZ1* anonymous_var_nameX469);
+int mbsinit(const union anonymous_typeZ1* anonymous_var_nameX470);
+unsigned long  int mbsrtowcs(int* anonymous_var_nameX471, const char** anonymous_var_nameX472, unsigned long  int __len, union anonymous_typeZ1* anonymous_var_nameX473);
+int putwc(int anonymous_var_nameX474, struct __sFILE* anonymous_var_nameX475);
+int putwchar(int anonymous_var_nameX476);
+int swprintf(int* anonymous_var_nameX477, unsigned long  int __maxlen, const int* anonymous_var_nameX478, ...);
+int swscanf(const int* anonymous_var_nameX479, const int* anonymous_var_nameX480, ...);
+int ungetwc(int anonymous_var_nameX481, struct __sFILE* anonymous_var_nameX482);
+int vfwprintf(struct __sFILE* anonymous_var_nameX483, const int* anonymous_var_nameX484, __darwin_va_list anonymous_var_nameX485);
+int vswprintf(int* anonymous_var_nameX486, unsigned long  int __maxlen, const int* anonymous_var_nameX487, __darwin_va_list anonymous_var_nameX488);
+int vwprintf(const int* anonymous_var_nameX489, __darwin_va_list anonymous_var_nameX490);
+unsigned long  int wcrtomb(char* anonymous_var_nameX491, int anonymous_var_nameX492, union anonymous_typeZ1* anonymous_var_nameX493);
+int* wcscat(int* anonymous_var_nameX494, const int* anonymous_var_nameX495);
+int* wcschr(const int* anonymous_var_nameX496, int anonymous_var_nameX497);
+int wcscmp(const int* anonymous_var_nameX498, const int* anonymous_var_nameX499);
+int wcscoll(const int* anonymous_var_nameX500, const int* anonymous_var_nameX501);
+int* wcscpy(int* anonymous_var_nameX502, const int* anonymous_var_nameX503);
+unsigned long  int wcscspn(const int* anonymous_var_nameX504, const int* anonymous_var_nameX505);
+unsigned long  int wcsftime(int* anonymous_var_nameX506, unsigned long  int __maxlen, const int* anonymous_var_nameX507, const struct tm* anonymous_var_nameX508);
+unsigned long  int wcslen(const int* anonymous_var_nameX509);
+int* wcsncat(int* anonymous_var_nameX510, const int* anonymous_var_nameX511, unsigned long  int __n);
+int wcsncmp(const int* anonymous_var_nameX512, const int* anonymous_var_nameX513, unsigned long  int anonymous_var_nameX514);
+int* wcsncpy(int* anonymous_var_nameX515, const int* anonymous_var_nameX516, unsigned long  int __n);
+int* wcspbrk(const int* anonymous_var_nameX517, const int* anonymous_var_nameX518);
+int* wcsrchr(const int* anonymous_var_nameX519, int anonymous_var_nameX520);
+unsigned long  int wcsrtombs(char* anonymous_var_nameX521, const int** anonymous_var_nameX522, unsigned long  int __len, union anonymous_typeZ1* anonymous_var_nameX523);
+unsigned long  int wcsspn(const int* anonymous_var_nameX524, const int* anonymous_var_nameX525);
+int* wcsstr(const int* anonymous_var_nameX526, const int* anonymous_var_nameX527);
+unsigned long  int wcsxfrm(int* anonymous_var_nameX528, const int* anonymous_var_nameX529, unsigned long  int __n);
+int wctob(int anonymous_var_nameX530);
+double wcstod(const int* anonymous_var_nameX531, int** anonymous_var_nameX532);
+int* wcstok(int* anonymous_var_nameX533, const int* anonymous_var_nameX534, int** anonymous_var_nameX535);
+long wcstol(const int* anonymous_var_nameX536, int** anonymous_var_nameX537, int anonymous_var_nameX538);
+unsigned long  int wcstoul(const int* anonymous_var_nameX539, int** anonymous_var_nameX540, int anonymous_var_nameX541);
+int* wmemchr(const int* anonymous_var_nameX542, int anonymous_var_nameX543, unsigned long  int __n);
+int wmemcmp(const int* anonymous_var_nameX544, const int* anonymous_var_nameX545, unsigned long  int __n);
+int* wmemcpy(int* anonymous_var_nameX546, const int* anonymous_var_nameX547, unsigned long  int __n);
+int* wmemmove(int* anonymous_var_nameX548, const int* anonymous_var_nameX549, unsigned long  int __n);
+int* wmemset(int* anonymous_var_nameX550, int anonymous_var_nameX551, unsigned long  int __n);
+int wprintf(const int* anonymous_var_nameX552, ...);
+int wscanf(const int* anonymous_var_nameX553, ...);
+int wcswidth(const int* anonymous_var_nameX554, unsigned long  int __n);
+int wcwidth(int anonymous_var_nameX555);
+int vfwscanf(struct __sFILE* anonymous_var_nameX556, const int* anonymous_var_nameX557, __darwin_va_list anonymous_var_nameX558);
+int vswscanf(const int* anonymous_var_nameX559, const int* anonymous_var_nameX560, __darwin_va_list anonymous_var_nameX561);
+int vwscanf(const int* anonymous_var_nameX562, __darwin_va_list anonymous_var_nameX563);
+float wcstof(const int* anonymous_var_nameX564, int** anonymous_var_nameX565);
+long  double wcstold(const int* anonymous_var_nameX566, int** anonymous_var_nameX567);
+long long wcstoll(const int* anonymous_var_nameX568, int** anonymous_var_nameX569, int anonymous_var_nameX570);
+unsigned long  long wcstoull(const int* anonymous_var_nameX571, int** anonymous_var_nameX572, int anonymous_var_nameX573);
+unsigned long  int mbsnrtowcs(int* anonymous_var_nameX574, const char** anonymous_var_nameX575, unsigned long  int anonymous_var_nameX576, unsigned long  int __len, union anonymous_typeZ1* anonymous_var_nameX577);
+int* wcpcpy(int* anonymous_var_nameX578, const int* anonymous_var_nameX579);
+int* wcpncpy(int* anonymous_var_nameX580, const int* anonymous_var_nameX581, unsigned long  int __n);
+int* wcsdup(const int* anonymous_var_nameX582);
+int wcscasecmp(const int* anonymous_var_nameX583, const int* anonymous_var_nameX584);
+int wcsncasecmp(const int* anonymous_var_nameX585, const int* anonymous_var_nameX586, unsigned long  int n);
+unsigned long  int wcsnlen(const int* anonymous_var_nameX587, unsigned long  int __n);
+unsigned long  int wcsnrtombs(char* anonymous_var_nameX588, const int** anonymous_var_nameX589, unsigned long  int anonymous_var_nameX590, unsigned long  int __len, union anonymous_typeZ1* anonymous_var_nameX591);
+struct __sFILE* open_wmemstream(int** __bufp, unsigned long  int* __sizep);
+int* fgetwln(struct __sFILE* anonymous_var_nameX592, unsigned long  int* __len);
+unsigned long  int wcslcat(int* anonymous_var_nameX593, const int* anonymous_var_nameX594, unsigned long  int __len);
+unsigned long  int wcslcpy(int* anonymous_var_nameX595, const int* anonymous_var_nameX596, unsigned long  int __len);
+char* basename(char* anonymous_var_nameX597);
+char* dirname(char* anonymous_var_nameX598);
+char* basename_r(const char* anonymous_var_nameX599, char* anonymous_var_nameX600);
+char* dirname_r(const char* anonymous_var_nameX601, char* anonymous_var_nameX602);
+char* charp_chomp(char* str);
+int* __builtin_wstring(char* str);
+int wchar_tp_length(int* str);
+int wstring_length(int* str);
+int* wchar_tp_substring(int* str, int head, int tail);
+int* charp_to_wstring(char* str);
+int* wchar_tp_delete(int* str, int head, int tail);
+int wchar_tp_index(int* str, int* search_str, int default_value);
+int wchar_tp_rindex(int* str, int* search_str, int default_value);
+int* wchar_tp_reverse(int* str);
+int* wchar_tp_multiply(int* str, int n);
+int* wchar_tp_printable(int* str);
+unsigned long  int xwcslen(int* wstr);
+int* wstring_substring(int* str, int head, int tail);
+char* wchar_tp_to_string(int* wstr);
+int wchar_tp_compare(int* left, int* right);
+int wstring_compare(int* left, int* right);
+int* wchar_tp_operator_mult(int* str, int n);
+int* wstring_operator_mult(int* str, int n);
+_Bool wchar_tp_operator_equals(int* left, int* right);
+_Bool wstring_operator_equals(int* left, int* right);
+_Bool wchar_tp_operator_not_equals(int* left, int* right);
+_Bool wstring_operator_not_equals(int* left, int* right);
+int* wchar_tp_operator_add(int* left, int* right);
+int* wstring_operator_add(int* left, int* right);
+_Bool wchar_tp_equals(int* left, int* right);
+_Bool wstring_equals(int* left, int* right);
+char* wstring_to_string(int* wstr);
+int* int_to_wstring(int self);
+int* wstring_delete(int* str, int head, int tail);
+int wstring_index(int* str, int* search_str, int default_value);
+int wstring_rindex(int* str, int* search_str, int default_value);
+int* wstring_reverse(int* str);
+int* wstring_multiply(int* str, int n);
+int* wstring_printable(int* str);
+unsigned int wstring_get_hash_key(int* value);
+int* string_to_wstring(char* str);
+char* xdirname(char* path);
 _Bool xiswalpha(int c);
 _Bool xiswblank(int c);
 _Bool xiswdigit(int c);

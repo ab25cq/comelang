@@ -230,7 +230,7 @@ string make_come_type_name_string(sType* type, sInfo* info=info, bool original_t
             for(int i=0; i<type2->mGenericsTypes.length(); i++) {
                 sType* gtype = type2->mGenericsTypes[i];
                 
-                buf.append_str(make_come_type_name_string(gtype));
+                buf.append_str(make_come_type_name_string(gtype, original_type_name:original_type_name));
                 
                 if(i != type2->mGenericsTypes.length() -1) {
                     buf.append_str(",");
@@ -465,7 +465,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
     else {
         string type_str;
         if(come_type) {
-            type_str = make_come_type_name_string(type2);
+            type_str = make_come_type_name_string(type2, original_type_name:original_type_name);
         }
         else {
             type_str = make_type_name_string(type2, in_header, no_static:no_static);
@@ -500,10 +500,10 @@ string make_come_header_function(sFun* fun, string base_fun_name, sType*% impl_t
 {
     buffer*% header = new buffer();
     
-    string result_type_name = make_come_type_name_string(fun->mResultType);
+    string result_type_name = make_come_type_name_string(fun->mResultType, original_type_name:true);
     
     if(impl_type) {
-        string impl_name = make_come_type_name_string(impl_type);
+        string impl_name = make_come_type_name_string(impl_type, original_type_name:true);
         header.append_format("extern %s %s::%s(", result_type_name, impl_name, base_fun_name);
     }
     else {
@@ -517,10 +517,10 @@ string make_come_header_function(sFun* fun, string base_fun_name, sType*% impl_t
         var default_parametor = fun.mParamDefaultParametors[i];
         
         if(default_parametor) {
-            header.append_format("%s %s=%s", make_come_type_name_string(param_type), param_name, default_parametor);
+            header.append_format("%s %s=%s", make_come_type_name_string(param_type, original_type_name:true), param_name, default_parametor);
         }
         else {
-            header.append_format("%s %s", make_come_type_name_string(param_type), param_name);
+            header.append_format("%s %s", make_come_type_name_string(param_type, original_type_name:true), param_name);
         }
         
         if(i != fun.mParamTypes.length()-1) {

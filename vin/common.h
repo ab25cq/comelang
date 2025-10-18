@@ -3,7 +3,6 @@
 // src/01init.c
 ////////////////////////////
 #include <comelang.h> 
-#include <comelang-wchar.h> 
 #include <curses.h>
 #include <unistd.h>
 

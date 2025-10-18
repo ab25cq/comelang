@@ -284,8 +284,8 @@ void ViWin*::gotoFunctionTop(ViWin* self, Vi* nvi)
 {
     int it2 = 0;
     foreach(it, self.texts.sublist(0, self.scroll+self.cursorY).reverse()) {
-        if(it.to_string().match("^{")
-            || it.to_string().match("^[a-zA-Z].*{$")) 
+        if(it.to_string().match("^{"))
+//            || it.to_string().match("^[a-zA-Z].*{$")) 
         {
             self.saveReturnPoint();
 
