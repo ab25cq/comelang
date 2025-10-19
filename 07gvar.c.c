@@ -2748,7 +2748,8 @@ _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main(int argc, char** argv);
 char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type, _Bool no_alignas);
-char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name);
+char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name, _Bool no_static);
+char* make_come_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 char* header_function(struct sFun* fun, struct sInfo* info);
 _Bool output_source_file(struct sInfo* info);
 char* make_come_header_function(struct sFun* fun, char* base_fun_name, struct sType* impl_type, int version_, struct sInfo* info);
@@ -3177,7 +3178,7 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X141=(info->output_header_file));            _condtional_value_X141;            })) {
                 if(({                (_condtional_value_X142=(!type_10->mStatic));                _condtional_value_X142;                })) {
                     id=(char*)come_increment_ref_count(__builtin_string(name_11));
-                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value60=make_define_var(type_10,name_11,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value60=make_come_define_var(type_10,name_11,(_Bool)0,(_Bool)1,info,(_Bool)0,(_Bool)0))));
                     (__right_value60 = come_decrement_ref_count(__right_value60, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id = come_decrement_ref_count(id, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
@@ -3211,7 +3212,7 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X238=(info->output_header_file));            _condtional_value_X238;            })) {
                 if(({                (_condtional_value_X239=(!type->mStatic));                _condtional_value_X239;                })) {
                     id_28=(char*)come_increment_ref_count(__builtin_string(name));
-                    add_come_code_at_come_header(info,id_28,"extern %s;\n",((char*)(__right_value91=make_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+                    add_come_code_at_come_header(info,id_28,"extern %s;\n",((char*)(__right_value91=make_come_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)0,(_Bool)0))));
                     (__right_value91 = come_decrement_ref_count(__right_value91, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id_28 = come_decrement_ref_count(id_28, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
@@ -3244,7 +3245,7 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X243=(info->output_header_file));            _condtional_value_X243;            })) {
                 if(({                (_condtional_value_X244=(!type->mStatic));                _condtional_value_X244;                })) {
                     id_29=(char*)come_increment_ref_count(__builtin_string(name));
-                    add_come_code_at_come_header(info,id_29,"extern %s;\n",((char*)(__right_value105=make_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+                    add_come_code_at_come_header(info,id_29,"extern %s;\n",((char*)(__right_value105=make_come_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)0,(_Bool)0))));
                     (__right_value105 = come_decrement_ref_count(__right_value105, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id_29 = come_decrement_ref_count(id_29, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
@@ -3267,7 +3268,7 @@ _Bool __result_obj__65;
             if(({            (_condtional_value_X250=(info->output_header_file));            _condtional_value_X250;            })) {
                 if(({                (_condtional_value_X251=(!type->mStatic));                _condtional_value_X251;                })) {
                     id_30=(char*)come_increment_ref_count(__builtin_string(name));
-                    add_come_code_at_come_header(info,id_30,"extern %s;\n",((char*)(__right_value118=make_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+                    add_come_code_at_come_header(info,id_30,"extern %s;\n",((char*)(__right_value118=make_come_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)0,(_Bool)0))));
                     (__right_value118 = come_decrement_ref_count(__right_value118, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id_30 = come_decrement_ref_count(id_30, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
@@ -5283,7 +5284,7 @@ _Bool __result_obj__68;
             if(({            (_condtional_value_X261=(info->output_header_file));            _condtional_value_X261;            })) {
                 if(({                (_condtional_value_X262=(!type_31->mStatic));                _condtional_value_X262;                })) {
                     id=(char*)come_increment_ref_count(__builtin_string(name_32));
-                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value137=make_define_var(type_31,name_32,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+                    add_come_code_at_come_header(info,id,"extern %s;\n",((char*)(__right_value137=make_come_define_var(type_31,name_32,(_Bool)0,(_Bool)1,info,(_Bool)0,(_Bool)0))));
                     (__right_value137 = come_decrement_ref_count(__right_value137, (void*)0, (void*)0, 1, 0, (void*)0));
                     (id = come_decrement_ref_count(id, (void*)0, (void*)0, 0, 0, (void*)0));
                 }
@@ -5304,7 +5305,7 @@ _Bool __result_obj__68;
         if(({        (_condtional_value_X263=(info->output_header_file));        _condtional_value_X263;        })) {
             if(({            (_condtional_value_X264=(!type->mStatic));            _condtional_value_X264;            })) {
                 id_33=(char*)come_increment_ref_count(__builtin_string(name));
-                add_come_code_at_come_header(info,id_33,"extern %s;\n",((char*)(__right_value144=make_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+                add_come_code_at_come_header(info,id_33,"extern %s;\n",((char*)(__right_value144=make_come_define_var(type,name,(_Bool)0,(_Bool)1,info,(_Bool)0,(_Bool)0))));
                 (__right_value144 = come_decrement_ref_count(__right_value144, (void*)0, (void*)0, 1, 0, (void*)0));
                 (id_33 = come_decrement_ref_count(id_33, (void*)0, (void*)0, 0, 0, (void*)0));
             }

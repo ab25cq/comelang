@@ -2720,7 +2720,8 @@ _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main(int argc, char** argv);
 char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type, _Bool no_alignas);
-char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name);
+char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name, _Bool no_static);
+char* make_come_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 char* header_function(struct sFun* fun, struct sInfo* info);
 _Bool output_source_file(struct sInfo* info);
 char* make_come_header_function(struct sFun* fun, char* base_fun_name, struct sType* impl_type, int version_, struct sInfo* info);
@@ -4255,7 +4256,7 @@ _Bool __result_obj__61;
         }
     }
     num_method_block=info->num_method_block;
-    buffer_append_format(method_block2,"%s method_block%d_%s(",((char*)(__right_value84=make_come_type_name_string(result_type2,info,(_Bool)0))),num_method_block,((char*)(__right_value85=buffer_to_string(all_alhabet_sname))));
+    buffer_append_format(method_block2,"%s method_block%d_%s(",((char*)(__right_value84=make_come_type_name_string(result_type2,info,(_Bool)0,(_Bool)0))),num_method_block,((char*)(__right_value85=buffer_to_string(all_alhabet_sname))));
     (__right_value84 = come_decrement_ref_count(__right_value84, (void*)0, (void*)0, 1, 0, (void*)0));
     (__right_value85 = come_decrement_ref_count(__right_value85, (void*)0, (void*)0, 1, 0, (void*)0));
     i=0;

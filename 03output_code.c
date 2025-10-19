@@ -200,7 +200,7 @@ sType*% get_no_solved_type(sType* type)
     return result;
 }
 
-string make_come_type_name_string(sType* type, sInfo* info=info, bool original_type_name=false)
+string make_come_type_name_string(sType* type, sInfo* info=info, bool original_type_name=false, bool no_static=false)
 {
     var buf = new buffer();
     
@@ -470,6 +470,117 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         else {
             type_str = make_type_name_string(type2, in_header, no_static:no_static);
         }
+        
+        if(type_str === "") {
+            return string("");
+        }
+        
+        buf.append_str(type_str);
+        
+        buf.append_str(" ");
+        buf.append_str(name);
+        
+        if(type2->mArrayPointerType) {
+            buf.append_str("[]");
+        }
+        
+        if(type2->mAsmName != null && type2->mAsmName !== "") {
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
+        }
+    }
+    
+    if(type2->mVarAttribute) {
+        buf.append_str(" " + type->mVarAttribute);
+    }
+    
+    return buf.to_string();
+}
+
+string make_come_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=true, sInfo* info=info, bool come_type=false, bool no_static=false)
+{
+    var buf = new buffer();
+    
+    sType*% type2 = clone type;
+    if(type2->mArrayPointerType) {
+        type2->mPointerNum--;
+   }
+    
+    if(type2->mClass->mName === "lambda" && type2->mAsmName != null && type2->mAsmName !== "") {
+        var str = header_lambda(type2, type2->mAsmName, info);
+        
+        buf.append_str(str);
+    }
+    else if(type2->mClass->mName === "lambda") {
+        var str = make_lambda_type_name_string(type2, name, info);
+        
+        buf.append_str(str);
+    }
+    else if(type2->mArrayPointerNum > 0) {
+        string type_name = make_come_type_name_string(type2, no_static:no_static, original_type_name:true);
+        
+        buf.append_format("%s (*%s)", type_name, name);
+        
+        foreach(it, type2->mArrayNum) {
+            if(!node_compile(it)) {
+                err_msg(info, "invalid array number");
+                return string("");
+            }
+            CVALUE*% cvalue = get_value_from_stack(-1, info);
+        
+            buf.append_format("[%s]", cvalue.c_value);
+        }
+    }
+    else if(type2->mSizeNum != null) {
+        if(!node_compile(type2->mSizeNum)) {
+            err_msg(info, "invalid bit field number");
+            return string("");
+        }
+        
+        CVALUE*% come_value = get_value_from_stack(-1, info);
+    
+        string type_str;
+        type_str = make_come_type_name_string(type2, original_type_name:true);
+        buf.append_format("%s ", type_str);
+        buf.append_format("%s:%s", name, come_value.c_value);
+        
+        if(type2->mAsmName != null && type2->mAsmName !== "") {
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
+        }
+        
+        if(type2->mAsmName != null && type2->mAsmName !== "") {
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
+        }
+    }
+    else if(type2->mArrayNum.length() > 0) {
+        string type_str;
+        type_str = make_come_type_name_string(type2, original_type_name:true);
+        
+        buf.append_str(type_str);
+        
+        buf.append_str(" ");
+        buf.append_str(name);
+        
+        foreach(it, type2->mArrayNum) {
+            if(!node_compile(it)) {
+                err_msg(info, "invalid array number");
+                return string("");
+            }
+            CVALUE*% cvalue = get_value_from_stack(-1, info);
+        
+            buf.append_format("[%s]", cvalue.c_value);
+        }
+        
+        if(type2->mArrayPointerType) {
+            buf.append_str("[]");
+        }
+        
+        if(type2->mAsmName != null && type2->mAsmName !== "") {
+            buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
+        }
+    }
+    else {
+        string type_str;
+        type_str = make_come_type_name_string(type2, original_type_name:original_type_name);
         
         if(type_str === "") {
             return string("");

@@ -2917,7 +2917,8 @@ _Bool node_compile(struct sNode* node, struct sInfo* info);
 _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main(int argc, char** argv);
 char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type, _Bool no_alignas);
-char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name);
+char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name, _Bool no_static);
+char* make_come_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
 char* header_function(struct sFun* fun, struct sInfo* info);
 _Bool output_source_file(struct sInfo* info);
 char* make_come_header_function(struct sFun* fun, char* base_fun_name, struct sType* impl_type, int version_, struct sInfo* info);
@@ -3478,7 +3479,7 @@ obj = (void*)0;
     type2=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(type),(struct sType*)come_increment_ref_count(info->generics_type),info));
     list$1sNode$ph_reset(type2->mArrayNum);
     type_name=(char*)come_increment_ref_count(make_type_name_string(type2,(_Bool)0,(_Bool)1,(_Bool)0,info,(_Bool)1,(_Bool)0,(_Bool)0));
-    type_name2=(char*)come_increment_ref_count(make_come_type_name_string(type2,info,(_Bool)0));
+    type_name2=(char*)come_increment_ref_count(make_come_type_name_string(type2,info,(_Bool)0,(_Bool)0));
     if(({    (_condtional_value_X130=(initializer));    _condtional_value_X130;    })) {
         static int var_num=1;
         var_num++;

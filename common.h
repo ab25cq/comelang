@@ -782,7 +782,8 @@ bool node_compile(sNode* node, sInfo* info=info);
 bool node_condional_compile(sNode* node, sInfo* info=info);
 int come_main(int argc, char** argv);
 string make_type_name_string(sType* type, bool in_header=false, bool array_cast_pointer=false, bool no_pointer=false, sInfo* info=info, bool no_static=false, bool cast_type=false, bool no_alignas=false);
-string make_come_type_name_string(sType* type, sInfo* info=info, bool original_type_name=false);
+string make_come_type_name_string(sType* type, sInfo* info=info, bool original_type_name=false, bool no_static=false)
+string make_come_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=true, sInfo* info=info, bool come_type=false, bool no_static=false);
 
 /////////////////////////////////////////////////////////////////////
 /// 03output_code.c ///

@@ -35,7 +35,7 @@ class sGlobalVariable extends sNodeBase
                 if(info.output_header_file) {
                     if(!type.mStatic) {
                         string id = string(name);
-                        add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, come_type:true, original_type_name:true));
+                        add_come_code_at_come_header(info, id, "extern %s;\n", make_come_define_var(type, name, original_type_name:true));
                     }
                 }
                 else if(type.mUniq) {
@@ -79,7 +79,7 @@ class sGlobalVariable extends sNodeBase
                 if(info.output_header_file) {
                     if(!type.mStatic) {
                         string id = string(name);
-                        add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, come_type:true, original_type_name:true));
+                        add_come_code_at_come_header(info, id, "extern %s;\n", make_come_define_var(type, name, original_type_name:true));
                     }
                 }
                 else if(type.mUniq) {
@@ -115,7 +115,7 @@ class sGlobalVariable extends sNodeBase
                 if(info.output_header_file) {
                     if(!type.mStatic) {
                         string id = string(name);
-                        add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, come_type:true, original_type_name:true));
+                        add_come_code_at_come_header(info, id, "extern %s;\n", make_come_define_var(type, name, original_type_name:true));
                     }
                 }
                 else if(type.mUniq) {
@@ -145,7 +145,7 @@ class sGlobalVariable extends sNodeBase
                 if(info.output_header_file) {
                     if(!type.mStatic) {
                         string id = string(name);
-                        add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, come_type:true, original_type_name:true));
+                        add_come_code_at_come_header(info, id, "extern %s;\n", make_come_define_var(type, name, original_type_name:true));
                     }
                 }
                 else if(type.mUniq) {
@@ -206,7 +206,7 @@ class sExternalGlobalVariable extends sNodeBase
                 if(info.output_header_file) {
                     if(!type.mStatic) {
                         string id = string(name);
-                        add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, come_type:true, original_type_name:true));
+                        add_come_code_at_come_header(info, id, "extern %s;\n", make_come_define_var(type, name, original_type_name:true));
                     }
                 }
                 else {
@@ -226,7 +226,7 @@ class sExternalGlobalVariable extends sNodeBase
             if(info.output_header_file) {
                 if(!type.mStatic) {
                     string id = string(name);
-                    add_come_code_at_come_header(info, id, "extern %s;\n", make_define_var(type, name, come_type:true, original_type_name:true));
+                    add_come_code_at_come_header(info, id, "extern %s;\n", make_come_define_var(type, name, original_type_name:true));
                 }
             }
             else {
