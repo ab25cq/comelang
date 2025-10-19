@@ -109,21 +109,21 @@ bool compile_method_block(buffer* method_block, list<CVALUE*%>*% come_params, sF
         if(i == 0) {
             string param_name = xsprintf("parent");
             
-            method_block2.append_format("%s", make_define_var(param_type, param_name, come_type:true));
+            method_block2.append_format("%s", make_come_define_var(param_type, param_name));
         }
         else if(i == 1) {
             string param_name = xsprintf("it");
             
             sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
             
-            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:true, come_type:true));
+            method_block2.append_format("%s", make_come_define_var(param_type2, param_name, original_type_name:true));
         }
         else {
             string param_name = xsprintf("it%d", i);
             
             sType*% param_type2 = solve_generics(param_type, info->generics_type, info);
             
-            method_block2.append_format("%s", make_define_var(param_type2, param_name, original_type_name:true, come_type:true));
+            method_block2.append_format("%s", make_come_define_var(param_type2, param_name, original_type_name:true));
         }
         
         if(i != param_types.length() - 1) {

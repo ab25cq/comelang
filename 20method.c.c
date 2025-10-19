@@ -2721,7 +2721,7 @@ _Bool node_condional_compile(struct sNode* node, struct sInfo* info);
 int come_main(int argc, char** argv);
 char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type, _Bool no_alignas);
 char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name, _Bool no_static);
-char* make_come_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
+char* make_come_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool no_static);
 char* header_function(struct sFun* fun, struct sInfo* info);
 _Bool output_source_file(struct sInfo* info);
 char* make_come_header_function(struct sFun* fun, char* base_fun_name, struct sType* impl_type, int version_, struct sInfo* info);
@@ -2738,7 +2738,7 @@ void add_come_last_code2(struct sInfo* info, const char* msg, ...);
 void add_last_code_to_source_with_comma(struct sInfo* info);
 void dec_stack_ptr(int value, struct sInfo* info);
 struct CVALUE* get_value_from_stack(int offset, struct sInfo* info);
-char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool come_type, _Bool no_static);
+char* make_define_var(struct sType* type, char* name, _Bool in_header, _Bool original_type_name, struct sInfo* info, _Bool no_static);
 void transpiler_clear_last_code(struct sInfo* info);
 _Bool output_header_file(struct sInfo* info);
 void on_drop_object(struct sType* type, char* obj, struct sInfo* info, _Bool comma);
@@ -4264,14 +4264,14 @@ _Bool __result_obj__61;
         param_type=(struct sType*)come_increment_ref_count(it);
         if(({        (_condtional_value_X178=(i==0));        _condtional_value_X178;        })) {
             param_name=(char*)come_increment_ref_count(xsprintf("parent"));
-            buffer_append_format(method_block2,"%s",((char*)(__right_value87=make_define_var(param_type,param_name,(_Bool)0,(_Bool)0,info,(_Bool)1,(_Bool)0))));
+            buffer_append_format(method_block2,"%s",((char*)(__right_value87=make_come_define_var(param_type,param_name,(_Bool)0,(_Bool)1,info,(_Bool)0))));
             (__right_value87 = come_decrement_ref_count(__right_value87, (void*)0, (void*)0, 1, 0, (void*)0));
             (param_name = come_decrement_ref_count(param_name, (void*)0, (void*)0, 0, 0, (void*)0));
         }
         else if(({        (_condtional_value_X179=(i==1));        _condtional_value_X179;        })) {
             param_name_10=(char*)come_increment_ref_count(xsprintf("it"));
             param_type2=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(param_type),(struct sType*)come_increment_ref_count(info->generics_type),info));
-            buffer_append_format(method_block2,"%s",((char*)(__right_value90=make_define_var(param_type2,param_name_10,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+            buffer_append_format(method_block2,"%s",((char*)(__right_value90=make_come_define_var(param_type2,param_name_10,(_Bool)0,(_Bool)1,info,(_Bool)0))));
             (__right_value90 = come_decrement_ref_count(__right_value90, (void*)0, (void*)0, 1, 0, (void*)0));
             (param_name_10 = come_decrement_ref_count(param_name_10, (void*)0, (void*)0, 0, 0, (void*)0));
             come_call_finalizer(sType_finalize, param_type2, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -4279,7 +4279,7 @@ _Bool __result_obj__61;
         else {
             param_name_11=(char*)come_increment_ref_count(xsprintf("it%d",i));
             param_type2_12=(struct sType*)come_increment_ref_count(solve_generics((struct sType*)come_increment_ref_count(param_type),(struct sType*)come_increment_ref_count(info->generics_type),info));
-            buffer_append_format(method_block2,"%s",((char*)(__right_value93=make_define_var(param_type2_12,param_name_11,(_Bool)0,(_Bool)1,info,(_Bool)1,(_Bool)0))));
+            buffer_append_format(method_block2,"%s",((char*)(__right_value93=make_come_define_var(param_type2_12,param_name_11,(_Bool)0,(_Bool)1,info,(_Bool)0))));
             (__right_value93 = come_decrement_ref_count(__right_value93, (void*)0, (void*)0, 1, 0, (void*)0));
             (param_name_11 = come_decrement_ref_count(param_name_11, (void*)0, (void*)0, 0, 0, (void*)0));
             come_call_finalizer(sType_finalize, param_type2_12, (void*)0, (void*)0, 0, 0, 0, (void*)0);
@@ -6886,7 +6886,7 @@ _Bool __result_obj__136;
             type_114->mDefferRightValue=(_Bool)1;
             add_variable_to_table(var_name,(struct sType*)come_increment_ref_count(type_114),info,(_Bool)0,(_Bool)0);
             var_=get_variable_from_table(info->lv_table,var_name);
-            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value308=make_define_var(type_114,var_->mCValueName,(_Bool)0,(_Bool)0,info,(_Bool)0,(_Bool)0))));
+            add_come_code_at_function_head(info,"%s;\n",((char*)(__right_value308=make_define_var(type_114,var_->mCValueName,(_Bool)0,(_Bool)0,info,(_Bool)0))));
             (__right_value308 = come_decrement_ref_count(__right_value308, (void*)0, (void*)0, 1, 0, (void*)0));
             add_come_code(info,"%s=%s;\n",var_->mCValueName,obj_value->c_value);
             __dec_obj85=saved_obj_value,

@@ -370,7 +370,7 @@ static string make_lambda_type_name_string(sType* type, char* var_name, sInfo* i
 
 static string header_lambda(sType* lambda_type, string name, sInfo* info);
 
-string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info, bool come_type=false, bool no_static=false)
+string make_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=false, sInfo* info=info, bool no_static=false)
 {
     var buf = new buffer();
     
@@ -413,12 +413,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         CVALUE*% come_value = get_value_from_stack(-1, info);
     
         string type_str;
-        if(come_type) {
-            type_str = make_come_type_name_string(type2);
-        }
-        else {
-            type_str = make_type_name_string(type2, in_header, no_static:no_static);
-        }
+        type_str = make_type_name_string(type2, in_header, no_static:no_static);
         buf.append_format("%s ", type_str);
         buf.append_format("%s:%s", name, come_value.c_value);
         
@@ -432,12 +427,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
     }
     else if(type2->mArrayNum.length() > 0) {
         string type_str;
-        if(come_type) {
-            type_str = make_come_type_name_string(type2);
-        }
-        else {
-            type_str = make_type_name_string(type2, in_header, no_static:no_static);
-        }
+        type_str = make_type_name_string(type2, in_header, no_static:no_static);
         
         buf.append_str(type_str);
         
@@ -464,12 +454,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
     }
     else {
         string type_str;
-        if(come_type) {
-            type_str = make_come_type_name_string(type2, original_type_name:original_type_name);
-        }
-        else {
-            type_str = make_type_name_string(type2, in_header, no_static:no_static);
-        }
+        type_str = make_type_name_string(type2, in_header, no_static:no_static);
         
         if(type_str === "") {
             return string("");
@@ -496,7 +481,7 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
     return buf.to_string();
 }
 
-string make_come_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=true, sInfo* info=info, bool come_type=false, bool no_static=false)
+string make_come_define_var(sType* type, char* name, bool in_header=false, bool original_type_name=true, sInfo* info=info, bool no_static=false)
 {
     var buf = new buffer();
     

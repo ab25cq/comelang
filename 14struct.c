@@ -61,7 +61,7 @@ void output_struct_come_header(sClass* klass, sInfo* info)
         type->mStatic = false;
         
         buf.append_str("    ");
-        buf.append_str(make_define_var(type, name,original_type_name:true));
+        buf.append_str(make_come_define_var(type, name,original_type_name:true));
         buf.append_str(";\n");
     }
         
