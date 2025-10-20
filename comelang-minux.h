@@ -377,5 +377,6 @@ int system(const char* command);
 #define BUFSIZ 128
 
 void exit(int status);
+char *realpath(const char *path, char *resolved_path);
 
 #endif

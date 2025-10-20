@@ -8450,7 +8450,7 @@ char* __result_obj__273;
     result=(char*)come_increment_ref_count((char*)come_calloc_v2(1, sizeof(char)*(1*(len)), "/usr/local/include/comelang.h", 6527, "char*"));
     result[0]=0;
     for(    ({    (_conditional_value_X0=(i=0));    _conditional_value_X0;    });    ({    (_conditional_value_X1=(i<n));    _conditional_value_X1;    });    ({    (_conditional_value_X2=(i++));    _conditional_value_X2;    })    ){
-        strcat(result,str);
+        strncat(result,str,len);
     }
     __result_obj__273 = (char*)come_increment_ref_count(result);
     (result = come_decrement_ref_count(result, (void*)0, (void*)0, 0, 1, (void*)0));

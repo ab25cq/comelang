@@ -6528,7 +6528,7 @@ uniq string char*::multiply(char* str, int n)
     result[0] = '\0';
 
     for(int i=0; i<n; i++) {
-        strcat(result, str);
+        strncat(result, str, len);
     }
 
     return result;
