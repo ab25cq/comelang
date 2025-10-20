@@ -70,16 +70,27 @@ void transpile_conditional_with_free_right_object_value(CVALUE*% conditional_val
 {
     add_last_code_to_source(info);
     
-    static int num_condtional = 0;
-    add_come_code_at_function_head(info, "_Bool _condtional_value_X%d;\n", ++num_condtional);
-    int num_condtional_stack = num_condtional;
+    bool already_defined = info->num_conditional < info->max_conditional;
+    
+    int num_conditional = info->num_conditional;
+    
+    if(already_defined) {
+        info->num_conditional++;
+    }
+    else {
+        add_come_code_at_function_head(info, "_Bool _conditional_value_X%d;\n", info.num_conditional++);
+    }
+    
+    if(info->num_conditional >= info->max_conditional) {
+        info->max_conditional = info->num_conditional;
+    }
     
     if(conditional_value.c_value !== "") {
-        add_come_code(info, "(_condtional_value_X%d=(%s));", num_condtional_stack, conditional_value.c_value);
+        add_come_code(info, "(_conditional_value_X%d=(%s));", num_conditional, conditional_value.c_value);
     }
     free_right_value_objects(info, comma:false);
     if(conditional_value.c_value !== "") {
-        add_come_code(info, "_condtional_value_X%d;", num_condtional_stack);
+        add_come_code(info, "_conditional_value_X%d;", num_conditional);
     }
 }
 

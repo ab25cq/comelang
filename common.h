@@ -601,6 +601,8 @@ struct sInfo
     int right_value_num;
     int right_value_max;
     bool in_conditional;
+    int num_conditional;
+    int max_conditional;
 };
 
 uniq class sNodeBase

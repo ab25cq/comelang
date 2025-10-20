@@ -48,6 +48,9 @@ class sLambdaNode extends sNodeBase
         int block_level = info->block_level;
         info->block_level = 0;
         
+        int max_conditional = info->max_conditional;
+        info->max_conditional = 0;
+        
         if(self.mFun.mBlock) {
             transpile_block(self.mFun.mBlock, self.mFun.mParamTypes, self.mFun.mParamNames, info);
         }
@@ -68,6 +71,7 @@ class sLambdaNode extends sNodeBase
         
         info->right_value_max = right_value_max;
         info->right_value_num = right_value_num;
+        info->max_conditional = max_conditional;
         
         return true;
     }
@@ -96,6 +100,8 @@ class sFunNode extends sNodeBase
         info->right_value_num = 0;
         int right_value_max = info->right_value_max;
         info->right_value_max = 0;
+        int max_conditional = info->max_conditional;
+        info->max_conditional = 0;
         
         //string come_fun_name = info.come_fun_name;
         //info.come_fun_name = string(info.come_fun.mName);
@@ -123,6 +129,7 @@ class sFunNode extends sNodeBase
         
         info->right_value_max = right_value_max;
         info->right_value_num = right_value_num;
+        info->max_conditional = max_conditional;
         
         return true;
     }
@@ -446,6 +453,9 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
     else {
         int i;
         foreach(node, block->mNodes) {
+            int num_conditional = info->num_conditional;
+            if(info->block_level == 1) info->num_conditional = 0;
+            
             var right_value_objects = info.right_value_objects;
             info.right_value_objects = new list<sRightValueObject*%>();
             
@@ -526,6 +536,7 @@ int transpile_block(sBlock* block, list<sType*%>* param_types, list<string>* par
             if(info.right_value_objects) info.right_value_objects.reset();
             info.right_value_objects = right_value_objects;
             i++;
+            if(info->block_level == 1) info->num_conditional = num_conditional;
         }
     }
 
@@ -2056,6 +2067,8 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     
     int right_value_max = info->right_value_max;
     int right_value_num = info->right_value_num;
+    int max_conditional = info->max_conditional;
+    int num_conditional = info->num_conditional;
     
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
@@ -2174,6 +2187,8 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     
     info->right_value_max = right_value_max;
     info->right_value_num = right_value_num;
+    info->num_conditional = num_conditional;
+    info->max_conditional = max_conditional;
     
     return (string(fun_name), true);
 }
