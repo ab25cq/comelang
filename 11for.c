@@ -62,7 +62,7 @@ class sForNode extends sNodeBase
         sNode* expression_node = self.mExpressionNode;
         
         if(expression_node) {
-            node_compile(expression_node).elif {
+            node_conditional_compile(expression_node).elif {
                 return false;
             }
             
@@ -87,7 +87,7 @@ class sForNode extends sNodeBase
     
         if(expression_node2) {
             add_come_code(info,"({");
-            node_compile(expression_node2).elif {
+            node_conditional_compile(expression_node2).elif {
                 return false;
             }
             
@@ -105,7 +105,7 @@ class sForNode extends sNodeBase
         if(expression_node3) {
             add_come_code(info, "({");
             
-            node_compile(expression_node3).elif {
+            node_conditional_compile(expression_node3).elif {
                 return false;
             }
             

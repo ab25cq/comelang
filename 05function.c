@@ -39,6 +39,12 @@ class sLambdaNode extends sNodeBase
         sFun* come_fun = info.come_fun;
         info.come_fun = self.mFun;
         
+        int right_value_max = info->right_value_max;
+        info->right_value_max = 0;
+        
+        int right_value_num = info->right_value_num;
+        info->right_value_num = 0;
+        
         int block_level = info->block_level;
         info->block_level = 0;
         
@@ -59,6 +65,9 @@ class sLambdaNode extends sNodeBase
         info.stack.push_back(come_value);
         
         info.come_fun = come_fun;
+        
+        info->right_value_max = right_value_max;
+        info->right_value_num = right_value_num;
         
         return true;
     }
@@ -83,6 +92,11 @@ class sFunNode extends sNodeBase
         sFun* come_fun = info.come_fun;
         info.come_fun = self.mFun;
         
+        int right_value_num = info->right_value_num;
+        info->right_value_num = 0;
+        int right_value_max = info->right_value_max;
+        info->right_value_max = 0;
+        
         //string come_fun_name = info.come_fun_name;
         //info.come_fun_name = string(info.come_fun.mName);
         
@@ -106,6 +120,9 @@ class sFunNode extends sNodeBase
         
         info.come_fun = come_fun;
         //info.come_fun_name = come_fun_name;
+        
+        info->right_value_max = right_value_max;
+        info->right_value_num = right_value_num;
         
         return true;
     }
@@ -2037,6 +2054,9 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     char* caller_sname = info->caller_sname;
     info->caller_sname = info->sname;
     
+    int right_value_max = info->right_value_max;
+    int right_value_num = info->right_value_num;
+    
     string last_code = info.module.mLastCode;
     info.module.mLastCode = null;
     string last_code2 = info.module.mLastCode2;
@@ -2151,6 +2171,9 @@ string, bool create_generics_fun(string fun_name, sGenericsFun* generics_fun, sT
     info->caller_fun = caller_fun;
     info->caller_line = caller_line;
     info->caller_sname = caller_sname;
+    
+    info->right_value_max = right_value_max;
+    info->right_value_num = right_value_num;
     
     return (string(fun_name), true);
 }

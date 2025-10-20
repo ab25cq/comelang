@@ -301,12 +301,12 @@ void append_object_to_right_values(CVALUE* come_value, sType*% type, sInfo* info
     var new_value = new sRightValueObject;
     new_value.mType = type;
     new_value.mFreed = false;
-    static int right_value_num = 0;
-    new_value.mID = right_value_num;
-    new_value.mVarName = xsprintf("__right_value%d", right_value_num++);
+    new_value.mID = info->right_value_num;
+    new_value.mVarName = xsprintf("__right_value%d", info->right_value_num++);
     new_value.mFunName = info->come_fun->mName;
     new_value.mBlockLevel = info->block_level;
     new_value.mDecrementRefCount = decrement_ref_count;
+    
     
     if(obj_value) {
         new_value.mObjType = obj_type;
@@ -321,9 +321,22 @@ void append_object_to_right_values(CVALUE* come_value, sType*% type, sInfo* info
     info.right_value_objects.push_back(new_value);
     
     if(type->mPointerNum > 0) {
-        string buf = xsprintf("void* __right_value%d = (void*)0;\n", right_value_num-1);
-        add_come_code_at_function_head(info, buf);
+        bool already_defined = info->right_value_num-1 < info->right_value_max && info->right_value_max > 0;
         
+        if(already_defined) {
+            if(info->in_conditional ){
+                string buf = xsprintf("__right_value%d = (void*)0, ", info->right_value_num-1);
+                add_come_code(info, buf);
+            }
+            else {
+                string buf = xsprintf("__right_value%d = (void*)0;\n", info->right_value_num-1);
+                add_come_code(info, buf);
+            }
+        }
+        else {
+            string buf = xsprintf("void* __right_value%d = (void*)0;\n", info->right_value_num-1);
+            add_come_code_at_function_head(info, buf);
+        }
         
         come_value.c_value_without_right_value_objects = clone come_value.c_value;
         come_value.c_value = xsprintf("((%s)(%s=%s))", make_type_name_string(type, false@in_header, true@array_cast_pointer), new_value->mVarName, come_value.c_value);
@@ -345,6 +358,10 @@ void remove_object_from_right_values(int right_value_num, sInfo* info)
             break;
         }
         i++;
+    }
+    int id = right_value_num;
+    if(id + 1 > info->right_value_max) {
+        info->right_value_max = id +1;
     }
     
     info->right_value_objects.delete(i, i+1);
@@ -850,6 +867,17 @@ void free_right_value_objects(sInfo* info, bool comma=false)
         }
         
         n++;
+    }
+
+    int max_num = 0;
+    foreach(it, right_value_objects) {
+        if(it->mID + 1 > max_num) {
+            max_num = it->mID +1;
+        }
+    }
+    info->right_value_num = 0;
+    if(max_num >= info->right_value_max) {
+        info->right_value_max = max_num;
     }
 }
 

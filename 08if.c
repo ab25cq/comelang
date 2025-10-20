@@ -52,7 +52,7 @@ class sIfNode extends sNodeBase
         
         add_come_code(info, "if(({");
         
-        node_compile(expression_node).elif {
+        node_conditional_compile(expression_node).elif {
             return false;
         }
         
@@ -74,7 +74,7 @@ class sIfNode extends sNodeBase
     
                 add_come_code(info, "else if(({");
                 
-                node_compile(expression_node2).elif {
+                node_conditional_compile(expression_node2).elif {
                     return false;
                 }
                 
@@ -225,7 +225,7 @@ class sOrStatmentNode extends sNodeBase
         
         add_come_code(info, "if(!({");
     
-        node_compile(expression_node).elif {
+        node_conditional_compile(expression_node).elif {
             return false;
         }
     
@@ -274,7 +274,7 @@ class sAndStatmentNode extends sNodeBase
         
         add_come_code(info, "if(({");
     
-        node_compile(expression_node).elif {
+        node_conditional_compile(expression_node).elif {
             return false;
         }
         

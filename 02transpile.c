@@ -53,6 +53,19 @@ bool node_compile(sNode* node, sInfo* info=info)
     return result;
 }
 
+bool node_conditional_compile(sNode* node, sInfo* info=info)
+{
+    bool in_conditional = info->in_conditional;
+    info->in_conditional = true;
+    node_compile(node).if {
+        info->in_conditional = in_conditional;
+        return true;
+    }
+    info->in_conditional = in_conditional;
+    
+    return false;
+}
+
 void transpile_conditional_with_free_right_object_value(CVALUE*% conditional_value, sInfo* info=info)
 {
     add_last_code_to_source(info);

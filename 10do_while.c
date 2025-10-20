@@ -38,7 +38,7 @@ class sDoWhileNode extends sNodeBase
         /// compile expression ///
         sNode* expression_node = self.mExpressionNode;
     
-        node_compile(expression_node).elif {
+        node_conditional_compile(expression_node).elif {
             return false;
         }
         

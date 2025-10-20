@@ -1818,6 +1818,9 @@ struct sInfo
     _Bool in_method_block;
     _Bool prohibits_output_last_code;
     _Bool in_offsetof;
+    int right_value_num;
+    int right_value_max;
+    _Bool in_conditional;
 };
 
 struct sNodeBase
@@ -2692,7 +2695,7 @@ char* sCurrentNode_kind(struct sCurrentNode* self);
 _Bool sCurrentNode_compile(struct sCurrentNode* self, struct sInfo* info);
 void transpile_conditional_with_free_right_object_value(struct CVALUE* condtional_value, struct sInfo* info);
 _Bool node_compile(struct sNode* node, struct sInfo* info);
-_Bool node_condional_compile(struct sNode* node, struct sInfo* info);
+_Bool node_conditional_compile(struct sNode* node, struct sInfo* info);
 int come_main(int argc, char** argv);
 char* make_type_name_string(struct sType* type, _Bool in_header, _Bool array_cast_pointer, _Bool no_pointer, struct sInfo* info, _Bool no_static, _Bool cast_type, _Bool no_alignas);
 char* make_come_type_name_string(struct sType* type, struct sInfo* info, _Bool original_type_name, _Bool no_static);
@@ -2934,8 +2937,6 @@ _Bool _condtional_value_X8;
 int col;
 int col_0;
 void* __right_value2 = (void*)0;
-void* __right_value3 = (void*)0;
-void* __right_value4 = (void*)0;
 int __result_obj__1;
 msg2 = (void*)0;
 memset(&args, 0, sizeof(va_list));
@@ -2963,10 +2964,12 @@ memset(&args, 0, sizeof(va_list));
         }
         info->err_num++;
         free(msg2);
-        printf(((char*)(__right_value4=string_operator_add(((char*)(__right_value3=buffer_to_string(buf))),"\n"))));
+        __right_value0 = (void*)0;
+        __right_value1 = (void*)0;
+        printf(((char*)(__right_value2=string_operator_add(((char*)(__right_value1=buffer_to_string(buf))),"\n"))));
+        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
         (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
-        (__right_value3 = come_decrement_ref_count(__right_value3, (void*)0, (void*)0, 1, 0, (void*)0));
-        (__right_value4 = come_decrement_ref_count(__right_value4, (void*)0, (void*)0, 1, 0, (void*)0));
         __result_obj__1 = 0;
         come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
         return __result_obj__1;
@@ -2992,25 +2995,17 @@ _Bool _condtional_value_X10;
 }
 
 char* parse_word(struct sInfo* info){
-void* __right_value5 = (void*)0;
-void* __right_value6 = (void*)0;
+void* __right_value0 = (void*)0;
+void* __right_value1 = (void*)0;
 struct buffer* buf;
 _Bool _condtional_value_X11;
-void* __right_value7 = (void*)0;
 _Bool _condtional_value_X12;
-void* __right_value8 = (void*)0;
 char* __result_obj__2;
-void* __right_value9 = (void*)0;
 char* result;
 _Bool _condtional_value_X13;
-void* __right_value10 = (void*)0;
-void* __right_value11 = (void*)0;
-void* __right_value12 = (void*)0;
+void* __right_value2 = (void*)0;
 _Bool _condtional_value_X24;
-void* __right_value13 = (void*)0;
-void* __right_value14 = (void*)0;
-void* __right_value15 = (void*)0;
-void* __right_value16 = (void*)0;
+void* __right_value3 = (void*)0;
 char* __result_obj__11;
 char* __result_obj__12;
     buf=(struct buffer*)come_increment_ref_count(buffer_initialize((struct buffer*)come_increment_ref_count((struct buffer*)come_calloc_v2(1, sizeof(struct buffer)*(1), "05parse.c", 81, "struct buffer*"))));
@@ -3020,28 +3015,33 @@ char* __result_obj__12;
         info->p++;
     }
     skip_spaces_and_lf(info);
-    if(({    (_condtional_value_X12=(string_length(((char*)(__right_value7=buffer_to_string(buf))))==0));    (__right_value7 = come_decrement_ref_count(__right_value7, (void*)0, (void*)0, 1, 0, (void*)0));
+    if(({    __right_value0 = (void*)0,     (_condtional_value_X12=(string_length(((char*)(__right_value0=buffer_to_string(buf))))==0));    (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
     _condtional_value_X12;    })) {
         err_msg(info,"unexpected character(%c), expected word character, caller %s %d",*info->p,info->caller_sname,info->caller_line);
-        __result_obj__2 = (char*)come_increment_ref_count(((char*)(__right_value8=__builtin_string(""))));
+        __right_value0 = (void*)0;
+        __result_obj__2 = (char*)come_increment_ref_count(((char*)(__right_value0=__builtin_string(""))));
         come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
-        (__right_value8 = come_decrement_ref_count(__right_value8, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
         (__result_obj__2 = come_decrement_ref_count(__result_obj__2, (void*)0, (void*)0, 0, 1, (void*)0));
         return __result_obj__2;
     }
+    __right_value0 = (void*)0;
     result=(char*)come_increment_ref_count(buffer_to_string(buf));
     if(({    (_condtional_value_X13=(info->module_params));    _condtional_value_X13;    })) {
-        if(({        (_condtional_value_X24=(((char*)(__right_value12=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value11=__builtin_string(result))))))));        (__right_value10 = come_decrement_ref_count(__right_value10, (void*)0, (void*)0, 1, 0, (void*)0));
-        (__right_value11 = come_decrement_ref_count(__right_value11, (void*)0, (void*)0, 1, 0, (void*)0));
-        (__right_value12 = come_decrement_ref_count(__right_value12, (void*)0, (void*)0, 1, 0, (void*)0));
+        if(({        __right_value0 = (void*)0,         __right_value1 = (void*)0,         (_condtional_value_X24=(((char*)(__right_value2=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value1=__builtin_string(result))))))));        (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
+        (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
         _condtional_value_X24;        })) {
-            __result_obj__11 = (char*)come_increment_ref_count(((char*)(__right_value16=__builtin_string(((char*)(__right_value15=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value14=__builtin_string(result))))))))));
+            __right_value0 = (void*)0;
+            __right_value1 = (void*)0;
+            __right_value2 = (void*)0;
+            __result_obj__11 = (char*)come_increment_ref_count(((char*)(__right_value3=__builtin_string(((char*)(__right_value2=map$2char$phchar$ph_operator_load_element(info->module_params,((char*)(__right_value1=__builtin_string(result))))))))));
             come_call_finalizer(buffer_finalize, buf, (void*)0, (void*)0, 0, 0, 0, (void*)0);
             (result = come_decrement_ref_count(result, (void*)0, (void*)0, 0, 0, (void*)0));
-            (__right_value13 = come_decrement_ref_count(__right_value13, (void*)0, (void*)0, 1, 0, (void*)0));
-            (__right_value14 = come_decrement_ref_count(__right_value14, (void*)0, (void*)0, 1, 0, (void*)0));
-            (__right_value15 = come_decrement_ref_count(__right_value15, (void*)0, (void*)0, 1, 0, (void*)0));
-            (__right_value16 = come_decrement_ref_count(__right_value16, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__right_value1 = come_decrement_ref_count(__right_value1, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__right_value2 = come_decrement_ref_count(__right_value2, (void*)0, (void*)0, 1, 0, (void*)0));
+            (__right_value3 = come_decrement_ref_count(__right_value3, (void*)0, (void*)0, 1, 0, (void*)0));
             (__result_obj__11 = come_decrement_ref_count(__result_obj__11, (void*)0, (void*)0, 0, 1, (void*)0));
             return __result_obj__11;
         }
@@ -3156,9 +3156,8 @@ char* p;
 int sline;
 char* buf;
 _Bool _condtional_value_X25;
-void* __right_value17 = (void*)0;
+void* __right_value0 = (void*)0;
 char* __dec_obj1;
-void* __right_value18 = (void*)0;
 char* __dec_obj2;
 char* __result_obj__13;
 buf = (void*)0;
@@ -3170,6 +3169,7 @@ buf = (void*)0;
         __dec_obj1 = come_decrement_ref_count(__dec_obj1, (void*)0, (void*)0, 0,0, (void*)0);
     }
     else {
+        __right_value0 = (void*)0;
         __dec_obj2=buf,
         buf=(char*)come_increment_ref_count(__builtin_string(""));
         __dec_obj2 = come_decrement_ref_count(__dec_obj2, (void*)0, (void*)0, 0,0, (void*)0);
@@ -3227,14 +3227,13 @@ _Bool _condtional_value_X35;
 _Bool _condtional_value_X36;
 _Bool _condtional_value_X37;
 int line;
-void* __right_value19 = (void*)0;
-void* __right_value20 = (void*)0;
+void* __right_value0 = (void*)0;
+void* __right_value1 = (void*)0;
 struct buffer* fname;
 _Bool _condtional_value_X38;
 _Bool _condtional_value_X39;
 _Bool _condtional_value_X40;
 _Bool _condtional_value_X41;
-void* __right_value21 = (void*)0;
 char* __dec_obj3;
 _Bool _condtional_value_X42;
 _Bool _condtional_value_X43;
@@ -3287,6 +3286,7 @@ _Bool _condtional_value_X55;
                     info->p++;
                 }
                 info->sline=line;
+                __right_value0 = (void*)0;
                 __dec_obj3=info->sname,
                 info->sname=(char*)come_increment_ref_count(buffer_to_string(fname));
                 __dec_obj3 = come_decrement_ref_count(__dec_obj3, (void*)0, (void*)0, 0,0, (void*)0);

@@ -34,7 +34,7 @@ class sWhileNode extends sNodeBase
         
         add_come_code(info, "while(({");
     
-        node_compile(expression_node).elif {
+        node_conditional_compile(expression_node).elif {
             return false;
         }
     
