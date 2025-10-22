@@ -20,7 +20,7 @@
 typedef char*% string;
 
 ///////////////////////////////////////////////////////////////////////////
-// BARE METAL 
+// BARE METAL
 ///////////////////////////////////////////////////////////////////////////
 #if defined(__MINUX__)
 #include <comelang-minux.h>
@@ -31,6 +31,10 @@ using comelang;
 
 #define COME_STACKFRAME_MAX 16
 #define COME_STACKFRAME_MAX_GLOBAL 128
+
+#ifndef __DARWIN_OS_INLINE
+#define __DARWIN_OS_INLINE static inline
+#endif
 
 ///////////////////////////////////////////////////////////////////////////
 // UNIX
@@ -59,7 +63,7 @@ using comelang;
 ///////////////////////////////////////////////////////////////////////////
 //#define foreach(o1, o2) for(var o2_saved = (o2), var o1 = (o2_saved).begin(); !(o2_saved).end(); o1 = (o2_saved).next())
 
-struct buffer 
+struct buffer
 {
     char*% buf;
     int len;
@@ -143,7 +147,7 @@ uniq void come_push_stackframe(char* sname, int sline, int id)
         gComeStackFrameSName[gNumComeStackFrame] = sname;  // const string
         gComeStackFrameSLine[gNumComeStackFrame] = sline;
         gComeStackFrameID[gNumComeStackFrame] = id;
-    
+
         gNumComeStackFrame++;
     }
 }
@@ -162,7 +166,7 @@ uniq void come_save_stackframe(char* sname, int sline)
     for(int i=gNumComeStackFrame-2; i>=0; i--) {
         buf.append_format("%s %d #%d\n", gComeStackFrameSName[i], gComeStackFrameSLine[i], gComeStackFrameID[i]);
     }
-    
+
     if(gComeStackFrameBuffer) {
         free(gComeStackFrameBuffer);
     }
@@ -198,7 +202,7 @@ record uniq bool die(char* msg)
     perror(msg);
     stackframe();
     exit(4);
-    
+
     return false;
 }
 #else
@@ -207,7 +211,7 @@ uniq bool die(char* msg)
     puts(msg);
     //stackframe();
     exit(4);
-    
+
     return false;
 }
 #endif
@@ -230,17 +234,17 @@ struct sMemHeaderTiny
 struct sMemHeader
 {
     size_t size;
-    int allocated;            /// ALLOCATED_MAGIC_NUM 
+    int allocated;            /// ALLOCATED_MAGIC_NUM
     struct sMemHeader* next;
     struct sMemHeader* prev;
     struct sMemHeader* free_next;
-    
+
 #if !defined(__MINUX__) && !defined(__BARE_METAL__)
     char* sname[COME_STACKFRAME_MAX];
     int sline[COME_STACKFRAME_MAX];
     int id[COME_STACKFRAME_MAX];
 #endif
-    
+
     char* class_name;
 };
 
@@ -262,10 +266,10 @@ struct sHeapPage
 {
     char** mPages;
     int mSizePages;
-    
+
     char* mTop;
     int mCurrentPages;
-    
+
     sMemHeaderTiny* mFreeMem[HEAP_POOL_PAGE_SIZE];
 };
 
@@ -274,24 +278,24 @@ uniq struct sHeapPage gHeapPages;
 uniq void come_heap_init(int come_malloc, int come_debug, int come_gc)
 {
     gComeDebugLib = come_debug
-    
+
     gComeStackFrameBuffer = NULL;
     memset(gComeStackFrameSName, 0, sizeof(char*)*COME_STACKFRAME_MAX_GLOBAL);
     memset(gComeStackFrameSLine, 0, sizeof(int)*COME_STACKFRAME_MAX_GLOBAL);
     memset(gComeStackFrameID, 0, sizeof(int)*COME_STACKFRAME_MAX_GLOBAL);
-    
+
     gHeapPages.mSizePages = INIT_PAGE_PAGE_SIZE;
-    
+
     gHeapPages.mPages = calloc(1, sizeof(char**)*gHeapPages.mSizePages);
     for(int i=0; i<gHeapPages.mSizePages; i++) {
         gHeapPages.mPages[i] = calloc(1, sizeof(char)*HEAP_POOL_PAGE_SIZE);
     }
-    
+
     gHeapPages.mTop = gHeapPages.mPages[0];
     gHeapPages.mCurrentPages = 0;
-    
+
     memset(gHeapPages.mFreeMem, 0, sizeof(sMemHeaderTiny*)*HEAP_POOL_PAGE_SIZE);
-    
+
     gAllocMem = NULL;
 }
 
@@ -300,13 +304,13 @@ uniq void come_heap_final()
     if(gComeStackFrameBuffer) {
         free(gComeStackFrameBuffer);
     }
-    
+
     if(gComeDebugLib) {
         sMemHeader* it = gAllocMem;
         int n = 0;
         while(it) {
             n++;
-            
+
             bool flag = false;
             printf("#%d ", n);
             if(it->class_name) {
@@ -353,43 +357,43 @@ uniq void* alloc_from_pages(size_t size)
 #else
     size = (size + 7 & ~0x7);
 #endif
-    
+
     if(size < HEAP_POOL_PAGE_SIZE) {
         if(gHeapPages.mFreeMem[size]) {
             result = gHeapPages.mFreeMem[size];
-            
+
             gHeapPages.mFreeMem[size] = gHeapPages.mFreeMem[size]->free_next;
             memset(result, 0, size);
         }
 
         if(result == null) {
             size_t free_area = gHeapPages.mPages[gHeapPages.mCurrentPages] + HEAP_POOL_PAGE_SIZE - gHeapPages.mTop;
-            
+
             if(size >= free_area) {
                 gHeapPages.mCurrentPages++;
-                
+
                 if(gHeapPages.mCurrentPages == gHeapPages.mSizePages) {
                     int new_size_pages = gHeapPages.mSizePages * NEW_ALLOC_SIZE;
                     char** new_pages = calloc(1, sizeof(char*)*new_size_pages);
-                    
+
                     int i=0;
                     for(; i<gHeapPages.mSizePages; i++) {
                         new_pages[i] = gHeapPages.mPages[i];
                     }
-                    
+
                     for(; i<new_size_pages; i++) {
                         new_pages[i] = calloc(1, sizeof(char)*HEAP_POOL_PAGE_SIZE);
                     }
-                    
+
                     free(gHeapPages.mPages);
-                    
+
                     gHeapPages.mPages = new_pages;
                     gHeapPages.mSizePages = new_size_pages;
                 }
-                
+
                 gHeapPages.mTop = gHeapPages.mPages[gHeapPages.mCurrentPages];
             }
-            
+
             result = gHeapPages.mTop;
             gHeapPages.mTop += size;
         }
@@ -397,7 +401,7 @@ uniq void* alloc_from_pages(size_t size)
     else {
         result = calloc(1, size);
     }
-    
+
     return result;
 }
 
@@ -406,19 +410,19 @@ uniq void come_free_mem_of_heap_pool(void* mem)
     if(mem) {
         if(gComeDebugLib) {
             sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(sMemHeader));
-            
+
             if(it->allocated != ALLOCATED_MAGIC_NUM) {
                 return;
             }
-            
+
             it->allocated = 0;
-            
+
             sMemHeader* prev_it = it->prev;
             sMemHeader* next_it = it->next;
-            
+
             if(gAllocMem == it) {
                 gAllocMem = next_it;
-                
+
                 if(gAllocMem) {
                     gAllocMem->prev = null;
                 }
@@ -431,9 +435,9 @@ uniq void come_free_mem_of_heap_pool(void* mem)
                     next_it->prev = prev_it;
                 }
             }
-            
+
             size_t size = it->size;
-            
+
             if(size < HEAP_POOL_PAGE_SIZE) {
                 if(gHeapPages.mFreeMem[size] == NULL) {
                     it->free_next = NULL;
@@ -447,24 +451,24 @@ uniq void come_free_mem_of_heap_pool(void* mem)
             else {
                 free(it);
             }
-            
+
             gNumFree++;
         }
         else {
             sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(sMemHeaderTiny));
-            
+
             if(it->allocated != ALLOCATED_MAGIC_NUM) {
                 return;
             }
-            
+
             it->allocated = 0;
-            
+
             sMemHeaderTiny* prev_it = it->prev;
             sMemHeaderTiny* next_it = it->next;
-            
+
             if(gAllocMem == it) {
                 gAllocMem = (sMemHeader*)next_it;
-                
+
                 if(gAllocMem) {
                     gAllocMem->prev = null;
                 }
@@ -477,9 +481,9 @@ uniq void come_free_mem_of_heap_pool(void* mem)
                     next_it->prev = prev_it;
                 }
             }
-            
+
             size_t size = it->size;
-            
+
             if(size < HEAP_POOL_PAGE_SIZE) {
                 if(gHeapPages.mFreeMem[size] == NULL) {
                     it->free_next = NULL;
@@ -493,7 +497,7 @@ uniq void come_free_mem_of_heap_pool(void* mem)
             else {
                 free(it);
             }
-            
+
             gNumFree++;
         }
     }
@@ -503,14 +507,14 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
 {
     if(gComeDebugLib) {
         void* result = alloc_from_pages(size + sizeof(sMemHeader));
-        
+
         sMemHeader* it = result;
-        
+
         it->allocated = ALLOCATED_MAGIC_NUM;
-        
+
         it->size = size + sizeof(sMemHeader);
         it->free_next = NULL;
-        
+
         come_push_stackframe(sname, sline, 0);
 
         if(gNumComeStackFrame < COME_STACKFRAME_MAX) {
@@ -529,50 +533,50 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
                 it.id[i] = gComeStackFrameID[gNumComeStackFrame -1 - i];
             }
         }
-        
+
         come_pop_stackframe();
-        
+
         it->next = gAllocMem;
         it->prev = null;
-        
-        it->class_name = class_name; 
-        
+
+        it->class_name = class_name;
+
         if(gAllocMem) {
             gAllocMem->prev = it;
         }
-        
+
         gAllocMem = it;
-        
+
         gNumAlloc++;
-        
+
         return (char*)result + sizeof(sMemHeader);
     }
     else {
         void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
-        
+
         sMemHeaderTiny* it = result;
-        
+
         it->allocated = ALLOCATED_MAGIC_NUM;
-        
-        it->class_name = class_name; 
-        
+
+        it->class_name = class_name;
+
         it->sname = sname;
         it->sline = sline;
-        
+
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = NULL;
-        
+
         it->next = (sMemHeaderTiny*)gAllocMem;
         it->prev = null;
-        
+
         if(gAllocMem) {
             ((sMemHeaderTiny*)gAllocMem)->prev = it;
         }
-        
+
         gAllocMem = (sMemHeader*)it;
-        
+
         gNumAlloc++;
-        
+
         return (char*)result + sizeof(sMemHeaderTiny);
     }
 }
@@ -581,11 +585,11 @@ uniq void come_print_heap_info(void* mem)
 {
     if(gComeDebugLib) {
         sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
-        
+
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
             return;
         }
-        
+
         printf("%p ", mem);
         if(it->class_name) {
             printf("(%s): ", it->class_name);
@@ -599,7 +603,7 @@ uniq void come_print_heap_info(void* mem)
     }
     else {
         sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
-        
+
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
             return;
         }
@@ -637,19 +641,19 @@ uniq void come_free_mem_of_heap_pool(void* mem)
         }
         else {
             sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(sMemHeaderTiny));
-            
+
             if(it->allocated != ALLOCATED_MAGIC_NUM) {
                 return;
             }
-            
+
             it->allocated = 0;
-            
+
             sMemHeaderTiny* prev_it = it->prev;
             sMemHeaderTiny* next_it = it->next;
-            
+
             if(gAllocMem == it) {
                 gAllocMem = (sMemHeader*)next_it;
-                
+
                 if(gAllocMem) {
                     gAllocMem->prev = null;
                 }
@@ -662,11 +666,11 @@ uniq void come_free_mem_of_heap_pool(void* mem)
                     next_it->prev = prev_it;
                 }
             }
-            
+
             size_t size = it->size;
-            
+
             free(it);
-            
+
             gNumFree++;
         }
     }
@@ -678,30 +682,30 @@ uniq void* come_alloc_mem_from_heap_pool(size_t size, char* sname=null, int slin
     }
     else {
         void* result = alloc_from_pages(size + sizeof(sMemHeaderTiny));
-        
+
         sMemHeaderTiny* it = result;
-        
+
         it->allocated = ALLOCATED_MAGIC_NUM;
-        
-        it->class_name = class_name; 
-        
+
+        it->class_name = class_name;
+
         it->sname = sname;
         it->sline = sline;
-        
+
         it->size = size + sizeof(sMemHeaderTiny);
         it->free_next = NULL;
-        
+
         it->next = (sMemHeaderTiny*)gAllocMem;
         it->prev = null;
-        
+
         if(gAllocMem) {
             ((sMemHeaderTiny*)gAllocMem)->prev = it;
         }
-        
+
         gAllocMem = (sMemHeader*)it;
-        
+
         gNumAlloc++;
-        
+
         return (char*)result + sizeof(sMemHeaderTiny);
     }
 }
@@ -715,22 +719,22 @@ uniq char* come_dynamic_typeof(void* mem)
 {
     if(gComeDebugLib) {
         sMemHeader* it = (sMemHeader*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeader));
-        
+
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
             printf("invalid heap object(%p)(1)\n", it);
             exit(2);
         }
-        
+
         return it->class_name;
     }
     else {
         sMemHeaderTiny* it = (sMemHeaderTiny*)((char*)mem - sizeof(size_t) - sizeof(size_t) - sizeof(sMemHeaderTiny));
-        
+
         if(it->allocated != ALLOCATED_MAGIC_NUM) {
             printf("invalid heap object(%p)(2)\n", it);
             exit(2);
         }
-        
+
         return it->class_name;
     }
 }
@@ -738,15 +742,15 @@ uniq char* come_dynamic_typeof(void* mem)
 uniq void* come_calloc(size_t count, size_t size, char* sname=null, int sline=0, char* class_name="")
 {
     char* mem = come_alloc_mem_from_heap_pool(sizeof(size_t)+sizeof(size_t)+count*size, sname, sline, class_name);
-    
+
     size_t* ref_count = (size_t*)mem;
 
     *ref_count = 0;
-    
+
     size_t* size2 = (size_t*)(mem + sizeof(size_t));
-    
+
     *size2 = size*count + sizeof(size_t) + sizeof(size_t);
-    
+
     return mem + sizeof(size_t) + sizeof(size_t);
 }
 
@@ -755,9 +759,9 @@ uniq void come_free(void* mem)
     if(mem == NULL) {
         return;
     }
-    
+
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-    
+
     come_free_mem_of_heap_pool((char*)ref_count);
 }
 
@@ -768,15 +772,15 @@ uniq void* come_memdup(void* block, char* sname=null, int sline=0, char* class_n
     }
 
     char* mem = (char*)block - sizeof(size_t) - sizeof(size_t);
-    
+
     size_t* size_p = (size_t*)(mem + sizeof(size_t));
 
     size_t size = *size_p - sizeof(size_t) - sizeof(size_t);
-    
+
     void* result = come_calloc(1, size, sname, sline, class_name);
 
     memcpy(result, block, size);
-    
+
     return result;
 }
 
@@ -785,11 +789,11 @@ uniq void* come_increment_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
-    
+
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-    
+
     (*ref_count)++;
-    
+
     return mem;
 }
 
@@ -798,11 +802,11 @@ uniq void* come_print_ref_count(void* mem)
     if(mem == NULL) {
         return mem;
     }
-    
+
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-    
+
     printf("ref_count %ld\n", *ref_count);
-    
+
     return mem;
 }
 
@@ -811,9 +815,9 @@ uniq int come_get_ref_count(void* mem)
     if(mem == NULL) {
         return 0;
     }
-    
+
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-    
+
     return *ref_count;
 }
 
@@ -827,25 +831,25 @@ uniq void* come_decrement_ref_count(void* mem, void* protocol_fun, void* protoco
     if(mem == NULL) {
         return NULL;
     }
-    
+
     size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-    
+
     if(!no_decrement) {
         (*ref_count)--;
     }
-    
+
     size_t count = *ref_count;
     if(!no_free && count <= 0) {
         if(protocol_obj && protocol_fun) {
             void (*finalizer)(void*) = protocol_fun;
             finalizer(protocol_obj);
-            
+
             come_free(protocol_obj);
         }
         come_free(mem);
         return NULL;
     }
-    
+
     return mem;
 }
 
@@ -859,7 +863,7 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
     if(mem == NULL) {
         return;
     }
-    
+
     if(call_finalizer_only) {
         if(fun) {
             if(protocol_obj && protocol_fun) {
@@ -878,11 +882,11 @@ uniq void come_call_finalizer(void* fun, void* mem, void* protocol_fun, void* pr
     }
     else {
         size_t* ref_count = (size_t*)((char*)mem - sizeof(size_t) - sizeof(size_t));
-        
+
         if(!no_decrement) {
             (*ref_count)--;
         }
-        
+
         size_t count = *ref_count;
         if(!no_free && count <= 0) {
             if(mem) {
@@ -916,7 +920,7 @@ uniq string __builtin_string(char* str)
         return null;
     }
     int len = strlen(str) + 1;
-    
+
     char*% result = new char[len];
 
     strncpy(result, str, len);
@@ -990,12 +994,12 @@ impl list <T>
 
         return self;
     }
-    list<T>*% initialize_with_values(list<T>*% self, int num_value, T&* values) 
+    list<T>*% initialize_with_values(list<T>*% self, int num_value, T&* values)
     {
         self.head = null;
         self.tail = null;
         self.len = 0;
-        
+
         for(int i=0; i<num_value; i++) {
             self.push_back(dummy_heap values[i]);
         }
@@ -1034,11 +1038,11 @@ impl list <T>
     {
         if(self.len == 0) {
             list_item<T>* litem = borrow gc_inc(new list_item<T>);
-            
+
             litem.prev = null;
             litem.next = null;
             litem.item = item;
-            
+
             self.tail = litem;
             self.head = litem;
         }
@@ -1048,7 +1052,7 @@ impl list <T>
             litem.prev = self.head;
             litem.next = null;
             litem.item = item;
-            
+
             self.tail = litem;
             self.head.next = litem;
         }
@@ -1058,52 +1062,52 @@ impl list <T>
             litem.prev = self.tail;
             litem.next = null;
             litem.item = item;
-            
+
             self.tail.next = litem;
             self.tail = litem;
         }
 
         self.len++;
-        
+
         return self;
     }
     T pop_front(list<T>* self) {
         T result;
         if(self.len == 1) {
             result = self.head.item;
-            
+
             list_item<T>* litem = self.head;
             self.head = null;
             self.tail = null;
-            
+
             delete borrow litem;
-            
+
             self.len--;
         }
         else if(self.len == 2) {
             list_item<T>* litem = self.head;
-            
+
             result = self.head.item;
-            
+
             self.head = self.head.next;
             self.head.prev = null;
             self.head.next = null;
             self.tail = self.head;
-            
+
             delete borrow litem;
-            
+
             self.len--;
         }
         else if(self.len >= 3) {
             list_item<T>* litem = self.head;
-            
+
             result = self.head.item;
-            
+
             self.head = litem.next;
             self.head.prev = null;
-            
+
             delete borrow litem;
-            
+
             self.len--;
         }
         return result;
@@ -1112,11 +1116,11 @@ impl list <T>
     {
         if(self.len == 0) {
             list_item<T>* litem = borrow gc_inc(new list_item<T>);
-            
+
             litem.prev = null;
             litem.next = null;
             litem.item = item;
-            
+
             self.tail = litem;
             self.head = litem;
         }
@@ -1126,7 +1130,7 @@ impl list <T>
             litem.prev = self.head;
             litem.next = null;
             litem.item = item;
-            
+
             self.tail = litem;
             self.head.next = litem;
         }
@@ -1136,39 +1140,39 @@ impl list <T>
             litem.prev = self.tail;
             litem.next = null;
             litem.item = item;
-            
+
             self.tail.next = litem;
             self.tail = litem;
         }
 
         self.len++;
-        
+
         return self;
     }
-    
+
     immutable string to_string(list<T>* self)
     {
         buffer*% result = new buffer();
-        
+
         result.append_str("[");
         list_item<T>* it = self.head;
         int i = 0;
         while(it != null) {
             result.append_str(it.item.to_string());
             it = it.next;
-            
+
             i++;
-            
+
             if(i != self.length()) {
                 result.append_str(",");
             }
         }
-        
+
         result.append_str("]");
-        
+
         return result.to_string();
     }
-    
+
     T& begin(list<T>* self) {
         if(self == null) {
             T&` result;
@@ -1180,7 +1184,7 @@ impl list <T>
         if(self.it) {
             return self.it.item;
         }
-        
+
         T&` result;
         memset(&result, 0, sizeof(T));
         return result;
@@ -1192,13 +1196,13 @@ impl list <T>
             memset(&result, 0, sizeof(T));
             return result;
         }
-        
+
         self.it = self.it.next;
 
         if(self.it) {
             return self.it.item;
         }
-        
+
         T&` result;
         memset(&result, 0, sizeof(T));
         return result;
@@ -1207,7 +1211,7 @@ impl list <T>
     bool end(list<T>* self) {
         return self == null || self.it == null;
     }
-    immutable list<T>* each(list<T>* self, void* parent, void (*block)(void*, T&,int,bool*)) 
+    immutable list<T>* each(list<T>* self, void* parent, void (*block)(void*, T&,int,bool*))
     {
         list_item<T>* it = self.head;
         int i = 0;
@@ -1221,10 +1225,10 @@ impl list <T>
             it = it.next;
             i++;
         }
-        
+
         return self;
     }
-    immutable T item(list<T>* self, int position, T& default_value) 
+    immutable T item(list<T>* self, int position, T& default_value)
     {
         if(position < 0) {
             position += self.len;
@@ -1250,7 +1254,7 @@ impl list <T>
         }
         return self.len;
     }
-    
+
     list<T>* insert(list<T>* self, int position, T item)
     {
         if(position < 0) {
@@ -1276,7 +1280,7 @@ impl list <T>
             litem.prev = null;
             litem.next = self.head;
             litem.item = item;
-            
+
             self.head.prev = litem;
             self.head = litem;
 
@@ -1288,7 +1292,7 @@ impl list <T>
             litem.prev = self.head;
             litem.next = self.tail;
             litem.item = item;
-            
+
             self.tail.prev = litem;
             self.head.next = litem;
 
@@ -1315,7 +1319,7 @@ impl list <T>
                 i++;
             }
         }
-        
+
         return self;
     }
     list<T>* reset(list<T>* self) {
@@ -1330,7 +1334,7 @@ impl list <T>
         self.tail = null;
 
         self.len = 0;
-        
+
         return self;
     }
     list<T>* remove(list<T>* self, T& item) {
@@ -1342,10 +1346,10 @@ impl list <T>
                 break;
             }
             it2++;
-            
+
             it = it.next;
         }
-        
+
         return self;
     }
     list<T>* remove_by_pointer(list<T>* self, T& item) {
@@ -1357,10 +1361,10 @@ impl list <T>
                 break;
             }
             it2++;
-            
+
             it = it.next;
         }
-        
+
         return self;
     }
     list<T>* delete(list<T>* self, int head, int tail)
@@ -1389,8 +1393,8 @@ impl list <T>
         if(head == tail) {
             return self;
         }
-        
-        if(head == 0 && tail == self.len) 
+
+        if(head == 0 && tail == self.len)
         {
             self.reset();
         }
@@ -1460,7 +1464,7 @@ impl list <T>
                     tail_it = it;
                 }
 
-                if(i >= head && i < tail) 
+                if(i >= head && i < tail)
                 {
                     list_item<T>* prev_it = it;
 
@@ -1484,7 +1488,7 @@ impl list <T>
                 tail_it.prev = head_prev_it;
             }
         }
-        
+
         return self;
     }
     list<T>* replace(list<T>* self, int position, T item)
@@ -1495,7 +1499,7 @@ impl list <T>
         if(position < 0) {
             position = 0;
         }
-        
+
         if(self.len == 0 || position >= self.len) {
             int len = self.len;
             for(int i=0; i<position-len; i++) {
@@ -1517,7 +1521,7 @@ impl list <T>
             it = it.next;
             i++;
         }
-        
+
         return self;
     }
 
@@ -1529,7 +1533,7 @@ impl list <T>
                 return it2;
             }
             it2++;
-            
+
             it = it.next;
         }
 
@@ -1543,7 +1547,7 @@ impl list <T>
                 return it2;
             }
             it2++;
-            
+
             it = it.next;
         }
 
@@ -1653,7 +1657,7 @@ impl list <T>
 
         return result;
     }
-    bool operator_equals(list<T>* left, list<T>* right) 
+    bool operator_equals(list<T>* left, list<T>* right)
     {
         if(left.len != right.len) {
             return false;
@@ -1682,7 +1686,7 @@ impl list <T>
                 return true;
             }
         }
-        
+
         return false;
     }
     list<T>*% merge_list_with_lambda(list<T>* left, list<T>* right, int (*compare)(T&,T&)) {
@@ -1699,7 +1703,7 @@ impl list <T>
                 else if(it2.item == null) {
                     it2 = it2.next;
                 }
-                else if(compare(it.item, it2.item) <= 0) 
+                else if(compare(it.item, it2.item) <= 0)
                 {
                     if(isheap(T)) {
                         result.push_back(clone it.item);
@@ -1790,10 +1794,10 @@ impl list <T>
                 break;
             }
         }
-        
+
         auto left_list = list1.merge_sort_with_lambda(compare);
         auto right_list = list2.merge_sort_with_lambda(compare);
-        
+
         return left_list.merge_list_with_lambda(right_list, compare);
     }
     list<T>*% sort_with_lambda(list<T>* self, int (*compare)(T&,T&)) {
@@ -1843,7 +1847,7 @@ impl list <T>
                 }
 
                 item_before = it.item;
-                
+
                 it = it.next;
             }
         }
@@ -1864,8 +1868,8 @@ impl list <T>
         }
 
         return result;
-    } 
-    
+    }
+
     immutable list<T>*% operator_add(list<T>*% left, list<T>*% right) {
         list<T>*% result = new list<T>();
 
@@ -1892,7 +1896,7 @@ impl list <T>
             list_item<T>* it = left.head;
             while(it != null) {
                 result.push_back(dupe it.item);
-    
+
                 it = it.next;
             }
         }
@@ -1901,18 +1905,18 @@ impl list <T>
     }
     string join(list<T>* self, char* sep=" ") {
         buffer*% buf = new buffer();
-        
+
         int n = 0;
         for(var it = self.begin(); !self.end(); it = self.next()) {
             buf.append_str(it);
-            
+
             if(n < self.length()-1) {
                 buf.append_str(sep);
             }
-            
+
             n++;
         }
-        
+
         return buf.to_string();
     }
 }
@@ -1927,7 +1931,7 @@ struct map<T, T2>
     T2*& items;
     int size;
     int len;
-    
+
     list<T>*% key_list;
 
     int it;
@@ -1949,14 +1953,14 @@ impl map <T, T2>
 
         self.size = MAP_TABLE_DEFAULT_SIZE;
         self.len = 0;
-        
+
         self.key_list = new list<T&>();
 
         self.it = 0;
 
         return self;
     }
-    map<T,T2>*% initialize_with_values(map<T,T2>*% self, int num_keys, T&* keys, T2&* values) 
+    map<T,T2>*% initialize_with_values(map<T,T2>*% self, int num_keys, T&* keys, T2&* values)
     {
         self.keys = borrow gc_inc(new T[MAP_TABLE_DEFAULT_SIZE]);
         self.items = borrow gc_inc(new T2[MAP_TABLE_DEFAULT_SIZE]);
@@ -1971,9 +1975,9 @@ impl map <T, T2>
         self.len = 0;
 
         self.it = 0;
-        
+
         self.key_list = new list<T&>();
-        
+
         for(int i=0; i<num_keys; i++) {
             self.insert(dummy_heap keys\[i], dummy_heap values[i]);
         }
@@ -1998,7 +2002,7 @@ impl map <T, T2>
             }
         }
         come_free((char*)self.keys);
-        
+
         delete borrow self.key_list;
 
         delete borrow self.item_existance;
@@ -2008,15 +2012,15 @@ impl map <T, T2>
         if(self == null) {
             return null;
         }
-        
+
         var result = new map<T,T2>();
-        
+
         result.key_list = new list<T&>();
 
         for(var it = self.begin(); !self.end(); it = self.next()) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
-            
+
             var it2 = self.at(it, default_value);
 
             if(isheap(T) && isheap(T2)) {
@@ -2035,39 +2039,39 @@ impl map <T, T2>
 
         return result;
     }
-    
+
     immutable string to_string(map<T,T2>* self)
     {
         buffer*% result = new buffer();
-        
+
         result.append_str("[");
-        
+
         list_item<T&>* it = self.key_list.head;
         while(it) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = self.at(it.item, default_value);
-            
+
             result.append_str(it.item.to_string());
             result.append_str(":");
             result.append_str(it2.to_string());
-            
+
             it = it.next;
-            
+
             if(it != null) {
                 result.append_str(",");
             }
         }
-        
+
         result.append_str("]");
-        
+
         return result.to_string();
     }
-    
+
     immutable T2 at(map<T, T2>* self, T& key, T2 default_value) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
-        
+
         while(true) {
             if(self.item_existance[it])
             {
@@ -2095,14 +2099,14 @@ impl map <T, T2>
     map<T,T2>* remove(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
-        
+
         while(true) {
             if(self.item_existance[it])
             {
                 if(self.keys\[it].equals(key))
                 {
                     self.key_list.remove(self.keys\[it]);
-                    
+
                     self.item_existance[it] = false;
                     if(isheap(T)) {
                         delete borrow self.keys\[it];
@@ -2112,7 +2116,7 @@ impl map <T, T2>
                         delete borrow self.items\[it];
                     }
                     memset(self.items + it, 0, sizeof(T2));
-                    
+
                     self.len--;
                     break;
                 }
@@ -2130,20 +2134,20 @@ impl map <T, T2>
                 break;
             }
         }
-        
+
         return self;
     }
     map<T,T2>* remove_by_pointer(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
-        
+
         while(true) {
             if(self.item_existance[it])
             {
-                if(self.keys\[it] == key) 
+                if(self.keys\[it] == key)
                 {
                     self.key_list.remove(self.keys\[it]);
-                    
+
                     self.item_existance[it] = false;
                     if(isheap(T)) {
                         delete borrow self.keys\[it];
@@ -2153,7 +2157,7 @@ impl map <T, T2>
                         delete borrow self.items\[it];
                     }
                     memset(self.items + it, 0, sizeof(T2));
-                    
+
                     self.len--;
                     break;
                 }
@@ -2171,13 +2175,13 @@ impl map <T, T2>
                 break;
             }
         }
-        
+
         return self;
     }
     immutable int length(map<T, T2>* self) {
         return self.len;
     }
-    
+
     T& begin(map<T, T2>* self) {
         if(self == null) {
             T`& result;
@@ -2189,7 +2193,7 @@ impl map <T, T2>
         if(self.key_list.it) {
             return self.key_list.it.item;
         }
-        
+
         T`& result;
         memset(&result, 0, sizeof(T));
         return result;
@@ -2206,7 +2210,7 @@ impl map <T, T2>
         if(self.key_list.it) {
             return self.key_list.it.item;
         }
-        
+
         T`& result;
         memset(&result, 0, sizeof(T));
         return result;
@@ -2215,7 +2219,7 @@ impl map <T, T2>
     bool end(map<T, T2>* self) {
         return self == null || self.key_list == null || self.key_list.it == null;
     }
-    
+
     void rehash(map<T,T2>* self) {
         int size = self.size * 10;
         T&* keys = borrow gc_inc(new T[size]);
@@ -2268,18 +2272,18 @@ impl map <T, T2>
         self.size = size;
         self.len = len;
     }
-    
+
     map<T,T2>* insert(map<T,T2>* self, T key, T2 item) {
         if(self.len*10 >= self.size) {
             self.rehash();
         }
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
-        
+
         while(true) {
             if(self.item_existance[it])
             {
-                if(self.keys\[it].equals(key)) 
+                if(self.keys\[it].equals(key))
                 {
                     if(isheap(T)) {
                         self.key_list.remove(self.keys\[it]);
@@ -2331,18 +2335,18 @@ impl map <T, T2>
                 break;
             }
         }
-        
+
         bool same_key_exist = false;
         for(var it2 = self.key_list.begin(); !self.key_list.end(); it2 = self.key_list.next()) {
             if(it2.equals(key)) {
                 same_key_exist = true;
             }
         }
-        
+
         if(!same_key_exist) {
             self.key_list.push_back(key);
         }
-        
+
         return self;
     }
     map<T,T2>* put(map<T,T2>* self, T key, T2 item) {
@@ -2355,7 +2359,7 @@ impl map <T, T2>
         while(true) {
             if(self.item_existance[it])
             {
-                if(self.keys\[it].equals(key)) 
+                if(self.keys\[it].equals(key))
                 {
                     if(isheap(T)) {
                         delete self.keys\[it];
@@ -2407,27 +2411,27 @@ impl map <T, T2>
                 break;
             }
         }
-        
+
         bool same_key_exist = false;
         for(var it2 = self.key_list.begin(); !self.key_list.end(); it2 = self.key_list.next()) {
             if(it2.equals(key)) {
                 same_key_exist = true;
             }
         }
-        
+
         if(!same_key_exist) {
             self.key_list.push_back(key);
         }
-        
+
         return self;
     }
     immutable T2 operator_load_element(map<T, T2>* self, T& key) {
         T2` default_value;
         memset(&default_value, 0, sizeof(T2));
-        
+
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         unsigned int it = hash;
-        
+
         while(true) {
             if(self.item_existance[it])
             {
@@ -2452,11 +2456,11 @@ impl map <T, T2>
 
         return default_value;
     }
-    
+
     void operator_store_element(map<T, T2>* self, T key, T2 item) {
         self.insert(key, item);
     }
-    
+
     immutable bool equals(map<T, T2>* left, map<T, T2>* right)
     {
         if(left.len != right.len) {
@@ -2469,13 +2473,13 @@ impl map <T, T2>
             T` default_value;
             memset(&default_value, 0, sizeof(T));
             T& it2 = right.key_list.item(n, default_value);
-            
+
             if(it.equals(it2)) {
                 T2` default_value2;
                 memset(&default_value2, 0, sizeof(T2));
                 T2& item = left.at(it, default_value2);
                 T2& item2 = right.at(it2, default_value2);
-                
+
                 if(!item.equals(item2)) {
                     result = false;
                 }
@@ -2483,13 +2487,13 @@ impl map <T, T2>
             else {
                 result = false;
             }
-            
+
             n++;
         }
 
         return result;
     }
-    
+
     immutable bool operator_equals(map<T, T2>* left, map<T,T2>* right) {
         if(left.len != right.len) {
             return false;
@@ -2501,13 +2505,13 @@ impl map <T, T2>
             T` default_value;
             memset(&default_value, 0, sizeof(T));
             T& it2 = right.key_list.item(n, default_value);
-            
+
             if(it === it2) {
                 T2` default_value2;
                 memset(&default_value2, 0, sizeof(T2));
                 T2& item = left.at(it, default_value2);
                 T2& item2 = right.at(it2, default_value2);
-                
+
                 if(!(item === item2)) {
                     result = false;
                 }
@@ -2515,17 +2519,17 @@ impl map <T, T2>
             else {
                 result = false;
             }
-            
+
             n++;
         }
 
         return result;
     }
-    
+
     bool operator_not_equals(map<T, T2>* left, map<T,T2>* right) {
         return !(left.operator_equals(right);
     }
-    
+
     immutable bool find(map<T, T2>* self, T& key) {
         unsigned int hash = ((T)key).get_hash_key() % self.size;
         int it = hash;
@@ -2562,7 +2566,7 @@ impl map <T, T2>
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = left.at(it, default_value);
-            
+
             if(isheap(T) && isheap(T2)) {
                 result.insert(clone it, clone it2);
             }
@@ -2583,7 +2587,7 @@ impl map <T, T2>
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
             T2& it2 = left.at(it, default_value);
-            
+
             if(isheap(T) && isheap(T2)) {
                 result.insert(clone it, clone it2);
             }
@@ -2609,9 +2613,9 @@ impl map <T, T2>
             for(var it = left.key_list.begin(); !left.key_list.end(); it = left.key_list.next()) {
                 T2` default_value;
                 memset(&default_value, 0, sizeof(T2));
-                
+
                 T2& it2 = left.at(it, default_value);
-                
+
                 if(isheap(T) && isheap(T2)) {
                     result.insert(clone it, clone it2);
                 }
@@ -2632,7 +2636,7 @@ impl map <T, T2>
     }
     immutable list<T>*% keys(map<T, T2>* self) {
         var result = new list<T>();
-        
+
         for(var it = self.key_list.begin(); !self.key_list.end(); it = self.key_list.next()) {
             if(isheap(T)) {
                 result.push_back(clone it);
@@ -2641,19 +2645,19 @@ impl map <T, T2>
                 result.push_back(dummy_heap dupe it);
             }
         }
-        
+
         return result;
     }
-    
+
     immutable list<T2>*% values(map<T, T2>* self) {
         var result = new list<T2>();
-        
-        for(var it = self.key_list.begin(); !self.key_list.end(); it = self.key_list.next()) { 
+
+        for(var it = self.key_list.begin(); !self.key_list.end(); it = self.key_list.next()) {
             T2` default_value;
             memset(&default_value, 0, sizeof(T2));
-        
+
             var it2 = self.at(it, default_value);
-            
+
             if(isheap(T2)) {
                 result.push_back(clone it2);
             }
@@ -2661,7 +2665,7 @@ impl map <T, T2>
                 result.push_back(dummy_heap dupe it2);
             }
         }
-        
+
         return result;
     }
 }
@@ -2679,30 +2683,30 @@ impl tuple1 <T>
     tuple1<T>*% initialize(tuple1<T>*% self, T v1)
     {
         self.v1 = v1;
-        
+
         return self;
     }
-    
+
     immutable bool equals(tuple1<T>* self, tuple1<T>* right)
     {
         if(!self.v1.equals(right.v1)) {
             return false;
         }
-        
+
         return true;
     }
-    immutable bool operator_equals(tuple1<T>* self, tuple1<T>* right) 
+    immutable bool operator_equals(tuple1<T>* self, tuple1<T>* right)
     {
         if(!(self.v1 === right.v1)) {
             return false;
         }
-        
+
         return true;
     }
     immutable bool operator_not_equals(tuple1<T>* left, tuple1<T>* right) {
         return !left.operator_equals(right);
     }
-    
+
     immutable string to_string(tuple1<T>* self)
     {
         return "(" + self.v1.to_string() + ")";
@@ -2721,10 +2725,10 @@ impl tuple2 <T, T2>
     {
         self.v1 = v1;
         self.v2 = v2;
-        
+
         return self;
     }
-    
+
     immutable string to_string(tuple2<T, T2>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + ")";
@@ -2737,10 +2741,10 @@ impl tuple2 <T, T2>
         if(!self.v2.equals(right.v2)) {
             return false;
         }
-        
+
         return true;
     }
-    immutable bool operator_equals(tuple2<T,T2>* self, tuple2<T,T2>* right) 
+    immutable bool operator_equals(tuple2<T,T2>* self, tuple2<T,T2>* right)
     {
         if(!(self.v1 === right.v1)) {
             return false;
@@ -2748,7 +2752,7 @@ impl tuple2 <T, T2>
         if(!(self.v2 === right.v2)) {
             return false;
         }
-        
+
         return true;
     }
     immutable bool operator_not_equals(tuple2<T,T2>* left, tuple2<T,T2>* right) {
@@ -2771,10 +2775,10 @@ impl tuple3 <T, T2, T3>
         self.v1 = v1;
         self.v2 = v2;
         self.v3 = v3;
-        
+
         return self;
     }
-    
+
     immutable string to_string(tuple3<T, T2, T3>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + ")";
@@ -2790,10 +2794,10 @@ impl tuple3 <T, T2, T3>
         if(!self.v3.equals(right.v3)) {
             return false;
         }
-        
+
         return true;
     }
-    immutable bool operator_equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right) 
+    immutable bool operator_equals(tuple3<T,T2,T3>* self, tuple3<T,T2,T3>* right)
     {
         if(!(self.v1 === right.v1)) {
             return false;
@@ -2804,7 +2808,7 @@ impl tuple3 <T, T2, T3>
         if(!(self.v3 === right.v3)) {
             return false;
         }
-        
+
         return true;
     }
     immutable bool operator_not_equals(tuple3<T,T2,T3>* left, tuple3<T,T2,T3>* right) {
@@ -2828,10 +2832,10 @@ impl tuple4 <T, T2, T3, T4>
         self.v2 = v2;
         self.v3 = v3;
         self.v4 = v4;
-        
+
         return self;
     }
-    
+
     immutable string to_string(tuple4<T, T2, T3, T4>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + ")";
@@ -2850,10 +2854,10 @@ impl tuple4 <T, T2, T3, T4>
         if(!self.v4.equals(right.v4)) {
             return false;
         }
-        
+
         return true;
     }
-    immutable bool operator_equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right) 
+    immutable bool operator_equals(tuple4<T,T2,T3,T4>* self, tuple4<T,T2,T3,T4>* right)
     {
         if(!(self.v1 === right.v1)) {
             return false;
@@ -2867,7 +2871,7 @@ impl tuple4 <T, T2, T3, T4>
         if(!(self.v4 === right.v4)) {
             return false;
         }
-        
+
         return true;
     }
     immutable bool operator_not_equals(tuple4<T,T2,T3,T4>* left, tuple4<T,T2,T3,T4>* right) {
@@ -2893,10 +2897,10 @@ impl tuple5 <T, T2, T3, T4, T5>
         self.v3 = v3;
         self.v4 = v4;
         self.v5 = v5;
-        
+
         return self;
     }
-    
+
     immutable string to_string(tuple5<T, T2, T3, T4, T5>* self)
     {
         return "(" + self.v1.to_string() + "," + self.v2.to_string() + "," + self.v3.to_string() + "," + self.v4.to_string() + "," + self.v5.to_string() + ")";
@@ -2918,10 +2922,10 @@ impl tuple5 <T, T2, T3, T4, T5>
         if(!self.v5.equals(right.v5)) {
             return false;
         }
-        
+
         return true;
     }
-    immutable bool operator_equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right) 
+    immutable bool operator_equals(tuple5<T,T2,T3,T4,T5>* self, tuple5<T,T2,T3,T4,T5>* right)
     {
         if(!(self.v1 === right.v1)) {
             return false;
@@ -2938,7 +2942,7 @@ impl tuple5 <T, T2, T3, T4, T5>
         if(!(self.v5 === right.v5)) {
             return false;
         }
-        
+
         return true;
     }
     immutable bool operator_not_equals(tuple5<T,T2,T3,T4,T5>* left, tuple5<T,T2,T3,T4,T5>* right) {
@@ -2949,7 +2953,7 @@ impl tuple5 <T, T2, T3, T4, T5>
 //////////////////////////////
 // buffer
 //////////////////////////////
-uniq buffer*% buffer*::initialize(buffer*% self) 
+uniq buffer*% buffer*::initialize(buffer*% self)
 {
     self.size = 128;
     self.buf = new char[self.size];
@@ -2959,13 +2963,13 @@ uniq buffer*% buffer*::initialize(buffer*% self)
     return self;
 }
 
-uniq buffer*% buffer*::initialize_with_value(buffer*% self, char* mem, size_t size) 
+uniq buffer*% buffer*::initialize_with_value(buffer*% self, char* mem, size_t size)
 {
     self.size = 128;
     self.buf = new char[self.size];
     self.buf[0] = '\0';
     self.len = 0;
-    
+
     self.append(mem, size);
 
     return self;
@@ -2981,14 +2985,14 @@ uniq immutable buffer*% buffer*::clone(buffer* self)
     if(self == null) {
         return null;
     }
-    
+
     var result = new buffer;
-    
+
     result.size = self.size;
     result.buf = new char[self.size];
     result.len = self.len;
     memcpy(result.buf, self.buf, self.len);
-    
+
     return result;
 }
 
@@ -2997,11 +3001,11 @@ uniq immutable bool buffer*::equals(buffer* left, buffer* right)
     if(left == null || right == null) {
         return false;
     }
-    
+
     return left.to_string().equals(right.to_string());
 }
 
-uniq immutable int buffer*::length(buffer* self) 
+uniq immutable int buffer*::length(buffer* self)
 {
     if(self == null) {
         return 0;
@@ -3046,7 +3050,7 @@ uniq buffer* buffer*::append(buffer* self, char* mem, size_t size)
     memcpy(self.buf + self.len, mem, size);
     self.len += size;
     self.buf[self.len] = '\0';
-    
+
     return self;
 }
 
@@ -3058,7 +3062,7 @@ uniq buffer* buffer*::append_char(buffer* self, char c)
     if(self.len + 1 + 1 + 1 >= self.size) {
         char*% old_buf = clone self.buf;
         int old_len = self.len;
-        
+
         int new_size = (self.size + 10 + 1) * 2;
         self.buf = new char[new_size];
         memcpy(self.buf, old_buf, old_len);
@@ -3070,7 +3074,7 @@ uniq buffer* buffer*::append_char(buffer* self, char c)
     self.len++;
 
     self.buf[self.len] = '\0';
-    
+
     return self;
 }
 
@@ -3079,7 +3083,7 @@ uniq buffer* buffer*::append_str(buffer* self, char* mem)
     if(self == null || mem == null) {
         return self;
     }
-    
+
     int size = strlen(mem);
     if(self.len + size + 1 + 1 >= self.size) {
         char*% old_buf = new char[self.size];
@@ -3095,7 +3099,7 @@ uniq buffer* buffer*::append_str(buffer* self, char* mem)
     memcpy(self.buf + self.len, mem, size);
     self.len += size;
     self.buf[self.len] = '\0';
-    
+
     return self;
 }
 
@@ -3104,15 +3108,15 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
     if(self == null || msg == null) {
         return self;
     }
-    
+
 #ifdef __RISCV__
     char result[128];
-    
+
     va_list` args;
     va_start(args, msg);
     snprintf(result, 128, args);
     va_end(args);
-    
+
     int len = strlen(result);
 #else
     va_list` args;
@@ -3120,14 +3124,14 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
     char* result;
     int len = vasprintf(&result, msg, args);
     va_end(args);
-    
+
     if(len < 0) {
         return self;
     }
 #endif
-    
+
     string mem = string(result);
-    
+
     int size = strlen(mem);
     if(self.len + size + 1 + 1 >= self.size) {
         char*% old_buf = new char[self.size];
@@ -3143,9 +3147,9 @@ uniq buffer* buffer*::append_format(buffer* self, char* msg, ...)
     memcpy(self.buf + self.len, mem, size);
     self.len += size;
     self.buf[self.len] = '\0';
-    
+
     free(result);
-    
+
     return self;
 }
 
@@ -3170,18 +3174,18 @@ uniq buffer* buffer*::append_nullterminated_str(buffer* self, char* mem)
     self.len += size;
     self.buf[self.len] = '\0';
     self.len++;
-    
+
     return self;
 }
 
-uniq buffer* buffer*::append_int(buffer* self, int value) 
+uniq buffer* buffer*::append_int(buffer* self, int value)
 {
     if(self == null) {
         return null;
     }
     int* mem = &value;
     int size = sizeof(int);
-    
+
     if(self.len + size + 1 + 1 >= self.size) {
         char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
@@ -3196,15 +3200,15 @@ uniq buffer* buffer*::append_int(buffer* self, int value)
     memcpy(self.buf + self.len, mem, size);
     self.len += size;
     self.buf[self.len] = '\0';
-    
+
     return self;
 }
 
-uniq buffer* buffer*::append_long(buffer* self, long value) 
+uniq buffer* buffer*::append_long(buffer* self, long value)
 {
     long* mem = &value;
     int size = sizeof(long);
-    
+
     if(self.len + size + 1 + 1 >= self.size) {
         char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
@@ -3219,19 +3223,19 @@ uniq buffer* buffer*::append_long(buffer* self, long value)
     memcpy(self.buf + self.len, mem, size);
     self.len += size;
     self.buf[self.len] = '\0';
-    
+
     return self;
 }
 
-uniq buffer* buffer*::append_short(buffer* self, short value) 
+uniq buffer* buffer*::append_short(buffer* self, short value)
 {
     if(self == null) {
         return null;
     }
-    
+
     short* mem = &value;
     int size = sizeof(short);
-    
+
     if(self.len + size + 1 + 1 >= self.size) {
         char*% old_buf = new char[self.size];
         memcpy(old_buf, self.buf, self.size);
@@ -3246,19 +3250,19 @@ uniq buffer* buffer*::append_short(buffer* self, short value)
     memcpy(self.buf + self.len, mem, size);
     self.len += size;
     self.buf[self.len] = '\0';
-    
+
     return self;
 }
 
-uniq buffer* buffer*::alignment(buffer* self) 
+uniq buffer* buffer*::alignment(buffer* self)
 {
     if(self == null) {
         return null;
     }
-    
+
     int len = self.len;
     len = (len + 3) & ~3;
-    
+
     if(len >= self.size) {
         int new_size = (self.size + 1 + 1) * 2;
         self.buf = new char[new_size];
@@ -3268,13 +3272,13 @@ uniq buffer* buffer*::alignment(buffer* self)
     for(int i=self.len; i<len; i++) {
         self.buf[i] = '\0';
     }
-    
+
     self.len = len;
-    
+
     return self;
 }
 
-uniq immutable int buffer*::compare(buffer* left, buffer* right) 
+uniq immutable int buffer*::compare(buffer* left, buffer* right)
 {
     if(left == null && right == null) {
         return 0;
@@ -3285,14 +3289,14 @@ uniq immutable int buffer*::compare(buffer* left, buffer* right)
     else if(right == null) {
         return 1;
     }
-    
+
     return strcmp(left.buf, right.buf);
 }
 
-uniq immutable buffer*% char*::to_buffer(char* self) 
+uniq immutable buffer*% char*::to_buffer(char* self)
 {
     var result = new buffer.initialize();
-    
+
     if(self == null) {
         return result;
     }
@@ -3307,7 +3311,7 @@ uniq immutable string buffer*::to_string(buffer* self)
     if(self == null) {
         return string("");
     }
-    
+
     return string(self.buf);
 }
 
@@ -3316,14 +3320,14 @@ uniq immutable unsigned char* buffer*::head_pointer(buffer* self)
     return self.buf;
 }
 
-uniq buffer*% char[]::to_buffer(char* self, size_t len) 
+uniq buffer*% char[]::to_buffer(char* self, size_t len)
 {
     var result = new buffer();
     result.append(self, sizeof(char)*len);
     return result;
 }
 
-uniq immutable buffer*% char*[]::to_buffer(char** self, size_t len) 
+uniq immutable buffer*% char*[]::to_buffer(char** self, size_t len)
 {
     var result = new buffer();
     for(int i=0; i<len; i++) {
@@ -3332,35 +3336,35 @@ uniq immutable buffer*% char*[]::to_buffer(char** self, size_t len)
     return result;
 }
 
-uniq immutable buffer*% short[]::to_buffer(short* self, size_t len) 
+uniq immutable buffer*% short[]::to_buffer(short* self, size_t len)
 {
     var result = new buffer();
     result.append((char*)self, sizeof(short)*len);
     return result;
 }
 
-uniq immutable buffer*% int[]::to_buffer(int* self, size_t len) 
+uniq immutable buffer*% int[]::to_buffer(int* self, size_t len)
 {
     var result = new buffer();
     result.append((char*)self, sizeof(int)*len);
     return result;
 }
 
-uniq immutable buffer*% long[]::to_buffer(long* self, size_t len) 
+uniq immutable buffer*% long[]::to_buffer(long* self, size_t len)
 {
     var result = new buffer();
     result.append((char*)self, sizeof(long)*len);
     return result;
 }
 
-uniq immutable buffer*% float[]::to_buffer(float* self, size_t len) 
+uniq immutable buffer*% float[]::to_buffer(float* self, size_t len)
 {
     var result = new buffer();
     result.append((char*)self, sizeof(float)*len);
     return result;
 }
 
-uniq immutable buffer*% double[]::to_buffer(double* self, size_t len) 
+uniq immutable buffer*% double[]::to_buffer(double* self, size_t len)
 {
     var result = new buffer();
     result.append((char*)self, sizeof(double)*len);
@@ -3376,7 +3380,7 @@ uniq immutable string buffer*::printable(buffer* self)
     for(int i=0; i<len; i++) {
         unsigned char c = self.buf[i];
 
-        if((c >= 0 && c < ' ') 
+        if((c >= 0 && c < ' ')
             || c == 127)
         {
             result[n++] = '^';
@@ -3409,37 +3413,37 @@ impl list <T>
 //////////////////////////////
 /// base library(primitive array)
 //////////////////////////////
-uniq list<char>*% char[]::to_list(char* self, size_t len) 
+uniq list<char>*% char[]::to_list(char* self, size_t len)
 {
     return new list<char>.initialize_with_values(len, self);
 }
 
-uniq list<char*>*% char*[]::to_list(char** self, size_t len) 
+uniq list<char*>*% char*[]::to_list(char** self, size_t len)
 {
     return new list<char*>.initialize_with_values(len, self);
 }
 
-uniq list<short>*% short[]::to_list(short* self, size_t len) 
+uniq list<short>*% short[]::to_list(short* self, size_t len)
 {
     return new list<short>.initialize_with_values(len, self);
 }
 
-uniq list<int>*% int[]::to_list(int* self, size_t len) 
+uniq list<int>*% int[]::to_list(int* self, size_t len)
 {
     return new list<int>.initialize_with_values(len, self);
 }
 
-uniq list<long>*% long[]::to_list(long* self, size_t len) 
+uniq list<long>*% long[]::to_list(long* self, size_t len)
 {
     return new list<long>.initialize_with_values(len, self);
 }
 
-uniq list<float>*% float[]::to_list(float* self, size_t len) 
+uniq list<float>*% float[]::to_list(float* self, size_t len)
 {
     return new list<float>.initialize_with_values(len, self);
 }
 
-uniq list<double>*% double[]::to_list(double* self, size_t len) 
+uniq list<double>*% double[]::to_list(double* self, size_t len)
 {
     return new list<double>.initialize_with_values(len, self);
 }
@@ -3447,47 +3451,47 @@ uniq list<double>*% double[]::to_list(double* self, size_t len)
 //////////////////////////////
 /// base library(equals)
 //////////////////////////////
-uniq immutable bool bool::equals(bool self, bool right) 
+uniq immutable bool bool::equals(bool self, bool right)
 {
     return self == right;
 }
 
-uniq immutable bool _Bool::equals(_Bool self, _Bool right) 
+uniq immutable bool _Bool::equals(_Bool self, _Bool right)
 {
     return self == right;
 }
 
-uniq immutable bool char::equals(char self, char right) 
+uniq immutable bool char::equals(char self, char right)
 {
     return self == right;
 }
 
-uniq immutable bool short::equals(short self, short right) 
+uniq immutable bool short::equals(short self, short right)
 {
     return self == right;
 }
 
-uniq immutable bool int::equals(int self, int right) 
+uniq immutable bool int::equals(int self, int right)
 {
     return self == right;
 }
 
-uniq immutable bool long::equals(long self, long right) 
+uniq immutable bool long::equals(long self, long right)
 {
     return self == right;
 }
 
-uniq immutable bool size_t::equals(size_t self, size_t right) 
+uniq immutable bool size_t::equals(size_t self, size_t right)
 {
     return self == right;
 }
 
-uniq immutable bool float::equals(float self, float right) 
+uniq immutable bool float::equals(float self, float right)
 {
     return self == right;
 }
 
-uniq immutable bool double::equals(double self, double right) 
+uniq immutable bool double::equals(double self, double right)
 {
     return self == right;
 }
@@ -3552,7 +3556,7 @@ uniq bool long::operator_not_equals(long self, long right)
     return !(self == right);
 }
 
-uniq bool char*::equals(char* self, char* right) 
+uniq bool char*::equals(char* self, char* right)
 {
     if(self == null && right == null) {
         return true;
@@ -3563,11 +3567,11 @@ uniq bool char*::equals(char* self, char* right)
     else if(right == null) {
         return false;
     }
-    
+
     return strcmp(self, right) == 0;
 }
 
-uniq bool string::equals(char* self, char* right) 
+uniq bool string::equals(char* self, char* right)
 {
     if(self == null && right == null) {
         return true;
@@ -3578,21 +3582,21 @@ uniq bool string::equals(char* self, char* right)
     else if(right == null) {
         return false;
     }
-    
+
     return strcmp(self, right) == 0;
 }
 
-uniq bool void*::equals(void* self, void* right) 
+uniq bool void*::equals(void* self, void* right)
 {
     return self == right;
 }
 
-uniq bool bool*::equals(bool* self, bool* right) 
+uniq bool bool*::equals(bool* self, bool* right)
 {
     return *self == *right;
 }
 
-uniq bool string::operator_equals(char* self, char* right) 
+uniq bool string::operator_equals(char* self, char* right)
 {
     if(self == null && right == null) {
         return true;
@@ -3603,11 +3607,11 @@ uniq bool string::operator_equals(char* self, char* right)
     else if(right == null) {
         return false;
     }
-    
+
     return strcmp(self, right) == 0;
 }
 
-uniq bool char*::operator_equals(char* self, char* right) 
+uniq bool char*::operator_equals(char* self, char* right)
 {
     if(self == null && right == null) {
         return true;
@@ -3618,21 +3622,21 @@ uniq bool char*::operator_equals(char* self, char* right)
     else if(right == null) {
         return false;
     }
-    
+
     return strcmp(self, right) == 0;
 }
 
-uniq bool void*::operator_equals(char* self, char* right) 
+uniq bool void*::operator_equals(char* self, char* right)
 {
     return self == right;
 }
 
-uniq bool void*::operator_not_equals(char* self, char* right) 
+uniq bool void*::operator_not_equals(char* self, char* right)
 {
     return !self.operator_equals(right);
 }
 
-uniq bool string::operator_not_equals(char* self, char* right) 
+uniq bool string::operator_not_equals(char* self, char* right)
 {
     if(self == null && right == null) {
         return false;
@@ -3643,11 +3647,11 @@ uniq bool string::operator_not_equals(char* self, char* right)
     else if(right == null) {
         return true;
     }
-    
+
     return strcmp(self, right) != 0;
 }
 
-uniq bool char*::operator_not_equals(char* self, char* right) 
+uniq bool char*::operator_not_equals(char* self, char* right)
 {
     if(self == null && right == null) {
         return false;
@@ -3658,75 +3662,75 @@ uniq bool char*::operator_not_equals(char* self, char* right)
     else if(right == null) {
         return true;
     }
-    
+
     return strcmp(self, right) != 0;
 }
 
 
-uniq string char*::operator_add(char* self, char* right) 
+uniq string char*::operator_add(char* self, char* right)
 {
     if(self == null || right == null) {
         return string("");
     }
     int len = strlen(self) + strlen(right);
-   
+
     char*% result = new char[len+1];
-    
+
     strncpy(result, self, len+1);
     strncat(result, right, len+1);
-    
+
     return result;
 }
 
-uniq string string::operator_add(char* self, char* right) 
+uniq string string::operator_add(char* self, char* right)
 {
     if(self == null || right == null) {
         return string("");
     }
     int len = strlen(self) + strlen(right);
-   
+
     char*% result = new char[len+1];
-    
+
     strncpy(result, self, len+1);
     strncat(result, right, len+1);
-    
+
     return result;
 }
 
-uniq string char*::operator_mult(char* self, int right) 
+uniq string char*::operator_mult(char* self, int right)
 {
     if(self == null) {
         return string("");
     }
     var buf = new buffer();
-    
+
     for(int i=0; i<right; i++) {
         buf.append_str(self);
     }
-    
+
     return buf.to_string();
 }
 
-uniq string string::operator_mult(char* self, int right) 
+uniq string string::operator_mult(char* self, int right)
 {
     if(self == null) {
         return string("");
     }
     var buf = new buffer();
-    
+
     for(int i=0; i<right; i++) {
         buf.append_str(self);
     }
-    
+
     return buf.to_string();
 }
 
-uniq size_t char[]::length(char* self, size_t len) 
+uniq size_t char[]::length(char* self, size_t len)
 {
     return len;
 }
 
-uniq bool char*[]::contained(char** self, size_t len, char* str) 
+uniq bool char*[]::contained(char** self, size_t len, char* str)
 {
     bool result = false;
     for(int i=0; i<len; i++) {
@@ -3738,27 +3742,27 @@ uniq bool char*[]::contained(char** self, size_t len, char* str)
     return result;
 }
 
-uniq size_t short[]::length(short* self, size_t len) 
+uniq size_t short[]::length(short* self, size_t len)
 {
     return len;
 }
 
-uniq size_t int[]::length(int* self, size_t len) 
+uniq size_t int[]::length(int* self, size_t len)
 {
     return len;
 }
 
-uniq size_t long[]::length(long* self, size_t len) 
+uniq size_t long[]::length(long* self, size_t len)
 {
     return len;
 }
 
-uniq size_t float[]::length(float* self, size_t len) 
+uniq size_t float[]::length(float* self, size_t len)
 {
     return len;
 }
 
-uniq size_t double[]::length(double* self, size_t len) 
+uniq size_t double[]::length(double* self, size_t len)
 {
     return len;
 }
@@ -3962,7 +3966,7 @@ uniq int wstring::length(wchar_t* str)
 uniq wstring wchar_t*::substring(wchar_t* str, int head, int tail)
 {
     using unsafe;
-    
+
     if(str == null) {
         return wstring("");
     }
@@ -4009,20 +4013,20 @@ uniq wstring char*::to_wstring(char* str)
     return wstring(str);
 }
 
-uniq wstring wchar_t*::delete(wchar_t* str, int head, int tail) 
+uniq wstring wchar_t*::delete(wchar_t* str, int head, int tail)
 {
     using unsafe;
-    
+
     int len = wcslen(str);
 
     if(len == 0) {
         return str.to_string().to_wstring();
     }
-    
+
     if(head < 0) {
        head += len;
     }
-    
+
     if(tail < 0) {
        tail += len + 1;
     }
@@ -4038,7 +4042,7 @@ uniq wstring wchar_t*::delete(wchar_t* str, int head, int tail)
     if(tail >= len) {
         tail = len;
     }
-    
+
     wstring sub_str = str.substring(tail, -1);
 
     memcpy(str + head, sub_str, sizeof(wchar_t)*(sub_str.length()+1));
@@ -4049,7 +4053,7 @@ uniq wstring wchar_t*::delete(wchar_t* str, int head, int tail)
 uniq int wchar_t*::index(wchar_t* str, wchar_t* search_str, int default_value)
 {
     using unsafe;
-    
+
     wchar_t* head = wcsstr(str, search_str);
 
     if(head == null) {
@@ -4062,7 +4066,7 @@ uniq int wchar_t*::index(wchar_t* str, wchar_t* search_str, int default_value)
 uniq int wchar_t*::rindex(wchar_t* str, wchar_t* search_str, int default_value)
 {
     using unsafe;
-    
+
     int len = wcslen(search_str);
 
     wchar_t* p = str + wcslen(str) - len;
@@ -4086,7 +4090,7 @@ uniq int wchar_t*::rindex(wchar_t* str, wchar_t* search_str, int default_value)
     return default_value;
 }
 
-uniq wstring wchar_t*::reverse(wchar_t* str) 
+uniq wstring wchar_t*::reverse(wchar_t* str)
 {
     int len = wcslen(str);
     wstring result = new wchar_t[len + 1];
@@ -4124,7 +4128,7 @@ uniq wstring wchar_t*::printable(wchar_t* str)
     for(int i=0; i<len; i++) {
         wchar_t c = str[i];
 
-        if((c >= 0 && c < ' ') 
+        if((c >= 0 && c < ' ')
             || c == 127)
         {
             result[n++] = '^';
@@ -4143,13 +4147,13 @@ uniq wstring wchar_t*::printable(wchar_t* str)
 uniq size_t xwcslen(wchar_t* wstr)
 {
     wchar_t* p = wstr;
-    
+
     size_t len = 0;
     while(*p) {
         p++;
         len++;
     }
-    
+
     return len;
 }
 
@@ -4157,7 +4161,7 @@ uniq size_t xwcslen(wchar_t* wstr)
 #define wcslen(o) xwcslen(o)
 #endif
 
-uniq wstring wstring::substring(wchar_t* str, int head, int tail) 
+uniq wstring wstring::substring(wchar_t* str, int head, int tail)
 {
     return wchar_t*::substring(str, head, tail);
 }
@@ -4168,7 +4172,7 @@ uniq string wchar_t*::to_string(wchar_t* wstr)
 
     string result = new char[len];
 
-    if(wcstombs(result, wstr, len) < 0) 
+    if(wcstombs(result, wstr, len) < 0)
     {
         strncpy(result, "", len);
     }
@@ -4221,26 +4225,26 @@ uniq bool wstring::operator_not_equals(wchar_t* left, wchar_t* right)
 uniq wstring wchar_t*::operator_add(wchar_t* left, wchar_t* right)
 {
     wchar_t*% result = new wchar_t[wcslen(left) + wcslen(right) + 1];
-    
+
     wcscpy(result, left);
     wcscat(result, right);
-    
+
     return result;
 }
 
 uniq wstring wstring::operator_add(wchar_t* left, wchar_t* right)
 {
     wchar_t*% result = new wchar_t[wcslen(left) + wcslen(right) + 1];
-    
+
     wcscpy(result, left);
     wcscat(result, right);
-    
+
     return result;
 }
 uniq unsigned int wchar_t*::get_hash_key(wchar_t* value)
 {
     using unsafe;
-    
+
     int result = 0;
     wchar_t* p = value;
     while(*p) {
@@ -4421,7 +4425,7 @@ uniq int char*::length(char* str) {
     return strlen(str);
 }
 
-uniq string char*::reverse(char* str) 
+uniq string char*::reverse(char* str)
 {
     if(str == null) {
         return string("");
@@ -4577,34 +4581,34 @@ uniq string xsprintf(char* msg, ...)
     char* result;
     int len = vasprintf(&result, msg, args);
     va_end(args);
-    
+
     if(len < 0) {
         return string("");
     }
-    
+
     string result2 = string(result);
-    
+
     free(result);
-    
+
     return result2;
 }
 
-uniq string char*::delete(char* str, int head, int tail) 
+uniq string char*::delete(char* str, int head, int tail)
 {
     if(str == null) {
         return string("");
     }
-    
+
     int len = strlen(str);
 
     if(strcmp(str, "") == 0) {
         return string(str);
     }
-    
+
     if(head < 0) {
        head += len;
     }
-    
+
     if(tail < 0) {
        tail += len + 1;
     }
@@ -4620,23 +4624,23 @@ uniq string char*::delete(char* str, int head, int tail)
     if(tail >= len) {
         tail = len;
     }
-    
+
     char*% result = new char[len-(tail-head)+1];
-    
+
     memcpy(result, str, head);
     memcpy(result + head, str + tail, len-tail);
-    
+
     result[len -(tail-head)] = '\0';
 
     return result;
 }
 
-uniq list<string>*% char*::split_char(char* self, char c) 
+uniq list<string>*% char*::split_char(char* self, char c)
 {
     if(self == null) {
         return new list<string>();
     }
-    
+
     auto result = new list<string>.initialize();
 
     auto str = new buffer.initialize();
@@ -4677,7 +4681,7 @@ uniq string char*::printable(char* str)
     for(int i=0; i<len; i++) {
         char c = str[i];
 
-        if((c >= 0 && c < ' ') 
+        if((c >= 0 && c < ' ')
             || c == 127)
         {
             result[n++] = '^';
@@ -4700,12 +4704,12 @@ uniq string char*::sub_plain(char* self, char* str, char* replace)
     }
 
     auto result = new buffer.initialize();
-    
+
     char* p = self;
-    
+
     while(true) {
         char* p2 = strstr(p, str);
-        
+
         if(p2 == null) {
             p2 = p;
             while(*p2) {
@@ -4714,10 +4718,10 @@ uniq string char*::sub_plain(char* self, char* str, char* replace)
             result.append(p, p2 - p);
             break;
         }
-        
+
         result.append(p, p2 - p);
         result.append_str(replace);
-        
+
         p = p2 + strlen(str);
     }
 
@@ -4733,7 +4737,7 @@ uniq string xbasename(char* path)
         return string("");
     }
     char* p = path + strlen(path);
-    
+
     while(p >= path) {
         if(*p == '/') {
             break;
@@ -4742,14 +4746,14 @@ uniq string xbasename(char* path)
             p--;
         }
     }
-    
+
     if(p < path) {
         return string(path);
     }
     else {
-        return string(p+1);  
+        return string(p+1);
     }
-    
+
     return string("");
 }
 
@@ -4759,9 +4763,9 @@ uniq string xnoextname(char* path)
         return string("");
     }
     string path2 = xbasename(path);
-    
+
     char* p = path2 + strlen(path2);
-    
+
     while(p >= path2) {
         if(*p == '.') {
             break;
@@ -4770,14 +4774,14 @@ uniq string xnoextname(char* path)
             p--;
         }
     }
-    
+
     if(p < path2) {
         return string(path2);
     }
     else {
         return path2.substring(0, p - path2);
     }
-    
+
     return string("");
 }
 
@@ -4787,7 +4791,7 @@ uniq string xextname(char* path)
         return string("");
     }
     char* p = path + strlen(path);
-    
+
     while(p >= path) {
         if(*p == '.') {
             break;
@@ -4796,14 +4800,14 @@ uniq string xextname(char* path)
             p--;
         }
     }
-    
+
     if(p < path) {
         return string(path);
     }
     else {
-        return string(p+1);  
+        return string(p+1);
     }
-    
+
     return string("");
 }
 
@@ -4898,7 +4902,7 @@ uniq int bool::compare(bool left, bool right)
     else {
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -4916,11 +4920,11 @@ uniq int _Bool::compare(bool left, bool right)
     else {
         return 1;
     }
-    
+
     return 0;
 }
 
-uniq int char::compare(char left, char right) 
+uniq int char::compare(char left, char right)
 {
     if(left < right) {
         return -1;
@@ -4931,11 +4935,11 @@ uniq int char::compare(char left, char right)
     else {
         return 0;
     }
-    
+
     return 0;
 }
 
-uniq int short::compare(short left, short right) 
+uniq int short::compare(short left, short right)
 {
     if(left < right) {
         return -1;
@@ -4946,11 +4950,11 @@ uniq int short::compare(short left, short right)
     else {
         return 0;
     }
-    
+
     return 0;
 }
 
-uniq int int::compare(int left, int right) 
+uniq int int::compare(int left, int right)
 {
     if(left < right) {
         return -1;
@@ -4961,11 +4965,11 @@ uniq int int::compare(int left, int right)
     else {
         return 0;
     }
-    
+
     return 0;
 }
 
-uniq int long::compare(long left, long right) 
+uniq int long::compare(long left, long right)
 {
     if(left < right) {
         return -1;
@@ -4976,11 +4980,11 @@ uniq int long::compare(long left, long right)
     else {
         return 0;
     }
-    
+
     return 0;
 }
 
-uniq int size_t::compare(size_t left, size_t right) 
+uniq int size_t::compare(size_t left, size_t right)
 {
     if(left < right) {
         return -1;
@@ -4991,11 +4995,11 @@ uniq int size_t::compare(size_t left, size_t right)
     else {
         return 0;
     }
-    
+
     return 0;
 }
 
-uniq int float::compare(float left, float right) 
+uniq int float::compare(float left, float right)
 {
     if(left < right) {
         return -1;
@@ -5006,11 +5010,11 @@ uniq int float::compare(float left, float right)
     else {
         return 0;
     }
-    
+
     return 0;
 }
 
-uniq int double::compare(double left, double right) 
+uniq int double::compare(double left, double right)
 {
     if(left < right) {
         return -1;
@@ -5021,11 +5025,11 @@ uniq int double::compare(double left, double right)
     else {
         return 0;
     }
-    
+
     return 0;
 }
 
-uniq int string::compare(char* left, char* right) 
+uniq int string::compare(char* left, char* right)
 {
     if(left == null && right == null) {
         return 0;
@@ -5036,11 +5040,11 @@ uniq int string::compare(char* left, char* right)
     else if(right == null) {
         return 1;
     }
-    
+
     return strcmp(left,right);
 }
 
-uniq int char*::compare(char* left, char* right) 
+uniq int char*::compare(char* left, char* right)
 {
     if(left == null && right == null) {
         return 0;
@@ -5051,7 +5055,7 @@ uniq int char*::compare(char* left, char* right)
     else if(right == null) {
         return 1;
     }
-    
+
     return strcmp(left,right);
 }
 
@@ -5065,19 +5069,19 @@ uniq string FILE*::read(FILE* f)
         return string("");
     }
     buffer*% buf = new buffer.initialize();
-    
+
     while(1) {
         char buf2[BUFSIZ];
-        
+
         int size = fread(buf2, 1, BUFSIZ, f);
-        
+
         buf.append(buf2, size);
 
         if(size < BUFSIZ) {
             break;
         }
     }
-    
+
     return buf.to_string();
 }
 
@@ -5086,22 +5090,22 @@ uniq int FILE*::write(FILE* f, char* str)
     if(f == null || str == null) {
         return -1;
     }
-    
+
     return fwrite(str, strlen(str), 1, f);
 }
 
-uniq int FILE*::fclose(FILE* f) 
+uniq int FILE*::fclose(FILE* f)
 {
     if(f == null) {
         return -1;
     }
-    
+
     int result = fclose(f);
-    
+
     if(result < 0) {
         return result;
     }
-    
+
     return result;
 }
 
@@ -5118,11 +5122,11 @@ uniq FILE* FILE*::fprintf(FILE* f, const char* msg, ...)
     va_end(args);
 
     int result = fprintf(f, "%s", msg2);
-    
+
     if(result < 0) {
         return f;
     }
-    
+
     return f;
 }
 
@@ -5131,12 +5135,12 @@ uniq void FILE*::on_drop(FILE* self)
     if(self) fclose(self);
 }
 
-uniq int char*::write(char* self, char* file_name, bool append=false) 
+uniq int char*::write(char* self, char* file_name, bool append=false)
 {
     if(self == null || file_name == null) {
         return -1;
     }
-    
+
     FILE* f;
     if(append) {
        f = fopen(file_name, "a");
@@ -5144,81 +5148,81 @@ uniq int char*::write(char* self, char* file_name, bool append=false)
     else {
        f = fopen(file_name, "w");
     }
-    
+
     if(f == NULL) {
         return -1;
     }
-    
+
     int result = fwrite(self, strlen(self), 1, f);
-    
+
     if(result < 0) {
         return result;
     }
-    
+
     int result2 = fclose(f)
-    
+
     if(result2 < 0) {
         return result2;
     }
-    
+
     return result;
 }
 
-uniq string char*::read(char* file_name) 
+uniq string char*::read(char* file_name)
 {
     if(file_name == null) {
         return string("");
     }
-    
+
     FILE* f = fopen(file_name, "r");
-    
+
     if(f == NULL) {
         return string("");
     }
-    
+
     buffer*% buf = new buffer.initialize();
-    
+
     while(1) {
         char buf2[BUFSIZ];
-        
+
         int size = fread(buf2, 1, BUFSIZ, f);
-        
+
         buf.append(buf2, size);
 
         if(size < BUFSIZ) {
             break;
         }
     }
-    
+
     string result = buf.to_string();
-    
+
     int result2 = fclose(f)
-    
+
     if(result2 < 0) {
         return string("");
     }
-    
+
     return result;
 }
 
 uniq list<string>*% FILE*::readlines(FILE* f)
 {
     list<string>*% result = new list<string>.initialize();
-    
+
     if(f == null) {
         return result;
     }
-    
+
     while(1) {
         char buf[BUFSIZ];
-        
+
         if(fgets(buf, BUFSIZ, f) == NULL) {
             break;
         }
-        
+
         result.push_back(string(buf));
     }
-    
+
     return result;
 }
 #endif
@@ -5232,7 +5236,7 @@ uniq string char*::puts(char* self)
         return string("");
     }
     puts(self);
-    
+
     return string(self);
 }
 
@@ -5242,7 +5246,7 @@ uniq string char*::print(char* self)
         return string("");
     }
     printf("%s", self);
-    
+
     return string(self);
 }
 
@@ -5255,7 +5259,7 @@ uniq string char*::printf(char* self, ...)
 
 #ifdef __RISCV__
     char msg2[128];
-    
+
     va_list` args;
     va_start(args, self);
     int len = snprintf(msg2, 128, self, args);
@@ -5266,18 +5270,18 @@ uniq string char*::printf(char* self, ...)
     vasprintf(&msg2,self,args);
     va_end(args);
 #endif
-    
+
     printf("%s", msg2);
 
     free(msg2);
-    
+
     return string(self);
 }
 
 uniq int int::printf(int self, char* msg)
 {
     printf(msg, self);
-    
+
     return self;
 }
 
@@ -5378,11 +5382,11 @@ uniq void int::times(int self, void* parent, void (*block)(void* parent, int it)
  */
 
 #ifndef RE_DOT_MATCHES_NEWLINE
-// Define to 0 if you DON'T want '.' to match '\r' + '\n' 
+// Define to 0 if you DON'T want '.' to match '\r' + '\n'
 #define RE_DOT_MATCHES_NEWLINE 0
 #endif
 
-// Typedef'd pointer to get abstract datatype. 
+// Typedef'd pointer to get abstract datatype.
 struct re_program;
 typedef struct re_program* re_t;
 
@@ -5394,11 +5398,11 @@ typedef struct re_capture
 } re_capture;
 
 
-// Compile regex string pattern to a regex_t-array. 
+// Compile regex string pattern to a regex_t-array.
 re_t re_compile(const char* pattern);
 
 
-// Find matches of the compiled pattern inside text. 
+// Find matches of the compiled pattern inside text.
 int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures);
 
 
@@ -5406,17 +5410,17 @@ int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* capt
 int re_match(const char* pattern, const char* text, int* matchlength);
 
 
-// Debug helper to inspect compiled patterns (unstable API). 
+// Debug helper to inspect compiled patterns (unstable API).
 void re_print(re_t pattern);
 
-// Return the number of capturing groups present in the compiled pattern. 
+// Return the number of capturing groups present in the compiled pattern.
 int re_get_group_count(re_t pattern);
 
 
 // Definitions:
 
-#define MAX_REGEXP_OBJECTS   64   // Max number of regex symbols in expression, incl. groups. 
-#define MAX_CHAR_CLASS_LEN   40   // Max length of character-class buffer.                   
+#define MAX_REGEXP_OBJECTS   64   // Max number of regex symbols in expression, incl. groups.
+#define MAX_CHAR_CLASS_LEN   40   // Max length of character-class buffer.
 #define MAX_CAPTURE_SLOTS    MAX_REGEXP_OBJECTS
 
 enum
@@ -5445,18 +5449,18 @@ typedef struct regex_t regex_t;
 
 struct regex_t
 {
-  unsigned char type;   // CHAR, STAR, GROUP, etc. 
+  unsigned char type;   // CHAR, STAR, GROUP, etc.
   union
   {
-    unsigned char  ch;      // Literal character                
-    unsigned char* ccl;     // Pointer to characters in a class  
+    unsigned char  ch;      // Literal character
+    unsigned char* ccl;     // Pointer to characters in a class
     struct
     {
-      regex_t* first;       // First token inside the group      
-      int      id;          // Capture index (1-based)          
+      regex_t* first;       // First token inside the group
+      int      id;          // Capture index (1-based)
     } group;
   } u;
-  regex_t* next;            // Linked list pointer for sequence 
+  regex_t* next;            // Linked list pointer for sequence
 };
 
 
@@ -5483,12 +5487,12 @@ typedef struct
 {
   const char* base;
   re_capture* captures;
-  int         capture_capacity;   // Slots provided by caller 
+  int         capture_capacity;   // Slots provided by caller
   int         total_groups;       // Groups present in pattern
 } match_context;
 
 
-// Private function declarations: 
+// Private function declarations:
 uniq const char* matchpattern(regex_t* pattern, const char* text, match_context* ctx);
 uniq const char* matchtoken(regex_t* token, const char* text, match_context* ctx);
 uniq const char* matchstar(regex_t* token, regex_t* rest, const char* text, match_context* ctx);
@@ -5512,7 +5516,7 @@ uniq void        restore_captures(match_context* ctx, const re_capture* buffer_)
 uniq void        clear_captures(match_context* ctx);
 
 
-// Public functions: 
+// Public functions:
 uniq int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture* captures, int max_captures)
 {
   *matchlength = 0;
@@ -5551,7 +5555,7 @@ uniq int re_matchp(re_t pattern, const char* text, int* matchlength, re_capture*
       *matchlength = (int)(end - text);
       if (ctx.captures != 0)
       {
-        // Groups already recorded relative to ctx.base 
+        // Groups already recorded relative to ctx.base
       }
       return 0;
     }
@@ -5606,7 +5610,7 @@ uniq re_t re_compile(const char* pattern)
   state.pool_size = 0;
   state.ccl_buf = ccl_buf;
   state.ccl_capacity = MAX_CHAR_CLASS_LEN;
-  state.ccl_idx = 1; // leave first slot unused to mimic original behaviour 
+  state.ccl_idx = 1; // leave first slot unused to mimic original behaviour
   state.group_count = 0;
 
   if (state.ccl_capacity > 0)
@@ -5644,7 +5648,7 @@ uniq void re_print(re_t pattern)
 }
 
 
-// Private helper implementations 
+// Private helper implementations
 uniq void clear_captures(match_context* ctx)
 {
   if ((ctx->captures == 0) || (ctx->capture_capacity <= 0))
@@ -6320,7 +6324,7 @@ uniq string string::lower_case(char* str)
             result[i] = str[i] - 'A' + 'a';
         }
     }
-    
+
     return result;
 }
 
@@ -6332,7 +6336,7 @@ uniq string string::upper_case(char* str)
             result[i] = str[i] - 'a' + 'A';
         }
     }
-    
+
     return result;
 }
 
@@ -6341,19 +6345,19 @@ uniq int char*::index_regex(char* self, char* reg, int default_value)
     if(reg == null) {
         return default_value;
     }
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return default_value;
     }
-    
+
     int result = default_value;
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     int result = default_value;
 
     while(true) {
@@ -6363,7 +6367,7 @@ uniq int char*::index_regex(char* self, char* reg, int default_value)
         int regex_result = re_matchp(re, self, &matchlength, captures, max_captures);
 
         /// match and no group strings ///
-        if(regex_result >= 0) 
+        if(regex_result >= 0)
         {
             result = regex_result;
             break;
@@ -6398,19 +6402,19 @@ uniq int char*::rindex_regex(char* self, char* reg, int default_value)
     if(reg == null) {
         return default_value;
     }
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return default_value;
     }
-    
+
     int result = default_value;
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     string self2 = self.reverse();
 
     int result = default_value;
@@ -6422,7 +6426,7 @@ uniq int char*::rindex_regex(char* self, char* reg, int default_value)
         int regex_result = re_matchp(re, self2, &matchlength, captures, max_captures);
 
         /// match and no group strings ///
-        if(regex_result >= 0) 
+        if(regex_result >= 0)
         {
             result = strlen(self) -matchlength;
             break;
@@ -6439,9 +6443,9 @@ uniq int char*::rindex_regex(char* self, char* reg, int default_value)
 uniq string char*::strip(char* self)
 {
     string result = string(self);
-    
+
     int len = strlen(self);
-    
+
     if(self[len-1] == '\n') {
         result[len-1] = '\0';
     }
@@ -6451,14 +6455,14 @@ uniq string char*::strip(char* self)
     else if(len > 2 && self[len-2] == '\r' && self[len-1] == '\n') {
         result[len-2] = '\0';
     }
-    
+
     return result;
 }
 
 uniq int char*::index(char* str, char* search_str, int default_value)
 {
     using unsafe;
-    
+
     char* head = strstr(str, search_str);
 
     if(head == null) {
@@ -6471,11 +6475,11 @@ uniq int char*::index(char* str, char* search_str, int default_value)
 uniq string string::chomp(char* str)
 {
     string result = string(str);
-    
+
     if(result[result.length()-1] == '\n') {
         return result.substring(0, -2);
     }
-    
+
     return result;
 }
 
@@ -6501,7 +6505,7 @@ uniq string char*::replace(char* self, int index, char c)
     if(strcmp(self, "") == 0) {
         return string(self);
     }
-    
+
     if(index < 0) {
        index += len;
     }
@@ -6513,9 +6517,9 @@ uniq string char*::replace(char* self, int index, char c)
     if(index < 0) {
         index = 0;
     }
-    
+
     self[index] = c;
-    
+
     return string(self);
 }
 
@@ -6534,10 +6538,10 @@ uniq string char*::multiply(char* str, int n)
     return result;
 }
 
-uniq list<string>*% char*::split_str(char* self, char* str) 
+uniq list<string>*% char*::split_str(char* self, char* str)
 {
     using unsafe;
-    
+
     auto result = new list<string>.initialize();
 
     auto buf = new buffer.initialize();
@@ -6559,7 +6563,7 @@ uniq list<string>*% char*::split_str(char* self, char* str)
     return result;
 }
 
-uniq int string::rindex(char* str, char* search_str, int default_value=-1) 
+uniq int string::rindex(char* str, char* search_str, int default_value=-1)
 {
     return char*::rindex(str, search_str, default_value);
 }
@@ -6599,17 +6603,17 @@ uniq bool char*::match(char* self, char* reg)
     if(reg == null) {
         return false;
     }
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return false;
     }
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     int matchlength = 0;
     int max_captures = 8;
     re_capture captures[max_captures];
@@ -6633,17 +6637,17 @@ uniq list<string>*% char*::scan(char* self, char* reg)
         return new list<string>();
     }
     auto result = new list<string>();
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return new list<string>();
     }
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     int group_count = re_get_group_count(re);
 
     while(true) {
@@ -6658,7 +6662,7 @@ uniq list<string>*% char*::scan(char* self, char* reg)
             string str = self.substring(offset + regex_result, offset + regex_result + matchlength);
 
             result.add(str);
-            
+
             if(matchlength == 0) {
                 offset++;
             }
@@ -6673,7 +6677,7 @@ uniq list<string>*% char*::scan(char* self, char* reg)
                 auto match_string = (self + offset).substring(cp.start, cp.start + cp.length);
                 result.push_back(match_string);
             }
-            
+
             if(matchlength == 0) {
                 offset++;
             }
@@ -6695,19 +6699,19 @@ uniq list<string>*% char*::split(char* self, char* reg)
     if(reg == null || reg == null) {
         return new list<string>();
     }
-    
+
     auto result = new list<string>();
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return new list<string>();
     }
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     int group_count = re_get_group_count(re);
 
     while(true) {
@@ -6722,7 +6726,7 @@ uniq list<string>*% char*::split(char* self, char* reg)
             string str = self.substring(offset, offset + regex_result);
 
             result.add(str);
-            
+
             if(matchlength == 0) {
                 offset++;
             }
@@ -6775,19 +6779,19 @@ uniq string char*::sub(char* self, char* reg, char* replace)
     if(reg == null || reg == null) {
         return string("");
     }
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return string("");
     }
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     auto result = new buffer.initialize();
-    
+
     int group_count = re_get_group_count(re);
 
     while(true) {
@@ -6803,7 +6807,7 @@ uniq string char*::sub(char* self, char* reg, char* replace)
 
             result.append_str(str);
             result.append_str(replace);
-            
+
             if(matchlength == 0) {
                 offset++;
             }
@@ -6827,19 +6831,19 @@ uniq string char*::sub_block(char* self, char* reg, void* parent, string (*block
     if(reg == null || reg == null) {
         return string("");
     }
-    
+
     auto result = new buffer();
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return string("");
     }
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     int group_count = re_get_group_count(re);
 
     while(true) {
@@ -6854,15 +6858,15 @@ uniq string char*::sub_block(char* self, char* reg, void* parent, string (*block
             string str = self.substring(offset, offset + regex_result);
 
             result.append_str(str);
-            
+
             list<string>*% group_strings = new list<string>.initialize();
-            
+
             string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
-            
+
             string block_result = block(parent, match_string, group_strings);
-            
+
             result.append_str(block_result);
-            
+
             if(matchlength == 0) {
                 offset++;
             }
@@ -6884,13 +6888,13 @@ uniq string char*::sub_block(char* self, char* reg, void* parent, string (*block
                 auto match_string = (self + offset).substring(cp.start, cp.start + cp.length);
                 group_strings.push_back(match_string);
             }
-            
+
             string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
-            
+
             string block_result = block(parent, match_string, group_strings);
-            
+
             result.append_str(block_result);
-            
+
             if(matchlength == 0) {
                 offset++;
             }
@@ -6914,17 +6918,17 @@ uniq list<string>*% char*::scan_block(char* self, char* reg, void* parent, strin
         return new list<string>();
     }
     auto result = new list<string>();
-    
+
     re_t re = re_compile(reg);
-    
+
     if(re == NULL) {
         return new list<string>();
     }
-    
+
     int offset = 0;
 
     int n = 0;
-    
+
     int group_count = re_get_group_count(re);
 
     while(true) {
@@ -6937,13 +6941,13 @@ uniq list<string>*% char*::scan_block(char* self, char* reg, void* parent, strin
         if(regex_result >= 0 && group_count == 0)
         {
             list<string>*% group_strings = new list<string>.initialize();
-            
+
             string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
-            
+
             string block_result = block(parent, match_string, group_strings);
-            
+
             result.add(block_result);
-            
+
             if(matchlength == 0) {
                 offset++;
             }
@@ -6960,13 +6964,13 @@ uniq list<string>*% char*::scan_block(char* self, char* reg, void* parent, strin
                 auto match_string = (self + offset).substring(cp.start, cp.start + cp.length);
                 group_strings.push_back(match_string);
             }
-            
+
             string match_string = self.substring(offset + regex_result, offset + regex_result + matchlength);
-            
+
             string block_result = block(parent, match_string, group_strings);
-            
+
             result.add(block_result);
-            
+
             if(matchlength == 0) {
                 offset++;
             }

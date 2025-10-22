@@ -3493,7 +3493,7 @@ memset(&is_raspi, 0, sizeof(int));
     else if(({    (_conditional_value_X14=(is_mac));    _conditional_value_X14;    })) {
         __right_value0 = (void*)0;
         __right_value1 = (void*)0;
-        cmd2_7=(char*)come_increment_ref_count(xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/opt/homebrew/opt/pcre/include -I/opt/homebrew/opt/boehmgc/include/ -I/opt/homebrew/opt/openssl/include -I/opt/homebrew/opt/mysql/include %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
+        cmd2_7=(char*)come_increment_ref_count(xsprintf("gcc -E %s -lang-c %s -I. -I/usr/local/include -DPREFIX=\"\\\"%s\\\"\" -I%s/include -DNEO_C -D__MAC__ -I/usr/local/opt/pcre/include -I/usr/local/opt/boehmgc/include/ -I/usr/local/opt/openssl/include -I/usr/local/opt/mysql/include %s %s > %s 2> %s.cpp.out",((info->remove_comment)?(""):(" -C")),info->cpp_option,"/usr/local/","/usr/local/",((exist_common_h)?(((char*)(__right_value0=__builtin_string(" -include common.h ")))):("")),input_file_name,output_file_name,output_file_name));
         (__right_value0 = come_decrement_ref_count(__right_value0, (void*)0, (void*)0, 1, 0, (void*)0));
         if(({        (_conditional_value_X15=(info->verbose));        _conditional_value_X15;        })) {
             puts(cmd2_7);
@@ -3941,7 +3941,7 @@ _Bool __result_obj__14;
     }
     is_mac_33=system("uname -a | grep Darwin 1> /dev/null 2>/dev/null")==0;
     if(({    (_conditional_value_X0=(is_mac_33));    _conditional_value_X0;    })) {
-        buffer_append_str(command," -L/opt/homebrew/opt/pcre/lib -L/opt/homebrew/opt/openssl/lib -L/opt/homebrew/opt/boehmgc/lib -L/opt/homebrew/opt/mysql/lib -L/opt/homebrew/opt/zstd/lib ");
+        buffer_append_str(command," -L/usr/local/opt/pcre/lib -L/usr/local/opt/openssl/lib -L/usr/local/opt/boehmgc/lib -L/usr/local/opt/mysql/lib -L/usr/local/opt/zstd/lib ");
     }
     __right_value0 = (void*)0;
     cmd=(char*)come_increment_ref_count(xsprintf("ls /usr/local/lib 1> /dev/null 2>/dev/null"));
