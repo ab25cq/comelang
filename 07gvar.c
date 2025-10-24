@@ -46,7 +46,7 @@ class sGlobalVariable extends sNodeBase
                     }
                     else {
                     */
-                        info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                        if(!type.mConstant) info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
                         info.uniq_definition.insert(string(name), xsprintf("%s;\n", make_define_var(type, name)));
                     //}
                 }
@@ -90,7 +90,7 @@ class sGlobalVariable extends sNodeBase
                     }
                     else {
                     */
-                        info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                        if(!type->mConstant) info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
                         info.uniq_definition.insert(string(name), xsprintf("%s=%s;\n", make_define_var(type, name), array_initializer));
                     //}
                 }
@@ -126,7 +126,7 @@ class sGlobalVariable extends sNodeBase
                     }
                     else {
                     */
-                        info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                        if(!type->mConstant) info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
                         info.uniq_definition.insert(string(name), xsprintf("%s=%s;\n", make_define_var(type, name), come_value.c_value));
                     //}
                 }
@@ -156,7 +156,7 @@ class sGlobalVariable extends sNodeBase
                     }
                     else {
                     */
-                        info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
+                        if(!type->mConstant) info.struct_definition.insert(string(name), xsprintf("extern %s;\n", make_define_var(type, name)).to_buffer());
                         info.uniq_definition.insert(string(name), xsprintf("%s;\n", make_define_var(type, name)));
                     //}
                 }

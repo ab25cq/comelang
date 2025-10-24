@@ -14,13 +14,7 @@ bool gComeBareMetal = false;
 
 char* CC="clang";
 
-#ifdef __LINUX__
 static char* RM = "rm -rf";
-#elif __MAC__
-static char* RM = "rm -rf";
-#else
-static char* RM = "rm -rf";
-#endif
 
 static void write_source_file_position_to_source(sInfo* info=info)
 {
@@ -891,10 +885,6 @@ module MEvalOptions<T, T2>
         }
         else if(argv[i] === "-pthread") {
             gComePthread = true;
-        }
-        else if(argv[i] === "-gc") {
-            gComeGC = true;
-            cpp_option.append_format(s" -DENABLE_GC ");
         }
         else if(argv[i] === "-gcc") {
             gcc_compiler = true;
