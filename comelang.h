@@ -27,9 +27,18 @@ typedef char*% string;
 
 #include <stdint.h>
 #include <stdarg.h>
+#include <stddef.h>
+#include <stdbool.h>
 
 #undef va_start
 #define va_start(ap, last) __builtin_va_start(ap, last)
+
+using comelang;
+
+typedef struct {
+  size_t gl_pathc;   // count of paths matched
+  char **gl_pathv;   // NULL-terminated vector of strings
+} glob_t;
 
 // Minimal ctype classification table required by newlib-style ctype macros.
 // Values mirror newlib's _ctype_ so that isalpha/isdigit macros work without
@@ -179,7 +188,7 @@ uniq void *calloc(size_t nmemb, size_t size) {
 
 uniq void *realloc(void *ptr, size_t size) {
     if (ptr == 0) return malloc(size);
-    if (size == 0) { free(ptr); return 0; }
+    if (size == 0) { free(ptr); return (void*)0; }
 
     // Old block header sits just before the user pointer
     mem_block_t *oldb = (mem_block_t*)ptr - 1;
@@ -187,7 +196,7 @@ uniq void *realloc(void *ptr, size_t size) {
     size_t old_payload = (old_total > sizeof(mem_block_t)) ? (old_total - sizeof(mem_block_t)) : 0;
 
     void *np = malloc(size);
-    if (!np) return 0;
+    if (!np) return (void*)0;
     size_t tocopy = old_payload < size ? old_payload : size;
     memcpy(np, ptr, tocopy);
     free(ptr);
@@ -263,7 +272,7 @@ uniq void* memchr(const void* s, int c, size_t n) {
         }
         p++;
     }
-    return 0;
+    return (void*)0;
 }
 
 uniq void* memmove(void *dst, const void *src, unsigned int n) {
@@ -334,7 +343,7 @@ uniq char* strchr(const char* s, int c) {
 }
 
 uniq char* strrchr(const char* s, int c) {
-    const char* last = 0;
+    const char* last = (const char*)0;
     do {
         if (*s == (char)c) last = s;
     } while (*s++);
@@ -345,162 +354,51 @@ uniq char* strndup(const char* s, size_t n) {
     size_t len = 0;
     while (len < n && s[len]) len++;
     char* p = (char*)malloc(len + 1);
-    if (!p) return 0;
+    if (!p) return (char*)0;
     for (size_t i = 0; i < len; i++) p[i] = s[i];
     p[len] = '\0';
     return p;
 }
 
-uniq int mkstemp(char* template) {
-    static unsigned long seed = 0x1234abcd;
-    if (!template) return -1;
-    int len = strlen(template);
-    if (len < 6) return -1;
-    char* x = template + len - 6;
-    for (int i=0; i<6; i++) if (x[i] != 'X') return -1;
 
-    const char* cs = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    const int csn = 62;
-
-    for (int attempt = 0; attempt < 256; attempt++) {
-        // simple LCG to vary names
-        seed = seed * 1664525u + 1013904223u;
-        unsigned long v = seed;
-        for (int i=0; i<6; i++) { x[i] = cs[(v + i*13) % csn]; }
-
-        // if exists, try another
-        struct stat st;
-        if (stat(template, &st) == 0) continue;
-
-        int fd = open(template, O_CREAT|O_RDWR, 0600);
-        if (fd >= 0) return fd;
-    }
-    // give up; leave last tried name in place
-    return -1;
-}
-
-// ───────────────────────────────────────────
-// Minimal glob: only handles patterns without meta; otherwise returns 0 matches
-// This is sufficient for rvcc -S path since it doesn't rely on globbed libs.
-uniq int __has_meta(const char* s) {
-    for (; *s; s++) if (*s=='*' || *s=='?' ) return 1; return 0;
-}
-
-uniq int __match_wild(const char* pat, const char* s) {
-    // supports '*' and '?'
-    if (*pat == '\0') return *s == '\0';
-    if (*pat == '*') {
-        while (*pat == '*') pat++;
-        if (*pat == '\0') return 1; // trailing * matches all
-        while (*s) { if (__match_wild(pat, s)) return 1; s++; }
-        return 0;
-    }
-    if (*pat == '?') { return *s ? __match_wild(pat+1, s+1) : 0; }
-    return (*pat == *s) ? __match_wild(pat+1, s+1) : 0;
-}
-
-uniq char* __join_path(const char* dir, const char* name) {
-    int need_slash = 1;
-    size_t dl = strlen(dir);
-    if (dl > 0 && dir[dl-1] == '/') need_slash = 0;
-    size_t nl = strlen(name);
-    size_t tot = dl + (need_slash?1:0) + nl + 1;
-    char* p = (char*)malloc(tot);
-    if (!p) return 0;
-    size_t i=0; for(size_t k=0;k<dl;k++) p[i++]=dir[k];
-    if (need_slash) p[i++] = '/';
-    for(size_t k=0;k<nl;k++) p[i++]=name[k];
-    p[i]='\0';
-    return p;
-}
-
-uniq int glob(const char* pattern, int flags, void* errfunc, glob_t* pglob) {
-    (void)flags; (void)errfunc;
-    if (!pglob) return -1;
-    pglob->gl_pathc = 0;
-    pglob->gl_pathv = 0;
-
-    // split into dir and base pattern
-    char dirbuf[256];
-    const char* slash = strrchr(pattern, '/');
-    const char* base = pattern;
-    if (slash) {
-        size_t dl = (size_t)(slash - pattern);
-        if (dl >= sizeof(dirbuf)) dl = sizeof(dirbuf)-1;
-        for (size_t i=0;i<dl;i++) dirbuf[i] = pattern[i];
-        dirbuf[dl] = '\0';
-        if (dl == 0) { dirbuf[0] = '/'; dirbuf[1] = '\0'; }
-        base = slash + 1;
-        if (*base == '\0') base = "*"; // pattern ended with '/'
-    } else {
-        // no dir component
-        dirbuf[0] = '.'; dirbuf[1] = '\0';
-        base = pattern;
-    }
-
-    // no meta: literal path
-    if (!__has_meta(base)) {
-        struct stat st;
-        char* full = __join_path(dirbuf, base);
-        if (!full) return -1;
-        if (stat(full, &st) == 0) {
-            char** v = (char**)malloc(sizeof(char*) * 2);
-            if (!v) { free(full); return -1; }
-            v[0] = full; v[1] = 0; pglob->gl_pathv = v; pglob->gl_pathc = 1; return 0;
-        }
-        free(full);
-        return 0;
-    }
-
-    // wildcard: scan directory
-    int dfd = opendir(dirbuf);
-    if (dfd < 0) return 0;
-
-    size_t cap = 8; size_t cnt = 0;
-    char** vec = (char**)malloc(sizeof(char*) * cap);
-    if (!vec) { closedir(dfd); return -1; }
-
-    // read chunks
-    for (;;) {
-        struct dirent ents[16];
-        int n = readdir(dfd, ents, 16);
-        if (n < 0) { // error
-            break;
-        }
-        if (n == 0) break; // EOF
-        for (int i=0;i<n;i++) {
-            char namebuf[DIRSIZ+1];
-            for (int k=0;k<DIRSIZ;k++) namebuf[k] = ents[i].name[k];
-            namebuf[DIRSIZ] = '\0';
-            // trim trailing NULs (already NUL padded)
-            // skip empty entries
-            if (namebuf[0] == '\0') continue;
-            // skip . and ..
-            if ((namebuf[0]=='.' && namebuf[1]=='\0') || (namebuf[0]=='.' && namebuf[1]=='.' && namebuf[2]=='\0')) continue;
-            if (!__match_wild(base, namebuf)) continue;
-            char* full = __join_path(dirbuf, namebuf);
-            if (!full) { continue; }
-            if (cnt + 2 > cap) { size_t ncap = cap*2; char** nv = (char**)realloc(vec, sizeof(char*)*ncap); if (!nv) { free(full); continue; } vec = nv; cap = ncap; }
-            vec[cnt++] = full;
-        }
-    }
-    closedir(dfd);
-    if (cnt == 0) { free(vec); return 0; }
-    vec[cnt] = 0;
-    pglob->gl_pathv = vec; pglob->gl_pathc = cnt;
-    return 0;
-}
-
-uniq void globfree(glob_t* pglob) {
-    if (!pglob || !pglob->gl_pathv) return;
-    for (size_t i=0; pglob->gl_pathv[i]; i++) free(pglob->gl_pathv[i]);
-    free(pglob->gl_pathv);
-    pglob->gl_pathv = 0;
-    pglob->gl_pathc = 0;
-}
 
 // ───────────────────────────────────────────
 // Minimal argtable2-compatible implementation
+enum arg_kind {
+    ARG_KIND_LIT = 1,
+    ARG_KIND_FILE = 2,
+    ARG_KIND_END = 3,
+};                                                     
+struct arg_hdr {                                       
+    enum arg_kind kind;
+    const char *shortopts;
+    const char *longopts;
+    const char *datatype;
+    const char *glossary;
+    int mincount;
+    int maxcount;
+};
+struct arg_lit {
+    struct arg_hdr hdr;
+    int count;
+};
+struct arg_file {
+    struct arg_hdr hdr;
+    int count;
+    const char **filename;
+};                                                     
+struct arg_error {                                     
+    const char *msg;
+    const char *argval;
+    const struct arg_hdr *hdr;
+};               
+
+struct arg_end {
+    struct arg_hdr hdr;                                
+    int count;                                         
+    int maxerrors;                                    
+    struct arg_error *errors;
+};                  
 
 uniq size_t arg_file_capacity(const struct arg_file *file) {
     int maxc = file->hdr.maxcount;
@@ -735,7 +633,7 @@ uniq int arg_parse(int argc, char **argv, void **argtable) {
 
             if (arg[1] == '-') {
                 const char *name = arg + 2;
-                const char *val = NULL;
+                const char *val_ = NULL;
                 const char *eq = strchr(name, '=');
                 char namebuf[64];
                 if (eq) {
@@ -744,7 +642,7 @@ uniq int arg_parse(int argc, char **argv, void **argtable) {
                     for (size_t k = 0; k < len; ++k) namebuf[k] = name[k];
                     namebuf[len] = '\0';
                     name = namebuf;
-                    val = eq + 1;
+                    val_ = eq + 1;
                 }
                 struct arg_hdr *hdr = arg_find_long(argtable, entries, name);
                 if (!hdr) {
@@ -752,7 +650,7 @@ uniq int arg_parse(int argc, char **argv, void **argtable) {
                     continue;
                 }
                 if (hdr->kind == ARG_KIND_LIT) {
-                    if (val && *val) {
+                    if (val_ && *val_) {
                         arg_add_error(end, "option does not take a value", arg, hdr);
                         continue;
                     }
@@ -765,15 +663,15 @@ uniq int arg_parse(int argc, char **argv, void **argtable) {
                     continue;
                 }
                 if (hdr->kind == ARG_KIND_FILE) {
-                    if (!val) {
+                    if (!val_) {
                         if (i + 1 < argc) {
-                            val = argv[++i];
+                            val_ = argv[++i];
                         } else {
                             arg_add_error(end, "option requires a value", arg, hdr);
                             continue;
                         }
                     }
-                    arg_file_add((struct arg_file *)hdr, val, end,
+                    arg_file_add((struct arg_file *)hdr, val_, end,
                                   "option specified too many times");
                     continue;
                 }
@@ -799,17 +697,17 @@ uniq int arg_parse(int argc, char **argv, void **argtable) {
                     continue;
                 }
                 if (hdr->kind == ARG_KIND_FILE) {
-                    const char *val = NULL;
+                    const char *val_ = NULL;
                     if (*p) {
-                        val = p;
+                        val_ = p;
                         p += strlen(p);
                     } else if (i + 1 < argc) {
-                        val = argv[++i];
+                        val_ = argv[++i];
                     } else {
                         arg_add_error(end, "option requires a value", arg, hdr);
                         break;
                     }
-                    arg_file_add((struct arg_file *)hdr, val, end,
+                    arg_file_add((struct arg_file *)hdr, val_, end,
                                   "option specified too many times");
                     break;
                 }
@@ -999,10 +897,14 @@ uniq int isalnum(int c) {
     return (isalpha(c) || isdigit(c)) ? 1 : 0;
 }
 
+extern void putchar(char c);
+
+/*
 uniq void putchar(char c)
 {
     write(1, &c, 1);
 }
+*/
 
 uniq void puts(const char *s) {
     while (*s) {
@@ -1357,458 +1259,6 @@ uniq void __run_atexit(void) {
   }
 }
 
-uniq int __minux_exit(int status) {
-  __run_atexit();
-  // perform SYS_exit
-  register long _a0 asm("a0") = (long)status;
-  register long _a7 asm("a7") = SYS_exit;
-  asm volatile("ecall" : "+r"(_a0) : "r"(_a7) : "memory");
-  while (1) { }
-}
-
-uniq int __parse_mode(const char* mode) {
-  int flags = 0;
-  if (!mode || !mode[0]) return -1;
-  int rd = 0, wr = 0, app = 0, plus = 0, creat = 0, trunc = 0;
-  switch (mode[0]) {
-    case 'r': rd = 1; break;
-    case 'w': wr = 1; creat = 1; trunc = 1; break;
-    case 'a': wr = 1; creat = 1; app = 1; break;
-    default: return -1;
-  }
-  for (const char* p = mode+1; *p; p++) {
-    if (*p == '+') plus = 1;
-    // ignore 'b'
-  }
-  int oflags = 0;
-  if (rd && !wr && !plus) oflags = O_RDONLY;
-  if (wr && !plus && !rd) oflags = O_WRONLY;
-  if (plus) oflags = O_RDWR;
-  if (creat) oflags |= O_CREAT;
-  if (trunc) oflags |= O_TRUNC;
-  if (app)   oflags |= O_APPEND;
-  return oflags;
-}
-
-#define RL_HISTORY_MAX 32
-uniq char* rl_history[RL_HISTORY_MAX];
-uniq size_t rl_history_len = 0;
-
-uniq void rl_history_add(const char* line) {
-  if (!line || !*line) {
-    return;
-  }
-  if (rl_history_len > 0 && strcmp(rl_history[rl_history_len - 1], line) == 0) {
-    return;
-  }
-  char* copy = strdup(line);
-  if (!copy) {
-    return;
-  }
-  if (rl_history_len == RL_HISTORY_MAX) {
-    free(rl_history[0]);
-    for (size_t i = 1; i < RL_HISTORY_MAX; ++i) {
-      rl_history[i - 1] = rl_history[i];
-    }
-    rl_history_len = RL_HISTORY_MAX - 1;
-  }
-  rl_history[rl_history_len++] = copy;
-}
-
-uniq char* readline_simple(const char* prompt) {
-  if (prompt) {
-    fputs(prompt, stdout);
-    fflush(stdout);
-  }
-
-  size_t cap = 64;
-  char* buf = (char*)malloc(cap);
-  if (!buf) {
-    return NULL;
-  }
-
-  size_t len = 0;
-  while (1) {
-    int ch = fgetc(stdin);
-    if (ch == EOF) {
-      if (len == 0) {
-        free(buf);
-        return NULL;
-      }
-      break;
-    }
-
-    if (ch == '\r') {
-      ch = '\n';
-    }
-
-    if (ch == '\n') {
-      break;
-    }
-
-    if (len + 1 >= cap) {
-      size_t newcap = cap * 2;
-      char* bigger = (char*)realloc(buf, newcap);
-      if (!bigger) {
-        free(buf);
-        return NULL;
-      }
-      buf = bigger;
-      cap = newcap;
-    }
-
-    buf[len++] = (char)ch;
-  }
-
-  buf[len] = '\0';
-  return buf;
-}
-
-uniq void rl_redraw_line(const char* prompt, size_t prompt_len,
-                           const char* buf, size_t len, size_t cur) {
-  fputs("\r", stdout);
-  if (prompt_len) {
-    fwrite(prompt, 1, prompt_len, stdout);
-  }
-  if (len) {
-    fwrite(buf, 1, len, stdout);
-  }
-  fputs("\033[K", stdout);
-  size_t total = prompt_len + len;
-  size_t desired = prompt_len + cur;
-  if (total > desired) {
-    unsigned long moves = (unsigned long)(total - desired);
-    fprintf(stdout, "\033[%luD", moves);
-  }
-  fflush(stdout);
-}
-
-uniq int rl_ensure_capacity(char** bufp, size_t* capp, size_t needed) {
-  if (needed <= *capp) {
-    return 0;
-  }
-  size_t newcap = *capp;
-  while (newcap < needed) {
-    newcap *= 2;
-    if (newcap < *capp) {
-      newcap = needed;
-      break;
-    }
-  }
-  char* bigger = (char*)realloc(*bufp, newcap);
-  if (!bigger) {
-    return -1;
-  }
-  *bufp = bigger;
-  *capp = newcap;
-  return 0;
-}
-
-uniq char* readline_interactive(const char* prompt) {
-  size_t prompt_len = prompt ? strlen(prompt) : 0;
-  if (prompt_len) {
-    fwrite(prompt, 1, prompt_len, stdout);
-    fflush(stdout);
-  }
-
-  size_t cap = 64;
-  char* buf = (char*)malloc(cap);
-  if (!buf) {
-    return NULL;
-  }
-  buf[0] = '\0';
-  size_t len = 0;
-  size_t cur = 0;
-
-  size_t history_index = rl_history_len;
-  char* saved_line = NULL;
-
-  for (;;) {
-    int ch = fgetc(stdin);
-    if (ch == EOF) {
-      if (len == 0) {
-        fputc('\n', stdout);
-        fflush(stdout);
-        free(buf);
-        if (saved_line) free(saved_line);
-        return NULL;
-      }
-      ch = '\n';
-    }
-
-    if (ch == '\r') {
-      ch = '\n';
-    }
-
-    if (ch == '\n') {
-      fputc('\n', stdout);
-      fflush(stdout);
-      buf[len] = '\0';
-      char* result = (char*)malloc(len + 1);
-      if (!result) {
-        free(buf);
-        if (saved_line) free(saved_line);
-        return NULL;
-      }
-      memcpy(result, buf, len + 1);
-      if (len > 0) {
-        rl_history_add(result);
-      }
-      free(buf);
-      if (saved_line) free(saved_line);
-      return result;
-    }
-
-    if (ch == 3) { // Ctrl-C
-      fputc('\n', stdout);
-      fflush(stdout);
-      free(buf);
-      if (saved_line) free(saved_line);
-      return NULL;
-    }
-
-    if (ch == 4) { // Ctrl-D
-      if (len == 0) {
-        fputc('\n', stdout);
-        fflush(stdout);
-        free(buf);
-        if (saved_line) free(saved_line);
-        return NULL;
-      }
-      if (cur < len) {
-        memmove(buf + cur, buf + cur + 1, len - cur);
-        len--;
-        buf[len] = '\0';
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 1) { // Ctrl-A
-      if (cur != 0) {
-        cur = 0;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 5) { // Ctrl-E
-      if (cur != len) {
-        cur = len;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 2) { // Ctrl-B
-      if (cur > 0) {
-        cur--;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 6) { // Ctrl-F
-      if (cur < len) {
-        cur++;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 11) { // Ctrl-K
-      if (cur < len) {
-        len = cur;
-        buf[len] = '\0';
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 21) { // Ctrl-U
-      if (len > 0) {
-        len = 0;
-        cur = 0;
-        buf[0] = '\0';
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 12) { // Ctrl-L clear screen and redraw
-      fputs("\033[2J\033[H", stdout);
-      rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      continue;
-    }
-
-    if (ch == 14) { // Ctrl-N (down history)
-      ch = 0x100; // reuse down arrow handler below
-    }
-
-    if (ch == 16) { // Ctrl-P (up history)
-      ch = 0x101; // reuse up arrow handler below
-    }
-
-    if (ch == 27) { // ESC sequence for arrows/home/end/delete
-      int c1 = fgetc(stdin);
-      if (c1 == '[') {
-        int c2 = fgetc(stdin);
-        if (c2 == 'A') { // Up
-          ch = 0x101;
-        } else if (c2 == 'B') { // Down
-          ch = 0x100;
-        } else if (c2 == 'C') { // Right
-          ch = 0x102;
-        } else if (c2 == 'D') { // Left
-          ch = 0x103;
-        } else if (c2 == 'H') { // Home
-          ch = 0x104;
-        } else if (c2 == 'F') { // End
-          ch = 0x105;
-        } else if (c2 == '3') { // Delete key ESC [ 3 ~
-          int c3 = fgetc(stdin);
-          if (c3 == '~') {
-            ch = 0x106;
-          }
-        } else {
-          // consume trailing digits until non-digit maybe '~'
-          while (c2 >= '0' && c2 <= '9') {
-            int c3 = fgetc(stdin);
-            if (c3 == '~' || c3 == EOF) break;
-            c2 = c3;
-          }
-          ch = 0;
-        }
-      } else if (c1 == 'O') {
-        int c2 = fgetc(stdin);
-        if (c2 == 'H') {
-          ch = 0x104;
-        } else if (c2 == 'F') {
-          ch = 0x105;
-        }
-      }
-      if (ch == 27) {
-        ch = 0;
-      }
-    }
-
-    if (ch == 0x102) { // Right arrow
-      if (cur < len) {
-        cur++;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-    if (ch == 0x103) { // Left arrow
-      if (cur > 0) {
-        cur--;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-    if (ch == 0x104) { // Home
-      if (cur != 0) {
-        cur = 0;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-    if (ch == 0x105) { // End
-      if (cur != len) {
-        cur = len;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-    if (ch == 0x106) { // Delete key
-      if (cur < len) {
-        memmove(buf + cur, buf + cur + 1, len - cur);
-        len--;
-        buf[len] = '\0';
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch == 0x101 || ch == 0x100) { // history navigation
-      int move_up = (ch == 0x101);
-      if (move_up) {
-        if (history_index > 0) {
-          if (history_index == rl_history_len && !saved_line) {
-            saved_line = (char*)malloc(len + 1);
-            if (saved_line) memcpy(saved_line, buf, len + 1);
-          }
-          history_index--;
-          const char* src = rl_history[history_index];
-          size_t needed = strlen(src) + 1;
-          if (rl_ensure_capacity(&buf, &cap, needed) == 0) {
-            memcpy(buf, src, needed);
-            len = needed - 1;
-            cur = len;
-            rl_redraw_line(prompt, prompt_len, buf, len, cur);
-          }
-        }
-      } else {
-        if (history_index < rl_history_len) {
-          history_index++;
-          const char* src;
-          if (history_index == rl_history_len) {
-            src = saved_line ? saved_line : "";
-          } else {
-            src = rl_history[history_index];
-          }
-          size_t needed = strlen(src) + 1;
-          if (rl_ensure_capacity(&buf, &cap, needed) == 0) {
-            memcpy(buf, src, needed);
-            len = needed - 1;
-            cur = len;
-            rl_redraw_line(prompt, prompt_len, buf, len, cur);
-          }
-        }
-      }
-      continue;
-    }
-
-    if (ch == 8 || ch == 127) { // Backspace
-      if (cur > 0) {
-        memmove(buf + cur - 1, buf + cur, len - cur + 1);
-        cur--;
-        len--;
-        rl_redraw_line(prompt, prompt_len, buf, len, cur);
-      }
-      continue;
-    }
-
-    if (ch < 32 || ch == 0x7f) {
-      continue; // ignore other control chars
-    }
-
-    if (rl_ensure_capacity(&buf, &cap, len + 2) != 0) {
-      free(buf);
-      if (saved_line) free(saved_line);
-      return NULL;
-    }
-
-    memmove(buf + cur + 1, buf + cur, len - cur + 1);
-    buf[cur] = (char)ch;
-    len++;
-    cur++;
-    rl_redraw_line(prompt, prompt_len, buf, len, cur);
-  }
-}
-
-uniq char* readline(const char* prompt) {
-  int input_tty = isatty(0);
-  int output_tty = isatty(1);
-  if (!input_tty || !output_tty) {
-    return readline_simple(prompt);
-  }
-  return readline_interactive(prompt);
-}
-
-
-
-
 uniq double strtod(const char* nptr, char** endptr) {
     const char* s = nptr;
     while (isspace(*s)) s++;
@@ -1818,17 +1268,17 @@ uniq double strtod(const char* nptr, char** endptr) {
     while (*s >= '0' && *s <= '9') { ip = ip*10.0 + (*s - '0'); s++; any=1; }
     double fp = 0.0, scale = 1.0;
     if (*s == '.') { s++; while (*s>='0' && *s<='9') { fp = fp*10.0 + (*s-'0'); scale *= 10.0; s++; any=1; } }
-    double val = ip + (scale>1.0 ? fp/scale : 0.0);
+    double val_ = ip + (scale>1.0 ? fp/scale : 0.0);
     if (*s=='e' || *s=='E') {
         s++;
         int esign = 0; if (*s=='+'||*s=='-'){ esign = (*s=='-'); s++; }
         int exp = 0; while (*s>='0'&&*s<='9'){ exp = exp*10 + (*s-'0'); s++; }
         double pow10 = 1.0; while (exp-- > 0) pow10 *= 10.0;
-        val = esign ? (val / pow10) : (val * pow10);
+        val_ = esign ? (val_ / pow10) : (val_ * pow10);
         any = 1;
     }
     if (endptr) *endptr = (char*)(any ? s : nptr);
-    return neg ? -val : val;
+    return neg ? -val_ : val_;
 }
 
 uniq unsigned long long __minux_parse_unsigned(const char* nptr, char** endptr,
@@ -1844,7 +1294,7 @@ uniq unsigned long long __minux_parse_unsigned(const char* nptr, char** endptr,
         s++;
     }
 
-    unsigned long long val = 0;
+    unsigned long long val_ = 0;
     int any = 0;
     int actual_base = base;
 
@@ -1883,13 +1333,13 @@ uniq unsigned long long __minux_parse_unsigned(const char* nptr, char** endptr,
         else break;
         if (d >= actual_base) break;
         any = 1;
-        val = val * (unsigned long long)actual_base + (unsigned long long)d;
+        val_ = val_ * (unsigned long long)actual_base + (unsigned long long)d;
     }
 
     if (endptr) *endptr = (char*)(any ? s : nptr);
     if (neg_out) *neg_out = neg;
     if (any_out) *any_out = any;
-    return val;
+    return val_;
 }
 
 uniq unsigned long strtoul(const char* nptr, char** endptr, int base) {
@@ -1897,9 +1347,9 @@ uniq unsigned long strtoul(const char* nptr, char** endptr, int base) {
     int any = 0;
     unsigned long long parsed = __minux_parse_unsigned(nptr, endptr, base, &neg, &any);
     if (!any) return 0;
-    unsigned long val = (unsigned long)parsed;
-    if (neg) val = (unsigned long)(-(long)val);
-    return val;
+    unsigned long val_ = (unsigned long)parsed;
+    if (neg) val_ = (unsigned long)(-(long)val_);
+    return val_;
 }
 
 uniq long strtol(const char* nptr, char** endptr, int base) {
@@ -1923,11 +1373,11 @@ uniq long long strtoll(const char* nptr, char** endptr, int base) {
 }
 
 uniq long atol(const char* nptr) {
-    return strtol(nptr, 0, 10);
+    return strtol(nptr, (char**)0, 10);
 }
 
 uniq int atoi(const char* nptr) {
-    return (int)strtol(nptr, 0, 10);
+    return (int)strtol(nptr, (char**)0, 10);
 }
 
 uniq int __tolower(int c) {
@@ -1945,27 +1395,6 @@ uniq int strncasecmp(const char* a, const char* b, size_t n) {
         if (da != db) return da - db;
     }
     return 0;
-}
-
-uniq time_t time(time_t* tloc) {
-    struct timeval tv; tv.tv_sec = 0; tv.tv_usec = 0;
-    // If gettimeofday is available it could be used; return epoch by default
-    if (tloc) *tloc = tv.tv_sec;
-    return tv.tv_sec;
-}
-
-uniq struct tm* localtime(const time_t* timep) {
-    static struct tm tm;
-    (void)timep;
-    tm.tm_sec=0; tm.tm_min=0; tm.tm_hour=0; tm.tm_mday=1; tm.tm_mon=0; tm.tm_year=70; tm.tm_wday=4; tm.tm_yday=0; tm.tm_isdst=0;
-    return &tm;
-}
-
-uniq char* ctime_r(const time_t* timep, char* buf) {
-    (void)timep;
-    const char* s = "Thu Jan  1 00:00:00 1970\n";
-    char* p = buf; while (*s) *p++ = *s++; *p = '\0';
-    return buf;
 }
 
 uniq char* strerror(int errnum) {
@@ -1995,7 +1424,7 @@ uniq int ispunct(int c) {
 uniq char* __strtok_save;
 uniq char *strtok(char *s, const char *delim) {
     if (!s) s = __strtok_save;
-    if (!s) return 0;
+    if (!s) return (char*)0;
     // skip leading delimiters
     const char *d;
     while (*s) {
@@ -2004,13 +1433,13 @@ uniq char *strtok(char *s, const char *delim) {
         if (!isdelim) break;
         s++;
     }
-    if (*s == '\0') { __strtok_save = 0; return 0; }
+    if (*s == '\0') { __strtok_save = (char*)0; return (char*)0; }
     char *start = s;
     while (*s) {
         for (d = delim; *d; d++) if (*d == *s) { *s = '\0'; __strtok_save = s+1; return start; }
         s++;
     }
-    __strtok_save = 0; return start;
+    __strtok_save = (char*)0; return start;
 }
 
 uniq int isxdigit(int c) {
@@ -2063,15 +1492,15 @@ uniq int sscanf(const char *str, const char *fmt, ...) {
         } else if (conv=='d' || conv=='i' || conv=='u') {
             SKIP_WS_INPUT();
             int neg = 0; if (*s=='+'||*s=='-'){ neg = (*s=='-'); s++; }
-            unsigned long long val=0; int digits=0;
-            while (*s>='0'&&*s<='9' && (width==0 || digits<width)) { val = val*10 + (unsigned)(*s-'0'); s++; digits++; }
+            unsigned long long val_=0; int digits=0;
+            while (*s>='0'&&*s<='9' && (width==0 || digits<width)) { val_ = val_*10 + (unsigned)(*s-'0'); s++; digits++; }
             if (digits==0) { va_end(ap); return assigned; }
             if (conv=='u') {
-                if (length=='l')      { unsigned long* p = va_arg(ap, unsigned long*); *p = (unsigned long)val; }
-                else if (length=='z') { size_t* p = va_arg(ap, size_t*); *p = (size_t)val; }
-                else                  { unsigned* p = va_arg(ap, unsigned*); *p = (unsigned)val; }
+                if (length=='l')      { unsigned long* p = va_arg(ap, unsigned long*); *p = (unsigned long)val_; }
+                else if (length=='z') { size_t* p = va_arg(ap, size_t*); *p = (size_t)val_; }
+                else                  { unsigned* p = va_arg(ap, unsigned*); *p = (unsigned)val_; }
             } else {
-                long long sval = neg ? -(long long)val : (long long)val;
+                long long sval = neg ? -(long long)val_ : (long long)val_;
                 if (length=='l')      { long* p = va_arg(ap, long*); *p = (long)sval; }
                 else if (length=='z') { long long* p = va_arg(ap, long long*); *p = (long long)sval; } // ssize_t 相当
                 else                  { int* p = va_arg(ap, int*); *p = (int)sval; }
@@ -2126,69 +1555,26 @@ uniq int sscanf(const char *str, const char *fmt, ...) {
     return assigned;
 }
 
-#define MINUX_PATH_MAX 1024
-
-uniq char *realpath(const char *path, char *resolved_path) {
-    if (!path || !*path) {
-        errno = 22; // EINVAL
-        return 0;
-    }
-
-    char *out = resolved_path;
-    int need_free = 0;
-    if (!out) {
-        out = (char*)malloc(MINUX_PATH_MAX);
-        if (!out) {
-            errno = 12; // ENOMEM
-            return 0;
-        }
-        need_free = 1;
-    }
-
-    if (realpath_user(path, out, MINUX_PATH_MAX) < 0) {
-        if (need_free) free(out);
-        errno = 2; // ENOENT (generic failure)
-        return 0;
-    }
-
-    return out;
-}
-
-
-// POSIX-like dirname: returns static buffer; input not modified
-uniq char* dirname(const char* path) {
-    static char buf[MINUX_PATH_MAX];
-    if (!path || !*path) { buf[0]='.'; buf[1]='\0'; return buf; }
-
-    // copy
-    size_t n = 0;
-    while (path[n] && n < MINUX_PATH_MAX-1) { buf[n] = path[n]; n++; }
-    buf[n] = '\0';
-
-    // strip trailing '/'
-    while (n > 1 && buf[n-1] == '/') { buf[--n] = '\0'; }
-
-    // find last '/'
-    char *last = NULL;
-    for (size_t i=0; i<n; i++) if (buf[i] == '/') last = &buf[i];
-
-    if (!last) { buf[0]='.'; buf[1]='\0'; return buf; }
-    if (last == buf) { buf[1] = '\0'; return buf; } // "/xxx" -> "/"
-
-    *last = '\0';
-    size_t m = (size_t)(last - buf);
-    while (m > 0 && buf[m-1] == '/') { buf[--m] = '\0'; } // "/foo///bar" -> "/foo"
-
-    if (m == 0) { buf[0] = '/'; buf[1] = '\0'; }
-    return buf;
-}
-
 //──────────────────────────────────────────
 // Minimal curses-like implementation for MINUX9
 //──────────────────────────────────────────
 
 #define MINUX_CURSES_DEFAULT_ROWS 24
 #define MINUX_CURSES_DEFAULT_COLS 80
+
+typedef struct minux_window {
+    int rows;
+    int cols;
+    int beg_y;
+    int beg_x;
+    int cur_y;
+    int cur_x;
+    struct minux_window* parent;
+    int is_subwin;
+    int is_static;
+} WINDOW;
+
+extern WINDOW* stdscr;
 
 uniq WINDOW __stdscr;
 uniq WINDOW* stdscr = NULL;
@@ -2198,7 +1584,7 @@ uniq int __curses_stdout_is_tty = -1;
 
 uniq int curses_stdout_is_tty(void) {
     if (__curses_stdout_is_tty < 0) {
-        __curses_stdout_is_tty = isatty(1) ? 1 : 0;
+        __curses_stdout_is_tty = 1;
     }
     return __curses_stdout_is_tty;
 }
@@ -2206,7 +1592,7 @@ uniq int curses_stdout_is_tty(void) {
 uniq void curses_emit(const char* seq) {
     if (!seq) return;
     if (!curses_stdout_is_tty()) return;
-    fputs(seq, stdout);
+    puts(seq);
 }
 
 uniq void curses_init_window(WINDOW* win, int rows, int cols, int beg_y, int beg_x) {
@@ -2243,7 +1629,6 @@ uniq WINDOW* initscr(void) {
     (void)curses_stdout_is_tty();
     curses_emit("\033[2J");   // clear screen
     curses_emit("\033[H");    // move cursor to home position
-    fflush(stdout);
 
     return stdscr;
 }
@@ -2254,7 +1639,6 @@ uniq int endwin(void) {
     }
     curses_emit("\033[0m");   // reset attributes
     curses_emit("\033[?25h"); // ensure cursor is shown
-    fflush(stdout);
 
     stdscr = NULL;
     __curses_initialized = 0;
@@ -2266,7 +1650,7 @@ uniq int wrefresh(WINDOW* win) {
     if (!win) {
         return -1;
     }
-    return fflush(stdout) == 0 ? 0 : -1;
+    return 0;
 }
 
 uniq int refresh(void) {
@@ -2372,7 +1756,7 @@ uniq int wmove(WINDOW* win, int y, int x) {
     win->cur_x = x;
 
     if (curses_stdout_is_tty()) {
-        fprintf(stdout, "\033[%d;%dH", win->beg_y + y + 1, win->beg_x + x + 1);
+        printf("\033[%d;%dH", win->beg_y + y + 1, win->beg_x + x + 1);
     }
     return 0;
 }
@@ -2388,7 +1772,7 @@ uniq int __mvwprintfv(WINDOW* win, int y, int x, const char* fmt, va_list ap) {
 
     va_list aq;
     va_copy(aq, ap);
-    int wrote = vfprintf(stdout, fmt, aq);
+    int wrote = printf(fmt, aq);
     va_end(aq);
 
     if (wrote >= 0) {
@@ -2427,12 +1811,13 @@ uniq void setlocale(int n, char* m)
 uniq void perror(char* msg)
 {
     puts(msg);
-    _exit(3);
+    while(1); //_exit(3);
 }
 
 uniq void exit(int status)
 {
-    _exit(status);
+    while(1);
+//    _exit(status);
 }
 
 uniq void* _impure_ptr(void)
@@ -2451,6 +1836,8 @@ uniq void* _impure_ptr(void)
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+
+using comelang;
 
 struct dirent {
     uint16_t inum;           // ファイル/ディレクトリの i-node 番号
@@ -2506,10 +1893,6 @@ typedef struct {
   size_t gl_pathc;   // count of paths matched
   char **gl_pathv;   // NULL-terminated vector of strings
 } glob_t;
-
-extern FILE* stdin;
-extern FILE* stdout;
-extern FILE* stderr;
 
 #define EOF (-1)
 
@@ -3119,36 +2502,36 @@ typedef struct minux_window {
 
 extern WINDOW* stdscr;
 
-enum arg_kind {                                                                                                          
-    ARG_KIND_LIT = 1,                                                                                                    
-    ARG_KIND_FILE = 2,                                                                                                   
-    ARG_KIND_END = 3,                                                                                                    
+enum arg_kind {
+    ARG_KIND_LIT = 1,
+    ARG_KIND_FILE = 2,
+    ARG_KIND_END = 3,
 };                                                     
 struct arg_hdr {                                       
-    enum arg_kind kind;                                
-    const char *shortopts;                                                                                               
-    const char *longopts;                 
-    const char *datatype;                                                                                                
-    const char *glossary;                              
-    int mincount;                                                                                                        
-    int maxcount;                                                                                                        
-};                                                                                                                       
-struct arg_lit {                                                                                                         
-    struct arg_hdr hdr;      
+    enum arg_kind kind;
+    const char *shortopts;
+    const char *longopts;
+    const char *datatype;
+    const char *glossary;
+    int mincount;
+    int maxcount;
+};
+struct arg_lit {
+    struct arg_hdr hdr;
     int count;
-};                                                                                                                       
-struct arg_file {                                                                                                        
-    struct arg_hdr hdr;                                                                                                  
-    int count;                                                                                                           
-    const char **filename;                                                                                               
+};
+struct arg_file {
+    struct arg_hdr hdr;
+    int count;
+    const char **filename;
 };                                                     
 struct arg_error {                                     
-    const char *msg;                                                                                                     
-    const char *argval;                                                                                                  
-    const struct arg_hdr *hdr;                                                                                           
+    const char *msg;
+    const char *argval;
+    const struct arg_hdr *hdr;
 };               
 
-struct arg_end {                                                                                                         
+struct arg_end {
     struct arg_hdr hdr;                                
     int count;                                         
     int maxerrors;                                    
@@ -11758,6 +11141,7 @@ uniq string string::chomp(char* str)
     return result;
 }
 
+#if !defined(__BARE_METAL__)
 uniq string xrealpath(char* path)
 {
     if(path == null) {
@@ -11771,6 +11155,7 @@ uniq string xrealpath(char* path)
 
     return result2;
 }
+#endif
 
 
 uniq string char*::replace(char* self, int index, char c)
