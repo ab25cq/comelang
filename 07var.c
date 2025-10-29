@@ -361,6 +361,8 @@ class sStoreNode extends sNodeBase
             else if(left_type->mRegister) {
                 sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
                 
+                add_come_code(info, "%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
+                
                 CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("%s=%s;\n", make_define_var(var_->mType, var_->mCValueName), right_value.c_value);
                 info.stack.push_back(come_value);
@@ -1331,6 +1333,7 @@ sNode*% string_node(char* buf, char* head, int head_sline, sInfo* info) version 
     
     parse_sharp();
     sFun* fun = info.funcs[string(buf)]??;
+
     
     if((!gComeC && (buf === "var" || buf === "val")) || buf === "auto" || buf === "__auto_type") {
         bool val_ = false;

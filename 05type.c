@@ -1736,7 +1736,6 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 var_name = xsprintf("anonymous_var_nameY%d", num_anonymous_var_name);
             }
             
-            
             if(*info->p == ':') {
                 info->p++;
                 skip_spaces_and_lf();
@@ -2071,6 +2070,21 @@ sType*%,string,bool parse_type(sInfo* info=info, bool parse_variable_name=false,
                 
                 type->mSizeNum = node;
             }
+            
+/*
+            if(parsecmp("asm")) {
+                info->p += strlen("asm");
+                skip_spaces_and_lf();
+                
+                expected_next_character('"');
+                
+                string buf = parse_word();
+                
+                xstrncpy(type->mAsmRegister, buf, REGISTER_MAX);
+                
+                expected_next_character('"');
+            }
+*/
         
             string attribute2 = parse_struct_attribute();
             

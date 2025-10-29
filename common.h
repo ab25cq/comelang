@@ -82,6 +82,8 @@ uniq class sClass
     }
 };
 
+#define REGISTER_MAX 16
+
 uniq class sType
 {
     sClass* mClass;

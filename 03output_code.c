@@ -421,6 +421,10 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
             buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
         
+        if(type2->mAttribute != null) {
+            buf.append_format(type->mAttribute);
+        }
+        
         if(type2->mAsmName != null && type2->mAsmName !== "") {
             buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
@@ -448,6 +452,10 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
             buf.append_str("[]");
         }
         
+        if(type2->mAttribute != null) {
+            buf.append_format(type->mAttribute);
+        }
+        
         if(type2->mAsmName != null && type2->mAsmName !== "") {
             buf.append_format(" __asm__(\"%s\")", type2->mAsmName);
         }
@@ -467,6 +475,10 @@ string make_define_var(sType* type, char* name, bool in_header=false, bool origi
         
         if(type2->mArrayPointerType) {
             buf.append_str("[]");
+        }
+        
+        if(type2->mAttribute != null) {
+            buf.append_format(type->mAttribute);
         }
         
         if(type2->mAsmName != null && type2->mAsmName !== "") {
