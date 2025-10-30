@@ -3593,7 +3593,6 @@ unsigned long  int count;
 void (*finalizer)(void*);
 void* __result_obj__17;
 void* __result_obj__18;
-memset(&finalizer, 0, sizeof(void (*)(void*)));
     if(({    (_conditional_value_X0=(result_obj));    _conditional_value_X0;    })) {
         if(({        (_conditional_value_X1=(mem==result_obj));        _conditional_value_X1;        })) {
             __result_obj__15 = mem;
@@ -3643,12 +3642,6 @@ _Bool _conditional_value_X9;
 void (*finalizer_15)(void*);
 _Bool _conditional_value_X10;
 void (*finalizer_16)(void*);
-memset(&finalizer, 0, sizeof(void (*)(void*)));
-memset(&finalizer_12, 0, sizeof(void (*)(void*)));
-memset(&finalizer_13, 0, sizeof(void (*)(void*)));
-memset(&finalizer_14, 0, sizeof(void (*)(void*)));
-memset(&finalizer_15, 0, sizeof(void (*)(void*)));
-memset(&finalizer_16, 0, sizeof(void (*)(void*)));
     if(({    (_conditional_value_X0=(result_obj));    _conditional_value_X0;    })) {
         if(({        (_conditional_value_X1=(mem==result_obj));        _conditional_value_X1;        })) {
             return;

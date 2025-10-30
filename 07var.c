@@ -89,7 +89,7 @@ class sStoreNode extends sNodeBase
             }
             
             CVALUE*% right_value = get_value_from_stack(-1, info);
-            sType* right_type = right_value.type;
+            sType*% right_type = right_value.type;
             
             if(right_type->mNoSolvedGenericsType) {
                 right_type = right_type->mNoSolvedGenericsType;
@@ -109,7 +109,7 @@ class sStoreNode extends sNodeBase
             
                     sType*% right_type2 = clone right_type.mGenericsTypes[i];
                     right_type2->mStatic = false;
-                    add_variable_to_table(it, clone right_type2, info, false@function_param, comma:self.comma);
+                    add_variable_to_table(it, right_type2, info, false@function_param, comma:self.comma);
                 }
                 
                 i++;
@@ -130,7 +130,7 @@ class sStoreNode extends sNodeBase
                     
                     sVar* var_ = get_variable_from_table(info.lv_table, it);
                     
-                    sType*% left_type = clone var_->mType;
+                    sType*% left_type = var_->mType;
                     
                     CVALUE*% right_value2 = new CVALUE();
                     
@@ -207,14 +207,7 @@ class sStoreNode extends sNodeBase
                 }
             }
             else if(left_type->mArrayNum.length() > 0) {
-                /*
-                if(left_type->mAttribute) {
-                    add_come_code(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
-                }
-                else {
-                */
-                    add_come_code(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                //}
+                add_come_code(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
                 
                 if(info.come_fun.mName !== "memset" && !left_type->mNoCallingDestructor && info.funcs["memset"]) {
                     add_come_code(info, "memset(&%s, 0, sizeof(%s)", var_->mCValueName, make_type_name_string(left_type, no_static:true, no_alignas:true));
@@ -232,14 +225,7 @@ class sStoreNode extends sNodeBase
                 }
             }
             else {
-                /*
-                if(left_type->mAttribute) {
-                    add_come_code_at_function_head(info, "%s %s;\n", make_define_var(left_type, var_->mCValueName), left_type->mAttribute);
-                }
-                else {
-                */
-                    add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                //}
+                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
                 
                 if(left_type->mPointerNum > 0) {
                     add_come_code_at_function_head2(info, "%s = (void*)0;\n", var_->mCValueName);
@@ -303,24 +289,10 @@ class sStoreNode extends sNodeBase
                 var type = solve_generics(right_type, info->generics_type, info);
                 add_variable_to_table(self.name, type, info, false@function_param, comma:self.comma);
             }
-            else {
-            }
             
             var_ = get_variable_from_table(info.lv_table, self.name);
             
             sType*% left_type = clone var_->mType;
-            
-            if(!array_initializer && !struct_initializer && !string_initializer && !left_type->mStatic && !left_type->mConstant && left_type->mArrayNum.length() == 0 && !left_type->mRegister) {
-                if(left_type->mClass->mNumber) {
-                }
-                else if((left_type->mClass->mStruct || left_type->mClass->mUnion || left_type->mClass->mEnum) || left_type->mPointerNum > 0) {
-                }
-                else {
-                    if(info.come_fun.mName !== "memset" && !left_type->mNoCallingDestructor && info.funcs["memset"]) {
-                        add_come_code_at_function_head2(info, "memset(&%s, 0, sizeof(%s));\n", var_->mCValueName, make_type_name_string(left_type, no_static:true, no_alignas:true));
-                    }
-                }
-            }
             
             if(left_type->mHeap && (left_type->mConstant || left_type->mStatic || left_type->mRegister)) {
                 err_msg(info, "don't append heap with constant, static, register");
@@ -456,80 +428,39 @@ class sStoreNode extends sNodeBase
                             return true;
                         }
                         
+                        check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
+                        
                         if(left_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mHeap && left_type->mHeap) {
-                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
-                            
                             string c_value = xsprintf("*(parent->%s)", parent_var->mCValueName);
                             
                             decrement_ref_count_object(parent_var->mType, c_value, info);
                             std_move(left_type, right_type, right_value);
-                            
-                            CVALUE*% come_value = new CVALUE();
-                        
-                            if(parent_var->mType->mOriginIsArray) {
-                                come_value.c_value = xsprintf("(parent->%s)=%s", parent_var->mCValueName, right_value.c_value);
-                            }
-                            else {
-                                come_value.c_value = xsprintf("(*(parent->%s))=%s", parent_var->mCValueName, right_value.c_value);
-                            }
-                            come_value.type = clone left_type;
-                            come_value.var = null;
-                            
-                            add_come_last_code(info, "%s", come_value.c_value);
-                            
-                            info.stack.push_back(come_value);
-                            
-                            return true;
                         }
-                        else if(left_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mHeap) 
-                        {
-                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
-                            
+                        else if(left_type->mPointerNum > 0 && right_type->mPointerNum > 0 && right_type->mClass->mName === "void" && left_type->mHeap)  {
                             string c_value = xsprintf("*(parent->%s)", parent_var->mCValueName);
                             decrement_ref_count_object(parent_var->mType, c_value, info);
-                            
-                            CVALUE*% come_value = new CVALUE();
-                            
-                            if(parent_var->mType->mOriginIsArray) {
-                                come_value.c_value = xsprintf("(parent->%s)=%s", parent_var->mCValueName, right_value.c_value);
-                            }
-                            else {
-                                come_value.c_value = xsprintf("(*(parent->%s))=%s", parent_var->mCValueName, right_value.c_value);
-                            }
-                            come_value.type = clone left_type;
-                            come_value.var = null;
-                            
-                            add_come_last_code(info, "%s", come_value.c_value);
-                            
-                            info.stack.push_back(come_value);
-                            
+                        }
+                        else if(left_type->mHeap && !right_value.type->mHeap) {
+                            err_msg(info, "require right value as heap object(%s)", self.name);
                             return true;
+                        }
+                        
+                        CVALUE*% come_value = new CVALUE();
+                        
+                        if(parent_var->mType->mOriginIsArray) {
+                            come_value.c_value = xsprintf("(parent->%s)=%s", parent_var->mCValueName, right_value.c_value);
                         }
                         else {
-                            check_assign_type(s"\{self.name} is assigning to", left_type, right_type, right_value);
-                            
-                            if(left_type->mHeap && !right_value.type->mHeap) {
-                                err_msg(info, "require right value as heap object(%s)", self.name);
-                                return true;
-                            }
-                            
-                            CVALUE*% come_value = new CVALUE();
-                            
-                            if(parent_var->mType->mOriginIsArray) {
-                                come_value.c_value = xsprintf("(parent->%s)=%s", parent_var->mCValueName, right_value.c_value);
-                            }
-                            else {
-                                come_value.c_value = xsprintf("(*(parent->%s))=%s", parent_var->mCValueName, right_value.c_value);
-                            }
-                            come_value.type = clone left_type;
-                            come_value.var = null;
-                            
-                            add_come_last_code(info, "%s", come_value.c_value);
-                            
-                            info.stack.push_back(come_value);
-                            
-                            return true;
+                            come_value.c_value = xsprintf("(*(parent->%s))=%s", parent_var->mCValueName, right_value.c_value);
                         }
+                        come_value.type = clone left_type;
+                        come_value.var = null;
+                        
+                        add_come_last_code(info, "%s", come_value.c_value);
+                        
+                        info.stack.push_back(come_value);
+                        
+                        return true;
                     }
                 }
             }
@@ -556,54 +487,9 @@ class sStoreNode extends sNodeBase
                 return true;
             }
             
-            if((var_->mType->mStatic || var_->mType->mConstant) && !var_->mGlobal) {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
+            if(left_type->mChannel && new_channel) {
                 CVALUE*% come_value = new CVALUE();
                 
-                come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
-                come_value.type = clone left_type;
-                come_value.var = var_;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-            }
-            else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
-            {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
-                decrement_ref_count_object(left_type, var_->mCValueName, info);
-                std_move(left_type, right_type, right_value);
-                
-                CVALUE*% come_value = new CVALUE();
-                
-                come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
-                come_value.type = clone left_type;
-                come_value.var = var_;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-            }
-            else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
-            {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
-                decrement_ref_count_object(left_type, var_->mCValueName, info);
-                
-                CVALUE*% come_value = new CVALUE();
-                
-                come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
-                come_value.type = clone left_type;
-                come_value.var = var_;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-            }
-            else if(left_type->mChannel && new_channel) {
-                CVALUE*% come_value = new CVALUE();
                 come_value.c_value = xsprintf("(pipe(%s), (void*)0)", var_->mCValueName);
                 come_value.type = new sType(s"void");
                 come_value.type.mPointerNum = 1;
@@ -616,7 +502,16 @@ class sStoreNode extends sNodeBase
             else {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
-                if(left_type->mHeap && !right_value.type->mHeap) {
+                if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
+                {
+                    decrement_ref_count_object(left_type, var_->mCValueName, info);
+                    std_move(left_type, right_type, right_value);
+                }
+                else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
+                {
+                    decrement_ref_count_object(left_type, var_->mCValueName, info);
+                }
+                else if(left_type->mHeap && !right_value.type->mHeap) {
                     err_msg(info, "require right value as heap object(%s)", self.name);
                     return true;
                 }
