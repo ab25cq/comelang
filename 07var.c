@@ -237,15 +237,13 @@ class sStoreNode extends sNodeBase
                 }
             }
             
-            if(!info.m5stack_cpp) {
-                CVALUE*% come_value = new CVALUE();
-                
-                come_value.c_value = xsprintf("%s", var_->mCValueName);
-                come_value.type = clone left_type;
-                come_value.var = var_;
-                
-                info.stack.push_back(come_value);
-            }
+            CVALUE*% come_value = new CVALUE();
+            
+            come_value.c_value = xsprintf("%s", var_->mCValueName);
+            come_value.type = clone left_type;
+            come_value.var = var_;
+            
+            info.stack.push_back(come_value);
             
             if(!left_type->mClass->mNumber && left_type->mPointerNum == 0) {
                 var_->mType->mAllocaValue = true;
