@@ -594,8 +594,10 @@ class sMethodCallNode extends sNodeBase
             sType*% result_type2 = solve_generics(result_type, info.generics_type, info);
             
             come_value2.type = clone result_type2;
-            come_value2.type->mStatic = false;
-            come_value2.type->mImmutable = false;
+            if(come_value2.type) {
+                come_value2.type->mStatic = false;
+                come_value2.type->mImmutable = false;
+            }
             come_value2.var = null;
             
             if(result_type2->mHeap) {
@@ -845,8 +847,10 @@ class sMethodCallNode extends sNodeBase
             come_value2.c_value = buf.to_string();
             
             come_value2.type = clone result_type;
-            come_value2.type->mStatic = false;
-            come_value2.type->mImmutable = false;
+            if(come_value2.type) {
+                come_value2.type->mStatic = false;
+                come_value2.type->mImmutable = false;
+            }
             
             if(result_type->mHeap) {
                 append_object_to_right_values(come_value2, result_type, info, obj_type:obj_type, obj_value:saved_obj_value, obj_var:saved_var);

@@ -520,7 +520,9 @@ class sFunCallNode extends sNodeBase
             }
             
             sType*% result_type = clone lambda_type->mResultType;
-            result_type->mStatic = false;
+            if(result_type) {
+                result_type->mStatic = false;
+            }
             
             list<CVALUE*%>*% come_params = new list<CVALUE*%>();
             
@@ -577,8 +579,10 @@ class sFunCallNode extends sNodeBase
             CVALUE*% come_value = new CVALUE();
             come_value.c_value = buf.to_string();
             come_value.type = clone result_type;
-            come_value.type->mStatic = false;
-            come_value.type->mImmutable = false;
+            if(come_value.type) {
+                come_value.type->mStatic = false;
+                come_value.type->mImmutable = false;
+            }
             come_value.var = null;
             
             if(lambda_type->mResultType.mHeap) {
@@ -1083,7 +1087,9 @@ class sFunCallNode extends sNodeBase
             come_value.c_value = buf.to_string();
             come_value.type = result_type;
             come_value.var = null;
-            come_value.type.mStatic = false;
+            if(come_value.type) {
+                come_value.type.mStatic = false;
+            }
             
             add_come_last_code(info, "%s", come_value.c_value);
             
@@ -1420,8 +1426,10 @@ class sFunCallNode extends sNodeBase
         CVALUE*% come_value = new CVALUE();
         come_value.c_value = buf.to_string();
         come_value.type = clone result_type;
-        come_value.type->mStatic = false;
-        come_value.type->mImmutable = false;
+        if(come_value.type) {
+            come_value.type->mStatic = false;
+            come_value.type->mImmutable = false;
+        }
         come_value.var = null;
             
         if(fun.mResultType->mHeap) {
@@ -1820,7 +1828,9 @@ class sLambdaCall extends sNodeBase
         }
         
         come_value2.type = clone result_type;
-        come_value2.type->mStatic = false;
+        if(come_value2.type) {
+            come_value2.type->mStatic = false;
+        }
         come_value2.var = null;
         
         add_come_last_code(info, "%s", come_value2.c_value);
