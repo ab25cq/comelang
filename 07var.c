@@ -298,7 +298,9 @@ class sStoreNode extends sNodeBase
                 err_msg(info, "don't append heap with constant, static, register");
                 return true;
             }
-            else if(array_initializer || string_initializer || struct_initializer) {
+            else if(array_initializer || string_initializer || struct_initializer || left_type->mStatic 
+                || left_type->mConstant || left_type->mRegister) 
+            {
                 sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
                 add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
                 
@@ -307,26 +309,6 @@ class sStoreNode extends sNodeBase
                 info.stack.push_back(come_value);
                 
                 transpiler_clear_last_code(info);
-            }
-            else if(left_type->mStatic || left_type->mConstant) {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
-                add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = string("");
-                info.stack.push_back(come_value);
-                
-                transpiler_clear_last_code(info);
-            }
-            else if(left_type->mRegister) {
-                sVar* var_ = info.lv_table.mVars.at(string(self.name), null);
-                
-                add_come_code(info, "%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = xsprintf("%s=%s;\n", make_define_var(left_type, var_->mCValueName), right_value.c_value);
-                info.stack.push_back(come_value);
             }
             else if(left_type->mChannel && new_channel) {
                 add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
@@ -345,48 +327,17 @@ class sStoreNode extends sNodeBase
                 
                 add_come_last_code(info, "%s", come_value.c_value);
             }
-            else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
-            {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
-                std_move(left_type, right_type, right_value);
-                
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                
-                CVALUE*% come_value = new CVALUE();
-                come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
-                come_value.type = clone left_type;
-                come_value.var = var_;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-            }
-            else if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
-            {
-                check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
-                
-                add_come_code_at_function_head(info, "%s;\n", make_define_var(left_type, var_->mCValueName));
-                
-                CVALUE*% come_value = new CVALUE();
-                
-                come_value.c_value = xsprintf("%s=%s", var_->mCValueName, right_value.c_value);
-                come_value.type = clone left_type;
-                come_value.var = var_;
-                
-                info.stack.push_back(come_value);
-                
-                add_come_last_code(info, "%s", come_value.c_value);
-            }
             else {
                 check_assign_type(s"\{self.name} is assining to", left_type, right_type, right_value);
                 
-                if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
+                if(left_type->mPointerNum > 0 && left_type->mHeap && right_type->mClass->mName === "void" && right_type->mPointerNum > 0)
+                {
+                }
+                else if(right_type->mHeap && left_type->mHeap && left_type->mPointerNum > 0 && right_type->mPointerNum > 0)
                 {
                     std_move(left_type, right_type, right_value);
                 }
-                
-                if(left_type->mHeap && !right_value.type->mHeap) {
+                else if(left_type->mHeap && !right_value.type->mHeap) {
                     err_msg(info, "require right value as heap object(%s)", self.name);
                     return true;
                 }
@@ -689,7 +640,6 @@ class sLoadNode extends sNodeBase
         self.super();
         
         string self.name = string(name);
-        bool self.on_load_calling = false;
     }
     
     string kind()
@@ -766,7 +716,6 @@ class sLoadNode extends sNodeBase
                     return true;
                 }
                 else {
-stackframe();
                     err_msg(info, "var not found(%s)(Z) at loading variable", self.name);
                     return true;
                 }
@@ -786,23 +735,6 @@ stackframe();
             come_value.type->mArrayNum.reset();
             come_value.type->mPointerNum++;
             come_value.type->mOriginalTypeNamePointerNum = come_value.type->mPointerNum;
-        }
-        
-        if(!self.on_load_calling && self.name !== "self") {
-            self.on_load_calling = true;
-            
-            var fun_name, fun, generics_fun = get_method("on_load"@fun_name, come_value.type, info);
-            
-            if(fun) {
-                get_value_from_stack(-1, info);
-                
-                var params = [((string)null, (clone self) implements sNode)];
-                sNode*% node = create_method_call(s"on_load", (clone self) implements sNode, params, null@method_block, 0@method_block_sline, null@method_generics_types, info);
-                
-                node_compile(node).elif {
-                    return false;
-                }
-            }
         }
         
         return true;
